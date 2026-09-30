@@ -1,0 +1,5 @@
+node_modules/
+.env
+CLAUDE.local.md
+
+# dist/ se commitea: es lo que publica jsDelivr.

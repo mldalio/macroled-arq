@@ -1,0 +1,322 @@
+/* Generado por npm run tokens desde tokens/tokens.json. No editar a mano. */
+
+/* Base: Light · Desktop */
+:root {
+  --arq-space-0: 0px;
+  --arq-space-2: 2px;
+  --arq-space-3: 3px;
+  --arq-space-4: 4px;
+  --arq-space-6: 6px;
+  --arq-space-8: 8px;
+  --arq-space-12: 12px;
+  --arq-space-16: 16px;
+  --arq-space-20: 20px;
+  --arq-space-24: 24px;
+  --arq-space-32: 32px;
+  --arq-space-40: 40px;
+  --arq-space-48: 48px;
+  --arq-space-56: 56px;
+  --arq-space-64: 64px;
+  --arq-space-80: 80px;
+  --arq-space-96: 96px;
+  --arq-space-128: 128px;
+  --arq-space-160: 160px;
+  --arq-font-family-sans: 'Albert Sans';
+  --arq-font-weight-light: 300;
+  --arq-font-weight-regular: 400;
+  --arq-font-weight-medium: 500;
+  --arq-font-weight-semibold: 600;
+  --arq-font-weight-bold: 700;
+  --arq-font-size-10: 10px;
+  --arq-font-size-11: 11px;
+  --arq-font-size-12: 12px;
+  --arq-font-size-14: 14px;
+  --arq-font-size-16: 16px;
+  --arq-font-size-20: 20px;
+  --arq-font-size-24: 24px;
+  --arq-font-size-32: 32px;
+  --arq-font-size-40: 40px;
+  --arq-font-size-48: 48px;
+  --arq-font-size-64: 64px;
+  --arq-font-leading-14: 14px;
+  --arq-font-leading-16: 16px;
+  --arq-font-leading-20: 20px;
+  --arq-font-leading-24: 24px;
+  --arq-font-leading-28: 28px;
+  --arq-font-leading-32: 32px;
+  --arq-font-leading-40: 40px;
+  --arq-font-leading-44: 44px;
+  --arq-font-leading-48: 48px;
+  --arq-font-leading-56: 56px;
+  --arq-font-leading-72: 72px;
+  --arq-font-tracking-tighter: -0.8px;
+  --arq-font-tracking-tight: -0.4px;
+  --arq-font-tracking-normal: 0px;
+  --arq-font-tracking-wide: 0.4px;
+  --arq-font-tracking-wider: 0.8px;
+  --arq-font-tracking-widest: 1px;
+  --arq-radius-0: 0px;
+  --arq-radius-2: 2px;
+  --arq-radius-4: 4px;
+  --arq-radius-8: 8px;
+  --arq-radius-16: 16px;
+  --arq-radius-24: 24px;
+  --arq-radius-full: 999px;
+  --arq-border-1: 1px;
+  --arq-border-2: 2px;
+  --arq-neutral-0: #ffffff;
+  --arq-neutral-25: #fbfbfb;
+  --arq-neutral-50: #f7f7f7;
+  --arq-neutral-75: #f4f4f4;
+  --arq-neutral-100: #f0f0f0;
+  --arq-neutral-150: #e9e9e9;
+  --arq-neutral-200: #e0e0e0;
+  --arq-neutral-250: #d6d6d6;
+  --arq-neutral-300: #cccccc;
+  --arq-neutral-350: #bdbdbd;
+  --arq-neutral-400: #adadad;
+  --arq-neutral-500: #8a8a8a;
+  --arq-neutral-600: #666666;
+  --arq-neutral-650: #575757;
+  --arq-neutral-700: #454545;
+  --arq-neutral-725: #3a3a3a;
+  --arq-neutral-750: #2e2e2e;
+  --arq-neutral-775: #252525;
+  --arq-neutral-800: #1c1c1c;
+  --arq-neutral-850: #161616;
+  --arq-neutral-900: #101010;
+  --arq-red-50: #fbedeb;
+  --arq-red-100: #f6d6d2;
+  --arq-red-200: #edb3ab;
+  --arq-red-300: #e38b7f;
+  --arq-red-400: #d06453;
+  --arq-red-500: #bd4536;
+  --arq-red-600: #a8322a;
+  --arq-red-700: #86271f;
+  --arq-red-800: #621d18;
+  --arq-red-900: #3f1310;
+  --arq-green-50: #eef4f0;
+  --arq-green-100: #d7e7dd;
+  --arq-green-200: #b5d3c0;
+  --arq-green-300: #8fbf9f;
+  --arq-green-400: #6a9e7e;
+  --arq-green-500: #528566;
+  --arq-green-600: #3f6f53;
+  --arq-green-700: #30573f;
+  --arq-green-800: #223f2e;
+  --arq-green-900: #15281d;
+  --arq-amber-50: #fcf5e3;
+  --arq-amber-100: #f8e8bf;
+  --arq-amber-200: #f0d48e;
+  --arq-amber-300: #e0b35a;
+  --arq-amber-400: #d39d35;
+  --arq-amber-500: #b07a1a;
+  --arq-amber-600: #8a5f10;
+  --arq-amber-700: #6e4a0c;
+  --arq-amber-800: #51370a;
+  --arq-amber-900: #342307;
+  --arq-alpha-ink-10: rgba(16, 16, 16, 0.1);
+  --arq-alpha-ink-22: rgba(16, 16, 16, 0.22);
+  --arq-alpha-white-10: rgba(255, 255, 255, 0.1);
+  --arq-alpha-white-22: rgba(255, 255, 255, 0.22);
+  --arq-alpha-black-60: rgba(0, 0, 0, 0.6);
+  --arq-alpha-transparent: rgba(0, 0, 0, 0);
+  --arq-layout-card-min: 280px; /** Ancho mínimo de tarjeta en la grilla de catálogo (auto-fill). Desde 1600 px se reemplaza por layout/card-min-wide con una media query. */
+  --arq-layout-card-min-wide: 340px; /** Ancho mínimo de tarjeta en la grilla de catálogo desde 1600 px. En código reemplaza a layout/card-min con una media query (min-width: 1600px). */
+  --arq-layout-compare-media-max: 2000px; /** Tope de ancho de la foto de compare-product. En la práctica la foto ocupa la columna. */
+  --arq-space-section-2xs: var(--arq-space-32); /** Separación mínima entre bloques de página. */
+  --arq-space-section-xs: var(--arq-space-48); /** Separación ajustada entre bloques de página. */
+  --arq-space-section-sm: var(--arq-space-64); /** Separación reducida entre bloques de página. */
+  --arq-space-section-md: var(--arq-space-96); /** Separación estándar entre secciones y arriba/abajo de la página. */
+  --arq-space-section-lg: var(--arq-space-128); /** Separación amplia entre secciones. */
+  --arq-space-section-xl: var(--arq-space-160); /** Separación máxima, para secciones destacadas. */
+  --arq-space-gap-xs: var(--arq-space-4); /** Elementos muy pegados, como un ícono junto a su texto. */
+  --arq-space-gap-sm: var(--arq-space-8); /** Entre título y bajada, o label e input. */
+  --arq-space-gap-sm-md: var(--arq-space-12); /** Gap entre sm (8) y md (16): 12 en Desktop y Mobile. */
+  --arq-space-gap-md: var(--arq-space-16); /** Separación entre elementos de un bloque (título y párrafo, filas de una lista). */
+  --arq-space-gap-lg: var(--arq-space-24); /** Entre grupos dentro de un bloque. */
+  --arq-space-gap-xl: var(--arq-space-32); /** Entre el encabezado de una sección y su contenido, o columnas grandes. */
+  --arq-space-gap-xl-2xl: var(--arq-space-40); /** Gap entre xl y 2xl: 40 en Desktop, 32 en Mobile. */
+  --arq-space-gap-2xl: var(--arq-space-48); /** Entre grupos grandes de contenido dentro de una sección. */
+  --arq-space-gap-3xl: var(--arq-space-64); /** Distancia entre elementos grandes dentro de un bloque (64 desktop / 48 mobile). */
+  --arq-space-gap-4xl: var(--arq-space-80); /** Distancia entre elementos grandes dentro de un bloque (80 desktop / 56 mobile). */
+  --arq-space-gap-5xl: var(--arq-space-96); /** Distancia entre elementos grandes dentro de un bloque (96 desktop / 64 mobile). */
+  --arq-space-gap-6xl: var(--arq-space-128); /** Distancia entre elementos grandes dentro de un bloque (128 desktop / 96 mobile). */
+  --arq-space-padding-2xs: var(--arq-space-3); /** Relleno mínimo de controles muy compactos (track del toggle). */
+  --arq-space-padding-xs: var(--arq-space-4); /** Relleno de badges y chips. */
+  --arq-space-padding-sm: var(--arq-space-8); /** Relleno de botones y controles compactos. */
+  --arq-space-padding-sm-md: var(--arq-space-12); /** Padding intermedio entre sm (8) y md (16): 12 en Desktop y Mobile. */
+  --arq-space-padding-md: var(--arq-space-16); /** Relleno estándar de tarjetas, inputs y paneles. */
+  --arq-space-padding-lg: var(--arq-space-24); /** Relleno de tarjetas grandes y side sheets. */
+  --arq-space-padding-xl: var(--arq-space-32); /** Relleno de modales y bloques destacados. */
+  --arq-space-padding-xl-2xl: var(--arq-space-40); /** Padding entre xl y 2xl: 40 en Desktop, 32 en Mobile. */
+  --arq-space-padding-2xl: var(--arq-space-48); /** Relleno de bloques muy aireados. */
+  --arq-space-padding-3xl: var(--arq-space-64); /** Padding interno de bloques grandes (64 desktop / 48 mobile). */
+  --arq-space-padding-4xl: var(--arq-space-80); /** Padding interno de bloques grandes (80 desktop / 56 mobile). */
+  --arq-space-padding-5xl: var(--arq-space-96); /** Padding interno de bloques grandes (96 desktop / 64 mobile). */
+  --arq-space-padding-6xl: var(--arq-space-128); /** Padding interno de bloques grandes (128 desktop / 96 mobile). */
+  --arq-radius-control: var(--arq-radius-0); /** Radio de todo el sistema: 0 (esquinas rectas). Siempre 0, salvo que se pida explícitamente otra cosa. */
+  --arq-radius-pill: var(--arq-radius-full); /** Solo si el componente lo requiere (toggle-switch) o se pide explícitamente. */
+  --arq-border-default: var(--arq-border-1); /** Grosor de bordes y divisores. */
+  --arq-border-focus: var(--arq-border-1); /** Grosor del anillo de foco. */
+  --arq-border-strong: var(--arq-border-2); /** Grosor de borde marcado (2): hover y selección de muestras. */
+  --arq-color-bg-default: var(--arq-neutral-0); /** Fondo de página y de secciones completas (body, section). */
+  --arq-color-bg-subtle: var(--arq-neutral-100); /** Fondo alternativo para diferenciar una sección de página de la siguiente. */
+  --arq-color-bg-inverse: var(--arq-neutral-900); /** Fondo de sección invertida, por ejemplo un footer oscuro en modo Light. */
+  --arq-color-surface-default: var(--arq-neutral-0); /** Fondo principal de página, tarjetas y paneles. */
+  --arq-color-surface-faint: var(--arq-neutral-25); /** Fondo apenas despegado de surface/default: hover de opciones sin fondo (option-tile). */
+  --arq-color-surface-hover: var(--arq-neutral-50); /** Fondo al pasar el cursor sobre un elemento interactivo que está sobre surface/default. */
+  --arq-color-surface-soft: var(--arq-neutral-75); /** Fondo suave entre hover y subtle: estado seleccionado liviano (option-tile). */
+  --arq-color-surface-subtle: var(--arq-neutral-100); /** Fondo secundario: bloques destacados, bandas de sección, filas alternas. */
+  --arq-color-surface-selected: var(--arq-neutral-150); /** Fondo de un elemento seleccionado: opción de filtro, fila, chip de variante. */
+  --arq-color-surface-strong: var(--arq-neutral-200); /** Componente que se despega bien del fondo: placeholders, fondos de imagen, chips seleccionados. */
+  --arq-color-surface-inverse: var(--arq-neutral-900); /** Fondo de máximo contraste: botón primario, footer, bandas oscuras. Siempre con color/text/inverse encima. */
+  --arq-color-surface-inverse-hover: var(--arq-neutral-750); /** Hover de un fondo color/surface/inverse (botón primario). */
+  --arq-color-surface-inverse-pressed: var(--arq-neutral-600); /** Pressed de un fondo color/surface/inverse (botón primario). */
+  --arq-color-surface-transparent: var(--arq-alpha-transparent); /** Fondo transparente explícito: sin relleno, para estados que no pintan fondo. */
+  --arq-color-text-primary: var(--arq-neutral-900); /** Títulos, nombres de producto y texto de máxima jerarquía. */
+  --arq-color-text-secondary: var(--arq-neutral-750); /** Texto de lectura: párrafos, descripciones, valores de especificaciones. */
+  --arq-color-text-tertiary: var(--arq-neutral-600); /** Texto secundario: metadatos, etiquetas, ayudas, captions, SKU. */
+  --arq-color-text-inverse: var(--arq-neutral-0); /** Texto e íconos sobre surface/inverse. */
+  --arq-color-text-accent: var(--arq-neutral-900); /** Texto de acento, como links destacados. Mismo tono que color/accent/default. */
+  --arq-color-text-disabled: var(--arq-neutral-400); /** Texto e íconos de elementos deshabilitados. No usar para texto que se tiene que leer. */
+  --arq-color-text-error: var(--arq-red-600); /** Mensajes de error y validación. */
+  --arq-color-text-success: var(--arq-green-600); /** Mensajes de confirmación (por ejemplo, formulario enviado). */
+  --arq-color-text-warning: var(--arq-amber-600); /** Avisos (por ejemplo, sin stock o plazo de entrega largo). */
+  --arq-color-icon-primary: var(--arq-neutral-900); /** Íconos junto a títulos o de máxima jerarquía. */
+  --arq-color-icon-secondary: var(--arq-neutral-750); /** Íconos de uso general. */
+  --arq-color-icon-tertiary: var(--arq-neutral-600); /** Íconos secundarios o de apoyo. */
+  --arq-color-icon-accent: var(--arq-neutral-900); /** Íconos de acento (activo o destacado). Mismo tono que color/accent/default. */
+  --arq-color-icon-inverse: var(--arq-neutral-0); /** Íconos sobre color/surface/inverse o color/bg/inverse. */
+  --arq-color-icon-disabled: var(--arq-neutral-400); /** Íconos de elementos deshabilitados. */
+  --arq-color-border-subtle: var(--arq-alpha-ink-10); /** Divisores y bordes de tarjetas. El borde por defecto. */
+  --arq-color-border-default: var(--arq-alpha-ink-22); /** Bordes de controles en reposo: inputs, chips, checkboxes. */
+  --arq-color-border-hover: var(--arq-neutral-500); /** Borde al pasar el mouse, entre color/border/default y color/border/strong. */
+  --arq-color-border-strong: var(--arq-neutral-900); /** Bordes de énfasis: elemento seleccionado, botón secundario. */
+  --arq-color-border-disabled: var(--arq-neutral-200); /** Bordes de controles deshabilitados. */
+  --arq-color-border-focus: var(--arq-neutral-900); /** Anillo de foco de teclado. Obligatorio en todo elemento interactivo. */
+  --arq-color-border-error: var(--arq-red-600); /** Borde de un campo con error. Acompañar siempre con color/text/error. */
+  --arq-color-action-primary: var(--arq-neutral-900); /** Acción principal: fondo del botón Filled; texto e ícono de Outline y Underline. */
+  --arq-color-action-primary-hover: var(--arq-neutral-750); /** Hover de la acción principal. */
+  --arq-color-action-on-primary: var(--arq-neutral-0); /** Texto e íconos sobre color/action/primary. */
+  --arq-color-accent-default: var(--arq-neutral-900); /** Acento para detalles: foco, estados activos, etiquetas. Nunca fondo de botones ni de bloques grandes. */
+  --arq-color-overlay-scrim: var(--arq-alpha-black-60); /** Fondo semitransparente detrás de modales y paneles laterales. */
+  --arq-layout-gutter: var(--arq-space-40); /** Margen lateral de la página. */
+  --arq-icon-sm: var(--arq-space-12); /** Íconos dentro de texto pequeño o chips. */
+  --arq-icon-md: var(--arq-space-16); /** Íconos por defecto (botones, navegación). */
+  --arq-icon-lg: var(--arq-space-20); /** Íconos destacados. */
+  --arq-icon-xl: var(--arq-space-24); /** Ícono grande (24): acciones destacadas. */
+  --arq-icon-2xl: var(--arq-space-32); /** Ícono extra grande (32): acciones de títulos grandes. */
+  --arq-swatch-sm: var(--arq-space-16); /** Muestra de acabado chica (16): opciones de menú y celdas de filtro. */
+  --arq-swatch-md: var(--arq-space-20); /** Muestra de acabado del selector de muestras (20). */
+  --arq-swatch-lg: var(--arq-space-24); /** Muestra grande (24): campo select y muestra seleccionada. */
+  --arq-type-display-size: var(--arq-font-size-64); /** Tamaño del estilo role/display. */
+  --arq-type-display-leading: var(--arq-font-leading-72); /** Interlineado del estilo role/display. */
+  --arq-type-display-sm-size: var(--arq-font-size-48); /** Tamaño del estilo role/display-sm. */
+  --arq-type-display-sm-leading: var(--arq-font-leading-56); /** Interlineado del estilo role/display-sm. */
+  --arq-type-heading-1-size: var(--arq-font-size-40); /** Tamaño del estilo role/heading-1. */
+  --arq-type-heading-1-leading: var(--arq-font-leading-48); /** Interlineado del estilo role/heading-1. */
+  --arq-type-heading-2-size: var(--arq-font-size-32); /** Tamaño del estilo role/heading-2. */
+  --arq-type-heading-2-leading: var(--arq-font-leading-40); /** Interlineado del estilo role/heading-2. */
+  --arq-type-heading-3-size: var(--arq-font-size-24); /** Tamaño del estilo role/heading-3. */
+  --arq-type-heading-3-leading: var(--arq-font-leading-32); /** Interlineado del estilo role/heading-3. */
+  --arq-type-body-xl-size: var(--arq-font-size-20); /** Tamaño del estilo role/body-xl. */
+  --arq-type-body-xl-leading: var(--arq-font-leading-28); /** Interlineado del estilo role/body-xl. */
+  --arq-type-body-lg-size: var(--arq-font-size-16); /** Tamaño de los estilos role/body-lg*. */
+  --arq-type-body-lg-leading: var(--arq-font-leading-24); /** Interlineado de los estilos role/body-lg*. */
+  --arq-type-body-size: var(--arq-font-size-14); /** Tamaño de los estilos role/body*. */
+  --arq-type-body-leading: var(--arq-font-leading-20); /** Interlineado de los estilos role/body*. */
+  --arq-type-body-sm-size: var(--arq-font-size-12); /** Tamaño de los estilos role/body-sm*. */
+  --arq-type-body-sm-leading: var(--arq-font-leading-16); /** Interlineado de los estilos role/body-sm*. */
+  --arq-type-label-size: var(--arq-font-size-12); /** Tamaño del estilo role/label. */
+  --arq-type-label-leading: var(--arq-font-leading-16); /** Interlineado del estilo role/label. */
+  --arq-type-label-sm-size: var(--arq-font-size-10); /** Tamaño de role/label-sm (10). Caso extremo: solo donde 12 px no entra. */
+  --arq-type-label-sm-leading: var(--arq-font-leading-14); /** Interlineado de role/label-sm. */
+  --arq-type-caption-size: var(--arq-font-size-12); /** Tamaño de los estilos role/caption*. */
+  --arq-type-caption-leading: var(--arq-font-leading-14); /** Interlineado de los estilos role/caption*. */
+}
+
+/* Dark: solo con el switch Iluminar (data-arq-theme="dark"), nunca por prefers-color-scheme */
+[data-arq-theme="dark"] {
+  --arq-color-bg-default: var(--arq-neutral-800); /** Fondo de página y de secciones completas (body, section). */
+  --arq-color-bg-subtle: var(--arq-neutral-750); /** Fondo alternativo para diferenciar una sección de página de la siguiente. */
+  --arq-color-bg-inverse: var(--arq-neutral-0); /** Fondo de sección invertida, por ejemplo un footer oscuro en modo Light. */
+  --arq-color-surface-default: var(--arq-neutral-800); /** Fondo principal de página, tarjetas y paneles. */
+  --arq-color-surface-faint: var(--arq-neutral-775); /** Fondo apenas despegado de surface/default: hover de opciones sin fondo (option-tile). */
+  --arq-color-surface-hover: var(--arq-neutral-775); /** Fondo al pasar el cursor sobre un elemento interactivo que está sobre surface/default. */
+  --arq-color-surface-soft: var(--arq-neutral-725); /** Fondo suave entre hover y subtle: estado seleccionado liviano (option-tile). */
+  --arq-color-surface-subtle: var(--arq-neutral-750); /** Fondo secundario: bloques destacados, bandas de sección, filas alternas. */
+  --arq-color-surface-selected: var(--arq-neutral-725); /** Fondo de un elemento seleccionado: opción de filtro, fila, chip de variante. */
+  --arq-color-surface-strong: var(--arq-neutral-700); /** Componente que se despega bien del fondo: placeholders, fondos de imagen, chips seleccionados. */
+  --arq-color-surface-inverse: var(--arq-neutral-0); /** Fondo de máximo contraste: botón primario, footer, bandas oscuras. Siempre con color/text/inverse encima. */
+  --arq-color-surface-inverse-hover: var(--arq-neutral-150); /** Hover de un fondo color/surface/inverse (botón primario). */
+  --arq-color-surface-inverse-pressed: var(--arq-neutral-200); /** Pressed de un fondo color/surface/inverse (botón primario). */
+  --arq-color-text-primary: var(--arq-neutral-100); /** Títulos, nombres de producto y texto de máxima jerarquía. */
+  --arq-color-text-secondary: var(--arq-neutral-200); /** Texto de lectura: párrafos, descripciones, valores de especificaciones. */
+  --arq-color-text-tertiary: var(--arq-neutral-500); /** Texto secundario: metadatos, etiquetas, ayudas, captions, SKU. */
+  --arq-color-text-inverse: var(--arq-neutral-800); /** Texto e íconos sobre surface/inverse. */
+  --arq-color-text-accent: var(--arq-neutral-150); /** Texto de acento, como links destacados. Mismo tono que color/accent/default. */
+  --arq-color-text-disabled: var(--arq-neutral-600); /** Texto e íconos de elementos deshabilitados. No usar para texto que se tiene que leer. */
+  --arq-color-text-error: var(--arq-red-300); /** Mensajes de error y validación. */
+  --arq-color-text-success: var(--arq-green-300); /** Mensajes de confirmación (por ejemplo, formulario enviado). */
+  --arq-color-text-warning: var(--arq-amber-300); /** Avisos (por ejemplo, sin stock o plazo de entrega largo). */
+  --arq-color-icon-primary: var(--arq-neutral-100); /** Íconos junto a títulos o de máxima jerarquía. */
+  --arq-color-icon-secondary: var(--arq-neutral-200); /** Íconos de uso general. */
+  --arq-color-icon-tertiary: var(--arq-neutral-500); /** Íconos secundarios o de apoyo. */
+  --arq-color-icon-accent: var(--arq-neutral-150); /** Íconos de acento (activo o destacado). Mismo tono que color/accent/default. */
+  --arq-color-icon-inverse: var(--arq-neutral-800); /** Íconos sobre color/surface/inverse o color/bg/inverse. */
+  --arq-color-icon-disabled: var(--arq-neutral-600); /** Íconos de elementos deshabilitados. */
+  --arq-color-border-subtle: var(--arq-alpha-white-10); /** Divisores y bordes de tarjetas. El borde por defecto. */
+  --arq-color-border-default: var(--arq-alpha-white-22); /** Bordes de controles en reposo: inputs, chips, checkboxes. */
+  --arq-color-border-strong: var(--arq-neutral-0); /** Bordes de énfasis: elemento seleccionado, botón secundario. */
+  --arq-color-border-disabled: var(--arq-alpha-white-10); /** Bordes de controles deshabilitados. */
+  --arq-color-border-focus: var(--arq-neutral-150); /** Anillo de foco de teclado. Obligatorio en todo elemento interactivo. */
+  --arq-color-border-error: var(--arq-red-300); /** Borde de un campo con error. Acompañar siempre con color/text/error. */
+  --arq-color-action-primary: var(--arq-neutral-100); /** Acción principal: fondo del botón Filled; texto e ícono de Outline y Underline. */
+  --arq-color-action-primary-hover: var(--arq-neutral-200); /** Hover de la acción principal. */
+  --arq-color-action-on-primary: var(--arq-neutral-900); /** Texto e íconos sobre color/action/primary. */
+  --arq-color-accent-default: var(--arq-neutral-150); /** Acento para detalles: foco, estados activos, etiquetas. Nunca fondo de botones ni de bloques grandes. */
+}
+
+/* Mobile: hasta 767 px */
+@media (max-width: 767px) {
+  :root {
+    --arq-layout-card-min: 160px; /** Ancho mínimo de tarjeta en la grilla de catálogo (auto-fill). Desde 1600 px se reemplaza por layout/card-min-wide con una media query. */
+    --arq-space-section-2xs: var(--arq-space-24); /** Separación mínima entre bloques de página. */
+    --arq-space-section-xs: var(--arq-space-32); /** Separación ajustada entre bloques de página. */
+    --arq-space-section-sm: var(--arq-space-40); /** Separación reducida entre bloques de página. */
+    --arq-space-section-md: var(--arq-space-56); /** Separación estándar entre secciones y arriba/abajo de la página. */
+    --arq-space-section-lg: var(--arq-space-96); /** Separación amplia entre secciones. */
+    --arq-space-section-xl: var(--arq-space-128); /** Separación máxima, para secciones destacadas. */
+    --arq-space-gap-lg: var(--arq-space-20); /** Entre grupos dentro de un bloque. */
+    --arq-space-gap-xl: var(--arq-space-24); /** Entre el encabezado de una sección y su contenido, o columnas grandes. */
+    --arq-space-gap-xl-2xl: var(--arq-space-32); /** Gap entre xl y 2xl: 40 en Desktop, 32 en Mobile. */
+    --arq-space-gap-2xl: var(--arq-space-40); /** Entre grupos grandes de contenido dentro de una sección. */
+    --arq-space-gap-3xl: var(--arq-space-48); /** Distancia entre elementos grandes dentro de un bloque (64 desktop / 48 mobile). */
+    --arq-space-gap-4xl: var(--arq-space-56); /** Distancia entre elementos grandes dentro de un bloque (80 desktop / 56 mobile). */
+    --arq-space-gap-5xl: var(--arq-space-64); /** Distancia entre elementos grandes dentro de un bloque (96 desktop / 64 mobile). */
+    --arq-space-gap-6xl: var(--arq-space-96); /** Distancia entre elementos grandes dentro de un bloque (128 desktop / 96 mobile). */
+    --arq-space-padding-lg: var(--arq-space-20); /** Relleno de tarjetas grandes y side sheets. */
+    --arq-space-padding-xl: var(--arq-space-24); /** Relleno de modales y bloques destacados. */
+    --arq-space-padding-xl-2xl: var(--arq-space-32); /** Padding entre xl y 2xl: 40 en Desktop, 32 en Mobile. */
+    --arq-space-padding-2xl: var(--arq-space-32); /** Relleno de bloques muy aireados. */
+    --arq-space-padding-3xl: var(--arq-space-48); /** Padding interno de bloques grandes (64 desktop / 48 mobile). */
+    --arq-space-padding-4xl: var(--arq-space-56); /** Padding interno de bloques grandes (80 desktop / 56 mobile). */
+    --arq-space-padding-5xl: var(--arq-space-64); /** Padding interno de bloques grandes (96 desktop / 64 mobile). */
+    --arq-space-padding-6xl: var(--arq-space-96); /** Padding interno de bloques grandes (128 desktop / 96 mobile). */
+    --arq-layout-gutter: var(--arq-space-20); /** Margen lateral de la página. */
+    --arq-icon-lg: var(--arq-space-24); /** Íconos destacados. */
+    --arq-type-display-size: var(--arq-font-size-40); /** Tamaño del estilo role/display. */
+    --arq-type-display-leading: var(--arq-font-leading-44); /** Interlineado del estilo role/display. */
+    --arq-type-display-sm-size: var(--arq-font-size-32); /** Tamaño del estilo role/display-sm. */
+    --arq-type-display-sm-leading: var(--arq-font-leading-40); /** Interlineado del estilo role/display-sm. */
+    --arq-type-heading-1-size: var(--arq-font-size-32); /** Tamaño del estilo role/heading-1. */
+    --arq-type-heading-1-leading: var(--arq-font-leading-40); /** Interlineado del estilo role/heading-1. */
+    --arq-type-heading-2-size: var(--arq-font-size-24); /** Tamaño del estilo role/heading-2. */
+    --arq-type-heading-2-leading: var(--arq-font-leading-32); /** Interlineado del estilo role/heading-2. */
+    --arq-type-heading-3-size: var(--arq-font-size-20); /** Tamaño del estilo role/heading-3. */
+    --arq-type-heading-3-leading: var(--arq-font-leading-28); /** Interlineado del estilo role/heading-3. */
+    --arq-type-body-xl-size: var(--arq-font-size-16); /** Tamaño del estilo role/body-xl. */
+    --arq-type-body-xl-leading: var(--arq-font-leading-24); /** Interlineado del estilo role/body-xl. */
+  }
+}

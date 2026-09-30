@@ -1,0 +1,4 @@
+/* Entrada de dist/arq.css: solo lo global.
+   Nada de html, body ni selectores globales: solo variables --arq-*.
+   Albert Sans se carga a nivel página, no acá (ver docs/decisiones.md). */
+@import './tokens.css';

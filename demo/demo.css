@@ -1,0 +1,95 @@
+/* Estilos de la demo (no entran al build). Sin valores sueltos: solo --arq-*.
+   Las clases llevan prefijo demo- para no confundirse con las del sistema. */
+
+.demo {
+  margin: 0;
+  color: var(--arq-color-text-primary);
+  background: var(--arq-color-bg-default);
+}
+
+.demo-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-20);
+  padding: var(--arq-space-20) var(--arq-layout-gutter);
+}
+
+.demo-title {
+  margin: 0;
+  font-weight: var(--arq-font-weight-regular);
+}
+
+.demo-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--arq-space-20);
+  cursor: pointer;
+}
+
+.demo-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--arq-space-40);
+  padding: var(--arq-space-40) var(--arq-layout-gutter);
+}
+
+.demo-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--arq-space-20);
+}
+
+.demo-heading {
+  margin: 0;
+  color: var(--arq-color-text-secondary);
+}
+
+.demo-meta {
+  color: var(--arq-color-text-tertiary);
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--arq-space-40) * 4)), 1fr));
+  align-items: start;
+  gap: var(--arq-space-20);
+}
+
+.demo-stack {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--arq-space-20);
+}
+
+.demo-token {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: var(--arq-space-20);
+  min-width: 0;
+  margin: 0;
+}
+
+.demo-token figcaption {
+  display: grid;
+  overflow-wrap: anywhere;
+}
+
+.demo-swatch {
+  box-sizing: border-box;
+  aspect-ratio: 1 / 1;
+  border: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+/* max-width: tokens como layout/compare-media-max son más anchos que la página */
+.demo-bar {
+  max-width: 100%;
+  height: var(--arq-space-gap-lg);
+  background: var(--arq-color-surface-inverse);
+}
+
+.demo-sample {
+  margin: 0;
+}

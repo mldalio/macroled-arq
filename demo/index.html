@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Macroled Arq · Demo</title>
+    <link rel="icon" href="data:," />
+
+    <!-- Albert Sans a nivel página, como en Webflow (no va en dist/arq.css) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@300..700&display=swap" />
+
+    <link rel="stylesheet" href="/src/styles/tokens.css" />
+    <link rel="stylesheet" href="/demo/demo.css" />
+    <script type="module" src="/demo/demo.js"></script>
+  </head>
+  <body class="demo role-body">
+    <header class="demo-header">
+      <p class="demo-title">Macroled Arq · Demo</p>
+      <label class="demo-switch">
+        <input type="checkbox" id="demo-theme" />
+        <span>Dark (data-arq-theme en &lt;html&gt;)</span>
+      </label>
+    </header>
+
+    <main class="demo-main">
+      <section class="demo-section" aria-labelledby="demo-colors">
+        <h2 id="demo-colors" class="demo-heading role-label">Colores</h2>
+        <div class="demo-grid" data-demo-list="color"></div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-roles">
+        <h2 id="demo-roles" class="demo-heading role-label">Estilos role/*</h2>
+        <div class="demo-stack" data-demo-list="role"></div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-spaces">
+        <h2 id="demo-spaces" class="demo-heading role-label">Espacios</h2>
+        <div class="demo-stack" data-demo-list="dimension"></div>
+      </section>
+
+      <!-- Componentes: una sección por componente con todas sus variantes y estados -->
+    </main>
+  </body>
+</html>

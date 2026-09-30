@@ -1,0 +1,174 @@
+/* Generado por npm run tokens desde tokens/tokens.json. No editar a mano. */
+
+/* Titulares principales (nombre de producto en el hero). */
+.role-display {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-light);
+  font-size: var(--arq-type-display-size);
+  line-height: var(--arq-type-display-leading);
+  letter-spacing: var(--arq-font-tracking-tighter);
+}
+
+/* Titulares secundarios. */
+.role-display-sm {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-light);
+  font-size: var(--arq-type-display-sm-size);
+  line-height: var(--arq-type-display-sm-leading);
+  letter-spacing: var(--arq-font-tracking-tight);
+}
+
+/* Título de página. */
+.role-heading-1 {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-light);
+  font-size: var(--arq-type-heading-1-size);
+  line-height: var(--arq-type-heading-1-leading);
+  letter-spacing: var(--arq-font-tracking-tight);
+}
+
+/* Título de sección. */
+.role-heading-2 {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-light);
+  font-size: var(--arq-type-heading-2-size);
+  line-height: var(--arq-type-heading-2-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Subtítulos, columnas del mega menú, category-card. */
+.role-heading-3 {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-regular);
+  font-size: var(--arq-type-heading-3-size);
+  line-height: var(--arq-type-heading-3-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Acciones grandes, más que un button (opciones del modal de descargas). */
+.role-body-xl {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-regular);
+  font-size: var(--arq-type-body-xl-size);
+  line-height: var(--arq-type-body-xl-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Bajadas y párrafos destacados. */
+.role-body-lg {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-light);
+  font-size: var(--arq-type-body-lg-size);
+  line-height: var(--arq-type-body-lg-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Títulos o preguntas de lectura, entre body-lg y body-lg-medium. */
+.role-body-lg-regular {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-regular);
+  font-size: var(--arq-type-body-lg-size);
+  line-height: var(--arq-type-body-lg-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Énfasis sobre body-lg. */
+.role-body-lg-medium {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-medium);
+  font-size: var(--arq-type-body-lg-size);
+  line-height: var(--arq-type-body-lg-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Lectura, valores de inputs, links de listas. */
+.role-body {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-light);
+  font-size: var(--arq-type-body-size);
+  line-height: var(--arq-type-body-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Botones, opciones y controles con texto. */
+.role-body-regular {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-regular);
+  font-size: var(--arq-type-body-size);
+  line-height: var(--arq-type-body-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Énfasis intermedio entre regular y strong. */
+.role-body-medium {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-medium);
+  font-size: var(--arq-type-body-size);
+  line-height: var(--arq-type-body-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Títulos de columna, nombres en listas. */
+.role-body-strong {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-semibold);
+  font-size: var(--arq-type-body-size);
+  line-height: var(--arq-type-body-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Metadatos, SKU, legales, ayudas. */
+.role-body-sm {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-regular);
+  font-size: var(--arq-type-body-sm-size);
+  line-height: var(--arq-type-body-sm-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Énfasis sobre body-sm. */
+.role-body-sm-medium {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-medium);
+  font-size: var(--arq-type-body-sm-size);
+  line-height: var(--arq-type-body-sm-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Etiquetas de inputs, tabs, títulos de grupo, breadcrumb. */
+.role-label {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-regular);
+  font-size: var(--arq-type-label-size);
+  line-height: var(--arq-type-label-leading);
+  letter-spacing: var(--arq-font-tracking-widest);
+  text-transform: uppercase;
+}
+
+/* Caso extremo: solo donde role/label (12) no entra (celdas de filtro). */
+.role-label-sm {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-medium);
+  font-size: var(--arq-type-label-sm-size);
+  line-height: var(--arq-type-label-sm-leading);
+  letter-spacing: var(--arq-font-tracking-widest);
+  text-transform: uppercase;
+}
+
+/* Notas mínimas, "Copiado". */
+.role-caption {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-regular);
+  font-size: var(--arq-type-caption-size);
+  line-height: var(--arq-type-caption-leading);
+  letter-spacing: var(--arq-font-tracking-wide);
+}
+
+/* Énfasis sobre caption. */
+.role-caption-medium {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-medium);
+  font-size: var(--arq-type-caption-size);
+  line-height: var(--arq-type-caption-leading);
+  letter-spacing: var(--arq-font-tracking-wide);
+}

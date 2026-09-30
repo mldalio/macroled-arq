@@ -1,0 +1,19 @@
+{
+  "name": "macroled-arq",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Web Components de Macroled Arq (macroled.com.ar/arq) para cargar en Webflow.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "tokens": "node scripts/build-tokens.js"
+  },
+  "devDependencies": {
+    "style-dictionary": "^5.5.5",
+    "vite": "^8.3.1"
+  }
+}
