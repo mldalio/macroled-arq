@@ -25,7 +25,17 @@ Orden de prioridad cuando algo se contradice:
 
 Excepción: cuando DESIGN.md o la descripción de un componente describen un comportamiento que una variante estática de Figma no puede mostrar (por ejemplo, el cambio de imagen en hover de product-card), manda el texto.
 
-Qué leer por el MCP de Figma: páginas **Componentes** y **Final** (pantallas), y **Tokens** / **Documentación** / **Plan del proyecto** como referencia.
+Qué leer por el MCP de Figma: páginas **Componentes** y **Final** (pantallas), y **Tokens** / **Documentación** / **Plan del proyecto** como referencia. El MCP puede listar solo algunas páginas: se accede a las demás por su node id.
+
+| Página | Node id |
+| --- | --- |
+| Componentes | `751:4274` |
+| Final (pantallas) | `475:7137` |
+| Documentación (fichas `doc/<nombre>`) | `1422:1702` |
+| Tokens | `557:1112` |
+| Plan del proyecto | `703:2696` |
+
+Para encontrar la ficha de un componente, listar los hijos de Documentación (`get_metadata` sobre `1422:1702`) y buscar el frame `doc/<nombre>`.
 Qué **no** usar: página *baja / media*, frames *Registro · …* (historial de pendientes).
 
 ## Stack
@@ -39,6 +49,7 @@ No se usa Storybook. Los componentes se prueban en `demo/index.html`.
 ```
 tokens/tokens.json            ← export de variables de Figma (no editar a mano salvo acuerdo)
 src/styles/tokens.css         ← generado con npm run tokens (no editar)
+src/base/                     ← ArqElement (clase base), icons.js, disclosure.js
 src/components/<nombre>/      ← <nombre>.js, <nombre>.css, README.md
 src/pages/                    ← páginas armadas con componentes y datos
 demo/index.html               ← página de prueba: todos los componentes y sus estados
@@ -62,7 +73,9 @@ dist/arq.js · dist/arq.css    ← única salida que carga Webflow
 ## Componentes
 
 - Web Components con prefijo `arq-` (`<arq-button>`) y **Shadow DOM**. Dentro del Shadow DOM las clases no llevan prefijo.
-- Nombres de props y variantes **idénticos a Figma** (Breakpoint, Type, State, Open, Size, Theme, Show …). En HTML se escriben en kebab-case como atributos: `type="outline"`, `show-icon`.
+- Nombres de props y variantes **idénticos a Figma** (Type, Open, Size, Theme, Show …). En HTML se escriben en kebab-case como atributos y valores: `type="outline"`, `show-icon`, `layout="image-left"`. Los booleanos son atributos de presencia.
+- **No son props:** `Breakpoint` (se resuelve con media query) ni los estados de interacción `Hover`, `Pressed` y `Focus` (se resuelven con `:hover`, `:active` y `:focus-visible`). Sí son props los estados que dependen de datos o de la app: `selected`, `current`, `checked`, `value`, `filled`, `error`, `disabled`, `loading`, `copied`, `applied`, `open`.
+- Todo componente extiende `ArqElement` (`src/base/`). Los íconos salen de `src/base/icons.js` y los desplegables usan `src/base/disclosure.js`.
 - Una carpeta por componente en `src/components/<nombre>/` con `.js`, `.css` y `README.md`.
 - Antes de construir un componente, leer **tres cosas**: el set en Figma por MCP (variantes, props y variables enlazadas), su **descripción** en Figma (copiada en `docs/components.md`; si no coincide con Figma, manda Figma) y su ficha `doc/<nombre>` en la página Documentación (uso, "No confundir con", notas de código). El link al set está en el Anexo A de DESIGN.md y en la tarjeta de Trello. Si las tres fuentes no coinciden, avisar en vez de elegir.
 - El texto principal llega como **slot** desde el HTML (indexable), no se genera por JS.

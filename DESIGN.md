@@ -94,11 +94,6 @@ Arq vive en `macroled.com.ar/arq`, dentro del mismo sitio de Webflow que el e-co
 @media (max-width: 767px) {
   :root { --arq-layout-gutter: var(--arq-space-20); }
 }
-
-/* Grilla de catálogo: card-min más grande en pantallas grandes */
-@media (min-width: 1600px) {
-  :root { --arq-layout-card-min: var(--arq-layout-card-min-wide); }
-}
 ```
 
 Las variables CSS atraviesan el Shadow DOM. Un bloque en modo Dark se logra con `data-arq-theme="dark"` en el contenedor (en Figma: modo Dark en el frame). **Dark nunca se activa solo por la preferencia del sistema**: únicamente con Iluminar.
@@ -107,7 +102,19 @@ Las variables CSS atraviesan el Shadow DOM. Un bloque en modo Dark se logra con 
 
 - **Mobile** hasta 767 px y **Desktop** desde 768 px (modos de Dimension y Type).
 - **Listados** (Productos y Colecciones): hasta 1023 px usan `catalog-nav-mobile` en lugar del sidebar `catalog-nav`.
-- **Grilla de catálogo:** `grid-template-columns: repeat(auto-fill, minmax(var(--arq-layout-card-min), 1fr))`. `layout/card-min` vale 280 (160 en mobile) y desde 1600 px se reemplaza por `layout/card-min-wide` (340).
+- **Grilla de catálogo:** `layout/card-min` vale 280 (160 en mobile) y desde 1600 px se usa `layout/card-min-wide` (340). El cambio se resuelve en el CSS de la grilla, no en `tokens.css` (que solo refleja los modos de Figma):
+
+```css
+.grid {
+  --card-min: var(--arq-layout-card-min);
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
+}
+@media (min-width: 1600px) {
+  .grid { --card-min: var(--arq-layout-card-min-wide); }
+}
+```
+
+`--card-min` es una variable local de la grilla, dentro del Shadow DOM del componente que la contiene: no sale al DOM global.
 
 | Viewport | Columnas | Ancho de tarjeta |
 | --- | --- | --- |
@@ -235,7 +242,7 @@ Cómo elegir un token:
 | --- | --- | --- | --- |
 | layout/gutter | 40 | 20 | Margen lateral de la página. Lo aplica la sección, no cada componente. Excepción: componentes de borde a borde (navbar, footer, filter-bar, variants-table) lo usan como padding interno |
 | layout/card-min | 280 | 160 | Ancho mínimo de tarjeta en la grilla de catálogo |
-| layout/card-min-wide | 340 | 340 | Reemplaza a card-min desde 1600 px (media query) |
+| layout/card-min-wide | 340 | 340 | Reemplaza a card-min desde 1600 px, en el CSS de la grilla |
 | layout/compare-media-max | 2000 | 2000 | Tope de la media en la comparativa |
 | space/section/2xs · xs · sm · md · lg · xl | 32 · 48 · 64 · 96 · 128 · 160 | 24 · 32 · 40 · 56 · 96 · 128 | Solo entre bloques de página (padding de la sección). Es la perilla del ritmo de página |
 | space/gap/xs · sm · sm-md · md · lg · xl · xl-2xl · 2xl · 3xl · 4xl · 5xl · 6xl | 4 · 8 · 12 · 16 · 24 · 32 · 40 · 48 · 64 · 80 · 96 · 128 | 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 56 · 64 · 96 | Entre elementos (gap) |
@@ -328,9 +335,9 @@ Web Components con prefijo `arq-` y Shadow DOM. Nombres de props y variantes **i
 
 | Propiedad | Valores | Para qué |
 | --- | --- | --- |
-| Breakpoint | Desktop · Mobile | Cambios de layout responsive |
+| Breakpoint | Desktop · Mobile | Cambios de layout responsive. En código no es una prop: media query |
 | Type | según componente | Qué tipo de componente es (nunca "Variant") |
-| State | Default · Hover · Pressed · Focus · Disabled (+ los del §7) | Estado de interacción |
+| State | Default · Hover · Pressed · Focus · Disabled (+ los del §7) | Estado. En código, Hover, Pressed y Focus son `:hover`, `:active` y `:focus-visible`; el resto son props (`disabled`, `selected`, `loading`…) |
 | Open | False · True | Desplegables |
 | Size | Small · Default · Large (+ Compact) | Tamaño |
 | Theme | Default · Inverse · Transparent | Color sobre fondos especiales |
