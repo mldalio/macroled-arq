@@ -43,6 +43,69 @@ Formato: fecha · decisión · por qué.
 - Salida (`npm run tokens`): `:root` (base), `[data-arq-theme="dark"]` y `@media (max-width: 767px) { :root }`. Nunca `prefers-color-scheme`.
 - Pendiente: conversor del export de variables de Figma a este formato (TODO).
 
+## 2026-09-30 · Base de componentes (src/base/)
+
+### ArqElement
+
+Todo componente extiende `ArqElement` (`src/base/arq-element.js`):
+
+```js
+import css from './accordion-item.css?inline';
+
+class ArqAccordionItem extends ArqElement {
+  static tag = 'arq-accordion-item';
+  static styles = css;
+  static properties = {
+    open: { type: Boolean },                                            // Open
+    type: { type: String, values: ['plain', 'outline'], default: 'plain' },
+    count: { type: Number },
+  };
+  static template = `<button type="button">…</button><div class="panel"><slot></slot></div>`;
+  setup() { … }          // una vez, al conectarse por primera vez
+  update(changed) { … }  // al conectarse y cuando cambian props (Set con los nombres)
+}
+ArqAccordionItem.define();
+```
+
+- **Props = propiedades de Figma**, declaradas una por una. El nombre de Figma pasa a atributo en kebab-case y a prop JS en camelCase: `Show icon` → `show-icon` → `showIcon`. Los valores van en kebab-case en los dos lados: `Layout=Image left` → `layout="image-left"` → `el.layout === 'image-left'`.
+- **No son props:** `Breakpoint` (media query) ni `State=Hover / Pressed / Focus` (`:hover`, `:active`, `:focus-visible`). **Sí son props** los estados que dependen de datos o de la app: `open`, `selected`, `current`, `checked`, `value`, `filled`, `error`, `disabled`, `loading`, `copied`, `applied`.
+- **Tipos:** `Boolean` (atributo de presencia; ausente = `false`), `String` (con `values` y `default` si es una variante) y `Number`. Un valor fuera de `values` vuelve al `default` y avisa solo en `npm run dev`.
+- **Reflejo:** atributo → prop y prop → atributo. Las props asignadas antes de que se registre el elemento se recuperan al registrarlo.
+- **Estilos:** el Shadow DOM adopta, en orden, la hoja de roles, una hoja base (`[hidden] { display: none !important }`) y la del componente. Cada hoja se crea una vez y la comparten todas las instancias.
+- **Render:** `static template` se parsea una vez por clase y se clona en cada instancia. El texto principal llega por slot.
+- **Eventos:** `this.emit('change', detail)` despacha `arq:change` con `bubbles` y `composed`. Nombres: `arq:change` para cambios de valor, `arq:toggle` para abrir / cerrar.
+- **Controladores:** `addController(obj)` llama a `obj.hostUpdate(changed)` después de cada `update()`. Lo usa Disclosure.
+- **Registro:** `define()` no hace nada si el tag ya existe (Webflow puede cargar el script dos veces). Cada componente se importa en `src/main.js`.
+
+### Íconos (src/base/icons.js)
+
+- Los 20 de Figma (`icon/*`, sección icons `1075:4571`), leídos por MCP desde la variante `Theme=Default`. El node id de cada uno queda anotado en el archivo.
+- `icon('plus')` devuelve el `<svg>` como string para usar en templates. No hay elemento `<arq-icon>`: los íconos viven dentro de los componentes.
+- `stroke="currentColor"`: el color lo pone el componente con `color/icon/*`. `Theme=Inverse` no es otro SVG, es `color/icon/inverse`.
+- `vector-effect="non-scaling-stroke"`: el trazo queda en 1 px en cualquier tamaño. El tamaño lo define el componente con `--arq-icon-*` (el SVG no trae width/height).
+- `aria-hidden="true"`: el nombre accesible lo lleva el botón o link.
+- `data-icon="<nombre>"` en el SVG, para elegir con CSS cuál mostrar (por ejemplo, plus o minus según `open`).
+
+### Desplegables (src/base/disclosure.js)
+
+accordion-item, faq-item, filter-row, catalog-nav-group y catalog-nav-trigger usan el controlador `Disclosure`, armado según sus fichas `doc/<nombre>`:
+
+```js
+setup() {
+  this.disclosure = new Disclosure(this, { trigger: button, panel: region });
+}
+```
+
+- Encabezado `<button type="button">` con `aria-expanded` y `aria-controls`. Enter y Espacio son nativos.
+- Panel con el atributo `hidden` (no solo CSS). El contenido va por slot: queda en el HTML aunque esté cerrado.
+- El ícono + / – es decorativo; el estado lo comunica `aria-expanded`.
+- **Desplegables independientes:** pueden quedar varios abiertos (así lo dicen las fichas de accordion-item y faq-item).
+- El estado es la prop `open`. Figma define `Open=True` por defecto en filter-row y catalog-nav-group, pero en código lo decide el HTML o los datos (el grupo de la categoría actual, la fila con filtros aplicados).
+- Cambiar `open` por código no emite eventos. La acción del usuario y `show()` / `hide()` / `toggle()` emiten `arq:toggle` con `{ open }`.
+- Opción `closeOnEscape` (apagada por defecto).
+- **TODO:** sin animación, porque no hay tokens de movimiento. Si se anima, respetar `prefers-reduced-motion`.
+- Se usa `<button>` y no `<details>` en todos los casos, también en faq-item (su ficha acepta las dos), para tener un solo patrón.
+
 ### Finales de línea (LF)
 
 - `.gitattributes` fuerza LF en todos los archivos de texto (`* text=auto eol=lf`, SVG incluido) y marca como binarios PNG, JPG, WebP y WOFF2.

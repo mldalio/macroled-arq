@@ -40,6 +40,33 @@
         <div class="demo-stack" data-demo-list="dimension"></div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-icons">
+        <h2 id="demo-icons" class="demo-heading role-label">Íconos · src/base/icons.js</h2>
+        <p class="demo-note role-body-sm">icon/md con color/icon/primary (Default) y color/icon/inverse sobre color/surface/inverse (Inverse).</p>
+        <div class="demo-icons" data-demo-list="icons"></div>
+        <div class="demo-icons demo-icons--inverse" data-demo-list="icons-inverse"></div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-base">
+        <h2 id="demo-base" class="demo-heading role-label">Base · ArqElement + Disclosure</h2>
+        <p class="demo-note role-body-sm">Ejemplo mínimo (demo-disclosure), no es un componente del sistema.</p>
+        <div>
+          <demo-disclosure>
+            <span slot="label">Cerrado por defecto</span>
+            El contenido llega por slot y queda en el HTML aunque el panel esté cerrado.
+          </demo-disclosure>
+          <demo-disclosure open>
+            <span slot="label">Abierto con el atributo open</span>
+            Pueden quedar varios abiertos a la vez.
+          </demo-disclosure>
+          <demo-disclosure>
+            <span slot="label">Un título largo para ver cómo se comporta el encabezado cuando el texto ocupa más de una línea en 390 px</span>
+            Contenido.
+          </demo-disclosure>
+        </div>
+        <p class="demo-note role-body-sm" aria-live="polite" data-demo-log>Eventos arq:toggle: todavía ninguno.</p>
+      </section>
+
       <!-- Componentes: una sección por componente con todas sus variantes y estados -->
     </main>
   </body>

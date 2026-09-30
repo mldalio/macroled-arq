@@ -93,3 +93,37 @@
 .demo-sample {
   margin: 0;
 }
+
+.demo-note {
+  margin: 0;
+  color: var(--arq-color-text-tertiary);
+}
+
+.demo-icons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--arq-space-40) * 3), 1fr));
+  gap: var(--arq-space-gap-md);
+  padding: var(--arq-space-padding-md);
+  color: var(--arq-color-icon-primary);
+}
+
+.demo-icons--inverse {
+  background: var(--arq-color-surface-inverse);
+  color: var(--arq-color-icon-inverse);
+}
+
+.demo-icon {
+  display: grid;
+  justify-items: start;
+  gap: var(--arq-space-gap-sm);
+  margin: 0;
+}
+
+.demo-icon .icon {
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+}
+
+.demo-icon figcaption {
+  overflow-wrap: anywhere;
+}

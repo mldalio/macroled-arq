@@ -3,9 +3,25 @@
 
 import '/src/main.js';
 import { getRolesSheet } from '/src/styles/roles.js';
+import { icon, iconNames } from '/src/base/icons.js';
+import './demo-disclosure.js';
 import tokens from '/tokens/tokens.json';
 
 document.adoptedStyleSheets = [...document.adoptedStyleSheets, getRolesSheet()];
+
+// ── Íconos ─────────────────────────────────────────────────────────
+for (const list of document.querySelectorAll('[data-demo-list^="icons"]')) {
+  list.innerHTML = iconNames
+    .map((name) => `<figure class="demo-icon">${icon(name)}<figcaption class="role-caption">${name}</figcaption></figure>`)
+    .join('');
+}
+
+// ── Eventos arq:toggle ─────────────────────────────────────────────
+const log = document.querySelector('[data-demo-log]');
+document.addEventListener('arq:toggle', (event) => {
+  const label = event.target.querySelector('[slot="label"]')?.textContent.trim();
+  log.textContent = `arq:toggle → open: ${event.detail.open} · «${label}»`;
+});
 
 // ── Switch Light/Dark ──────────────────────────────────────────────
 const THEME_KEY = 'arq:demo-theme';

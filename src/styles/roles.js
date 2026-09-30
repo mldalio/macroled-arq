@@ -20,16 +20,17 @@ export function getRolesSheet() {
 }
 
 /**
- * Adopta en un shadowRoot los roles y, opcionalmente, el CSS del componente
- * (el texto que llega de `import css from './x.css?inline'`). La hoja del
- * componente también se crea una sola vez y la comparten todas sus instancias.
+ * Adopta en un shadowRoot los roles y, en orden, cada CSS que se le pase
+ * (el texto que llega de `import css from './x.css?inline'`). Cada hoja se crea
+ * una sola vez y la comparten todas las instancias.
  *
  *   const root = this.attachShadow({ mode: 'open' });
  *   adoptStyles(root, css);
  */
-export function adoptStyles(root, cssText) {
+export function adoptStyles(root, ...cssTexts) {
   const sheets = [getRolesSheet()];
-  if (cssText) {
+  for (const cssText of cssTexts) {
+    if (!cssText) continue;
     if (!componentSheets.has(cssText)) componentSheets.set(cssText, toSheet(cssText));
     sheets.push(componentSheets.get(cssText));
   }
