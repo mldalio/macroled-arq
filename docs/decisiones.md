@@ -43,6 +43,12 @@ Formato: fecha · decisión · por qué.
 - Salida (`npm run tokens`): `:root` (base), `[data-arq-theme="dark"]` y `@media (max-width: 767px) { :root }`. Nunca `prefers-color-scheme`.
 - Pendiente: conversor del export de variables de Figma a este formato (TODO).
 
+### Finales de línea (LF)
+
+- `.gitattributes` fuerza LF en todos los archivos de texto (`* text=auto eol=lf`, SVG incluido) y marca como binarios PNG, JPG, WebP y WOFF2.
+- Coincide con `.editorconfig` (`end_of_line = lf`). Evita diffs que solo cambian finales de línea entre máquinas con distinta configuración de `core.autocrlf` (Windows / macOS).
+- Si se suma otro tipo de binario (por ejemplo `.gif`, `.avif`, `.pdf`), se agrega a `.gitattributes`.
+
 ### Variables de entorno
 
 - `src/config.js` lee `import.meta.env.VITE_*`. Vite reemplaza los valores al compilar y quedan dentro de `dist/arq.js`: solo se usa la search-only key de Typesense.
