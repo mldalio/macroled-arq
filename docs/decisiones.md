@@ -299,3 +299,10 @@ setup() {
 - Propuesta acordada en `docs/urls.md`. Home en `/arq`; templates del CMS en singular (`/arq/producto/{slug}`, `/arq/coleccion/{slug}`) para no chocar con los listados en plural; `/arq/comparativa`, `/arq/glosario` y `/arq/buscar` como páginas estáticas.
 - Las colecciones (KANU…) son una colección del CMS, con su template.
 - Productos por categoría: PENDIENTE, junto con los listados.
+
+## 2026-10-01 · carousel-controls
+
+- **`for="<id>"`:** el componente maneja el contenedor con scroll de la página: `scrollBy` de un ancho visible (el snap alinea) y Position calculada con el `scrollLeft`. Sin `for`, Position es un atributo fijo y las flechas emiten `arq:prev` / `arq:next`.
+- **Foco:** si la flecha con foco se deshabilita al llegar a una punta, el foco pasa a la otra.
+- **`aria-controls`** con `ariaControlsElements`: un id del DOM de la página no se puede referenciar desde el Shadow DOM.
+- **El carrusel no es parte del componente.** `TODO` (páginas): el contenedor (snap, peek) se resuelve al armar Colección y Home.
