@@ -727,7 +727,7 @@
         <h3 class="demo-subheading role-body-sm">Type=Link (+ button de la página, solo Mobile)</h3>
         <div class="demo-stack">
           <arq-section-header type="link" href="#demo-section-header">
-            Productos destacados
+            <h2 slot="title">Productos destacados</h2>
             <span slot="link">Ver todos los productos</span>
           </arq-section-header>
           <div class="demo-placeholder role-body-sm">Contenido del bloque (grilla)</div>
@@ -736,37 +736,37 @@
 
         <h3 class="demo-subheading role-body-sm">Type=Description</h3>
         <arq-section-header type="description">
-          Diseño que inspira
+          <h2 slot="title">Diseño que inspira</h2>
           <span slot="description">Proyectos donde la luminaria forma parte de la arquitectura, no un agregado.</span>
         </arq-section-header>
 
         <h3 class="demo-subheading role-body-sm">Type=Title</h3>
-        <arq-section-header type="title">Explorar por espacio</arq-section-header>
+        <arq-section-header type="title"><h2 slot="title">Explorar por espacio</h2></arq-section-header>
 
         <h3 class="demo-subheading role-body-sm">Type=Stacked (con link y sin link)</h3>
         <div class="demo-stack">
           <arq-section-header type="stacked" href="#demo-section-header">
-            Preguntas frecuentes
+            <h2 slot="title">Preguntas frecuentes</h2>
             <span slot="description">¿No encontrás lo que buscás? Nuestro equipo técnico te acompaña en cada etapa del proyecto.</span>
             <span slot="link">Escribinos</span>
           </arq-section-header>
           <arq-section-header type="stacked">
-            Sobre Macroled Arq
+            <h2 slot="title">Sobre Macroled Arq</h2>
             <span slot="description">Iluminación arquitectónica para proyectos de interior y exterior.</span>
           </arq-section-header>
         </div>
 
         <h3 class="demo-subheading role-body-sm">Casos límite: link sin texto propio («Ver todo»), Description sin bajada, Link sin href, textos largos</h3>
         <div class="demo-stack">
-          <arq-section-header type="link" href="#demo-section-header">Explorar por espacio</arq-section-header>
-          <arq-section-header type="description">Description sin bajada</arq-section-header>
-          <arq-section-header type="link">Link sin href (no hay link)</arq-section-header>
+          <arq-section-header type="link" href="#demo-section-header"><h2 slot="title">Explorar por espacio</h2></arq-section-header>
+          <arq-section-header type="description"><h2 slot="title">Description sin bajada</h2></arq-section-header>
+          <arq-section-header type="link"><h2 slot="title">Link sin href (no hay link)</h2></arq-section-header>
           <arq-section-header type="link" href="#demo-section-header">
-            Luminarias para fachadas, jardines y espacios exteriores de uso público y privado
+            <h2 slot="title">Luminarias para fachadas, jardines y espacios exteriores de uso público y privado</h2>
             <span slot="link">Ver todas las luminarias de exterior</span>
           </arq-section-header>
           <arq-section-header type="description">
-            Proyectos de iluminación arquitectónica en todo el país
+            <h2 slot="title">Proyectos de iluminación arquitectónica en todo el país</h2>
             <span slot="description">Proyectos donde la luminaria forma parte de la arquitectura, no un agregado: residencias, hoteles, espacios públicos y oficinas que eligieron Macroled Arq.</span>
           </arq-section-header>
         </div>
@@ -774,15 +774,15 @@
         <h3 class="demo-subheading role-body-sm">Contenedor en modo Dark (data-arq-theme="dark")</h3>
         <div class="demo-dark demo-stack" data-arq-theme="dark">
           <arq-section-header type="link" href="#demo-section-header">
-            Productos destacados
+            <h2 slot="title">Productos destacados</h2>
             <span slot="link">Ver todos los productos</span>
           </arq-section-header>
           <arq-section-header type="description">
-            Diseño que inspira
+            <h2 slot="title">Diseño que inspira</h2>
             <span slot="description">Proyectos donde la luminaria forma parte de la arquitectura, no un agregado.</span>
           </arq-section-header>
           <arq-section-header type="stacked" href="#demo-section-header">
-            Preguntas frecuentes
+            <h2 slot="title">Preguntas frecuentes</h2>
             <span slot="description">¿No encontrás lo que buscás? Nuestro equipo técnico te acompaña en cada etapa del proyecto.</span>
             <span slot="link">Escribinos</span>
           </arq-section-header>
@@ -800,7 +800,7 @@
               <arq-breadcrumb-item href="#demo-page-header" show-separator>Inicio</arq-breadcrumb-item>
               <arq-breadcrumb-item current>Productos</arq-breadcrumb-item>
             </arq-breadcrumb>
-            Productos
+            <h1 slot="title">Productos</h1>
             <span slot="description">Luminarias para interior y exterior. Cada modelo cuenta con ficha técnica y archivos IES para especificar.</span>
           </arq-page-header>
         </div>
@@ -812,10 +812,10 @@
               <arq-breadcrumb-item href="#demo-page-header" show-separator>Inicio</arq-breadcrumb-item>
               <arq-breadcrumb-item current>Colecciones</arq-breadcrumb-item>
             </arq-breadcrumb>
-            Colecciones
+            <h1 slot="title">Colecciones</h1>
           </arq-page-header>
           <arq-page-header show-description>
-            Contacto
+            <h1 slot="title">Contacto</h1>
             <span slot="description">Escribinos por tu proyecto: te respondemos en 48 h.</span>
           </arq-page-header>
         </div>
@@ -824,7 +824,7 @@
         <div class="demo-bleed">
           <arq-page-header type="detail" show-back back-href="#demo-page-header" show-description show-action>
             <span slot="back">Volver a productos</span>
-            Comparativa
+            <h1 slot="title">Comparativa</h1>
             <span slot="description">Compará hasta tres productos: especificaciones lumínicas, eléctricas y de montaje lado a lado.</span>
             <arq-button slot="action" show-icon icon="download">Descargar comparación</arq-button>
           </arq-page-header>
@@ -838,12 +838,12 @@
               <arq-breadcrumb-item href="#demo-page-header" show-separator>Colecciones</arq-breadcrumb-item>
               <arq-breadcrumb-item current>Kanu</arq-breadcrumb-item>
             </arq-breadcrumb>
-            Iluminación arquitectónica para exteriores
+            <h1 slot="title">Iluminación arquitectónica para exteriores</h1>
             <span slot="description">Luminarias para fachadas, jardines y espacios públicos con cuerpos de aluminio inyectado, ópticas intercambiables y acabados resistentes a la intemperie.</span>
           </arq-page-header>
           <arq-page-header type="detail" show-back back-href="#demo-page-header" show-description>
             <span slot="back">Volver a colecciones</span>
-            Comparativa de luminarias de exterior
+            <h1 slot="title">Comparativa de luminarias de exterior</h1>
             <span slot="description">Compará hasta tres productos: especificaciones lumínicas, eléctricas y de montaje lado a lado, con los archivos IES de cada uno.</span>
           </arq-page-header>
         </div>
@@ -855,12 +855,12 @@
               <arq-breadcrumb-item href="#demo-page-header" show-separator>Inicio</arq-breadcrumb-item>
               <arq-breadcrumb-item current>Productos</arq-breadcrumb-item>
             </arq-breadcrumb>
-            Productos
+            <h1 slot="title">Productos</h1>
             <span slot="description">Luminarias para interior y exterior. Cada modelo cuenta con ficha técnica y archivos IES para especificar.</span>
           </arq-page-header>
           <arq-page-header type="detail" show-back back-href="#demo-page-header" show-description show-action>
             <span slot="back">Volver a productos</span>
-            Comparativa
+            <h1 slot="title">Comparativa</h1>
             <span slot="description">Compará hasta tres productos lado a lado.</span>
             <arq-button slot="action" show-icon icon="download">Descargar comparación</arq-button>
           </arq-page-header>
@@ -886,7 +886,7 @@
         <p class="demo-subheading role-body-sm">Bloque del Home (section-header Stacked + lista)</p>
         <div class="demo-faq">
           <arq-section-header type="stacked" href="#demo-faq-item">
-            Preguntas frecuentes
+            <h2 slot="title">Preguntas frecuentes</h2>
             <span slot="description">¿No encontrás lo que buscás? Nuestro equipo técnico te acompaña en cada etapa del proyecto.</span>
             <span slot="link">Escribinos</span>
           </arq-section-header>
@@ -939,13 +939,16 @@
         <div class="demo-bleed">
           <arq-footer>
             <span slot="tagline">Diseño lumínico para la arquitectura contemporánea.</span>
+            <h2 slot="productos-title">Productos</h2>
             <arq-footer-link slot="productos" href="#demo-footer">Interior</arq-footer-link>
             <arq-footer-link slot="productos" href="#demo-footer">Exterior</arq-footer-link>
             <arq-footer-link slot="productos" href="#demo-footer">Lámparas y Artefactos</arq-footer-link>
             <arq-footer-link slot="productos" href="#demo-footer">Colecciones</arq-footer-link>
+            <h2 slot="informacion-title">Información</h2>
             <arq-footer-link slot="informacion" href="#demo-footer">Contacto</arq-footer-link>
             <arq-footer-link slot="informacion" href="#demo-footer">Descargas</arq-footer-link>
             <arq-footer-link slot="informacion" href="#demo-footer">Glosario</arq-footer-link>
+            <h2 slot="redes-title">Redes</h2>
             <arq-footer-link slot="redes" href="https://www.instagram.com/" target="_blank" show-icon icon="instagram" label="Macroled Arq en Instagram">Instagram</arq-footer-link>
             <arq-footer-link slot="redes" href="https://www.youtube.com/" target="_blank" show-icon icon="youtube" label="Macroled Arq en YouTube">YouTube</arq-footer-link>
           </arq-footer>
@@ -954,14 +957,17 @@
         <p class="demo-subheading role-body-sm">Sin bajada, columnas con muchos links y textos largos</p>
         <div class="demo-bleed">
           <arq-footer>
+            <h2 slot="productos-title">Productos</h2>
             <arq-footer-link slot="productos" href="#demo-footer">Interior</arq-footer-link>
             <arq-footer-link slot="productos" href="#demo-footer">Exterior</arq-footer-link>
             <arq-footer-link slot="productos" href="#demo-footer">Lámparas, artefactos y accesorios de montaje</arq-footer-link>
             <arq-footer-link slot="productos" href="#demo-footer">Colecciones</arq-footer-link>
             <arq-footer-link slot="productos" href="#demo-footer">Proyectos</arq-footer-link>
             <arq-footer-link slot="productos" href="#demo-footer">Novedades</arq-footer-link>
+            <h2 slot="informacion-title">Información</h2>
             <arq-footer-link slot="informacion" href="#demo-footer">Contacto</arq-footer-link>
             <arq-footer-link slot="informacion" href="#demo-footer">Términos y condiciones</arq-footer-link>
+            <h2 slot="redes-title">Redes</h2>
             <arq-footer-link slot="redes" href="https://www.instagram.com/" target="_blank" show-icon icon="instagram" label="Macroled Arq en Instagram">Instagram</arq-footer-link>
           </arq-footer>
         </div>
@@ -970,13 +976,16 @@
         <div class="demo-bleed demo-dark" data-arq-theme="dark">
           <arq-footer>
             <span slot="tagline">Diseño lumínico para la arquitectura contemporánea.</span>
+            <h2 slot="productos-title">Productos</h2>
             <arq-footer-link slot="productos" href="#demo-footer">Interior</arq-footer-link>
             <arq-footer-link slot="productos" href="#demo-footer">Exterior</arq-footer-link>
             <arq-footer-link slot="productos" href="#demo-footer">Lámparas y Artefactos</arq-footer-link>
             <arq-footer-link slot="productos" href="#demo-footer">Colecciones</arq-footer-link>
+            <h2 slot="informacion-title">Información</h2>
             <arq-footer-link slot="informacion" href="#demo-footer">Contacto</arq-footer-link>
             <arq-footer-link slot="informacion" href="#demo-footer">Descargas</arq-footer-link>
             <arq-footer-link slot="informacion" href="#demo-footer">Glosario</arq-footer-link>
+            <h2 slot="redes-title">Redes</h2>
             <arq-footer-link slot="redes" href="https://www.instagram.com/" target="_blank" show-icon icon="instagram" label="Macroled Arq en Instagram">Instagram</arq-footer-link>
             <arq-footer-link slot="redes" href="https://www.youtube.com/" target="_blank" show-icon icon="youtube" label="Macroled Arq en YouTube">YouTube</arq-footer-link>
           </arq-footer>

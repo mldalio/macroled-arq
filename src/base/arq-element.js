@@ -45,6 +45,10 @@ const templates = new WeakMap();
 // toma). Con prefers-reduced-motion la duración vale 0 desde tokens.css.
 // Un componente que además anima transform u opacity redeclara la lista
 // completa en ese elemento (toggle, ícono de los desplegables).
+// Encabezados por slot (AGENTS.md: h1–h6 en el HTML de la página): sin margen
+// y con la tipografía y el color del contenedor del componente, que lleva la
+// clase role/*. !important porque los estilos del sitio (Webflow) para h1–h6
+// ganan sobre ::slotted.
 const baseCss = `
 :host([hidden]),
 [hidden] {
@@ -66,6 +70,19 @@ const baseCss = `
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+::slotted(h1),
+::slotted(h2),
+::slotted(h3),
+::slotted(h4),
+::slotted(h5),
+::slotted(h6) {
+  margin: 0 !important;
+  font: inherit !important;
+  letter-spacing: inherit !important;
+  text-transform: inherit !important;
+  color: inherit !important;
 }
 `;
 

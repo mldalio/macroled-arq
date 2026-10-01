@@ -77,16 +77,8 @@
   overflow-wrap: break-word;
 }
 
-/* El <h1> llega del HTML de la página: hereda role/display y el color del
-   contenedor. !important porque los estilos del sitio para h1 ganan sobre
-   ::slotted. */
-::slotted(h1) {
-  margin: 0 !important;
-  font: inherit !important;
-  letter-spacing: inherit !important;
-  text-transform: inherit !important;
-  color: inherit !important;
-}
+/* El <h1> llega del HTML de la página y hereda role/display y el color de
+   .title (regla ::slotted(h1–h6) de la hoja base de ArqElement). */
 
 /* Dark local: el button Outline queda claro sobre la foto */
 .action {

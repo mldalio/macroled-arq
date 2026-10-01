@@ -5,18 +5,19 @@
 //
 //   <arq-page-header show-breadcrumb show-description>
 //     <arq-breadcrumb slot="breadcrumb">…</arq-breadcrumb>
-//     Productos
+//     <h1 slot="title">Productos</h1>
 //     <span slot="description">Luminarias para interior y exterior.</span>
 //   </arq-page-header>
 //
 //   <arq-page-header type="detail" show-back back-href="/arq/productos" show-description show-action>
 //     <span slot="back">Volver a productos</span>
-//     Comparativa
+//     <h1 slot="title">Comparativa</h1>
 //     <span slot="description">…</span>
 //     <arq-button slot="action" show-icon icon="download">Descargar comparación</arq-button>
 //   </arq-page-header>
 //
-// El título llega por slot y el componente lo pone en su propio <h1>. Es un
+// El <h1> llega por slot title (AGENTS.md: los encabezados van en el HTML) y
+// toma role/display del contenedor (::slotted de la hoja base). Es un
 // <div> y no un <header> (dentro del Shadow DOM podría tomarse como el banner
 // de la página). Aplica su propio layout/gutter, como navbar y footer.
 //
@@ -47,7 +48,7 @@ class ArqPageHeader extends ArqElement {
     `<div class="main">` +
     `<div class="heading">` +
     `<div class="breadcrumb" hidden><slot name="breadcrumb"></slot></div>` +
-    `<h1 class="title role-display"><slot></slot></h1>` +
+    `<div class="title role-display"><slot name="title"></slot></div>` +
     `</div>` +
     `<p class="description role-body-lg" hidden><slot name="description"></slot></p>` +
     `</div>` +
