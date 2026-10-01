@@ -33,6 +33,7 @@ import './components/nav-link/nav-link.js';
 import './components/section-header/section-header.js';
 import './components/page-header/page-header.js';
 import './components/faq-item/faq-item.js';
+import './components/footer/footer.js';
 
 if (!window.Arq) {
   window.Arq = Object.freeze({ version });

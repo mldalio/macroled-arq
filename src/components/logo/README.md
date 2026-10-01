@@ -17,7 +17,7 @@ Logotipo de Macroled Arq (MACROLED + ARQ). Siempre es link a la home de Arq.
 | Size | `size` | `size` | `default` · `small` · `compact` (def. `default`) |
 | — | `href` | `href` | destino del link (def. `/arq`) |
 
-- **Default** en navbar desktop y footer · **Small** en navbar mobile · **Compact** donde el espacio es mínimo. Se elige el Size; no se escala a mano.
+- **Default** en navbar desktop · **Small** en navbar mobile · **Compact** en el footer y donde el espacio es mínimo. Se elige el Size; no se escala a mano. (La ficha `doc/logo` dice Default en el footer; el set del footer usa Compact y se sigue el set: `docs/decisiones.md`, 2026-10-01 · footer.)
 - Tamaños: 181 × 16 · 158 × 13,97 · 117 × 10,34. Es el mismo dibujo escalado.
 - **Color:** `currentColor`, que por defecto es `color/text/primary`: en modo Dark se invierte solo. Un contenedor puede pisar `color` del elemento.
 - **Accesibilidad:** el link lleva `aria-label="Macroled Arq, inicio"` y el SVG queda oculto para lectores de pantalla. Foco con el anillo de DESIGN.md §7.

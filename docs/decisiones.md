@@ -214,3 +214,12 @@ setup() {
 - **Hover solo cerrado:** el set no tiene la variante Open=True + Hover.
 - **Foco alrededor de todo el ítem** (capa focus-ring del set), también abierto: `.item:has(.trigger:focus-visible)`.
 - **El padding del ítem va en el botón**, así todo el alto del encabezado es clickeable. Abierto, el padding inferior del botón es el gap hasta la respuesta (`space/gap/sm-md`) y la respuesta lleva `space/padding/lg` abajo.
+
+## 2026-10-01 · footer
+
+- **API:** la bajada (slot `tagline`) y los links (`<arq-footer-link slot="productos|informacion|redes">`) llegan por HTML. Logo, títulos de columna y legal están en el componente; el año sale de `new Date().getFullYear()` (ficha `doc/footer`). Tres columnas fijas: una sección nueva es una columna nueva en el componente.
+- **Logo Compact**, como el set del footer. La ficha `doc/logo` dice "Default en navbar desktop y footer": falta corregirla en Figma.
+- **Anchos sin token:** en el set cada columna mide 200 y la bajada 240. En código toman el ancho de su contenido (`TODO` hasta que diseño cree tokens si los quiere). En Mobile la bajada queda en una línea y el footer mide 20 menos que en Figma.
+- **Información:** Contacto, Descargas y Glosario (la lista de Mobile del set; Desktop no tiene Descargas). Falta igualar el Desktop en Figma.
+- **Legal en un solo elemento:** grilla con el legal debajo de la marca en Desktop (segunda fila en 1fr para que el alto de las columnas no lo empuje) y al final en Mobile.
+- **footer-link:** pasa a `role="listitem"` (como breadcrumb-item), suma la prop `label` (aria-label, para "Macroled Arq en Instagram") y su label se parte en líneas en vez de cortarse con "…", como en el set del footer en Mobile.

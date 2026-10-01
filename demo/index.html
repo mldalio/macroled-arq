@@ -340,7 +340,7 @@
         <p class="demo-note role-body-sm">Figma 788:2930. Hover, Pressed y Focus se prueban con el mouse y con Tab. Instagram y YouTube abren en otra pestaña.</p>
 
         <h3 class="demo-subheading role-body-sm">Sin ícono y con Show icon (columna Redes)</h3>
-        <div class="demo-column">
+        <div class="demo-column" role="list">
             <arq-footer-link href="#demo-footer-link">Productos</arq-footer-link>
             <arq-footer-link href="#demo-footer-link">Colecciones</arq-footer-link>
             <arq-footer-link href="#demo-footer-link">Contacto</arq-footer-link>
@@ -349,12 +349,12 @@
         </div>
 
         <h3 class="demo-subheading role-body-sm">Texto largo (columna angosta)</h3>
-        <div class="demo-narrow">
+        <div class="demo-narrow" role="list">
           <arq-footer-link href="#demo-footer-link">Términos y condiciones de uso del sitio y de las descargas</arq-footer-link>
         </div>
 
         <h3 class="demo-subheading role-body-sm">Contenedor en modo Dark (data-arq-theme="dark")</h3>
-        <div class="demo-column demo-dark" data-arq-theme="dark">
+        <div class="demo-column demo-dark" data-arq-theme="dark" role="list">
             <arq-footer-link href="#demo-footer-link">Productos</arq-footer-link>
             <arq-footer-link href="#demo-footer-link">Colecciones</arq-footer-link>
             <arq-footer-link href="#demo-footer-link">Contacto</arq-footer-link>
@@ -922,6 +922,58 @@
             <span slot="question">¿Dónde descargo los archivos IES?</span>
             En la ficha de cada producto, en <a href="#demo-faq-item">Descargas</a>.
           </arq-faq-item>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-footer">
+        <h2 id="demo-footer" class="demo-heading role-label">footer · &lt;arq-footer&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 788:3104. Aplica su propio layout/gutter: en la demo va a sangre. Desktop: marca a la izquierda y tres columnas; hasta 767 px se apila (marca, columnas, legal). El año del legal sale del código.</p>
+
+        <p class="demo-subheading role-body-sm">Footer de todas las páginas</p>
+        <div class="demo-bleed">
+          <arq-footer>
+            <span slot="tagline">Diseño lumínico para la arquitectura contemporánea.</span>
+            <arq-footer-link slot="productos" href="#demo-footer">Interior</arq-footer-link>
+            <arq-footer-link slot="productos" href="#demo-footer">Exterior</arq-footer-link>
+            <arq-footer-link slot="productos" href="#demo-footer">Lámparas y Artefactos</arq-footer-link>
+            <arq-footer-link slot="productos" href="#demo-footer">Colecciones</arq-footer-link>
+            <arq-footer-link slot="informacion" href="#demo-footer">Contacto</arq-footer-link>
+            <arq-footer-link slot="informacion" href="#demo-footer">Descargas</arq-footer-link>
+            <arq-footer-link slot="informacion" href="#demo-footer">Glosario</arq-footer-link>
+            <arq-footer-link slot="redes" href="https://www.instagram.com/" target="_blank" show-icon icon="instagram" label="Macroled Arq en Instagram">Instagram</arq-footer-link>
+            <arq-footer-link slot="redes" href="https://www.youtube.com/" target="_blank" show-icon icon="youtube" label="Macroled Arq en YouTube">YouTube</arq-footer-link>
+          </arq-footer>
+        </div>
+
+        <p class="demo-subheading role-body-sm">Sin bajada, columnas con muchos links y textos largos</p>
+        <div class="demo-bleed">
+          <arq-footer>
+            <arq-footer-link slot="productos" href="#demo-footer">Interior</arq-footer-link>
+            <arq-footer-link slot="productos" href="#demo-footer">Exterior</arq-footer-link>
+            <arq-footer-link slot="productos" href="#demo-footer">Lámparas, artefactos y accesorios de montaje</arq-footer-link>
+            <arq-footer-link slot="productos" href="#demo-footer">Colecciones</arq-footer-link>
+            <arq-footer-link slot="productos" href="#demo-footer">Proyectos</arq-footer-link>
+            <arq-footer-link slot="productos" href="#demo-footer">Novedades</arq-footer-link>
+            <arq-footer-link slot="informacion" href="#demo-footer">Contacto</arq-footer-link>
+            <arq-footer-link slot="informacion" href="#demo-footer">Términos y condiciones</arq-footer-link>
+            <arq-footer-link slot="redes" href="https://www.instagram.com/" target="_blank" show-icon icon="instagram" label="Macroled Arq en Instagram">Instagram</arq-footer-link>
+          </arq-footer>
+        </div>
+
+        <p class="demo-subheading role-body-sm">Contenedor en modo Dark</p>
+        <div class="demo-bleed demo-dark" data-arq-theme="dark">
+          <arq-footer>
+            <span slot="tagline">Diseño lumínico para la arquitectura contemporánea.</span>
+            <arq-footer-link slot="productos" href="#demo-footer">Interior</arq-footer-link>
+            <arq-footer-link slot="productos" href="#demo-footer">Exterior</arq-footer-link>
+            <arq-footer-link slot="productos" href="#demo-footer">Lámparas y Artefactos</arq-footer-link>
+            <arq-footer-link slot="productos" href="#demo-footer">Colecciones</arq-footer-link>
+            <arq-footer-link slot="informacion" href="#demo-footer">Contacto</arq-footer-link>
+            <arq-footer-link slot="informacion" href="#demo-footer">Descargas</arq-footer-link>
+            <arq-footer-link slot="informacion" href="#demo-footer">Glosario</arq-footer-link>
+            <arq-footer-link slot="redes" href="https://www.instagram.com/" target="_blank" show-icon icon="instagram" label="Macroled Arq en Instagram">Instagram</arq-footer-link>
+            <arq-footer-link slot="redes" href="https://www.youtube.com/" target="_blank" show-icon icon="youtube" label="Macroled Arq en YouTube">YouTube</arq-footer-link>
+          </arq-footer>
         </div>
       </section>
     </main>
