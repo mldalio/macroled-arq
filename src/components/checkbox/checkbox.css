@@ -28,8 +28,7 @@
   height: var(--arq-icon-md);
 }
 
-/* Checked: cuadrado lleno, sin tilde (set de Figma; la ficha nombra un check
-   en color/action/on-primary que no existe en la librería). */
+/* Checked: cuadrado lleno en color/action/primary, sin tilde. */
 .box {
   box-sizing: border-box;
   width: var(--arq-icon-sm);
@@ -39,7 +38,7 @@
   background: var(--arq-color-surface-default);
 }
 
-/* Label: color/text/secondary (set; la tabla de la ficha dice text/primary) */
+/* Label: color/text/secondary (primary en hover) */
 .label {
   min-width: 0;
   color: var(--arq-color-text-secondary);

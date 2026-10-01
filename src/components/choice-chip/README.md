@@ -38,6 +38,3 @@ Opción en forma de chip para elegir entre pocas opciones visibles (2 a 6) en un
 ## Pendientes
 
 - `TODO` Contenedor del grupo (`<fieldset>` + `<legend>`, `role="radiogroup"`): no existe en Figma y la separación entre chips no está definida (falta tomarla de la pantalla de Contacto). La demo usa `space/gap/sm`.
-- Hover/Selected usan `color/border/strong` (set y descripción); la tabla de la ficha dice `color/text/primary`.
-- Default sin fondo (set); la ficha dice `color/surface/default`.
-- La ficha (variantes y texto) muestra 3 estados; el set y la descripción tienen 5 (con Focus y Disabled).

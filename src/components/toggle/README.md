@@ -42,5 +42,3 @@ Interruptor con texto para opciones binarias que se aplican al instante: "Ilumin
 
 - `TODO` Sin transición del círculo: no hay tokens de movimiento (la ficha pide "transición corta" y respetar `prefers-reduced-motion`).
 - `TODO` (catalog-toolbar / ficha) Guardar Iluminar en `localStorage` (`arq:<clave>`) o no: no está definido.
-- On + Disabled con pista `color/surface/strong` sale del set; la descripción y la ficha no lo mencionan.
-- Foco con anillo: en Figma el foco solo cambia el color del borde a `color/border/focus`, que en Light es igual al borde de Off.

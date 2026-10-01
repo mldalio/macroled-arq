@@ -40,4 +40,3 @@ Opción de select-menu: muestra de acabado opcional + nombre. Sirve para acabado
 - `TODO` (select-menu) Foco y teclado: foco real o `aria-activedescendant`. Hoy la opción no recibe foco sola.
 - `TODO` (datos) URL de la imagen del acabado: falta el campo en Typesense y el archivo de mapeo de acabados (AGENTS.md).
 - La muestra no es `<arq-swatch>`: dentro del menú lleva borde `color/border/default` (Figma) y el swatch suelto `color/border/subtle`.
-- Disabled está en el set y en la tabla de la ficha; la descripción de Figma no lo menciona.

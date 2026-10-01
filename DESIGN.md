@@ -290,7 +290,7 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 | role/body-regular | Regular | 14/20 | 14/20 | Botones, opciones y controles con texto |
 | role/body-medium | Medium | 14/20 | 14/20 | Énfasis intermedio |
 | role/body-strong | SemiBold | 14/20 | 14/20 | Títulos de columna, nombres en listas |
-| role/body-sm | Regular | 12/16 | 12/16 | Metadatos, SKU, legales, ayudas |
+| role/body-sm | Regular | 12/16 | 12/16 | Metadatos, SKU en listados, legales, ayudas |
 | role/body-sm-medium | Medium | 12/16 | 12/16 | Énfasis sobre body-sm |
 | role/label | Regular | 12/16 | 12/16 | MAYÚSCULAS, tracking 1 px: etiquetas de inputs, tabs, títulos de grupo, breadcrumb |
 | role/label-sm | Medium | 10/14 | 10/14 | MAYÚSCULAS, tracking 1 px. Solo donde 12 no entra (celdas de filtro) |
@@ -392,7 +392,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | tag | Type: Plain · Outline. Prop: Label | No interactivo |
 | count-badge | Tone: Primary · Inverse. Prop: Count | Mín. 20, crece con el número |
 | divider | Orientation: Horizontal · Vertical. Emphasis: Subtle · Default | — |
-| sku | Size: Default · Compact. State: Default · Hover · Copied. Prop: Code | Botón de copiar |
+| sku | Size: Default · Compact. State: Default · Hover · Copied. Prop: Code | Botón de copiar. Código en role/body-lg (Default) o role/body (Compact) |
 | variants-table · variants-table-row | Filters: Off · On × Breakpoint / Type: Header · Row. State: Default · Hover | Un solo contenedor con overflow-x; columnas fijas con position: sticky. Sin scroll por fila |
 | download-modal · download-item | Breakpoint: Desktop · Mobile / Emphasis: Default · Featured. State: Default · Hover · Focus | Desktop: esquina inferior derecha a layout/gutter. Mobile: pantalla completa. Siempre con scrim |
 | file-upload | State: Empty · Attached. Props: Label · Helper | — |

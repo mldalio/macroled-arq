@@ -5,7 +5,7 @@
   width: 100%;
 }
 
-/* Padding solo abajo (set de Figma; la ficha dice "padding vertical").
+/* Padding solo abajo.
    Borde: en el set no tiene variable; la ficha dice border/default. */
 .header {
   display: flex;

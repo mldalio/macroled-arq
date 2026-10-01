@@ -46,5 +46,4 @@ Zona para adjuntar un archivo al formulario de Contacto (planos, renders, fotos)
 - `TODO` Textos de error ("El formato no está admitido.", "El archivo supera los 10 MB.") sin diseñar.
 - `TODO` (form-contacto) Cómo viaja el archivo a n8n (multipart): no está definido el contrato del webhook.
 - `TODO` Disabled no está diseñado.
-- El label es `color/text/secondary` (set); la tabla de la ficha dice `color/text/tertiary`.
-- El texto de ayuda de Figma ("PDF, JPG o PNG") y el de la ficha ("PDF, DWG o JPG") no coinciden; los formatos aceptados son los acordados (PDF, DWG, JPG, PNG).
+- Formatos aceptados: los acordados (PDF, DWG, JPG, PNG).

@@ -33,5 +33,4 @@ Título de sección dentro de un formulario largo ("01 Tus datos", "02 Tu proyec
 
 ## Pendientes
 
-- El padding va solo abajo (set de Figma); la ficha dice "padding vertical".
 - `TODO` Textos `role/label` en mayúsculas: el nombre accesible del `<legend>` puede quedar en mayúsculas (ver `docs/decisiones.md`).

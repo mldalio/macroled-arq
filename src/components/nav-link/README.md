@@ -45,4 +45,3 @@ Link de primer nivel del navbar (desktop) y fila del menú mobile. Current marca
 - `TODO` (navbar) `aria-controls` hacia el mega-menu: los ids no cruzan el Shadow DOM.
 - El estilo de texto (`role/body` → `role/body-xl`) lo cambia el JS con el mismo corte de 767 px: un `role/*` es una clase y no se puede aplicar desde un media query.
 - En mobile, Figma dibuja dos flechas si tiene Has dropdown; se deja una sola.
-- Foco con anillo: en Figma el foco es un borde interno que agranda la caja (desktop 65 → 81, mobile 60 → 62).

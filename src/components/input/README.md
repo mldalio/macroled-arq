@@ -58,5 +58,4 @@ Campo de formulario con línea inferior (sin caja). Text para datos cortos (nomb
 - **Foco:** solo cambia el color de la línea, sin anillo (excepción a DESIGN.md §7, anotada en `docs/decisiones.md`).
 - `TODO` Textarea: 120 de alto mínimo (6 líneas de `role/body`, sin token). Falta definir filas y si se puede agrandar (hoy `resize: vertical`).
 - `TODO` Textos de error por caso de validación, indicador de campo obligatorio y estado Hover: no están diseñados.
-- La ficha lista "Fondo color/surface/default"; el set no tiene fondo en el campo (en Dark queda el fondo de la sección).
 - Helper y error comparten la prop Helper en Figma; en código son separados (slot `helper` y atributo `error`).

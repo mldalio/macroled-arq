@@ -1,5 +1,5 @@
 /* choice-chip · Figma 1113:2485. Solo tokens semánticos.
-   Sin fondo en Default (set de Figma; la ficha dice color/surface/default). */
+   Sin fondo en Default. */
 
 :host {
   display: inline-flex;
@@ -20,8 +20,7 @@
   white-space: nowrap;
 }
 
-/* State=Hover: borde color/border/strong (set y descripción;
-   la tabla de la ficha dice color/text/primary) */
+/* State=Hover: borde color/border/strong */
 :host(:not([disabled]):hover) .chip {
   border-color: var(--arq-color-border-strong);
 }
