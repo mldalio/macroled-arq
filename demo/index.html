@@ -1036,6 +1036,59 @@
           </arq-hero>
         </div>
       </section>
+
+      <section class="demo-section" aria-labelledby="demo-cta-block">
+        <h2 id="demo-cta-block" class="demo-heading role-label">cta-block · &lt;arq-cta-block&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1265:4464. Aplica su propio layout/gutter: en la demo va a sangre. Newsletter valida el email (Enter o Suscribirme) y emite arq:submit; todavía no envía.</p>
+
+        <p class="demo-subheading role-body-sm">Type=Button (Comparativa)</p>
+        <div class="demo-bleed">
+          <arq-cta-block>
+            <h2 slot="title">¿Necesitás ayuda para elegir?</h2>
+            <span slot="description">Nuestro equipo técnico te asesora.</span>
+            <arq-button slot="action" show-icon icon="arrow-right" href="#demo-cta-block">Hablar con un asesor</arq-button>
+          </arq-cta-block>
+        </div>
+
+        <p class="demo-subheading role-body-sm">Type=Newsletter (Home)</p>
+        <div class="demo-bleed">
+          <arq-cta-block type="newsletter">
+            <h2 slot="title">Novedades para estudios</h2>
+            <span slot="description">Lanzamientos y fichas técnicas, una vez por mes.</span>
+            <arq-input slot="email" name="email" input-type="email" placeholder="Tu email profesional" autocomplete="email" required>Email</arq-input>
+            <arq-button slot="action">Suscribirme</arq-button>
+          </arq-cta-block>
+        </div>
+        <p class="demo-note role-body-sm" aria-live="polite" data-demo-cta-log>arq:submit: todavía ninguno.</p>
+
+        <p class="demo-subheading role-body-sm">Sin bajada, y título y bajada largos</p>
+        <div class="demo-bleed">
+          <arq-cta-block>
+            <h2 slot="title">¿Querés ver las luminarias en persona?</h2>
+            <arq-button slot="action" type="outline" href="#demo-cta-block">Visitar el showroom</arq-button>
+          </arq-cta-block>
+          <arq-cta-block>
+            <h2 slot="title">¿Necesitás ayuda para elegir la luminaria indicada para tu proyecto de interior o exterior?</h2>
+            <span slot="description">Nuestro equipo técnico te asesora con la potencia, la temperatura de color y los accesorios de montaje según los planos de cada espacio.</span>
+            <arq-button slot="action" show-icon icon="arrow-right" href="#demo-cta-block">Hablar con un asesor</arq-button>
+          </arq-cta-block>
+        </div>
+
+        <p class="demo-subheading role-body-sm">Contenedor en modo Dark</p>
+        <div class="demo-bleed demo-dark" data-arq-theme="dark">
+          <arq-cta-block>
+            <h2 slot="title">¿Necesitás ayuda para elegir?</h2>
+            <span slot="description">Nuestro equipo técnico te asesora.</span>
+            <arq-button slot="action" show-icon icon="arrow-right" href="#demo-cta-block">Hablar con un asesor</arq-button>
+          </arq-cta-block>
+          <arq-cta-block type="newsletter">
+            <h2 slot="title">Novedades para estudios</h2>
+            <span slot="description">Lanzamientos y fichas técnicas, una vez por mes.</span>
+            <arq-input slot="email" name="email-dark" input-type="email" placeholder="Tu email profesional" required>Email</arq-input>
+            <arq-button slot="action">Suscribirme</arq-button>
+          </arq-cta-block>
+        </div>
+      </section>
     </main>
   </body>
 </html>

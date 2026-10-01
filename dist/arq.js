@@ -1183,8 +1183,6 @@ var me = ":host{display:block}.hero{aspect-ratio:16/10;background:var(--arq-colo
 	"description",
 	"action"
 ];
-//#endregion
-//#region src/main.js
 (class extends d {
 	static tag = "arq-hero";
 	static styles = me;
@@ -1208,6 +1206,37 @@ var me = ":host{display:block}.hero{aspect-ratio:16/10;background:var(--arq-colo
 				t.autoplay = !1, t.pause(), t.load();
 			} else t.autoplay || (t.autoplay = !0, t.play().catch(() => {}));
 		}
+	}
+}).define();
+//#endregion
+//#region src/components/cta-block/cta-block.css?inline
+var ge = ":host{min-width:0;display:block}.block{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-xl);padding:var(--arq-space-section-md) var(--arq-layout-gutter);background:var(--arq-color-bg-subtle);display:flex}.text{gap:var(--arq-space-gap-sm-md);flex-direction:column;min-width:0;display:flex}.title{color:var(--arq-color-text-primary)}::slotted(h2){overflow-wrap:break-word;font:inherit!important;letter-spacing:inherit!important;text-transform:inherit!important;color:inherit!important;margin:0!important}.description{max-width:var(--arq-layout-measure-wide);color:var(--arq-color-text-secondary);overflow-wrap:break-word;margin:0}.action{align-items:center;gap:var(--arq-space-gap-md);flex:none;display:flex}.email{width:var(--arq-layout-measure)}::slotted(arq-input){width:100%;display:block}@media (width<=767px){.block{flex-direction:column;align-items:stretch}.description{max-width:none}.action{align-items:stretch;gap:var(--arq-space-gap-xl);flex-direction:column}.email{width:auto}::slotted(arq-button){width:100%}}";
+//#endregion
+//#region src/main.js
+(class extends d {
+	static tag = "arq-cta-block";
+	static styles = ge;
+	static properties = { type: {
+		type: String,
+		values: ["button", "newsletter"],
+		default: "button"
+	} };
+	static template = "<div class=\"block\"><div class=\"text\"><div class=\"title role-heading-2\"><slot name=\"title\"></slot></div><p class=\"description role-body-lg\" hidden><slot name=\"description\"></slot></p></div><div class=\"action\"><div class=\"email\" hidden><slot name=\"email\"></slot></div><slot name=\"action\"></slot></div></div>";
+	setup() {
+		let e = this.shadowRoot;
+		e.querySelector("slot[name=\"description\"]").addEventListener("slotchange", () => this.update()), e.querySelector("slot[name=\"action\"]").addEventListener("click", () => {
+			this.type === "newsletter" && this.#e();
+		}), e.querySelector("slot[name=\"email\"]").addEventListener("keydown", (e) => {
+			this.type === "newsletter" && e.key === "Enter" && (e.preventDefault(), this.#e());
+		});
+	}
+	update() {
+		let e = this.shadowRoot;
+		e.querySelector(".description").hidden = !e.querySelector("slot[name=\"description\"]").assignedNodes({ flatten: !0 }).some((e) => e.nodeType === Node.ELEMENT_NODE || e.textContent.trim()), e.querySelector(".email").hidden = this.type !== "newsletter";
+	}
+	#e() {
+		let e = this.querySelector("[slot=\"email\"]");
+		return e ? typeof e.reportValidity == "function" && !e.reportValidity() ? (e.focus?.(), !1) : (this.emit("submit", { email: e.value }), !0) : !1;
 	}
 }).define(), window.Arq || (window.Arq = Object.freeze({ version: e }));
 //#endregion

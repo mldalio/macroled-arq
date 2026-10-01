@@ -234,3 +234,9 @@ document.addEventListener('arq:toggle', (event) => {
   const link = event.target.closest?.('[data-demo-dropdown]');
   if (link) link.open = event.detail.open;
 });
+
+// ── cta-block: arq:submit de la newsletter ──
+document.addEventListener('arq:submit', (event) => {
+  const log = document.querySelector('[data-demo-cta-log]');
+  if (log && event.target.localName === 'arq-cta-block') log.textContent = `arq:submit → email: ${event.detail.email}`;
+});

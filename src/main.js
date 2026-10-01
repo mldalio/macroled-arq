@@ -35,6 +35,7 @@ import './components/page-header/page-header.js';
 import './components/faq-item/faq-item.js';
 import './components/footer/footer.js';
 import './components/hero/hero.js';
+import './components/cta-block/cta-block.js';
 
 if (!window.Arq) {
   window.Arq = Object.freeze({ version });
