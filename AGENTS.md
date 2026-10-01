@@ -47,7 +47,8 @@ No se usa Storybook. Los componentes se prueban en `demo/index.html`.
 ## Estructura del repo
 
 ```
-tokens/tokens.json            ← export de variables de Figma (no editar a mano salvo acuerdo)
+tokens/figma/                 ← export de variables de Figma por MCP (una colección y modo por archivo)
+tokens/tokens.json            ← generado con npm run tokens:import (no editar)
 src/styles/tokens.css         ← generado con npm run tokens (no editar)
 src/base/                     ← ArqElement (clase base), icons.js, disclosure.js
 src/components/<nombre>/      ← <nombre>.js, <nombre>.css, README.md
@@ -65,7 +66,7 @@ dist/arq.js · dist/arq.css    ← única salida que carga Webflow
 
 - Prohibido usar valores sueltos (hex, px, rem). Solo variables de `tokens.css`.
 - Los componentes usan tokens **semánticos**, nunca primitivos.
-- `tokens.css` es generado: se cambia `tokens/tokens.json` y se corre `npm run tokens`. Se commitean juntos.
+- Los tokens se cambian **solo en Figma**. Después: exportar las variables por el MCP de Figma a `tokens/figma/` (una colección por llamada), `npm run tokens:import` (genera `tokens/tokens.json`) y `npm run tokens` (genera `tokens.css`). Se commitean juntos. Nunca editar `tokens.json` ni `tokens.css` a mano. Detalle en `docs/setup.md`, Parte 6.
 - No se exportan las paletas de marca sin uso (bronze, cacao, olive, terracotta, offwhite).
 - Los estilos de texto `role/*` no son variables: se exportan aparte y se aplican como clases o reglas dentro de cada componente.
 - Si falta un token, **no inventarlo**: dejar un `TODO` y avisar al equipo.

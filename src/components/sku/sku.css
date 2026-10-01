@@ -96,8 +96,8 @@
   display: inline;
 }
 
-/* Portapapeles falló: "Copialo con Ctrl+C" en el lugar de "Copiado".
-   TODO: Figma no define el color; se usa color/text/secondary (no es un éxito). */
+/* Portapapeles falló: "Copialo con Ctrl+C" ("⌘C" en Mac) en el lugar de
+   "Copiado", en color/text/secondary (descripción del set). */
 .failed {
   color: var(--arq-color-text-secondary);
 }

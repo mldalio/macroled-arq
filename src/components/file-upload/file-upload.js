@@ -21,9 +21,8 @@ import css from './file-upload.css?inline';
 
 const DEFAULT_ACCEPT = '.pdf,.dwg,.jpg,.jpeg,.png';
 const DEFAULT_MAX_MB = 10;
-// Mensaje de State=Error en Figma: "El archivo supera los 10 MB. Formatos:
-// PDF, DWG, JPG o PNG." El problema va primero y después los formatos.
-// TODO: Figma solo muestra el de tamaño; el de formato sigue el mismo patrón.
+// Mensajes de State=Error (descripción del set): "El archivo supera los 10 MB.
+// Formatos: …" o "El formato no está admitido. Formatos: …".
 const ERRORS = {
   type: 'El formato no está admitido.',
   size: (mb) => `El archivo supera los ${mb} MB.`,
