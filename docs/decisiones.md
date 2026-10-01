@@ -285,3 +285,17 @@ setup() {
 - **Componentes:** hero (`<h1 slot="title">`), page-header (`<h1 slot="title">`), section-header y cta-block (`<h2 slot="title">`) y footer (`<h2 slot="productos-title">`, `"informacion-title"`, `"redes-title"`).
 - **Estilo compartido:** la hoja base de `ArqElement` tiene una sola regla `::slotted(h1)…::slotted(h6)` que deja el encabezado sin margen y con `font`, `letter-spacing`, `text-transform` y `color` heredados (`inherit`). Cada componente pone la clase `role/*` y el color en el contenedor del slot: no se escriben primitivas. Va con `!important` porque los estilos del sitio (Webflow) para h1–h6 ganan sobre `::slotted`.
 - **footer:** cada `<nav>` toma su nombre (`aria-label`) del texto de su `<h2>`: un `aria-labelledby` desde el Shadow DOM no puede apuntar a un id del DOM de la página.
+
+## 2026-10-01 · Datos sin Typesense
+
+- **Forma propia por componente:** cada componente que recibe datos define su propia forma: un objeto con nombres en inglés y camelCase (por ejemplo `{ name, sku, finishes: [{ slug, name }] }`), documentado en su README. No usa los nombres de Typesense ni los del CMS.
+- **Fixtures:** `demo/fixtures/` usa esa forma, no la de Typesense ni la del CMS. Así la demo prueba el componente tal como lo va a recibir.
+- **`src/data/` traduce:** es el único lugar que lee Typesense (o el CMS) y convierte a la forma de cada componente. Cuando exista `docs/typesense-schema.md`, solo cambia `src/data/`; los componentes y las fixtures no.
+- `TODO` (schema): los campos de las 4 imágenes de product-card (estudio y contexto, luz apagada y encendida) y los códigos de acabado (N, V, R, B, BN, P) quedan pendientes hasta tener el schema.
+- **Listados PENDIENTES** (ver "Páginas en Webflow"): no se define todavía de dónde salen (Collection List, Typesense o los dos).
+
+## 2026-10-01 · URLs
+
+- Propuesta acordada en `docs/urls.md`. Home en `/arq`; templates del CMS en singular (`/arq/producto/{slug}`, `/arq/coleccion/{slug}`) para no chocar con los listados en plural; `/arq/comparativa`, `/arq/glosario` y `/arq/buscar` como páginas estáticas.
+- Las colecciones (KANU…) son una colección del CMS, con su template.
+- Productos por categoría: PENDIENTE, junto con los listados.
