@@ -384,3 +384,142 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ── Navegación de la demo (demo-nav.js) ─────────────────────────── */
+
+/* Encabezado fijo arriba: índice, sección actual, ancho y tema */
+.demo-header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  background: var(--arq-color-bg-default);
+}
+
+.demo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--arq-space-gap-md);
+  min-width: 0;
+}
+
+.demo-tool {
+  padding: var(--arq-space-padding-xs) var(--arq-space-padding-sm);
+  border: var(--arq-border-default) solid var(--arq-color-border-default);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-default);
+  color: var(--arq-color-text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.demo-tool:hover {
+  border-color: var(--arq-color-border-hover);
+}
+
+.demo-tool[aria-expanded='true'],
+.demo-tool[aria-pressed='true'] {
+  border-color: var(--arq-color-border-strong);
+}
+
+.demo-tool:focus-visible,
+.demo-index a:focus-visible,
+.demo-index input:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.demo-current {
+  color: var(--arq-color-text-tertiary);
+}
+
+/* Índice: panel a la izquierda, debajo del encabezado */
+.demo-index {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 4;
+  overflow-y: auto;
+  width: min(100%, var(--arq-layout-measure));
+  padding: var(--arq-space-padding-lg);
+  border-right: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  background: var(--arq-color-surface-default);
+  color: var(--arq-color-text-primary);
+}
+
+.demo-index-search {
+  display: grid;
+  gap: var(--arq-space-gap-xs);
+  margin-bottom: var(--arq-space-gap-lg);
+  color: var(--arq-color-text-tertiary);
+}
+
+.demo-index-search input {
+  padding: var(--arq-space-padding-sm);
+  border: var(--arq-border-default) solid var(--arq-color-border-default);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-default);
+  color: var(--arq-color-text-primary);
+  font: inherit;
+}
+
+.demo-index-group + .demo-index-group {
+  margin-top: var(--arq-space-gap-lg);
+}
+
+.demo-index-group h2 {
+  margin: 0 0 var(--arq-space-gap-sm);
+  color: var(--arq-color-text-tertiary);
+}
+
+.demo-index ul {
+  display: grid;
+  gap: var(--arq-space-gap-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.demo-index a {
+  color: var(--arq-color-text-secondary);
+  text-decoration: none;
+}
+
+.demo-index a:hover,
+.demo-index a[aria-current] {
+  color: var(--arq-color-text-primary);
+  text-decoration: underline;
+}
+
+/* Ver a 390: la demo en un iframe, sobre la página (debajo del encabezado) */
+.demo-frame {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  background: var(--arq-color-bg-subtle);
+}
+
+.demo-frame iframe {
+  height: 100%;
+  border: 0;
+  border-inline: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  background: var(--arq-color-bg-default);
+}
+
+.demo-framed body {
+  overflow: hidden;
+}
+
+/* Dentro del iframe: sin encabezado (lo maneja la página de afuera) y sin
+   barra de scroll, así el contenido mide los 390 enteros como en un celular */
+.demo-embedded {
+  scrollbar-width: none;
+}
+
+.demo-embedded .demo-header {
+  display: none;
+}

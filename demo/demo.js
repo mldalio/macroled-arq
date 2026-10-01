@@ -7,6 +7,7 @@ import { icon, iconNames } from '/src/base/icons.js';
 import './demo-disclosure.js';
 import './demo-dark-local.js';
 import './demo-groups.js';
+import './demo-nav.js';
 import tokens from '/tokens/tokens.json';
 
 document.adoptedStyleSheets = [...document.adoptedStyleSheets, getRolesSheet()];
