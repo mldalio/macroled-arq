@@ -5,6 +5,9 @@
 //     [data-arq-theme="dark"]           modo dark (solo los tokens que lo tienen)
 //     @media (max-width: 767px) :root   modo mobile (solo los que cambian)
 //     @media (prefers-reduced-motion: reduce) :root   duraciones de motion/* en 0
+//   src/styles/dark.css    → el mismo bloque [data-arq-theme="dark"], para adoptarlo
+//     en cada Shadow DOM (src/styles/roles.js): así el atributo también funciona
+//     en un contenedor interno de un componente (Dark local)
 //   src/styles/roles.css   → estilos de texto role/* como clases .role-<nombre>
 //     (no son variables: los componentes los adoptan con src/styles/roles.js)
 // Nunca se usa prefers-color-scheme: dark solo se activa con data-arq-theme.
@@ -16,6 +19,7 @@ import { MODES, MODES_KEY, ROLE_PROPS, isToken, validate } from './lib/validate-
 
 const SOURCE = new URL('../tokens/tokens.json', import.meta.url);
 const OUT_TOKENS = new URL('../src/styles/tokens.css', import.meta.url);
+const OUT_DARK = new URL('../src/styles/dark.css', import.meta.url);
 const OUT_ROLES = new URL('../src/styles/roles.css', import.meta.url);
 
 const BASE_KEY = 'arq.baseValue';
@@ -143,7 +147,7 @@ const reducedMotion = await cssVariables('reducedMotion', ':root');
 
 const sections = [
   `/* Base: Light · Desktop */\n${base}`,
-  `/* Dark: solo con el switch Iluminar (data-arq-theme="dark"), nunca por prefers-color-scheme */\n${dark}`,
+  `/* Dark: con data-arq-theme="dark" (Iluminar o Dark local), nunca por prefers-color-scheme */\n${dark}`,
   `/* Mobile: hasta 767 px */\n@media (max-width: 767px) {\n${indent(mobile)}\n}`,
 ];
 if (reducedMotion) {
@@ -153,6 +157,13 @@ if (reducedMotion) {
   );
 }
 await writeFile(OUT_TOKENS, `${HEADER}\n${sections.join('\n\n')}\n`);
+
+// Bloque Dark para los Shadow DOM: tokens.css (documento) no alcanza un
+// [data-arq-theme] que está dentro de un componente.
+await writeFile(
+  OUT_DARK,
+  `${HEADER}/* Lo adopta cada Shadow DOM (src/styles/roles.js): Dark local en un contenedor interno. */\n${dark}\n`,
+);
 
 const rolesSd = createDictionary(tokens, [{ destination: 'roles.css', format: 'arq/roles', filter: isRole }]);
 const [{ output: roles }] = await rolesSd.formatPlatform('css');

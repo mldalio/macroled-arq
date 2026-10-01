@@ -229,3 +229,11 @@ setup() {
 - **Nuevos:** `blur/12` (colección nueva `1 · Primitive · Blur`, una por propiedad como Radius y Border), `blur/backdrop` (2 · Semantic · Dimension, igual en Desktop y Mobile) y `color/overlay/translucent` (2 · Semantic · Color, `alpha/ink-10` en Light y Dark). Ligados en las cinco variantes Theme=Transparent de navbar: fondo translúcido + background blur.
 - `blur/12` no tiene scope en Figma (como `alpha/*`): en el selector solo aparece el semántico.
 - **Blur de Figma ≠ CSS:** el radio del background blur de Figma no equivale 1:1 a `backdrop-filter: blur()`; un 12 de Figma se parece más a `blur(6px)`. Se resuelve al construir el navbar, comparando contra Figma (`TODO` navbar).
+
+## 2026-10-01 · Dark dentro del Shadow DOM
+
+- **Problema:** `tokens.css` vive en el documento. Su selector `[data-arq-theme="dark"]` alcanza el host de un componente o un ancestro del DOM de la página, pero no un elemento dentro de un Shadow DOM: un contenedor interno con el atributo seguía en Light.
+- **Solución:** `npm run tokens` genera también `src/styles/dark.css`, con el mismo bloque Dark. `src/styles/roles.js` lo convierte en una sola `CSSStyleSheet` y `ArqElement` la adopta en cada Shadow DOM, junto con la de roles (compartida entre instancias). No se edita a mano.
+- **Resultado:** `data-arq-theme="dark"` funciona en tres lugares: un ancestro del DOM de la página, el host del componente y un contenedor dentro del Shadow DOM. El contenido por slot hereda el modo del contenedor donde se muestra (las variables CSS siguen el árbol con los slots resueltos). Probado en la demo con `demo-dark-local` (Base): `<arq-button>` Filled y Outline por slot dentro de un contenedor interno Dark.
+- **Regla para Dark local:** un componente con Dark fijo por diseño lo aplica en un contenedor interno; el contenido por slot lo hereda. Quien arma la página no pone el atributo.
+- No hay modo Light local: dentro de un bloque Dark no se puede volver a Light (no existe `[data-arq-theme="light"]`).
