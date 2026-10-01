@@ -34,10 +34,23 @@ const templates = new WeakMap();
 // Hoja base de todos los componentes, antes que la del componente.
 // [hidden] gana siempre: el CSS de un componente que le pone display a un
 // panel no puede dejarlo visible cuando Disclosure lo oculta.
+// .visually-hidden: texto solo para lectores de pantalla (nombres de controles
+// sin texto visible, labels ocultos con Show label=false, números reales).
+// border/default (1 px) es el tamaño mínimo disponible: con 0 algunos lectores
+// lo descartan.
 const baseCss = `
 :host([hidden]),
 [hidden] {
   display: none !important;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: var(--arq-border-default);
+  height: var(--arq-border-default);
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 `;
 

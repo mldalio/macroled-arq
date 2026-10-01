@@ -14,7 +14,7 @@ function a(e, ...t) {
 }
 //#endregion
 //#region src/base/arq-element.js
-var o = (e) => e.replace(/[A-Z]/g, (e) => `-${e.toLowerCase()}`), s = /* @__PURE__ */ new WeakMap(), c = "\n:host([hidden]),\n[hidden] {\n  display: none !important;\n}\n", l = class e extends HTMLElement {
+var o = (e) => e.replace(/[A-Z]/g, (e) => `-${e.toLowerCase()}`), s = /* @__PURE__ */ new WeakMap(), c = "\n:host([hidden]),\n[hidden] {\n  display: none !important;\n}\n\n.visually-hidden {\n  position: absolute;\n  width: var(--arq-border-default);\n  height: var(--arq-border-default);\n  overflow: hidden;\n  clip-path: inset(50%);\n  white-space: nowrap;\n}\n", l = class e extends HTMLElement {
 	static tag = "";
 	static styles = "";
 	static template = "";

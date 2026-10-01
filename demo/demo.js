@@ -5,6 +5,7 @@ import '/src/main.js';
 import { getRolesSheet } from '/src/styles/roles.js';
 import { icon, iconNames } from '/src/base/icons.js';
 import './demo-disclosure.js';
+import './demo-groups.js';
 import tokens from '/tokens/tokens.json';
 
 document.adoptedStyleSheets = [...document.adoptedStyleSheets, getRolesSheet()];
