@@ -234,6 +234,7 @@
 .demo-form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--arq-layout-card-min-wide)), 1fr));
+  align-items: start;
   gap: var(--arq-space-gap-lg);
 }
 
