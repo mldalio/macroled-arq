@@ -11,7 +11,7 @@ Reglas para todas las IAs que trabajan en este repo (Claude, Codex, Cursor u otr
 
 - Sitio en `macroled.com.ar/arq`. Se desarrolla en este repo y se carga dentro de páginas de Webflow que comparten sitio y dominio con el e-commerce de Macroled.
 - Las páginas de colección del CMS se anidan en la carpeta `/arq` de Webflow.
-- **Datos:** Google Sheets es la fuente maestra y alimenta Typesense. Webflow CMS guarda solo lo que Google necesita leer en el HTML (nombre, SKU, macrofamilia, slug, meta title, meta description, imagen principal, descripción corta).
+- **Datos:** Google Sheets es la fuente maestra y alimenta Typesense. Webflow CMS tiene dos colecciones, Productos y Colecciones, y guarda solo lo que Google necesita leer en el HTML: en Productos, nombre, SKU, macrofamilia, slug, meta title, meta description, imagen principal y descripción corta; en Colecciones, los campos equivalentes (a definir). URLs en `docs/urls.md`.
 - **Formulario de contacto:** webhook de n8n.
 
 ## Fuente de verdad
