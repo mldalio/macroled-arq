@@ -1,0 +1,92 @@
+/* checkbox · Figma 975:2322. Solo tokens semánticos.
+   La caja mide icon/sm (12) dentro de un control de icon/md (16), igual en los
+   dos Size; Large solo cambia el texto (role/body-lg). */
+
+:host {
+  display: inline-flex;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+/* padding vertical: Figma usa space/gap/xs */
+.row {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  max-width: 100%;
+  padding-block: var(--arq-space-gap-xs);
+  cursor: pointer;
+}
+
+.control {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+}
+
+/* Checked: cuadrado lleno, sin tilde (set de Figma; la ficha nombra un check
+   en color/action/on-primary que no existe en la librería). */
+.box {
+  box-sizing: border-box;
+  width: var(--arq-icon-sm);
+  height: var(--arq-icon-sm);
+  border: var(--arq-border-default) solid var(--arq-color-icon-tertiary);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-default);
+}
+
+/* Label: color/text/secondary (set; la tabla de la ficha dice text/primary) */
+.label {
+  min-width: 0;
+  color: var(--arq-color-text-secondary);
+}
+
+/* State=Hover */
+.row:hover .box {
+  border-color: var(--arq-color-icon-primary);
+}
+
+.row:hover .label {
+  color: var(--arq-color-text-primary);
+}
+
+/* Checked=True */
+.native:checked + .control .box {
+  border-color: var(--arq-color-action-primary);
+  background: var(--arq-color-action-primary);
+}
+
+.row:hover .native:checked + .control .box {
+  border-color: var(--arq-color-action-primary-hover);
+  background: var(--arq-color-action-primary-hover);
+}
+
+/* State=Disabled */
+:host([disabled]) .row {
+  cursor: default;
+}
+
+:host([disabled]) .box,
+:host([disabled]) .row:hover .box {
+  border-color: var(--arq-color-icon-disabled);
+}
+
+:host([disabled]) .native:checked + .control .box {
+  border-color: var(--arq-color-icon-disabled);
+  background: var(--arq-color-icon-disabled);
+}
+
+:host([disabled]) .label,
+:host([disabled]) .row:hover .label {
+  color: var(--arq-color-text-disabled);
+}
+
+/* Foco: anillo de DESIGN.md §7 alrededor de la caja (2px: valor fijado ahí) */
+.native:focus-visible + .control .box {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}

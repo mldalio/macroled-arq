@@ -580,6 +580,41 @@
           </demo-tablist>
         </div>
       </section>
+
+      <section class="demo-section" aria-labelledby="demo-checkbox">
+        <h2 id="demo-checkbox" class="demo-heading role-label">checkbox · &lt;arq-checkbox&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 975:2322. Size Default y Large × Checked × Disabled; sin show-label (texto solo para lectores) y texto largo. «Ver valor» muestra lo que manda el formulario.</p>
+        <form class="demo-stack" data-demo-form>
+          <div class="demo-row">
+            <arq-checkbox name="comparar" value="kanu" show-label>Comparar</arq-checkbox>
+            <arq-checkbox name="comparar" value="nara" checked show-label>Comparar</arq-checkbox>
+            <arq-checkbox name="comparar" value="otro" disabled show-label>Comparar</arq-checkbox>
+            <arq-checkbox name="comparar" value="otro2" checked disabled show-label>Comparar</arq-checkbox>
+            <arq-checkbox name="comparar" value="sin-label">Comparar (sin show-label)</arq-checkbox>
+          </div>
+          <div class="demo-row">
+            <arq-checkbox size="large" name="aplicacion" value="exterior" show-label>Exterior</arq-checkbox>
+            <arq-checkbox size="large" name="aplicacion" value="interior" checked show-label>Interior</arq-checkbox>
+            <arq-checkbox size="large" name="aplicacion" value="jardin" disabled show-label>Jardín</arq-checkbox>
+            <arq-checkbox size="large" name="aplicacion" value="pared" checked disabled show-label>Pared</arq-checkbox>
+          </div>
+          <div class="demo-narrow">
+            <arq-checkbox size="large" name="aplicacion" value="largo" show-label>Una opción de filtro con un texto largo que se parte en dos líneas</arq-checkbox>
+          </div>
+          <div class="demo-row">
+            <arq-button type="outline" data-demo-show>Ver valor</arq-button>
+            <arq-button type="underline" show-underline data-demo-reset>Restablecer</arq-button>
+            <span class="role-body-sm demo-meta" data-demo-output aria-live="polite"></span>
+          </div>
+        </form>
+        <div class="demo-row demo-dark" data-arq-theme="dark">
+          <arq-checkbox show-label>Comparar</arq-checkbox>
+          <arq-checkbox checked show-label>Comparar</arq-checkbox>
+          <arq-checkbox disabled show-label>Comparar</arq-checkbox>
+          <arq-checkbox checked disabled show-label>Comparar</arq-checkbox>
+          <arq-checkbox size="large" checked show-label>Interior</arq-checkbox>
+        </div>
+      </section>
     </main>
   </body>
 </html>

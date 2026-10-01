@@ -1,0 +1,102 @@
+/* toggle · Figma 926:3102 · toggle-switch 1131:6383. Solo tokens semánticos. */
+
+:host {
+  display: inline-flex;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  max-width: 100%;
+  cursor: pointer;
+}
+
+/* ── toggle-switch ─────────────────────────────────────────────────
+   Pista 38 × 18 sin token, armada con los de Figma:
+   ancho = 2 × padding/2xs + 2 × icon/sm + gap/sm · alto = 2 × padding/2xs + icon/sm.
+   El borde va por dentro (como en Figma): se descuenta del padding. */
+.track {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  width: calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm) * 2 + var(--arq-space-gap-sm));
+  height: calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm));
+  padding: calc(var(--arq-space-padding-2xs) - var(--arq-border-default));
+  border: var(--arq-border-default) solid var(--arq-color-border-strong);
+  border-radius: var(--arq-radius-pill);
+  background: var(--arq-color-surface-transparent);
+}
+
+/* Círculo icon/sm. On: se corre icon/sm + gap/sm a la derecha.
+   TODO: sin transición (no hay tokens de movimiento); con tokens, respetar
+   prefers-reduced-motion. */
+.thumb {
+  width: var(--arq-icon-sm);
+  height: var(--arq-icon-sm);
+  border-radius: var(--arq-radius-pill);
+  background: var(--arq-color-icon-primary);
+}
+
+.label {
+  min-width: 0;
+  color: var(--arq-color-text-primary);
+}
+
+/* Checked=False · Hover */
+.toggle:hover .track {
+  background: var(--arq-color-surface-hover);
+}
+
+/* Checked=True */
+.native:checked + .track {
+  border-color: var(--arq-color-action-primary);
+  background: var(--arq-color-action-primary);
+}
+
+.native:checked + .track .thumb {
+  background: var(--arq-color-action-on-primary);
+  transform: translateX(calc(var(--arq-icon-sm) + var(--arq-space-gap-sm)));
+}
+
+/* Checked=True · Hover */
+.toggle:hover .native:checked + .track {
+  border-color: var(--arq-color-action-primary-hover);
+  background: var(--arq-color-action-primary-hover);
+}
+
+/* State=Disabled. Checked + Disabled lleva pista color/surface/strong (set) */
+:host([disabled]) .toggle {
+  cursor: default;
+}
+
+:host([disabled]) .track,
+:host([disabled]) .toggle:hover .track {
+  border-color: var(--arq-color-border-disabled);
+  background: var(--arq-color-surface-transparent);
+}
+
+:host([disabled]) .native:checked + .track {
+  border-color: var(--arq-color-border-disabled);
+  background: var(--arq-color-surface-strong);
+}
+
+:host([disabled]) .thumb,
+:host([disabled]) .native:checked + .track .thumb {
+  background: var(--arq-color-icon-disabled);
+}
+
+:host([disabled]) .label {
+  color: var(--arq-color-text-disabled);
+}
+
+/* Foco: anillo de DESIGN.md §7 alrededor de la pista (2px: valor fijado ahí).
+   En Figma el foco solo recolorea el borde y en Light no se distingue. */
+.native:focus-visible + .track {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
