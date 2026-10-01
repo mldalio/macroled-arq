@@ -76,7 +76,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [swatch](#swatch) | `<arq-swatch>` | Pendiente |
 | [swatch-picker](#swatch-picker) | `<arq-swatch-picker>` | Pendiente |
 | [tab](#tab) | `<arq-tab>` | Pendiente |
-| [tag](#tag) | `<arq-tag>` | Pendiente |
+| [tag](#tag) | `<arq-tag>` | En espera de diseño |
 | [toggle](#toggle) | `<arq-toggle>` | Pendiente |
 | [toggle-switch](#toggle-switch) | `<arq-toggle-switch>` | Pendiente |
 | [variants-table](#variants-table) | `<arq-variants-table>` | Pendiente |
@@ -607,6 +607,8 @@ Pestaña (role="tab"). Default, Hover, Selected (aria-selected="true", subrayado
 - Propiedades: Label; Type: Plain · Outline
 
 Etiqueta informativa (no interactiva). Type: Plain (tipo de producto en tarjetas: "Embutir", "Jardín · Pared") y Outline (especificaciones: "IP 65", "CE", "2700 K"). Prop: Label. Si tiene que ser clickeable, se usa button o checkbox, no tag.
+
+> **En espera de diseño:** hoy no hay instancias de tag en las pantallas (product-card resuelve el tipo con Meta). No se construye hasta que diseño defina si se usa en la ficha o se da de baja. Si se hace, Outline lleva fondo `color/surface/default`.
 
 ## toggle
 
