@@ -356,7 +356,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | select-menu | Type: Finishes · Filter · Text | Hasta 7 opciones. surface/default, border/default, sin sombra |
 | select-option | State: Default · Hover · Selected · Focus · Disabled. Props: Name · Show swatch | Hover surface/faint, Selected role/body-medium, Focus border/focus |
 | tab | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | role/label; seleccionado con línea border/strong. Un solo tab en todo el sitio |
-| nav-link | Breakpoint: Desktop · Mobile. State: Default · Hover · Pressed · Current · Focus. Open: False · True. Theme: Default · Inverse. Props: Label · Has dropdown | Hover subrayado; Current guion; Open subrayado + flecha girada |
+| nav-link | Breakpoint: Desktop · Mobile. State: Default · Hover · Pressed · Current · Focus. Open: False · True. Theme: Default · Inverse. Props: Label · Has dropdown | Hover subrayado; Current guion; Open: solo gira la flecha (sin subrayado) |
 | navbar | Breakpoint: Desktop · Mobile. Mode: Default · Search · Menu · Products. Theme: Default · Transparent | 56 px de alto. Transparent sobre el hero; pasa a Default al hacer scroll |
 | mega-menu | Tab: Aplicación · Lámparas y artefactos · Colecciones | Un solo componente; categorías, links y "Ver todo…" salen de los datos. Usa tab y mega-link |
 | mega-link | Type: Link · Group. State: Default · Hover · Focus. Size: Default · Large. Open: False · True. Props: Name · Meta · Show meta · Show image · Show arrow | Link role/body (Large role/body-lg). Group role/body-xl con icon/plus / icon/minus |
