@@ -8,6 +8,7 @@ import { version } from '../package.json';
 // import './components/<nombre>/<nombre>.js';
 import './components/button/button.js';
 import './components/count-badge/count-badge.js';
+import './components/divider/divider.js';
 
 if (!window.Arq) {
   window.Arq = Object.freeze({ version });

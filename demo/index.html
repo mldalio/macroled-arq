@@ -166,6 +166,49 @@
           <arq-button type="outline" show-count count="0" count-label="filtros activos">Filtrar (count 0)</arq-button>
         </div>
       </section>
+
+      <section class="demo-section" aria-labelledby="demo-divider">
+        <h2 id="demo-divider" class="demo-heading role-label">divider · &lt;arq-divider&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1244:3990. Vertical toma el alto de su contenedor flex o grid.</p>
+
+        <h3 class="demo-subheading role-body-sm">Orientation=Horizontal · Emphasis=Subtle y Default</h3>
+        <div class="demo-stack">
+          <p class="demo-sample role-body">Bloque de arriba</p>
+          <arq-divider></arq-divider>
+          <p class="demo-sample role-body">Emphasis=Subtle (arriba) · Emphasis=Default (abajo)</p>
+          <arq-divider emphasis="default"></arq-divider>
+          <p class="demo-sample role-body">Bloque de abajo</p>
+        </div>
+
+        <h3 class="demo-subheading role-body-sm">Orientation=Vertical · alto de la fila (toolbar, 20) y FILL (barra alta)</h3>
+        <div class="demo-row">
+          <span class="role-body">11 productos</span>
+          <arq-divider orientation="vertical"></arq-divider>
+          <span class="role-body">Iluminar</span>
+          <arq-divider orientation="vertical" emphasis="default"></arq-divider>
+          <span class="role-body">Filtrar</span>
+        </div>
+        <div class="demo-row demo-tall">
+          <span class="role-body">Slot 1</span>
+          <arq-divider orientation="vertical"></arq-divider>
+          <span class="role-body">Slot 2</span>
+          <arq-divider orientation="vertical" emphasis="default"></arq-divider>
+          <span class="role-body">Slot 3</span>
+        </div>
+
+        <h3 class="demo-subheading role-body-sm">Contenedor en modo Dark (data-arq-theme="dark")</h3>
+        <div class="demo-stack demo-dark" data-arq-theme="dark">
+          <arq-divider></arq-divider>
+          <arq-divider emphasis="default"></arq-divider>
+          <div class="demo-row">
+            <span class="role-body">Iluminar</span>
+            <arq-divider orientation="vertical"></arq-divider>
+            <span class="role-body">Filtrar</span>
+            <arq-divider orientation="vertical" emphasis="default"></arq-divider>
+            <span class="role-body">Default</span>
+          </div>
+        </div>
+      </section>
     </main>
   </body>
 </html>

@@ -160,3 +160,15 @@
   padding: var(--arq-space-padding-md);
   background: var(--arq-color-action-primary);
 }
+
+/* Barra alta para probar divider vertical en FILL (como compare-bar) */
+.demo-tall {
+  align-items: stretch;
+  min-height: var(--arq-space-section-xs);
+  padding: var(--arq-space-padding-md);
+  background: var(--arq-color-surface-subtle);
+}
+
+.demo-tall > span {
+  align-self: center;
+}

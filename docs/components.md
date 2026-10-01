@@ -30,7 +30,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [contact-item](#contact-item) | `<arq-contact-item>` | Pendiente |
 | [count-badge](#count-badge) | `<arq-count-badge>` | En código ([README](../src/components/count-badge/README.md)) |
 | [cta-block](#cta-block) | `<arq-cta-block>` | Pendiente |
-| [divider](#divider) | `<arq-divider>` | Pendiente |
+| [divider](#divider) | `<arq-divider>` | En código ([README](../src/components/divider/README.md)) |
 | [download-item](#download-item) | `<arq-download-item>` | Pendiente |
 | [download-modal](#download-modal) | `<arq-download-modal>` | Pendiente |
 | [family-card](#family-card) | `<arq-family-card>` | Pendiente |

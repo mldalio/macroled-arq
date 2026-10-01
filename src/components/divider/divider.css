@@ -1,0 +1,27 @@
+/* divider · Figma 1244:3990. Solo tokens semánticos.
+   La línea es el propio elemento: un relleno de color de borde de border/default.
+   Horizontal y Subtle son la base (también para valores inválidos). */
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  flex: none;
+  width: 100%;
+  height: var(--arq-border-default);
+  background: var(--arq-color-border-subtle);
+}
+
+:host([emphasis='default']) {
+  background: var(--arq-color-border-default);
+}
+
+/* Vertical: toma el alto de su contenedor flex o grid (align-self: stretch).
+   Sin token ni prop: el alto lo da el contenedor (compare-bar: FILL).
+   TODO (catalog-toolbar): ahí mide 20 en una fila de 36 (botón Filtrar); el
+   toolbar le tiene que dar ese alto. */
+:host([orientation='vertical']) {
+  display: inline-block;
+  align-self: stretch;
+  width: var(--arq-border-default);
+  height: auto;
+}
