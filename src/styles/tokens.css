@@ -125,6 +125,7 @@
   --arq-layout-card-min-wide: 340px; /** Ancho mínimo de tarjeta en la grilla de catálogo desde 1600 px. Se aplica en el CSS de la grilla con una media query (min-width: 1600px); no es un modo. */
   --arq-layout-compare-media-max: 2000px; /** Tope de ancho de la foto de compare-product. En la práctica la foto ocupa la columna. */
   --arq-layout-measure: 400px; /** Ancho máximo de un texto de lectura junto a otro elemento (bajada de section-header Description). En Mobile el texto ocupa todo el ancho. */
+  --arq-layout-measure-wide: 520px; /** Ancho máximo de un texto de lectura en una columna principal (título y bajada de page-header Detail). En Mobile el texto ocupa todo el ancho. */
   --arq-motion-duration-fast: 120ms; /** Hover, toggle, foco. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-base: 200ms; /** Desplegables (disclosure) y menús. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-slow: 320ms; /** Fundido de imágenes de product-card. En ms. Con prefers-reduced-motion: 0. */

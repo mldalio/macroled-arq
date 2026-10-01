@@ -1,0 +1,110 @@
+/* page-header · Figma 1244:4016. Solo tokens semánticos.
+   Desktop es la base; Mobile apila todo. Aplica su propio layout/gutter. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Type=List: arriba space/section/sm, abajo space/section/xs */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-xl-2xl);
+  padding: var(--arq-space-section-sm) var(--arq-layout-gutter) var(--arq-space-section-xs);
+}
+
+/* Fila: columna del título a la izquierda y bajada (List) o acción (Detail)
+   abajo a la derecha (SPACE_BETWEEN / MAX en Figma). */
+.row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-lg);
+  align-self: stretch;
+  min-width: 0;
+}
+
+.main,
+.heading {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* breadcrumb → título: space/gap/lg */
+.heading {
+  gap: var(--arq-space-gap-lg);
+}
+
+.title,
+.description {
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
+.title {
+  color: var(--arq-color-text-primary);
+}
+
+.description {
+  color: var(--arq-color-text-secondary);
+}
+
+.action {
+  flex: none;
+}
+
+/* Type=List (Desktop): la bajada sale de .main y queda a la derecha de la
+   fila, hasta layout/measure. */
+:host(:not([type='detail'])) .main {
+  display: contents;
+}
+
+:host(:not([type='detail'])) .description {
+  flex: 0 1 var(--arq-layout-measure);
+  max-width: var(--arq-layout-measure);
+}
+
+/* Type=Detail: arriba space/section/xs, abajo space/section/sm. Volver arriba
+   (a space/gap/xl-2xl); título y bajada a space/gap/md en una columna de hasta
+   layout/measure-wide. */
+:host([type='detail']) .header {
+  padding-block: var(--arq-space-section-xs) var(--arq-space-section-sm);
+}
+
+:host([type='detail']) .main {
+  gap: var(--arq-space-gap-md);
+  max-width: var(--arq-layout-measure-wide);
+}
+
+/* Mobile: todo apilado y a ancho completo. List: breadcrumb + título y bajada
+   a space/gap/lg. Detail: Volver, título y acción a space/gap/xl-2xl; la acción
+   ocupa todo el ancho. */
+@media (max-width: 767px) {
+  .row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--arq-space-gap-lg);
+  }
+
+  :host(:not([type='detail'])) .main {
+    display: flex;
+    gap: var(--arq-space-gap-lg);
+  }
+
+  :host(:not([type='detail'])) .description,
+  :host([type='detail']) .main {
+    flex: none;
+    max-width: none;
+  }
+
+  :host([type='detail']) .row {
+    gap: var(--arq-space-gap-xl-2xl);
+  }
+
+  .action ::slotted(*) {
+    width: 100%;
+  }
+}

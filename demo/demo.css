@@ -281,3 +281,20 @@
     display: inline-flex;
   }
 }
+
+/* page-header aplica su propio layout/gutter: en la demo va a sangre para no
+   sumarlo dos veces. El contorno punteado marca la caja del componente. */
+.demo-bleed {
+  display: grid;
+  gap: var(--arq-space-gap-md);
+  margin-inline: calc(var(--arq-layout-gutter) * -1);
+}
+
+.demo-bleed > arq-page-header {
+  outline: var(--arq-border-default) dashed var(--arq-color-border-subtle);
+  outline-offset: calc(var(--arq-border-default) * -1);
+}
+
+.demo-bleed.demo-dark {
+  padding: 0;
+}
