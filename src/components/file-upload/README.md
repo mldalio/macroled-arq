@@ -27,7 +27,7 @@ Zona para adjuntar un archivo al formulario de Contacto (planos, renders, fotos)
 | — | `name` · `required` | `name` · `required` | para el formulario |
 
 - **Es un `<input type="file">` real:** la zona es su `<label>` (clic o Enter/Espacio abre el selector) y acepta arrastrar y soltar. `el.focus()` enfoca el input.
-- **Validación:** formato (`accept`) y tamaño (`max-size`) al elegir el archivo. Si no pasa, no lo adjunta y pasa a State=Error: la zona con borde `color/border/error` y el mensaje en lugar del helper. Mensajes: "El archivo supera los 10 MB. Formatos: PDF, DWG, JPG o PNG." (el de Figma) y "El formato no está admitido. Formatos: PDF, DWG, JPG o PNG." (mismo patrón). La lista de formatos sale de `accept`.
+- **Validación:** formato (`accept`) y tamaño (`max-size`) al elegir el archivo. Si no pasa, no lo adjunta y pasa a State=Error: la zona con borde `color/border/error` y el mensaje en lugar del helper. Mensajes: "El archivo supera los 10 MB. Formatos: PDF, DWG, JPG o PNG." y "El formato no está admitido. Formatos: PDF, DWG, JPG o PNG." (los dos de la descripción del set). La lista de formatos sale de `accept`.
 - **Drag over:** borde `color/border/strong`, fondo `color/surface/hover` y el texto de la zona pasa a "Soltá el archivo acá". Disabled no acepta archivos arrastrados.
 - **Formulario:** el archivo viaja en el `FormData` del `<form>` (ElementInternals). `form.reset()` lo quita.
 - "Quitar" es `<arq-button type="underline">`; su nombre accesible es "Quitar archivo plano.pdf". Al quitarlo, el foco vuelve al input.
@@ -48,7 +48,5 @@ Zona para adjuntar un archivo al formulario de Contacto (planos, renders, fotos)
 
 ## Pendientes
 
-- `TODO` Figma muestra solo el mensaje de tamaño; el de formato sigue el mismo patrón.
-- `TODO` En Figma, el ícono de State=Disabled es `icon/plus` Theme=Default; en código va en `color/icon/disabled`, como el resto del texto (ficha: "border/disabled y text/disabled").
 - `TODO` (form-contacto) Cómo viaja el archivo a n8n (multipart): no está definido el contrato del webhook.
 - Formatos aceptados: los acordados (PDF, DWG, JPG, PNG).

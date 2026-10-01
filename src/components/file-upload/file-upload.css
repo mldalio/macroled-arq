@@ -108,7 +108,7 @@
 }
 
 /* State=Disabled: borde color/border/disabled y textos color/text/disabled.
-   El ícono va en color/icon/disabled (la ficha: "border/disabled y text/disabled"). */
+   El ícono en color/icon/disabled, como en Figma. */
 :host([disabled]) .zone {
   border-color: var(--arq-color-border-disabled);
   cursor: default;

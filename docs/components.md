@@ -320,7 +320,7 @@ Bloque editorial destacado: imagen grande (y secundaria opcional) + eyebrow, tí
 
 Zona para adjuntar un archivo al formulario (planos, planillas). Empty: zona con icon/plus y ayuda; Attached: nombre del archivo + quitar. Props: Label y Helper (formatos y tamaño máximo). En código: <input type="file"> real con drag & drop.
 
-Un solo archivo. State: Empty, Attached, Drag over (archivo arrastrado encima: borde color/border/strong y fondo color/surface/hover), Error (borde color/border/error; el mensaje reemplaza a la ayuda, en color/text/error) y Disabled. Formatos: PDF, DWG, JPG o PNG, hasta 10 MB.
+Un solo archivo. State: Empty, Attached, Drag over (archivo arrastrado encima: borde color/border/strong y fondo color/surface/hover), Error (borde color/border/error; el mensaje reemplaza a la ayuda, en color/text/error: "El archivo supera los 10 MB. Formatos: …" o "El formato no está admitido. Formatos: …") y Disabled. Formatos: PDF, DWG, JPG o PNG, hasta 10 MB.
 
 ## filter-bar
 
@@ -576,7 +576,7 @@ Opción de select-menu. Muestra opcional (Show swatch; swatch/sm con border/defa
 
 Código de producto con botón de copiar. Size: Default (bloque del configurador, con etiqueta SKU) y Compact (fila de la tabla de variantes). State: Default (ícono icon/secondary), Hover (ícono icon/primary), Copied (confirmación "Copiado", text/success).
 
-Textos largos: el código se parte en varias líneas, nunca se corta. Si falla el portapapeles: el código queda seleccionado y se anuncia "Copialo con Ctrl+C" en lugar de "Copiado".
+Textos largos: el código se parte en varias líneas, nunca se corta. Si falla el portapapeles: el código queda seleccionado y se anuncia "Copialo con Ctrl+C" ("⌘C" en Mac) en lugar de "Copiado", en color/text/secondary.
 
 ## spec-list
 

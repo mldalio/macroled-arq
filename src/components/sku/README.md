@@ -20,7 +20,7 @@ Código de producto con botón de copiar. Size=Default en el configurador de la 
 - State=Hover es CSS (el ícono pasa a `color/icon/primary`).
 - **Copiar:** toda la fila (código + ícono) es el botón. Copia con `navigator.clipboard.writeText` y emite `arq:copy` con `{ code }`. `el.copy()` hace lo mismo por código.
 - **Accesibilidad:** el botón se llama "Copiar SKU KANU-J-500-12W-N-WW". "Copiado" se anuncia con `aria-live="polite"`.
-- **Si falla el portapapeles** (permiso denegado, contexto no seguro): el código queda seleccionado, en el lugar de "Copiado" se ve "Copialo con Ctrl+C" y se anuncia por el mismo `aria-live`. Dura `motion/duration/feedback`; la selección queda. Estado interno `:state(copy-failed)`.
+- **Si falla el portapapeles** (permiso denegado, contexto no seguro): el código queda seleccionado, en el lugar de "Copiado" se ve "Copialo con Ctrl+C" ("Copialo con ⌘C" en Mac y iPad) y se anuncia por el mismo `aria-live`. Dura `motion/duration/feedback`; la selección queda. Estado interno `:state(copy-failed)`.
 - **Textos largos:** el código se parte en varias líneas y nunca se corta (también sin espacios). El ícono y "Copiado" quedan en la primera línea.
 - El SKU no se usa como `id` HTML ni como slug.
 
@@ -32,7 +32,7 @@ Código de producto con botón de copiar. Size=Default en el configurador de la 
 | Código | `color/text/primary` · `role/body-lg` (Compact: `role/body`) |
 | Ícono · Hover | `copy` en `icon/md`, `color/icon/secondary` · `color/icon/primary` |
 | "Copiado" | `color/text/success` · `role/caption` |
-| "Copialo con Ctrl+C" | `color/text/secondary` · `role/caption` (ver Pendientes) |
+| "Copialo con Ctrl+C" / "⌘C" | `color/text/secondary` · `role/caption` |
 | Duración de Copied | `motion/duration/feedback` |
 | Hover del ícono | transición de color `motion/duration/fast` |
 | Gaps | `space/gap/xs` (etiqueta–fila) · `space/gap/sm` (código–ícono) |
@@ -40,5 +40,4 @@ Código de producto con botón de copiar. Size=Default en el configurador de la 
 
 ## Pendientes
 
-- `TODO` Color de "Copialo con Ctrl+C": Figma no lo define; se usa `color/text/secondary`. El texto dice Ctrl+C también en Mac (como en Figma).
 - Con "Copiado" el componente se ensancha unos 34 px (igual que en Figma).

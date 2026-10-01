@@ -8,7 +8,7 @@
 // Toda la fila (código + ícono) es el botón: así el área táctil supera 24 × 24.
 // Al copiar, State=Copied: "Copiado" en lugar del ícono durante
 // motion/duration/feedback, anunciado con aria-live. Si el portapapeles falla,
-// el código queda seleccionado y se anuncia "Copialo con Ctrl+C" en lugar de
+// el código queda seleccionado y se anuncia "Copialo con Ctrl+C" ("⌘C" en Mac) en lugar de
 // "Copiado" (descripción del set). El SKU es un identificador opaco
 // (AGENTS.md): se copia tal cual.
 
@@ -17,7 +17,9 @@ import { icon } from '../../base/icons.js';
 import css from './sku.css?inline';
 
 const COPIED_TEXT = 'Copiado';
-const FAILED_TEXT = 'Copialo con Ctrl+C';
+// En Mac (y iPad con teclado) el atajo es ⌘C (descripción del set).
+const isApple = /Mac|iPhone|iPad/.test(navigator.userAgentData?.platform ?? navigator.platform ?? '');
+const FAILED_TEXT = isApple ? 'Copialo con ⌘C' : 'Copialo con Ctrl+C';
 
 // motion/duration/feedback ("2000ms" o "2s") en milisegundos. Sale de tokens.css
 // (dist/arq.css), así el tiempo se cambia desde Figma.
