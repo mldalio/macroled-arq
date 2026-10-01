@@ -271,3 +271,10 @@ setup() {
 - **Media con `!important`:** posición y tamaño de la media slotteada van con `!important`, porque los estilos del sitio para `img` ganan sobre `::slotted`.
 - **Gap texto–CTA en Desktop:** `space/gap/xl`; en Figma es justify-between sin gap y un título largo tocaría el CTA.
 - **Fondo de reserva** `color/surface/inverse` mientras carga la media o si falta, para que el texto inverso se lea.
+
+## 2026-10-01 · cta-block
+
+- **Slots:** title (`<h2>` en el HTML de la página, como el `<h1>` del hero), description, action (`<arq-button>`) y, en Newsletter, email (`<arq-input>`). Aplica su propio `layout/gutter` porque el fondo va a sangre.
+- **Gaps del set, no de la ficha:** título–bajada `space/gap/sm-md` y email–button `space/gap/md` (la ficha dice `sm` y `sm-md`). Falta corregir la ficha.
+- **Newsletter sin envío:** un `<form>` dentro del Shadow DOM no es dueño de un `arq-input` que llega por slot (el formulario dueño se busca en el DOM de la página). Por eso el componente valida el email con `reportValidity()` del `arq-input` al tocar el button o con Enter, y emite `arq:submit` con `{ email }`. `TODO` (formularios): envío a n8n y `form-message`, cuando se defina el webhook de la newsletter y se construya `arq-button submit`.
+- **Email:** 380 fijos en el set, sin token; `layout/measure` (400) con `TODO`.

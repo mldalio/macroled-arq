@@ -1,0 +1,93 @@
+/* cta-block · Figma 1265:4464. Solo tokens semánticos.
+   Fondo color/bg/subtle a sangre, con su propio layout/gutter.
+   Desktop: texto a la izquierda, acción a la derecha. Mobile: apilado. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-xl);
+  padding: var(--arq-space-section-md) var(--arq-layout-gutter);
+  background: var(--arq-color-bg-subtle);
+}
+
+/* Título y bajada a space/gap/sm-md (como el set; la ficha dice sm) */
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-sm-md);
+  min-width: 0;
+}
+
+.title {
+  color: var(--arq-color-text-primary);
+}
+
+/* El <h2> llega del HTML de la página: hereda role/heading-2 y el color.
+   !important porque los estilos del sitio para h2 ganan sobre ::slotted. */
+::slotted(h2) {
+  margin: 0 !important;
+  font: inherit !important;
+  letter-spacing: inherit !important;
+  text-transform: inherit !important;
+  color: inherit !important;
+  overflow-wrap: break-word;
+}
+
+/* Bajada hasta layout/measure-wide (520 en el set) */
+.description {
+  max-width: var(--arq-layout-measure-wide);
+  margin: 0;
+  color: var(--arq-color-text-secondary);
+  overflow-wrap: break-word;
+}
+
+/* Acción: button, o email + button a space/gap/md (como el set) */
+.action {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--arq-space-gap-md);
+}
+
+/* TODO (diseño): en el set el campo mide 380 fijos y no hay token; se usa el
+   más cercano, layout/measure (400). */
+.email {
+  width: var(--arq-layout-measure);
+}
+
+::slotted(arq-input) {
+  display: block;
+  width: 100%;
+}
+
+/* Mobile: todo apilado a space/gap/xl y a ancho completo (también el button) */
+@media (max-width: 767px) {
+  .block {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .description {
+    max-width: none;
+  }
+
+  .action {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--arq-space-gap-xl);
+  }
+
+  .email {
+    width: auto;
+  }
+
+  ::slotted(arq-button) {
+    width: 100%;
+  }
+}

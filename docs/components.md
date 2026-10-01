@@ -29,7 +29,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [compare-slot](#compare-slot) | `<arq-compare-slot>` | Pendiente |
 | [contact-item](#contact-item) | `<arq-contact-item>` | Pendiente |
 | [count-badge](#count-badge) | `<arq-count-badge>` | En código ([README](../src/components/count-badge/README.md)) |
-| [cta-block](#cta-block) | `<arq-cta-block>` | Pendiente |
+| [cta-block](#cta-block) | `<arq-cta-block>` | En código ([README](../src/components/cta-block/README.md)) |
 | [divider](#divider) | `<arq-divider>` | En código ([README](../src/components/divider/README.md)) |
 | [download-item](#download-item) | `<arq-download-item>` | Pendiente |
 | [download-modal](#download-modal) | `<arq-download-modal>` | Pendiente |
