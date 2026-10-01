@@ -1,0 +1,95 @@
+/* section-header · Figma 1036:2448. Solo tokens semánticos.
+   Sin separador. Desktop es la base; Mobile apila todo. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Type=Link · Description (Desktop): una fila, título a la izquierda y link o
+   bajada abajo a la derecha (SPACE_BETWEEN / MAX en Figma). */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-lg);
+  min-width: 0;
+}
+
+/* Textos: título y bajada a space/gap/sm-md (Stacked y Mobile) */
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-sm-md);
+  min-width: 0;
+}
+
+.title,
+.description {
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
+.title {
+  color: var(--arq-color-text-primary);
+}
+
+.description {
+  color: var(--arq-color-text-secondary);
+}
+
+/* El link no se achica: un título largo se parte en líneas */
+.link {
+  flex: none;
+}
+
+/* Type=Description (Desktop): la bajada va al costado, hasta layout/measure.
+   La bajada sale de .text para quedar como hija de la fila. */
+:host([type='description']) .text {
+  display: contents;
+}
+
+:host([type='description']) .description {
+  flex: 0 1 var(--arq-layout-measure);
+  max-width: var(--arq-layout-measure);
+}
+
+/* Type=Stacked: título y bajada arriba, link debajo a space/gap/lg */
+:host([type='stacked']) .header {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* Textos a ancho completo (FILL en Figma) */
+:host([type='stacked']) .text {
+  align-self: stretch;
+}
+
+/* Mobile: todo apilado y a ancho completo. Type=Link no muestra su link: la
+   página pone un button al final del bloque (README). */
+@media (max-width: 767px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .text {
+    width: 100%;
+  }
+
+  :host([type='description']) .text {
+    display: flex;
+  }
+
+  :host([type='description']) .description {
+    flex: none;
+    max-width: none;
+  }
+
+  :host([type='link']) .link,
+  :host(:not([type])) .link {
+    display: none;
+  }
+}
