@@ -439,8 +439,6 @@ var D = ":host{display:block}.row{justify-content:space-between;align-items:cent
 //#endregion
 //#region src/components/filter-chip/filter-chip.css?inline
 var O = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.chip{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-xs);max-width:100%;padding:var(--arq-space-padding-xs) var(--arq-space-padding-sm);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);margin:0;display:inline-flex}.label{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm);flex:none}.chip:hover{border-color:var(--arq-color-text-primary)}.chip:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.chip:focus:not(:focus-visible){outline:none}";
-//#endregion
-//#region src/main.js
 (class extends l {
 	static tag = "arq-filter-chip";
 	static styles = O;
@@ -453,6 +451,71 @@ var O = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.chip{bo
 	}
 	focus(e) {
 		this.#e ? this.#e.focus(e) : super.focus(e);
+	}
+}).define();
+//#endregion
+//#region src/components/select-option/select-option.css?inline
+var k = ":host{cursor:pointer;display:block}:host([disabled]){cursor:default}.option{align-items:center;gap:var(--arq-space-gap-sm);padding:var(--arq-space-padding-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex}:host(:not([disabled]):hover) .option{background:var(--arq-color-surface-faint)}.swatch{box-sizing:border-box;width:var(--arq-swatch-sm);height:var(--arq-swatch-sm);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);flex:none;position:relative;overflow:hidden}.swatch img{object-fit:cover;width:100%;height:100%;display:block}.name{min-width:0;color:var(--arq-color-text-primary)}:host([disabled]) .name{color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+(class extends l {
+	static tag = "arq-select-option";
+	static styles = k;
+	static properties = {
+		showSwatch: { type: Boolean },
+		swatchSrc: { type: String },
+		selected: { type: Boolean },
+		disabled: { type: Boolean },
+		value: { type: String }
+	};
+	static template = "<span class=\"option\"><span class=\"swatch\" aria-hidden=\"true\" hidden><img alt=\"\" hidden></span><span class=\"name role-body\"><slot></slot></span></span>";
+	setup() {
+		this.hasAttribute("role") || this.setAttribute("role", "option");
+		let e = this.shadowRoot.querySelector("img");
+		e.addEventListener("error", () => e.hidden = !0), e.addEventListener("load", () => e.hidden = !1), this.addEventListener("click", () => {
+			this.disabled || this.emit("change", {
+				value: this.value,
+				selected: !0
+			});
+		});
+	}
+	update(e) {
+		this.setAttribute("aria-selected", String(this.selected)), this.disabled ? this.setAttribute("aria-disabled", "true") : this.removeAttribute("aria-disabled"), this.shadowRoot.querySelector(".swatch").hidden = !this.showSwatch;
+		let t = this.shadowRoot.querySelector(".name");
+		if (t.classList.toggle("role-body", !this.selected), t.classList.toggle("role-body-medium", this.selected), e.has("swatchSrc")) {
+			let e = this.shadowRoot.querySelector("img");
+			this.swatchSrc ? e.src = this.swatchSrc : (e.removeAttribute("src"), e.hidden = !0);
+		}
+	}
+}).define();
+//#endregion
+//#region src/components/gallery-thumb/gallery-thumb.css?inline
+var A = ":host{display:block}.thumb{box-sizing:border-box;aspect-ratio:5/4;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;width:100%;margin:0;padding:0;display:block;position:relative;overflow:hidden}.thumb img{object-fit:cover;width:100%;height:100%;display:block}.thumb:after{content:\"\";border:var(--arq-border-default) solid var(--arq-color-surface-transparent);border-radius:inherit;pointer-events:none;position:absolute;inset:0}.thumb:hover:after{border-color:var(--arq-color-border-hover)}.thumb[aria-current=true]:after{border-color:var(--arq-color-border-strong)}.thumb:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.thumb:focus:not(:focus-visible){outline:none}";
+//#endregion
+//#region src/main.js
+(class extends l {
+	static tag = "arq-gallery-thumb";
+	static styles = A;
+	static properties = {
+		selected: { type: Boolean },
+		src: { type: String },
+		alt: { type: String }
+	};
+	static template = "<button type=\"button\" class=\"thumb\"><img alt=\"\" loading=\"lazy\" hidden></button>";
+	#e = null;
+	setup() {
+		this.#e = this.shadowRoot.querySelector(".thumb");
+		let e = this.shadowRoot.querySelector("img");
+		e.addEventListener("error", () => e.hidden = !0), e.addEventListener("load", () => e.hidden = !1), setTimeout(() => {
+			this.alt || console.warn("[arq] <arq-gallery-thumb> sin alt: describí la imagen (p. ej. alt=\"Kanu Jardín, vista frontal\").");
+		});
+	}
+	focus(e) {
+		this.#e ? this.#e.focus(e) : super.focus(e);
+	}
+	update(e) {
+		let t = this.#e;
+		this.selected ? t.setAttribute("aria-current", "true") : t.removeAttribute("aria-current");
+		let n = this.shadowRoot.querySelector("img");
+		e.has("src") && (this.src ? n.src = this.src : (n.removeAttribute("src"), n.hidden = !0)), this.alt ? t.setAttribute("aria-label", this.alt) : t.removeAttribute("aria-label");
 	}
 }).define(), window.Arq || (window.Arq = Object.freeze({ version: e }));
 //#endregion
