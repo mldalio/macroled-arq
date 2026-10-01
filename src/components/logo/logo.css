@@ -1,0 +1,42 @@
+/* logo · Figma 751:4307. Solo tokens semánticos, salvo los anchos del logo.
+   Size=Default es la base (también para un size inválido). */
+
+:host {
+  display: inline-flex;
+  flex: none;
+  vertical-align: middle;
+  color: var(--arq-color-text-primary);
+}
+
+.link {
+  display: inline-flex;
+  color: inherit;
+}
+
+/* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí, no hay token de offset) */
+.link:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.link:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Excepción a "sin px": son medidas del archivo del logo, no del sistema
+   (docs/decisiones.md). Ancho por Size; el alto sale del viewBox 181 × 16:
+   Default 181 × 16 · Small 158 × 13,97 · Compact 117 × 10,34. */
+.mark {
+  display: block;
+  width: 181px;
+  height: auto;
+  aspect-ratio: 181 / 16;
+}
+
+:host([size='small']) .mark {
+  width: 158px;
+}
+
+:host([size='compact']) .mark {
+  width: 117px;
+}

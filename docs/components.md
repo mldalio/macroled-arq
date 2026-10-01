@@ -51,7 +51,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [input](#input) | `<arq-input>` | Pendiente |
 | [line-card](#line-card) | `<arq-line-card>` | Pendiente |
 | [link-list](#link-list) | `<arq-link-list>` | Pendiente |
-| [logo](#logo) | `<arq-logo>` | Pendiente |
+| [logo](#logo) | `<arq-logo>` | En código ([README](../src/components/logo/README.md)) |
 | [mega-link](#mega-link) | `<arq-mega-link>` | Pendiente |
 | [mega-menu](#mega-menu) | `<arq-mega-menu>` | Pendiente |
 | [nav-link](#nav-link) | `<arq-nav-link>` | Pendiente |

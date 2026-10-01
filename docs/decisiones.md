@@ -131,3 +131,9 @@ setup() {
 - Cuando se construya `form-contacto`, el envío se va a hacer con un atributo **`submit` sin valor**: `<arq-button submit>Enviar</arq-button>`.
 - Implementación prevista: `static formAssociated = true` y `attachInternals()` (`ElementInternals`); al hacer clic, `this.internals.form?.requestSubmit()`. Así el formulario corre su validación y dispara `submit` como con un botón nativo.
 - Hasta entonces el `<button>` interno es siempre `type="button"`.
+
+## 2026-10-01 · logo
+
+- **px como excepción:** los anchos del logo (181 · 158 · 117 px, alto por el viewBox 181 × 16) son medidas del archivo del logo, no del sistema. Van en px dentro de `src/components/logo/logo.css` y no se crean tokens. Es la única excepción a "sin px" en componentes junto con el `outline-offset: 2px` del foco (DESIGN.md §7).
+- **Un solo SVG:** Small y Compact son el mismo dibujo que Default escalado. Los trazos se exportaron de Figma (Size=Default) y quedaron en `logo.js` con `fill="currentColor"`.
+- **Link incluido:** `<arq-logo>` es siempre un link (`href="/arq"` por defecto) con `aria-label="Macroled Arq, inicio"`, según la ficha `doc/logo`.
