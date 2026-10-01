@@ -348,20 +348,19 @@ var x = ":host{min-width:0;display:inline-flex}.item{align-items:center;gap:var(
 		current: { type: Boolean }
 	};
 	static template = "<span class=\"item role-label\"><span class=\"label\"><slot></slot></span><span class=\"separator\" aria-hidden=\"true\" hidden>/</span></span>";
-	#e = this.attachInternals();
 	setup() {
-		this.#e.role = "listitem", this.shadowRoot.querySelector("slot").addEventListener("slotchange", () => this.#n());
+		this.hasAttribute("role") || this.setAttribute("role", "listitem"), this.shadowRoot.querySelector("slot").addEventListener("slotchange", () => this.#t());
 	}
 	update(e) {
-		(e.has("href") || e.has("current")) && this.#t();
+		(e.has("href") || e.has("current")) && this.#e();
 		let t = this.shadowRoot.querySelector(".separator");
 		t.hidden = !this.showSeparator || this.current;
 	}
-	#t() {
+	#e() {
 		let e = this.shadowRoot.querySelector(".label"), t = this.href !== null && !this.current, n = document.createElement(t ? "a" : "span");
-		n.className = "label", t && n.setAttribute("href", this.href), this.current && n.setAttribute("aria-current", "page"), n.append(...e.childNodes), e.replaceWith(n), this.#n();
+		n.className = "label", t && n.setAttribute("href", this.href), this.current && n.setAttribute("aria-current", "page"), n.append(...e.childNodes), e.replaceWith(n), this.#t();
 	}
-	#n() {
+	#t() {
 		let e = this.shadowRoot.querySelector(".label"), t = this.textContent.trim();
 		e.localName === "a" && t ? e.setAttribute("aria-label", t) : e.removeAttribute("aria-label");
 	}
@@ -372,7 +371,7 @@ var S = ":host{min-width:0;display:block}.list{align-items:center;gap:var(--arq-
 (class extends l {
 	static tag = "arq-breadcrumb";
 	static styles = S;
-	static template = `<nav aria-label="${C}"><ol class="list"><slot></slot></ol></nav>`;
+	static template = `<nav aria-label="${C}"><div class="list" role="list"><slot></slot></div></nav>`;
 }).define();
 //#endregion
 //#region src/components/footer-link/footer-link.css?inline

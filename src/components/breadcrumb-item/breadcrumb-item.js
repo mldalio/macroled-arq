@@ -22,11 +22,11 @@ class ArqBreadcrumbItem extends ArqElement {
   };
   static template = `<span class="item role-label"><span class="label"><slot></slot></span><span class="separator" aria-hidden="true" hidden>/</span></span>`;
 
-  #internals = this.attachInternals();
-
   setup() {
-    // Es un <li> del <ol> de <arq-breadcrumb>.
-    this.#internals.role = 'listitem';
+    // Ítem de la lista de <arq-breadcrumb>. Va como atributo (no por
+    // ElementInternals) para que lo reconozcan también los chequeos de
+    // accesibilidad como axe.
+    if (!this.hasAttribute('role')) this.setAttribute('role', 'listitem');
     this.shadowRoot.querySelector('slot').addEventListener('slotchange', () => this.#syncName());
   }
 

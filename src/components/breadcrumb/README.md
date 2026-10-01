@@ -19,7 +19,7 @@ Migas de pan: `Colecciones / Kanu / Kanu Jardín`. Contiene [`<arq-breadcrumb-it
 | Levels | — | — | No es una prop: la cantidad de niveles es la cantidad de ítems (3 · 2 en Figma, libre en código) |
 
 - El último ítem va con `current` (sin separador); los demás con `show-separator`.
-- **Accesibilidad:** `<nav aria-label="Migas de pan">` con un `<ol>`; cada ítem es un `listitem`.
+- **Accesibilidad:** `<nav aria-label="Migas de pan">` con una lista (`role="list"`); cada ítem es un `listitem`. No es un `<ol>` porque un `<ol>` solo admite `<li>` como hijos directos (axe lo marca como error).
 
 ## Tokens
 

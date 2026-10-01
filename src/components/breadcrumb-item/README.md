@@ -19,7 +19,7 @@ Un nivel del breadcrumb: label (link) y separador "/" opcional. No se usa suelto
 | — | `href` | `href` | destino del link. Sin `href` (o con `current`) el label es texto |
 
 - State=Hover es `:hover`, solo en dispositivos con mouse (`@media (hover: hover)`): el label pasa a `color/text/primary`.
-- Es un ítem de lista (`role="listitem"` por `ElementInternals`) del `<ol>` de `<arq-breadcrumb>`. El "/" queda oculto para lectores de pantalla.
+- Es un ítem de lista (`role="listitem"`, como atributo para que axe lo reconozca) de `<arq-breadcrumb>`. El "/" queda oculto para lectores de pantalla.
 - Foco del link con el anillo de DESIGN.md §7.
 
 ## Tokens
