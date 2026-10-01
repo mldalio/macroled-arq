@@ -68,6 +68,62 @@
       </section>
 
       <!-- Componentes: una sección por componente con todas sus variantes y estados -->
+
+      <section class="demo-section" aria-labelledby="demo-button">
+        <h2 id="demo-button" class="demo-heading role-label">button · &lt;arq-button&gt;</h2>
+        <p class="demo-note role-body-sm">Hover, Pressed y Focus se prueban con el mouse y con Tab. Figma 907:2375.</p>
+
+        <h3 class="demo-subheading role-body-sm">Type=Filled</h3>
+        <div class="demo-row">
+          <arq-button show-icon>Información técnica</arq-button>
+          <arq-button>Comparar</arq-button>
+          <arq-button show-leading-icon>Volver</arq-button>
+          <arq-button show-count count="3">Filtrar</arq-button>
+          <arq-button show-icon disabled>Disabled</arq-button>
+          <arq-button loading>Enviar</arq-button>
+        </div>
+
+        <h3 class="demo-subheading role-body-sm">Type=Outline</h3>
+        <div class="demo-row">
+          <arq-button type="outline" show-icon>Información técnica</arq-button>
+          <arq-button type="outline" show-icon icon="filter">Filtrar</arq-button>
+          <arq-button type="outline" show-count count="12">Filtrar</arq-button>
+          <arq-button type="outline" show-leading-icon>Volver</arq-button>
+          <arq-button type="outline" show-icon disabled>Disabled</arq-button>
+        </div>
+
+        <h3 class="demo-subheading role-body-sm">Type=Underline</h3>
+        <div class="demo-row">
+          <arq-button type="underline" show-underline show-icon>Información técnica</arq-button>
+          <arq-button type="underline" show-underline>Borrar todo</arq-button>
+          <arq-button type="underline" show-leading-icon href="#demo-button">Volver a productos (sin subrayado, link)</arq-button>
+          <arq-button type="underline" show-underline show-count count="2">Comparar</arq-button>
+          <arq-button type="underline" show-underline show-icon disabled>Disabled</arq-button>
+        </div>
+
+        <h3 class="demo-subheading role-body-sm">Links (href) y casos límite</h3>
+        <div class="demo-row">
+          <arq-button href="#demo-button" show-icon icon="arrow-right">Ver colección</arq-button>
+          <arq-button type="outline" href="https://www.macroled.com.ar" target="_blank" show-icon>Abre en otra pestaña</arq-button>
+          <arq-button href="#demo-button" disabled>Link deshabilitado</arq-button>        </div>
+        <div class="demo-narrow">
+          <arq-button show-icon>Un label largo que no entra en el ancho de la columna y se corta con puntos suspensivos</arq-button>
+          <arq-button type="underline" show-underline show-icon>Un label largo que no entra en el ancho de la columna y se corta</arq-button>
+        </div>
+
+        <h3 class="demo-subheading role-body-sm">Contenedor en modo Dark (data-arq-theme="dark")</h3>
+        <div class="demo-row demo-dark" data-arq-theme="dark">
+          <arq-button show-icon>Información técnica</arq-button>
+          <arq-button type="outline" show-icon>Información técnica</arq-button>
+          <arq-button type="underline" show-underline show-icon>Información técnica</arq-button>
+          <arq-button show-count count="3">Filtrar</arq-button>
+          <arq-button type="outline" show-count count="3">Filtrar</arq-button>
+          <arq-button disabled>Disabled</arq-button>
+          <arq-button loading>Enviar</arq-button>
+        </div>
+
+        <p class="demo-note role-body-sm" aria-live="polite" data-demo-button-log>Clic en un botón: todavía ninguno.</p>
+      </section>
     </main>
   </body>
 </html>

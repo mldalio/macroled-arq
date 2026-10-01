@@ -1,0 +1,192 @@
+/* button · Figma 907:2375. Solo tokens semánticos.
+   Filled es la base (también para un type inválido); Outline y Underline la pisan.
+   .inactive = disabled o loading (lo pone el JS en el <button> o <a> interno). */
+
+:host {
+  display: inline-flex;
+  max-width: 100%;
+  /* En una fila flex o una columna angosta puede achicarse: el label se corta */
+  min-width: 0;
+  vertical-align: middle;
+}
+
+.control {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--arq-space-gap-sm);
+  max-width: 100%;
+  margin: 0;
+  padding: var(--arq-space-gap-sm) var(--arq-space-padding-md);
+  border: 0;
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-action-primary);
+  color: var(--arq-color-action-on-primary);
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+}
+
+.text {
+  position: relative;
+  display: flex;
+  min-width: 0;
+}
+
+.label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* El ícono usa el color del texto (currentColor) */
+.leading,
+.trailing {
+  display: inline-flex;
+  flex: none;
+}
+
+.icon {
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+}
+
+/* Foco: outline, no cambia el tamaño. Separado un border/focus del botón para
+   que se vea también sobre Filled y Outline (en Light el color de foco es el
+   mismo que el fondo de Filled y el borde de Outline). */
+.control:focus-visible {
+  outline: var(--arq-border-focus) solid var(--arq-color-border-focus);
+  outline-offset: var(--arq-border-focus);
+}
+
+.control:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.control.inactive {
+  cursor: default;
+}
+
+/* ── Filled ───────────────────────────────────────────────────── */
+
+.control:not(.inactive):hover {
+  background: var(--arq-color-action-primary-hover);
+}
+
+.control:not(.inactive):active {
+  background: var(--arq-color-surface-inverse-pressed);
+}
+
+.control.inactive {
+  background: var(--arq-color-surface-subtle);
+  color: var(--arq-color-text-disabled);
+}
+
+/* State=Loading: fondo de hover y texto sobre primary */
+.control[aria-busy='true'] {
+  background: var(--arq-color-action-primary-hover);
+  color: var(--arq-color-action-on-primary);
+}
+
+/* count-badge Tone=Inverse dentro de Filled.
+   min-width: Figma pide mín. 20 sin token; es el alto del badge
+   (caption-leading + padding vertical), así queda cuadrado con un dígito. */
+.count {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  min-width: calc(var(--arq-type-caption-leading) + var(--arq-space-padding-2xs) * 2);
+  padding: var(--arq-space-padding-2xs) var(--arq-space-padding-xs);
+  background: var(--arq-color-action-on-primary);
+  color: var(--arq-color-action-primary);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ── Outline ──────────────────────────────────────────────────── */
+
+/* El borde no suma al alto (36, como Filled): se descuenta del padding */
+:host([type='outline']) .control {
+  padding: calc(var(--arq-space-gap-sm) - var(--arq-border-default))
+    calc(var(--arq-space-padding-md) - var(--arq-border-default));
+  border: var(--arq-border-default) solid var(--arq-color-border-strong);
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-action-primary);
+}
+
+:host([type='outline']) .control:not(.inactive):hover {
+  background: var(--arq-color-surface-hover);
+}
+
+:host([type='outline']) .control:not(.inactive):active {
+  background: var(--arq-color-surface-selected);
+}
+
+:host([type='outline']) .control.inactive {
+  border-color: var(--arq-color-border-disabled);
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-disabled);
+}
+
+/* count-badge Tone=Primary en Outline y Underline */
+:host([type='outline']) .count,
+:host([type='underline']) .count {
+  background: var(--arq-color-action-primary);
+  color: var(--arq-color-action-on-primary);
+}
+
+/* ── Underline ────────────────────────────────────────────────── */
+
+:host([type='underline']) .control {
+  padding: var(--arq-space-gap-xs) 0;
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-action-primary);
+}
+
+:host([type='underline']) .control:focus-visible {
+  outline-offset: 0;
+}
+
+/* Subrayado: en Figma, una línea 3 px debajo de la caja del texto.
+   3 = space/padding/2xs (no hay un token de offset de subrayado). */
+:host([type='underline']) .text::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: calc(var(--arq-space-padding-2xs) * -1);
+  height: var(--arq-border-default);
+  background: var(--arq-color-border-strong);
+  visibility: hidden;
+}
+
+/* Show underline=true: siempre. Show underline=false: solo en hover.
+   TODO: Figma (State=Hover) usa border/focus = 1 px y DESIGN.md §8 dice
+   "subrayado 2 px en hover". Se sigue Figma hasta que se defina. */
+:host([type='underline'][show-underline]) .text::after,
+:host([type='underline']) .control:not(.inactive):hover .text::after {
+  visibility: visible;
+}
+
+:host([type='underline']) .control:not(.inactive):hover .text::after {
+  height: var(--arq-border-focus);
+}
+
+:host([type='underline']) .control:not(.inactive):active {
+  color: var(--arq-color-text-tertiary);
+}
+
+:host([type='underline']) .control:not(.inactive):active .text::after {
+  background: var(--arq-color-text-tertiary);
+}
+
+:host([type='underline']) .control.inactive {
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-disabled);
+}
+
+:host([type='underline']) .control.inactive .text::after {
+  background: var(--arq-color-border-disabled);
+}

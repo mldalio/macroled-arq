@@ -10,7 +10,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [accordion-item](#accordion-item) | `<arq-accordion-item>` | Pendiente |
 | [breadcrumb](#breadcrumb) | `<arq-breadcrumb>` | Pendiente |
 | [breadcrumb-item](#breadcrumb-item) | `<arq-breadcrumb-item>` | Pendiente |
-| [button](#button) | `<arq-button>` | Pendiente |
+| [button](#button) | `<arq-button>` | En código ([README](../src/components/button/README.md)) |
 | [carousel-controls](#carousel-controls) | `<arq-carousel-controls>` | Pendiente |
 | [catalog-nav](#catalog-nav) | `<arq-catalog-nav>` | Pendiente |
 | [catalog-nav-group](#catalog-nav-group) | `<arq-catalog-nav-group>` | Pendiente |

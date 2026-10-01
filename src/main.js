@@ -6,6 +6,7 @@ import { version } from '../package.json';
 
 // Registro de componentes (uno por línea, cuando existan):
 // import './components/<nombre>/<nombre>.js';
+import './components/button/button.js';
 
 if (!window.Arq) {
   window.Arq = Object.freeze({ version });

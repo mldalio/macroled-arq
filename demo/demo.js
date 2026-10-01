@@ -124,3 +124,12 @@ themeInput.checked = saved === 'dark';
 setTheme(themeInput.checked);
 
 matchMedia('(max-width: 767px)').addEventListener('change', refreshValues);
+
+// ── button: clics ──────────────────────────────────────────────────
+const buttonLog = document.querySelector('[data-demo-button-log]');
+document.addEventListener('click', (event) => {
+  const button = event.target.closest?.('arq-button');
+  if (!button) return;
+  if (button.getAttribute('href')?.startsWith('#')) event.preventDefault();
+  buttonLog.textContent = `Clic → «${button.textContent.trim()}»`;
+});

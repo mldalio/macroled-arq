@@ -115,3 +115,10 @@ setup() {
 ### Variables de entorno
 
 - `src/config.js` lee `import.meta.env.VITE_*`. Vite reemplaza los valores al compilar y quedan dentro de `dist/arq.js`: solo se usa la search-only key de Typesense.
+
+## 2026-10-01 · button
+
+- **`<button>` o `<a>`:** `<arq-button>` sin `href` dibuja un `<button type="button">`; con `href`, un `<a>` (ficha `doc/button`: "`<a>` con la misma clase para navegación"). Un link deshabilitado pierde el `href` y lleva `aria-disabled="true"`.
+- **Foco visible en Filled y Outline:** en Light, el borde de foco de Figma es del mismo color que el fondo de Filled y que el borde de Outline, y no se ve. En código el `outline` va separado del botón por `border/focus` (`outline-offset`). No cambia el tamaño. Pendiente de validar con diseño.
+- **Alto de Outline:** el borde se descuenta del padding para que mida 36 como Filled.
+- **Booleanos con `true` por defecto en Figma** (Show icon, Show underline): en código son atributos de presencia, así que hay que escribirlos.
