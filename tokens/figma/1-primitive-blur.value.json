@@ -1,0 +1,22 @@
+{
+  "$extensions": {
+    "com.figma": {
+      "collection": "1 · Primitive · Blur",
+      "mode": "Value"
+    }
+  },
+  "blur": {
+    "12": {
+      "$type": "number",
+      "$value": 12,
+      "$extensions": {
+        "com.figma": {
+          "scopes": [],
+          "codeSyntax": {
+            "WEB": "var(--arq-blur-12)"
+          }
+        }
+      }
+    }
+  }
+}

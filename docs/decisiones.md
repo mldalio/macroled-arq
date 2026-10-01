@@ -223,3 +223,9 @@ setup() {
 - **Información:** Contacto, Descargas y Glosario (la lista de Mobile del set; Desktop no tiene Descargas). Falta igualar el Desktop en Figma.
 - **Legal en un solo elemento:** grilla con el legal debajo de la marca en Desktop (segunda fila en 1fr para que el alto de las columnas no lo empuje) y al final en Mobile.
 - **footer-link:** pasa a `role="listitem"` (como breadcrumb-item), suma la prop `label` (aria-label, para "Macroled Arq en Instagram") y su label se parte en líneas en vez de cortarse con "…", como en el set del footer en Mobile.
+
+## 2026-10-01 · Tokens de navbar Transparent
+
+- **Nuevos:** `blur/12` (colección nueva `1 · Primitive · Blur`, una por propiedad como Radius y Border), `blur/backdrop` (2 · Semantic · Dimension, igual en Desktop y Mobile) y `color/overlay/translucent` (2 · Semantic · Color, `alpha/ink-10` en Light y Dark). Ligados en las cinco variantes Theme=Transparent de navbar: fondo translúcido + background blur.
+- `blur/12` no tiene scope en Figma (como `alpha/*`): en el selector solo aparece el semántico.
+- **Blur de Figma ≠ CSS:** el radio del background blur de Figma no equivale 1:1 a `backdrop-filter: blur()`; un 12 de Figma se parece más a `blur(6px)`. Se resuelve al construir el navbar, comparando contra Figma (`TODO` navbar).

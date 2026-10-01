@@ -773,5 +773,22 @@
         }
       }
     }
+  },
+  "blur": {
+    "backdrop": {
+      "$type": "number",
+      "$value": "{blur.12}",
+      "$description": "Desenfoque del fondo detrás de una superficie translúcida (background blur / backdrop-filter). Va junto con color/overlay/translucent.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "EFFECT_FLOAT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-blur-backdrop)"
+          }
+        }
+      }
+    }
   }
 }
