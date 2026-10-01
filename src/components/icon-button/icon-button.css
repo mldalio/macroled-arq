@@ -1,0 +1,112 @@
+/* icon-button · Figma 752:2882. Solo tokens semánticos.
+   Size=Default y Background=None son la base (también para valores inválidos). */
+
+:host {
+  display: inline-flex;
+  flex: none;
+  vertical-align: middle;
+}
+
+/* Size=Default: 24 × 24 = ícono icon/md (16) + space/padding/xs (4) por lado.
+   Figma lo dibuja como caja fija de 24 sin padding; no hay token para 24. */
+.control {
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: var(--arq-space-padding-xs);
+  border: 0;
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-icon-primary);
+  cursor: pointer;
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+}
+
+.glyph {
+  display: inline-flex;
+}
+
+/* El ícono usa el color del botón (currentColor) */
+.icon {
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+}
+
+/* Size=Large: 48 × 48 = space/padding/sm-md (12) por lado + icon/xl (24) */
+:host([size='large']) .control {
+  padding: var(--arq-space-padding-sm-md);
+}
+
+:host([size='large']) .icon {
+  width: var(--arq-icon-xl);
+  height: var(--arq-icon-xl);
+}
+
+/* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí, no hay token de offset) */
+.control:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.control:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Nombre accesible: solo para lectores de pantalla.
+   border/default (1 px) es el tamaño mínimo disponible. */
+.visually-hidden {
+  position: absolute;
+  width: var(--arq-border-default);
+  height: var(--arq-border-default);
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ── Background=None ──────────────────────────────────────────── */
+
+.control:enabled:hover {
+  background: var(--arq-color-surface-hover);
+}
+
+.control:enabled:active {
+  background: var(--arq-color-surface-selected);
+}
+
+/* ── Background=Surface (sobre otra superficie: faint, subtle…) ── */
+
+:host([background='surface']) .control {
+  background: var(--arq-color-surface-default);
+}
+
+:host([background='surface']) .control:enabled:hover {
+  background: var(--arq-color-surface-subtle);
+}
+
+:host([background='surface']) .control:enabled:active {
+  background: var(--arq-color-surface-selected);
+}
+
+/* ── Background=Subtle (destacar entre mucha información) ──────── */
+
+:host([background='subtle']) .control {
+  background: var(--arq-color-surface-subtle);
+}
+
+:host([background='subtle']) .control:enabled:hover {
+  background: var(--arq-color-surface-selected);
+}
+
+:host([background='subtle']) .control:enabled:active {
+  background: var(--arq-color-surface-strong);
+}
+
+/* ── State=Disabled: solo cambia el ícono; el fondo queda como Default ── */
+
+.control:disabled {
+  color: var(--arq-color-icon-disabled);
+  cursor: default;
+}

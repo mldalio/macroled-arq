@@ -228,6 +228,65 @@
           <arq-logo size="compact" href="#demo-logo"></arq-logo>
         </div>
       </section>
+
+      <section class="demo-section" aria-labelledby="demo-icon-button">
+        <h2 id="demo-icon-button" class="demo-heading role-label">icon-button · &lt;arq-icon-button&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 752:2882. Hover, Pressed y Focus se prueban con el mouse y con Tab. El nombre accesible va por slot, oculto.</p>
+
+        <h3 class="demo-subheading role-body-sm">Size=Default · Background=None (sobre surface/default) · el último, Disabled</h3>
+        <div class="demo-row">
+          <arq-icon-button icon="search">Buscar</arq-icon-button>
+          <arq-icon-button icon="plus">Abrir</arq-icon-button>
+          <arq-icon-button icon="download">Descargar</arq-icon-button>
+          <arq-icon-button icon="close" disabled>Cerrar (deshabilitado)</arq-icon-button>
+        </div>
+        <h3 class="demo-subheading role-body-sm">Size=Default · Background=Surface (sobre surface/subtle) · el último, Disabled</h3>
+        <div class="demo-row demo-on-subtle">
+          <arq-icon-button icon="search" background="surface">Buscar</arq-icon-button>
+          <arq-icon-button icon="plus" background="surface">Abrir</arq-icon-button>
+          <arq-icon-button icon="download" background="surface">Descargar</arq-icon-button>
+          <arq-icon-button icon="close" background="surface" disabled>Cerrar (deshabilitado)</arq-icon-button>
+        </div>
+        <h3 class="demo-subheading role-body-sm">Size=Default · Background=Subtle (sobre surface/default) · el último, Disabled</h3>
+        <div class="demo-row">
+          <arq-icon-button icon="search" background="subtle">Buscar</arq-icon-button>
+          <arq-icon-button icon="plus" background="subtle">Abrir</arq-icon-button>
+          <arq-icon-button icon="download" background="subtle">Descargar</arq-icon-button>
+          <arq-icon-button icon="close" background="subtle" disabled>Cerrar (deshabilitado)</arq-icon-button>
+        </div>
+        <h3 class="demo-subheading role-body-sm">Size=Large · Background=None (sobre surface/default) · el último, Disabled</h3>
+        <div class="demo-row">
+          <arq-icon-button icon="search" size="large">Buscar</arq-icon-button>
+          <arq-icon-button icon="plus" size="large">Abrir</arq-icon-button>
+          <arq-icon-button icon="download" size="large">Descargar</arq-icon-button>
+          <arq-icon-button icon="close" size="large" disabled>Cerrar (deshabilitado)</arq-icon-button>
+        </div>
+        <h3 class="demo-subheading role-body-sm">Size=Large · Background=Surface (sobre surface/subtle) · el último, Disabled</h3>
+        <div class="demo-row demo-on-subtle">
+          <arq-icon-button icon="search" size="large" background="surface">Buscar</arq-icon-button>
+          <arq-icon-button icon="plus" size="large" background="surface">Abrir</arq-icon-button>
+          <arq-icon-button icon="download" size="large" background="surface">Descargar</arq-icon-button>
+          <arq-icon-button icon="close" size="large" background="surface" disabled>Cerrar (deshabilitado)</arq-icon-button>
+        </div>
+        <h3 class="demo-subheading role-body-sm">Size=Large · Background=Subtle (sobre surface/default) · el último, Disabled</h3>
+        <div class="demo-row">
+          <arq-icon-button icon="search" size="large" background="subtle">Buscar</arq-icon-button>
+          <arq-icon-button icon="plus" size="large" background="subtle">Abrir</arq-icon-button>
+          <arq-icon-button icon="download" size="large" background="subtle">Descargar</arq-icon-button>
+          <arq-icon-button icon="close" size="large" background="subtle" disabled>Cerrar (deshabilitado)</arq-icon-button>
+        </div>
+
+        <h3 class="demo-subheading role-body-sm">Contenedor en modo Dark (data-arq-theme="dark"): Default y Large × None, Surface, Subtle, y Disabled</h3>
+        <div class="demo-row demo-dark" data-arq-theme="dark">
+          <arq-icon-button icon="search">Buscar (default, none)</arq-icon-button>
+          <arq-icon-button icon="search" background="surface">Buscar (default, surface)</arq-icon-button>
+          <arq-icon-button icon="search" background="subtle">Buscar (default, subtle)</arq-icon-button>
+          <arq-icon-button icon="search" size="large">Buscar (large, none)</arq-icon-button>
+          <arq-icon-button icon="search" size="large" background="surface">Buscar (large, surface)</arq-icon-button>
+          <arq-icon-button icon="search" size="large" background="subtle">Buscar (large, subtle)</arq-icon-button>
+          <arq-icon-button icon="close" disabled>Cerrar (deshabilitado)</arq-icon-button>
+        </div>
+      </section>
     </main>
   </body>
 </html>

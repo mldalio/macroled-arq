@@ -47,7 +47,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [form-section-header](#form-section-header) | `<arq-form-section-header>` | Pendiente |
 | [gallery-thumb](#gallery-thumb) | `<arq-gallery-thumb>` | Pendiente |
 | [hero](#hero) | `<arq-hero>` | Pendiente |
-| [icon-button](#icon-button) | `<arq-icon-button>` | Pendiente |
+| [icon-button](#icon-button) | `<arq-icon-button>` | En código ([README](../src/components/icon-button/README.md)) |
 | [input](#input) | `<arq-input>` | Pendiente |
 | [line-card](#line-card) | `<arq-line-card>` | Pendiente |
 | [link-list](#link-list) | `<arq-link-list>` | Pendiente |

@@ -172,3 +172,9 @@
 .demo-tall > span {
   align-self: center;
 }
+
+/* Fondo color/surface/subtle para probar icon-button Background=Surface */
+.demo-on-subtle {
+  padding: var(--arq-space-padding-md);
+  background: var(--arq-color-surface-subtle);
+}
