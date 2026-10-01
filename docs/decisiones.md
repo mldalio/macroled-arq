@@ -246,3 +246,15 @@ setup() {
   - Sección de página (explora-coleccion de la ficha): en la sección, en el DOM de la página.
 - **hero:** solo el CTA va en Dark (button Outline claro); los textos siguen en `color/text/inverse`, como Figma. El CTA llega por slot (`slot="action"`, editable en Webflow) y el hero envuelve ese slot en un contenedor con `data-arq-theme="dark"`.
 - **explora-coleccion es Dark local, no Iluminar:** en las cuatro pantallas de la ficha (con y sin Iluminar) está en Dark. Iluminar en la ficha cambia navbar, hero y la foto.
+
+## 2026-10-01 · Páginas en Webflow
+
+- **Todo el contenido de Arq se carga con Code Embed.** No se arma nada en el Designer de Webflow.
+- **Páginas estáticas (Home, Contacto, Comparativa):** un Code Embed con el HTML de los componentes.
+- **Ficha de producto:** template de la colección del CMS (slug propio) con un Code Embed que inserta los campos mínimos con campos dinámicos del CMS: nombre como `<h1>`, descripción corta, SKU e imagen principal. El componente busca el resto en Typesense por SKU.
+- **Listados (Productos y Colecciones): PENDIENTE.** No está definido si salen de una Collection List, de Typesense o de los dos. No se resuelve hasta que el equipo lo decida.
+- **`src/pages/`** guarda un archivo por página con el HTML exacto de su embed. Es la fuente: se edita en el repo y se pega en Webflow; no se edita el embed directo en Webflow.
+- **Límite:** cada Code Embed admite hasta 50.000 caracteres (Webflow, "Increased custom code character limit"; antes era 10.000). Es un tope por elemento y no se puede subir.
+  - Una página de Arq entra holgada: el embed lleva solo el HTML de los componentes y el texto indexable; estilos y lógica vienen de `dist/arq.js` y `dist/arq.css` (jsDelivr), y los datos de Typesense.
+  - Si una página se acerca al límite, se parte **por sección**: un Code Embed por bloque de página (hero, categorías, FAQ…), en orden. Cada bloque es un conjunto de componentes que no depende del HTML de otro embed, así que se puede partir en cualquier límite entre secciones. En `src/pages/` la página sigue siendo un archivo, con un comentario `<!-- embed N -->` en cada corte.
+  - Nunca se parte un componente entre dos embeds: el HTML de un elemento tiene que abrir y cerrar en el mismo embed.
