@@ -40,5 +40,5 @@ Interruptor con texto para opciones binarias que se aplican al instante: "Ilumin
 
 ## Pendientes
 
-- `TODO` Sin transición del círculo: no hay tokens de movimiento (la ficha pide "transición corta" y respetar `prefers-reduced-motion`).
+- **Movimiento:** el círculo se corre con `transform` y la pista cambia de color en `motion/duration/fast` con `motion/easing/standard`. Con `prefers-reduced-motion: reduce` es instantáneo.
 - `TODO` (catalog-toolbar / ficha) Guardar Iluminar en `localStorage` (`arq:<clave>`) o no: no está definido.
