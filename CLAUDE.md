@@ -18,3 +18,4 @@ Las reglas del proyecto están en AGENTS.md y el sistema de diseño en DESIGN.md
 - Correr `npm run build` y abrir la demo (`npm run dev`) sin errores en consola.
 - Revisar el componente en Light/Dark y Desktop/Mobile.
 - Si algo quedó con `TODO` (token, estilo o dato faltante), listarlo en el mensaje final.
+- Al terminar, si npm run build pasa y la demo no tiene errores en consola, mostrame el resumen y preguntame si commiteo, mergeo a main y subo. No commitees ni subas sin que te diga que sí. Nunca crees ni subas tags sin que te lo pida.

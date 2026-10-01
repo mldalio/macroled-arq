@@ -228,7 +228,7 @@ setup() {
 
 - **Nuevos:** `blur/12` (colección nueva `1 · Primitive · Blur`, una por propiedad como Radius y Border), `blur/backdrop` (2 · Semantic · Dimension, igual en Desktop y Mobile) y `color/overlay/translucent` (2 · Semantic · Color, `alpha/ink-10` en Light y Dark). Ligados en las cinco variantes Theme=Transparent de navbar: fondo translúcido + background blur.
 - `blur/12` no tiene scope en Figma (como `alpha/*`): en el selector solo aparece el semántico.
-- **Blur de Figma ≠ CSS:** el radio del background blur de Figma no equivale 1:1 a `backdrop-filter: blur()`; un 12 de Figma se parece más a `blur(6px)`. Se resuelve al construir el navbar, comparando contra Figma (`TODO` navbar).
+- **Blur de Figma ≠ CSS:** el radio del background blur de Figma equivale a la mitad en CSS. En código se escribe `backdrop-filter: blur(calc(var(--arq-blur-backdrop) / 2))`: el token conserva el valor de Figma (12) y la conversión queda en el CSS.
 
 ## 2026-10-01 · Dark dentro del Shadow DOM
 
