@@ -134,3 +134,12 @@ document.addEventListener('click', (event) => {
   if (button.getAttribute('href')?.startsWith('#')) event.preventDefault();
   buttonLog.textContent = `Clic → «${button.textContent.trim()}»`;
 });
+
+// ── filter-chip: al tocarlo se quita y el foco pasa al siguiente ──
+document.addEventListener('click', (event) => {
+  const chip = event.target.closest?.('[data-demo-chips] arq-filter-chip');
+  if (!chip) return;
+  const next = chip.nextElementSibling ?? chip.previousElementSibling;
+  chip.remove();
+  next?.focus();
+});

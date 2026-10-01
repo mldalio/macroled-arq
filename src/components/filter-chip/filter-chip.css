@@ -1,0 +1,53 @@
+/* filter-chip · Figma 1238:3693. Solo tokens semánticos.
+   Misma base que tag Outline: padding xs/sm, radius/control, role/body-sm. */
+
+:host {
+  display: inline-flex;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.chip {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--arq-space-gap-xs);
+  max-width: 100%;
+  margin: 0;
+  padding: var(--arq-space-padding-xs) var(--arq-space-padding-sm);
+  border: var(--arq-border-default) solid var(--arq-color-border-default);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-primary);
+  cursor: pointer;
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+}
+
+.label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* El ícono usa el color del texto (currentColor) */
+.icon {
+  flex: none;
+  width: var(--arq-icon-sm);
+  height: var(--arq-icon-sm);
+}
+
+/* State=Hover: borde color/text/primary (set de Figma y ficha;
+   la descripción dice color/border/strong) */
+.chip:hover {
+  border-color: var(--arq-color-text-primary);
+}
+
+/* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí, no hay token de offset) */
+.chip:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.chip:focus:not(:focus-visible) {
+  outline: none;
+}

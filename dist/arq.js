@@ -376,8 +376,6 @@ var S = ":host{min-width:0;display:block}.list{align-items:center;gap:var(--arq-
 //#endregion
 //#region src/components/footer-link/footer-link.css?inline
 var w = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{align-items:center;gap:var(--arq-space-gap-sm);max-width:100%;color:var(--arq-color-text-secondary);text-decoration:none;display:inline-flex;position:relative}.label{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.leading{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.link:after{content:\"\";inset-inline:0;height:var(--arq-border-default);background:var(--arq-color-border-strong);visibility:hidden;position:absolute;top:100%}.link[href]:hover{color:var(--arq-color-text-primary)}.link[href]:hover:after{visibility:visible}.link[href]:active{color:var(--arq-color-text-tertiary)}.link[href]:active:after{visibility:hidden}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}";
-//#endregion
-//#region src/main.js
 (class extends l {
 	static tag = "arq-footer-link";
 	static styles = w;
@@ -396,6 +394,24 @@ var w = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{al
 		this.href === null ? t.removeAttribute("href") : t.setAttribute("href", this.href), this.target ? t.setAttribute("target", this.target) : t.removeAttribute("target"), this.target === "_blank" ? t.setAttribute("rel", "noopener") : t.removeAttribute("rel");
 		let n = this.shadowRoot.querySelector(".leading");
 		e.has("icon") && (n.innerHTML = d(this.icon)), n.hidden = !this.showIcon;
+	}
+}).define();
+//#endregion
+//#region src/components/form-message/form-message.css?inline
+var T = ":host{display:block}.message{color:var(--arq-color-text-success);margin:0}:host([tone=error]) .message{color:var(--arq-color-text-error)}";
+//#endregion
+//#region src/main.js
+(class extends l {
+	static tag = "arq-form-message";
+	static styles = T;
+	static properties = { tone: {
+		type: String,
+		values: ["success", "error"],
+		default: "success"
+	} };
+	static template = "<p class=\"message role-body\"><slot></slot></p>";
+	update() {
+		this.setAttribute("role", this.tone === "error" ? "alert" : "status");
 	}
 }).define(), window.Arq || (window.Arq = Object.freeze({ version: e }));
 //#endregion

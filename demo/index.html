@@ -362,6 +362,20 @@
             <arq-footer-link href="https://www.youtube.com/" target="_blank" show-icon icon="youtube">YouTube</arq-footer-link>
         </div>
       </section>
+
+      <section class="demo-section" aria-labelledby="demo-form-message">
+        <h2 id="demo-form-message" class="demo-heading role-label">form-message · &lt;arq-form-message&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1311:4871. Success con role="status", Error con role="alert". Sin ícono.</p>
+        <arq-form-message>Recibimos tu consulta. Te respondemos a la brevedad.</arq-form-message>
+        <arq-form-message tone="error">No pudimos enviar. Probá de nuevo o escribinos a arq@macroled.com.ar.</arq-form-message>
+        <div class="demo-narrow">
+          <arq-form-message tone="error">Texto largo: no pudimos enviar tu consulta porque se cortó la conexión. Probá de nuevo en unos minutos.</arq-form-message>
+        </div>
+        <div class="demo-stack demo-dark" data-arq-theme="dark">
+          <arq-form-message>Recibimos tu consulta. Te respondemos a la brevedad.</arq-form-message>
+          <arq-form-message tone="error">No pudimos enviar. Probá de nuevo.</arq-form-message>
+        </div>
+      </section>
     </main>
   </body>
 </html>

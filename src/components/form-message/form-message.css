@@ -1,0 +1,16 @@
+/* form-message · Figma 1311:4871. Solo tokens semánticos.
+   Tone=Success es la base (también para un tone inválido). */
+
+:host {
+  display: block;
+}
+
+/* En Figma el texto es nowrap; en código se parte en líneas (mensajes largos). */
+.message {
+  margin: 0;
+  color: var(--arq-color-text-success);
+}
+
+:host([tone='error']) .message {
+  color: var(--arq-color-text-error);
+}

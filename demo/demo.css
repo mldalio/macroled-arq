@@ -185,3 +185,19 @@
   justify-items: start;
   gap: var(--arq-space-gap-sm-md);
 }
+
+.demo-fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.demo-fieldset legend {
+  width: 100%;
+  padding: 0;
+}
+
+/* Columna de especificaciones (como una columna de spec-list) */
+.demo-specs {
+  max-width: calc(var(--arq-layout-card-min) * 1.25);
+}
