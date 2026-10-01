@@ -1,5 +1,5 @@
 //#region package.json
-var e = "0.0.0", t, n = /* @__PURE__ */ new Map();
+var e = "0.1.0", t, n = /* @__PURE__ */ new Map();
 function r(e) {
 	let t = new CSSStyleSheet();
 	return t.replaceSync(e), t;
