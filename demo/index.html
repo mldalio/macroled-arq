@@ -636,6 +636,33 @@
           <arq-toggle checked disabled show-label>Iluminar</arq-toggle>
         </div>
       </section>
+
+      <section class="demo-section" aria-labelledby="demo-input">
+        <h2 id="demo-input" class="demo-heading role-label">input · &lt;arq-input&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 930:2364. Text y Textarea × Empty, Filled, Focus (con Tab o clic), Error y Disabled; con helper, sin label visible (email del Home) y texto largo. «Validar» corre la validación nativa del formulario.</p>
+        <form class="demo-form-grid" data-demo-form novalidate>
+          <arq-input name="nombre" placeholder="Tu nombre completo" autocomplete="name" required show-label>Nombre</arq-input>
+          <arq-input name="empresa" value="Estudio Lorem Ipsum" show-label>Empresa (Filled)</arq-input>
+          <arq-input name="email" input-type="email" placeholder="nombre@empresa.com" autocomplete="email" show-label show-helper>Email<span slot="helper">Te respondemos en 48 h</span></arq-input>
+          <arq-input name="telefono" input-type="tel" value="nombre@empresa" error="Revisá el formato: solo números, con código de área" show-label show-helper>Teléfono (Error)<span slot="helper">Con código de área</span></arq-input>
+          <arq-input name="cuit" value="30-12345678-9" disabled show-label show-helper>CUIT (Disabled)<span slot="helper">No se puede editar</span></arq-input>
+          <arq-input name="newsletter" input-type="email" placeholder="Tu email (sin label visible)">Email para el newsletter</arq-input>
+          <arq-input type="textarea" name="mensaje" placeholder="Contanos más sobre tu consulta o proyecto…" show-label class="demo-span">Mensaje</arq-input>
+          <arq-input type="textarea" name="mensaje-error" error="Contanos un poco más (mínimo 20 caracteres)" show-label class="demo-span">Mensaje (Error)</arq-input>
+          <div class="demo-row demo-span">
+            <arq-button type="outline" data-demo-show>Ver valor</arq-button>
+            <arq-button type="outline" data-demo-validate>Validar</arq-button>
+            <arq-button type="underline" show-underline data-demo-reset>Restablecer</arq-button>
+            <span class="role-body-sm demo-meta" data-demo-output aria-live="polite"></span>
+          </div>
+        </form>
+        <div class="demo-form-grid demo-dark" data-arq-theme="dark">
+          <arq-input placeholder="Tu nombre completo" show-label>Nombre</arq-input>
+          <arq-input value="nombre@empresa" error="Revisá el formato del email" show-label>Email (Error)</arq-input>
+          <arq-input value="30-12345678-9" disabled show-label>CUIT (Disabled)</arq-input>
+          <arq-input input-type="email" placeholder="Tu email">Email para el newsletter</arq-input>
+        </div>
+      </section>
     </main>
   </body>
 </html>

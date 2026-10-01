@@ -1,0 +1,94 @@
+/* file-upload · Figma 1113:2499. Solo tokens semánticos. */
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.upload {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-sm);
+}
+
+/* Label: color/text/secondary (set; la ficha dice text/tertiary) */
+.label {
+  color: var(--arq-color-text-secondary);
+}
+
+/* Zona (Empty: borde punteado; Attached: borde lleno) */
+.zone,
+.attached {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: var(--arq-space-padding-lg);
+  border: var(--arq-border-default) dashed var(--arq-color-border-default);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-bg-subtle);
+}
+
+.zone {
+  cursor: pointer;
+}
+
+.attached {
+  justify-content: space-between;
+  gap: var(--arq-space-gap-sm-md);
+  border-style: solid;
+}
+
+.empty {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm-md);
+  min-width: 0;
+}
+
+/* El ícono usa el color del texto (currentColor) */
+.icon {
+  flex: none;
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+  color: var(--arq-color-icon-primary);
+}
+
+.prompt,
+.file {
+  min-width: 0;
+  color: var(--arq-color-text-primary);
+}
+
+/* Nombre de archivo largo: se corta con puntos suspensivos */
+.file {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.remove {
+  flex: none;
+}
+
+.helper {
+  margin: 0;
+  color: var(--arq-color-text-tertiary);
+}
+
+.error {
+  margin: 0;
+  color: var(--arq-color-text-error);
+}
+
+/* Error (archivo inválido): mismo tratamiento que input State=Error.
+   TODO: no está diseñado en Figma. */
+:host(:state(error)) .zone {
+  border-color: var(--arq-color-border-error);
+}
+
+/* Foco: anillo de DESIGN.md §7 en la zona cuando el input tiene foco */
+.zone:has(.native:focus-visible) {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}

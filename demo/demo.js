@@ -176,3 +176,13 @@ document.addEventListener('arq:change', (event) => {
   if (!group || event.target.localName !== 'arq-swatch') return;
   for (const s of group.querySelectorAll('arq-swatch')) s.size = s === event.target ? 'large' : 'default';
 });
+
+// ── input: validación nativa del formulario de prueba ──
+for (const button of document.querySelectorAll('[data-demo-validate]')) {
+  button.addEventListener('click', () => {
+    const form = button.closest('form');
+    const output = form.querySelector('[data-demo-output]');
+    const invalid = [...form.querySelectorAll('arq-input')].filter((i) => !i.checkValidity());
+    output.textContent = invalid.length ? `Inválidos: ${invalid.map((i) => i.getAttribute('name')).join(', ')}` : 'Todo válido';
+  });
+}

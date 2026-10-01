@@ -229,3 +229,14 @@
 .demo-tiles--narrow {
   max-width: var(--arq-layout-card-min);
 }
+
+/* Formulario de prueba: dos columnas (una en mobile) */
+.demo-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--arq-layout-card-min-wide)), 1fr));
+  gap: var(--arq-space-gap-lg);
+}
+
+.demo-span {
+  grid-column: 1 / -1;
+}

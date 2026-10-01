@@ -1,0 +1,175 @@
+/* nav-link · Figma 752:2866. Solo tokens semánticos.
+   Desktop es la base; Mobile (≤ 767 px) es la fila del menú mobile. */
+
+:host {
+  display: inline-flex;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.link {
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-primary);
+  font: inherit;
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+}
+
+/* Desktop: role/body · Mobile: role/body-xl (las clases las cambia el JS
+   según el breakpoint, porque un role/* no se puede aplicar desde CSS). */
+.label {
+  min-width: 0;
+  white-space: nowrap;
+}
+
+/* Indicador de Current: guion de space/gap/sm × border/strong (8 × 2) */
+.indicator {
+  display: none;
+  flex: none;
+  width: var(--arq-space-gap-sm);
+  height: var(--arq-border-strong);
+  background: var(--arq-color-border-strong);
+}
+
+.current .indicator {
+  display: block;
+}
+
+/* Chevron (Has dropdown, desktop): chevron-down en icon/sm, gira al abrir */
+.chevron {
+  display: none;
+  flex: none;
+}
+
+:host([has-dropdown]) .chevron {
+  display: inline-flex;
+}
+
+.chevron .icon {
+  width: var(--arq-icon-sm);
+  height: var(--arq-icon-sm);
+}
+
+[aria-expanded='true'] .chevron .icon {
+  transform: rotate(180deg);
+}
+
+/* Flecha final de mobile: oculta en desktop */
+.trailing {
+  display: none;
+}
+
+/* State=Hover (desktop): subrayado por debajo de label y chevron, como el
+   button Underline: termina 3 px (space/padding/2xs) debajo del texto. */
+.link::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));
+  height: var(--arq-border-default);
+  background: var(--arq-color-border-strong);
+  visibility: hidden;
+}
+
+/* Sin subrayado en Current ni Open (Open solo gira la flecha) */
+.link:not(.current):not([aria-expanded='true']):hover::after {
+  visibility: visible;
+}
+
+/* State=Pressed: texto color/text/tertiary, sin subrayado */
+.link:active {
+  color: var(--arq-color-text-tertiary);
+}
+
+.link:active::after {
+  visibility: hidden;
+}
+
+/* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí, no hay token de offset) */
+.link:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.link:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── Mobile: fila del menú, ancho completo ────────────────────── */
+@media (max-width: 767px) {
+  :host {
+    display: flex;
+    width: 100%;
+  }
+
+  .link {
+    width: 100%;
+    padding: var(--arq-space-gap-md) var(--arq-layout-gutter);
+  }
+
+  /* El label ocupa el resto y se parte en líneas */
+  .label {
+    flex: 1;
+    white-space: normal;
+  }
+
+  /* En mobile no va el chevron de desktop: la flecha final indica que entra
+     al submenú (una sola flecha, aunque tenga Has dropdown). */
+  :host([has-dropdown]) .chevron {
+    display: none;
+  }
+
+  /* Flecha final en todas las filas: chevron-right; Current: arrow-right */
+  .trailing {
+    display: inline-flex;
+    flex: none;
+  }
+
+  .trailing .icon {
+    width: var(--arq-icon-md);
+    height: var(--arq-icon-md);
+  }
+
+  .trailing [data-icon='arrow-right'],
+  .current .trailing [data-icon='chevron-right'] {
+    display: none;
+  }
+
+  .current .trailing [data-icon='arrow-right'] {
+    display: block;
+  }
+
+  /* Sin subrayado en mobile */
+  .link::after {
+    display: none;
+  }
+
+  /* State=Pressed: fondo color/surface/selected (texto sigue primary) */
+  .link:active {
+    background: var(--arq-color-surface-selected);
+    color: var(--arq-color-text-primary);
+  }
+
+  /* Hover solo con mouse: color/surface/hover */
+  @media (hover: hover) {
+    .link:not(:active):hover {
+      background: var(--arq-color-surface-hover);
+    }
+  }
+
+  /* Anillo hacia adentro: la fila ocupa todo el ancho */
+  .link:focus-visible {
+    outline-offset: calc(var(--arq-border-strong) * -1);
+  }
+}

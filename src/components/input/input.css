@@ -1,0 +1,91 @@
+/* input · Figma 930:2364. Solo tokens semánticos.
+   Campo con línea inferior (sin caja). La línea es border/default en todos los
+   estados: solo cambia el color, no hay salto de layout. */
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-sm);
+}
+
+.label {
+  color: var(--arq-color-text-tertiary);
+}
+
+/* padding vertical: Figma usa space/gap/sm (8) */
+.field {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  padding-block: var(--arq-space-gap-sm);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-default);
+}
+
+.control {
+  box-sizing: border-box;
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-primary);
+}
+
+.control::placeholder {
+  color: var(--arq-color-text-tertiary);
+  opacity: 1;
+}
+
+/* Textarea: 120 de alto mínimo en Figma, sin token; son 6 líneas de role/body.
+   TODO: definir filas y si se puede agrandar (hoy resize vertical). */
+textarea.control {
+  min-height: calc(var(--arq-type-body-leading) * 6);
+  resize: vertical;
+}
+
+.helper {
+  margin: 0;
+  color: var(--arq-color-text-tertiary);
+}
+
+.error {
+  margin: 0;
+  color: var(--arq-color-text-error);
+}
+
+/* State=Focus: solo cambia el color de la línea (excepción a §7, anotada en
+   docs/decisiones.md). El control no lleva outline propio. */
+.control:focus,
+.control:focus-visible {
+  outline: none;
+}
+
+.field:focus-within {
+  border-bottom-color: var(--arq-color-border-focus);
+}
+
+/* State=Error */
+:host([error]) .field,
+:host([error]) .field:focus-within {
+  border-bottom-color: var(--arq-color-border-error);
+}
+
+/* State=Disabled */
+:host([disabled]) .label,
+:host([disabled]) .helper,
+:host([disabled]) .control,
+:host([disabled]) .control::placeholder {
+  color: var(--arq-color-text-disabled);
+}
+
+:host([disabled]) .field {
+  border-bottom-color: var(--arq-color-border-disabled);
+}
