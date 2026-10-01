@@ -1,0 +1,140 @@
+/* feature-block · Figma 1036:2535. Solo tokens semánticos.
+   Desktop: imagen al 50 % (ratio/portrait-soft) a space/gap/6xl del texto; la
+   secundaria va en la columna del texto. Mobile: apilado. El margen lateral
+   lo pone la sección (no es de borde a borde). */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Grilla: la imagen ocupa las dos filas de su columna; textos arriba y
+   secundaria abajo en la otra. La fila de la secundaria es 1fr para que el
+   alto de la imagen no la empuje. */
+.block {
+  display: grid;
+  grid-template-columns: 50% minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'image content'
+    'image secondary';
+  column-gap: var(--arq-space-gap-6xl);
+  align-items: start;
+}
+
+:host([layout='image-right']) .block {
+  grid-template-columns: minmax(0, 1fr) 50%;
+  grid-template-areas:
+    'content image'
+    'secondary image';
+}
+
+/* Sin secundaria, la fila de la secundaria no ocupa lugar */
+.block:has(.secondary[hidden]) {
+  grid-template-areas:
+    'image content'
+    'image content';
+}
+
+:host([layout='image-right']) .block:has(.secondary[hidden]) {
+  grid-template-areas:
+    'content image'
+    'content image';
+}
+
+.media {
+  overflow: hidden;
+  background: var(--arq-color-bg-subtle);
+}
+
+.image {
+  grid-area: image;
+  aspect-ratio: 4 / 5;
+}
+
+/* TODO (diseño): en el set la secundaria tiene alto fijo (300 Desktop · 220
+   Mobile), sin ratio; se usa ratio/wide (16:10), el más cercano. */
+.secondary {
+  grid-area: secondary;
+  aspect-ratio: 16 / 10;
+  /* En el set: botón → gap xl → espaciador lg → gap xl → secundaria */
+  margin-top: calc(var(--arq-space-gap-xl) * 2 + var(--arq-space-gap-lg));
+}
+
+/* Imágenes por slot a sangre. !important: los estilos del sitio para img
+   ganan sobre ::slotted. */
+.media ::slotted(*) {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+
+/* Textos a space/gap/xl. Image left arranca a space/padding/xl-2xl; Image
+   right a space/padding/6xl (desfasados a propósito, como el set). */
+.content {
+  grid-area: content;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-xl);
+  padding-top: var(--arq-space-padding-xl-2xl);
+}
+
+:host([layout='image-right']) .content {
+  padding-top: var(--arq-space-padding-6xl);
+}
+
+.label,
+.description {
+  margin: 0;
+}
+
+.label {
+  color: var(--arq-color-text-tertiary);
+}
+
+.title {
+  max-width: 100%;
+  color: var(--arq-color-text-primary);
+  overflow-wrap: break-word;
+}
+
+/* TODO (diseño): en el set la bajada mide 440 fijos y no hay token; se usa
+   el más cercano, layout/measure (400). En Mobile ocupa todo el ancho. */
+.description {
+  max-width: var(--arq-layout-measure);
+  color: var(--arq-color-text-secondary);
+  overflow-wrap: break-word;
+}
+
+/* Mobile: imagen, textos y secundaria apilados a space/gap/lg */
+@media (max-width: 767px) {
+  .block,
+  :host([layout='image-right']) .block,
+  .block:has(.secondary[hidden]),
+  :host([layout='image-right']) .block:has(.secondary[hidden]) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-template-areas:
+      'image'
+      'content'
+      'secondary';
+    row-gap: var(--arq-space-gap-lg);
+  }
+
+  .content,
+  :host([layout='image-right']) .content {
+    gap: var(--arq-space-gap-md);
+    padding-top: var(--arq-space-padding-sm);
+  }
+
+  .secondary {
+    margin-top: 0;
+  }
+
+  .description {
+    max-width: none;
+  }
+}

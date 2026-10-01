@@ -306,3 +306,18 @@ setup() {
 - **Foco:** si la flecha con foco se deshabilita al llegar a una punta, el foco pasa a la otra.
 - **`aria-controls`** con `ariaControlsElements`: un id del DOM de la página no se puede referenciar desde el Shadow DOM.
 - **El carrusel no es parte del componente.** `TODO` (páginas): el contenedor (snap, peek) se resuelve al armar Colección y Home.
+
+## 2026-10-01 · Tarjetas con link estirado
+
+- **Patrón común** de las tarjetas que son un link: category-card y line-card ahora; family-card y product-card lo van a usar. CSS compartido en `src/base/card-link.css` (cada tarjeta lo suma a su hoja).
+- El componente recibe `href`. En el Shadow DOM, el `<a>` envuelve **solo el slot del nombre** (en line-card, `<h3 slot="name">`), así el nombre accesible es corto.
+- El `::after` del `<a>` cubre toda la tarjeta (`position: absolute; inset: 0`): toda la tarjeta es clickeable.
+- Hover y foco se aplican a la tarjeta con `:has(.card-link:hover)` y `:has(.card-link:focus-visible)`. El anillo de foco rodea la tarjeta, como en los sets. El hover (borde `color/border/hover` en la imagen, outline hacia adentro) va solo con `hover: hover`.
+- Textos de acción como "Ver colección" se ven como button Underline pero son decorativos (`aria-hidden`): nunca dos links al mismo destino.
+- Elementos interactivos dentro de la tarjeta (el checkbox "Comparar" de product-card) van por encima del `::after`: `position: relative` y `z-index: var(--card-above)`.
+
+## 2026-10-01 · Proporciones de category-card, line-card y feature-block
+
+- **Mandan los ratios del sistema** (DESIGN.md §5), no las medidas de los sets: category-card `ratio/portrait-soft` (4:5) en Desktop y Mobile; line-card `ratio/landscape` (5:4) en Desktop y `ratio/square` (1:1) en Mobile. Se corrigió en Figma el alto de la imagen de las 12 variantes (y el `focus-ring` de las Focus) y se sumó line-card Mobile a `ratio/square` en la tabla.
+- **Gaps de los sets**, no de las fichas (las fichas de line-card y feature-block dicen `space/gap/sm`). Sin borde en reposo en la imagen de category-card (la ficha dice `color/border/subtle`).
+- **feature-block:** imagen principal 4:5 (coincide con el set: 640 × 800). Texto desfasado como el set: `space/padding/xl-2xl` arriba en Image left y `space/padding/6xl` en Image right (la ficha dice que es un espejo). La secundaria tiene alto fijo en el set y no está en la tabla de ratios: `ratio/wide` con `TODO`.

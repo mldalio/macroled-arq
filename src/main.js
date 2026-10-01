@@ -37,6 +37,9 @@ import './components/footer/footer.js';
 import './components/hero/hero.js';
 import './components/cta-block/cta-block.js';
 import './components/carousel-controls/carousel-controls.js';
+import './components/category-card/category-card.js';
+import './components/line-card/line-card.js';
+import './components/feature-block/feature-block.js';
 
 if (!window.Arq) {
   window.Arq = Object.freeze({ version });

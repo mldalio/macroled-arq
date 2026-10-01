@@ -286,8 +286,8 @@ Cómo elegir un token:
 | --- | --- | --- | --- |
 | ratio/portrait | 7:10 | `aspect-ratio: 7 / 10` | product-card, family-card Large, fotos verticales |
 | ratio/portrait-soft | 4:5 | `aspect-ratio: 4 / 5` | category-card, bloque texto + imágenes |
-| ratio/square | 1:1 | `aspect-ratio: 1 / 1` | compare-product, family-card Default, galería doble, proyectos |
-| ratio/landscape | 5:4 | `aspect-ratio: 5 / 4` | product-gallery y thumbs, line-card, texto + imagen |
+| ratio/square | 1:1 | `aspect-ratio: 1 / 1` | compare-product, family-card Default, galería doble, proyectos, line-card (Mobile) |
+| ratio/landscape | 5:4 | `aspect-ratio: 5 / 4` | product-gallery y thumbs, line-card (Desktop), texto + imagen |
 | ratio/wide | 16:10 | `aspect-ratio: 16 / 10` | hero desktop, galería de ambiente |
 | hero mobile | 70 % del alto | `height: 70svh` | Hero en mobile |
 
@@ -412,7 +412,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | accordion-item | Open: False · True. State: Default · Hover · Focus. Breakpoint: Desktop · Mobile. Prop: Title | Ficha: bloques de especificaciones con spec-list adentro |
 | spec-list · spec-row | Props: Title / Label · Value | Cantidad de filas libre en código |
 | category-card | Breakpoint: Desktop · Mobile. State: Default · Hover · Focus. Prop: Name | Home. Toda la tarjeta es link. ratio/portrait-soft |
-| line-card | Breakpoint: Desktop · Mobile. State: Default · Hover · Focus. Props: Label · Name · Description | Home, editorial. ratio/landscape |
+| line-card | Breakpoint: Desktop · Mobile. State: Default · Hover · Focus. Props: Label · Name · Description | Home, editorial. ratio/landscape (Desktop) · ratio/square (Mobile) |
 | family-card | Size: Default · Large. State: Default · Hover · Focus. Prop: Name | Ficha: otras familias de la colección |
 | product-card | Size: Large · Small. State: Default · Hover · Focus. Props: Name · Meta · Show meta · Show finishes · Show compare | Toma el ancho de su columna (FILL). ratio/portrait. Hover y Iluminar cambian la imagen (ver Imágenes de product-card) |
 | product-gallery · gallery-thumb | Breakpoint: Desktop · Mobile / State: Default · Hover · Selected · Focus | ratio/landscape |
