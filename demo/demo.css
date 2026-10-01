@@ -298,3 +298,19 @@
 .demo-bleed.demo-dark {
   padding: 0;
 }
+
+/* Bloque FAQ del Home: section-header a layout/measure y lista al lado,
+   separados space/section/md (Final 1203:9906). En Mobile se apila. */
+.demo-faq {
+  display: grid;
+  grid-template-columns: var(--arq-layout-measure) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--arq-space-section-md);
+}
+
+@media (max-width: 767px) {
+  .demo-faq {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--arq-space-gap-xl);
+  }
+}

@@ -206,3 +206,11 @@ setup() {
 - **hero no contiene al navbar.** En código cada página tiene un solo `<arq-navbar>`, que va aparte, antes del hero, con `theme="transparent"` y encima de la media del hero. `<arq-hero>` usa solo button.
 - **Por qué:** el navbar es uno por página (también en las páginas sin hero) y tiene su propio comportamiento (scroll, búsqueda, menú, mega-menu). Meterlo dentro del hero lo duplicaría en Home y Contacto.
 - En Figma, hero muestra una instancia de navbar Theme=Transparent (y su descripción lo menciona): es una referencia de composición, no parte del componente.
+
+## 2026-10-01 · faq-item
+
+- **Separador:** línea arriba de cada ítem en `border/default` + `color/border/default`, como el set (1036:2430) y el Home (Final 1203:9906). La descripción del set y la ficha `doc/faq-item` dicen "borde inferior color/border/subtle": manda el set; falta corregir los dos textos en Figma. El último ítem de la lista queda sin línea abajo.
+- **Ancho de la respuesta:** en el set mide 560 fijos y no hay token. Se usa `layout/measure-wide` (520) como ancho máximo en Desktop; en Mobile ocupa todo el ancho. `TODO` hasta que diseño confirme.
+- **Hover solo cerrado:** el set no tiene la variante Open=True + Hover.
+- **Foco alrededor de todo el ítem** (capa focus-ring del set), también abierto: `.item:has(.trigger:focus-visible)`.
+- **El padding del ítem va en el botón**, así todo el alto del encabezado es clickeable. Abierto, el padding inferior del botón es el gap hasta la respuesta (`space/gap/sm-md`) y la respuesta lleva `space/padding/lg` abajo.
