@@ -20,7 +20,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [catalog-toolbar](#catalog-toolbar) | `<arq-catalog-toolbar>` | Pendiente |
 | [category-card](#category-card) | `<arq-category-card>` | Pendiente |
 | [checkbox](#checkbox) | `<arq-checkbox>` | Pendiente |
-| [choice-chip](#choice-chip) | `<arq-choice-chip>` | Pendiente |
+| [choice-chip](#choice-chip) | `<arq-choice-chip>` | En código ([README](../src/components/choice-chip/README.md)) |
 | [compare-bar](#compare-bar) | `<arq-compare-bar>` | Pendiente |
 | [compare-group](#compare-group) | `<arq-compare-group>` | Pendiente |
 | [compare-header](#compare-header) | `<arq-compare-header>` | Pendiente |

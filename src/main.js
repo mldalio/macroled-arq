@@ -23,6 +23,7 @@ import './components/gallery-thumb/gallery-thumb.js';
 import './components/sku/sku.js';
 import './components/swatch/swatch.js';
 import './components/option-tile/option-tile.js';
+import './components/choice-chip/choice-chip.js';
 
 if (!window.Arq) {
   window.Arq = Object.freeze({ version });

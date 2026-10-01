@@ -534,6 +534,34 @@
           </demo-radio-group>
         </div>
       </section>
+
+      <section class="demo-section" aria-labelledby="demo-choice-chip">
+        <h2 id="demo-choice-chip" class="demo-heading role-label">choice-chip · &lt;arq-choice-chip&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1113:2485. En un formulario de prueba: flechas, clic, Hover, Selected, Focus y Disabled. «Ver valor» muestra lo que manda el formulario.</p>
+        <form class="demo-stack" data-demo-form>
+          <fieldset class="demo-fieldset">
+            <legend class="role-label demo-meta">Motivo de consulta</legend>
+            <demo-radio-group role="radiogroup" label="Motivo de consulta" items="arq-choice-chip">
+              <arq-choice-chip name="motivo" value="presupuesto" selected>Presupuesto</arq-choice-chip>
+              <arq-choice-chip name="motivo" value="asesoramiento">Asesoramiento lumínico</arq-choice-chip>
+              <arq-choice-chip name="motivo" value="tecnico">Consulta técnica</arq-choice-chip>
+              <arq-choice-chip name="motivo" value="otro" disabled>Otro</arq-choice-chip>
+            </demo-radio-group>
+          </fieldset>
+          <div class="demo-row">
+            <arq-button type="outline" data-demo-show>Ver valor</arq-button>
+            <arq-button type="underline" show-underline data-demo-reset>Restablecer</arq-button>
+            <span class="role-body-sm demo-meta" data-demo-output aria-live="polite"></span>
+          </div>
+        </form>
+        <div class="demo-dark" data-arq-theme="dark">
+          <demo-radio-group role="radiogroup" label="Motivo (Dark)" items="arq-choice-chip">
+            <arq-choice-chip value="presupuesto" selected>Presupuesto</arq-choice-chip>
+            <arq-choice-chip value="asesoramiento">Asesoramiento lumínico</arq-choice-chip>
+            <arq-choice-chip value="otro" disabled>Otro</arq-choice-chip>
+          </demo-radio-group>
+        </div>
+      </section>
     </main>
   </body>
 </html>
