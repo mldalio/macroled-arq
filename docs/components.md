@@ -98,12 +98,16 @@ Uso: bloques de especificaciones de la ficha (características lumínicas, eléc
 
 Levels=3: Inicio / Sección / Página. Levels=2: Inicio / Página. El separador vive en breadcrumb-item (Show separator); el ítem actual lo trae apagado.
 
+Textos largos: los ítems intermedios se cortan con "…" (el texto completo queda en el link); el ítem actual se parte en varias líneas.
+
 ## breadcrumb-item
 
 - Figma: [1053-4430](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1053-4430)
 - Propiedades: Label; Show separator; State: Default · Hover · Current
 
 Un nivel del breadcrumb: Label (link) y separador opcional (Show separator). State=Current para la página actual: sin link ni separador. No se usa suelto, siempre dentro de breadcrumb.
+
+Textos largos: si no es Current, se corta con "…"; Current se parte en varias líneas.
 
 ## button
 
@@ -312,9 +316,11 @@ Bloque editorial destacado: imagen grande (y secundaria opcional) + eyebrow, tí
 ## file-upload
 
 - Figma: [1113-2499](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1113-2499)
-- Propiedades: Label; Helper; State: Empty · Attached
+- Propiedades: Label; Helper; State: Empty · Attached · Drag over · Error · Disabled
 
 Zona para adjuntar un archivo al formulario (planos, planillas). Empty: zona con icon/plus y ayuda; Attached: nombre del archivo + quitar. Props: Label y Helper (formatos y tamaño máximo). En código: <input type="file"> real con drag & drop.
+
+Un solo archivo. State: Empty, Attached, Drag over (archivo arrastrado encima: borde color/border/strong y fondo color/surface/hover), Error (borde color/border/error; el mensaje reemplaza a la ayuda, en color/text/error) y Disabled. Formatos: PDF, DWG, JPG o PNG, hasta 10 MB.
 
 ## filter-bar
 
@@ -401,6 +407,8 @@ State=Disabled: ícono en color/icon/disabled, sin interacción (atributo disabl
 - Propiedades: Label; Show label; Helper; Show helper; Type: Text · Select · Textarea; State: Empty · Filled · Focus · Error · Disabled; Open: False · True
 
 Campo de formulario con línea inferior. Type: Text, Select (flecha; en Focus la lista está abierta) y Textarea. State: Empty (placeholder), Filled, Focus (línea color/border/focus), Error (línea color/border/error y mensaje) y Disabled. Props: Label, Show label (false para campos sin etiqueta, como el email del Home), Helper y Show helper. En Error el mensaje siempre se ve. Sobre fondos oscuros: modo Dark.
+
+Textarea: 4 filas visibles; solo se agranda hacia abajo (resize: vertical).
 
 ## line-card
 
@@ -568,6 +576,8 @@ Opción de select-menu. Muestra opcional (Show swatch; swatch/sm con border/defa
 
 Código de producto con botón de copiar. Size: Default (bloque del configurador, con etiqueta SKU) y Compact (fila de la tabla de variantes). State: Default (ícono icon/secondary), Hover (ícono icon/primary), Copied (confirmación "Copiado", text/success).
 
+Textos largos: el código se parte en varias líneas, nunca se corta. Si falla el portapapeles: el código queda seleccionado y se anuncia "Copialo con Ctrl+C" en lugar de "Copiado".
+
 ## spec-list
 
 - Figma: [922-2500](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=922-2500)
@@ -581,6 +591,8 @@ Lista de spec-row. En la ficha va en dos columnas dentro de accordion-item (una 
 - Propiedades: Label; Value
 
 Fila de especificación técnica: etiqueta role/body-regular (text/tertiary) y valor role/body-regular (text/primary), separador inferior border/subtle. Padding space/padding/md arriba y abajo, gap space/gap/lg. Se usa dentro de spec-list.
+
+Textos largos: etiqueta y valor se parten en varias líneas; nunca se cortan.
 
 ## swatch
 
