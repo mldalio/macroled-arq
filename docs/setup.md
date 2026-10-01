@@ -107,10 +107,22 @@ Hacerle estas tres preguntas. Si responde bien las tres, está lista:
 2. `git checkout main && git pull`
 3. `git checkout -b feat/arq-<nombre>` (o `fix/`, `tokens/`, `docs/`).
 4. Pedirle a la IA la tarea con el **prompt común**.
-5. Revisar en la demo (`npm run dev`): Light/Dark, 390 px y teclado.
+5. Revisar en la demo (`npm run dev`, ver más abajo): Light/Dark, 390 px y teclado.
 6. `npm run build` sin errores.
 7. `git push -u origin feat/arq-<nombre>` y abrir un Pull Request.
 8. Antes de mergear: `git pull origin main` en la rama. Mergear y mover la tarjeta a Hecho.
+
+### Ver la demo
+
+`npm run build` no muestra nada en pantalla: solo genera `dist/arq.js` y `dist/arq.css`, los archivos que carga Webflow. Los componentes se ven en la demo:
+
+1. En la terminal, en la carpeta del repo: `npm run dev`.
+2. Se abre el navegador en `http://localhost:5173/demo/index.html`. Si no se abre solo, copiar la dirección que muestra la terminal y agregarle `/demo/index.html`. Si el puerto 5173 está ocupado, Vite usa otro (5174…): vale el que muestre la terminal.
+3. Cada componente tiene su sección, en el orden en que se construyeron (los nuevos, al final).
+4. **Dark:** switch "Dark" arriba de la página. **Mobile:** F12 → ícono de celular (Ctrl+Shift+M) → 390 de ancho. **Consola:** F12 → Console, sin errores.
+5. Para cortar el servidor: Ctrl+C en la terminal.
+
+Si la demo ya estaba abierta, los cambios aparecen solos al guardar; si no, recargar con Ctrl+F5. Para ver lo último de `main`: `git checkout main && git pull` antes de `npm run dev`.
 
 ### Prompt común para construir un componente
 
