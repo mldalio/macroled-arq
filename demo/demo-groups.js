@@ -14,7 +14,7 @@ import { SingleSelect } from '/src/base/single-select.js';
 
 const css = `
 :host { display: flex; flex-wrap: wrap; gap: var(--arq-space-gap-sm); }
-:host([fill]) > ::slotted(*) { flex: 1 1 0; }
+:host([fill]) ::slotted(*) { flex: 1 1 0; }
 `;
 
 class DemoRadioGroup extends ArqElement {
