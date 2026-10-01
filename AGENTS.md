@@ -52,7 +52,7 @@ tokens/tokens.json            ← generado con npm run tokens:import (no editar)
 src/styles/tokens.css         ← generado con npm run tokens (no editar)
 src/base/                     ← ArqElement (clase base), icons.js, disclosure.js
 src/components/<nombre>/      ← <nombre>.js, <nombre>.css, README.md
-src/pages/                    ← páginas armadas con componentes y datos
+src/pages/                    ← un archivo por página con el HTML exacto de su Code Embed de Webflow (fuente: se edita acá y se pega en Webflow)
 demo/index.html               ← página de prueba: todos los componentes y sus estados
 demo/fixtures/                ← datos de ejemplo (JSON) para la demo
 src/data/                     ← único acceso a Typesense
