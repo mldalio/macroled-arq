@@ -83,7 +83,7 @@ dist/arq.js · dist/arq.css    ← única salida que carga Webflow
 - **Foco:** siempre `:focus-visible` con un anillo separado: `outline` de `--arq-border-strong` en `--arq-color-border-focus` y `outline-offset: 2px`. El foco nunca cambia el tamaño del componente.
 - Las props booleanas de Figma que vienen activadas por defecto (Show icon, Show underline…) en código van desactivadas por defecto, porque son atributos de presencia. Se aclara en el README del componente.
 - **Responsive:** Desktop es la base; Mobile con `@media (max-width: 767px)`. Los listados usan `catalog-nav-mobile` hasta 1023 px.
-- **Dark:** solo con `data-arq-theme="dark"` (switch Iluminar). Nunca `prefers-color-scheme`.
+- **Dark:** solo con `data-arq-theme="dark"`, en dos usos: Iluminar (switch del usuario) y Dark local (fijo por diseño, sobre fotos o fondos oscuros). Dónde va el atributo en cada caso: DESIGN.md §2 · Modo Dark. Nunca `prefers-color-scheme`.
 - Los desplegables (accordion-item, faq-item, filter-row, catalog-nav-group, catalog-nav-trigger) comparten un disclosure base.
 - Cantidades variables (filas, opciones, acabados) son libres en código aunque en Figma haya un número fijo.
 - Cada componente se agrega a `demo/index.html` con todas sus variantes de Figma + cargando, vacío, error, texto largo, sin imagen, en Light y Dark. La demo tiene un switch para `data-arq-theme` y se revisa también en 390 px.
