@@ -18,8 +18,6 @@ npm run tokens   # tokens/tokens.json → src/styles/tokens.css y roles.css
 npm run build    # dist/arq.js y dist/arq.css
 ```
 
-`npm run build` no muestra nada: solo genera los archivos que carga Webflow. Para ver los componentes se usa la demo (`npm run dev`, que abre `http://localhost:5173/demo/index.html`). Pasos en [docs/setup.md](./docs/setup.md), Parte 3 · Ver la demo.
-
 Configuración inicial, variables de entorno, MCP de Figma, cómo actualizar los tokens y cómo publicar una versión: [docs/setup.md](./docs/setup.md).
 
 ## Cargar en Webflow
