@@ -178,3 +178,10 @@
   padding: var(--arq-space-padding-md);
   background: var(--arq-color-surface-subtle);
 }
+
+/* Columna de links (como una columna del footer) */
+.demo-column {
+  display: grid;
+  justify-items: start;
+  gap: var(--arq-space-gap-sm-md);
+}

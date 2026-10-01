@@ -42,7 +42,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [filter-panel](#filter-panel) | `<arq-filter-panel>` | Pendiente |
 | [filter-row](#filter-row) | `<arq-filter-row>` | Pendiente |
 | [footer](#footer) | `<arq-footer>` | Pendiente |
-| [footer-link](#footer-link) | `<arq-footer-link>` | Pendiente |
+| [footer-link](#footer-link) | `<arq-footer-link>` | En código ([README](../src/components/footer-link/README.md)) |
 | [form-message](#form-message) | `<arq-form-message>` | Pendiente |
 | [form-section-header](#form-section-header) | `<arq-form-section-header>` | Pendiente |
 | [gallery-thumb](#gallery-thumb) | `<arq-gallery-thumb>` | Pendiente |

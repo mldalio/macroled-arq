@@ -1,0 +1,74 @@
+/* footer-link · Figma 788:2930. Solo tokens semánticos. */
+
+:host {
+  display: inline-flex;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  max-width: 100%;
+  color: var(--arq-color-text-secondary);
+  text-decoration: none;
+}
+
+.label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Ícono a la izquierda, del color del texto (currentColor) */
+.leading {
+  display: inline-flex;
+  flex: none;
+}
+
+.icon {
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+}
+
+/* Subrayado de Hover: como en Figma, pasa también por debajo del ícono.
+   Va justo debajo de la caja de 20 (top: 100%) y es absoluto: no cambia el alto. */
+.link::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  height: var(--arq-border-default);
+  background: var(--arq-color-border-strong);
+  visibility: hidden;
+}
+
+/* State=Hover: texto color/text/primary + subrayado */
+.link[href]:hover {
+  color: var(--arq-color-text-primary);
+}
+
+.link[href]:hover::after {
+  visibility: visible;
+}
+
+/* State=Pressed: texto color/text/tertiary, sin subrayado */
+.link[href]:active {
+  color: var(--arq-color-text-tertiary);
+}
+
+.link[href]:active::after {
+  visibility: hidden;
+}
+
+/* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí, no hay token de offset) */
+.link:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.link:focus:not(:focus-visible) {
+  outline: none;
+}
