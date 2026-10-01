@@ -469,6 +469,10 @@ Theme=Inverse: para navbar Theme=Transparent sobre foto (label color/text/invers
 
 Barra de navegación de Macroled Arq. Breakpoint: Desktop · Mobile. Mode: Default, Search (buscador abierto), Menu (menú mobile abierto) y Products (submenú de Productos en mobile, con "volver"). En desktop, Productos abierto = nav-link Open=True con mega-menu debajo. Theme: Default · Transparent (sobre la foto del hero; pasa a Default al hacer scroll). El link de la página actual va en State=Current; el que despliega un menú usa Has dropdown.
 
+Theme=Transparent: fondo translúcido color/overlay/translucent + background blur blur/backdrop (en código, `backdrop-filter`).
+
+> **Falta en Figma:** esta última línea todavía no está en la descripción del set (se agregó acá al ligar los tokens, 2026-10-01).
+
 ## option-group
 
 - Figma: [921-2560](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2560)

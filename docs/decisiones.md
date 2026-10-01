@@ -237,3 +237,12 @@ setup() {
 - **Resultado:** `data-arq-theme="dark"` funciona en tres lugares: un ancestro del DOM de la página, el host del componente y un contenedor dentro del Shadow DOM. El contenido por slot hereda el modo del contenedor donde se muestra (las variables CSS siguen el árbol con los slots resueltos). Probado en la demo con `demo-dark-local` (Base): `<arq-button>` Filled y Outline por slot dentro de un contenedor interno Dark.
 - **Regla para Dark local:** un componente con Dark fijo por diseño lo aplica en un contenedor interno; el contenido por slot lo hereda. Quien arma la página no pone el atributo.
 - No hay modo Light local: dentro de un bloque Dark no se puede volver a Light (no existe `[data-arq-theme="light"]`).
+
+## 2026-10-01 · Modo Dark: Iluminar y Dark local
+
+- **Dos usos, un atributo:** Iluminar (switch del usuario: ficha, Productos y Colecciones) y Dark local (fijo por diseño, para colores claros sobre fotos o fondos oscuros). Los dos son `data-arq-theme="dark"`. Detalle en DESIGN.md §2 · Modo Dark.
+- **Dónde va el atributo en Dark local:**
+  - Componente con Dark propio (hero, compare-bar): en un contenedor interno de su Shadow DOM. El contenido por slot lo hereda y quien arma la página no pone nada.
+  - Sección de página (explora-coleccion de la ficha): en la sección, en el DOM de la página.
+- **hero:** solo el CTA va en Dark (button Outline claro); los textos siguen en `color/text/inverse`, como Figma. El CTA llega por slot (`slot="action"`, editable en Webflow) y el hero envuelve ese slot en un contenedor con `data-arq-theme="dark"`.
+- **explora-coleccion es Dark local, no Iluminar:** en las cuatro pantallas de la ficha (con y sin Iluminar) está en Dark. Iluminar en la ficha cambia navbar, hero y la foto.

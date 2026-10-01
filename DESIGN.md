@@ -86,7 +86,7 @@ Arq vive en `macroled.com.ar/arq`, dentro del mismo sitio de Webflow que el e-co
 /* Light es el valor base */
 :root { --arq-color-text-primary: var(--arq-neutral-900); }
 
-/* Dark: solo con el switch Iluminar (sin prefers-color-scheme) */
+/* Dark: solo con data-arq-theme="dark" (Iluminar o Dark local), sin prefers-color-scheme */
 [data-arq-theme="dark"] { --arq-color-text-primary: var(--arq-neutral-100); }
 
 /* Desktop es el valor base; Mobile por media query */
@@ -96,7 +96,7 @@ Arq vive en `macroled.com.ar/arq`, dentro del mismo sitio de Webflow que el e-co
 }
 ```
 
-Las variables CSS atraviesan el Shadow DOM. Un bloque en modo Dark se logra con `data-arq-theme="dark"` en el contenedor (en Figma: modo Dark en el frame). **Dark nunca se activa solo por la preferencia del sistema**: únicamente con Iluminar.
+Las variables CSS atraviesan el Shadow DOM. Un bloque en modo Dark se logra con `data-arq-theme="dark"` en el contenedor (en Figma: modo Dark en el frame). **Dark nunca se activa solo por la preferencia del sistema**: únicamente con `data-arq-theme="dark"`, por Iluminar o por Dark local (ver Modo Dark, más abajo).
 
 ### Breakpoints y grilla
 
@@ -125,11 +125,31 @@ Las variables CSS atraviesan el Shadow DOM. Un bloque en modo Dark se logra con 
 
 - No hay ancho máximo: todas las páginas son full width y el margen lateral es siempre `layout/gutter`.
 
-### Iluminar
+### Modo Dark: Iluminar y Dark local
 
-- **Ficha de producto:** el switch pone el modo Dark en `navbar`, `hero` y `explora-coleccion` (desktop y mobile) y cambia la foto; el resto de la página no cambia. En código: `data-arq-theme="dark"` en esas tres secciones.
+Hay dos usos del modo Dark. Los dos usan `data-arq-theme="dark"`; cambia quién lo pone y cuándo.
+
+**Iluminar:** switch del usuario. Solo existe en la ficha de producto, Productos y Colecciones.
+
+- **Ficha de producto:** el switch pone el modo Dark en `navbar` y `hero` (desktop y mobile) y cambia la foto; el resto de la página no cambia. `explora-coleccion` ya es Dark siempre (Dark local, abajo). En código: `data-arq-theme="dark"` en `<arq-navbar>` y en la sección hero de la ficha (elementos del DOM de la página).
 - **Productos y Colecciones:** el toggle Iluminar de `catalog-toolbar` pasa toda la página a Dark y las product-card muestran sus imágenes con la luz encendida (ver §8, Imágenes de product-card). En código: `data-arq-theme="dark"` en `<html>`.
-- **Contacto** no tiene modo Iluminar.
+- **Home y Contacto** no tienen Iluminar.
+
+**Dark local:** fijo por diseño, para tener colores claros sobre fotos o fondos oscuros. No depende de Iluminar ni lo activa: se ve igual con Iluminar apagado o encendido.
+
+| Caso | Qué va en Dark | Dónde va el atributo |
+| --- | --- | --- |
+| hero (Home, Contacto) | Solo el CTA (button Outline claro). Los textos usan `color/text/inverse` | Contenedor interno del Shadow DOM que envuelve el slot del CTA |
+| compare-bar | Toda la barra | Contenedor interno del Shadow DOM (el que envuelve todo el componente) |
+| explora-coleccion (ficha), con family-card Large | Toda la sección | La sección, en el DOM de la página |
+
+- **Regla:** un componente con Dark local lo aplica en un contenedor interno; el contenido por slot lo hereda. Quien arma la página no pone el atributo. Si el Dark es de una sección de la página (explora-coleccion), el atributo va en la sección y los componentes de adentro lo heredan.
+- **Dónde funciona el atributo:** en un ancestro del DOM de la página, en el host del componente (`<arq-compare-bar data-arq-theme="dark">`) y en un contenedor dentro del Shadow DOM. Este último caso funciona porque `ArqElement` adopta en cada Shadow DOM la hoja `src/styles/dark.css` (el mismo bloque Dark de `tokens.css`): `tokens.css` solo alcanza el DOM de la página, no lo que está dentro de un componente (`docs/decisiones.md`, 2026-10-01 · Dark dentro del Shadow DOM).
+- El contenido por slot hereda el modo del contenedor donde se muestra, no el de su padre en el HTML.
+- No hay Light local: dentro de un bloque Dark no se puede volver a Light.
+
+Para los dos usos:
+
 - El negro es `color/bg/default` en Dark (`neutral/800`, #1C1C1C).
 - **Cambio de fondo:** cuando una sección pasa a oscuro, su padding inferior baja un escalón (`space/section/xl` → `space/section/lg`) y la sección clara que sigue suma padding superior `space/section/md`. Desktop: 128 + 96 · Mobile: 96 + 56. Con el fondo igual, la sección siguiente no lleva padding superior. En código, el ajuste va atado a `data-arq-theme="dark"` en la sección.
 
@@ -142,7 +162,7 @@ Estos valores **no se usan en componentes**. Están acá para entender de dónde
 - **Color:** neutral (0–900, con 25, 75, 150, 725, 750 y 775), bronze, cacao, olive, terracotta (50–900), offwhite, red / green / amber y alpha. Bronze, cacao, olive, terracotta y offwhite quedan en Figma como paleta de marca, pero **no se exportan a `tokens.json`** hasta que un semántico los use.
 - **Espaciado (px):** 0 · 2 · 3 · 4 · 6 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 56 · 64 · 80 · 96 · 128 · 160.
 - **Tipografía:** familia única Albert Sans; pesos 300–700; tamaños 10 · 11 · 12 · 14 · 16 · 20 · 24 · 32 · 40 · 48 · 64.
-- **Radio:** `radius/0 · 2 · 4 · 8 · 16 · 24 · full`. **Borde:** `border/1 · border/2`.
+- **Radio:** `radius/0 · 2 · 4 · 8 · 16 · 24 · full`. **Borde:** `border/1 · border/2`. **Blur:** `blur/12`.
 
 ### Primitivas de color que usa Semantic
 
@@ -178,7 +198,7 @@ Estos valores **no se usan en componentes**. Están acá para entender de dónde
 
 Cómo elegir un token:
 
-1. **¿Qué propiedad es?** Fondo de sección → `color/bg/*`. Fondo de elemento → `color/surface/*`. Texto → `color/text/*`. Ícono → `color/icon/*`. Borde → `color/border/*`. Acción principal → `color/action/*`. Marca → `color/accent/*`. Modal → `color/overlay/*`.
+1. **¿Qué propiedad es?** Fondo de sección → `color/bg/*`. Fondo de elemento → `color/surface/*`. Texto → `color/text/*`. Ícono → `color/icon/*`. Borde → `color/border/*`. Acción principal → `color/action/*`. Marca → `color/accent/*`. Modal o barra translúcida → `color/overlay/*`.
 2. **¿Qué jerarquía tiene?** primary para títulos, secondary para lectura, tertiary para lo secundario. Fondos: default, subtle, strong, inverse.
 3. **¿En qué estado está?** hover, pressed, selected, disabled, focus, error, success, warning.
 
@@ -232,6 +252,7 @@ Cómo elegir un token:
 | color/action/on-primary | neutral/0 | neutral/900 | Texto e ícono sobre color/action/primary |
 | color/accent/default | neutral/900 | neutral/150 | Detalles de marca |
 | color/overlay/scrim | alpha/black-60 | alpha/black-60 | Detrás de download-modal (siempre) y filter-panel (solo desktop) |
+| color/overlay/translucent | alpha/ink-10 | alpha/ink-10 | Fondo translúcido de barras sobre fotos (navbar Transparent), junto con blur/backdrop |
 | hero/scrim (estilo de relleno) | Degradado negro 52 → 20 → 20 → 68 % | Igual | Scrim del hero sobre media. Ya incluye el oscurecido de la imagen. Único para Desktop y Mobile |
 
 ---
@@ -252,6 +273,7 @@ Cómo elegir un token:
 | radius/control | 0 | 0 | Esquinas rectas |
 | radius/pill | 999 | 999 | Solo si el componente lo requiere (toggle-switch) o se pide explícitamente |
 | border/default · focus · strong | 1 · 1 · 2 | 1 · 1 · 2 | Bordes / foco (se distingue por color) / hover y selección de muestras |
+| blur/backdrop | 12 | 12 | Desenfoque del fondo detrás de una superficie translúcida (background blur en Figma, `backdrop-filter` en código), junto con color/overlay/translucent |
 | icon/sm · md · lg · xl · 2xl | 12 · 16 · 20 · 24 · 32 | 12 · 16 · 24 · 24 · 32 | Íconos |
 | swatch/sm · md · lg | 16 · 20 · 24 | 16 · 20 · 24 | Muestras de acabado |
 
@@ -372,7 +394,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | select-option | State: Default · Hover · Selected · Focus · Disabled. Props: Name · Show swatch | Hover surface/faint, Selected role/body-medium, Focus border/focus |
 | tab | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | role/label; seleccionado con línea border/strong. Un solo tab en todo el sitio |
 | nav-link | Breakpoint: Desktop · Mobile. State: Default · Hover · Pressed · Current · Focus. Open: False · True. Theme: Default · Inverse. Props: Label · Has dropdown | Hover subrayado; Current guion de space/gap/sm × border/strong (8 × 2); Open: solo gira la flecha (sin subrayado) |
-| navbar | Breakpoint: Desktop · Mobile. Mode: Default · Search · Menu · Products. Theme: Default · Transparent | 56 px de alto. Transparent sobre el hero; pasa a Default al hacer scroll |
+| navbar | Breakpoint: Desktop · Mobile. Mode: Default · Search · Menu · Products. Theme: Default · Transparent | 56 px de alto. Transparent sobre el hero: fondo translúcido (color/overlay/translucent) + blur (blur/backdrop); pasa a Default al hacer scroll |
 | mega-menu | Tab: Aplicación · Lámparas y artefactos · Colecciones | Un solo componente; categorías, links y "Ver todo…" salen de los datos. Usa tab y mega-link |
 | mega-link | Type: Link · Group. State: Default · Hover · Focus. Size: Default · Large. Open: False · True. Props: Name · Meta · Show meta · Show image · Show arrow | Link role/body (Large role/body-lg). Group role/body-xl con icon/plus / icon/minus |
 | logo | Size: Default · Small · Compact | 181 / 158 / 117 px |
@@ -380,7 +402,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | search-field | State: Empty · Focus · Filled. Prop: Show close | Campo con borde del navbar |
 | search-result · search-see-all | State: Default · Hover · Active (solo search-result) · Focus | Miniatura, nombre, SKU, flecha |
 | search-dropdown · search-screen | State: Results · No results (· Empty en search-screen) | Desktop / mobile |
-| hero | Breakpoint: Desktop · Mobile. Props: Eyebrow · Show eyebrow · Title · Description · Show description · Show button | Media + hero/scrim. Eyebrow role/label, título role/display, button Outline en Dark. Alto: ratio/wide desktop; 70svh mobile |
+| hero | Breakpoint: Desktop · Mobile. Props: Eyebrow · Show eyebrow · Title · Description · Show description · Show button | Media + hero/scrim. Eyebrow role/label, título role/display, button Outline en Dark local (CTA por slot). Alto: ratio/wide desktop; 70svh mobile |
 | section-header | Breakpoint: Desktop · Mobile. Type: Link · Description · Title · Stacked. Props: Title · Description | role/heading-2 y role/body-lg. Sin separador. Gap título–bajada sm-md, textos–link lg. Bajada Description hasta layout/measure. En Mobile el link no se muestra: la página pone un button al final del bloque |
 | page-header | Breakpoint: Desktop · Mobile. Type: List · Detail. Props: Title · Description · Show breadcrumb · Show description · Show back · Show action | Título role/display. Sin desplegable |
 | breadcrumb · breadcrumb-item | Levels: 3 · 2 / State: Default · Hover · Current. Props: Label · Show separator | role/label. El ítem actual no lleva link ni separador |
@@ -414,7 +436,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | form-section-header · form-message | Props: Number · Show number · Label / Tone: Success · Error. Prop: Message | form-message sin ícono |
 | contact-item · link-list | State: Default · Hover · Focus. Props: Label · Value / Props: Title · Show link 3 | Valor como link mailto: / tel: |
 | compare-header · compare-group · compare-row · compare-product | Type: Default · Compact × Breakpoint / Label / Breakpoint + Value 1–3 / State: Filled · Empty | Hasta 3 productos |
-| compare-bar · compare-slot | Breakpoint: Desktop · Mobile / Size: Default · Compact. State: Filled · Empty | Barra fija inferior |
+| compare-bar · compare-slot | Breakpoint: Desktop · Mobile / Size: Default · Compact. State: Filled · Empty | Barra fija inferior, en Dark local |
 
 El inventario completo con links a Figma está en el [Anexo A](#anexo-a-inventario-de-componentes).
 
