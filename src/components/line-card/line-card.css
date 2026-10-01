@@ -1,0 +1,103 @@
+/* line-card · Figma 1036:2490. Solo tokens semánticos.
+   Imagen + textos + "Ver colección" (visual de button Underline). Toma el
+   ancho de su columna (FILL). El link estirado está en src/base/card-link.css. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Imagen → textos: space/gap/lg (24 Desktop · 20 Mobile) */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-lg);
+}
+
+/* ratio/landscape en Desktop, ratio/square en Mobile (DESIGN.md §5) */
+.card-media {
+  aspect-ratio: 5 / 4;
+}
+
+/* Textos a space/gap/md con space/padding/sm arriba (como el set; la ficha
+   dice gap/sm) */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-md);
+  padding-top: var(--arq-space-padding-sm);
+}
+
+.label,
+.description {
+  margin: 0;
+}
+
+.label {
+  color: var(--arq-color-text-tertiary);
+}
+
+.name {
+  max-width: 100%;
+  color: var(--arq-color-text-primary);
+  overflow-wrap: break-word;
+}
+
+/* TODO (diseño): en el set la bajada mide 440 fijos y no hay token; se usa
+   el más cercano, layout/measure (400). En Mobile ocupa todo el ancho. */
+.description {
+  max-width: var(--arq-layout-measure);
+  color: var(--arq-color-text-secondary);
+  overflow-wrap: break-word;
+}
+
+/* "Ver colección": el mismo dibujo que button Underline con Show underline
+   (subrayado de border/default 3 px debajo del texto) y la flecha. Decorativo.
+   En el set hay un espaciador (8 Desktop · 4 Mobile) entre la bajada y el
+   botón, con el gap a los dos lados: el margen extra es espaciador + gap. */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  margin-top: calc(var(--arq-space-gap-sm) + var(--arq-space-gap-md));
+  padding: var(--arq-space-gap-xs) 0;
+  color: var(--arq-color-action-primary);
+}
+
+.cta-text {
+  position: relative;
+}
+
+.cta-text::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));
+  height: var(--arq-border-default);
+  background: var(--arq-color-border-strong);
+}
+
+.cta .icon {
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+}
+
+@media (max-width: 767px) {
+  .card-media {
+    aspect-ratio: 1 / 1;
+  }
+
+  .content {
+    gap: var(--arq-space-gap-sm-md);
+    padding-top: 0;
+  }
+
+  .description {
+    max-width: none;
+  }
+
+  .cta {
+    margin-top: calc(var(--arq-space-gap-xs) + var(--arq-space-gap-sm-md));
+  }
+}

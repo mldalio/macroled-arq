@@ -1,0 +1,67 @@
+/* Link estirado: patrón común de las tarjetas (category-card, line-card y,
+   cuando se construyan, family-card y product-card). docs/decisiones.md,
+   2026-10-01 · Tarjetas con link estirado.
+
+   Estructura que espera cada componente:
+     .card            contenedor de la tarjeta (position: relative)
+     .card-link       <a> que envuelve solo el slot del nombre (nombre accesible corto)
+     .card-media      contenedor de la imagen (recibe el borde de hover)
+
+   - El ::after del <a> cubre toda la tarjeta: toda la tarjeta es clickeable.
+   - Hover y foco se aplican a la tarjeta con :has(). El anillo de foco rodea
+     la tarjeta (DESIGN.md §7) y no cambia su tamaño.
+   - Hover: borde color/border/hover en la imagen, hacia adentro (outline con
+     offset negativo, así no cambia el tamaño). Solo con mouse (hover: hover).
+   - Un elemento interactivo dentro de la tarjeta (el checkbox de
+     product-card) va por encima del ::after: position: relative + z-index:
+     var(--card-above), la variable local de abajo. */
+
+.card {
+  --card-above: 1;
+  position: relative;
+}
+
+.card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+}
+
+.card-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.card-link:focus {
+  outline: none;
+}
+
+.card:has(.card-link:focus-visible) {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .card:has(.card-link:hover) .card-media {
+    outline: var(--arq-border-default) solid var(--arq-color-border-hover);
+    outline-offset: calc(var(--arq-border-default) * -1);
+  }
+}
+
+/* Imagen por slot, a sangre en su caja con la proporción del componente.
+   !important porque los estilos del sitio (Webflow) para img ganan sobre
+   ::slotted. Sin imagen se ve el fondo color/bg/subtle. */
+.card-media {
+  overflow: hidden;
+  background: var(--arq-color-bg-subtle);
+}
+
+.card-media ::slotted(*) {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+  object-fit: cover;
+}

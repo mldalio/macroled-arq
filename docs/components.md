@@ -18,7 +18,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [catalog-nav-mobile](#catalog-nav-mobile) | `<arq-catalog-nav-mobile>` | Pendiente |
 | [catalog-nav-trigger](#catalog-nav-trigger) | `<arq-catalog-nav-trigger>` | Pendiente |
 | [catalog-toolbar](#catalog-toolbar) | `<arq-catalog-toolbar>` | Pendiente |
-| [category-card](#category-card) | `<arq-category-card>` | Pendiente |
+| [category-card](#category-card) | `<arq-category-card>` | En código ([README](../src/components/category-card/README.md)) |
 | [checkbox](#checkbox) | `<arq-checkbox>` | En código ([README](../src/components/checkbox/README.md)) |
 | [choice-chip](#choice-chip) | `<arq-choice-chip>` | En código ([README](../src/components/choice-chip/README.md)) |
 | [compare-bar](#compare-bar) | `<arq-compare-bar>` | Pendiente |
@@ -35,7 +35,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [download-modal](#download-modal) | `<arq-download-modal>` | Pendiente |
 | [family-card](#family-card) | `<arq-family-card>` | Pendiente |
 | [faq-item](#faq-item) | `<arq-faq-item>` | En código ([README](../src/components/faq-item/README.md)) |
-| [feature-block](#feature-block) | `<arq-feature-block>` | Pendiente |
+| [feature-block](#feature-block) | `<arq-feature-block>` | En código ([README](../src/components/feature-block/README.md)) |
 | [file-upload](#file-upload) | `<arq-file-upload>` | En código ([README](../src/components/file-upload/README.md)) |
 | [filter-bar](#filter-bar) | `<arq-filter-bar>` | Pendiente |
 | [filter-chip](#filter-chip) | `<arq-filter-chip>` | En código ([README](../src/components/filter-chip/README.md)) |
@@ -49,7 +49,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [hero](#hero) | `<arq-hero>` | En código ([README](../src/components/hero/README.md)) |
 | [icon-button](#icon-button) | `<arq-icon-button>` | En código ([README](../src/components/icon-button/README.md)) |
 | [input](#input) | `<arq-input>` | En código ([README](../src/components/input/README.md)) |
-| [line-card](#line-card) | `<arq-line-card>` | Pendiente |
+| [line-card](#line-card) | `<arq-line-card>` | En código ([README](../src/components/line-card/README.md)) |
 | [link-list](#link-list) | `<arq-link-list>` | Pendiente |
 | [logo](#logo) | `<arq-logo>` | En código ([README](../src/components/logo/README.md)) |
 | [mega-link](#mega-link) | `<arq-mega-link>` | Pendiente |

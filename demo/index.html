@@ -1147,6 +1147,118 @@
           <arq-carousel-controls position="end"></arq-carousel-controls>
         </div>
       </section>
+
+      <section class="demo-section" aria-labelledby="demo-category-card">
+        <h2 id="demo-category-card" class="demo-heading role-label">category-card · &lt;arq-category-card&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1036:2461. Toda la tarjeta es link (link estirado): hover pone borde border/hover en la imagen y el foco rodea la tarjeta. ratio/portrait-soft. En Mobile, carrusel de tarjetas de 280.</p>
+        <div class="demo-cards demo-cards--3">
+          <arq-category-card href="#demo-category-card">
+            <img slot="image" src="/demo/fixtures/img/producto-1.svg" alt="" loading="lazy">
+            <span slot="name">Interior</span>
+          </arq-category-card>
+          <arq-category-card href="#demo-category-card">
+            <img slot="image" src="/demo/fixtures/img/producto-2.svg" alt="" loading="lazy">
+            <span slot="name">Exterior</span>
+          </arq-category-card>
+          <arq-category-card href="#demo-category-card">
+            <img slot="image" src="/demo/fixtures/img/producto-3.svg" alt="" loading="lazy">
+            <span slot="name">Lámparas y artefactos</span>
+          </arq-category-card>
+        </div>
+        <p class="demo-subheading role-body-sm">Sin imagen, nombre largo y Dark</p>
+        <div class="demo-cards demo-cards--3">
+          <arq-category-card href="#demo-category-card">
+            <span slot="name">Interior</span>
+          </arq-category-card>
+          <arq-category-card href="#demo-category-card">
+            <img slot="image" src="/demo/fixtures/img/producto-1.svg" alt="" loading="lazy">
+            <span slot="name">Accesorios de montaje y repuestos para luminarias</span>
+          </arq-category-card>
+          <div class="demo-dark" data-arq-theme="dark">
+          <arq-category-card href="#demo-category-card">
+            <img slot="image" src="/demo/fixtures/img/producto-2.svg" alt="" loading="lazy">
+            <span slot="name">Exterior</span>
+          </arq-category-card>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-line-card">
+        <h2 id="demo-line-card" class="demo-heading role-label">line-card · &lt;arq-line-card&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1036:2490. Un solo link (link estirado) con el nombre en &lt;h3&gt;; "Ver colección" es decorativo. ratio/landscape en Desktop, ratio/square en Mobile.</p>
+        <div class="demo-cards demo-cards--2">
+          <arq-line-card href="#demo-line-card">
+            <img slot="image" src="/demo/fixtures/img/producto-1.svg" alt="" loading="lazy">
+            <span slot="label">Línea interior</span>
+            <h3 slot="name">Douli</h3>
+            <span slot="description">Descripción breve de la línea, su uso y su carácter.</span>
+          </arq-line-card>
+          <arq-line-card href="#demo-line-card">
+            <img slot="image" src="/demo/fixtures/img/producto-2.svg" alt="" loading="lazy">
+            <span slot="label">Línea exterior</span>
+            <h3 slot="name">Sento</h3>
+            <span slot="description">Luminarias de exterior para fachadas y jardines.</span>
+          </arq-line-card>
+        </div>
+        <p class="demo-subheading role-body-sm">Sin imagen y textos largos · Dark</p>
+        <div class="demo-cards demo-cards--2">
+          <arq-line-card href="#demo-line-card">
+            <span slot="label">Línea interior para espacios comerciales y residenciales</span>
+            <h3 slot="name">Iluminación arquitectónica de interiores</h3>
+            <span slot="description">Luminarias de embutir, aplicar y suspender, con ópticas intercambiables, para resolver la iluminación general y de acento en un mismo sistema.</span>
+          </arq-line-card>
+          <div class="demo-dark" data-arq-theme="dark">
+          <arq-line-card href="#demo-line-card">
+            <img slot="image" src="/demo/fixtures/img/producto-3.svg" alt="" loading="lazy">
+            <span slot="label">Línea interior</span>
+            <h3 slot="name">Douli</h3>
+            <span slot="description">Descripción breve de la línea, su uso y su carácter.</span>
+          </arq-line-card>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-feature-block">
+        <h2 id="demo-feature-block" class="demo-heading role-label">feature-block · &lt;arq-feature-block&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1036:2535. Layout Image left (def.) e Image right (texto desfasado: 40 / 128 arriba). Imagen 4:5 al 50 %; secundaria opcional en ratio/wide. En Mobile se apila.</p>
+        <p class="demo-subheading role-body-sm">Image left con secundaria</p>
+        <arq-feature-block>
+          <img slot="image" src="/demo/fixtures/img/hero-1.svg" alt="Balizas de jardín de la colección Kanu" loading="lazy">
+          <span slot="label">Colección destacada</span>
+          <h2 slot="title">Kanu</h2>
+          <span slot="description">Descripción de la colección destacada, su uso y los espacios para los que está pensada.</span>
+          <arq-button slot="action" type="underline" show-underline show-icon icon="arrow-right" href="#demo-feature-block">Ver colección</arq-button>
+          <img slot="secondary" src="/demo/fixtures/img/producto-2.svg" alt="Detalle del acabado" loading="lazy">
+        </arq-feature-block>
+        <p class="demo-subheading role-body-sm">Image right con secundaria</p>
+        <arq-feature-block layout="image-right">
+          <img slot="image" src="/demo/fixtures/img/hero-1.svg" alt="Balizas de jardín de la colección Kanu" loading="lazy">
+          <span slot="label">Colección destacada</span>
+          <h2 slot="title">Douli</h2>
+          <span slot="description">Descripción de la colección destacada, su uso y los espacios para los que está pensada.</span>
+          <arq-button slot="action" type="underline" show-underline show-icon icon="arrow-right" href="#demo-feature-block">Ver colección</arq-button>
+          <img slot="secondary" src="/demo/fixtures/img/producto-2.svg" alt="Detalle del acabado" loading="lazy">
+        </arq-feature-block>
+        <p class="demo-subheading role-body-sm">Sin secundaria y título largo</p>
+        <arq-feature-block>
+          <img slot="image" src="/demo/fixtures/img/hero-1.svg" alt="Balizas de jardín de la colección Kanu" loading="lazy">
+          <span slot="label">Colección destacada</span>
+          <h2 slot="title">Iluminación para fachadas y espacios exteriores</h2>
+          <span slot="description">Descripción de la colección destacada, su uso y los espacios para los que está pensada.</span>
+          <arq-button slot="action" type="underline" show-underline show-icon icon="arrow-right" href="#demo-feature-block">Ver colección</arq-button>
+        </arq-feature-block>
+        <p class="demo-subheading role-body-sm">Contenedor en modo Dark</p>
+        <div class="demo-dark" data-arq-theme="dark">
+        <arq-feature-block layout="image-right">
+          <img slot="image" src="/demo/fixtures/img/hero-1.svg" alt="Balizas de jardín de la colección Kanu" loading="lazy">
+          <span slot="label">Colección destacada</span>
+          <h2 slot="title">Kanu</h2>
+          <span slot="description">Descripción de la colección destacada, su uso y los espacios para los que está pensada.</span>
+          <arq-button slot="action" type="underline" show-underline show-icon icon="arrow-right" href="#demo-feature-block">Ver colección</arq-button>
+          <img slot="secondary" src="/demo/fixtures/img/producto-2.svg" alt="Detalle del acabado" loading="lazy">
+        </arq-feature-block>
+        </div>
+      </section>
     </main>
   </body>
 </html>

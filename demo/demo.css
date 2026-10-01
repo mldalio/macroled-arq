@@ -348,5 +348,39 @@
   aspect-ratio: 1 / 1;
   scroll-snap-align: start;
   background: var(--arq-color-surface-subtle);
-  color: var(--arq-color-text-tertiary);
+  color: var(--arq-color-text-secondary);
+}
+
+/* Grillas de tarjetas de la demo (category-card de a 3, line-card de a 2).
+   En Mobile, category-card va en un carrusel (en el set, tarjetas de 280;
+   sin token para ese ancho, la demo usa el 75 % de la columna). */
+.demo-cards {
+  display: grid;
+  gap: var(--arq-space-gap-lg);
+  align-items: start;
+}
+
+.demo-cards--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.demo-cards--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 767px) {
+  .demo-cards--3 {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .demo-cards--3 > * {
+    flex: 0 0 75%;
+    scroll-snap-align: start;
+  }
+
+  .demo-cards--2 {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
