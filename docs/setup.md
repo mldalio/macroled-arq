@@ -118,11 +118,11 @@ Hacerle estas tres preguntas. Si responde bien las tres, está lista:
 
 1. En la terminal, en la carpeta del repo: `npm run dev`.
 2. Se abre el navegador en `http://localhost:5173/demo/index.html`. Si no se abre solo, copiar la dirección que muestra la terminal y agregarle `/demo/index.html`. Si el puerto 5173 está ocupado, Vite usa otro (5174…): vale el que muestre la terminal.
-3. Cada componente tiene su sección, en el orden en que se construyeron (los nuevos, al final).
-4. **Dark:** switch "Dark" arriba de la página. **Mobile:** F12 → ícono de celular (Ctrl+Shift+M) → 390 de ancho. **Consola:** F12 → Console, sin errores.
+3. Cada componente tiene su sección. **Índice** (arriba a la izquierda) las lista agrupadas, con un buscador: escribir el nombre y Enter lleva a la sección. Al lado se ve en qué sección estás.
+4. **Dark:** switch "Dark" arriba a la derecha. **Mobile:** botón **Ver a 390**, que muestra la demo en 390 de ancho (también se puede con F12 → ícono de celular, Ctrl+Shift+M). **Consola:** F12 → Console, sin errores.
 5. Para cortar el servidor: Ctrl+C en la terminal.
 
-Si la demo ya estaba abierta, los cambios aparecen solos al guardar; si no, recargar con Ctrl+F5. Para ver lo último de `main`: `git checkout main && git pull` antes de `npm run dev`.
+Si la demo ya estaba abierta, los cambios aparecen solos al guardar y la página vuelve a la misma sección; si no, recargar con Ctrl+F5. Una sección nueva aparece sola en el índice (en "Otros" hasta que se le asigna un grupo en `demo/demo-nav.js`). Para ver lo último de `main`: `git checkout main && git pull` antes de `npm run dev`.
 
 ### Prompt común para construir un componente
 
