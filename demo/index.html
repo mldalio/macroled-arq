@@ -512,6 +512,28 @@
           </demo-radio-group>
         </div>
       </section>
+
+      <section class="demo-section" aria-labelledby="demo-option-tile">
+        <h2 id="demo-option-tile" class="demo-heading role-label">option-tile · &lt;arq-option-tile&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 921:2487. En un grupo de prueba (como option-group Type=Tiles, en Fill): flechas, clic, Hover, Selected, Focus y Disabled.</p>
+        <demo-radio-group role="radiogroup" label="Altura" items="arq-option-tile" fill class="demo-tiles">
+          <arq-option-tile value="30">30 cm</arq-option-tile>
+          <arq-option-tile value="50" selected>50 cm</arq-option-tile>
+          <arq-option-tile value="80">80 cm</arq-option-tile>
+          <arq-option-tile value="120" disabled>120 cm</arq-option-tile>
+        </demo-radio-group>
+        <demo-radio-group role="radiogroup" label="Potencia" items="arq-option-tile" fill class="demo-tiles demo-narrow">
+          <arq-option-tile value="8">8 W</arq-option-tile>
+          <arq-option-tile value="12">12 W con texto largo</arq-option-tile>
+        </demo-radio-group>
+        <div class="demo-dark" data-arq-theme="dark">
+          <demo-radio-group role="radiogroup" label="Altura (Dark)" items="arq-option-tile" fill class="demo-tiles">
+            <arq-option-tile value="30">30 cm</arq-option-tile>
+            <arq-option-tile value="50" selected>50 cm</arq-option-tile>
+            <arq-option-tile value="120" disabled>120 cm</arq-option-tile>
+          </demo-radio-group>
+        </div>
+      </section>
     </main>
   </body>
 </html>

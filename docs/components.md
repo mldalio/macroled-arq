@@ -57,7 +57,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [nav-link](#nav-link) | `<arq-nav-link>` | Pendiente |
 | [navbar](#navbar) | `<arq-navbar>` | Pendiente |
 | [option-group](#option-group) | `<arq-option-group>` | Pendiente |
-| [option-tile](#option-tile) | `<arq-option-tile>` | Pendiente |
+| [option-tile](#option-tile) | `<arq-option-tile>` | En código ([README](../src/components/option-tile/README.md)) |
 | [page-header](#page-header) | `<arq-page-header>` | Pendiente |
 | [product-card](#product-card) | `<arq-product-card>` | Pendiente |
 | [product-gallery](#product-gallery) | `<arq-product-gallery>` | Pendiente |
