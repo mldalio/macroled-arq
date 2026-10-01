@@ -201,3 +201,18 @@
 .demo-specs {
   max-width: calc(var(--arq-layout-card-min) * 1.25);
 }
+
+/* Lista de opciones (como un select-menu: borde border/default) */
+.demo-menu {
+  max-width: calc(var(--arq-layout-card-min) * 1.5);
+  border: var(--arq-border-default) solid var(--arq-color-border-default);
+  background: var(--arq-color-surface-default);
+}
+
+/* Fila de miniaturas (como product-gallery: 5 columnas, gap space/gap/sm) */
+.demo-thumbs {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--arq-space-gap-sm);
+  max-width: calc(var(--arq-layout-card-min) * 2);
+}

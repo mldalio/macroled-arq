@@ -427,6 +427,26 @@
           <arq-filter-chip>3000 K</arq-filter-chip>
         </div>
       </section>
+
+      <section class="demo-section" aria-labelledby="demo-select-option">
+        <h2 id="demo-select-option" class="demo-heading role-label">select-option · &lt;arq-select-option&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 921:2500. Default, Selected, Disabled, con y sin muestra, sin imagen y texto largo. El foco y el teclado llegan con select-menu.</p>
+        <div class="demo-menu" role="listbox" aria-label="Acabado">
+          <arq-select-option value="all">Todos</arq-select-option>
+          <arq-select-option value="black" show-swatch swatch-src="/demo/fixtures/img/acabado-negro.svg" selected>Negro texturado</arq-select-option>
+          <arq-select-option value="white" show-swatch swatch-src="/demo/fixtures/img/acabado-blanco.svg">Blanco</arq-select-option>
+          <arq-select-option value="graphite" show-swatch>Gris grafito (sin imagen)</arq-select-option>
+          <arq-select-option value="bronze" show-swatch swatch-src="/demo/fixtures/img/acabado-bronce.svg" disabled>Bronce (sin stock)</arq-select-option>
+          <arq-select-option value="long">Un nombre de opción muy largo para ver cómo se parte en la lista</arq-select-option>
+        </div>
+        <div class="demo-dark" data-arq-theme="dark">
+          <div class="demo-menu" role="listbox" aria-label="Acabado (Dark)">
+            <arq-select-option value="all">Todos</arq-select-option>
+            <arq-select-option value="black" show-swatch swatch-src="/demo/fixtures/img/acabado-negro.svg" selected>Negro texturado</arq-select-option>
+            <arq-select-option value="bronze" show-swatch swatch-src="/demo/fixtures/img/acabado-bronce.svg" disabled>Bronce (sin stock)</arq-select-option>
+          </div>
+        </div>
+      </section>
     </main>
   </body>
 </html>

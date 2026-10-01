@@ -143,3 +143,15 @@ document.addEventListener('click', (event) => {
   chip.remove();
   next?.focus();
 });
+
+// ── select-option y gallery-thumb: elegir una (como lo harán select-menu y product-gallery)
+document.addEventListener('arq:change', (event) => {
+  const option = event.target.closest?.('arq-select-option');
+  if (!option) return;
+  for (const o of option.parentElement.querySelectorAll('arq-select-option')) o.selected = o === option;
+});
+document.addEventListener('click', (event) => {
+  const thumb = event.target.closest?.('[data-demo-thumbs] arq-gallery-thumb');
+  if (!thumb) return;
+  for (const t of thumb.parentElement.querySelectorAll('arq-gallery-thumb')) t.selected = t === thumb;
+});

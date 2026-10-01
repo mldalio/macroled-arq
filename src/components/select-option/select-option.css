@@ -1,0 +1,65 @@
+/* select-option · Figma 921:2500. Solo tokens semánticos. */
+
+:host {
+  display: block;
+  cursor: pointer;
+}
+
+:host([disabled]) {
+  cursor: default;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  padding: var(--arq-space-padding-md);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+/* State=Hover */
+:host(:not([disabled]):hover) .option {
+  background: var(--arq-color-surface-faint);
+}
+
+/* Muestra propia (no arq-swatch): dentro del menú lleva borde
+   color/border/default, no el color/border/subtle del swatch suelto. */
+.swatch {
+  position: relative;
+  box-sizing: border-box;
+  flex: none;
+  width: var(--arq-swatch-sm);
+  height: var(--arq-swatch-sm);
+  overflow: hidden;
+  border: var(--arq-border-default) solid var(--arq-color-border-default);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-subtle);
+}
+
+.swatch img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Selected: el nombre pasa a role/body-medium (lo cambia el JS). Es un cambio
+   de peso por selección, no por hover (DESIGN.md §6). */
+.name {
+  min-width: 0;
+  color: var(--arq-color-text-primary);
+}
+
+:host([disabled]) .name {
+  color: var(--arq-color-text-disabled);
+}
+
+/* Foco (cuando select-menu le dé foco): anillo de DESIGN.md §7 */
+:host(:focus-visible) {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+:host(:focus:not(:focus-visible)) {
+  outline: none;
+}

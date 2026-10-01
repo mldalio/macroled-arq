@@ -69,7 +69,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [section-header](#section-header) | `<arq-section-header>` | Pendiente |
 | [select](#select) | `<arq-select>` | Pendiente |
 | [select-menu](#select-menu) | `<arq-select-menu>` | Pendiente |
-| [select-option](#select-option) | `<arq-select-option>` | Pendiente |
+| [select-option](#select-option) | `<arq-select-option>` | En código ([README](../src/components/select-option/README.md)) |
 | [sku](#sku) | `<arq-sku>` | Pendiente |
 | [spec-list](#spec-list) | `<arq-spec-list>` | Pendiente |
 | [spec-row](#spec-row) | `<arq-spec-row>` | En código ([README](../src/components/spec-row/README.md)) |
