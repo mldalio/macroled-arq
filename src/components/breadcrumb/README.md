@@ -27,6 +27,6 @@ Migas de pan: `Colecciones / Kanu / Kanu Jardín`. Contiene [`<arq-breadcrumb-it
 | --- | --- |
 | Gap entre ítems | `space/gap/sm` (el mismo que entre label y "/") |
 
-## Pendientes
+## Textos largos
 
-- `TODO` Si no entra en una línea, Figma no lo define: se parte en varias líneas con el mismo gap.
+Una sola fila (descripción del set). Si no entra, primero se achica el ítem actual, que se parte en varias líneas (hasta el ancho de su palabra más larga), y después se cortan con "…" los intermedios. Los separadores quedan en la primera línea.

@@ -199,8 +199,34 @@ document.querySelector('[data-demo-attach]')?.addEventListener('click', () => {
 document.querySelector('[data-demo-bad]')?.addEventListener('click', () => {
   demoDrop(document.querySelector('[data-demo-upload]'), new File(['x'], 'presupuesto.xlsx'));
 });
+document.querySelector('[data-demo-heavy]')?.addEventListener('click', () => {
+  // 11 MB: supera max-size (10).
+  demoDrop(document.querySelector('[data-demo-upload]'), new File([new Uint8Array(11 * 1024 * 1024)], 'render-alta.png'));
+});
+// Drag over: se simula entrar con un archivo y se sale a los 2 s.
+document.querySelector('[data-demo-dragover]')?.addEventListener('click', () => {
+  const zone = document.querySelector('[data-demo-upload]').shadowRoot.querySelector('.zone');
+  zone.dispatchEvent(new DragEvent('dragenter', { bubbles: true, cancelable: true }));
+  setTimeout(() => zone.dispatchEvent(new DragEvent('dragleave', { bubbles: true })), 2000);
+});
 const darkUpload = document.querySelector('[data-demo-upload-dark]');
-if (darkUpload) customElements.whenDefined('arq-file-upload').then(() => demoDrop(darkUpload, new File(['%PDF'], 'plano-con-un-nombre-de-archivo-muy-largo-para-ver-como-se-corta.pdf')));
+const darkUploadError = document.querySelector('[data-demo-upload-dark-error]');
+customElements.whenDefined('arq-file-upload').then(() => {
+  if (darkUpload) demoDrop(darkUpload, new File(['%PDF'], 'plano-con-un-nombre-de-archivo-muy-largo-para-ver-como-se-corta.pdf'));
+  if (darkUploadError) demoDrop(darkUploadError, new File(['x'], 'presupuesto.xlsx'));
+});
+
+// ── sku: falla del portapapeles (solo la próxima copia de ese sku) ──
+document.querySelector('[data-demo-clipboard-fail]')?.addEventListener('click', () => {
+  const sku = document.querySelector('[data-demo-sku-fail]');
+  const clipboard = navigator.clipboard;
+  const original = clipboard?.writeText;
+  if (!clipboard || !original) return sku.copy();
+  clipboard.writeText = () => Promise.reject(new Error('Falla simulada (demo)'));
+  sku.copy().finally(() => {
+    clipboard.writeText = original;
+  });
+});
 
 // ── nav-link: el navbar de prueba abre y cierra el dropdown ──
 document.addEventListener('arq:toggle', (event) => {

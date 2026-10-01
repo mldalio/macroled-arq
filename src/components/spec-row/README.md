@@ -29,4 +29,4 @@ Fila de especificación técnica: etiqueta y valor, con separador inferior. Va d
 
 ## Pendientes
 
-- `TODO` Textos largos y mobile: Figma no define si se apilan. Hoy se parten en líneas, etiqueta a la izquierda y valor a la derecha.
+- **Textos largos:** etiqueta y valor se parten en varias líneas y nunca se cortan (también una palabra sin espacios, como un código). Las dos columnas arrancan arriba; etiqueta a la izquierda y valor a la derecha, también en mobile.

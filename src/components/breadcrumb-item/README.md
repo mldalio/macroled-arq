@@ -35,5 +35,5 @@ Un nivel del breadcrumb: label (link) y separador "/" opcional. No se usa suelto
 ## Pendientes
 
 - Hover a `color/text/primary` sigue la ficha `doc/breadcrumb-item`; en el set de Figma Hover está igual que Default (diseño corrige Figma).
-- `TODO` Un label que no entra: Figma no lo define. Se corta con puntos suspensivos.
-- Sin transición en hover ("transición corta" en la ficha): no hay tokens de movimiento.
+- **Textos largos:** si no es Current, el label se corta con "…" (el texto completo queda en el link y en su `aria-label`). Current se parte en varias líneas y nunca se corta.
+- Hover con transición de color `motion/duration/fast` (regla compartida de `ArqElement`).

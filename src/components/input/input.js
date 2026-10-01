@@ -26,6 +26,7 @@ const uid = (() => {
 })();
 
 // Atributos que pasan tal cual al control nativo.
+const TEXTAREA_ROWS = 4;
 const FORWARDED = ['placeholder', 'autocomplete', 'required', 'minlength', 'maxlength', 'pattern', 'inputmode', 'rows'];
 
 class ArqInput extends ArqElement {
@@ -108,6 +109,8 @@ class ArqInput extends ArqElement {
       if (this.hasAttribute(attr)) control.setAttribute(attr, this.getAttribute(attr));
       else control.removeAttribute(attr);
     }
+    // Textarea: 4 filas visibles por defecto (Figma).
+    if (control.localName === 'textarea' && !this.hasAttribute('rows')) control.rows = TEXTAREA_ROWS;
     control.disabled = this.disabled;
 
     // Show label=false (email del Home): el label queda solo para lectores.

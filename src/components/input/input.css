@@ -44,13 +44,10 @@
   opacity: 1;
 }
 
-/* Textarea: el campo (padding y línea incluidos) mide 120 de alto mínimo en
-   Figma, sin token: 6 líneas de role/body. El <textarea> llena el campo.
-   TODO: definir filas y si se puede agrandar (hoy resize vertical). */
+/* Textarea: 4 filas visibles de role/body (rows="4", que se puede cambiar con
+   el atributo rows); solo se agranda hacia abajo (descripción del set en Figma). */
 :host([type='textarea']) .field {
-  box-sizing: border-box;
   align-items: stretch;
-  min-height: calc(var(--arq-type-body-leading) * 6);
 }
 
 textarea.control {

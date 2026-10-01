@@ -6,10 +6,11 @@
 }
 
 /* gap space/gap/lg: separación mínima entre etiqueta y valor (descripción).
-   TODO: Figma no define qué pasa con textos largos; se parten en líneas. */
+   Textos largos (descripción del set): etiqueta y valor se parten en varias
+   líneas; nunca se cortan. Una palabra sin espacios (un código) también se parte. */
 .row {
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* con varias líneas, las dos columnas arrancan arriba */
   justify-content: space-between;
   gap: var(--arq-space-gap-lg);
   margin: 0;
@@ -19,11 +20,13 @@
 
 .label {
   min-width: 0;
+  overflow-wrap: anywhere;
   color: var(--arq-color-text-tertiary);
 }
 
 .value {
   min-width: 0;
+  overflow-wrap: anywhere;
   margin: 0;
   color: var(--arq-color-text-primary);
   text-align: end;
