@@ -1,0 +1,48 @@
+/* tab · Figma 929:2287. Solo tokens semánticos. */
+
+:host {
+  display: inline-flex;
+  flex: none;
+  cursor: pointer;
+}
+
+/* El subrayado de Selected es un borde inferior de border/default (1 px, set de
+   Figma) que existe en todos los estados (transparente): elegir no mueve el
+   layout. padding-bottom: Figma usa space/gap/sm. */
+.tab {
+  display: inline-flex;
+  padding-bottom: var(--arq-space-gap-sm);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-tertiary);
+  white-space: nowrap;
+}
+
+/* State=Hover */
+:host(:not([disabled]):hover) .tab {
+  color: var(--arq-color-text-primary);
+}
+
+/* State=Selected */
+:host([selected]) .tab {
+  border-bottom-color: var(--arq-color-border-strong);
+  color: var(--arq-color-text-primary);
+}
+
+/* State=Disabled */
+:host([disabled]) {
+  cursor: default;
+}
+
+:host([disabled]) .tab {
+  color: var(--arq-color-text-disabled);
+}
+
+/* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí, no hay token de offset) */
+:host(:focus-visible) {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+:host(:focus:not(:focus-visible)) {
+  outline: none;
+}

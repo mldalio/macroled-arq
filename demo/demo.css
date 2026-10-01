@@ -216,3 +216,12 @@
   gap: var(--arq-space-gap-sm);
   max-width: calc(var(--arq-layout-card-min) * 2);
 }
+
+.demo-swatches {
+  align-items: center;
+  gap: var(--arq-space-gap-sm-md);
+}
+
+.demo-tiles {
+  max-width: calc(var(--arq-layout-card-min) * 2);
+}

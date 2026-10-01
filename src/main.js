@@ -20,6 +20,7 @@ import './components/spec-row/spec-row.js';
 import './components/filter-chip/filter-chip.js';
 import './components/select-option/select-option.js';
 import './components/gallery-thumb/gallery-thumb.js';
+import './components/sku/sku.js';
 
 if (!window.Arq) {
   window.Arq = Object.freeze({ version });

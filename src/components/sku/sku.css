@@ -1,0 +1,91 @@
+/* sku · Figma 920:2539. Solo tokens semánticos.
+   Size=Default es la base (también para un size inválido). */
+
+:host {
+  display: inline-flex;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.sku {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-xs);
+  min-width: 0;
+}
+
+/* Etiqueta "SKU": solo en Size=Default */
+.label {
+  color: var(--arq-color-text-secondary);
+}
+
+:host([size='compact']) .label {
+  display: none;
+}
+
+.row {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-primary);
+  text-align: start;
+  cursor: pointer;
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+}
+
+/* Código: role/body-lg (Default) o role/body (Compact), lo pone el JS.
+   TODO: Figma es nowrap; un SKU largo (con espacios o paréntesis) se corta con …  */
+.code {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--arq-color-text-primary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.copy {
+  display: inline-flex;
+  flex: none;
+  color: var(--arq-color-icon-secondary);
+}
+
+.icon {
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+}
+
+/* State=Hover: el ícono pasa a color/icon/primary */
+.row:hover .copy {
+  color: var(--arq-color-icon-primary);
+}
+
+/* State=Copied: "Copiado" en el lugar del ícono */
+.copied {
+  display: none;
+  flex: none;
+  color: var(--arq-color-text-success);
+}
+
+:host([copied]) .copy {
+  display: none;
+}
+
+:host([copied]) .copied {
+  display: inline;
+}
+
+/* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí, no hay token de offset) */
+.row:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.row:focus:not(:focus-visible) {
+  outline: none;
+}

@@ -155,3 +155,24 @@ document.addEventListener('click', (event) => {
   if (!thumb) return;
   for (const t of thumb.parentElement.querySelectorAll('arq-gallery-thumb')) t.selected = t === thumb;
 });
+
+// ── Formulario de prueba: muestra lo que manda (FormData) y restablece ──
+for (const form of document.querySelectorAll('[data-demo-form]')) {
+  const output = form.querySelector('[data-demo-output]');
+  form.addEventListener('submit', (event) => event.preventDefault());
+  form.querySelector('[data-demo-show]')?.addEventListener('click', () => {
+    const data = [...new FormData(form)].map(([k, v]) => `${k}=${v instanceof File ? v.name : v}`);
+    output.textContent = data.length ? data.join(' · ') : '(vacío)';
+  });
+  form.querySelector('[data-demo-reset]')?.addEventListener('click', () => {
+    form.reset();
+    output.textContent = 'Restablecido';
+  });
+}
+
+// ── swatch-picker de prueba: la elegida pasa a Large y el resto a Default ──
+document.addEventListener('arq:change', (event) => {
+  const group = event.target.closest?.('[data-demo-swatches]');
+  if (!group || event.target.localName !== 'arq-swatch') return;
+  for (const s of group.querySelectorAll('arq-swatch')) s.size = s === event.target ? 'large' : 'default';
+});

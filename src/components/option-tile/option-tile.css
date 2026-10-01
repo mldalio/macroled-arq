@@ -1,0 +1,58 @@
+/* option-tile · Figma 921:2487. Solo tokens semánticos.
+   Sin caja: solo línea inferior de border/default (también en Selected: 1 px). */
+
+/* En un grupo va en Fill */
+:host {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.tile {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: var(--arq-space-padding-sm-md) var(--arq-space-padding-md);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-default);
+  border-radius: var(--arq-radius-control);
+  color: var(--arq-color-text-tertiary);
+  text-align: center;
+}
+
+/* State=Hover */
+:host(:not([disabled]):not([selected]):hover) .tile {
+  border-bottom-color: var(--arq-color-border-hover);
+  background: var(--arq-color-surface-faint);
+  color: var(--arq-color-text-primary);
+}
+
+/* State=Selected */
+:host([selected]) .tile {
+  border-bottom-color: var(--arq-color-border-strong);
+  background: var(--arq-color-surface-soft);
+  color: var(--arq-color-text-primary);
+}
+
+/* State=Disabled */
+:host([disabled]) {
+  cursor: default;
+}
+
+:host([disabled]) .tile {
+  border-bottom-color: var(--arq-color-border-disabled);
+  color: var(--arq-color-text-disabled);
+}
+
+/* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí, no hay token de offset) */
+:host(:focus-visible) {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+:host(:focus:not(:focus-visible)) {
+  outline: none;
+}

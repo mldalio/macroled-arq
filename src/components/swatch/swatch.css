@@ -1,0 +1,69 @@
+/* swatch · Figma 1063:4880. Solo tokens semánticos.
+   Size=Small es la base (el default de Figma); siempre cuadrado. */
+
+:host {
+  display: inline-flex;
+  flex: none;
+  vertical-align: middle;
+}
+
+.swatch {
+  position: relative;
+  box-sizing: border-box;
+  display: block;
+  width: var(--arq-swatch-sm);
+  height: var(--arq-swatch-sm);
+  overflow: hidden;
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-subtle);
+}
+
+:host([size='default']) .swatch {
+  width: var(--arq-swatch-md);
+  height: var(--arq-swatch-md);
+}
+
+:host([size='large']) .swatch {
+  width: var(--arq-swatch-lg);
+  height: var(--arq-swatch-lg);
+}
+
+.swatch img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Borde por encima de la imagen: pasar de 1 a 2 px no cambia el tamaño.
+   Default: color/border/subtle, para que se vea el acabado blanco. */
+.swatch::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Elegible (role="radio", dentro de swatch-picker) */
+:host([role='radio']) {
+  cursor: pointer;
+}
+
+/* State=Hover y Selected: border/strong (2 px) en color/border/strong */
+:host([role='radio']:hover) .swatch::after,
+:host([selected]) .swatch::after {
+  border-width: var(--arq-border-strong);
+  border-color: var(--arq-color-border-strong);
+}
+
+/* Foco: anillo de DESIGN.md §7 por fuera (2px: valor fijado ahí) */
+:host(:focus-visible) {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+:host(:focus:not(:focus-visible)) {
+  outline: none;
+}
