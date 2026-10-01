@@ -28,6 +28,7 @@ import './components/tab/tab.js';
 import './components/checkbox/checkbox.js';
 import './components/toggle/toggle.js';
 import './components/input/input.js';
+import './components/file-upload/file-upload.js';
 
 if (!window.Arq) {
   window.Arq = Object.freeze({ version });

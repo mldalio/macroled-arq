@@ -186,3 +186,18 @@ for (const button of document.querySelectorAll('[data-demo-validate]')) {
     output.textContent = invalid.length ? `Inválidos: ${invalid.map((i) => i.getAttribute('name')).join(', ')}` : 'Todo válido';
   });
 }
+
+// ── file-upload: adjuntar un archivo de ejemplo (como si se soltara en la zona) ──
+const demoDrop = (upload, file) => {
+  const data = new DataTransfer();
+  data.items.add(file);
+  upload.shadowRoot.querySelector('.zone').dispatchEvent(new DragEvent('drop', { dataTransfer: data, bubbles: true }));
+};
+document.querySelector('[data-demo-attach]')?.addEventListener('click', () => {
+  demoDrop(document.querySelector('[data-demo-upload]'), new File(['%PDF'], 'planta-arquitectura.pdf', { type: 'application/pdf' }));
+});
+document.querySelector('[data-demo-bad]')?.addEventListener('click', () => {
+  demoDrop(document.querySelector('[data-demo-upload]'), new File(['x'], 'presupuesto.xlsx'));
+});
+const darkUpload = document.querySelector('[data-demo-upload-dark]');
+if (darkUpload) customElements.whenDefined('arq-file-upload').then(() => demoDrop(darkUpload, new File(['%PDF'], 'plano-con-un-nombre-de-archivo-muy-largo-para-ver-como-se-corta.pdf')));

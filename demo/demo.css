@@ -240,3 +240,7 @@
 .demo-span {
   grid-column: 1 / -1;
 }
+
+.demo-upload {
+  max-width: calc(var(--arq-layout-card-min) * 2);
+}

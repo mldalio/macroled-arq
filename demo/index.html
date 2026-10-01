@@ -663,6 +663,24 @@
           <arq-input input-type="email" placeholder="Tu email">Email para el newsletter</arq-input>
         </div>
       </section>
+
+      <section class="demo-section" aria-labelledby="demo-file-upload">
+        <h2 id="demo-file-upload" class="demo-heading role-label">file-upload · &lt;arq-file-upload&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1113:2499. Empty (clic o arrastrar un archivo), Attached («Adjuntar ejemplo») y error («Probar archivo inválido»).</p>
+        <form class="demo-stack demo-upload" data-demo-form>
+          <arq-file-upload name="adjunto" data-demo-upload>Adjuntar archivos<span slot="helper">PDF, DWG, JPG o PNG · hasta 10 MB</span></arq-file-upload>
+          <div class="demo-row">
+            <arq-button type="outline" data-demo-attach>Adjuntar ejemplo</arq-button>
+            <arq-button type="outline" data-demo-bad>Probar archivo inválido</arq-button>
+            <arq-button type="outline" data-demo-show>Ver valor</arq-button>
+            <arq-button type="underline" show-underline data-demo-reset>Restablecer</arq-button>
+            <span class="role-body-sm demo-meta" data-demo-output aria-live="polite"></span>
+          </div>
+        </form>
+        <div class="demo-dark demo-upload" data-arq-theme="dark">
+          <arq-file-upload data-demo-upload-dark>Adjuntar archivos<span slot="helper">PDF, DWG, JPG o PNG · hasta 10 MB</span></arq-file-upload>
+        </div>
+      </section>
     </main>
   </body>
 </html>
