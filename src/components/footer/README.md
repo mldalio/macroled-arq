@@ -71,5 +71,4 @@ Las rutas son de ejemplo: las definitivas van en `docs/urls.md`.
 ## Pendientes
 
 - `TODO` (diseño): en el set cada columna mide 200 fijos y la bajada 240 fijos, sin token. En código toman el ancho de su contenido. En Mobile la bajada queda en una línea (en Figma, dos) y el footer mide 20 menos.
-- La ficha `doc/logo` dice "Default en navbar desktop y footer"; el set del footer usa Compact y se sigue el set. Falta corregir la ficha en Figma.
 - En el set, Información tiene Contacto y Glosario en Desktop y Contacto, Descargas y Glosario en Mobile. Se usa la lista de Mobile; falta sumar Descargas al Desktop en Figma.
