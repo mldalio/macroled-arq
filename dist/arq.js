@@ -295,8 +295,6 @@ var g = ":host{vertical-align:middle;color:var(--arq-color-text-primary);flex:no
 //#endregion
 //#region src/components/icon-button/icon-button.css?inline
 var y = ":host{vertical-align:middle;flex:none;display:inline-flex}.control{box-sizing:border-box;padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;justify-content:center;align-items:center;margin:0;display:inline-flex;position:relative}.glyph{display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host([size=large]) .control{padding:var(--arq-space-padding-sm-md)}:host([size=large]) .icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl)}.control:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.control:focus:not(:focus-visible){outline:none}.visually-hidden{width:var(--arq-border-default);height:var(--arq-border-default);clip-path:inset(50%);white-space:nowrap;position:absolute;overflow:hidden}.control:enabled:hover{background:var(--arq-color-surface-hover)}.control:enabled:active{background:var(--arq-color-surface-selected)}:host([background=surface]) .control{background:var(--arq-color-surface-default)}:host([background=surface]) .control:enabled:hover{background:var(--arq-color-surface-subtle)}:host([background=surface]) .control:enabled:active{background:var(--arq-color-surface-selected)}:host([background=subtle]) .control{background:var(--arq-color-surface-subtle)}:host([background=subtle]) .control:enabled:hover{background:var(--arq-color-surface-selected)}:host([background=subtle]) .control:enabled:active{background:var(--arq-color-surface-strong)}.control:disabled{color:var(--arq-color-icon-disabled);cursor:default}";
-//#endregion
-//#region src/main.js
 (class extends l {
 	static tag = "arq-icon-button";
 	static styles = y;
@@ -337,5 +335,45 @@ var y = ":host{vertical-align:middle;flex:none;display:inline-flex}.control{box-
 	#t() {
 		this.textContent.trim() || console.warn(`[arq] <arq-icon-button icon="${this.icon}"> no tiene nombre accesible: escribí qué hace entre las etiquetas (p. ej. <arq-icon-button icon="search">Buscar</arq-icon-button>).`);
 	}
+}).define();
+//#endregion
+//#region src/components/breadcrumb-item/breadcrumb-item.css?inline
+var b = ":host{min-width:0;display:inline-flex}.item{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;color:var(--arq-color-text-tertiary);display:inline-flex}.label{color:inherit;text-overflow:ellipsis;white-space:nowrap;text-decoration:none;overflow:hidden}.separator{color:var(--arq-color-text-tertiary);flex:none}@media (hover:hover){a.label:hover{color:var(--arq-color-text-primary)}}.label[aria-current=page]{color:var(--arq-color-text-primary)}a.label:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}a.label:focus:not(:focus-visible){outline:none}";
+(class extends l {
+	static tag = "arq-breadcrumb-item";
+	static styles = b;
+	static properties = {
+		href: { type: String },
+		showSeparator: { type: Boolean },
+		current: { type: Boolean }
+	};
+	static template = "<span class=\"item role-label\"><span class=\"label\"><slot></slot></span><span class=\"separator\" aria-hidden=\"true\" hidden>/</span></span>";
+	#e = this.attachInternals();
+	setup() {
+		this.#e.role = "listitem", this.shadowRoot.querySelector("slot").addEventListener("slotchange", () => this.#n());
+	}
+	update(e) {
+		(e.has("href") || e.has("current")) && this.#t();
+		let t = this.shadowRoot.querySelector(".separator");
+		t.hidden = !this.showSeparator || this.current;
+	}
+	#t() {
+		let e = this.shadowRoot.querySelector(".label"), t = this.href !== null && !this.current, n = document.createElement(t ? "a" : "span");
+		n.className = "label", t && n.setAttribute("href", this.href), this.current && n.setAttribute("aria-current", "page"), n.append(...e.childNodes), e.replaceWith(n), this.#n();
+	}
+	#n() {
+		let e = this.shadowRoot.querySelector(".label"), t = this.textContent.trim();
+		e.localName === "a" && t ? e.setAttribute("aria-label", t) : e.removeAttribute("aria-label");
+	}
+}).define();
+//#endregion
+//#region src/components/breadcrumb/breadcrumb.css?inline
+var x = ":host{min-width:0;display:block}.list{align-items:center;gap:var(--arq-space-gap-sm);flex-wrap:wrap;min-width:0;margin:0;padding:0;list-style:none;display:flex}", S = "Migas de pan";
+//#endregion
+//#region src/main.js
+(class extends l {
+	static tag = "arq-breadcrumb";
+	static styles = x;
+	static template = `<nav aria-label="${S}"><ol class="list"><slot></slot></ol></nav>`;
 }).define(), window.Arq || (window.Arq = Object.freeze({ version: e }));
 //#endregion

@@ -8,8 +8,8 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | Componente | Etiqueta | Estado en código |
 | --- | --- | --- |
 | [accordion-item](#accordion-item) | `<arq-accordion-item>` | Pendiente |
-| [breadcrumb](#breadcrumb) | `<arq-breadcrumb>` | Pendiente |
-| [breadcrumb-item](#breadcrumb-item) | `<arq-breadcrumb-item>` | Pendiente |
+| [breadcrumb](#breadcrumb) | `<arq-breadcrumb>` | En código ([README](../src/components/breadcrumb/README.md)) |
+| [breadcrumb-item](#breadcrumb-item) | `<arq-breadcrumb-item>` | En código ([README](../src/components/breadcrumb-item/README.md)) |
 | [button](#button) | `<arq-button>` | En código ([README](../src/components/button/README.md)) |
 | [carousel-controls](#carousel-controls) | `<arq-carousel-controls>` | Pendiente |
 | [catalog-nav](#catalog-nav) | `<arq-catalog-nav>` | Pendiente |

@@ -137,3 +137,8 @@ setup() {
 - **px como excepción:** los anchos del logo (181 · 158 · 117 px, alto por el viewBox 181 × 16) son medidas del archivo del logo, no del sistema. Van en px dentro de `src/components/logo/logo.css` y no se crean tokens. Es la única excepción a "sin px" en componentes junto con el `outline-offset: 2px` del foco (DESIGN.md §7).
 - **Un solo SVG:** Small y Compact son el mismo dibujo que Default escalado. Los trazos se exportaron de Figma (Size=Default) y quedaron en `logo.js` con `fill="currentColor"`.
 - **Link incluido:** `<arq-logo>` es siempre un link (`href="/arq"` por defecto) con `aria-label="Macroled Arq, inicio"`, según la ficha `doc/logo`.
+
+## 2026-10-01 · Textos en mayúsculas (role/label)
+
+- `role/label` y `role/label-sm` ponen la mayúscula con `text-transform`. Chrome arma el nombre accesible con esa transformación ("COLECCIONES") y algunos lectores de pantalla leen las palabras en mayúsculas como siglas.
+- En links con texto `role/label` (por ahora breadcrumb-item), el link lleva `aria-label` con el texto tal como llega del HTML, en caja normal. En elementos sin rol (un `<span>`) no se puede: ARIA no permite `aria-label` ahí.

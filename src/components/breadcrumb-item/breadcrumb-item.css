@@ -1,0 +1,53 @@
+/* breadcrumb-item · Figma 1053:4430. Solo tokens semánticos.
+   Texto role/label (mayúsculas por el estilo; el dato va en caja normal). */
+
+:host {
+  display: inline-flex;
+  min-width: 0;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  min-width: 0;
+  color: var(--arq-color-text-tertiary);
+}
+
+/* TODO: Figma no define qué pasa con un label que no entra (todo es nowrap).
+   Se corta con puntos suspensivos para no desbordar en mobile. */
+.label {
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.separator {
+  flex: none;
+  color: var(--arq-color-text-tertiary);
+}
+
+/* State=Hover: color/text/primary, como dice la ficha (diseño corrige Figma).
+   Solo con mouse: "Hover solo aplica en desktop". */
+@media (hover: hover) {
+  a.label:hover {
+    color: var(--arq-color-text-primary);
+  }
+}
+
+/* State=Current: página actual, sin link */
+.label[aria-current='page'] {
+  color: var(--arq-color-text-primary);
+}
+
+/* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí, no hay token de offset) */
+a.label:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+a.label:focus:not(:focus-visible) {
+  outline: none;
+}

@@ -1,0 +1,21 @@
+/* breadcrumb · Figma 1244:12667. Solo tokens semánticos. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* label · gap · "/" · gap · label: el gap entre ítems es el mismo que hay
+   entre el label y su separador (space/gap/sm).
+   TODO: Figma no define qué pasa si no entra en una línea; se parte en
+   varias (flex-wrap) con el mismo gap. */
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

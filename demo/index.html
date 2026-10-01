@@ -287,6 +287,50 @@
           <arq-icon-button icon="close" disabled>Cerrar (deshabilitado)</arq-icon-button>
         </div>
       </section>
+
+      <section class="demo-section" aria-labelledby="demo-breadcrumb">
+        <h2 id="demo-breadcrumb" class="demo-heading role-label">breadcrumb · &lt;arq-breadcrumb&gt; + &lt;arq-breadcrumb-item&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1244:12667 y 1053:4430. Hover (solo con mouse) y Focus se prueban con el mouse y con Tab.</p>
+
+        <h3 class="demo-subheading role-body-sm">Levels=3</h3>
+        <arq-breadcrumb>
+          <arq-breadcrumb-item href="#demo-breadcrumb" show-separator>Colecciones</arq-breadcrumb-item>
+          <arq-breadcrumb-item href="#demo-breadcrumb" show-separator>Kanu</arq-breadcrumb-item>
+          <arq-breadcrumb-item current>Kanu Jardín</arq-breadcrumb-item>
+        </arq-breadcrumb>
+
+        <h3 class="demo-subheading role-body-sm">Levels=2</h3>
+        <arq-breadcrumb>
+          <arq-breadcrumb-item href="#demo-breadcrumb" show-separator>Productos</arq-breadcrumb-item>
+          <arq-breadcrumb-item current>Kanu Jardín</arq-breadcrumb-item>
+        </arq-breadcrumb>
+
+        <h3 class="demo-subheading role-body-sm">breadcrumb-item suelto: Default · Default sin separador · Current con show-separator (no lo muestra) · sin href</h3>
+        <arq-breadcrumb>
+          <arq-breadcrumb-item href="#demo-breadcrumb" show-separator>Default</arq-breadcrumb-item>
+          <arq-breadcrumb-item href="#demo-breadcrumb">Sin separador</arq-breadcrumb-item>
+          <arq-breadcrumb-item current show-separator>Current</arq-breadcrumb-item>
+          <arq-breadcrumb-item show-separator>Sin href</arq-breadcrumb-item>
+        </arq-breadcrumb>
+
+        <h3 class="demo-subheading role-body-sm">Texto largo (columna angosta: parte en líneas y corta con …)</h3>
+        <div class="demo-narrow">
+          <arq-breadcrumb>
+            <arq-breadcrumb-item href="#demo-breadcrumb" show-separator>Colecciones</arq-breadcrumb-item>
+            <arq-breadcrumb-item href="#demo-breadcrumb" show-separator>Iluminación exterior arquitectónica</arq-breadcrumb-item>
+            <arq-breadcrumb-item current>Kanu Jardín 500 mm 12 W luz cálida con acabado negro texturado</arq-breadcrumb-item>
+          </arq-breadcrumb>
+        </div>
+
+        <h3 class="demo-subheading role-body-sm">Contenedor en modo Dark (data-arq-theme="dark")</h3>
+        <div class="demo-dark" data-arq-theme="dark">
+          <arq-breadcrumb>
+            <arq-breadcrumb-item href="#demo-breadcrumb" show-separator>Colecciones</arq-breadcrumb-item>
+            <arq-breadcrumb-item href="#demo-breadcrumb" show-separator>Kanu</arq-breadcrumb-item>
+            <arq-breadcrumb-item current>Kanu Jardín</arq-breadcrumb-item>
+          </arq-breadcrumb>
+        </div>
+      </section>
     </main>
   </body>
 </html>
