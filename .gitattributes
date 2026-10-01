@@ -2,5 +2,6 @@
 *.png binary
 *.jpg binary
 *.webp binary
+*.webm binary
 *.svg text eol=lf
 *.woff2 binary

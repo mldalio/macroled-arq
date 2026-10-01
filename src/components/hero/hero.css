@@ -1,0 +1,109 @@
+/* hero · Figma 1311:4340. Solo tokens semánticos, salvo el scrim (abajo).
+   Media a sangre + scrim + contenido abajo. Alto: ratio/wide en Desktop,
+   70svh en Mobile (DESIGN.md §5). Aplica su propio layout/gutter. */
+
+:host {
+  display: block;
+}
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  /* Mientras carga la media (o si falta): fondo oscuro, así el texto
+     inverso se sigue leyendo */
+  background: var(--arq-color-surface-inverse);
+}
+
+/* Media (imagen o video del DOM de la página): a sangre, recortada.
+   !important porque los estilos del sitio (Webflow) ganan sobre ::slotted. */
+.media {
+  position: absolute;
+  inset: 0;
+}
+
+::slotted([slot='media']) {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+
+/* hero/scrim (estilo de relleno de Figma, ya incluye el oscurecido de la
+   imagen). Excepción fija a "sin valores sueltos", como los px del logo: es un
+   estilo, no una variable, y el export de variables no lo trae
+   (decisión 2026-10-01 · hero). Si cambia en Figma, se copia acá a mano. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 52%) 0%,
+    rgb(0 0 0 / 20%) 18%,
+    rgb(0 0 0 / 20%) 45%,
+    rgb(0 0 0 / 68%) 100%
+  );
+}
+
+/* Contenido abajo: texto a la izquierda y CTA a la derecha (Desktop).
+   El gap entre los dos no está en Figma (justify-between): space/gap/xl
+   evita que un título largo toque el CTA. */
+.content {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-xl);
+  padding: 0 var(--arq-layout-gutter) var(--arq-space-section-sm);
+  color: var(--arq-color-text-inverse);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-lg);
+  min-width: 0;
+}
+
+.eyebrow,
+.title,
+.description {
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
+/* El <h1> llega del HTML de la página: hereda role/display y el color del
+   contenedor. !important porque los estilos del sitio para h1 ganan sobre
+   ::slotted. */
+::slotted(h1) {
+  margin: 0 !important;
+  font: inherit !important;
+  letter-spacing: inherit !important;
+  text-transform: inherit !important;
+  color: inherit !important;
+}
+
+/* Dark local: el button Outline queda claro sobre la foto */
+.action {
+  flex: none;
+}
+
+/* Mobile: 70 % del alto y todo apilado a space/gap/lg */
+@media (max-width: 767px) {
+  .hero {
+    aspect-ratio: auto;
+    height: 70svh;
+  }
+
+  .content {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: var(--arq-space-gap-lg);
+  }
+}

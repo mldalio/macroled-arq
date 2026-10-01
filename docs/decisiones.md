@@ -258,3 +258,16 @@ setup() {
   - Una página de Arq entra holgada: el embed lleva solo el HTML de los componentes y el texto indexable; estilos y lógica vienen de `dist/arq.js` y `dist/arq.css` (jsDelivr), y los datos de Typesense.
   - Si una página se acerca al límite, se parte **por sección**: un Code Embed por bloque de página (hero, categorías, FAQ…), en orden. Cada bloque es un conjunto de componentes que no depende del HTML de otro embed, así que se puede partir en cualquier límite entre secciones. En `src/pages/` la página sigue siendo un archivo, con un comentario `<!-- embed N -->` en cada corte.
   - Nunca se parte un componente entre dos embeds: el HTML de un elemento tiene que abrir y cerrar en el mismo embed.
+
+## 2026-10-01 · hero
+
+- **Slots:** media (`<img>` o `<video>`), eyebrow, title, description y action. La media va en el HTML del embed porque es el LCP: el navegador la descubre sin esperar al JS. Show eyebrow, Show description y Show button no son atributos: cada parte se muestra si su slot tiene contenido.
+- **Dark local del CTA:** el slot `action` va envuelto en un contenedor interno con `data-arq-theme="dark"` (DESIGN.md §2). Los textos van en `color/text/inverse`, como Figma.
+- **`<h1>` en el HTML de la página:** el título se escribe `<h1 slot="title">…</h1>` en el embed, no dentro del Shadow DOM, así el encabezado está en el HTML indexable. El componente lo estiliza con `::slotted(h1)`: hereda `role/display` y el color de un contenedor interno (`font: inherit`, sin escribir primitivas), con `!important` porque los estilos del sitio para `h1` ganan sobre `::slotted`.
+- **scrim, excepción fija:** `hero/scrim` es un estilo de relleno de Figma y el export de variables no lo trae. El degradado (negro 52 → 20 → 20 → 68 %) va copiado con sus valores en `src/components/hero/hero.css`, como los px del logo. No es un pendiente: si cambia en Figma, se copia a mano.
+- `TODO` (navbar): crear `layout/navbar-height` (56) en Figma al construir navbar; lo usan hero y compare-header Compact.
+- **`<div>`, no `<header>`:** la ficha pide `<header class="hero">`, pero en esas páginas el navbar es el banner y dos banners es un error de axe.
+- **Video y movimiento reducido:** con `prefers-reduced-motion: reduce` el componente quita el autoplay, pausa el video y vuelve al poster (`load()`); si la preferencia cambia, lo reanuda. Solo afecta a videos que vinieron con `autoplay` en el HTML.
+- **Media con `!important`:** posición y tamaño de la media slotteada van con `!important`, porque los estilos del sitio para `img` ganan sobre `::slotted`.
+- **Gap texto–CTA en Desktop:** `space/gap/xl`; en Figma es justify-between sin gap y un título largo tocaría el CTA.
+- **Fondo de reserva** `color/surface/inverse` mientras carga la media o si falta, para que el texto inverso se lea.
