@@ -499,12 +499,12 @@ var A = ":host{display:block}.thumb{box-sizing:border-box;aspect-ratio:5/4;borde
 		src: { type: String },
 		alt: { type: String }
 	};
-	static template = "<button type=\"button\" class=\"thumb\"><img alt=\"\" loading=\"lazy\" hidden></button>";
+	static template = "<button type=\"button\" class=\"thumb\"><img alt=\"\" loading=\"lazy\"></button>";
 	#e = null;
 	setup() {
 		this.#e = this.shadowRoot.querySelector(".thumb");
 		let e = this.shadowRoot.querySelector("img");
-		e.addEventListener("error", () => e.hidden = !0), e.addEventListener("load", () => e.hidden = !1), setTimeout(() => {
+		e.addEventListener("error", () => e.hidden = !0), setTimeout(() => {
 			this.alt || console.warn("[arq] <arq-gallery-thumb> sin alt: describí la imagen (p. ej. alt=\"Kanu Jardín, vista frontal\").");
 		});
 	}
@@ -515,7 +515,7 @@ var A = ":host{display:block}.thumb{box-sizing:border-box;aspect-ratio:5/4;borde
 		let t = this.#e;
 		this.selected ? t.setAttribute("aria-current", "true") : t.removeAttribute("aria-current");
 		let n = this.shadowRoot.querySelector("img");
-		e.has("src") && (this.src ? n.src = this.src : (n.removeAttribute("src"), n.hidden = !0)), this.alt ? t.setAttribute("aria-label", this.alt) : t.removeAttribute("aria-label");
+		e.has("src") && (this.src ? (n.hidden = !1, n.src = this.src) : (n.removeAttribute("src"), n.hidden = !0)), this.alt ? t.setAttribute("aria-label", this.alt) : t.removeAttribute("aria-label");
 	}
 }).define(), window.Arq || (window.Arq = Object.freeze({ version: e }));
 //#endregion

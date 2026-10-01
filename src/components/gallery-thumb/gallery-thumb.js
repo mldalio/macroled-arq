@@ -19,7 +19,7 @@ class ArqGalleryThumb extends ArqElement {
     src: { type: String },
     alt: { type: String },
   };
-  static template = `<button type="button" class="thumb"><img alt="" loading="lazy" hidden></button>`;
+  static template = `<button type="button" class="thumb"><img alt="" loading="lazy"></button>`;
 
   #control = null;
 
@@ -27,8 +27,8 @@ class ArqGalleryThumb extends ArqElement {
     this.#control = this.shadowRoot.querySelector('.thumb');
     const img = this.shadowRoot.querySelector('img');
     // Sin imagen (o si no carga): queda el fondo color/surface/subtle.
+    // La <img> no arranca oculta: con loading="lazy", una imagen oculta no se carga.
     img.addEventListener('error', () => (img.hidden = true));
-    img.addEventListener('load', () => (img.hidden = false));
     // Se revisa después de una vuelta del event loop (el alt puede llegar por JS).
     setTimeout(() => {
       if (!this.alt) console.warn('[arq] <arq-gallery-thumb> sin alt: describí la imagen (p. ej. alt="Kanu Jardín, vista frontal").');
@@ -47,8 +47,10 @@ class ArqGalleryThumb extends ArqElement {
     else control.removeAttribute('aria-current');
     const img = this.shadowRoot.querySelector('img');
     if (changed.has('src')) {
-      if (this.src) img.src = this.src;
-      else {
+      if (this.src) {
+        img.hidden = false;
+        img.src = this.src;
+      } else {
         img.removeAttribute('src');
         img.hidden = true;
       }
