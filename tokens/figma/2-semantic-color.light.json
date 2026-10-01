@@ -471,6 +471,22 @@
             }
           }
         }
+      },
+      "translucent": {
+        "$type": "color",
+        "$value": "{alpha.ink-10}",
+        "$description": "Fondo translúcido para barras sobre fotos (navbar Transparent), junto con blur/backdrop. Igual en Light y Dark.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-overlay-translucent)"
+            }
+          }
+        }
       }
     },
     "bg": {

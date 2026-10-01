@@ -64,6 +64,7 @@
   --arq-radius-full: 999px;
   --arq-border-1: 1px;
   --arq-border-2: 2px;
+  --arq-blur-12: 12px;
   --arq-neutral-0: #ffffff;
   --arq-neutral-25: #fbfbfb;
   --arq-neutral-50: #f7f7f7;
@@ -167,6 +168,7 @@
   --arq-border-default: var(--arq-border-1); /** Grosor de bordes y divisores. */
   --arq-border-focus: var(--arq-border-1); /** Grosor del anillo de foco. */
   --arq-border-strong: var(--arq-border-2); /** Grosor de borde marcado (2): hover y selección de muestras. */
+  --arq-blur-backdrop: var(--arq-blur-12); /** Desenfoque del fondo detrás de una superficie translúcida (background blur / backdrop-filter). Va junto con color/overlay/translucent. */
   --arq-color-bg-default: var(--arq-neutral-0); /** Fondo de página y de secciones completas (body, section). */
   --arq-color-bg-subtle: var(--arq-neutral-100); /** Fondo alternativo para diferenciar una sección de página de la siguiente. */
   --arq-color-bg-inverse: var(--arq-neutral-900); /** Fondo de sección invertida, por ejemplo un footer oscuro en modo Light. */
@@ -208,6 +210,7 @@
   --arq-color-action-on-primary: var(--arq-neutral-0); /** Texto e íconos sobre color/action/primary. */
   --arq-color-accent-default: var(--arq-neutral-900); /** Acento para detalles: foco, estados activos, etiquetas. Light neutral/900, Dark neutral/150. Nunca fondo de botones ni de bloques grandes. */
   --arq-color-overlay-scrim: var(--arq-alpha-black-60); /** Fondo semitransparente detrás de modales y paneles laterales. */
+  --arq-color-overlay-translucent: var(--arq-alpha-ink-10); /** Fondo translúcido para barras sobre fotos (navbar Transparent), junto con blur/backdrop. Igual en Light y Dark. */
   --arq-layout-gutter: var(--arq-space-40); /** Margen lateral de la página. */
   --arq-icon-sm: var(--arq-space-12); /** Íconos dentro de texto pequeño o chips. */
   --arq-icon-md: var(--arq-space-16); /** Íconos por defecto (botones, navegación). */
