@@ -58,7 +58,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [navbar](#navbar) | `<arq-navbar>` | Pendiente |
 | [option-group](#option-group) | `<arq-option-group>` | Pendiente |
 | [option-tile](#option-tile) | `<arq-option-tile>` | En código ([README](../src/components/option-tile/README.md)) |
-| [page-header](#page-header) | `<arq-page-header>` | Pendiente |
+| [page-header](#page-header) | `<arq-page-header>` | En código ([README](../src/components/page-header/README.md)) |
 | [product-card](#product-card) | `<arq-product-card>` | Pendiente |
 | [product-gallery](#product-gallery) | `<arq-product-gallery>` | Pendiente |
 | [search-dropdown](#search-dropdown) | `<arq-search-dropdown>` | Pendiente |
@@ -490,6 +490,7 @@ Opción seleccionable de configuración (altura, potencia, temperatura…), func
 
 Encabezado de páginas de listado (Productos, Colecciones, Descargas, Contacto). Título único role/display. Desktop: título a la izquierda y bajada a la derecha; Mobile: todo apilado (modos Mobile de Dimension y Type). Props: Title, Description, Show breadcrumb, Show description; breadcrumb expuesto. Type=List (breadcrumb + título, bajada a la derecha en desktop) · Type=Detail (volver + título con bajada debajo + acción a la derecha, p. ej. Comparativa). Props Detail: Show back, Show action (button expuesto).
 
+Anchos: bajada de List hasta layout/measure; columna de título y bajada de Detail hasta layout/measure-wide. El componente aplica su propio layout/gutter (como navbar y footer). El breadcrumb muestra los niveles que correspondan a la página.
 ## product-card
 
 - Figma: [990-2372](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=990-2372)

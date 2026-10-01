@@ -782,6 +782,84 @@
           </arq-section-header>
         </div>
       </section>
+
+      <section class="demo-section" aria-labelledby="demo-page-header">
+        <h2 id="demo-page-header" class="demo-heading role-label">page-header · &lt;arq-page-header&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1244:4016. Type List y Detail. Aplica su propio layout/gutter: en la demo va a sangre (el contorno punteado marca su caja). Hasta 767 px se apila y la acción de Detail ocupa todo el ancho.</p>
+
+        <p class="demo-subheading role-body-sm">Type=List (Productos)</p>
+        <div class="demo-bleed">
+          <arq-page-header show-breadcrumb show-description>
+            <arq-breadcrumb slot="breadcrumb">
+              <arq-breadcrumb-item href="#demo-page-header" show-separator>Inicio</arq-breadcrumb-item>
+              <arq-breadcrumb-item current>Productos</arq-breadcrumb-item>
+            </arq-breadcrumb>
+            Productos
+            <span slot="description">Luminarias para interior y exterior. Cada modelo cuenta con ficha técnica y archivos IES para especificar.</span>
+          </arq-page-header>
+        </div>
+
+        <p class="demo-subheading role-body-sm">Type=List sin bajada (Colecciones) y sin breadcrumb</p>
+        <div class="demo-bleed">
+          <arq-page-header show-breadcrumb>
+            <arq-breadcrumb slot="breadcrumb">
+              <arq-breadcrumb-item href="#demo-page-header" show-separator>Inicio</arq-breadcrumb-item>
+              <arq-breadcrumb-item current>Colecciones</arq-breadcrumb-item>
+            </arq-breadcrumb>
+            Colecciones
+          </arq-page-header>
+          <arq-page-header show-description>
+            Contacto
+            <span slot="description">Escribinos por tu proyecto: te respondemos en 48 h.</span>
+          </arq-page-header>
+        </div>
+
+        <p class="demo-subheading role-body-sm">Type=Detail (Comparativa)</p>
+        <div class="demo-bleed">
+          <arq-page-header type="detail" show-back back-href="#demo-page-header" show-description show-action>
+            <span slot="back">Volver a productos</span>
+            Comparativa
+            <span slot="description">Compará hasta tres productos: especificaciones lumínicas, eléctricas y de montaje lado a lado.</span>
+            <arq-button slot="action" show-icon icon="download">Descargar comparación</arq-button>
+          </arq-page-header>
+        </div>
+
+        <p class="demo-subheading role-body-sm">Textos largos (List y Detail sin acción)</p>
+        <div class="demo-bleed">
+          <arq-page-header show-breadcrumb show-description>
+            <arq-breadcrumb slot="breadcrumb">
+              <arq-breadcrumb-item href="#demo-page-header" show-separator>Inicio</arq-breadcrumb-item>
+              <arq-breadcrumb-item href="#demo-page-header" show-separator>Colecciones</arq-breadcrumb-item>
+              <arq-breadcrumb-item current>Kanu</arq-breadcrumb-item>
+            </arq-breadcrumb>
+            Iluminación arquitectónica para exteriores
+            <span slot="description">Luminarias para fachadas, jardines y espacios públicos con cuerpos de aluminio inyectado, ópticas intercambiables y acabados resistentes a la intemperie.</span>
+          </arq-page-header>
+          <arq-page-header type="detail" show-back back-href="#demo-page-header" show-description>
+            <span slot="back">Volver a colecciones</span>
+            Comparativa de luminarias de exterior
+            <span slot="description">Compará hasta tres productos: especificaciones lumínicas, eléctricas y de montaje lado a lado, con los archivos IES de cada uno.</span>
+          </arq-page-header>
+        </div>
+
+        <p class="demo-subheading role-body-sm">Contenedor en modo Dark (Iluminar)</p>
+        <div class="demo-bleed demo-dark" data-arq-theme="dark">
+          <arq-page-header show-breadcrumb show-description>
+            <arq-breadcrumb slot="breadcrumb">
+              <arq-breadcrumb-item href="#demo-page-header" show-separator>Inicio</arq-breadcrumb-item>
+              <arq-breadcrumb-item current>Productos</arq-breadcrumb-item>
+            </arq-breadcrumb>
+            Productos
+            <span slot="description">Luminarias para interior y exterior. Cada modelo cuenta con ficha técnica y archivos IES para especificar.</span>
+          </arq-page-header>
+          <arq-page-header type="detail" show-back back-href="#demo-page-header" show-description show-action>
+            <span slot="back">Volver a productos</span>
+            Comparativa
+            <span slot="description">Compará hasta tres productos lado a lado.</span>
+            <arq-button slot="action" show-icon icon="download">Descargar comparación</arq-button>
+          </arq-page-header>
+        </div>
+      </section>
     </main>
   </body>
 </html>

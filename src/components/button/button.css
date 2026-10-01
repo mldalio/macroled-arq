@@ -10,10 +10,13 @@
   vertical-align: middle;
 }
 
+/* flex 1: si el host es más ancho que su contenido (p. ej. width: 100% en la
+   acción de page-header Mobile), el botón lo llena. Si no, no cambia nada. */
 .control {
   position: relative;
   box-sizing: border-box;
   display: inline-flex;
+  flex: 1 1 auto;
   align-items: center;
   justify-content: center;
   gap: var(--arq-space-gap-sm);

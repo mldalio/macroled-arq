@@ -240,11 +240,12 @@ Cómo elegir un token:
 
 | Token | Desktop | Mobile | Uso |
 | --- | --- | --- | --- |
-| layout/gutter | 40 | 20 | Margen lateral de la página. Lo aplica la sección, no cada componente. Excepción: componentes de borde a borde (navbar, footer, filter-bar, variants-table) lo usan como padding interno |
+| layout/gutter | 40 | 20 | Margen lateral de la página. Lo aplica la sección, no cada componente. Excepción: componentes de borde a borde (navbar, footer, page-header, filter-bar, variants-table) lo usan como padding interno |
 | layout/card-min | 280 | 160 | Ancho mínimo de tarjeta en la grilla de catálogo |
 | layout/card-min-wide | 340 | 340 | Reemplaza a card-min desde 1600 px, en el CSS de la grilla |
 | layout/compare-media-max | 2000 | 2000 | Tope de la media en la comparativa |
-| layout/measure | 400 | 400 | Ancho máximo de un texto de lectura junto a otro elemento (bajada de section-header). En Mobile el texto ocupa todo el ancho |
+| layout/measure | 400 | 400 | Ancho máximo de un texto de lectura junto a otro elemento (bajada de section-header y de page-header List). En Mobile el texto ocupa todo el ancho |
+| layout/measure-wide | 520 | 520 | Ancho máximo de un texto de lectura en una columna principal (page-header Detail). En Mobile el texto ocupa todo el ancho |
 | space/section/2xs · xs · sm · md · lg · xl | 32 · 48 · 64 · 96 · 128 · 160 | 24 · 32 · 40 · 56 · 96 · 128 | Solo entre bloques de página (padding de la sección). Es la perilla del ritmo de página |
 | space/gap/xs · sm · sm-md · md · lg · xl · xl-2xl · 2xl · 3xl · 4xl · 5xl · 6xl | 4 · 8 · 12 · 16 · 24 · 32 · 40 · 48 · 64 · 80 · 96 · 128 | 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 56 · 64 · 96 | Entre elementos (gap) |
 | space/padding/2xs · xs · sm · sm-md · md · lg · xl · xl-2xl · 2xl · 3xl · 4xl · 5xl · 6xl | 3 · 4 · 8 · 12 · 16 · 24 · 32 · 40 · 48 · 64 · 80 · 96 · 128 | 3 · 4 · 8 · 12 · 16 · 20 · 24 · 32 · 32 · 48 · 56 · 64 · 96 | Padding interno |
