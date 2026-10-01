@@ -246,7 +246,7 @@
   --arq-type-caption-leading: var(--arq-font-leading-14); /** Interlineado del estilo role/caption. Lo usa el estilo de texto: no aplicar directo. */
 }
 
-/* Dark: solo con el switch Iluminar (data-arq-theme="dark"), nunca por prefers-color-scheme */
+/* Dark: con data-arq-theme="dark" (Iluminar o Dark local), nunca por prefers-color-scheme */
 [data-arq-theme="dark"] {
   --arq-color-bg-default: var(--arq-neutral-800); /** Fondo de página y de secciones completas (body, section). */
   --arq-color-bg-subtle: var(--arq-neutral-750); /** Fondo alternativo para diferenciar una sección de página de la siguiente. */
