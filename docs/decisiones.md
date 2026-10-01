@@ -200,3 +200,9 @@ setup() {
 - **breadcrumb:** una sola fila. El ítem actual tiene `flex-shrink` mucho mayor que los intermedios: primero se parte en líneas (hasta su palabra más larga) y recién después se cortan los intermedios con "…".
 - **sku:** si falla `navigator.clipboard.writeText`, se selecciona el código (está en el DOM de la página) y se muestra y anuncia "Copialo con Ctrl+C" ("⌘C" si `navigator.userAgentData.platform` o `navigator.platform` es Mac, iPhone o iPad) en `color/text/secondary` durante feedback. Estado interno `:state(copy-failed)`.
 - **spec-row y sku:** `overflow-wrap: anywhere` para que un código sin espacios también se parta.
+
+## 2026-10-01 · hero y navbar
+
+- **hero no contiene al navbar.** En código cada página tiene un solo `<arq-navbar>`, que va aparte, antes del hero, con `theme="transparent"` y encima de la media del hero. `<arq-hero>` usa solo button.
+- **Por qué:** el navbar es uno por página (también en las páginas sin hero) y tiene su propio comportamiento (scroll, búsqueda, menú, mega-menu). Meterlo dentro del hero lo duplicaría en Home y Contacto.
+- En Figma, hero muestra una instancia de navbar Theme=Transparent (y su descripción lo menciona): es una referencia de composición, no parte del componente.

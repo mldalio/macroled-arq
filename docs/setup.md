@@ -1,14 +1,16 @@
 # Setup y forma de trabajo — Macroled Arq
 
-Guía para trabajar las tres con IAs distintas sobre las mismas reglas.
+Guía para trabajar con IAs sobre las mismas reglas.
+
+**Hoy trabaja una sola persona:** Lau construye todos los componentes con Claude Code. Las filas de Codex y Cursor quedan como referencia, por si más adelante se suma alguien con otra IA.
 
 | Persona | Editor | IA | Qué lee automáticamente |
 | --- | --- | --- | --- |
 | Lau | VS Code | Claude Code | `CLAUDE.md` → importa `AGENTS.md` y `DESIGN.md` |
-| Compañera 2 | VS Code | Codex (ChatGPT) | `AGENTS.md` |
-| Compañera 3 | Cursor | Agente de Cursor | `AGENTS.md` |
+| (a futuro) | VS Code | Codex (ChatGPT) | `AGENTS.md` |
+| (a futuro) | Cursor | Agente de Cursor | `AGENTS.md` |
 
-Las reglas viven en **un solo lugar** (`AGENTS.md` + `DESIGN.md`). `CLAUDE.md` solo agrega notas para Claude. No se crean reglas propias por herramienta (`.cursor/rules/`, instrucciones personalizadas de ChatGPT, etc.): si hace falta una regla nueva, va en `AGENTS.md` y se acuerda entre las tres.
+Las reglas viven en **un solo lugar** (`AGENTS.md` + `DESIGN.md`). `CLAUDE.md` solo agrega notas para Claude. No se crean reglas propias por herramienta (`.cursor/rules/`, instrucciones personalizadas de ChatGPT, etc.): si hace falta una regla nueva, va en `AGENTS.md`, en una rama `docs/`, y después se actualiza su copia en *Plan del proyecto* de Figma.
 
 ---
 
@@ -19,19 +21,20 @@ Ya está hecho:
 - **Base del repo:** Vite en modo librería (`dist/arq.js` + `dist/arq.css`), tokens desde Figma (`npm run tokens:import` + `npm run tokens`, 256 tokens con los de movimiento), estilos `role/*` compartidos, demo con Light/Dark, `.gitattributes` con LF.
 - **Publicación:** repo público y `dist/` servido por jsDelivr desde los tags de GitHub (opción A, ver Parte 5).
 - **Fase 1:** primitivos en `main` (lista en Parte 4) con transiciones de color y movimiento reducido.
-- **Base de componentes** (rama `feat/arq-base`): `ArqElement` (clase base), `icons.js` (20 íconos) y `disclosure.js` (desplegables). El patrón está en `docs/decisiones.md`.
+- **Base de componentes** (en `main`): `ArqElement` (clase base), `icons.js` (20 íconos) y `disclosure.js` (desplegables). El patrón está en `docs/decisiones.md`.
 - **Documentación para IAs:** `AGENTS.md`, `DESIGN.md`, `CLAUDE.md`, `docs/components.md` (descripción de los 74 componentes). Hay una copia de cada uno en la página *Plan del proyecto* de Figma.
+
+- **v0.1.0:** publicada y probada en el staging de Webflow.
 
 Falta:
 
-- Probar `v0.1.0` en el staging de Webflow (Parte 5).
 - Completar `docs/typesense-schema.md` y `docs/urls.md`.
 
 ---
 
-## Parte 1 · Lau: cerrar la base y abrir el repo al equipo
+## Parte 1 · Lau: cerrar la base
 
-### 1. Dónde se publica `dist/` (decidido)
+### 1. Dónde se publica `dist/` (hecho)
 
 **Opción A · repo público + jsDelivr.** El repo `github.com/mldalio/macroled-arq` es público y jsDelivr sirve `dist/` desde los tags de GitHub:
 
@@ -42,51 +45,25 @@ https://cdn.jsdelivr.net/gh/mldalio/macroled-arq@vX.Y.Z/dist/arq.css
 
 No hay secretos en el repo: la única key del front es la search-only de Typesense, que es pública por diseño. La decisión está en `docs/decisiones.md` (2026-10-01 · Publicación).
 
-### 2. Subir el repo
+### 2. Subir el repo y la base (hecho)
 
-```bash
-git checkout main
-git push -u origin main
-git checkout feat/arq-base
-git push -u origin feat/arq-base
-```
+El repo está en GitHub y la base de componentes (`feat/arq-base`) está mergeada en `main`.
 
-En GitHub, abrir un Pull Request de `feat/arq-base` a `main`, revisarlo y mergearlo. Después:
+### 3. Validar el circuito con `<arq-button>` (hecho)
 
-```bash
-git checkout main
-git pull
-```
+`<arq-button>` está en `main` y `v0.1.0` se probó en el staging de Webflow: se ve igual que en la demo y los estilos de Macroled no lo afectan (ni al revés). Si una versión nueva rompe algo en Webflow, se corrige en la base antes de seguir con componentes.
 
-### 3. Validar el circuito con `<arq-button>`
+### 4. Opcional: tarjetas en Trello
 
-```bash
-git checkout -b feat/arq-button
-```
-
-Pedirle a Claude Code el componente con el **prompt común** (Parte 3), con `NOMBRE = button` y `NODE-ID = 907-2375`. Después:
-
-1. Revisarlo en la demo (`npm run dev`) contra Figma: Light/Dark, 390 px, teclado y los estados Filled, Outline, Underline, Disabled y Loading.
-2. `npm run build`, commit, push y Pull Request.
-3. Publicar una versión de prueba `v0.1.0` (Parte 5).
-4. En el staging de Webflow, crear una página de prueba en `/arq` con el loader (Parte 5) y un `<arq-button>`.
-5. Verificar que se ve igual que en la demo y que los estilos de Macroled no lo afectan (ni al revés).
-
-Si algo falla acá, se corrige en la base antes de repartir trabajo.
-
-### 4. Cargar las tarjetas en Trello
-
-Una tarjeta por componente de la Fase 1 y la Fase 2 (Parte 4), con el link al set de Figma (Anexo A de `DESIGN.md`) y el nombre de la rama.
-
-### 5. Avisar a las compañeras
-
-Cuando `feat/arq-base` y `feat/arq-button` estén en `main`, pasarles este archivo.
+Una tarjeta por componente pendiente, en el orden de la Parte 4, con el link al set de Figma (Anexo A de `DESIGN.md`) y el nombre de la rama.
 
 ---
 
-## Parte 2 · Cada compañera prepara su máquina
+## Parte 2 · Preparar una máquina
 
-Necesitan **Node.js 22 LTS**, **Git**, acceso al repo de GitHub y acceso al archivo de Figma `Macroled-ARQ` con su propia cuenta.
+> Hoy trabaja una sola persona y esta máquina ya está lista. Esta parte queda para cuando se sume alguien (con Claude Code, Codex o Cursor).
+
+Hace falta **Node.js 22 LTS**, **Git**, acceso al repo de GitHub y acceso al archivo de Figma `Macroled-ARQ` con su propia cuenta.
 
 ```bash
 git clone https://github.com/mldalio/macroled-arq.git
@@ -97,7 +74,7 @@ npm run dev
 
 Si la demo abre y muestra los tokens y los íconos, el entorno está bien.
 
-### Codex (VS Code) — compañera 2
+### Codex (VS Code)
 
 1. Instalar la extensión **Codex** de OpenAI en VS Code e iniciar sesión con la cuenta de ChatGPT.
 2. Codex lee `AGENTS.md` en cada tarea. `AGENTS.md` le indica leer `DESIGN.md` y `docs/components.md` antes de construir.
@@ -107,7 +84,7 @@ Si la demo abre y muestra los tokens y los íconos, el entorno está bien.
    ```
    Completar el login de Figma en el navegador.
 
-### Cursor — compañera 3
+### Cursor
 
 1. Abrir la carpeta del repo en Cursor. Cursor lee `AGENTS.md` como reglas del proyecto.
 2. Conectar Figma: en el chat del agente escribir `/add-plugin figma`, o en Settings → MCP agregar `https://mcp.figma.com/mcp`, tocar **Connect** y autorizar.
@@ -137,7 +114,7 @@ Hacerle estas tres preguntas. Si responde bien las tres, está lista:
 
 ### Prompt común para construir un componente
 
-Las tres usan el mismo texto, así las IAs trabajan igual:
+Cualquier IA usa el mismo texto, así todas trabajan igual:
 
 > Construí `<arq-NOMBRE>` siguiendo AGENTS.md y DESIGN.md.
 > 1. Leé el set NODE-ID de Figma por MCP (variantes, props y variables enlazadas), su descripción en `docs/components.md` y su ficha `doc/NOMBRE` en la página Documentación (`1422:1702`).
@@ -151,37 +128,92 @@ El `NODE-ID` de cada componente está en el Anexo A de `DESIGN.md`.
 
 ### Reglas para no pisarse
 
-- No trabajar dos personas en el mismo componente a la vez.
-- Si un componente necesita otro que todavía no existe, se avisa en Trello y se espera o se coordina. No se crea una versión propia.
-- `src/base/`, `tokens/tokens.json` y `src/styles/` los toca una sola persona por vez, en una rama `fix/` o `tokens/`, avisando en Trello.
-- `AGENTS.md` y `DESIGN.md` solo se cambian con acuerdo de las tres, en una rama `docs/`. Después se actualiza la copia en *Plan del proyecto* de Figma.
+- Si un componente necesita otro que todavía no existe, se construye primero el que falta (orden de la Parte 4). No se crea una versión propia.
+- Los cambios en `src/base/`, `tokens/` y `src/styles/` van en su propia rama `fix/` o `tokens/`, no dentro de la rama de un componente.
+- `AGENTS.md` y `DESIGN.md` se cambian en una rama `docs/`. Después se actualiza su copia en *Plan del proyecto* de Figma.
 - Si la IA propone cambiar algo fuera del alcance de la tarea, se rechaza.
 
 ---
 
-## Parte 4 · Reparto del trabajo
+## Parte 4 · Orden de construcción
 
-### Fase 1 · Primitivos (Lau)
+Lau construye todos los componentes. El orden sale de las dependencias (descripciones de `docs/components.md`): cada nivel usa solo lo que ya está en código o en un nivel anterior. Dentro de un nivel el orden es libre; la columna Página ayuda a cerrar páginas de a una.
 
-Lau construye todos los primitivos, para que la Fase 2 arranque sobre una base pareja: icon-button, tag (en espera de diseño), divider, count-badge, logo, nav-link, footer-link, breadcrumb-item, checkbox, toggle, choice-chip, input, file-upload, form-message, form-section-header, swatch, option-tile, tab, select-option, sku, gallery-thumb, spec-row, filter-chip.
+**Ya en código:** button, icon-button, input (Text y Textarea), checkbox, toggle (con toggle-switch), choice-chip, option-tile, swatch, tab, select-option, file-upload, form-message, form-section-header, sku, spec-row, filter-chip, gallery-thumb, count-badge, divider, logo, nav-link, footer-link, breadcrumb, breadcrumb-item, section-header, page-header.
 
-Mientras tanto, las compañeras preparan su máquina (Parte 2) y avanzan con los datos (más abajo). Empiezan la Fase 2 cuando la Fase 1 esté en `main`.
+**En espera de diseño:** tag.
 
-### Fase 2 · Compuestos y páginas, por dominio
+### Nivel 1 · Usan solo componentes que ya están
 
-Cada una toma un dominio y lo lleva hasta su página.
-
-| | Componentes | Páginas |
+| Página | Componente | Usa |
 | --- | --- | --- |
-| **Lau · navegación y contenido** | navbar, mega-menu, mega-link, search-field, search-result, search-see-all, search-dropdown, search-screen, footer, hero, page-header, section-header, breadcrumb, cta-block, feature-block, category-card, line-card, faq-item, carousel-controls | Home |
-| **Compañera 2 · catálogo** | product-card (hover con 4 imágenes), catalog-toolbar, catalog-nav, catalog-nav-group, catalog-nav-item, catalog-nav-mobile, catalog-nav-trigger, filter-panel, filter-row, compare-bar, compare-slot, compare-header, compare-group, compare-row, compare-product | Productos, Colecciones, Comparativa |
-| **Compañera 3 · ficha** | select, select-menu, option-group, swatch-picker, product-gallery, accordion-item, spec-list, variants-table, variants-table-row, filter-bar, download-modal, download-item, family-card | Ficha de producto |
+| Home y Contacto | hero | button (el navbar va aparte, ver `docs/decisiones.md`) |
+| Home | category-card, line-card, feature-block | button |
+| Home | cta-block | input, button |
+| Home | faq-item | disclosure |
+| Home y Colección | carousel-controls | icon-button |
+| Todas | footer | logo, footer-link |
+| Ficha | spec-list | spec-row |
+| Ficha | accordion-item | icon-button, disclosure |
+| Ficha | swatch-picker | swatch |
+| Ficha | select-menu | select-option |
+| Ficha | product-gallery | gallery-thumb |
+| Ficha | variants-table-row | sku, icon-button |
+| Ficha | family-card | — |
+| Ficha | download-item | íconos |
+| Listados | product-card | swatch, checkbox |
+| Listados | catalog-toolbar | toggle, divider, button y count-badge |
+| Listados | catalog-nav-item | — |
+| Listados | catalog-nav-trigger | icon-button, disclosure |
+| Listados | filter-row | icon-button, checkbox, disclosure |
+| Comparativa | compare-slot | icon-button |
+| Comparativa | compare-group, compare-row | — |
+| Contacto | contact-item | — |
+| Contacto | link-list | button |
+| Navbar | search-field | icon-button |
+| Navbar | search-result, search-see-all | íconos |
+| Navbar | mega-link | íconos, disclosure |
 
-Contact-item, link-list y el formulario de Contacto los toma la primera que termine.
+product-card necesita los campos de las 4 imágenes en `docs/typesense-schema.md`; hasta que estén, se construye con `TODO` y fixtures.
+
+### Nivel 2 · Dependen del nivel 1
+
+| Componente | Usa |
+| --- | --- |
+| select | select-menu, swatch |
+| input Type=Select (completar) | select-menu Type=Text; cierra el `TODO` de input |
+| catalog-nav-group | catalog-nav-item |
+| catalog-nav-mobile | catalog-nav-trigger, catalog-nav-item |
+| filter-panel | filter-row, filter-chip, button |
+| compare-bar | compare-slot, count-badge, divider, button |
+| download-modal | download-item |
+| search-dropdown | search-result, search-see-all |
+| search-screen | search-field, search-result, search-see-all |
+| mega-menu | tab, mega-link |
+
+### Nivel 3 · Dependen del nivel 2
+
+| Componente | Usa |
+| --- | --- |
+| option-group | option-tile, swatch-picker, select |
+| filter-bar | select (Type Filter), button |
+| catalog-nav | catalog-nav-group |
+| compare-product | select (familia y variante), button |
+
+### Nivel 4
+
+| Componente | Usa |
+| --- | --- |
+| variants-table | variants-table-row, filter-bar, button |
+| compare-header | compare-product, compare-slot, toggle |
+
+### Al final · navbar
+
+Usa nav-link, logo, icon-button, search-field, search-dropdown, search-screen, mega-menu y mega-link. Cierra los `TODO` de navbar que hoy están en logo y nav-link (Theme Inverse, `aria-controls` hacia el mega-menu).
 
 ### En paralelo: datos
 
-Las páginas necesitan datos reales. Antes de la Fase 2 hay que completar:
+Las páginas necesitan datos reales. Antes de armar las páginas hay que completar:
 
 - `docs/typesense-schema.md`: campos de la colección de Arq, incluidas las 4 imágenes de product-card y los códigos de acabado.
 - `docs/urls.md`: rutas de cada página dentro de `/arq`.

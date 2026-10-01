@@ -1,6 +1,6 @@
 # AGENTS.md — Macroled Arq
 
-Reglas para todas las IAs que trabajan en este repo (Claude, Codex, Cursor u otras). Los cambios en este archivo se acuerdan entre las tres personas del equipo.
+Reglas para todas las IAs que trabajan en este repo (Claude, Codex, Cursor u otras). Los cambios en este archivo y en DESIGN.md se hacen en una rama `docs/` y después se actualiza su copia en la página Plan del proyecto de Figma.
 
 - **Diseño:** leer [DESIGN.md](./DESIGN.md) antes de escribir cualquier componente. Si DESIGN.md y este archivo no cubren algo, **no se inventa**: se deja un `TODO` y se pregunta.
 - Si una regla impide hacer la tarea, preguntar en vez de romperla.
