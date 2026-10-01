@@ -1,0 +1,38 @@
+{
+  "$extensions": {
+    "com.figma": {
+      "collection": "1 · Primitive · Border",
+      "mode": "Value"
+    }
+  },
+  "border": {
+    "1": {
+      "$type": "number",
+      "$value": 1,
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "STROKE_FLOAT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-border-1)"
+          }
+        }
+      }
+    },
+    "2": {
+      "$type": "number",
+      "$value": 2,
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "STROKE_FLOAT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-border-2)"
+          }
+        }
+      }
+    }
+  }
+}

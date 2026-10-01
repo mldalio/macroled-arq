@@ -301,6 +301,19 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 - Si un diseño tiene 13 px, 9 px u otra familia, se normaliza al rol más cercano.
 - Mayúsculas de interfaz: el dato va en caja normal y la mayúscula la pone el estilo (`text-transform`). Los textos que vienen de la base se muestran como llegan.
 
+### Movimiento (2 · Semantic · Motion)
+
+| Token | Valor | Uso |
+| --- | --- | --- |
+| motion/duration/fast | 120 ms | Hover, toggle, foco |
+| motion/duration/base | 200 ms | Desplegables (disclosure) y menús |
+| motion/duration/slow | 320 ms | Fundido de imágenes de product-card |
+| motion/duration/feedback | 2000 ms | Tiempo visible de una confirmación ("Copiado" del sku) |
+| motion/easing/standard | cubic-bezier(0.2, 0, 0, 1) | Todas las transiciones |
+
+- Con `prefers-reduced-motion: reduce`, las duraciones fast, base y slow pasan a 0. feedback no cambia: es un tiempo de lectura, no una animación.
+- Se anima solo `opacity`, `transform` y colores. Nunca alto, ancho ni posición de layout.
+
 ---
 
 ## 7. Estados de interacción
@@ -428,7 +441,7 @@ Aplica a product-card en los listados de Productos y Colecciones. Cada producto 
 | **Dark** (Iluminar encendido) | Estudio, luz encendida | Contexto, luz encendida |
 
 - El hover **no** usa borde: cambia la imagen. El foco de teclado muestra la misma imagen que el hover, además del anillo `color/border/focus`.
-- El cambio es un fundido entre dos `<img>` apiladas (sin mover el layout). Con `prefers-reduced-motion: reduce`, el cambio es instantáneo. La duración todavía no tiene token: `TODO` hasta definirla.
+- El cambio es un fundido entre dos `<img>` apiladas (sin mover el layout). Usa `motion/duration/slow` con `motion/easing/standard`. Con `prefers-reduced-motion: reduce`, el cambio es instantáneo.
 - La imagen que se muestra depende de `data-arq-theme` del ancestro: al activar Iluminar en `catalog-toolbar`, todas las tarjetas pasan a las versiones encendidas.
 - En pantallas táctiles no hay hover: se ve solo la imagen de estudio.
 - Si falta la imagen de contexto, no hay cambio en hover. Si falta la versión encendida, se usa la apagada. Si falta la de estudio, se muestra un fondo `color/surface/subtle` con el nombre: nunca se rompe la tarjeta.
@@ -477,7 +490,7 @@ Aplica a product-card en los listados de Productos y Colecciones. Cada producto 
 - **Códigos de acabado** (N, V, R, B, BN, P): falta la tabla de equivalencias para mostrar el nombre.
 - **project-mosaic y carousel:** se resuelven en código (grid + aspect-ratio; snap y peek), no como componentes de Figma.
 - **button Loading:** no hay ícono de carga en la librería.
-- **product-card:** falta la duración del fundido entre imágenes (no hay tokens de movimiento) y confirmar si el cambio de imagen aplica también a `Size=Small` (ficha → Otras familias).
+- **product-card:** confirmar si el cambio de imagen aplica también a `Size=Small` (ficha → Otras familias). El fundido usa motion/duration/slow.
 
 ---
 

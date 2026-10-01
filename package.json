@@ -10,7 +10,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "tokens": "node scripts/build-tokens.js"
+    "tokens": "node scripts/build-tokens.js",
+    "tokens:import": "node scripts/import-tokens.js"
   },
   "devDependencies": {
     "style-dictionary": "^5.5.5",
