@@ -48,6 +48,5 @@ Zona para adjuntar un archivo al formulario de Contacto (planos, renders, fotos)
 
 ## Pendientes
 
-- `TODO` En Figma, el ícono de State=Disabled es `icon/plus` Theme=Default; en código va en `color/icon/disabled`, como el resto del texto (ficha: "border/disabled y text/disabled").
 - `TODO` (form-contacto) Cómo viaja el archivo a n8n (multipart): no está definido el contrato del webhook.
 - Formatos aceptados: los acordados (PDF, DWG, JPG, PNG).

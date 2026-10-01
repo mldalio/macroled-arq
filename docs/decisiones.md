@@ -196,7 +196,7 @@ setup() {
 ## 2026-10-01 · Casos definidos por diseño
 
 - **file-upload:** Drag over y Error son estados internos (`:state(drag-over)`, `:state(error)`), no props: dependen de lo que hace el usuario. Disabled es la prop `disabled`. El mensaje de error es "<problema>. Formatos: <lista>." con la lista armada desde `accept` (JPEG se muestra como JPG).
-- **input:** Textarea con `rows="4"` por defecto y `resize: vertical` (Figma: campo de 96). En código mide 97 porque la línea inferior suma al alto, como en Text (37 en Figma y en código).
+- **input:** Textarea con `rows="4"` por defecto y `resize: vertical`.
 - **breadcrumb:** una sola fila. El ítem actual tiene `flex-shrink` mucho mayor que los intermedios: primero se parte en líneas (hasta su palabra más larga) y recién después se cortan los intermedios con "…".
 - **sku:** si falla `navigator.clipboard.writeText`, se selecciona el código (está en el DOM de la página) y se muestra y anuncia "Copialo con Ctrl+C" ("⌘C" si `navigator.userAgentData.platform` o `navigator.platform` es Mac, iPhone o iPad) en `color/text/secondary` durante feedback. Estado interno `:state(copy-failed)`.
 - **spec-row y sku:** `overflow-wrap: anywhere` para que un código sin espacios también se parta.
