@@ -1163,8 +1163,6 @@ var fe = ":host{display:block}.footer{column-gap:var(--arq-space-gap-xl);row-gap
 		title: "Redes"
 	}
 ];
-//#endregion
-//#region src/main.js
 (class extends d {
 	static tag = "arq-footer";
 	static styles = fe;
@@ -1176,6 +1174,40 @@ var fe = ":host{display:block}.footer{column-gap:var(--arq-space-gap-xl);row-gap
 			e.querySelector(".tagline").hidden = !t.assignedNodes({ flatten: !0 }).some((e) => e.textContent.trim());
 		};
 		t.addEventListener("slotchange", n), n();
+	}
+}).define();
+//#endregion
+//#region src/components/hero/hero.css?inline
+var me = ":host{display:block}.hero{aspect-ratio:16/10;background:var(--arq-color-surface-inverse);flex-direction:column;justify-content:flex-end;display:flex;position:relative;overflow:hidden}.media{position:absolute;inset:0}::slotted([slot=media]){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}.scrim{background:linear-gradient(#00000085 0%,#0003 18% 45%,#000000ad 100%);position:absolute;inset:0}.content{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-xl);padding:0 var(--arq-layout-gutter) var(--arq-space-section-sm);color:var(--arq-color-text-inverse);display:flex;position:relative}.text{align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column;min-width:0;display:flex}.eyebrow,.title,.description{overflow-wrap:break-word;margin:0}::slotted(h1){font:inherit!important;letter-spacing:inherit!important;text-transform:inherit!important;color:inherit!important;margin:0!important}.action{flex:none}@media (width<=767px){.hero{aspect-ratio:auto;height:70svh}.content{justify-content:flex-start;align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column}}", he = [
+	"eyebrow",
+	"description",
+	"action"
+];
+//#endregion
+//#region src/main.js
+(class extends d {
+	static tag = "arq-hero";
+	static styles = me;
+	static template = "<div class=\"hero\"><div class=\"media\"><slot name=\"media\"></slot></div><div class=\"scrim\" aria-hidden=\"true\"></div><div class=\"content\"><div class=\"text\"><p class=\"eyebrow role-label\" hidden><slot name=\"eyebrow\"></slot></p><div class=\"title role-display\"><slot name=\"title\"></slot></div><p class=\"description role-body-lg\" hidden><slot name=\"description\"></slot></p></div><div class=\"action\" data-arq-theme=\"dark\" hidden><slot name=\"action\"></slot></div></div></div>";
+	#e = window.matchMedia("(prefers-reduced-motion: reduce)");
+	setup() {
+		for (let e of this.shadowRoot.querySelectorAll("slot[name]")) e.addEventListener("slotchange", () => this.update());
+		this.#e.addEventListener("change", () => this.#n());
+	}
+	update() {
+		let e = this.shadowRoot, t = (t) => e.querySelector(`slot[name="${t}"]`).assignedNodes({ flatten: !0 }).some((e) => e.nodeType === Node.ELEMENT_NODE || e.textContent.trim());
+		for (let n of he) e.querySelector(`.${n}`).hidden = !t(n);
+		this.#n();
+	}
+	#t = /* @__PURE__ */ new WeakSet();
+	#n() {
+		let e = this.shadowRoot.querySelector("slot[name=\"media\"]").assignedElements().filter((e) => e.localName === "video");
+		for (let t of e) if (t.autoplay && this.#t.add(t), this.#t.has(t)) {
+			if (this.#e.matches) {
+				if (!t.autoplay && t.paused) continue;
+				t.autoplay = !1, t.pause(), t.load();
+			} else t.autoplay || (t.autoplay = !0, t.play().catch(() => {}));
+		}
 	}
 }).define(), window.Arq || (window.Arq = Object.freeze({ version: e }));
 //#endregion

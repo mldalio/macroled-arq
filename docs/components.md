@@ -46,7 +46,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [form-message](#form-message) | `<arq-form-message>` | En código ([README](../src/components/form-message/README.md)) |
 | [form-section-header](#form-section-header) | `<arq-form-section-header>` | En código ([README](../src/components/form-section-header/README.md)) |
 | [gallery-thumb](#gallery-thumb) | `<arq-gallery-thumb>` | En código ([README](../src/components/gallery-thumb/README.md)) |
-| [hero](#hero) | `<arq-hero>` | Pendiente |
+| [hero](#hero) | `<arq-hero>` | En código ([README](../src/components/hero/README.md)) |
 | [icon-button](#icon-button) | `<arq-icon-button>` | En código ([README](../src/components/icon-button/README.md)) |
 | [input](#input) | `<arq-input>` | En código ([README](../src/components/input/README.md)) |
 | [line-card](#line-card) | `<arq-line-card>` | Pendiente |
@@ -393,6 +393,8 @@ Miniatura de la galería de producto, proporción 5:4 (105 × 84). La imagen se 
 - Propiedades: Eyebrow; Show eyebrow; Title; Description; Show description; Show button; Breakpoint: Desktop · Mobile
 
 Hero de página compartido por Home y Contacto: media (imagen o video; reemplazá el relleno de "media" en la instancia), scrim, navbar Theme=Transparent, eyebrow (role/label), título role/display, bajada opcional y button Outline opcional. Textos claros sobre la foto (el scrim hero/scrim asegura el contraste). Props: Eyebrow, Title, Description, Show eyebrow, Show description, Show button.
+
+> **No coincide con el código:** el navbar no va dentro del hero (`docs/decisiones.md`, 2026-10-01 · hero y navbar). Falta corregir esta descripción y la ficha `doc/hero` en Figma.
 
 ## icon-button
 
