@@ -13,7 +13,7 @@ Contador de productos seleccionados (compare-bar) o de filtros activos (button F
 
 | Figma | Atributo | Prop JS | Valores · por defecto |
 | --- | --- | --- | --- |
-| Count | `count` | `count` | número. Si es `0` o falta, el badge no se muestra |
+| Count | `count` | `count` | número. Si es `0` o falta, el badge no se muestra. Desde 100 se ve "99+"; el lector de pantalla oye el número real |
 | Tone | `tone` | `tone` | `primary` · `inverse` (def. `primary`) |
 
 - **Tone=Primary** sobre superficies claras. En modo Dark se invierte solo con los tokens: no hace falta cambiar a Inverse.
@@ -35,4 +35,3 @@ Contador de productos seleccionados (compare-bar) o de filtros activos (button F
 ## Pendientes
 
 - `TODO` Ancho mínimo 20 sin token: se calcula con `type/caption/leading` + 2 × `space/padding/2xs`.
-- Números grandes ("99+"): no hay regla definida. Hoy se muestra el número completo.

@@ -2,6 +2,7 @@
    Tone=Primary es la base (también para un tone inválido). */
 
 :host {
+  position: relative;
   display: inline-flex;
   flex: none;
   vertical-align: middle;
@@ -29,6 +30,17 @@
   white-space: nowrap;
   /* Que el ancho no salte al pasar de 9 a 10 (ficha doc/count-badge) */
   font-variant-numeric: tabular-nums;
+}
+
+/* Número real para lectores de pantalla (el visible puede ser "99+").
+   border/default (1 px) es el tamaño mínimo disponible. */
+.visually-hidden {
+  position: absolute;
+  width: var(--arq-border-default);
+  height: var(--arq-border-default);
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 /* Tone=Inverse: dentro de elementos con color/action/primary (button Filled) */

@@ -129,11 +129,12 @@
         <h2 id="demo-count-badge" class="demo-heading role-label">count-badge · &lt;arq-count-badge&gt;</h2>
         <p class="demo-note role-body-sm">Figma 1231:3557. No es interactivo. Con count 0 o vacío no se muestra.</p>
 
-        <h3 class="demo-subheading role-body-sm">Tone=Primary · 1, 3, 12, 128</h3>
+        <h3 class="demo-subheading role-body-sm">Tone=Primary · 1, 3, 12, 99, 128 (se ve 99+)</h3>
         <div class="demo-row">
           <arq-count-badge count="1"></arq-count-badge>
           <arq-count-badge count="3"></arq-count-badge>
           <arq-count-badge count="12"></arq-count-badge>
+          <arq-count-badge count="99"></arq-count-badge>
           <arq-count-badge count="128"></arq-count-badge>
         </div>
 
@@ -164,6 +165,8 @@
           <arq-button type="outline" show-count count="3" count-label="filtros activos">Filtrar</arq-button>
           <arq-button type="underline" show-underline show-count count="2" count-label="productos">Comparar</arq-button>
           <arq-button type="outline" show-count count="0" count-label="filtros activos">Filtrar (count 0)</arq-button>
+          <arq-button show-count count="128">Ver productos</arq-button>
+          <arq-button type="outline" show-count count="128" count-label="filtros activos">Filtrar (128)</arq-button>
         </div>
       </section>
 
