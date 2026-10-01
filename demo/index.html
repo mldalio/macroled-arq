@@ -615,6 +615,27 @@
           <arq-checkbox size="large" checked show-label>Interior</arq-checkbox>
         </div>
       </section>
+
+      <section class="demo-section" aria-labelledby="demo-toggle">
+        <h2 id="demo-toggle" class="demo-heading role-label">toggle · &lt;arq-toggle&gt; (con toggle-switch adentro)</h2>
+        <p class="demo-note role-body-sm">Figma 926:3102 y 1131:6383. Checked × Disabled; sin show-label (texto solo para lectores). Hover y Focus con el mouse y con Tab.</p>
+        <div class="demo-row">
+          <arq-toggle show-label>Iluminar</arq-toggle>
+          <arq-toggle checked show-label>Solo diferencias</arq-toggle>
+          <arq-toggle disabled show-label>Iluminar</arq-toggle>
+          <arq-toggle checked disabled show-label>Iluminar</arq-toggle>
+          <arq-toggle>Iluminar (sin show-label)</arq-toggle>
+        </div>
+        <div class="demo-narrow">
+          <arq-toggle show-label>Mostrar solo las especificaciones que cambian entre productos</arq-toggle>
+        </div>
+        <div class="demo-row demo-dark" data-arq-theme="dark">
+          <arq-toggle show-label>Iluminar</arq-toggle>
+          <arq-toggle checked show-label>Iluminar</arq-toggle>
+          <arq-toggle disabled show-label>Iluminar</arq-toggle>
+          <arq-toggle checked disabled show-label>Iluminar</arq-toggle>
+        </div>
+      </section>
     </main>
   </body>
 </html>

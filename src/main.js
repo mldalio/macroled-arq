@@ -26,6 +26,7 @@ import './components/option-tile/option-tile.js';
 import './components/choice-chip/choice-chip.js';
 import './components/tab/tab.js';
 import './components/checkbox/checkbox.js';
+import './components/toggle/toggle.js';
 
 if (!window.Arq) {
   window.Arq = Object.freeze({ version });

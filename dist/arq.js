@@ -668,8 +668,6 @@ var R = ":host{vertical-align:middle;cursor:pointer;max-width:100%;display:inlin
 //#endregion
 //#region src/components/tab/tab.css?inline
 var z = ":host{cursor:pointer;flex:none;display:inline-flex}.tab{padding-bottom:var(--arq-space-gap-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-surface-transparent);color:var(--arq-color-text-tertiary);white-space:nowrap;display:inline-flex}:host(:not([disabled]):hover) .tab{color:var(--arq-color-text-primary)}:host([selected]) .tab{border-bottom-color:var(--arq-color-border-strong);color:var(--arq-color-text-primary)}:host([disabled]){cursor:default}:host([disabled]) .tab{color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
-//#endregion
-//#region src/main.js
 (class extends l {
 	static tag = "arq-tab";
 	static styles = z;
@@ -689,6 +687,98 @@ var z = ":host{cursor:pointer;flex:none;display:inline-flex}.tab{padding-bottom:
 			e && this.setAttribute("aria-label", e);
 		};
 		this.shadowRoot.querySelector("slot").addEventListener("slotchange", e), e();
+	}
+}).define();
+//#endregion
+//#region src/components/checkbox/checkbox.css?inline
+var B = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.row{align-items:center;gap:var(--arq-space-gap-sm);max-width:100%;padding-block:var(--arq-space-gap-xs);cursor:pointer;display:inline-flex;position:relative}.control{width:var(--arq-icon-md);height:var(--arq-icon-md);flex:none;justify-content:center;align-items:center;display:inline-flex}.box{box-sizing:border-box;width:var(--arq-icon-sm);height:var(--arq-icon-sm);border:var(--arq-border-default) solid var(--arq-color-icon-tertiary);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default)}.label{min-width:0;color:var(--arq-color-text-secondary)}.row:hover .box{border-color:var(--arq-color-icon-primary)}.row:hover .label{color:var(--arq-color-text-primary)}.native:checked+.control .box{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}.row:hover .native:checked+.control .box{border-color:var(--arq-color-action-primary-hover);background:var(--arq-color-action-primary-hover)}:host([disabled]) .row{cursor:default}:host([disabled]) .box,:host([disabled]) .row:hover .box{border-color:var(--arq-color-icon-disabled)}:host([disabled]) .native:checked+.control .box{border-color:var(--arq-color-icon-disabled);background:var(--arq-color-icon-disabled)}:host([disabled]) .label,:host([disabled]) .row:hover .label{color:var(--arq-color-text-disabled)}.native:focus-visible+.control .box{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}";
+(class extends l {
+	static tag = "arq-checkbox";
+	static styles = B;
+	static formAssociated = !0;
+	static properties = {
+		size: {
+			type: String,
+			values: ["default", "large"],
+			default: "default"
+		},
+		checked: { type: Boolean },
+		disabled: { type: Boolean },
+		showLabel: { type: Boolean },
+		name: { type: String },
+		value: {
+			type: String,
+			default: "on"
+		}
+	};
+	static template = "<label class=\"row\"><input type=\"checkbox\" class=\"native visually-hidden\"><span class=\"control\" aria-hidden=\"true\"><span class=\"box\"></span></span><span class=\"label\"><slot></slot></span></label>";
+	#e = this.attachInternals();
+	#t = null;
+	#n = !1;
+	setup() {
+		this.#n = this.checked, this.#t = this.shadowRoot.querySelector("input"), this.#t.addEventListener("change", () => {
+			this.checked = this.#t.checked, this.emit("change", {
+				checked: this.#t.checked,
+				value: this.value
+			});
+		});
+	}
+	focus(e) {
+		this.#t ? this.#t.focus(e) : super.focus(e);
+	}
+	update() {
+		let e = this.#t;
+		e.checked = this.checked, e.disabled = this.disabled, this.shadowRoot.querySelector(".label").classList.toggle("visually-hidden", !this.showLabel), this.shadowRoot.querySelector(".label").classList.toggle("role-body", this.size !== "large"), this.shadowRoot.querySelector(".label").classList.toggle("role-body-lg", this.size === "large"), this.#e.setFormValue(this.checked ? this.value : null);
+	}
+	formResetCallback() {
+		this.checked = this.#n;
+	}
+	formDisabledCallback(e) {
+		this.#t.disabled = e || this.disabled;
+	}
+}).define();
+//#endregion
+//#region src/components/toggle/toggle.css?inline
+var V = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.toggle{align-items:center;gap:var(--arq-space-gap-sm);cursor:pointer;max-width:100%;display:inline-flex;position:relative}.track{box-sizing:border-box;width:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm) * 2 + var(--arq-space-gap-sm));height:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm));padding:calc(var(--arq-space-padding-2xs) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong);border-radius:var(--arq-radius-pill);background:var(--arq-color-surface-transparent);flex:none;align-items:center;display:inline-flex}.thumb{width:var(--arq-icon-sm);height:var(--arq-icon-sm);border-radius:var(--arq-radius-pill);background:var(--arq-color-icon-primary)}.label{min-width:0;color:var(--arq-color-text-primary)}.toggle:hover .track{background:var(--arq-color-surface-hover)}.native:checked+.track{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}.native:checked+.track .thumb{background:var(--arq-color-action-on-primary);transform:translateX(calc(var(--arq-icon-sm) + var(--arq-space-gap-sm)))}.toggle:hover .native:checked+.track{border-color:var(--arq-color-action-primary-hover);background:var(--arq-color-action-primary-hover)}:host([disabled]) .toggle{cursor:default}:host([disabled]) .track,:host([disabled]) .toggle:hover .track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-transparent)}:host([disabled]) .native:checked+.track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-strong)}:host([disabled]) .thumb,:host([disabled]) .native:checked+.track .thumb{background:var(--arq-color-icon-disabled)}:host([disabled]) .label{color:var(--arq-color-text-disabled)}.native:focus-visible+.track{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}";
+//#endregion
+//#region src/main.js
+(class extends l {
+	static tag = "arq-toggle";
+	static styles = V;
+	static formAssociated = !0;
+	static properties = {
+		checked: { type: Boolean },
+		disabled: { type: Boolean },
+		showLabel: { type: Boolean },
+		name: { type: String },
+		value: {
+			type: String,
+			default: "on"
+		}
+	};
+	static template = "<label class=\"toggle\"><input type=\"checkbox\" role=\"switch\" class=\"native visually-hidden\"><span class=\"track\" aria-hidden=\"true\"><span class=\"thumb\"></span></span><span class=\"label role-body-regular\"><slot></slot></span></label>";
+	#e = this.attachInternals();
+	#t = null;
+	#n = !1;
+	setup() {
+		this.#n = this.checked, this.#t = this.shadowRoot.querySelector("input"), this.#t.addEventListener("change", () => {
+			this.checked = this.#t.checked, this.emit("change", {
+				checked: this.#t.checked,
+				value: this.value
+			});
+		});
+	}
+	focus(e) {
+		this.#t ? this.#t.focus(e) : super.focus(e);
+	}
+	update() {
+		this.#t.checked = this.checked, this.#t.disabled = this.disabled, this.shadowRoot.querySelector(".label").classList.toggle("visually-hidden", !this.showLabel), this.#e.setFormValue(this.checked ? this.value : null);
+	}
+	formResetCallback() {
+		this.checked = this.#n;
+	}
+	formDisabledCallback(e) {
+		this.#t.disabled = e || this.disabled;
 	}
 }).define(), window.Arq || (window.Arq = Object.freeze({ version: e }));
 //#endregion
