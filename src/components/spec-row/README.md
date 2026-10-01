@@ -29,5 +29,4 @@ Fila de especificación técnica: etiqueta y valor, con separador inferior. Va d
 
 ## Pendientes
 
-- La etiqueta va en `role/body-regular` (set de Figma y tabla de la ficha); la descripción de Figma dice `role/label`.
 - `TODO` Textos largos y mobile: Figma no define si se apilan. Hoy se parten en líneas, etiqueta a la izquierda y valor a la derecha.

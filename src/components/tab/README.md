@@ -38,5 +38,4 @@ Pestaña para cambiar entre vistas de un mismo contenido sin salir de la página
 ## Pendientes
 
 - `TODO` (mega-menu) Tablist, paneles y ids de `aria-controls` / `aria-labelledby`.
-- El subrayado mide 1 px (set de Figma); la anatomía de la ficha dice "subrayado border/strong" (2 px).
 - Un label que no entra: Figma es nowrap y no define overflow del tablist.

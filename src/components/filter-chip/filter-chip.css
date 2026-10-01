@@ -36,8 +36,7 @@
   height: var(--arq-icon-sm);
 }
 
-/* State=Hover: borde color/text/primary (set de Figma y ficha;
-   la descripción dice color/border/strong) */
+/* State=Hover: borde color/text/primary */
 .chip:hover {
   border-color: var(--arq-color-text-primary);
 }

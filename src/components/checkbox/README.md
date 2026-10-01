@@ -41,8 +41,5 @@ Checkbox con label. Se usa en las opciones de filter-row (panel de filtros, Size
 ## Pendientes
 
 - `TODO` (product-card) "Comparar" con 3 productos elegidos: el resto pasa a disabled o se avisa (la ficha no lo decide).
-- Marcado es un cuadrado lleno sin tilde (set); la ficha nombra un "check" en `color/action/on-primary`.
-- El label en reposo es `color/text/secondary` (set); la tabla de la ficha dice `color/text/primary`.
-- La caja mide `icon/sm` dentro de un control `icon/md` (set); la ficha dice "Caja icon/md".
 - En Figma, Show label no está conectado en Size=Large.
 - Un label largo se parte en líneas (Figma es nowrap).

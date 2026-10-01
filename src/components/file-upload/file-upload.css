@@ -11,7 +11,7 @@
   gap: var(--arq-space-gap-sm);
 }
 
-/* Label: color/text/secondary (set; la ficha dice text/tertiary) */
+/* Label: color/text/secondary */
 .label {
   color: var(--arq-color-text-secondary);
 }

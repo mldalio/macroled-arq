@@ -69,7 +69,7 @@
   background: var(--arq-color-action-primary-hover);
 }
 
-/* State=Disabled. Checked + Disabled lleva pista color/surface/strong (set) */
+/* State=Disabled. Checked + Disabled lleva pista color/surface/strong */
 :host([disabled]) .toggle {
   cursor: default;
 }
@@ -94,8 +94,7 @@
   color: var(--arq-color-text-disabled);
 }
 
-/* Foco: anillo de DESIGN.md §7 alrededor de la pista (2px: valor fijado ahí).
-   En Figma el foco solo recolorea el borde y en Light no se distingue. */
+/* Foco: anillo de DESIGN.md §7 alrededor de la pista (2px: valor fijado ahí). */
 .native:focus-visible + .track {
   outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
   outline-offset: 2px;

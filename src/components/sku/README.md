@@ -39,5 +39,3 @@ Código de producto con botón de copiar. Size=Default en el configurador de la 
 - `TODO` Si el portapapeles falla: no hay estado diseñado. Hoy no muestra "Copiado" y avisa en consola.
 - `TODO` Un SKU muy largo se corta con puntos suspensivos (Figma es nowrap).
 - Con "Copiado" el componente se ensancha unos 34 px (igual que en Figma).
-- El ícono en reposo es `color/icon/secondary` (set); la descripción del ícono `copy` dice `color/icon/primary`.
-- El código usa `role/body-lg` / `role/body` en `text/primary` (set); DESIGN.md §6 sugiere `role/body-sm` para SKU.

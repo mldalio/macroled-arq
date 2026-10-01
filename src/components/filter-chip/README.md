@@ -31,5 +31,4 @@ Filtro aplicado que se puede quitar. Todo el chip es el botón. Va en la fila "a
 
 ## Pendientes
 
-- Hover usa `color/text/primary` como color de borde (set y ficha); la descripción de Figma dice `color/border/strong`. En Dark difieren un tono.
 - Un label que no entra se corta con puntos suspensivos (Figma no lo define).

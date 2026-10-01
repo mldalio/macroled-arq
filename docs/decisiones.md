@@ -159,3 +159,11 @@ setup() {
 
 - choice-chip, option-tile, swatch y tab se comportan como opciones de un grupo: una sola elegida, flechas para moverse (roving tabindex), Inicio / Fin. El controlador `SingleSelect` lo arma el contenedor (option-group, swatch-picker, el tablist del mega-menu o el grupo de choice-chip, todavía no construidos). La demo usa contenedores de prueba (`demo-radio-group`, `demo-tablist`).
 - Cada opción sola funciona igual con clic, Enter o Espacio y emite `arq:change`.
+
+### Ayuda de un input deshabilitado
+
+- Con `disabled`, la ayuda (helper) de input queda en `color/text/disabled`, como el label y el valor. No llega a 4.5 de contraste (2.24 en Light, 2.96 en Dark) y es a propósito: WCAG 1.4.3 no exige contraste mínimo a los controles inactivos. axe lo marca en la demo; se ignora para este caso.
+
+### Alto de nav-link en mobile
+
+- La fila de nav-link en mobile mide 56 (padding `space/gap/md` + `role/body-xl`). Figma ya está corregido a 56.

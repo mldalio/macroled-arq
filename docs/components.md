@@ -185,9 +185,11 @@ La imagen tiene la proporción bloqueada: al crecer la columna crece en alto sin
 - Figma: [975-2322](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=975-2322)
 - Propiedades: Label; Show label; Size: Large · Default; Checked: False · True; State: Default · Hover · Focus · Disabled
 
-Checkbox. Checked: False / True. State: Default, Hover, Focus (anillo color/border/focus alrededor del control) y Disabled. Props: Label y Show label. Se usa en los filtros de Productos y en "Comparar" de las tarjetas. En código es un <input type="checkbox"> real con su <label>; toda la fila es clickeable. Dentro de una tarjeta, el checkbox va fuera del link de la tarjeta.
+Checkbox. Checked: False / True. State: Default, Hover, Focus (anillo separado alrededor de todo el checkbox, DESIGN.md §7) y Disabled. Props: Label y Show label. Se usa en los filtros de Productos y en "Comparar" de las tarjetas. En código es un <input type="checkbox"> real con su <label>; toda la fila es clickeable. Dentro de una tarjeta, el checkbox va fuera del link de la tarjeta.
 
 Size: Default (role/body, 14) o Large (role/body-lg, 16) — en lugar de sobrescribir el estilo en cada instancia.
+
+Marcado: caja llena en color/action/primary, sin tilde. Label en color/text/secondary (primary en hover).
 
 ## choice-chip
 
@@ -326,7 +328,7 @@ Barra de filtros de la tabla de variantes (visible con Filtros activos). Fondo s
 - Figma: [1238-3693](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1238-3693)
 - Propiedades: Label; State: Default · Hover · Focus
 
-Filtro aplicado que se puede quitar (todo el chip es el botón; en código: button con aria-label "Quitar filtro <Label>"). Misma base que tag Outline (padding xs/sm, radius/control, role/body-sm) y los estados de choice-chip (Hover: borde color/border/strong; Focus: color/border/focus). Se usa en filter-panel.
+Filtro aplicado que se puede quitar (todo el chip es el botón; en código: button con aria-label "Quitar filtro <Label>"). Misma base que tag Outline (padding xs/sm, radius/control, role/body-sm) y los estados de choice-chip (Hover: borde color/text/primary; Focus: anillo separado, DESIGN.md §7). Se usa en filter-panel.
 
 ## filter-panel
 
@@ -375,7 +377,7 @@ Título de sección de un formulario: número opcional (color/text/tertiary) + l
 - Figma: [920-2474](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=920-2474)
 - Propiedades: State: Default · Hover · Selected · Focus
 
-Miniatura de la galería de producto, proporción 5:4 (105 × 84). La imagen se reemplaza en el fill de la instancia (placeholder surface/subtle). Default, Hover (border/hover), Selected (border/strong, imagen mostrada), Focus (border/focus).
+Miniatura de la galería de producto, proporción 5:4 (105 × 84). La imagen se reemplaza en el fill de la instancia (placeholder surface/subtle). Default, Hover (border/hover), Selected (border/strong, imagen mostrada), Focus (anillo separado, DESIGN.md §7).
 
 ## hero
 
@@ -557,14 +559,14 @@ Lista desplegable de select (hasta 7 opciones). Fondo surface/default, borde bor
 - Figma: [921-2500](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2500)
 - Propiedades: Name; Show swatch; State: Default · Hover · Selected · Focus · Disabled
 
-Opción de select-menu. Muestra opcional (Show swatch; swatch/sm con border/default) + nombre role/body. Default sin fondo, Hover surface/faint, Selected nombre en role/body-medium, Focus anillo border/focus. Separador inferior border/subtle. Padding space/padding/md, gap space/gap/sm. Sirve para acabados y para "Todos" o valores sin muestra.
+Opción de select-menu. Muestra opcional (Show swatch; swatch/sm con border/default) + nombre role/body. Default sin fondo, Hover surface/faint, Selected nombre en role/body-medium, Focus anillo border/focus. Separador inferior border/subtle. Padding space/padding/md, gap space/gap/sm. Sirve para acabados y para "Todos" o valores sin muestra. Disabled: opción no disponible (texto color/text/disabled).
 
 ## sku
 
 - Figma: [920-2539](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=920-2539)
 - Propiedades: Code; Size: Default · Compact; State: Default · Hover · Copied
 
-Código de producto con botón de copiar. Size: Default (bloque del configurador, con etiqueta SKU) y Compact (fila de la tabla de variantes). State: Default, Hover (ícono icon/primary), Copied (confirmación "Copiado", text/success).
+Código de producto con botón de copiar. Size: Default (bloque del configurador, con etiqueta SKU) y Compact (fila de la tabla de variantes). State: Default (ícono icon/secondary), Hover (ícono icon/primary), Copied (confirmación "Copiado", text/success).
 
 ## spec-list
 
@@ -578,7 +580,7 @@ Lista de spec-row. En la ficha va en dos columnas dentro de accordion-item (una 
 - Figma: [922-2497](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=922-2497)
 - Propiedades: Label; Value
 
-Fila de especificación técnica: etiqueta role/label (text/tertiary) y valor role/body-regular (text/primary), separador inferior border/subtle. Padding space/padding/md arriba y abajo, gap space/gap/lg. Se usa dentro de spec-list.
+Fila de especificación técnica: etiqueta role/body-regular (text/tertiary) y valor role/body-regular (text/primary), separador inferior border/subtle. Padding space/padding/md arriba y abajo, gap space/gap/lg. Se usa dentro de spec-list.
 
 ## swatch
 
@@ -599,7 +601,7 @@ Selector de acabado por muestras (role=radiogroup): fila de swatch con gap space
 - Figma: [929-2287](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=929-2287)
 - Propiedades: Label; State: Default · Hover · Selected · Focus · Disabled
 
-Pestaña (role="tab"). Default, Hover, Selected (aria-selected="true", subrayado), Focus y Disabled. Se agrupan en un contenedor role="tablist" con separación space/gap/xl y una línea color/border/subtle debajo. Lo usa el mega menú de Productos.
+Pestaña (role="tab"). Default, Hover, Selected (aria-selected="true", subrayado de 1 px border/default en color/border/strong), Focus y Disabled. Se agrupan en un contenedor role="tablist" con separación space/gap/xl y una línea color/border/subtle debajo. Lo usa el mega menú de Productos.
 
 ## tag
 
@@ -622,7 +624,7 @@ Interruptor con texto. El switch es siempre una instancia de toggle-switch, a la
 - Figma: [1131-6383](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1131-6383)
 - Propiedades: Checked: False · True; State: Default · Hover · Focus · Disabled
 
-Switch del toggle (pista + círculo), compartido por todas las variantes de toggle. Checked: False · True. State: Default · Hover · Focus · Disabled. Pista 38 × 18, radius/pill, padding space/padding/2xs, borde border/default. Off: borde color/border/strong, círculo color/icon/primary; On: fondo y borde color/action/primary, círculo color/action/on-primary. Hover: surface/hover (Off) o action/primary-hover (On). Focus: borde color/border/focus. Disabled: border/disabled, icon/disabled. No se usa suelto: va dentro de toggle.
+Switch del toggle (pista + círculo), compartido por todas las variantes de toggle. Checked: False · True. State: Default · Hover · Focus · Disabled. Pista 38 × 18, radius/pill, padding space/padding/2xs, borde border/default. Off: borde color/border/strong, círculo color/icon/primary; On: fondo y borde color/action/primary, círculo color/action/on-primary. Hover: surface/hover (Off) o action/primary-hover (On). Focus: anillo separado (DESIGN.md §7). Disabled: border/disabled, icon/disabled; On + Disabled: pista surface/strong. No se usa suelto: va dentro de toggle.
 
 ## variants-table
 
