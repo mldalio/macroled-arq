@@ -1,0 +1,20 @@
+/* carousel-controls · Figma 1410:17825. Solo tokens semánticos.
+   2 × icon-button Large (padding space/padding/sm-md + icon/xl) a
+   space/gap/sm. Deshabilitada = icon-button disabled (color/icon/disabled). */
+
+:host {
+  display: inline-flex;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+}
+
+/* Mobile: no se muestran (el carrusel se desliza y la imagen siguiente asoma) */
+@media (max-width: 767px) {
+  :host {
+    display: none;
+  }
+}

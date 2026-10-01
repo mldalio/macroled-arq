@@ -1098,6 +1098,55 @@
           </arq-cta-block>
         </div>
       </section>
+
+      <section class="demo-section" aria-labelledby="demo-carousel-controls">
+        <h2 id="demo-carousel-controls" class="demo-heading role-label">carousel-controls · &lt;arq-carousel-controls&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1410:17825. Con for="&lt;id&gt;" mueve el carrusel y calcula Position sola; sin for, Position queda fija. Hasta 767 px no se muestra. El carrusel (snap) es de la demo: el de las páginas se define al armar Colección y Home.</p>
+
+        <p class="demo-subheading role-body-sm">Position=Start · Middle · End (fijas, sin for)</p>
+        <div class="demo-row">
+          <arq-carousel-controls position="start"></arq-carousel-controls>
+          <arq-carousel-controls position="middle"></arq-carousel-controls>
+          <arq-carousel-controls position="end"></arq-carousel-controls>
+        </div>
+
+        <p class="demo-subheading role-body-sm">Con carrusel (for="demo-carrusel"): flechas a la derecha del section-header</p>
+        <div class="demo-carousel-head">
+          <arq-section-header type="title"><h2 slot="title">Proyectos</h2></arq-section-header>
+          <arq-carousel-controls for="demo-carrusel"></arq-carousel-controls>
+        </div>
+        <div class="demo-carousel" id="demo-carrusel" tabindex="0" aria-label="Proyectos">
+          <div class="demo-carousel-item">1</div>
+          <div class="demo-carousel-item">2</div>
+          <div class="demo-carousel-item">3</div>
+          <div class="demo-carousel-item">4</div>
+          <div class="demo-carousel-item">5</div>
+          <div class="demo-carousel-item">6</div>
+          <div class="demo-carousel-item">7</div>
+          <div class="demo-carousel-item">8</div>
+          <div class="demo-carousel-item">9</div>
+          <div class="demo-carousel-item">10</div>
+          <div class="demo-carousel-item">11</div>
+          <div class="demo-carousel-item">12</div>
+        </div>
+
+        <p class="demo-subheading role-body-sm">Carrusel que entra entero (las dos flechas deshabilitadas)</p>
+        <div class="demo-carousel-head">
+          <arq-section-header type="title"><h2 slot="title">Dos proyectos</h2></arq-section-header>
+          <arq-carousel-controls for="demo-carrusel-corto"></arq-carousel-controls>
+        </div>
+        <div class="demo-carousel" id="demo-carrusel-corto" tabindex="0" aria-label="Dos proyectos">
+          <div class="demo-carousel-item">1</div>
+          <div class="demo-carousel-item">2</div>
+        </div>
+
+        <p class="demo-subheading role-body-sm">Contenedor en modo Dark</p>
+        <div class="demo-row demo-dark" data-arq-theme="dark">
+          <arq-carousel-controls position="start"></arq-carousel-controls>
+          <arq-carousel-controls position="middle"></arq-carousel-controls>
+          <arq-carousel-controls position="end"></arq-carousel-controls>
+        </div>
+      </section>
     </main>
   </body>
 </html>

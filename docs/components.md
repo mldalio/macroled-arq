@@ -11,7 +11,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [breadcrumb](#breadcrumb) | `<arq-breadcrumb>` | En código ([README](../src/components/breadcrumb/README.md)) |
 | [breadcrumb-item](#breadcrumb-item) | `<arq-breadcrumb-item>` | En código ([README](../src/components/breadcrumb-item/README.md)) |
 | [button](#button) | `<arq-button>` | En código ([README](../src/components/button/README.md)) |
-| [carousel-controls](#carousel-controls) | `<arq-carousel-controls>` | Pendiente |
+| [carousel-controls](#carousel-controls) | `<arq-carousel-controls>` | En código ([README](../src/components/carousel-controls/README.md)) |
 | [catalog-nav](#catalog-nav) | `<arq-catalog-nav>` | Pendiente |
 | [catalog-nav-group](#catalog-nav-group) | `<arq-catalog-nav-group>` | Pendiente |
 | [catalog-nav-item](#catalog-nav-item) | `<arq-catalog-nav-item>` | Pendiente |

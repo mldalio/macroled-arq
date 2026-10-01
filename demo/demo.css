@@ -314,3 +314,39 @@
     gap: var(--arq-space-gap-xl);
   }
 }
+
+/* Carrusel de prueba para carousel-controls (no es el de las páginas):
+   fila con snap; las tarjetas usan layout/card-min y ratio/square. */
+.demo-carousel-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-lg);
+}
+
+.demo-carousel-head > arq-section-header {
+  flex: 1 1 auto;
+}
+
+.demo-carousel {
+  display: flex;
+  gap: var(--arq-space-gap-md);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.demo-carousel:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.demo-carousel-item {
+  display: grid;
+  flex: 0 0 var(--arq-layout-card-min);
+  place-items: center;
+  aspect-ratio: 1 / 1;
+  scroll-snap-align: start;
+  background: var(--arq-color-surface-subtle);
+  color: var(--arq-color-text-tertiary);
+}

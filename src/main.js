@@ -36,6 +36,7 @@ import './components/faq-item/faq-item.js';
 import './components/footer/footer.js';
 import './components/hero/hero.js';
 import './components/cta-block/cta-block.js';
+import './components/carousel-controls/carousel-controls.js';
 
 if (!window.Arq) {
   window.Arq = Object.freeze({ version });
