@@ -75,7 +75,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [spec-row](#spec-row) | `<arq-spec-row>` | En código ([README](../src/components/spec-row/README.md)) |
 | [swatch](#swatch) | `<arq-swatch>` | En código ([README](../src/components/swatch/README.md)) |
 | [swatch-picker](#swatch-picker) | `<arq-swatch-picker>` | Pendiente |
-| [tab](#tab) | `<arq-tab>` | Pendiente |
+| [tab](#tab) | `<arq-tab>` | En código ([README](../src/components/tab/README.md)) |
 | [tag](#tag) | `<arq-tag>` | En espera de diseño |
 | [toggle](#toggle) | `<arq-toggle>` | Pendiente |
 | [toggle-switch](#toggle-switch) | `<arq-toggle-switch>` | Pendiente |

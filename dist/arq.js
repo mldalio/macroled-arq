@@ -489,8 +489,6 @@ var k = ":host{cursor:pointer;display:block}:host([disabled]){cursor:default}.op
 //#endregion
 //#region src/components/gallery-thumb/gallery-thumb.css?inline
 var A = ":host{display:block}.thumb{box-sizing:border-box;aspect-ratio:5/4;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;width:100%;margin:0;padding:0;display:block;position:relative;overflow:hidden}.thumb img{object-fit:cover;width:100%;height:100%;display:block}.thumb:after{content:\"\";border:var(--arq-border-default) solid var(--arq-color-surface-transparent);border-radius:inherit;pointer-events:none;position:absolute;inset:0}.thumb:hover:after{border-color:var(--arq-color-border-hover)}.thumb[aria-current=true]:after{border-color:var(--arq-color-border-strong)}.thumb:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.thumb:focus:not(:focus-visible){outline:none}";
-//#endregion
-//#region src/main.js
 (class extends l {
 	static tag = "arq-gallery-thumb";
 	static styles = A;
@@ -516,6 +514,181 @@ var A = ":host{display:block}.thumb{box-sizing:border-box;aspect-ratio:5/4;borde
 		this.selected ? t.setAttribute("aria-current", "true") : t.removeAttribute("aria-current");
 		let n = this.shadowRoot.querySelector("img");
 		e.has("src") && (this.src ? (n.hidden = !1, n.src = this.src) : (n.removeAttribute("src"), n.hidden = !0)), this.alt ? t.setAttribute("aria-label", this.alt) : t.removeAttribute("aria-label");
+	}
+}).define();
+//#endregion
+//#region src/components/sku/sku.css?inline
+var j = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.sku{align-items:flex-start;gap:var(--arq-space-gap-xs);flex-direction:column;min-width:0;display:flex}.label{color:var(--arq-color-text-secondary)}:host([size=compact]) .label{display:none}.row{align-items:center;gap:var(--arq-space-gap-sm);background:var(--arq-color-surface-transparent);max-width:100%;color:var(--arq-color-text-primary);text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;padding:0;display:inline-flex}.code{min-width:0;color:var(--arq-color-text-primary);text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.copy{color:var(--arq-color-icon-secondary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.row:hover .copy{color:var(--arq-color-icon-primary)}.copied{color:var(--arq-color-text-success);flex:none;display:none}:host([copied]) .copy{display:none}:host([copied]) .copied{display:inline}.row:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.row:focus:not(:focus-visible){outline:none}", M = 2e3, N = "Copiado";
+(class extends l {
+	static tag = "arq-sku";
+	static styles = j;
+	static properties = {
+		size: {
+			type: String,
+			values: ["default", "compact"],
+			default: "default"
+		},
+		copied: { type: Boolean }
+	};
+	static template = `<span class="sku"><span class="label role-label">SKU</span><button type="button" class="row"><span class="code"><slot></slot></span><span class="copy">${d("copy")}</span><span class="copied role-caption" aria-hidden="true">${N}</span></button><span class="visually-hidden" aria-live="polite"></span></span>`;
+	#e = null;
+	#t = 0;
+	setup() {
+		this.#e = this.shadowRoot.querySelector(".row"), this.#e.addEventListener("click", () => this.copy());
+		let e = () => this.#e.setAttribute("aria-label", `Copiar SKU ${this.code}`);
+		this.shadowRoot.querySelector("slot").addEventListener("slotchange", e), e();
+	}
+	get code() {
+		return this.textContent.trim();
+	}
+	focus(e) {
+		this.#e ? this.#e.focus(e) : super.focus(e);
+	}
+	async copy() {
+		try {
+			await navigator.clipboard.writeText(this.code);
+		} catch (e) {
+			console.warn("[arq] <arq-sku> no se pudo copiar el código:", e);
+			return;
+		}
+		this.copied = !0, this.emit("copy", { code: this.code }), clearTimeout(this.#t), this.#t = setTimeout(() => this.copied = !1, M);
+	}
+	update() {
+		this.shadowRoot.querySelector(".code").classList.toggle("role-body-lg", this.size !== "compact"), this.shadowRoot.querySelector(".code").classList.toggle("role-body", this.size === "compact"), this.shadowRoot.querySelector("[aria-live]").textContent = this.copied ? N : "";
+	}
+	disconnectedCallback() {
+		clearTimeout(this.#t);
+	}
+}).define();
+//#endregion
+//#region src/base/selectable.js
+var P = "[role=\"radiogroup\"], [role=\"tablist\"]", F = class {
+	constructor(e, { role: t, state: n }) {
+		this.host = e, this.state = n, e.hasAttribute("role") || e.setAttribute("role", t), e.choose = () => this.choose(), e.addEventListener("click", () => this.choose()), e.addEventListener("keydown", (e) => {
+			(e.key === "Enter" || e.key === " ") && (e.preventDefault(), this.choose());
+		}), e.addController(this);
+	}
+	choose() {
+		let e = this.host;
+		e.disabled || e.selected || (e.selected = !0, e.emit("change", {
+			value: e.value ?? null,
+			selected: !0
+		}));
+	}
+	hostUpdate() {
+		let e = this.host;
+		e.setAttribute(this.state, String(!!e.selected)), e.disabled ? e.setAttribute("aria-disabled", "true") : e.removeAttribute("aria-disabled"), e.parentElement?.closest(P) || e.setAttribute("tabindex", e.disabled ? "-1" : "0");
+	}
+}, I = ":host{vertical-align:middle;flex:none;display:inline-flex}.swatch{box-sizing:border-box;width:var(--arq-swatch-sm);height:var(--arq-swatch-sm);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);display:block;position:relative;overflow:hidden}:host([size=default]) .swatch{width:var(--arq-swatch-md);height:var(--arq-swatch-md)}:host([size=large]) .swatch{width:var(--arq-swatch-lg);height:var(--arq-swatch-lg)}.swatch img{object-fit:cover;width:100%;height:100%;display:block}.swatch:after{content:\"\";border:var(--arq-border-default) solid var(--arq-color-border-subtle);border-radius:inherit;pointer-events:none;position:absolute;inset:0}:host([role=radio]){cursor:pointer}:host([role=radio]:hover) .swatch:after,:host([selected]) .swatch:after{border-width:var(--arq-border-strong);border-color:var(--arq-color-border-strong)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+(class extends l {
+	static tag = "arq-swatch";
+	static styles = I;
+	static properties = {
+		size: {
+			type: String,
+			values: [
+				"small",
+				"default",
+				"large"
+			],
+			default: "small"
+		},
+		selected: { type: Boolean },
+		src: { type: String },
+		value: { type: String }
+	};
+	static template = "<span class=\"swatch\"><img alt=\"\" hidden></span><span class=\"visually-hidden\"><slot></slot></span>";
+	setup() {
+		let e = this.shadowRoot.querySelector("img");
+		e.addEventListener("error", () => e.hidden = !0), e.addEventListener("load", () => e.hidden = !1);
+		let t = () => {
+			let e = this.textContent.trim();
+			e && this.setAttribute("aria-label", e);
+		};
+		this.shadowRoot.querySelector("slot").addEventListener("slotchange", t), t(), this.getAttribute("role") === "radio" ? this.selectable = new F(this, {
+			role: "radio",
+			state: "aria-checked"
+		}) : this.hasAttribute("role") || this.setAttribute("role", "img");
+	}
+	update(e) {
+		if (e.has("src")) {
+			let e = this.shadowRoot.querySelector("img");
+			this.src ? e.src = this.src : (e.removeAttribute("src"), e.hidden = !0);
+		}
+	}
+}).define();
+//#endregion
+//#region src/components/option-tile/option-tile.css?inline
+var L = ":host{cursor:pointer;flex:1 1 0;min-width:0;display:flex}.tile{box-sizing:border-box;min-width:0;padding:var(--arq-space-padding-sm-md) var(--arq-space-padding-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);color:var(--arq-color-text-tertiary);text-align:center;flex:1;justify-content:center;align-items:center;display:flex}:host(:not([disabled]):not([selected]):hover) .tile{border-bottom-color:var(--arq-color-border-hover);background:var(--arq-color-surface-faint);color:var(--arq-color-text-primary)}:host([selected]) .tile{border-bottom-color:var(--arq-color-border-strong);background:var(--arq-color-surface-soft);color:var(--arq-color-text-primary)}:host([disabled]){cursor:default}:host([disabled]) .tile{border-bottom-color:var(--arq-color-border-disabled);color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+(class extends l {
+	static tag = "arq-option-tile";
+	static styles = L;
+	static properties = {
+		selected: { type: Boolean },
+		disabled: { type: Boolean },
+		value: { type: String }
+	};
+	static template = "<span class=\"tile role-body-regular\"><slot></slot></span>";
+	setup() {
+		this.selectable = new F(this, {
+			role: "radio",
+			state: "aria-checked"
+		});
+	}
+}).define();
+//#endregion
+//#region src/components/choice-chip/choice-chip.css?inline
+var R = ":host{vertical-align:middle;cursor:pointer;max-width:100%;display:inline-flex}.chip{box-sizing:border-box;max-width:100%;padding:var(--arq-space-padding-sm-md) var(--arq-space-padding-lg);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);color:var(--arq-color-text-primary);white-space:nowrap;align-items:center;display:inline-flex}:host(:not([disabled]):hover) .chip{border-color:var(--arq-color-border-strong)}:host([selected]) .chip{border-color:var(--arq-color-border-strong);background:var(--arq-color-surface-selected)}:host([disabled]){cursor:default}:host([disabled]) .chip{border-color:var(--arq-color-border-disabled);color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+(class extends l {
+	static tag = "arq-choice-chip";
+	static styles = R;
+	static formAssociated = !0;
+	static properties = {
+		selected: { type: Boolean },
+		disabled: { type: Boolean },
+		name: { type: String },
+		value: { type: String }
+	};
+	static template = "<span class=\"chip role-body-regular\"><slot></slot></span>";
+	#e = this.attachInternals();
+	#t = !1;
+	setup() {
+		this.#t = this.selected, this.selectable = new F(this, {
+			role: "radio",
+			state: "aria-checked"
+		});
+	}
+	update() {
+		this.#e.setFormValue(this.selected ? this.value ?? "on" : null);
+	}
+	formResetCallback() {
+		this.selected = this.#t;
+	}
+}).define();
+//#endregion
+//#region src/components/tab/tab.css?inline
+var z = ":host{cursor:pointer;flex:none;display:inline-flex}.tab{padding-bottom:var(--arq-space-gap-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-surface-transparent);color:var(--arq-color-text-tertiary);white-space:nowrap;display:inline-flex}:host(:not([disabled]):hover) .tab{color:var(--arq-color-text-primary)}:host([selected]) .tab{border-bottom-color:var(--arq-color-border-strong);color:var(--arq-color-text-primary)}:host([disabled]){cursor:default}:host([disabled]) .tab{color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+//#endregion
+//#region src/main.js
+(class extends l {
+	static tag = "arq-tab";
+	static styles = z;
+	static properties = {
+		selected: { type: Boolean },
+		disabled: { type: Boolean },
+		value: { type: String }
+	};
+	static template = "<span class=\"tab role-label\"><slot></slot></span>";
+	setup() {
+		this.selectable = new F(this, {
+			role: "tab",
+			state: "aria-selected"
+		});
+		let e = () => {
+			let e = this.textContent.trim();
+			e && this.setAttribute("aria-label", e);
+		};
+		this.shadowRoot.querySelector("slot").addEventListener("slotchange", e), e();
 	}
 }).define(), window.Arq || (window.Arq = Object.freeze({ version: e }));
 //#endregion
