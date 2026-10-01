@@ -32,7 +32,7 @@ class DemoTablist extends ArqElement {
   static tag = 'demo-tablist';
   // Tablist del mega-menu: gap space/gap/xl y línea border/subtle debajo
   static styles = `
-:host { display: flex; gap: var(--arq-space-gap-xl); border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle); }
+:host { display: flex; gap: var(--arq-space-gap-xl); overflow-x: auto; border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle); }
 `;
   static template = `<slot></slot>`;
   setup() {

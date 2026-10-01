@@ -225,3 +225,7 @@
 .demo-tiles {
   max-width: calc(var(--arq-layout-card-min) * 2);
 }
+
+.demo-tiles--narrow {
+  max-width: var(--arq-layout-card-min);
+}
