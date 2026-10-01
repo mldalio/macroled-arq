@@ -7,6 +7,11 @@
 //   <arq-footer-link href="https://instagram.com/…" show-icon icon="instagram" target="_blank">Instagram</arq-footer-link>
 //
 // State de Figma: Hover, Pressed y Focus son :hover, :active y :focus-visible.
+//
+// Es un ítem de la lista de cada columna del footer (role="listitem", como
+// atributo para que axe lo reconozca, igual que breadcrumb-item). label pone
+// el nombre accesible del link cuando el texto visible no alcanza
+// ("Macroled Arq en Instagram", ficha doc/footer).
 
 import { ArqElement } from '../../base/arq-element.js';
 import { icon } from '../../base/icons.js';
@@ -20,13 +25,20 @@ class ArqFooterLink extends ArqElement {
     icon: { type: String, default: 'instagram' }, // Icon (default de Figma)
     href: { type: String },
     target: { type: String },
+    label: { type: String }, // nombre accesible del link (aria-label)
   };
   static template = `<a class="link role-body"><span class="leading" hidden></span><span class="label"><slot></slot></span></a>`;
+
+  setup() {
+    if (!this.hasAttribute('role')) this.setAttribute('role', 'listitem');
+  }
 
   update(changed) {
     const link = this.shadowRoot.querySelector('.link');
     if (this.href !== null) link.setAttribute('href', this.href);
     else link.removeAttribute('href');
+    if (this.label) link.setAttribute('aria-label', this.label);
+    else link.removeAttribute('aria-label');
     if (this.target) link.setAttribute('target', this.target);
     else link.removeAttribute('target');
     if (this.target === '_blank') link.setAttribute('rel', 'noopener');

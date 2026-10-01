@@ -18,8 +18,10 @@ Link del footer. Show icon agrega un ícono a la izquierda, solo en la columna R
 | Icon | `icon` | `icon` | nombre de `src/base/icons.js` (def. `instagram`; en Redes: `instagram`, `youtube`) |
 | — | `href` | `href` | destino del link |
 | — | `target` | `target` | con `_blank` suma `rel="noopener"` |
+| — | `label` | `label` | nombre accesible del link (`aria-label`) cuando el texto no alcanza: "Macroled Arq en Instagram" |
 
-- Solo dentro de footer. El footer lo pone en un `<li>` de la lista de cada columna.
+- Solo dentro de footer, en el slot de una columna (`slot="productos"`, `"informacion"` o `"redes"`). Es un ítem de la lista de la columna: lleva `role="listitem"` (como atributo, igual que breadcrumb-item). Fuera del footer, el contenedor tiene que tener `role="list"`.
+- Un label largo se parte en varias líneas (columnas del footer en Mobile); no se corta.
 - Hover, Pressed y Focus no son props: `:hover`, `:active`, `:focus-visible`.
 - El ícono usa el color del texto (`currentColor`) en todos los estados.
 

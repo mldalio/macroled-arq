@@ -41,7 +41,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [filter-chip](#filter-chip) | `<arq-filter-chip>` | En código ([README](../src/components/filter-chip/README.md)) |
 | [filter-panel](#filter-panel) | `<arq-filter-panel>` | Pendiente |
 | [filter-row](#filter-row) | `<arq-filter-row>` | Pendiente |
-| [footer](#footer) | `<arq-footer>` | Pendiente |
+| [footer](#footer) | `<arq-footer>` | En código ([README](../src/components/footer/README.md)) |
 | [footer-link](#footer-link) | `<arq-footer-link>` | En código ([README](../src/components/footer-link/README.md)) |
 | [form-message](#form-message) | `<arq-form-message>` | En código ([README](../src/components/form-message/README.md)) |
 | [form-section-header](#form-section-header) | `<arq-form-section-header>` | En código ([README](../src/components/form-section-header/README.md)) |

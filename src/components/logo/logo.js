@@ -2,9 +2,9 @@
 //
 // Logotipo de Macroled Arq. Siempre es link a la home de Arq.
 //
-//   <arq-logo></arq-logo>                     Size=Default (navbar desktop y footer)
+//   <arq-logo></arq-logo>                     Size=Default (navbar desktop)
 //   <arq-logo size="small"></arq-logo>        Size=Small (navbar mobile)
-//   <arq-logo size="compact"></arq-logo>      Size=Compact (espacios reducidos)
+//   <arq-logo size="compact"></arq-logo>      Size=Compact (footer y espacios reducidos)
 //
 // El color es currentColor = color/text/primary: se invierte solo en modo Dark.
 // TODO (navbar): sobre el hero (navbar Theme=Transparent) toma el color

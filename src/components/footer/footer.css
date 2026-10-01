@@ -1,0 +1,100 @@
+/* footer · Figma 788:3104. Solo tokens semánticos.
+   Desktop: marca a la izquierda (logo, bajada y legal) y columnas a la
+   derecha. Mobile: marca, columnas y legal apilados. */
+
+:host {
+  display: block;
+}
+
+/* Grilla: el legal es un solo elemento que en Desktop queda debajo de la
+   marca (gap space/gap/md) y en Mobile al final. La segunda fila es 1fr para
+   que el alto de las columnas no empuje el legal hacia abajo. */
+.footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'brand columns'
+    'legal columns';
+  column-gap: var(--arq-space-gap-xl);
+  row-gap: var(--arq-space-gap-md);
+  padding: var(--arq-space-section-sm) var(--arq-layout-gutter);
+  border-top: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  background: var(--arq-color-surface-default);
+}
+
+.brand {
+  grid-area: brand;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-md);
+  min-width: 0;
+}
+
+/* TODO (diseño): en el set la bajada mide 240 fijos y no hay token; toma el
+   ancho de su texto (decisión 2026-10-01 · footer). */
+.tagline {
+  margin: 0;
+  color: var(--arq-color-text-secondary);
+  overflow-wrap: break-word;
+}
+
+/* Legal: el dato va en caja normal y la mayúscula la pone el estilo */
+.legal {
+  grid-area: legal;
+  align-self: start;
+  margin: 0;
+  color: var(--arq-color-text-tertiary);
+  text-transform: uppercase;
+}
+
+.columns {
+  grid-area: columns;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-xl);
+}
+
+/* TODO (diseño): en el set cada columna mide 200 fijos y no hay token; toma
+   el ancho de su contenido (decisión 2026-10-01 · footer). */
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-sm);
+  min-width: 0;
+}
+
+/* Título: role/body-strong con space/gap/sm abajo (más el gap de la columna) */
+.title {
+  margin: 0;
+  padding-bottom: var(--arq-space-gap-sm);
+  color: var(--arq-color-text-primary);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-sm);
+  max-width: 100%;
+}
+
+/* Mobile: todo apilado a space/gap/xl; las tres columnas en una fila, de
+   igual ancho (FILL en Figma) */
+@media (max-width: 767px) {
+  .footer {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-template-areas:
+      'brand'
+      'columns'
+      'legal';
+    row-gap: var(--arq-space-gap-xl);
+  }
+
+  .column {
+    flex: 1 1 0;
+  }
+}

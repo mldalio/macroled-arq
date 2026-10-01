@@ -16,10 +16,10 @@
   text-decoration: none;
 }
 
+/* Un label largo se parte en líneas (columnas del footer en Mobile) */
 .label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 /* Ícono a la izquierda, del color del texto (currentColor) */
