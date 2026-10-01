@@ -375,7 +375,7 @@ Título de sección de un formulario: número opcional (color/text/tertiary) + l
 - Figma: [920-2474](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=920-2474)
 - Propiedades: State: Default · Hover · Selected · Focus
 
-Miniatura de la galería de producto. La imagen se reemplaza en el fill de la instancia (placeholder surface/subtle). Default, Hover (border/hover), Selected (border/strong, imagen mostrada), Focus (border/focus).
+Miniatura de la galería de producto, proporción 5:4 (105 × 84). La imagen se reemplaza en el fill de la instancia (placeholder surface/subtle). Default, Hover (border/hover), Selected (border/strong, imagen mostrada), Focus (border/focus).
 
 ## hero
 
@@ -446,7 +446,7 @@ Mega menú de Productos (desktop). Se abre desde nav-link "Productos" (Open=True
 
 Link del navbar. State: Default, Hover, Pressed, Current (página actual) y Focus. Open=True: desplegable abierto (aria-expanded="true"). Has dropdown muestra la flecha: hacia abajo en desktop (gira al abrir) y hacia la derecha en mobile (entra al submenú).
 
-State=Current: sección activa (indicador visible). En código: aria-current="page".
+State=Current: sección activa (indicador de 8 × 2: space/gap/sm × border/strong). En código: aria-current="page".
 
 Theme=Inverse: para navbar Theme=Transparent sobre foto (label color/text/inverse, indicador, subrayado y chevron en color/icon/inverse).
 
@@ -613,16 +613,16 @@ Etiqueta informativa (no interactiva). Type: Plain (tipo de producto en tarjetas
 ## toggle
 
 - Figma: [926-3102](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=926-3102)
-- Propiedades: Label; Show label; Value: Off · On; State: Default · Hover · Focus · Disabled
+- Propiedades: Label; Show label; Checked: False · True; State: Default · Hover · Focus · Disabled
 
-Interruptor con texto. El switch es siempre una instancia de toggle-switch, a la izquierda; el texto va a la derecha (gap space/gap/sm) en role/body-regular, en caja normal (p. ej. "Iluminar", "Solo diferencias"). Value: Off · On. State: Default · Hover · Focus · Disabled (texto color/text/disabled). Props: Label, Show label. role=switch con aria-checked.
+Interruptor con texto. El switch es siempre una instancia de toggle-switch, a la izquierda; el texto va a la derecha (gap space/gap/sm) en role/body-regular, en caja normal (p. ej. "Iluminar", "Solo diferencias"). Checked: False · True. State: Default · Hover · Focus · Disabled (texto color/text/disabled). Props: Label, Show label. role=switch con aria-checked.
 
 ## toggle-switch
 
 - Figma: [1131-6383](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1131-6383)
-- Propiedades: Value: Off · On; State: Default · Hover · Focus · Disabled
+- Propiedades: Checked: False · True; State: Default · Hover · Focus · Disabled
 
-Switch del toggle (pista + círculo), compartido por todas las variantes de toggle. Value: Off · On. State: Default · Hover · Focus · Disabled. Pista 38 × 18, radius/pill, padding space/padding/2xs, borde border/default. Off: borde color/border/strong, círculo color/icon/primary; On: fondo y borde color/action/primary, círculo color/action/on-primary. Hover: surface/hover (Off) o action/primary-hover (On). Focus: borde color/border/focus. Disabled: border/disabled, icon/disabled. No se usa suelto: va dentro de toggle.
+Switch del toggle (pista + círculo), compartido por todas las variantes de toggle. Checked: False · True. State: Default · Hover · Focus · Disabled. Pista 38 × 18, radius/pill, padding space/padding/2xs, borde border/default. Off: borde color/border/strong, círculo color/icon/primary; On: fondo y borde color/action/primary, círculo color/action/on-primary. Hover: surface/hover (Off) o action/primary-hover (On). Focus: borde color/border/focus. Disabled: border/disabled, icon/disabled. No se usa suelto: va dentro de toggle.
 
 ## variants-table
 

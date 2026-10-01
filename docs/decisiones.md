@@ -142,3 +142,20 @@ setup() {
 
 - `role/label` y `role/label-sm` ponen la mayúscula con `text-transform`. Chrome arma el nombre accesible con esa transformación ("COLECCIONES") y algunos lectores de pantalla leen las palabras en mayúsculas como siglas.
 - En links con texto `role/label` (por ahora breadcrumb-item), el link lleva `aria-label` con el texto tal como llega del HTML, en caja normal. En elementos sin rol (un `<span>`) no se puede: ARIA no permite `aria-label` ahí.
+
+## 2026-10-01 · Fase 1 (controles y formularios)
+
+### Foco en campos de texto (excepción)
+
+- En `input` (Text y Textarea) el foco **solo cambia el color de la línea inferior** a `color/border/focus`, sin anillo. Así está en Figma y en la ficha `doc/input`. Es la única excepción a la regla del anillo de DESIGN.md §7.
+- La línea no cambia de grosor (`border/default` en todos los estados): no hay salto de layout.
+
+### Controles de formulario con ElementInternals
+
+- checkbox, toggle, choice-chip, input y file-upload son *form-associated custom elements* (`static formAssociated = true` + `attachInternals()`): mandan su valor con el `<form>` que los contiene (`FormData`), como un control nativo. Un `<input>` dentro del Shadow DOM no lo haría solo.
+- Atributos de formulario: `name` y `value` (como en HTML). `form.reset()` los vuelve al estado inicial.
+
+### Selección única (src/base/single-select.js)
+
+- choice-chip, option-tile, swatch y tab se comportan como opciones de un grupo: una sola elegida, flechas para moverse (roving tabindex), Inicio / Fin. El controlador `SingleSelect` lo arma el contenedor (option-group, swatch-picker, el tablist del mega-menu o el grupo de choice-chip, todavía no construidos). La demo usa contenedores de prueba (`demo-radio-group`, `demo-tablist`).
+- Cada opción sola funciona igual con clic, Enter o Espacio y emite `arq:change`.

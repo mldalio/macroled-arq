@@ -318,7 +318,7 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 | Focus | Foco de teclado | `:focus-visible` con `color/border/focus` |
 | Error | Valor inválido | `[aria-invalid="true"]` + mensaje |
 | Disabled | Inactivo | `:disabled` |
-| Checked · Value | Checkbox marcado (`Checked=True`) · switch encendido (`Value=On`) | `[aria-checked="true"]` / `:checked` |
+| Checked | Checkbox marcado o switch encendido (`Checked=True`) | `[aria-checked="true"]` / `:checked` |
 | Applied | filter-bar con filtros aplicados | — (se muestra "Limpiar filtros") |
 | Copied | sku después de copiar el código | `aria-live="polite"` con el texto "Copiado" |
 | Loading | Envío en curso (button Filled) | `[aria-busy="true"]` + `:disabled` |
@@ -356,7 +356,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | select-menu | Type: Finishes · Filter · Text | Hasta 7 opciones. surface/default, border/default, sin sombra |
 | select-option | State: Default · Hover · Selected · Focus · Disabled. Props: Name · Show swatch | Hover surface/faint, Selected role/body-medium, Focus border/focus |
 | tab | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | role/label; seleccionado con línea border/strong. Un solo tab en todo el sitio |
-| nav-link | Breakpoint: Desktop · Mobile. State: Default · Hover · Pressed · Current · Focus. Open: False · True. Theme: Default · Inverse. Props: Label · Has dropdown | Hover subrayado; Current guion; Open: solo gira la flecha (sin subrayado) |
+| nav-link | Breakpoint: Desktop · Mobile. State: Default · Hover · Pressed · Current · Focus. Open: False · True. Theme: Default · Inverse. Props: Label · Has dropdown | Hover subrayado; Current guion de space/gap/sm × border/strong (8 × 2); Open: solo gira la flecha (sin subrayado) |
 | navbar | Breakpoint: Desktop · Mobile. Mode: Default · Search · Menu · Products. Theme: Default · Transparent | 56 px de alto. Transparent sobre el hero; pasa a Default al hacer scroll |
 | mega-menu | Tab: Aplicación · Lámparas y artefactos · Colecciones | Un solo componente; categorías, links y "Ver todo…" salen de los datos. Usa tab y mega-link |
 | mega-link | Type: Link · Group. State: Default · Hover · Focus. Size: Default · Large. Open: False · True. Props: Name · Meta · Show meta · Show image · Show arrow | Link role/body (Large role/body-lg). Group role/body-xl con icon/plus / icon/minus |
@@ -385,7 +385,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | catalog-nav-mobile · catalog-nav-trigger | Open: False · True / Open × State: Default · Hover · Focus | Hasta 1023 px |
 | filter-panel · filter-row · filter-chip · filter-bar | Breakpoint / Open × State / State: Default · Hover · Focus / State: Default · Applied × Breakpoint | filter-panel desktop con scrim; mobile pantalla completa sin scrim |
 | checkbox | Size: Large · Default. Checked: False · True. State: Default · Hover · Focus · Disabled. Props: Label · Show label | Filtros y "Comparar" en tarjetas |
-| toggle · toggle-switch | Value: Off · On. State: Default · Hover · Focus · Disabled. Props: Label · Show label | Pista 38 × 18, radius/pill |
+| toggle · toggle-switch | Checked: False · True. State: Default · Hover · Focus · Disabled. Props: Label · Show label | Pista 38 × 18, radius/pill |
 | choice-chip | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | Formularios. No confundir con option-tile |
 | option-group · option-tile | Type: Tiles · Select · Swatches / State: Default · Hover · Selected · Focus · Disabled | Configurador de la ficha. option-tile funciona como radio |
 | swatch · swatch-picker | Size: Small · Default · Large. State: Default · Hover · Selected · Focus | Elegir acabado en la ficha. Cantidad variable en código |
@@ -557,8 +557,8 @@ Link a cada set en Figma (`node-id`). Base: `https://www.figma.com/design/djAb2r
 | swatch-picker | [1063-4881](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1063-4881) | — |
 | tab | [929-2287](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=929-2287) | Label; State: Default · Hover · Selected · Focus · Disabled |
 | tag | [981-2305](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=981-2305) | Label; Type: Plain · Outline |
-| toggle | [926-3102](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=926-3102) | Label; Show label; Value: Off · On; State: Default · Hover · Focus · Disabled |
-| toggle-switch | [1131-6383](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1131-6383) | Value: Off · On; State: Default · Hover · Focus · Disabled |
+| toggle | [926-3102](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=926-3102) | Label; Show label; Checked: False · True; State: Default · Hover · Focus · Disabled |
+| toggle-switch | [1131-6383](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1131-6383) | Checked: False · True; State: Default · Hover · Focus · Disabled |
 | variants-table | [1068-5582](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1068-5582) | Filters: Off · On; Breakpoint: Desktop · Mobile |
 | variants-table-row | [923-2708](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=923-2708) | Type: Header · Row; State: Default · Hover |
 
