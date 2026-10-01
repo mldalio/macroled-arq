@@ -399,8 +399,6 @@ var w = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{al
 //#endregion
 //#region src/components/form-message/form-message.css?inline
 var T = ":host{display:block}.message{color:var(--arq-color-text-success);margin:0}:host([tone=error]) .message{color:var(--arq-color-text-error)}";
-//#endregion
-//#region src/main.js
 (class extends l {
 	static tag = "arq-form-message";
 	static styles = T;
@@ -412,6 +410,49 @@ var T = ":host{display:block}.message{color:var(--arq-color-text-success);margin
 	static template = "<p class=\"message role-body\"><slot></slot></p>";
 	update() {
 		this.setAttribute("role", this.tone === "error" ? "alert" : "status");
+	}
+}).define();
+//#endregion
+//#region src/components/form-section-header/form-section-header.css?inline
+var E = ":host{width:100%;display:block}.header{align-items:baseline;gap:var(--arq-space-gap-md);padding-bottom:var(--arq-space-padding-sm-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-strong);display:flex}.number{color:var(--arq-color-text-tertiary);flex:none}.label{min-width:0;color:var(--arq-color-text-primary)}";
+(class extends l {
+	static tag = "arq-form-section-header";
+	static styles = E;
+	static properties = {
+		number: { type: String },
+		showNumber: { type: Boolean }
+	};
+	static template = "<span class=\"header role-label\"><span class=\"number\" hidden></span><span class=\"label\"><slot></slot></span></span>";
+	update() {
+		let e = this.shadowRoot.querySelector(".number");
+		e.textContent = this.number ?? "", e.hidden = !this.showNumber || !this.number;
+	}
+}).define();
+//#endregion
+//#region src/components/spec-row/spec-row.css?inline
+var D = ":host{display:block}.row{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-lg);padding-block:var(--arq-space-padding-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);margin:0;display:flex}.label{min-width:0;color:var(--arq-color-text-tertiary)}.value{min-width:0;color:var(--arq-color-text-primary);text-align:end;margin:0}";
+(class extends l {
+	static tag = "arq-spec-row";
+	static styles = D;
+	static template = "<dl class=\"row role-body-regular\"><dt class=\"label\"><slot name=\"label\"></slot></dt><dd class=\"value\"><slot></slot></dd></dl>";
+}).define();
+//#endregion
+//#region src/components/filter-chip/filter-chip.css?inline
+var O = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.chip{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-xs);max-width:100%;padding:var(--arq-space-padding-xs) var(--arq-space-padding-sm);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);margin:0;display:inline-flex}.label{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm);flex:none}.chip:hover{border-color:var(--arq-color-text-primary)}.chip:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.chip:focus:not(:focus-visible){outline:none}";
+//#endregion
+//#region src/main.js
+(class extends l {
+	static tag = "arq-filter-chip";
+	static styles = O;
+	static template = `<button type="button" class="chip role-body-sm"><span class="label"><slot></slot></span>${d("close")}</button>`;
+	#e = null;
+	setup() {
+		this.#e = this.shadowRoot.querySelector(".chip");
+		let e = () => this.#e.setAttribute("aria-label", `Quitar filtro ${this.textContent.trim()}`);
+		this.shadowRoot.querySelector("slot").addEventListener("slotchange", e), e();
+	}
+	focus(e) {
+		this.#e ? this.#e.focus(e) : super.focus(e);
 	}
 }).define(), window.Arq || (window.Arq = Object.freeze({ version: e }));
 //#endregion

@@ -38,7 +38,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [feature-block](#feature-block) | `<arq-feature-block>` | Pendiente |
 | [file-upload](#file-upload) | `<arq-file-upload>` | Pendiente |
 | [filter-bar](#filter-bar) | `<arq-filter-bar>` | Pendiente |
-| [filter-chip](#filter-chip) | `<arq-filter-chip>` | Pendiente |
+| [filter-chip](#filter-chip) | `<arq-filter-chip>` | En código ([README](../src/components/filter-chip/README.md)) |
 | [filter-panel](#filter-panel) | `<arq-filter-panel>` | Pendiente |
 | [filter-row](#filter-row) | `<arq-filter-row>` | Pendiente |
 | [footer](#footer) | `<arq-footer>` | Pendiente |

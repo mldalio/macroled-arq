@@ -17,6 +17,7 @@ import './components/footer-link/footer-link.js';
 import './components/form-message/form-message.js';
 import './components/form-section-header/form-section-header.js';
 import './components/spec-row/spec-row.js';
+import './components/filter-chip/filter-chip.js';
 
 if (!window.Arq) {
   window.Arq = Object.freeze({ version });
