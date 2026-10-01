@@ -80,6 +80,7 @@ dist/arq.js · dist/arq.css    ← única salida que carga Webflow
 - Una carpeta por componente en `src/components/<nombre>/` con `.js`, `.css` y `README.md`.
 - Antes de construir un componente, leer **tres cosas**: el set en Figma por MCP (variantes, props y variables enlazadas), su **descripción** en Figma (copiada en `docs/components.md`; si no coincide con Figma, manda Figma) y su ficha `doc/<nombre>` en la página Documentación (uso, "No confundir con", notas de código). El link al set está en el Anexo A de DESIGN.md y en la tarjeta de Trello. Si las tres fuentes no coinciden, avisar en vez de elegir.
 - El texto principal llega como **slot** desde el HTML (indexable), no se genera por JS.
+- Los encabezados (h1–h6) se escriben en el HTML de la página con slot; el componente los estiliza con `::slotted()` y nunca crea su propia etiqueta de encabezado.
 - **Foco:** siempre `:focus-visible` con un anillo separado: `outline` de `--arq-border-strong` en `--arq-color-border-focus` y `outline-offset: 2px`. El foco nunca cambia el tamaño del componente.
 - Las props booleanas de Figma que vienen activadas por defecto (Show icon, Show underline…) en código van desactivadas por defecto, porque son atributos de presencia. Se aclara en el README del componente.
 - **Responsive:** Desktop es la base; Mobile con `@media (max-width: 767px)`. Los listados usan `catalog-nav-mobile` hasta 1023 px.

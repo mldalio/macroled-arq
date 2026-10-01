@@ -278,3 +278,10 @@ setup() {
 - **Gaps del set, no de la ficha:** título–bajada `space/gap/sm-md` y email–button `space/gap/md` (la ficha dice `sm` y `sm-md`). Falta corregir la ficha.
 - **Newsletter sin envío:** un `<form>` dentro del Shadow DOM no es dueño de un `arq-input` que llega por slot (el formulario dueño se busca en el DOM de la página). Por eso el componente valida el email con `reportValidity()` del `arq-input` al tocar el button o con Enter, y emite `arq:submit` con `{ email }`. `TODO` (formularios): envío a n8n y `form-message`, cuando se defina el webhook de la newsletter y se construya `arq-button submit`.
 - **Email:** 380 fijos en el set, sin token; `layout/measure` (400) con `TODO`.
+
+## 2026-10-01 · Encabezados en el HTML de la página
+
+- **Regla (AGENTS.md):** los encabezados (h1–h6) se escriben en el HTML de la página con slot; el componente los estiliza con `::slotted()` y nunca crea su propia etiqueta de encabezado. Así el encabezado está en el HTML del embed (indexable y con su nivel visible en el DOM de la página).
+- **Componentes:** hero (`<h1 slot="title">`), page-header (`<h1 slot="title">`), section-header y cta-block (`<h2 slot="title">`) y footer (`<h2 slot="productos-title">`, `"informacion-title"`, `"redes-title"`).
+- **Estilo compartido:** la hoja base de `ArqElement` tiene una sola regla `::slotted(h1)…::slotted(h6)` que deja el encabezado sin margen y con `font`, `letter-spacing`, `text-transform` y `color` heredados (`inherit`). Cada componente pone la clase `role/*` y el color en el contenedor del slot: no se escriben primitivas. Va con `!important` porque los estilos del sitio (Webflow) para h1–h6 ganan sobre `::slotted`.
+- **footer:** cada `<nav>` toma su nombre (`aria-label`) del texto de su `<h2>`: un `aria-labelledby` desde el Shadow DOM no puede apuntar a un id del DOM de la página.

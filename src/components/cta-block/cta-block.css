@@ -24,18 +24,10 @@
   min-width: 0;
 }
 
+/* El <h2> llega del HTML de la página y hereda role/heading-2 y el color
+   (regla ::slotted(h1–h6) de la hoja base de ArqElement). */
 .title {
   color: var(--arq-color-text-primary);
-}
-
-/* El <h2> llega del HTML de la página: hereda role/heading-2 y el color.
-   !important porque los estilos del sitio para h2 ganan sobre ::slotted. */
-::slotted(h2) {
-  margin: 0 !important;
-  font: inherit !important;
-  letter-spacing: inherit !important;
-  text-transform: inherit !important;
-  color: inherit !important;
   overflow-wrap: break-word;
 }
 

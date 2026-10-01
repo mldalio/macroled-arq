@@ -8,15 +8,18 @@ Footer de Macroled Arq, último elemento de todas las páginas, full width. Marc
 <arq-footer>
   <span slot="tagline">Diseño lumínico para la arquitectura contemporánea.</span>
 
+  <h2 slot="productos-title">Productos</h2>
   <arq-footer-link slot="productos" href="/arq/productos/interior">Interior</arq-footer-link>
   <arq-footer-link slot="productos" href="/arq/productos/exterior">Exterior</arq-footer-link>
   <arq-footer-link slot="productos" href="/arq/productos/lamparas-y-artefactos">Lámparas y Artefactos</arq-footer-link>
   <arq-footer-link slot="productos" href="/arq/colecciones">Colecciones</arq-footer-link>
 
+  <h2 slot="informacion-title">Información</h2>
   <arq-footer-link slot="informacion" href="/arq/contacto">Contacto</arq-footer-link>
   <arq-footer-link slot="informacion" href="/arq/descargas">Descargas</arq-footer-link>
   <arq-footer-link slot="informacion" href="/arq/glosario">Glosario</arq-footer-link>
 
+  <h2 slot="redes-title">Redes</h2>
   <arq-footer-link slot="redes" href="https://www.instagram.com/…" target="_blank"
     show-icon icon="instagram" label="Macroled Arq en Instagram">Instagram</arq-footer-link>
   <arq-footer-link slot="redes" href="https://www.youtube.com/…" target="_blank"
@@ -31,15 +34,17 @@ Las rutas son de ejemplo: las definitivas van en `docs/urls.md`.
 | Figma | Slot | Contenido |
 | --- | --- | --- |
 | (bajada de la marca) | `tagline` | texto. Sin texto, no se muestra |
+| (títulos de columna) | `productos-title` · `informacion-title` · `redes-title` | un `<h2>` por columna |
 | Productos | `productos` | `<arq-footer-link>`, en orden |
 | Información | `informacion` | `<arq-footer-link>`, en orden |
 | Redes | `redes` | `<arq-footer-link show-icon icon="…" target="_blank" label="…">` |
 | Breakpoint | — | media query: hasta 767 px es Mobile |
 
-- **En el componente:** el logo (`<arq-logo size="compact">`, link a `/arq`), los títulos de columna y el legal "© <año> Macroled Arq." (en mayúsculas por estilo). El año sale de `new Date().getFullYear()`.
+- **Títulos de columna:** un `<h2>` por columna en el HTML de la página (AGENTS.md: los encabezados van en el HTML). El componente les da `role/body-strong` con `::slotted()` y nombra cada `<nav>` con su texto.
+- **En el componente:** el logo (`<arq-logo size="compact">`, link a `/arq`) y el legal "© <año> Macroled Arq." (en mayúsculas por estilo). El año sale de `new Date().getFullYear()`.
 - **Cantidad de links libre** en cada columna. Si se suma una sección, va una columna nueva en el componente, no más links en otra.
 - **Redes:** `target="_blank"` (footer-link suma `rel="noopener"`) y `label` con el nombre completo ("Macroled Arq en Instagram").
-- **Accesibilidad:** `<footer>` con cada columna como `<nav>` nombrada por su `<h2>` (`role/body-strong`) y una lista (`role="list"`); cada footer-link es un `listitem`.
+- **Accesibilidad:** `<footer>` con cada columna como `<nav>` nombrada con el texto de su `<h2>` (`aria-label`: un `aria-labelledby` no cruza del Shadow DOM al DOM de la página) y una lista (`role="list"`); cada footer-link es un `listitem`.
 - Aplica su propio `layout/gutter` (componente de borde a borde): la página no le suma margen lateral.
 
 ## Layout

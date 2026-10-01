@@ -11,14 +11,14 @@ Encabezado de la página: breadcrumb, título (el único `<h1>`) y bajada. Type=
     <arq-breadcrumb-item href="/arq" show-separator>Inicio</arq-breadcrumb-item>
     <arq-breadcrumb-item current>Productos</arq-breadcrumb-item>
   </arq-breadcrumb>
-  Productos
+  <h1 slot="title">Productos</h1>
   <span slot="description">Luminarias para interior y exterior. Cada modelo cuenta con ficha técnica y archivos IES para especificar.</span>
 </arq-page-header>
 
 <!-- Type=Detail -->
 <arq-page-header type="detail" show-back back-href="/arq/productos" show-description show-action>
   <span slot="back">Volver a productos</span>
-  Comparativa
+  <h1 slot="title">Comparativa</h1>
   <span slot="description">…</span>
   <arq-button slot="action" show-icon icon="download">Descargar comparación</arq-button>
 </arq-page-header>
@@ -28,7 +28,7 @@ Encabezado de la página: breadcrumb, título (el único `<h1>`) y bajada. Type=
 
 | Figma | Atributo / slot | Prop JS | Valores · por defecto |
 | --- | --- | --- | --- |
-| Title | slot por defecto | — | texto del título; el componente lo pone en su `<h1>` |
+| Title | slot `title` | — | un `<h1>` con el título |
 | Description | slot `description` | — | bajada de 1 o 2 líneas |
 | Type | `type` | `type` | `list` · `detail` (def. `list`) |
 | Show breadcrumb | `show-breadcrumb` + slot `breadcrumb` | `showBreadcrumb` | booleano. Un `<arq-breadcrumb>` con los niveles que correspondan a la página |
@@ -38,7 +38,7 @@ Encabezado de la página: breadcrumb, título (el único `<h1>`) y bajada. Type=
 | Breakpoint | — | — | media query: hasta 767 px es Mobile |
 
 - **Los Show… vienen en `true` en Figma; en código, sin el atributo la parte no se ve** (AGENTS.md). Una parte con su atributo pero sin contenido tampoco se ve.
-- **El título va como texto**, sin `<h1>` propio: el componente lo envuelve en el suyo dentro del Shadow DOM, así no toma los estilos de Webflow. Es el único `<h1>` de la página.
+- **El `<h1>` va en el HTML de la página** (`<h1 slot="title">`), no dentro del Shadow DOM (AGENTS.md: los encabezados van en el HTML). El componente le da `role/display` y el color con `::slotted()`, sin margen y por encima de los estilos de Webflow. Es el único `<h1>` de la página.
 - **Volver** es `<arq-button type="underline" show-leading-icon>` con `chevron-left` y sin subrayado en reposo. Es un link real a `back-href` (no `history.back()`): funciona si se entra directo a la página.
 - **Acción:** la página pasa su `<arq-button>`. En Mobile ocupa todo el ancho.
 - Es un `<div>`, no un `<header>`: dentro del Shadow DOM podría tomarse como el banner de la página.

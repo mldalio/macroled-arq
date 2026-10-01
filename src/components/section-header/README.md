@@ -6,17 +6,17 @@ Encabezado de un bloque dentro de una página (categorías, productos destacados
 
 ```html
 <arq-section-header type="link" href="/arq/productos">
-  Productos destacados
+  <h2 slot="title">Productos destacados</h2>
   <span slot="link">Ver todos los productos</span>
 </arq-section-header>
 
 <arq-section-header type="description">
-  Diseño que inspira
+  <h2 slot="title">Diseño que inspira</h2>
   <span slot="description">Proyectos donde la luminaria forma parte de la arquitectura, no un agregado.</span>
 </arq-section-header>
 
 <arq-section-header type="stacked" href="/arq/contacto">
-  Preguntas frecuentes
+  <h2 slot="title">Preguntas frecuentes</h2>
   <span slot="description">¿No encontrás lo que buscás? Nuestro equipo técnico te acompaña en cada etapa del proyecto.</span>
   <span slot="link">Escribinos</span>
 </arq-section-header>
@@ -26,14 +26,14 @@ Encabezado de un bloque dentro de una página (categorías, productos destacados
 
 | Figma | Atributo / slot | Prop JS | Valores · por defecto |
 | --- | --- | --- | --- |
-| Title | slot por defecto | — | texto del título; el componente lo pone en su `<h2>` |
+| Title | slot `title` | — | un `<h2>` con el título |
 | Description | slot `description` | — | bajada (Type=Description y Stacked). Sin texto, no se muestra |
 | Type | `type` | `type` | `link` · `description` · `title` · `stacked` (def. `link`) |
 | — (link del button) | `href` | `href` | destino del link. Sin `href` no hay link |
 | — (Label del button) | slot `link` | — | def. "Ver todo". Mejor un texto con contexto: "Ver todos los productos" |
 | Breakpoint | — | — | media query: hasta 767 px es Mobile |
 
-- **El título y la bajada van como texto**, sin `<h2>` ni `<p>` propios: el componente los envuelve en su `<h2>` y su `<p>` dentro del Shadow DOM, así no toman los estilos de Webflow. El texto queda en el HTML (indexable).
+- **El `<h2>` va en el HTML de la página** (`<h2 slot="title">`), no dentro del Shadow DOM (AGENTS.md: los encabezados van en el HTML). El componente le da `role/heading-2` y el color con `::slotted()`, sin margen y por encima de los estilos de Webflow. **La bajada va como texto**: el componente la pone en su `<p>`.
 - **Link:** `<arq-button type="underline" show-underline show-icon icon="arrow-right">` con el `href`. Aparece en Type=Link y Stacked cuando hay `href`.
 - Es un `<div>`, no un `<header>`: dentro del Shadow DOM un `<header>` podría anunciarse como el encabezado de toda la página.
 - No se usa dos veces seguidas ni para el título de la página.
@@ -45,7 +45,7 @@ En Mobile (hasta 767 px), **Type=Link no muestra su link** (`display: none`): el
 ```html
 <section>
   <arq-section-header type="link" href="/arq/productos">
-    Productos destacados
+    <h2 slot="title">Productos destacados</h2>
     <span slot="link">Ver todos los productos</span>
   </arq-section-header>
   … grilla …
