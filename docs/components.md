@@ -392,9 +392,7 @@ Miniatura de la galería de producto, proporción 5:4 (105 × 84). La imagen se 
 - Figma: [1311-4340](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1311-4340)
 - Propiedades: Eyebrow; Show eyebrow; Title; Description; Show description; Show button; Breakpoint: Desktop · Mobile
 
-Hero de página compartido por Home y Contacto: media (imagen o video; reemplazá el relleno de "media" en la instancia), scrim, navbar Theme=Transparent, eyebrow (role/label), título role/display, bajada opcional y button Outline opcional. Textos claros sobre la foto (el scrim hero/scrim asegura el contraste). Props: Eyebrow, Title, Description, Show eyebrow, Show description, Show button.
-
-> **No coincide con el código:** el navbar no va dentro del hero (`docs/decisiones.md`, 2026-10-01 · hero y navbar). Falta corregir esta descripción y la ficha `doc/hero` en Figma.
+Hero de página compartido por Home y Contacto: media (imagen o video; reemplazá el relleno de "media" en la instancia), scrim, eyebrow (role/label), título role/display, bajada opcional y button Outline opcional. Textos claros sobre la foto (el scrim hero/scrim asegura el contraste). El navbar no es parte del hero: va aparte, con Theme=Transparent, superpuesto arriba (la instancia del set es referencia). Props: Eyebrow, Title, Description, Show eyebrow, Show description, Show button.
 
 ## icon-button
 
@@ -469,11 +467,7 @@ Theme=Inverse: para navbar Theme=Transparent sobre foto (label color/text/invers
 - Figma: [753-2907](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=753-2907)
 - Propiedades: Breakpoint: Desktop · Mobile; Mode: Default · Menu · Search · Products; Theme: Default · Transparent
 
-Barra de navegación de Macroled Arq. Breakpoint: Desktop · Mobile. Mode: Default, Search (buscador abierto), Menu (menú mobile abierto) y Products (submenú de Productos en mobile, con "volver"). En desktop, Productos abierto = nav-link Open=True con mega-menu debajo. Theme: Default · Transparent (sobre la foto del hero; pasa a Default al hacer scroll). El link de la página actual va en State=Current; el que despliega un menú usa Has dropdown.
-
-Theme=Transparent: fondo translúcido color/overlay/translucent + background blur blur/backdrop (en código, `backdrop-filter`).
-
-> **Falta en Figma:** esta última línea todavía no está en la descripción del set (se agregó acá al ligar los tokens, 2026-10-01).
+Barra de navegación de Macroled Arq. Breakpoint: Desktop · Mobile. Mode: Default, Search (buscador abierto), Menu (menú mobile abierto) y Products (submenú de Productos en mobile, con "volver"). En desktop, Productos abierto = nav-link Open=True con mega-menu debajo. Theme: Default · Transparent (sobre la foto del hero; pasa a Default al hacer scroll). Theme=Transparent: fondo translúcido color/overlay/translucent + background blur blur/backdrop. El link de la página actual va en State=Current; el que despliega un menú usa Has dropdown.
 
 ## option-group
 

@@ -69,4 +69,3 @@ document.addEventListener('arq:submit', (event) => {
 
 - `TODO` (formularios): el envío de la newsletter a n8n y el `form-message` de respuesta. Falta definir el webhook (en `src/config.js` hay uno solo, el de contacto) y construir el envío de formularios (`arq-button submit`, `docs/decisiones.md`).
 - `TODO` (diseño): en el set el email mide 380 fijos y no hay token; se usa `layout/measure` (400).
-- La ficha `doc/cta-block` dice gap título–bajada `space/gap/sm` (8) y email–button `space/gap/sm-md` (12); el set usa 12 y 16 y se sigue el set. Falta corregir la ficha.
