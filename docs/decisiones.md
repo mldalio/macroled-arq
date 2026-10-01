@@ -31,17 +31,17 @@ Formato: fecha · decisión · por qué.
 
 - DTCG (`$type`, `$value`, `$description`). La ruta es el nombre de la variable en Figma sin el nombre de la colección: `color/text/primary` → `color.text.primary` → `--arq-color-text-primary`.
 - `$value` es el valor del **primer modo** (Light o Desktop). El otro modo va en `$extensions["arq.modes"]` con la clave `dark` o `mobile`, **solo si cambia** respecto del primero. Si vale lo mismo, el token no lleva la extensión (el script lo marca como error).
-- Tipos: `color` (hex de 6 u 8 dígitos), `dimension` (`px`), `fontWeight` (número), `fontFamily` (texto) y `typography` (solo en `role/*`).
+- Tipos: `color` (hex de 6 u 8 dígitos), `dimension` (`px`), `fontWeight` (número), `fontFamily` (texto), `duration` (`ms`), `cubicBezier` (cuatro números) y `typography` (solo en `role/*`).
 - Los colores con transparencia salen como `rgba()` con el alpha redondeado a 2 decimales (`#1010101A` → `0.1`), porque el hex de Figma no da el porcentaje exacto. Los opacos quedan en hex.
 - Los alias se escriben `{ruta.del.token}` y salen como `var(--arq-…)`.
-- Un token no puede tener `dark` y `mobile` a la vez: el script corta con error (hoy los modos no se cruzan entre colecciones).
+- Un token no puede tener más de un modo (`dark`, `mobile` o `reducedMotion`): el script corta con error (hoy los modos no se cruzan entre colecciones). `reducedMotion` solo vale en duraciones.
 - Los estilos de texto `role/*` van en la rama `role` con `$type: typography` y **solo alias** en sus campos (familia, peso, tamaño, interlineado, tracking). No salen como variables: generan `roles.css`.
   - `fontSize` y `lineHeight` tienen que apuntar a `type/*` (Semantic · Type). En `roles.css` quedan como `var(--arq-type-<rol>-size)`, así el cambio a Mobile llega solo desde `tokens.css`.
   - `$extensions["arq.textTransform"]` (`uppercase`, por ejemplo en `role/label` y `role/label-sm`) genera `text-transform`.
   - Los `role/*` no llevan modos.
 - Antes de convertir, `npm run tokens` valida todo el archivo (alias inexistentes, tipos, valores, modos, extensiones desconocidas). Si hay problemas, los lista y no escribe nada.
-- Salida (`npm run tokens`): `:root` (base), `[data-arq-theme="dark"]` y `@media (max-width: 767px) { :root }`. Nunca `prefers-color-scheme`.
-- Pendiente: conversor del export de variables de Figma a este formato (TODO).
+- Salida (`npm run tokens`): `:root` (base), `[data-arq-theme="dark"]`, `@media (max-width: 767px) { :root }` y `@media (prefers-reduced-motion: reduce) { :root }`. Nunca `prefers-color-scheme`.
+- `tokens.json` se genera desde Figma con `npm run tokens:import` (ver 2026-10-01 · Tokens desde Figma). La rama `role` no viene de variables y se conserva.
 
 ## 2026-09-30 · Base de componentes (src/base/)
 
@@ -103,7 +103,7 @@ setup() {
 - El estado es la prop `open`. Figma define `Open=True` por defecto en filter-row y catalog-nav-group, pero en código lo decide el HTML o los datos (el grupo de la categoría actual, la fila con filtros aplicados).
 - Cambiar `open` por código no emite eventos. La acción del usuario y `show()` / `hide()` / `toggle()` emiten `arq:toggle` con `{ open }`.
 - Opción `closeOnEscape` (apagada por defecto).
-- **TODO:** sin animación, porque no hay tokens de movimiento. Si se anima, respetar `prefers-reduced-motion`.
+- **Movimiento:** al abrir, el panel aparece con un fundido de `opacity` en `motion/duration/base` (`@starting-style`). El alto cambia de golpe (no se anima layout) y al cerrar se oculta sin fundido. La hoja la adopta `Disclosure` en el Shadow DOM del host: los componentes no la repiten.
 - Se usa `<button>` y no `<details>` en todos los casos, también en faq-item (su ficha acepta las dos), para tener un solo patrón.
 
 ### Finales de línea (LF)
@@ -167,3 +167,36 @@ setup() {
 ### Alto de nav-link en mobile
 
 - La fila de nav-link en mobile mide 56 (padding `space/gap/md` + `role/body-xl`). Figma ya está corregido a 56.
+
+## 2026-10-01 · Publicación
+
+- **Opción A de docs/setup.md:** el repo [mldalio/macroled-arq](https://github.com/mldalio/macroled-arq) es público y jsDelivr sirve `dist/` desde los tags de GitHub. No hay paquete npm ni hosting aparte.
+- URLs: `https://cdn.jsdelivr.net/gh/mldalio/macroled-arq@vX.Y.Z/dist/arq.js` y `…/dist/arq.css`. Siempre con tag de versión, nunca `@main` ni `@latest` en Webflow.
+- Un tag publicado no se mueve ni se borra: jsDelivr lo cachea. Para corregir, se publica una versión nueva.
+- `package.json` lleva la misma versión que el tag.
+
+## 2026-10-01 · Tokens desde Figma
+
+- No hay export nativo de variables. Claude Code las lee por MCP (`use_figma`, solo lectura) con `scripts/figma/export-variables.figma.js`, una colección por llamada (la respuesta se corta a los 20 KB; 1 · Primitive · Color va en dos partes).
+- `scripts/figma/rows-to-dtcg.js` escribe un archivo por colección y modo en `tokens/figma/<colección>.<modo>.json` (DTCG: grupos por la `/` del nombre, `$type` color · number · string, hex `#rrggbb` o `#rrggbbaa`, alias `{neutral.900}`, `$description` y en `$extensions["com.figma"]` los scopes y el codeSyntax.WEB). Los nombres de archivo van en minúsculas y sin "·": `2-semantic-color.dark.json`. Se commitean.
+- `npm run tokens:import` convierte `tokens/figma/` a `tokens/tokens.json`: modo base Value / Light / Desktop, Dark y Mobile en `arq.modes` solo si cambian, tipos del repo por ruta (`font/weight` → fontWeight, `font/family` → fontFamily, `motion/duration` → duration, `motion/easing` → cubicBezier, el resto de los números → dimension en px). Respeta el orden del `tokens.json` anterior, valida con las mismas reglas que `npm run tokens` (`scripts/lib/validate-tokens.js`) y lista las diferencias.
+- **Figma es la fuente** también de las descripciones de cada variable: el import las pisa.
+- No se importan bronze, cacao, olive, terracotta ni offwhite (paletas de marca sin uso).
+
+## 2026-10-01 · Movimiento
+
+- Colección `2 · Semantic · Motion`: `--arq-motion-duration-fast` (120 ms), `base` (200), `slow` (320), `feedback` (2000) y `--arq-motion-easing-standard`.
+- **prefers-reduced-motion:** no es un modo de Figma. `npm run tokens:import` agrega a fast, base y slow el modo `reducedMotion` = `0ms` y `npm run tokens` lo escribe en `@media (prefers-reduced-motion: reduce)`. feedback no cambia (es un tiempo de lectura).
+- **Una sola regla de transición:** la hoja base de `ArqElement` aplica a todo el Shadow DOM (`*`, `::before`, `::after`) una transición de colores (`color`, `background-color`, `border-color`, `outline-color`, `text-decoration-color`, `fill`, `stroke`) en fast + standard. Cubre hover, pressed, foco y selección de todos los componentes sin repetirla. No llega al contenido por slot (vive en el DOM de Webflow).
+- Al cambiar Iluminar, los colores de los componentes también hacen ese fundido de 120 ms; el fondo de la página (fuera del Shadow DOM) cambia de golpe.
+- Lo que además anima `transform` u `opacity` redeclara la lista completa en ese elemento, porque `transition-property` no se suma: el círculo de toggle (`transform`, fast) y el panel de los desplegables (`opacity`, base).
+- Nunca se anima alto, ancho ni posición. El subrayado de button (1 → 2 px) cambia de golpe.
+- **Tiempos en JS:** el "Copiado" de sku lee `--arq-motion-duration-feedback` con `getComputedStyle`; no hay milisegundos escritos en el código.
+
+## 2026-10-01 · Casos definidos por diseño
+
+- **file-upload:** Drag over y Error son estados internos (`:state(drag-over)`, `:state(error)`), no props: dependen de lo que hace el usuario. Disabled es la prop `disabled`. El mensaje de error es "<problema>. Formatos: <lista>." con la lista armada desde `accept` (JPEG se muestra como JPG).
+- **input:** Textarea con `rows="4"` por defecto y `resize: vertical`. La descripción del set manda sobre el alto del frame (120).
+- **breadcrumb:** una sola fila. El ítem actual tiene `flex-shrink` mucho mayor que los intermedios: primero se parte en líneas (hasta su palabra más larga) y recién después se cortan los intermedios con "…".
+- **sku:** si falla `navigator.clipboard.writeText`, se selecciona el código (está en el DOM de la página) y se muestra y anuncia "Copialo con Ctrl+C" durante feedback. Estado interno `:state(copy-failed)`.
+- **spec-row y sku:** `overflow-wrap: anywhere` para que un código sin espacios también se parta.

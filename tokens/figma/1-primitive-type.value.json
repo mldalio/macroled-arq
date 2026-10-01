@@ -1,0 +1,461 @@
+{
+  "$extensions": {
+    "com.figma": {
+      "collection": "1 · Primitive · Type",
+      "mode": "Value"
+    }
+  },
+  "font": {
+    "family": {
+      "sans": {
+        "$type": "string",
+        "$value": "Albert Sans",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-family-sans)"
+            }
+          }
+        }
+      }
+    },
+    "weight": {
+      "light": {
+        "$type": "number",
+        "$value": 300,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-weight-light)"
+            }
+          }
+        }
+      },
+      "regular": {
+        "$type": "number",
+        "$value": 400,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-weight-regular)"
+            }
+          }
+        }
+      },
+      "medium": {
+        "$type": "number",
+        "$value": 500,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-weight-medium)"
+            }
+          }
+        }
+      },
+      "semibold": {
+        "$type": "number",
+        "$value": 600,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-weight-semibold)"
+            }
+          }
+        }
+      },
+      "bold": {
+        "$type": "number",
+        "$value": 700,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-weight-bold)"
+            }
+          }
+        }
+      }
+    },
+    "size": {
+      "10": {
+        "$type": "number",
+        "$value": 10,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-size-10)"
+            }
+          }
+        }
+      },
+      "11": {
+        "$type": "number",
+        "$value": 11,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-size-11)"
+            }
+          }
+        }
+      },
+      "12": {
+        "$type": "number",
+        "$value": 12,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-size-12)"
+            }
+          }
+        }
+      },
+      "14": {
+        "$type": "number",
+        "$value": 14,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-size-14)"
+            }
+          }
+        }
+      },
+      "16": {
+        "$type": "number",
+        "$value": 16,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-size-16)"
+            }
+          }
+        }
+      },
+      "20": {
+        "$type": "number",
+        "$value": 20,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-size-20)"
+            }
+          }
+        }
+      },
+      "24": {
+        "$type": "number",
+        "$value": 24,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-size-24)"
+            }
+          }
+        }
+      },
+      "32": {
+        "$type": "number",
+        "$value": 32,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-size-32)"
+            }
+          }
+        }
+      },
+      "40": {
+        "$type": "number",
+        "$value": 40,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-size-40)"
+            }
+          }
+        }
+      },
+      "48": {
+        "$type": "number",
+        "$value": 48,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-size-48)"
+            }
+          }
+        }
+      },
+      "64": {
+        "$type": "number",
+        "$value": 64,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-size-64)"
+            }
+          }
+        }
+      }
+    },
+    "leading": {
+      "14": {
+        "$type": "number",
+        "$value": 14,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-leading-14)"
+            }
+          }
+        }
+      },
+      "16": {
+        "$type": "number",
+        "$value": 16,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-leading-16)"
+            }
+          }
+        }
+      },
+      "20": {
+        "$type": "number",
+        "$value": 20,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-leading-20)"
+            }
+          }
+        }
+      },
+      "24": {
+        "$type": "number",
+        "$value": 24,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-leading-24)"
+            }
+          }
+        }
+      },
+      "28": {
+        "$type": "number",
+        "$value": 28,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-leading-28)"
+            }
+          }
+        }
+      },
+      "32": {
+        "$type": "number",
+        "$value": 32,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-leading-32)"
+            }
+          }
+        }
+      },
+      "40": {
+        "$type": "number",
+        "$value": 40,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-leading-40)"
+            }
+          }
+        }
+      },
+      "44": {
+        "$type": "number",
+        "$value": 44,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-leading-44)"
+            }
+          }
+        }
+      },
+      "48": {
+        "$type": "number",
+        "$value": 48,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-leading-48)"
+            }
+          }
+        }
+      },
+      "56": {
+        "$type": "number",
+        "$value": 56,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-leading-56)"
+            }
+          }
+        }
+      },
+      "72": {
+        "$type": "number",
+        "$value": 72,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-leading-72)"
+            }
+          }
+        }
+      }
+    },
+    "tracking": {
+      "tighter": {
+        "$type": "number",
+        "$value": -0.800000011920929,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-tracking-tighter)"
+            }
+          }
+        }
+      },
+      "tight": {
+        "$type": "number",
+        "$value": -0.4000000059604645,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-tracking-tight)"
+            }
+          }
+        }
+      },
+      "normal": {
+        "$type": "number",
+        "$value": 0,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-tracking-normal)"
+            }
+          }
+        }
+      },
+      "wide": {
+        "$type": "number",
+        "$value": 0.4000000059604645,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-tracking-wide)"
+            }
+          }
+        }
+      },
+      "wider": {
+        "$type": "number",
+        "$value": 0.800000011920929,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-tracking-wider)"
+            }
+          }
+        }
+      },
+      "widest": {
+        "$type": "number",
+        "$value": 1,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-tracking-widest)"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -14,14 +14,22 @@
   color: var(--arq-color-text-tertiary);
 }
 
-/* TODO: Figma no define qué pasa con un label que no entra (todo es nowrap).
-   Se corta con puntos suspensivos para no desbordar en mobile. */
+/* Textos largos (descripción del set): si no es Current, se corta con "…"
+   (el texto completo queda en el link y en su aria-label). */
 .label {
   overflow: hidden;
   color: inherit;
   text-decoration: none;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* Current se parte en varias líneas; nunca se corta. break-word (y no
+   anywhere) para que su ancho mínimo sea el de la palabra más larga. */
+.label[aria-current='page'] {
+  overflow: visible;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .separator {

@@ -1,0 +1,64 @@
+{
+  "$extensions": {
+    "com.figma": {
+      "collection": "2 · Semantic · Motion",
+      "mode": "Value"
+    }
+  },
+  "motion": {
+    "duration": {
+      "fast": {
+        "$type": "number",
+        "$value": 120,
+        "$description": "Hover, toggle, foco. En ms. Con prefers-reduced-motion: 0.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": []
+          }
+        }
+      },
+      "base": {
+        "$type": "number",
+        "$value": 200,
+        "$description": "Desplegables (disclosure) y menús. En ms. Con prefers-reduced-motion: 0.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": []
+          }
+        }
+      },
+      "slow": {
+        "$type": "number",
+        "$value": 320,
+        "$description": "Fundido de imágenes de product-card. En ms. Con prefers-reduced-motion: 0.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": []
+          }
+        }
+      },
+      "feedback": {
+        "$type": "number",
+        "$value": 2000,
+        "$description": "Tiempo visible de una confirmación (Copiado del sku). En ms. No cambia con prefers-reduced-motion.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": []
+          }
+        }
+      }
+    },
+    "easing": {
+      "standard": {
+        "$type": "string",
+        "$value": "cubic-bezier(0.2, 0, 0, 1)",
+        "$description": "Curva para todas las transiciones.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": []
+          }
+        }
+      }
+    }
+  }
+}

@@ -16,34 +16,31 @@ Las reglas viven en **un solo lugar** (`AGENTS.md` + `DESIGN.md`). `CLAUDE.md` s
 
 Ya está hecho:
 
-- **Base del repo:** Vite en modo librería (`dist/arq.js` + `dist/arq.css`), tokens desde Figma (`npm run tokens`, 251 tokens), estilos `role/*` compartidos, demo con Light/Dark, `.gitattributes` con LF.
+- **Base del repo:** Vite en modo librería (`dist/arq.js` + `dist/arq.css`), tokens desde Figma (`npm run tokens:import` + `npm run tokens`, 256 tokens con los de movimiento), estilos `role/*` compartidos, demo con Light/Dark, `.gitattributes` con LF.
+- **Publicación:** repo público y `dist/` servido por jsDelivr desde los tags de GitHub (opción A, ver Parte 5).
+- **Fase 1:** primitivos en `main` (lista en Parte 4) con transiciones de color y movimiento reducido.
 - **Base de componentes** (rama `feat/arq-base`): `ArqElement` (clase base), `icons.js` (20 íconos) y `disclosure.js` (desplegables). El patrón está en `docs/decisiones.md`.
 - **Documentación para IAs:** `AGENTS.md`, `DESIGN.md`, `CLAUDE.md`, `docs/components.md` (descripción de los 74 componentes). Hay una copia de cada uno en la página *Plan del proyecto* de Figma.
 
 Falta:
 
-- Decidir dónde se publica `dist/` (ver Parte 1, paso 1).
-- Construir `<arq-button>` y probarlo en el staging de Webflow.
+- Probar `v0.1.0` en el staging de Webflow (Parte 5).
 - Completar `docs/typesense-schema.md` y `docs/urls.md`.
-- Tokens de movimiento (duraciones y curvas): hoy no hay animaciones.
 
 ---
 
 ## Parte 1 · Lau: cerrar la base y abrir el repo al equipo
 
-### 1. Decidir dónde se publica `dist/`
+### 1. Dónde se publica `dist/` (decidido)
 
-jsDelivr sirve archivos **solo de repos públicos de GitHub o de paquetes públicos de npm**. Opciones:
+**Opción A · repo público + jsDelivr.** El repo `github.com/mldalio/macroled-arq` es público y jsDelivr sirve `dist/` desde los tags de GitHub:
 
-| Opción | Repo | Cómo se carga en Webflow | A tener en cuenta |
-| --- | --- | --- | --- |
-| **A · Repo público + jsDelivr** | Público | `cdn.jsdelivr.net/gh/<org>/macroled-arq@v1.0.0/dist/arq.js` | Lo más simple. Se ve todo el código fuente, la documentación y las decisiones. |
-| **B · Repo privado + paquete npm público** | Privado | `cdn.jsdelivr.net/npm/@macroled/arq@1.0.0/dist/arq.js` | Solo se publica `dist/` (que de todos modos es público en el sitio). Requiere una cuenta u organización en npm y `npm publish` en cada release. |
-| **C · Repo privado + Cloudflare Pages o Netlify** | Privado | URL propia del hosting | Gratis y automático en cada push, pero el versionado por release hay que armarlo. |
+```
+https://cdn.jsdelivr.net/gh/mldalio/macroled-arq@vX.Y.Z/dist/arq.js
+https://cdn.jsdelivr.net/gh/mldalio/macroled-arq@vX.Y.Z/dist/arq.css
+```
 
-Recomendación: **B** si la empresa no quiere el código abierto; **A** si no le importa. En ningún caso hay secretos en el repo: la única key del front es la search-only de Typesense, que es pública por diseño.
-
-Anotar la decisión en `docs/decisiones.md`.
+No hay secretos en el repo: la única key del front es la search-only de Typesense, que es pública por diseño. La decisión está en `docs/decisiones.md` (2026-10-01 · Publicación).
 
 ### 2. Subir el repo
 
@@ -71,7 +68,7 @@ Pedirle a Claude Code el componente con el **prompt común** (Parte 3), con `NOM
 
 1. Revisarlo en la demo (`npm run dev`) contra Figma: Light/Dark, 390 px, teclado y los estados Filled, Outline, Underline, Disabled y Loading.
 2. `npm run build`, commit, push y Pull Request.
-3. Publicar una versión de prueba `v0.1.0` según la opción elegida en el paso 1 (Parte 5).
+3. Publicar una versión de prueba `v0.1.0` (Parte 5).
 4. En el staging de Webflow, crear una página de prueba en `/arq` con el loader (Parte 5) y un `<arq-button>`.
 5. Verificar que se ve igual que en la demo y que los estilos de Macroled no lo afectan (ni al revés).
 
@@ -92,7 +89,7 @@ Cuando `feat/arq-base` y `feat/arq-button` estén en `main`, pasarles este archi
 Necesitan **Node.js 22 LTS**, **Git**, acceso al repo de GitHub y acceso al archivo de Figma `Macroled-ARQ` con su propia cuenta.
 
 ```bash
-git clone https://github.com/<organizacion>/macroled-arq.git
+git clone https://github.com/mldalio/macroled-arq.git
 cd macroled-arq
 npm install
 npm run dev
@@ -194,18 +191,34 @@ Las páginas necesitan datos reales. Antes de la Fase 2 hay que completar:
 
 ## Parte 5 · Publicar una versión
 
-1. En `main`, con todo mergeado: `npm run build` y commit de `dist/`.
-2. En GitHub → Releases → crear un release con tag `vX.Y.Z` (por ejemplo `v0.1.0`).
-3. Publicar según la opción elegida:
-   - **A:** nada más; jsDelivr lo toma del tag.
-   - **B:** `npm version X.Y.Z` y `npm publish --access public`.
-   - **C:** el hosting publica solo en cada push.
-4. En Webflow, en el `<head>` de las páginas de `/arq` (loader):
+1. En `main`, con todo mergeado y al día (`git pull`): subir la versión en `package.json` (`npm version X.Y.Z --no-git-tag-version`), `npm run build` y commit de `package.json`, `package-lock.json` y `dist/`.
+2. Crear el tag y subirlo: `git tag -a vX.Y.Z -m "vX.Y.Z"` y `git push origin main vX.Y.Z`. jsDelivr lo toma del tag; no hace falta nada más.
+3. Opcional: en GitHub → Releases, crear el release a partir del tag con las notas.
+4. Un tag publicado no se mueve ni se borra (jsDelivr lo cachea): si algo está mal, se publica `vX.Y.Z+1`.
+5. En Webflow, en el `<head>` de las páginas de `/arq` (loader):
    ```html
    <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@300..700&display=swap">
-   <link rel="stylesheet" href="URL-DE-arq.css">
-   <script type="module" src="URL-DE-arq.js"></script>
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mldalio/macroled-arq@vX.Y.Z/dist/arq.css">
+   <script type="module" src="https://cdn.jsdelivr.net/gh/mldalio/macroled-arq@vX.Y.Z/dist/arq.js"></script>
    ```
-5. Probar en el staging (`.webflow.io`). Si está bien, publicar en producción.
-6. Para volver atrás: poner la versión anterior en las dos URLs del loader.
+6. Probar en el staging (`.webflow.io`). Si está bien, publicar en producción.
+7. Para volver atrás: poner la versión anterior en las dos URLs del loader.
+
+---
+
+## Parte 6 · Actualizar los tokens desde Figma
+
+Figma manda: valores, modos y descripciones de las variables. No se edita `tokens/tokens.json` a mano.
+
+1. Se cambia la variable en Figma (con su descripción y su nombre CSS).
+2. En una rama `tokens/<cambio>`, pedirle a Claude Code:
+   > Exportá por MCP las colecciones de variables que cambiaron (o todas) a `tokens/figma/` con `scripts/figma/export-variables.figma.js` y `scripts/figma/rows-to-dtcg.js`.
+
+   Claude lee las variables con `use_figma` en modo solo lectura, una colección por llamada, y escribe un archivo por colección y modo (`tokens/figma/<colección>.<modo>.json`).
+3. `npm run tokens:import` → convierte `tokens/figma/` a `tokens/tokens.json`, lo valida y lista lo nuevo, lo quitado y lo cambiado. Revisar que esa lista sea lo esperado.
+4. `npm run tokens` → regenera `src/styles/tokens.css` y `roles.css`.
+5. `npm run build`, revisar la demo y commit de `tokens/figma/`, `tokens/tokens.json` y `src/styles/` juntos.
+
+Los estilos de texto `role/*` no son variables: el import los conserva tal como están en `tokens.json`.

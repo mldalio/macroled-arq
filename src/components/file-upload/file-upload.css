@@ -81,10 +81,48 @@
   color: var(--arq-color-text-error);
 }
 
-/* Error (archivo inválido): mismo tratamiento que input State=Error.
-   TODO: no está diseñado en Figma. */
+/* State=Drag over: borde color/border/strong, fondo color/surface/hover y el
+   texto de la zona pasa a "Soltá el archivo acá" */
+.drop {
+  display: none;
+  min-width: 0;
+  color: var(--arq-color-text-primary);
+}
+
+:host(:state(drag-over)) .zone {
+  border-color: var(--arq-color-border-strong);
+  background: var(--arq-color-surface-hover);
+}
+
+:host(:state(drag-over)) .prompt {
+  display: none;
+}
+
+:host(:state(drag-over)) .drop {
+  display: inline;
+}
+
+/* State=Error: borde color/border/error; el mensaje reemplaza a la ayuda */
 :host(:state(error)) .zone {
   border-color: var(--arq-color-border-error);
+}
+
+/* State=Disabled: borde color/border/disabled y textos color/text/disabled.
+   El ícono va en color/icon/disabled (la ficha: "border/disabled y text/disabled"). */
+:host([disabled]) .zone {
+  border-color: var(--arq-color-border-disabled);
+  cursor: default;
+}
+
+:host([disabled]) .label,
+:host([disabled]) .prompt,
+:host([disabled]) .file,
+:host([disabled]) .helper {
+  color: var(--arq-color-text-disabled);
+}
+
+:host([disabled]) .icon {
+  color: var(--arq-color-icon-disabled);
 }
 
 /* Foco: anillo de DESIGN.md §7 en la zona cuando el input tiene foco */

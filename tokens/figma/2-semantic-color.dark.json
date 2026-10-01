@@ -1,0 +1,676 @@
+{
+  "$extensions": {
+    "com.figma": {
+      "collection": "2 · Semantic · Color",
+      "mode": "Dark"
+    }
+  },
+  "color": {
+    "surface": {
+      "default": {
+        "$type": "color",
+        "$value": "{neutral.800}",
+        "$description": "Fondo principal de página, tarjetas y paneles.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-surface-default)"
+            }
+          }
+        }
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{neutral.750}",
+        "$description": "Fondo secundario: bloques destacados, bandas de sección, filas alternas.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-surface-subtle)"
+            }
+          }
+        }
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{neutral.0}",
+        "$description": "Fondo de máximo contraste: botón primario, footer, bandas oscuras. Siempre con color/text/inverse encima.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-surface-inverse)"
+            }
+          }
+        }
+      },
+      "hover": {
+        "$type": "color",
+        "$value": "{neutral.775}",
+        "$description": "Fondo al pasar el cursor sobre un elemento interactivo que está sobre surface/default.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-surface-hover)"
+            }
+          }
+        }
+      },
+      "selected": {
+        "$type": "color",
+        "$value": "{neutral.725}",
+        "$description": "Fondo de un elemento seleccionado: opción de filtro, fila, chip de variante.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-surface-selected)"
+            }
+          }
+        }
+      },
+      "strong": {
+        "$type": "color",
+        "$value": "{neutral.700}",
+        "$description": "Componente que se despega bien del fondo: placeholders, fondos de imagen, chips seleccionados.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-surface-strong)"
+            }
+          }
+        }
+      },
+      "inverse-hover": {
+        "$type": "color",
+        "$value": "{neutral.150}",
+        "$description": "Hover de un fondo color/surface/inverse (botón primario).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-surface-inverse-hover)"
+            }
+          }
+        }
+      },
+      "inverse-pressed": {
+        "$type": "color",
+        "$value": "{neutral.200}",
+        "$description": "Pressed de un fondo color/surface/inverse (botón primario).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-surface-inverse-pressed)"
+            }
+          }
+        }
+      },
+      "faint": {
+        "$type": "color",
+        "$value": "{neutral.775}",
+        "$description": "Fondo apenas despegado de surface/default: hover de opciones sin fondo (option-tile).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-surface-faint)"
+            }
+          }
+        }
+      },
+      "soft": {
+        "$type": "color",
+        "$value": "{neutral.725}",
+        "$description": "Fondo suave entre hover y subtle: estado seleccionado liviano (option-tile).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-surface-soft)"
+            }
+          }
+        }
+      },
+      "transparent": {
+        "$type": "color",
+        "$value": "{alpha.transparent}",
+        "$description": "Fondo transparente explícito: sin relleno, para estados que no pintan fondo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-surface-transparent)"
+            }
+          }
+        }
+      }
+    },
+    "text": {
+      "primary": {
+        "$type": "color",
+        "$value": "{neutral.100}",
+        "$description": "Títulos, nombres de producto y texto de máxima jerarquía.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-text-primary)"
+            }
+          }
+        }
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "{neutral.200}",
+        "$description": "Texto de lectura: párrafos, descripciones, valores de especificaciones.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-text-secondary)"
+            }
+          }
+        }
+      },
+      "tertiary": {
+        "$type": "color",
+        "$value": "{neutral.500}",
+        "$description": "Texto secundario: metadatos, etiquetas, ayudas, captions, SKU.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-text-tertiary)"
+            }
+          }
+        }
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{neutral.800}",
+        "$description": "Texto e íconos sobre surface/inverse.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-text-inverse)"
+            }
+          }
+        }
+      },
+      "disabled": {
+        "$type": "color",
+        "$value": "{neutral.600}",
+        "$description": "Texto e íconos de elementos deshabilitados. No usar para texto que se tiene que leer.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-text-disabled)"
+            }
+          }
+        }
+      },
+      "error": {
+        "$type": "color",
+        "$value": "{red.300}",
+        "$description": "Mensajes de error y validación.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-text-error)"
+            }
+          }
+        }
+      },
+      "success": {
+        "$type": "color",
+        "$value": "{green.300}",
+        "$description": "Mensajes de confirmación (por ejemplo, formulario enviado).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-text-success)"
+            }
+          }
+        }
+      },
+      "warning": {
+        "$type": "color",
+        "$value": "{amber.300}",
+        "$description": "Avisos (por ejemplo, sin stock o plazo de entrega largo).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-text-warning)"
+            }
+          }
+        }
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "{neutral.150}",
+        "$description": "Texto de acento, como links destacados. Mismo tono que color/accent/default (Light neutral/900, Dark neutral/150).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-text-accent)"
+            }
+          }
+        }
+      }
+    },
+    "border": {
+      "subtle": {
+        "$type": "color",
+        "$value": "{alpha.white-10}",
+        "$description": "Divisores y bordes de tarjetas. El borde por defecto.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "STROKE_COLOR"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-border-subtle)"
+            }
+          }
+        }
+      },
+      "default": {
+        "$type": "color",
+        "$value": "{alpha.white-22}",
+        "$description": "Bordes de controles en reposo: inputs, chips, checkboxes.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "STROKE_COLOR"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-border-default)"
+            }
+          }
+        }
+      },
+      "strong": {
+        "$type": "color",
+        "$value": "{neutral.0}",
+        "$description": "Bordes de énfasis: elemento seleccionado, botón secundario.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "STROKE_COLOR"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-border-strong)"
+            }
+          }
+        }
+      },
+      "disabled": {
+        "$type": "color",
+        "$value": "{alpha.white-10}",
+        "$description": "Bordes de controles deshabilitados.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "STROKE_COLOR"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-border-disabled)"
+            }
+          }
+        }
+      },
+      "focus": {
+        "$type": "color",
+        "$value": "{neutral.150}",
+        "$description": "Anillo de foco de teclado. Obligatorio en todo elemento interactivo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "STROKE_COLOR"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-border-focus)"
+            }
+          }
+        }
+      },
+      "error": {
+        "$type": "color",
+        "$value": "{red.300}",
+        "$description": "Borde de un campo con error. Acompañar siempre con color/text/error.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "STROKE_COLOR"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-border-error)"
+            }
+          }
+        }
+      },
+      "hover": {
+        "$type": "color",
+        "$value": "{neutral.500}",
+        "$description": "Borde al pasar el mouse, entre color/border/default y color/border/strong.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "STROKE_COLOR"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-border-hover)"
+            }
+          }
+        }
+      }
+    },
+    "accent": {
+      "default": {
+        "$type": "color",
+        "$value": "{neutral.150}",
+        "$description": "Acento para detalles: foco, estados activos, etiquetas. Light neutral/900, Dark neutral/150. Nunca fondo de botones ni de bloques grandes.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-accent-default)"
+            }
+          }
+        }
+      }
+    },
+    "overlay": {
+      "scrim": {
+        "$type": "color",
+        "$value": "{alpha.black-60}",
+        "$description": "Fondo semitransparente detrás de modales y paneles laterales.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-overlay-scrim)"
+            }
+          }
+        }
+      }
+    },
+    "bg": {
+      "default": {
+        "$type": "color",
+        "$value": "{neutral.800}",
+        "$description": "Fondo de página y de secciones completas (body, section).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-bg-default)"
+            }
+          }
+        }
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{neutral.750}",
+        "$description": "Fondo alternativo para diferenciar una sección de página de la siguiente.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-bg-subtle)"
+            }
+          }
+        }
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{neutral.0}",
+        "$description": "Fondo de sección invertida, por ejemplo un footer oscuro en modo Light.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-bg-inverse)"
+            }
+          }
+        }
+      }
+    },
+    "icon": {
+      "primary": {
+        "$type": "color",
+        "$value": "{neutral.100}",
+        "$description": "Íconos junto a títulos o de máxima jerarquía.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "SHAPE_FILL",
+              "STROKE_COLOR"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-icon-primary)"
+            }
+          }
+        }
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "{neutral.200}",
+        "$description": "Íconos de uso general.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "SHAPE_FILL",
+              "STROKE_COLOR"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-icon-secondary)"
+            }
+          }
+        }
+      },
+      "tertiary": {
+        "$type": "color",
+        "$value": "{neutral.500}",
+        "$description": "Íconos secundarios o de apoyo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "SHAPE_FILL",
+              "STROKE_COLOR"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-icon-tertiary)"
+            }
+          }
+        }
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "{neutral.150}",
+        "$description": "Íconos de acento (activo o destacado). Mismo tono que color/accent/default.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "SHAPE_FILL",
+              "STROKE_COLOR"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-icon-accent)"
+            }
+          }
+        }
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{neutral.800}",
+        "$description": "Íconos sobre color/surface/inverse o color/bg/inverse.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "SHAPE_FILL",
+              "STROKE_COLOR"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-icon-inverse)"
+            }
+          }
+        }
+      },
+      "disabled": {
+        "$type": "color",
+        "$value": "{neutral.600}",
+        "$description": "Íconos de elementos deshabilitados.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "SHAPE_FILL",
+              "STROKE_COLOR"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-icon-disabled)"
+            }
+          }
+        }
+      }
+    },
+    "action": {
+      "primary": {
+        "$type": "color",
+        "$value": "{neutral.100}",
+        "$description": "Acción principal: fondo del botón Filled; texto e ícono de Outline y Underline. Negro en Light, casi blanco en Dark.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-action-primary)"
+            }
+          }
+        }
+      },
+      "primary-hover": {
+        "$type": "color",
+        "$value": "{neutral.200}",
+        "$description": "Hover de la acción principal.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-action-primary-hover)"
+            }
+          }
+        }
+      },
+      "on-primary": {
+        "$type": "color",
+        "$value": "{neutral.900}",
+        "$description": "Texto e íconos sobre color/action/primary.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL",
+              "STROKE_COLOR"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-action-on-primary)"
+            }
+          }
+        }
+      }
+    }
+  }
+}

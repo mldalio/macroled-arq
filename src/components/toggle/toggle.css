@@ -32,14 +32,16 @@
   background: var(--arq-color-surface-transparent);
 }
 
-/* Círculo icon/sm. On: se corre icon/sm + gap/sm a la derecha.
-   TODO: sin transición (no hay tokens de movimiento); con tokens, respetar
-   prefers-reduced-motion. */
+/* Círculo icon/sm. On: se corre icon/sm + gap/sm a la derecha con transform
+   (motion/duration/fast, DESIGN.md §6). Repite la lista de colores de la hoja
+   base porque transition-property se reemplaza, no se suma. Con
+   prefers-reduced-motion la duración vale 0. */
 .thumb {
   width: var(--arq-icon-sm);
   height: var(--arq-icon-sm);
   border-radius: var(--arq-radius-pill);
   background: var(--arq-color-icon-primary);
+  transition-property: transform, color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
 }
 
 .label {

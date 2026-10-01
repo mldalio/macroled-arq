@@ -1,0 +1,394 @@
+{
+  "$extensions": {
+    "com.figma": {
+      "collection": "2 · Semantic · Type",
+      "mode": "Mobile"
+    }
+  },
+  "type": {
+    "display": {
+      "size": {
+        "$type": "number",
+        "$value": "{font.size.40}",
+        "$description": "Tamaño del estilo role/display. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-display-size)"
+            }
+          }
+        }
+      },
+      "leading": {
+        "$type": "number",
+        "$value": "{font.leading.44}",
+        "$description": "Interlineado del estilo role/display. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-display-leading)"
+            }
+          }
+        }
+      }
+    },
+    "heading-1": {
+      "size": {
+        "$type": "number",
+        "$value": "{font.size.32}",
+        "$description": "Tamaño del estilo role/heading-1. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-heading-1-size)"
+            }
+          }
+        }
+      },
+      "leading": {
+        "$type": "number",
+        "$value": "{font.leading.40}",
+        "$description": "Interlineado del estilo role/heading-1. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-heading-1-leading)"
+            }
+          }
+        }
+      }
+    },
+    "heading-2": {
+      "size": {
+        "$type": "number",
+        "$value": "{font.size.24}",
+        "$description": "Tamaño del estilo role/heading-2. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-heading-2-size)"
+            }
+          }
+        }
+      },
+      "leading": {
+        "$type": "number",
+        "$value": "{font.leading.32}",
+        "$description": "Interlineado del estilo role/heading-2. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-heading-2-leading)"
+            }
+          }
+        }
+      }
+    },
+    "heading-3": {
+      "size": {
+        "$type": "number",
+        "$value": "{font.size.20}",
+        "$description": "Tamaño del estilo role/heading-3. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-heading-3-size)"
+            }
+          }
+        }
+      },
+      "leading": {
+        "$type": "number",
+        "$value": "{font.leading.28}",
+        "$description": "Interlineado del estilo role/heading-3. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-heading-3-leading)"
+            }
+          }
+        }
+      }
+    },
+    "body-lg": {
+      "size": {
+        "$type": "number",
+        "$value": "{font.size.16}",
+        "$description": "Tamaño del estilo role/body-lg. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-body-lg-size)"
+            }
+          }
+        }
+      },
+      "leading": {
+        "$type": "number",
+        "$value": "{font.leading.24}",
+        "$description": "Interlineado del estilo role/body-lg. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-body-lg-leading)"
+            }
+          }
+        }
+      }
+    },
+    "body": {
+      "size": {
+        "$type": "number",
+        "$value": "{font.size.14}",
+        "$description": "Tamaño del estilo role/body. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-body-size)"
+            }
+          }
+        }
+      },
+      "leading": {
+        "$type": "number",
+        "$value": "{font.leading.20}",
+        "$description": "Interlineado del estilo role/body. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-body-leading)"
+            }
+          }
+        }
+      }
+    },
+    "body-sm": {
+      "size": {
+        "$type": "number",
+        "$value": "{font.size.12}",
+        "$description": "Tamaño del estilo role/body-sm. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-body-sm-size)"
+            }
+          }
+        }
+      },
+      "leading": {
+        "$type": "number",
+        "$value": "{font.leading.16}",
+        "$description": "Interlineado del estilo role/body-sm. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-body-sm-leading)"
+            }
+          }
+        }
+      }
+    },
+    "label": {
+      "size": {
+        "$type": "number",
+        "$value": "{font.size.12}",
+        "$description": "Tamaño del estilo role/label. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-label-size)"
+            }
+          }
+        }
+      },
+      "leading": {
+        "$type": "number",
+        "$value": "{font.leading.16}",
+        "$description": "Interlineado del estilo role/label. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-label-leading)"
+            }
+          }
+        }
+      }
+    },
+    "caption": {
+      "size": {
+        "$type": "number",
+        "$value": "{font.size.12}",
+        "$description": "Tamaño del estilo role/caption. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-caption-size)"
+            }
+          }
+        }
+      },
+      "leading": {
+        "$type": "number",
+        "$value": "{font.leading.14}",
+        "$description": "Interlineado del estilo role/caption. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-caption-leading)"
+            }
+          }
+        }
+      }
+    },
+    "display-sm": {
+      "size": {
+        "$type": "number",
+        "$value": "{font.size.32}",
+        "$description": "Tamaño del estilo role/display-sm. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-display-sm-size)"
+            }
+          }
+        }
+      },
+      "leading": {
+        "$type": "number",
+        "$value": "{font.leading.40}",
+        "$description": "Interlineado del estilo role/display-sm. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-display-sm-leading)"
+            }
+          }
+        }
+      }
+    },
+    "label-sm": {
+      "size": {
+        "$type": "number",
+        "$value": "{font.size.10}",
+        "$description": "Tamaño de role/label-sm (10). Caso extremo: la prioridad siempre la tiene role/label (12 px). Usar solo donde 12 px no entra, como las etiquetas de las celdas de filtro.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-label-sm-size)"
+            }
+          }
+        }
+      },
+      "leading": {
+        "$type": "number",
+        "$value": "{font.leading.14}",
+        "$description": "Interlineado de role/label-sm. Caso extremo: la prioridad siempre la tiene role/label (12 px). Usar solo donde 12 px no entra, como las etiquetas de las celdas de filtro.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-label-sm-leading)"
+            }
+          }
+        }
+      }
+    },
+    "body-xl": {
+      "size": {
+        "$type": "number",
+        "$value": "{font.size.16}",
+        "$description": "Tamaño de role/body-xl: 20 en Desktop, 16 en Mobile.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-body-xl-size)"
+            }
+          }
+        }
+      },
+      "leading": {
+        "$type": "number",
+        "$value": "{font.leading.24}",
+        "$description": "Interlineado de role/body-xl: 28 en Desktop, 24 en Mobile.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-body-xl-leading)"
+            }
+          }
+        }
+      }
+    }
+  }
+}

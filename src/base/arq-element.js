@@ -38,10 +38,25 @@ const templates = new WeakMap();
 // sin texto visible, labels ocultos con Show label=false, números reales).
 // border/default (1 px) es el tamaño mínimo disponible: con 0 algunos lectores
 // lo descartan.
+// Transición de colores (DESIGN.md §6 · Movimiento): una sola regla para el
+// cambio de hover, pressed, foco y selección de todos los componentes, con
+// motion/duration/fast y motion/easing/standard. Solo colores: nunca alto,
+// ancho ni posición. Alcanza solo al Shadow DOM (el contenido por slot no la
+// toma). Con prefers-reduced-motion la duración vale 0 desde tokens.css.
+// Un componente que además anima transform u opacity redeclara la lista
+// completa en ese elemento (toggle, ícono de los desplegables).
 const baseCss = `
 :host([hidden]),
 [hidden] {
   display: none !important;
+}
+
+*,
+*::before,
+*::after {
+  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
+  transition-duration: var(--arq-motion-duration-fast);
+  transition-timing-function: var(--arq-motion-easing-standard);
 }
 
 .visually-hidden {

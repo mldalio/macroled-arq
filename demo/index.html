@@ -316,7 +316,7 @@
           <arq-breadcrumb-item show-separator>Sin href</arq-breadcrumb-item>
         </arq-breadcrumb>
 
-        <h3 class="demo-subheading role-body-sm">Texto largo (columna angosta: parte en líneas y corta con …)</h3>
+        <h3 class="demo-subheading role-body-sm">Texto largo (columna angosta): los intermedios se cortan con …, el actual se parte en líneas</h3>
         <div class="demo-narrow">
           <arq-breadcrumb>
             <arq-breadcrumb-item href="#demo-breadcrumb" show-separator>Colecciones</arq-breadcrumb-item>
@@ -402,6 +402,7 @@
           <arq-spec-row><span slot="label">Temperatura de color</span>2700 K</arq-spec-row>
           <arq-spec-row><span slot="label">Grado de protección</span>IP 65</arq-spec-row>
           <arq-spec-row><span slot="label">Material del cuerpo</span>Aluminio inyectado con difusor de policarbonato opal</arq-spec-row>
+          <arq-spec-row><span slot="label">Código de accesorio de montaje recomendado</span>KANU-ACC-SOPORTE-PARED-500-NEGRO-TEXTURADO</arq-spec-row>
         </div>
         <div class="demo-dark" data-arq-theme="dark">
           <div class="demo-narrow demo-specs">
@@ -468,15 +469,21 @@
 
       <section class="demo-section" aria-labelledby="demo-sku">
         <h2 id="demo-sku" class="demo-heading role-label">sku · &lt;arq-sku&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 920:2539. Clic o Enter copia y muestra «Copiado» 2 s. Hover: el ícono pasa a icon/primary.</p>
+        <p class="demo-note role-body-sm">Figma 920:2539. Clic o Enter copia y muestra «Copiado» durante motion/duration/feedback. Hover: el ícono pasa a icon/primary (transición fast). «Simular falla» rompe el portapapeles una vez: el código queda seleccionado y se anuncia «Copialo con Ctrl+C».</p>
         <div class="demo-row">
           <arq-sku>KANU-J-500-12W-N-WW</arq-sku>
           <arq-sku size="compact">KANU-J-500-12W-N-WW</arq-sku>
           <arq-sku copied>KANU-J-500-12W-N-WW</arq-sku>
           <arq-sku size="compact" copied>KANU-J-500-12W-N-WW</arq-sku>
         </div>
-        <div class="demo-narrow">
+        <div class="demo-row">
+          <arq-button type="outline" data-demo-clipboard-fail>Simular falla del portapapeles</arq-button>
+          <arq-sku data-demo-sku-fail>KANU-J-500-12W-N-WW</arq-sku>
+        </div>
+        <h3 class="demo-subheading role-body-sm">Texto largo (columna angosta): el código se parte en líneas</h3>
+        <div class="demo-narrow demo-stack">
           <arq-sku>KANU (J) 500 12W N WW EXTRA LARGO 2026</arq-sku>
+          <arq-sku size="compact">KANU-J-500-12W-N-WW-ACCESORIO-SOPORTE-PARED</arq-sku>
         </div>
         <div class="demo-row demo-dark" data-arq-theme="dark">
           <arq-sku>KANU-J-500-12W-N-WW</arq-sku>
@@ -666,19 +673,26 @@
 
       <section class="demo-section" aria-labelledby="demo-file-upload">
         <h2 id="demo-file-upload" class="demo-heading role-label">file-upload · &lt;arq-file-upload&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 1113:2499. Empty (clic o arrastrar un archivo), Attached («Adjuntar ejemplo») y error («Probar archivo inválido»).</p>
+        <p class="demo-note role-body-sm">Figma 1113:2499. Empty (clic o arrastrar un archivo; al arrastrar encima pasa a Drag over), Attached («Adjuntar ejemplo»), Error («Probar archivo inválido» o «Probar archivo pesado») y Disabled. Sin texto, el label es «Adjuntar archivo».</p>
         <form class="demo-stack demo-upload" data-demo-form>
-          <arq-file-upload name="adjunto" data-demo-upload>Adjuntar archivos<span slot="helper">PDF, DWG, JPG o PNG · hasta 10 MB</span></arq-file-upload>
+          <arq-file-upload name="adjunto" data-demo-upload><span slot="helper">PDF, DWG, JPG o PNG · hasta 10 MB</span></arq-file-upload>
           <div class="demo-row">
             <arq-button type="outline" data-demo-attach>Adjuntar ejemplo</arq-button>
             <arq-button type="outline" data-demo-bad>Probar archivo inválido</arq-button>
+            <arq-button type="outline" data-demo-heavy>Probar archivo pesado</arq-button>
+            <arq-button type="outline" data-demo-dragover>Ver Drag over</arq-button>
             <arq-button type="outline" data-demo-show>Ver valor</arq-button>
             <arq-button type="underline" show-underline data-demo-reset>Restablecer</arq-button>
             <span class="role-body-sm demo-meta" data-demo-output aria-live="polite"></span>
           </div>
         </form>
-        <div class="demo-dark demo-upload" data-arq-theme="dark">
-          <arq-file-upload data-demo-upload-dark>Adjuntar archivos<span slot="helper">PDF, DWG, JPG o PNG · hasta 10 MB</span></arq-file-upload>
+        <div class="demo-stack demo-upload">
+          <arq-file-upload disabled>Adjuntar archivo (Disabled)<span slot="helper">PDF, DWG, JPG o PNG · hasta 10 MB</span></arq-file-upload>
+        </div>
+        <div class="demo-dark demo-stack demo-upload" data-arq-theme="dark">
+          <arq-file-upload data-demo-upload-dark><span slot="helper">PDF, DWG, JPG o PNG · hasta 10 MB</span></arq-file-upload>
+          <arq-file-upload data-demo-upload-dark-error><span slot="helper">PDF, DWG, JPG o PNG · hasta 10 MB</span></arq-file-upload>
+          <arq-file-upload disabled>Adjuntar archivo (Disabled)<span slot="helper">PDF, DWG, JPG o PNG · hasta 10 MB</span></arq-file-upload>
         </div>
       </section>
 

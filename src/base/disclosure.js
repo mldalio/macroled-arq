@@ -13,8 +13,11 @@
 //   decide el HTML o los datos: un booleano ausente es false.
 // - Cambiar open por código no emite eventos. La acción del usuario (y los
 //   métodos show / hide / toggle) emite arq:toggle con { open }.
-// - TODO: sin animación, porque no hay tokens de movimiento. Si se anima,
-//   respetar prefers-reduced-motion.
+// - Al abrir, el panel aparece con un fundido de opacity en motion/duration/base
+//   (DESIGN.md §6). El alto cambia de golpe: no se anima layout. Al cerrar se
+//   oculta sin fundido (hidden es display: none). Con prefers-reduced-motion la
+//   duración vale 0. La hoja la adopta Disclosure en el Shadow DOM del host:
+//   los componentes no la repiten.
 //
 //   setup() {
 //     this.disclosure = new Disclosure(this, {
@@ -24,6 +27,33 @@
 //   }
 
 let uid = 0;
+
+// Fundido del panel al abrir. Repite la lista de colores de la hoja base de
+// ArqElement porque transition-property no se puede sumar, solo reemplazar.
+const disclosureCss = `
+[data-disclosure-panel] {
+  transition-property: opacity, color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
+  transition-duration: var(--arq-motion-duration-base);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+@starting-style {
+  [data-disclosure-panel]:not([hidden]) {
+    opacity: 0;
+  }
+}
+`;
+let disclosureSheet;
+
+function adoptDisclosureSheet(root) {
+  if (!disclosureSheet) {
+    disclosureSheet = new CSSStyleSheet();
+    disclosureSheet.replaceSync(disclosureCss);
+  }
+  if (!root.adoptedStyleSheets.includes(disclosureSheet)) {
+    root.adoptedStyleSheets = [...root.adoptedStyleSheets, disclosureSheet];
+  }
+}
 
 export class Disclosure {
   #host;
@@ -42,6 +72,8 @@ export class Disclosure {
     // Los id viven dentro del Shadow DOM de cada instancia, pero igual se
     // generan únicos. Nunca se derivan del contenido (por ejemplo, un SKU).
     panel.id ||= `arq-disclosure-${++uid}`;
+    panel.setAttribute('data-disclosure-panel', '');
+    adoptDisclosureSheet(host.shadowRoot);
     trigger.type = 'button';
     trigger.setAttribute('aria-controls', panel.id);
     trigger.addEventListener('click', () => this.toggle());

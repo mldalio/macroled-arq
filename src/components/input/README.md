@@ -56,6 +56,6 @@ Campo de formulario con línea inferior (sin caja). Text para datos cortos (nomb
 
 - `TODO` **Type=Select:** se construye con select y select-menu (menú propio, teclado y posición). Hoy `type="select"` avisa en consola y se ve como Text.
 - **Foco:** solo cambia el color de la línea, sin anillo (excepción a DESIGN.md §7, anotada en `docs/decisiones.md`).
-- `TODO` Textarea: 120 de alto mínimo (6 líneas de `role/body`, sin token). Falta definir filas y si se puede agrandar (hoy `resize: vertical`).
+- **Textarea:** 4 filas visibles por defecto (`rows="4"`; se cambia con el atributo `rows`) y solo se agranda hacia abajo (`resize: vertical`), según la descripción del set. En el frame de Figma el campo mide 120 (unas 5 líneas): manda el texto.
 - `TODO` Textos de error por caso de validación, indicador de campo obligatorio y estado Hover: no están diseñados.
 - Helper y error comparten la prop Helper en Figma; en código son separados (slot `helper` y atributo `error`).

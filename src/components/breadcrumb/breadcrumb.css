@@ -7,15 +7,29 @@
 
 /* label · gap · "/" · gap · label: el gap entre ítems es el mismo que hay
    entre el label y su separador (space/gap/sm).
-   TODO: Figma no define qué pasa si no entra en una línea; se parte en
-   varias (flex-wrap) con el mismo gap. */
+   Textos largos (descripción del set): una sola fila; los ítems intermedios
+   se achican y se cortan con "…" y el actual se parte en varias líneas.
+   Arriba alineado, para que los separadores queden en la primera línea. */
 .list {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-wrap: nowrap;
+  align-items: flex-start;
   gap: var(--arq-space-gap-sm);
   min-width: 0;
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+/* Si no entra, primero se achica el actual (se parte en líneas, hasta el ancho
+   de su palabra más larga) y recién después se cortan los intermedios: el
+   actual tiene un flex-shrink mucho mayor (es un peso relativo, no una medida). */
+::slotted(*) {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+::slotted([current]) {
+  flex-shrink: 1000;
+  min-width: auto;
 }

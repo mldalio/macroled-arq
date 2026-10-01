@@ -24,9 +24,11 @@
   display: none;
 }
 
+/* Arriba alineado: con un código en varias líneas, el ícono y "Copiado"
+   quedan en la primera (ver margen de .copy y .copied). */
 .row {
   display: inline-flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--arq-space-gap-sm);
   max-width: 100%;
   margin: 0;
@@ -40,19 +42,24 @@
 }
 
 /* Código: role/body-lg (Default) o role/body (Compact), lo pone el JS.
-   TODO: Figma es nowrap; un SKU largo (con espacios o paréntesis) se corta con …  */
+   Textos largos (descripción del set): se parte en varias líneas, nunca se
+   corta; también un SKU sin espacios. */
 .code {
   min-width: 0;
-  overflow: hidden;
   color: var(--arq-color-text-primary);
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
+/* Centrado en la primera línea del código: (interlineado − alto) / 2 */
 .copy {
   display: inline-flex;
   flex: none;
+  margin-block-start: calc((var(--arq-type-body-lg-leading) - var(--arq-icon-md)) / 2);
   color: var(--arq-color-icon-secondary);
+}
+
+:host([size='compact']) .copy {
+  margin-block-start: calc((var(--arq-type-body-leading) - var(--arq-icon-md)) / 2);
 }
 
 .icon {
@@ -66,18 +73,42 @@
 }
 
 /* State=Copied: "Copiado" en el lugar del ícono */
-.copied {
+.copied,
+.failed {
   display: none;
   flex: none;
+  margin-block-start: calc((var(--arq-type-body-lg-leading) - var(--arq-type-caption-leading)) / 2);
   color: var(--arq-color-text-success);
 }
 
-:host([copied]) .copy {
+:host([size='compact']) .copied,
+:host([size='compact']) .failed {
+  margin-block-start: calc((var(--arq-type-body-leading) - var(--arq-type-caption-leading)) / 2);
+}
+
+:host([copied]) .copy,
+:host(:state(copy-failed)) .copy {
   display: none;
 }
 
-:host([copied]) .copied {
+:host([copied]) .copied,
+:host(:state(copy-failed)) .failed {
   display: inline;
+}
+
+/* Portapapeles falló: "Copialo con Ctrl+C" en el lugar de "Copiado".
+   TODO: Figma no define el color; se usa color/text/secondary (no es un éxito). */
+.failed {
+  color: var(--arq-color-text-secondary);
+}
+
+/* Si falla el portapapeles se selecciona el código: la etiqueta, el ícono y
+   los avisos no se pintan como seleccionados. */
+.label,
+.copy,
+.copied,
+.failed {
+  user-select: none;
 }
 
 /* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí, no hay token de offset) */

@@ -22,39 +22,39 @@
   --arq-space-128: 128px;
   --arq-space-160: 160px;
   --arq-font-family-sans: 'Albert Sans';
-  --arq-font-weight-light: 300;
-  --arq-font-weight-regular: 400;
-  --arq-font-weight-medium: 500;
-  --arq-font-weight-semibold: 600;
-  --arq-font-weight-bold: 700;
-  --arq-font-size-10: 10px;
-  --arq-font-size-11: 11px;
-  --arq-font-size-12: 12px;
-  --arq-font-size-14: 14px;
-  --arq-font-size-16: 16px;
-  --arq-font-size-20: 20px;
-  --arq-font-size-24: 24px;
-  --arq-font-size-32: 32px;
-  --arq-font-size-40: 40px;
-  --arq-font-size-48: 48px;
-  --arq-font-size-64: 64px;
-  --arq-font-leading-14: 14px;
-  --arq-font-leading-16: 16px;
-  --arq-font-leading-20: 20px;
-  --arq-font-leading-24: 24px;
-  --arq-font-leading-28: 28px;
-  --arq-font-leading-32: 32px;
-  --arq-font-leading-40: 40px;
-  --arq-font-leading-44: 44px;
-  --arq-font-leading-48: 48px;
-  --arq-font-leading-56: 56px;
-  --arq-font-leading-72: 72px;
-  --arq-font-tracking-tighter: -0.8px;
-  --arq-font-tracking-tight: -0.4px;
-  --arq-font-tracking-normal: 0px;
-  --arq-font-tracking-wide: 0.4px;
-  --arq-font-tracking-wider: 0.8px;
-  --arq-font-tracking-widest: 1px;
+  --arq-font-weight-light: 300; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-weight-regular: 400; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-weight-medium: 500; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-weight-semibold: 600; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-weight-bold: 700; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-10: 10px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-11: 11px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-12: 12px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-14: 14px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-16: 16px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-20: 20px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-24: 24px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-32: 32px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-40: 40px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-48: 48px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-64: 64px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-14: 14px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-16: 16px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-20: 20px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-24: 24px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-28: 28px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-32: 32px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-40: 40px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-44: 44px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-48: 48px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-56: 56px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-72: 72px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-tracking-tighter: -0.8px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-tracking-tight: -0.4px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-tracking-normal: 0px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-tracking-wide: 0.4px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-tracking-wider: 0.8px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-tracking-widest: 1px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-radius-0: 0px;
   --arq-radius-2: 2px;
   --arq-radius-4: 4px;
@@ -122,8 +122,13 @@
   --arq-alpha-black-60: rgba(0, 0, 0, 0.6);
   --arq-alpha-transparent: rgba(0, 0, 0, 0);
   --arq-layout-card-min: 280px; /** Ancho mínimo de tarjeta en la grilla de catálogo (auto-fill). Desde 1600 px se reemplaza por layout/card-min-wide con una media query. */
-  --arq-layout-card-min-wide: 340px; /** Ancho mínimo de tarjeta en la grilla de catálogo desde 1600 px. En código reemplaza a layout/card-min con una media query (min-width: 1600px). */
+  --arq-layout-card-min-wide: 340px; /** Ancho mínimo de tarjeta en la grilla de catálogo desde 1600 px. Se aplica en el CSS de la grilla con una media query (min-width: 1600px); no es un modo. */
   --arq-layout-compare-media-max: 2000px; /** Tope de ancho de la foto de compare-product. En la práctica la foto ocupa la columna. */
+  --arq-motion-duration-fast: 120ms; /** Hover, toggle, foco. En ms. Con prefers-reduced-motion: 0. */
+  --arq-motion-duration-base: 200ms; /** Desplegables (disclosure) y menús. En ms. Con prefers-reduced-motion: 0. */
+  --arq-motion-duration-slow: 320ms; /** Fundido de imágenes de product-card. En ms. Con prefers-reduced-motion: 0. */
+  --arq-motion-duration-feedback: 2000ms; /** Tiempo visible de una confirmación (Copiado del sku). En ms. No cambia con prefers-reduced-motion. */
+  --arq-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1); /** Curva para todas las transiciones. */
   --arq-space-section-2xs: var(--arq-space-32); /** Separación mínima entre bloques de página. */
   --arq-space-section-xs: var(--arq-space-48); /** Separación ajustada entre bloques de página. */
   --arq-space-section-sm: var(--arq-space-64); /** Separación reducida entre bloques de página. */
@@ -156,7 +161,7 @@
   --arq-space-padding-5xl: var(--arq-space-96); /** Padding interno de bloques grandes (96 desktop / 64 mobile). */
   --arq-space-padding-6xl: var(--arq-space-128); /** Padding interno de bloques grandes (128 desktop / 96 mobile). */
   --arq-radius-control: var(--arq-radius-0); /** Radio de todo el sistema: 0 (esquinas rectas). Siempre 0, salvo que se pida explícitamente otra cosa. */
-  --arq-radius-pill: var(--arq-radius-full); /** Solo si el componente lo requiere (toggle-switch) o se pide explícitamente. */
+  --arq-radius-pill: var(--arq-radius-full); /** Esquinas totalmente redondeadas. Solo si el componente lo requiere (hoy, la pista de toggle-switch) o se pide explícitamente. Por defecto no se usa. */
   --arq-border-default: var(--arq-border-1); /** Grosor de bordes y divisores. */
   --arq-border-focus: var(--arq-border-1); /** Grosor del anillo de foco. */
   --arq-border-strong: var(--arq-border-2); /** Grosor de borde marcado (2): hover y selección de muestras. */
@@ -178,7 +183,7 @@
   --arq-color-text-secondary: var(--arq-neutral-750); /** Texto de lectura: párrafos, descripciones, valores de especificaciones. */
   --arq-color-text-tertiary: var(--arq-neutral-600); /** Texto secundario: metadatos, etiquetas, ayudas, captions, SKU. */
   --arq-color-text-inverse: var(--arq-neutral-0); /** Texto e íconos sobre surface/inverse. */
-  --arq-color-text-accent: var(--arq-neutral-900); /** Texto de acento, como links destacados. Mismo tono que color/accent/default. */
+  --arq-color-text-accent: var(--arq-neutral-900); /** Texto de acento, como links destacados. Mismo tono que color/accent/default (Light neutral/900, Dark neutral/150). */
   --arq-color-text-disabled: var(--arq-neutral-400); /** Texto e íconos de elementos deshabilitados. No usar para texto que se tiene que leer. */
   --arq-color-text-error: var(--arq-red-600); /** Mensajes de error y validación. */
   --arq-color-text-success: var(--arq-green-600); /** Mensajes de confirmación (por ejemplo, formulario enviado). */
@@ -196,44 +201,44 @@
   --arq-color-border-disabled: var(--arq-neutral-200); /** Bordes de controles deshabilitados. */
   --arq-color-border-focus: var(--arq-neutral-900); /** Anillo de foco de teclado. Obligatorio en todo elemento interactivo. */
   --arq-color-border-error: var(--arq-red-600); /** Borde de un campo con error. Acompañar siempre con color/text/error. */
-  --arq-color-action-primary: var(--arq-neutral-900); /** Acción principal: fondo del botón Filled; texto e ícono de Outline y Underline. */
+  --arq-color-action-primary: var(--arq-neutral-900); /** Acción principal: fondo del botón Filled; texto e ícono de Outline y Underline. Negro en Light, casi blanco en Dark. */
   --arq-color-action-primary-hover: var(--arq-neutral-750); /** Hover de la acción principal. */
   --arq-color-action-on-primary: var(--arq-neutral-0); /** Texto e íconos sobre color/action/primary. */
-  --arq-color-accent-default: var(--arq-neutral-900); /** Acento para detalles: foco, estados activos, etiquetas. Nunca fondo de botones ni de bloques grandes. */
+  --arq-color-accent-default: var(--arq-neutral-900); /** Acento para detalles: foco, estados activos, etiquetas. Light neutral/900, Dark neutral/150. Nunca fondo de botones ni de bloques grandes. */
   --arq-color-overlay-scrim: var(--arq-alpha-black-60); /** Fondo semitransparente detrás de modales y paneles laterales. */
   --arq-layout-gutter: var(--arq-space-40); /** Margen lateral de la página. */
   --arq-icon-sm: var(--arq-space-12); /** Íconos dentro de texto pequeño o chips. */
   --arq-icon-md: var(--arq-space-16); /** Íconos por defecto (botones, navegación). */
   --arq-icon-lg: var(--arq-space-20); /** Íconos destacados. */
   --arq-icon-xl: var(--arq-space-24); /** Ícono grande (24): acciones destacadas. */
-  --arq-icon-2xl: var(--arq-space-32); /** Ícono extra grande (32): acciones de títulos grandes. */
+  --arq-icon-2xl: var(--arq-space-32); /** Ícono extra grande (32): acciones de títulos grandes, como el acordeón de la ficha. */
   --arq-swatch-sm: var(--arq-space-16); /** Muestra de acabado chica (16): opciones de menú y celdas de filtro. */
   --arq-swatch-md: var(--arq-space-20); /** Muestra de acabado del selector de muestras (20). */
   --arq-swatch-lg: var(--arq-space-24); /** Muestra grande (24): campo select y muestra seleccionada. */
-  --arq-type-display-size: var(--arq-font-size-64); /** Tamaño del estilo role/display. */
-  --arq-type-display-leading: var(--arq-font-leading-72); /** Interlineado del estilo role/display. */
-  --arq-type-display-sm-size: var(--arq-font-size-48); /** Tamaño del estilo role/display-sm. */
-  --arq-type-display-sm-leading: var(--arq-font-leading-56); /** Interlineado del estilo role/display-sm. */
-  --arq-type-heading-1-size: var(--arq-font-size-40); /** Tamaño del estilo role/heading-1. */
-  --arq-type-heading-1-leading: var(--arq-font-leading-48); /** Interlineado del estilo role/heading-1. */
-  --arq-type-heading-2-size: var(--arq-font-size-32); /** Tamaño del estilo role/heading-2. */
-  --arq-type-heading-2-leading: var(--arq-font-leading-40); /** Interlineado del estilo role/heading-2. */
-  --arq-type-heading-3-size: var(--arq-font-size-24); /** Tamaño del estilo role/heading-3. */
-  --arq-type-heading-3-leading: var(--arq-font-leading-32); /** Interlineado del estilo role/heading-3. */
-  --arq-type-body-xl-size: var(--arq-font-size-20); /** Tamaño del estilo role/body-xl. */
-  --arq-type-body-xl-leading: var(--arq-font-leading-28); /** Interlineado del estilo role/body-xl. */
-  --arq-type-body-lg-size: var(--arq-font-size-16); /** Tamaño de los estilos role/body-lg*. */
-  --arq-type-body-lg-leading: var(--arq-font-leading-24); /** Interlineado de los estilos role/body-lg*. */
-  --arq-type-body-size: var(--arq-font-size-14); /** Tamaño de los estilos role/body*. */
-  --arq-type-body-leading: var(--arq-font-leading-20); /** Interlineado de los estilos role/body*. */
-  --arq-type-body-sm-size: var(--arq-font-size-12); /** Tamaño de los estilos role/body-sm*. */
-  --arq-type-body-sm-leading: var(--arq-font-leading-16); /** Interlineado de los estilos role/body-sm*. */
-  --arq-type-label-size: var(--arq-font-size-12); /** Tamaño del estilo role/label. */
-  --arq-type-label-leading: var(--arq-font-leading-16); /** Interlineado del estilo role/label. */
-  --arq-type-label-sm-size: var(--arq-font-size-10); /** Tamaño de role/label-sm (10). Caso extremo: solo donde 12 px no entra. */
-  --arq-type-label-sm-leading: var(--arq-font-leading-14); /** Interlineado de role/label-sm. */
-  --arq-type-caption-size: var(--arq-font-size-12); /** Tamaño de los estilos role/caption*. */
-  --arq-type-caption-leading: var(--arq-font-leading-14); /** Interlineado de los estilos role/caption*. */
+  --arq-type-display-size: var(--arq-font-size-64); /** Tamaño del estilo role/display. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-display-leading: var(--arq-font-leading-72); /** Interlineado del estilo role/display. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-display-sm-size: var(--arq-font-size-48); /** Tamaño del estilo role/display-sm. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-display-sm-leading: var(--arq-font-leading-56); /** Interlineado del estilo role/display-sm. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-heading-1-size: var(--arq-font-size-40); /** Tamaño del estilo role/heading-1. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-heading-1-leading: var(--arq-font-leading-48); /** Interlineado del estilo role/heading-1. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-heading-2-size: var(--arq-font-size-32); /** Tamaño del estilo role/heading-2. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-heading-2-leading: var(--arq-font-leading-40); /** Interlineado del estilo role/heading-2. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-heading-3-size: var(--arq-font-size-24); /** Tamaño del estilo role/heading-3. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-heading-3-leading: var(--arq-font-leading-32); /** Interlineado del estilo role/heading-3. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-body-xl-size: var(--arq-font-size-20); /** Tamaño de role/body-xl: 20 en Desktop, 16 en Mobile. */
+  --arq-type-body-xl-leading: var(--arq-font-leading-28); /** Interlineado de role/body-xl: 28 en Desktop, 24 en Mobile. */
+  --arq-type-body-lg-size: var(--arq-font-size-16); /** Tamaño del estilo role/body-lg. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-body-lg-leading: var(--arq-font-leading-24); /** Interlineado del estilo role/body-lg. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-body-size: var(--arq-font-size-14); /** Tamaño del estilo role/body. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-body-leading: var(--arq-font-leading-20); /** Interlineado del estilo role/body. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-body-sm-size: var(--arq-font-size-12); /** Tamaño del estilo role/body-sm. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-body-sm-leading: var(--arq-font-leading-16); /** Interlineado del estilo role/body-sm. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-label-size: var(--arq-font-size-12); /** Tamaño del estilo role/label. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-label-leading: var(--arq-font-leading-16); /** Interlineado del estilo role/label. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-label-sm-size: var(--arq-font-size-10); /** Tamaño de role/label-sm (10). Caso extremo: la prioridad siempre la tiene role/label (12 px). Usar solo donde 12 px no entra, como las etiquetas de las celdas de filtro. */
+  --arq-type-label-sm-leading: var(--arq-font-leading-14); /** Interlineado de role/label-sm. Caso extremo: la prioridad siempre la tiene role/label (12 px). Usar solo donde 12 px no entra, como las etiquetas de las celdas de filtro. */
+  --arq-type-caption-size: var(--arq-font-size-12); /** Tamaño del estilo role/caption. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-caption-leading: var(--arq-font-leading-14); /** Interlineado del estilo role/caption. Lo usa el estilo de texto: no aplicar directo. */
 }
 
 /* Dark: solo con el switch Iluminar (data-arq-theme="dark"), nunca por prefers-color-scheme */
@@ -255,7 +260,7 @@
   --arq-color-text-secondary: var(--arq-neutral-200); /** Texto de lectura: párrafos, descripciones, valores de especificaciones. */
   --arq-color-text-tertiary: var(--arq-neutral-500); /** Texto secundario: metadatos, etiquetas, ayudas, captions, SKU. */
   --arq-color-text-inverse: var(--arq-neutral-800); /** Texto e íconos sobre surface/inverse. */
-  --arq-color-text-accent: var(--arq-neutral-150); /** Texto de acento, como links destacados. Mismo tono que color/accent/default. */
+  --arq-color-text-accent: var(--arq-neutral-150); /** Texto de acento, como links destacados. Mismo tono que color/accent/default (Light neutral/900, Dark neutral/150). */
   --arq-color-text-disabled: var(--arq-neutral-600); /** Texto e íconos de elementos deshabilitados. No usar para texto que se tiene que leer. */
   --arq-color-text-error: var(--arq-red-300); /** Mensajes de error y validación. */
   --arq-color-text-success: var(--arq-green-300); /** Mensajes de confirmación (por ejemplo, formulario enviado). */
@@ -272,10 +277,10 @@
   --arq-color-border-disabled: var(--arq-alpha-white-10); /** Bordes de controles deshabilitados. */
   --arq-color-border-focus: var(--arq-neutral-150); /** Anillo de foco de teclado. Obligatorio en todo elemento interactivo. */
   --arq-color-border-error: var(--arq-red-300); /** Borde de un campo con error. Acompañar siempre con color/text/error. */
-  --arq-color-action-primary: var(--arq-neutral-100); /** Acción principal: fondo del botón Filled; texto e ícono de Outline y Underline. */
+  --arq-color-action-primary: var(--arq-neutral-100); /** Acción principal: fondo del botón Filled; texto e ícono de Outline y Underline. Negro en Light, casi blanco en Dark. */
   --arq-color-action-primary-hover: var(--arq-neutral-200); /** Hover de la acción principal. */
   --arq-color-action-on-primary: var(--arq-neutral-900); /** Texto e íconos sobre color/action/primary. */
-  --arq-color-accent-default: var(--arq-neutral-150); /** Acento para detalles: foco, estados activos, etiquetas. Nunca fondo de botones ni de bloques grandes. */
+  --arq-color-accent-default: var(--arq-neutral-150); /** Acento para detalles: foco, estados activos, etiquetas. Light neutral/900, Dark neutral/150. Nunca fondo de botones ni de bloques grandes. */
 }
 
 /* Mobile: hasta 767 px */
@@ -306,17 +311,26 @@
     --arq-space-padding-6xl: var(--arq-space-96); /** Padding interno de bloques grandes (128 desktop / 96 mobile). */
     --arq-layout-gutter: var(--arq-space-20); /** Margen lateral de la página. */
     --arq-icon-lg: var(--arq-space-24); /** Íconos destacados. */
-    --arq-type-display-size: var(--arq-font-size-40); /** Tamaño del estilo role/display. */
-    --arq-type-display-leading: var(--arq-font-leading-44); /** Interlineado del estilo role/display. */
-    --arq-type-display-sm-size: var(--arq-font-size-32); /** Tamaño del estilo role/display-sm. */
-    --arq-type-display-sm-leading: var(--arq-font-leading-40); /** Interlineado del estilo role/display-sm. */
-    --arq-type-heading-1-size: var(--arq-font-size-32); /** Tamaño del estilo role/heading-1. */
-    --arq-type-heading-1-leading: var(--arq-font-leading-40); /** Interlineado del estilo role/heading-1. */
-    --arq-type-heading-2-size: var(--arq-font-size-24); /** Tamaño del estilo role/heading-2. */
-    --arq-type-heading-2-leading: var(--arq-font-leading-32); /** Interlineado del estilo role/heading-2. */
-    --arq-type-heading-3-size: var(--arq-font-size-20); /** Tamaño del estilo role/heading-3. */
-    --arq-type-heading-3-leading: var(--arq-font-leading-28); /** Interlineado del estilo role/heading-3. */
-    --arq-type-body-xl-size: var(--arq-font-size-16); /** Tamaño del estilo role/body-xl. */
-    --arq-type-body-xl-leading: var(--arq-font-leading-24); /** Interlineado del estilo role/body-xl. */
+    --arq-type-display-size: var(--arq-font-size-40); /** Tamaño del estilo role/display. Lo usa el estilo de texto: no aplicar directo. */
+    --arq-type-display-leading: var(--arq-font-leading-44); /** Interlineado del estilo role/display. Lo usa el estilo de texto: no aplicar directo. */
+    --arq-type-display-sm-size: var(--arq-font-size-32); /** Tamaño del estilo role/display-sm. Lo usa el estilo de texto: no aplicar directo. */
+    --arq-type-display-sm-leading: var(--arq-font-leading-40); /** Interlineado del estilo role/display-sm. Lo usa el estilo de texto: no aplicar directo. */
+    --arq-type-heading-1-size: var(--arq-font-size-32); /** Tamaño del estilo role/heading-1. Lo usa el estilo de texto: no aplicar directo. */
+    --arq-type-heading-1-leading: var(--arq-font-leading-40); /** Interlineado del estilo role/heading-1. Lo usa el estilo de texto: no aplicar directo. */
+    --arq-type-heading-2-size: var(--arq-font-size-24); /** Tamaño del estilo role/heading-2. Lo usa el estilo de texto: no aplicar directo. */
+    --arq-type-heading-2-leading: var(--arq-font-leading-32); /** Interlineado del estilo role/heading-2. Lo usa el estilo de texto: no aplicar directo. */
+    --arq-type-heading-3-size: var(--arq-font-size-20); /** Tamaño del estilo role/heading-3. Lo usa el estilo de texto: no aplicar directo. */
+    --arq-type-heading-3-leading: var(--arq-font-leading-28); /** Interlineado del estilo role/heading-3. Lo usa el estilo de texto: no aplicar directo. */
+    --arq-type-body-xl-size: var(--arq-font-size-16); /** Tamaño de role/body-xl: 20 en Desktop, 16 en Mobile. */
+    --arq-type-body-xl-leading: var(--arq-font-leading-24); /** Interlineado de role/body-xl: 28 en Desktop, 24 en Mobile. */
+  }
+}
+
+/* Movimiento reducido: fast, base y slow en 0 (feedback no cambia) */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --arq-motion-duration-fast: 0ms; /** Hover, toggle, foco. En ms. Con prefers-reduced-motion: 0. */
+    --arq-motion-duration-base: 0ms; /** Desplegables (disclosure) y menús. En ms. Con prefers-reduced-motion: 0. */
+    --arq-motion-duration-slow: 0ms; /** Fundido de imágenes de product-card. En ms. Con prefers-reduced-motion: 0. */
   }
 }
