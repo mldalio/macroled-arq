@@ -740,8 +740,6 @@ var B = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.row{ali
 //#endregion
 //#region src/components/toggle/toggle.css?inline
 var V = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.toggle{align-items:center;gap:var(--arq-space-gap-sm);cursor:pointer;max-width:100%;display:inline-flex;position:relative}.track{box-sizing:border-box;width:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm) * 2 + var(--arq-space-gap-sm));height:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm));padding:calc(var(--arq-space-padding-2xs) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong);border-radius:var(--arq-radius-pill);background:var(--arq-color-surface-transparent);flex:none;align-items:center;display:inline-flex}.thumb{width:var(--arq-icon-sm);height:var(--arq-icon-sm);border-radius:var(--arq-radius-pill);background:var(--arq-color-icon-primary)}.label{min-width:0;color:var(--arq-color-text-primary)}.toggle:hover .track{background:var(--arq-color-surface-hover)}.native:checked+.track{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}.native:checked+.track .thumb{background:var(--arq-color-action-on-primary);transform:translateX(calc(var(--arq-icon-sm) + var(--arq-space-gap-sm)))}.toggle:hover .native:checked+.track{border-color:var(--arq-color-action-primary-hover);background:var(--arq-color-action-primary-hover)}:host([disabled]) .toggle{cursor:default}:host([disabled]) .track,:host([disabled]) .toggle:hover .track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-transparent)}:host([disabled]) .native:checked+.track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-strong)}:host([disabled]) .thumb,:host([disabled]) .native:checked+.track .thumb{background:var(--arq-color-icon-disabled)}:host([disabled]) .label{color:var(--arq-color-text-disabled)}.native:focus-visible+.track{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}";
-//#endregion
-//#region src/main.js
 (class extends l {
 	static tag = "arq-toggle";
 	static styles = V;
@@ -779,6 +777,233 @@ var V = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.toggle{
 	}
 	formDisabledCallback(e) {
 		this.#t.disabled = e || this.disabled;
+	}
+}).define();
+//#endregion
+//#region src/components/input/input.css?inline
+var H = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.label{color:var(--arq-color-text-tertiary)}.field{align-items:center;gap:var(--arq-space-gap-sm);padding-block:var(--arq-space-gap-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);display:flex}.control{box-sizing:border-box;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);width:100%;min-width:0;color:var(--arq-color-text-primary);border:0;flex:1;margin:0;padding:0}.control::placeholder{color:var(--arq-color-text-tertiary);opacity:1}textarea.control{min-height:calc(var(--arq-type-body-leading) * 6);resize:vertical}.helper{color:var(--arq-color-text-tertiary);margin:0}.error{color:var(--arq-color-text-error);margin:0}.control:focus,.control:focus-visible{outline:none}.field:focus-within{border-bottom-color:var(--arq-color-border-focus)}:host([error]) .field,:host([error]) .field:focus-within{border-bottom-color:var(--arq-color-border-error)}:host([disabled]) .label,:host([disabled]) .helper,:host([disabled]) .control,:host([disabled]) .control::placeholder{color:var(--arq-color-text-disabled)}:host([disabled]) .field{border-bottom-color:var(--arq-color-border-disabled)}", U = (() => {
+	let e = 0;
+	return () => `arq-input-${++e}`;
+})(), W = [
+	"placeholder",
+	"autocomplete",
+	"required",
+	"minlength",
+	"maxlength",
+	"pattern",
+	"inputmode",
+	"rows"
+];
+(class extends l {
+	static tag = "arq-input";
+	static styles = H;
+	static formAssociated = !0;
+	static properties = {
+		type: {
+			type: String,
+			values: [
+				"text",
+				"select",
+				"textarea"
+			],
+			default: "text"
+		},
+		showLabel: { type: Boolean },
+		showHelper: { type: Boolean },
+		error: { type: String },
+		disabled: { type: Boolean },
+		name: { type: String },
+		inputType: {
+			type: String,
+			values: [
+				"text",
+				"email",
+				"tel",
+				"url",
+				"number",
+				"search"
+			],
+			default: "text"
+		},
+		placeholder: { type: String },
+		autocomplete: { type: String },
+		required: { type: Boolean }
+	};
+	static template = "<div class=\"input\"><label class=\"label role-label\"><slot></slot></label><div class=\"field\"></div><p class=\"helper role-body-sm\"><slot name=\"helper\"></slot></p><p class=\"error role-body-sm\" aria-live=\"polite\"></p></div>";
+	#e = this.attachInternals();
+	#t = null;
+	#n = {
+		control: U(),
+		helper: U(),
+		error: U()
+	};
+	#r = "";
+	setup() {
+		this.#r = this.getAttribute("value") ?? "";
+		let e = this.shadowRoot;
+		e.querySelector(".label").htmlFor = this.#n.control, e.querySelector(".helper").id = this.#n.helper, e.querySelector(".error").id = this.#n.error, this.type === "select" && console.warn("[arq] <arq-input type=\"select\"> todavía no está: se construye con select y select-menu. Se muestra como Text.");
+	}
+	get value() {
+		return this.#t?.value ?? this.getAttribute("value") ?? "";
+	}
+	set value(e) {
+		let t = e == null ? "" : String(e);
+		this.#t ? (this.#t.value = t, this.#a()) : this.setAttribute("value", t);
+	}
+	focus(e) {
+		this.#t ? this.#t.focus(e) : super.focus(e);
+	}
+	checkValidity() {
+		return this.#e.checkValidity();
+	}
+	reportValidity() {
+		return this.#e.reportValidity();
+	}
+	update(e) {
+		(e.has("type") || !this.#t) && this.#i();
+		let t = this.#t, n = this.shadowRoot;
+		t.localName === "input" && (t.type = this.inputType);
+		for (let e of W) this.hasAttribute(e) ? t.setAttribute(e, this.getAttribute(e)) : t.removeAttribute(e);
+		t.disabled = this.disabled, n.querySelector(".label").classList.toggle("visually-hidden", !this.showLabel);
+		let r = !!this.error, i = n.querySelector(".helper"), a = n.querySelector(".error");
+		a.textContent = this.error ?? "", a.hidden = !r, i.hidden = r || !this.showHelper, t.setAttribute("aria-invalid", String(r));
+		let o = [r ? this.#n.error : null, i.hidden ? null : this.#n.helper].filter(Boolean);
+		o.length ? t.setAttribute("aria-describedby", o.join(" ")) : t.removeAttribute("aria-describedby"), this.#a();
+	}
+	formResetCallback() {
+		this.value = this.#r;
+	}
+	formDisabledCallback(e) {
+		this.#t.disabled = e || this.disabled;
+	}
+	#i() {
+		let e = this.type === "textarea" ? "textarea" : "input";
+		if (this.#t?.localName === e) return;
+		let t = document.createElement(e);
+		t.className = "control role-body", t.id = this.#n.control, t.value = this.#t?.value ?? this.getAttribute("value") ?? "", t.addEventListener("input", () => {
+			this.#a(), this.emit("input", { value: t.value });
+		}), t.addEventListener("change", () => this.emit("change", { value: t.value })), this.shadowRoot.querySelector(".field").replaceChildren(t), this.#t = t;
+	}
+	#a() {
+		let e = this.#t;
+		this.#e.setFormValue(e.value), e.validity.valid ? this.#e.setValidity({}) : this.#e.setValidity(e.validity, e.validationMessage, e);
+	}
+}).define();
+//#endregion
+//#region src/components/file-upload/file-upload.css?inline
+var G = ":host{width:100%;display:block}.upload{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.label{color:var(--arq-color-text-secondary)}.zone,.attached{box-sizing:border-box;padding:var(--arq-space-padding-lg);border:var(--arq-border-default) dashed var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-bg-subtle);align-items:center;display:flex;position:relative}.zone{cursor:pointer}.attached{justify-content:space-between;gap:var(--arq-space-gap-sm-md);border-style:solid}.empty{align-items:center;gap:var(--arq-space-gap-sm-md);min-width:0;display:flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}.prompt,.file{min-width:0;color:var(--arq-color-text-primary)}.file{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.remove{flex:none}.helper{color:var(--arq-color-text-tertiary);margin:0}.error{color:var(--arq-color-text-error);margin:0}:host(:state(error)) .zone{border-color:var(--arq-color-border-error)}.zone:has(.native:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}", K = ".pdf,.dwg,.jpg,.jpeg,.png", q = 10, J = {
+	type: "El formato no está admitido.",
+	size: (e) => `El archivo supera los ${e} MB.`
+};
+(class extends l {
+	static tag = "arq-file-upload";
+	static styles = G;
+	static formAssociated = !0;
+	static properties = {
+		accept: {
+			type: String,
+			default: K
+		},
+		maxSize: {
+			type: Number,
+			default: q
+		},
+		name: { type: String },
+		required: { type: Boolean }
+	};
+	static template = `<div class="upload"><span class="label role-label" id="label"><slot></slot></span><label class="zone" id="zone"><input type="file" class="native visually-hidden" aria-labelledby="label" aria-describedby="helper error"><span class="empty">${d("plus")}<span class="prompt role-body"><slot name="prompt">Arrastrá o seleccioná planos, renders o fotos</slot></span></span></label><div class="attached" hidden><span class="file role-body-regular"></span><arq-button type="underline" show-underline class="remove">Quitar<span class="visually-hidden"></span></arq-button></div><p class="helper role-body-sm" id="helper"><slot name="helper"></slot></p><p class="error role-body-sm" id="error" aria-live="polite" hidden></p></div>`;
+	#e = this.attachInternals();
+	#t = null;
+	#n = null;
+	#r = "";
+	setup() {
+		let e = this.shadowRoot;
+		this.#t = e.querySelector(".native"), this.#t.addEventListener("change", () => this.#i(this.#t.files[0] ?? null));
+		let t = e.querySelector(".zone");
+		t.addEventListener("dragover", (e) => {
+			e.preventDefault();
+		}), t.addEventListener("drop", (e) => {
+			e.preventDefault();
+			let t = e.dataTransfer?.files?.[0];
+			t && this.#i(t);
+		}), e.querySelector(".remove").addEventListener("click", () => {
+			this.clear(), this.#t.focus();
+		});
+	}
+	get file() {
+		return this.#n;
+	}
+	focus(e) {
+		this.#t ? this.#t.focus(e) : super.focus(e);
+	}
+	clear() {
+		this.#t.value = "", this.#o(null, ""), this.emit("change", { file: null });
+	}
+	update() {
+		this.#t.accept = this.accept, this.#t.required = this.required, this.#s();
+	}
+	formResetCallback() {
+		this.#t.value = "", this.#o(null, "");
+	}
+	#i(e) {
+		if (!e) return;
+		let t = this.#a(e);
+		if (t) {
+			this.#t.value = "", this.#o(null, t);
+			return;
+		}
+		this.#o(e, ""), this.emit("change", { file: e });
+	}
+	#a(e) {
+		let t = this.accept.split(",").map((e) => e.trim().toLowerCase()).filter(Boolean), n = `.${e.name.split(".").pop()?.toLowerCase()}`;
+		return t.length && !t.includes(n) ? J.type : this.maxSize && e.size > this.maxSize * 1024 * 1024 ? J.size(this.maxSize) : "";
+	}
+	#o(e, t) {
+		this.#n = e, this.#r = t, this.#e.setFormValue(e), this.required && !e ? this.#e.setValidity({ valueMissing: !0 }, "Adjuntá un archivo.", this.#t) : this.#e.setValidity({}), this.#s();
+	}
+	#s() {
+		let e = this.shadowRoot, t = this.#n;
+		e.querySelector(".zone").hidden = !!t, e.querySelector(".attached").hidden = !t, e.querySelector(".file").textContent = t?.name ?? "", e.querySelector(".remove .visually-hidden").textContent = t ? ` archivo ${t.name}` : "";
+		let n = e.querySelector(".error");
+		n.textContent = this.#r, n.hidden = !this.#r, e.querySelector(".helper").hidden = !!this.#r, this.#r ? this.#e.states.add("error") : this.#e.states.delete("error"), this.#t.setAttribute("aria-invalid", String(!!this.#r));
+	}
+}).define();
+//#endregion
+//#region src/components/nav-link/nav-link.css?inline
+var Y = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-sm);background:var(--arq-color-surface-transparent);max-width:100%;color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;padding:0;text-decoration:none;display:inline-flex;position:relative}.label{white-space:nowrap;min-width:0}.indicator{width:var(--arq-space-gap-sm);height:var(--arq-border-strong);background:var(--arq-color-border-strong);flex:none;display:none}.current .indicator{display:block}.chevron{flex:none;display:none}:host([has-dropdown]) .chevron{display:inline-flex}.chevron .icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm)}[aria-expanded=true] .chevron .icon{transform:rotate(180deg)}.trailing{display:none}.link:after{content:\"\";inset-inline:0;top:calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));height:var(--arq-border-default);background:var(--arq-color-border-strong);visibility:hidden;position:absolute}.link:not(.current):not([aria-expanded=true]):hover:after{visibility:visible}.link:active{color:var(--arq-color-text-tertiary)}.link:active:after{visibility:hidden}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}@media (width<=767px){:host{width:100%;display:flex}.link{width:100%;padding:var(--arq-space-gap-md) var(--arq-layout-gutter)}.label{white-space:normal;flex:1}:host([has-dropdown]) .chevron{display:none}.trailing{flex:none;display:inline-flex}.trailing .icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.trailing [data-icon=arrow-right],.current .trailing [data-icon=chevron-right]{display:none}.current .trailing [data-icon=arrow-right]{display:block}.link:after{display:none}.link:active{background:var(--arq-color-surface-selected);color:var(--arq-color-text-primary)}@media (hover:hover){.link:not(:active):hover{background:var(--arq-color-surface-hover)}}.link:focus-visible{outline-offset:calc(var(--arq-border-strong) * -1)}}", X = matchMedia("(max-width: 767px)");
+//#endregion
+//#region src/main.js
+(class extends l {
+	static tag = "arq-nav-link";
+	static styles = Y;
+	static properties = {
+		hasDropdown: { type: Boolean },
+		open: { type: Boolean },
+		current: { type: Boolean },
+		href: { type: String }
+	};
+	static template = `<a class="link"><span class="indicator" aria-hidden="true"></span><span class="label role-body"><slot></slot></span><span class="chevron">${d("chevron-down")}</span><span class="trailing">${d("chevron-right")}${d("arrow-right")}</span></a>`;
+	#e = null;
+	setup() {
+		this.#e = this.shadowRoot.querySelector(".link");
+		let e = this.shadowRoot.querySelector(".label"), t = () => {
+			e.classList.toggle("role-body", !X.matches), e.classList.toggle("role-body-xl", X.matches);
+		};
+		X.addEventListener("change", t), t();
+	}
+	focus(e) {
+		this.#e ? this.#e.focus(e) : super.focus(e);
+	}
+	update(e) {
+		e.has("hasDropdown") && this.#t();
+		let t = this.#e;
+		t.localName === "a" ? (this.href === null ? t.removeAttribute("href") : t.setAttribute("href", this.href), this.current ? t.setAttribute("aria-current", "page") : t.removeAttribute("aria-current")) : t.setAttribute("aria-expanded", String(this.open)), t.classList.toggle("current", this.current);
+	}
+	#t() {
+		let e = this.hasDropdown ? "button" : "a", t = this.#e;
+		if (t.localName === e) return;
+		let n = document.createElement(e);
+		n.className = t.className, e === "button" && (n.type = "button", n.addEventListener("click", () => this.emit("toggle", { open: !this.open }))), n.append(...t.childNodes), t.replaceWith(n), this.#e = n;
 	}
 }).define(), window.Arq || (window.Arq = Object.freeze({ version: e }));
 //#endregion

@@ -54,7 +54,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [logo](#logo) | `<arq-logo>` | En código ([README](../src/components/logo/README.md)) |
 | [mega-link](#mega-link) | `<arq-mega-link>` | Pendiente |
 | [mega-menu](#mega-menu) | `<arq-mega-menu>` | Pendiente |
-| [nav-link](#nav-link) | `<arq-nav-link>` | Pendiente |
+| [nav-link](#nav-link) | `<arq-nav-link>` | En código ([README](../src/components/nav-link/README.md)) |
 | [navbar](#navbar) | `<arq-navbar>` | Pendiente |
 | [option-group](#option-group) | `<arq-option-group>` | Pendiente |
 | [option-tile](#option-tile) | `<arq-option-tile>` | En código ([README](../src/components/option-tile/README.md)) |

@@ -244,3 +244,20 @@
 .demo-upload {
   max-width: calc(var(--arq-layout-card-min) * 2);
 }
+
+/* Navbar de prueba: links en fila (gap space/gap/xl); en mobile, filas del menú */
+.demo-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--arq-space-gap-xl);
+}
+
+@media (max-width: 767px) {
+  .demo-nav {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    margin-inline: calc(var(--arq-layout-gutter) * -1);
+  }
+}

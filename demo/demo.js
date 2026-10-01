@@ -201,3 +201,9 @@ document.querySelector('[data-demo-bad]')?.addEventListener('click', () => {
 });
 const darkUpload = document.querySelector('[data-demo-upload-dark]');
 if (darkUpload) customElements.whenDefined('arq-file-upload').then(() => demoDrop(darkUpload, new File(['%PDF'], 'plano-con-un-nombre-de-archivo-muy-largo-para-ver-como-se-corta.pdf')));
+
+// ── nav-link: el navbar de prueba abre y cierra el dropdown ──
+document.addEventListener('arq:toggle', (event) => {
+  const link = event.target.closest?.('[data-demo-dropdown]');
+  if (link) link.open = event.detail.open;
+});

@@ -681,6 +681,24 @@
           <arq-file-upload data-demo-upload-dark>Adjuntar archivos<span slot="helper">PDF, DWG, JPG o PNG · hasta 10 MB</span></arq-file-upload>
         </div>
       </section>
+
+      <section class="demo-section" aria-labelledby="demo-nav-link">
+        <h2 id="demo-nav-link" class="demo-heading role-label">nav-link · &lt;arq-nav-link&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 752:2866. Desktop: Default, Current, Has dropdown (clic abre y cierra en la demo). Hasta 767 px se ve como la fila del menú mobile. Hover, Pressed y Focus con el mouse y con Tab.</p>
+        <nav class="demo-nav" aria-label="Navegación de prueba">
+          <arq-nav-link has-dropdown data-demo-dropdown>Productos</arq-nav-link>
+          <arq-nav-link href="#demo-nav-link" current>Colecciones</arq-nav-link>
+          <arq-nav-link href="#demo-nav-link">Glosario</arq-nav-link>
+          <arq-nav-link href="#demo-nav-link">Contacto</arq-nav-link>
+        </nav>
+        <div class="demo-dark" data-arq-theme="dark">
+          <nav class="demo-nav" aria-label="Navegación de prueba (Dark)">
+            <arq-nav-link has-dropdown open data-demo-dropdown>Productos</arq-nav-link>
+            <arq-nav-link href="#demo-nav-link" current>Colecciones</arq-nav-link>
+            <arq-nav-link href="#demo-nav-link">Contacto</arq-nav-link>
+          </nav>
+        </div>
+      </section>
     </main>
   </body>
 </html>

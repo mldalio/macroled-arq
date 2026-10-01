@@ -29,6 +29,7 @@ import './components/checkbox/checkbox.js';
 import './components/toggle/toggle.js';
 import './components/input/input.js';
 import './components/file-upload/file-upload.js';
+import './components/nav-link/nav-link.js';
 
 if (!window.Arq) {
   window.Arq = Object.freeze({ version });
