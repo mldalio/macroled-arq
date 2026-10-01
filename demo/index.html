@@ -713,6 +713,75 @@
           </nav>
         </div>
       </section>
+
+      <section class="demo-section" aria-labelledby="demo-section-header">
+        <h2 id="demo-section-header" class="demo-heading role-label">section-header · &lt;arq-section-header&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1036:2448. Type Link, Description, Title y Stacked. Hasta 767 px se apila y Type=Link no muestra su link: la página pone un button al final del bloque (ejemplo debajo de Link).</p>
+
+        <h3 class="demo-subheading role-body-sm">Type=Link (+ button de la página, solo Mobile)</h3>
+        <div class="demo-stack">
+          <arq-section-header type="link" href="#demo-section-header">
+            Productos destacados
+            <span slot="link">Ver todos los productos</span>
+          </arq-section-header>
+          <div class="demo-placeholder role-body-sm">Contenido del bloque (grilla)</div>
+          <arq-button type="outline" href="#demo-section-header" class="demo-mobile-only">Ver todos los productos</arq-button>
+        </div>
+
+        <h3 class="demo-subheading role-body-sm">Type=Description</h3>
+        <arq-section-header type="description">
+          Diseño que inspira
+          <span slot="description">Proyectos donde la luminaria forma parte de la arquitectura, no un agregado.</span>
+        </arq-section-header>
+
+        <h3 class="demo-subheading role-body-sm">Type=Title</h3>
+        <arq-section-header type="title">Explorar por espacio</arq-section-header>
+
+        <h3 class="demo-subheading role-body-sm">Type=Stacked (con link y sin link)</h3>
+        <div class="demo-stack">
+          <arq-section-header type="stacked" href="#demo-section-header">
+            Preguntas frecuentes
+            <span slot="description">¿No encontrás lo que buscás? Nuestro equipo técnico te acompaña en cada etapa del proyecto.</span>
+            <span slot="link">Escribinos</span>
+          </arq-section-header>
+          <arq-section-header type="stacked">
+            Sobre Macroled Arq
+            <span slot="description">Iluminación arquitectónica para proyectos de interior y exterior.</span>
+          </arq-section-header>
+        </div>
+
+        <h3 class="demo-subheading role-body-sm">Casos límite: link sin texto propio («Ver todo»), Description sin bajada, Link sin href, textos largos</h3>
+        <div class="demo-stack">
+          <arq-section-header type="link" href="#demo-section-header">Explorar por espacio</arq-section-header>
+          <arq-section-header type="description">Description sin bajada</arq-section-header>
+          <arq-section-header type="link">Link sin href (no hay link)</arq-section-header>
+          <arq-section-header type="link" href="#demo-section-header">
+            Luminarias para fachadas, jardines y espacios exteriores de uso público y privado
+            <span slot="link">Ver todas las luminarias de exterior</span>
+          </arq-section-header>
+          <arq-section-header type="description">
+            Proyectos de iluminación arquitectónica en todo el país
+            <span slot="description">Proyectos donde la luminaria forma parte de la arquitectura, no un agregado: residencias, hoteles, espacios públicos y oficinas que eligieron Macroled Arq.</span>
+          </arq-section-header>
+        </div>
+
+        <h3 class="demo-subheading role-body-sm">Contenedor en modo Dark (data-arq-theme="dark")</h3>
+        <div class="demo-dark demo-stack" data-arq-theme="dark">
+          <arq-section-header type="link" href="#demo-section-header">
+            Productos destacados
+            <span slot="link">Ver todos los productos</span>
+          </arq-section-header>
+          <arq-section-header type="description">
+            Diseño que inspira
+            <span slot="description">Proyectos donde la luminaria forma parte de la arquitectura, no un agregado.</span>
+          </arq-section-header>
+          <arq-section-header type="stacked" href="#demo-section-header">
+            Preguntas frecuentes
+            <span slot="description">¿No encontrás lo que buscás? Nuestro equipo técnico te acompaña en cada etapa del proyecto.</span>
+            <span slot="link">Escribinos</span>
+          </arq-section-header>
+        </div>
+      </section>
     </main>
   </body>
 </html>

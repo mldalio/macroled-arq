@@ -262,3 +262,22 @@
     margin-inline: calc(var(--arq-layout-gutter) * -1);
   }
 }
+
+/* section-header: contenido de relleno del bloque y button de la página que
+   solo se ve en Mobile (regla del README de section-header). */
+.demo-placeholder {
+  padding: var(--arq-space-padding-lg);
+  background: var(--arq-color-surface-subtle);
+  color: var(--arq-color-text-secondary);
+}
+
+.demo-mobile-only {
+  display: none;
+  justify-self: start;
+}
+
+@media (max-width: 767px) {
+  .demo-mobile-only {
+    display: inline-flex;
+  }
+}

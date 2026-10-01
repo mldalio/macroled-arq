@@ -66,7 +66,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [search-result](#search-result) | `<arq-search-result>` | Pendiente |
 | [search-screen](#search-screen) | `<arq-search-screen>` | Pendiente |
 | [search-see-all](#search-see-all) | `<arq-search-see-all>` | Pendiente |
-| [section-header](#section-header) | `<arq-section-header>` | Pendiente |
+| [section-header](#section-header) | `<arq-section-header>` | En código ([README](../src/components/section-header/README.md)) |
 | [select](#select) | `<arq-select>` | Pendiente |
 | [select-menu](#select-menu) | `<arq-select-menu>` | Pendiente |
 | [select-option](#select-option) | `<arq-select-option>` | En código ([README](../src/components/select-option/README.md)) |
@@ -546,7 +546,7 @@ Búsqueda en mobile, a pantalla completa. La flecha vuelve a la página (cierra 
 - Figma: [1036-2448](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1036-2448)
 - Propiedades: Title; Description; Breakpoint: Desktop · Mobile; Type: Link · Description · Title · Stacked
 
-Encabezado de bloque dentro de una página (no de la página: eso es page-header). Título role/heading-2. Type: Link (+ Ver todo), Description (bajada al costado), Title (mobile) y Stacked (bajada debajo). En código: un <h2> por bloque.
+Encabezado de bloque dentro de una página (no de la página: eso es page-header). Título role/heading-2. Type: Link (+ Ver todo), Description (bajada al costado, ancho máximo layout/measure), Title (mobile) y Stacked (bajada debajo). Sin separador. Gap título–bajada space/gap/sm-md; textos–link space/gap/lg. En Mobile, Link pasa a Title: el link no se muestra en el encabezado y la página pone un button al final del bloque. En código: un <h2> por bloque.
 
 ## select
 
