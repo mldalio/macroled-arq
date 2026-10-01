@@ -860,6 +860,70 @@
           </arq-page-header>
         </div>
       </section>
+
+      <section class="demo-section" aria-labelledby="demo-faq-item">
+        <h2 id="demo-faq-item" class="demo-heading role-label">faq-item · &lt;arq-faq-item&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1036:2430. Open False y True; Hover (solo cerrado) y Focus por CSS: el anillo rodea todo el ítem. Pueden quedar varios abiertos. La respuesta llega hasta layout/measure-wide (en Mobile, todo el ancho).</p>
+
+        <p class="demo-subheading role-body-sm">Open=False · Open=True</p>
+        <div>
+          <arq-faq-item>
+            <span slot="question">¿Desarrollan luminarias a medida para proyectos?</span>
+            Sí. Nuestro equipo técnico adapta medidas, acabados y temperatura de color según los requerimientos de cada proyecto.
+          </arq-faq-item>
+          <arq-faq-item open>
+            <span slot="question">¿Dónde descargo los archivos IES?</span>
+            En la ficha de cada producto, en <a href="#demo-faq-item">Descargas</a>: ficha técnica, IES y modelos 3D.
+          </arq-faq-item>
+        </div>
+
+        <p class="demo-subheading role-body-sm">Bloque del Home (section-header Stacked + lista)</p>
+        <div class="demo-faq">
+          <arq-section-header type="stacked" href="#demo-faq-item">
+            Preguntas frecuentes
+            <span slot="description">¿No encontrás lo que buscás? Nuestro equipo técnico te acompaña en cada etapa del proyecto.</span>
+            <span slot="link">Escribinos</span>
+          </arq-section-header>
+          <div>
+            <arq-faq-item>
+              <span slot="question">¿Desarrollan luminarias a medida para proyectos?</span>
+              Sí. Nuestro equipo técnico adapta medidas, acabados y temperatura de color según los requerimientos de cada proyecto.
+            </arq-faq-item>
+            <arq-faq-item>
+              <span slot="question">¿Dónde descargo los archivos IES?</span>
+              En la ficha de cada producto, en la sección Descargas.
+            </arq-faq-item>
+            <arq-faq-item>
+              <span slot="question">¿Qué garantía tienen los productos?</span>
+              Todas las luminarias tienen garantía de fábrica. El plazo depende de la línea y figura en la ficha técnica.
+            </arq-faq-item>
+            <arq-faq-item>
+              <span slot="question">¿Cómo accedo a condiciones para estudios y distribuidores?</span>
+              Escribinos desde Contacto con los datos del estudio o la empresa y te enviamos las condiciones.
+            </arq-faq-item>
+          </div>
+        </div>
+
+        <p class="demo-subheading role-body-sm">Textos largos, columna angosta</p>
+        <div class="demo-narrow">
+          <arq-faq-item open>
+            <span slot="question">¿Puedo pedir una luminaria con una temperatura de color distinta a las que figuran en el catálogo para un proyecto?</span>
+            Sí, para proyectos con volumen podemos fabricar versiones especiales. Contanos la cantidad, la temperatura de color y el plazo de entrega, y el equipo técnico confirma la factibilidad.
+          </arq-faq-item>
+        </div>
+
+        <p class="demo-subheading role-body-sm">Contenedor en modo Dark</p>
+        <div class="demo-dark" data-arq-theme="dark">
+          <arq-faq-item>
+            <span slot="question">¿Desarrollan luminarias a medida para proyectos?</span>
+            Sí. Nuestro equipo técnico adapta medidas, acabados y temperatura de color.
+          </arq-faq-item>
+          <arq-faq-item open>
+            <span slot="question">¿Dónde descargo los archivos IES?</span>
+            En la ficha de cada producto, en <a href="#demo-faq-item">Descargas</a>.
+          </arq-faq-item>
+        </div>
+      </section>
     </main>
   </body>
 </html>

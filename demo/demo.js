@@ -20,7 +20,7 @@ for (const list of document.querySelectorAll('[data-demo-list^="icons"]')) {
 // ── Eventos arq:toggle ─────────────────────────────────────────────
 const log = document.querySelector('[data-demo-log]');
 document.addEventListener('arq:toggle', (event) => {
-  const label = event.target.querySelector('[slot="label"]')?.textContent.trim();
+  const label = event.target.querySelector('[slot="label"], [slot="question"]')?.textContent.trim();
   log.textContent = `arq:toggle → open: ${event.detail.open} · «${label}»`;
 });
 

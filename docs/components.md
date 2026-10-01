@@ -34,7 +34,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [download-item](#download-item) | `<arq-download-item>` | Pendiente |
 | [download-modal](#download-modal) | `<arq-download-modal>` | Pendiente |
 | [family-card](#family-card) | `<arq-family-card>` | Pendiente |
-| [faq-item](#faq-item) | `<arq-faq-item>` | Pendiente |
+| [faq-item](#faq-item) | `<arq-faq-item>` | En código ([README](../src/components/faq-item/README.md)) |
 | [feature-block](#feature-block) | `<arq-feature-block>` | Pendiente |
 | [file-upload](#file-upload) | `<arq-file-upload>` | En código ([README](../src/components/file-upload/README.md)) |
 | [filter-bar](#filter-bar) | `<arq-filter-bar>` | Pendiente |
@@ -305,6 +305,8 @@ Card de otra familia de la colección (link a su ficha): imagen recortada (en el
 Uso: preguntas frecuentes (Home): pregunta y respuesta en texto. No confundir con accordion-item, que agrupa especificaciones en la ficha.
 
 Pregunta frecuente desplegable. Open=False (icon/plus) / Open=True (icon/minus + respuesta). State: Default, Hover (surface/faint), Focus (anillo color/border/focus). Pregunta en role/body-lg-regular, respuesta role/body color/text/secondary, borde inferior color/border/subtle. En código: <details>/<summary> o button con aria-expanded.
+
+> **No coincide con el set:** el set y el Home usan línea arriba en `color/border/default`, y en código se sigue el set (`docs/decisiones.md`, 2026-10-01 · faq-item). Falta corregir esta descripción y la ficha en Figma.
 
 ## feature-block
 

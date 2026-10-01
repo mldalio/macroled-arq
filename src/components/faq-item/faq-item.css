@@ -1,0 +1,95 @@
+/* faq-item · Figma 1036:2430. Solo tokens semánticos.
+   Línea arriba de cada ítem en color/border/default, como el set y el Home
+   de Figma (la descripción y la ficha dicen "borde inferior border/subtle":
+   decisión 2026-10-01 · faq-item). */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.item {
+  border-top: var(--arq-border-default) solid var(--arq-color-border-default);
+}
+
+/* Encabezado. El padding del ítem va en el botón para que todo el alto sea
+   clickeable: arriba space/padding/lg; abajo space/padding/lg cerrado y
+   space/gap/sm-md (el gap hasta la respuesta) abierto. */
+.trigger {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-lg);
+  width: 100%;
+  margin: 0;
+  padding: var(--arq-space-padding-lg) 0;
+  border: 0;
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-primary);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+}
+
+:host([open]) .trigger {
+  padding-bottom: var(--arq-space-gap-sm-md);
+}
+
+.question {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+/* icon/plus cerrado, icon/minus abierto (icon/md, color/icon/primary) */
+.icon {
+  flex: none;
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+  color: var(--arq-color-icon-primary);
+}
+
+:host(:not([open])) [data-icon='minus'],
+:host([open]) [data-icon='plus'] {
+  display: none;
+}
+
+/* Respuesta: role/body en color/text/secondary.
+   TODO (diseño): en el set mide 560 fijos y no hay token; se usa el más
+   cercano, layout/measure-wide (520). En Mobile ocupa todo el ancho. */
+.answer {
+  max-width: var(--arq-layout-measure-wide);
+  padding-bottom: var(--arq-space-padding-lg);
+  color: var(--arq-color-text-secondary);
+  overflow-wrap: break-word;
+}
+
+::slotted(a) {
+  color: var(--arq-color-text-primary);
+  text-decoration: underline;
+}
+
+/* State=Hover: solo cerrado (el set no tiene Open=True + Hover) */
+@media (hover: hover) {
+  :host(:not([open])) .trigger:hover {
+    background: var(--arq-color-surface-faint);
+  }
+}
+
+/* Foco: anillo de DESIGN.md §7 alrededor de todo el ítem, como la capa
+   focus-ring del set (2px: valor fijado ahí, no hay token de offset) */
+.item:has(.trigger:focus-visible) {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.trigger:focus {
+  outline: none;
+}
+
+@media (max-width: 767px) {
+  .answer {
+    max-width: none;
+  }
+}

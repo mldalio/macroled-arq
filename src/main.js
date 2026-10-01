@@ -32,6 +32,7 @@ import './components/file-upload/file-upload.js';
 import './components/nav-link/nav-link.js';
 import './components/section-header/section-header.js';
 import './components/page-header/page-header.js';
+import './components/faq-item/faq-item.js';
 
 if (!window.Arq) {
   window.Arq = Object.freeze({ version });
