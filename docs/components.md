@@ -73,7 +73,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [sku](#sku) | `<arq-sku>` | En código ([README](../src/components/sku/README.md)) |
 | [spec-list](#spec-list) | `<arq-spec-list>` | Pendiente |
 | [spec-row](#spec-row) | `<arq-spec-row>` | En código ([README](../src/components/spec-row/README.md)) |
-| [swatch](#swatch) | `<arq-swatch>` | Pendiente |
+| [swatch](#swatch) | `<arq-swatch>` | En código ([README](../src/components/swatch/README.md)) |
 | [swatch-picker](#swatch-picker) | `<arq-swatch-picker>` | Pendiente |
 | [tab](#tab) | `<arq-tab>` | Pendiente |
 | [tag](#tag) | `<arq-tag>` | En espera de diseño |

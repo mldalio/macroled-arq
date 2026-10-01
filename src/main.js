@@ -21,6 +21,7 @@ import './components/filter-chip/filter-chip.js';
 import './components/select-option/select-option.js';
 import './components/gallery-thumb/gallery-thumb.js';
 import './components/sku/sku.js';
+import './components/swatch/swatch.js';
 
 if (!window.Arq) {
   window.Arq = Object.freeze({ version });
