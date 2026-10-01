@@ -124,6 +124,48 @@
 
         <p class="demo-note role-body-sm" aria-live="polite" data-demo-button-log>Clic en un botón: todavía ninguno.</p>
       </section>
+
+      <section class="demo-section" aria-labelledby="demo-count-badge">
+        <h2 id="demo-count-badge" class="demo-heading role-label">count-badge · &lt;arq-count-badge&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1231:3557. No es interactivo. Con count 0 o vacío no se muestra.</p>
+
+        <h3 class="demo-subheading role-body-sm">Tone=Primary · 1, 3, 12, 128</h3>
+        <div class="demo-row">
+          <arq-count-badge count="1"></arq-count-badge>
+          <arq-count-badge count="3"></arq-count-badge>
+          <arq-count-badge count="12"></arq-count-badge>
+          <arq-count-badge count="128"></arq-count-badge>
+        </div>
+
+        <h3 class="demo-subheading role-body-sm">Tone=Inverse, sobre color/action/primary</h3>
+        <div class="demo-row demo-on-primary">
+          <arq-count-badge tone="inverse" count="1"></arq-count-badge>
+          <arq-count-badge tone="inverse" count="3"></arq-count-badge>
+          <arq-count-badge tone="inverse" count="12"></arq-count-badge>
+          <arq-count-badge tone="inverse" count="128"></arq-count-badge>
+        </div>
+
+        <h3 class="demo-subheading role-body-sm">Vacío: count="0" y sin count (no se ve nada entre los corchetes)</h3>
+        <div class="demo-row">
+          <span>[<arq-count-badge count="0"></arq-count-badge>]</span>
+          <span>[<arq-count-badge></arq-count-badge>]</span>
+        </div>
+
+        <h3 class="demo-subheading role-body-sm">Contenedor en modo Dark (data-arq-theme="dark")</h3>
+        <div class="demo-row demo-dark" data-arq-theme="dark">
+          <arq-count-badge count="3"></arq-count-badge>
+          <arq-count-badge count="128"></arq-count-badge>
+          <span class="demo-on-primary"><arq-count-badge tone="inverse" count="3"></arq-count-badge></span>
+        </div>
+
+        <h3 class="demo-subheading role-body-sm">Dentro de button (show-count)</h3>
+        <div class="demo-row">
+          <arq-button show-count count="3" count-label="filtros activos">Filtrar</arq-button>
+          <arq-button type="outline" show-count count="3" count-label="filtros activos">Filtrar</arq-button>
+          <arq-button type="underline" show-underline show-count count="2" count-label="productos">Comparar</arq-button>
+          <arq-button type="outline" show-count count="0" count-label="filtros activos">Filtrar (count 0)</arq-button>
+        </div>
+      </section>
     </main>
   </body>
 </html>

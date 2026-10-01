@@ -28,7 +28,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [compare-row](#compare-row) | `<arq-compare-row>` | Pendiente |
 | [compare-slot](#compare-slot) | `<arq-compare-slot>` | Pendiente |
 | [contact-item](#contact-item) | `<arq-contact-item>` | Pendiente |
-| [count-badge](#count-badge) | `<arq-count-badge>` | Pendiente |
+| [count-badge](#count-badge) | `<arq-count-badge>` | En código ([README](../src/components/count-badge/README.md)) |
 | [cta-block](#cta-block) | `<arq-cta-block>` | Pendiente |
 | [divider](#divider) | `<arq-divider>` | Pendiente |
 | [download-item](#download-item) | `<arq-download-item>` | Pendiente |

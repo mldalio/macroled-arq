@@ -1,0 +1,38 @@
+/* count-badge · Figma 1231:3557. Solo tokens semánticos.
+   Tone=Primary es la base (también para un tone inválido). */
+
+:host {
+  display: inline-flex;
+  flex: none;
+  vertical-align: middle;
+}
+
+/* Count 0 o vacío: no se muestra */
+:host(:state(empty)) {
+  display: none;
+}
+
+/* min-width: Figma pide mín. 20 sin token.
+   TODO: es el alto del badge (caption-leading + padding vertical), así queda
+   cuadrado con un dígito. Reemplazar si se crea un token. */
+.badge {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: calc(var(--arq-type-caption-leading) + var(--arq-space-padding-2xs) * 2);
+  padding: var(--arq-space-padding-2xs) var(--arq-space-padding-xs);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-action-primary);
+  color: var(--arq-color-action-on-primary);
+  text-align: center;
+  white-space: nowrap;
+  /* Que el ancho no salte al pasar de 9 a 10 (ficha doc/count-badge) */
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tone=Inverse: dentro de elementos con color/action/primary (button Filled) */
+:host([tone='inverse']) .badge {
+  background: var(--arq-color-action-on-primary);
+  color: var(--arq-color-action-primary);
+}

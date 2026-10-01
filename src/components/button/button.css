@@ -91,23 +91,6 @@
   color: var(--arq-color-action-on-primary);
 }
 
-/* count-badge Tone=Inverse dentro de Filled.
-   min-width: Figma pide mín. 20 sin token; es el alto del badge
-   (caption-leading + padding vertical), así queda cuadrado con un dígito. */
-.count {
-  box-sizing: border-box;
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  min-width: calc(var(--arq-type-caption-leading) + var(--arq-space-padding-2xs) * 2);
-  padding: var(--arq-space-padding-2xs) var(--arq-space-padding-xs);
-  background: var(--arq-color-action-on-primary);
-  color: var(--arq-color-action-primary);
-  text-align: center;
-  white-space: nowrap;
-}
-
 /* count-label: texto solo para lectores de pantalla (", 3 filtros activos").
    El tamaño mínimo evita que algunos lectores lo descarten; border/default
    (1 px) es el valor más chico disponible. */
@@ -143,13 +126,6 @@
   border-color: var(--arq-color-border-disabled);
   background: var(--arq-color-surface-transparent);
   color: var(--arq-color-text-disabled);
-}
-
-/* count-badge Tone=Primary en Outline y Underline */
-:host([type='outline']) .count,
-:host([type='underline']) .count {
-  background: var(--arq-color-action-primary);
-  color: var(--arq-color-action-on-primary);
 }
 
 /* ── Underline ────────────────────────────────────────────────── */

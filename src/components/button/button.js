@@ -12,6 +12,7 @@
 
 import { ArqElement } from '../../base/arq-element.js';
 import { icon } from '../../base/icons.js';
+import '../count-badge/count-badge.js';
 import css from './button.css?inline';
 
 // Label de State=Loading, según la descripción de Figma.
@@ -48,7 +49,7 @@ class ArqButton extends ArqElement {
         <span class="label"><slot></slot><span class="visually-hidden" hidden></span></span>
         <span class="label" data-loading hidden>${LOADING_LABEL}</span>
       </span>
-      <span class="count role-caption-medium" hidden></span>
+      <arq-count-badge class="count" hidden></arq-count-badge>
       <span class="trailing" hidden></span>
     </button>
   `.replace(/>\s+</g, '><').trim();
@@ -126,10 +127,13 @@ class ArqButton extends ArqElement {
     if (changed.has('icon')) trailing.innerHTML = icon(this.icon);
     trailing.hidden = !this.showIcon || loading;
 
-    // TODO: reemplazar por <arq-count-badge> cuando exista ese componente.
+    // count-badge: Tone=Inverse en Filled (fondo color/action/primary),
+    // Primary en Outline y Underline. Con 0 o sin count no se muestra.
     const count = root.querySelector('.count');
-    const showCount = this.showCount && this.count !== null && !loading;
-    count.textContent = this.count ?? '';
+    const showCount = this.showCount && Boolean(this.count) && !loading;
+    if (this.count) count.setAttribute('count', this.count);
+    else count.removeAttribute('count');
+    count.setAttribute('tone', this.type === 'filled' ? 'inverse' : 'primary');
     count.hidden = !showCount;
 
     // Con count-label, el lector de pantalla dice "Filtrar, 3 filtros activos":

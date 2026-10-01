@@ -154,3 +154,9 @@
   background: var(--arq-color-bg-default);
   color: var(--arq-color-text-primary);
 }
+
+/* Fondo color/action/primary para probar Tone=Inverse del count-badge */
+.demo-on-primary {
+  padding: var(--arq-space-padding-md);
+  background: var(--arq-color-action-primary);
+}

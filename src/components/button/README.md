@@ -20,8 +20,8 @@ Botón del sistema en tres jerarquías: Filled (acción principal), Outline (sec
 | Show icon | `show-icon` | `showIcon` | booleano · ícono a la derecha. **En Figma viene en `true`; en código, sin el atributo no hay ícono** |
 | Icon | `icon` | `icon` | cualquier nombre de `src/base/icons.js` (def. `arrow-up-right`) |
 | Show underline | `show-underline` | `showUnderline` | booleano · solo Underline. **En Figma viene en `true`; en código, sin el atributo el subrayado aparece solo en hover y pressed** (p. ej. "Volver a productos") |
-| Show count | `show-count` | `showCount` | booleano · count-badge después del label (Tone=Inverse en Filled) |
-| — (Count del badge) | `count` | `count` | número. Sin `count` no se muestra el badge |
+| Show count | `show-count` | `showCount` | booleano · [`<arq-count-badge>`](../count-badge/README.md) después del label (Tone=Inverse en Filled, Primary en Outline y Underline) |
+| — (Count del badge) | `count` | `count` | número. Con `0` o sin `count` no se muestra el badge |
 | — | `count-label` | `countLabel` | texto · qué cuenta el badge, solo para lectores de pantalla. Con `count="3" count-label="filtros activos"` se lee "Filtrar, 3 filtros activos" (el número visible no se lee dos veces). Sin `count-label` se lee "Filtrar 3" |
 | Show leading icon | `show-leading-icon` | `showLeadingIcon` | booleano · ícono a la izquierda |
 | Leading icon | `leading-icon` | `leadingIcon` | nombre de ícono (def. `chevron-left`) |
@@ -53,7 +53,6 @@ Botón del sistema en tres jerarquías: Filled (acción principal), Outline (sec
 
 ## Pendientes
 
-- `TODO` El badge es interno: reemplazar por `<arq-count-badge>` cuando exista. Su ancho mínimo (20 en Figma) no tiene token: se calcula con `type/caption/leading` + `space/padding/2xs`.
 - `TODO` Offset del subrayado: Figma lo pone 3 px debajo del texto y no hay token; se usa `space/padding/2xs` (3).
 - `TODO` Enviar formularios: todavía no se construye. Se va a hacer con un atributo `submit` sin valor (ver `docs/decisiones.md`). Hasta entonces el botón es siempre `type="button"`.
 - `TODO` Sin ícono de carga en Loading (no existe en la librería).
