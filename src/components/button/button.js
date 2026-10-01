@@ -31,6 +31,7 @@ class ArqButton extends ArqElement {
     showUnderline: { type: Boolean }, // Show underline (solo Underline)
     showCount: { type: Boolean }, // Show count
     count: { type: Number }, // Count del count-badge
+    countLabel: { type: String }, // texto para lectores de pantalla: "filtros activos"
     showLeadingIcon: { type: Boolean }, // Show leading icon
     leadingIcon: { type: String, default: 'chevron-left' }, // Leading icon (default de Figma)
     disabled: { type: Boolean }, // State=Disabled
@@ -38,17 +39,19 @@ class ArqButton extends ArqElement {
     href: { type: String },
     target: { type: String },
   };
+  // Sin espacios entre etiquetas, para no sumar espacios al nombre accesible.
+  // El texto de count-label va junto al slot, dentro del label.
   static template = `
     <button type="button" class="control role-body-regular">
       <span class="leading" hidden></span>
       <span class="text">
-        <span class="label"><slot></slot></span>
+        <span class="label"><slot></slot><span class="visually-hidden" hidden></span></span>
         <span class="label" data-loading hidden>${LOADING_LABEL}</span>
       </span>
       <span class="count role-caption-medium" hidden></span>
       <span class="trailing" hidden></span>
     </button>
-  `;
+  `.replace(/>\s+</g, '><').trim();
 
   #control = null;
 
@@ -85,8 +88,15 @@ class ArqButton extends ArqElement {
     const inactive = this.disabled || loading;
 
     control.classList.toggle('inactive', inactive);
-    if (loading) control.setAttribute('aria-busy', 'true');
-    else control.removeAttribute('aria-busy');
+    // En Loading el label del slot queda oculto, pero el navegador lo sigue
+    // sumando al nombre accesible ("Enviar Enviando…"): se fija con aria-label.
+    if (loading) {
+      control.setAttribute('aria-busy', 'true');
+      control.setAttribute('aria-label', LOADING_LABEL);
+    } else {
+      control.removeAttribute('aria-busy');
+      control.removeAttribute('aria-label');
+    }
 
     if (control.localName === 'button') {
       control.disabled = inactive;
@@ -117,12 +127,19 @@ class ArqButton extends ArqElement {
     trailing.hidden = !this.showIcon || loading;
 
     // TODO: reemplazar por <arq-count-badge> cuando exista ese componente.
-    // TODO: la ficha pide que el nombre accesible incluya el número
-    // ("Filtrar, 3 filtros activos"). Hoy se lee "Filtrar 3": falta definir
-    // cómo se pasa el texto ("filtros activos") sin inventar una prop.
     const count = root.querySelector('.count');
+    const showCount = this.showCount && this.count !== null && !loading;
     count.textContent = this.count ?? '';
-    count.hidden = !this.showCount || this.count === null || loading;
+    count.hidden = !showCount;
+
+    // Con count-label, el lector de pantalla dice "Filtrar, 3 filtros activos":
+    // el número visible se oculta para no leerlo dos veces.
+    const spoken = root.querySelector('.visually-hidden');
+    const countLabel = this.countLabel?.trim();
+    spoken.textContent = countLabel ? `, ${this.count} ${countLabel}` : '';
+    spoken.hidden = !showCount || !countLabel;
+    if (showCount && countLabel) count.setAttribute('aria-hidden', 'true');
+    else count.removeAttribute('aria-hidden');
   }
 
   // <button> para acciones, <a> para navegación. Se cambia el elemento

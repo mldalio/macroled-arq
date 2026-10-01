@@ -112,7 +112,9 @@ Un nivel del breadcrumb: Label (link) y separador opcional (Show separator). Sta
 
 Botón. Type: Filled (acción principal), Outline (borde) y Underline (texto subrayado). State: Default, Hover, Pressed, Focus y Disabled. Props: Label, Show icon, Icon y Show underline (solo Underline: en false queda como texto simple y el subrayado aparece en hover). Sobre fotos o fondos oscuros, poner el contenedor en modo Dark: Filled pasa a fondo claro.
 
-Show count: muestra un count-badge después del label (p. ej. "Filtrar 3" con filtros activos). En Filled usa Tone=Inverse.
+Subrayado (Underline): 1 px en reposo y 2 px en hover y pressed. Focus: anillo separado del botón (capa focus-ring, 2 px, color/border/focus, 2 px de separación).
+
+Show count: muestra un count-badge después del label (p. ej. "Filtrar 3" con filtros activos). En Filled usa Tone=Inverse. En código, el lector de pantalla dice "Filtrar, 3 filtros activos" (atributo count-label).
 
 Show leading icon + Leading icon: ícono a la izquierda del label (p. ej. "Volver a productos" = Underline, sin subrayado, icon/chevron-left). State=Loading (solo Filled): envío en curso. En código, el label pasa a "Enviando…", el botón lleva aria-busy="true" y queda deshabilitado; no hay ícono de carga en la librería.
 

@@ -79,7 +79,8 @@ dist/arq.js · dist/arq.css    ← única salida que carga Webflow
 - Una carpeta por componente en `src/components/<nombre>/` con `.js`, `.css` y `README.md`.
 - Antes de construir un componente, leer **tres cosas**: el set en Figma por MCP (variantes, props y variables enlazadas), su **descripción** en Figma (copiada en `docs/components.md`; si no coincide con Figma, manda Figma) y su ficha `doc/<nombre>` en la página Documentación (uso, "No confundir con", notas de código). El link al set está en el Anexo A de DESIGN.md y en la tarjeta de Trello. Si las tres fuentes no coinciden, avisar en vez de elegir.
 - El texto principal llega como **slot** desde el HTML (indexable), no se genera por JS.
-- **Foco:** siempre `:focus-visible` con `outline` en `--arq-color-border-focus`. El foco nunca cambia el tamaño del componente.
+- **Foco:** siempre `:focus-visible` con un anillo separado: `outline` de `--arq-border-strong` en `--arq-color-border-focus` y `outline-offset: 2px`. El foco nunca cambia el tamaño del componente.
+- Las props booleanas de Figma que vienen activadas por defecto (Show icon, Show underline…) en código van desactivadas por defecto, porque son atributos de presencia. Se aclara en el README del componente.
 - **Responsive:** Desktop es la base; Mobile con `@media (max-width: 767px)`. Los listados usan `catalog-nav-mobile` hasta 1023 px.
 - **Dark:** solo con `data-arq-theme="dark"` (switch Iluminar). Nunca `prefers-color-scheme`.
 - Los desplegables (accordion-item, faq-item, filter-row, catalog-nav-group, catalog-nav-trigger) comparten un disclosure base.

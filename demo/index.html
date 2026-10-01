@@ -71,14 +71,14 @@
 
       <section class="demo-section" aria-labelledby="demo-button">
         <h2 id="demo-button" class="demo-heading role-label">button · &lt;arq-button&gt;</h2>
-        <p class="demo-note role-body-sm">Hover, Pressed y Focus se prueban con el mouse y con Tab. Figma 907:2375.</p>
+        <p class="demo-note role-body-sm">Hover, Pressed y Focus se prueban con el mouse y con Tab. Figma 907:2375. Los «Filtrar» con count-label se leen «Filtrar, N filtros activos».</p>
 
         <h3 class="demo-subheading role-body-sm">Type=Filled</h3>
         <div class="demo-row">
           <arq-button show-icon>Información técnica</arq-button>
           <arq-button>Comparar</arq-button>
           <arq-button show-leading-icon>Volver</arq-button>
-          <arq-button show-count count="3">Filtrar</arq-button>
+          <arq-button show-count count="3" count-label="filtros activos">Filtrar</arq-button>
           <arq-button show-icon disabled>Disabled</arq-button>
           <arq-button loading>Enviar</arq-button>
         </div>
@@ -87,7 +87,7 @@
         <div class="demo-row">
           <arq-button type="outline" show-icon>Información técnica</arq-button>
           <arq-button type="outline" show-icon icon="filter">Filtrar</arq-button>
-          <arq-button type="outline" show-count count="12">Filtrar</arq-button>
+          <arq-button type="outline" show-icon icon="filter-off" show-count count="12" count-label="filtros activos">Filtrar</arq-button>
           <arq-button type="outline" show-leading-icon>Volver</arq-button>
           <arq-button type="outline" show-icon disabled>Disabled</arq-button>
         </div>

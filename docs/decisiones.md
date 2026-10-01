@@ -119,6 +119,15 @@ setup() {
 ## 2026-10-01 · button
 
 - **`<button>` o `<a>`:** `<arq-button>` sin `href` dibuja un `<button type="button">`; con `href`, un `<a>` (ficha `doc/button`: "`<a>` con la misma clase para navegación"). Un link deshabilitado pierde el `href` y lleva `aria-disabled="true"`.
-- **Foco visible en Filled y Outline:** en Light, el borde de foco de Figma es del mismo color que el fondo de Filled y que el borde de Outline, y no se ve. En código el `outline` va separado del botón por `border/focus` (`outline-offset`). No cambia el tamaño. Pendiente de validar con diseño.
+- **Foco:** anillo separado, según DESIGN.md §7 (capa `focus-ring` de Figma): `outline` de `border/strong` en `color/border/focus` con `outline-offset: 2px`, en los tres Type.
+- **Subrayado de Underline:** `border/default` en reposo y `border/strong` en hover y pressed. Es un pseudo-elemento absoluto anclado por arriba: pasar a 2 px no cambia el alto del botón.
+- **count-label:** texto para lectores de pantalla en un span oculto visualmente (", 3 filtros activos"); con `count-label`, el número visible del badge lleva `aria-hidden`.
 - **Alto de Outline:** el borde se descuenta del padding para que mida 36 como Filled.
 - **Booleanos con `true` por defecto en Figma** (Show icon, Show underline): en código son atributos de presencia, así que hay que escribirlos.
+
+### Envío de formularios (todavía no se construye)
+
+- `type` es la prop de Figma (Filled · Outline · Underline), así que no se puede usar `type="submit"`.
+- Cuando se construya `form-contacto`, el envío se va a hacer con un atributo **`submit` sin valor**: `<arq-button submit>Enviar</arq-button>`.
+- Implementación prevista: `static formAssociated = true` y `attachInternals()` (`ElementInternals`); al hacer clic, `this.internals.form?.requestSubmit()`. Así el formulario corre su validación y dispara `submit` como con un botón nativo.
+- Hasta entonces el `<button>` interno es siempre `type="button"`.

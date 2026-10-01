@@ -6,7 +6,7 @@ Botón del sistema en tres jerarquías: Filled (acción principal), Outline (sec
 
 ```html
 <arq-button show-icon>Información técnica</arq-button>
-<arq-button type="outline" show-icon icon="filter" show-count count="3">Filtrar</arq-button>
+<arq-button type="outline" show-icon icon="filter-off" show-count count="3" count-label="filtros activos">Filtrar</arq-button>
 <arq-button type="underline" show-leading-icon href="/arq/productos">Volver a productos</arq-button>
 <arq-button loading>Enviar</arq-button>
 ```
@@ -17,11 +17,12 @@ Botón del sistema en tres jerarquías: Filled (acción principal), Outline (sec
 | --- | --- | --- | --- |
 | Label | slot por defecto | — | Texto de la acción (infinitivo o sustantivo corto, sin punto final) |
 | Type | `type` | `type` | `filled` · `outline` · `underline` (def. `filled`) |
-| Show icon | `show-icon` | `showIcon` | booleano · ícono a la derecha |
+| Show icon | `show-icon` | `showIcon` | booleano · ícono a la derecha. **En Figma viene en `true`; en código, sin el atributo no hay ícono** |
 | Icon | `icon` | `icon` | cualquier nombre de `src/base/icons.js` (def. `arrow-up-right`) |
-| Show underline | `show-underline` | `showUnderline` | booleano · solo Underline. Sin el atributo, el subrayado aparece solo en hover |
+| Show underline | `show-underline` | `showUnderline` | booleano · solo Underline. **En Figma viene en `true`; en código, sin el atributo el subrayado aparece solo en hover y pressed** (p. ej. "Volver a productos") |
 | Show count | `show-count` | `showCount` | booleano · count-badge después del label (Tone=Inverse en Filled) |
 | — (Count del badge) | `count` | `count` | número. Sin `count` no se muestra el badge |
+| — | `count-label` | `countLabel` | texto · qué cuenta el badge, solo para lectores de pantalla. Con `count="3" count-label="filtros activos"` se lee "Filtrar, 3 filtros activos" (el número visible no se lee dos veces). Sin `count-label` se lee "Filtrar 3" |
 | Show leading icon | `show-leading-icon` | `showLeadingIcon` | booleano · ícono a la izquierda |
 | Leading icon | `leading-icon` | `leadingIcon` | nombre de ícono (def. `chevron-left`) |
 | State=Disabled | `disabled` | `disabled` | booleano |
@@ -29,7 +30,7 @@ Botón del sistema en tres jerarquías: Filled (acción principal), Outline (sec
 | — | `href` | `href` | Con `href` se dibuja un `<a>` (navegación); sin `href`, un `<button type="button">` |
 | — | `target` | `target` | Para links. Con `_blank` suma `rel="noopener"` |
 
-- Los booleanos son atributos de presencia: en Figma Show icon y Show underline valen `true` por defecto, en código hay que escribir el atributo.
+- Los booleanos son atributos de presencia (AGENTS.md): Show icon y Show underline, que en Figma valen `true` por defecto, en código están desactivados hasta que se escribe el atributo.
 - Hover, Pressed y Focus no son props: `:hover`, `:active`, `:focus-visible`.
 - `el.focus()` enfoca el `<button>` o `<a>` interno.
 - Deshabilitado o cargando, el clic no se propaga. Un link deshabilitado pierde el `href` y lleva `aria-disabled="true"`.
@@ -43,18 +44,16 @@ Botón del sistema en tres jerarquías: Filled (acción principal), Outline (sec
 | Texto e ícono Outline y Underline | `color/action/primary` (Underline pressed: `color/text/tertiary`) |
 | Borde Outline | `border/default` en `color/border/strong` |
 | Fondo Outline hover · pressed | `color/surface/hover` · `color/surface/selected` |
-| Subrayado | `border/default` en `color/border/strong` |
+| Subrayado | `border/default` (1 px) en reposo y `border/strong` (2 px) en hover y pressed, en `color/border/strong` (pressed: `color/text/tertiary`). No cambia el alto |
 | Disabled | `color/text/disabled`, `color/border/disabled`, fondo Filled `color/surface/subtle` |
-| Foco | `border/focus` en `color/border/focus` (outline, no cambia el tamaño) |
+| Foco | anillo `border/strong` en `color/border/focus`, separado 2 px (`outline-offset`, DESIGN.md §7). No cambia el tamaño |
 | Padding · gap | `space/gap/sm` + `space/padding/md` (Underline: `space/gap/xs`, sin padding horizontal) · `space/gap/sm` |
 | Ícono | `icon/md` |
 | Texto | `role/body-regular` (badge: `role/caption-medium`) |
 
 ## Pendientes
 
-- `TODO` Subrayado en hover: Figma usa 1 px (`border/focus`) y DESIGN.md §8 dice 2 px. Hoy sigue a Figma.
-- `TODO` Foco: en Figma, Filled y Outline en Light tienen el borde de foco del mismo color que el fondo o el borde, y no se ve. En código el anillo va separado un `border/focus` del botón para que sea visible.
-- `TODO` Nombre accesible con count: la ficha pide "Filtrar, 3 filtros activos"; hoy se lee "Filtrar 3".
-- `TODO` El badge es interno: reemplazar por `<arq-count-badge>` cuando exista.
-- `TODO` Enviar formularios: `type` es la prop de Figma, así que no hay `type="submit"`. Falta definir cómo se envía un formulario (lo necesita `form-contacto`).
-- Sin ícono de carga en Loading (no existe en la librería).
+- `TODO` El badge es interno: reemplazar por `<arq-count-badge>` cuando exista. Su ancho mínimo (20 en Figma) no tiene token: se calcula con `type/caption/leading` + `space/padding/2xs`.
+- `TODO` Offset del subrayado: Figma lo pone 3 px debajo del texto y no hay token; se usa `space/padding/2xs` (3).
+- `TODO` Enviar formularios: todavía no se construye. Se va a hacer con un atributo `submit` sin valor (ver `docs/decisiones.md`). Hasta entonces el botón es siempre `type="button"`.
+- `TODO` Sin ícono de carga en Loading (no existe en la librería).

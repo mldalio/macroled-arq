@@ -323,7 +323,7 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 | Copied | sku después de copiar el código | `aria-live="polite"` con el texto "Copiado" |
 | Loading | Envío en curso (button Filled) | `[aria-busy="true"]` + `:disabled` |
 
-**Foco:** siempre con `outline` (o un borde que no ocupe lugar). El estado Focus **nunca cambia el tamaño** del componente.
+**Foco:** anillo separado del componente: `outline: var(--arq-border-strong) solid var(--arq-color-border-focus)` con `outline-offset: 2px` (en Figma, la capa `focus-ring` de button). Así se ve también sobre fondos del mismo color que el foco. El estado Focus **nunca cambia el tamaño** del componente.
 
 ---
 
@@ -349,7 +349,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 
 | Componente | Variantes / propiedades | Tokens y notas |
 | --- | --- | --- |
-| button | Type: Filled · Outline · Underline. State: Default · Hover · Pressed · Focus · Disabled · Loading (solo Filled). Props: Label · Show icon · Icon · Show underline · Show count · Show leading icon · Leading icon | Filled: color/action/*. Outline: color/border/strong (el borde no suma al alto: 36 como Filled). Underline: subrayado 2 px en hover. Loading: label "Enviando…", aria-busy |
+| button | Type: Filled · Outline · Underline. State: Default · Hover · Pressed · Focus · Disabled · Loading (solo Filled). Props: Label · Show icon · Icon · Show underline · Show count · Show leading icon · Leading icon | Filled: color/action/*. Outline: color/border/strong (el borde no suma al alto: 36 como Filled). Underline: subrayado border/default (1 px) en reposo y border/strong (2 px) en hover y pressed. Focus: anillo separado (ver Foco). Loading: label "Enviando…", aria-busy |
 | icon-button | Size: Default · Large. Background: None · Surface · Subtle. State: Default · Hover · Pressed · Focus · Disabled. Prop: Icon | Default 24 × 24 (icon/md). Large 48 × 48 (padding sm-md + icon/xl). Surface sobre otra superficie; Subtle para destacar entre mucha información |
 | input | Type: Text · Select · Textarea. State: Empty · Filled · Focus · Error · Disabled. Open: False · True (solo Select). Props: Label · Show label · Helper · Show helper | Línea border/default → focus border/focus → error border/error. Select abierto: border/strong, chevron-up y select-menu Type=Text flotante |
 | select | Type: Field · Filter. State: Default · Hover · Focus · Disabled · Filled. Open: False · True. Props: Name · Label · Value | Filled = Filter con opción elegida |
