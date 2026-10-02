@@ -1,6 +1,6 @@
 // Contenedores de prueba (solo demo, no entran al build). No son componentes
-// del sistema: option-group, swatch-picker, el tablist del mega-menu y el
-// grupo de choice-chip se construyen después. Prueban SingleSelect.
+// del sistema: el tablist del mega-menu y el grupo de choice-chip se
+// construyen después. Prueban SingleSelect.
 //
 //   <demo-radio-group role="radiogroup" label="Motivo" items="arq-choice-chip">…</demo-radio-group>
 //   <demo-tablist role="tablist" label="Productos">…</demo-tablist>

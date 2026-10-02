@@ -1,8 +1,7 @@
 // option-tile · Figma 921:2487 · ficha doc/option-tile (1461:9043)
 //
 // Opción de configuración de la ficha (altura, potencia, temperatura). Funciona
-// como radio dentro de option-group Type=Tiles (role="radiogroup", todavía no
-// construido). No confundir con choice-chip (formularios).
+// como radio dentro de option-group Type=Tiles (role="radiogroup"). No confundir con choice-chip (formularios).
 //
 //   <arq-option-tile value="50" selected>50 cm</arq-option-tile>
 //

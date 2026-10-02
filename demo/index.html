@@ -500,7 +500,7 @@
 
       <section class="demo-section" aria-labelledby="demo-swatch">
         <h2 id="demo-swatch" class="demo-heading role-label">swatch · &lt;arq-swatch&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 1063:4880. Solo visual (role="img") y elegible dentro de un grupo de prueba (role="radio"): flechas, clic, Hover, Selected, Focus y Disabled (la deshabilitada no se elige y las flechas la saltean).</p>
+        <p class="demo-note role-body-sm">Figma 1063:4880. Solo visual (role="img") y elegible dentro de swatch-picker (role="radio"): flechas, clic, Hover, Selected, Focus y Disabled (la deshabilitada no se elige y las flechas la saltean).</p>
         <h3 class="demo-subheading role-body-sm">Solo visual · Small (16) · Default (20) · Large (24) · sin imagen · Selected · Disabled</h3>
         <div class="demo-row">
           <arq-swatch src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
@@ -513,19 +513,19 @@
           <arq-swatch size="default" disabled src="/demo/fixtures/img/acabado-negro.svg">Negro, deshabilitado</arq-swatch>
           <arq-swatch size="large" disabled>Sin imagen, deshabilitado</arq-swatch>
         </div>
-        <h3 class="demo-subheading role-body-sm">Elegible (como en swatch-picker: la elegida en Large)</h3>
-        <demo-radio-group role="radiogroup" label="Acabado" items="arq-swatch" class="demo-swatches" data-demo-swatches>
-          <arq-swatch role="radio" size="large" selected value="black" src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
-          <arq-swatch role="radio" size="default" value="white" src="/demo/fixtures/img/acabado-blanco.svg">Blanco</arq-swatch>
-          <arq-swatch role="radio" size="default" value="bronze" disabled src="/demo/fixtures/img/acabado-bronce.svg">Bronce (sin combinación)</arq-swatch>
-          <arq-swatch role="radio" size="default" value="graphite" src="/demo/fixtures/img/acabado-gris-grafito.svg">Gris grafito</arq-swatch>
-        </demo-radio-group>
+        <h3 class="demo-subheading role-body-sm">Elegible, dentro de swatch-picker (la elegida pasa sola a Large)</h3>
+        <arq-swatch-picker label="Acabado">
+          <arq-swatch selected value="black" src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
+          <arq-swatch value="white" src="/demo/fixtures/img/acabado-blanco.svg">Blanco</arq-swatch>
+          <arq-swatch value="bronze" disabled src="/demo/fixtures/img/acabado-bronce.svg">Bronce (sin combinación)</arq-swatch>
+          <arq-swatch value="graphite" src="/demo/fixtures/img/acabado-gris-grafito.svg">Gris grafito</arq-swatch>
+        </arq-swatch-picker>
         <div class="demo-dark" data-arq-theme="dark">
-          <demo-radio-group role="radiogroup" label="Acabado (Dark)" items="arq-swatch" class="demo-swatches" data-demo-swatches>
-            <arq-swatch role="radio" size="large" selected value="black" src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
-            <arq-swatch role="radio" size="default" value="white" disabled src="/demo/fixtures/img/acabado-blanco.svg">Blanco (sin combinación)</arq-swatch>
-            <arq-swatch role="radio" size="default" value="none">Sin imagen</arq-swatch>
-          </demo-radio-group>
+          <arq-swatch-picker label="Acabado (Dark)">
+            <arq-swatch selected value="black" src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
+            <arq-swatch value="white" disabled src="/demo/fixtures/img/acabado-blanco.svg">Blanco (sin combinación)</arq-swatch>
+            <arq-swatch value="none">Sin imagen</arq-swatch>
+          </arq-swatch-picker>
         </div>
       </section>
 
@@ -548,6 +548,97 @@
             <arq-option-tile value="50" selected>50 cm</arq-option-tile>
             <arq-option-tile value="120" disabled>120 cm</arq-option-tile>
           </demo-radio-group>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-swatch-picker">
+        <h2 id="demo-swatch-picker" class="demo-heading role-label">swatch-picker · &lt;arq-swatch-picker&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1063:4881. role="radiogroup": flechas, Inicio / Fin, clic. La elegida pasa sola a Size=Large; las deshabilitadas se saltean. Cantidad libre: si no entran, bajan.</p>
+        <arq-swatch-picker label="Acabado">
+          <arq-swatch value="black" selected src="/demo/fixtures/img/acabado-negro.svg">Negro texturado</arq-swatch>
+          <arq-swatch value="white" src="/demo/fixtures/img/acabado-blanco.svg">Blanco</arq-swatch>
+          <arq-swatch value="bronze" disabled src="/demo/fixtures/img/acabado-bronce.svg">Bronce (sin combinación)</arq-swatch>
+          <arq-swatch value="graphite" src="/demo/fixtures/img/acabado-gris-grafito.svg">Gris grafito</arq-swatch>
+          <arq-swatch value="none">Sin imagen</arq-swatch>
+        </arq-swatch-picker>
+        <h3 class="demo-subheading role-body-sm">Muchas opciones en una columna angosta</h3>
+        <div class="demo-tiles--narrow">
+          <arq-swatch-picker label="Acabado (muchas)">
+            <arq-swatch value="a1" selected src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
+            <arq-swatch value="a2" src="/demo/fixtures/img/acabado-blanco.svg">Blanco</arq-swatch>
+            <arq-swatch value="a3" src="/demo/fixtures/img/acabado-bronce.svg">Bronce</arq-swatch>
+            <arq-swatch value="a4" src="/demo/fixtures/img/acabado-gris-grafito.svg">Gris grafito</arq-swatch>
+            <arq-swatch value="a5">Verde</arq-swatch>
+            <arq-swatch value="a6">Terracota</arq-swatch>
+            <arq-swatch value="a7" src="/demo/fixtures/img/acabado-negro.svg">Negro mate</arq-swatch>
+            <arq-swatch value="a8" src="/demo/fixtures/img/acabado-blanco.svg">Blanco mate</arq-swatch>
+            <arq-swatch value="a9" src="/demo/fixtures/img/acabado-bronce.svg">Bronce viejo</arq-swatch>
+            <arq-swatch value="a10" src="/demo/fixtures/img/acabado-gris-grafito.svg">Grafito</arq-swatch>
+            <arq-swatch value="a11">Arena</arq-swatch>
+            <arq-swatch value="a12">Oliva</arq-swatch>
+          </arq-swatch-picker>
+        </div>
+        <div class="demo-dark" data-arq-theme="dark">
+          <arq-swatch-picker label="Acabado (Dark)">
+            <arq-swatch value="black" selected src="/demo/fixtures/img/acabado-negro.svg">Negro texturado</arq-swatch>
+            <arq-swatch value="white" src="/demo/fixtures/img/acabado-blanco.svg">Blanco</arq-swatch>
+            <arq-swatch value="bronze" disabled src="/demo/fixtures/img/acabado-bronce.svg">Bronce (sin combinación)</arq-swatch>
+            <arq-swatch value="none">Sin imagen</arq-swatch>
+          </arq-swatch-picker>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-option-group">
+        <h2 id="demo-option-group" class="demo-heading role-label">option-group · &lt;arq-option-group&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 921:2560. Type=Tiles (el grupo es el radiogroup; tiles en Fill que bajan si no entran) y Type=Swatches (swatch-picker con la etiqueta del grupo). Type=Select: TODO, select todavía no existe.</p>
+        <div class="demo-option-groups">
+          <arq-option-group type="swatches" label="Color">
+            <arq-swatch-picker>
+              <arq-swatch value="black" selected src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
+              <arq-swatch value="white" src="/demo/fixtures/img/acabado-blanco.svg">Blanco</arq-swatch>
+              <arq-swatch value="bronze" src="/demo/fixtures/img/acabado-bronce.svg">Bronce</arq-swatch>
+            </arq-swatch-picker>
+          </arq-option-group>
+          <arq-option-group label="Altura">
+            <arq-option-tile value="50 cm">50 cm</arq-option-tile>
+            <arq-option-tile value="90 cm" selected>90 cm</arq-option-tile>
+          </arq-option-group>
+          <arq-option-group label="Potencia (muchas opciones)">
+            <arq-option-tile value="6">6 W</arq-option-tile>
+            <arq-option-tile value="8" selected>8 W</arq-option-tile>
+            <arq-option-tile value="10">10 W</arq-option-tile>
+            <arq-option-tile value="12">12 W</arq-option-tile>
+            <arq-option-tile value="15" disabled>15 W</arq-option-tile>
+            <arq-option-tile value="18">18 W</arq-option-tile>
+            <arq-option-tile value="24">24 W</arq-option-tile>
+            <arq-option-tile value="30">30 W</arq-option-tile>
+            <arq-option-tile value="36">36 W</arq-option-tile>
+          </arq-option-group>
+          <arq-option-group label="Temperatura de color con una etiqueta larga que ocupa más de una línea">
+            <arq-option-tile value="2700" selected>2700 K · cálida, para ambientes residenciales</arq-option-tile>
+            <arq-option-tile value="4000">4000 K</arq-option-tile>
+          </arq-option-group>
+          <arq-option-group label="Sin opciones"></arq-option-group>
+        </div>
+        <div class="demo-dark" data-arq-theme="dark">
+          <div class="demo-option-groups">
+            <arq-option-group type="swatches" label="Color (Dark)">
+              <arq-swatch-picker>
+                <arq-swatch value="black" selected src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
+                <arq-swatch value="white" disabled src="/demo/fixtures/img/acabado-blanco.svg">Blanco (sin combinación)</arq-swatch>
+              </arq-swatch-picker>
+            </arq-option-group>
+            <arq-option-group label="Altura (Dark)">
+              <arq-option-tile value="50 cm" selected>50 cm</arq-option-tile>
+              <arq-option-tile value="90 cm" disabled>90 cm</arq-option-tile>
+            </arq-option-group>
+          </div>
+        </div>
+        <h3 class="demo-subheading role-body-sm">Configurador de prueba · Kanu Jardín y Kanu Pared (demo/fixtures/kanu.json + src/data/variants.js)</h3>
+        <p class="demo-note role-body-sm">Verde y Terracota existen solo en 50 cm: con uno de ellos, 90 cm queda deshabilitado; en 90 cm, solo Negro. Se puede abrir con ?sku=EJEMPLO-KANU-J-900-N. Acabados sin imagen salvo Negro (sin definir).</p>
+        <div class="demo-option-groups">
+          <demo-configurator group="kanu-jardin" class="demo-option-groups"></demo-configurator>
+          <demo-configurator group="kanu-pared" class="demo-option-groups"></demo-configurator>
         </div>
       </section>
 

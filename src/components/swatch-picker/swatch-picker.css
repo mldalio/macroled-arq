@@ -1,0 +1,10 @@
+/* swatch-picker · Figma 1063:4881. Solo tokens semánticos.
+   Fila de muestras centradas en vertical (la elegida mide 24, el resto 20).
+   Si no entran, bajan a otra línea. */
+
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--arq-space-gap-sm-md);
+}

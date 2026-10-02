@@ -23,6 +23,8 @@ import './components/gallery-thumb/gallery-thumb.js';
 import './components/sku/sku.js';
 import './components/swatch/swatch.js';
 import './components/option-tile/option-tile.js';
+import './components/swatch-picker/swatch-picker.js';
+import './components/option-group/option-group.js';
 import './components/choice-chip/choice-chip.js';
 import './components/tab/tab.js';
 import './components/checkbox/checkbox.js';

@@ -56,7 +56,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [mega-menu](#mega-menu) | `<arq-mega-menu>` | Pendiente |
 | [nav-link](#nav-link) | `<arq-nav-link>` | En código ([README](../src/components/nav-link/README.md)) |
 | [navbar](#navbar) | `<arq-navbar>` | Pendiente |
-| [option-group](#option-group) | `<arq-option-group>` | Pendiente |
+| [option-group](#option-group) | `<arq-option-group>` | En código ([README](../src/components/option-group/README.md)); Type=Select pendiente (select) |
 | [option-tile](#option-tile) | `<arq-option-tile>` | En código ([README](../src/components/option-tile/README.md)) |
 | [page-header](#page-header) | `<arq-page-header>` | En código ([README](../src/components/page-header/README.md)) |
 | [product-card](#product-card) | `<arq-product-card>` | Pendiente |
@@ -74,7 +74,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [spec-list](#spec-list) | `<arq-spec-list>` | Pendiente |
 | [spec-row](#spec-row) | `<arq-spec-row>` | En código ([README](../src/components/spec-row/README.md)) |
 | [swatch](#swatch) | `<arq-swatch>` | En código ([README](../src/components/swatch/README.md)) |
-| [swatch-picker](#swatch-picker) | `<arq-swatch-picker>` | Pendiente |
+| [swatch-picker](#swatch-picker) | `<arq-swatch-picker>` | En código ([README](../src/components/swatch-picker/README.md)) |
 | [tab](#tab) | `<arq-tab>` | En código ([README](../src/components/tab/README.md)) |
 | [tag](#tag) | `<arq-tag>` | En espera de diseño |
 | [toggle](#toggle) | `<arq-toggle>` | En código ([README](../src/components/toggle/README.md)) |

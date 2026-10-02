@@ -1,10 +1,11 @@
 /* option-tile · Figma 921:2487. Solo tokens semánticos.
    Sin caja: solo línea inferior de border/default (también en Selected: 1 px). */
 
-/* En un grupo va en Fill */
+/* En un grupo va en Fill: parte del ancho de su texto y se estira para llenar
+   la fila; si no entran todos, bajan a otra línea (option-group hace wrap). */
 :host {
   display: flex;
-  flex: 1 1 0;
+  flex: 1 1 max-content;
   min-width: 0;
   cursor: pointer;
 }
