@@ -5,6 +5,114 @@
       "mode": "Mobile"
     }
   },
+  "layout": {
+    "gutter": {
+      "$type": "number",
+      "$value": "{space.20}",
+      "$description": "Margen lateral de la página.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT",
+            "GAP"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-gutter)"
+          }
+        }
+      }
+    },
+    "card-min": {
+      "$type": "number",
+      "$value": 160,
+      "$description": "Ancho mínimo de tarjeta en la grilla de catálogo (auto-fill). Desde 1600 px se reemplaza por layout/card-min-wide con una media query.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-card-min)"
+          }
+        }
+      }
+    },
+    "compare-media-max": {
+      "$type": "number",
+      "$value": 2000,
+      "$description": "Tope de ancho de la foto de compare-product. En la práctica la foto ocupa la columna.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-compare-media-max)"
+          }
+        }
+      }
+    },
+    "card-min-wide": {
+      "$type": "number",
+      "$value": 340,
+      "$description": "Ancho mínimo de tarjeta en la grilla de catálogo desde 1600 px. Se aplica en el CSS de la grilla con una media query (min-width: 1600px); no es un modo.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-card-min-wide)"
+          }
+        }
+      }
+    },
+    "measure": {
+      "$type": "number",
+      "$value": 400,
+      "$description": "Ancho máximo de un texto de lectura junto a otro elemento (bajada de section-header Description). En Mobile el texto ocupa todo el ancho.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-measure)"
+          }
+        }
+      }
+    },
+    "measure-wide": {
+      "$type": "number",
+      "$value": 520,
+      "$description": "Ancho máximo de un texto de lectura en una columna principal (título y bajada de page-header Detail). En Mobile el texto ocupa todo el ancho.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-measure-wide)"
+          }
+        }
+      }
+    },
+    "gallery-thumb": {
+      "$type": "number",
+      "$value": 76,
+      "$description": "Ancho de gallery-thumb en product-gallery (105 Desktop · 76 Mobile). El alto sale de ratio/landscape (5:4).",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-gallery-thumb)"
+          }
+        }
+      }
+    }
+  },
   "space": {
     "section": {
       "2xs": {
@@ -473,99 +581,6 @@
             "codeSyntax": {
               "WEB": "var(--arq-space-padding-6xl)"
             }
-          }
-        }
-      }
-    }
-  },
-  "layout": {
-    "gutter": {
-      "$type": "number",
-      "$value": "{space.20}",
-      "$description": "Margen lateral de la página.",
-      "$extensions": {
-        "com.figma": {
-          "scopes": [
-            "WIDTH_HEIGHT",
-            "GAP"
-          ],
-          "codeSyntax": {
-            "WEB": "var(--arq-layout-gutter)"
-          }
-        }
-      }
-    },
-    "card-min": {
-      "$type": "number",
-      "$value": 160,
-      "$description": "Ancho mínimo de tarjeta en la grilla de catálogo (auto-fill). Desde 1600 px se reemplaza por layout/card-min-wide con una media query.",
-      "$extensions": {
-        "com.figma": {
-          "scopes": [
-            "WIDTH_HEIGHT"
-          ],
-          "codeSyntax": {
-            "WEB": "var(--arq-layout-card-min)"
-          }
-        }
-      }
-    },
-    "compare-media-max": {
-      "$type": "number",
-      "$value": 2000,
-      "$description": "Tope de ancho de la foto de compare-product. En la práctica la foto ocupa la columna.",
-      "$extensions": {
-        "com.figma": {
-          "scopes": [
-            "WIDTH_HEIGHT"
-          ],
-          "codeSyntax": {
-            "WEB": "var(--arq-layout-compare-media-max)"
-          }
-        }
-      }
-    },
-    "card-min-wide": {
-      "$type": "number",
-      "$value": 340,
-      "$description": "Ancho mínimo de tarjeta en la grilla de catálogo desde 1600 px. Se aplica en el CSS de la grilla con una media query (min-width: 1600px); no es un modo.",
-      "$extensions": {
-        "com.figma": {
-          "scopes": [
-            "WIDTH_HEIGHT"
-          ],
-          "codeSyntax": {
-            "WEB": "var(--arq-layout-card-min-wide)"
-          }
-        }
-      }
-    },
-    "measure": {
-      "$type": "number",
-      "$value": 400,
-      "$description": "Ancho máximo de un texto de lectura junto a otro elemento (bajada de section-header Description). En Mobile el texto ocupa todo el ancho.",
-      "$extensions": {
-        "com.figma": {
-          "scopes": [
-            "WIDTH_HEIGHT"
-          ],
-          "codeSyntax": {
-            "WEB": "var(--arq-layout-measure)"
-          }
-        }
-      }
-    },
-    "measure-wide": {
-      "$type": "number",
-      "$value": 520,
-      "$description": "Ancho máximo de un texto de lectura en una columna principal (título y bajada de page-header Detail). En Mobile el texto ocupa todo el ancho.",
-      "$extensions": {
-        "com.figma": {
-          "scopes": [
-            "WIDTH_HEIGHT"
-          ],
-          "codeSyntax": {
-            "WEB": "var(--arq-layout-measure-wide)"
           }
         }
       }
