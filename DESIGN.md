@@ -269,6 +269,7 @@ Cómo elegir un token:
 | layout/measure-wide | 520 | 520 | Ancho máximo de un texto de lectura en una columna principal (page-header Detail). En Mobile el texto ocupa todo el ancho |
 | layout/gallery-thumb | 105 | 76 | Ancho de gallery-thumb en product-gallery. El alto sale de ratio/landscape (5:4) |
 | layout/filter-panel | 560 | 560 | Ancho de los paneles en Desktop: filter-panel y download-modal. En Mobile no se usa |
+| layout/table-thumb | 56 | 56 | Miniatura cuadrada de cada fila de la tabla de variantes (glosario) |
 | space/section/2xs · xs · sm · md · lg · xl | 32 · 48 · 64 · 96 · 128 · 160 | 24 · 32 · 40 · 56 · 96 · 128 | Solo entre bloques de página (padding de la sección). Es la perilla del ritmo de página |
 | space/gap/xs · sm · sm-md · md · lg · xl · xl-2xl · 2xl · 3xl · 4xl · 5xl · 6xl | 4 · 8 · 12 · 16 · 24 · 32 · 40 · 48 · 64 · 80 · 96 · 128 | 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 56 · 64 · 96 | Entre elementos (gap) |
 | space/padding/2xs · xs · sm · sm-md · md · lg · xl · xl-2xl · 2xl · 3xl · 4xl · 5xl · 6xl | 3 · 4 · 8 · 12 · 16 · 24 · 32 · 40 · 48 · 64 · 80 · 96 · 128 | 3 · 4 · 8 · 12 · 16 · 20 · 24 · 32 · 32 · 48 · 56 · 64 · 96 | Padding interno |
