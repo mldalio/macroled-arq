@@ -1,7 +1,7 @@
 // spec-row · Figma 922:2497 · ficha doc/spec-row (1462:9118)
 //
 // Fila de especificación técnica: etiqueta + valor, con separador inferior.
-// Va dentro de spec-list (todavía no construido); la cantidad de filas es libre.
+// Va dentro de spec-list; la cantidad de filas es libre.
 //
 //   <arq-spec-row><span slot="label">Flujo luminoso</span>850 lm</arq-spec-row>
 //

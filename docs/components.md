@@ -7,7 +7,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 
 | Componente | Etiqueta | Estado en código |
 | --- | --- | --- |
-| [accordion-item](#accordion-item) | `<arq-accordion-item>` | Pendiente |
+| [accordion-item](#accordion-item) | `<arq-accordion-item>` | En código ([README](../src/components/accordion-item/README.md)) |
 | [breadcrumb](#breadcrumb) | `<arq-breadcrumb>` | En código ([README](../src/components/breadcrumb/README.md)) |
 | [breadcrumb-item](#breadcrumb-item) | `<arq-breadcrumb-item>` | En código ([README](../src/components/breadcrumb-item/README.md)) |
 | [button](#button) | `<arq-button>` | En código ([README](../src/components/button/README.md)) |
@@ -71,7 +71,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [select-menu](#select-menu) | `<arq-select-menu>` | Pendiente |
 | [select-option](#select-option) | `<arq-select-option>` | En código ([README](../src/components/select-option/README.md)) |
 | [sku](#sku) | `<arq-sku>` | En código ([README](../src/components/sku/README.md)) |
-| [spec-list](#spec-list) | `<arq-spec-list>` | Pendiente |
+| [spec-list](#spec-list) | `<arq-spec-list>` | En código ([README](../src/components/spec-list/README.md)) |
 | [spec-row](#spec-row) | `<arq-spec-row>` | En código ([README](../src/components/spec-row/README.md)) |
 | [swatch](#swatch) | `<arq-swatch>` | En código ([README](../src/components/swatch/README.md)) |
 | [swatch-picker](#swatch-picker) | `<arq-swatch-picker>` | En código ([README](../src/components/swatch-picker/README.md)) |

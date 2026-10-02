@@ -1,0 +1,121 @@
+/* accordion-item · Figma 922:2645. Solo tokens semánticos.
+   Desktop es la base; Mobile (max-width: 767px) cambia el padding lateral y
+   el inferior cerrado, como las variantes Breakpoint=Mobile. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Open=False: sin fondo, línea inferior border/default.
+   Open=True: fondo color/surface/faint, sin línea. */
+.item {
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-default);
+  background: var(--arq-color-surface-transparent);
+}
+
+:host([open]) .item {
+  border-bottom: 0;
+  background: var(--arq-color-surface-faint);
+}
+
+/* Encabezado. El padding del ítem va en el botón para que todo el alto sea
+   clickeable: arriba space/padding/xl-2xl, a los lados space/padding/2xl,
+   abajo space/padding/xl-2xl cerrado o space/gap/xl (gap hasta el contenido)
+   abierto. Gap título–ícono space/gap/md. Cerrado, la línea inferior se
+   descuenta del padding: el ítem mide como el set (128), donde el borde va
+   por dentro. */
+.trigger {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-md);
+  width: 100%;
+  margin: 0;
+  padding: var(--arq-space-padding-xl-2xl) var(--arq-space-padding-2xl);
+  padding-bottom: calc(var(--arq-space-padding-xl-2xl) - var(--arq-border-default));
+  border: 0;
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-primary);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+}
+
+:host([open]) .trigger {
+  padding-bottom: var(--arq-space-gap-xl);
+}
+
+.title {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+/* Ícono con las medidas de icon-button Size=Large: space/padding/sm-md + icon/xl.
+   Background=None cerrado; Background=Surface (color/surface/default) abierto. */
+.icon-box {
+  display: inline-flex;
+  flex: none;
+  padding: var(--arq-space-padding-sm-md);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-icon-primary);
+}
+
+:host([open]) .icon-box {
+  background: var(--arq-color-surface-default);
+}
+
+.icon {
+  width: var(--arq-icon-xl);
+  height: var(--arq-icon-xl);
+}
+
+:host(:not([open])) [data-icon='minus'],
+:host([open]) [data-icon='plus'] {
+  display: none;
+}
+
+/* Contenido (en la ficha, spec-list en Fill): a los lados space/padding/2xl,
+   abajo space/padding/2xl */
+.content {
+  padding: 0 var(--arq-space-padding-2xl) var(--arq-space-padding-2xl);
+}
+
+/* State=Hover: solo cerrado. Fondo color/surface/faint y el ícono como
+   icon-button Background=None en Hover (color/surface/hover). */
+@media (hover: hover) {
+  :host(:not([open])) .item:has(.trigger:hover) {
+    background: var(--arq-color-surface-faint);
+  }
+
+  :host(:not([open])) .trigger:hover .icon-box {
+    background: var(--arq-color-surface-hover);
+  }
+}
+
+/* Foco: anillo de DESIGN.md §7 alrededor de todo el ítem, como la capa
+   focus-ring del set (2px: valor fijado ahí, no hay token de offset) */
+.item:has(.trigger:focus-visible) {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.trigger:focus {
+  outline: none;
+}
+
+/* Breakpoint=Mobile: a los lados space/padding/xl; abajo cerrado
+   space/padding/2xl (como el set) */
+@media (max-width: 767px) {
+  .trigger {
+    padding-inline: var(--arq-space-padding-xl);
+    padding-bottom: calc(var(--arq-space-padding-2xl) - var(--arq-border-default));
+  }
+
+  .content {
+    padding-inline: var(--arq-space-padding-xl);
+  }
+}
