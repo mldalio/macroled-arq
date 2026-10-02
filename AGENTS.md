@@ -134,7 +134,7 @@ dist/arq.js · dist/arq.css    ← única salida que carga Webflow
 3. Rama `feat/arq-<nombre>`; la IA lo construye leyendo el set por el MCP de Figma y siguiendo DESIGN.md y este archivo.
 4. Sumarlo a `demo/index.html` con fixtures (ver Componentes).
 5. Comparar contra Figma en la demo (`npm run dev`).
-6. Merge a `main`, actualizar `docs/components.md` y mover la tarjeta a Hecho.
+6. Merge a `main`, actualizar `docs/components.md` (estado y marca ✅) y mover la tarjeta a Hecho. En el set de Figma, una anotación de Dev Mode «✅ En código: arq-<nombre> (src/components/<nombre>)».
 
 - Una rama por tarea: `feat/`, `fix/`, `tokens/`, `docs/`. Ramas cortas.
 - Hacer pull antes de empezar y antes de mergear a `main`.
