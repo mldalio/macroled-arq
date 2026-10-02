@@ -73,7 +73,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [sku](#sku) | `<arq-sku>` | En código ([README](../src/components/sku/README.md)) |
 | [spec-list](#spec-list) | `<arq-spec-list>` | Pendiente |
 | [spec-row](#spec-row) | `<arq-spec-row>` | En código ([README](../src/components/spec-row/README.md)) |
-| [swatch](#swatch) | `<arq-swatch>` | En código ([README](../src/components/swatch/README.md)) |
+| [swatch](#swatch) | `<arq-swatch>` | En código ([README](../src/components/swatch/README.md)); falta State=Disabled (sumado en Figma el 2026-10-02) |
 | [swatch-picker](#swatch-picker) | `<arq-swatch-picker>` | Pendiente |
 | [tab](#tab) | `<arq-tab>` | En código ([README](../src/components/tab/README.md)) |
 | [tag](#tag) | `<arq-tag>` | En espera de diseño |
@@ -600,9 +600,9 @@ Textos largos: etiqueta y valor se parten en varias líneas; nunca se cortan.
 ## swatch
 
 - Figma: [1063-4880](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1063-4880)
-- Propiedades: Size: Small · Default · Large; State: Default · Hover · Selected · Focus
+- Propiedades: Size: Small · Default · Large; State: Default · Hover · Selected · Focus · Disabled
 
-Muestra de acabado (único swatch del sistema). Size: Small (16, menú, filtro y cards), Default (20, swatch-picker), Large (24, select Field y muestra elegida). State: Default (borde color/border/subtle para que se vea el acabado blanco), Hover (border/strong 2 px, color/border/strong), Selected (border/strong), Focus (anillo color/border/focus por fuera, no cambia el tamaño). Siempre cuadrado (radius/control = 0). El relleno es la imagen del acabado del servidor de la empresa, en el fill de la instancia; fallback color/surface/subtle. En swatch-picker la elegida va en Size=Large, State=Selected. Cuando es solo visual (product-card, filtro) se usa State=Default. Interactivo: role=radio con aria-label del acabado.
+Muestra de acabado (único swatch del sistema). Size: Small (16, menú, filtro y cards), Default (20, swatch-picker), Large (24, select Field y muestra elegida). State: Default (borde color/border/subtle para que se vea el acabado blanco), Hover (border/strong 2 px, color/border/strong), Selected (border/strong), Focus (anillo color/border/focus por fuera, no cambia el tamaño), Disabled (acabado sin combinación con las otras opciones elegidas: borde color/border/disabled y línea diagonal border/default en color/icon/tertiary; no se puede elegir). Siempre cuadrado (radius/control = 0). El relleno es la imagen del acabado del servidor de la empresa, en el fill de la instancia; fallback color/surface/subtle. En swatch-picker la elegida va en Size=Large, State=Selected. Cuando es solo visual (product-card, filtro) se usa State=Default. Interactivo: role=radio con aria-label del acabado.
 
 ## swatch-picker
 
