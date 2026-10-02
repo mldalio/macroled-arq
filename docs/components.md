@@ -3,84 +3,86 @@
 Descripción de cada componente, copiada de Figma (página Componentes, campo *description* del set). Se lee junto con la ficha `doc/<nombre>` de la página Documentación y con DESIGN.md.
 
 - Si este archivo no coincide con Figma, manda Figma y se actualiza este archivo.
-- Al crear o modificar un componente en código, actualizar su **Estado en código**.
+- Al crear o modificar un componente en código, actualizar su **Estado en código** y su marca.
+
+**40 de 74 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
 
 | Componente | Etiqueta | Estado en código |
 | --- | --- | --- |
-| [accordion-item](#accordion-item) | `<arq-accordion-item>` | En código ([README](../src/components/accordion-item/README.md)) |
-| [breadcrumb](#breadcrumb) | `<arq-breadcrumb>` | En código ([README](../src/components/breadcrumb/README.md)) |
-| [breadcrumb-item](#breadcrumb-item) | `<arq-breadcrumb-item>` | En código ([README](../src/components/breadcrumb-item/README.md)) |
-| [button](#button) | `<arq-button>` | En código ([README](../src/components/button/README.md)) |
-| [carousel-controls](#carousel-controls) | `<arq-carousel-controls>` | En código ([README](../src/components/carousel-controls/README.md)) |
-| [catalog-nav](#catalog-nav) | `<arq-catalog-nav>` | Pendiente |
-| [catalog-nav-group](#catalog-nav-group) | `<arq-catalog-nav-group>` | Pendiente |
-| [catalog-nav-item](#catalog-nav-item) | `<arq-catalog-nav-item>` | Pendiente |
-| [catalog-nav-mobile](#catalog-nav-mobile) | `<arq-catalog-nav-mobile>` | Pendiente |
-| [catalog-nav-trigger](#catalog-nav-trigger) | `<arq-catalog-nav-trigger>` | Pendiente |
-| [catalog-toolbar](#catalog-toolbar) | `<arq-catalog-toolbar>` | Pendiente |
-| [category-card](#category-card) | `<arq-category-card>` | En código ([README](../src/components/category-card/README.md)) |
-| [checkbox](#checkbox) | `<arq-checkbox>` | En código ([README](../src/components/checkbox/README.md)) |
-| [choice-chip](#choice-chip) | `<arq-choice-chip>` | En código ([README](../src/components/choice-chip/README.md)) |
-| [compare-bar](#compare-bar) | `<arq-compare-bar>` | Pendiente |
-| [compare-group](#compare-group) | `<arq-compare-group>` | Pendiente |
-| [compare-header](#compare-header) | `<arq-compare-header>` | Pendiente |
-| [compare-product](#compare-product) | `<arq-compare-product>` | Pendiente |
-| [compare-row](#compare-row) | `<arq-compare-row>` | Pendiente |
-| [compare-slot](#compare-slot) | `<arq-compare-slot>` | Pendiente |
-| [contact-item](#contact-item) | `<arq-contact-item>` | Pendiente |
-| [count-badge](#count-badge) | `<arq-count-badge>` | En código ([README](../src/components/count-badge/README.md)) |
-| [cta-block](#cta-block) | `<arq-cta-block>` | En código ([README](../src/components/cta-block/README.md)) |
-| [divider](#divider) | `<arq-divider>` | En código ([README](../src/components/divider/README.md)) |
-| [download-item](#download-item) | `<arq-download-item>` | Pendiente |
-| [download-modal](#download-modal) | `<arq-download-modal>` | Pendiente |
-| [family-card](#family-card) | `<arq-family-card>` | Pendiente |
-| [faq-item](#faq-item) | `<arq-faq-item>` | En código ([README](../src/components/faq-item/README.md)) |
-| [feature-block](#feature-block) | `<arq-feature-block>` | En código ([README](../src/components/feature-block/README.md)) |
-| [file-upload](#file-upload) | `<arq-file-upload>` | En código ([README](../src/components/file-upload/README.md)) |
-| [filter-bar](#filter-bar) | `<arq-filter-bar>` | Pendiente |
-| [filter-chip](#filter-chip) | `<arq-filter-chip>` | En código ([README](../src/components/filter-chip/README.md)) |
-| [filter-panel](#filter-panel) | `<arq-filter-panel>` | Pendiente |
-| [filter-row](#filter-row) | `<arq-filter-row>` | Pendiente |
-| [footer](#footer) | `<arq-footer>` | En código ([README](../src/components/footer/README.md)) |
-| [footer-link](#footer-link) | `<arq-footer-link>` | En código ([README](../src/components/footer-link/README.md)) |
-| [form-message](#form-message) | `<arq-form-message>` | En código ([README](../src/components/form-message/README.md)) |
-| [form-section-header](#form-section-header) | `<arq-form-section-header>` | En código ([README](../src/components/form-section-header/README.md)) |
-| [gallery-thumb](#gallery-thumb) | `<arq-gallery-thumb>` | En código ([README](../src/components/gallery-thumb/README.md)) |
-| [hero](#hero) | `<arq-hero>` | En código ([README](../src/components/hero/README.md)) |
-| [icon-button](#icon-button) | `<arq-icon-button>` | En código ([README](../src/components/icon-button/README.md)) |
-| [input](#input) | `<arq-input>` | En código ([README](../src/components/input/README.md)) |
-| [line-card](#line-card) | `<arq-line-card>` | En código ([README](../src/components/line-card/README.md)) |
-| [link-list](#link-list) | `<arq-link-list>` | Pendiente |
-| [logo](#logo) | `<arq-logo>` | En código ([README](../src/components/logo/README.md)) |
-| [mega-link](#mega-link) | `<arq-mega-link>` | Pendiente |
-| [mega-menu](#mega-menu) | `<arq-mega-menu>` | Pendiente |
-| [nav-link](#nav-link) | `<arq-nav-link>` | En código ([README](../src/components/nav-link/README.md)) |
-| [navbar](#navbar) | `<arq-navbar>` | Pendiente |
-| [option-group](#option-group) | `<arq-option-group>` | En código ([README](../src/components/option-group/README.md)); Type=Select pendiente (select) |
-| [option-tile](#option-tile) | `<arq-option-tile>` | En código ([README](../src/components/option-tile/README.md)) |
-| [page-header](#page-header) | `<arq-page-header>` | En código ([README](../src/components/page-header/README.md)) |
-| [product-card](#product-card) | `<arq-product-card>` | Pendiente |
-| [product-gallery](#product-gallery) | `<arq-product-gallery>` | En código ([README](../src/components/product-gallery/README.md)) |
-| [search-dropdown](#search-dropdown) | `<arq-search-dropdown>` | Pendiente |
-| [search-field](#search-field) | `<arq-search-field>` | Pendiente |
-| [search-result](#search-result) | `<arq-search-result>` | Pendiente |
-| [search-screen](#search-screen) | `<arq-search-screen>` | Pendiente |
-| [search-see-all](#search-see-all) | `<arq-search-see-all>` | Pendiente |
-| [section-header](#section-header) | `<arq-section-header>` | En código ([README](../src/components/section-header/README.md)) |
-| [select](#select) | `<arq-select>` | Pendiente |
-| [select-menu](#select-menu) | `<arq-select-menu>` | Pendiente |
-| [select-option](#select-option) | `<arq-select-option>` | En código ([README](../src/components/select-option/README.md)) |
-| [sku](#sku) | `<arq-sku>` | En código ([README](../src/components/sku/README.md)) |
-| [spec-list](#spec-list) | `<arq-spec-list>` | En código ([README](../src/components/spec-list/README.md)) |
-| [spec-row](#spec-row) | `<arq-spec-row>` | En código ([README](../src/components/spec-row/README.md)) |
-| [swatch](#swatch) | `<arq-swatch>` | En código ([README](../src/components/swatch/README.md)) |
-| [swatch-picker](#swatch-picker) | `<arq-swatch-picker>` | En código ([README](../src/components/swatch-picker/README.md)) |
-| [tab](#tab) | `<arq-tab>` | En código ([README](../src/components/tab/README.md)) |
-| [tag](#tag) | `<arq-tag>` | En espera de diseño |
-| [toggle](#toggle) | `<arq-toggle>` | En código ([README](../src/components/toggle/README.md)) |
-| [toggle-switch](#toggle-switch) | — | Dentro de toggle ([README](../src/components/toggle/README.md)) |
-| [variants-table](#variants-table) | `<arq-variants-table>` | Pendiente |
-| [variants-table-row](#variants-table-row) | `<arq-variants-table-row>` | Pendiente |
+| ✅ [accordion-item](#accordion-item) | `<arq-accordion-item>` | En código ([README](../src/components/accordion-item/README.md)) |
+| ✅ [breadcrumb](#breadcrumb) | `<arq-breadcrumb>` | En código ([README](../src/components/breadcrumb/README.md)) |
+| ✅ [breadcrumb-item](#breadcrumb-item) | `<arq-breadcrumb-item>` | En código ([README](../src/components/breadcrumb-item/README.md)) |
+| ✅ [button](#button) | `<arq-button>` | En código ([README](../src/components/button/README.md)) |
+| ✅ [carousel-controls](#carousel-controls) | `<arq-carousel-controls>` | En código ([README](../src/components/carousel-controls/README.md)) |
+| ⬜ [catalog-nav](#catalog-nav) | `<arq-catalog-nav>` | Pendiente |
+| ⬜ [catalog-nav-group](#catalog-nav-group) | `<arq-catalog-nav-group>` | Pendiente |
+| ⬜ [catalog-nav-item](#catalog-nav-item) | `<arq-catalog-nav-item>` | Pendiente |
+| ⬜ [catalog-nav-mobile](#catalog-nav-mobile) | `<arq-catalog-nav-mobile>` | Pendiente |
+| ⬜ [catalog-nav-trigger](#catalog-nav-trigger) | `<arq-catalog-nav-trigger>` | Pendiente |
+| ⬜ [catalog-toolbar](#catalog-toolbar) | `<arq-catalog-toolbar>` | Pendiente |
+| ✅ [category-card](#category-card) | `<arq-category-card>` | En código ([README](../src/components/category-card/README.md)) |
+| ✅ [checkbox](#checkbox) | `<arq-checkbox>` | En código ([README](../src/components/checkbox/README.md)) |
+| ✅ [choice-chip](#choice-chip) | `<arq-choice-chip>` | En código ([README](../src/components/choice-chip/README.md)) |
+| ⬜ [compare-bar](#compare-bar) | `<arq-compare-bar>` | Pendiente |
+| ⬜ [compare-group](#compare-group) | `<arq-compare-group>` | Pendiente |
+| ⬜ [compare-header](#compare-header) | `<arq-compare-header>` | Pendiente |
+| ⬜ [compare-product](#compare-product) | `<arq-compare-product>` | Pendiente |
+| ⬜ [compare-row](#compare-row) | `<arq-compare-row>` | Pendiente |
+| ⬜ [compare-slot](#compare-slot) | `<arq-compare-slot>` | Pendiente |
+| ⬜ [contact-item](#contact-item) | `<arq-contact-item>` | Pendiente |
+| ✅ [count-badge](#count-badge) | `<arq-count-badge>` | En código ([README](../src/components/count-badge/README.md)) |
+| ✅ [cta-block](#cta-block) | `<arq-cta-block>` | En código ([README](../src/components/cta-block/README.md)) |
+| ✅ [divider](#divider) | `<arq-divider>` | En código ([README](../src/components/divider/README.md)) |
+| ⬜ [download-item](#download-item) | `<arq-download-item>` | Pendiente |
+| ⬜ [download-modal](#download-modal) | `<arq-download-modal>` | Pendiente |
+| ⬜ [family-card](#family-card) | `<arq-family-card>` | Pendiente |
+| ✅ [faq-item](#faq-item) | `<arq-faq-item>` | En código ([README](../src/components/faq-item/README.md)) |
+| ✅ [feature-block](#feature-block) | `<arq-feature-block>` | En código ([README](../src/components/feature-block/README.md)) |
+| ✅ [file-upload](#file-upload) | `<arq-file-upload>` | En código ([README](../src/components/file-upload/README.md)) |
+| ⬜ [filter-bar](#filter-bar) | `<arq-filter-bar>` | Pendiente |
+| ✅ [filter-chip](#filter-chip) | `<arq-filter-chip>` | En código ([README](../src/components/filter-chip/README.md)) |
+| ⬜ [filter-panel](#filter-panel) | `<arq-filter-panel>` | Pendiente |
+| ⬜ [filter-row](#filter-row) | `<arq-filter-row>` | Pendiente |
+| ✅ [footer](#footer) | `<arq-footer>` | En código ([README](../src/components/footer/README.md)) |
+| ✅ [footer-link](#footer-link) | `<arq-footer-link>` | En código ([README](../src/components/footer-link/README.md)) |
+| ✅ [form-message](#form-message) | `<arq-form-message>` | En código ([README](../src/components/form-message/README.md)) |
+| ✅ [form-section-header](#form-section-header) | `<arq-form-section-header>` | En código ([README](../src/components/form-section-header/README.md)) |
+| ✅ [gallery-thumb](#gallery-thumb) | `<arq-gallery-thumb>` | En código ([README](../src/components/gallery-thumb/README.md)) |
+| ✅ [hero](#hero) | `<arq-hero>` | En código ([README](../src/components/hero/README.md)) |
+| ✅ [icon-button](#icon-button) | `<arq-icon-button>` | En código ([README](../src/components/icon-button/README.md)) |
+| ✅ [input](#input) | `<arq-input>` | En código ([README](../src/components/input/README.md)) |
+| ✅ [line-card](#line-card) | `<arq-line-card>` | En código ([README](../src/components/line-card/README.md)) |
+| ⬜ [link-list](#link-list) | `<arq-link-list>` | Pendiente |
+| ✅ [logo](#logo) | `<arq-logo>` | En código ([README](../src/components/logo/README.md)) |
+| ⬜ [mega-link](#mega-link) | `<arq-mega-link>` | Pendiente |
+| ⬜ [mega-menu](#mega-menu) | `<arq-mega-menu>` | Pendiente |
+| ✅ [nav-link](#nav-link) | `<arq-nav-link>` | En código ([README](../src/components/nav-link/README.md)) |
+| ⬜ [navbar](#navbar) | `<arq-navbar>` | Pendiente |
+| ✅ [option-group](#option-group) | `<arq-option-group>` | En código ([README](../src/components/option-group/README.md)); Type=Select pendiente (select) |
+| ✅ [option-tile](#option-tile) | `<arq-option-tile>` | En código ([README](../src/components/option-tile/README.md)) |
+| ✅ [page-header](#page-header) | `<arq-page-header>` | En código ([README](../src/components/page-header/README.md)) |
+| ⬜ [product-card](#product-card) | `<arq-product-card>` | Pendiente |
+| ✅ [product-gallery](#product-gallery) | `<arq-product-gallery>` | En código ([README](../src/components/product-gallery/README.md)) |
+| ⬜ [search-dropdown](#search-dropdown) | `<arq-search-dropdown>` | Pendiente |
+| ⬜ [search-field](#search-field) | `<arq-search-field>` | Pendiente |
+| ⬜ [search-result](#search-result) | `<arq-search-result>` | Pendiente |
+| ⬜ [search-screen](#search-screen) | `<arq-search-screen>` | Pendiente |
+| ⬜ [search-see-all](#search-see-all) | `<arq-search-see-all>` | Pendiente |
+| ✅ [section-header](#section-header) | `<arq-section-header>` | En código ([README](../src/components/section-header/README.md)) |
+| ⬜ [select](#select) | `<arq-select>` | Pendiente |
+| ⬜ [select-menu](#select-menu) | `<arq-select-menu>` | Pendiente |
+| ✅ [select-option](#select-option) | `<arq-select-option>` | En código ([README](../src/components/select-option/README.md)) |
+| ✅ [sku](#sku) | `<arq-sku>` | En código ([README](../src/components/sku/README.md)) |
+| ✅ [spec-list](#spec-list) | `<arq-spec-list>` | En código ([README](../src/components/spec-list/README.md)) |
+| ✅ [spec-row](#spec-row) | `<arq-spec-row>` | En código ([README](../src/components/spec-row/README.md)) |
+| ✅ [swatch](#swatch) | `<arq-swatch>` | En código ([README](../src/components/swatch/README.md)) |
+| ✅ [swatch-picker](#swatch-picker) | `<arq-swatch-picker>` | En código ([README](../src/components/swatch-picker/README.md)) |
+| ✅ [tab](#tab) | `<arq-tab>` | En código ([README](../src/components/tab/README.md)) |
+| ⏸️ [tag](#tag) | `<arq-tag>` | En espera de diseño |
+| ✅ [toggle](#toggle) | `<arq-toggle>` | En código ([README](../src/components/toggle/README.md)) |
+| ✅ [toggle-switch](#toggle-switch) | — | Dentro de toggle ([README](../src/components/toggle/README.md)) |
+| ⬜ [variants-table](#variants-table) | `<arq-variants-table>` | Pendiente |
+| ⬜ [variants-table-row](#variants-table-row) | `<arq-variants-table-row>` | Pendiente |
 
 ## accordion-item
 
