@@ -1,0 +1,33 @@
+/* option-group · Figma 921:2560. Solo tokens semánticos.
+   Etiqueta + opciones, separadas por space/gap/md. Ocupa el ancho de su
+   columna (Fill en la ficha). */
+
+:host {
+  display: block;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-md);
+}
+
+.label {
+  color: var(--arq-color-text-secondary);
+}
+
+/* Type=Tiles: fila de option-tile en Fill, separados por space/gap/sm.
+   Si no entran, bajan a otra línea (decisión 2026-10-02). */
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--arq-space-gap-sm);
+  align-self: stretch;
+}
+
+/* Type=Swatches y Select: el contenido mide lo suyo (swatch-picker hace Hug) */
+:host([type='swatches']) .options,
+:host([type='select']) .options {
+  display: block;
+}

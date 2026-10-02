@@ -226,6 +226,14 @@
   max-width: calc(var(--arq-layout-card-min) * 2);
 }
 
+/* Columna del configurador (como la de la ficha) */
+.demo-option-groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xl-2xl);
+  max-width: calc(var(--arq-layout-card-min) * 2);
+}
+
 .demo-tiles--narrow {
   max-width: var(--arq-layout-card-min);
 }

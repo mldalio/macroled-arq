@@ -25,8 +25,8 @@ Muestra de acabado (único swatch del sistema). Siempre cuadrada. El relleno es 
 | — | `value` | `value` | valor del acabado (slug en inglés) |
 
 - **Solo visual** por defecto: `role="img"` con el nombre del acabado. Así va en product-card y en los filtros (State=Default).
-- **Elegible** con `role="radio"`, que lo pone swatch-picker: clic, Enter o Espacio la eligen y emite `arq:change` con `{ value, selected: true }`. Tiene Hover, Selected y Focus. Las flechas las maneja el grupo (`SingleSelect`).
-- En swatch-picker la elegida va en `size="large"` + `selected` y el resto en `size="default"`.
+- **Elegible** dentro de `<arq-swatch-picker>` (o con `role="radio"`): clic, Enter o Espacio la eligen y emite `arq:change` con `{ value, selected: true }`. Tiene Hover, Selected y Focus. Las flechas las maneja el grupo (`SingleSelect`).
+- En swatch-picker la elegida va en `size="large"` + `selected` y el resto en `size="default"`: el picker lo pone solo.
 
 ## Tokens
 

@@ -7,7 +7,7 @@
 //   <arq-swatch src="…/black.jpg">Negro texturado</arq-swatch>                  solo visual (product-card, filtros)
 //   <arq-swatch role="radio" size="large" selected src="…">Negro</arq-swatch>    elegible (swatch-picker)
 //
-// Solo visual por defecto (role="img"). Con role="radio" (lo pone swatch-picker)
+// Solo visual por defecto (role="img"). Dentro de swatch-picker (o con role="radio")
 // se elige con clic, Enter o Espacio y tiene Hover, Selected y Focus. Con
 // disabled no se puede elegir y el grupo la saltea con las flechas.
 
@@ -37,7 +37,9 @@ class ArqSwatch extends ArqElement {
     };
     this.shadowRoot.querySelector('slot').addEventListener('slotchange', sync);
     sync();
-    if (this.getAttribute('role') === 'radio') {
+    // Elegible con role="radio" o dentro de swatch-picker (se mira el tag, que
+    // existe aunque el picker todavía no se haya registrado).
+    if (this.getAttribute('role') === 'radio' || this.parentElement?.closest('arq-swatch-picker')) {
       this.selectable = new Selectable(this, { role: 'radio', state: 'aria-checked' });
     } else if (!this.hasAttribute('role')) {
       this.setAttribute('role', 'img');

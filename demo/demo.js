@@ -7,6 +7,7 @@ import { icon, iconNames } from '/src/base/icons.js';
 import './demo-disclosure.js';
 import './demo-dark-local.js';
 import './demo-groups.js';
+import './demo-configurator.js';
 import './demo-nav.js';
 import tokens from '/tokens/tokens.json';
 
@@ -171,13 +172,6 @@ for (const form of document.querySelectorAll('[data-demo-form]')) {
     output.textContent = 'Restablecido';
   });
 }
-
-// ── swatch-picker de prueba: la elegida pasa a Large y el resto a Default ──
-document.addEventListener('arq:change', (event) => {
-  const group = event.target.closest?.('[data-demo-swatches]');
-  if (!group || event.target.localName !== 'arq-swatch') return;
-  for (const s of group.querySelectorAll('arq-swatch')) s.size = s === event.target ? 'large' : 'default';
-});
 
 // ── input: validación nativa del formulario de prueba ──
 for (const button of document.querySelectorAll('[data-demo-validate]')) {
