@@ -177,8 +177,8 @@ Lau construye todos los componentes. El orden sale de las dependencias (descripc
 | Ficha | download-item | íconos |
 | Listados | product-card | swatch, checkbox |
 | Listados | catalog-toolbar | toggle, divider, button y count-badge |
-| Listados | catalog-nav-item | — |
-| Listados | catalog-nav-trigger | icon-button, disclosure |
+| Listados | ✅ catalog-nav-item | — |
+| Listados | ✅ catalog-nav-trigger (dentro de catalog-nav) | icon-button, disclosure |
 | Listados | filter-row | icon-button, checkbox, disclosure |
 | Comparativa | compare-slot | icon-button |
 | Comparativa | compare-group, compare-row | — |
@@ -196,8 +196,8 @@ product-card necesita los campos de las 4 imágenes en `docs/typesense-schema.md
 | --- | --- |
 | select | select-menu, swatch |
 | input Type=Select (completar) | select-menu Type=Text; cierra el `TODO` de input |
-| catalog-nav-group | catalog-nav-item |
-| catalog-nav-mobile | catalog-nav-trigger, catalog-nav-item |
+| ✅ catalog-nav-group | catalog-nav-item |
+| ✅ catalog-nav-mobile (dentro de catalog-nav) | catalog-nav-trigger, catalog-nav-item |
 | filter-panel | filter-row, filter-chip, button |
 | compare-bar | compare-slot, count-badge, divider, button |
 | download-modal | download-item |
@@ -211,7 +211,7 @@ product-card necesita los campos de las 4 imágenes en `docs/typesense-schema.md
 | --- | --- |
 | ✅ option-group (falta Type=Select) | option-tile, swatch-picker, select |
 | filter-bar | select (Type Filter), button |
-| catalog-nav | catalog-nav-group |
+| ✅ catalog-nav | catalog-nav-group |
 | compare-product | select (familia y variante), button |
 
 ### Nivel 4

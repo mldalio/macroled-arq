@@ -5,7 +5,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 - Si este archivo no coincide con Figma, manda Figma y se actualiza este archivo.
 - Al crear o modificar un componente en código, actualizar su **Estado en código** y su marca.
 
-**40 de 74 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
+**45 de 74 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
 
 | Componente | Etiqueta | Estado en código |
 | --- | --- | --- |
@@ -14,11 +14,11 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [breadcrumb-item](#breadcrumb-item) | `<arq-breadcrumb-item>` | En código ([README](../src/components/breadcrumb-item/README.md)) |
 | ✅ [button](#button) | `<arq-button>` | En código ([README](../src/components/button/README.md)) |
 | ✅ [carousel-controls](#carousel-controls) | `<arq-carousel-controls>` | En código ([README](../src/components/carousel-controls/README.md)) |
-| ⬜ [catalog-nav](#catalog-nav) | `<arq-catalog-nav>` | Pendiente |
-| ⬜ [catalog-nav-group](#catalog-nav-group) | `<arq-catalog-nav-group>` | Pendiente |
-| ⬜ [catalog-nav-item](#catalog-nav-item) | `<arq-catalog-nav-item>` | Pendiente |
-| ⬜ [catalog-nav-mobile](#catalog-nav-mobile) | `<arq-catalog-nav-mobile>` | Pendiente |
-| ⬜ [catalog-nav-trigger](#catalog-nav-trigger) | `<arq-catalog-nav-trigger>` | Pendiente |
+| ✅ [catalog-nav](#catalog-nav) | `<arq-catalog-nav>` | En código ([README](../src/components/catalog-nav/README.md)) |
+| ✅ [catalog-nav-group](#catalog-nav-group) | `<arq-catalog-nav-group>` | En código ([README](../src/components/catalog-nav-group/README.md)) |
+| ✅ [catalog-nav-item](#catalog-nav-item) | `<arq-catalog-nav-item>` | En código ([README](../src/components/catalog-nav-item/README.md)) |
+| ✅ [catalog-nav-mobile](#catalog-nav-mobile) | — | Dentro de catalog-nav ([README](../src/components/catalog-nav/README.md)) |
+| ✅ [catalog-nav-trigger](#catalog-nav-trigger) | — | Dentro de catalog-nav ([README](../src/components/catalog-nav/README.md)) |
 | ⬜ [catalog-toolbar](#catalog-toolbar) | `<arq-catalog-toolbar>` | Pendiente |
 | ✅ [category-card](#category-card) | `<arq-category-card>` | En código ([README](../src/components/category-card/README.md)) |
 | ✅ [checkbox](#checkbox) | `<arq-checkbox>` | En código ([README](../src/components/checkbox/README.md)) |

@@ -585,6 +585,80 @@
         </div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-catalog-nav-item">
+        <h2 id="demo-catalog-nav-item" class="demo-heading role-label">catalog-nav-item · &lt;arq-catalog-nav-item&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1035:2382. Link (&lt;a href&gt;); Selected = página actual (aria-current="page"). Size Default y Large. Hover y Focus son CSS.</p>
+        <div class="demo-row" role="list">
+          <arq-catalog-nav-item href="#demo-catalog-nav-item">Embutir</arq-catalog-nav-item>
+          <arq-catalog-nav-item href="#demo-catalog-nav-item" selected>Todo interior</arq-catalog-nav-item>
+          <arq-catalog-nav-item href="#demo-catalog-nav-item" size="large">Embutir</arq-catalog-nav-item>
+          <arq-catalog-nav-item href="#demo-catalog-nav-item" size="large" selected>Todo interior</arq-catalog-nav-item>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-catalog-nav">
+        <h2 id="demo-catalog-nav" class="demo-heading role-label">catalog-nav · &lt;arq-catalog-nav&gt; (+ catalog-nav-group, catalog-nav-mobile, catalog-nav-trigger)</h2>
+        <p class="demo-note role-body-sm">Figma 1035:2411 · 1035:2410 · 1207:3314 · 1215:3337. Un solo componente: sidebar desde 1024 px; hasta 1023 px, encabezado con la selección actual que abre los mismos grupos (probar con «Ver a 390»). El grupo del ítem elegido se abre solo. Links de ejemplo (URLs de categoría pendientes).</p>
+        <div class="demo-catalog-nav">
+          <arq-catalog-nav>
+            <arq-catalog-nav-group>
+              <span slot="label">Interior</span>
+              <arq-catalog-nav-item href="#demo-catalog-nav" selected>Todo interior</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="#demo-catalog-nav">Embutir</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="#demo-catalog-nav">Colgante</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="#demo-catalog-nav">Pared</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="#demo-catalog-nav">Aplicar</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="#demo-catalog-nav">Lámparas</arq-catalog-nav-item>
+            </arq-catalog-nav-group>
+            <arq-catalog-nav-group>
+              <span slot="label">Exterior</span>
+              <arq-catalog-nav-item href="#demo-catalog-nav">Todo exterior</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="#demo-catalog-nav">Jardín</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="#demo-catalog-nav">Bañadores</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="#demo-catalog-nav">Pared</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="#demo-catalog-nav">Lámparas</arq-catalog-nav-item>
+            </arq-catalog-nav-group>
+            <arq-catalog-nav-group>
+              <span slot="label">Lámparas</span>
+              <arq-catalog-nav-item href="#demo-catalog-nav">Todas las lámparas</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="#demo-catalog-nav">AR111 PRO</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="#demo-catalog-nav">MR16 PRO</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="#demo-catalog-nav">MR11</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="#demo-catalog-nav">Tira LED</arq-catalog-nav-item>
+            </arq-catalog-nav-group>
+            <arq-catalog-nav-group>
+              <span slot="label">Artefactos</span>
+              <arq-catalog-nav-item href="#demo-catalog-nav">Todos los artefactos</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="#demo-catalog-nav">MR11</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="#demo-catalog-nav">MR16</arq-catalog-nav-item>
+            </arq-catalog-nav-group>
+            <arq-catalog-nav-group>
+              <span slot="label">Colecciones</span>
+              <arq-catalog-nav-item href="#demo-catalog-nav">Todas las colecciones</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="#demo-catalog-nav">Kanu</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="#demo-catalog-nav">Hoshi</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="#demo-catalog-nav">Nombre de colección largo que ocupa dos líneas en el sidebar</arq-catalog-nav-item>
+            </arq-catalog-nav-group>
+          </arq-catalog-nav>
+        </div>
+        <div class="demo-dark" data-arq-theme="dark">
+          <div class="demo-catalog-nav">
+            <arq-catalog-nav label="Categorías (Dark)">
+              <arq-catalog-nav-group>
+                <span slot="label">Interior</span>
+                <arq-catalog-nav-item href="#demo-catalog-nav">Todo interior</arq-catalog-nav-item>
+                <arq-catalog-nav-item href="#demo-catalog-nav">Embutir</arq-catalog-nav-item>
+              </arq-catalog-nav-group>
+              <arq-catalog-nav-group>
+                <span slot="label">Exterior</span>
+                <arq-catalog-nav-item href="#demo-catalog-nav" selected>Jardín</arq-catalog-nav-item>
+                <arq-catalog-nav-item href="#demo-catalog-nav">Bañadores</arq-catalog-nav-item>
+              </arq-catalog-nav-group>
+            </arq-catalog-nav>
+          </div>
+        </div>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-sku">
         <h2 id="demo-sku" class="demo-heading role-label">sku · &lt;arq-sku&gt;</h2>
         <p class="demo-note role-body-sm">Figma 920:2539. Clic o Enter copia y muestra «Copiado» durante motion/duration/feedback. Hover: el ícono pasa a icon/primary (transición fast). «Simular falla» rompe el portapapeles una vez: el código queda seleccionado y se anuncia «Copialo con Ctrl+C».</p>

@@ -1,0 +1,90 @@
+/* catalog-nav-group · Figma 1035:2410. Solo tokens semánticos.
+   Línea superior border/default en color/border/subtle, padding vertical
+   space/padding/md, gap encabezado–lista space/gap/md. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.group {
+  border-top: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+/* El padding vertical del grupo va en el botón (todo el alto es clickeable);
+   abierto, el de abajo pasa a ser el gap hasta la lista. */
+.header {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-md);
+  width: 100%;
+  margin: 0;
+  padding: var(--arq-space-padding-md) 0;
+  border: 0;
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-secondary);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+}
+
+/* Open=True: label en color/text/primary (cerrado, color/text/secondary) */
+:host([open]) .header {
+  padding-bottom: var(--arq-space-gap-md);
+  color: var(--arq-color-text-primary);
+}
+
+.label {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+/* Ícono como icon-button Size=Default, Background=None: 24 = space/padding/xs
+   + icon/md. Hover: color/surface/hover. */
+.icon-box {
+  display: inline-flex;
+  flex: none;
+  padding: var(--arq-space-padding-xs);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-icon-primary);
+}
+
+.icon {
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+}
+
+:host(:not([open])) [data-icon='minus'],
+:host([open]) [data-icon='plus'] {
+  display: none;
+}
+
+@media (hover: hover) {
+  .header:hover .icon-box {
+    background: var(--arq-color-surface-hover);
+  }
+}
+
+/* Lista: gap space/gap/sm-md (el del set; la ficha dice space/gap/sm),
+   abajo space/padding/md + space/padding/xs. */
+.items {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-sm-md);
+  padding-bottom: calc(var(--arq-space-padding-md) + var(--arq-space-padding-xs));
+}
+
+/* Foco: anillo de DESIGN.md §7 en el encabezado (2px: valor fijado ahí) */
+.header:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.header:focus:not(:focus-visible) {
+  outline: none;
+}
