@@ -130,6 +130,9 @@
   --arq-layout-gallery-thumb: 105px; /** Ancho de gallery-thumb en product-gallery (105 Desktop · 76 Mobile). El alto sale de ratio/landscape (5:4). */
   --arq-layout-filter-panel: 560px; /** Ancho de los paneles en Desktop: filter-panel (lateral sobre el scrim) y download-modal. En Mobile el CSS no usa este valor. */
   --arq-layout-table-thumb: 56px; /** Miniatura cuadrada de cada fila de la tabla de variantes (glosario de la ficha). */
+  --arq-layout-compare-thumb: 48px; /** Foto cuadrada de compare-slot Size=Default (compare-bar y compare-header Compact en Desktop). */
+  --arq-layout-compare-thumb-sm: 28px; /** Ancho de compare-slot Size=Compact (miniatura en Mobile). El alto sale de ratio/portrait (7:10). */
+  --arq-layout-compare-slot: 400px; /** Ancho máximo de compare-slot Size=Default, para que no se estire en pantallas anchas. */
   --arq-motion-duration-fast: 120ms; /** Hover, toggle, foco. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-base: 200ms; /** Desplegables (disclosure) y menús. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-slow: 320ms; /** Fundido de imágenes de product-card. En ms. Con prefers-reduced-motion: 0. */
