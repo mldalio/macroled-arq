@@ -1,0 +1,202 @@
+{
+  "_nota": "Catálogo de ejemplo (VITE_DATA_SOURCE=mock). Nombres de colección reales; SKU, valores e imágenes de ejemplo. Forma: la de src/data/catalog.js. En cada grupo, specs vale para todas sus variantes y attributes de cada variante pisa o completa. Campos técnicos con los nombres del índice real (docs/typesense-schema.md).",
+  "collections": [
+    {
+      "id": "kanu",
+      "name": "Kanu",
+      "intro": "Una línea de exterior de perfil delgado, pensada para acompañar recorridos y jardines sin competir con el paisaje.",
+      "description": "Kanu combina un cuerpo de aluminio extruido con una óptica asimétrica que baña el suelo sin encandilar. Se presenta en versiones de jardín y de pared, en tres alturas y tres terminaciones.",
+      "images": {
+        "studio": "/demo/fixtures/img/card-estudio.svg",
+        "studioOn": "/demo/fixtures/img/card-estudio-on.svg",
+        "context": "/demo/fixtures/img/card-contexto.svg",
+        "contextOn": "/demo/fixtures/img/card-contexto-on.svg",
+        "gallery": ["/demo/fixtures/img/producto-1.svg", "/demo/fixtures/img/producto-2.svg", "/demo/fixtures/img/producto-3.svg"],
+        "description": "/demo/fixtures/img/producto-2.svg",
+        "inspiration": ["/demo/fixtures/img/producto-1.svg", "/demo/fixtures/img/producto-3.svg"]
+      }
+    },
+    {
+      "id": "tori",
+      "name": "Tori",
+      "intro": "Balizas de jardín de líneas puras, en tres tamaños.",
+      "description": "Tori es una familia de balizas con difusor opal que reparte la luz de forma pareja.",
+      "images": {
+        "studio": "/demo/fixtures/img/card-estudio.svg",
+        "context": "/demo/fixtures/img/card-contexto.svg",
+        "gallery": ["/demo/fixtures/img/producto-3.svg"]
+      }
+    },
+    {
+      "id": "douli",
+      "name": "Douli",
+      "intro": "Colgantes de interior con difusor de vidrio.",
+      "description": "Douli suma una luz cálida y envolvente a mesas, barras y livings.",
+      "images": {
+        "studio": "/demo/fixtures/img/card-estudio.svg",
+        "studioOn": "/demo/fixtures/img/card-estudio-on.svg",
+        "context": "/demo/fixtures/img/card-contexto.svg",
+        "contextOn": "/demo/fixtures/img/card-contexto-on.svg",
+        "gallery": ["/demo/fixtures/img/producto-2.svg", "/demo/fixtures/img/producto-1.svg"]
+      }
+    },
+    {
+      "id": "yoru",
+      "name": "Yoru",
+      "intro": "",
+      "description": "",
+      "images": {}
+    }
+  ],
+  "groups": [
+    {
+      "id": "kanu-jardin",
+      "name": "Kanu Jardín",
+      "collection": "kanu",
+      "productType": "Luminaria",
+      "environment": ["Exterior"],
+      "application": "Jardín",
+      "variantAttributes": ["color_carcasa", "altura"],
+      "story": "## Diseño\nPerfil de aluminio extruido de 6 cm, con una cabeza que oculta la fuente de luz.\n- Óptica asimétrica: baña el suelo sin encandilar\n- Cuerpo de aluminio con pintura en polvo para exterior\n- Base de anclaje oculta",
+      "inspiration": "Pensada para marcar recorridos en jardines y accesos, Kanu desaparece de día y dibuja el camino de noche.",
+      "images": {
+        "ambient": ["/demo/fixtures/img/producto-1.svg", "/demo/fixtures/img/producto-2.svg", "/demo/fixtures/img/producto-3.svg"],
+        "description": "/demo/fixtures/img/producto-2.svg",
+        "inspiration": "/demo/fixtures/img/producto-3.svg"
+      },
+      "specs": {
+        "potencia": "12W", "flujo_luminoso": "850 lm", "lumenes_lmw": "71 lm/W", "temperatura_color": "3000 K", "cri": "90", "angulo_apertura": "120°", "ugr": "19",
+        "tension_proveedor": "220 V", "factor_potencia": "> 0,9", "dimeable": "No", "tipo_driver": "Integrado",
+        "material_cuerpo": "Aluminio", "material_lente": "Policarbonato opal", "tamanio": "6*2,5*50cm", "peso": "1,2 kg",
+        "proteccion_ip": "IP65", "proteccion_ik": "IK08", "tipo_montaje": "Estaca", "temperatura_operacion": "-20 °C a 45 °C",
+        "vida_util": "50.000 h", "garantia_proveedor": "2 años"
+      },
+      "variants": [
+        { "sku": "KANU-J-500-12W-N-WW", "isDefault": true, "description": "Baliza de jardín de 50 cm en negro, 12 W, luz cálida.", "attributes": { "color_carcasa": "Negro", "altura": "50 cm" }, "images": { "studio": "/demo/fixtures/img/card-estudio.svg", "studioOn": "/demo/fixtures/img/card-estudio-on.svg", "context": "/demo/fixtures/img/card-contexto.svg", "contextOn": "/demo/fixtures/img/card-contexto-on.svg", "gallery": ["/demo/fixtures/img/producto-1.svg", "/demo/fixtures/img/producto-2.svg", "/demo/fixtures/img/producto-3.svg"], "galleryOn": ["/demo/fixtures/img/producto-1-on.svg", "/demo/fixtures/img/producto-2-on.svg"] }, "downloads": { "ies": "https://s3.coresagroup.com/MACROLED/ARQ/ies/KANU-J-500-12W.ies", "cad": "#cad", "manual": "#manual", "fotometria": "#fotometria" } },
+        { "sku": "KANU-J-900-18W-N-WW", "description": "Baliza de jardín de 90 cm en negro, 18 W, luz cálida.", "attributes": { "color_carcasa": "Negro", "altura": "90 cm", "potencia": "18W", "flujo_luminoso": "1250 lm", "tamanio": "6*2,5*90cm", "peso": "1,8 kg" }, "images": { "studio": "/demo/fixtures/img/card-estudio.svg", "context": "/demo/fixtures/img/card-contexto.svg", "gallery": ["/demo/fixtures/img/producto-2.svg"] }, "downloads": { "ies": "#ies" } },
+        { "sku": "KANU-J-500-12W-V-WW", "description": "Baliza de jardín de 50 cm en verde, 12 W, luz cálida.", "attributes": { "color_carcasa": "Verde", "altura": "50 cm" }, "images": { "studio": "/demo/fixtures/img/card-estudio.svg", "gallery": ["/demo/fixtures/img/producto-3.svg"] }, "downloads": {} },
+        { "sku": "KANU-J-500-12W-T-WW", "description": "Baliza de jardín de 50 cm en terracota, 12 W, luz cálida.", "attributes": { "color_carcasa": "Terracota", "altura": "50 cm" }, "images": {}, "downloads": {} }
+      ]
+    },
+    {
+      "id": "kanu-pared",
+      "name": "Kanu Pared",
+      "collection": "kanu",
+      "productType": "Luminaria",
+      "environment": ["Exterior"],
+      "application": "Pared",
+      "variantAttributes": ["color_carcasa", "altura"],
+      "story": "## Diseño\nLa versión de pared de Kanu, con la misma óptica asimétrica.",
+      "inspiration": "",
+      "images": { "ambient": ["/demo/fixtures/img/producto-2.svg"] },
+      "specs": { "potencia": "12W", "flujo_luminoso": "780 lm", "temperatura_color": "3000 K", "cri": "90", "material_cuerpo": "Aluminio", "proteccion_ip": "IP65", "tipo_montaje": "Aplicar", "garantia_proveedor": "2 años" },
+      "variants": [
+        { "sku": "KANU-P-350-12W-N-WW", "isDefault": true, "description": "Aplique de pared de 35 cm en negro.", "attributes": { "color_carcasa": "Negro", "altura": "35 cm", "tamanio": "6*2,5*35cm" }, "images": { "studio": "/demo/fixtures/img/card-estudio.svg", "studioOn": "/demo/fixtures/img/card-estudio-on.svg", "context": "/demo/fixtures/img/card-contexto.svg", "gallery": ["/demo/fixtures/img/producto-2.svg"] }, "downloads": { "ies": "#ies" } },
+        { "sku": "KANU-P-350-12W-V-WW", "description": "Aplique de pared de 35 cm en verde.", "attributes": { "color_carcasa": "Verde", "altura": "35 cm", "tamanio": "6*2,5*35cm" }, "images": {}, "downloads": {} },
+        { "sku": "KANU-P-500-15W-N-WW", "description": "Aplique de pared de 50 cm en negro.", "attributes": { "color_carcasa": "Negro", "altura": "50 cm", "potencia": "15W", "flujo_luminoso": "1000 lm", "tamanio": "6*2,5*50cm" }, "images": {}, "downloads": {} }
+      ]
+    },
+    {
+      "id": "tori-jardin",
+      "name": "Tori Jardín",
+      "collection": "tori",
+      "productType": "Luminaria",
+      "environment": ["Exterior"],
+      "application": "Jardín",
+      "variantAttributes": ["altura"],
+      "story": "",
+      "inspiration": "",
+      "images": {},
+      "specs": { "potencia": "7W", "flujo_luminoso": "520 lm", "temperatura_color": "3000 K", "cri": "80", "material_cuerpo": "Aluminio", "material_lente": "Policarbonato opal", "proteccion_ip": "IP65", "color_carcasa": "Gris grafito", "garantia_proveedor": "2 años" },
+      "variants": [
+        { "sku": "TORI-J-450-7W-G-WW", "isDefault": true, "description": "Baliza Tori de 45 cm.", "attributes": { "altura": "45 cm" }, "images": { "studio": "/demo/fixtures/img/card-estudio.svg", "context": "/demo/fixtures/img/card-contexto.svg" }, "downloads": { "ies": "#ies" } },
+        { "sku": "TORI-J-650-7W-G-WW", "description": "Baliza Tori de 65 cm.", "attributes": { "altura": "65 cm" }, "images": {}, "downloads": {} },
+        { "sku": "TORI-J-850-9W-G-WW", "description": "Baliza Tori de 85 cm.", "attributes": { "altura": "85 cm", "potencia": "9W", "flujo_luminoso": "680 lm" }, "images": {}, "downloads": {} }
+      ]
+    },
+    {
+      "id": "mini-tori-jardin",
+      "name": "Mini Tori Jardín",
+      "collection": "tori",
+      "productType": "Luminaria",
+      "environment": ["Exterior"],
+      "application": "Jardín",
+      "variantAttributes": [],
+      "story": "",
+      "inspiration": "",
+      "images": {},
+      "specs": { "potencia": "4W", "flujo_luminoso": "300 lm", "temperatura_color": "3000 K", "cri": "80", "tamanio": "822*18*42mm", "proteccion_ip": "IP65" },
+      "variants": [
+        { "sku": "MTORI-J-4W-WW (doble)", "isDefault": true, "description": "Mini Tori doble, 4 W.", "attributes": {}, "images": {}, "downloads": {} }
+      ]
+    },
+    {
+      "id": "douli-colgante",
+      "name": "Douli Colgante",
+      "collection": "douli",
+      "productType": "Luminaria",
+      "environment": ["Interior"],
+      "application": "Colgante",
+      "variantAttributes": ["color_carcasa", "tamanio"],
+      "story": "## Diseño\nUn difusor de vidrio soplado sobre una estructura mínima de metal.\n- Vidrio opal soplado\n- Cable textil de 1,5 m regulable",
+      "inspiration": "Sobre la mesa o en grupo sobre una barra, Douli arma una luz cálida a la altura de la mirada.",
+      "images": { "ambient": ["/demo/fixtures/img/producto-2.svg", "/demo/fixtures/img/producto-1.svg"], "inspiration": "/demo/fixtures/img/producto-1.svg" },
+      "specs": { "potencia": "9W", "flujo_luminoso": "650 lm", "temperatura_color": "2700 K", "cri": "90", "dimeable": "Sí", "material_cuerpo": "Vidrio y acero", "largo_cable": "1,5 m", "proteccion_ip": "IP20", "tipo_montaje": "Colgante", "garantia_proveedor": "2 años" },
+      "variants": [
+        { "sku": "DOULI-C-300-9W-B-WW", "isDefault": true, "description": "Colgante Douli de 30 cm, blanco.", "attributes": { "color_carcasa": "Blanco", "tamanio": "Ø30*35cm" }, "images": { "studio": "/demo/fixtures/img/card-estudio.svg", "studioOn": "/demo/fixtures/img/card-estudio-on.svg", "context": "/demo/fixtures/img/card-contexto.svg", "contextOn": "/demo/fixtures/img/card-contexto-on.svg", "gallery": ["/demo/fixtures/img/producto-2.svg", "/demo/fixtures/img/producto-1.svg"] }, "downloads": { "ies": "#ies", "manual": "#manual" } },
+        { "sku": "DOULI-C-300-9W-N-WW", "description": "Colgante Douli de 30 cm, negro.", "attributes": { "color_carcasa": "Negro", "tamanio": "Ø30*35cm" }, "images": {}, "downloads": {} },
+        { "sku": "DOULI-C-450-15W-B-WW", "description": "Colgante Douli de 45 cm, blanco.", "attributes": { "color_carcasa": "Blanco", "tamanio": "Ø45*50cm", "potencia": "15W", "flujo_luminoso": "1100 lm" }, "images": {}, "downloads": {} }
+      ]
+    },
+    {
+      "id": "yoru-jardin",
+      "name": "Yoru Jardín con un nombre largo para probar dos líneas",
+      "collection": "yoru",
+      "productType": "Luminaria",
+      "environment": ["Exterior"],
+      "application": "Jardín",
+      "variantAttributes": ["color_carcasa"],
+      "story": "",
+      "inspiration": "",
+      "images": {},
+      "specs": { "potencia": "8W", "cri": "90", "tamanio": "10*60cm", "ugr": "19" },
+      "variants": [
+        { "sku": "YORU-J-8W-V-WW", "isDefault": true, "description": "", "attributes": { "color_carcasa": "Verde" }, "images": {}, "downloads": {} },
+        { "sku": "YORU-J-8W-N-WW", "description": "", "attributes": { "color_carcasa": "Negro" }, "images": {}, "downloads": {} }
+      ]
+    },
+    {
+      "id": "mr16-pro",
+      "name": "MR16 PRO",
+      "collection": null,
+      "productType": "Lámpara",
+      "environment": ["Interior", "Exterior"],
+      "application": null,
+      "variantAttributes": ["temperatura_color"],
+      "story": "",
+      "inspiration": "",
+      "images": {},
+      "specs": { "potencia": "7W", "flujo_luminoso": "560 lm", "cri": "90", "angulo_apertura": "36°", "dimeable": "Sí", "vida_util": "25.000 h" },
+      "variants": [
+        { "sku": "MR16-PRO-7W-WW", "isDefault": true, "description": "Lámpara MR16 de 7 W, luz cálida.", "attributes": { "temperatura_color": "3000 K" }, "images": { "studio": "/demo/fixtures/img/card-estudio.svg" }, "downloads": {} },
+        { "sku": "MR16-PRO-7W-NW", "description": "Lámpara MR16 de 7 W, luz neutra.", "attributes": { "temperatura_color": "4000 K" }, "images": {}, "downloads": {} }
+      ]
+    },
+    {
+      "id": "ar111-pro",
+      "name": "AR111 PRO",
+      "collection": null,
+      "productType": "Lámpara",
+      "environment": ["Interior"],
+      "application": null,
+      "variantAttributes": [],
+      "story": "",
+      "inspiration": "",
+      "images": {},
+      "specs": { "potencia": "15W", "flujo_luminoso": "1200 lm", "cri": "90", "angulo_apertura": "24°", "temperatura_color": "3000 K" },
+      "variants": [
+        { "sku": "AR111-PRO-15W-WW", "isDefault": true, "description": "Lámpara AR111 de 15 W.", "attributes": {}, "images": {}, "downloads": {} }
+      ]
+    }
+  ]
+}

@@ -413,3 +413,12 @@ setup() {
 ### Acabados
 
 - Sin definir. El swatch muestra el neutro con el nombre (DESIGN.md §8) hasta que haya imágenes y la tabla de códigos (N, V, R, B, BN, P).
+
+## 2026-10-02 · Datos de ejemplo mientras se completa la base
+
+- **Para qué:** armar y diseñar todas las páginas antes de que la base de Typesense esté completa (hoy no trae grupos, nombres, textos ni imágenes: `docs/typesense-schema.md`, Estado del índice).
+- **Dos fuentes, una forma:** `src/data/source.js` carga el catálogo desde Typesense o desde el ejemplo (`demo/fixtures/catalogo.json`). Las dos dan la misma forma (`src/data/catalog.js`), así que páginas y componentes no saben cuál se usa.
+- **Cómo se elige:** `VITE_DATA_SOURCE=mock` en `.env`, solo con `npm run dev`. El build (`dist/arq.js`) siempre usa Typesense y no incluye el ejemplo.
+- **Cuando la base esté completa:** se ajusta solo `src/data/typesense-adapter.js` (nombres de campo de identificación, textos e imágenes) y se cambia `.env` a `typesense`. Mientras falte `product_group_id`, cada SKU es su propio grupo.
+- **Catálogo en memoria:** se carga una vez por página y `catalog.js` resuelve listados, filtros, ficha, comparativa, búsqueda y navegación (2026-10-02 · Listados: una sola consulta).
+- **Campos técnicos:** etiquetas, sección del acordeón y de la comparativa, y filtros en `src/data/attributes.js`. `TODO` (diseño): confirmar las secciones y el reparto de los campos (propuesta a partir de Ficha y Comparativa de Final).
