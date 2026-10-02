@@ -1,0 +1,203 @@
+/* navbar · Figma 753:2907. Solo tokens semánticos. Desktop es la base;
+   Mobile (max-width: 767px): logo Small, lupa y menú. */
+
+/* Default: queda arriba al desplazar (sticky). Transparent: fixed, encima
+   del hero (TODO diseño: confirmar). z-index sin token: por encima del
+   contenido de la página. */
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 4;
+}
+
+:host([theme='transparent']) {
+  position: fixed;
+  inset-inline: 0;
+}
+
+.navbar {
+  position: relative;
+}
+
+/* Barra: alto 56 (no hay token de alto: space/gap/md × 2 + icon/xl, el
+   icon-button de 24 con su aire), fondo color/surface/default, padding
+   lateral layout/gutter, línea inferior color/border/subtle. El alto no
+   cambia con la búsqueda abierta (el campo mide 42). */
+.bar {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-xl);
+  height: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
+  padding: 0 var(--arq-layout-gutter);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  background: var(--arq-color-surface-default);
+  color: var(--arq-color-text-primary);
+}
+
+/* Theme=Transparent sobre la foto: color/overlay/translucent + blur/backdrop,
+   logo, links e íconos en inverso */
+.over-photo .bar {
+  background: var(--arq-color-overlay-translucent);
+  backdrop-filter: blur(var(--arq-blur-backdrop));
+  -webkit-backdrop-filter: blur(var(--arq-blur-backdrop));
+}
+
+.over-photo .logo {
+  color: var(--arq-color-text-inverse);
+}
+
+.over-photo .search-open,
+.over-photo .actions arq-icon-button {
+  color: var(--arq-color-icon-inverse);
+}
+
+.logo {
+  flex: none;
+}
+
+/* Derecha: links (gap space/gap/xl) y búsqueda */
+.right {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-xl);
+  min-width: 0;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-xl);
+}
+
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Search: el campo reemplaza a la lupa (layout/search-field) y el dropdown
+   va debajo, con el mismo ancho */
+.search-box {
+  position: relative;
+  width: var(--arq-layout-search-field);
+}
+
+.search-dropdown {
+  position: absolute;
+  top: 100%;
+  inset-inline: 0;
+}
+
+.actions {
+  display: none;
+}
+
+/* Mega-menu: debajo de la barra, a todo el ancho */
+.mega {
+  position: absolute;
+  top: 100%;
+  inset-inline: 0;
+}
+
+/* ── Menú mobile (Mode=Menu y Products): diálogo a pantalla completa ── */
+.menu {
+  box-sizing: border-box;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-default);
+  color: var(--arq-color-text-primary);
+  overscroll-behavior: contain;
+}
+
+.menu-bar {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
+  padding: 0 var(--arq-layout-gutter);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+/* Mode=Menu: nav-link Mobile apilados, padding vertical space/gap/sm */
+.menu-main {
+  display: flex;
+  flex-direction: column;
+  padding-block: var(--arq-space-gap-sm);
+}
+
+/* Mode=Products: arriba space/gap/sm, abajo space/gap/xl */
+.menu-products {
+  display: flex;
+  flex-direction: column;
+  padding: var(--arq-space-gap-sm) 0 var(--arq-space-gap-xl);
+}
+
+/* Volver: chevron-left + "Productos" (role/body-medium,
+   color/text/secondary), gap space/gap/xs, padding space/gap/sm ×
+   layout/gutter */
+.back {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-xs);
+  padding: var(--arq-space-gap-sm) var(--arq-layout-gutter);
+  border: 0;
+  background: none;
+  color: var(--arq-color-text-secondary);
+  text-align: start;
+  cursor: pointer;
+}
+
+.back .icon {
+  box-sizing: content-box;
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+  padding: var(--arq-space-padding-xs);
+  color: var(--arq-color-icon-primary);
+}
+
+.back:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: calc(var(--arq-border-strong) * -1);
+}
+
+/* Grupos (mega-link Type=Group): arriba space/gap/md, abajo
+   space/padding/md, a los lados layout/gutter */
+.groups {
+  display: flex;
+  flex-direction: column;
+  padding: var(--arq-space-gap-md) var(--arq-layout-gutter) var(--arq-space-padding-md);
+}
+
+/* "Ver colecciones" */
+.collections {
+  padding: var(--arq-space-gap-md) var(--arq-layout-gutter) 0;
+}
+
+@media (max-width: 767px) {
+  .right {
+    display: contents;
+  }
+
+  .links,
+  .search {
+    display: none;
+  }
+
+  /* Lupa y menú, gap space/gap/sm */
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: var(--arq-space-gap-sm);
+  }
+}

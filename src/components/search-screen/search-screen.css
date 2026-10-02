@@ -1,0 +1,52 @@
+/* search-screen · Figma 796:2351. Solo tokens semánticos. Pantalla completa
+   (es la búsqueda de Mobile). */
+
+:host {
+  display: contents;
+}
+
+/* <dialog> sin los estilos del navegador, a pantalla completa */
+.dialog {
+  box-sizing: border-box;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-default);
+  color: var(--arq-color-text-primary);
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Barra: volver + campo, gap space/gap/sm, padding space/gap/md ×
+   layout/gutter, línea inferior color/border/subtle */
+.header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  padding: var(--arq-space-gap-md) var(--arq-layout-gutter);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+.field {
+  flex: 1;
+}
+
+/* Resultados con scroll propio. Las filas llevan layout/gutter a los lados
+   (--search-inline: variable local, la leen search-result y search-see-all) */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  --search-inline: var(--arq-layout-gutter);
+}

@@ -8,12 +8,13 @@
 // - Sin dropdown: <a href>. Current: aria-current="page" + indicador.
 // - Con dropdown: <button aria-expanded>. Al tocarlo emite arq:toggle
 //   { open: !open }; open y current los controla el navbar.
-//   TODO (mega-menu): como "Productos" deja de ser link, el mega-menu tiene que
-//   incluir un link "Ver todos".
+//   El mega-menu incluye los "Ver todo…" (Productos deja de ser link).
 // Breakpoint es CSS (≤ 767 px: fila del menú mobile). El estilo de texto
 // (role/body → role/body-xl) lo cambia el JS con el mismo media query.
 // TODO (navbar): aria-controls hacia el mega-menu (los ids no cruzan el Shadow DOM).
-// TODO (navbar): Theme=Inverse (navbar Transparent sobre el hero), con diseño.
+// Theme=Inverse (navbar Transparent sobre el hero): label, indicador,
+// subrayado y chevron en color/text/inverse y color/icon/inverse. Solo desktop:
+// el menú mobile siempre va sobre color/surface/default.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { icon } from '../../base/icons.js';
@@ -30,6 +31,7 @@ class ArqNavLink extends ArqElement {
     open: { type: Boolean }, // Open
     current: { type: Boolean }, // State=Current
     href: { type: String },
+    theme: { type: String, values: ['default', 'inverse'], default: 'default' }, // Theme
   };
   static template =
     `<a class="link">` +

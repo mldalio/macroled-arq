@@ -5,6 +5,9 @@
   display: inline-flex;
   flex: none;
   vertical-align: middle;
+  /* color/icon/primary. Un contenedor lo puede pisar en el host (navbar
+     Transparent: color/icon/inverse, como el ícono Theme=Inverse) */
+  color: var(--arq-color-icon-primary);
 }
 
 /* Size=Default: 24 × 24 = ícono icon/md (16) + space/padding/xs (4) por lado.
@@ -20,7 +23,7 @@
   border: 0;
   border-radius: var(--arq-radius-control);
   background: var(--arq-color-surface-transparent);
-  color: var(--arq-color-icon-primary);
+  color: inherit;
   cursor: pointer;
   -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
 }

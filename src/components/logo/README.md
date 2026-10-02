@@ -32,4 +32,4 @@ Logotipo de Macroled Arq (MACROLED + ARQ). Siempre es link a la home de Arq.
 ## Pendientes
 
 - Los anchos van en px dentro de `logo.css`: son medidas del archivo del logo, no del sistema (excepción anotada en `docs/decisiones.md`).
-- `TODO` (navbar) Sobre el hero (navbar Theme=Transparent) el logo toma el color inverso. Se define al construir el navbar.
+- Sobre el hero (navbar Theme=Transparent) el navbar le pone `color/text/inverse`.

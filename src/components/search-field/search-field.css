@@ -1,0 +1,61 @@
+/* search-field · Figma 795:2179. Solo tokens semánticos. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Campo: fondo color/surface/default, borde border/default en
+   color/border/default; padding space/gap/sm × space/padding/md (derecha
+   space/padding/xs, para la cruz), gap space/gap/md */
+.field {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-md);
+  padding: var(--arq-space-gap-sm) var(--arq-space-padding-xs) var(--arq-space-gap-sm) var(--arq-space-padding-md);
+  border: var(--arq-border-default) solid var(--arq-color-border-default);
+  background: var(--arq-color-surface-default);
+}
+
+/* Sin cruz, el padding derecho es el mismo que el izquierdo */
+:host(:not([show-close])) .field {
+  padding-inline-end: var(--arq-space-padding-md);
+}
+
+/* State=Focus: borde border/focus en color/border/focus. Es el foco del
+   campo (no se suma anillo afuera: el borde ya lo marca, como el set) */
+.field:focus-within {
+  border-color: var(--arq-color-border-focus);
+}
+
+/* Texto role/body: valor color/text/primary, placeholder color/text/tertiary */
+.input {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--arq-color-text-primary);
+  caret-color: var(--arq-color-text-primary);
+  appearance: none;
+}
+
+.input::placeholder {
+  color: var(--arq-color-text-tertiary);
+  opacity: 1;
+}
+
+.input:focus {
+  outline: none;
+}
+
+/* Sin la cruz nativa del navegador: la del set es icon-button */
+.input::-webkit-search-cancel-button,
+.input::-webkit-search-decoration {
+  appearance: none;
+}
+
+.close {
+  flex: none;
+}

@@ -1348,6 +1348,130 @@
         </div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-navbar">
+        <h2 id="demo-navbar" class="demo-heading role-label">navbar · &lt;arq-navbar&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 753:2907. Productos abre el mega-menu (Desktop) o el submenú (Mobile, con «volver»). La lupa abre la búsqueda: escribí «kanu», «jardín» o un SKU; ↑ ↓ eligen y Enter abre; Esc cierra. Datos del catálogo de ejemplo (VITE_DATA_SOURCE=mock). En la demo la barra no queda fija.</p>
+        <div class="demo-navbar">
+          <arq-navbar>
+            <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-navbar">Glosario</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-navbar" current>Contacto</arq-nav-link>
+          </arq-navbar>
+          <div class="demo-placeholder role-body-sm">Contenido de la página</div>
+        </div>
+        <p class="demo-note role-body-sm">Theme=Transparent sobre la foto del hero (nav-link Theme=Inverse). Al abrir un menú o la búsqueda pasa a Default:</p>
+        <div class="demo-navbar demo-navbar--photo">
+          <arq-navbar theme="transparent" label="Principal (sobre foto)">
+            <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-navbar">Glosario</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-navbar">Contacto</arq-nav-link>
+          </arq-navbar>
+          <img src="/demo/fixtures/img/hero-1.svg" alt="">
+        </div>
+        <p class="demo-note role-body-sm">Dark (Iluminar en la ficha: data-arq-theme="dark" en el navbar):</p>
+        <div class="demo-navbar">
+          <arq-navbar data-arq-theme="dark" label="Principal (Dark)">
+            <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-navbar">Glosario</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-navbar">Contacto</arq-nav-link>
+          </arq-navbar>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-mega-menu">
+        <h2 id="demo-mega-menu" class="demo-heading role-label">mega-menu · &lt;arq-mega-menu&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 841:2282. Pestañas Aplicación, Lámparas y artefactos y Colecciones (← → cambian). Columnas, links y «Ver todo…» salen de los datos; una pestaña sin datos no se muestra. Imagen layout/mega-menu-image × ratio/portrait-soft (sin imagen: color/surface/subtle). Solo Desktop.</p>
+        <div class="demo-bleed">
+          <arq-mega-menu data-demo-mega-menu></arq-mega-menu>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-mega-link">
+        <h2 id="demo-mega-link" class="demo-heading role-label">mega-link · &lt;arq-mega-link&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 840:2070. Type=Link Size Default y Large, con bajada y texto largo; Type=Group cerrado y abierto (+ / –). Hover y Focus con el mouse y con Tab.</p>
+        <div class="demo-mega-links">
+          <div>
+            <arq-mega-link href="#demo-mega-link" show-arrow>Jardín</arq-mega-link>
+            <arq-mega-link href="#demo-mega-link" show-arrow>Kanu<span slot="meta">Jardín · Pared</span></arq-mega-link>
+            <arq-mega-link href="#demo-mega-link" show-arrow>Una colección con un nombre largo que ocupa dos líneas<span slot="meta">Embutir · Aplicar · Colgante</span></arq-mega-link>
+            <arq-mega-link href="#demo-mega-link">Sin flecha</arq-mega-link>
+          </div>
+          <div>
+            <arq-mega-link href="#demo-mega-link" size="large" show-arrow>Jardín</arq-mega-link>
+            <arq-mega-link type="group">Exterior
+              <a slot="links" href="#demo-mega-link">Jardín</a>
+              <a slot="links" href="#demo-mega-link">Pared</a>
+              <arq-button slot="links" type="underline" show-underline href="#demo-mega-link">Ver todo</arq-button>
+            </arq-mega-link>
+            <arq-mega-link type="group" open>Interior
+              <a slot="links" href="#demo-mega-link">Embutir</a>
+              <a slot="links" href="#demo-mega-link">Colgante</a>
+              <a slot="links" href="#demo-mega-link">Lámparas</a>
+              <arq-button slot="links" type="underline" show-underline href="#demo-mega-link">Ver todo</arq-button>
+            </arq-mega-link>
+          </div>
+        </div>
+        <div class="demo-dark" data-arq-theme="dark">
+          <div class="demo-mega-links">
+            <div>
+              <arq-mega-link href="#demo-mega-link" show-arrow>Kanu<span slot="meta">Jardín · Pared</span></arq-mega-link>
+            </div>
+            <div>
+              <arq-mega-link type="group" open>Interior
+                <a slot="links" href="#demo-mega-link">Embutir</a>
+                <arq-button slot="links" type="underline" show-underline href="#demo-mega-link">Ver todo</arq-button>
+              </arq-mega-link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-search-field">
+        <h2 id="demo-search-field" class="demo-heading role-label">search-field · &lt;arq-search-field&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 795:2179. Empty, Filled y sin cruz (Mobile). Focus: borde color/border/focus. Emite arq:input, arq:submit, arq:navigate (↑ ↓) y arq:close.</p>
+        <div class="demo-search">
+          <arq-search-field show-close></arq-search-field>
+          <arq-search-field show-close value="kanu"></arq-search-field>
+          <arq-search-field></arq-search-field>
+        </div>
+        <p class="demo-note role-body-sm" data-demo-search-log>arq:input → (todavía nada)</p>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-search-result">
+        <h2 id="demo-search-result" class="demo-heading role-label">search-result · search-see-all</h2>
+        <p class="demo-note role-body-sm">Figma 789:3045 y 795:2206. Con y sin imagen, Active (resaltado con las flechas), colección y nombre largo. Hover y Focus con el mouse y con Tab.</p>
+        <div class="demo-search">
+          <div>
+            <arq-search-result href="#demo-search-result" image="/demo/fixtures/img/card-estudio.svg">Kanu Jardín<span slot="meta">KANU-J-500-12W-N-WW</span></arq-search-result>
+            <arq-search-result href="#demo-search-result" image="/demo/fixtures/img/card-contexto.svg" active>Kanu Pared<span slot="meta">KANU-P-350-12W-N-WW</span></arq-search-result>
+            <arq-search-result href="#demo-search-result">Kanu<span slot="meta">Colección</span></arq-search-result>
+            <arq-search-result href="#demo-search-result">Producto con un nombre largo que ocupa dos líneas en el desplegable<span slot="meta">MTORI-J-4W-WW (doble)</span></arq-search-result>
+            <arq-search-see-all href="#demo-search-result" term="kanu" count="12"></arq-search-see-all>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-search-dropdown">
+        <h2 id="demo-search-dropdown" class="demo-heading role-label">search-dropdown · search-screen</h2>
+        <p class="demo-note role-body-sm">Figma 796:2271 y 796:2351. Results y No results (ancho layout/search-field). search-screen es la búsqueda de Mobile a pantalla completa: «Abrir search-screen» la muestra con resultados de ejemplo; volver o Esc la cierran.</p>
+        <div class="demo-search">
+          <arq-search-dropdown term="kanu">
+            <arq-search-result href="#demo-search-dropdown" image="/demo/fixtures/img/card-estudio.svg">Kanu Jardín<span slot="meta">KANU-J-500-12W-N-WW</span></arq-search-result>
+            <arq-search-result href="#demo-search-dropdown">Kanu<span slot="meta">Colección</span></arq-search-result>
+            <arq-search-see-all href="#demo-search-dropdown" term="kanu" count="12"></arq-search-see-all>
+          </arq-search-dropdown>
+          <arq-search-dropdown state="no-results" term="lámpara roja"></arq-search-dropdown>
+        </div>
+        <div class="demo-row">
+          <arq-button type="outline" data-demo-search-screen>Abrir search-screen</arq-button>
+        </div>
+        <arq-search-screen data-demo-screen>
+          <arq-search-result href="#demo-search-dropdown" image="/demo/fixtures/img/card-estudio.svg">Kanu Jardín<span slot="meta">KANU-J-500-12W-N-WW</span></arq-search-result>
+          <arq-search-result href="#demo-search-dropdown">Kanu Pared<span slot="meta">KANU-P-350-12W-N-WW</span></arq-search-result>
+          <arq-search-see-all href="#demo-search-dropdown" term="kanu" count="12"></arq-search-see-all>
+        </arq-search-screen>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-section-header">
         <h2 id="demo-section-header" class="demo-heading role-label">section-header · &lt;arq-section-header&gt;</h2>
         <p class="demo-note role-body-sm">Figma 1036:2448. Type Link, Description, Title y Stacked. Hasta 767 px se apila y Type=Link no muestra su link: la página pone un button al final del bloque (ejemplo debajo de Link).</p>

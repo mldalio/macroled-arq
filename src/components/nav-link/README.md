@@ -19,6 +19,7 @@ Link de primer nivel del navbar (desktop) y fila del menú mobile. Current marca
 | Open | `open` | `open` | booleano · menú abierto (`aria-expanded="true"`); lo controla el navbar |
 | State=Current | `current` | `current` | booleano · página actual (`aria-current="page"`) + indicador; lo controla el navbar |
 | — | `href` | `href` | destino (sin Has dropdown) |
+| Theme | `theme` | `theme` | `default` · `inverse` (def. `default`) · Inverse en el navbar Transparent, sobre foto (solo desktop) |
 
 - Hover, Pressed y Focus son CSS. Breakpoint es CSS: hasta 767 px es la fila del menú mobile.
 - **Sin dropdown:** `<a href>`. **Con dropdown:** `<button aria-expanded>`; al tocarlo emite `arq:toggle` con `{ open: !open }` y el navbar decide abrir o cerrar.
@@ -40,8 +41,7 @@ Link de primer nivel del navbar (desktop) y fila del menú mobile. Current marca
 
 ## Pendientes
 
-- `TODO` (navbar) **Theme=Inverse** (navbar Transparent sobre el hero): queda para cuando se haga el navbar, con diseño (opacidad de Pressed sin token, color del foco sobre foto, Inverse con Iluminar).
-- `TODO` (mega-menu) "Productos" con Has dropdown deja de ser link: el mega-menu tiene que incluir un link "Ver todos".
-- `TODO` (navbar) `aria-controls` hacia el mega-menu: los ids no cruzan el Shadow DOM.
+- `TODO` (diseño) **Theme=Inverse**: Pressed queda en `color/text/inverse` (el set no define otro color) y el anillo de foco usa `color/border/focus`, que sobre una foto oscura se ve poco.
+- `TODO` (a11y) `aria-controls` hacia el mega-menu: los ids no cruzan el Shadow DOM (el mega-menu vive en el del navbar). El estado lo comunica `aria-expanded`.
 - El estilo de texto (`role/body` → `role/body-xl`) lo cambia el JS con el mismo corte de 767 px: un `role/*` es una clase y no se puede aplicar desde un media query.
 - En mobile, Figma dibuja dos flechas si tiene Has dropdown; se deja una sola.
