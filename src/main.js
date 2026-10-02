@@ -23,6 +23,7 @@ import './components/filter-chip/filter-chip.js';
 import './components/select-option/select-option.js';
 import './components/gallery-thumb/gallery-thumb.js';
 import './components/product-gallery/product-gallery.js';
+import './components/family-card/family-card.js';
 import './components/catalog-nav-item/catalog-nav-item.js';
 import './components/catalog-nav-group/catalog-nav-group.js';
 import './components/catalog-nav/catalog-nav.js';

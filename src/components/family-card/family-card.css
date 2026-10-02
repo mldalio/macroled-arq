@@ -1,0 +1,39 @@
+/* family-card · Figma 1094:5766. Solo tokens semánticos.
+   Imagen + nombre, gap space/gap/md. Toma el ancho de su columna (FILL). El
+   link estirado está en src/base/card-link.css. Size=Default es la base. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-md);
+}
+
+/* Proporción del sistema (DESIGN.md §5): ratio/square en Default y
+   ratio/portrait en Large. Placeholder color/surface/subtle. */
+.card-media {
+  aspect-ratio: 1 / 1;
+  background: var(--arq-color-surface-subtle);
+}
+
+:host([size='large']) .card-media {
+  aspect-ratio: 7 / 10;
+}
+
+/* Nombre: Default role/body-lg-medium en color/text/secondary;
+   Large role/heading-3 en color/text/primary. Sin subrayado en hover (el set;
+   la descripción dice "nombre subrayado"). */
+.name {
+  align-self: flex-start;
+  max-width: 100%;
+  color: var(--arq-color-text-secondary);
+  overflow-wrap: break-word;
+}
+
+:host([size='large']) .name {
+  color: var(--arq-color-text-primary);
+}

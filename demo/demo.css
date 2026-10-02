@@ -292,6 +292,27 @@
   max-width: calc(var(--arq-layout-card-min) * 2);
 }
 
+/* Carrusel de family-card (patrón de la página, no componente): ancho de
+   ejemplo por tarjeta, scroll-snap y gap space/gap/sm (descripción del set).
+   TODO (ficha): el ancho real de cada tarjeta se define al armar la Ficha. */
+.demo-family-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc(var(--arq-layout-card-min) - 2 * var(--arq-space-gap-xl-2xl));
+  gap: var(--arq-space-gap-sm);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: var(--arq-space-padding-xs);
+}
+
+.demo-family-row > * {
+  scroll-snap-align: start;
+}
+
+.demo-family-row--large {
+  grid-auto-columns: calc(var(--arq-layout-card-min) + var(--arq-space-gap-2xl));
+}
+
 /* Columna del configurador (como la de la ficha) */
 .demo-option-groups {
   display: flex;

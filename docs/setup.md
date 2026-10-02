@@ -173,7 +173,7 @@ Lau construye todos los componentes. El orden sale de las dependencias (descripc
 | Ficha | select-menu | select-option |
 | Ficha | ✅ product-gallery | gallery-thumb |
 | Ficha | variants-table-row | sku, icon-button |
-| Ficha | family-card | — |
+| Ficha | ✅ family-card | — |
 | Ficha | download-item | íconos |
 | Listados | ✅ product-card | swatch, checkbox |
 | Listados | ✅ catalog-toolbar | toggle, divider, button y count-badge |
