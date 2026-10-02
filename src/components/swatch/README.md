@@ -20,6 +20,7 @@ Muestra de acabado (único swatch del sistema). Siempre cuadrada. El relleno es 
 | — (nombre del acabado) | slot por defecto | — | **Obligatorio.** Queda oculto y es el nombre accesible (`aria-label`) |
 | Size | `size` | `size` | `small` (16) · `default` (20) · `large` (24). **Por defecto `small`**, como en Figma (Size=Default no es el valor por defecto) |
 | State=Selected | `selected` | `selected` | booleano |
+| State=Disabled | `disabled` | `disabled` | booleano. Acabado sin combinación con las otras opciones elegidas: no se puede elegir (`aria-disabled="true"`) y las flechas del grupo la saltean |
 | — (imagen del fill) | `src` | `src` | URL de la imagen del acabado (de los datos) |
 | — | `value` | `value` | valor del acabado (slug en inglés) |
 
@@ -34,6 +35,7 @@ Muestra de acabado (único swatch del sistema). Siempre cuadrada. El relleno es 
 | Tamaño | `swatch/sm` · `swatch/md` · `swatch/lg` |
 | Borde Default | `border/default` en `color/border/subtle` |
 | Borde Hover · Selected | `border/strong` (2 px) en `color/border/strong`, por dentro: no cambia el tamaño |
+| Disabled | borde `border/default` en `color/border/disabled` + línea diagonal `border/default` en `color/icon/tertiary`, sobre la imagen. Sin Hover |
 | Fondo sin imagen | `color/surface/subtle` |
 | Radio | `radius/control` |
 | Foco | `border/strong` en `color/border/focus`, separado 2 px (DESIGN.md §7) |
@@ -42,4 +44,4 @@ Muestra de acabado (único swatch del sistema). Siempre cuadrada. El relleno es 
 
 - `TODO` (datos) URL de la imagen: falta el campo en Typesense, la URL base del servidor de imágenes y el archivo de mapeo de acabados (nombre de Sheets → slug en inglés). Faltan también los códigos N, V, R, B, BN, P (DESIGN.md §12).
 - `TODO` "Neutro con el nombre" cuando falta la imagen: en 16–24 px no entra texto; hoy queda el fondo `color/surface/subtle` y el nombre solo para lectores de pantalla.
-- No hay estado Disabled (por ejemplo, un acabado sin stock).
+- El tratamiento de Disabled (línea diagonal) se sumó en Figma el 2026-10-02 como propuesta: falta que diseño lo confirme.

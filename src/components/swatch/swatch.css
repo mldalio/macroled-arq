@@ -52,10 +52,35 @@
 }
 
 /* State=Hover y Selected: border/strong (2 px) en color/border/strong */
-:host([role='radio']:hover) .swatch::after,
+:host([role='radio']:not([disabled]):hover) .swatch::after,
 :host([selected]) .swatch::after {
   border-width: var(--arq-border-strong);
   border-color: var(--arq-color-border-strong);
+}
+
+/* State=Disabled: borde color/border/disabled y línea diagonal (capa
+   "unavailable" del set) de border/default en color/icon/tertiary, por
+   encima de la imagen y por debajo del borde. */
+:host([disabled]) {
+  cursor: default;
+}
+
+:host([disabled]) .swatch::after {
+  border-color: var(--arq-color-border-disabled);
+}
+
+:host([disabled]) .swatch::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom right,
+    transparent calc(50% - var(--arq-border-default) / 2),
+    var(--arq-color-icon-tertiary) calc(50% - var(--arq-border-default) / 2),
+    var(--arq-color-icon-tertiary) calc(50% + var(--arq-border-default) / 2),
+    transparent calc(50% + var(--arq-border-default) / 2)
+  );
+  pointer-events: none;
 }
 
 /* Foco: anillo de DESIGN.md §7 por fuera (2px: valor fijado ahí) */

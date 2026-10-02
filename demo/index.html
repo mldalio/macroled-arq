@@ -500,8 +500,8 @@
 
       <section class="demo-section" aria-labelledby="demo-swatch">
         <h2 id="demo-swatch" class="demo-heading role-label">swatch · &lt;arq-swatch&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 1063:4880. Solo visual (role="img") y elegible dentro de un grupo de prueba (role="radio"): flechas, clic, Hover, Selected y Focus.</p>
-        <h3 class="demo-subheading role-body-sm">Solo visual · Small (16) · Default (20) · Large (24) · sin imagen · Selected</h3>
+        <p class="demo-note role-body-sm">Figma 1063:4880. Solo visual (role="img") y elegible dentro de un grupo de prueba (role="radio"): flechas, clic, Hover, Selected, Focus y Disabled (la deshabilitada no se elige y las flechas la saltean).</p>
+        <h3 class="demo-subheading role-body-sm">Solo visual · Small (16) · Default (20) · Large (24) · sin imagen · Selected · Disabled</h3>
         <div class="demo-row">
           <arq-swatch src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
           <arq-swatch src="/demo/fixtures/img/acabado-blanco.svg">Blanco</arq-swatch>
@@ -509,18 +509,21 @@
           <arq-swatch size="large" src="/demo/fixtures/img/acabado-gris-grafito.svg">Gris grafito</arq-swatch>
           <arq-swatch size="large">Acabado sin imagen</arq-swatch>
           <arq-swatch size="large" selected src="/demo/fixtures/img/acabado-negro.svg">Negro, seleccionado</arq-swatch>
+          <arq-swatch disabled src="/demo/fixtures/img/acabado-blanco.svg">Blanco, deshabilitado</arq-swatch>
+          <arq-swatch size="default" disabled src="/demo/fixtures/img/acabado-negro.svg">Negro, deshabilitado</arq-swatch>
+          <arq-swatch size="large" disabled>Sin imagen, deshabilitado</arq-swatch>
         </div>
         <h3 class="demo-subheading role-body-sm">Elegible (como en swatch-picker: la elegida en Large)</h3>
         <demo-radio-group role="radiogroup" label="Acabado" items="arq-swatch" class="demo-swatches" data-demo-swatches>
           <arq-swatch role="radio" size="large" selected value="black" src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
           <arq-swatch role="radio" size="default" value="white" src="/demo/fixtures/img/acabado-blanco.svg">Blanco</arq-swatch>
-          <arq-swatch role="radio" size="default" value="bronze" src="/demo/fixtures/img/acabado-bronce.svg">Bronce</arq-swatch>
+          <arq-swatch role="radio" size="default" value="bronze" disabled src="/demo/fixtures/img/acabado-bronce.svg">Bronce (sin combinación)</arq-swatch>
           <arq-swatch role="radio" size="default" value="graphite" src="/demo/fixtures/img/acabado-gris-grafito.svg">Gris grafito</arq-swatch>
         </demo-radio-group>
         <div class="demo-dark" data-arq-theme="dark">
           <demo-radio-group role="radiogroup" label="Acabado (Dark)" items="arq-swatch" class="demo-swatches" data-demo-swatches>
             <arq-swatch role="radio" size="large" selected value="black" src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
-            <arq-swatch role="radio" size="default" value="white" src="/demo/fixtures/img/acabado-blanco.svg">Blanco</arq-swatch>
+            <arq-swatch role="radio" size="default" value="white" disabled src="/demo/fixtures/img/acabado-blanco.svg">Blanco (sin combinación)</arq-swatch>
             <arq-swatch role="radio" size="default" value="none">Sin imagen</arq-swatch>
           </demo-radio-group>
         </div>
