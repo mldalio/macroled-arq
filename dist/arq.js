@@ -166,10 +166,10 @@ var ee = ":host{vertical-align:middle;flex:none;display:inline-flex;position:rel
 }).define();
 //#endregion
 //#region src/components/button/button.css?inline
-var h = ":host{vertical-align:middle;min-width:0;max-width:100%;display:inline-flex}.control{box-sizing:border-box;justify-content:center;align-items:center;gap:var(--arq-space-gap-sm);max-width:100%;padding:var(--arq-space-gap-sm) var(--arq-space-padding-md);border-radius:var(--arq-radius-control);background:var(--arq-color-action-primary);color:var(--arq-color-action-on-primary);cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;flex:auto;margin:0;text-decoration:none;display:inline-flex;position:relative}.text{min-width:0;display:flex;position:relative}.label{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.leading,.trailing{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.control:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.control:focus:not(:focus-visible){outline:none}.control.inactive{cursor:default}.control:not(.inactive):hover{background:var(--arq-color-action-primary-hover)}.control:not(.inactive):active{background:var(--arq-color-surface-inverse-pressed)}.control.inactive{background:var(--arq-color-surface-subtle);color:var(--arq-color-text-disabled)}.control[aria-busy=true]{background:var(--arq-color-action-primary-hover);color:var(--arq-color-action-on-primary)}.visually-hidden{width:var(--arq-border-default);height:var(--arq-border-default);clip-path:inset(50%);white-space:nowrap;position:absolute;overflow:hidden}:host([type=outline]) .control{padding:calc(var(--arq-space-gap-sm) - var(--arq-border-default)) calc(var(--arq-space-padding-md) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong);background:var(--arq-color-surface-transparent);color:var(--arq-color-action-primary)}:host([type=outline]) .control:not(.inactive):hover{background:var(--arq-color-surface-hover)}:host([type=outline]) .control:not(.inactive):active{background:var(--arq-color-surface-selected)}:host([type=outline]) .control.inactive{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-disabled)}:host([type=underline]) .control{padding:var(--arq-space-gap-xs) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-action-primary)}:host([type=underline]) .text:after{content:\"\";inset-inline:0;top:calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));height:var(--arq-border-default);background:var(--arq-color-border-strong);visibility:hidden;position:absolute}:host([type=underline][show-underline]) .text:after,:host([type=underline]) .control:not(.inactive):hover .text:after,:host([type=underline]) .control:not(.inactive):active .text:after{visibility:visible}:host([type=underline]) .control:not(.inactive):hover .text:after,:host([type=underline]) .control:not(.inactive):active .text:after{height:var(--arq-border-strong)}:host([type=underline]) .control:not(.inactive):active{color:var(--arq-color-text-tertiary)}:host([type=underline]) .control:not(.inactive):active .text:after{background:var(--arq-color-text-tertiary)}:host([type=underline]) .control.inactive{background:var(--arq-color-surface-transparent);color:var(--arq-color-text-disabled)}:host([type=underline]) .control.inactive .text:after{background:var(--arq-color-border-disabled)}", g = "Enviando…";
+var te = ":host{vertical-align:middle;min-width:0;max-width:100%;display:inline-flex}.control{box-sizing:border-box;justify-content:center;align-items:center;gap:var(--arq-space-gap-sm);max-width:100%;padding:var(--arq-space-gap-sm) var(--arq-space-padding-md);border-radius:var(--arq-radius-control);background:var(--arq-color-action-primary);color:var(--arq-color-action-on-primary);cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;flex:auto;margin:0;text-decoration:none;display:inline-flex;position:relative}.text{min-width:0;display:flex;position:relative}.label{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.leading,.trailing{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.control:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.control:focus:not(:focus-visible){outline:none}.control.inactive{cursor:default}.control:not(.inactive):hover{background:var(--arq-color-action-primary-hover)}.control:not(.inactive):active{background:var(--arq-color-surface-inverse-pressed)}.control.inactive{background:var(--arq-color-surface-subtle);color:var(--arq-color-text-disabled)}.control[aria-busy=true]{background:var(--arq-color-action-primary-hover);color:var(--arq-color-action-on-primary)}.visually-hidden{width:var(--arq-border-default);height:var(--arq-border-default);clip-path:inset(50%);white-space:nowrap;position:absolute;overflow:hidden}:host([type=outline]) .control{padding:calc(var(--arq-space-gap-sm) - var(--arq-border-default)) calc(var(--arq-space-padding-md) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong);background:var(--arq-color-surface-transparent);color:var(--arq-color-action-primary)}:host([type=outline]) .control:not(.inactive):hover{background:var(--arq-color-surface-hover)}:host([type=outline]) .control:not(.inactive):active{background:var(--arq-color-surface-selected)}:host([type=outline]) .control.inactive{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-disabled)}:host([type=underline]) .control{padding:var(--arq-space-gap-xs) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-action-primary)}:host([type=underline]) .text:after{content:\"\";inset-inline:0;top:calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));height:var(--arq-border-default);background:var(--arq-color-border-strong);visibility:hidden;position:absolute}:host([type=underline][show-underline]) .text:after,:host([type=underline]) .control:not(.inactive):hover .text:after,:host([type=underline]) .control:not(.inactive):active .text:after{visibility:visible}:host([type=underline]) .control:not(.inactive):hover .text:after,:host([type=underline]) .control:not(.inactive):active .text:after{height:var(--arq-border-strong)}:host([type=underline]) .control:not(.inactive):active{color:var(--arq-color-text-tertiary)}:host([type=underline]) .control:not(.inactive):active .text:after{background:var(--arq-color-text-tertiary)}:host([type=underline]) .control.inactive{background:var(--arq-color-surface-transparent);color:var(--arq-color-text-disabled)}:host([type=underline]) .control.inactive .text:after{background:var(--arq-color-border-disabled)}", h = "Enviando…";
 (class extends d {
 	static tag = "arq-button";
-	static styles = h;
+	static styles = te;
 	static properties = {
 		type: {
 			type: String,
@@ -204,7 +204,7 @@ var h = ":host{vertical-align:middle;min-width:0;max-width:100%;display:inline-f
       <span class="leading" hidden></span>
       <span class="text">
         <span class="label"><slot></slot><span class="visually-hidden" hidden></span></span>
-        <span class="label" data-loading hidden>${g}</span>
+        <span class="label" data-loading hidden>${h}</span>
       </span>
       <arq-count-badge class="count" hidden></arq-count-badge>
       <span class="trailing" hidden></span>
@@ -222,7 +222,7 @@ var h = ":host{vertical-align:middle;min-width:0;max-width:100%;display:inline-f
 	update(e) {
 		e.has("href") && this.#t(), e.has("loading") && this.loading && this.type;
 		let t = this.shadowRoot, n = this.#e, r = this.loading, i = this.disabled || r;
-		n.classList.toggle("inactive", i), r ? (n.setAttribute("aria-busy", "true"), n.setAttribute("aria-label", g)) : (n.removeAttribute("aria-busy"), n.removeAttribute("aria-label")), n.localName === "button" ? n.disabled = i : (i ? (n.removeAttribute("href"), n.setAttribute("aria-disabled", "true")) : (n.setAttribute("href", this.href), n.removeAttribute("aria-disabled")), this.target ? n.setAttribute("target", this.target) : n.removeAttribute("target"), this.target === "_blank" ? n.setAttribute("rel", "noopener") : n.removeAttribute("rel")), t.querySelector(".label:not([data-loading])").hidden = r, t.querySelector(".label[data-loading]").hidden = !r;
+		n.classList.toggle("inactive", i), r ? (n.setAttribute("aria-busy", "true"), n.setAttribute("aria-label", h)) : (n.removeAttribute("aria-busy"), n.removeAttribute("aria-label")), n.localName === "button" ? n.disabled = i : (i ? (n.removeAttribute("href"), n.setAttribute("aria-disabled", "true")) : (n.setAttribute("href", this.href), n.removeAttribute("aria-disabled")), this.target ? n.setAttribute("target", this.target) : n.removeAttribute("target"), this.target === "_blank" ? n.setAttribute("rel", "noopener") : n.removeAttribute("rel")), t.querySelector(".label:not([data-loading])").hidden = r, t.querySelector(".label[data-loading]").hidden = !r;
 		let a = t.querySelector(".leading");
 		e.has("leadingIcon") && (a.innerHTML = p(this.leadingIcon)), a.hidden = !this.showLeadingIcon || r;
 		let o = t.querySelector(".trailing");
@@ -241,10 +241,10 @@ var h = ":host{vertical-align:middle;min-width:0;max-width:100%;display:inline-f
 }).define();
 //#endregion
 //#region src/components/divider/divider.css?inline
-var te = ":host{box-sizing:border-box;width:100%;height:var(--arq-border-default);background:var(--arq-color-border-subtle);flex:none;display:block}:host([emphasis=default]){background:var(--arq-color-border-default)}:host([orientation=vertical]){width:var(--arq-border-default);align-self:stretch;height:auto;display:inline-block}";
+var ne = ":host{box-sizing:border-box;width:100%;height:var(--arq-border-default);background:var(--arq-color-border-subtle);flex:none;display:block}:host([emphasis=default]){background:var(--arq-color-border-default)}:host([orientation=vertical]){width:var(--arq-border-default);align-self:stretch;height:auto;display:inline-block}";
 (class extends d {
 	static tag = "arq-divider";
-	static styles = te;
+	static styles = ne;
 	static properties = {
 		orientation: {
 			type: String,
@@ -265,7 +265,7 @@ var te = ":host{box-sizing:border-box;width:100%;height:var(--arq-border-default
 }).define();
 //#endregion
 //#region src/components/logo/logo.css?inline
-var ne = ":host{vertical-align:middle;color:var(--arq-color-text-primary);flex:none;display:inline-flex}.link{color:inherit;display:inline-flex}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}.mark{aspect-ratio:181/16;width:181px;height:auto;display:block}:host([size=small]) .mark{width:158px}:host([size=compact]) .mark{width:117px}", re = "Macroled Arq, inicio", ie = "<svg class=\"mark\" viewBox=\"0 0 181 16\" fill=\"currentColor\" aria-hidden=\"true\" focusable=\"false\">" + [
+var g = ":host{vertical-align:middle;color:var(--arq-color-text-primary);flex:none;display:inline-flex}.link{color:inherit;display:inline-flex}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}.mark{aspect-ratio:181/16;width:181px;height:auto;display:block}:host([size=small]) .mark{width:158px}:host([size=compact]) .mark{width:117px}", _ = "Macroled Arq, inicio", v = "<svg class=\"mark\" viewBox=\"0 0 181 16\" fill=\"currentColor\" aria-hidden=\"true\" focusable=\"false\">" + [
 	"M13.2112 1.03819C13.5552 0.538809 14.1401 0.243121 14.7662 0.243121H16.9337V15.6977H13.452V7.16879C13.452 6.99138 13.2112 6.92567 13.108 7.07023L8.62167 13.4637C8.54598 13.5688 8.38772 13.5688 8.31203 13.4637L3.80509 7.07023C3.70188 6.92567 3.46793 6.99138 3.46793 7.16879V15.6977H0V0.243121H2.16746C2.79361 0.243121 3.37848 0.538809 3.72252 1.03819L8.31203 7.76674C8.38772 7.87187 8.55286 7.87187 8.62855 7.76674L13.2112 1.03819ZM35.0922 15.6977H31.1564L30.5233 14.1799C30.5233 14.1799 30.5233 14.1667 30.5164 14.1602C30.1518 13.306 29.4362 13.1351 28.5623 13.1351H23.5943L22.5209 15.6977H18.592L24.8604 1.07105C25.0806 0.571663 25.5898 0.243121 26.1609 0.243121H28.4591L28.4797 0.295688L35.0853 15.6977H35.0922ZM29.0095 10.2571L27.021 5.46037C26.9591 5.30924 26.7389 5.30924 26.6769 5.46037L24.6677 10.2637H29.0164L29.0095 10.2571ZM47.6703 10.7828C47.6703 10.7828 46.2873 12.6949 43.5487 12.6949C42.1657 12.6949 41.0235 12.2546 40.0533 11.361C39.1175 10.4476 38.6633 9.34374 38.6633 7.98357C38.6633 6.62341 39.1175 5.51951 40.0533 4.60616C41.0166 3.71253 42.1657 3.27228 43.5487 3.27228C45.1244 3.27228 46.4455 3.85051 47.4914 4.99384L47.5534 5.05955L49.191 2.51663C49.2804 2.37207 49.2529 2.18152 49.1222 2.06324C47.574 0.742505 45.6405 0.0197125 43.5487 0.0197125C41.1542 0.0197125 39.1725 0.755647 37.4936 2.28008C36.0073 3.64682 35.0096 5.85462 35.0096 7.977C35.0096 10.2702 35.8216 12.1363 37.4936 13.6739C39.1725 15.1918 41.1542 15.9343 43.5487 15.9343C45.7024 15.9343 47.6979 15.1721 49.2598 13.7725C49.3905 13.6542 49.4181 13.4702 49.3217 13.3257L47.6703 10.7828ZM60.9985 9.66571C60.9022 9.7117 60.8677 9.82998 60.9297 9.9154L64.9068 15.6912H61.4113C60.9297 15.6912 60.4755 15.4481 60.2209 15.0604L57.331 10.6053H55.1291V15.6912H51.4617V3.48912V0.243121H58.198C59.7118 0.243121 61.0122 0.742505 62.065 1.7347C63.1522 2.72033 63.682 3.90965 63.682 5.36838C63.682 7.22793 62.5811 8.88378 60.9916 9.66571M55.1291 7.27392C55.1291 7.37248 55.2117 7.45134 55.3149 7.45134H57.8127C59.1407 7.45134 59.9939 6.64969 59.9939 5.41437C59.9939 4.31704 59.1819 3.48912 58.1085 3.48912H55.1291V7.27392ZM79.7281 2.32608C81.3795 3.86366 82.2121 5.77577 82.2121 8.00329C82.2121 10.2374 81.3864 12.1561 79.7487 13.7002C78.1042 15.2312 76.0881 16.0066 73.7349 16.0066C71.4092 16.0066 69.3862 15.2312 67.7279 13.7002C66.0903 12.1561 65.2646 10.2374 65.2646 8.00329C65.2646 5.78234 66.0903 3.87023 67.7279 2.32608C69.3862 0.78193 71.4092 0 73.7418 0C76.0881 0 78.0973 0.78193 79.735 2.32608M68.9665 8.00329C68.9665 9.34374 69.4206 10.4476 70.3495 11.3676C71.2647 12.2546 72.4069 12.708 73.7418 12.708C75.0904 12.708 76.1913 12.2612 77.1134 11.3478C78.0423 10.4411 78.5171 9.31745 78.5171 8.00329C78.5171 6.70883 78.056 5.59179 77.1409 4.67844C76.2189 3.75852 75.0766 3.29199 73.7486 3.29199C72.4206 3.29199 71.2784 3.75852 70.3564 4.67844C69.4413 5.58522 68.9734 6.70883 68.9734 8.00329M86.6433 0.243121H84.2832V3.48912V15.6977H94.164V12.3598H88.2328C88.1296 12.3598 88.047 12.2809 88.047 12.1823V1.577C88.047 0.841068 87.4208 0.243121 86.6433 0.243121ZM100.185 12.4517C100.082 12.4517 99.999 12.3729 99.999 12.2743V9.37659H105.951V6.16345H100.192C100.088 6.16345 100.006 6.0846 100.006 5.98604V3.48912H105.779C106.55 3.48912 107.183 2.89117 107.183 2.15524V0.243121H96.3177V15.6977H107.492V12.4517H100.192H100.185ZM124.364 8.00329C124.364 10.3359 123.621 12.2218 122.148 13.6148C120.71 15.0012 118.598 15.7043 115.866 15.7043H109.928V0.243121H115.846C118.557 0.243121 120.669 0.965914 122.128 2.39836C123.614 3.80452 124.364 5.69035 124.364 8.00329ZM113.623 12.2678C113.623 12.3663 113.706 12.4452 113.809 12.4452H115.639C119.052 12.4452 120.641 11.0324 120.641 7.99672C120.641 6.59055 120.256 5.47351 119.506 4.68501C118.77 3.88994 117.463 3.48912 115.612 3.48912H113.616V12.2743L113.623 12.2678Z",
 	"M141.655 1.64271H140.912L135.532 15.5006H134.142L139.977 0.512526H142.578L148.385 15.5072H147.016L141.655 1.64928V1.64271ZM136.722 10.2374H145.873V11.3741H136.722V10.2374Z",
 	"M156.89 0.512526C158.128 0.512526 159.133 0.70308 159.903 1.09076C160.674 1.47844 161.245 1.99754 161.617 2.65462C161.988 3.3117 162.174 4.05421 162.174 4.88214C162.174 5.49322 162.071 6.06489 161.858 6.59713C161.651 7.12279 161.328 7.58932 160.894 7.977C160.461 8.37125 159.917 8.68008 159.257 8.91006C158.596 9.14004 157.819 9.25175 156.924 9.25175H153.023V15.5072H151.653V0.512526H156.883H156.89ZM160.791 4.88214C160.791 3.89651 160.495 3.11458 159.897 2.5232C159.298 1.9384 158.293 1.64271 156.89 1.64271H153.029V8.08871H156.931C157.825 8.08871 158.562 7.95072 159.126 7.68131C159.69 7.41191 160.11 7.0308 160.385 6.54456C160.653 6.05832 160.791 5.4998 160.791 4.87557V4.88214ZM158.073 8.75893L162.449 15.5072H160.901L156.594 8.75893H158.073Z",
@@ -274,7 +274,7 @@ var ne = ":host{vertical-align:middle;color:var(--arq-color-text-primary);flex:n
 ].map((e) => `<path d="${e}"/>`).join("") + "</svg>";
 (class extends d {
 	static tag = "arq-logo";
-	static styles = ne;
+	static styles = g;
 	static properties = {
 		size: {
 			type: String,
@@ -290,17 +290,17 @@ var ne = ":host{vertical-align:middle;color:var(--arq-color-text-primary);flex:n
 			default: "/arq"
 		}
 	};
-	static template = `<a class="link" aria-label="${re}">${ie}</a>`;
+	static template = `<a class="link" aria-label="${_}">${v}</a>`;
 	update(e) {
 		e.has("href") && this.shadowRoot.querySelector(".link").setAttribute("href", this.href);
 	}
 }).define();
 //#endregion
 //#region src/components/icon-button/icon-button.css?inline
-var ae = ":host{vertical-align:middle;flex:none;display:inline-flex}.control{box-sizing:border-box;padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;justify-content:center;align-items:center;margin:0;display:inline-flex;position:relative}.glyph{display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host([size=large]) .control{padding:var(--arq-space-padding-sm-md)}:host([size=large]) .icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl)}.control:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.control:focus:not(:focus-visible){outline:none}.visually-hidden{width:var(--arq-border-default);height:var(--arq-border-default);clip-path:inset(50%);white-space:nowrap;position:absolute;overflow:hidden}.control:enabled:hover{background:var(--arq-color-surface-hover)}.control:enabled:active{background:var(--arq-color-surface-selected)}:host([background=surface]) .control{background:var(--arq-color-surface-default)}:host([background=surface]) .control:enabled:hover{background:var(--arq-color-surface-subtle)}:host([background=surface]) .control:enabled:active{background:var(--arq-color-surface-selected)}:host([background=subtle]) .control{background:var(--arq-color-surface-subtle)}:host([background=subtle]) .control:enabled:hover{background:var(--arq-color-surface-selected)}:host([background=subtle]) .control:enabled:active{background:var(--arq-color-surface-strong)}.control:disabled{color:var(--arq-color-icon-disabled);cursor:default}";
+var y = ":host{vertical-align:middle;flex:none;display:inline-flex}.control{box-sizing:border-box;padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;justify-content:center;align-items:center;margin:0;display:inline-flex;position:relative}.glyph{display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host([size=large]) .control{padding:var(--arq-space-padding-sm-md)}:host([size=large]) .icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl)}.control:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.control:focus:not(:focus-visible){outline:none}.visually-hidden{width:var(--arq-border-default);height:var(--arq-border-default);clip-path:inset(50%);white-space:nowrap;position:absolute;overflow:hidden}.control:enabled:hover{background:var(--arq-color-surface-hover)}.control:enabled:active{background:var(--arq-color-surface-selected)}:host([background=surface]) .control{background:var(--arq-color-surface-default)}:host([background=surface]) .control:enabled:hover{background:var(--arq-color-surface-subtle)}:host([background=surface]) .control:enabled:active{background:var(--arq-color-surface-selected)}:host([background=subtle]) .control{background:var(--arq-color-surface-subtle)}:host([background=subtle]) .control:enabled:hover{background:var(--arq-color-surface-selected)}:host([background=subtle]) .control:enabled:active{background:var(--arq-color-surface-strong)}.control:disabled{color:var(--arq-color-icon-disabled);cursor:default}";
 (class extends d {
 	static tag = "arq-icon-button";
-	static styles = ae;
+	static styles = y;
 	static properties = {
 		icon: {
 			type: String,
@@ -341,10 +341,10 @@ var ae = ":host{vertical-align:middle;flex:none;display:inline-flex}.control{box
 }).define();
 //#endregion
 //#region src/components/breadcrumb-item/breadcrumb-item.css?inline
-var oe = ":host{min-width:0;display:inline-flex}.item{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;color:var(--arq-color-text-tertiary);display:inline-flex}.label{color:inherit;text-overflow:ellipsis;white-space:nowrap;text-decoration:none;overflow:hidden}.label[aria-current=page]{white-space:normal;overflow-wrap:break-word;overflow:visible}.separator{color:var(--arq-color-text-tertiary);flex:none}@media (hover:hover){a.label:hover{color:var(--arq-color-text-primary)}}.label[aria-current=page]{color:var(--arq-color-text-primary)}a.label:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}a.label:focus:not(:focus-visible){outline:none}";
+var b = ":host{min-width:0;display:inline-flex}.item{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;color:var(--arq-color-text-tertiary);display:inline-flex}.label{color:inherit;text-overflow:ellipsis;white-space:nowrap;text-decoration:none;overflow:hidden}.label[aria-current=page]{white-space:normal;overflow-wrap:break-word;overflow:visible}.separator{color:var(--arq-color-text-tertiary);flex:none}@media (hover:hover){a.label:hover{color:var(--arq-color-text-primary)}}.label[aria-current=page]{color:var(--arq-color-text-primary)}a.label:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}a.label:focus:not(:focus-visible){outline:none}";
 (class extends d {
 	static tag = "arq-breadcrumb-item";
-	static styles = oe;
+	static styles = b;
 	static properties = {
 		href: { type: String },
 		showSeparator: { type: Boolean },
@@ -370,18 +370,18 @@ var oe = ":host{min-width:0;display:inline-flex}.item{align-items:center;gap:var
 }).define();
 //#endregion
 //#region src/components/breadcrumb/breadcrumb.css?inline
-var se = ":host{min-width:0;display:block}.list{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-wrap:nowrap;min-width:0;margin:0;padding:0;list-style:none;display:flex}::slotted(*){flex:0 auto;min-width:0}::slotted([current]){flex-shrink:1000;min-width:auto}", _ = "Migas de pan";
+var re = ":host{min-width:0;display:block}.list{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-wrap:nowrap;min-width:0;margin:0;padding:0;list-style:none;display:flex}::slotted(*){flex:0 auto;min-width:0}::slotted([current]){flex-shrink:1000;min-width:auto}", ie = "Migas de pan";
 (class extends d {
 	static tag = "arq-breadcrumb";
-	static styles = se;
-	static template = `<nav aria-label="${_}"><div class="list" role="list"><slot></slot></div></nav>`;
+	static styles = re;
+	static template = `<nav aria-label="${ie}"><div class="list" role="list"><slot></slot></div></nav>`;
 }).define();
 //#endregion
 //#region src/components/footer-link/footer-link.css?inline
-var v = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{align-items:center;gap:var(--arq-space-gap-sm);max-width:100%;color:var(--arq-color-text-secondary);text-decoration:none;display:inline-flex;position:relative}.label{overflow-wrap:break-word;min-width:0}.leading{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.link:after{content:\"\";inset-inline:0;height:var(--arq-border-default);background:var(--arq-color-border-strong);visibility:hidden;position:absolute;top:100%}.link[href]:hover{color:var(--arq-color-text-primary)}.link[href]:hover:after{visibility:visible}.link[href]:active{color:var(--arq-color-text-tertiary)}.link[href]:active:after{visibility:hidden}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}";
+var ae = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{align-items:center;gap:var(--arq-space-gap-sm);max-width:100%;color:var(--arq-color-text-secondary);text-decoration:none;display:inline-flex;position:relative}.label{overflow-wrap:break-word;min-width:0}.leading{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.link:after{content:\"\";inset-inline:0;height:var(--arq-border-default);background:var(--arq-color-border-strong);visibility:hidden;position:absolute;top:100%}.link[href]:hover{color:var(--arq-color-text-primary)}.link[href]:hover:after{visibility:visible}.link[href]:active{color:var(--arq-color-text-tertiary)}.link[href]:active:after{visibility:hidden}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}";
 (class extends d {
 	static tag = "arq-footer-link";
-	static styles = v;
+	static styles = ae;
 	static properties = {
 		showIcon: { type: Boolean },
 		icon: {
@@ -405,10 +405,10 @@ var v = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{al
 }).define();
 //#endregion
 //#region src/components/form-message/form-message.css?inline
-var y = ":host{display:block}.message{color:var(--arq-color-text-success);margin:0}:host([tone=error]) .message{color:var(--arq-color-text-error)}";
+var oe = ":host{display:block}.message{color:var(--arq-color-text-success);margin:0}:host([tone=error]) .message{color:var(--arq-color-text-error)}";
 (class extends d {
 	static tag = "arq-form-message";
-	static styles = y;
+	static styles = oe;
 	static properties = { tone: {
 		type: String,
 		values: ["success", "error"],
@@ -421,10 +421,10 @@ var y = ":host{display:block}.message{color:var(--arq-color-text-success);margin
 }).define();
 //#endregion
 //#region src/components/form-section-header/form-section-header.css?inline
-var b = ":host{width:100%;display:block}.header{align-items:baseline;gap:var(--arq-space-gap-md);padding-bottom:var(--arq-space-padding-sm-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-strong);display:flex}.number{color:var(--arq-color-text-tertiary);flex:none}.label{min-width:0;color:var(--arq-color-text-primary)}";
+var se = ":host{width:100%;display:block}.header{align-items:baseline;gap:var(--arq-space-gap-md);padding-bottom:var(--arq-space-padding-sm-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-strong);display:flex}.number{color:var(--arq-color-text-tertiary);flex:none}.label{min-width:0;color:var(--arq-color-text-primary)}";
 (class extends d {
 	static tag = "arq-form-section-header";
-	static styles = b;
+	static styles = se;
 	static properties = {
 		number: { type: String },
 		showNumber: { type: Boolean }
@@ -518,7 +518,7 @@ var me = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.chip{b
 }).define();
 //#endregion
 //#region src/components/select-option/select-option.css?inline
-var he = ":host{cursor:pointer;display:block}:host([disabled]){cursor:default}.option{align-items:center;gap:var(--arq-space-gap-sm);padding:var(--arq-space-padding-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex}:host(:not([disabled]):hover) .option{background:var(--arq-color-surface-faint)}.swatch{box-sizing:border-box;width:var(--arq-swatch-sm);height:var(--arq-swatch-sm);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);flex:none;position:relative;overflow:hidden}.swatch img{object-fit:cover;width:100%;height:100%;display:block}.name{min-width:0;color:var(--arq-color-text-primary)}:host([disabled]) .name{color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+var he = ":host{cursor:pointer;display:block}:host([disabled]){cursor:default}.option{align-items:center;gap:var(--arq-space-gap-sm);padding:var(--arq-space-padding-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex}:host(:not([disabled]):hover) .option{background:var(--arq-color-surface-faint)}.swatch{box-sizing:border-box;width:var(--arq-swatch-sm);height:var(--arq-swatch-sm);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);flex:none;position:relative;overflow:hidden}.swatch img{object-fit:cover;width:100%;height:100%;display:block}.name{min-width:0;color:var(--arq-color-text-primary)}:host([disabled]) .name{color:var(--arq-color-text-disabled)}:host([active]) .option{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(-1 * var(--arq-border-strong))}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
 (class extends d {
 	static tag = "arq-select-option";
 	static styles = he;
@@ -527,6 +527,7 @@ var he = ":host{cursor:pointer;display:block}:host([disabled]){cursor:default}.o
 		swatchSrc: { type: String },
 		selected: { type: Boolean },
 		disabled: { type: Boolean },
+		active: { type: Boolean },
 		value: { type: String }
 	};
 	static template = "<span class=\"option\"><span class=\"swatch\" aria-hidden=\"true\" hidden><img alt=\"\" hidden></span><span class=\"name role-body\"><slot></slot></span></span>";
@@ -550,11 +551,425 @@ var he = ":host{cursor:pointer;display:block}:host([disabled]){cursor:default}.o
 	}
 }).define();
 //#endregion
+//#region src/components/select-menu/select-menu.css?inline
+var ge = ":host{box-sizing:border-box;border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);min-width:100%;display:block}:host([type=filter]),:host([type=text]){width:max-content;max-width:calc(100vw - 2 * var(--arq-layout-gutter))}.menu{max-height:calc(7 * (2 * var(--arq-space-padding-md) + var(--arq-type-body-leading) + var(--arq-border-default)));overscroll-behavior:contain;overflow-y:auto}";
+(class extends d {
+	static tag = "arq-select-menu";
+	static styles = ge;
+	static properties = { type: {
+		type: String,
+		values: [
+			"finishes",
+			"filter",
+			"text"
+		],
+		default: "finishes"
+	} };
+	static template = "<div class=\"menu\"><slot></slot></div>";
+	setup() {
+		this.setAttribute("role", "listbox");
+	}
+}).define();
+//#endregion
+//#region src/base/selectable.js
+var _e = "[role=\"radiogroup\"], [role=\"tablist\"]", C = class {
+	constructor(e, { role: t, state: n }) {
+		this.host = e, this.state = n, e.hasAttribute("role") || e.setAttribute("role", t), e.choose = () => this.choose(), e.addEventListener("click", () => this.choose()), e.addEventListener("keydown", (e) => {
+			(e.key === "Enter" || e.key === " ") && (e.preventDefault(), this.choose());
+		}), e.addController(this);
+	}
+	choose() {
+		let e = this.host;
+		e.disabled || e.selected || (e.selected = !0, e.emit("change", {
+			value: e.value ?? null,
+			selected: !0
+		}));
+	}
+	hostUpdate() {
+		let e = this.host;
+		e.setAttribute(this.state, String(!!e.selected)), e.disabled ? e.setAttribute("aria-disabled", "true") : e.removeAttribute("aria-disabled"), e.parentElement?.closest(_e) || e.setAttribute("tabindex", e.disabled ? "-1" : "0");
+	}
+}, ve = ":host{vertical-align:middle;flex:none;display:inline-flex}.swatch{box-sizing:border-box;width:var(--arq-swatch-sm);height:var(--arq-swatch-sm);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);display:block;position:relative;overflow:hidden}:host([size=default]) .swatch{width:var(--arq-swatch-md);height:var(--arq-swatch-md)}:host([size=large]) .swatch{width:var(--arq-swatch-lg);height:var(--arq-swatch-lg)}.swatch img{object-fit:cover;width:100%;height:100%;display:block}.swatch:after{content:\"\";border:var(--arq-border-default) solid var(--arq-color-border-subtle);border-radius:inherit;pointer-events:none;position:absolute;inset:0}:host([role=radio]){cursor:pointer}:host([role=radio]:not([disabled]):hover) .swatch:after,:host([selected]) .swatch:after{border-width:var(--arq-border-strong);border-color:var(--arq-color-border-strong)}:host([disabled]){cursor:default}:host([disabled]) .swatch:after{border-color:var(--arq-color-border-disabled)}:host([disabled]) .swatch:before{content:\"\";background:linear-gradient(to bottom right, transparent calc(50% - var(--arq-border-default) / 2), var(--arq-color-icon-tertiary) calc(50% - var(--arq-border-default) / 2), var(--arq-color-icon-tertiary) calc(50% + var(--arq-border-default) / 2), transparent calc(50% + var(--arq-border-default) / 2));pointer-events:none;position:absolute;inset:0}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+(class extends d {
+	static tag = "arq-swatch";
+	static styles = ve;
+	static properties = {
+		size: {
+			type: String,
+			values: [
+				"small",
+				"default",
+				"large"
+			],
+			default: "small"
+		},
+		selected: { type: Boolean },
+		disabled: { type: Boolean },
+		src: { type: String },
+		value: { type: String }
+	};
+	static template = "<span class=\"swatch\"><img alt=\"\" hidden></span><span class=\"visually-hidden\"><slot></slot></span>";
+	setup() {
+		let e = this.shadowRoot.querySelector("img");
+		e.addEventListener("error", () => e.hidden = !0), e.addEventListener("load", () => e.hidden = !1);
+		let t = () => {
+			let e = this.textContent.trim();
+			e && this.setAttribute("aria-label", e);
+		};
+		this.shadowRoot.querySelector("slot").addEventListener("slotchange", t), t(), this.getAttribute("role") === "radio" || this.parentElement?.closest("arq-swatch-picker") ? this.selectable = new C(this, {
+			role: "radio",
+			state: "aria-checked"
+		}) : this.hasAttribute("role") || this.setAttribute("role", "img");
+	}
+	update(e) {
+		if (e.has("src")) {
+			let e = this.shadowRoot.querySelector("img");
+			this.src ? e.src = this.src : (e.removeAttribute("src"), e.hidden = !0);
+		}
+	}
+}).define();
+//#endregion
+//#region src/components/select/select.css?inline
+var w = ":host{min-width:0;display:block}.select{flex-direction:column;display:flex;position:relative}.trigger{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-md);border-radius:var(--arq-radius-control);width:100%;font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}.value{overflow-wrap:break-word;flex:auto;min-width:0}.chevron{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary)}:host(:not([open])) [data-icon=chevron-up],:host([open]) [data-icon=chevron-down]{display:none}.menu{z-index:2;position:absolute;top:100%;left:0}:host(:not([type=filter])) .trigger{padding:var(--arq-space-padding-sm-md) var(--arq-space-padding-md) calc(var(--arq-space-padding-sm-md) - var(--arq-border-default));border-bottom:var(--arq-border-default) solid var(--arq-color-border-strong);background:var(--arq-color-surface-soft);color:var(--arq-color-text-primary)}@media (hover:hover){:host(:not([type=filter]):not([open])) .trigger:enabled:hover{background:var(--arq-color-surface-faint)}}:host(:not([type=filter])) .menu{right:0}:host([type=filter]) .select{gap:var(--arq-space-gap-xs);padding-bottom:var(--arq-space-padding-xs)}:host([type=filter][filled]) .select{gap:var(--arq-space-gap-sm);padding-bottom:calc(var(--arq-space-padding-sm) - var(--arq-border-default));border-bottom:var(--arq-border-default) solid var(--arq-color-border-strong)}.label{color:var(--arq-color-text-tertiary)}:host([type=filter]) .trigger{justify-content:space-between;gap:var(--arq-space-gap-sm);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);padding:0}:host([type=filter]) .icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm)}@media (hover:hover){:host([type=filter]:not([open])) .trigger:enabled:hover .value{color:var(--arq-color-text-tertiary)}}:host([type=filter]) .menu{margin-top:var(--arq-space-gap-sm)}:host([disabled]) .trigger{cursor:default;border-bottom-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-disabled)}:host([disabled]) .label,:host([disabled]) .icon{color:var(--arq-color-text-disabled)}.trigger:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus:not(:focus-visible){outline:none}", T = 0;
+(class extends d {
+	static tag = "arq-select";
+	static styles = w;
+	static properties = {
+		type: {
+			type: String,
+			values: ["field", "filter"],
+			default: "field"
+		},
+		label: { type: String },
+		value: { type: String },
+		name: { type: String },
+		disabled: { type: Boolean },
+		open: { type: Boolean },
+		filled: { type: Boolean },
+		allLabel: {
+			type: String,
+			default: "Todos"
+		}
+	};
+	static template = `<div class="select"><span class="label role-label-sm" hidden></span><button type="button" class="trigger" role="combobox" aria-haspopup="listbox" aria-expanded="false"><arq-swatch class="swatch" aria-hidden="true" hidden></arq-swatch><span class="value"></span><span class="chevron">${p("chevron-down")}${p("chevron-up")}</span></button><arq-select-menu class="menu" hidden></arq-select-menu></div>`;
+	#e = [];
+	#t = -1;
+	#n = "";
+	#r = 0;
+	get options() {
+		return this.#e;
+	}
+	set options(e) {
+		this.#e = Array.isArray(e) ? e : [], this.isConnected && this.#a();
+	}
+	setup() {
+		let e = this.shadowRoot, t = `arq-select-${++T}`;
+		this.trigger = e.querySelector(".trigger"), this.menu = e.querySelector(".menu"), this.menu.id = `${t}-menu`, e.querySelector(".label").id = `${t}-label`, this.trigger.id = `${t}-trigger`, this.trigger.setAttribute("aria-controls", this.menu.id), this.trigger.addEventListener("click", () => this.open ? this.close() : this.show()), this.trigger.addEventListener("keydown", (e) => this.#u(e)), this.trigger.addEventListener("blur", () => {
+			setTimeout(() => {
+				this.open && !this.matches(":focus-within") && this.close(!1);
+			});
+		}), this.menu.addEventListener("pointerdown", (e) => e.preventDefault()), this.menu.addEventListener("click", (e) => {
+			let t = e.target.closest("arq-select-option");
+			t && !t.disabled && this.#c(Number(t.dataset.index));
+		}), this.menu.addEventListener("arq:change", (e) => e.stopPropagation()), this.#a();
+	}
+	update(e) {
+		let t = this.shadowRoot, n = this.type === "filter", r = t.querySelector(".label");
+		r.hidden = !n, r.textContent = this.label ?? "", r.className = "label role-label-sm", n ? (this.trigger.setAttribute("aria-labelledby", `${r.id} ${this.trigger.id}`), this.trigger.removeAttribute("aria-label")) : (this.trigger.removeAttribute("aria-labelledby"), this.label && this.trigger.setAttribute("aria-label", this.label)), this.trigger.disabled = this.disabled, this.menu.type = n ? "filter" : "finishes", e.has("open") && (this.menu.hidden = !this.open, this.trigger.setAttribute("aria-expanded", String(this.open)), this.open || this.#o(-1)), this.#a();
+	}
+	show() {
+		if (this.disabled) return;
+		this.open = !0;
+		let e = this.#i(), t = e.findIndex((e) => e.value === (this.value ?? ""));
+		this.#o(t >= 0 && !e[t].disabled ? t : this.#s(-1, 1));
+	}
+	close(e = !0) {
+		this.open = !1, e && this.trigger.focus();
+	}
+	focus(e) {
+		this.trigger ? this.trigger.focus(e) : super.focus(e);
+	}
+	#i() {
+		let e = this.#e.map((e) => ({
+			value: String(e.value),
+			label: e.label ?? String(e.value),
+			swatch: e.swatch,
+			showSwatch: !!(e.swatch || e.showSwatch),
+			disabled: !!e.disabled
+		}));
+		return this.type === "filter" && e.unshift({
+			value: "",
+			label: this.allLabel ?? "Todos",
+			showSwatch: !1,
+			disabled: !1
+		}), e;
+	}
+	#a() {
+		if (!this.trigger) return;
+		let e = this.#i(), t = e.find((e) => e.value === (this.value ?? "")) ?? (this.type === "filter" ? e[0] : null), n = this.type === "filter" && !!this.value;
+		this.filled !== n && (this.filled = n);
+		let r = this.shadowRoot.querySelector(".swatch");
+		r.hidden = !t?.showSwatch || this.type !== "field" && !n, r.setAttribute("size", this.type === "field" ? "large" : "small"), t?.swatch ? r.setAttribute("src", t.swatch) : r.removeAttribute("src"), r.textContent = t?.label ?? "";
+		let i = this.shadowRoot.querySelector(".value");
+		i.textContent = t?.label ?? "", i.className = `value ${this.type === "filter" && !this.disabled ? "role-body-medium" : "role-body-regular"}`;
+		let a = this.menu;
+		for (; a.children.length > e.length;) a.lastElementChild.remove();
+		for (; a.children.length < e.length;) a.append(document.createElement("arq-select-option"));
+		e.forEach((e, n) => {
+			let r = a.children[n];
+			r.id = `${a.id}-${n}`, r.dataset.index = String(n), r.value = e.value, r.textContent = e.label, r.showSwatch = e.showSwatch, r.swatchSrc = e.swatch ?? null, r.disabled = e.disabled, r.selected = e === t;
+		});
+	}
+	#o(e) {
+		this.#t = e;
+		let t = [...this.menu.children];
+		t.forEach((t, n) => t.active = n === e), e >= 0 && t[e] ? (this.trigger.setAttribute("aria-activedescendant", t[e].id), t[e].scrollIntoView({ block: "nearest" })) : this.trigger.removeAttribute("aria-activedescendant");
+	}
+	#s(e, t) {
+		let n = this.#i();
+		for (let r = e + t; r >= 0 && r < n.length; r += t) if (!n[r].disabled) return r;
+		return e;
+	}
+	#c(e) {
+		let t = this.#i()[e];
+		if (!t || t.disabled) return;
+		let n = t.value !== (this.value ?? "");
+		this.value = t.value, this.close(), n && this.emit("change", { value: t.value });
+	}
+	#l(e) {
+		let t = Date.now();
+		this.#n = t - this.#r > 500 ? e : this.#n + e, this.#r = t;
+		let n = this.#i(), r = this.#t >= 0 ? this.#t : 0, i = [...n.keys()].slice(r + 1).concat([...n.keys()].slice(0, r + 1)).find((e) => !n[e].disabled && n[e].label.toLowerCase().startsWith(this.#n.toLowerCase()));
+		i !== void 0 && this.#o(i);
+	}
+	#u(e) {
+		let { key: t } = e, n = this.#i();
+		if (!this.open) {
+			[
+				"ArrowDown",
+				"ArrowUp",
+				"Enter",
+				" ",
+				"Home",
+				"End"
+			].includes(t) ? (e.preventDefault(), this.show(), t === "Home" && this.#o(this.#s(-1, 1)), t === "End" && this.#o(this.#s(n.length, -1))) : t.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey && (this.show(), this.#l(t));
+			return;
+		}
+		if (t === "ArrowDown") this.#o(this.#s(this.#t, 1));
+		else if (t === "ArrowUp") this.#o(this.#s(this.#t, -1));
+		else if (t === "Home") this.#o(this.#s(-1, 1));
+		else if (t === "End") this.#o(this.#s(n.length, -1));
+		else if (t === "Enter" || t === " ") this.#c(this.#t);
+		else if (t === "Escape") this.close();
+		else if (t === "Tab") {
+			this.close(!1);
+			return;
+		} else if (t.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) this.#l(t);
+		else return;
+		e.preventDefault();
+	}
+}).define();
+//#endregion
+//#region src/components/filter-bar/filter-bar.css?inline
+var E = ":host{min-width:0;display:block}.bar{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-lg);padding:calc(var(--arq-space-padding-md) - var(--arq-border-default)) var(--arq-layout-gutter);border-block:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-faint);display:flex}.filters{align-items:stretch;gap:var(--arq-space-gap-lg);flex-wrap:wrap;min-width:0;display:flex}::slotted(arq-select){flex:none}::slotted(arq-select:not(:first-child)){border-inline-start:var(--arq-border-default) solid var(--arq-color-border-subtle);padding-inline-start:var(--arq-space-gap-lg)}.clear{flex:none}@media (width<=767px){.bar{align-items:stretch;gap:var(--arq-space-gap-md);flex-direction:column}.filters{gap:var(--arq-space-gap-md);flex-direction:column}::slotted(arq-select:not(:first-child)){border-inline-start:0;padding-inline-start:0}.clear{align-self:flex-start}}";
+(class extends d {
+	static tag = "arq-filter-bar";
+	static styles = E;
+	static properties = { applied: { type: Boolean } };
+	static template = "<div class=\"bar\"><div class=\"filters\" role=\"group\" aria-label=\"Filtros\"><slot></slot></div><arq-button type=\"underline\" show-underline class=\"clear\" hidden>Limpiar filtros</arq-button></div>";
+	setup() {
+		this.addEventListener("arq:change", (e) => {
+			e.target.localName === "arq-select" && (e.stopPropagation(), this.#e());
+		}), this.shadowRoot.querySelector(".clear").addEventListener("click", () => this.clear()), this.shadowRoot.querySelector("slot").addEventListener("slotchange", () => this.#t()), this.#t();
+	}
+	get selects() {
+		return [...this.querySelectorAll(":scope > arq-select")];
+	}
+	get filters() {
+		let e = {};
+		for (let t of this.selects) t.value && (e[t.name ?? ""] = t.value);
+		return e;
+	}
+	clear() {
+		for (let e of this.selects) e.value = "";
+		this.#e(), this.selects[0]?.focus();
+	}
+	#e() {
+		this.#t(), this.emit("filters", { filters: this.filters });
+	}
+	#t() {
+		let e = this.selects.some((e) => !!e.value);
+		this.applied !== e && (this.applied = e), this.shadowRoot.querySelector(".clear").hidden = !e;
+	}
+}).define();
+//#endregion
+//#region src/data/variants.js
+var D = (e) => e != null && String(e).trim() !== "";
+function O(e, t) {
+	let n = [];
+	for (let r of e) {
+		let e = r.attributes[t];
+		D(e) && !n.includes(e) && n.push(e);
+	}
+	return n;
+}
+var k = (e, t, n) => Object.entries(t).every(([t, r]) => t === n || !D(r) || e.attributes[t] === r);
+function A(e, t) {
+	return e.filter((e) => k(e, t));
+}
+function j(e, t, n) {
+	return t.map((t) => ({
+		attribute: t,
+		options: O(e, t).map((r) => ({
+			value: r,
+			selected: n[t] === r,
+			disabled: !e.some((e) => e.attributes[t] === r && k(e, n, t))
+		}))
+	}));
+}
+//#endregion
+//#region src/components/sku/sku.css?inline
+var M = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.sku{align-items:flex-start;gap:var(--arq-space-gap-xs);flex-direction:column;min-width:0;display:flex}.label{color:var(--arq-color-text-secondary)}:host([size=compact]) .label{display:none}.row{align-items:flex-start;gap:var(--arq-space-gap-sm);background:var(--arq-color-surface-transparent);max-width:100%;color:var(--arq-color-text-primary);text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;padding:0;display:inline-flex}.code{min-width:0;color:var(--arq-color-text-primary);overflow-wrap:anywhere}.copy{color:var(--arq-color-icon-secondary);flex:none;margin-block-start:calc((var(--arq-type-body-lg-leading) - var(--arq-icon-md)) / 2);display:inline-flex}:host([size=compact]) .copy{margin-block-start:calc((var(--arq-type-body-leading) - var(--arq-icon-md)) / 2)}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.row:hover .copy{color:var(--arq-color-icon-primary)}.copied,.failed{color:var(--arq-color-text-success);flex:none;margin-block-start:calc((var(--arq-type-body-lg-leading) - var(--arq-type-caption-leading)) / 2);display:none}:host([size=compact]) .copied,:host([size=compact]) .failed{margin-block-start:calc((var(--arq-type-body-leading) - var(--arq-type-caption-leading)) / 2)}:host([copied]) .copy,:host(:state(copy-failed)) .copy{display:none}:host([copied]) .copied,:host(:state(copy-failed)) .failed{display:inline}.failed{color:var(--arq-color-text-secondary)}.label,.copy,.copied,.failed{-webkit-user-select:none;user-select:none}.row:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.row:focus:not(:focus-visible){outline:none}", N = "Copiado", P = /Mac|iPhone|iPad/.test(navigator.userAgentData?.platform ?? navigator.platform ?? "") ? "Copialo con ⌘C" : "Copialo con Ctrl+C";
+function F(e) {
+	let t = getComputedStyle(e).getPropertyValue("--arq-motion-duration-feedback").trim(), n = Number.parseFloat(t);
+	return Number.isNaN(n) ? 0 : t.endsWith("ms") ? n : n * 1e3;
+}
+(class extends d {
+	static tag = "arq-sku";
+	static styles = M;
+	static properties = {
+		size: {
+			type: String,
+			values: ["default", "compact"],
+			default: "default"
+		},
+		copied: { type: Boolean }
+	};
+	static template = `<span class="sku"><span class="label role-label">SKU</span><button type="button" class="row"><span class="code"><slot></slot></span><span class="copy">${p("copy")}</span><span class="copied role-caption" aria-hidden="true">${N}</span><span class="failed role-caption" aria-hidden="true">${P}</span></button><span class="visually-hidden" aria-live="polite"></span></span>`;
+	#e = null;
+	#t = 0;
+	#n = this.attachInternals();
+	setup() {
+		this.#e = this.shadowRoot.querySelector(".row"), this.#e.addEventListener("click", () => this.copy());
+		let e = () => this.#e.setAttribute("aria-label", `Copiar SKU ${this.code}`);
+		this.shadowRoot.querySelector("slot").addEventListener("slotchange", e), e();
+	}
+	get code() {
+		return this.textContent.trim();
+	}
+	focus(e) {
+		this.#e ? this.#e.focus(e) : super.focus(e);
+	}
+	async copy() {
+		clearTimeout(this.#t), this.#r(!1);
+		try {
+			await navigator.clipboard.writeText(this.code);
+		} catch {
+			getSelection()?.selectAllChildren(this), this.copied = !1, this.#r(!0), this.#t = setTimeout(() => this.#r(!1), F(this));
+			return;
+		}
+		this.copied = !0, this.emit("copy", { code: this.code }), this.#t = setTimeout(() => this.copied = !1, F(this));
+	}
+	update() {
+		this.shadowRoot.querySelector(".code").classList.toggle("role-body-lg", this.size !== "compact"), this.shadowRoot.querySelector(".code").classList.toggle("role-body", this.size === "compact"), this.#i();
+	}
+	disconnectedCallback() {
+		clearTimeout(this.#t);
+	}
+	#r(e) {
+		e ? this.#n.states.add("copy-failed") : this.#n.states.delete("copy-failed"), this.#i();
+	}
+	#i() {
+		let e = this.#n.states.has("copy-failed");
+		this.shadowRoot.querySelector("[aria-live]").textContent = e ? P : this.copied ? N : "";
+	}
+}).define();
+//#endregion
+//#region src/components/variants-table/variants-table.css?inline
+var ye = ":host{gap:var(--arq-space-gap-md);flex-direction:column;min-width:0;display:flex}.toolbar{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);padding:var(--arq-space-padding-md) var(--arq-layout-gutter);flex-wrap:wrap;display:flex}.downloads{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.scroll{overscroll-behavior-x:contain;overflow-x:auto}.scroll:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(-1 * var(--arq-border-strong))}.table{border-collapse:collapse;border-spacing:0;width:100%}th,td{padding:0 var(--arq-space-gap-sm) 0 0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-bg-default);text-align:start;white-space:nowrap;vertical-align:middle}thead th{padding-block:var(--arq-space-padding-sm-md);color:var(--arq-color-text-tertiary);font-weight:inherit}tbody td{color:var(--arq-color-text-primary)}@media (hover:hover){tbody tr:hover>*{background:var(--arq-color-surface-faint)}}.start{z-index:1;padding-inline-start:var(--arq-layout-gutter);position:sticky;left:0}.cell-start{align-items:center;gap:var(--arq-space-gap-sm);display:flex}.th-sku{padding-inline-start:calc(var(--arq-layout-table-thumb) + var(--arq-space-gap-sm));display:inline-block}.thumb{width:var(--arq-layout-table-thumb);height:var(--arq-layout-table-thumb);background:var(--arq-color-surface-subtle);flex:none;display:block;overflow:hidden}.thumb img{object-fit:cover;width:100%;height:100%;display:block}.end{z-index:1;width:1%;padding-inline:var(--arq-space-gap-sm) var(--arq-layout-gutter);text-align:end;position:sticky;right:0}", I = (e) => String(e ?? "").replace(/[&<>"]/g, (e) => ({
+	"&": "&amp;",
+	"<": "&lt;",
+	">": "&gt;",
+	"\"": "&quot;"
+})[e]);
+(class extends d {
+	static tag = "arq-variants-table";
+	static styles = ye;
+	static properties = {
+		filters: { type: Boolean },
+		downloads: { type: String },
+		label: {
+			type: String,
+			default: "Variantes"
+		}
+	};
+	static template = "<div class=\"controls\"><div class=\"toolbar\"><arq-button class=\"toggle-filters\" show-icon icon=\"filter\">Filtros</arq-button><div class=\"downloads\"><slot name=\"downloads\"></slot></div></div><arq-filter-bar class=\"filter-bar\" hidden></arq-filter-bar></div><div class=\"scroll\" tabindex=\"0\" role=\"region\" aria-label=\"Variantes\"><table class=\"table\"><thead></thead><tbody></tbody></table></div>";
+	#e = {
+		columns: [],
+		filters: [],
+		rows: []
+	};
+	#t = {};
+	get data() {
+		return this.#e;
+	}
+	set data(e) {
+		this.#e = {
+			columns: e?.columns ?? [],
+			filters: e?.filters ?? [],
+			rows: e?.rows ?? []
+		}, this.#t = {}, this.isConnected && this.#n();
+	}
+	setup() {
+		let e = this.shadowRoot;
+		e.querySelector(".toggle-filters").addEventListener("click", () => this.filters = !this.filters), e.querySelector(".filter-bar").addEventListener("arq:filters", (e) => {
+			e.stopPropagation(), this.#t = e.detail.filters, this.#r();
+		}), e.querySelector("tbody").addEventListener("click", (e) => {
+			let t = e.target.closest("arq-icon-button[data-sku]");
+			if (!t) return;
+			let n = t.dataset.sku;
+			this.emit("downloads", { sku: n }), (this.downloads ? this.getRootNode().getElementById?.(this.downloads) : null)?.show?.(t);
+		}), this.#n();
+	}
+	update(e) {
+		let t = this.shadowRoot;
+		if (e.has("label") && t.querySelector(".scroll").setAttribute("aria-label", this.label ?? "Variantes"), !e.has("filters")) return;
+		let n = t.querySelector(".toggle-filters");
+		if (n.type = this.filters ? "outline" : "filled", n.icon = this.filters ? "filter-off" : "filter", customElements.whenDefined("arq-button").then(() => {
+			let e = n.shadowRoot?.querySelector(".control");
+			e && (e.setAttribute("aria-expanded", String(this.filters)), "ariaControlsElements" in e && (e.ariaControlsElements = [t.querySelector(".filter-bar")]));
+		}), t.querySelector(".filter-bar").hidden = !this.filters, !this.filters && Object.keys(this.#t).length) {
+			this.#t = {};
+			for (let e of t.querySelectorAll(".filter-bar arq-select")) e.value = "";
+			t.querySelector(".filter-bar").applied = !1, this.#r();
+		}
+	}
+	#n() {
+		let e = this.shadowRoot, { columns: t, filters: n } = this.#e;
+		e.querySelector("thead").innerHTML = "<tr><th scope=\"col\" class=\"start role-label\"><span class=\"th-sku\">SKU</span></th>" + t.map((e) => `<th scope="col" class="role-label">${I(e.label)}</th>`).join("") + "<th scope=\"col\" class=\"end\"><span class=\"visually-hidden\">Descargas</span></th></tr>", e.querySelector(".filter-bar").replaceChildren(...n.map((e) => {
+			let t = document.createElement("arq-select");
+			return t.type = "filter", t.label = e.label, t.name = e.key, t;
+		})), this.#r();
+	}
+	#r() {
+		let e = this.shadowRoot, { columns: t, filters: n, rows: r } = this.#e, i = j(r, n.map((e) => e.key), this.#t);
+		e.querySelectorAll(".filter-bar arq-select").forEach((e, t) => {
+			e.options = i[t].options.map((e) => ({
+				value: e.value,
+				label: e.value,
+				disabled: e.disabled
+			})), e.value = this.#t[e.name] ?? "";
+		});
+		let a = A(r, this.#t);
+		e.querySelector("tbody").innerHTML = a.map((e) => `<tr><th scope="row" class="start"><span class="cell-start"><span class="thumb">${e.thumb ? `<img src="${I(e.thumb)}" alt="" loading="lazy">` : ""}</span><arq-sku size="compact">${I(e.sku)}</arq-sku></span></th>` + t.map((t) => `<td class="role-body">${I(e.values?.[t.key] ?? "—")}</td>`).join("") + `<td class="end"><arq-icon-button icon="download" background="subtle" data-sku="${I(e.sku)}">Descargas de ${I(e.sku)}</arq-icon-button></td></tr>`).join("");
+	}
+}).define();
+//#endregion
 //#region src/components/gallery-thumb/gallery-thumb.css?inline
-var ge = ":host{display:block}.thumb{box-sizing:border-box;aspect-ratio:5/4;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;width:100%;margin:0;padding:0;display:block;position:relative;overflow:hidden}.thumb img{object-fit:cover;width:100%;height:100%;display:block}.thumb:after{content:\"\";border:var(--arq-border-default) solid var(--arq-color-surface-transparent);border-radius:inherit;pointer-events:none;position:absolute;inset:0}.thumb:hover:after{border-color:var(--arq-color-border-hover)}.thumb[aria-current=true]:after{border-color:var(--arq-color-border-strong)}.thumb:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.thumb:focus:not(:focus-visible){outline:none}";
+var be = ":host{display:block}.thumb{box-sizing:border-box;aspect-ratio:5/4;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;width:100%;margin:0;padding:0;display:block;position:relative;overflow:hidden}.thumb img{object-fit:cover;width:100%;height:100%;display:block}.thumb:after{content:\"\";border:var(--arq-border-default) solid var(--arq-color-surface-transparent);border-radius:inherit;pointer-events:none;position:absolute;inset:0}.thumb:hover:after{border-color:var(--arq-color-border-hover)}.thumb[aria-current=true]:after{border-color:var(--arq-color-border-strong)}.thumb:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.thumb:focus:not(:focus-visible){outline:none}";
 (class extends d {
 	static tag = "arq-gallery-thumb";
-	static styles = ge;
+	static styles = be;
 	static properties = {
 		selected: { type: Boolean },
 		src: { type: String },
@@ -581,36 +996,36 @@ var ge = ":host{display:block}.thumb{box-sizing:border-box;aspect-ratio:5/4;bord
 }).define();
 //#endregion
 //#region src/base/theme.js
-var C = /* @__PURE__ */ new Set(), w = null;
-function T(e) {
+var L = /* @__PURE__ */ new Set(), R = null;
+function xe(e) {
 	if (e.assignedSlot) return e.assignedSlot;
 	if (e.parentElement) return e.parentElement;
 	let t = e.parentNode;
 	return t instanceof ShadowRoot ? t.host : null;
 }
-function E(e) {
-	for (let t = e; t; t = T(t)) if (t.hasAttribute?.("data-arq-theme")) return t.getAttribute("data-arq-theme") === "dark";
+function z(e) {
+	for (let t = e; t; t = xe(t)) if (t.hasAttribute?.("data-arq-theme")) return t.getAttribute("data-arq-theme") === "dark";
 	return !1;
 }
-function D() {
-	for (let e of C) {
+function Se() {
+	for (let e of L) {
 		let t = e.ref.deref();
 		if (!t) {
-			C.delete(e);
+			L.delete(e);
 			continue;
 		}
 		if (!t.isConnected) continue;
-		let n = E(t);
+		let n = z(t);
 		n !== e.dark && (e.dark = n, t[e.method](n));
 	}
 }
-function O(e, t) {
+function B(e, t) {
 	let n = {
 		ref: new WeakRef(e),
-		dark: E(e),
+		dark: z(e),
 		method: t
 	};
-	C.add(n), w || (w = new MutationObserver(D), w.observe(document.documentElement, {
+	L.add(n), R || (R = new MutationObserver(Se), R.observe(document.documentElement, {
 		attributes: !0,
 		subtree: !0,
 		attributeFilter: ["data-arq-theme"]
@@ -618,10 +1033,10 @@ function O(e, t) {
 }
 //#endregion
 //#region src/components/product-gallery/product-gallery.css?inline
-var k = ":host{min-width:0;display:block}.gallery{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex;position:relative}.image{aspect-ratio:5/4;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);overflow:hidden}::slotted(img){object-fit:cover!important;width:100%!important;height:100%!important;display:block!important}.thumbs{gap:var(--arq-space-gap-sm);margin:calc(-1 * var(--arq-space-padding-xs));padding:var(--arq-space-padding-xs);scroll-snap-type:x mandatory;scrollbar-width:none;display:flex;overflow-x:auto}.thumbs::-webkit-scrollbar{display:none}arq-gallery-thumb{width:var(--arq-layout-gallery-thumb);scroll-snap-align:start;flex:none}@media (width>=768px){.thumbs{left:var(--arq-space-padding-lg);bottom:var(--arq-space-padding-lg);max-width:calc(100% - 2 * var(--arq-space-padding-lg));position:absolute}}";
+var Ce = ":host{min-width:0;display:block}.gallery{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex;position:relative}.image{aspect-ratio:5/4;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);overflow:hidden}::slotted(img){object-fit:cover!important;width:100%!important;height:100%!important;display:block!important}.thumbs{gap:var(--arq-space-gap-sm);margin:calc(-1 * var(--arq-space-padding-xs));padding:var(--arq-space-padding-xs);scroll-snap-type:x mandatory;scrollbar-width:none;display:flex;overflow-x:auto}.thumbs::-webkit-scrollbar{display:none}arq-gallery-thumb{width:var(--arq-layout-gallery-thumb);scroll-snap-align:start;flex:none}@media (width>=768px){.thumbs{left:var(--arq-space-padding-lg);bottom:var(--arq-space-padding-lg);max-width:calc(100% - 2 * var(--arq-space-padding-lg));position:absolute}}";
 (class extends d {
 	static tag = "arq-product-gallery";
-	static styles = k;
+	static styles = Ce;
 	static properties = {};
 	static template = "<div class=\"gallery\"><div class=\"image\"><slot name=\"image\"></slot></div><div class=\"thumbs\" hidden></div></div>";
 	#e = [];
@@ -637,7 +1052,7 @@ var k = ":host{min-width:0;display:block}.gallery{gap:var(--arq-space-gap-sm);fl
 		this.shadowRoot.querySelector(".thumbs").addEventListener("click", (e) => {
 			let t = e.target.closest("arq-gallery-thumb");
 			t && this.select(Number(t.dataset.index));
-		}), O(this, "themeChanged"), this.#a();
+		}), B(this, "themeChanged"), this.#a();
 	}
 	themeChanged(e) {
 		this.#n = e, this.#a();
@@ -673,10 +1088,10 @@ var k = ":host{min-width:0;display:block}.gallery{gap:var(--arq-space-gap-sm);fl
 }).define();
 //#endregion
 //#region src/base/card-link.css?inline
-var A = ".card{--card-above:1;position:relative}.card-link{color:inherit;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);text-decoration:none;display:block}.card-link:after{content:\"\";position:absolute;inset:0}.card-link:focus{outline:none}.card:has(.card-link:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}@media (hover:hover){.card:has(.card-link:hover) .card-media{outline:var(--arq-border-default) solid var(--arq-color-border-hover);outline-offset:calc(var(--arq-border-default) * -1)}}.card-media{background:var(--arq-color-bg-subtle);overflow:hidden}.card-media ::slotted(*){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}", j = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.card-media{aspect-ratio:1;background:var(--arq-color-surface-subtle)}:host([size=large]) .card-media{aspect-ratio:7/10}.name{max-width:100%;color:var(--arq-color-text-secondary);overflow-wrap:break-word;align-self:flex-start}:host([size=large]) .name{color:var(--arq-color-text-primary)}";
+var V = ".card{--card-above:1;position:relative}.card-link{color:inherit;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);text-decoration:none;display:block}.card-link:after{content:\"\";position:absolute;inset:0}.card-link:focus{outline:none}.card:has(.card-link:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}@media (hover:hover){.card:has(.card-link:hover) .card-media{outline:var(--arq-border-default) solid var(--arq-color-border-hover);outline-offset:calc(var(--arq-border-default) * -1)}}.card-media{background:var(--arq-color-bg-subtle);overflow:hidden}.card-media ::slotted(*){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}", we = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.card-media{aspect-ratio:1;background:var(--arq-color-surface-subtle)}:host([size=large]) .card-media{aspect-ratio:7/10}.name{max-width:100%;color:var(--arq-color-text-secondary);overflow-wrap:break-word;align-self:flex-start}:host([size=large]) .name{color:var(--arq-color-text-primary)}";
 (class extends d {
 	static tag = "arq-family-card";
-	static styles = A + j;
+	static styles = V + we;
 	static properties = {
 		size: {
 			type: String,
@@ -693,10 +1108,10 @@ var A = ".card{--card-above:1;position:relative}.card-link{color:inherit;-webkit
 }).define();
 //#endregion
 //#region src/components/download-item/download-item.css?inline
-var M = ":host{min-width:0;display:block}.row{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0 calc(var(--arq-space-padding-md) - var(--arq-border-default));border:0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);margin:0;text-decoration:none;display:flex}.label{overflow-wrap:break-word;flex:auto;min-width:0}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}:host([emphasis=featured]) .row{padding:calc(var(--arq-space-padding-md) - var(--arq-border-default)) calc(var(--arq-space-padding-lg) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong)}@media (hover:hover){:host(:not([emphasis=featured])) .row:hover .label{text-decoration:underline;text-decoration-thickness:var(--arq-border-default)}:host([emphasis=featured]) .row:hover{background:var(--arq-color-surface-faint)}}.row:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.row:focus:not(:focus-visible){outline:none}";
+var Te = ":host{min-width:0;display:block}.row{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0 calc(var(--arq-space-padding-md) - var(--arq-border-default));border:0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);margin:0;text-decoration:none;display:flex}.label{overflow-wrap:break-word;flex:auto;min-width:0}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}:host([emphasis=featured]) .row{padding:calc(var(--arq-space-padding-md) - var(--arq-border-default)) calc(var(--arq-space-padding-lg) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong)}@media (hover:hover){:host(:not([emphasis=featured])) .row:hover .label{text-decoration:underline;text-decoration-thickness:var(--arq-border-default)}:host([emphasis=featured]) .row:hover{background:var(--arq-color-surface-faint)}}.row:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.row:focus:not(:focus-visible){outline:none}";
 (class extends d {
 	static tag = "arq-download-item";
-	static styles = M;
+	static styles = Te;
 	static properties = {
 		emphasis: {
 			type: String,
@@ -722,10 +1137,10 @@ var M = ":host{min-width:0;display:block}.row{box-sizing:border-box;align-items:
 }).define();
 //#endregion
 //#region src/components/download-modal/download-modal.css?inline
-var N = ":host{display:contents}.dialog{box-sizing:border-box;inset:auto var(--arq-layout-gutter) var(--arq-layout-gutter) auto;width:var(--arq-layout-filter-panel);max-width:calc(100% - 2 * var(--arq-layout-gutter));max-height:calc(100dvh - 2 * var(--arq-layout-gutter));border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);margin:0;padding:0}.dialog::backdrop{background:var(--arq-color-overlay-scrim)}.sheet{gap:var(--arq-space-gap-2xl);padding:var(--arq-space-padding-xl-2xl);flex-direction:column;display:flex}.header{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.title{min-width:0;color:var(--arq-color-text-primary)}.content{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.list{flex-direction:column;display:flex}@media (width<=767px){.dialog{inset:auto var(--arq-layout-gutter) var(--arq-layout-gutter);width:auto;max-width:none}}";
+var Ee = ":host{display:contents}.dialog{box-sizing:border-box;inset:auto var(--arq-layout-gutter) var(--arq-layout-gutter) auto;width:var(--arq-layout-filter-panel);max-width:calc(100% - 2 * var(--arq-layout-gutter));max-height:calc(100dvh - 2 * var(--arq-layout-gutter));border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);margin:0;padding:0}.dialog::backdrop{background:var(--arq-color-overlay-scrim)}.sheet{gap:var(--arq-space-gap-2xl);padding:var(--arq-space-padding-xl-2xl);flex-direction:column;display:flex}.header{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.title{min-width:0;color:var(--arq-color-text-primary)}.content{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.list{flex-direction:column;display:flex}@media (width<=767px){.dialog{inset:auto var(--arq-layout-gutter) var(--arq-layout-gutter);width:auto;max-width:none}}";
 (class extends d {
 	static tag = "arq-download-modal";
-	static styles = N;
+	static styles = Ee;
 	static properties = { open: { type: Boolean } };
 	static template = "<dialog class=\"dialog\"><div class=\"sheet\"><div class=\"header\"><div class=\"title role-heading-1\"><slot name=\"title\"></slot></div><arq-icon-button icon=\"close\" size=\"large\" class=\"close\">Cerrar descargas</arq-icon-button></div><div class=\"content\"><div class=\"featured\"><slot name=\"featured\"></slot></div><div class=\"list\" role=\"list\"><slot></slot></div></div></div></dialog>";
 	#e = null;
@@ -771,10 +1186,10 @@ var N = ":host{display:contents}.dialog{box-sizing:border-box;inset:auto var(--a
 }).define();
 //#endregion
 //#region src/components/catalog-nav-item/catalog-nav-item.css?inline
-var P = ":host{min-width:0;display:flex}.link{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;color:var(--arq-color-text-tertiary);-webkit-tap-highlight-color:var(--arq-color-surface-transparent);text-decoration:none;display:inline-flex}.label{overflow-wrap:break-word;min-width:0}.indicator{width:var(--arq-space-gap-sm-md);height:var(--arq-border-default);background:var(--arq-color-text-primary);flex:none;display:none}@media (hover:hover){.link:hover{color:var(--arq-color-text-primary)}}:host([selected]) .link{color:var(--arq-color-text-primary)}:host([selected]) .indicator{display:block}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}";
+var De = ":host{min-width:0;display:flex}.link{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;color:var(--arq-color-text-tertiary);-webkit-tap-highlight-color:var(--arq-color-surface-transparent);text-decoration:none;display:inline-flex}.label{overflow-wrap:break-word;min-width:0}.indicator{width:var(--arq-space-gap-sm-md);height:var(--arq-border-default);background:var(--arq-color-text-primary);flex:none;display:none}@media (hover:hover){.link:hover{color:var(--arq-color-text-primary)}}:host([selected]) .link{color:var(--arq-color-text-primary)}:host([selected]) .indicator{display:block}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}";
 (class extends d {
 	static tag = "arq-catalog-nav-item";
-	static styles = P;
+	static styles = De;
 	static properties = {
 		size: {
 			type: String,
@@ -797,10 +1212,10 @@ var P = ":host{min-width:0;display:flex}.link{align-items:center;gap:var(--arq-s
 }).define();
 //#endregion
 //#region src/components/catalog-nav-group/catalog-nav-group.css?inline
-var F = ":host{min-width:0;display:block}.group{border-top:var(--arq-border-default) solid var(--arq-color-border-subtle)}.header{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-secondary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .header{padding-bottom:var(--arq-space-gap-md);color:var(--arq-color-text-primary)}.label{overflow-wrap:break-word;min-width:0}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}@media (hover:hover){.header:hover .icon-box{background:var(--arq-color-surface-hover)}}.items{align-items:flex-start;gap:var(--arq-space-gap-sm-md);padding-bottom:calc(var(--arq-space-padding-md) + var(--arq-space-padding-xs));flex-direction:column;display:flex}.header:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.header:focus:not(:focus-visible){outline:none}";
+var Oe = ":host{min-width:0;display:block}.group{border-top:var(--arq-border-default) solid var(--arq-color-border-subtle)}.header{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-secondary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .header{padding-bottom:var(--arq-space-gap-md);color:var(--arq-color-text-primary)}.label{overflow-wrap:break-word;min-width:0}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}@media (hover:hover){.header:hover .icon-box{background:var(--arq-color-surface-hover)}}.items{align-items:flex-start;gap:var(--arq-space-gap-sm-md);padding-bottom:calc(var(--arq-space-padding-md) + var(--arq-space-padding-xs));flex-direction:column;display:flex}.header:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.header:focus:not(:focus-visible){outline:none}";
 (class extends d {
 	static tag = "arq-catalog-nav-group";
-	static styles = F;
+	static styles = Oe;
 	static properties = { open: { type: Boolean } };
 	static template = `<div class="group"><button type="button" class="header"><span class="label role-label"><slot name="label"></slot></span><span class="icon-box">${p("plus")}${p("minus")}</span></button><div class="items" role="list" part="panel"><slot></slot></div></div>`;
 	setup() {
@@ -812,10 +1227,10 @@ var F = ":host{min-width:0;display:block}.group{border-top:var(--arq-border-defa
 }).define();
 //#endregion
 //#region src/components/catalog-nav/catalog-nav.css?inline
-var I = ":host{min-width:0;display:block}.nav{background:var(--arq-color-surface-default)}.trigger{display:none}.panel,.panel[hidden]{padding-inline:var(--arq-space-padding-md);display:block!important}@media (width<=1023px){.nav{border-block:var(--arq-border-default) solid var(--arq-color-border-default)}.panel[hidden]{display:none!important}.trigger{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .trigger{background:var(--arq-color-surface-faint)}@media (hover:hover){.trigger:hover{background:var(--arq-color-surface-faint)}:host(:not([open])) .trigger:hover .icon-box{background:var(--arq-color-surface-hover)}}.trigger:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus:not(:focus-visible){outline:none}}.current{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;display:inline-flex}.current-label{overflow-wrap:break-word;min-width:0}.indicator{width:var(--arq-space-gap-sm-md);height:var(--arq-border-default);background:var(--arq-color-text-primary);flex:none}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}:host([open]) .icon-box{background:var(--arq-color-surface-default)}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}";
+var ke = ":host{min-width:0;display:block}.nav{background:var(--arq-color-surface-default)}.trigger{display:none}.panel,.panel[hidden]{padding-inline:var(--arq-space-padding-md);display:block!important}@media (width<=1023px){.nav{border-block:var(--arq-border-default) solid var(--arq-color-border-default)}.panel[hidden]{display:none!important}.trigger{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .trigger{background:var(--arq-color-surface-faint)}@media (hover:hover){.trigger:hover{background:var(--arq-color-surface-faint)}:host(:not([open])) .trigger:hover .icon-box{background:var(--arq-color-surface-hover)}}.trigger:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus:not(:focus-visible){outline:none}}.current{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;display:inline-flex}.current-label{overflow-wrap:break-word;min-width:0}.indicator{width:var(--arq-space-gap-sm-md);height:var(--arq-border-default);background:var(--arq-color-text-primary);flex:none}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}:host([open]) .icon-box{background:var(--arq-color-surface-default)}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}";
 (class extends d {
 	static tag = "arq-catalog-nav";
-	static styles = I;
+	static styles = ke;
 	static properties = {
 		open: { type: Boolean },
 		label: {
@@ -858,10 +1273,10 @@ var I = ":host{min-width:0;display:block}.nav{background:var(--arq-color-surface
 }).define();
 //#endregion
 //#region src/components/checkbox/checkbox.css?inline
-var L = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.row{align-items:center;gap:var(--arq-space-gap-sm);max-width:100%;padding-block:var(--arq-space-gap-xs);cursor:pointer;display:inline-flex;position:relative}.control{width:var(--arq-icon-md);height:var(--arq-icon-md);flex:none;justify-content:center;align-items:center;display:inline-flex}.box{box-sizing:border-box;width:var(--arq-icon-sm);height:var(--arq-icon-sm);border:var(--arq-border-default) solid var(--arq-color-icon-tertiary);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default)}.label{min-width:0;color:var(--arq-color-text-secondary)}.row:hover .box{border-color:var(--arq-color-icon-primary)}.row:hover .label{color:var(--arq-color-text-primary)}.native:checked+.control .box{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}.row:hover .native:checked+.control .box{border-color:var(--arq-color-action-primary-hover);background:var(--arq-color-action-primary-hover)}:host([disabled]) .row{cursor:default}:host([disabled]) .box,:host([disabled]) .row:hover .box{border-color:var(--arq-color-icon-disabled)}:host([disabled]) .native:checked+.control .box{border-color:var(--arq-color-icon-disabled);background:var(--arq-color-icon-disabled)}:host([disabled]) .label,:host([disabled]) .row:hover .label{color:var(--arq-color-text-disabled)}.native:focus-visible+.control .box{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}";
+var Ae = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.row{align-items:center;gap:var(--arq-space-gap-sm);max-width:100%;padding-block:var(--arq-space-gap-xs);cursor:pointer;display:inline-flex;position:relative}.control{width:var(--arq-icon-md);height:var(--arq-icon-md);flex:none;justify-content:center;align-items:center;display:inline-flex}.box{box-sizing:border-box;width:var(--arq-icon-sm);height:var(--arq-icon-sm);border:var(--arq-border-default) solid var(--arq-color-icon-tertiary);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default)}.label{min-width:0;color:var(--arq-color-text-secondary)}.row:hover .box{border-color:var(--arq-color-icon-primary)}.row:hover .label{color:var(--arq-color-text-primary)}.native:checked+.control .box{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}.row:hover .native:checked+.control .box{border-color:var(--arq-color-action-primary-hover);background:var(--arq-color-action-primary-hover)}:host([disabled]) .row{cursor:default}:host([disabled]) .box,:host([disabled]) .row:hover .box{border-color:var(--arq-color-icon-disabled)}:host([disabled]) .native:checked+.control .box{border-color:var(--arq-color-icon-disabled);background:var(--arq-color-icon-disabled)}:host([disabled]) .label,:host([disabled]) .row:hover .label{color:var(--arq-color-text-disabled)}.native:focus-visible+.control .box{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}";
 (class extends d {
 	static tag = "arq-checkbox";
-	static styles = L;
+	static styles = Ae;
 	static formAssociated = !0;
 	static properties = {
 		size: {
@@ -906,10 +1321,10 @@ var L = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.row{ali
 }).define();
 //#endregion
 //#region src/components/filter-row/filter-row.css?inline
-var _e = ":host{min-width:0;display:block}.row{border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.header{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .header{padding-bottom:var(--arq-space-gap-md)}.label{overflow-wrap:break-word;min-width:0}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.options{align-items:flex-start;gap:var(--arq-space-gap-sm-md);padding-bottom:calc(var(--arq-space-padding-sm) + var(--arq-space-padding-md));flex-direction:column;display:flex}@media (hover:hover){.row:has(.header:hover){border-bottom-color:var(--arq-color-border-default)}.header:hover .icon-box{background:var(--arq-color-surface-hover)}}.row:has(.header:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.header:focus{outline:none}";
+var je = ":host{min-width:0;display:block}.row{border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.header{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .header{padding-bottom:var(--arq-space-gap-md)}.label{overflow-wrap:break-word;min-width:0}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.options{align-items:flex-start;gap:var(--arq-space-gap-sm-md);padding-bottom:calc(var(--arq-space-padding-sm) + var(--arq-space-padding-md));flex-direction:column;display:flex}@media (hover:hover){.row:has(.header:hover){border-bottom-color:var(--arq-color-border-default)}.header:hover .icon-box{background:var(--arq-color-surface-hover)}}.row:has(.header:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.header:focus{outline:none}";
 (class extends d {
 	static tag = "arq-filter-row";
-	static styles = _e;
+	static styles = je;
 	static properties = { open: { type: Boolean } };
 	static template = `<div class="row"><button type="button" class="header"><span class="label role-body-xl"><slot name="label"></slot></span><span class="icon-box">${p("plus")}${p("minus")}</span></button><div class="options" role="group" part="panel"><slot></slot></div></div>`;
 	setup() {
@@ -926,13 +1341,13 @@ var _e = ":host{min-width:0;display:block}.row{border-bottom:var(--arq-border-de
 }).define();
 //#endregion
 //#region src/components/filter-panel/filter-panel.css?inline
-var ve = ":host{display:contents}.dialog{box-sizing:border-box;width:var(--arq-layout-filter-panel);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);max-width:100%;height:100dvh;max-height:none;color:var(--arq-color-text-primary);margin:0;padding:0;inset:0 0 0 auto;overflow:hidden}.dialog::backdrop{background:var(--arq-color-overlay-scrim)}.sheet{box-sizing:border-box;gap:var(--arq-space-gap-lg);height:100%;padding:var(--arq-space-padding-xl-2xl);flex-direction:column;display:flex}.header{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.titles{gap:var(--arq-space-gap-xs);flex-direction:column;min-width:0;display:flex}.title{color:var(--arq-color-text-primary)}.summary{color:var(--arq-color-text-secondary);margin:0}.applied{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.body{min-height:0;margin:calc(-1 * var(--arq-space-padding-xs));padding:var(--arq-space-padding-xs);overscroll-behavior:contain;flex:auto;overflow-y:auto}.footer{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-lg);display:flex}@media (width<=767px){.dialog{border:0;width:100%;inset:0}.dialog::backdrop{background:var(--arq-color-surface-transparent)}.sheet{gap:var(--arq-space-gap-xl);padding:var(--arq-space-padding-lg) var(--arq-layout-gutter)}.footer{justify-content:flex-start}.apply{flex:auto}}", R = {
+var Me = ":host{display:contents}.dialog{box-sizing:border-box;width:var(--arq-layout-filter-panel);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);max-width:100%;height:100dvh;max-height:none;color:var(--arq-color-text-primary);margin:0;padding:0;inset:0 0 0 auto;overflow:hidden}.dialog::backdrop{background:var(--arq-color-overlay-scrim)}.sheet{box-sizing:border-box;gap:var(--arq-space-gap-lg);height:100%;padding:var(--arq-space-padding-xl-2xl);flex-direction:column;display:flex}.header{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.titles{gap:var(--arq-space-gap-xs);flex-direction:column;min-width:0;display:flex}.title{color:var(--arq-color-text-primary)}.summary{color:var(--arq-color-text-secondary);margin:0}.applied{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.body{min-height:0;margin:calc(-1 * var(--arq-space-padding-xs));padding:var(--arq-space-padding-xs);overscroll-behavior:contain;flex:auto;overflow-y:auto}.footer{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-lg);display:flex}@media (width<=767px){.dialog{border:0;width:100%;inset:0}.dialog::backdrop{background:var(--arq-color-surface-transparent)}.sheet{gap:var(--arq-space-gap-xl);padding:var(--arq-space-padding-lg) var(--arq-layout-gutter)}.footer{justify-content:flex-start}.apply{flex:auto}}", H = {
 	productos: ["producto", "productos"],
 	colecciones: ["colección", "colecciones"]
 };
 (class extends d {
 	static tag = "arq-filter-panel";
-	static styles = ve;
+	static styles = Me;
 	static properties = {
 		open: { type: Boolean },
 		count: { type: Number },
@@ -1028,7 +1443,7 @@ var ve = ":host{display:contents}.dialog{box-sizing:border-box;width:var(--arq-l
 	#u() {
 		let e = this.shadowRoot.querySelector(".apply");
 		if (!e) return;
-		let [t, n] = R[this.unit] ?? R.productos;
+		let [t, n] = H[this.unit] ?? H.productos;
 		e.textContent = Number.isFinite(this.count) ? `Ver ${this.count} ${this.count === 1 ? t : n}` : `Ver ${n}`;
 	}
 	#d(e) {
@@ -1040,10 +1455,10 @@ var ve = ":host{display:contents}.dialog{box-sizing:border-box;width:var(--arq-l
 }).define();
 //#endregion
 //#region src/components/toggle/toggle.css?inline
-var ye = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.toggle{align-items:center;gap:var(--arq-space-gap-sm);cursor:pointer;max-width:100%;display:inline-flex;position:relative}.track{box-sizing:border-box;width:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm) * 2 + var(--arq-space-gap-sm));height:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm));padding:calc(var(--arq-space-padding-2xs) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong);border-radius:var(--arq-radius-pill);background:var(--arq-color-surface-transparent);flex:none;align-items:center;display:inline-flex}.thumb{width:var(--arq-icon-sm);height:var(--arq-icon-sm);border-radius:var(--arq-radius-pill);background:var(--arq-color-icon-primary);transition-property:transform,color,background-color,border-color,outline-color,text-decoration-color,fill,stroke}.label{min-width:0;color:var(--arq-color-text-primary)}.toggle:hover .track{background:var(--arq-color-surface-hover)}.native:checked+.track{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}.native:checked+.track .thumb{background:var(--arq-color-action-on-primary);transform:translateX(calc(var(--arq-icon-sm) + var(--arq-space-gap-sm)))}.toggle:hover .native:checked+.track{border-color:var(--arq-color-action-primary-hover);background:var(--arq-color-action-primary-hover)}:host([disabled]) .toggle{cursor:default}:host([disabled]) .track,:host([disabled]) .toggle:hover .track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-transparent)}:host([disabled]) .native:checked+.track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-strong)}:host([disabled]) .thumb,:host([disabled]) .native:checked+.track .thumb{background:var(--arq-color-icon-disabled)}:host([disabled]) .label{color:var(--arq-color-text-disabled)}.native:focus-visible+.track{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}";
+var Ne = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.toggle{align-items:center;gap:var(--arq-space-gap-sm);cursor:pointer;max-width:100%;display:inline-flex;position:relative}.track{box-sizing:border-box;width:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm) * 2 + var(--arq-space-gap-sm));height:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm));padding:calc(var(--arq-space-padding-2xs) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong);border-radius:var(--arq-radius-pill);background:var(--arq-color-surface-transparent);flex:none;align-items:center;display:inline-flex}.thumb{width:var(--arq-icon-sm);height:var(--arq-icon-sm);border-radius:var(--arq-radius-pill);background:var(--arq-color-icon-primary);transition-property:transform,color,background-color,border-color,outline-color,text-decoration-color,fill,stroke}.label{min-width:0;color:var(--arq-color-text-primary)}.toggle:hover .track{background:var(--arq-color-surface-hover)}.native:checked+.track{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}.native:checked+.track .thumb{background:var(--arq-color-action-on-primary);transform:translateX(calc(var(--arq-icon-sm) + var(--arq-space-gap-sm)))}.toggle:hover .native:checked+.track{border-color:var(--arq-color-action-primary-hover);background:var(--arq-color-action-primary-hover)}:host([disabled]) .toggle{cursor:default}:host([disabled]) .track,:host([disabled]) .toggle:hover .track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-transparent)}:host([disabled]) .native:checked+.track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-strong)}:host([disabled]) .thumb,:host([disabled]) .native:checked+.track .thumb{background:var(--arq-color-icon-disabled)}:host([disabled]) .label{color:var(--arq-color-text-disabled)}.native:focus-visible+.track{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}";
 (class extends d {
 	static tag = "arq-toggle";
-	static styles = ye;
+	static styles = Ne;
 	static formAssociated = !0;
 	static properties = {
 		checked: { type: Boolean },
@@ -1082,25 +1497,25 @@ var ye = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.toggle
 }).define();
 //#endregion
 //#region src/components/catalog-toolbar/catalog-toolbar.css?inline
-var be = ":host{min-width:0;display:block}.bar{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);padding-block:var(--arq-space-padding-md);border-block:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex}.count{min-width:0;color:var(--arq-color-text-secondary);white-space:nowrap;margin:0}.actions{align-items:center;gap:var(--arq-space-gap-xl);flex:none;display:flex}.lead{align-items:stretch;gap:var(--arq-space-gap-xl);display:flex}@media (width<=767px){.actions,.lead{gap:var(--arq-space-gap-lg)}}", z = {
+var Pe = ":host{min-width:0;display:block}.bar{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);padding-block:var(--arq-space-padding-md);border-block:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex}.count{min-width:0;color:var(--arq-color-text-secondary);white-space:nowrap;margin:0}.actions{align-items:center;gap:var(--arq-space-gap-xl);flex:none;display:flex}.lead{align-items:stretch;gap:var(--arq-space-gap-xl);display:flex}@media (width<=767px){.actions,.lead{gap:var(--arq-space-gap-lg)}}", U = {
 	productos: ["producto", "productos"],
 	colecciones: ["colección", "colecciones"]
-}, B = "arq:theme";
-function xe() {
+}, W = "arq:theme";
+function Fe() {
 	try {
-		return localStorage.getItem(B);
+		return localStorage.getItem(W);
 	} catch {
 		return null;
 	}
 }
-function Se(e) {
+function Ie(e) {
 	try {
-		localStorage.setItem(B, e);
+		localStorage.setItem(W, e);
 	} catch {}
 }
 (class extends d {
 	static tag = "arq-catalog-toolbar";
-	static styles = be;
+	static styles = Pe;
 	static properties = {
 		count: { type: Number },
 		unit: {
@@ -1121,7 +1536,7 @@ function Se(e) {
 		if (this.#t = e.querySelector(".iluminar"), this.#n = e.querySelector(".filter"), this.#n.addEventListener("click", () => this.#u()), this.#t.addEventListener("arq:change", (e) => {
 			e.stopPropagation(), this.#a(e.detail.checked, !0);
 		}), this.showIluminar) {
-			let e = xe();
+			let e = Fe();
 			(e === "dark" || e === "light") && this.#a(e === "dark", !1);
 		}
 		new MutationObserver(() => this.#o()).observe(document.documentElement, {
@@ -1133,7 +1548,7 @@ function Se(e) {
 		(e.has("count") || e.has("unit")) && this.#r(), e.has("showIluminar") && (this.shadowRoot.querySelector(".lead").hidden = !this.showIluminar), e.has("for") && this.#s(), e.has("filterCount") && this.#i();
 	}
 	#r() {
-		let [e, t] = z[this.unit] ?? z.productos, n = this.shadowRoot.querySelector(".count");
+		let [e, t] = U[this.unit] ?? U.productos, n = this.shadowRoot.querySelector(".count");
 		n.textContent = Number.isFinite(this.count) ? `${this.count} ${this.count === 1 ? e : t}` : "";
 	}
 	#i() {
@@ -1142,7 +1557,7 @@ function Se(e) {
 	}
 	#a(e, t) {
 		let n = document.documentElement;
-		e ? n.setAttribute("data-arq-theme", "dark") : n.removeAttribute("data-arq-theme"), t && Se(e ? "dark" : "light");
+		e ? n.setAttribute("data-arq-theme", "dark") : n.removeAttribute("data-arq-theme"), t && Ie(e ? "dark" : "light");
 	}
 	#o() {
 		this.#t.checked = document.documentElement.getAttribute("data-arq-theme") === "dark";
@@ -1171,10 +1586,10 @@ function Se(e) {
 }).define();
 //#endregion
 //#region src/components/product-card/product-card.css?inline
-var Ce = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.card.is-small{gap:var(--arq-space-gap-sm)}.card-media{aspect-ratio:7/10;background:var(--arq-color-surface-subtle);position:relative}@media (hover:hover){.card:has(.card-link:hover) .card-media{outline:none}}.img{object-fit:cover;visibility:hidden;width:100%;height:100%;position:absolute;inset:0}.img.loaded{visibility:visible}.hover{opacity:0;transition-property:opacity,color,background-color,border-color,outline-color,text-decoration-color,fill,stroke;transition-duration:var(--arq-motion-duration-slow);transition-timing-function:var(--arq-motion-easing-standard)}.card.has-hover:has(.card-link:focus-visible) .hover{opacity:1}@media (hover:hover){.card.has-hover:has(.card-link:hover) .hover{opacity:1}}.fallback{padding:var(--arq-space-padding-md);color:var(--arq-color-text-secondary);text-align:center;overflow-wrap:break-word;justify-content:center;align-items:center;display:flex;position:absolute;inset:0}.info{align-items:flex-start;gap:var(--arq-space-gap-xs);padding-top:var(--arq-space-gap-xs);padding-bottom:var(--arq-space-gap-sm);flex-direction:column;display:flex}.title{align-items:center;gap:var(--arq-space-gap-sm);align-self:stretch;display:flex}.name{min-width:0;color:var(--arq-color-text-primary);overflow-wrap:break-word;flex:auto}.finishes{align-items:center;gap:var(--arq-space-gap-xs);flex:none;display:flex}.meta{-webkit-line-clamp:2;color:var(--arq-color-text-secondary);overflow-wrap:break-word;-webkit-box-orient:vertical;margin:0;display:-webkit-box;overflow:hidden}.meta[hidden]{display:none}.compare{z-index:var(--card-above);position:relative}", V = matchMedia("(max-width: 767px)");
+var Le = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.card.is-small{gap:var(--arq-space-gap-sm)}.card-media{aspect-ratio:7/10;background:var(--arq-color-surface-subtle);position:relative}@media (hover:hover){.card:has(.card-link:hover) .card-media{outline:none}}.img{object-fit:cover;visibility:hidden;width:100%;height:100%;position:absolute;inset:0}.img.loaded{visibility:visible}.hover{opacity:0;transition-property:opacity,color,background-color,border-color,outline-color,text-decoration-color,fill,stroke;transition-duration:var(--arq-motion-duration-slow);transition-timing-function:var(--arq-motion-easing-standard)}.card.has-hover:has(.card-link:focus-visible) .hover{opacity:1}@media (hover:hover){.card.has-hover:has(.card-link:hover) .hover{opacity:1}}.fallback{padding:var(--arq-space-padding-md);color:var(--arq-color-text-secondary);text-align:center;overflow-wrap:break-word;justify-content:center;align-items:center;display:flex;position:absolute;inset:0}.info{align-items:flex-start;gap:var(--arq-space-gap-xs);padding-top:var(--arq-space-gap-xs);padding-bottom:var(--arq-space-gap-sm);flex-direction:column;display:flex}.title{align-items:center;gap:var(--arq-space-gap-sm);align-self:stretch;display:flex}.name{min-width:0;color:var(--arq-color-text-primary);overflow-wrap:break-word;flex:auto}.finishes{align-items:center;gap:var(--arq-space-gap-xs);flex:none;display:flex}.meta{-webkit-line-clamp:2;color:var(--arq-color-text-secondary);overflow-wrap:break-word;-webkit-box-orient:vertical;margin:0;display:-webkit-box;overflow:hidden}.meta[hidden]{display:none}.compare{z-index:var(--card-above);position:relative}", G = matchMedia("(max-width: 767px)");
 (class extends d {
 	static tag = "arq-product-card";
-	static styles = A + Ce;
+	static styles = V + Le;
 	static properties = {
 		size: {
 			type: String,
@@ -1208,7 +1623,7 @@ var Ce = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex
 		]) e.querySelector(`slot[name="${t}"]`).addEventListener("slotchange", () => this.#i());
 		e.querySelector(".compare").addEventListener("arq:change", (e) => {
 			e.stopPropagation(), this.compared = e.detail.checked, this.emit("compare", { checked: e.detail.checked });
-		}), V.addEventListener("change", () => this.#r()), O(this, "themeChanged");
+		}), G.addEventListener("change", () => this.#r()), B(this, "themeChanged");
 	}
 	themeChanged(e) {
 		this.#e = e, this.#a();
@@ -1223,7 +1638,7 @@ var Ce = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex
 		n.hidden = !this.showCompare, n.checked = this.compared, e.has("size") && this.#r(), [...e].some((e) => e.startsWith("image")) && this.#a(), this.#i();
 	}
 	#n() {
-		return this.size === "small" || V.matches;
+		return this.size === "small" || G.matches;
 	}
 	#r() {
 		let e = this.#n(), t = this.shadowRoot;
@@ -1246,126 +1661,11 @@ var Ce = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex
 	}
 }).define();
 //#endregion
-//#region src/components/sku/sku.css?inline
-var H = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.sku{align-items:flex-start;gap:var(--arq-space-gap-xs);flex-direction:column;min-width:0;display:flex}.label{color:var(--arq-color-text-secondary)}:host([size=compact]) .label{display:none}.row{align-items:flex-start;gap:var(--arq-space-gap-sm);background:var(--arq-color-surface-transparent);max-width:100%;color:var(--arq-color-text-primary);text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;padding:0;display:inline-flex}.code{min-width:0;color:var(--arq-color-text-primary);overflow-wrap:anywhere}.copy{color:var(--arq-color-icon-secondary);flex:none;margin-block-start:calc((var(--arq-type-body-lg-leading) - var(--arq-icon-md)) / 2);display:inline-flex}:host([size=compact]) .copy{margin-block-start:calc((var(--arq-type-body-leading) - var(--arq-icon-md)) / 2)}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.row:hover .copy{color:var(--arq-color-icon-primary)}.copied,.failed{color:var(--arq-color-text-success);flex:none;margin-block-start:calc((var(--arq-type-body-lg-leading) - var(--arq-type-caption-leading)) / 2);display:none}:host([size=compact]) .copied,:host([size=compact]) .failed{margin-block-start:calc((var(--arq-type-body-leading) - var(--arq-type-caption-leading)) / 2)}:host([copied]) .copy,:host(:state(copy-failed)) .copy{display:none}:host([copied]) .copied,:host(:state(copy-failed)) .failed{display:inline}.failed{color:var(--arq-color-text-secondary)}.label,.copy,.copied,.failed{-webkit-user-select:none;user-select:none}.row:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.row:focus:not(:focus-visible){outline:none}", U = "Copiado", W = /Mac|iPhone|iPad/.test(navigator.userAgentData?.platform ?? navigator.platform ?? "") ? "Copialo con ⌘C" : "Copialo con Ctrl+C";
-function G(e) {
-	let t = getComputedStyle(e).getPropertyValue("--arq-motion-duration-feedback").trim(), n = Number.parseFloat(t);
-	return Number.isNaN(n) ? 0 : t.endsWith("ms") ? n : n * 1e3;
-}
-(class extends d {
-	static tag = "arq-sku";
-	static styles = H;
-	static properties = {
-		size: {
-			type: String,
-			values: ["default", "compact"],
-			default: "default"
-		},
-		copied: { type: Boolean }
-	};
-	static template = `<span class="sku"><span class="label role-label">SKU</span><button type="button" class="row"><span class="code"><slot></slot></span><span class="copy">${p("copy")}</span><span class="copied role-caption" aria-hidden="true">${U}</span><span class="failed role-caption" aria-hidden="true">${W}</span></button><span class="visually-hidden" aria-live="polite"></span></span>`;
-	#e = null;
-	#t = 0;
-	#n = this.attachInternals();
-	setup() {
-		this.#e = this.shadowRoot.querySelector(".row"), this.#e.addEventListener("click", () => this.copy());
-		let e = () => this.#e.setAttribute("aria-label", `Copiar SKU ${this.code}`);
-		this.shadowRoot.querySelector("slot").addEventListener("slotchange", e), e();
-	}
-	get code() {
-		return this.textContent.trim();
-	}
-	focus(e) {
-		this.#e ? this.#e.focus(e) : super.focus(e);
-	}
-	async copy() {
-		clearTimeout(this.#t), this.#r(!1);
-		try {
-			await navigator.clipboard.writeText(this.code);
-		} catch {
-			getSelection()?.selectAllChildren(this), this.copied = !1, this.#r(!0), this.#t = setTimeout(() => this.#r(!1), G(this));
-			return;
-		}
-		this.copied = !0, this.emit("copy", { code: this.code }), this.#t = setTimeout(() => this.copied = !1, G(this));
-	}
-	update() {
-		this.shadowRoot.querySelector(".code").classList.toggle("role-body-lg", this.size !== "compact"), this.shadowRoot.querySelector(".code").classList.toggle("role-body", this.size === "compact"), this.#i();
-	}
-	disconnectedCallback() {
-		clearTimeout(this.#t);
-	}
-	#r(e) {
-		e ? this.#n.states.add("copy-failed") : this.#n.states.delete("copy-failed"), this.#i();
-	}
-	#i() {
-		let e = this.#n.states.has("copy-failed");
-		this.shadowRoot.querySelector("[aria-live]").textContent = e ? W : this.copied ? U : "";
-	}
-}).define();
-//#endregion
-//#region src/base/selectable.js
-var we = "[role=\"radiogroup\"], [role=\"tablist\"]", K = class {
-	constructor(e, { role: t, state: n }) {
-		this.host = e, this.state = n, e.hasAttribute("role") || e.setAttribute("role", t), e.choose = () => this.choose(), e.addEventListener("click", () => this.choose()), e.addEventListener("keydown", (e) => {
-			(e.key === "Enter" || e.key === " ") && (e.preventDefault(), this.choose());
-		}), e.addController(this);
-	}
-	choose() {
-		let e = this.host;
-		e.disabled || e.selected || (e.selected = !0, e.emit("change", {
-			value: e.value ?? null,
-			selected: !0
-		}));
-	}
-	hostUpdate() {
-		let e = this.host;
-		e.setAttribute(this.state, String(!!e.selected)), e.disabled ? e.setAttribute("aria-disabled", "true") : e.removeAttribute("aria-disabled"), e.parentElement?.closest(we) || e.setAttribute("tabindex", e.disabled ? "-1" : "0");
-	}
-}, Te = ":host{vertical-align:middle;flex:none;display:inline-flex}.swatch{box-sizing:border-box;width:var(--arq-swatch-sm);height:var(--arq-swatch-sm);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);display:block;position:relative;overflow:hidden}:host([size=default]) .swatch{width:var(--arq-swatch-md);height:var(--arq-swatch-md)}:host([size=large]) .swatch{width:var(--arq-swatch-lg);height:var(--arq-swatch-lg)}.swatch img{object-fit:cover;width:100%;height:100%;display:block}.swatch:after{content:\"\";border:var(--arq-border-default) solid var(--arq-color-border-subtle);border-radius:inherit;pointer-events:none;position:absolute;inset:0}:host([role=radio]){cursor:pointer}:host([role=radio]:not([disabled]):hover) .swatch:after,:host([selected]) .swatch:after{border-width:var(--arq-border-strong);border-color:var(--arq-color-border-strong)}:host([disabled]){cursor:default}:host([disabled]) .swatch:after{border-color:var(--arq-color-border-disabled)}:host([disabled]) .swatch:before{content:\"\";background:linear-gradient(to bottom right, transparent calc(50% - var(--arq-border-default) / 2), var(--arq-color-icon-tertiary) calc(50% - var(--arq-border-default) / 2), var(--arq-color-icon-tertiary) calc(50% + var(--arq-border-default) / 2), transparent calc(50% + var(--arq-border-default) / 2));pointer-events:none;position:absolute;inset:0}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
-(class extends d {
-	static tag = "arq-swatch";
-	static styles = Te;
-	static properties = {
-		size: {
-			type: String,
-			values: [
-				"small",
-				"default",
-				"large"
-			],
-			default: "small"
-		},
-		selected: { type: Boolean },
-		disabled: { type: Boolean },
-		src: { type: String },
-		value: { type: String }
-	};
-	static template = "<span class=\"swatch\"><img alt=\"\" hidden></span><span class=\"visually-hidden\"><slot></slot></span>";
-	setup() {
-		let e = this.shadowRoot.querySelector("img");
-		e.addEventListener("error", () => e.hidden = !0), e.addEventListener("load", () => e.hidden = !1);
-		let t = () => {
-			let e = this.textContent.trim();
-			e && this.setAttribute("aria-label", e);
-		};
-		this.shadowRoot.querySelector("slot").addEventListener("slotchange", t), t(), this.getAttribute("role") === "radio" || this.parentElement?.closest("arq-swatch-picker") ? this.selectable = new K(this, {
-			role: "radio",
-			state: "aria-checked"
-		}) : this.hasAttribute("role") || this.setAttribute("role", "img");
-	}
-	update(e) {
-		if (e.has("src")) {
-			let e = this.shadowRoot.querySelector("img");
-			this.src ? e.src = this.src : (e.removeAttribute("src"), e.hidden = !0);
-		}
-	}
-}).define();
-//#endregion
 //#region src/components/option-tile/option-tile.css?inline
-var Ee = ":host{flex:1 1 max-content;cursor:pointer;min-width:0;display:flex}.tile{box-sizing:border-box;min-width:0;padding:var(--arq-space-padding-sm-md) var(--arq-space-padding-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);color:var(--arq-color-text-tertiary);text-align:center;flex:1;justify-content:center;align-items:center;display:flex}:host(:not([disabled]):not([selected]):hover) .tile{border-bottom-color:var(--arq-color-border-hover);background:var(--arq-color-surface-faint);color:var(--arq-color-text-primary)}:host([selected]) .tile{border-bottom-color:var(--arq-color-border-strong);background:var(--arq-color-surface-soft);color:var(--arq-color-text-primary)}:host([disabled]){cursor:default}:host([disabled]) .tile{border-bottom-color:var(--arq-color-border-disabled);color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+var Re = ":host{flex:1 1 max-content;cursor:pointer;min-width:0;display:flex}.tile{box-sizing:border-box;min-width:0;padding:var(--arq-space-padding-sm-md) var(--arq-space-padding-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);color:var(--arq-color-text-tertiary);text-align:center;flex:1;justify-content:center;align-items:center;display:flex}:host(:not([disabled]):not([selected]):hover) .tile{border-bottom-color:var(--arq-color-border-hover);background:var(--arq-color-surface-faint);color:var(--arq-color-text-primary)}:host([selected]) .tile{border-bottom-color:var(--arq-color-border-strong);background:var(--arq-color-surface-soft);color:var(--arq-color-text-primary)}:host([disabled]){cursor:default}:host([disabled]) .tile{border-bottom-color:var(--arq-color-border-disabled);color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
 (class extends d {
 	static tag = "arq-option-tile";
-	static styles = Ee;
+	static styles = Re;
 	static properties = {
 		selected: { type: Boolean },
 		disabled: { type: Boolean },
@@ -1373,7 +1673,7 @@ var Ee = ":host{flex:1 1 max-content;cursor:pointer;min-width:0;display:flex}.ti
 	};
 	static template = "<span class=\"tile role-body-regular\"><slot></slot></span>";
 	setup() {
-		this.selectable = new K(this, {
+		this.selectable = new C(this, {
 			role: "radio",
 			state: "aria-checked"
 		});
@@ -1381,7 +1681,7 @@ var Ee = ":host{flex:1 1 max-content;cursor:pointer;min-width:0;display:flex}.ti
 }).define();
 //#endregion
 //#region src/base/single-select.js
-var De = ["ArrowRight", "ArrowDown"], Oe = ["ArrowLeft", "ArrowUp"], q = class {
+var ze = ["ArrowRight", "ArrowDown"], Be = ["ArrowLeft", "ArrowUp"], K = class {
 	constructor(e, { items: t }) {
 		this.host = e, this.selector = t, e.addEventListener("keydown", (e) => this.#t(e)), e.addEventListener("arq:change", (e) => this.#e(e)), new MutationObserver(() => this.refresh()).observe(e, {
 			childList: !0,
@@ -1414,16 +1714,16 @@ var De = ["ArrowRight", "ArrowDown"], Oe = ["ArrowLeft", "ArrowUp"], q = class {
 		let t = this.enabledItems, n = t.indexOf(e.target);
 		if (n === -1) return;
 		let r = null;
-		De.includes(e.key) ? r = t[(n + 1) % t.length] : Oe.includes(e.key) ? r = t[(n - 1 + t.length) % t.length] : e.key === "Home" ? r = t[0] : e.key === "End" && (r = t[t.length - 1]), r && (e.preventDefault(), r.focus(), r.choose?.());
+		ze.includes(e.key) ? r = t[(n + 1) % t.length] : Be.includes(e.key) ? r = t[(n - 1 + t.length) % t.length] : e.key === "Home" ? r = t[0] : e.key === "End" && (r = t[t.length - 1]), r && (e.preventDefault(), r.focus(), r.choose?.());
 	}
-}, ke = ":host{align-items:center;gap:var(--arq-space-gap-sm-md);flex-wrap:wrap;display:flex}";
+}, Ve = ":host{align-items:center;gap:var(--arq-space-gap-sm-md);flex-wrap:wrap;display:flex}";
 (class extends d {
 	static tag = "arq-swatch-picker";
-	static styles = ke;
+	static styles = Ve;
 	static properties = { label: { type: String } };
 	static template = "<slot></slot>";
 	setup() {
-		this.setAttribute("role", "radiogroup"), this.select = new q(this, { items: "arq-swatch" });
+		this.setAttribute("role", "radiogroup"), this.select = new K(this, { items: "arq-swatch" });
 		let e = () => {
 			for (let e of this.select.items) {
 				let t = e.hasAttribute("selected") ? "large" : "default";
@@ -1443,10 +1743,10 @@ var De = ["ArrowRight", "ArrowDown"], Oe = ["ArrowLeft", "ArrowUp"], q = class {
 }).define();
 //#endregion
 //#region src/components/option-group/option-group.css?inline
-var Ae = ":host{display:block}.group{align-items:flex-start;gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.label{color:var(--arq-color-text-secondary)}.options{gap:var(--arq-space-gap-sm);flex-wrap:wrap;align-self:stretch;display:flex}:host([type=swatches]) .options,:host([type=select]) .options{display:block}";
+var He = ":host{display:block}.group{align-items:flex-start;gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.label{color:var(--arq-color-text-secondary)}.options{gap:var(--arq-space-gap-sm);flex-wrap:wrap;align-self:stretch;display:flex}:host([type=swatches]) .options,:host([type=select]) .options{display:block}";
 (class extends d {
 	static tag = "arq-option-group";
-	static styles = Ae;
+	static styles = He;
 	static properties = {
 		label: { type: String },
 		type: {
@@ -1461,7 +1761,7 @@ var Ae = ":host{display:block}.group{align-items:flex-start;gap:var(--arq-space-
 	};
 	static template = "<div class=\"group\"><span class=\"label role-label\"></span><div class=\"options\"><slot></slot></div></div>";
 	setup() {
-		this.select = new q(this, { items: "arq-option-tile" }), this.shadowRoot.querySelector("slot").addEventListener("slotchange", () => this.#e());
+		this.select = new K(this, { items: "arq-option-tile" }), this.shadowRoot.querySelector("slot").addEventListener("slotchange", () => this.#e());
 	}
 	update(e) {
 		e.has("label") && (this.shadowRoot.querySelector(".label").textContent = this.label ?? ""), this.type === "tiles" ? (this.setAttribute("role", "radiogroup"), this.label ? this.setAttribute("aria-label", this.label) : this.removeAttribute("aria-label")) : (this.removeAttribute("role"), this.removeAttribute("aria-label")), this.#e();
@@ -1474,10 +1774,10 @@ var Ae = ":host{display:block}.group{align-items:flex-start;gap:var(--arq-space-
 }).define();
 //#endregion
 //#region src/components/choice-chip/choice-chip.css?inline
-var je = ":host{vertical-align:middle;cursor:pointer;max-width:100%;display:inline-flex}.chip{box-sizing:border-box;max-width:100%;padding:var(--arq-space-padding-sm-md) var(--arq-space-padding-lg);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);color:var(--arq-color-text-primary);white-space:nowrap;align-items:center;display:inline-flex}:host(:not([disabled]):hover) .chip{border-color:var(--arq-color-border-strong)}:host([selected]) .chip{border-color:var(--arq-color-border-strong);background:var(--arq-color-surface-selected)}:host([disabled]){cursor:default}:host([disabled]) .chip{border-color:var(--arq-color-border-disabled);color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+var Ue = ":host{vertical-align:middle;cursor:pointer;max-width:100%;display:inline-flex}.chip{box-sizing:border-box;max-width:100%;padding:var(--arq-space-padding-sm-md) var(--arq-space-padding-lg);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);color:var(--arq-color-text-primary);white-space:nowrap;align-items:center;display:inline-flex}:host(:not([disabled]):hover) .chip{border-color:var(--arq-color-border-strong)}:host([selected]) .chip{border-color:var(--arq-color-border-strong);background:var(--arq-color-surface-selected)}:host([disabled]){cursor:default}:host([disabled]) .chip{border-color:var(--arq-color-border-disabled);color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
 (class extends d {
 	static tag = "arq-choice-chip";
-	static styles = je;
+	static styles = Ue;
 	static formAssociated = !0;
 	static properties = {
 		selected: { type: Boolean },
@@ -1489,7 +1789,7 @@ var je = ":host{vertical-align:middle;cursor:pointer;max-width:100%;display:inli
 	#e = this.attachInternals();
 	#t = !1;
 	setup() {
-		this.#t = this.selected, this.selectable = new K(this, {
+		this.#t = this.selected, this.selectable = new C(this, {
 			role: "radio",
 			state: "aria-checked"
 		});
@@ -1503,10 +1803,10 @@ var je = ":host{vertical-align:middle;cursor:pointer;max-width:100%;display:inli
 }).define();
 //#endregion
 //#region src/components/tab/tab.css?inline
-var Me = ":host{cursor:pointer;flex:none;display:inline-flex}.tab{padding-bottom:var(--arq-space-gap-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-surface-transparent);color:var(--arq-color-text-tertiary);white-space:nowrap;display:inline-flex}:host(:not([disabled]):hover) .tab{color:var(--arq-color-text-primary)}:host([selected]) .tab{border-bottom-color:var(--arq-color-border-strong);color:var(--arq-color-text-primary)}:host([disabled]){cursor:default}:host([disabled]) .tab{color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+var We = ":host{cursor:pointer;flex:none;display:inline-flex}.tab{padding-bottom:var(--arq-space-gap-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-surface-transparent);color:var(--arq-color-text-tertiary);white-space:nowrap;display:inline-flex}:host(:not([disabled]):hover) .tab{color:var(--arq-color-text-primary)}:host([selected]) .tab{border-bottom-color:var(--arq-color-border-strong);color:var(--arq-color-text-primary)}:host([disabled]){cursor:default}:host([disabled]) .tab{color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
 (class extends d {
 	static tag = "arq-tab";
-	static styles = Me;
+	static styles = We;
 	static properties = {
 		selected: { type: Boolean },
 		disabled: { type: Boolean },
@@ -1514,7 +1814,7 @@ var Me = ":host{cursor:pointer;flex:none;display:inline-flex}.tab{padding-bottom
 	};
 	static template = "<span class=\"tab role-label\"><slot></slot></span>";
 	setup() {
-		this.selectable = new K(this, {
+		this.selectable = new C(this, {
 			role: "tab",
 			state: "aria-selected"
 		});
@@ -1527,10 +1827,10 @@ var Me = ":host{cursor:pointer;flex:none;display:inline-flex}.tab{padding-bottom
 }).define();
 //#endregion
 //#region src/components/input/input.css?inline
-var Ne = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.label{color:var(--arq-color-text-tertiary)}.field{align-items:center;gap:var(--arq-space-gap-sm);padding-block:var(--arq-space-gap-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);display:flex}.control{box-sizing:border-box;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);width:100%;min-width:0;color:var(--arq-color-text-primary);border:0;flex:1;margin:0;padding:0}.control::placeholder{color:var(--arq-color-text-tertiary);opacity:1}:host([type=textarea]) .field{align-items:stretch}textarea.control{resize:vertical}.helper{color:var(--arq-color-text-tertiary);margin:0}.error{color:var(--arq-color-text-error);margin:0}.control:focus,.control:focus-visible{outline:none}.field:focus-within{border-bottom-color:var(--arq-color-border-focus)}:host([error]) .field,:host([error]) .field:focus-within{border-bottom-color:var(--arq-color-border-error)}:host([disabled]) .label,:host([disabled]) .helper,:host([disabled]) .control,:host([disabled]) .control::placeholder{color:var(--arq-color-text-disabled)}:host([disabled]) .field{border-bottom-color:var(--arq-color-border-disabled)}", J = (() => {
+var Ge = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.label{color:var(--arq-color-text-tertiary)}.field{align-items:center;gap:var(--arq-space-gap-sm);padding-block:var(--arq-space-gap-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);display:flex}.control{box-sizing:border-box;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);width:100%;min-width:0;color:var(--arq-color-text-primary);border:0;flex:1;margin:0;padding:0}.control::placeholder{color:var(--arq-color-text-tertiary);opacity:1}:host([type=textarea]) .field{align-items:stretch}textarea.control{resize:vertical}.helper{color:var(--arq-color-text-tertiary);margin:0}.error{color:var(--arq-color-text-error);margin:0}.control:focus,.control:focus-visible{outline:none}.field:focus-within{border-bottom-color:var(--arq-color-border-focus)}:host([error]) .field,:host([error]) .field:focus-within{border-bottom-color:var(--arq-color-border-error)}:host([disabled]) .label,:host([disabled]) .helper,:host([disabled]) .control,:host([disabled]) .control::placeholder{color:var(--arq-color-text-disabled)}:host([disabled]) .field{border-bottom-color:var(--arq-color-border-disabled)}", q = (() => {
 	let e = 0;
 	return () => `arq-input-${++e}`;
-})(), Pe = 4, Fe = [
+})(), Ke = 4, qe = [
 	"placeholder",
 	"autocomplete",
 	"required",
@@ -1542,7 +1842,7 @@ var Ne = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex
 ];
 (class extends d {
 	static tag = "arq-input";
-	static styles = Ne;
+	static styles = Ge;
 	static formAssociated = !0;
 	static properties = {
 		type: {
@@ -1579,9 +1879,9 @@ var Ne = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex
 	#e = this.attachInternals();
 	#t = null;
 	#n = {
-		control: J(),
-		helper: J(),
-		error: J()
+		control: q(),
+		helper: q(),
+		error: q()
 	};
 	#r = "";
 	setup() {
@@ -1609,8 +1909,8 @@ var Ne = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex
 		(e.has("type") || !this.#t) && this.#i();
 		let t = this.#t, n = this.shadowRoot;
 		t.localName === "input" && (t.type = this.inputType);
-		for (let e of Fe) this.hasAttribute(e) ? t.setAttribute(e, this.getAttribute(e)) : t.removeAttribute(e);
-		t.localName === "textarea" && !this.hasAttribute("rows") && (t.rows = Pe), t.disabled = this.disabled, n.querySelector(".label").classList.toggle("visually-hidden", !this.showLabel);
+		for (let e of qe) this.hasAttribute(e) ? t.setAttribute(e, this.getAttribute(e)) : t.removeAttribute(e);
+		t.localName === "textarea" && !this.hasAttribute("rows") && (t.rows = Ke), t.disabled = this.disabled, n.querySelector(".label").classList.toggle("visually-hidden", !this.showLabel);
 		let r = !!this.error, i = n.querySelector(".helper"), a = n.querySelector(".error");
 		a.textContent = this.error ?? "", a.hidden = !r, i.hidden = r || !this.showHelper, t.setAttribute("aria-invalid", String(r));
 		let o = [r ? this.#n.error : null, i.hidden ? null : this.#n.helper].filter(Boolean);
@@ -1637,26 +1937,26 @@ var Ne = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex
 }).define();
 //#endregion
 //#region src/components/file-upload/file-upload.css?inline
-var Ie = ":host{width:100%;display:block}.upload{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.label{color:var(--arq-color-text-secondary)}.zone,.attached{box-sizing:border-box;padding:var(--arq-space-padding-lg);border:var(--arq-border-default) dashed var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-bg-subtle);align-items:center;display:flex;position:relative}.zone{cursor:pointer}.attached{justify-content:space-between;gap:var(--arq-space-gap-sm-md);border-style:solid}.empty{align-items:center;gap:var(--arq-space-gap-sm-md);min-width:0;display:flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}.prompt,.file{min-width:0;color:var(--arq-color-text-primary)}.file{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.remove{flex:none}.helper{color:var(--arq-color-text-tertiary);margin:0}.error{color:var(--arq-color-text-error);margin:0}.drop{min-width:0;color:var(--arq-color-text-primary);display:none}:host(:state(drag-over)) .zone{border-color:var(--arq-color-border-strong);background:var(--arq-color-surface-hover)}:host(:state(drag-over)) .prompt{display:none}:host(:state(drag-over)) .drop{display:inline}:host(:state(error)) .zone{border-color:var(--arq-color-border-error)}:host([disabled]) .zone{border-color:var(--arq-color-border-disabled);cursor:default}:host([disabled]) .label,:host([disabled]) .prompt,:host([disabled]) .file,:host([disabled]) .helper{color:var(--arq-color-text-disabled)}:host([disabled]) .icon{color:var(--arq-color-icon-disabled)}.zone:has(.native:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}", Le = ".pdf,.dwg,.jpg,.jpeg,.png", Re = 10, Y = {
+var Je = ":host{width:100%;display:block}.upload{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.label{color:var(--arq-color-text-secondary)}.zone,.attached{box-sizing:border-box;padding:var(--arq-space-padding-lg);border:var(--arq-border-default) dashed var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-bg-subtle);align-items:center;display:flex;position:relative}.zone{cursor:pointer}.attached{justify-content:space-between;gap:var(--arq-space-gap-sm-md);border-style:solid}.empty{align-items:center;gap:var(--arq-space-gap-sm-md);min-width:0;display:flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}.prompt,.file{min-width:0;color:var(--arq-color-text-primary)}.file{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.remove{flex:none}.helper{color:var(--arq-color-text-tertiary);margin:0}.error{color:var(--arq-color-text-error);margin:0}.drop{min-width:0;color:var(--arq-color-text-primary);display:none}:host(:state(drag-over)) .zone{border-color:var(--arq-color-border-strong);background:var(--arq-color-surface-hover)}:host(:state(drag-over)) .prompt{display:none}:host(:state(drag-over)) .drop{display:inline}:host(:state(error)) .zone{border-color:var(--arq-color-border-error)}:host([disabled]) .zone{border-color:var(--arq-color-border-disabled);cursor:default}:host([disabled]) .label,:host([disabled]) .prompt,:host([disabled]) .file,:host([disabled]) .helper{color:var(--arq-color-text-disabled)}:host([disabled]) .icon{color:var(--arq-color-icon-disabled)}.zone:has(.native:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}", Ye = ".pdf,.dwg,.jpg,.jpeg,.png", Xe = 10, J = {
 	type: "El formato no está admitido.",
 	size: (e) => `El archivo supera los ${e} MB.`
 };
-function ze(e) {
+function Ze(e) {
 	let t = [...new Set(e.split(",").map((e) => e.trim().replace(/^\./, "").toUpperCase()).filter(Boolean).map((e) => e === "JPEG" ? "JPG" : e))];
 	return t.length > 1 ? `${t.slice(0, -1).join(", ")} o ${t.at(-1)}` : t.join("");
 }
 (class extends d {
 	static tag = "arq-file-upload";
-	static styles = Ie;
+	static styles = Je;
 	static formAssociated = !0;
 	static properties = {
 		accept: {
 			type: String,
-			default: Le
+			default: Ye
 		},
 		maxSize: {
 			type: Number,
-			default: Re
+			default: Xe
 		},
 		name: { type: String },
 		required: { type: Boolean },
@@ -1714,8 +2014,8 @@ function ze(e) {
 		this.#s(e, ""), this.emit("change", { file: e });
 	}
 	#o(e) {
-		let t = this.accept.split(",").map((e) => e.trim().toLowerCase()).filter(Boolean), n = `.${e.name.split(".").pop()?.toLowerCase()}`, r = t.length ? ` Formatos: ${ze(this.accept)}.` : "";
-		return t.length && !t.includes(n) ? Y.type + r : this.maxSize && e.size > this.maxSize * 1024 * 1024 ? Y.size(this.maxSize) + r : "";
+		let t = this.accept.split(",").map((e) => e.trim().toLowerCase()).filter(Boolean), n = `.${e.name.split(".").pop()?.toLowerCase()}`, r = t.length ? ` Formatos: ${Ze(this.accept)}.` : "";
+		return t.length && !t.includes(n) ? J.type + r : this.maxSize && e.size > this.maxSize * 1024 * 1024 ? J.size(this.maxSize) + r : "";
 	}
 	#s(e, t) {
 		this.#n = e, this.#r = t, this.#e.setFormValue(e), this.required && !e ? this.#e.setValidity({ valueMissing: !0 }, "Adjuntá un archivo.", this.#t) : this.#e.setValidity({}), this.#l();
@@ -1732,10 +2032,10 @@ function ze(e) {
 }).define();
 //#endregion
 //#region src/components/nav-link/nav-link.css?inline
-var Be = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-sm);background:var(--arq-color-surface-transparent);max-width:100%;color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;padding:0;text-decoration:none;display:inline-flex;position:relative}.label{white-space:nowrap;min-width:0}.indicator{width:var(--arq-space-gap-sm);height:var(--arq-border-strong);background:var(--arq-color-border-strong);flex:none;display:none}.current .indicator{display:block}.chevron{flex:none;display:none}:host([has-dropdown]) .chevron{display:inline-flex}.chevron .icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm)}[aria-expanded=true] .chevron .icon{transform:rotate(180deg)}.trailing{display:none}.link:after{content:\"\";inset-inline:0;top:calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));height:var(--arq-border-default);background:var(--arq-color-border-strong);visibility:hidden;position:absolute}.link:not(.current):not([aria-expanded=true]):hover:after{visibility:visible}.link:active{color:var(--arq-color-text-tertiary)}.link:active:after{visibility:hidden}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}@media (width<=767px){:host{width:100%;display:flex}.link{width:100%;padding:var(--arq-space-gap-md) var(--arq-layout-gutter)}.label{white-space:normal;flex:1}:host([has-dropdown]) .chevron{display:none}.trailing{flex:none;display:inline-flex}.trailing .icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.trailing [data-icon=arrow-right],.current .trailing [data-icon=chevron-right]{display:none}.current .trailing [data-icon=arrow-right]{display:block}.link:after{display:none}.link:active{background:var(--arq-color-surface-selected);color:var(--arq-color-text-primary)}@media (hover:hover){.link:not(:active):hover{background:var(--arq-color-surface-hover)}}.link:focus-visible{outline-offset:calc(var(--arq-border-strong) * -1)}}", X = matchMedia("(max-width: 767px)");
+var Qe = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-sm);background:var(--arq-color-surface-transparent);max-width:100%;color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;padding:0;text-decoration:none;display:inline-flex;position:relative}.label{white-space:nowrap;min-width:0}.indicator{width:var(--arq-space-gap-sm);height:var(--arq-border-strong);background:var(--arq-color-border-strong);flex:none;display:none}.current .indicator{display:block}.chevron{flex:none;display:none}:host([has-dropdown]) .chevron{display:inline-flex}.chevron .icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm)}[aria-expanded=true] .chevron .icon{transform:rotate(180deg)}.trailing{display:none}.link:after{content:\"\";inset-inline:0;top:calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));height:var(--arq-border-default);background:var(--arq-color-border-strong);visibility:hidden;position:absolute}.link:not(.current):not([aria-expanded=true]):hover:after{visibility:visible}.link:active{color:var(--arq-color-text-tertiary)}.link:active:after{visibility:hidden}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}@media (width<=767px){:host{width:100%;display:flex}.link{width:100%;padding:var(--arq-space-gap-md) var(--arq-layout-gutter)}.label{white-space:normal;flex:1}:host([has-dropdown]) .chevron{display:none}.trailing{flex:none;display:inline-flex}.trailing .icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.trailing [data-icon=arrow-right],.current .trailing [data-icon=chevron-right]{display:none}.current .trailing [data-icon=arrow-right]{display:block}.link:after{display:none}.link:active{background:var(--arq-color-surface-selected);color:var(--arq-color-text-primary)}@media (hover:hover){.link:not(:active):hover{background:var(--arq-color-surface-hover)}}.link:focus-visible{outline-offset:calc(var(--arq-border-strong) * -1)}}", Y = matchMedia("(max-width: 767px)");
 (class extends d {
 	static tag = "arq-nav-link";
-	static styles = Be;
+	static styles = Qe;
 	static properties = {
 		hasDropdown: { type: Boolean },
 		open: { type: Boolean },
@@ -1747,9 +2047,9 @@ var Be = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{b
 	setup() {
 		this.#e = this.shadowRoot.querySelector(".link");
 		let e = this.shadowRoot.querySelector(".label"), t = () => {
-			e.classList.toggle("role-body", !X.matches), e.classList.toggle("role-body-xl", X.matches);
+			e.classList.toggle("role-body", !Y.matches), e.classList.toggle("role-body-xl", Y.matches);
 		};
-		X.addEventListener("change", t), t();
+		Y.addEventListener("change", t), t();
 	}
 	focus(e) {
 		this.#e ? this.#e.focus(e) : super.focus(e);
@@ -1768,10 +2068,10 @@ var Be = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{b
 }).define();
 //#endregion
 //#region src/components/section-header/section-header.css?inline
-var Ve = ":host{min-width:0;display:block}.header{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-lg);min-width:0;display:flex}.text{gap:var(--arq-space-gap-sm-md);flex-direction:column;min-width:0;display:flex}.title,.description{overflow-wrap:break-word;margin:0}.title{color:var(--arq-color-text-primary)}.description{color:var(--arq-color-text-secondary)}.link{flex:none}:host([type=description]) .text{display:contents}:host([type=description]) .description{flex:0 1 var(--arq-layout-measure);max-width:var(--arq-layout-measure)}:host([type=stacked]) .header{flex-direction:column;justify-content:flex-start;align-items:flex-start}:host([type=stacked]) .text{align-self:stretch}@media (width<=767px){.header{flex-direction:column;justify-content:flex-start;align-items:flex-start}.text{width:100%}:host([type=description]) .text{display:flex}:host([type=description]) .description{flex:none;max-width:none}:host([type=link]) .link,:host(:not([type])) .link{display:none}}", He = ["description", "stacked"], Ue = ["link", "stacked"];
+var $e = ":host{min-width:0;display:block}.header{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-lg);min-width:0;display:flex}.text{gap:var(--arq-space-gap-sm-md);flex-direction:column;min-width:0;display:flex}.title,.description{overflow-wrap:break-word;margin:0}.title{color:var(--arq-color-text-primary)}.description{color:var(--arq-color-text-secondary)}.link{flex:none}:host([type=description]) .text{display:contents}:host([type=description]) .description{flex:0 1 var(--arq-layout-measure);max-width:var(--arq-layout-measure)}:host([type=stacked]) .header{flex-direction:column;justify-content:flex-start;align-items:flex-start}:host([type=stacked]) .text{align-self:stretch}@media (width<=767px){.header{flex-direction:column;justify-content:flex-start;align-items:flex-start}.text{width:100%}:host([type=description]) .text{display:flex}:host([type=description]) .description{flex:none;max-width:none}:host([type=link]) .link,:host(:not([type])) .link{display:none}}", et = ["description", "stacked"], tt = ["link", "stacked"];
 (class extends d {
 	static tag = "arq-section-header";
-	static styles = Ve;
+	static styles = $e;
 	static properties = {
 		type: {
 			type: String,
@@ -1791,17 +2091,17 @@ var Ve = ":host{min-width:0;display:block}.header{justify-content:space-between;
 	}
 	update() {
 		let e = this.shadowRoot, t = e.querySelector("slot[name=\"description\"]").assignedNodes({ flatten: !0 }).some((e) => e.textContent.trim());
-		e.querySelector(".description").hidden = !He.includes(this.type) || !t;
-		let n = e.querySelector(".link"), r = Ue.includes(this.type) && !!this.href;
+		e.querySelector(".description").hidden = !et.includes(this.type) || !t;
+		let n = e.querySelector(".link"), r = tt.includes(this.type) && !!this.href;
 		n.hidden = !r, r ? n.setAttribute("href", this.href) : n.removeAttribute("href");
 	}
 }).define();
 //#endregion
 //#region src/components/page-header/page-header.css?inline
-var We = ":host{min-width:0;display:block}.header{align-items:flex-start;gap:var(--arq-space-gap-xl-2xl);padding:var(--arq-space-section-sm) var(--arq-layout-gutter) var(--arq-space-section-xs);flex-direction:column;display:flex}.row{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-lg);align-self:stretch;min-width:0;display:flex}.main,.heading{flex-direction:column;min-width:0;display:flex}.heading{gap:var(--arq-space-gap-lg)}.title,.description{overflow-wrap:break-word;margin:0}.title{color:var(--arq-color-text-primary)}.description{color:var(--arq-color-text-secondary)}.action{flex:none}:host(:not([type=detail])) .main{display:contents}:host(:not([type=detail])) .description{flex:0 1 var(--arq-layout-measure);max-width:var(--arq-layout-measure)}:host([type=detail]) .header{padding-block:var(--arq-space-section-xs) var(--arq-space-section-sm)}:host([type=detail]) .main{gap:var(--arq-space-gap-md);max-width:var(--arq-layout-measure-wide)}@media (width<=767px){.row{align-items:stretch;gap:var(--arq-space-gap-lg);flex-direction:column}:host(:not([type=detail])) .main{gap:var(--arq-space-gap-lg);display:flex}:host(:not([type=detail])) .description,:host([type=detail]) .main{flex:none;max-width:none}:host([type=detail]) .row{gap:var(--arq-space-gap-xl-2xl)}.action ::slotted(*){width:100%}}";
+var nt = ":host{min-width:0;display:block}.header{align-items:flex-start;gap:var(--arq-space-gap-xl-2xl);padding:var(--arq-space-section-sm) var(--arq-layout-gutter) var(--arq-space-section-xs);flex-direction:column;display:flex}.row{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-lg);align-self:stretch;min-width:0;display:flex}.main,.heading{flex-direction:column;min-width:0;display:flex}.heading{gap:var(--arq-space-gap-lg)}.title,.description{overflow-wrap:break-word;margin:0}.title{color:var(--arq-color-text-primary)}.description{color:var(--arq-color-text-secondary)}.action{flex:none}:host(:not([type=detail])) .main{display:contents}:host(:not([type=detail])) .description{flex:0 1 var(--arq-layout-measure);max-width:var(--arq-layout-measure)}:host([type=detail]) .header{padding-block:var(--arq-space-section-xs) var(--arq-space-section-sm)}:host([type=detail]) .main{gap:var(--arq-space-gap-md);max-width:var(--arq-layout-measure-wide)}@media (width<=767px){.row{align-items:stretch;gap:var(--arq-space-gap-lg);flex-direction:column}:host(:not([type=detail])) .main{gap:var(--arq-space-gap-lg);display:flex}:host(:not([type=detail])) .description,:host([type=detail]) .main{flex:none;max-width:none}:host([type=detail]) .row{gap:var(--arq-space-gap-xl-2xl)}.action ::slotted(*){width:100%}}";
 (class extends d {
 	static tag = "arq-page-header";
-	static styles = We;
+	static styles = nt;
 	static properties = {
 		type: {
 			type: String,
@@ -1827,10 +2127,10 @@ var We = ":host{min-width:0;display:block}.header{align-items:flex-start;gap:var
 }).define();
 //#endregion
 //#region src/components/faq-item/faq-item.css?inline
-var Ge = ":host{min-width:0;display:block}.item{border-top:var(--arq-border-default) solid var(--arq-color-border-default)}.trigger{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-lg);width:100%;padding:var(--arq-space-padding-lg) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .trigger{padding-bottom:var(--arq-space-gap-sm-md)}.question{overflow-wrap:break-word;flex:1 1 0;min-width:0}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.answer{max-width:var(--arq-layout-measure-wide);padding-bottom:var(--arq-space-padding-lg);color:var(--arq-color-text-secondary);overflow-wrap:break-word}::slotted(a){color:var(--arq-color-text-primary);text-decoration:underline}@media (hover:hover){:host(:not([open])) .trigger:hover{background:var(--arq-color-surface-faint)}}.item:has(.trigger:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus{outline:none}@media (width<=767px){.answer{max-width:none}}";
+var rt = ":host{min-width:0;display:block}.item{border-top:var(--arq-border-default) solid var(--arq-color-border-default)}.trigger{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-lg);width:100%;padding:var(--arq-space-padding-lg) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .trigger{padding-bottom:var(--arq-space-gap-sm-md)}.question{overflow-wrap:break-word;flex:1 1 0;min-width:0}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.answer{max-width:var(--arq-layout-measure-wide);padding-bottom:var(--arq-space-padding-lg);color:var(--arq-color-text-secondary);overflow-wrap:break-word}::slotted(a){color:var(--arq-color-text-primary);text-decoration:underline}@media (hover:hover){:host(:not([open])) .trigger:hover{background:var(--arq-color-surface-faint)}}.item:has(.trigger:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus{outline:none}@media (width<=767px){.answer{max-width:none}}";
 (class extends d {
 	static tag = "arq-faq-item";
-	static styles = Ge;
+	static styles = rt;
 	static properties = { open: { type: Boolean } };
 	static template = `<div class="item"><button type="button" class="trigger"><span class="question role-body-lg-regular"><slot name="question"></slot></span>${p("plus")}${p("minus")}</button><div class="answer role-body" part="panel"><slot></slot></div></div>`;
 	setup() {
@@ -1842,15 +2142,15 @@ var Ge = ":host{min-width:0;display:block}.item{border-top:var(--arq-border-defa
 }).define();
 //#endregion
 //#region src/components/footer/footer.css?inline
-var Ke = ":host{display:block}.footer{column-gap:var(--arq-space-gap-xl);row-gap:var(--arq-space-gap-md);padding:var(--arq-space-section-sm) var(--arq-layout-gutter);border-top:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-default);grid-template:\"brand columns\"\"legal columns\"1fr/minmax(0,1fr) auto;display:grid}.brand{align-items:flex-start;gap:var(--arq-space-gap-md);flex-direction:column;grid-area:brand;min-width:0;display:flex}.tagline{color:var(--arq-color-text-secondary);overflow-wrap:break-word;margin:0}.legal{color:var(--arq-color-text-tertiary);text-transform:uppercase;grid-area:legal;align-self:start;margin:0}.columns{align-items:flex-start;gap:var(--arq-space-gap-xl);grid-area:columns;display:flex}.column{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;min-width:0;display:flex}.title{padding-bottom:var(--arq-space-gap-sm);color:var(--arq-color-text-primary);margin:0}.list{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;max-width:100%;display:flex}@media (width<=767px){.footer{row-gap:var(--arq-space-gap-xl);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"brand\"\"columns\"\"legal\"}.column{flex:1 1 0}}", Z = [
+var it = ":host{display:block}.footer{column-gap:var(--arq-space-gap-xl);row-gap:var(--arq-space-gap-md);padding:var(--arq-space-section-sm) var(--arq-layout-gutter);border-top:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-default);grid-template:\"brand columns\"\"legal columns\"1fr/minmax(0,1fr) auto;display:grid}.brand{align-items:flex-start;gap:var(--arq-space-gap-md);flex-direction:column;grid-area:brand;min-width:0;display:flex}.tagline{color:var(--arq-color-text-secondary);overflow-wrap:break-word;margin:0}.legal{color:var(--arq-color-text-tertiary);text-transform:uppercase;grid-area:legal;align-self:start;margin:0}.columns{align-items:flex-start;gap:var(--arq-space-gap-xl);grid-area:columns;display:flex}.column{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;min-width:0;display:flex}.title{padding-bottom:var(--arq-space-gap-sm);color:var(--arq-color-text-primary);margin:0}.list{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;max-width:100%;display:flex}@media (width<=767px){.footer{row-gap:var(--arq-space-gap-xl);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"brand\"\"columns\"\"legal\"}.column{flex:1 1 0}}", X = [
 	"productos",
 	"informacion",
 	"redes"
 ];
 (class extends d {
 	static tag = "arq-footer";
-	static styles = Ke;
-	static template = "<footer class=\"footer\"><div class=\"brand\"><arq-logo size=\"compact\"></arq-logo><p class=\"tagline role-body\"><slot name=\"tagline\"></slot></p></div><div class=\"columns\">" + Z.map((e) => `<nav class="column" data-column="${e}"><div class="title role-body-strong"><slot name="${e}-title"></slot></div><div class="list" role="list"><slot name="${e}"></slot></div></nav>`).join("") + "</div><p class=\"legal role-body-sm\">© <span class=\"year\"></span> Macroled Arq.</p></footer>";
+	static styles = it;
+	static template = "<footer class=\"footer\"><div class=\"brand\"><arq-logo size=\"compact\"></arq-logo><p class=\"tagline role-body\"><slot name=\"tagline\"></slot></p></div><div class=\"columns\">" + X.map((e) => `<nav class="column" data-column="${e}"><div class="title role-body-strong"><slot name="${e}-title"></slot></div><div class="list" role="list"><slot name="${e}"></slot></div></nav>`).join("") + "</div><p class=\"legal role-body-sm\">© <span class=\"year\"></span> Macroled Arq.</p></footer>";
 	setup() {
 		let e = this.shadowRoot;
 		e.querySelector(".year").textContent = String((/* @__PURE__ */ new Date()).getFullYear());
@@ -1858,7 +2158,7 @@ var Ke = ":host{display:block}.footer{column-gap:var(--arq-space-gap-xl);row-gap
 			e.querySelector(".tagline").hidden = !t.assignedNodes({ flatten: !0 }).some((e) => e.textContent.trim());
 		};
 		t.addEventListener("slotchange", n), n();
-		for (let t of Z) {
+		for (let t of X) {
 			let n = e.querySelector(`[data-column="${t}"]`), r = e.querySelector(`slot[name="${t}-title"]`), i = () => {
 				let e = r.assignedNodes({ flatten: !0 }).map((e) => e.textContent).join(" ").trim();
 				e ? n.setAttribute("aria-label", e) : n.removeAttribute("aria-label");
@@ -1869,14 +2169,14 @@ var Ke = ":host{display:block}.footer{column-gap:var(--arq-space-gap-xl);row-gap
 }).define();
 //#endregion
 //#region src/components/hero/hero.css?inline
-var qe = ":host{display:block}.hero{aspect-ratio:16/10;background:var(--arq-color-surface-inverse);flex-direction:column;justify-content:flex-end;display:flex;position:relative;overflow:hidden}.media{position:absolute;inset:0}::slotted([slot=media]){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}.scrim{background:linear-gradient(#00000085 0%,#0003 18% 45%,#000000ad 100%);position:absolute;inset:0}.content{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-xl);padding:0 var(--arq-layout-gutter) var(--arq-space-section-sm);color:var(--arq-color-text-inverse);display:flex;position:relative}.text{align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column;min-width:0;display:flex}.eyebrow,.title,.description{overflow-wrap:break-word;margin:0}.action{flex:none}@media (width<=767px){.hero{aspect-ratio:auto;height:70svh}.content{justify-content:flex-start;align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column}}", Je = [
+var at = ":host{display:block}.hero{aspect-ratio:16/10;background:var(--arq-color-surface-inverse);flex-direction:column;justify-content:flex-end;display:flex;position:relative;overflow:hidden}.media{position:absolute;inset:0}::slotted([slot=media]){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}.scrim{background:linear-gradient(#00000085 0%,#0003 18% 45%,#000000ad 100%);position:absolute;inset:0}.content{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-xl);padding:0 var(--arq-layout-gutter) var(--arq-space-section-sm);color:var(--arq-color-text-inverse);display:flex;position:relative}.text{align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column;min-width:0;display:flex}.eyebrow,.title,.description{overflow-wrap:break-word;margin:0}.action{flex:none}@media (width<=767px){.hero{aspect-ratio:auto;height:70svh}.content{justify-content:flex-start;align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column}}", ot = [
 	"eyebrow",
 	"description",
 	"action"
 ];
 (class extends d {
 	static tag = "arq-hero";
-	static styles = qe;
+	static styles = at;
 	static template = "<div class=\"hero\"><div class=\"media\"><slot name=\"media\"></slot></div><div class=\"scrim\" aria-hidden=\"true\"></div><div class=\"content\"><div class=\"text\"><p class=\"eyebrow role-label\" hidden><slot name=\"eyebrow\"></slot></p><div class=\"title role-display\"><slot name=\"title\"></slot></div><p class=\"description role-body-lg\" hidden><slot name=\"description\"></slot></p></div><div class=\"action\" data-arq-theme=\"dark\" hidden><slot name=\"action\"></slot></div></div></div>";
 	#e = window.matchMedia("(prefers-reduced-motion: reduce)");
 	setup() {
@@ -1885,7 +2185,7 @@ var qe = ":host{display:block}.hero{aspect-ratio:16/10;background:var(--arq-colo
 	}
 	update() {
 		let e = this.shadowRoot, t = (t) => e.querySelector(`slot[name="${t}"]`).assignedNodes({ flatten: !0 }).some((e) => e.nodeType === Node.ELEMENT_NODE || e.textContent.trim());
-		for (let n of Je) e.querySelector(`.${n}`).hidden = !t(n);
+		for (let n of ot) e.querySelector(`.${n}`).hidden = !t(n);
 		this.#n();
 	}
 	#t = /* @__PURE__ */ new WeakSet();
@@ -1901,10 +2201,10 @@ var qe = ":host{display:block}.hero{aspect-ratio:16/10;background:var(--arq-colo
 }).define();
 //#endregion
 //#region src/components/cta-block/cta-block.css?inline
-var Ye = ":host{min-width:0;display:block}.block{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-xl);padding:var(--arq-space-section-md) var(--arq-layout-gutter);background:var(--arq-color-bg-subtle);display:flex}.text{gap:var(--arq-space-gap-sm-md);flex-direction:column;min-width:0;display:flex}.title{color:var(--arq-color-text-primary);overflow-wrap:break-word}.description{max-width:var(--arq-layout-measure-wide);color:var(--arq-color-text-secondary);overflow-wrap:break-word;margin:0}.action{align-items:center;gap:var(--arq-space-gap-md);flex:none;display:flex}.email{width:var(--arq-layout-measure)}::slotted(arq-input){width:100%;display:block}@media (width<=767px){.block{flex-direction:column;align-items:stretch}.description{max-width:none}.action{align-items:stretch;gap:var(--arq-space-gap-xl);flex-direction:column}.email{width:auto}::slotted(arq-button){width:100%}}";
+var Z = ":host{min-width:0;display:block}.block{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-xl);padding:var(--arq-space-section-md) var(--arq-layout-gutter);background:var(--arq-color-bg-subtle);display:flex}.text{gap:var(--arq-space-gap-sm-md);flex-direction:column;min-width:0;display:flex}.title{color:var(--arq-color-text-primary);overflow-wrap:break-word}.description{max-width:var(--arq-layout-measure-wide);color:var(--arq-color-text-secondary);overflow-wrap:break-word;margin:0}.action{align-items:center;gap:var(--arq-space-gap-md);flex:none;display:flex}.email{width:var(--arq-layout-measure)}::slotted(arq-input){width:100%;display:block}@media (width<=767px){.block{flex-direction:column;align-items:stretch}.description{max-width:none}.action{align-items:stretch;gap:var(--arq-space-gap-xl);flex-direction:column}.email{width:auto}::slotted(arq-button){width:100%}}";
 (class extends d {
 	static tag = "arq-cta-block";
-	static styles = Ye;
+	static styles = Z;
 	static properties = { type: {
 		type: String,
 		values: ["button", "newsletter"],
@@ -1930,18 +2230,18 @@ var Ye = ":host{min-width:0;display:block}.block{justify-content:space-between;a
 }).define();
 //#endregion
 //#region src/components/carousel-controls/carousel-controls.css?inline
-var Xe = ":host{display:inline-flex}.controls{align-items:center;gap:var(--arq-space-gap-sm);display:flex}@media (width<=767px){:host{display:none}}", Ze = [
+var st = ":host{display:inline-flex}.controls{align-items:center;gap:var(--arq-space-gap-sm);display:flex}@media (width<=767px){:host{display:none}}", ct = [
 	"start",
 	"middle",
 	"end"
 ];
 (class extends d {
 	static tag = "arq-carousel-controls";
-	static styles = Xe;
+	static styles = st;
 	static properties = {
 		position: {
 			type: String,
-			values: Ze,
+			values: ct,
 			default: "start"
 		},
 		for: { type: String },
@@ -2013,10 +2313,10 @@ var Xe = ":host{display:inline-flex}.controls{align-items:center;gap:var(--arq-s
 }).define();
 //#endregion
 //#region src/components/category-card/category-card.css?inline
-var Qe = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.card-media{aspect-ratio:4/5}.caption{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.name{min-width:0;color:var(--arq-color-text-primary);overflow-wrap:break-word}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}@media (width<=767px){.card{gap:var(--arq-space-gap-md)}}";
+var lt = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.card-media{aspect-ratio:4/5}.caption{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.name{min-width:0;color:var(--arq-color-text-primary);overflow-wrap:break-word}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}@media (width<=767px){.card{gap:var(--arq-space-gap-md)}}";
 (class extends d {
 	static tag = "arq-category-card";
-	static styles = A + Qe;
+	static styles = V + lt;
 	static properties = { href: { type: String } };
 	static template = `<div class="card"><div class="card-media"><slot name="image"></slot></div><div class="caption"><a class="card-link name role-heading-3"><slot name="name"></slot></a>${p("arrow-right")}</div></div>`;
 	update(e) {
@@ -2027,10 +2327,10 @@ var Qe = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex
 }).define();
 //#endregion
 //#region src/components/line-card/line-card.css?inline
-var $e = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.card-media{aspect-ratio:5/4}.content{align-items:flex-start;gap:var(--arq-space-gap-md);padding-top:var(--arq-space-padding-sm);flex-direction:column;display:flex}.label,.description{margin:0}.label{color:var(--arq-color-text-tertiary)}.name{max-width:100%;color:var(--arq-color-text-primary);overflow-wrap:break-word}.description{max-width:var(--arq-layout-measure);color:var(--arq-color-text-secondary);overflow-wrap:break-word}.cta{align-items:center;gap:var(--arq-space-gap-sm);margin-top:calc(var(--arq-space-gap-sm) + var(--arq-space-gap-md));padding:var(--arq-space-gap-xs) 0;color:var(--arq-color-action-primary);display:inline-flex}.cta-text{position:relative}.cta-text:after{content:\"\";inset-inline:0;top:calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));height:var(--arq-border-default);background:var(--arq-color-border-strong);position:absolute}.cta .icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}@media (width<=767px){.card-media{aspect-ratio:1}.content{gap:var(--arq-space-gap-sm-md);padding-top:0}.description{max-width:none}.cta{margin-top:calc(var(--arq-space-gap-xs) + var(--arq-space-gap-sm-md))}}", Q = ["label", "description"];
+var ut = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.card-media{aspect-ratio:5/4}.content{align-items:flex-start;gap:var(--arq-space-gap-md);padding-top:var(--arq-space-padding-sm);flex-direction:column;display:flex}.label,.description{margin:0}.label{color:var(--arq-color-text-tertiary)}.name{max-width:100%;color:var(--arq-color-text-primary);overflow-wrap:break-word}.description{max-width:var(--arq-layout-measure);color:var(--arq-color-text-secondary);overflow-wrap:break-word}.cta{align-items:center;gap:var(--arq-space-gap-sm);margin-top:calc(var(--arq-space-gap-sm) + var(--arq-space-gap-md));padding:var(--arq-space-gap-xs) 0;color:var(--arq-color-action-primary);display:inline-flex}.cta-text{position:relative}.cta-text:after{content:\"\";inset-inline:0;top:calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));height:var(--arq-border-default);background:var(--arq-color-border-strong);position:absolute}.cta .icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}@media (width<=767px){.card-media{aspect-ratio:1}.content{gap:var(--arq-space-gap-sm-md);padding-top:0}.description{max-width:none}.cta{margin-top:calc(var(--arq-space-gap-xs) + var(--arq-space-gap-sm-md))}}", Q = ["label", "description"];
 (class extends d {
 	static tag = "arq-line-card";
-	static styles = A + $e;
+	static styles = V + ut;
 	static properties = { href: { type: String } };
 	static template = `<div class="card"><div class="card-media"><slot name="image"></slot></div><div class="content"><p class="label role-label" hidden><slot name="label"></slot></p><a class="card-link name role-heading-1"><slot name="name"></slot></a><p class="description role-body-lg" hidden><slot name="description"></slot></p><span class="cta role-body-regular" aria-hidden="true"><span class="cta-text"><slot name="action">Ver colección</slot></span>${p("arrow-right")}</span></div></div>`;
 	setup() {
@@ -2047,7 +2347,7 @@ var $e = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex
 }).define();
 //#endregion
 //#region src/components/feature-block/feature-block.css?inline
-var et = ":host{min-width:0;display:block}.block{column-gap:var(--arq-space-gap-6xl);grid-template:\"image content\"\"image secondary\"1fr/50% minmax(0,1fr);align-items:start;display:grid}:host([layout=image-right]) .block{grid-template-columns:minmax(0,1fr) 50%;grid-template-areas:\"content image\"\"secondary image\"}.block:has(.secondary[hidden]){grid-template-areas:\"image content\"\"image content\"}:host([layout=image-right]) .block:has(.secondary[hidden]){grid-template-areas:\"content image\"\"content image\"}.media{background:var(--arq-color-bg-subtle);overflow:hidden}.image{aspect-ratio:4/5;grid-area:image}.secondary{aspect-ratio:16/10;margin-top:calc(var(--arq-space-gap-xl) * 2 + var(--arq-space-gap-lg));grid-area:secondary}.media ::slotted(*){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}.content{align-items:flex-start;gap:var(--arq-space-gap-xl);padding-top:var(--arq-space-padding-xl-2xl);flex-direction:column;grid-area:content;display:flex}:host([layout=image-right]) .content{padding-top:var(--arq-space-padding-6xl)}.label,.description{margin:0}.label{color:var(--arq-color-text-tertiary)}.title{max-width:100%;color:var(--arq-color-text-primary);overflow-wrap:break-word}.description{max-width:var(--arq-layout-measure);color:var(--arq-color-text-secondary);overflow-wrap:break-word}@media (width<=767px){.block,:host([layout=image-right]) .block{row-gap:var(--arq-space-gap-lg);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"image\"\"content\"\"secondary\"}.block:has(.secondary[hidden]){row-gap:var(--arq-space-gap-lg);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"image\"\"content\"\"secondary\"}:host([layout=image-right]) .block:has(.secondary[hidden]){row-gap:var(--arq-space-gap-lg);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"image\"\"content\"\"secondary\"}.content,:host([layout=image-right]) .content{gap:var(--arq-space-gap-md);padding-top:var(--arq-space-padding-sm)}.secondary{margin-top:0}.description{max-width:none}}", $ = [
+var dt = ":host{min-width:0;display:block}.block{column-gap:var(--arq-space-gap-6xl);grid-template:\"image content\"\"image secondary\"1fr/50% minmax(0,1fr);align-items:start;display:grid}:host([layout=image-right]) .block{grid-template-columns:minmax(0,1fr) 50%;grid-template-areas:\"content image\"\"secondary image\"}.block:has(.secondary[hidden]){grid-template-areas:\"image content\"\"image content\"}:host([layout=image-right]) .block:has(.secondary[hidden]){grid-template-areas:\"content image\"\"content image\"}.media{background:var(--arq-color-bg-subtle);overflow:hidden}.image{aspect-ratio:4/5;grid-area:image}.secondary{aspect-ratio:16/10;margin-top:calc(var(--arq-space-gap-xl) * 2 + var(--arq-space-gap-lg));grid-area:secondary}.media ::slotted(*){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}.content{align-items:flex-start;gap:var(--arq-space-gap-xl);padding-top:var(--arq-space-padding-xl-2xl);flex-direction:column;grid-area:content;display:flex}:host([layout=image-right]) .content{padding-top:var(--arq-space-padding-6xl)}.label,.description{margin:0}.label{color:var(--arq-color-text-tertiary)}.title{max-width:100%;color:var(--arq-color-text-primary);overflow-wrap:break-word}.description{max-width:var(--arq-layout-measure);color:var(--arq-color-text-secondary);overflow-wrap:break-word}@media (width<=767px){.block,:host([layout=image-right]) .block{row-gap:var(--arq-space-gap-lg);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"image\"\"content\"\"secondary\"}.block:has(.secondary[hidden]){row-gap:var(--arq-space-gap-lg);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"image\"\"content\"\"secondary\"}:host([layout=image-right]) .block:has(.secondary[hidden]){row-gap:var(--arq-space-gap-lg);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"image\"\"content\"\"secondary\"}.content,:host([layout=image-right]) .content{gap:var(--arq-space-gap-md);padding-top:var(--arq-space-padding-sm)}.secondary{margin-top:0}.description{max-width:none}}", $ = [
 	"label",
 	"description",
 	"action",
@@ -2057,7 +2357,7 @@ var et = ":host{min-width:0;display:block}.block{column-gap:var(--arq-space-gap-
 //#region src/main.js
 (class extends d {
 	static tag = "arq-feature-block";
-	static styles = et;
+	static styles = dt;
 	static properties = { layout: {
 		type: String,
 		values: ["image-left", "image-right"],

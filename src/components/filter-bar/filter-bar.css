@@ -1,0 +1,65 @@
+/* filter-bar · Figma 1068:5165. Solo tokens semánticos.
+   Desktop es la base; Mobile (max-width: 767px) apila las celdas. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Fondo color/surface/faint, líneas color/border/subtle arriba y abajo,
+   padding space/padding/md y layout/gutter (borde a borde). Las líneas se
+   descuentan del padding: 74 (Applied 82), como el set. */
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-lg);
+  padding: calc(var(--arq-space-padding-md) - var(--arq-border-default)) var(--arq-layout-gutter);
+  border-block: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  background: var(--arq-color-surface-faint);
+}
+
+/* Celdas en fila, gap space/gap/lg, con divisor border/default en
+   color/border/subtle entre una y otra (del alto de la celda) */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: var(--arq-space-gap-lg);
+  min-width: 0;
+}
+
+::slotted(arq-select) {
+  flex: none;
+}
+
+::slotted(arq-select:not(:first-child)) {
+  padding-inline-start: var(--arq-space-gap-lg);
+  border-inline-start: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+.clear {
+  flex: none;
+}
+
+@media (max-width: 767px) {
+  .bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--arq-space-gap-md);
+  }
+
+  .filters {
+    flex-direction: column;
+    gap: var(--arq-space-gap-md);
+  }
+
+  ::slotted(arq-select:not(:first-child)) {
+    padding-inline-start: 0;
+    border-inline-start: 0;
+  }
+
+  .clear {
+    align-self: flex-start;
+  }
+}

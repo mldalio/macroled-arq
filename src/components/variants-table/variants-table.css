@@ -1,0 +1,122 @@
+/* variants-table · Figma 1068:5582 + variants-table-row 923:2708.
+   Solo tokens semánticos. Componente de borde a borde: la barra y las filas
+   llevan layout/gutter a los lados; el scroll llega al borde de la pantalla. */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-md);
+  min-width: 0;
+}
+
+/* Barra: Filtros a la izquierda, descargas a la derecha; padding
+   space/padding/md y layout/gutter */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-md);
+  padding: var(--arq-space-padding-md) var(--arq-layout-gutter);
+}
+
+.downloads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--arq-space-gap-sm);
+}
+
+/* Un solo contenedor con scroll para encabezado y filas */
+.scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+.scroll:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: calc(-1 * var(--arq-border-strong));
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Celdas: separador inferior border/default en color/border/subtle; entre
+   columnas space/gap/sm. Las columnas miden lo que su contenido. */
+th,
+td {
+  padding: 0 var(--arq-space-gap-sm) 0 0;
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  background: var(--arq-color-bg-default);
+  text-align: start;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* Encabezado (Type=Header): role/label en color/text/tertiary, padding
+   vertical space/padding/sm-md */
+thead th {
+  padding-block: var(--arq-space-padding-sm-md);
+  color: var(--arq-color-text-tertiary);
+  font-weight: inherit;
+}
+
+/* Filas (Type=Row): valores role/body en color/text/primary; alto de la
+   miniatura (layout/table-thumb). Hover color/surface/faint. */
+tbody td {
+  color: var(--arq-color-text-primary);
+}
+
+@media (hover: hover) {
+  tbody tr:hover > * {
+    background: var(--arq-color-surface-faint);
+  }
+}
+
+/* Columna fija de inicio (miniatura + sku), con layout/gutter a la izquierda */
+.start {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  padding-inline-start: var(--arq-layout-gutter);
+}
+
+.cell-start {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+}
+
+/* En el encabezado, "SKU" se alinea con el sku de las filas (después de la miniatura) */
+.th-sku {
+  display: inline-block;
+  padding-inline-start: calc(var(--arq-layout-table-thumb) + var(--arq-space-gap-sm));
+}
+
+.thumb {
+  display: block;
+  flex: none;
+  width: var(--arq-layout-table-thumb);
+  height: var(--arq-layout-table-thumb);
+  overflow: hidden;
+  background: var(--arq-color-surface-subtle);
+}
+
+.thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Columna fija de fin (descarga), con layout/gutter a la derecha */
+.end {
+  position: sticky;
+  right: 0;
+  z-index: 1;
+  width: 1%;
+  padding-inline: var(--arq-space-gap-sm) var(--arq-layout-gutter);
+  text-align: end;
+}

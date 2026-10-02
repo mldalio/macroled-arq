@@ -5,7 +5,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 - Si este archivo no coincide con Figma, manda Figma y se actualiza este archivo.
 - Al crear o modificar un componente en código, actualizar su **Estado en código** y su marca.
 
-**52 de 74 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
+**57 de 74 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
 
 | Componente | Etiqueta | Estado en código |
 | --- | --- | --- |
@@ -39,7 +39,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [faq-item](#faq-item) | `<arq-faq-item>` | En código ([README](../src/components/faq-item/README.md)) |
 | ✅ [feature-block](#feature-block) | `<arq-feature-block>` | En código ([README](../src/components/feature-block/README.md)) |
 | ✅ [file-upload](#file-upload) | `<arq-file-upload>` | En código ([README](../src/components/file-upload/README.md)) |
-| ⬜ [filter-bar](#filter-bar) | `<arq-filter-bar>` | Pendiente |
+| ✅ [filter-bar](#filter-bar) | `<arq-filter-bar>` | En código ([README](../src/components/filter-bar/README.md)) |
 | ✅ [filter-chip](#filter-chip) | `<arq-filter-chip>` | En código ([README](../src/components/filter-chip/README.md)) |
 | ✅ [filter-panel](#filter-panel) | `<arq-filter-panel>` | En código ([README](../src/components/filter-panel/README.md)) |
 | ✅ [filter-row](#filter-row) | `<arq-filter-row>` | En código ([README](../src/components/filter-row/README.md)) |
@@ -58,7 +58,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ⬜ [mega-menu](#mega-menu) | `<arq-mega-menu>` | Pendiente |
 | ✅ [nav-link](#nav-link) | `<arq-nav-link>` | En código ([README](../src/components/nav-link/README.md)) |
 | ⬜ [navbar](#navbar) | `<arq-navbar>` | Pendiente |
-| ✅ [option-group](#option-group) | `<arq-option-group>` | En código ([README](../src/components/option-group/README.md)); Type=Select pendiente (select) |
+| ✅ [option-group](#option-group) | `<arq-option-group>` | En código ([README](../src/components/option-group/README.md)) |
 | ✅ [option-tile](#option-tile) | `<arq-option-tile>` | En código ([README](../src/components/option-tile/README.md)) |
 | ✅ [page-header](#page-header) | `<arq-page-header>` | En código ([README](../src/components/page-header/README.md)) |
 | ✅ [product-card](#product-card) | `<arq-product-card>` | En código ([README](../src/components/product-card/README.md)); imágenes reales con TODO |
@@ -69,8 +69,8 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ⬜ [search-screen](#search-screen) | `<arq-search-screen>` | Pendiente |
 | ⬜ [search-see-all](#search-see-all) | `<arq-search-see-all>` | Pendiente |
 | ✅ [section-header](#section-header) | `<arq-section-header>` | En código ([README](../src/components/section-header/README.md)) |
-| ⬜ [select](#select) | `<arq-select>` | Pendiente |
-| ⬜ [select-menu](#select-menu) | `<arq-select-menu>` | Pendiente |
+| ✅ [select](#select) | `<arq-select>` | En código ([README](../src/components/select/README.md)) |
+| ✅ [select-menu](#select-menu) | `<arq-select-menu>` | En código ([README](../src/components/select-menu/README.md)) |
 | ✅ [select-option](#select-option) | `<arq-select-option>` | En código ([README](../src/components/select-option/README.md)) |
 | ✅ [sku](#sku) | `<arq-sku>` | En código ([README](../src/components/sku/README.md)) |
 | ✅ [spec-list](#spec-list) | `<arq-spec-list>` | En código ([README](../src/components/spec-list/README.md)) |
@@ -81,8 +81,8 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ⏸️ [tag](#tag) | `<arq-tag>` | En espera de diseño |
 | ✅ [toggle](#toggle) | `<arq-toggle>` | En código ([README](../src/components/toggle/README.md)) |
 | ✅ [toggle-switch](#toggle-switch) | — | Dentro de toggle ([README](../src/components/toggle/README.md)) |
-| ⬜ [variants-table](#variants-table) | `<arq-variants-table>` | Pendiente |
-| ⬜ [variants-table-row](#variants-table-row) | `<arq-variants-table-row>` | Pendiente |
+| ✅ [variants-table](#variants-table) | `<arq-variants-table>` | En código ([README](../src/components/variants-table/README.md)) |
+| ✅ [variants-table-row](#variants-table-row) | — | Dentro de variants-table ([README](../src/components/variants-table/README.md)) |
 
 ## accordion-item
 

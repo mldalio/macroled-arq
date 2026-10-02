@@ -54,7 +54,7 @@ Campo de formulario con línea inferior (sin caja). Text para datos cortos (nomb
 
 ## Pendientes
 
-- `TODO` **Type=Select:** se construye con select y select-menu (menú propio, teclado y posición). Hoy `type="select"` avisa en consola y se ve como Text.
+- `TODO` **Type=Select:** se construye con select-menu Type=Text, reusando el teclado y la posición de `arq-select` (ya existe). Hoy `type="select"` avisa en consola y se ve como Text.
 - **Foco:** solo cambia el color de la línea, sin anillo (excepción a DESIGN.md §7, anotada en `docs/decisiones.md`).
 - **Textarea:** 4 filas visibles por defecto (`rows="4"`; se cambia con el atributo `rows`) y solo se agranda hacia abajo (`resize: vertical`), según la descripción del set.
 - `TODO` Textos de error por caso de validación, indicador de campo obligatorio y estado Hover: no están diseñados.
