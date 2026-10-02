@@ -378,6 +378,8 @@ setup() {
 - Galería superior, galería de ambiente, Inspiración y galerías de colección muestran solo las imágenes que existen: los campos vacíos y las URLs repetidas se omiten.
 - Si hay más imágenes de las que entran, la galería se desliza (scroll-snap, como el carrusel de 2026-10-01 · carousel-controls). En product-gallery se desliza la fila de miniaturas (5 en Desktop, 4 en Mobile).
 - `TODO` (diseño): cantidad de imágenes de cada galería.
+- **product-gallery:** Iluminar cambia la imagen grande y también las miniaturas que tienen versión encendida. Las miniaturas se recorren con Tab. Su ancho es `layout/gallery-thumb` (105 Desktop · 76 Mobile, token nuevo) y la separación al borde de la imagen, `space/padding/lg` (en Figma 20, sin token).
+- **Iluminar en componentes:** `src/base/theme.js` detecta si un componente está dentro de un bloque con `data-arq-theme="dark"` y le avisa cuando cambia (un solo MutationObserver en el documento). Lo usan product-gallery y, después, product-card. No ve cambios dentro de un Shadow DOM: el Dark local es fijo.
 
 ### Textos editoriales
 

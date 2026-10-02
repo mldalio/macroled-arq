@@ -546,6 +546,45 @@
         </div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-product-gallery">
+        <h2 id="demo-product-gallery" class="demo-heading role-label">product-gallery · &lt;arq-product-gallery&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 920:2490. Imagen principal por slot (la del CMS) + images por JS. Desktop: miniaturas sobre la imagen; Mobile (390): debajo. Si no entran, se deslizan. Iluminar pasa a las versiones encendidas (la 1 y la 2 tienen; la 3 no).</p>
+        <h3 class="demo-subheading role-body-sm">3 imágenes · con Iluminar (como el hero de la ficha)</h3>
+        <div class="demo-gallery" data-demo-iluminar>
+          <arq-toggle show-label>Iluminar</arq-toggle>
+          <arq-product-gallery data-demo-images="3">
+            <img slot="image" src="/demo/fixtures/img/producto-1.svg" alt="Kanu Jardín, estudio" fetchpriority="high">
+          </arq-product-gallery>
+        </div>
+        <h3 class="demo-subheading role-body-sm">5 imágenes (lo que entra en Figma Desktop)</h3>
+        <div class="demo-gallery">
+          <arq-product-gallery data-demo-images="5">
+            <img slot="image" src="/demo/fixtures/img/producto-1.svg" alt="Kanu Jardín, estudio">
+          </arq-product-gallery>
+        </div>
+        <h3 class="demo-subheading role-body-sm">8 imágenes (la fila se desliza)</h3>
+        <div class="demo-gallery">
+          <arq-product-gallery data-demo-images="8">
+            <img slot="image" src="/demo/fixtures/img/producto-1.svg" alt="Kanu Jardín, estudio">
+          </arq-product-gallery>
+        </div>
+        <h3 class="demo-subheading role-body-sm">Una sola imagen (sin miniaturas) · sin imagen (placeholder)</h3>
+        <div class="demo-gallery demo-row">
+          <arq-product-gallery data-demo-images="1">
+            <img slot="image" src="/demo/fixtures/img/producto-3.svg" alt="Kanu Jardín, perspectiva">
+          </arq-product-gallery>
+          <arq-product-gallery data-demo-images="0"></arq-product-gallery>
+        </div>
+        <div class="demo-dark" data-arq-theme="dark">
+          <h3 class="demo-subheading role-body-sm">Dark fijo (Iluminar encendido): versiones encendidas</h3>
+          <div class="demo-gallery">
+            <arq-product-gallery data-demo-images="3">
+              <img slot="image" src="/demo/fixtures/img/producto-1.svg" alt="Kanu Jardín, estudio">
+            </arq-product-gallery>
+          </div>
+        </div>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-sku">
         <h2 id="demo-sku" class="demo-heading role-label">sku · &lt;arq-sku&gt;</h2>
         <p class="demo-note role-body-sm">Figma 920:2539. Clic o Enter copia y muestra «Copiado» durante motion/duration/feedback. Hover: el ícono pasa a icon/primary (transición fast). «Simular falla» rompe el portapapeles una vez: el código queda seleccionado y se anuncia «Copialo con Ctrl+C».</p>
