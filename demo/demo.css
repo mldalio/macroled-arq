@@ -248,6 +248,17 @@
   grid-template-columns: repeat(auto-fit, minmax(var(--arq-layout-card-min), 1fr));
 }
 
+/* Columna del sidebar de catálogo (240 en Final = card-min − 40; en Mobile ocupa el ancho) */
+.demo-catalog-nav {
+  max-width: calc(var(--arq-layout-card-min) - var(--arq-space-gap-xl-2xl));
+}
+
+@media (max-width: 1023px) {
+  .demo-catalog-nav {
+    max-width: none;
+  }
+}
+
 /* Columna del configurador (como la de la ficha) */
 .demo-option-groups {
   display: flex;

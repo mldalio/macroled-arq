@@ -1,0 +1,59 @@
+/* catalog-nav-item · Figma 1035:2382. Solo tokens semánticos.
+   Sin padding propio: el espacio entre ítems lo da el grupo. */
+
+:host {
+  display: flex;
+  min-width: 0;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  min-width: 0;
+  color: var(--arq-color-text-tertiary);
+  text-decoration: none;
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+}
+
+.label {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+/* Indicador de Selected: guion de 12 × border/default en color/text/primary.
+   El ancho es space/gap/sm-md (12): no hay token de tamaño para el guion
+   (mismo criterio que el indicador de nav-link). */
+.indicator {
+  display: none;
+  flex: none;
+  width: var(--arq-space-gap-sm-md);
+  height: var(--arq-border-default);
+  background: var(--arq-color-text-primary);
+}
+
+/* State=Hover */
+@media (hover: hover) {
+  .link:hover {
+    color: var(--arq-color-text-primary);
+  }
+}
+
+/* State=Selected */
+:host([selected]) .link {
+  color: var(--arq-color-text-primary);
+}
+
+:host([selected]) .indicator {
+  display: block;
+}
+
+/* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí, no hay token de offset) */
+.link:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.link:focus:not(:focus-visible) {
+  outline: none;
+}

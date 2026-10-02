@@ -1,0 +1,128 @@
+/* catalog-nav · Figma 1035:2411 (Desktop) + catalog-nav-mobile 1207:3314 y
+   catalog-nav-trigger 1215:3337 (hasta 1023 px). Solo tokens semánticos.
+   Desktop es la base. El corte de 1024 es el de los listados (AGENTS.md). */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Desktop: lista de grupos, fondo color/surface/default, padding lateral
+   space/padding/md. El ancho lo da la columna del listado (240 en Figma).
+   TODO (listados): token del ancho de la columna al armar la grilla. */
+.nav {
+  background: var(--arq-color-surface-default);
+}
+
+.trigger {
+  display: none;
+}
+
+/* Desktop: el panel se ve siempre, aunque el disclosure lo marque cerrado
+   (Open solo cuenta en Mobile). Gana sobre [hidden] por especificidad. */
+.panel,
+.panel[hidden] {
+  display: block !important;
+  padding-inline: var(--arq-space-padding-md);
+}
+
+/* ── Mobile (hasta 1023 px): catalog-nav-mobile ─────────────────── */
+@media (max-width: 1023px) {
+  /* Bordes superior e inferior border/default en color/border/default */
+  .nav {
+    border-block: var(--arq-border-default) solid var(--arq-color-border-default);
+  }
+
+  .panel[hidden] {
+    display: none !important;
+  }
+
+  /* catalog-nav-trigger: alto 56 = space/padding/md + 24 (ícono) + space/padding/md.
+     Gap space/gap/md. Fondo: Default color/surface/default, Hover y Open
+     color/surface/faint. */
+  .trigger {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--arq-space-gap-md);
+    width: 100%;
+    margin: 0;
+    padding: var(--arq-space-padding-md);
+    border: 0;
+    background: var(--arq-color-surface-default);
+    color: var(--arq-color-text-primary);
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+    -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+  }
+
+  :host([open]) .trigger {
+    background: var(--arq-color-surface-faint);
+  }
+
+  @media (hover: hover) {
+    .trigger:hover {
+      background: var(--arq-color-surface-faint);
+    }
+
+    :host(:not([open])) .trigger:hover .icon-box {
+      background: var(--arq-color-surface-hover);
+    }
+  }
+
+  .trigger:focus-visible {
+    outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+    outline-offset: 2px;
+  }
+
+  .trigger:focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+/* Selección actual: guion (como catalog-nav-item Selected) + role/body-regular */
+.current {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  min-width: 0;
+}
+
+.current-label {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.indicator {
+  flex: none;
+  width: var(--arq-space-gap-sm-md);
+  height: var(--arq-border-default);
+  background: var(--arq-color-text-primary);
+}
+
+/* Ícono como icon-button Size=Default: Background=None cerrado,
+   Background=Surface (color/surface/default) abierto */
+.icon-box {
+  display: inline-flex;
+  flex: none;
+  padding: var(--arq-space-padding-xs);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-icon-primary);
+}
+
+:host([open]) .icon-box {
+  background: var(--arq-color-surface-default);
+}
+
+.icon {
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+}
+
+:host(:not([open])) [data-icon='minus'],
+:host([open]) [data-icon='plus'] {
+  display: none;
+}
