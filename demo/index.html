@@ -659,6 +659,18 @@
         </div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-catalog-toolbar">
+        <h2 id="demo-catalog-toolbar" class="demo-heading role-label">catalog-toolbar · &lt;arq-catalog-toolbar&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1244:4058. Productos: Filtrar abre el panel de prueba de filter-panel (for) y, al aplicar, muestra la cantidad de filtros y pasa a icon/filter-off. Iluminar pasa toda la página a Dark y lo recuerda (arq:theme): recargá para ver que vuelve igual. Colecciones sin Iluminar; 1 producto.</p>
+        <arq-catalog-toolbar count="11" unit="productos" for="demo-panel-productos" show-iluminar></arq-catalog-toolbar>
+        <h3 class="demo-subheading role-body-sm">Colecciones (sin Iluminar) · 1 producto</h3>
+        <arq-catalog-toolbar count="10" unit="colecciones"></arq-catalog-toolbar>
+        <arq-catalog-toolbar count="1" unit="productos" filter-count="3"></arq-catalog-toolbar>
+        <div class="demo-dark" data-arq-theme="dark">
+          <arq-catalog-toolbar count="11" unit="productos" filter-count="2"></arq-catalog-toolbar>
+        </div>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-filter-row">
         <h2 id="demo-filter-row" class="demo-heading role-label">filter-row · &lt;arq-filter-row&gt;</h2>
         <p class="demo-note role-body-sm">Figma 1225:3405. Abierta, cerrada y con texto largo. Opciones: checkbox Size=Large, cantidad libre. Hover cambia la línea y el ícono; foco alrededor de la fila.</p>

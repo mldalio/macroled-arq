@@ -25,7 +25,7 @@ Línea divisoria de 1 px. Horizontal para separar bloques dentro de un mismo con
 
 ## Pendientes
 
-- `TODO` (catalog-toolbar): en Figma el divider del toolbar mide 20, pero esa fila tiene el botón Filtrar (36), así que con `stretch` mediría 36. catalog-toolbar le tiene que dar el alto de 20 a su divider (por ejemplo, envolviéndolo en un elemento del alto de una línea de texto).
+- En catalog-toolbar el divider va en la misma fila que el toggle Iluminar, así mide 20 (el alto del toggle) y no 36 (el del botón Filtrar).
 
 ## Tokens
 

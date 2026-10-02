@@ -16,6 +16,8 @@ for (const button of document.querySelectorAll('[data-demo-filter-open]')) {
   button.addEventListener('click', () => panel.show(button));
   panel.addEventListener('arq:filters', (event) => (panel.count = count(event.detail.filters)));
   panel.addEventListener('arq:apply', (event) => {
+    // Como la página: el toolbar conectado muestra el nuevo total.
+    for (const toolbar of document.querySelectorAll(`arq-catalog-toolbar[for="${panel.id}"]`)) toolbar.count = panel.count;
     const list = Object.entries(event.detail.filters).map(([name, values]) => `${name}: ${values.join(', ')}`);
     if (log) log.textContent = `arq:apply → ${list.join(' · ') || 'sin filtros'}`;
   });

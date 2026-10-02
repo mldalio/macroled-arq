@@ -176,7 +176,7 @@ Lau construye todos los componentes. El orden sale de las dependencias (descripc
 | Ficha | family-card | — |
 | Ficha | download-item | íconos |
 | Listados | product-card | swatch, checkbox |
-| Listados | catalog-toolbar | toggle, divider, button y count-badge |
+| Listados | ✅ catalog-toolbar | toggle, divider, button y count-badge |
 | Listados | ✅ catalog-nav-item | — |
 | Listados | ✅ catalog-nav-trigger (dentro de catalog-nav) | icon-button, disclosure |
 | Listados | ✅ filter-row | icon-button, checkbox, disclosure |

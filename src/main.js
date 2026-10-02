@@ -28,6 +28,7 @@ import './components/catalog-nav-group/catalog-nav-group.js';
 import './components/catalog-nav/catalog-nav.js';
 import './components/filter-row/filter-row.js';
 import './components/filter-panel/filter-panel.js';
+import './components/catalog-toolbar/catalog-toolbar.js';
 import './components/sku/sku.js';
 import './components/swatch/swatch.js';
 import './components/option-tile/option-tile.js';
