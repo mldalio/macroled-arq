@@ -1,0 +1,16 @@
+/* featured-products · Home de Final (1203:9846 · 1204:10062).
+   Solo tokens semánticos. La grilla es arq-grid; acá solo la reserva. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Reserva: los links del HTML, uno debajo del otro */
+.fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-sm);
+  color: var(--arq-color-text-primary);
+}

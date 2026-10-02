@@ -4,7 +4,7 @@
 
 | Archivo | Qué hace |
 | --- | --- |
-| `catalog.js` | API de las páginas: `listProducts`, `listCollections`, `getProduct` + `variantDetails`, `getCollection`, `getCompare`, `searchProducts`, `getNavigation` y las URLs (`productHref`…) |
+| `catalog.js` | API de las páginas: `listProducts`, `listCollections`, `getProduct` + `variantDetails`, `getProductCards`, `getCollection`, `getCompare`, `searchProducts`, `getNavigation` y las URLs (`productHref`…) |
 | `source.js` | Elige la fuente: Typesense o el ejemplo (`VITE_DATA_SOURCE=mock`, solo en `npm run dev`) |
 | `typesense.js` | Cliente de Typesense con la search-only key |
 | `typesense-adapter.js` | Documentos de Typesense → catálogo. Lo único que cambia cuando la base esté completa |

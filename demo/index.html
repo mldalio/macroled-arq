@@ -18,6 +18,7 @@
   <body class="demo role-body">
     <header class="demo-header">
       <h1 class="demo-title role-body">Macroled Arq · Demo</h1>
+      <a class="role-body" href="/demo/home.html">Página: Home</a>
       <label class="demo-switch">
         <input type="checkbox" id="demo-theme" />
         <span>Dark (data-arq-theme en &lt;html&gt;)</span>
@@ -2049,6 +2050,126 @@
           <arq-button slot="action" type="underline" show-underline show-icon icon="arrow-right" href="#demo-feature-block">Ver colección</arq-button>
           <img slot="secondary" src="/demo/fixtures/img/producto-2.svg" alt="Detalle del acabado" loading="lazy">
         </arq-feature-block>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-layout">
+        <h2 id="demo-layout" class="demo-heading role-label">Layout de página · &lt;arq-section&gt; · &lt;arq-grid&gt; · &lt;arq-project-mosaic&gt; · &lt;arq-featured-products&gt;</h2>
+        <p class="demo-note role-body-sm">Sin set en Figma: salen de las pantallas de Final (Home 1203:9716 · 1204:9952). Página completa: <a href="/demo/home.html">demo/home.html</a> (carga src/pages/home.html tal cual). El contorno punteado marca la caja de cada arq-section.</p>
+
+        <p class="demo-subheading role-body-sm">arq-section padding-top + arq-grid columns="3" mobile="carousel" (hasta 767 px: carrusel y button mobile-action)</p>
+        <div class="demo-bleed demo-layout">
+          <arq-section padding-top>
+            <arq-section-header slot="header" type="link" href="#demo-layout">
+              <h2 slot="title">Explorar por espacio</h2>
+              <span slot="link">Ver catálogo</span>
+            </arq-section-header>
+            <arq-grid columns="3" mobile="carousel">
+              <arq-category-card href="#demo-layout"><img slot="image" src="/demo/fixtures/img/home/categoria-interior.jpg" alt="" loading="lazy"><span slot="name">Interior</span></arq-category-card>
+              <arq-category-card href="#demo-layout"><img slot="image" src="/demo/fixtures/img/home/categoria-exterior.jpg" alt="" loading="lazy"><span slot="name">Exterior</span></arq-category-card>
+              <arq-category-card href="#demo-layout"><img slot="image" src="/demo/fixtures/img/home/categoria-lamparas.jpg" alt="" loading="lazy"><span slot="name">Lámparas y artefactos</span></arq-category-card>
+              <arq-category-card href="#demo-layout"><span slot="name">Sin imagen y con un nombre largo que se parte</span></arq-category-card>
+            </arq-grid>
+            <arq-button slot="mobile-action" type="underline" show-underline show-icon icon="arrow-right" href="#demo-layout">Ver catálogo</arq-button>
+          </arq-section>
+        </div>
+
+        <p class="demo-subheading role-body-sm">arq-grid columns="2" (Mobile apila a space/section/md) · sin encabezado</p>
+        <div class="demo-bleed demo-layout">
+          <arq-section>
+            <arq-grid columns="2">
+              <arq-line-card href="#demo-layout"><img slot="image" src="/demo/fixtures/img/home/linea-douli.jpg" alt="" loading="lazy"><span slot="label">Línea interior</span><h3 slot="name">Douli</h3><span slot="description">Colgante de ala amplia que define zonas de estar y comedor.</span></arq-line-card>
+              <arq-line-card href="#demo-layout"><img slot="image" src="/demo/fixtures/img/home/linea-sento.jpg" alt="" loading="lazy"><span slot="label">Línea exterior</span><h3 slot="name">Sento</h3><span slot="description">Spot de cabezal circular para acentuar vegetación, muros y texturas.</span></arq-line-card>
+            </arq-grid>
+          </arq-section>
+        </div>
+
+        <p class="demo-subheading role-body-sm">arq-featured-products (arq-grid columns="4" mobile="two-columns"): grupos del catálogo, en el orden del HTML; "no-existe" se saltea</p>
+        <div class="demo-bleed demo-layout">
+          <arq-section>
+            <arq-section-header slot="header" type="link" href="#demo-layout">
+              <h2 slot="title">Productos destacados</h2>
+              <span slot="link">Ver todos los productos</span>
+            </arq-section-header>
+            <arq-featured-products>
+              <a href="#demo-layout" data-group="douli-colgante">Douli</a>
+              <a href="#demo-layout" data-group="no-existe">No existe</a>
+              <a href="#demo-layout" data-group="kanu-jardin">Kanu Jardín</a>
+              <a href="#demo-layout" data-group="mini-tori-jardin">Mini Tori (sin imagen)</a>
+              <a href="#demo-layout" data-group="mr16-pro">MR16 Pro</a>
+            </arq-featured-products>
+            <arq-button slot="mobile-action" type="underline" show-underline show-icon icon="arrow-right" href="#demo-layout">Ver todos los productos</arq-button>
+          </arq-section>
+        </div>
+
+        <p class="demo-subheading role-body-sm">arq-featured-products sin grupos que existan: se ven los links del HTML (reserva)</p>
+        <div class="demo-bleed demo-layout">
+          <arq-section>
+            <arq-featured-products>
+              <a href="#demo-layout" data-group="grupo-a">Grupo A</a>
+              <a href="#demo-layout" data-group="grupo-b">Grupo B</a>
+            </arq-featured-products>
+          </arq-section>
+        </div>
+
+        <p class="demo-subheading role-body-sm">arq-project-mosaic (4 fotos; en Mobile la 4.ª no se ve) + action en Desktop y Mobile</p>
+        <div class="demo-bleed demo-layout">
+          <arq-section>
+            <arq-section-header slot="header" type="description">
+              <h2 slot="title">Diseño que inspira</h2>
+              <span slot="description">Proyectos donde la luminaria forma parte de la arquitectura, no un agregado.</span>
+            </arq-section-header>
+            <arq-project-mosaic>
+              <img src="/demo/fixtures/img/home/proyecto-1.jpg" alt="Balizas en un patio de hormigón" loading="lazy">
+              <img src="/demo/fixtures/img/home/proyecto-2.jpg" alt="Living con colgante" loading="lazy">
+              <img src="/demo/fixtures/img/home/proyecto-3.jpg" alt="Comedor con colgantes" loading="lazy">
+              <img src="/demo/fixtures/img/home/destacada-nami.jpg" alt="Spot entre plantas" loading="lazy">
+            </arq-project-mosaic>
+            <arq-button slot="action" type="underline" show-underline show-icon icon="arrow-right" href="#demo-layout">Ver colecciones</arq-button>
+          </arq-section>
+        </div>
+
+        <p class="demo-subheading role-body-sm">arq-project-mosaic con una foto sin src, mientras carga (queda el fondo color/bg/subtle)</p>
+        <div class="demo-bleed demo-layout">
+          <arq-section>
+            <arq-project-mosaic>
+              <img src="/demo/fixtures/img/home/proyecto-1.jpg" alt="Balizas en un patio de hormigón" loading="lazy">
+              <img alt="">
+              <img src="/demo/fixtures/img/home/proyecto-3.jpg" alt="Comedor con colgantes" loading="lazy">
+              <img src="/demo/fixtures/img/home/proyecto-2.jpg" alt="Living con colgante" loading="lazy">
+            </arq-project-mosaic>
+          </arq-section>
+        </div>
+
+        <p class="demo-subheading role-body-sm">arq-section layout="split" (FAQ): encabezado y acción a la izquierda en Desktop; en Mobile la acción va al final</p>
+        <div class="demo-bleed demo-layout">
+          <arq-section layout="split">
+            <arq-section-header slot="header" type="stacked">
+              <h2 slot="title">Preguntas frecuentes</h2>
+              <span slot="description">¿No encontrás lo que buscás? Nuestro equipo técnico te acompaña en cada etapa del proyecto.</span>
+            </arq-section-header>
+            <div>
+              <arq-faq-item><span slot="question">¿Desarrollan luminarias a medida para proyectos?</span>Sí. Nuestro equipo técnico adapta medidas, acabados y temperatura de color.</arq-faq-item>
+              <arq-faq-item><span slot="question">¿Dónde descargo los archivos IES?</span>En la ficha de cada producto, en Descargas.</arq-faq-item>
+            </div>
+            <arq-button slot="action" type="underline" show-underline show-icon icon="arrow-right" href="#demo-layout">Escribinos</arq-button>
+          </arq-section>
+        </div>
+
+        <p class="demo-subheading role-body-sm">Contenedor en modo Dark (arq-section usa color/bg/default)</p>
+        <div class="demo-bleed demo-layout demo-dark" data-arq-theme="dark">
+          <arq-section padding-top>
+            <arq-section-header slot="header" type="link" href="#demo-layout">
+              <h2 slot="title">Productos destacados</h2>
+              <span slot="link">Ver todos los productos</span>
+            </arq-section-header>
+            <arq-featured-products>
+              <a href="#demo-layout" data-group="kanu-jardin">Kanu Jardín</a>
+              <a href="#demo-layout" data-group="kanu-pared">Kanu Pared</a>
+              <a href="#demo-layout" data-group="douli-colgante">Douli</a>
+            </arq-featured-products>
+            <arq-button slot="mobile-action" type="underline" show-underline show-icon icon="arrow-right" href="#demo-layout">Ver todos los productos</arq-button>
+          </arq-section>
         </div>
       </section>
     </main>

@@ -72,6 +72,10 @@ import './components/carousel-controls/carousel-controls.js';
 import './components/category-card/category-card.js';
 import './components/line-card/line-card.js';
 import './components/feature-block/feature-block.js';
+import './components/section/section.js';
+import './components/grid/grid.js';
+import './components/project-mosaic/project-mosaic.js';
+import './components/featured-products/featured-products.js';
 
 if (!window.Arq) {
   window.Arq = Object.freeze({ version });

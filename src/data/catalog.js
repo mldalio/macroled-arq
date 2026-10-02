@@ -185,7 +185,16 @@ export async function getProduct(groupId) {
   };
 }
 
-const DOWNLOAD_LABELS = { ies: 'IES', cad: 'CAD 2D/3D', manual: 'Manual', fotometria: 'Fotometría' };
+/**
+ * Cards de grupos elegidos a mano (Productos destacados del Home), en el
+ * mismo orden. Un grupo que no existe se saltea.
+ */
+export async function getProductCards(groupIds) {
+  const { groupById } = await loadCatalog();
+  return groupIds.map((id) => groupById.get(id)).filter(Boolean).map((group) => productCard(group));
+}
+
+const DOWNLOAD_LABELS ={ ies: 'IES', cad: 'CAD 2D/3D', manual: 'Manual', fotometria: 'Fotometría' };
 
 /**
  * Lo que cambia con la variante: descripción, galería, especificaciones por
