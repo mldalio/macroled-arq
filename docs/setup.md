@@ -180,7 +180,7 @@ Lau construye todos los componentes. El orden sale de las dependencias (descripc
 | Listados | ✅ catalog-nav-item | — |
 | Listados | ✅ catalog-nav-trigger (dentro de catalog-nav) | icon-button, disclosure |
 | Listados | ✅ filter-row | icon-button, checkbox, disclosure |
-| Comparativa | compare-slot | icon-button |
+| Comparativa | ✅ compare-slot | icon-button |
 | Comparativa | compare-group, compare-row | — |
 | Contacto | contact-item | — |
 | Contacto | link-list | button |
@@ -199,7 +199,7 @@ product-card necesita los campos de las 4 imágenes en `docs/typesense-schema.md
 | ✅ catalog-nav-group | catalog-nav-item |
 | ✅ catalog-nav-mobile (dentro de catalog-nav) | catalog-nav-trigger, catalog-nav-item |
 | ✅ filter-panel | filter-row, filter-chip, button |
-| compare-bar | compare-slot, count-badge, divider, button |
+| ✅ compare-bar | compare-slot, count-badge, divider, button |
 | ✅ download-modal | download-item |
 | search-dropdown | search-result, search-see-all |
 | search-screen | search-field, search-result, search-see-all |

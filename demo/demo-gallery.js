@@ -23,10 +23,30 @@ for (const gallery of document.querySelectorAll('arq-product-gallery[data-demo-i
   gallery.images = images(Number(gallery.dataset.demoImages));
 }
 
-// product-card: registro de Comparar
+// product-card + compare-bar: lo que va a hacer la página del listado.
+// En la demo el nombre hace de SKU.
 const compareLog = document.querySelector('[data-demo-compare-log]');
+const bar = document.querySelector('arq-compare-bar');
+const cardName = (card) => card.querySelector('[slot=name]')?.textContent.trim() ?? '';
+const cards = () => [...document.querySelectorAll('arq-product-card[show-compare]')];
 document.addEventListener('arq:compare', (event) => {
-  if (compareLog) compareLog.textContent = `arq:compare → ${event.detail.checked ? 'agregar' : 'quitar'} «${event.target.querySelector('[slot=name]')?.textContent}»`;
+  const card = event.target;
+  const name = cardName(card);
+  if (compareLog) compareLog.textContent = `arq:compare → ${event.detail.checked ? 'agregar' : 'quitar'} «${name}»`;
+  if (!bar) return;
+  if (!event.detail.checked) bar.remove(name);
+  else if (!bar.add({ sku: name, name, meta: 'Exterior · Jardín', image: card.image })) card.compared = false; // ya hay 3
+});
+const barLog = document.querySelector('[data-demo-compare-bar-log]');
+const syncCards = () => { for (const card of cards()) card.compared = bar.has(cardName(card)); };
+bar?.addEventListener('arq:compare-change', (event) => {
+  syncCards();
+  if (barLog) barLog.textContent = `arq:compare-change → ${event.detail.items.map((i) => i.name).join(', ') || 'vacía'}`;
+});
+if (bar) customElements.whenDefined('arq-product-card').then(syncCards);
+document.querySelector('[data-demo-compare-add]')?.addEventListener('click', () => {
+  bar.add({ sku: 'Hoshi', name: 'Hoshi', meta: 'Interior · Embutir', image: '/demo/fixtures/img/card-estudio.svg' });
+  bar.add({ sku: 'Kanu Jardín', name: 'Kanu Jardín', meta: 'Exterior · Jardín', image: '/demo/fixtures/img/card-contexto.svg' });
 });
 
 for (const block of document.querySelectorAll('[data-demo-iluminar]')) {

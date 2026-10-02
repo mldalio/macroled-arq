@@ -14,7 +14,7 @@ Páginas del sitio en `macroled.com.ar/arq`. Todo el contenido se carga con Code
 | Ficha de producto | `/arq/producto/{slug}` · `?sku={SKU}` | template de colección CMS «Productos» + Code Embed | Ficha (`1218:10486`) | Slug = `PRODUCT_GROUP_ID`. `?sku=` elige la variante (sin parámetro, el SKU predeterminado); el canonical va sin parámetro. El embed imprime el grupo, nombre (`<h1>`), descripción corta, imagen principal y textos editoriales; el resto sale de Typesense. El breadcrumb (Colecciones / Kanu / Kanu Jardín) sale de los datos, no de la URL |
 | Colecciones (listado) | `/arq/colecciones` | estática + Code Embed | Colecciones (`1157:10222`) | Una card por colección, desde Typesense, con filtros técnicos |
 | Colección (p. ej. KANU) | `/arq/coleccion/{slug}` | template de colección CMS «Colecciones» + Code Embed | Colección (`1234:13200`) | Slug = `COLLECTION_ID`. Una card por grupo de la colección |
-| Comparativa | `/arq/comparativa` | estática + Code Embed | Comparativa (`1227:12373`) | Cómo llegan los productos elegidos (por ejemplo `?sku=…`): se define al construir la comparativa |
+| Comparativa | `/arq/comparativa` | estática + Code Embed | Comparativa (`1227:12373`) | `?sku=SKU1,SKU2,SKU3` (hasta 3, con `encodeURIComponent`; lo arma compare-bar) |
 | Contacto | `/arq/contacto` | estática + Code Embed | Contacto (`1364:15761`) | El estado "enviado" es la misma página |
 | Descargas | `/arq/descargas` | estática + Code Embed | sin pantalla | Footer (Información) y page-header List |
 | Glosario | `/arq/glosario` | estática + Code Embed | sin pantalla | Footer (Información). No es la tabla de variantes de la ficha (que en Figma se llama Glosario) |

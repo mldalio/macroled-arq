@@ -5,7 +5,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 - Si este archivo no coincide con Figma, manda Figma y se actualiza este archivo.
 - Al crear o modificar un componente en código, actualizar su **Estado en código** y su marca.
 
-**57 de 74 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
+**59 de 74 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
 
 | Componente | Etiqueta | Estado en código |
 | --- | --- | --- |
@@ -23,12 +23,12 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [category-card](#category-card) | `<arq-category-card>` | En código ([README](../src/components/category-card/README.md)) |
 | ✅ [checkbox](#checkbox) | `<arq-checkbox>` | En código ([README](../src/components/checkbox/README.md)) |
 | ✅ [choice-chip](#choice-chip) | `<arq-choice-chip>` | En código ([README](../src/components/choice-chip/README.md)) |
-| ⬜ [compare-bar](#compare-bar) | `<arq-compare-bar>` | Pendiente |
+| ✅ [compare-bar](#compare-bar) | `<arq-compare-bar>` | En código ([README](../src/components/compare-bar/README.md)) |
 | ⬜ [compare-group](#compare-group) | `<arq-compare-group>` | Pendiente |
 | ⬜ [compare-header](#compare-header) | `<arq-compare-header>` | Pendiente |
 | ⬜ [compare-product](#compare-product) | `<arq-compare-product>` | Pendiente |
 | ⬜ [compare-row](#compare-row) | `<arq-compare-row>` | Pendiente |
-| ⬜ [compare-slot](#compare-slot) | `<arq-compare-slot>` | Pendiente |
+| ✅ [compare-slot](#compare-slot) | `<arq-compare-slot>` | En código ([README](../src/components/compare-slot/README.md)) |
 | ⬜ [contact-item](#contact-item) | `<arq-contact-item>` | Pendiente |
 | ✅ [count-badge](#count-badge) | `<arq-count-badge>` | En código ([README](../src/components/count-badge/README.md)) |
 | ✅ [cta-block](#cta-block) | `<arq-cta-block>` | En código ([README](../src/components/cta-block/README.md)) |
