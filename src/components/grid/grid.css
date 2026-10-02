@@ -1,0 +1,90 @@
+/* grid · layout de página (Home de Final: 1203:9716 · 1204:9952).
+   Solo tokens semánticos. Desktop es la base; Mobile con max-width: 767px.
+   --columns y --card-min son variables locales: no salen del Shadow DOM. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.grid {
+  --card-min: var(--arq-layout-card-min);
+
+  display: grid;
+  grid-template-columns: repeat(var(--columns, 1), minmax(0, 1fr));
+  gap: var(--arq-space-gap-lg);
+  align-items: start;
+}
+
+/* Sin columns: grilla de catálogo (DESIGN.md §2 · Breakpoints y grilla).
+   Gaps de Productos en Final: columnas space/gap/lg y filas space/gap/2xl;
+   en Mobile space/gap/md y space/gap/xl. */
+.grid.auto {
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
+  gap: var(--arq-space-gap-2xl) var(--arq-space-gap-lg);
+}
+
+@media (min-width: 1600px) {
+  .grid.auto {
+    --card-min: var(--arq-layout-card-min-wide);
+  }
+}
+
+::slotted(*) {
+  min-width: 0;
+}
+
+@media (max-width: 767px) {
+  .grid.auto {
+    gap: var(--arq-space-gap-xl) var(--arq-space-gap-md);
+  }
+
+  /* stack: bloques apilados, separados como en el Home (space/section/md).
+     Sin columns sigue el auto-fill (layout/card-min ya vale 160 en Mobile). */
+  .grid:not(.auto) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--arq-space-section-md);
+  }
+
+  :host([mobile='two-columns']) .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--arq-space-gap-sm-md);
+  }
+
+  /* carousel: el propio elemento es el contenedor con scroll (así lo maneja
+     carousel-controls con for). Llega hasta el borde derecho de la pantalla
+     (margen negativo de layout/gutter) y la tarjeta siguiente asoma.
+     space/gap/xs alrededor deja lugar al anillo de foco (border/strong +
+     separación de 2), que un contenedor con scroll recortaría. */
+  :host([mobile='carousel']) {
+    container-type: inline-size;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline-start: var(--arq-space-gap-xs);
+    scrollbar-width: none;
+    margin-block: calc(var(--arq-space-gap-xs) * -1);
+    margin-inline: calc(var(--arq-space-gap-xs) * -1) calc(var(--arq-layout-gutter) * -1);
+    padding-block: var(--arq-space-gap-xs);
+    padding-inline-start: var(--arq-space-gap-xs);
+  }
+
+  :host([mobile='carousel'])::-webkit-scrollbar {
+    display: none;
+  }
+
+  :host([mobile='carousel']) .grid {
+    display: flex;
+    width: max-content;
+    gap: var(--arq-space-gap-sm-md);
+    padding-inline-end: var(--arq-layout-gutter);
+  }
+
+  /* Tarjeta: 80 % del ancho de contenido de la sección (280 de 350 en Figma).
+     TODO (diseño): no hay token para el ancho de tarjeta del carrusel mobile. */
+  :host([mobile='carousel']) ::slotted(*) {
+    flex: none;
+    width: calc((100cqi - var(--arq-layout-gutter)) * 0.8);
+    scroll-snap-align: start;
+  }
+}

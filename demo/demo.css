@@ -421,6 +421,12 @@
   padding: 0;
 }
 
+/* Layout de página: contorno de cada arq-section */
+.demo-layout > arq-section {
+  outline: var(--arq-border-default) dashed var(--arq-color-border-subtle);
+  outline-offset: calc(var(--arq-border-default) * -1);
+}
+
 /* Bloque FAQ del Home: section-header a layout/measure y lista al lado,
    separados space/section/md (Final 1203:9906). En Mobile se apila. */
 .demo-faq {

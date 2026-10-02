@@ -1,0 +1,78 @@
+/* section · layout de página (Home de Final: 1203:9716 · 1204:9952).
+   Solo tokens semánticos. Desktop es la base; Mobile con max-width: 767px. */
+
+:host {
+  /* Gap encabezado → contenido → acción: space/gap/2xl en Desktop y
+     space/gap/xl en Mobile (dos tokens distintos en el Home de Figma). */
+  --section-gap: var(--arq-space-gap-2xl);
+
+  display: block;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 0 var(--arq-layout-gutter) var(--arq-space-section-xl);
+  background: var(--arq-color-bg-default);
+}
+
+:host([padding-top]) {
+  padding-top: var(--arq-space-section-xl);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
+  min-width: 0;
+}
+
+.head,
+.body {
+  min-width: 0;
+}
+
+/* La acción toma el ancho de su texto, a la izquierda */
+.action,
+.mobile-action {
+  align-self: flex-start;
+}
+
+/* mobile-action: solo hasta 767 px */
+@media (min-width: 768px) {
+  .mobile-action {
+    display: none;
+  }
+
+  /* layout="split" (FAQ del Home): encabezado y acción en una columna de
+     layout/measure, contenido a la derecha. Encabezado → acción a
+     space/gap/lg, como el texto → link de section-header Stacked.
+     TODO (diseño): entre columnas el set usa space/section/md, un token de
+     separación entre bloques, dentro de un bloque (DESIGN.md §5). */
+  :host([layout='split']) .section {
+    display: grid;
+    grid-template-columns: var(--arq-layout-measure) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      'head body'
+      'action body';
+    column-gap: var(--arq-space-section-md);
+    row-gap: var(--arq-space-gap-lg);
+    align-items: start;
+  }
+
+  :host([layout='split']) .head {
+    grid-area: head;
+  }
+
+  :host([layout='split']) .body {
+    grid-area: body;
+  }
+
+  :host([layout='split']) .action {
+    grid-area: action;
+  }
+}
+
+@media (max-width: 767px) {
+  :host {
+    --section-gap: var(--arq-space-gap-xl);
+  }
+}

@@ -1,0 +1,162 @@
+<!--
+  Home · /arq · Code Embed de Webflow (docs/decisiones.md, 2026-10-01 · Páginas en Webflow)
+  Pantalla: Final › Home (1203:9716 Desktop · 1204:9952 Mobile)
+  Se edita acá y se pega en Webflow. dist/arq.js, dist/arq.css y Albert Sans se cargan a nivel sitio.
+
+  TODO (imágenes): las src apuntan a las fotos de ejemplo de la demo (/demo/fixtures/img/…).
+  Antes de pegar en Webflow, reemplazarlas por las URLs de Webflow Assets.
+-->
+<arq-navbar theme="transparent">
+  <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
+  <arq-nav-link slot="links" href="/arq/glosario">Glosario</arq-nav-link>
+  <arq-nav-link slot="links" href="/arq/contacto">Contacto</arq-nav-link>
+</arq-navbar>
+
+<main>
+  <arq-hero>
+    <img slot="media" src="/demo/fixtures/img/hero-1.svg" alt="" fetchpriority="high">
+    <span slot="eyebrow">Iluminación profesional</span>
+    <h1 slot="title">Materia, forma,<br>atmósfera.</h1>
+    <arq-button slot="action" type="outline" href="/arq/colecciones">Explorar colecciones</arq-button>
+  </arq-hero>
+
+  <arq-section padding-top>
+    <arq-section-header slot="header" type="link" href="/arq/productos">
+      <h2 slot="title">Explorar por espacio</h2>
+      <span slot="link">Ver catálogo</span>
+    </arq-section-header>
+    <arq-grid columns="3" mobile="carousel">
+      <arq-category-card href="/arq/productos?environment=Interior">
+        <img slot="image" src="/demo/fixtures/img/home/categoria-interior.jpg" alt="" loading="lazy">
+        <span slot="name">Interior</span>
+      </arq-category-card>
+      <arq-category-card href="/arq/productos?environment=Exterior">
+        <img slot="image" src="/demo/fixtures/img/home/categoria-exterior.jpg" alt="" loading="lazy">
+        <span slot="name">Exterior</span>
+      </arq-category-card>
+      <!-- TODO (urls): Lámparas y artefactos son dos tipos de producto; la URL de categoría está PENDIENTE (docs/urls.md) -->
+      <arq-category-card href="/arq/productos">
+        <img slot="image" src="/demo/fixtures/img/home/categoria-lamparas.jpg" alt="" loading="lazy">
+        <span slot="name">Lámparas y artefactos</span>
+      </arq-category-card>
+    </arq-grid>
+    <arq-button slot="mobile-action" type="underline" show-underline show-icon icon="arrow-right" href="/arq/productos">Ver catálogo</arq-button>
+  </arq-section>
+
+  <arq-section>
+    <arq-feature-block>
+      <img slot="image" src="/demo/fixtures/img/home/destacada-kanu.jpg" alt="Baliza Kanu encendida en un jardín" loading="lazy">
+      <span slot="label">Colección destacada</span>
+      <h2 slot="title">Kanu</h2>
+      <span slot="description">Balizas de líneas puras que marcan recorridos sin interrumpir el paisaje. Una familia pensada para exteriores residenciales y espacios públicos.</span>
+      <arq-button slot="action" type="underline" show-underline show-icon icon="arrow-right" href="/arq/coleccion/kanu">Ver colección</arq-button>
+    </arq-feature-block>
+  </arq-section>
+
+  <arq-section>
+    <arq-grid columns="2">
+      <arq-line-card href="/arq/coleccion/douli">
+        <img slot="image" src="/demo/fixtures/img/home/linea-douli.jpg" alt="" loading="lazy">
+        <span slot="label">Línea interior</span>
+        <h3 slot="name">Douli</h3>
+        <span slot="description">Colgante de ala amplia que define zonas de estar y comedor. Una silueta escultórica con emisión dirigida hacia el plano de trabajo.</span>
+      </arq-line-card>
+      <arq-line-card href="/arq/coleccion/sento">
+        <img slot="image" src="/demo/fixtures/img/home/linea-sento.jpg" alt="" loading="lazy">
+        <span slot="label">Línea exterior</span>
+        <h3 slot="name">Sento</h3>
+        <span slot="description">Spot de cabezal circular para acentuar vegetación, muros y texturas sin tomar protagonismo en el paisaje.</span>
+      </arq-line-card>
+    </arq-grid>
+  </arq-section>
+
+  <arq-section>
+    <arq-feature-block layout="image-right">
+      <img slot="image" src="/demo/fixtures/img/home/destacada-nami.jpg" alt="Spot Nami iluminando vegetación" loading="lazy">
+      <span slot="label">Colección destacada</span>
+      <h2 slot="title">Nami</h2>
+      <span slot="description">Spot orientable de cuerpo tubular para empotrar. Dirige el haz con precisión sobre obras, estantes y detalles de arquitectura, y desaparece en el cielorraso cuando no se lo mira.</span>
+      <arq-button slot="action" type="underline" show-underline show-icon icon="arrow-right" href="/arq/coleccion/nami">Ver colección</arq-button>
+    </arq-feature-block>
+  </arq-section>
+
+  <arq-section>
+    <arq-section-header slot="header" type="link" href="/arq/productos">
+      <h2 slot="title">Productos destacados</h2>
+      <span slot="link">Ver todos los productos</span>
+    </arq-section-header>
+    <!-- Un link por grupo (PRODUCT_GROUP_ID). El componente trae nombre, meta e imágenes del catálogo. -->
+    <arq-featured-products>
+      <a href="/arq/producto/kanu-jardin" data-group="kanu-jardin">Kanu Jardín</a>
+      <a href="/arq/producto/tori-jardin" data-group="tori-jardin">Tori Jardín</a>
+      <a href="/arq/producto/mini-tori-jardin" data-group="mini-tori-jardin">Mini Tori</a>
+      <a href="/arq/producto/douli-colgante" data-group="douli-colgante">Douli</a>
+    </arq-featured-products>
+    <arq-button slot="mobile-action" type="underline" show-underline show-icon icon="arrow-right" href="/arq/productos">Ver todos los productos</arq-button>
+  </arq-section>
+
+  <arq-section>
+    <arq-section-header slot="header" type="description">
+      <h2 slot="title">Diseño que inspira</h2>
+      <span slot="description">Proyectos donde la luminaria forma parte de la arquitectura, no un agregado.</span>
+    </arq-section-header>
+    <arq-project-mosaic>
+      <img src="/demo/fixtures/img/home/proyecto-1.jpg" alt="Balizas encendidas en un patio con muros de hormigón y vegetación" loading="lazy">
+      <img src="/demo/fixtures/img/home/proyecto-2.jpg" alt="Living con colgante sobre una mesa baja" loading="lazy">
+      <img src="/demo/fixtures/img/home/proyecto-3.jpg" alt="Baliza entre plantas de hojas grandes" loading="lazy">
+      <img src="/demo/fixtures/img/home/destacada-nami.jpg" alt="Spot iluminando vegetación de noche" loading="lazy">
+    </arq-project-mosaic>
+    <arq-button slot="action" type="underline" show-underline show-icon icon="arrow-right" href="/arq/colecciones">Ver colecciones</arq-button>
+  </arq-section>
+
+  <arq-section layout="split">
+    <arq-section-header slot="header" type="stacked">
+      <h2 slot="title">Preguntas frecuentes</h2>
+      <span slot="description">¿No encontrás lo que buscás? Nuestro equipo técnico te acompaña en cada etapa del proyecto.</span>
+    </arq-section-header>
+    <div>
+      <arq-faq-item>
+        <span slot="question">¿Desarrollan luminarias a medida para proyectos?</span>
+        Sí. Nuestro equipo técnico adapta medidas, acabados y temperatura de color según los requerimientos de cada proyecto.
+      </arq-faq-item>
+      <arq-faq-item>
+        <span slot="question">¿Dónde descargo los archivos IES?</span>
+        En la ficha de cada producto, en <a href="/arq/productos">Descargas</a>.
+      </arq-faq-item>
+      <!-- TODO (contenido): faltan las respuestas de estas dos preguntas (Figma muestra solo las preguntas) -->
+      <arq-faq-item>
+        <span slot="question">¿Qué garantía tienen los productos?</span>
+        Respuesta pendiente.
+      </arq-faq-item>
+      <arq-faq-item>
+        <span slot="question">¿Cómo accedo a condiciones para estudios y distribuidores?</span>
+        Respuesta pendiente.
+      </arq-faq-item>
+    </div>
+    <arq-button slot="action" type="underline" show-underline show-icon icon="arrow-right" href="/arq/contacto">Escribinos</arq-button>
+  </arq-section>
+
+  <!-- TODO (formularios): la newsletter valida y emite arq:submit, pero todavía no envía (falta el webhook) -->
+  <arq-cta-block type="newsletter">
+    <h2 slot="title">Novedades para estudios</h2>
+    <span slot="description">Lanzamientos, proyectos y recursos técnicos. Una vez al mes.</span>
+    <arq-input slot="email" name="email" input-type="email" placeholder="Tu email profesional" autocomplete="email" required>Email</arq-input>
+    <arq-button slot="action">Suscribirme</arq-button>
+  </arq-cta-block>
+</main>
+
+<arq-footer>
+  <span slot="tagline">Diseño lumínico para la arquitectura contemporánea.</span>
+  <h2 slot="productos-title">Productos</h2>
+  <arq-footer-link slot="productos" href="/arq/productos?environment=Interior">Interior</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?environment=Exterior">Exterior</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos">Lámparas y Artefactos</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/colecciones">Colecciones</arq-footer-link>
+  <h2 slot="informacion-title">Información</h2>
+  <arq-footer-link slot="informacion" href="/arq/contacto">Contacto</arq-footer-link>
+  <arq-footer-link slot="informacion" href="/arq/descargas">Descargas</arq-footer-link>
+  <arq-footer-link slot="informacion" href="/arq/glosario">Glosario</arq-footer-link>
+  <h2 slot="redes-title">Redes</h2>
+  <arq-footer-link slot="redes" href="https://www.instagram.com/" target="_blank" show-icon icon="instagram" label="Macroled Arq en Instagram">Instagram</arq-footer-link>
+  <arq-footer-link slot="redes" href="https://www.youtube.com/" target="_blank" show-icon icon="youtube" label="Macroled Arq en YouTube">YouTube</arq-footer-link>
+</arq-footer>

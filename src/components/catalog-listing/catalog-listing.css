@@ -1,0 +1,58 @@
+/* catalog-listing · Final: Productos (1153:5679 · 1155:5837).
+   Solo tokens semánticos. Desde 1024 px el sidebar va a la izquierda
+   (AGENTS.md: los listados usan catalog-nav-mobile hasta 1023 px). */
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 0 var(--arq-layout-gutter) var(--arq-space-section-xl);
+  background: var(--arq-color-bg-default);
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xl);
+  min-width: 0;
+}
+
+.nav {
+  min-width: 0;
+}
+
+/* Toolbar → grilla: space/gap/xl-2xl en Desktop y space/gap/xl en Mobile */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xl-2xl);
+  min-width: 0;
+}
+
+.status {
+  margin: 0;
+  color: var(--arq-color-text-secondary);
+}
+
+.status:empty {
+  display: none;
+}
+
+/* Sidebar + contenido.
+   TODO (diseño): la columna del sidebar mide 240 en Figma y no hay token; se
+   usa layout/card-min (280), el más cercano. Entre columnas el set usa
+   space/section/sm, un token de separación entre bloques (DESIGN.md §5). */
+@media (min-width: 1024px) {
+  .layout {
+    display: grid;
+    grid-template-columns: var(--arq-layout-card-min) minmax(0, 1fr);
+    column-gap: var(--arq-space-section-sm);
+    align-items: start;
+  }
+}
+
+@media (max-width: 767px) {
+  .content {
+    gap: var(--arq-space-gap-xl);
+  }
+}

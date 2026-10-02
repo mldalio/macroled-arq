@@ -84,6 +84,25 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [variants-table](#variants-table) | `<arq-variants-table>` | En código ([README](../src/components/variants-table/README.md)) |
 | ✅ [variants-table-row](#variants-table-row) | — | Dentro de variants-table ([README](../src/components/variants-table/README.md)) |
 
+### Componentes de layout de página (sin set en Figma)
+
+Salen de las pantallas de Final, no de la página Componentes, y no cuentan en el total de arriba. Decisión: `docs/decisiones.md`, 2026-10-02 · Layout de página.
+
+| Componente | Etiqueta | Para qué |
+| --- | --- | --- |
+| ✅ section | `<arq-section>` | Bloque de página: gutter, padding de sección y encabezado → contenido → acción ([README](../src/components/section/README.md)) |
+| ✅ grid | `<arq-grid>` | Grilla de tarjetas; en Mobile apila, dos columnas o carrusel ([README](../src/components/grid/README.md)) |
+| ✅ project-mosaic | `<arq-project-mosaic>` | Mosaico de fotos de proyectos del Home (DESIGN.md §12) ([README](../src/components/project-mosaic/README.md)) |
+| ✅ featured-products | `<arq-featured-products>` | Productos destacados del Home, por grupo, con datos del catálogo ([README](../src/components/featured-products/README.md)) |
+| ✅ catalog-listing | `<arq-catalog-listing>` | Listado de Productos (y Colecciones): nav, toolbar, grilla, filtros y comparar ([README](../src/components/catalog-listing/README.md)) |
+
+### Páginas
+
+| Página | Embed | Demo |
+| --- | --- | --- |
+| ✅ Home | [src/pages/home.html](../src/pages/home.html) | `demo/home.html` |
+| ✅ Productos | [src/pages/productos.html](../src/pages/productos.html) | `demo/productos.html` |
+
 ## accordion-item
 
 - Figma: [922-2645](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=922-2645)

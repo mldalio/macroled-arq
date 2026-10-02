@@ -433,3 +433,32 @@ setup() {
 - **Posición:** sticky en Default y fixed en Transparent (encima del hero). `TODO` (diseño): confirmar.
 - **Resultado activo de la búsqueda:** `aria-activedescendant` no cruza el Shadow DOM; el campo anuncia el activo con `aria-live`.
 - **Tokens nuevos:** `layout/mega-menu-image` (438), `layout/search-field` (360) y `layout/search-thumb` (48). En Figma se enlazaron a la imagen del mega-menu, a search-field (y al ancho de search-dropdown, que ahora mide lo mismo que el campo, como dice su descripción) y a la miniatura de search-result.
+
+## 2026-10-02 · Layout de página
+
+- **Componentes de layout, no CSS global:** el layout de las páginas (padding de sección, grillas, carrusel, mosaico, buttons solo Mobile) va en componentes con Shadow DOM: `<arq-section>`, `<arq-grid>` y `<arq-project-mosaic>`. No hay clases de página en `dist/arq.css`.
+- **Por qué:** AGENTS.md prohíbe estilar selectores globales; con componentes el CSS queda encapsulado, no choca con Webflow y se reusa en Colección, Ficha y Contacto. Alternativas descartadas: clases `arq-*` en `arq.css` (el CSS sale del Shadow DOM) y un componente por página (no se reusa).
+- **arq-section:** `layout/gutter` a los lados y `space/section/xl` abajo; `padding-top` para el primer bloque después del hero. Slots `header`, contenido, `action` (siempre) y `mobile-action` (solo hasta 767 px, para el link de un section-header Type=Link). `layout="split"` para el FAQ: encabezado y acción a la izquierda en Desktop.
+- **Gap de sección:** `space/gap/2xl` en Desktop y `space/gap/xl` en Mobile, como el Home de Figma (dos tokens distintos según el breakpoint).
+- **arq-grid:** `columns` en Desktop y `mobile="stack | two-columns | carousel"`. Sin `columns`, la grilla de catálogo de DESIGN.md §2. El carrusel es el propio elemento con scroll (sirve para `carousel-controls for`).
+- **project-mosaic:** grid de 4 columnas y 2 filas en Desktop (así salen las medidas del set: 648 · 312 · 312); en Mobile una a todo el ancho y dos debajo. Ratios más cercanos con `TODO` (ver README).
+- `TODO` (diseño): faltan el token del ancho de tarjeta del carrusel mobile (280) y ratios para las fotos del mosaico; el split del FAQ usa `space/section/md` dentro de un bloque.
+
+## 2026-10-02 · Home
+
+- **Embed:** `src/pages/home.html`, un solo Code Embed (entra holgado en 50.000 caracteres). `demo/home.html` lo carga tal cual con la librería.
+- **Productos destacados por grupo:** el embed lista un `<a href data-group="PRODUCT_GROUP_ID">` por producto y `<arq-featured-products>` trae nombre, meta e imágenes del catálogo (`getProductCards` en `src/data/catalog.js`), en ese orden. Los links quedan en el HTML (indexables) y son la reserva si el catálogo no carga. Es la misma excepción que el navbar: un contenedor que consulta por `src/data/`; las product-card reciben datos.
+- **Proyectos:** mosaico fijo (`arq-project-mosaic`), como Final; no lleva carousel-controls.
+- **Imágenes:** las `src` del embed apuntan a las fotos de ejemplo de la demo (`demo/fixtures/img/home/`, bajadas de Figma y comprimidas). `TODO`: reemplazarlas por URLs de Webflow Assets antes de pegar el embed.
+- `TODO` (contenido): respuestas de dos preguntas del FAQ (Figma muestra solo las preguntas). `TODO` (urls): link de la categoría Lámparas y artefactos (dos tipos de producto; URLs de categoría PENDIENTES). `TODO` (datos): los grupos destacados reales (Figma muestra Sento, que no está en el catálogo de ejemplo).
+
+## 2026-10-02 · Productos
+
+- **Embed:** `src/pages/productos.html` con page-header List, `<arq-catalog-listing>` y footer. `demo/productos.html` lo carga tal cual (en las demos de páginas, los links a `/arq` y `/arq/productos` apuntan a su demo).
+- **`<arq-catalog-listing>`:** contenedor que consulta por `src/data/` (como el navbar) y arma toolbar, grilla, filter-panel y compare-bar en su Shadow DOM. La navegación (`arq-catalog-nav`) y el título del panel (`<h2>`) llegan por slot desde el HTML: quedan indexables, como pide catalog-nav. Sirve también para Colecciones (`unit="colecciones"`).
+- **Categoría en la URL:** `?environment=`, `?application=`, `?product_type=` (los mismos parámetros que `categoryHref`) mientras las URLs de categoría sigan PENDIENTES. El ítem del catalog-nav que enlaza a la página actual se marca solo.
+- **Links del catalog-nav:** se escriben en el embed siguiendo el árbol de `getNavigation()` (decisión 2026-10-02 · Navegación). `TODO` (datos): hoy siguen el catálogo de ejemplo; revisarlos con la base real.
+- **Acabados en la card:** `listProducts` suma `finishes` (valores de los campos con control `swatches`, hoy `color_carcasa`). Sin imagen hasta que se definan los acabados.
+- **Nombre de la card en `<h2>`** en el listado: no hay section-header entre el `<h1>` y las cards (axe: heading-order). En el Home sigue en `<h3>`.
+- **Grilla de catálogo (`arq-grid` sin `columns`):** filas a `space/gap/2xl` y columnas a `space/gap/lg`; en Mobile `space/gap/xl` y `space/gap/md`, como Final.
+- `TODO` (diseño): sidebar de 240 sin token (se usa `layout/card-min`); pantallas de carga, vacío y error; Productos como Current sin flecha en el navbar de Final (se deja `has-dropdown`). `TODO` (urls): filtros en la URL.

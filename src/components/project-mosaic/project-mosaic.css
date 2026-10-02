@@ -1,0 +1,93 @@
+/* project-mosaic · Home de Final (proyectos: 1203:9888 · 1204:10104).
+   Solo tokens semánticos. Desktop es la base; Mobile con max-width: 767px.
+   Las fotos llegan por slot: posición y tamaño con !important, porque los
+   estilos del sitio para img ganan sobre ::slotted (como la media del hero). */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Desktop: cuatro columnas iguales y dos filas. Así la 1.ª (dos columnas) mide
+   lo mismo que la 2.ª y la 3.ª y la 4.ª ocupan una columna cada una, como el
+   set (648 · 648 · 312 · 312 con gap de 24). */
+.mosaic {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: 1fr 1fr;
+  gap: var(--arq-space-gap-lg);
+}
+
+::slotted(img) {
+  display: block !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+  min-width: 0;
+  object-fit: cover !important;
+  background: var(--arq-color-bg-subtle);
+}
+
+/* La 1.ª y la 2.ª toman el alto de las filas: contain: size hace que el tamaño
+   propio de la foto no agrande la grilla. */
+::slotted(img:nth-child(1)) {
+  grid-column: 1 / span 2;
+  grid-row: 1 / span 2;
+  contain: size;
+}
+
+::slotted(img:nth-child(2)) {
+  grid-column: 3 / span 2;
+  grid-row: 1;
+  contain: size;
+}
+
+/* La 3.ª y la 4.ª dan el alto de cada fila.
+   TODO (diseño): en el set miden 312 × 348, sin ratio del sistema; se usa
+   ratio/square, el más cercano (el mosaico mide 648 de alto en vez de 720). */
+::slotted(img:nth-child(3)),
+::slotted(img:nth-child(4)) {
+  grid-row: 2;
+  height: auto !important;
+  aspect-ratio: 1 / 1;
+}
+
+::slotted(img:nth-child(n + 5)) {
+  display: none !important;
+}
+
+/* Mobile: la 1.ª a todo el ancho y dos debajo, a space/gap/sm-md.
+   TODO (diseño): en el set miden 350 × 420 y 169 × 200, sin ratio del sistema;
+   se usa ratio/portrait-soft (4:5), el más cercano. */
+@media (max-width: 767px) {
+  .mosaic {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+    gap: var(--arq-space-gap-sm-md);
+  }
+
+  ::slotted(img) {
+    height: auto !important;
+    aspect-ratio: 4 / 5;
+    contain: none;
+  }
+
+  ::slotted(img:nth-child(1)) {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    contain: none;
+  }
+
+  ::slotted(img:nth-child(2)),
+  ::slotted(img:nth-child(3)) {
+    grid-column: auto;
+    grid-row: auto;
+    aspect-ratio: 4 / 5;
+    contain: none;
+  }
+
+  ::slotted(img:nth-child(4)) {
+    display: none !important;
+  }
+}

@@ -1,0 +1,10 @@
+/* Demo de páginas: hace lo que en Webflow hace el sitio. Las variables
+   --arq-* (dist/arq.css) llegan con src/main.js. Esto imita el estilo base de
+   Webflow (body sin margen, Albert Sans) y no sale de la demo. */
+
+body {
+  margin: 0;
+  font-family: 'Albert Sans', sans-serif;
+  background: var(--arq-color-bg-default);
+  color: var(--arq-color-text-primary);
+}
