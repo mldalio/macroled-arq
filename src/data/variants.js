@@ -69,6 +69,32 @@ export function variantOptions(variants, attributes, selection) {
   }));
 }
 
+// ── Filtros del glosario (variants-table) ─────────────────────────
+// Selección parcial: un atributo sin valor ("Todos") no filtra.
+
+const matches = (variant, filters, except) =>
+  Object.entries(filters).every(([key, value]) => key === except || !hasValue(value) || variant.attributes[key] === value);
+
+/** SKU que cumplen los filtros (selección parcial). */
+export function filterVariants(variants, filters) {
+  return variants.filter((variant) => matches(variant, filters));
+}
+
+/**
+ * Opciones de cada filtro con su estado: una opción va deshabilitada si no hay
+ * SKU con ese valor que cumpla los demás filtros elegidos.
+ */
+export function filterOptions(variants, attributes, filters) {
+  return attributes.map((attribute) => ({
+    attribute,
+    options: variantValues(variants, attribute).map((value) => ({
+      value,
+      selected: filters[attribute] === value,
+      disabled: !variants.some((variant) => variant.attributes[attribute] === value && matches(variant, filters, attribute)),
+    })),
+  }));
+}
+
 /** Nueva selección al elegir `value` en `attribute`. */
 export function choose(selection, attribute, value) {
   return { ...selection, [attribute]: value };

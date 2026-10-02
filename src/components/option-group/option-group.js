@@ -19,8 +19,8 @@
 //   entran.
 // - Swatches: el radiogroup es el swatch-picker de adentro; el grupo le pasa su
 //   etiqueta. Así no quedan dos radiogroups anidados.
-// - Select: queda para select Field (TODO: select todavía no existe; decisión
-//   2026-10-02, sin uso por ahora).
+// - Select: un arq-select (Field) por slot; queda sin uso por ahora (decisión
+//   2026-10-02 · Selectores de variante).
 // - La etiqueta es visible en el Shadow DOM y llega al grupo como aria-label
 //   (un aria-labelledby no cruza el Shadow DOM). La ficha pide fieldset +
 //   legend: se usa radiogroup con nombre, que da el mismo anuncio.

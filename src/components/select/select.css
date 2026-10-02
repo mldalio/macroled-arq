@@ -1,0 +1,148 @@
+/* select · Figma 921:2544. Solo tokens semánticos.
+   Type=Field es la base. El menú (select-menu) flota debajo del campo. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.select {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.trigger {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-md);
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: var(--arq-radius-control);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+}
+
+.value {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.chevron {
+  display: inline-flex;
+  flex: none;
+}
+
+.icon {
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+  color: var(--arq-color-icon-primary);
+}
+
+:host(:not([open])) [data-icon='chevron-up'],
+:host([open]) [data-icon='chevron-down'] {
+  display: none;
+}
+
+/* Menú flotante debajo del campo */
+.menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 2;
+}
+
+/* ── Type=Field ──────────────────────────────────────────────────
+   Default y Open color/surface/soft con línea inferior border/default en
+   color/border/strong; Hover color/surface/faint (el set; la descripción
+   dice surface/subtle). Padding space/padding/sm-md × space/padding/md; la
+   línea se descuenta del padding (48, como el set). */
+:host(:not([type='filter'])) .trigger {
+  padding: var(--arq-space-padding-sm-md) var(--arq-space-padding-md) calc(var(--arq-space-padding-sm-md) - var(--arq-border-default));
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-strong);
+  background: var(--arq-color-surface-soft);
+  color: var(--arq-color-text-primary);
+}
+
+@media (hover: hover) {
+  :host(:not([type='filter']):not([open])) .trigger:enabled:hover {
+    background: var(--arq-color-surface-faint);
+  }
+}
+
+:host(:not([type='filter'])) .menu {
+  right: 0;
+}
+
+/* ── Type=Filter ─────────────────────────────────────────────────
+   Etiqueta role/label-sm en color/text/tertiary + fila con valor
+   (role/body-medium) y chevron icon/sm. Gap y padding inferior space/gap/xs
+   y space/padding/xs; Filled: space/gap/sm y space/padding/sm con línea
+   inferior color/border/strong (como el set). */
+:host([type='filter']) .select {
+  gap: var(--arq-space-gap-xs);
+  padding-bottom: var(--arq-space-padding-xs);
+}
+
+/* La línea se descuenta del padding (50, como el set) */
+:host([type='filter'][filled]) .select {
+  gap: var(--arq-space-gap-sm);
+  padding-bottom: calc(var(--arq-space-padding-sm) - var(--arq-border-default));
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-strong);
+}
+
+.label {
+  color: var(--arq-color-text-tertiary);
+}
+
+:host([type='filter']) .trigger {
+  justify-content: space-between;
+  gap: var(--arq-space-gap-sm);
+  padding: 0;
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-primary);
+}
+
+:host([type='filter']) .icon {
+  width: var(--arq-icon-sm);
+  height: var(--arq-icon-sm);
+}
+
+/* Hover del Filter: el valor pasa a color/text/tertiary (el set) */
+@media (hover: hover) {
+  :host([type='filter']:not([open])) .trigger:enabled:hover .value {
+    color: var(--arq-color-text-tertiary);
+  }
+}
+
+:host([type='filter']) .menu {
+  margin-top: var(--arq-space-gap-sm);
+}
+
+/* ── Disabled ───────────────────────────────────────────────────── */
+:host([disabled]) .trigger {
+  cursor: default;
+  border-bottom-color: var(--arq-color-border-disabled);
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-disabled);
+}
+
+:host([disabled]) .label,
+:host([disabled]) .icon {
+  color: var(--arq-color-text-disabled);
+}
+
+/* Foco: anillo de DESIGN.md §7 alrededor del campo (2px: valor fijado ahí) */
+.trigger:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.trigger:focus:not(:focus-visible) {
+  outline: none;
+}

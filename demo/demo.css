@@ -321,6 +321,18 @@
   max-width: calc(var(--arq-layout-filter-panel) - 2 * var(--arq-space-padding-xl-2xl));
 }
 
+/* Componentes de borde a borde (filter-bar, variants-table): salen del
+   padding lateral de la demo, como en la página */
+.demo-section--bleed > arq-filter-bar,
+.demo-section--bleed > arq-variants-table {
+  margin-inline: calc(-1 * var(--arq-layout-gutter));
+}
+
+.demo-section--bleed > .demo-dark {
+  margin-inline: calc(-1 * var(--arq-layout-gutter));
+  padding-inline: 0;
+}
+
 /* Columna del configurador (como la de la ficha) */
 .demo-option-groups {
   display: flex;

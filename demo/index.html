@@ -672,6 +672,52 @@
         </arq-download-modal>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-select">
+        <h2 id="demo-select" class="demo-heading role-label">select · &lt;arq-select&gt; (+ select-menu)</h2>
+        <p class="demo-note role-body-sm">Figma 921:2544 · 1061:4867. Field (configurador) y Filter (celda de filter-bar, «Todos» primero). Teclado: flechas, Enter, Espacio, Esc, Inicio/Fin y letras. Las deshabilitadas se saltean (Terracota). Con más de 7 opciones, el menú tiene scroll.</p>
+        <div class="demo-option-groups">
+          <arq-select label="Acabado" value="Negro" data-demo-options="finishes"></arq-select>
+          <arq-select label="Altura (muchas opciones)" value="50 cm" data-demo-options="heights"></arq-select>
+          <arq-select label="Acabado (deshabilitado)" value="Negro" disabled data-demo-options="finishes"></arq-select>
+        </div>
+        <div class="demo-row">
+          <arq-select type="filter" label="Acabado" data-demo-options="finishes"></arq-select>
+          <arq-select type="filter" label="Acabado" value="Negro" data-demo-options="finishes"></arq-select>
+          <arq-select type="filter" label="Altura" data-demo-options="heights"></arq-select>
+          <arq-select type="filter" label="Acabado" disabled data-demo-options="finishes"></arq-select>
+        </div>
+        <p class="demo-note role-body-sm" data-demo-select-log>arq:change → (todavía nada)</p>
+        <div class="demo-dark" data-arq-theme="dark">
+          <div class="demo-row">
+            <div class="demo-option-groups"><arq-select label="Acabado (Dark)" value="Negro" data-demo-options="finishes"></arq-select></div>
+            <arq-select type="filter" label="Acabado" value="Negro" data-demo-options="finishes"></arq-select>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section demo-section--bleed" aria-labelledby="demo-filter-bar">
+        <h2 id="demo-filter-bar" class="demo-heading role-label">filter-bar · &lt;arq-filter-bar&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1068:5165. De borde a borde. Applied (con un valor elegido) muestra «Limpiar filtros». Mobile: celdas en columna.</p>
+        <arq-filter-bar>
+          <arq-select type="filter" label="Acabado" name="acabado" data-demo-options="finishes"></arq-select>
+          <arq-select type="filter" label="Altura" name="altura" data-demo-options="heights"></arq-select>
+          <arq-select type="filter" label="Temperatura" name="temperatura" data-demo-options="heights"></arq-select>
+        </arq-filter-bar>
+        <p class="demo-note role-body-sm" data-demo-filter-bar-log>arq:filters → (todavía nada)</p>
+      </section>
+
+      <section class="demo-section demo-section--bleed" aria-labelledby="demo-variants-table">
+        <h2 id="demo-variants-table" class="demo-heading role-label">variants-table · &lt;arq-variants-table&gt; (+ variants-table-row)</h2>
+        <p class="demo-note role-body-sm">Figma 1068:5582 · 923:2708. Glosario de Kanu Jardín (columnas de la Ficha de Final; SKU de ejemplo). Tabla real con scroll horizontal; miniatura + SKU y descarga quedan fijas. Filtros: un select por atributo de variante, con las opciones sin filas deshabilitadas. El ícono de cada fila abre el download-modal de prueba.</p>
+        <arq-variants-table data-demo-glosario downloads="demo-descargas">
+          <arq-button slot="downloads" type="outline" show-icon icon="download" href="/demo/fixtures/img/producto-1.svg">CAD 2D/3D</arq-button>
+          <arq-button slot="downloads" type="outline" show-icon icon="download" href="/demo/fixtures/img/producto-2.svg">Manual</arq-button>
+        </arq-variants-table>
+        <div class="demo-dark" data-arq-theme="dark">
+          <arq-variants-table data-demo-glosario filters label="Variantes (Dark)"></arq-variants-table>
+        </div>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-catalog-nav-item">
         <h2 id="demo-catalog-nav-item" class="demo-heading role-label">catalog-nav-item · &lt;arq-catalog-nav-item&gt;</h2>
         <p class="demo-note role-body-sm">Figma 1035:2382. Link (&lt;a href&gt;); Selected = página actual (aria-current="page"). Size Default y Large. Hover y Focus son CSS.</p>

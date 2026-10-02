@@ -54,7 +54,14 @@
   color: var(--arq-color-text-disabled);
 }
 
-/* Foco (cuando select-menu le dé foco): anillo de DESIGN.md §7 */
+/* State=Focus: la opción resaltada con las flechas (el foco real queda en el
+   campo, aria-activedescendant). Anillo de DESIGN.md §7, hacia adentro para
+   que el borde del menú no lo corte. */
+:host([active]) .option {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: calc(-1 * var(--arq-border-strong));
+}
+
 :host(:focus-visible) {
   outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
   outline-offset: 2px;

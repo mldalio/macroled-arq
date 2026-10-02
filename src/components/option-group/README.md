@@ -29,7 +29,7 @@ Grupo de configuración de la ficha con etiqueta: elige un atributo de la varian
 
 - **Tiles:** el propio grupo es el `role="radiogroup"` (con `aria-label` = etiqueta) y usa `SingleSelect`: una sola elegida, flechas, Inicio / Fin, saltea las deshabilitadas. Los tiles van en **Fill** y, si no entran en una línea, bajan a la siguiente (decisión 2026-10-02). Una opción que queda sola en la última línea ocupa todo el ancho.
 - **Swatches:** el radiogroup es el `arq-swatch-picker` de adentro; el grupo le pasa su etiqueta como nombre. No hay dos radiogroups anidados.
-- **Select:** `TODO`. Es para select Field, que todavía no existe; por la decisión del 2026-10-02 queda sin uso por ahora.
+- **Select:** un `arq-select` (Field) por slot. Por la decisión del 2026-10-02 queda sin uso por ahora.
 - **Etiqueta:** visible en el Shadow DOM y repetida como `aria-label` (un `aria-labelledby` no cruza el Shadow DOM). La ficha `doc/option-group` pide `<fieldset>` + `<legend>`: un radiogroup con nombre da el mismo anuncio y deja las flechas de un grupo de radios.
 - **Evento:** el `arq:change` de la opción elegida (`{ value, selected: true }`) sale del grupo.
 - **Qué opción va deshabilitada** lo decide `src/data/variants.js` (combinaciones que existen); el grupo solo muestra el estado. Etiqueta y control de cada atributo: `src/data/attributes.js`.

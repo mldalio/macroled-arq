@@ -170,9 +170,9 @@ Lau construye todos los componentes. El orden sale de las dependencias (descripc
 | Ficha | ✅ spec-list | spec-row |
 | Ficha | ✅ accordion-item | icon-button, disclosure |
 | Ficha | ✅ swatch-picker | swatch |
-| Ficha | select-menu | select-option |
+| Ficha | ✅ select-menu | select-option |
 | Ficha | ✅ product-gallery | gallery-thumb |
-| Ficha | variants-table-row | sku, icon-button |
+| Ficha | ✅ variants-table-row (dentro de variants-table) | sku, icon-button |
 | Ficha | ✅ family-card | — |
 | Ficha | ✅ download-item | íconos |
 | Listados | ✅ product-card | swatch, checkbox |
@@ -194,7 +194,7 @@ product-card necesita los campos de las 4 imágenes en `docs/typesense-schema.md
 
 | Componente | Usa |
 | --- | --- |
-| select | select-menu, swatch |
+| ✅ select | select-menu, swatch |
 | input Type=Select (completar) | select-menu Type=Text; cierra el `TODO` de input |
 | ✅ catalog-nav-group | catalog-nav-item |
 | ✅ catalog-nav-mobile (dentro de catalog-nav) | catalog-nav-trigger, catalog-nav-item |
@@ -209,8 +209,8 @@ product-card necesita los campos de las 4 imágenes en `docs/typesense-schema.md
 
 | Componente | Usa |
 | --- | --- |
-| ✅ option-group (falta Type=Select) | option-tile, swatch-picker, select |
-| filter-bar | select (Type Filter), button |
+| ✅ option-group | option-tile, swatch-picker, select |
+| ✅ filter-bar | select (Type Filter), button |
 | ✅ catalog-nav | catalog-nav-group |
 | compare-product | select (familia y variante), button |
 
@@ -218,7 +218,7 @@ product-card necesita los campos de las 4 imágenes en `docs/typesense-schema.md
 
 | Componente | Usa |
 | --- | --- |
-| variants-table | variants-table-row, filter-bar, button |
+| ✅ variants-table | variants-table-row, filter-bar, button |
 | compare-header | compare-product, compare-slot, toggle |
 
 ### Al final · navbar

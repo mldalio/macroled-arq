@@ -1,14 +1,14 @@
 // select-option · Figma 921:2500 · ficha doc/select-option (1461:8627)
 //
-// Opción de select-menu (todavía no construido): muestra de acabado opcional +
-// nombre. Sirve para acabados y para "Todos" o valores sin muestra.
+// Opción de select-menu: muestra de acabado opcional + nombre. Sirve para
+// acabados y para "Todos" o valores sin muestra.
 //
 //   <arq-select-option value="black" show-swatch swatch-src="…/black.jpg">Negro</arq-select-option>
 //   <arq-select-option value="all" selected>Todos</arq-select-option>
 //
 // El elemento es la opción (role="option", aria-selected, aria-disabled). El
-// foco y el teclado (flechas, Enter, Escape) los maneja select-menu.
-// TODO (select-menu): modelo de foco (foco real o aria-activedescendant).
+// foco y el teclado los maneja select: el foco queda en el campo y la opción
+// resaltada se marca con aria-activedescendant + active (State=Focus).
 
 import { ArqElement } from '../../base/arq-element.js';
 import css from './select-option.css?inline';
@@ -21,6 +21,7 @@ class ArqSelectOption extends ArqElement {
     swatchSrc: { type: String }, // imagen del acabado (de los datos)
     selected: { type: Boolean }, // State=Selected
     disabled: { type: Boolean }, // State=Disabled
+    active: { type: Boolean }, // State=Focus: la opción resaltada con las flechas (aria-activedescendant)
     value: { type: String },
   };
   static template = `<span class="option"><span class="swatch" aria-hidden="true" hidden><img alt="" hidden></span><span class="name role-body"><slot></slot></span></span>`;

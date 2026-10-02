@@ -1,0 +1,27 @@
+/* select-menu · Figma 1061:4867. Solo tokens semánticos.
+   Type=Finishes toma el ancho del campo; Filter y Text, el de sus opciones
+   (al menos el del campo). */
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  min-width: 100%;
+  border: var(--arq-border-default) solid var(--arq-color-border-default);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-default);
+}
+
+:host([type='filter']),
+:host([type='text']) {
+  width: max-content;
+  max-width: calc(100vw - 2 * var(--arq-layout-gutter));
+}
+
+/* Hasta 7 opciones a la vista (cada una: space/padding/md × 2 + una línea de
+   role/body + su línea inferior); con más, scroll. type/body/leading se usa
+   solo para medir el alto de una opción, no para estilar texto. */
+.menu {
+  max-height: calc(7 * (2 * var(--arq-space-padding-md) + var(--arq-type-body-leading) + var(--arq-border-default)));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
