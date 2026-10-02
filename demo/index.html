@@ -585,6 +585,52 @@
         </div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-family-card">
+        <h2 id="demo-family-card" class="demo-heading role-label">family-card · &lt;arq-family-card&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1094:5766. Default («Otras familias», 1:1) y Large («Explora la colección», 7:10, sección en Dark). Toma el ancho de su columna; en un carrusel el ancho lo pone la página (acá, de ejemplo). Hover: borde en la imagen; foco alrededor de la tarjeta.</p>
+        <h3 class="demo-subheading role-body-sm">Default · carrusel de ejemplo (scroll-snap)</h3>
+        <div class="demo-family-row">
+          <arq-family-card href="#demo-family-card">
+            <img slot="image" src="/demo/fixtures/img/card-estudio.svg" alt="" loading="lazy">
+            <h3 slot="name">Kanu Pared</h3>
+          </arq-family-card>
+          <arq-family-card href="#demo-family-card">
+            <img slot="image" src="/demo/fixtures/img/card-contexto.svg" alt="" loading="lazy">
+            <h3 slot="name">Kanu Jardín</h3>
+          </arq-family-card>
+          <arq-family-card href="#demo-family-card">
+            <h3 slot="name">Sin imagen</h3>
+          </arq-family-card>
+          <arq-family-card href="#demo-family-card">
+            <img slot="image" src="/demo/fixtures/img/card-estudio.svg" alt="" loading="lazy">
+            <h3 slot="name">Familia con un nombre largo que ocupa dos líneas</h3>
+          </arq-family-card>
+          <arq-family-card href="#demo-family-card">
+            <img slot="image" src="/demo/fixtures/img/card-contexto.svg" alt="" loading="lazy">
+            <h3 slot="name">Kanu Bolardo</h3>
+          </arq-family-card>
+        </div>
+        <div class="demo-dark" data-arq-theme="dark">
+          <h3 class="demo-subheading role-body-sm">Large · «Explora la colección» (Dark local de la sección)</h3>
+          <div class="demo-family-row demo-family-row--large">
+            <arq-family-card href="#demo-family-card" size="large">
+              <img slot="image" src="/demo/fixtures/img/card-estudio-on.svg" alt="" loading="lazy">
+              <h3 slot="name">Kanu Pared</h3>
+            </arq-family-card>
+            <arq-family-card href="#demo-family-card" size="large">
+              <h3 slot="name">Sin imagen</h3>
+            </arq-family-card>
+          </div>
+        </div>
+        <h3 class="demo-subheading role-body-sm">Large en Light</h3>
+        <div class="demo-family-row demo-family-row--large">
+          <arq-family-card href="#demo-family-card" size="large">
+            <img slot="image" src="/demo/fixtures/img/card-estudio.svg" alt="" loading="lazy">
+            <h3 slot="name">Kanu Jardín</h3>
+          </arq-family-card>
+        </div>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-catalog-nav-item">
         <h2 id="demo-catalog-nav-item" class="demo-heading role-label">catalog-nav-item · &lt;arq-catalog-nav-item&gt;</h2>
         <p class="demo-note role-body-sm">Figma 1035:2382. Link (&lt;a href&gt;); Selected = página actual (aria-current="page"). Size Default y Large. Hover y Focus son CSS.</p>

@@ -5,7 +5,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 - Si este archivo no coincide con Figma, manda Figma y se actualiza este archivo.
 - Al crear o modificar un componente en código, actualizar su **Estado en código** y su marca.
 
-**49 de 74 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
+**50 de 74 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
 
 | Componente | Etiqueta | Estado en código |
 | --- | --- | --- |
@@ -35,7 +35,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [divider](#divider) | `<arq-divider>` | En código ([README](../src/components/divider/README.md)) |
 | ⬜ [download-item](#download-item) | `<arq-download-item>` | Pendiente |
 | ⬜ [download-modal](#download-modal) | `<arq-download-modal>` | Pendiente |
-| ⬜ [family-card](#family-card) | `<arq-family-card>` | Pendiente |
+| ✅ [family-card](#family-card) | `<arq-family-card>` | En código ([README](../src/components/family-card/README.md)) |
 | ✅ [faq-item](#faq-item) | `<arq-faq-item>` | En código ([README](../src/components/faq-item/README.md)) |
 | ✅ [feature-block](#feature-block) | `<arq-feature-block>` | En código ([README](../src/components/feature-block/README.md)) |
 | ✅ [file-upload](#file-upload) | `<arq-file-upload>` | En código ([README](../src/components/file-upload/README.md)) |
@@ -297,7 +297,7 @@ Modal de descargas con opciones download-item. Desktop: esquina inferior derecha
 
 Uso: otras familias de la misma colección en la ficha ("Explora la colección" y "Otras familias"); lleva a la ficha de esa familia. No confundir con category-card ni line-card (Home).
 
-Card de otra familia de la colección (link a su ficha): imagen recortada (en el fill de la instancia; placeholder surface/subtle) + nombre, gap space/gap/md. Size: Default (200 × 219, nombre role/body-lg-medium; sección "Otras familias de la colección") y Large (328 × 458, nombre role/heading-3; sección "Explora la colección", que va sobre fondo oscuro: aplicar modo Dark a la sección para que el texto quede claro). State: Default, Hover (nombre subrayado, border/hover en la imagen), Focus (border/focus). Cuando hay más cards de las que entran, se ubican en un carrusel horizontal (patrón, no componente): contenedor con overflow-x: auto y scroll-snap-type: x mandatory, cards de ancho fijo con scroll-snap-align: start, gap space/gap/sm; sin flechas por ahora; en mobile el scroll puede llegar al borde de la pantalla.
+Card de otra familia de la colección (link a su ficha): imagen recortada (en el fill de la instancia; placeholder surface/subtle) + nombre, gap space/gap/md. Size: Default (200 × 200, ratio/square, nombre role/body-lg-medium; sección "Otras familias de la colección") y Large (328 × 469, ratio/portrait, nombre role/heading-3; sección "Explora la colección", que va sobre fondo oscuro: aplicar modo Dark a la sección para que el texto quede claro). State: Default, Hover (border/hover en la imagen), Focus (border/focus). Cuando hay más cards de las que entran, se ubican en un carrusel horizontal (patrón, no componente): contenedor con overflow-x: auto y scroll-snap-type: x mandatory, cards de ancho fijo con scroll-snap-align: start, gap space/gap/sm; sin flechas por ahora; en mobile el scroll puede llegar al borde de la pantalla.
 
 ## faq-item
 
