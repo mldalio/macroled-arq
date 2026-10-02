@@ -251,8 +251,8 @@ setup() {
 
 - **Todo el contenido de Arq se carga con Code Embed.** No se arma nada en el Designer de Webflow.
 - **Páginas estáticas (Home, Contacto, Comparativa):** un Code Embed con el HTML de los componentes.
-- **Ficha de producto:** template de la colección del CMS (slug propio) con un Code Embed que inserta los campos mínimos con campos dinámicos del CMS: nombre como `<h1>`, descripción corta, SKU e imagen principal. El componente busca el resto en Typesense por SKU.
-- **Listados (Productos y Colecciones): PENDIENTE.** No está definido si salen de una Collection List, de Typesense o de los dos. No se resuelve hasta que el equipo lo decida.
+- **Ficha de producto:** template de la colección del CMS (slug propio) con un Code Embed que inserta los campos mínimos con campos dinámicos del CMS: nombre como `<h1>`, descripción corta, SKU e imagen principal. El componente busca el resto en Typesense. Desde 2026-10-02 el ítem del CMS es un grupo y el embed imprime su `PRODUCT_GROUP_ID` (ver 2026-10-02 · Base de datos, Ficha de producto por grupo).
+- **Listados (Productos y Colecciones):** salen de Typesense (2026-10-02 · Base de datos, Listados).
 - **`src/pages/`** guarda un archivo por página con el HTML exacto de su embed. Es la fuente: se edita en el repo y se pega en Webflow; no se edita el embed directo en Webflow.
 - **Límite:** cada Code Embed admite hasta 50.000 caracteres (Webflow, "Increased custom code character limit"; antes era 10.000). Es un tope por elemento y no se puede subir.
   - Una página de Arq entra holgada: el embed lleva solo el HTML de los componentes y el texto indexable; estilos y lógica vienen de `dist/arq.js` y `dist/arq.css` (jsDelivr), y los datos de Typesense.
@@ -291,14 +291,14 @@ setup() {
 - **Forma propia por componente:** cada componente que recibe datos define su propia forma: un objeto con nombres en inglés y camelCase (por ejemplo `{ name, sku, finishes: [{ slug, name }] }`), documentado en su README. No usa los nombres de Typesense ni los del CMS.
 - **Fixtures:** `demo/fixtures/` usa esa forma, no la de Typesense ni la del CMS. Así la demo prueba el componente tal como lo va a recibir.
 - **`src/data/` traduce:** es el único lugar que lee Typesense (o el CMS) y convierte a la forma de cada componente. Cuando exista `docs/typesense-schema.md`, solo cambia `src/data/`; los componentes y las fixtures no.
-- `TODO` (schema): los campos de las 4 imágenes de product-card (estudio y contexto, luz apagada y encendida) y los códigos de acabado (N, V, R, B, BN, P) quedan pendientes hasta tener el schema.
-- **Listados PENDIENTES** (ver "Páginas en Webflow"): no se define todavía de dónde salen (Collection List, Typesense o los dos).
+- `TODO` (schema): los campos de las 4 imágenes de product-card (estudio y contexto, luz apagada y encendida) y los códigos de acabado (N, V, R, B, BN, P). El resto del esquema está en `docs/typesense-schema.md` desde 2026-10-02.
+- **Listados:** salen de Typesense (2026-10-02 · Base de datos, Listados).
 
 ## 2026-10-01 · URLs
 
 - Propuesta acordada en `docs/urls.md`. Home en `/arq`; templates del CMS en singular (`/arq/producto/{slug}`, `/arq/coleccion/{slug}`) para no chocar con los listados en plural; `/arq/comparativa`, `/arq/glosario` y `/arq/buscar` como páginas estáticas.
 - Las colecciones (KANU…) son una colección del CMS, con su template.
-- Productos por categoría: PENDIENTE, junto con los listados.
+- Productos por categoría: PENDIENTE (parámetro o subpágina). Los listados ya están definidos (2026-10-02).
 
 ## 2026-10-01 · carousel-controls
 
@@ -321,3 +321,84 @@ setup() {
 - **Mandan los ratios del sistema** (DESIGN.md §5), no las medidas de los sets: category-card `ratio/portrait-soft` (4:5) en Desktop y Mobile; line-card `ratio/landscape` (5:4) en Desktop y `ratio/square` (1:1) en Mobile. Se corrigió en Figma el alto de la imagen de las 12 variantes (y el `focus-ring` de las Focus) y se sumó line-card Mobile a `ratio/square` en la tabla.
 - **Gaps de los sets**, no de las fichas (las fichas de line-card y feature-block dicen `space/gap/sm`). Sin borde en reposo en la imagen de category-card (la ficha dice `color/border/subtle`).
 - **feature-block:** imagen principal 4:5 (coincide con el set: 640 × 800). Texto desfasado como el set: `space/padding/xl-2xl` arriba en Image left y `space/padding/6xl` en Image right (la ficha dice que es un espejo). La secundaria tiene alto fijo en el set y no está en la tabla de ratios: `ratio/wide` con `TODO`.
+
+## 2026-10-02 · Base de datos (estructura v5)
+
+- **Fuente:** `docs/estructura-base-de-datos.md` (versión 5, convertida del .docx). Los datos son tentativos y la base se está armando en Typesense. Campos y tipos: `docs/typesense-schema.md` (propuesta hasta que se confirme con quien arma la base).
+- **Un documento por SKU.** Los SKU con el mismo `PRODUCT_GROUP_ID` forman un producto (una card y una ficha); los grupos con el mismo `COLLECTION_ID`, una colección.
+- **Nombres de campo:** columna en minúscula, sin tildes y con `_` (`Color de carcasa` → `color_de_carcasa`). Las etiquetas visibles, las secciones del acordeón, los filtros, las filas de la comparativa y las columnas del glosario viven en un único archivo de `src/data/`.
+- De Figma se usan solo las páginas Componentes y Final: el documento cita *baja / media*, que no se usa.
+
+### Ficha de producto por grupo
+
+- **CMS Productos: un ítem por grupo**, cargado a mano en Webflow por ahora. Slug = `PRODUCT_GROUP_ID`. Campos: nombre (`PRODUCT_NAME`), SKU predeterminado, slug, meta title, meta description, imagen principal (`IMG_MAIN` del SKU predeterminado), descripción corta y textos editoriales (ver Textos editoriales).
+- **El template imprime el grupo:** `<arq-ficha-producto data-group="kanu-jardin">` con el `<h1>` y los textos por slot. El componente pide a `src/data/` los SKU del grupo.
+- **Variante en la URL:** `?sku=<SKU>` (con `encodeURIComponent`, porque el SKU puede tener espacios o paréntesis). La ficha abre con ese SKU si pertenece al grupo; si no viene o no es del grupo, con el predeterminado (`IS_GROUP_DEFAULT`). Al cambiar la variante se actualiza el parámetro con `history.replaceState` (sin recargar). El canonical es siempre la URL sin parámetro.
+- **Qué cambia con la variante** (Final, Ficha `1218:10486`): galería superior, sku, descripción técnica, acordeón de características, descargas y ficha técnica. No cambian: breadcrumb, título, galería de ambiente, Descripción, Inspiración, Otras familias, Explora la colección ni el glosario (lista todos los SKU del grupo).
+
+### Selectores de variante
+
+- Un selector por cada campo de `VARIANT_ATTRIBUTES`, en ese orden. Las opciones son los valores únicos de los SKU del grupo.
+- Solo se ofrecen combinaciones que existen: una opción que no forma un SKU con lo ya elegido va en **Disabled** (option-tile, select-option y swatch; swatch suma el estado Disabled en Figma).
+- **Atributo → control:** el acabado (color) usa option-group Type=Swatches; el resto, Type=Tiles. Cada atributo declara su control en el archivo de etiquetas de `src/data/`. Type=Select queda sin uso por ahora.
+- La misma lógica de combinaciones la usan la ficha, los filtros del glosario y la comparativa: un solo módulo en `src/data/`.
+
+### Listados (cierra el PENDIENTE de 2026-10-01)
+
+- **Productos, Colecciones y ficha de colección salen de Typesense**, sin Collection List de Webflow. El embed de la página tiene el componente de la grilla; las cards las dibuja el componente con los datos que le pasa `src/data/`.
+- **Una sola consulta:** el catálogo tiene unos 50 SKU, así que `src/data/` trae todos los documentos de una vez (hasta 250 por página) y agrupa, filtra y cuenta en el navegador. Si el catálogo pasa de 250 SKU, se revisa (`group_by` de Typesense o paginado).
+- **Una card por grupo** en Productos y en la ficha de colección; **una por colección** en Colecciones.
+- **SKU de la card:** el predeterminado. Con filtros técnicos, si el predeterminado no cumple, el primer SKU del grupo que cumple según el orden de la hoja (`sheet_order`); la card enlaza a la ficha con `?sku=`. Sin filtros, siempre el predeterminado.
+- **Conteo** (catalog-toolbar): grupos o colecciones que cumplen el filtro, no SKU.
+- `TODO` (orden de las cards): el de la hoja (primera fila de cada grupo) hasta que se defina otro.
+- **SEO:** las cards no están en el HTML inicial. Las fichas y las colecciones se indexan por sus páginas del CMS (sitemap).
+
+### Cards
+
+- **Colecciones con el mismo criterio que Productos:** cuatro imágenes (hover e Iluminar, DESIGN.md §8) y filtros técnicos (una colección aparece si alguno de sus SKU cumple). Sin Comparar. `TODO` (base): de dónde salen las cuatro imágenes de una colección.
+- **family-card** (Default y Large) usa la misma imagen que la card de producto del grupo: estudio, luz apagada (`TODO` hasta definir la columna). "Explora la colección" es Dark local, no Iluminar: no pasa a la versión encendida.
+- **Resumen de la card** (meta): valores de `VARIANT_ATTRIBUTES` (por ejemplo «35 cm – 50 cm») más una o dos características fijas. `TODO`: cuáles.
+
+### Navegación
+
+- **Un solo árbol** en `src/data/` para mega-menu, catalog-nav, catalog-nav-mobile y el menú mobile. Cada opción es un filtro sobre `environment`, `application` y `product_type`. Las opciones sin productos se ocultan.
+- **Lámparas:** categoría propia (pestaña "Lámparas y artefactos" del mega-menu, sección Lámparas del lateral, `product_type` = Lámpara) y además aparecen dentro de Interior y Exterior (opción "Lámparas" = Lámpara + ese entorno), como en Final (`1237:13492`). Por eso `environment` admite una lista. `TODO`: confirmar si Artefactos sigue la misma regla (en Final también está dentro de Interior y Exterior).
+- **Nombres:** la aplicación se llama **Colgante** (no Suspensión ni Colgantes). MR16 PRO y AR111 PRO son productos distintos.
+- **catalog-nav-mobile:** la sección actual abierta, con su opción marcada; las demás visibles y cerradas, como en Figma (`1207:3314`). El documento dice "solo la sección actual": se descarta.
+- `TODO` (mega-menu): pestañas, columnas y orden se pasan del Final (`1237:13492`) al árbol al construir mega-menu. URLs de categoría: siguen PENDIENTES (`docs/urls.md`).
+
+### Comparativa
+
+- **Cada columna es un grupo.** Selects en orden: colección (Kanu) → producto de esa colección (Jardín, Pared) → un select por campo de `VARIANT_ATTRIBUTES`, con la misma disponibilidad que la ficha. Ejemplo: Kanu · Jardín · Negro · 50 cm contra Kanu · Pared · sus variantes.
+- Al cambiar un select se actualizan la imagen (`img_main` del SKU elegido) y todas las filas de la columna. Hasta 3 columnas.
+- El set de compare-product (Familia + Variante) **se rediseña en Figma**: pendiente de diseño. `TODO`: cómo se nombra el producto en su select (aplicación o nombre completo) y cómo llegan los productos a `/arq/comparativa`.
+
+### Galerías
+
+- Galería superior, galería de ambiente, Inspiración y galerías de colección muestran solo las imágenes que existen: los campos vacíos y las URLs repetidas se omiten.
+- Si hay más imágenes de las que entran, la galería se desliza (scroll-snap, como el carrusel de 2026-10-01 · carousel-controls). En product-gallery se desliza la fila de miniaturas (5 en Desktop, 4 en Mobile).
+- `TODO` (diseño): cantidad de imágenes de cada galería.
+
+### Textos editoriales
+
+- **Ficha y colección:** `PRODUCT_STORY_TEXT`, `PRODUCT_INSPIRATION_TEXT`, `COLLECTION_INTRO_TEXT` y `COLLECTION_DESCRIPTION_TEXT` van también en el CMS, como texto plano. El template los imprime en el embed y llegan al componente por slot: quedan en el HTML (indexables). No van en el código.
+- **Home y Contacto:** los textos van en su embed de `src/pages/`.
+- La hoja es la fuente; el CMS es una copia cargada a mano. Si no coinciden, manda la hoja.
+- **Markdown de STORY** (`##` título, `-` características): el componente lo lee del texto del slot y arma los nodos con `createElement` y `textContent`, nunca con `innerHTML`. Una línea que no es `##` ni `-` va como párrafo.
+- `TODO` (Webflow): verificar si un campo Rich Text se puede insertar en un Code Embed; si se puede, se evalúa usarlo en lugar del Markdown.
+
+### Ficha técnica en PDF
+
+- **Descargable e imprimible.** Se genera en el navegador al hacer clic en "Generar ficha técnica" o en la descarga "Ficha técnica", con los datos del SKU elegido.
+- La librería de PDF se carga desde jsDelivr, con versión fija, **solo al primer clic**: no entra en `dist/arq.js`. Es la única excepción a "solo `dist/arq.js`" y se documenta en el README del componente. Lo mismo para "Descargar comparación".
+- `TODO` (diseño): el diseño del PDF no existe en Figma. `TODO` (código): elegir la librería al construirlo (tiene que poder incrustar Albert Sans).
+
+### Sincronización Sheets → Typesense
+
+- Por ahora no hay acceso a n8n. Mientras se arma la base, la carga la hace quien arma Typesense.
+- **Propuesta para después:** Apps Script dentro de la hoja, con un menú "Publicar en Typesense", sin línea de comandos. La admin key va en las propiedades del script (nunca en el repo) y el código se guarda en el repo. Corre las validaciones del documento (SKU único, un predeterminado por grupo y colección, atributos que existen, combinaciones no ambiguas) y no publica si alguna falla. `TODO`: se define cuando la base esté armada.
+- El CMS de Webflow se carga a mano.
+
+### Acabados
+
+- Sin definir. El swatch muestra el neutro con el nombre (DESIGN.md §8) hasta que haya imágenes y la tabla de códigos (N, V, R, B, BN, P).

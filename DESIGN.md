@@ -413,19 +413,19 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | spec-list · spec-row | Props: Title / Label · Value | Cantidad de filas libre en código |
 | category-card | Breakpoint: Desktop · Mobile. State: Default · Hover · Focus. Prop: Name | Home. Toda la tarjeta es link. ratio/portrait-soft |
 | line-card | Breakpoint: Desktop · Mobile. State: Default · Hover · Focus. Props: Label · Name · Description | Home, editorial. ratio/landscape (Desktop) · ratio/square (Mobile) |
-| family-card | Size: Default · Large. State: Default · Hover · Focus. Prop: Name | Ficha: otras familias de la colección |
+| family-card | Size: Default · Large. State: Default · Hover · Focus. Prop: Name | Ficha: otras familias de la colección. Misma imagen que la product-card del grupo (estudio, luz apagada) |
 | product-card | Size: Large · Small. State: Default · Hover · Focus. Props: Name · Meta · Show meta · Show finishes · Show compare | Toma el ancho de su columna (FILL). ratio/portrait. Hover y Iluminar cambian la imagen (ver Imágenes de product-card) |
 | product-gallery · gallery-thumb | Breakpoint: Desktop · Mobile / State: Default · Hover · Selected · Focus | ratio/landscape |
 | carousel-controls | Position: Start · Middle · End | icon-button Large con flechas |
 | catalog-toolbar | Breakpoint: Desktop · Mobile. Props: Count · Show iluminar | Cantidad ("11 productos" / "10 colecciones"), toggle Iluminar y botón Filtrar |
 | catalog-nav · catalog-nav-group · catalog-nav-item | — / Open: True · False / Size: Large · Default. State: Default · Hover · Selected · Focus | Sidebar desde 1024 px |
-| catalog-nav-mobile · catalog-nav-trigger | Open: False · True / Open × State: Default · Hover · Focus | Hasta 1023 px |
+| catalog-nav-mobile · catalog-nav-trigger | Open: False · True / Open × State: Default · Hover · Focus | Hasta 1023 px. Abierto: la sección actual abierta con su opción marcada; las demás visibles y cerradas |
 | filter-panel · filter-row · filter-chip · filter-bar | Breakpoint / Open × State / State: Default · Hover · Focus / State: Default · Applied × Breakpoint | filter-panel desktop con scrim; mobile pantalla completa sin scrim |
 | checkbox | Size: Large · Default. Checked: False · True. State: Default · Hover · Focus · Disabled. Props: Label · Show label | Filtros y "Comparar" en tarjetas |
 | toggle · toggle-switch | Checked: False · True. State: Default · Hover · Focus · Disabled. Props: Label · Show label | Pista 38 × 18, radius/pill |
 | choice-chip | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | Formularios. No confundir con option-tile |
 | option-group · option-tile | Type: Tiles · Select · Swatches / State: Default · Hover · Selected · Focus · Disabled | Configurador de la ficha. option-tile funciona como radio |
-| swatch · swatch-picker | Size: Small · Default · Large. State: Default · Hover · Selected · Focus | Elegir acabado en la ficha. Cantidad variable en código |
+| swatch · swatch-picker | Size: Small · Default · Large. State: Default · Hover · Selected · Focus · Disabled | Elegir acabado en la ficha. Cantidad variable en código. Disabled: acabado sin combinación con las otras opciones elegidas |
 | tag | Type: Plain · Outline. Prop: Label | No interactivo |
 | count-badge | Tone: Primary · Inverse. Prop: Count | Mín. 20, crece con el número |
 | divider | Orientation: Horizontal · Vertical. Emphasis: Subtle · Default | — |
@@ -435,7 +435,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | file-upload | State: Empty · Attached. Props: Label · Helper | — |
 | form-section-header · form-message | Props: Number · Show number · Label / Tone: Success · Error. Prop: Message | form-message sin ícono |
 | contact-item · link-list | State: Default · Hover · Focus. Props: Label · Value / Props: Title · Show link 3 | Valor como link mailto: / tel: |
-| compare-header · compare-group · compare-row · compare-product | Type: Default · Compact × Breakpoint / Label / Breakpoint + Value 1–3 / State: Filled · Empty | Hasta 3 productos |
+| compare-header · compare-group · compare-row · compare-product | Type: Default · Compact × Breakpoint / Label / Breakpoint + Value 1–3 / State: Filled · Empty | Hasta 3 productos. Cada columna es un producto (grupo): selects de colección, producto y uno por atributo de variante (rediseño de compare-product pendiente) |
 | compare-bar · compare-slot | Breakpoint: Desktop · Mobile / Size: Default · Compact. State: Filled · Empty | Barra fija inferior, en Dark local |
 
 El inventario completo con links a Figma está en el [Anexo A](#anexo-a-inventario-de-componentes).
@@ -457,7 +457,7 @@ El inventario completo con links a Figma está en el [Anexo A](#anexo-a-inventar
 
 ### Imágenes de product-card (hover e Iluminar)
 
-Aplica a product-card en los listados de Productos y Colecciones. Cada producto trae **cuatro imágenes**, todas en `ratio/portrait` (7:10) y con el mismo encuadre:
+Aplica a product-card en los listados de Productos y Colecciones (las cards de colección siguen el mismo criterio; de dónde salen sus cuatro imágenes: `TODO` en la base). Cada producto trae **cuatro imágenes**, todas en `ratio/portrait` (7:10) y con el mismo encuadre:
 
 | | Reposo | Hover / Focus |
 | --- | --- | --- |
@@ -470,7 +470,7 @@ Aplica a product-card en los listados de Productos y Colecciones. Cada producto 
 - En pantallas táctiles no hay hover: se ve solo la imagen de estudio.
 - Si falta la imagen de contexto, no hay cambio en hover. Si falta la versión encendida, se usa la apagada. Si falta la de estudio, se muestra un fondo `color/surface/subtle` con el nombre: nunca se rompe la tarjeta.
 - Solo se carga de entrada la imagen visible; las de hover y las encendidas se cargan en diferido (`loading="lazy"` o al primer hover / al activar Iluminar).
-- Las imágenes vienen de los datos (Sheets → Typesense). Los nombres de los campos van en `docs/typesense-schema.md`; hasta que existan, `TODO`.
+- Las imágenes vienen de los datos (Sheets → Typesense). Los nombres de los campos van en `docs/typesense-schema.md`; diseño todavía no definió qué columna es la de estudio y cuál la de contexto: hasta entonces, `TODO`.
 - En Figma, la variante `State=Hover` de product-card es una referencia estática: muestra el estado, no el cambio de imagen. Para este comportamiento manda esta sección.
 
 ### Acabados de producto
@@ -515,6 +515,11 @@ Aplica a product-card en los listados de Productos y Colecciones. Cada producto 
 - **project-mosaic y carousel:** se resuelven en código (grid + aspect-ratio; snap y peek), no como componentes de Figma.
 - **button Loading:** no hay ícono de carga en la librería.
 - **product-card:** confirmar si el cambio de imagen aplica también a `Size=Small` (ficha → Otras familias). El fundido usa motion/duration/slow.
+- **product-card:** qué columnas de la base son la foto de estudio y la de contexto, y de dónde salen las cuatro imágenes de una card de colección.
+- **Ficha técnica en PDF** y **Descargar comparación:** falta el diseño del PDF.
+- **compare-product:** rediseño con selects de colección, producto y uno por atributo de variante (`docs/decisiones.md`, 2026-10-02 · Comparativa).
+- **Galerías** (product-gallery, ambiente, Inspiración, colección): cantidad de imágenes. Si hay más de las que entran, se desliza.
+- **Acabados:** sin definir (imágenes y tabla de códigos).
 
 ---
 
@@ -590,7 +595,7 @@ Link a cada set en Figma (`node-id`). Base: `https://www.figma.com/design/djAb2r
 | sku | [920-2539](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=920-2539) | Code; Size: Default · Compact; State: Default · Hover · Copied |
 | spec-list | [922-2500](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=922-2500) | Title |
 | spec-row | [922-2497](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=922-2497) | Label; Value |
-| swatch | [1063-4880](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1063-4880) | Size: Small · Default · Large; State: Default · Hover · Selected · Focus |
+| swatch | [1063-4880](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1063-4880) | Size: Small · Default · Large; State: Default · Hover · Selected · Focus · Disabled |
 | swatch-picker | [1063-4881](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1063-4881) | — |
 | tab | [929-2287](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=929-2287) | Label; State: Default · Hover · Selected · Focus · Disabled |
 | tag | [981-2305](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=981-2305) | Label; Type: Plain · Outline |
