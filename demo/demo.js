@@ -14,6 +14,7 @@ import './demo-glosario.js';
 import './demo-compare.js';
 import './demo-navbar.js';
 import './demo-nav.js';
+import './demo-inspect.js';
 import tokens from '/tokens/tokens.json';
 
 document.adoptedStyleSheets = [...document.adoptedStyleSheets, getRolesSheet()];
