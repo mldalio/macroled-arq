@@ -111,6 +111,21 @@
           }
         }
       }
+    },
+    "filter-panel": {
+      "$type": "number",
+      "$value": 560,
+      "$description": "Ancho de filter-panel en Desktop (panel lateral derecho sobre el scrim). En Mobile el panel ocupa toda la pantalla: el CSS no usa este valor.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-filter-panel)"
+          }
+        }
+      }
     }
   },
   "space": {
