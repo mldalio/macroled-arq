@@ -23,6 +23,12 @@ for (const gallery of document.querySelectorAll('arq-product-gallery[data-demo-i
   gallery.images = images(Number(gallery.dataset.demoImages));
 }
 
+// product-card: registro de Comparar
+const compareLog = document.querySelector('[data-demo-compare-log]');
+document.addEventListener('arq:compare', (event) => {
+  if (compareLog) compareLog.textContent = `arq:compare → ${event.detail.checked ? 'agregar' : 'quitar'} «${event.target.querySelector('[slot=name]')?.textContent}»`;
+});
+
 for (const block of document.querySelectorAll('[data-demo-iluminar]')) {
   block.querySelector('arq-toggle')?.addEventListener('arq:change', (event) => {
     if (event.detail.checked) block.setAttribute('data-arq-theme', 'dark');
