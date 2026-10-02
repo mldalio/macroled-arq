@@ -671,6 +671,77 @@
         </div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-product-card">
+        <h2 id="demo-product-card" class="demo-heading role-label">product-card · &lt;arq-product-card&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 990:2372. Grilla de listado (auto-fill, layout/card-min; desde 1600 px card-min-wide). Hover y foco: fundido estudio → contexto. Iluminar: versiones encendidas. Large pasa a Small hasta 767 px (probar «Ver 390»). Imágenes de ejemplo (las columnas reales están en TODO).</p>
+        <div data-demo-iluminar class="demo-card-block">
+          <arq-toggle show-label>Iluminar</arq-toggle>
+          <div class="demo-card-grid">
+            <arq-product-card href="#demo-product-card" show-compare
+              image="/demo/fixtures/img/card-estudio.svg" image-hover="/demo/fixtures/img/card-contexto.svg"
+              image-lit="/demo/fixtures/img/card-estudio-on.svg" image-hover-lit="/demo/fixtures/img/card-contexto-on.svg">
+              <h3 slot="name">Kanu Jardín</h3>
+              <arq-swatch slot="finishes" src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
+              <arq-swatch slot="finishes">Verde</arq-swatch>
+              <arq-swatch slot="finishes">Terracota</arq-swatch>
+            </arq-product-card>
+            <arq-product-card href="#demo-product-card" show-compare compared
+              image="/demo/fixtures/img/card-estudio.svg" image-lit="/demo/fixtures/img/card-estudio-on.svg">
+              <h3 slot="name">Kanu Pared (sin contexto)</h3>
+            </arq-product-card>
+            <arq-product-card href="#demo-product-card" show-compare
+              image="/demo/fixtures/img/card-estudio.svg" image-hover="/demo/fixtures/img/card-contexto.svg">
+              <h3 slot="name">Nobu (sin encendida)</h3>
+              <arq-swatch slot="finishes" src="/demo/fixtures/img/acabado-blanco.svg">Blanco</arq-swatch>
+            </arq-product-card>
+            <arq-product-card href="#demo-product-card" show-compare>
+              <h3 slot="name">Sento (sin imagen)</h3>
+            </arq-product-card>
+            <arq-product-card href="#demo-product-card"
+              image="/demo/fixtures/img/card-estudio.svg" image-hover="/demo/fixtures/img/card-contexto.svg"
+              image-lit="/demo/fixtures/img/card-estudio-on.svg" image-hover-lit="/demo/fixtures/img/card-contexto-on.svg">
+              <h3 slot="name">Kanu</h3>
+              <span slot="meta">Exterior · Jardín · Pared</span>
+              <arq-swatch slot="finishes" src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
+              <arq-swatch slot="finishes">Verde</arq-swatch>
+            </arq-product-card>
+            <arq-product-card href="#demo-product-card"
+              image="/demo/fixtures/img/card-estudio.svg" image-hover="/demo/fixtures/img/card-contexto.svg">
+              <h3 slot="name">Colección con un nombre muy largo que ocupa más de una línea</h3>
+              <span slot="meta">35 cm – 70 cm · 12 W – 15 W · Meta larga que se corta en la segunda línea porque el resto va en la ficha</span>
+            </arq-product-card>
+          </div>
+        </div>
+        <p class="demo-note role-body-sm" data-demo-compare-log>arq:compare → (todavía nada)</p>
+        <h3 class="demo-subheading role-body-sm">Size=Small siempre</h3>
+        <div class="demo-card-grid demo-card-grid--small">
+          <arq-product-card href="#demo-product-card" size="small" image="/demo/fixtures/img/card-estudio.svg" image-hover="/demo/fixtures/img/card-contexto.svg">
+            <h3 slot="name">Kanu Pared</h3>
+            <span slot="meta">Jardín · Pared</span>
+            <arq-swatch slot="finishes" src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
+            <arq-swatch slot="finishes">Verde</arq-swatch>
+          </arq-product-card>
+          <arq-product-card href="#demo-product-card" size="small">
+            <h3 slot="name">Sin imagen</h3>
+          </arq-product-card>
+        </div>
+        <div class="demo-dark" data-arq-theme="dark">
+          <h3 class="demo-subheading role-body-sm">Dark fijo (Iluminar encendido)</h3>
+          <div class="demo-card-grid">
+            <arq-product-card href="#demo-product-card" show-compare
+              image="/demo/fixtures/img/card-estudio.svg" image-hover="/demo/fixtures/img/card-contexto.svg"
+              image-lit="/demo/fixtures/img/card-estudio-on.svg" image-hover-lit="/demo/fixtures/img/card-contexto-on.svg">
+              <h3 slot="name">Kanu Jardín</h3>
+              <arq-swatch slot="finishes" src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
+            </arq-product-card>
+            <arq-product-card href="#demo-product-card">
+              <h3 slot="name">Sin imagen (Dark)</h3>
+              <span slot="meta">Exterior · Jardín</span>
+            </arq-product-card>
+          </div>
+        </div>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-filter-row">
         <h2 id="demo-filter-row" class="demo-heading role-label">filter-row · &lt;arq-filter-row&gt;</h2>
         <p class="demo-note role-body-sm">Figma 1225:3405. Abierta, cerrada y con texto largo. Opciones: checkbox Size=Large, cantidad libre. Hover cambia la línea y el ícono; foco alrededor de la fila.</p>

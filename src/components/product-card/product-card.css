@@ -1,0 +1,136 @@
+/* product-card · Figma 990:2372. Solo tokens semánticos.
+   Toma el ancho de su columna (FILL). El link estirado está en
+   src/base/card-link.css. Size=Large es la base; .is-small = Size=Small (o
+   Large hasta 767 px). */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Imagen → info: space/gap/md (Small: space/gap/sm) */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-md);
+}
+
+.card.is-small {
+  gap: var(--arq-space-gap-sm);
+}
+
+/* Imagen: ratio/portrait (7:10), fallback color/surface/subtle, sin borde
+   (como el set; la ficha dice color/border/subtle). */
+.card-media {
+  position: relative;
+  aspect-ratio: 7 / 10;
+  background: var(--arq-color-surface-subtle);
+}
+
+/* El hover de product-card cambia la imagen: sin el borde del patrón común */
+@media (hover: hover) {
+  .card:has(.card-link:hover) .card-media {
+    outline: none;
+  }
+}
+
+.img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  visibility: hidden;
+}
+
+.img.loaded {
+  visibility: visible;
+}
+
+/* Fundido entre estudio y contexto: motion/duration/slow + motion/easing/standard.
+   Repite la lista de la hoja base porque transition-property no se suma.
+   Con prefers-reduced-motion la duración vale 0 (tokens.css). */
+.hover {
+  opacity: 0;
+  transition-property: opacity, color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
+  transition-duration: var(--arq-motion-duration-slow);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+.card.has-hover:has(.card-link:focus-visible) .hover {
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  .card.has-hover:has(.card-link:hover) .hover {
+    opacity: 1;
+  }
+}
+
+/* Sin imagen de estudio: fondo color/surface/subtle con el nombre, en
+   color/text/secondary (con text/tertiary no llega a 4.5 en Dark) */
+.fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--arq-space-padding-md);
+  color: var(--arq-color-text-secondary);
+  text-align: center;
+  overflow-wrap: break-word;
+}
+
+/* Info: padding space/gap/xs arriba y space/gap/sm abajo, gap space/gap/xs (el set) */
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-xs);
+  padding-top: var(--arq-space-gap-xs);
+  padding-bottom: var(--arq-space-gap-sm);
+}
+
+/* Nombre + acabados a la derecha, gap space/gap/sm */
+.title {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  align-self: stretch;
+}
+
+.name {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--arq-color-text-primary);
+  overflow-wrap: break-word;
+}
+
+/* Acabados: gap space/gap/xs; swatch Default (20) en Large y Small (16) en Small */
+.finishes {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--arq-space-gap-xs);
+}
+
+/* Meta: color/text/secondary, hasta dos líneas (más texto va en la ficha) */
+.meta {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: var(--arq-color-text-secondary);
+  overflow-wrap: break-word;
+}
+
+.meta[hidden] {
+  display: none;
+}
+
+/* Comparar: por encima del ::after del link estirado */
+.compare {
+  position: relative;
+  z-index: var(--card-above);
+}
