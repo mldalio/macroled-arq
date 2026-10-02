@@ -7,6 +7,16 @@
 
 const TOTAL = 11;
 
+// download-modal: abrir desde su botón; registro de arq:download (ficha técnica)
+for (const button of document.querySelectorAll('[data-demo-download-open]')) {
+  const modal = document.getElementById(button.dataset.demoDownloadOpen);
+  button.addEventListener('click', () => modal?.show(button));
+}
+const downloadLog = document.querySelector('[data-demo-download-log]');
+document.addEventListener('arq:download', (event) => {
+  if (downloadLog) downloadLog.textContent = `arq:download → «${event.target.textContent.trim()}» (acá se generaría el PDF)`;
+});
+
 for (const button of document.querySelectorAll('[data-demo-filter-open]')) {
   const panel = document.getElementById(button.dataset.demoFilterOpen);
   if (!panel) continue;

@@ -174,7 +174,7 @@ Lau construye todos los componentes. El orden sale de las dependencias (descripc
 | Ficha | ✅ product-gallery | gallery-thumb |
 | Ficha | variants-table-row | sku, icon-button |
 | Ficha | ✅ family-card | — |
-| Ficha | download-item | íconos |
+| Ficha | ✅ download-item | íconos |
 | Listados | ✅ product-card | swatch, checkbox |
 | Listados | ✅ catalog-toolbar | toggle, divider, button y count-badge |
 | Listados | ✅ catalog-nav-item | — |
@@ -200,7 +200,7 @@ product-card necesita los campos de las 4 imágenes en `docs/typesense-schema.md
 | ✅ catalog-nav-mobile (dentro de catalog-nav) | catalog-nav-trigger, catalog-nav-item |
 | ✅ filter-panel | filter-row, filter-chip, button |
 | compare-bar | compare-slot, count-badge, divider, button |
-| download-modal | download-item |
+| ✅ download-modal | download-item |
 | search-dropdown | search-result, search-see-all |
 | search-screen | search-field, search-result, search-see-all |
 | mega-menu | tab, mega-link |
