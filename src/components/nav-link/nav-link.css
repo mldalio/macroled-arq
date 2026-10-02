@@ -106,6 +106,24 @@
   outline: none;
 }
 
+/* Theme=Inverse (desktop, sobre foto): todo en color/text/inverse y
+   color/icon/inverse */
+@media (min-width: 768px) {
+  :host([theme='inverse']) .link,
+  :host([theme='inverse']) .link:active {
+    color: var(--arq-color-text-inverse);
+  }
+
+  :host([theme='inverse']) .indicator,
+  :host([theme='inverse']) .link::after {
+    background: var(--arq-color-icon-inverse);
+  }
+
+  :host([theme='inverse']) .chevron {
+    color: var(--arq-color-icon-inverse);
+  }
+}
+
 /* ── Mobile: fila del menú, ancho completo ────────────────────── */
 @media (max-width: 767px) {
   :host {

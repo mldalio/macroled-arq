@@ -422,3 +422,14 @@ setup() {
 - **Cuando la base esté completa:** se ajusta solo `src/data/typesense-adapter.js` (nombres de campo de identificación, textos e imágenes) y se cambia `.env` a `typesense`. Mientras falte `product_group_id`, cada SKU es su propio grupo.
 - **Catálogo en memoria:** se carga una vez por página y `catalog.js` resuelve listados, filtros, ficha, comparativa, búsqueda y navegación (2026-10-02 · Listados: una sola consulta).
 - **Campos técnicos:** etiquetas, sección del acordeón y de la comparativa, y filtros en `src/data/attributes.js`. `TODO` (diseño): confirmar las secciones y el reparto de los campos (propuesta a partir de Ficha y Comparativa de Final).
+
+## 2026-10-02 · navbar, mega-menu y búsqueda
+
+- **Datos:** el navbar es global (está en todas las páginas) y pide sus datos a `src/data/catalog.js`: la navegación (`getNavigation`) al abrir Productos y la búsqueda (`searchProducts`) al escribir. Es la misma excepción que `<arq-ficha-producto>`: un componente contenedor consulta por `src/data/`; los componentes que muestra (mega-menu, mega-link, search-*) reciben datos.
+- **Árbol de navegación:** secciones Exterior e Interior (aplicaciones + Artefactos y Lámparas de ese entorno), Lámparas y Artefactos (un link por producto) y Colecciones (con sus aplicaciones como bajada). Las opciones sin productos no aparecen. Mismo árbol para el mega-menu y el submenú mobile (Interior, Exterior, Lámparas, Artefactos, como el set).
+- **Mode no es prop:** Default · Search · Menu · Products es el estado de la barra; se refleja en el atributo `mode`.
+- **Menú mobile y búsqueda mobile:** diálogos modales nativos a pantalla completa (foco adentro, Esc). Así la página no tiene que bloquear el scroll de `body`, que no se puede estilar (AGENTS.md).
+- **Transparent:** pasa a Default al desplazar y con un menú o la búsqueda abiertos. Las variantes Transparent de Menu, Search y Products del set están desactualizadas: `TODO` (diseño).
+- **Posición:** sticky en Default y fixed en Transparent (encima del hero). `TODO` (diseño): confirmar.
+- **Resultado activo de la búsqueda:** `aria-activedescendant` no cruza el Shadow DOM; el campo anuncia el activo con `aria-live`.
+- **Tokens nuevos:** `layout/mega-menu-image` (438), `layout/search-field` (360) y `layout/search-thumb` (48). En Figma se enlazaron a la imagen del mega-menu, a search-field (y al ancho de search-dropdown, que ahora mide lo mismo que el campo, como dice su descripción) y a la miniatura de search-result.

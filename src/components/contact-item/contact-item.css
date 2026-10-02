@@ -1,0 +1,46 @@
+/* contact-item · Figma 1303:4340. Solo tokens semánticos. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Ítem: padding vertical space/padding/lg, gap space/gap/sm, línea
+   color/border/subtle arriba (como el set). Ancho de su columna. */
+.item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-sm);
+  padding-block: var(--arq-space-padding-lg);
+  border-top: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+.label {
+  color: var(--arq-color-text-tertiary);
+}
+
+.value {
+  max-width: 100%;
+  color: var(--arq-color-text-primary);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+/* State=Hover: subrayado del valor (border/default) */
+.value[href]:hover {
+  text-decoration: underline;
+  text-decoration-thickness: var(--arq-border-default);
+  text-underline-offset: var(--arq-space-padding-2xs);
+}
+
+/* State=Focus: anillo alrededor de todo el ítem (DESIGN.md §7) */
+.value:focus-visible {
+  outline: none;
+}
+
+.item:has(.value:focus-visible) {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}

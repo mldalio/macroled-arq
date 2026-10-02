@@ -1,0 +1,43 @@
+/* search-see-all · Figma 795:2206. Solo tokens semánticos. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Fila: padding space/gap/sm × space/padding/md (en search-screen,
+   layout/gutter vía --search-inline), gap space/gap/md */
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-md);
+  padding: var(--arq-space-gap-sm) var(--search-inline, var(--arq-space-padding-md));
+  color: var(--arq-color-icon-tertiary);
+  text-decoration: none;
+}
+
+.row[href]:hover {
+  background: var(--arq-color-surface-hover);
+}
+
+.row:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: calc(var(--arq-border-strong) * -1);
+}
+
+.icon {
+  flex: none;
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+  color: var(--arq-color-text-tertiary);
+  overflow-wrap: break-word;
+}
+
+.term {
+  color: var(--arq-color-text-primary);
+}

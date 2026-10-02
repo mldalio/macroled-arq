@@ -245,48 +245,70 @@ const normalize = (text) => String(text ?? '').normalize('NFD').replace(/[̀-ͯ]
 
 /**
  * Búsqueda por nombre, colección, aplicación o SKU: { results: [{ name, meta,
- * href, image }], total }. Un resultado por grupo; si coincide un SKU, ese.
+ * href, image }], total }. Un resultado por grupo (meta: el SKU; si coincide
+ * un SKU, ese) y uno por colección (meta: "Colección"), como search-dropdown.
  */
-export async function searchProducts(query, { limit = 6 } = {}) {
+export async function searchProducts(query, { limit = 5 } = {}) {
   const words = normalize(query).split(/\s+/).filter(Boolean);
   if (!words.length) return { results: [], total: 0 };
-  const { groups } = await loadCatalog();
-  const results = groups.flatMap((group) => {
-    const text = normalize([group.name, group.collectionData?.name, group.application, group.productType, ...group.environment].join(' '));
-    const variant = group.variants.find((v) => words.every((w) => normalize(v.sku).includes(w)));
-    if (!variant && !words.every((w) => text.includes(w))) return [];
+  const { groups, collections } = await loadCatalog();
+  const matches = (text) => words.every((w) => normalize(text).includes(w));
+  const products = groups.flatMap((group) => {
+    const variant = group.variants.find((v) => matches(v.sku));
+    if (!variant && !matches([group.name, group.collectionData?.name, group.application, group.productType, ...group.environment].join(' '))) return [];
     const card = productCard(group, variant ?? group.defaultVariant, Boolean(variant));
     return [{ name: group.name, meta: (variant ?? group.defaultVariant).sku, href: card.href, image: card.image }];
   });
+  const found = collections
+    .filter((c) => matches(c.name))
+    .map((c) => ({ name: c.name, meta: 'Colección', href: collectionHref(c.id), image: c.images?.studio ?? null }));
+  const results = [...products, ...found];
   return { results: results.slice(0, limit), total: results.length };
 }
 
+/** URL de la página con todos los resultados (docs/urls.md). */
+export const searchHref = (query) => `/arq/buscar?q=${encodeURIComponent(query)}`;
+
 // ── Navegación ───────────────────────────────────────────────────────
 /**
- * Árbol único para mega-menu, catalog-nav y menú mobile (decisiones.md,
- * 2026-10-02 · Navegación): [{ id, label, href, items: [{ label, href, count }] }].
- * Las opciones sin productos no aparecen. Lámparas: sección propia y además
- * dentro de Interior y Exterior.
- * TODO (mega-menu): pestañas, columnas y orden de Final (1237:13492).
+ * Árbol único para mega-menu, menú mobile y catalog-nav (decisiones.md,
+ * 2026-10-02 · Navegación), con las secciones del mega-menu de Figma (841:2282):
+ *   { sections: { exterior, interior, lamparas, artefactos }, collections, allCollections }
+ *   sección: { id, label, href, all: { label, href }, links: [{ label, href, count }] }
+ *   colección: { label, meta, href }
+ * Exterior e Interior: aplicaciones de luminarias + Artefactos y Lámparas de
+ * ese entorno. Lámparas y Artefactos: un link por producto. Las opciones sin
+ * productos no aparecen; una sección sin links es null.
  */
 export async function getNavigation() {
-  const { groups } = await loadCatalog();
+  const { groups, collections } = await loadCatalog();
   const count = (filter) => groups.filter((g) => inCategory(g, filter)).length;
-  const item = (label, filter) => ({ label, href: categoryHref(filter), count: count(filter) });
-  const luminarias = groups.filter((g) => g.productType === 'Luminaria');
-  const section = (environment) => {
-    const applications = [...new Set(luminarias.filter((g) => g.environment.includes(environment)).map((g) => g.application).filter(Boolean))];
-    const items = applications.map((application) => item(application, { environment, application, productType: 'Luminaria' }));
-    const lamps = item('Lámparas', { environment, productType: 'Lámpara' });
-    if (lamps.count) items.push(lamps);
-    return { id: normalize(environment), label: environment, href: categoryHref({ environment }), items };
+  const link = (label, filter) => ({ label, href: categoryHref(filter), count: count(filter) });
+  const environmentSection = (environment, allLabel) => {
+    const applications = [...new Set(groups.filter((g) => g.productType === 'Luminaria' && g.environment.includes(environment)).map((g) => g.application).filter(Boolean))];
+    const links = [
+      ...applications.map((application) => link(application, { environment, application, productType: 'Luminaria' })),
+      link('Artefactos', { environment, productType: 'Artefacto' }),
+      link('Lámparas', { environment, productType: 'Lámpara' }),
+    ].filter((l) => l.count);
+    return links.length ? { id: normalize(environment), label: environment, href: categoryHref({ environment }), all: { label: allLabel, href: categoryHref({ environment }) }, links } : null;
   };
-  const others = [...new Set(groups.map((g) => g.productType).filter((t) => t && t !== 'Luminaria'))];
-  return [
-    section('Interior'),
-    section('Exterior'),
-    { id: 'lamparas', label: 'Lámparas y artefactos', href: categoryHref({ productType: others[0] }), items: others.map((t) => item(t, { productType: t })) },
-  ].filter((s) => s.items.length);
+  const typeSection = (productType, label, allLabel) => {
+    const links = groups.filter((g) => g.productType === productType).map((g) => ({ label: g.name, href: productHref(g.id), count: 1 }));
+    return links.length ? { id: normalize(label), label, href: categoryHref({ productType }), all: { label: allLabel, href: categoryHref({ productType }) }, links } : null;
+  };
+  return {
+    sections: {
+      exterior: environmentSection('Exterior', 'Ver todo Exterior'),
+      interior: environmentSection('Interior', 'Ver todo Interior'),
+      lamparas: typeSection('Lámpara', 'Lámparas', 'Ver todas las lámparas'),
+      artefactos: typeSection('Artefacto', 'Artefactos', 'Ver todos los artefactos'),
+    },
+    collections: collections
+      .map((c) => ({ label: c.name, meta: [...new Set(groups.filter((g) => g.collection === c.id).map((g) => g.application ?? g.productType).filter(Boolean))].join(' · '), href: collectionHref(c.id) }))
+      .filter((c) => c.meta),
+    allCollections: { label: 'Ver todas las colecciones', href: '/arq/colecciones' },
+  };
 }
 
 export { ATTRIBUTES };

@@ -182,11 +182,11 @@ Lau construye todos los componentes. El orden sale de las dependencias (descripc
 | Listados | ✅ filter-row | icon-button, checkbox, disclosure |
 | Comparativa | ✅ compare-slot | icon-button |
 | Comparativa | ✅ compare-group, ✅ compare-row (en `<arq-compare-table>`) | toggle, compare-slot |
-| Contacto | contact-item | — |
-| Contacto | link-list | button |
-| Navbar | search-field | icon-button |
-| Navbar | search-result, search-see-all | íconos |
-| Navbar | mega-link | íconos, disclosure |
+| Contacto | ✅ contact-item | — |
+| Contacto | ✅ link-list | button |
+| Navbar | ✅ search-field | icon-button |
+| Navbar | ✅ search-result, ✅ search-see-all | íconos |
+| Navbar | ✅ mega-link | íconos, disclosure |
 
 product-card necesita los campos de las 4 imágenes en `docs/typesense-schema.md`; hasta que estén, se construye con `TODO` y fixtures.
 
@@ -201,9 +201,9 @@ product-card necesita los campos de las 4 imágenes en `docs/typesense-schema.md
 | ✅ filter-panel | filter-row, filter-chip, button |
 | ✅ compare-bar | compare-slot, count-badge, divider, button |
 | ✅ download-modal | download-item |
-| search-dropdown | search-result, search-see-all |
-| search-screen | search-field, search-result, search-see-all |
-| mega-menu | tab, mega-link |
+| ✅ search-dropdown | search-result, search-see-all |
+| ✅ search-screen | search-field, search-result, search-see-all |
+| ✅ mega-menu | tab, mega-link |
 
 ### Nivel 3 · Dependen del nivel 2
 
@@ -221,7 +221,7 @@ product-card necesita los campos de las 4 imágenes en `docs/typesense-schema.md
 | ✅ variants-table | variants-table-row, filter-bar, button |
 | compare-header | compare-product, compare-slot, toggle |
 
-### Al final · navbar
+### Al final · ✅ navbar
 
 Usa nav-link, logo, icon-button, search-field, search-dropdown, search-screen, mega-menu y mega-link. Cierra los `TODO` de navbar que hoy están en logo y nav-link (Theme Inverse, `aria-controls` hacia el mega-menu).
 

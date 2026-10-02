@@ -645,3 +645,52 @@
 .demo-embedded .demo-header {
   display: none;
 }
+
+/* navbar en la demo: no queda fijo (la página real sí) */
+.demo-navbar {
+  position: relative;
+  display: grid;
+  margin-inline: calc(var(--arq-layout-gutter) * -1);
+  outline: var(--arq-border-default) dashed var(--arq-color-border-subtle);
+}
+
+.demo-navbar > arq-navbar {
+  position: relative;
+}
+
+/* Transparent sobre una foto: la barra va encima de la imagen */
+.demo-navbar--photo > arq-navbar {
+  position: absolute;
+  inset: 0 0 auto;
+}
+
+.demo-navbar--photo > img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.demo-mega-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--arq-layout-measure)), 1fr));
+  gap: var(--arq-space-gap-xl);
+}
+
+.demo-search {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--arq-layout-search-field)), var(--arq-layout-search-field)));
+  gap: var(--arq-space-gap-xl);
+  align-items: start;
+}
+
+/* Con un menú abierto, esa barra va por encima de las otras de la demo */
+.demo-navbar:focus-within {
+  z-index: 1;
+}
+
+/* contact-item: columna de canales (en Contacto, layout/measure) */
+.demo-contact {
+  display: grid;
+  max-width: var(--arq-layout-measure);
+}

@@ -1,0 +1,105 @@
+/* mega-menu · Figma 841:2282. Solo tokens semánticos. Solo desktop: en
+   Mobile el navbar usa su submenú de Productos. */
+
+:host {
+  display: block;
+}
+
+.menu {
+  background: var(--arq-color-surface-default);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+/* Pestañas: arriba space/gap/md, a los lados layout/gutter, separación
+   space/gap/xl y línea inferior color/border/subtle */
+.tabs {
+  display: flex;
+  gap: var(--arq-space-gap-xl);
+  padding: var(--arq-space-gap-md) var(--arq-layout-gutter) 0;
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+/* Cuerpo: columnas a la izquierda e imagen a la derecha */
+.body {
+  display: flex;
+  align-items: stretch;
+}
+
+.panels {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Contenido: padding space/gap/xl × layout/gutter, gap space/gap/md */
+.panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--arq-space-gap-md);
+  min-width: 0;
+  padding: var(--arq-space-gap-xl) var(--arq-layout-gutter);
+}
+
+.columns {
+  display: flex;
+  flex: 1;
+  gap: var(--arq-space-gap-xl);
+}
+
+/* Columna: título y links arriba, "Ver todo…" al pie */
+.column {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-md);
+  min-width: 0;
+}
+
+.top {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-md);
+  align-self: stretch;
+}
+
+.title {
+  margin: 0;
+  color: var(--arq-color-text-primary);
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+}
+
+/* Colecciones: cada columna es solo la lista de links */
+.panel--colecciones .column {
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.panel--colecciones .all {
+  align-self: flex-start;
+}
+
+/* Imagen: layout/mega-menu-image de ancho, ratio/portrait-soft (4:5); si el
+   contenido es más alto, la imagen se estira. Fondo color/surface/subtle. */
+.image {
+  position: relative;
+  flex: none;
+  width: var(--arq-layout-mega-menu-image);
+  aspect-ratio: 4 / 5;
+  background: var(--arq-color-surface-subtle);
+}
+
+.image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

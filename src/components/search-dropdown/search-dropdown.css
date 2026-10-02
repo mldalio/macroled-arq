@@ -1,0 +1,61 @@
+/* search-dropdown · Figma 796:2271. Solo tokens semánticos. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Fondo color/surface/default, borde border/default en color/border/subtle */
+.dropdown {
+  background: var(--arq-color-surface-default);
+  border: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+}
+
+/* No results: mensaje con padding space/padding/md y gap space/gap/sm */
+.message {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-sm);
+  padding: var(--arq-space-padding-md) var(--arq-space-padding-md);
+}
+
+.message p {
+  margin: 0;
+}
+
+.title {
+  color: var(--arq-color-text-primary);
+}
+
+.help {
+  color: var(--arq-color-text-tertiary);
+}
+
+/* "Explorá nuestros productos": línea superior color/border/subtle,
+   padding space/padding/sm × space/padding/md, gap space/gap/sm */
+.explore {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  padding: var(--arq-space-padding-sm) var(--arq-space-padding-md);
+  border-top: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  color: var(--arq-color-text-tertiary);
+  text-decoration: none;
+}
+
+.explore:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: calc(var(--arq-border-strong) * -1);
+}
+
+.explore .icon {
+  flex: none;
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+  color: var(--arq-color-icon-primary);
+}

@@ -1,0 +1,134 @@
+/* mega-link · Figma 840:2070. Solo tokens semánticos. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* ── Type=Link ───────────────────────────────────────────────────── */
+/* Fila: padding vertical space/gap/sm, gap space/gap/sm, línea inferior
+   color/border/subtle. Hover: fondo color/surface/hover. */
+.link {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  padding-block: var(--arq-space-gap-sm);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  color: var(--arq-color-text-primary);
+  text-decoration: none;
+}
+
+.link[href]:hover {
+  background: var(--arq-color-surface-hover);
+}
+
+.link:focus-visible,
+.trigger:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+/* Nombre (role/body · Large role/body-lg) y bajada (role/caption,
+   color/text/tertiary), separados space/gap/xs */
+.text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xs);
+  min-width: 0;
+}
+
+.name {
+  overflow-wrap: break-word;
+}
+
+.meta {
+  color: var(--arq-color-text-tertiary);
+}
+
+/* Flecha icon/md en color/icon/primary */
+.arrow {
+  display: inline-flex;
+  flex: none;
+  color: var(--arq-color-icon-primary);
+}
+
+.icon {
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+}
+
+/* ── Type=Group ──────────────────────────────────────────────────── */
+/* Encabezado: role/body-xl, padding vertical space/gap/md, + / – icon/md.
+   Línea inferior en todo el grupo (también abierto). */
+.group {
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  width: 100%;
+  padding: var(--arq-space-gap-md) 0;
+  border: 0;
+  background: none;
+  color: var(--arq-color-text-primary);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.trigger:hover {
+  background: var(--arq-color-surface-hover);
+}
+
+.trigger .name {
+  flex: 1;
+  min-width: 0;
+}
+
+.toggle {
+  display: inline-flex;
+  flex: none;
+  color: var(--arq-color-icon-primary);
+}
+
+:host(:not([open])) [data-icon='minus'],
+:host([open]) [data-icon='plus'] {
+  display: none;
+}
+
+/* Abierto: los links (role/body-lg, padding vertical space/gap/sm) y el
+   "Ver todo" debajo del encabezado; el grupo suma space/gap/md abajo */
+.links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: var(--arq-space-gap-md);
+}
+
+/* Los links llegan por slot (viven en el DOM de la página): se les aplican
+   los valores de role/body-lg con sus tokens */
+::slotted(a) {
+  display: block;
+  width: 100%;
+  padding-block: var(--arq-space-gap-sm);
+  color: var(--arq-color-text-primary);
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-light);
+  font-size: var(--arq-type-body-lg-size);
+  line-height: var(--arq-type-body-lg-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+  text-decoration: none;
+}
+
+::slotted(a:focus-visible) {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+/* "Ver todo" (button Underline): separado como un link más */
+::slotted(arq-button) {
+  margin-block: var(--arq-space-gap-sm);
+}
