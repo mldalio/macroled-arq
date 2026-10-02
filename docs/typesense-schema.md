@@ -5,12 +5,39 @@ Campos disponibles en Typesense. Los componentes y `src/data/` usan **solo** los
 - Fuente: Google Sheets «Macroled ARQ - Base de datos», pestaña Propuesta → Typesense. Estructura y reglas de cada columna: `docs/estructura-base-de-datos.md` (versión 5, datos tentativos).
 - **Un documento por SKU.** Los SKU con el mismo `PRODUCT_GROUP_ID` forman un producto (una card, una ficha); los grupos con el mismo `COLLECTION_ID` forman una colección. Los datos de grupo y de colección se repiten iguales en sus filas.
 - En el front se usa solo la search-only key (ver `.env.example`).
-- **Estado: propuesta.** La base se está armando en Typesense. Los nombres de campo y los tipos se confirman con quien la arma; hasta entonces esta tabla es el contrato que usa `src/data/`.
+- **Estado:** el índice ya existe pero está incompleto. Lo que hay hoy está en **Estado del índice**; las tablas siguientes son la propuesta original (versión 5) y quedan como referencia de lo que falta.
+
+## Estado del índice (2026-10-02)
+
+Leído con la search-only key en `typesense.coresagroup.com`, colección `macroled_arq`. **132 documentos**, uno por SKU (`id` = `sku`). El acceso desde el front está en `src/data/typesense.js`.
+
+**Campos que existen** (los nombres mandan sobre la propuesta de abajo):
+
+| Grupo | Campos |
+| --- | --- |
+| Identificación | `id`, `sku`, `product_name`, `product_type`, `familia`, `macrofamilia`, `subfamilia`, `application`, `environment`, `collection_name`, `is_group_default`, `is_collection_default`, `variant_attributes` (texto: «Color de carcasa, Altura»), `nombre_origen` |
+| Textos | `description`, `product_story_text`, `product_inspiration_text`, `collection_intro_text`, `collection_description_text`, `escena_uso_sugerido` |
+| Imágenes y video | `multimagen_producto`, `multimagen_ambiente`, `multimagen_detalles`, `multimagen_perspectivas`, `multimagen_vistas` (listas), `video_inspiration` |
+| Descargas | `ies`, `cad`, `manual`, `fotometria` |
+| Técnicos | `altura`, `angulo_apertura`, `anti_high_volt`, `certificado_lm80`, `clase_proteccion`, `color_carcasa`, `conector`, `corriente_entrada`, `corriente_irrupcion`, `corriente_salida`, `cri`, `desviacion_color`, `dimeable`, `emc`, `factor_potencia`, `flujo_luminoso`, `frecuencia`, `garantia_pack`, `garantia_proveedor`, `grupo_seguridad_fotobiologica`, `instalacion`, `largo_cable`, `lumenes_lmw`, `marca_driver`, `marca_led`, `material_cuerpo`, `material_lente`, `max_lum_b16`, `max_lum_c10`, `max_lum_c16`, `no_flicker`, `on_off_switch`, `peso`, `potencia`, `proteccion_ik`, `proteccion_ip`, `protector_spd`, `sdcm`, `tamanio`, `td_distorsion_tonal`, `temperatura_color`, `temperatura_operacion`, `tension_pack`, `tension_proveedor`, `tension_salida`, `thd`, `tiempo_arranque`, `tiempo_irrupcion`, `tipo_driver`, `tipo_led`, `tipo_montaje`, `ugr`, `vida_util` |
+
+- **Facets** (filtros con cantidades): `familia`, `macrofamilia`, `subfamilia`, `potencia`, `temperatura_color`. No son facet: `product_type`, `environment`, `application`, `collection_name`, `is_group_default`, `proteccion_ip`, `color_carcasa`, `altura`, `variant_attributes`.
+- **Con datos:** `sku` (132), `potencia` (61), `cri` y `tamanio` (58), `familia`, `macrofamilia`, `subfamilia` y `product_type` (56), `emc`, `sdcm`, `thd` y `ugr` (54), `ies` (47), `variant_attributes` (11), `nombre_origen` (4). El resto está vacío en todos los documentos, incluidos `product_name`, `description`, todas las imágenes, `color_carcasa` y `altura`. 2 documentos con `is_group_default`.
+- Valores actuales: `macrofamilia` Exterior · Interior; `subfamilia` Jardín · Pared · Colgante; `familia` Tori, Douli, Kanu, Sento, Yoru, Nobu, Köen, Mini Tori; `product_type` Luminaria.
+
+**Diferencias con la propuesta (para quien arma la base):**
+
+- `TODO` **Falta `product_group_id`** (y `collection_id`): es el vínculo con el CMS y el slug de la ficha (AGENTS.md · Datos). Sin él no se pueden armar fichas, cards por grupo ni selectores de variante.
+- `TODO` Imágenes: el índice usa listas `multimagen_*` en lugar de las columnas `img_*`. Falta definir qué posición de cada lista es cada foto (estudio, contexto, luz encendida, galería).
+- `TODO` Navegación: ¿`macrofamilia` reemplaza a `environment` y `subfamilia` a `application`? ¿`familia` es la colección? Hasta confirmarlo, `src/data/` no los usa como tales.
+- `TODO` `variant_attributes` llega como texto, no como lista: `src/data/attributes.js` lo separa por comas y traduce cada columna a su campo.
+- `TODO` Tipos: los técnicos llegan como texto con unidad (`12W`, `10*60cm`, `-`). Para filtros por rango harían falta números.
+- No hay `sheet_order` (orden de la hoja).
 
 ## Nombres de campo
 
-- **Propuesta:** el nombre de la columna en minúscula, sin tildes y con `_` en lugar de espacios: `PRODUCT_GROUP_ID` → `product_group_id`, `Color de carcasa` → `color_de_carcasa`.
-- `VARIANT_ATTRIBUTES` trae los nombres de columna tal como están en la hoja («Color de carcasa, Altura»). La sincronización los pasa a nombres de campo con la misma regla y los guarda como lista.
+- Los nombres los define el índice (ver Estado del índice): no siempre siguen una regla (`Color de carcasa` → `color_carcasa`, `Descripcion` → `description`).
+- `VARIANT_ATTRIBUTES` trae los nombres de columna tal como están en la hoja («Color de carcasa, Altura»), como texto. `src/data/attributes.js` los traduce a campos.
 - Las etiquetas visibles («Color», «Altura», «Flujo luminoso») no salen de los nombres de campo: viven en un único archivo de `src/data/`, junto con las secciones del acordeón, los filtros, las filas de la comparativa y las columnas del glosario.
 
 ## Identificación y navegación
@@ -35,7 +62,7 @@ Campos disponibles en Typesense. Los componentes y `src/data/` usan **solo** los
 
 | Columna en Sheets | Campo | Tipo | Nivel | Uso |
 | --- | --- | --- | --- | --- |
-| Descripcion | `descripcion` | string | SKU | Resumen técnico junto a los selectores. Cambia con la variante |
+| Descripcion | `description` | string | SKU | Resumen técnico junto a los selectores. Cambia con la variante |
 | PRODUCT_STORY_TEXT | `product_story_text` | string | grupo | Ficha, sección Descripción. Markdown limitado: `##` título y `-` características |
 | PRODUCT_INSPIRATION_TEXT | `product_inspiration_text` | string | grupo | Ficha, sección Inspiración |
 | COLLECTION_INTRO_TEXT | `collection_intro_text` | string | colección | Ficha de colección, junto al título |

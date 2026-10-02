@@ -6,7 +6,7 @@ Barra de filtros de la tabla de variantes (visible con Filtros activos): una cel
 
 ```html
 <arq-filter-bar>
-  <arq-select type="filter" label="Color" name="color_de_carcasa"></arq-select>
+  <arq-select type="filter" label="Color" name="color_carcasa"></arq-select>
   <arq-select type="filter" label="Altura" name="altura"></arq-select>
 </arq-filter-bar>
 ```

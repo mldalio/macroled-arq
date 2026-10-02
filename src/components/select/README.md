@@ -6,7 +6,7 @@ Selector con menú desplegable (select-menu). Type=Field: campo del configurador
 
 ```html
 <arq-select label="Acabado" value="Negro"></arq-select>
-<arq-select type="filter" label="Acabado" name="color_de_carcasa"></arq-select>
+<arq-select type="filter" label="Acabado" name="color_carcasa"></arq-select>
 ```
 
 ```js

@@ -9,8 +9,8 @@
 //
 //   tabla.data = {
 //     columns: [{ key: 'potencia', label: 'Potencia' }, …],
-//     filters: [{ key: 'color_de_carcasa', label: 'Color' }, { key: 'altura', label: 'Altura' }],
-//     rows: [{ sku: 'KANU-…', thumb: '…', attributes: { color_de_carcasa: 'Negro', … }, values: { potencia: '12 W', … } }],
+//     filters: [{ key: 'color_carcasa', label: 'Color' }, { key: 'altura', label: 'Altura' }],
+//     rows: [{ sku: 'KANU-…', thumb: '…', attributes: { color_carcasa: 'Negro', … }, values: { potencia: '12 W', … } }],
 //   };
 //
 // - Es un <table> real: un lector de pantalla anuncia la columna de cada valor.

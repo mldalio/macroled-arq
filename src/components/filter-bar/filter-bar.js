@@ -4,7 +4,7 @@
 // una celda select Type=Filter por atributo y "Limpiar filtros".
 //
 //   <arq-filter-bar>
-//     <arq-select type="filter" label="Acabado" name="color_de_carcasa"></arq-select>
+//     <arq-select type="filter" label="Acabado" name="color_carcasa"></arq-select>
 //     <arq-select type="filter" label="Altura" name="altura"></arq-select>
 //   </arq-filter-bar>
 //

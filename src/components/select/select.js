@@ -4,7 +4,7 @@
 // configurador (muestra + nombre). Type=Filter: celda de filter-bar (etiqueta
 // + valor; "Todos" primero).
 //
-//   <arq-select type="filter" label="Acabado" name="color_de_carcasa"></arq-select>
+//   <arq-select type="filter" label="Acabado" name="color_carcasa"></arq-select>
 //   select.options = [
 //     { value: 'Negro', label: 'Negro', swatch: '…/negro.jpg' },
 //     { value: 'Verde', label: 'Verde', disabled: true },
