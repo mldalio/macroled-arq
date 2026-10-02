@@ -133,6 +133,8 @@
   --arq-layout-compare-thumb: 48px; /** Foto cuadrada de compare-slot Size=Default (compare-bar y compare-header Compact en Desktop). */
   --arq-layout-compare-thumb-sm: 28px; /** Ancho de compare-slot Size=Compact (miniatura en Mobile). El alto sale de ratio/portrait (7:10). */
   --arq-layout-compare-slot: 400px; /** Ancho máximo de compare-slot Size=Default, para que no se estire en pantallas anchas. */
+  --arq-layout-compare-label: 200px; /** Columna de etiquetas de la comparativa (compare-row, compare-group y la columna de controles de compare-header). En Mobile queda fija al desplazar. */
+  --arq-layout-compare-column: 160px; /** Ancho de cada columna de producto de la comparativa en Mobile (con scroll horizontal). En Desktop las columnas se reparten el ancho. */
   --arq-motion-duration-fast: 120ms; /** Hover, toggle, foco. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-base: 200ms; /** Desplegables (disclosure) y menús. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-slow: 320ms; /** Fundido de imágenes de product-card. En ms. Con prefers-reduced-motion: 0. */
@@ -299,6 +301,7 @@
   :root {
     --arq-layout-card-min: 160px; /** Ancho mínimo de tarjeta en la grilla de catálogo (auto-fill). Desde 1600 px se reemplaza por layout/card-min-wide con una media query. */
     --arq-layout-gallery-thumb: 76px; /** Ancho de gallery-thumb en product-gallery (105 Desktop · 76 Mobile). El alto sale de ratio/landscape (5:4). */
+    --arq-layout-compare-label: 120px; /** Columna de etiquetas de la comparativa (compare-row, compare-group y la columna de controles de compare-header). En Mobile queda fija al desplazar. */
     --arq-space-section-2xs: var(--arq-space-24); /** Separación mínima entre bloques de página. */
     --arq-space-section-xs: var(--arq-space-32); /** Separación ajustada entre bloques de página. */
     --arq-space-section-sm: var(--arq-space-40); /** Separación reducida entre bloques de página. */

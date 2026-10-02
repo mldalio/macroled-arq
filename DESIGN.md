@@ -272,6 +272,8 @@ Cómo elegir un token:
 | layout/table-thumb | 56 | 56 | Miniatura cuadrada de cada fila de la tabla de variantes (glosario) |
 | layout/compare-thumb · compare-thumb-sm | 48 · 28 | 48 · 28 | Foto de compare-slot Default (cuadrada) y Compact (ancho; alto por ratio/portrait) |
 | layout/compare-slot | 400 | 400 | Ancho máximo de compare-slot Default |
+| layout/compare-label | 200 | 120 | Columna de etiquetas de la comparativa (fija en Mobile) |
+| layout/compare-column | 160 | 160 | Columna de producto de la comparativa en Mobile (en Desktop se reparten el ancho) |
 | space/section/2xs · xs · sm · md · lg · xl | 32 · 48 · 64 · 96 · 128 · 160 | 24 · 32 · 40 · 56 · 96 · 128 | Solo entre bloques de página (padding de la sección). Es la perilla del ritmo de página |
 | space/gap/xs · sm · sm-md · md · lg · xl · xl-2xl · 2xl · 3xl · 4xl · 5xl · 6xl | 4 · 8 · 12 · 16 · 24 · 32 · 40 · 48 · 64 · 80 · 96 · 128 | 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 56 · 64 · 96 | Entre elementos (gap) |
 | space/padding/2xs · xs · sm · sm-md · md · lg · xl · xl-2xl · 2xl · 3xl · 4xl · 5xl · 6xl | 3 · 4 · 8 · 12 · 16 · 24 · 32 · 40 · 48 · 64 · 80 · 96 · 128 | 3 · 4 · 8 · 12 · 16 · 20 · 24 · 32 · 32 · 48 · 56 · 64 · 96 | Padding interno |
