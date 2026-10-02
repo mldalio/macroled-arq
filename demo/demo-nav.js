@@ -11,7 +11,7 @@ const GROUPS = [
   ['Fundamentos', ['colors', 'roles', 'spaces', 'icons', 'base']],
   ['Acciones y navegación', ['button', 'icon-button', 'count-badge', 'divider', 'logo', 'breadcrumb', 'nav-link', 'tab', 'footer-link', 'carousel-controls']],
   ['Formularios', ['input', 'checkbox', 'toggle', 'choice-chip', 'file-upload', 'form-message', 'form-section-header']],
-  ['Producto y filtros', ['option-tile', 'swatch', 'swatch-picker', 'option-group', 'select-option', 'sku', 'gallery-thumb', 'spec-row', 'filter-chip']],
+  ['Producto y filtros', ['option-tile', 'swatch', 'swatch-picker', 'option-group', 'select-option', 'sku', 'gallery-thumb', 'spec-row', 'spec-list', 'accordion-item', 'filter-chip']],
   ['Bloques y tarjetas', ['section-header', 'page-header', 'hero', 'feature-block', 'category-card', 'line-card', 'faq-item', 'cta-block', 'footer']],
 ];
 

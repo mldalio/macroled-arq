@@ -418,6 +418,79 @@
         </div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-spec-list">
+        <h2 id="demo-spec-list" class="demo-heading role-label">spec-list · &lt;arq-spec-list&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 922:2500. Una columna de spec-row en Fill; cantidad libre (salen de los datos del SKU).</p>
+        <div class="demo-narrow">
+          <arq-spec-list>
+            <arq-spec-row><span slot="label">Flujo luminoso</span>850 lm</arq-spec-row>
+            <arq-spec-row><span slot="label">Temperatura de color</span>2700 K</arq-spec-row>
+            <arq-spec-row><span slot="label">CRI</span>90</arq-spec-row>
+            <arq-spec-row><span slot="label">Ángulo de apertura</span>40°</arq-spec-row>
+            <arq-spec-row><span slot="label">Eficiencia luminosa</span>77 lm/W</arq-spec-row>
+          </arq-spec-list>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-accordion-item">
+        <h2 id="demo-accordion-item" class="demo-heading role-label">accordion-item · &lt;arq-accordion-item&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 922:2645. Las tres secciones de la Ficha (1218:10632): abierto con spec-list, cerrados, título largo y sin filas. Pueden quedar varios abiertos. Hover solo cerrado; foco alrededor de todo el ítem.</p>
+        <div class="demo-accordion">
+          <arq-accordion-item open>
+            <span slot="title">Características lumínicas</span>
+            <arq-spec-list>
+              <arq-spec-row><span slot="label">Flujo luminoso</span>850 lm</arq-spec-row>
+              <arq-spec-row><span slot="label">Temperatura de color</span>2700 K</arq-spec-row>
+              <arq-spec-row><span slot="label">CRI</span>90</arq-spec-row>
+              <arq-spec-row><span slot="label">Ángulo de apertura</span>40°</arq-spec-row>
+              <arq-spec-row><span slot="label">Eficiencia luminosa</span>77 lm/W</arq-spec-row>
+            </arq-spec-list>
+          </arq-accordion-item>
+          <arq-accordion-item>
+            <span slot="title">Características eléctricas</span>
+            <arq-spec-list>
+              <arq-spec-row><span slot="label">Potencia</span>12 W</arq-spec-row>
+              <arq-spec-row><span slot="label">Tensión</span>AC 100–240 V</arq-spec-row>
+              <arq-spec-row><span slot="label">Driver</span>Integrado</arq-spec-row>
+            </arq-spec-list>
+          </arq-accordion-item>
+          <arq-accordion-item>
+            <span slot="title">Materiales y dimensiones</span>
+            <arq-spec-list>
+              <arq-spec-row><span slot="label">Material del cuerpo</span>Aluminio inyectado con difusor de policarbonato opal</arq-spec-row>
+              <arq-spec-row><span slot="label">Dimensiones</span>100 × 100 × 500 mm</arq-spec-row>
+              <arq-spec-row><span slot="label">Peso</span>3,2 kg</arq-spec-row>
+            </arq-spec-list>
+          </arq-accordion-item>
+          <arq-accordion-item>
+            <span slot="title">Instalación, protección y mantenimiento con un título largo que ocupa dos líneas</span>
+            <arq-spec-list>
+              <arq-spec-row><span slot="label">Grado de protección</span>IP 65</arq-spec-row>
+            </arq-spec-list>
+          </arq-accordion-item>
+          <arq-accordion-item open>
+            <span slot="title">Sin datos (abierto, sin filas)</span>
+          </arq-accordion-item>
+        </div>
+        <div class="demo-dark" data-arq-theme="dark">
+          <div class="demo-accordion">
+            <arq-accordion-item open>
+              <span slot="title">Características lumínicas</span>
+              <arq-spec-list>
+                <arq-spec-row><span slot="label">Flujo luminoso</span>850 lm</arq-spec-row>
+                <arq-spec-row><span slot="label">CRI</span>90</arq-spec-row>
+              </arq-spec-list>
+            </arq-accordion-item>
+            <arq-accordion-item>
+              <span slot="title">Características eléctricas</span>
+              <arq-spec-list>
+                <arq-spec-row><span slot="label">Potencia</span>12 W</arq-spec-row>
+              </arq-spec-list>
+            </arq-accordion-item>
+          </div>
+        </div>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-filter-chip">
         <h2 id="demo-filter-chip" class="demo-heading role-label">filter-chip · &lt;arq-filter-chip&gt;</h2>
         <p class="demo-note role-body-sm">Figma 1238:3693. Hover y Focus con el mouse y con Tab. Al tocarlo se quita (en la demo).</p>

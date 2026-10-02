@@ -17,6 +17,8 @@ import './components/footer-link/footer-link.js';
 import './components/form-message/form-message.js';
 import './components/form-section-header/form-section-header.js';
 import './components/spec-row/spec-row.js';
+import './components/spec-list/spec-list.js';
+import './components/accordion-item/accordion-item.js';
 import './components/filter-chip/filter-chip.js';
 import './components/select-option/select-option.js';
 import './components/gallery-thumb/gallery-thumb.js';

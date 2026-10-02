@@ -1,0 +1,12 @@
+/* spec-list · Figma 922:2500. Solo tokens semánticos.
+   Columna de spec-row sin gap: cada fila trae su padding y su separador. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}

@@ -226,6 +226,11 @@
   max-width: calc(var(--arq-layout-card-min) * 2);
 }
 
+/* Columna del acordeón de la ficha (816 en Final; card-min × 3 es lo más cercano) */
+.demo-accordion {
+  max-width: calc(var(--arq-layout-card-min) * 3);
+}
+
 /* Columna del configurador (como la de la ficha) */
 .demo-option-groups {
   display: flex;
