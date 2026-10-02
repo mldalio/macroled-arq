@@ -126,6 +126,21 @@
           }
         }
       }
+    },
+    "table-thumb": {
+      "$type": "number",
+      "$value": 56,
+      "$description": "Miniatura cuadrada de cada fila de la tabla de variantes (glosario de la ficha).",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-table-thumb)"
+          }
+        }
+      }
     }
   },
   "space": {
