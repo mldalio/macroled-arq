@@ -7,6 +7,7 @@
 // productos) se cambian a su demo, con el mismo ?query, para poder navegar.
 
 import '/src/main.js';
+import '/demo/demo-inspect.js';
 
 const pages = import.meta.glob('/src/pages/*.html', { query: '?raw', import: 'default' });
 const DEMOS = { '/arq': 'home', '/arq/productos': 'productos' };
