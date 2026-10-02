@@ -1,0 +1,98 @@
+/* compare-slot · Figma 1233:3656. Solo tokens semánticos.
+   Size=Default es la base. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Foto + info + quitar, gap space/gap/sm-md; ancho máximo layout/compare-slot */
+.slot {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm-md);
+  max-width: var(--arq-layout-compare-slot);
+}
+
+/* Foto cuadrada layout/compare-thumb, fondo color/surface/subtle. Empty: icon/plus centrado */
+.thumb {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--arq-layout-compare-thumb);
+  height: var(--arq-layout-compare-thumb);
+  overflow: hidden;
+  background: var(--arq-color-surface-subtle);
+}
+
+.thumb img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.icon {
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+  color: var(--arq-color-icon-primary);
+}
+
+:host([filled]) .icon {
+  display: none;
+}
+
+/* Nombre role/label en color/text/primary; meta role/body-sm en
+   color/text/secondary; gap space/gap/xs */
+.info {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xs);
+  min-width: 0;
+}
+
+.name {
+  color: var(--arq-color-text-primary);
+  overflow-wrap: break-word;
+}
+
+.meta,
+.empty {
+  color: var(--arq-color-text-secondary);
+  overflow-wrap: break-word;
+}
+
+:host(:not([filled])) .name,
+:host(:not([filled])) .meta,
+.empty:empty {
+  display: none;
+}
+
+.remove {
+  flex: none;
+}
+
+/* Size=Compact: solo la miniatura, layout/compare-thumb-sm de ancho y
+   ratio/portrait (7:10); el nombre queda para lectores de pantalla */
+:host([size='compact']) .slot {
+  max-width: none;
+}
+
+:host([size='compact']) .thumb {
+  width: var(--arq-layout-compare-thumb-sm);
+  height: auto;
+  aspect-ratio: 7 / 10;
+}
+
+:host([size='compact']) .info {
+  position: absolute;
+  width: var(--arq-border-default);
+  height: var(--arq-border-default);
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

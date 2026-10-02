@@ -875,6 +875,33 @@
         </div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-compare-slot">
+        <h2 id="demo-compare-slot" class="demo-heading role-label">compare-slot · &lt;arq-compare-slot&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1233:3656. Default (foto layout/compare-thumb, ancho máximo layout/compare-slot) y Compact (miniatura 7:10). Filled si tiene nombre; Empty «Agregar producto». Quitar emite arq:remove.</p>
+        <div class="demo-dark" data-arq-theme="dark">
+          <div class="demo-compare-slots">
+            <arq-compare-slot sku="KANU-J-500-12W-N-WW" image="/demo/fixtures/img/card-estudio.svg"><span slot="name">Kanu Jardín</span><span slot="meta">Exterior · Jardín</span></arq-compare-slot>
+            <arq-compare-slot sku="LARGO"><span slot="name">Producto con un nombre largo que ocupa dos líneas</span><span slot="meta">Interior · Embutir · Colgante</span></arq-compare-slot>
+            <arq-compare-slot></arq-compare-slot>
+          </div>
+          <div class="demo-row">
+            <arq-compare-slot size="compact" image="/demo/fixtures/img/card-estudio.svg"><span slot="name">Kanu Jardín</span></arq-compare-slot>
+            <arq-compare-slot size="compact"><span slot="name">Sin imagen</span></arq-compare-slot>
+            <arq-compare-slot size="compact"></arq-compare-slot>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-compare-bar">
+        <h2 id="demo-compare-bar" class="demo-heading role-label">compare-bar · &lt;arq-compare-bar&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1233:3963. Barra fija abajo, en Dark local. Aparece al marcar «Comparar» en las product-card de esta demo (hasta 3) y recuerda la selección (arq:compare). «Comparar» lleva a /arq/comparativa?sku=…</p>
+        <div class="demo-row">
+          <arq-button type="outline" data-demo-compare-add>Agregar 2 de ejemplo</arq-button>
+        </div>
+        <p class="demo-note role-body-sm" data-demo-compare-bar-log>arq:compare-change → (todavía nada)</p>
+        <arq-compare-bar></arq-compare-bar>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-filter-row">
         <h2 id="demo-filter-row" class="demo-heading role-label">filter-row · &lt;arq-filter-row&gt;</h2>
         <p class="demo-note role-body-sm">Figma 1225:3405. Abierta, cerrada y con texto largo. Opciones: checkbox Size=Large, cantidad libre. Hover cambia la línea y el ícono; foco alrededor de la fila.</p>

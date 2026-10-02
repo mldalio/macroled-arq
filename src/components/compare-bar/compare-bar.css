@@ -1,0 +1,107 @@
+/* compare-bar · Figma 1233:3963. Solo tokens semánticos.
+   Barra fija inferior en Dark local. Desktop es la base; Mobile
+   (max-width: 767px) usa lugares Compact. */
+
+:host {
+  display: contents;
+}
+
+/* Fija abajo, a todo el ancho: fondo color/surface/default (en Dark), línea
+   superior border/default en color/border/default; padding space/padding/md
+   × layout/gutter; gap space/gap/md */
+.bar {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 3;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-md);
+  padding: var(--arq-space-padding-md) var(--arq-layout-gutter);
+  border-top: var(--arq-border-default) solid var(--arq-color-border-default);
+  background: var(--arq-color-surface-default);
+  color: var(--arq-color-text-primary);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-md);
+}
+
+/* Título role/body-lg + count-badge, gap space/gap/sm */
+.title {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  margin: 0;
+}
+
+/* Lugares (gap space/gap/lg, divisores Default) y acciones (gap space/gap/xl);
+   entre los dos, space/gap/2xl */
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-2xl);
+}
+
+.slots {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: stretch;
+  gap: var(--arq-space-gap-lg);
+  min-width: 0;
+}
+
+.slots arq-compare-slot {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--arq-space-gap-xl);
+}
+
+.clear-mobile {
+  display: none;
+}
+
+/* ── Mobile: lugares Compact, "Borrar todo" arriba, "Comparar" al ancho ── */
+@media (max-width: 767px) {
+  .bar {
+    gap: var(--arq-space-gap-sm-md);
+    padding-bottom: var(--arq-space-padding-lg);
+    border-top-color: var(--arq-color-border-subtle);
+  }
+
+  .clear-mobile {
+    display: inline-flex;
+  }
+
+  .clear-desktop {
+    display: none;
+  }
+
+  .row {
+    gap: var(--arq-space-gap-md);
+  }
+
+  .slots {
+    flex: none;
+    gap: var(--arq-space-gap-sm);
+  }
+
+  .slots arq-compare-slot {
+    flex: none;
+  }
+
+  .actions,
+  .go {
+    flex: 1 1 auto;
+  }
+}
