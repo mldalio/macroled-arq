@@ -216,6 +216,51 @@
           }
         }
       }
+    },
+    "mega-menu-image": {
+      "$type": "number",
+      "$value": 438,
+      "$description": "Ancho de la imagen del mega-menu (a la derecha de las columnas). El alto sale de ratio/portrait-soft (4:5).",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-mega-menu-image)"
+          }
+        }
+      }
+    },
+    "search-field": {
+      "$type": "number",
+      "$value": 360,
+      "$description": "Ancho de search-field en el navbar Desktop. search-dropdown toma el mismo ancho. En Mobile (search-screen) el campo ocupa el ancho disponible.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-search-field)"
+          }
+        }
+      }
+    },
+    "search-thumb": {
+      "$type": "number",
+      "$value": 48,
+      "$description": "Miniatura cuadrada de search-result.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-search-thumb)"
+          }
+        }
+      }
     }
   },
   "space": {
