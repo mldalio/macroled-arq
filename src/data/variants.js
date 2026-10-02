@@ -5,13 +5,13 @@
 // los filtros del glosario y la comparativa.
 //
 //   const variants = [
-//     { sku: 'KANU-J-500-12W-N-WW', isDefault: true, attributes: { color_de_carcasa: 'Negro', altura: '50 cm' } },
+//     { sku: 'KANU-J-500-12W-N-WW', isDefault: true, attributes: { color_carcasa: 'Negro', altura: '50 cm' } },
 //     …
 //   ];
-//   const attributes = ['color_de_carcasa', 'altura'];
+//   const attributes = ['color_carcasa', 'altura'];
 //   let selection = initialSelection(variants, attributes, skuDeLaUrl);
 //   variantOptions(variants, attributes, selection);
-//   // → [{ attribute: 'color_de_carcasa', options: [{ value: 'Negro', selected: true, disabled: false }, …] }, …]
+//   // → [{ attribute: 'color_carcasa', options: [{ value: 'Negro', selected: true, disabled: false }, …] }, …]
 //   findVariant(variants, selection); // → el SKU elegido (o null)
 //
 // - Las opciones de cada atributo son los valores únicos de los SKU, en el

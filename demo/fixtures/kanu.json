@@ -4,23 +4,23 @@
     {
       "id": "kanu-jardin",
       "name": "Kanu Jardín",
-      "variantAttributes": ["color_de_carcasa", "altura"],
+      "variantAttributes": ["color_carcasa", "altura"],
       "variants": [
-        { "sku": "KANU-J-500-12W-N-WW", "isDefault": true, "attributes": { "color_de_carcasa": "Negro", "altura": "50 cm" } },
-        { "sku": "EJEMPLO-KANU-J-900-N", "attributes": { "color_de_carcasa": "Negro", "altura": "90 cm" } },
-        { "sku": "EJEMPLO-KANU-J-500-V", "attributes": { "color_de_carcasa": "Verde", "altura": "50 cm" } },
-        { "sku": "EJEMPLO-KANU-J-500-T", "attributes": { "color_de_carcasa": "Terracota", "altura": "50 cm" } }
+        { "sku": "KANU-J-500-12W-N-WW", "isDefault": true, "attributes": { "color_carcasa": "Negro", "altura": "50 cm" } },
+        { "sku": "EJEMPLO-KANU-J-900-N", "attributes": { "color_carcasa": "Negro", "altura": "90 cm" } },
+        { "sku": "EJEMPLO-KANU-J-500-V", "attributes": { "color_carcasa": "Verde", "altura": "50 cm" } },
+        { "sku": "EJEMPLO-KANU-J-500-T", "attributes": { "color_carcasa": "Terracota", "altura": "50 cm" } }
       ]
     },
     {
       "id": "kanu-pared",
       "name": "Kanu Pared",
-      "variantAttributes": ["color_de_carcasa", "altura"],
+      "variantAttributes": ["color_carcasa", "altura"],
       "variants": [
-        { "sku": "EJEMPLO-KANU-P-350-N", "isDefault": true, "attributes": { "color_de_carcasa": "Negro", "altura": "35 cm" } },
-        { "sku": "EJEMPLO-KANU-P-350-V", "attributes": { "color_de_carcasa": "Verde", "altura": "35 cm" } },
-        { "sku": "EJEMPLO-KANU-P-350-T", "attributes": { "color_de_carcasa": "Terracota", "altura": "35 cm" } },
-        { "sku": "EJEMPLO-KANU-P-500-N", "attributes": { "color_de_carcasa": "Negro", "altura": "50 cm" } }
+        { "sku": "EJEMPLO-KANU-P-350-N", "isDefault": true, "attributes": { "color_carcasa": "Negro", "altura": "35 cm" } },
+        { "sku": "EJEMPLO-KANU-P-350-V", "attributes": { "color_carcasa": "Verde", "altura": "35 cm" } },
+        { "sku": "EJEMPLO-KANU-P-350-T", "attributes": { "color_carcasa": "Terracota", "altura": "35 cm" } },
+        { "sku": "EJEMPLO-KANU-P-500-N", "attributes": { "color_carcasa": "Negro", "altura": "50 cm" } }
       ]
     }
   ],

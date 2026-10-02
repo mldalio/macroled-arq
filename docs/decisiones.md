@@ -326,7 +326,7 @@ setup() {
 
 - **Fuente:** `docs/estructura-base-de-datos.md` (versión 5, convertida del .docx). Los datos son tentativos y la base se está armando en Typesense. Campos y tipos: `docs/typesense-schema.md` (propuesta hasta que se confirme con quien arma la base).
 - **Un documento por SKU.** Los SKU con el mismo `PRODUCT_GROUP_ID` forman un producto (una card y una ficha); los grupos con el mismo `COLLECTION_ID`, una colección.
-- **Nombres de campo:** columna en minúscula, sin tildes y con `_` (`Color de carcasa` → `color_de_carcasa`). Las etiquetas visibles, las secciones del acordeón, los filtros, las filas de la comparativa y las columnas del glosario viven en un único archivo de `src/data/`.
+- **Nombres de campo:** los define el índice de Typesense, no una regla (`Color de carcasa` → `color_carcasa`; ver `docs/typesense-schema.md`, Estado del índice). `variant_attributes` trae los nombres de columna como texto; `src/data/attributes.js` los traduce a campos. Las etiquetas visibles, las secciones del acordeón, los filtros, las filas de la comparativa y las columnas del glosario viven en un único archivo de `src/data/`.
 - De Figma se usan solo las páginas Componentes y Final: el documento cita *baja / media*, que no se usa.
 
 ### Ficha de producto por grupo
