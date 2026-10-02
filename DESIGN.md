@@ -470,6 +470,7 @@ Aplica a product-card en los listados de Productos y Colecciones (las cards de c
 - El cambio es un fundido entre dos `<img>` apiladas (sin mover el layout). Usa `motion/duration/slow` con `motion/easing/standard`. Con `prefers-reduced-motion: reduce`, el cambio es instantáneo.
 - La imagen que se muestra depende de `data-arq-theme` del ancestro: al activar Iluminar en `catalog-toolbar`, todas las tarjetas pasan a las versiones encendidas.
 - En pantallas táctiles no hay hover: se ve solo la imagen de estudio.
+- Aplica también a `Size=Small`. Una tarjeta Large pasa sola al aspecto Small hasta 767 px (grilla mobile).
 - Si falta la imagen de contexto, no hay cambio en hover. Si falta la versión encendida, se usa la apagada. Si falta la de estudio, se muestra un fondo `color/surface/subtle` con el nombre: nunca se rompe la tarjeta.
 - Solo se carga de entrada la imagen visible; las de hover y las encendidas se cargan en diferido (`loading="lazy"` o al primer hover / al activar Iluminar).
 - Las imágenes vienen de los datos (Sheets → Typesense). Los nombres de los campos van en `docs/typesense-schema.md`; diseño todavía no definió qué columna es la de estudio y cuál la de contexto: hasta entonces, `TODO`.
@@ -516,7 +517,6 @@ Aplica a product-card en los listados de Productos y Colecciones (las cards de c
 - **Códigos de acabado** (N, V, R, B, BN, P): falta la tabla de equivalencias para mostrar el nombre.
 - **project-mosaic y carousel:** se resuelven en código (grid + aspect-ratio; snap y peek), no como componentes de Figma.
 - **button Loading:** no hay ícono de carga en la librería.
-- **product-card:** confirmar si el cambio de imagen aplica también a `Size=Small` (ficha → Otras familias). El fundido usa motion/duration/slow.
 - **product-card:** qué columnas de la base son la foto de estudio y la de contexto, y de dónde salen las cuatro imágenes de una card de colección.
 - **Ficha técnica en PDF** y **Descargar comparación:** falta el diseño del PDF.
 - **compare-product:** rediseño con selects de colección, producto y uno por atributo de variante (`docs/decisiones.md`, 2026-10-02 · Comparativa).
