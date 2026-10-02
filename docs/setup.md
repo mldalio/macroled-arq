@@ -151,7 +151,9 @@ El `NODE-ID` de cada componente está en el Anexo A de `DESIGN.md`.
 
 Lau construye todos los componentes. El orden sale de las dependencias (descripciones de `docs/components.md`): cada nivel usa solo lo que ya está en código o en un nivel anterior. Dentro de un nivel el orden es libre; la columna Página ayuda a cerrar páginas de a una.
 
-**Ya en código:** button, icon-button, input (Text y Textarea), checkbox, toggle (con toggle-switch), choice-chip, option-tile, swatch, tab, select-option, file-upload, form-message, form-section-header, sku, spec-row, filter-chip, gallery-thumb, count-badge, divider, logo, nav-link, footer-link, breadcrumb, breadcrumb-item, section-header, page-header.
+✅ = ya en código (en `main`, con README y en la demo). El estado de cada componente está en `docs/components.md`.
+
+**Fase 1, ya en código (no están en las tablas):** button, icon-button, input (Text y Textarea), checkbox, toggle (con toggle-switch), choice-chip, option-tile, swatch, tab, select-option, file-upload, form-message, form-section-header, sku, spec-row, filter-chip, gallery-thumb, count-badge, divider, logo, nav-link, footer-link, breadcrumb, breadcrumb-item, section-header, page-header.
 
 **En espera de diseño:** tag.
 
@@ -159,17 +161,17 @@ Lau construye todos los componentes. El orden sale de las dependencias (descripc
 
 | Página | Componente | Usa |
 | --- | --- | --- |
-| Home y Contacto | hero | button (el navbar va aparte, ver `docs/decisiones.md`) |
-| Home | category-card, line-card, feature-block | button |
-| Home | cta-block | input, button |
-| Home | faq-item | disclosure |
-| Home y Colección | carousel-controls | icon-button |
-| Todas | footer | logo, footer-link |
-| Ficha | spec-list | spec-row |
-| Ficha | accordion-item | icon-button, disclosure |
-| Ficha | swatch-picker | swatch |
+| Home y Contacto | ✅ hero | button (el navbar va aparte, ver `docs/decisiones.md`) |
+| Home | ✅ category-card, line-card, feature-block | button |
+| Home | ✅ cta-block | input, button |
+| Home | ✅ faq-item | disclosure |
+| Home y Colección | ✅ carousel-controls | icon-button |
+| Todas | ✅ footer | logo, footer-link |
+| Ficha | ✅ spec-list | spec-row |
+| Ficha | ✅ accordion-item | icon-button, disclosure |
+| Ficha | ✅ swatch-picker | swatch |
 | Ficha | select-menu | select-option |
-| Ficha | product-gallery | gallery-thumb |
+| Ficha | ✅ product-gallery | gallery-thumb |
 | Ficha | variants-table-row | sku, icon-button |
 | Ficha | family-card | — |
 | Ficha | download-item | íconos |
@@ -207,7 +209,7 @@ product-card necesita los campos de las 4 imágenes en `docs/typesense-schema.md
 
 | Componente | Usa |
 | --- | --- |
-| option-group | option-tile, swatch-picker, select |
+| ✅ option-group (falta Type=Select) | option-tile, swatch-picker, select |
 | filter-bar | select (Type Filter), button |
 | catalog-nav | catalog-nav-group |
 | compare-product | select (familia y variante), button |
