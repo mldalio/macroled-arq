@@ -127,6 +127,7 @@
   --arq-layout-compare-media-max: 2000px; /** Tope de ancho de la foto de compare-product. En la práctica la foto ocupa la columna. */
   --arq-layout-measure: 400px; /** Ancho máximo de un texto de lectura junto a otro elemento (bajada de section-header Description). En Mobile el texto ocupa todo el ancho. */
   --arq-layout-measure-wide: 520px; /** Ancho máximo de un texto de lectura en una columna principal (título y bajada de page-header Detail). En Mobile el texto ocupa todo el ancho. */
+  --arq-layout-gallery-thumb: 105px; /** Ancho de gallery-thumb en product-gallery (105 Desktop · 76 Mobile). El alto sale de ratio/landscape (5:4). */
   --arq-motion-duration-fast: 120ms; /** Hover, toggle, foco. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-base: 200ms; /** Desplegables (disclosure) y menús. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-slow: 320ms; /** Fundido de imágenes de product-card. En ms. Con prefers-reduced-motion: 0. */
@@ -292,6 +293,7 @@
 @media (max-width: 767px) {
   :root {
     --arq-layout-card-min: 160px; /** Ancho mínimo de tarjeta en la grilla de catálogo (auto-fill). Desde 1600 px se reemplaza por layout/card-min-wide con una media query. */
+    --arq-layout-gallery-thumb: 76px; /** Ancho de gallery-thumb en product-gallery (105 Desktop · 76 Mobile). El alto sale de ratio/landscape (5:4). */
     --arq-space-section-2xs: var(--arq-space-24); /** Separación mínima entre bloques de página. */
     --arq-space-section-xs: var(--arq-space-32); /** Separación ajustada entre bloques de página. */
     --arq-space-section-sm: var(--arq-space-40); /** Separación reducida entre bloques de página. */
