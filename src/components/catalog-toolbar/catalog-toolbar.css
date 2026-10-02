@@ -1,0 +1,49 @@
+/* catalog-toolbar · Figma 1244:4058. Solo tokens semánticos.
+   Desktop es la base; Mobile (max-width: 767px) achica el gap entre acciones. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Líneas arriba y abajo en color/border/subtle, como el set (la ficha dice
+   solo abajo); padding vertical space/padding/md. Alto 70 con el botón (36). */
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-md);
+  padding-block: var(--arq-space-padding-md);
+  border-block: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+/* Count: role/body en color/text/secondary */
+.count {
+  margin: 0;
+  min-width: 0;
+  color: var(--arq-color-text-secondary);
+  white-space: nowrap; /* "11 productos" en una línea, aunque Filtrar muestre la cantidad */
+}
+
+/* Acciones: gap space/gap/xl en Desktop (el set; la ficha dice space/gap/lg) */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-xl);
+  flex: none;
+}
+
+/* Toggle + divider en su propia fila: el divider toma el alto del toggle (20
+   en el set) y no el del botón (36). Cierra el TODO de divider. */
+.lead {
+  display: flex;
+  align-items: stretch;
+  gap: var(--arq-space-gap-xl);
+}
+
+@media (max-width: 767px) {
+  .actions,
+  .lead {
+    gap: var(--arq-space-gap-lg);
+  }
+}

@@ -44,6 +44,15 @@ function setTheme(dark) {
 
 themeInput.addEventListener('change', () => setTheme(themeInput.checked));
 
+// Iluminar de catalog-toolbar también cambia <html>: el switch lo sigue.
+new MutationObserver(() => {
+  themeInput.checked = document.documentElement.dataset.arqTheme === 'dark';
+  try {
+    localStorage.setItem(THEME_KEY, themeInput.checked ? 'dark' : 'light');
+  } catch {}
+  refreshValues();
+}).observe(document.documentElement, { attributes: true, attributeFilter: ['data-arq-theme'] });
+
 // ── Tokens ─────────────────────────────────────────────────────────
 function flatten(node, path = []) {
   if (node && typeof node === 'object' && '$value' in node) return [{ path, ...node }];
@@ -126,7 +135,8 @@ let saved = null;
 try {
   saved = localStorage.getItem(THEME_KEY);
 } catch {}
-themeInput.checked = saved === 'dark';
+// Sin preferencia de la demo, se respeta lo que ya puso Iluminar (arq:theme).
+themeInput.checked = saved ? saved === 'dark' : document.documentElement.dataset.arqTheme === 'dark';
 setTheme(themeInput.checked);
 
 matchMedia('(max-width: 767px)').addEventListener('change', refreshValues);

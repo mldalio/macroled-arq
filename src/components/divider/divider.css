@@ -16,9 +16,8 @@
 }
 
 /* Vertical: toma el alto de su contenedor flex o grid (align-self: stretch).
-   Sin token ni prop: el alto lo da el contenedor (compare-bar: FILL).
-   TODO (catalog-toolbar): ahí mide 20 en una fila de 36 (botón Filtrar); el
-   toolbar le tiene que dar ese alto. */
+   Sin token ni prop: el alto lo da el contenedor (compare-bar: FILL;
+   catalog-toolbar: la fila del toggle, 20). */
 :host([orientation='vertical']) {
   display: inline-block;
   align-self: stretch;
