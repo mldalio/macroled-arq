@@ -22,6 +22,7 @@ import './components/accordion-item/accordion-item.js';
 import './components/filter-chip/filter-chip.js';
 import './components/select-option/select-option.js';
 import './components/gallery-thumb/gallery-thumb.js';
+import './components/product-gallery/product-gallery.js';
 import './components/sku/sku.js';
 import './components/swatch/swatch.js';
 import './components/option-tile/option-tile.js';

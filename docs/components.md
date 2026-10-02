@@ -60,7 +60,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | [option-tile](#option-tile) | `<arq-option-tile>` | En código ([README](../src/components/option-tile/README.md)) |
 | [page-header](#page-header) | `<arq-page-header>` | En código ([README](../src/components/page-header/README.md)) |
 | [product-card](#product-card) | `<arq-product-card>` | Pendiente |
-| [product-gallery](#product-gallery) | `<arq-product-gallery>` | Pendiente |
+| [product-gallery](#product-gallery) | `<arq-product-gallery>` | En código ([README](../src/components/product-gallery/README.md)) |
 | [search-dropdown](#search-dropdown) | `<arq-search-dropdown>` | Pendiente |
 | [search-field](#search-field) | `<arq-search-field>` | Pendiente |
 | [search-result](#search-result) | `<arq-search-result>` | Pendiente |

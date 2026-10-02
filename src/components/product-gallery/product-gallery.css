@@ -1,0 +1,65 @@
+/* product-gallery · Figma 920:2490. Solo tokens semánticos.
+   Desktop es la base; Mobile (max-width: 767px) pone las miniaturas debajo. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.gallery {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-sm);
+}
+
+/* Imagen principal: ratio/landscape (5:4), placeholder color/surface/subtle.
+   !important: los estilos del sitio para img ganan sobre ::slotted. */
+.image {
+  aspect-ratio: 5 / 4;
+  overflow: hidden;
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-subtle);
+}
+
+::slotted(img) {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+/* Miniaturas: layout/gallery-thumb de ancho (el alto sale de 5:4), separadas
+   por space/gap/sm. Si no entran, la fila se desliza con snap.
+   El padding space/padding/xs deja lugar al anillo de foco (2 + 2 px), que el
+   overflow cortaría; el margen negativo lo compensa. */
+.thumbs {
+  display: flex;
+  gap: var(--arq-space-gap-sm);
+  margin: calc(-1 * var(--arq-space-padding-xs));
+  padding: var(--arq-space-padding-xs);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.thumbs::-webkit-scrollbar {
+  display: none;
+}
+
+arq-gallery-thumb {
+  flex: none;
+  width: var(--arq-layout-gallery-thumb);
+  scroll-snap-align: start;
+}
+
+/* Desktop: sobre la imagen, abajo a la izquierda, a space/padding/lg del
+   borde (en Figma 20; TODO: sin token exacto, decisión 2026-10-02). */
+@media (min-width: 768px) {
+  .thumbs {
+    position: absolute;
+    left: var(--arq-space-padding-lg);
+    bottom: var(--arq-space-padding-lg);
+    max-width: calc(100% - 2 * var(--arq-space-padding-lg));
+  }
+}

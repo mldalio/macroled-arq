@@ -8,6 +8,7 @@ import './demo-disclosure.js';
 import './demo-dark-local.js';
 import './demo-groups.js';
 import './demo-configurator.js';
+import './demo-gallery.js';
 import './demo-nav.js';
 import tokens from '/tokens/tokens.json';
 

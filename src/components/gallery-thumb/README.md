@@ -18,7 +18,7 @@ Miniatura de la galería de producto, proporción 5:4. Elegirla muestra la image
 | — | `alt` | `alt` | descripción de la imagen; es el nombre del botón. Si falta, avisa en consola |
 
 - Hover y Focus son CSS. Es un `<button>`: product-gallery escucha el `click`, cambia la imagen grande y mueve `selected`.
-- Toma el ancho que le da la galería (en Figma 105 × 84 en desktop) y mantiene 5:4.
+- Toma el ancho que le da la galería (`layout/gallery-thumb`: 105 Desktop · 76 Mobile) y mantiene 5:4.
 - La imagen se carga en diferido (`loading="lazy"`) y cubre la miniatura (`object-fit: cover`).
 
 ## Tokens
@@ -32,6 +32,6 @@ Miniatura de la galería de producto, proporción 5:4. Elegirla muestra la image
 
 ## Pendientes
 
-- `TODO` (product-gallery) Teclado en la fila (flechas o Tab) y si Iluminar cambia también las miniaturas.
+- En product-gallery se recorren con Tab, y con Iluminar también pasan a la versión encendida (decisión 2026-10-02).
 - `TODO` (datos) Campos de imagen y alt en Typesense (`docs/typesense-schema.md`).
 - La ficha pide `aria-pressed` y `aria-current` a la vez; se usa solo `aria-current="true"` (acordado).

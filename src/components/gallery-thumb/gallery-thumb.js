@@ -1,8 +1,7 @@
 // gallery-thumb · Figma 920:2474 · ficha doc/gallery-thumb (1463:10579)
 //
 // Miniatura de la galería de producto (5:4). Elegirla muestra la imagen grande
-// en product-gallery (todavía no construido). Toma el ancho que le da la
-// galería.
+// en product-gallery. Toma el ancho que le da la galería (layout/gallery-thumb).
 //
 //   <arq-gallery-thumb src="…/kanu-1.jpg" alt="Kanu Jardín, vista frontal" selected></arq-gallery-thumb>
 //
