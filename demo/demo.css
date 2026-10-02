@@ -313,6 +313,14 @@
   grid-auto-columns: calc(var(--arq-layout-card-min) + var(--arq-space-gap-2xl));
 }
 
+/* Columna de descargas (480 de contenido en el modal de Figma) */
+.demo-downloads {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-md);
+  max-width: calc(var(--arq-layout-filter-panel) - 2 * var(--arq-space-padding-xl-2xl));
+}
+
 /* Columna del configurador (como la de la ficha) */
 .demo-option-groups {
   display: flex;

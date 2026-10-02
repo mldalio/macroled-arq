@@ -631,6 +631,47 @@
         </div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-download-item">
+        <h2 id="demo-download-item" class="demo-heading role-label">download-item · &lt;arq-download-item&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1101:5542. Con href es un link de descarga; sin href es un botón que emite arq:download (la ficha técnica se genera al hacer clic). Default: Hover subraya el texto. Featured: caja; Hover color/surface/faint.</p>
+        <div class="demo-downloads">
+          <arq-download-item emphasis="featured">Ficha técnica</arq-download-item>
+          <div role="list">
+            <arq-download-item href="/demo/fixtures/img/producto-1.svg">IES</arq-download-item>
+            <arq-download-item href="/demo/fixtures/img/producto-2.svg">Instrucciones de instalación con un nombre de archivo largo</arq-download-item>
+          </div>
+        </div>
+        <p class="demo-note role-body-sm" data-demo-download-log>arq:download → (todavía nada)</p>
+        <div class="demo-dark" data-arq-theme="dark">
+          <div class="demo-downloads">
+            <arq-download-item emphasis="featured">Ficha técnica</arq-download-item>
+            <div role="list"><arq-download-item href="/demo/fixtures/img/producto-1.svg">CAD 2D/3D</arq-download-item></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-download-modal">
+        <h2 id="demo-download-modal" class="demo-heading role-label">download-modal · &lt;arq-download-modal&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1375:4948. Diálogo modal con scrim: Desktop abajo a la derecha (ancho layout/filter-panel); Mobile (390) abajo, ocupando el ancho. Esc, el scrim o la X lo cierran y el foco vuelve al botón. Solo las descargas que existen.</p>
+        <div class="demo-row">
+          <arq-button type="outline" show-icon icon="download" data-demo-download-open="demo-descargas">Descargas (ficha)</arq-button>
+          <arq-button type="outline" show-icon icon="download" data-demo-download-open="demo-descargas-pocas">Descargas (solo IES)</arq-button>
+        </div>
+        <arq-download-modal id="demo-descargas">
+          <h2 slot="title">Descargas</h2>
+          <arq-download-item emphasis="featured">Ficha técnica</arq-download-item>
+          <arq-download-item href="/demo/fixtures/img/producto-1.svg">Instrucciones</arq-download-item>
+          <arq-download-item href="/demo/fixtures/img/producto-2.svg">CAD 2D/3D</arq-download-item>
+          <arq-download-item href="/demo/fixtures/img/producto-3.svg">Fotometrías</arq-download-item>
+          <arq-download-item href="/demo/fixtures/img/producto-1.svg">IES</arq-download-item>
+        </arq-download-modal>
+        <arq-download-modal id="demo-descargas-pocas">
+          <h2 slot="title">Descargas</h2>
+          <arq-download-item emphasis="featured">Ficha técnica</arq-download-item>
+          <arq-download-item href="/demo/fixtures/img/producto-1.svg">IES</arq-download-item>
+        </arq-download-modal>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-catalog-nav-item">
         <h2 id="demo-catalog-nav-item" class="demo-heading role-label">catalog-nav-item · &lt;arq-catalog-nav-item&gt;</h2>
         <p class="demo-note role-body-sm">Figma 1035:2382. Link (&lt;a href&gt;); Selected = página actual (aria-current="page"). Size Default y Large. Hover y Focus son CSS.</p>

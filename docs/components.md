@@ -5,7 +5,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 - Si este archivo no coincide con Figma, manda Figma y se actualiza este archivo.
 - Al crear o modificar un componente en código, actualizar su **Estado en código** y su marca.
 
-**50 de 74 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
+**52 de 74 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
 
 | Componente | Etiqueta | Estado en código |
 | --- | --- | --- |
@@ -33,8 +33,8 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [count-badge](#count-badge) | `<arq-count-badge>` | En código ([README](../src/components/count-badge/README.md)) |
 | ✅ [cta-block](#cta-block) | `<arq-cta-block>` | En código ([README](../src/components/cta-block/README.md)) |
 | ✅ [divider](#divider) | `<arq-divider>` | En código ([README](../src/components/divider/README.md)) |
-| ⬜ [download-item](#download-item) | `<arq-download-item>` | Pendiente |
-| ⬜ [download-modal](#download-modal) | `<arq-download-modal>` | Pendiente |
+| ✅ [download-item](#download-item) | `<arq-download-item>` | En código ([README](../src/components/download-item/README.md)) |
+| ✅ [download-modal](#download-modal) | `<arq-download-modal>` | En código ([README](../src/components/download-modal/README.md)) |
 | ✅ [family-card](#family-card) | `<arq-family-card>` | En código ([README](../src/components/family-card/README.md)) |
 | ✅ [faq-item](#faq-item) | `<arq-faq-item>` | En código ([README](../src/components/faq-item/README.md)) |
 | ✅ [feature-block](#feature-block) | `<arq-feature-block>` | En código ([README](../src/components/feature-block/README.md)) |
@@ -288,7 +288,7 @@ Opción del modal de descargas, con texto role/body-xl (más grande que un butto
 - Figma: [1375-4948](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1375-4948)
 - Propiedades: Title; Breakpoint: Desktop · Mobile
 
-Modal de descargas con opciones download-item. Desktop: esquina inferior derecha, separado layout/gutter del borde. Mobile: ocupa la pantalla respetando layout/gutter. Siempre con color/overlay/scrim detrás.
+Modal de descargas con opciones download-item. Desktop: esquina inferior derecha, separado layout/gutter del borde, ancho layout/filter-panel (560). Mobile: abajo, a layout/gutter de los bordes y ocupando el ancho (alto según el contenido). Siempre con color/overlay/scrim detrás.
 
 ## family-card
 

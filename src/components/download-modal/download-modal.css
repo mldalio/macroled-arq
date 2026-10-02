@@ -1,0 +1,68 @@
+/* download-modal · Figma 1375:4948. Solo tokens semánticos.
+   Desktop es la base: esquina inferior derecha, a layout/gutter de los
+   bordes, ancho layout/filter-panel. Mobile (max-width: 767px): abajo, a
+   layout/gutter de los bordes y ocupando el ancho. Siempre con scrim. */
+
+:host {
+  display: contents;
+}
+
+/* <dialog> sin los estilos del navegador. El contenido va en .sheet: así un
+   clic en el <dialog> mismo es un clic en el scrim. */
+.dialog {
+  box-sizing: border-box;
+  inset: auto var(--arq-layout-gutter) var(--arq-layout-gutter) auto;
+  width: var(--arq-layout-filter-panel);
+  max-width: calc(100% - 2 * var(--arq-layout-gutter));
+  max-height: calc(100dvh - 2 * var(--arq-layout-gutter));
+  margin: 0;
+  padding: 0;
+  border: var(--arq-border-default) solid var(--arq-color-border-default);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-default);
+  color: var(--arq-color-text-primary);
+}
+
+.dialog::backdrop {
+  background: var(--arq-color-overlay-scrim);
+}
+
+/* Encabezado → opciones: space/gap/2xl; padding space/padding/xl-2xl */
+.sheet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-2xl);
+  padding: var(--arq-space-padding-xl-2xl);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-md);
+}
+
+.title {
+  min-width: 0;
+  color: var(--arq-color-text-primary);
+}
+
+/* Featured → lista: space/gap/md */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-md);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 767px) {
+  .dialog {
+    inset: auto var(--arq-layout-gutter) var(--arq-layout-gutter);
+    width: auto;
+    max-width: none;
+  }
+}
