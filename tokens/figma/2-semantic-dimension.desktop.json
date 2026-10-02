@@ -115,7 +115,7 @@
     "filter-panel": {
       "$type": "number",
       "$value": 560,
-      "$description": "Ancho de filter-panel en Desktop (panel lateral derecho sobre el scrim). En Mobile el panel ocupa toda la pantalla: el CSS no usa este valor.",
+      "$description": "Ancho de los paneles en Desktop: filter-panel (lateral sobre el scrim) y download-modal. En Mobile el CSS no usa este valor.",
       "$extensions": {
         "com.figma": {
           "scopes": [
