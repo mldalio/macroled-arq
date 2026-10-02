@@ -451,3 +451,14 @@ setup() {
 - **Proyectos:** mosaico fijo (`arq-project-mosaic`), como Final; no lleva carousel-controls.
 - **Imágenes:** las `src` del embed apuntan a las fotos de ejemplo de la demo (`demo/fixtures/img/home/`, bajadas de Figma y comprimidas). `TODO`: reemplazarlas por URLs de Webflow Assets antes de pegar el embed.
 - `TODO` (contenido): respuestas de dos preguntas del FAQ (Figma muestra solo las preguntas). `TODO` (urls): link de la categoría Lámparas y artefactos (dos tipos de producto; URLs de categoría PENDIENTES). `TODO` (datos): los grupos destacados reales (Figma muestra Sento, que no está en el catálogo de ejemplo).
+
+## 2026-10-02 · Productos
+
+- **Embed:** `src/pages/productos.html` con page-header List, `<arq-catalog-listing>` y footer. `demo/productos.html` lo carga tal cual (en las demos de páginas, los links a `/arq` y `/arq/productos` apuntan a su demo).
+- **`<arq-catalog-listing>`:** contenedor que consulta por `src/data/` (como el navbar) y arma toolbar, grilla, filter-panel y compare-bar en su Shadow DOM. La navegación (`arq-catalog-nav`) y el título del panel (`<h2>`) llegan por slot desde el HTML: quedan indexables, como pide catalog-nav. Sirve también para Colecciones (`unit="colecciones"`).
+- **Categoría en la URL:** `?environment=`, `?application=`, `?product_type=` (los mismos parámetros que `categoryHref`) mientras las URLs de categoría sigan PENDIENTES. El ítem del catalog-nav que enlaza a la página actual se marca solo.
+- **Links del catalog-nav:** se escriben en el embed siguiendo el árbol de `getNavigation()` (decisión 2026-10-02 · Navegación). `TODO` (datos): hoy siguen el catálogo de ejemplo; revisarlos con la base real.
+- **Acabados en la card:** `listProducts` suma `finishes` (valores de los campos con control `swatches`, hoy `color_carcasa`). Sin imagen hasta que se definan los acabados.
+- **Nombre de la card en `<h2>`** en el listado: no hay section-header entre el `<h1>` y las cards (axe: heading-order). En el Home sigue en `<h3>`.
+- **Grilla de catálogo (`arq-grid` sin `columns`):** filas a `space/gap/2xl` y columnas a `space/gap/lg`; en Mobile `space/gap/xl` y `space/gap/md`, como Final.
+- `TODO` (diseño): sidebar de 240 sin token (se usa `layout/card-min`); pantallas de carga, vacío y error; Productos como Current sin flecha en el navbar de Final (se deja `has-dropdown`). `TODO` (urls): filtros en la URL.

@@ -16,9 +16,12 @@
   align-items: start;
 }
 
-/* Sin columns: grilla de catálogo (DESIGN.md §2 · Breakpoints y grilla) */
+/* Sin columns: grilla de catálogo (DESIGN.md §2 · Breakpoints y grilla).
+   Gaps de Productos en Final: columnas space/gap/lg y filas space/gap/2xl;
+   en Mobile space/gap/md y space/gap/xl. */
 .grid.auto {
   grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
+  gap: var(--arq-space-gap-2xl) var(--arq-space-gap-lg);
 }
 
 @media (min-width: 1600px) {
@@ -32,6 +35,10 @@
 }
 
 @media (max-width: 767px) {
+  .grid.auto {
+    gap: var(--arq-space-gap-xl) var(--arq-space-gap-md);
+  }
+
   /* stack: bloques apilados, separados como en el Home (space/section/md).
      Sin columns sigue el auto-fill (layout/card-min ya vale 160 en Mobile). */
   .grid:not(.auto) {

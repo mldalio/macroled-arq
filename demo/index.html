@@ -19,6 +19,7 @@
     <header class="demo-header">
       <h1 class="demo-title role-body">Macroled Arq · Demo</h1>
       <a class="role-body" href="/demo/home.html">Página: Home</a>
+      <a class="role-body" href="/demo/productos.html">Página: Productos</a>
       <label class="demo-switch">
         <input type="checkbox" id="demo-theme" />
         <span>Dark (data-arq-theme en &lt;html&gt;)</span>
@@ -2154,6 +2155,13 @@
             </div>
             <arq-button slot="action" type="underline" show-underline show-icon icon="arrow-right" href="#demo-layout">Escribinos</arq-button>
           </arq-section>
+        </div>
+
+        <p class="demo-subheading role-body-sm">arq-catalog-listing unit="colecciones" (sin nav ni Comparar; con meta). Productos completo, con categoría, filtros, comparar e Iluminar: <a href="/demo/productos.html">demo/productos.html</a> (y <a href="/demo/productos.html?environment=Exterior">?environment=Exterior</a>)</p>
+        <div class="demo-bleed demo-layout">
+          <arq-catalog-listing unit="colecciones">
+            <h2 slot="filter-title">Filtrar</h2>
+          </arq-catalog-listing>
         </div>
 
         <p class="demo-subheading role-body-sm">Contenedor en modo Dark (arq-section usa color/bg/default)</p>

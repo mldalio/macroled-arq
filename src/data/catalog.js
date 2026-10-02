@@ -97,6 +97,12 @@ function meta(group) {
   return [group.environment.join(' · '), group.application].filter(Boolean).join(' · ');
 }
 
+// Acabados de la card (Show finishes): valores únicos de los campos con
+// control 'swatches' (attributes.js) entre las variantes del grupo.
+// TODO (acabados): imagen de cada acabado (mapeo nombre → slug, DESIGN.md §8).
+const FINISH_FIELDS = Object.keys(ATTRIBUTES).filter((field) => ATTRIBUTES[field].control === 'swatches');
+const finishes = (group) => [...new Set(group.variants.flatMap((v) => FINISH_FIELDS.map((field) => v.values[field])).filter(hasValue))];
+
 function productCard(group, variant = group.defaultVariant, withSku = false) {
   const images = { ...group.defaultVariant.images, ...pick(variant.images) };
   return {
@@ -104,6 +110,7 @@ function productCard(group, variant = group.defaultVariant, withSku = false) {
     sku: variant.sku,
     name: group.name,
     meta: meta(group),
+    finishes: finishes(group),
     href: productHref(group.id, withSku && variant !== group.defaultVariant ? variant.sku : null),
     image: images.studio ?? null,
     imageHover: images.context ?? null,

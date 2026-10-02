@@ -94,12 +94,14 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ grid | `<arq-grid>` | Grilla de tarjetas; en Mobile apila, dos columnas o carrusel ([README](../src/components/grid/README.md)) |
 | ✅ project-mosaic | `<arq-project-mosaic>` | Mosaico de fotos de proyectos del Home (DESIGN.md §12) ([README](../src/components/project-mosaic/README.md)) |
 | ✅ featured-products | `<arq-featured-products>` | Productos destacados del Home, por grupo, con datos del catálogo ([README](../src/components/featured-products/README.md)) |
+| ✅ catalog-listing | `<arq-catalog-listing>` | Listado de Productos (y Colecciones): nav, toolbar, grilla, filtros y comparar ([README](../src/components/catalog-listing/README.md)) |
 
 ### Páginas
 
 | Página | Embed | Demo |
 | --- | --- | --- |
 | ✅ Home | [src/pages/home.html](../src/pages/home.html) | `demo/home.html` |
+| ✅ Productos | [src/pages/productos.html](../src/pages/productos.html) | `demo/productos.html` |
 
 ## accordion-item
 
