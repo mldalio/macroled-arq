@@ -128,6 +128,7 @@
   --arq-layout-measure: 400px; /** Ancho máximo de un texto de lectura junto a otro elemento (bajada de section-header Description). En Mobile el texto ocupa todo el ancho. */
   --arq-layout-measure-wide: 520px; /** Ancho máximo de un texto de lectura en una columna principal (título y bajada de page-header Detail). En Mobile el texto ocupa todo el ancho. */
   --arq-layout-gallery-thumb: 105px; /** Ancho de gallery-thumb en product-gallery (105 Desktop · 76 Mobile). El alto sale de ratio/landscape (5:4). */
+  --arq-layout-filter-panel: 560px; /** Ancho de filter-panel en Desktop (panel lateral derecho sobre el scrim). En Mobile el panel ocupa toda la pantalla: el CSS no usa este valor. */
   --arq-motion-duration-fast: 120ms; /** Hover, toggle, foco. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-base: 200ms; /** Desplegables (disclosure) y menús. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-slow: 320ms; /** Fundido de imágenes de product-card. En ms. Con prefers-reduced-motion: 0. */
