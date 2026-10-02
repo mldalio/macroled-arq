@@ -8,7 +8,8 @@
 //   <arq-swatch role="radio" size="large" selected src="…">Negro</arq-swatch>    elegible (swatch-picker)
 //
 // Solo visual por defecto (role="img"). Con role="radio" (lo pone swatch-picker)
-// se elige con clic, Enter o Espacio y tiene Hover, Selected y Focus.
+// se elige con clic, Enter o Espacio y tiene Hover, Selected y Focus. Con
+// disabled no se puede elegir y el grupo la saltea con las flechas.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { Selectable } from '../../base/selectable.js';
@@ -20,6 +21,7 @@ class ArqSwatch extends ArqElement {
   static properties = {
     size: { type: String, values: ['small', 'default', 'large'], default: 'small' }, // Size (def. Small)
     selected: { type: Boolean }, // State=Selected
+    disabled: { type: Boolean }, // State=Disabled: acabado sin combinación con lo ya elegido
     src: { type: String },
     value: { type: String },
   };
