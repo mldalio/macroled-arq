@@ -11,6 +11,7 @@ import './demo-configurator.js';
 import './demo-gallery.js';
 import './demo-filters.js';
 import './demo-glosario.js';
+import './demo-compare.js';
 import './demo-nav.js';
 import tokens from '/tokens/tokens.json';
 

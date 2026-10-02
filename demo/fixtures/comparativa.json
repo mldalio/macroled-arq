@@ -1,0 +1,34 @@
+{
+  "products": [
+    { "sku": "KANU-J-500-12W-N-WW", "name": "Kanu Jardín", "meta": "Exterior · Jardín", "image": "/demo/fixtures/img/card-estudio.svg" },
+    { "sku": "KANU-J-700-18W-N-WW", "name": "Kanu Jardín 700", "meta": "Exterior · Jardín" },
+    { "sku": "LARGO-1", "name": "Producto con un nombre largo que ocupa dos líneas", "meta": "Interior · Colgante", "image": "/demo/fixtures/img/card-contexto.svg" }
+  ],
+  "groups": [
+    {
+      "label": "Características lumínicas",
+      "rows": [
+        { "label": "Potencia", "values": ["12 W", "18 W", "12 W"] },
+        { "label": "Flujo luminoso", "values": ["850 lm", "1250 lm", "850 lm"] },
+        { "label": "Temperatura de color", "values": ["3000 K", "3000 K", "3000 K"] },
+        { "label": "IRC", "values": ["> 90", "> 90", "> 80"] }
+      ]
+    },
+    {
+      "label": "Características físicas",
+      "rows": [
+        { "label": "Altura", "values": ["500 mm", "700 mm", "1200 mm"] },
+        { "label": "Material", "values": ["Aluminio", "Aluminio", "Aluminio"] },
+        { "label": "Acabado", "values": ["Negro", "Negro", "Blanco texturado con difusor de policarbonato opal"] },
+        { "label": "Grado de protección", "values": ["IP65", "IP65"] }
+      ]
+    },
+    {
+      "label": "Información comercial",
+      "rows": [
+        { "label": "SKU", "values": ["KANU-J-500-12W-N-WW", "KANU-J-700-18W-N-WW", "LARGO-1"] },
+        { "label": "Garantía", "values": ["2 años", "2 años", "2 años"] }
+      ]
+    }
+  ]
+}

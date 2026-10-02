@@ -1,0 +1,135 @@
+/* compare-table + compare-group (1263:4320) + compare-row (1263:4317).
+   Solo tokens semánticos. Desktop es la base; Mobile (max-width: 767px):
+   columnas de layout/compare-column con scroll y la etiqueta fija. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Un solo scroll para cabecera y filas; layout/gutter a los lados (en Mobile
+   el scroll llega al borde de la pantalla) */
+.scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding-inline: var(--arq-layout-gutter);
+}
+
+.scroll:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: calc(-1 * var(--arq-border-strong));
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+th,
+td {
+  padding: 0;
+  background: var(--arq-color-bg-default);
+  text-align: start;
+  vertical-align: middle;
+  font-weight: inherit;
+}
+
+/* Columna de etiquetas: layout/compare-label, gap space/gap/lg hasta los valores */
+.label-cell {
+  width: var(--arq-layout-compare-label);
+  padding-inline-end: var(--arq-space-gap-lg);
+}
+
+/* Cabecera: un producto por columna (compare-slot), padding inferior space/gap/lg */
+thead th,
+thead td {
+  padding-block-end: var(--arq-space-gap-lg);
+  vertical-align: top;
+}
+
+.product {
+  padding-inline-end: var(--arq-space-gap-lg);
+}
+
+.mobile-name {
+  display: none;
+  color: var(--arq-color-text-primary);
+}
+
+/* compare-group: role/label en color/text/primary, arriba space/gap/2xl,
+   abajo space/padding/sm-md, línea inferior border/default en color/border/strong */
+.group th {
+  padding-block: var(--arq-space-gap-2xl) var(--arq-space-padding-sm-md);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-strong);
+  color: var(--arq-color-text-primary);
+}
+
+/* compare-row: etiqueta role/body en color/text/secondary; valores
+   role/body-lg-regular en color/text/primary con línea izquierda
+   color/border/subtle y space/padding/md; padding vertical space/padding/md;
+   línea inferior color/border/subtle */
+.row > * {
+  padding-block: var(--arq-space-padding-md);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+.row-label {
+  color: var(--arq-color-text-secondary);
+  overflow-wrap: break-word;
+}
+
+.value {
+  padding-inline: var(--arq-space-padding-md) var(--arq-space-gap-lg);
+  border-left: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  color: var(--arq-color-text-primary);
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 767px) {
+  .scroll {
+    padding-inline: 0;
+  }
+
+  .table {
+    width: auto;
+    table-layout: auto;
+  }
+
+  /* Etiqueta fija a la izquierda con fondo color/bg/default */
+  .label-cell {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    min-width: var(--arq-layout-compare-label);
+    max-width: var(--arq-layout-compare-label);
+    padding-inline-start: var(--arq-layout-gutter);
+    box-sizing: content-box;
+  }
+
+  .value,
+  .product {
+    box-sizing: border-box;
+    min-width: var(--arq-layout-compare-column);
+    max-width: var(--arq-layout-compare-column);
+  }
+
+  .product {
+    padding-inline-start: var(--arq-space-padding-md);
+  }
+
+  thead th .mobile-name {
+    display: block;
+    margin-top: var(--arq-space-gap-sm);
+  }
+
+  /* El título del grupo queda a la vista al desplazar */
+  .group th {
+    padding-inline-start: var(--arq-layout-gutter);
+  }
+
+  .group-label {
+    position: sticky;
+    left: var(--arq-layout-gutter);
+  }
+}

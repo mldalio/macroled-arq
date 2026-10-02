@@ -39,6 +39,7 @@ import './components/catalog-toolbar/catalog-toolbar.js';
 import './components/product-card/product-card.js';
 import './components/compare-slot/compare-slot.js';
 import './components/compare-bar/compare-bar.js';
+import './components/compare-table/compare-table.js';
 import './components/sku/sku.js';
 import './components/swatch/swatch.js';
 import './components/option-tile/option-tile.js';

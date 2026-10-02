@@ -12,7 +12,7 @@ const GROUPS = [
   ['Acciones y navegación', ['button', 'icon-button', 'count-badge', 'divider', 'logo', 'breadcrumb', 'nav-link', 'tab', 'footer-link', 'carousel-controls']],
   ['Formularios', ['input', 'checkbox', 'toggle', 'choice-chip', 'file-upload', 'form-message', 'form-section-header']],
   ['Producto y filtros', ['option-tile', 'swatch', 'swatch-picker', 'option-group', 'select-option', 'sku', 'gallery-thumb', 'product-gallery', 'family-card', 'download-item', 'download-modal', 'select', 'filter-bar', 'variants-table', 'spec-row', 'spec-list', 'accordion-item', 'filter-chip']],
-  ['Listados', ['catalog-nav-item', 'catalog-nav', 'catalog-toolbar', 'product-card', 'compare-slot', 'compare-bar', 'filter-row', 'filter-panel']],
+  ['Listados', ['catalog-nav-item', 'catalog-nav', 'catalog-toolbar', 'product-card', 'compare-slot', 'compare-bar', 'compare-table', 'filter-row', 'filter-panel']],
   ['Bloques y tarjetas', ['section-header', 'page-header', 'hero', 'feature-block', 'category-card', 'line-card', 'faq-item', 'cta-block', 'footer']],
 ];
 

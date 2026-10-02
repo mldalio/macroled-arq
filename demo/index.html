@@ -902,6 +902,24 @@
         <arq-compare-bar></arq-compare-bar>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-compare-table">
+        <h2 id="demo-compare-table" class="demo-heading role-label">compare-table · &lt;arq-compare-table&gt;</h2>
+        <p class="demo-note role-body-sm">Solo código, con compare-group (1263:4320) y compare-row (1263:4317). Tabla real con un solo scroll; etiquetas en layout/compare-label (fijas en Mobile) y columnas de layout/compare-column en Mobile. «Solo diferencias» oculta las filas iguales y los grupos vacíos. Cabecera provisoria con compare-slot (compare-header pendiente). Quitar emite arq:remove.</p>
+        <p class="demo-note role-body-sm">3 productos, con valores faltantes («—») y texto largo:</p>
+        <div class="demo-bleed">
+          <arq-compare-table data-demo-compare-table="3"></arq-compare-table>
+        </div>
+        <p class="demo-note role-body-sm">2 productos, «Solo diferencias» encendido:</p>
+        <div class="demo-bleed">
+          <arq-compare-table data-demo-compare-table="2" only-differences label="Comparación de 2 productos"></arq-compare-table>
+        </div>
+        <p class="demo-note role-body-sm">Dark (sección con data-arq-theme="dark"):</p>
+        <div class="demo-bleed demo-dark" data-arq-theme="dark">
+          <arq-compare-table data-demo-compare-table="3" label="Comparación en Dark"></arq-compare-table>
+        </div>
+        <p class="demo-note role-body-sm" data-demo-compare-table-log>arq:remove → (todavía nada)</p>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-filter-row">
         <h2 id="demo-filter-row" class="demo-heading role-label">filter-row · &lt;arq-filter-row&gt;</h2>
         <p class="demo-note role-body-sm">Figma 1225:3405. Abierta, cerrada y con texto largo. Opciones: checkbox Size=Large, cantidad libre. Hover cambia la línea y el ícono; foco alrededor de la fila.</p>
