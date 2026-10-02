@@ -1,0 +1,118 @@
+/* filter-panel · Figma 1225:13576. Solo tokens semánticos.
+   Desktop es la base: panel lateral derecho a todo el alto, de
+   layout/filter-panel, sobre color/overlay/scrim. Mobile (max-width: 767px):
+   pantalla completa, sin scrim. */
+
+:host {
+  display: contents;
+}
+
+/* <dialog> sin los estilos del navegador. El contenido va en .sheet: así un
+   clic en el <dialog> mismo es un clic en el scrim. */
+.dialog {
+  box-sizing: border-box;
+  inset: 0 0 0 auto;
+  width: var(--arq-layout-filter-panel);
+  max-width: 100%;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: var(--arq-border-default) solid var(--arq-color-border-default);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-default);
+  color: var(--arq-color-text-primary);
+  overflow: hidden;
+}
+
+.dialog::backdrop {
+  background: var(--arq-color-overlay-scrim);
+}
+
+/* Header · applied · body (con scroll propio) · footer, gap space/gap/lg,
+   padding space/padding/xl-2xl */
+.sheet {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-lg);
+  height: 100%;
+  padding: var(--arq-space-padding-xl-2xl);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-md);
+}
+
+/* Título (role/heading-1) y Summary (role/body, color/text/secondary), gap space/gap/xs */
+.titles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xs);
+  min-width: 0;
+}
+
+.title {
+  color: var(--arq-color-text-primary);
+}
+
+.summary {
+  margin: 0;
+  color: var(--arq-color-text-secondary);
+}
+
+/* Filtros aplicados: filter-chip con wrap, gap space/gap/sm */
+.applied {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--arq-space-gap-sm);
+}
+
+/* Filas con scroll propio. El padding space/padding/xs deja lugar al anillo
+   de foco de las filas, que el overflow cortaría; el margen lo compensa. */
+.body {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: calc(-1 * var(--arq-space-padding-xs));
+  padding: var(--arq-space-padding-xs);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* Footer fijo: "Borrar todo" (Underline) y "Ver N productos" (Filled) */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-lg);
+}
+
+/* ── Mobile: pantalla completa, sin scrim ───────────────────────── */
+@media (max-width: 767px) {
+  .dialog {
+    inset: 0;
+    width: 100%;
+    border: 0;
+  }
+
+  .dialog::backdrop {
+    background: var(--arq-color-surface-transparent);
+  }
+
+  /* padding space/padding/lg arriba y abajo, layout/gutter a los lados; gap space/gap/xl */
+  .sheet {
+    gap: var(--arq-space-gap-xl);
+    padding: var(--arq-space-padding-lg) var(--arq-layout-gutter);
+  }
+
+  .footer {
+    justify-content: flex-start;
+  }
+
+  .apply {
+    flex: 1 1 auto;
+  }
+}

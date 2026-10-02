@@ -659,6 +659,93 @@
         </div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-filter-row">
+        <h2 id="demo-filter-row" class="demo-heading role-label">filter-row · &lt;arq-filter-row&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1225:3405. Abierta, cerrada y con texto largo. Opciones: checkbox Size=Large, cantidad libre. Hover cambia la línea y el ícono; foco alrededor de la fila.</p>
+        <div class="demo-filter-rows">
+          <arq-filter-row open>
+            <span slot="label">Potencia</span>
+            <arq-checkbox size="large" show-label name="potencia" value="3">3 W</arq-checkbox>
+            <arq-checkbox size="large" show-label name="potencia" value="7">7 W</arq-checkbox>
+            <arq-checkbox size="large" show-label name="potencia" value="8" checked>8 W</arq-checkbox>
+            <arq-checkbox size="large" show-label name="potencia" value="12" checked>12 W</arq-checkbox>
+            <arq-checkbox size="large" show-label name="potencia" value="15">15 W</arq-checkbox>
+            <arq-checkbox size="large" show-label name="potencia" value="18">18 W</arq-checkbox>
+          </arq-filter-row>
+          <arq-filter-row>
+            <span slot="label">Ángulo</span>
+            <arq-checkbox size="large" show-label name="angulo" value="40">40°</arq-checkbox>
+          </arq-filter-row>
+          <arq-filter-row open>
+            <span slot="label">Temperatura de color, con un nombre de atributo largo</span>
+            <arq-checkbox size="large" show-label name="temperatura" value="2700">2700 K · cálida, para ambientes residenciales y hoteleros</arq-checkbox>
+          </arq-filter-row>
+        </div>
+        <div class="demo-dark" data-arq-theme="dark">
+          <div class="demo-filter-rows">
+            <arq-filter-row open>
+              <span slot="label">Potencia (Dark)</span>
+              <arq-checkbox size="large" show-label name="potencia" value="8" checked>8 W</arq-checkbox>
+              <arq-checkbox size="large" show-label name="potencia" value="12">12 W</arq-checkbox>
+            </arq-filter-row>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-filter-panel">
+        <h2 id="demo-filter-panel" class="demo-heading role-label">filter-panel · &lt;arq-filter-panel&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1225:13576. Diálogo modal: Desktop lateral de layout/filter-panel sobre el scrim; Mobile (390) pantalla completa. Summary y chips salen de lo marcado. «Ver N» aplica y cierra; la X, el scrim o Esc descartan los cambios. El número es de ejemplo (lo calcula la página).</p>
+        <div class="demo-row">
+          <arq-button type="outline" data-demo-filter-open="demo-panel-productos">Filtrar (Productos)</arq-button>
+          <arq-button type="outline" data-demo-filter-open="demo-panel-vacio">Filtrar (sin filtros, Colecciones)</arq-button>
+        </div>
+        <p class="demo-note role-body-sm" data-demo-filter-log="demo-panel-productos">arq:apply → (todavía nada)</p>
+        <arq-filter-panel id="demo-panel-productos">
+          <h2 slot="title">Filtrar</h2>
+          <arq-filter-row open>
+            <span slot="label">Potencia</span>
+            <arq-checkbox size="large" show-label name="potencia" value="3">3 W</arq-checkbox>
+            <arq-checkbox size="large" show-label name="potencia" value="7">7 W</arq-checkbox>
+            <arq-checkbox size="large" show-label name="potencia" value="8" checked>8 W</arq-checkbox>
+            <arq-checkbox size="large" show-label name="potencia" value="12" checked>12 W</arq-checkbox>
+            <arq-checkbox size="large" show-label name="potencia" value="15">15 W</arq-checkbox>
+            <arq-checkbox size="large" show-label name="potencia" value="18">18 W</arq-checkbox>
+          </arq-filter-row>
+          <arq-filter-row open>
+            <span slot="label">Temperatura</span>
+            <arq-checkbox size="large" show-label name="temperatura" value="2700">2700 K</arq-checkbox>
+            <arq-checkbox size="large" show-label name="temperatura" value="3000" checked>3000 K</arq-checkbox>
+            <arq-checkbox size="large" show-label name="temperatura" value="4000">4000 K</arq-checkbox>
+          </arq-filter-row>
+          <arq-filter-row>
+            <span slot="label">Ángulo</span>
+            <arq-checkbox size="large" show-label name="angulo" value="40">40°</arq-checkbox>
+            <arq-checkbox size="large" show-label name="angulo" value="120">120°</arq-checkbox>
+          </arq-filter-row>
+          <arq-filter-row>
+            <span slot="label">Diámetro de corte</span>
+            <arq-checkbox size="large" show-label name="corte" value="55">55 mm</arq-checkbox>
+          </arq-filter-row>
+          <arq-filter-row>
+            <span slot="label">Largo</span>
+            <arq-checkbox size="large" show-label name="largo" value="500">500 mm</arq-checkbox>
+          </arq-filter-row>
+          <arq-filter-row>
+            <span slot="label">Color</span>
+            <arq-checkbox size="large" show-label name="color" value="negro">Negro</arq-checkbox>
+            <arq-checkbox size="large" show-label name="color" value="blanco">Blanco</arq-checkbox>
+          </arq-filter-row>
+        </arq-filter-panel>
+        <arq-filter-panel id="demo-panel-vacio" unit="colecciones">
+          <h2 slot="title">Filtrar</h2>
+          <arq-filter-row>
+            <span slot="label">Aplicación</span>
+            <arq-checkbox size="large" show-label name="aplicacion" value="jardin">Jardín</arq-checkbox>
+            <arq-checkbox size="large" show-label name="aplicacion" value="pared">Pared</arq-checkbox>
+          </arq-filter-row>
+        </arq-filter-panel>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-sku">
         <h2 id="demo-sku" class="demo-heading role-label">sku · &lt;arq-sku&gt;</h2>
         <p class="demo-note role-body-sm">Figma 920:2539. Clic o Enter copia y muestra «Copiado» durante motion/duration/feedback. Hover: el ícono pasa a icon/primary (transición fast). «Simular falla» rompe el portapapeles una vez: el código queda seleccionado y se anuncia «Copialo con Ctrl+C».</p>

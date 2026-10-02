@@ -259,6 +259,11 @@
   }
 }
 
+/* Columna de filter-row (478 en el panel de Figma) */
+.demo-filter-rows {
+  max-width: calc(var(--arq-layout-filter-panel) - 2 * var(--arq-space-padding-xl-2xl));
+}
+
 /* Columna del configurador (como la de la ficha) */
 .demo-option-groups {
   display: flex;
