@@ -186,6 +186,36 @@
           }
         }
       }
+    },
+    "compare-label": {
+      "$type": "number",
+      "$value": 120,
+      "$description": "Columna de etiquetas de la comparativa (compare-row, compare-group y la columna de controles de compare-header). En Mobile queda fija al desplazar.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-compare-label)"
+          }
+        }
+      }
+    },
+    "compare-column": {
+      "$type": "number",
+      "$value": 160,
+      "$description": "Ancho de cada columna de producto de la comparativa en Mobile (con scroll horizontal). En Desktop las columnas se reparten el ancho.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-compare-column)"
+          }
+        }
+      }
     }
   },
   "space": {
