@@ -10,7 +10,7 @@
 const GROUPS = [
   ['Fundamentos', ['colors', 'roles', 'spaces', 'icons', 'base']],
   ['Acciones y navegación', ['button', 'icon-button', 'count-badge', 'divider', 'logo', 'breadcrumb', 'nav-link', 'navbar', 'mega-menu', 'mega-link', 'search-field', 'search-result', 'search-dropdown', 'tab', 'footer-link', 'carousel-controls']],
-  ['Formularios', ['input', 'checkbox', 'toggle', 'choice-chip', 'file-upload', 'form-message', 'form-section-header']],
+  ['Formularios', ['input', 'checkbox', 'toggle', 'choice-chip', 'file-upload', 'form-message', 'form-section-header', 'contact-item', 'link-list']],
   ['Producto y filtros', ['option-tile', 'swatch', 'swatch-picker', 'option-group', 'select-option', 'sku', 'gallery-thumb', 'product-gallery', 'family-card', 'download-item', 'download-modal', 'select', 'filter-bar', 'variants-table', 'spec-row', 'spec-list', 'accordion-item', 'filter-chip']],
   ['Listados', ['catalog-nav-item', 'catalog-nav', 'catalog-toolbar', 'product-card', 'compare-slot', 'compare-bar', 'compare-table', 'filter-row', 'filter-panel']],
   ['Bloques y tarjetas', ['section-header', 'page-header', 'hero', 'feature-block', 'category-card', 'line-card', 'faq-item', 'cta-block', 'footer']],

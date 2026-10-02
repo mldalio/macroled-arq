@@ -48,6 +48,8 @@ import './components/search-see-all/search-see-all.js';
 import './components/search-dropdown/search-dropdown.js';
 import './components/search-screen/search-screen.js';
 import './components/navbar/navbar.js';
+import './components/contact-item/contact-item.js';
+import './components/link-list/link-list.js';
 import './components/sku/sku.js';
 import './components/swatch/swatch.js';
 import './components/option-tile/option-tile.js';

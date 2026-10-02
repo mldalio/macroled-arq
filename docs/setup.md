@@ -182,8 +182,8 @@ Lau construye todos los componentes. El orden sale de las dependencias (descripc
 | Listados | ✅ filter-row | icon-button, checkbox, disclosure |
 | Comparativa | ✅ compare-slot | icon-button |
 | Comparativa | ✅ compare-group, ✅ compare-row (en `<arq-compare-table>`) | toggle, compare-slot |
-| Contacto | contact-item | — |
-| Contacto | link-list | button |
+| Contacto | ✅ contact-item | — |
+| Contacto | ✅ link-list | button |
 | Navbar | ✅ search-field | icon-button |
 | Navbar | ✅ search-result, ✅ search-see-all | íconos |
 | Navbar | ✅ mega-link | íconos, disclosure |

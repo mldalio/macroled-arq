@@ -688,3 +688,9 @@
 .demo-navbar:focus-within {
   z-index: 1;
 }
+
+/* contact-item: columna de canales (en Contacto, layout/measure) */
+.demo-contact {
+  display: grid;
+  max-width: var(--arq-layout-measure);
+}

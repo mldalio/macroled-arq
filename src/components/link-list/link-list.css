@@ -1,0 +1,27 @@
+/* link-list · Figma 1303:4377. Solo tokens semánticos. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Título + lista, gap space/gap/md */
+.list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-md);
+}
+
+.title {
+  color: var(--arq-color-text-tertiary);
+}
+
+/* Links (button Underline con ícono), separados space/gap/md como el set
+   (la ficha dice space/gap/sm: manda el set) */
+.links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-md);
+}

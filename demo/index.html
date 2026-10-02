@@ -383,6 +383,46 @@
         </div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-contact-item">
+        <h2 id="demo-contact-item" class="demo-heading role-label">contact-item · &lt;arq-contact-item&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1303:4340. Email (mailto:), teléfono (tel:), valor largo y sin link. Hover subraya el valor; Focus pone el anillo alrededor del ítem.</p>
+        <div class="demo-contact">
+          <arq-contact-item href="mailto:info@macroled.com.ar"><span slot="label">Email</span>info@macroled.com.ar</arq-contact-item>
+          <arq-contact-item href="tel:+541100000000"><span slot="label">Teléfono</span>+54 11 0000-0000</arq-contact-item>
+          <arq-contact-item href="https://maps.google.com"><span slot="label">Dirección</span>Avenida con un nombre largo 1234, Ciudad Autónoma de Buenos Aires</arq-contact-item>
+          <arq-contact-item><span slot="label">Horario</span>Lunes a viernes de 9 a 18</arq-contact-item>
+        </div>
+        <div class="demo-dark" data-arq-theme="dark">
+          <div class="demo-contact">
+            <arq-contact-item href="mailto:info@macroled.com.ar"><span slot="label">Email</span>info@macroled.com.ar</arq-contact-item>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-link-list">
+        <h2 id="demo-link-list" class="demo-heading role-label">link-list · &lt;arq-link-list&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1303:4377. Dos y tres links (Show link 3: en código la cantidad es libre). Cada link es button Underline con ícono.</p>
+        <div class="demo-row">
+          <arq-link-list>
+            <span slot="title">Recursos técnicos</span>
+            <arq-button type="underline" show-underline show-icon icon="arrow-right" href="#demo-link-list">Centro de descargas</arq-button>
+            <arq-button type="underline" show-underline show-icon icon="arrow-right" href="#demo-link-list">Glosario técnico</arq-button>
+          </arq-link-list>
+          <arq-link-list>
+            <span slot="title">Más recursos</span>
+            <arq-button type="underline" show-underline show-icon icon="arrow-right" href="#demo-link-list">Catálogo PDF · 8 MB</arq-button>
+            <arq-button type="underline" show-underline show-icon icon="arrow-right" href="#demo-link-list">Archivos IES</arq-button>
+            <arq-button type="underline" show-underline show-icon icon="arrow-right" href="#demo-link-list">Glosario técnico</arq-button>
+          </arq-link-list>
+          <div class="demo-dark" data-arq-theme="dark">
+            <arq-link-list>
+              <span slot="title">Recursos técnicos (Dark)</span>
+              <arq-button type="underline" show-underline show-icon icon="arrow-right" href="#demo-link-list">Centro de descargas</arq-button>
+            </arq-link-list>
+          </div>
+        </div>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-form-section-header">
         <h2 id="demo-form-section-header" class="demo-heading role-label">form-section-header · &lt;arq-form-section-header&gt;</h2>
         <p class="demo-note role-body-sm">Figma 1303:4382. Dentro de un &lt;legend&gt;. Con número, sin número y texto largo.</p>

@@ -5,7 +5,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 - Si este archivo no coincide con Figma, manda Figma y se actualiza este archivo.
 - Al crear o modificar un componente en código, actualizar su **Estado en código** y su marca.
 
-**69 de 74 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
+**71 de 74 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
 
 | Componente | Etiqueta | Estado en código |
 | --- | --- | --- |
@@ -29,7 +29,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ⬜ [compare-product](#compare-product) | `<arq-compare-product>` | Pendiente |
 | ✅ [compare-row](#compare-row) | dentro de `<arq-compare-table>` | En código, como parte de compare-table ([README](../src/components/compare-table/README.md)) |
 | ✅ [compare-slot](#compare-slot) | `<arq-compare-slot>` | En código ([README](../src/components/compare-slot/README.md)) |
-| ⬜ [contact-item](#contact-item) | `<arq-contact-item>` | Pendiente |
+| ✅ [contact-item](#contact-item) | `<arq-contact-item>` | En código ([README](../src/components/contact-item/README.md)) |
 | ✅ [count-badge](#count-badge) | `<arq-count-badge>` | En código ([README](../src/components/count-badge/README.md)) |
 | ✅ [cta-block](#cta-block) | `<arq-cta-block>` | En código ([README](../src/components/cta-block/README.md)) |
 | ✅ [divider](#divider) | `<arq-divider>` | En código ([README](../src/components/divider/README.md)) |
@@ -52,7 +52,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [icon-button](#icon-button) | `<arq-icon-button>` | En código ([README](../src/components/icon-button/README.md)) |
 | ✅ [input](#input) | `<arq-input>` | En código ([README](../src/components/input/README.md)) |
 | ✅ [line-card](#line-card) | `<arq-line-card>` | En código ([README](../src/components/line-card/README.md)) |
-| ⬜ [link-list](#link-list) | `<arq-link-list>` | Pendiente |
+| ✅ [link-list](#link-list) | `<arq-link-list>` | En código ([README](../src/components/link-list/README.md)) |
 | ✅ [logo](#logo) | `<arq-logo>` | En código ([README](../src/components/logo/README.md)) |
 | ✅ [mega-link](#mega-link) | `<arq-mega-link>` | En código ([README](../src/components/mega-link/README.md)) |
 | ✅ [mega-menu](#mega-menu) | `<arq-mega-menu>` | En código ([README](../src/components/mega-menu/README.md)) |
