@@ -141,6 +141,51 @@
           }
         }
       }
+    },
+    "compare-thumb": {
+      "$type": "number",
+      "$value": 48,
+      "$description": "Foto cuadrada de compare-slot Size=Default (compare-bar y compare-header Compact en Desktop).",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-compare-thumb)"
+          }
+        }
+      }
+    },
+    "compare-thumb-sm": {
+      "$type": "number",
+      "$value": 28,
+      "$description": "Ancho de compare-slot Size=Compact (miniatura en Mobile). El alto sale de ratio/portrait (7:10).",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-compare-thumb-sm)"
+          }
+        }
+      }
+    },
+    "compare-slot": {
+      "$type": "number",
+      "$value": 400,
+      "$description": "Ancho máximo de compare-slot Size=Default, para que no se estire en pantallas anchas.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-compare-slot)"
+          }
+        }
+      }
     }
   },
   "space": {
