@@ -216,6 +216,21 @@
           }
         }
       }
+    },
+    "mega-menu-image": {
+      "$type": "number",
+      "$value": 438,
+      "$description": "Ancho de la imagen del mega-menu (a la derecha de las columnas). El alto sale de ratio/portrait-soft (4:5).",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-mega-menu-image)"
+          }
+        }
+      }
     }
   },
   "space": {
