@@ -6,7 +6,7 @@
 //   <arq-filter-chip>8 W</arq-filter-chip>
 //
 // Al tocarlo dispara un click (como un <button>); filter-panel quita el filtro
-// y mueve el foco al chip siguiente (o a Summary si era el último).
+// y mueve el foco al chip siguiente (o al anterior, o a cerrar si era el último).
 // Nombre accesible: "Quitar filtro 8 W".
 
 import { ArqElement } from '../../base/arq-element.js';

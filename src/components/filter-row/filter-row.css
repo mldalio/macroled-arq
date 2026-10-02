@@ -1,0 +1,94 @@
+/* filter-row · Figma 1225:3405. Solo tokens semánticos.
+   Línea inferior border/default en color/border/subtle; padding vertical
+   space/padding/md; gap encabezado–opciones space/gap/md. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.row {
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+/* El padding del ítem va en el botón (todo el alto es clickeable); abierta,
+   el de abajo pasa a ser el gap hasta las opciones. */
+.header {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-md);
+  width: 100%;
+  margin: 0;
+  padding: var(--arq-space-padding-md) 0;
+  border: 0;
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-primary);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+}
+
+:host([open]) .header {
+  padding-bottom: var(--arq-space-gap-md);
+}
+
+.label {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+/* Ícono como icon-button Size=Default, Background=None (24 = space/padding/xs
+   + icon/md); Hover color/surface/hover */
+.icon-box {
+  display: inline-flex;
+  flex: none;
+  padding: var(--arq-space-padding-xs);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-icon-primary);
+}
+
+.icon {
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+}
+
+:host(:not([open])) [data-icon='minus'],
+:host([open]) [data-icon='plus'] {
+  display: none;
+}
+
+/* Opciones: checkbox Large, gap space/gap/sm-md; abajo space/padding/sm (el
+   del set) + space/padding/md (el padding inferior de la fila). */
+.options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-sm-md);
+  padding-bottom: calc(var(--arq-space-padding-sm) + var(--arq-space-padding-md));
+}
+
+/* State=Hover: línea color/border/default e ícono en Hover (sin fondo, como el set) */
+@media (hover: hover) {
+  .row:has(.header:hover) {
+    border-bottom-color: var(--arq-color-border-default);
+  }
+
+  .header:hover .icon-box {
+    background: var(--arq-color-surface-hover);
+  }
+}
+
+/* Foco: anillo de DESIGN.md §7 alrededor de la fila, como la capa focus-ring
+   del set (2px: valor fijado ahí) */
+.row:has(.header:focus-visible) {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.header:focus {
+  outline: none;
+}
