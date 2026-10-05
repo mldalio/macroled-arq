@@ -414,11 +414,18 @@ setup() {
 
 - Sin definir. El swatch muestra el neutro con el nombre (DESIGN.md §8) hasta que haya imágenes y la tabla de códigos (N, V, R, B, BN, P).
 
+## 2026-10-05 · Ficha 60/40, scroll de la galería de ambiente y datos mixtos
+
+- **Hero de la ficha:** galería y configurador reparten el ancho 60/40 (`minmax(0, 3fr) minmax(layout/measure, 2fr)`), separados `space/gap/5xl`. Antes el configurador medía `layout/measure` fijo y la galería tomaba el resto (≈ 70 % a 1440 y más en pantallas anchas): la foto quedaba muy grande. Desde 1023 px sigue apilado. Figma (Final, 770 / 440) no se cambió.
+- **Galería de ambiente:** snap `x proximity` (con `mandatory` la fila se re-alineaba en medio de un gesto del trackpad y cada vez que cargaba una foto, y peleaba con el scroll vertical), `overscroll-behavior-x: contain` (al llegar al final no pasa al historial del navegador) y `aspect-ratio: auto 4 / 5` en las fotos: ocupan lugar antes de cargar y después toman su proporción real.
+- **Datos mixtos:** `VITE_DATA_SOURCE=mixto` (solo `npm run dev`) usa lo que trae Typesense y completa lo vacío con `demo/fixtures/completar.js`: primero con el catálogo de ejemplo (mismo SKU o mismo grupo), y si no, con datos inventados. Inventado: grupo y nombre (familia + subfamilia, o el primer tramo del SKU si falta la familia), colección (la familia), color (código del SKU: N negro, B blanco, V verde, R terracota, P plata, BN blanco y negro, y los nombres de DAO), altura (tramo en mm del SKU), atributos de variante (los que cambian entre SKU), textos, especificaciones (las de Kanu Jardín) e imágenes de ejemplo. Lo que el índice ya trae (potencia, tamaño, CRI, UGR, IES, ambiente, subfamilia, `variant_attributes`, predeterminado) no se toca. El build sigue usando solo Typesense.
+- **Orden de las opciones:** el configurador ordena los valores de cada atributo con números de menor a mayor y el resto alfabético (`variantValues`, `src/data/variants.js`): Typesense devuelve los SKU en un orden que no sirve («90 cm» antes que «50 cm»).
+
 ## 2026-10-02 · Datos de ejemplo mientras se completa la base
 
 - **Para qué:** armar y diseñar todas las páginas antes de que la base de Typesense esté completa (hoy no trae grupos, nombres, textos ni imágenes: `docs/typesense-schema.md`, Estado del índice).
 - **Dos fuentes, una forma:** `src/data/source.js` carga el catálogo desde Typesense o desde el ejemplo (`demo/fixtures/catalogo.json`). Las dos dan la misma forma (`src/data/catalog.js`), así que páginas y componentes no saben cuál se usa.
-- **Cómo se elige:** `VITE_DATA_SOURCE=mock` en `.env`, solo con `npm run dev`. El build (`dist/arq.js`) siempre usa Typesense y no incluye el ejemplo.
+- **Cómo se elige:** `VITE_DATA_SOURCE=mock` en `.env`, solo con `npm run dev` (desde 2026-10-05 también `mixto`, ver 2026-10-05 · Ficha 60/40, scroll de la galería de ambiente y datos mixtos). El build (`dist/arq.js`) siempre usa Typesense y no incluye el ejemplo.
 - **Cuando la base esté completa:** se ajusta solo `src/data/typesense-adapter.js` (nombres de campo de identificación, textos e imágenes) y se cambia `.env` a `typesense`. Mientras falte `product_group_id`, cada SKU es su propio grupo.
 - **Catálogo en memoria:** se carga una vez por página y `catalog.js` resuelve listados, filtros, ficha, comparativa, búsqueda y navegación (2026-10-02 · Listados: una sola consulta).
 - **Campos técnicos:** etiquetas, sección del acordeón y de la comparativa, y filtros en `src/data/attributes.js`. `TODO` (diseño): confirmar las secciones y el reparto de los campos (propuesta a partir de Ficha y Comparativa de Final).

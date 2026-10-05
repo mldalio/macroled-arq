@@ -57,12 +57,13 @@
   overflow-wrap: break-word;
 }
 
-/* TODO (diseño): en Final las columnas miden 770 y 440, separadas 110, sin
-   token. La del configurador usa layout/measure (400), el más cercano (como la
-   bajada de 440 de feature-block), y la separación space/gap/5xl (96). */
+/* Galería y configurador reparten el ancho 60/40 (3fr · 2fr), con
+   layout/measure (400) como mínimo del configurador. Separación
+   space/gap/5xl (96); en Final mide 110, sin token
+   (docs/decisiones.md, 2026-10-05 · Ficha 60/40, scroll de la galería de ambiente y datos mixtos). */
 .configurator {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) var(--arq-layout-measure);
+  grid-template-columns: minmax(0, 3fr) minmax(var(--arq-layout-measure), 2fr);
   column-gap: var(--arq-space-gap-5xl);
   align-items: stretch;
 }
@@ -177,14 +178,21 @@
 /* Fila con scroll que llega al borde derecho de la pantalla (decisión
    2026-10-02 · Galerías). Cada foto mantiene su proporción.
    TODO (diseño): las fotos miden 684 de alto en Desktop y 440 en Mobile, sin
-   token; se usa 70svh (el alto del hero mobile, DESIGN.md §5). */
+   token; se usa 70svh (el alto del hero mobile, DESIGN.md §5).
+   Convivencia con el scroll de la página (docs/decisiones.md, 2026-10-05 · Ficha 60/40, scroll de la galería de ambiente y datos mixtos):
+   snap proximity (mandatory re-alineaba la
+   fila en medio de un gesto del trackpad y al cargar cada foto),
+   overscroll-behavior-x para que al llegar al final no siga el historial del
+   navegador, y aspect-ratio auto 4 / 5 para que cada foto ocupe lugar antes de
+   cargar (con su proporción real una vez cargada). */
 .ambient {
   display: flex;
   gap: var(--arq-space-gap-md);
   margin-bottom: var(--arq-space-section-xl);
   padding-left: var(--page-gutter);
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
   scroll-padding-inline-start: var(--page-gutter);
   scrollbar-width: none;
 }
@@ -199,6 +207,7 @@
   width: auto;
   height: 70svh;
   max-width: none;
+  aspect-ratio: auto 4 / 5;
   object-fit: cover;
   scroll-snap-align: start;
   background: var(--arq-color-surface-subtle);

@@ -58,10 +58,10 @@ Tablet (768–1023 px) usa la columna Desktop salvo en los bloques marcados: ah�
 | --- | --- | --- |
 | Todos | `--page-gutter` a los lados (`layout/gutter` con tope en `layout/max-width`), `space/section/xl` abajo | ídem |
 | Hero · encabezado | `space/padding/xl` arriba, `space/padding/xl-2xl` abajo, gap `space/gap/xl`; título y "Ver colección" en fila a `space/gap/md` | gap `space/gap/2xl`; "Ver colección" debajo a `space/gap/xs` |
-| Hero · configurador | galería (resto) + columna de `layout/measure`, a `space/gap/5xl` | apilado a `space/gap/2xl` (también Tablet) |
+| Hero · configurador | galería y configurador 60/40 (`3fr` · `2fr`, el configurador con `layout/measure` de mínimo), a `space/gap/5xl` | apilado a `space/gap/2xl` (también Tablet) |
 | Columna del configurador | info (`space/gap/xl`: sku y descripción a `space/gap/lg`, opciones a `space/gap/xl-2xl`) y acciones abajo (`space/gap/md`) | acciones a todo el ancho, una debajo de la otra |
 | Descargas + acordeón | columna de `layout/measure` + acordeón, a `space/gap/3xl` | apilado a `space/gap/2xl`, acordeón a todo el ancho (también Tablet) |
-| Galería de ambiente | fila con scroll hasta el borde derecho, gap `space/gap/md` | gap `space/gap/sm-md` |
+| Galería de ambiente | fila con scroll hasta el borde derecho, gap `space/gap/md`; snap `proximity` y `overscroll-behavior-x: contain` para no pelear con el scroll vertical | gap `space/gap/sm-md` |
 | Descripción | textos a `space/gap/lg`; otras familias e imagen (`ratio/wide`) en dos mitades, abajo, a `space/gap/sm` | imagen arriba, otras familias a `space/gap/6xl` |
 | Glosario | título a `space/gap/md` de la tabla | ídem |
 | Inspiración | texto (un tercio) e imágenes (dos tercios) en `ratio/portrait-soft` | apilado a `space/gap/xl` (también Tablet, con las fotos en fila y el texto hasta `layout/measure`) |
@@ -69,7 +69,7 @@ Tablet (768–1023 px) usa la columna Desktop salvo en los bloques marcados: ah�
 
 ## Pendientes
 
-- `TODO` (diseño) Medidas sin token: columnas del hero 770 / 440 a 110 (se usa `layout/measure` y `space/gap/5xl`), Descargas e introducción de Explora 440 (`layout/measure`), lista de características 539 (`layout/measure-wide`), sangría de la lista 21 (`space/padding/lg`), alto de la galería de ambiente 684 / 440 (70svh), texto de Inspiración 330 (`layout/measure`), fotos de Inspiración 440 × 568 (`ratio/portrait-soft`) y family-card de 200 y 328 (`layout/card-min` y `layout/card-min-wide`).
+- `TODO` (diseño) Medidas sin token: separación del hero 110 (`space/gap/5xl`; las columnas pasaron de 770 / 440 a 60/40, decisión 2026-10-05 · Ficha 60/40, scroll de la galería de ambiente y datos mixtos), Descargas e introducción de Explora 440 (`layout/measure`), lista de características 539 (`layout/measure-wide`), sangría de la lista 21 (`space/padding/lg`), alto de la galería de ambiente 684 / 440 (70svh), texto de Inspiración 330 (`layout/measure`), fotos de Inspiración 440 × 568 (`ratio/portrait-soft`) y family-card de 200 y 328 (`layout/card-min` y `layout/card-min-wide`).
 - `TODO` (diseño) PDF de la ficha técnica: sin diseño ni librería. Hoy los botones emiten `arq:datasheet` y no generan nada.
 - `TODO` (navbar) Falta `layout/navbar-height` (56): el margen al llegar al glosario usa `space/gap/4xl`.
 - `TODO` (datos) Archivos de la barra del glosario: no hay descargas por grupo; salen del SKU predeterminado. Imágenes de los acabados, `alt` de las fotos y columnas del glosario (`src/data/attributes.js`).
