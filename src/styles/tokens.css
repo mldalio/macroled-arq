@@ -32,6 +32,7 @@
   --arq-font-size-12: 0.75rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-size-14: 0.875rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-size-16: 1rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-18: 1.125rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-size-20: 1.25rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-size-24: 1.5rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-size-32: 2rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
@@ -244,12 +245,12 @@
   --arq-type-heading-3-leading: var(--arq-font-leading-32); /** Interlineado del estilo role/heading-3. Lo usa el estilo de texto: no aplicar directo. */
   --arq-type-body-xl-size: var(--arq-font-size-20); /** Tamaño de role/body-xl: 20 en Desktop, 16 en Mobile. */
   --arq-type-body-xl-leading: var(--arq-font-leading-28); /** Interlineado de role/body-xl: 28 en Desktop, 24 en Mobile. */
-  --arq-type-body-lg-size: var(--arq-font-size-16); /** Tamaño del estilo role/body-lg. Lo usa el estilo de texto: no aplicar directo. */
-  --arq-type-body-lg-leading: var(--arq-font-leading-24); /** Interlineado del estilo role/body-lg. Lo usa el estilo de texto: no aplicar directo. */
-  --arq-type-body-size: var(--arq-font-size-14); /** Tamaño del estilo role/body. Lo usa el estilo de texto: no aplicar directo. */
-  --arq-type-body-leading: var(--arq-font-leading-20); /** Interlineado del estilo role/body. Lo usa el estilo de texto: no aplicar directo. */
-  --arq-type-body-sm-size: var(--arq-font-size-12); /** Tamaño del estilo role/body-sm. Lo usa el estilo de texto: no aplicar directo. */
-  --arq-type-body-sm-leading: var(--arq-font-leading-16); /** Interlineado del estilo role/body-sm. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-body-lg-size: var(--arq-font-size-16); /** Tamaño del estilo role/body-lg. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 18. */
+  --arq-type-body-lg-leading: var(--arq-font-leading-24); /** Interlineado del estilo role/body-lg. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 28. */
+  --arq-type-body-size: var(--arq-font-size-14); /** Tamaño del estilo role/body. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 16. */
+  --arq-type-body-leading: var(--arq-font-leading-20); /** Interlineado del estilo role/body. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 24. */
+  --arq-type-body-sm-size: var(--arq-font-size-12); /** Tamaño del estilo role/body-sm. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 14. */
+  --arq-type-body-sm-leading: var(--arq-font-leading-16); /** Interlineado del estilo role/body-sm. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 20. */
   --arq-type-label-size: var(--arq-font-size-12); /** Tamaño del estilo role/label. Lo usa el estilo de texto: no aplicar directo. */
   --arq-type-label-leading: var(--arq-font-leading-16); /** Interlineado del estilo role/label. Lo usa el estilo de texto: no aplicar directo. */
   --arq-type-label-sm-size: var(--arq-font-size-10); /** Tamaño de role/label-sm (10). Caso extremo: la prioridad siempre la tiene role/label (12 px). Usar solo donde 12 px no entra, como las etiquetas de las celdas de filtro. */
@@ -352,10 +353,22 @@
   }
 }
 
-/* Large: desde 1440 px */
+/* Large: desde 1440 px (Dimension) */
 @media (min-width: 1440px) {
   :root {
     --arq-layout-gutter: var(--arq-space-64); /** Margen lateral de la página. Mobile 20 · Tablet (768–1023) 32 · Desktop (1024–1439) 40 · Large (desde 1440) 64. Desde 1920 el margen crece para que el contenido no pase de layout/max-width; los fondos siguen a todo el ancho. */
+  }
+}
+
+/* Wide: desde 1920 px (Type) */
+@media (min-width: 1920px) {
+  :root {
+    --arq-type-body-lg-size: var(--arq-font-size-18); /** Tamaño del estilo role/body-lg. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 18. */
+    --arq-type-body-lg-leading: var(--arq-font-leading-28); /** Interlineado del estilo role/body-lg. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 28. */
+    --arq-type-body-size: var(--arq-font-size-16); /** Tamaño del estilo role/body. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 16. */
+    --arq-type-body-leading: var(--arq-font-leading-24); /** Interlineado del estilo role/body. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 24. */
+    --arq-type-body-sm-size: var(--arq-font-size-14); /** Tamaño del estilo role/body-sm. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 14. */
+    --arq-type-body-sm-leading: var(--arq-font-leading-20); /** Interlineado del estilo role/body-sm. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 20. */
   }
 }
 

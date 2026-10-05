@@ -153,6 +153,19 @@
           }
         }
       },
+      "18": {
+        "$type": "number",
+        "$value": 18,
+        "$description": "Primitivo. No usar directo: aplicar un estilo role/*.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-font-size-18)"
+            }
+          }
+        }
+      },
       "20": {
         "$type": "number",
         "$value": 20,
