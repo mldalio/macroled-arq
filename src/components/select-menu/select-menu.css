@@ -1,6 +1,7 @@
 /* select-menu · Figma 1061:4867. Solo tokens semánticos.
    Type=Finishes toma el ancho del campo; Filter y Text, el de sus opciones
-   (al menos el del campo). */
+   (al menos el del campo). Filter mide como mínimo layout/select-menu-filter
+   (200, el set). */
 
 :host {
   display: block;
@@ -15,6 +16,10 @@
 :host([type='text']) {
   width: max-content;
   max-width: calc(100vw - 2 * var(--arq-layout-gutter));
+}
+
+:host([type='filter']) {
+  min-width: max(100%, var(--arq-layout-select-menu-filter));
 }
 
 /* Hasta 7 opciones a la vista (cada una: space/padding/md × 2 + una línea de

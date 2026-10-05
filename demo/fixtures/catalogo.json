@@ -60,9 +60,9 @@
       "story": "## Diseño\nPerfil de aluminio extruido de 6 cm, con una cabeza que oculta la fuente de luz.\n- Óptica asimétrica: baña el suelo sin encandilar\n- Cuerpo de aluminio con pintura en polvo para exterior\n- Base de anclaje oculta",
       "inspiration": "Pensada para marcar recorridos en jardines y accesos, Kanu desaparece de día y dibuja el camino de noche.",
       "images": {
-        "ambient": ["/demo/fixtures/img/producto-1.svg", "/demo/fixtures/img/producto-2.svg", "/demo/fixtures/img/producto-3.svg"],
-        "description": "/demo/fixtures/img/producto-2.svg",
-        "inspiration": "/demo/fixtures/img/producto-3.svg"
+        "ambient": ["/demo/fixtures/img/ficha/ambiente-1.webp", "/demo/fixtures/img/ficha/ambiente-2.webp", "/demo/fixtures/img/ficha/ambiente-3.webp", "/demo/fixtures/img/ficha/ambiente-4.webp", "/demo/fixtures/img/ficha/ambiente-5.webp", "/demo/fixtures/img/ficha/ambiente-6.webp", "/demo/fixtures/img/ficha/ambiente-7.webp", "/demo/fixtures/img/ficha/ambiente-8.webp"],
+        "description": "/demo/fixtures/img/ficha/descripcion.webp",
+        "inspiration": "/demo/fixtures/img/ficha/ambiente-5.webp"
       },
       "specs": {
         "potencia": "12W", "flujo_luminoso": "850 lm", "lumenes_lmw": "71 lm/W", "temperatura_color": "3000 K", "cri": "90", "angulo_apertura": "120°", "ugr": "19",
@@ -72,7 +72,7 @@
         "vida_util": "50.000 h", "garantia_proveedor": "2 años"
       },
       "variants": [
-        { "sku": "KANU-J-500-12W-N-WW", "isDefault": true, "description": "Baliza de jardín de 50 cm en negro, 12 W, luz cálida.", "attributes": { "color_carcasa": "Negro", "altura": "50 cm" }, "images": { "studio": "/demo/fixtures/img/card-estudio.svg", "studioOn": "/demo/fixtures/img/card-estudio-on.svg", "context": "/demo/fixtures/img/card-contexto.svg", "contextOn": "/demo/fixtures/img/card-contexto-on.svg", "gallery": ["/demo/fixtures/img/producto-1.svg", "/demo/fixtures/img/producto-2.svg", "/demo/fixtures/img/producto-3.svg"], "galleryOn": ["/demo/fixtures/img/producto-1-on.svg", "/demo/fixtures/img/producto-2-on.svg"] }, "downloads": { "ies": "https://s3.coresagroup.com/MACROLED/ARQ/ies/KANU-J-500-12W.ies", "cad": "#cad", "manual": "#manual", "fotometria": "#fotometria" } },
+        { "sku": "KANU-J-500-12W-N-WW", "isDefault": true, "description": "Baliza de jardín de 50 cm en negro, 12 W, luz cálida.", "attributes": { "color_carcasa": "Negro", "altura": "50 cm" }, "images": { "studio": "/demo/fixtures/img/ficha/kanu-estudio.webp", "studioOn": "/demo/fixtures/img/ficha/kanu-estudio-on.webp", "context": "/demo/fixtures/img/ficha/kanu-contexto.webp", "contextOn": "/demo/fixtures/img/ficha/kanu-contexto-on.webp", "gallery": ["/demo/fixtures/img/ficha/kanu-contexto.webp", "/demo/fixtures/img/ficha/kanu-estudio.webp"], "galleryOn": ["/demo/fixtures/img/ficha/kanu-contexto-on.webp", "/demo/fixtures/img/ficha/kanu-estudio-on.webp"] }, "downloads": { "ies": "https://s3.coresagroup.com/MACROLED/ARQ/ies/KANU-J-500-12W.ies", "cad": "#cad", "manual": "#manual", "fotometria": "#fotometria" } },
         { "sku": "KANU-J-900-18W-N-WW", "description": "Baliza de jardín de 90 cm en negro, 18 W, luz cálida.", "attributes": { "color_carcasa": "Negro", "altura": "90 cm", "potencia": "18W", "flujo_luminoso": "1250 lm", "tamanio": "6*2,5*90cm", "peso": "1,8 kg" }, "images": { "studio": "/demo/fixtures/img/card-estudio.svg", "context": "/demo/fixtures/img/card-contexto.svg", "gallery": ["/demo/fixtures/img/producto-2.svg"] }, "downloads": { "ies": "#ies" } },
         { "sku": "KANU-J-500-12W-V-WW", "description": "Baliza de jardín de 50 cm en verde, 12 W, luz cálida.", "attributes": { "color_carcasa": "Verde", "altura": "50 cm" }, "images": { "studio": "/demo/fixtures/img/card-estudio.svg", "gallery": ["/demo/fixtures/img/producto-3.svg"] }, "downloads": {} },
         { "sku": "KANU-J-500-12W-T-WW", "description": "Baliza de jardín de 50 cm en terracota, 12 W, luz cálida.", "attributes": { "color_carcasa": "Terracota", "altura": "50 cm" }, "images": {}, "downloads": {} }
@@ -91,7 +91,7 @@
       "images": { "ambient": ["/demo/fixtures/img/producto-2.svg"] },
       "specs": { "potencia": "12W", "flujo_luminoso": "780 lm", "temperatura_color": "3000 K", "cri": "90", "material_cuerpo": "Aluminio", "proteccion_ip": "IP65", "tipo_montaje": "Aplicar", "garantia_proveedor": "2 años" },
       "variants": [
-        { "sku": "KANU-P-350-12W-N-WW", "isDefault": true, "description": "Aplique de pared de 35 cm en negro.", "attributes": { "color_carcasa": "Negro", "altura": "35 cm", "tamanio": "6*2,5*35cm" }, "images": { "studio": "/demo/fixtures/img/card-estudio.svg", "studioOn": "/demo/fixtures/img/card-estudio-on.svg", "context": "/demo/fixtures/img/card-contexto.svg", "gallery": ["/demo/fixtures/img/producto-2.svg"] }, "downloads": { "ies": "#ies" } },
+        { "sku": "KANU-P-350-12W-N-WW", "isDefault": true, "description": "Aplique de pared de 35 cm en negro.", "attributes": { "color_carcasa": "Negro", "altura": "35 cm", "tamanio": "6*2,5*35cm" }, "images": { "studio": "/demo/fixtures/img/ficha/kanu-pared-estudio.webp", "studioOn": "/demo/fixtures/img/card-estudio-on.svg", "context": "/demo/fixtures/img/card-contexto.svg", "gallery": ["/demo/fixtures/img/producto-2.svg"] }, "downloads": { "ies": "#ies" } },
         { "sku": "KANU-P-350-12W-V-WW", "description": "Aplique de pared de 35 cm en verde.", "attributes": { "color_carcasa": "Verde", "altura": "35 cm", "tamanio": "6*2,5*35cm" }, "images": {}, "downloads": {} },
         { "sku": "KANU-P-500-15W-N-WW", "description": "Aplique de pared de 50 cm en negro.", "attributes": { "color_carcasa": "Negro", "altura": "50 cm", "potencia": "15W", "flujo_luminoso": "1000 lm", "tamanio": "6*2,5*50cm" }, "images": {}, "downloads": {} }
       ]

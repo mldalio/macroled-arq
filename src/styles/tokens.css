@@ -140,6 +140,8 @@
   --arq-layout-search-field: 360px; /** Ancho de search-field en el navbar Desktop. search-dropdown toma el mismo ancho. En Mobile (search-screen) el campo ocupa el ancho disponible. */
   --arq-layout-search-thumb: 48px; /** Miniatura cuadrada de search-result. */
   --arq-layout-max-width: 1792px; /** Ancho máximo del contenido de la página (1920 − 2 × 64). Desde 1920 px el margen lateral es max(layout/gutter, (100% − layout/max-width) / 2). Los fondos, fotos y barras siguen a todo el ancho; solo el contenido se centra. No es un modo. */
+  --arq-layout-select-filter: 160px; /** Ancho mínimo de select Type=Filter (celda de filter-bar): la flecha va al extremo derecho de la celda. */
+  --arq-layout-select-menu-filter: 200px; /** Ancho de select-menu Type=Filter (menú de un select Filter). */
   --arq-motion-duration-fast: 120ms; /** Hover, toggle, foco. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-base: 200ms; /** Desplegables (disclosure) y menús. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-slow: 320ms; /** Fundido de imágenes de product-card. En ms. Con prefers-reduced-motion: 0. */

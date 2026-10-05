@@ -540,3 +540,11 @@ setup() {
 - **Por qué:** en pantallas de 1920+ el texto de 14 de botones, valores y links se veía chico.
 - **Efecto:** los controles que usan `body-regular` (button, select, option-tile…) crecen 4 px de alto a 1920+ (button de 36 a 40).
 - Se llama Wide (no Large) porque Large es el modo de Dimension desde 1440.
+
+## 2026-10-05 · Detalles de la ficha y select Filter
+
+- **accordion-item abiertos:** en la ficha, un ítem abierto (fondo `color/surface/faint`) se separa `space/gap/sm` de los de al lado, así dos abiertos seguidos no se pegan (`margin-top` del segundo de cada par, en `ficha-producto.css`).
+- **variants-table-row:** padding lateral `space/padding/sm` en Header y Row, y vertical `space/padding/xs` en Row (64 de alto): la miniatura y el botón de descarga no quedan pegados al borde de la línea ni forman una columna continua. Cambiado también en Figma (`923:2708`, con su descripción).
+- **select Type=Filter:** ancho mínimo `layout/select-filter` (160), así la flecha va al extremo derecho de la celda como en el set (`1128:3232`). **select-menu Type=Filter:** ancho mínimo `layout/select-menu-filter` (200). Los dos son semánticos nuevos de 2 · Semantic · Dimension, enlazados en Figma al set.
+- **Filtros de acabado del glosario:** las opciones muestran la muestra (`swatches` en `filters` de variants-table, desde `attributes.js`); «Todos» va sin muestra. `TODO` (acabados): sin imagen, la muestra es el neutro.
+- **Imágenes de prueba:** la ficha de Kanu Jardín (`demo/ficha.html`) usa las imágenes de Final (`1218:10487` e Iluminar `1218:11777`) en WebP, en `demo/fixtures/img/ficha/`: galería (contexto y estudio, apagada y encendida), ambiente (8), descripción, Inspiración y la foto de estudio de Kanu Pared (otras familias y Explora la colección). Las demás variantes siguen con los SVG de ejemplo.
