@@ -62,7 +62,7 @@
       "images": {
         "ambient": ["/demo/fixtures/img/ficha/ambiente-1.webp", "/demo/fixtures/img/ficha/ambiente-2.webp", "/demo/fixtures/img/ficha/ambiente-3.webp", "/demo/fixtures/img/ficha/ambiente-4.webp", "/demo/fixtures/img/ficha/ambiente-5.webp", "/demo/fixtures/img/ficha/ambiente-6.webp", "/demo/fixtures/img/ficha/ambiente-7.webp", "/demo/fixtures/img/ficha/ambiente-8.webp"],
         "description": "/demo/fixtures/img/ficha/descripcion.webp",
-        "inspiration": "/demo/fixtures/img/ficha/ambiente-5.webp"
+        "inspiration": ["/demo/fixtures/img/ficha/ambiente-5.webp", "/demo/fixtures/img/ficha/inspiracion-2.webp"]
       },
       "specs": {
         "potencia": "12W", "flujo_luminoso": "850 lm", "lumenes_lmw": "71 lm/W", "temperatura_color": "3000 K", "cri": "90", "angulo_apertura": "120°", "ugr": "19",

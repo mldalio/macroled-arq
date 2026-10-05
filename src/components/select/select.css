@@ -81,25 +81,25 @@
 
 /* ── Type=Filter ─────────────────────────────────────────────────
    Etiqueta role/label-sm en color/text/tertiary + fila con valor
-   (role/body-medium) y chevron icon/sm. Gap y padding inferior space/gap/xs
-   y space/padding/xs; Filled: space/gap/sm y space/padding/sm con línea
-   inferior color/border/strong (como el set). */
+   (role/body-medium) y chevron icon/sm. En todos los estados, gap
+   space/gap/sm y padding inferior space/padding/sm con línea inferior
+   color/border/strong (como el set). */
 /* La celda mide al menos layout/select-filter (160): la flecha va al extremo
    derecho, como el set */
 :host([type='filter']) {
   min-width: var(--arq-layout-select-filter);
 }
 
+/* Todos los estados llevan la línea inferior de Filled (el set): «Todos» se
+   ve igual que un filtro elegido. La línea se descuenta del padding. */
 :host([type='filter']) .select {
-  gap: var(--arq-space-gap-xs);
-  padding-bottom: var(--arq-space-padding-xs);
-}
-
-/* La línea se descuenta del padding (50, como el set) */
-:host([type='filter'][filled]) .select {
   gap: var(--arq-space-gap-sm);
   padding-bottom: calc(var(--arq-space-padding-sm) - var(--arq-border-default));
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-strong);
+}
+
+:host([type='filter'][disabled]) .select {
+  border-bottom-color: var(--arq-color-border-disabled);
 }
 
 .label {

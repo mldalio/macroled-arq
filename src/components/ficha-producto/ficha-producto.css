@@ -45,7 +45,9 @@
 .title-row {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  /* Título y «Ver colección» apoyados en la misma línea de base (la última
+     del título, si ocupa dos) */
+  align-items: last baseline;
   gap: var(--arq-space-gap-md);
   min-width: 0;
 }
@@ -390,11 +392,13 @@
 }
 
 /* ── Explora la colección (Dark local) ──────────────────────────── */
-/* TODO (diseño): la introducción mide 440 en Final, sin token; layout/measure. */
+/* La introducción ocupa el primer tercio (440 en Final), con el texto hasta layout/measure. */
 .collection {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--arq-space-gap-2xl);
+  /* Misma grilla que Inspiración (un tercio + dos tercios, como Final: 440 +
+     880): las cards empiezan en la misma línea que las fotos de Inspiración */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  align-items: start;
   padding: var(--arq-space-padding-5xl) var(--page-gutter);
   background: var(--arq-color-bg-default);
   color: var(--arq-color-text-primary);
@@ -402,12 +406,10 @@
 
 .collection-intro {
   display: flex;
-  flex: none;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--arq-space-gap-md);
-  width: var(--arq-layout-measure);
-  max-width: 100%;
+  max-width: var(--arq-layout-measure);
 }
 
 .collection-cards {
@@ -452,12 +454,9 @@
   }
 
   .collection {
+    display: flex;
     flex-direction: column;
     gap: var(--arq-space-gap-4xl);
-  }
-
-  .collection-intro {
-    width: auto;
   }
 }
 

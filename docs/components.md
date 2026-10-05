@@ -511,7 +511,7 @@ Grupo de configuración con etiqueta. Type: Tiles (fila de option-tile en Fill, 
 
 Uso: configurar el producto en la ficha (altura, potencia, temperatura), dentro de option-group Type=Tiles. No confundir con choice-chip, que es para formularios.
 
-Opción seleccionable de configuración (altura, potencia, temperatura…), funciona como radio (role=radio). Sin caja: solo línea inferior. Default: sin fondo, border/default abajo, text/tertiary. Hover: surface/faint, border/hover, text/primary. Selected: surface/soft, border/strong abajo, text/primary. Focus: anillo border/focus. Disabled: border/disabled y text/disabled. Padding space/padding/sm-md × space/padding/md, texto role/body-regular. En un grupo va en Fill.
+Opción seleccionable de configuración (altura, potencia, temperatura…), funciona como radio (role=radio). Sin caja: solo línea inferior. Default: sin fondo, border/default abajo, text/secondary. Hover: surface/faint, border/hover, text/primary. Selected: surface/soft, border/strong abajo, text/primary. Focus: anillo border/focus. Disabled: border/disabled y text/disabled, tachado (combinación no disponible). Padding space/padding/sm-md × space/padding/md, texto role/body-regular. En un grupo va en Fill.
 
 ## page-header
 
@@ -584,7 +584,7 @@ Encabezado de bloque dentro de una página (no de la página: eso es page-header
 - Figma: [921-2544](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2544)
 - Propiedades: Name; Label; Value; Type: Field · Filter; State: Default · Hover · Focus · Disabled · Filled; Open: False · True
 
-Selector con menú desplegable (arq-select). Type=Field: campo del configurador (muestra swatch/lg + nombre role/body-regular + chevron-down, hacia arriba en Open; Default surface/soft con línea inferior border/strong; Hover y Open surface/subtle; menú select-menu Finishes a todo el ancho). Type=Filter: celda de la filter-bar (etiqueta role/label-sm text/tertiary (caso extremo: 10 px) + valor + chevron icon/sm; Default "Todos" en text/secondary; Hover text/primary; Filled = filtro elegido: valor role/body-medium text/primary, muestra swatch/sm si es acabado y línea inferior border/strong; Open con select-menu Filter). Focus: anillo border/focus. Disabled: text/disabled. Props: Name (valor del Field), Label y Value (Filter; en Filled el valor elegido va como override).
+Selector con menú desplegable (arq-select). Type=Field: campo del configurador (muestra swatch/lg + nombre role/body-regular + chevron-down, hacia arriba en Open; Default surface/soft con línea inferior border/strong; Hover y Open surface/subtle; menú select-menu Finishes a todo el ancho). Type=Filter: celda de la filter-bar (etiqueta role/label-sm text/tertiary (caso extremo: 10 px) + valor + chevron icon/sm; Default "Todos" en text/secondary; Hover text/primary; Filled = filtro elegido: valor role/body-medium text/primary y muestra swatch/sm si es acabado; todos los estados llevan la línea inferior border/strong (Disabled: border/disabled), con gap space/gap/sm y padding inferior space/padding/sm, y miden al menos layout/select-filter; Open con select-menu Filter). Focus: anillo border/focus. Disabled: text/disabled. Props: Name (valor del Field), Label y Value (Filter; en Filled el valor elegido va como override).
 
 ## select-menu
 

@@ -31,7 +31,7 @@ Opción de configuración de la ficha (altura, potencia, temperatura). Funciona 
 | --- | --- |
 | Línea inferior | `border/default` en `color/border/default` (Hover `color/border/hover`, Selected `color/border/strong`, Disabled `color/border/disabled`) |
 | Fondo Hover · Selected | `color/surface/faint` · `color/surface/soft` |
-| Texto | `color/text/tertiary` (Hover y Selected `color/text/primary`, Disabled `color/text/disabled`) · `role/body-regular` |
+| Texto | `color/text/secondary` (Hover y Selected `color/text/primary`, Disabled `color/text/disabled` tachado) · `role/body-regular` |
 | Padding | `space/padding/sm-md` × `space/padding/md` |
 | Foco | `border/strong` en `color/border/focus`, separado 2 px (DESIGN.md §7) |
 - Selected mantiene la línea en 1 px (set de Figma); DESIGN.md §5 asocia `border/strong` (2 px) a la selección de muestras, no a option-tile.
