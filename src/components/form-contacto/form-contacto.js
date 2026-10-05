@@ -112,7 +112,15 @@ class ArqFormContacto extends ArqElement {
 
   setup() {
     const root = this.shadowRoot;
-    new SingleSelect(root.querySelector('.choices'), { items: 'arq-choice-chip' });
+    const choices = root.querySelector('.choices');
+    new SingleSelect(choices, { items: 'arq-choice-chip' });
+    // Los chips ocupan todo el ancho solo si entran en una fila; si hacen
+    // wrap, quedan con su ancho (decisiones.md, 2026-10-05 · Contacto: ajustes)
+    const chips = [...choices.querySelectorAll('arq-choice-chip')];
+    const fit = () => choices.classList.toggle('fill', chips.every((chip) => chip.offsetTop === chips[0].offsetTop));
+    const observer = new ResizeObserver(fit);
+    observer.observe(choices);
+    for (const chip of chips) observer.observe(chip);
     root.querySelector('[name="provincia"]').options = PROVINCES.map((value) => ({ value }));
     const form = root.querySelector('form');
     form.addEventListener('submit', (event) => {

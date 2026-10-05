@@ -11,6 +11,8 @@
 //   El mega-menu incluye los "Ver todo…" (Productos deja de ser link).
 // Breakpoint es CSS (≤ 767 px: fila del menú mobile). El estilo de texto
 // (role/body → role/body-xl) lo cambia el JS con el mismo media query.
+// Current en desktop sube a role/body-regular, como catalog-nav-item Selected
+// (decisiones.md, 2026-10-05 · Contacto: ajustes).
 // TODO (navbar): aria-controls hacia el mega-menu (los ids no cruzan el Shadow DOM).
 // Theme=Inverse (navbar Transparent sobre el hero): label, indicador,
 // subrayado y chevron en color/text/inverse y color/icon/inverse. Solo desktop:
@@ -45,13 +47,17 @@ class ArqNavLink extends ArqElement {
 
   setup() {
     this.#control = this.shadowRoot.querySelector('.link');
+    mobile.addEventListener('change', () => this.#applyRole());
+    this.#applyRole();
+  }
+
+  // Desktop role/body (Current role/body-regular) · Mobile role/body-xl
+  #applyRole() {
     const label = this.shadowRoot.querySelector('.label');
-    const apply = () => {
-      label.classList.toggle('role-body', !mobile.matches);
-      label.classList.toggle('role-body-xl', mobile.matches);
-    };
-    mobile.addEventListener('change', apply);
-    apply();
+    const desktop = !mobile.matches;
+    label.classList.toggle('role-body', desktop && !this.current);
+    label.classList.toggle('role-body-regular', desktop && this.current);
+    label.classList.toggle('role-body-xl', !desktop);
   }
 
   /** El foco va al <a> o <button> interno. */
@@ -74,6 +80,7 @@ class ArqNavLink extends ArqElement {
     }
     // Current también se marca en el botón (indicador), sin aria-current.
     control.classList.toggle('current', this.current);
+    if (changed.has('current')) this.#applyRole();
   }
 
   // <a> para navegar, <button> para abrir el menú. Se cambia el elemento
