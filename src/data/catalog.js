@@ -17,7 +17,6 @@
 
 import { loadSource } from './source.js';
 import { ATTRIBUTES, FILTER_FIELDS, GLOSSARY_COLUMNS, attributeInfo, specSections } from './attributes.js';
-
 let pending = null;
 
 /** El catálogo, cargado una sola vez por página. */
@@ -59,9 +58,9 @@ function variantMatches(variant, filters) {
   return Object.entries(filters).every(([field, values]) => !values?.length || values.includes(variant.values[field]));
 }
 
-/** Primera variante del grupo que cumple (la predeterminada si cumple). */
-function matchingVariant(group, filters) {
-  const ordered = [group.defaultVariant, ...group.variants.filter((v) => v !== group.defaultVariant)];
+/** Primera variante del grupo que cumple (first si cumple; si no, la predeterminada). */
+function matchingVariant(group, filters, first = group.defaultVariant) {
+  const ordered = [first, group.defaultVariant, ...group.variants].filter((v, i, all) => all.indexOf(v) === i);
   return ordered.find((variant) => variantMatches(variant, filters)) ?? null;
 }
 
@@ -141,16 +140,26 @@ function collectionCard(collection, groups) {
 /**
  * Listado de Productos: una card por grupo. category: { environment,
  * application, productType, collection }. filters: { campo: [valores] }.
- * Devuelve { cards, count, filters: filas del filter-panel de la categoría }.
+ * query: texto de la búsqueda (?q=), con el criterio de searchProducts.
+ * Devuelve { cards, count, filters: filas del filter-panel de la categoría
+ * (y de la búsqueda) }.
  */
-export async function listProducts({ filters, ...category } = {}) {
+export async function listProducts({ filters, query, ...category } = {}) {
   const { groups } = await loadCatalog();
-  const scope = groups.filter((group) => inCategory(group, category));
+  const words = queryWords(query ?? '');
+  const found = new Map();
+  for (const group of groups) {
+    if (!inCategory(group, category)) continue;
+    const match = words.length ? searchMatch(group, words) : { variant: group.defaultVariant, bySku: false };
+    if (match) found.set(group, match);
+  }
+  const scope = [...found.keys()];
   const active = activeFilters(filters);
   const withFilters = Object.keys(active).length > 0;
   const cards = scope.flatMap((group) => {
-    const variant = matchingVariant(group, active);
-    return variant ? [productCard(group, variant, withFilters)] : [];
+    const match = found.get(group);
+    const variant = matchingVariant(group, active, match.variant);
+    return variant ? [productCard(group, variant, withFilters || match.bySku)] : [];
   });
   return { cards, count: cards.length, filters: filterRows(scope) };
 }
@@ -334,7 +343,43 @@ export async function getCompare(skus) {
 }
 
 // ── Búsqueda ─────────────────────────────────────────────────────────
+// La usan search-dropdown (searchProducts) y el listado de Productos con ?q=
+// (listProducts), con el mismo criterio (decisiones.md, 2026-10-05 · Búsqueda
+// en Productos): cada palabra tiene que aparecer, sin importar tildes,
+// mayúsculas ni plural.
+// TODO (búsqueda): sinónimos ("jardín" → parque, patio…): falta decidir si van
+// en el front o en Typesense (decisiones.md, Pendientes).
 const normalize = (text) => String(text ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+// Formas de una palabra: ella misma y su singular ("jardines" → "jardin").
+function forms(word) {
+  const all = [word];
+  if (word.length > 3 && word.endsWith('es')) all.push(word.slice(0, -2));
+  if (word.length > 3 && word.endsWith('s')) all.push(word.slice(0, -1));
+  return all;
+}
+
+/** Palabras de la búsqueda: por cada una, la lista de textos que valen. */
+function queryWords(query) {
+  return normalize(query).split(/\s+/).filter(Boolean).map(forms);
+}
+
+const matchesWords = (text, words) => {
+  const value = normalize(text);
+  return words.every((options) => options.some((option) => value.includes(option)));
+};
+
+const groupText = (group) => [group.name, group.collectionData?.name, group.application, group.productType, ...group.environment].join(' ');
+
+/**
+ * ¿El grupo coincide con la búsqueda? { variant, bySku } o null. Si coincide
+ * un SKU, esa variante (bySku); si no, la predeterminada.
+ */
+function searchMatch(group, words) {
+  const variant = group.variants.find((v) => matchesWords(v.sku, words));
+  if (variant) return { variant, bySku: true };
+  return matchesWords(groupText(group), words) ? { variant: group.defaultVariant, bySku: false } : null;
+}
 
 /**
  * Búsqueda por nombre, colección, aplicación o SKU: { results: [{ name, meta,
@@ -342,25 +387,24 @@ const normalize = (text) => String(text ?? '').normalize('NFD').replace(/[̀-ͯ]
  * un SKU, ese) y uno por colección (meta: "Colección"), como search-dropdown.
  */
 export async function searchProducts(query, { limit = 5 } = {}) {
-  const words = normalize(query).split(/\s+/).filter(Boolean);
+  const words = queryWords(query);
   if (!words.length) return { results: [], total: 0 };
   const { groups, collections } = await loadCatalog();
-  const matches = (text) => words.every((w) => normalize(text).includes(w));
   const products = groups.flatMap((group) => {
-    const variant = group.variants.find((v) => matches(v.sku));
-    if (!variant && !matches([group.name, group.collectionData?.name, group.application, group.productType, ...group.environment].join(' '))) return [];
-    const card = productCard(group, variant ?? group.defaultVariant, Boolean(variant));
-    return [{ name: group.name, meta: (variant ?? group.defaultVariant).sku, href: card.href, image: card.image }];
+    const match = searchMatch(group, words);
+    if (!match) return [];
+    const card = productCard(group, match.variant, match.bySku);
+    return [{ name: group.name, meta: match.variant.sku, href: card.href, image: card.image }];
   });
   const found = collections
-    .filter((c) => matches(c.name))
+    .filter((c) => matchesWords(c.name, words))
     .map((c) => ({ name: c.name, meta: 'Colección', href: collectionHref(c.id), image: c.images?.studio ?? null }));
   const results = [...products, ...found];
   return { results: results.slice(0, limit), total: results.length };
 }
 
-/** URL de la página con todos los resultados (docs/urls.md). */
-export const searchHref = (query) => `/arq/buscar?q=${encodeURIComponent(query)}`;
+/** URL con todos los resultados: el listado de Productos con ?q= (docs/urls.md). */
+export const searchHref = (query) => `/arq/productos?q=${encodeURIComponent(query)}`;
 
 // ── Navegación ───────────────────────────────────────────────────────
 /**

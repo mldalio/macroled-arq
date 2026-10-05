@@ -22,6 +22,23 @@ export default defineConfig({
   server: {
     open: '/demo/index.html',
   },
+  plugins: [
+    {
+      // Solo demo: Enter en el buscador del navbar navega con location.assign a
+      // /arq/productos?q=…, que demo/demo-page.js no puede cambiar (solo cambia
+      // links y clics). Se redirige a la demo de Productos con el mismo ?query.
+      name: 'arq-demo-productos',
+      apply: 'serve',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          const url = new URL(req.url, 'http://localhost');
+          if (url.pathname.replace(/\/$/, '') !== '/arq/productos') return next();
+          res.writeHead(302, { Location: `/demo/productos.html${url.search}` });
+          res.end();
+        });
+      },
+    },
+  ],
   build: {
     outDir: 'dist',
     emptyOutDir: true,

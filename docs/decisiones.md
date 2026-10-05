@@ -198,7 +198,7 @@ ArqAccordionItem.define();
 
 ## 2026-10-01 · URLs
 
-- `docs/urls.md`: Home `/arq`; templates en singular (`/arq/producto/{slug}`, `/arq/coleccion/{slug}`); `/arq/comparativa`, `/arq/glosario` y `/arq/buscar` estáticas.
+- `docs/urls.md`: Home `/arq`; templates en singular (`/arq/producto/{slug}`, `/arq/coleccion/{slug}`); `/arq/comparativa` y `/arq/glosario` estáticas. La búsqueda va al listado de Productos (2026-10-05 · Búsqueda en Productos).
 
 ## 2026-10-01 · carousel-controls
 
@@ -426,6 +426,13 @@ ArqAccordionItem.define();
 
 ---
 
+## 2026-10-05 · Búsqueda en Productos
+
+- "Ver todos los resultados" y Enter en el buscador llevan a `/arq/productos?q=…`: el listado de Productos filtrado por el término (no hay página `/arq/buscar`). Se combina con la categoría y los filtros, y el filter-panel muestra los filtros de los resultados.
+- El buscador del navbar y el listado usan el mismo criterio (`src/data/catalog.js`): cada palabra tiene que aparecer en el nombre, la colección, la aplicación, el entorno, el tipo o el SKU, sin importar tildes, mayúsculas ni plural ("jardines" encuentra "Jardín"). Si coincide un SKU, la card abre esa variante.
+- Se filtra en memoria sobre el catálogo ya cargado, sin otra consulta a Typesense.
+- Solo demo: `vite.config.js` redirige `/arq/productos` a `demo/productos.html` en `npm run dev`, porque Enter navega con `location.assign` y `demo-page.js` solo cambia links.
+
 ## Pendientes
 
 Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe la decisión en su sección. El grupo entre paréntesis es el del `TODO` en el código.
@@ -462,6 +469,10 @@ Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe
 - Regla de Artefactos: ¿también dentro de Interior y Exterior, como Lámparas?
 - Revisar con la base real los links del catalog-nav y los grupos destacados de la Home.
 - Sincronización Sheets → Typesense (Apps Script), cuando la base esté armada.
+
+### Búsqueda
+
+- **Sinónimos** ("jardín" → parque, patio…): falta decidir con el equipo si van en el front (una lista en `src/data/`, búsqueda en memoria como hoy) o en Typesense (los carga la sincronización con la admin key y el buscador pasa a consultar Typesense con el texto; suma tolerancia a errores de tipeo).
 
 ### URLs
 

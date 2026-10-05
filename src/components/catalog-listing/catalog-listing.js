@@ -15,6 +15,9 @@
 //   las URLs de categoría están PENDIENTES, docs/urls.md). Se marca sola el
 //   catalog-nav-item cuyo href coincide con la página, y el <h1> del
 //   page-header pasa a ser el nombre de su grupo (Interior, Exterior…).
+// - Búsqueda: ?q= filtra el listado con el criterio del buscador del navbar
+//   ("Ver todos los resultados" y Enter llegan acá; decisiones.md,
+//   2026-10-05 · Búsqueda en Productos). Se combina con categoría y filtros.
 // - Filtros técnicos: las filas del filter-panel salen de los datos de la
 //   categoría. "Ver N" aplica (arq:apply) y la grilla se vuelve a armar.
 // - Comparar (solo Productos): "Comparar" de cada card suma o saca el producto
@@ -60,6 +63,7 @@ class ArqCatalogListing extends ArqElement {
     `<div class="compare-space" aria-hidden="true"></div>`;
 
   #category = {};
+  #query = '';
   #filters = {};
   #cards = new Map(); // product-card → datos de la card
   #request = 0;
@@ -67,6 +71,7 @@ class ArqCatalogListing extends ArqElement {
   setup() {
     const root = this.shadowRoot;
     this.#category = categoryFromUrl();
+    this.#query = new URLSearchParams(location.search).get('q')?.trim() ?? '';
     root.querySelector('slot[name="nav"]').addEventListener('slotchange', () => this.#markNav());
 
     const panel = root.querySelector('arq-filter-panel');
@@ -109,6 +114,7 @@ class ArqCatalogListing extends ArqElement {
     root.querySelector('.toolbar').unit = this.unit;
     root.querySelector('arq-filter-panel').unit = this.unit;
     root.querySelector('.compare').hidden = this.unit !== 'productos';
+    if (this.#query && this.unit === 'productos') this.#titleFromQuery();
     this.#load({ rows: true });
   }
 
@@ -136,11 +142,11 @@ class ArqCatalogListing extends ArqElement {
     if (rows) this.#renderRows(result.filters);
     toolbar.count = result.count;
     this.#render(result.cards);
-    this.#status(result.count ? '' : text.empty);
+    this.#status(result.count ? '' : this.#query && this.unit === 'productos' ? `No hay productos para «${this.#query}».` : text.empty);
   }
 
   #list(filters) {
-    return this.unit === 'colecciones' ? listCollections({ filters }) : listProducts({ ...this.#category, filters });
+    return this.unit === 'colecciones' ? listCollections({ filters }) : listProducts({ ...this.#category, query: this.#query, filters });
   }
 
   // "Ver N productos" mientras se marcan filtros (el listado no cambia)
@@ -237,6 +243,14 @@ class ArqCatalogListing extends ArqElement {
       if (item.selected) current ??= item;
     }
     this.#titleFromNav(current);
+  }
+
+  // Con ?q=, el <h1> del page-header nombra la búsqueda.
+  // TODO (diseño): no hay pantalla de resultados de búsqueda en Final; título y
+  // vacío elegidos en código.
+  #titleFromQuery() {
+    const title = document.querySelector('arq-page-header > [slot="title"]');
+    if (title) title.textContent = `Resultados para «${this.#query}»`;
   }
 
   // El <h1> del page-header pasa a ser el grupo del ítem actual (Interior,
