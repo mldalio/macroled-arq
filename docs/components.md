@@ -449,6 +449,8 @@ Uso: líneas destacadas en el Home, en formato editorial (eyebrow, bajada y bot�
 
 Tarjeta editorial de línea del Home: imagen, eyebrow, nombre role/heading-1, bajada y button Underline.
 
+El único link es el botón: la imagen y el nombre no son clickeables. Hover y Focus muestran el estado del button; la imagen no cambia. (`TODO` diseño: sumar este párrafo a la descripción del set en Figma.)
+
 La imagen tiene la proporción bloqueada: al crecer la columna crece en alto sin deformarse.
 
 ## link-list
