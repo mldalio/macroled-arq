@@ -83,6 +83,16 @@
   height: var(--arq-icon-md);
 }
 
+/* Desktop: la sección entra en una pantalla. La imagen no pasa del alto del
+   viewport menos dos space/section/xl y space/gap/6xl (padding de la sección
+   y lugar para los textos de abajo); al tope se recorta. Piso de 50svh
+   (decisiones.md, 2026-10-05 · Home: alturas y meta). */
+@media (min-width: 768px) {
+  .card-media {
+    max-height: max(50svh, 100svh - var(--arq-space-section-xl) * 2 - var(--arq-space-gap-6xl));
+  }
+}
+
 @media (max-width: 767px) {
   .card-media {
     aspect-ratio: 1 / 1;

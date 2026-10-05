@@ -24,6 +24,8 @@
 // - Show eyebrow, Show description y Show button no son atributos: cada parte
 //   se muestra si su slot tiene contenido.
 // - Es un <div> y no un <header>: el banner de la página es el navbar.
+// - full-height (solo código, la usa la Home): ocupa todo el alto del viewport
+//   (100svh) en Desktop y Mobile, en lugar de ratio/wide y 70svh.
 
 import { ArqElement } from '../../base/arq-element.js';
 import css from './hero.css?inline';
@@ -33,6 +35,9 @@ const OPTIONAL = ['eyebrow', 'description', 'action'];
 class ArqHero extends ArqElement {
   static tag = 'arq-hero';
   static styles = css;
+  static properties = {
+    fullHeight: { type: Boolean },
+  };
   static template =
     `<div class="hero">` +
     `<div class="media"><slot name="media"></slot></div>` +

@@ -53,6 +53,15 @@
   aspect-ratio: 1 / 1;
 }
 
+/* La sección entra en una pantalla: el mosaico no pasa del alto del viewport
+   menos dos space/section/xl (padding de la sección, encabezado y botón).
+   Cada fila es la mitad; al tope las fotos se recortan. Piso de 50svh
+   (decisiones.md, 2026-10-05 · Home: alturas y meta). */
+::slotted(img:nth-child(3)),
+::slotted(img:nth-child(4)) {
+  max-height: calc((max(50svh, 100svh - var(--arq-space-section-xl) * 2) - var(--arq-space-gap-lg)) / 2) !important;
+}
+
 ::slotted(img:nth-child(n + 5)) {
   display: none !important;
 }
@@ -83,6 +92,7 @@
   ::slotted(img:nth-child(3)) {
     grid-column: auto;
     grid-row: auto;
+    max-height: none !important;
     aspect-ratio: 4 / 5;
     contain: none;
   }
