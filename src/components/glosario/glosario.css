@@ -1,0 +1,16 @@
+/* glosario · Final: Glosario (1795:18553 Desktop · 1795:18955 Mobile).
+   Solo tokens semánticos. variants-table pone su propio margen
+   (--page-gutter); el bloque lleva space/section/xl abajo, como los listados. */
+
+:host {
+  display: block;
+  min-width: 0;
+  padding-bottom: var(--arq-space-section-xl);
+  color: var(--arq-color-text-primary);
+}
+
+.status {
+  margin: 0;
+  padding: 0 var(--page-gutter);
+  color: var(--arq-color-text-secondary);
+}

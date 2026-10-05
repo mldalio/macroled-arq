@@ -82,6 +82,7 @@ import './components/featured-products/featured-products.js';
 import './components/catalog-listing/catalog-listing.js';
 import './components/ficha-producto/ficha-producto.js';
 import './components/coleccion/coleccion.js';
+import './components/glosario/glosario.js';
 import './components/form-contacto/form-contacto.js';
 
 if (!window.Arq) {
