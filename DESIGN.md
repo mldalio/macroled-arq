@@ -39,7 +39,7 @@ valores crudos      roles con modos     usa SOLO Semantic
 | Nivel | Colecciones en Figma | Qué contiene | ¿Se usa en componentes? |
 | --- | --- | --- | --- |
 | 1 · Primitive | 1 · Primitive · Color, Space, Type, Radius, Border | Valores crudos (`neutral/900` = #101010, `space/16` = 16) | Nunca directo |
-| 2 · Semantic | 2 · Semantic · Color (Light/Dark), Dimension (Desktop/Mobile/Tablet/Large) y Type (Desktop/Mobile) | Roles de uso general (`color/text/primary`, `space/gap/md`) | Sí: es lo único que usan los componentes |
+| 2 · Semantic | 2 · Semantic · Color (Light/Dark), Dimension (Desktop/Mobile/Tablet/Large) y Type (Desktop/Mobile/Wide) | Roles de uso general (`color/text/primary`, `space/gap/md`) | Sí: es lo único que usan los componentes |
 
 No hay nivel de componente (Mapped). Se descartó por escalabilidad: cada componente se enlaza directamente a los semánticos. Si un componente necesita un valor que no existe, se agrega un semántico nuevo que sirva para todos (por ejemplo, `color/surface/inverse-hover`).
 
@@ -47,7 +47,7 @@ No hay nivel de componente (Mapped). Se descartó por escalabilidad: cada compon
 
 1. Los componentes usan solo Semantic. Nunca un Primitive, nunca un valor suelto.
 2. Prohibidos los valores sueltos: nada de `#hex`, `px`, `rem` escritos a mano.
-3. Los modos (Light/Dark, Desktop/Mobile/Tablet/Large) viven solo en Semantic.
+3. Los modos (Light/Dark, Desktop/Mobile/Tablet/Large/Wide) viven solo en Semantic.
 4. Si falta un rol, se agrega en Semantic, para todos. No se crea un color para un caso puntual.
 5. Los nombres de Figma y de código son los mismos.
 6. Texto: todo texto usa un estilo `role/*` y un color Semantic (`color/text/*`). Nunca tamaño, peso, interlineado ni color sueltos. Si ningún rol encaja, se usa el más cercano y se avisa; no se crea un estilo nuevo sin acordarlo.
@@ -108,7 +108,7 @@ Las variables CSS atraviesan el Shadow DOM. Un bloque en modo Dark se logra con 
 ### Breakpoints y grilla
 
 - **Mobile** hasta 767 px y **Desktop** desde 768 px (modos de Type y de Dimension).
-- **Dimension** suma dos modos más, que hoy solo cambian `layout/gutter`: **Tablet** (768–1023 px) y **Large** (desde 1440 px). Desktop queda en 1024–1439 px. Type no tiene Tablet ni Large: de 768 px en adelante usa Desktop.
+- **Dimension** suma dos modos más, que hoy solo cambian `layout/gutter`: **Tablet** (768–1023 px) y **Large** (desde 1440 px). Desktop queda en 1024–1439 px. Type no tiene Tablet ni Large: de 768 a 1919 px usa Desktop, y desde 1920 px su modo **Wide** agranda el texto de lectura y de controles (§6).
 
 | Modo de Dimension | Viewport | `layout/gutter` |
 | --- | --- | --- |
@@ -145,7 +145,8 @@ Medido en Productos (con `catalog-nav` desde 1024 px):
 ### Ancho máximo
 
 - El **contenido** de la página llega hasta `layout/max-width` (1792 = 1920 − 2 × 64). Hasta 1920 px manda `layout/gutter`; desde ahí el margen lateral crece y el contenido queda centrado.
-- Los **fondos**, fotos y barras siguen a todo el ancho (hero, navbar, footer, cta-block, la sección Dark de la ficha, compare-bar, variants-table): el tope se aplica como padding, no como un contenedor con `max-width`.
+- **variants-table** no va de borde a borde: en todos los breakpoints ocupa el ancho del contenido, y sus líneas y su barra de filtros van de la miniatura al ícono de descarga. Si no entra, se desplaza dentro de los márgenes, sin barra de scroll visible.
+- Los **fondos**, fotos y barras siguen a todo el ancho (hero, navbar, footer, cta-block, la sección Dark de la ficha, compare-bar): el tope se aplica como padding, no como un contenedor con `max-width`.
 - En código, los componentes usan `--page-gutter` en lugar de `--arq-layout-gutter` para el margen de página. Es una variable local que `ArqElement` declara en cada `:host`:
 
 ```css
@@ -192,7 +193,7 @@ Estos valores **no se usan en componentes**. Están acá para entender de dónde
 
 - **Color:** neutral (0–900, con 25, 75, 150, 725, 750 y 775), bronze, cacao, olive, terracotta (50–900), offwhite, red / green / amber y alpha. Bronze, cacao, olive, terracotta y offwhite quedan en Figma como paleta de marca, pero **no se exportan a `tokens.json`** hasta que un semántico los use.
 - **Espaciado (px en Figma, rem en código):** 0 · 2 · 3 · 4 · 6 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 56 · 64 · 80 · 96 · 128 · 160.
-- **Tipografía:** familia única Albert Sans; pesos 300–700; tamaños 10 · 11 · 12 · 14 · 16 · 20 · 24 · 32 · 40 · 48 · 64.
+- **Tipografía:** familia única Albert Sans; pesos 300–700; tamaños 10 · 11 · 12 · 14 · 16 · 18 · 20 · 24 · 32 · 40 · 48 · 64.
 - **Radio:** `radius/0 · 2 · 4 · 8 · 16 · 24 · full`. **Borde:** `border/1 · border/2`. **Blur:** `blur/12`.
 
 ### Primitivas de color que usa Semantic
@@ -294,7 +295,7 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 
 | Token | Desktop | Mobile | Uso |
 | --- | --- | --- | --- |
-| layout/gutter | 40 | 20 | Margen lateral de la página (Tablet 32 · Large 64, ver §2 · Breakpoints y grilla). Lo aplica la sección, no cada componente. Excepción: componentes de borde a borde (navbar, footer, page-header, filter-bar, variants-table) lo usan como padding interno. En código, a través de `--page-gutter` |
+| layout/gutter | 40 | 20 | Margen lateral de la página (Tablet 32 · Large 64, ver §2 · Breakpoints y grilla). Lo aplica la sección, no cada componente. Excepción: componentes de borde a borde (navbar, footer, page-header, filter-bar) lo usan como padding interno. En código, a través de `--page-gutter` |
 | layout/max-width | 1792 | 1792 | Ancho máximo del contenido de la página (§2 · Ancho máximo). No es un modo |
 | layout/card-min | 280 | 160 | Ancho mínimo de tarjeta en la grilla de catálogo |
 | layout/card-min-wide | 340 | 340 | Reemplaza a card-min desde 1600 px, en el CSS de la grilla |
@@ -341,7 +342,9 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 
 ## 6. Tipografía: Semantic · Type y estilos role/*
 
-`2 · Semantic · Type` guarda tamaño e interlineado por rol (`type/<rol>/size`, `type/<rol>/leading`) con modo Desktop/Mobile. El color y los estados no son parte del estilo.
+`2 · Semantic · Type` guarda tamaño e interlineado por rol (`type/<rol>/size`, `type/<rol>/leading`) con modo Desktop/Mobile y, desde 1920 px, Wide. El color y los estados no son parte del estilo.
+
+**Wide (desde 1920 px):** `role/body`, `body-regular`, `body-medium` y `body-strong` pasan a 16/24; `role/body-sm` y `body-sm-medium` a 14/20; `role/body-lg`, `body-lg-regular` y `body-lg-medium` a 18/28. El resto queda como Desktop. Los controles con `body-regular` (button, select, option-tile) crecen 4 px de alto.
 
 | Estilo | Peso | Desktop | Mobile | Uso |
 | --- | --- | --- | --- | --- |
