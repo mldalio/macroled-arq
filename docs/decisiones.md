@@ -509,4 +509,11 @@ setup() {
 - **Fondos a todo el ancho:** el tope va como padding (`--page-gutter: max(layout/gutter, (100vw − layout/max-width) / 2)`, declarado en `:host` por `ArqElement`), no como un contenedor. Hero, navbar, footer, cta-block, la sección Dark de la ficha, compare-bar y variants-table siguen de borde a borde. Se usa `100vw` y no `100%` para que el valor sea el mismo en celdas sticky y carruseles; con una barra de scroll clásica de Windows el contenido queda unos px por debajo de 1792.
 - **Siguen con `layout/gutter`:** overlays que se ubican respecto del viewport (download-modal, select-menu) y lo que solo existe en Mobile (search-screen, menú de nav-link, filter-panel Mobile, carrusel de grid).
 - **Tokens:** `import-tokens.js` mapea Tablet y Large; `build-tokens.js` los escribe como `@media (min-width: 768px) and (max-width: 1023px)` y `@media (min-width: 1440px)`, y permite combinar en un token los modos de breakpoint (no con Dark ni reducedMotion).
-- `TODO` (diseño): en Tablet, la columna de especificaciones de la ficha queda angosta y los títulos de accordion-item se cortan a mitad de palabra (ya pasaba con 40). Falta un layout Tablet para la ficha.
+- En Tablet, la columna de especificaciones de la ficha quedaba angosta y los títulos de accordion-item se cortaban a mitad de palabra (ya pasaba con 40): se resuelve en 2026-10-05 · Ficha en Tablet.
+
+## 2026-10-05 · Ficha en Tablet
+
+- **Qué:** Final no tiene Ficha en Tablet. Entre 768 y 1023 px, `<arq-ficha-producto>` apila los bloques de dos columnas como en Mobile: galería y configurador, descargas y especificaciones, texto e imágenes de Inspiración, introducción y cards de Explora la colección. Lo demás queda como Desktop: tipografía (Type no tiene modo Tablet), espaciados, botones del configurador en fila, otras familias e imagen en dos mitades, fotos de Inspiración en fila.
+- **Por qué:** en dos columnas, a 900 px la galería quedaba en ≈ 340 (las miniaturas tapaban la foto) y el acordeón en ≈ 310, con los títulos cortados a mitad de palabra.
+- **Corrección también en Mobile:** apilado, `.details` estira sus hijos (`align-items: stretch`). Antes el acordeón quedaba fijo en ≈ 388 px de 430 a 1023 px en vez de llenar el ancho.
+- `TODO` (diseño): validar o diseñar la Ficha en Tablet en Figma.

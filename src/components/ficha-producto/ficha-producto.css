@@ -407,27 +407,62 @@
   min-width: 0;
 }
 
-/* ── Mobile ─────────────────────────────────────────────────────── */
-@media (max-width: 767px) {
+/* ── Tablet y Mobile (hasta 1023 px) ────────────────────────────── */
+/* TODO (diseño): Final no tiene Ficha en Tablet. Hasta 1023 px se apilan los
+   bloques de dos columnas como en Mobile (galería y configurador, descargas y
+   especificaciones, texto e imágenes de inspiración, introducción y tarjetas
+   de la colección), con la tipografía y los espaciados de Desktop. En dos
+   columnas, la galería quedaba en ≈ 340 y los títulos de accordion-item se
+   cortaban a mitad de palabra (docs/decisiones.md, 2026-10-05 · Ficha en Tablet). */
+@media (max-width: 1023px) {
   .hero {
     gap: var(--arq-space-gap-2xl);
   }
 
   .header {
-    gap: var(--arq-space-gap-2xl);
     padding-bottom: 0;
-  }
-
-  .title-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--arq-space-gap-xs);
   }
 
   .configurator {
     display: flex;
     flex-direction: column;
     gap: var(--arq-space-gap-2xl);
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--arq-space-gap-2xl);
+  }
+
+  .inspiration {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--arq-space-gap-xl);
+  }
+
+  .collection {
+    flex-direction: column;
+    gap: var(--arq-space-gap-4xl);
+  }
+
+  .collection-intro {
+    width: auto;
+  }
+}
+
+/* ── Mobile ─────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .header {
+    gap: var(--arq-space-gap-2xl);
+  }
+
+  .title-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--arq-space-gap-xs);
   }
 
   .actions {
@@ -437,12 +472,6 @@
   .actions arq-button {
     flex: none;
     width: 100%;
-  }
-
-  .details {
-    display: flex;
-    flex-direction: column;
-    gap: var(--arq-space-gap-2xl);
   }
 
   .downloads {
@@ -473,13 +502,6 @@
     order: -1;
   }
 
-  .inspiration {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--arq-space-gap-xl);
-  }
-
   .inspiration-text {
     max-width: none;
   }
@@ -491,14 +513,5 @@
   .inspiration-images img {
     flex: none;
     width: 100%;
-  }
-
-  .collection {
-    flex-direction: column;
-    gap: var(--arq-space-gap-4xl);
-  }
-
-  .collection-intro {
-    width: auto;
   }
 }
