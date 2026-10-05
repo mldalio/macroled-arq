@@ -18,7 +18,7 @@ Páginas del sitio en `macroled.com.ar/arq`. Todo el contenido se carga con Code
 | Contacto | `/arq/contacto` | estática + Code Embed | Contacto (`1364:15761`) | El estado "enviado" es la misma página |
 | Descargas | `/arq/descargas` | estática + Code Embed | sin pantalla | Footer (Información) y page-header List |
 | Glosario | `/arq/glosario` | estática + Code Embed | sin pantalla | Footer (Información). No es la tabla de variantes de la ficha (que en Figma se llama Glosario) |
-| Resultados de búsqueda | `/arq/buscar?q=…` | estática + Code Embed | sin pantalla | Destino de "Ver todos los resultados" (search-see-all) |
+| Resultados de búsqueda | `/arq/productos?q=…` | el listado de Productos | sin pantalla | Destino de "Ver todos los resultados" (search-see-all) y de Enter en el buscador. No es una página aparte (decisiones.md, 2026-10-05 · Búsqueda en Productos) |
 
 No son páginas:
 
