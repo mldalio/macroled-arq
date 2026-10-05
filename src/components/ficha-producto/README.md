@@ -69,7 +69,7 @@ Tablet (768–1023 px) usa la columna Desktop salvo en los bloques marcados: ah�
 
 ## Pendientes
 
-- `TODO` (diseño) Medidas sin token: separación del hero 110 (`space/gap/5xl`; las columnas pasaron de 770 / 440 a 60/40, decisión 2026-10-05 · Ficha 60/40, scroll de la galería de ambiente y datos mixtos), Descargas e introducción de Explora 440 (`layout/measure`), lista de características 539 (`layout/measure-wide`), sangría de la lista 21 (`space/padding/lg`), alto de la galería de ambiente 684 / 440 (70svh), texto de Inspiración 330 (`layout/measure`), fotos de Inspiración 440 × 568 (`ratio/portrait-soft`) y family-card de 200 y 328 (`layout/card-min` y `layout/card-min-wide`).
+- `TODO` (diseño) Medidas sin token: Descargas e introducción de Explora 440 (`layout/measure`), lista de características 539 (`layout/measure-wide`), sangría de la lista 21 (`space/padding/lg`), alto de la galería de ambiente 684 / 440 (70svh), texto de Inspiración 330 (`layout/measure`), fotos de Inspiración 440 × 568 (`ratio/portrait-soft`) y family-card de 200 y 328 (`layout/card-min` y `layout/card-min-wide`).
 - `TODO` (diseño) PDF de la ficha técnica: sin diseño ni librería. Hoy los botones emiten `arq:datasheet` y no generan nada.
 - `TODO` (navbar) Falta `layout/navbar-height` (56): el margen al llegar al glosario usa `space/gap/4xl`.
 - `TODO` (datos) Archivos de la barra del glosario: no hay descargas por grupo; salen del SKU predeterminado. Imágenes de los acabados, `alt` de las fotos y columnas del glosario (`src/data/attributes.js`).
