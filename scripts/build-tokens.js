@@ -99,6 +99,22 @@ StyleDictionary.registerTransform({
     ),
 });
 
+// font/size/* y font/leading/* en rem (base 16px, la del html de Webflow)
+// para que el texto respete el zoom y el tamaño de fuente del usuario/SO.
+// El resto de las dimensiones (space, radius, border, layout, tracking…)
+// sigue en px: no son tipografía y Figma no las exporta como tal.
+const REM_BASE_PX = 16;
+StyleDictionary.registerTransform({
+  name: 'arq/type/rem',
+  type: 'value',
+  filter: (token) =>
+    token.$type === 'dimension' &&
+    token.path[0] === 'font' &&
+    (token.path[1] === 'size' || token.path[1] === 'leading') &&
+    /^-?[\d.]+px$/.test(token.$value),
+  transform: (token) => `${Number((parseFloat(token.$value) / REM_BASE_PX).toFixed(4))}rem`,
+});
+
 function createDictionary(tokens, files) {
   return new StyleDictionary({
     tokens,
@@ -108,7 +124,14 @@ function createDictionary(tokens, files) {
     platforms: {
       css: {
         prefix: 'arq',
-        transforms: ['name/kebab', 'color/css', 'arq/color/round-alpha', 'fontFamily/css', 'cubicBezier/css'],
+        transforms: [
+          'name/kebab',
+          'color/css',
+          'arq/color/round-alpha',
+          'fontFamily/css',
+          'cubicBezier/css',
+          'arq/type/rem',
+        ],
         files,
       },
     },
