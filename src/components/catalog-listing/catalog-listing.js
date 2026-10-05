@@ -13,7 +13,8 @@
 //
 // - Categoría: sale de la URL (?environment=, ?application=, ?product_type=;
 //   las URLs de categoría están PENDIENTES, docs/urls.md). Se marca sola el
-//   catalog-nav-item cuyo href coincide con la página.
+//   catalog-nav-item cuyo href coincide con la página, y el <h1> del
+//   page-header pasa a ser el nombre de su grupo (Interior, Exterior…).
 // - Filtros técnicos: las filas del filter-panel salen de los datos de la
 //   categoría. "Ver N" aplica (arq:apply) y la grilla se vuelve a armar.
 // - Comparar (solo Productos): "Comparar" de cada card suma o saca el producto
@@ -229,10 +230,22 @@ class ArqCatalogListing extends ArqElement {
     const nav = this.shadowRoot.querySelector('slot[name="nav"]').assignedElements()[0];
     if (!nav) return;
     const here = location.pathname + location.search;
+    let current = null;
     for (const item of nav.querySelectorAll('arq-catalog-nav-item')) {
       const href = item.getAttribute('href');
       item.selected = Boolean(href) && samePage(href, here);
+      if (item.selected) current ??= item;
     }
+    this.#titleFromNav(current);
+  }
+
+  // El <h1> del page-header pasa a ser el grupo del ítem actual (Interior,
+  // Exterior, Lámparas y artefactos, Colecciones). Sin ítem actual queda el
+  // del HTML (Productos).
+  #titleFromNav(item) {
+    const label = item?.closest('arq-catalog-nav-group')?.querySelector('[slot="label"]')?.textContent.trim();
+    const title = document.querySelector('arq-page-header > [slot="title"]');
+    if (label && title) title.textContent = label;
   }
 }
 
