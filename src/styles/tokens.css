@@ -27,28 +27,28 @@
   --arq-font-weight-medium: 500; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-weight-semibold: 600; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-weight-bold: 700; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-size-10: 10px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-size-11: 11px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-size-12: 12px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-size-14: 14px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-size-16: 16px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-size-20: 20px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-size-24: 24px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-size-32: 32px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-size-40: 40px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-size-48: 48px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-size-64: 64px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-leading-14: 14px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-leading-16: 16px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-leading-20: 20px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-leading-24: 24px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-leading-28: 28px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-leading-32: 32px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-leading-40: 40px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-leading-44: 44px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-leading-48: 48px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-leading-56: 56px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-leading-72: 72px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-10: 0.625rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-11: 0.6875rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-12: 0.75rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-14: 0.875rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-16: 1rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-20: 1.25rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-24: 1.5rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-32: 2rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-40: 2.5rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-48: 3rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-64: 4rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-14: 0.875rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-16: 1rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-20: 1.25rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-24: 1.5rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-28: 1.75rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-32: 2rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-40: 2.5rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-44: 2.75rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-48: 3rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-56: 3.5rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-72: 4.5rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-tracking-tighter: -0.8px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-tracking-tight: -0.4px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-tracking-normal: 0px; /** Primitivo. No usar directo: aplicar un estilo role/*. */

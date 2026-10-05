@@ -12,6 +12,11 @@
 
 const PROPS = ['font-size', 'line-height', 'font-weight', 'letter-spacing', 'color'];
 
+// El navegador siempre resuelve estas dos a px en getComputedStyle, aunque el
+// origen sea rem/em/%: no hay forma de pedirle el valor calculado en otra
+// unidad. La unidad real queda en la propiedad --arq-* (línea "from").
+const ALWAYS_PX = new Set(['font-size', 'line-height']);
+
 // ── Árbol aplanado (flat tree) ──────────────────────────────────────────
 
 // Padre en el árbol que se dibuja: el slot si el nodo está asignado a uno; el
@@ -221,6 +226,7 @@ const PANEL_CSS = `
   dd { margin: 0; overflow-wrap: anywhere; }
   .value { font-weight: var(--arq-font-weight-semibold); }
   .from { display: block; color: var(--arq-color-text-secondary); }
+  .hint { display: block; color: var(--arq-color-text-tertiary); font-style: italic; }
   .warn { color: var(--arq-color-text-warning); }
 `;
 
@@ -249,7 +255,10 @@ function show(event) {
       const via = origin.via.length ? ` (vía ${escape(origin.via.join(', '))} → inherit)` : '';
       from = `${escape(origin.selector)} · ${where}${via}<br>${escape(resolveVars(origin.value, origin.el))}`;
     }
-    return `<dt>${prop}</dt><dd><span class="value">${escape(computed.getPropertyValue(prop))}</span><span class="from">${from}</span></dd>`;
+    const hint = ALWAYS_PX.has(prop)
+      ? '<span class="hint">calculado en px (así lo da el navegador); unidad real abajo ↓</span>'
+      : '';
+    return `<dt>${prop}</dt><dd><span class="value">${escape(computed.getPropertyValue(prop))}</span>${hint}<span class="from">${from}</span></dd>`;
   }).join('');
 
   const roleRow = role
