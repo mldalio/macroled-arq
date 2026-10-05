@@ -335,10 +335,13 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 | ratio/portrait-soft | 4:5 | `aspect-ratio: 4 / 5` | category-card, bloque texto + imágenes |
 | ratio/square | 1:1 | `aspect-ratio: 1 / 1` | compare-product, family-card Default, galería doble, proyectos, line-card (Mobile) |
 | ratio/landscape | 5:4 | `aspect-ratio: 5 / 4` | product-gallery y thumbs, line-card (Desktop), texto + imagen |
-| ratio/wide | 16:10 | `aspect-ratio: 16 / 10` | hero desktop, galería de ambiente |
-| hero mobile | 70 % del alto | `height: 70svh` | Hero en mobile |
+| ratio/wide | 16:10 | `aspect-ratio: 16 / 10` | hero desktop (Contacto), galería de ambiente |
+| hero mobile | 70 % del alto | `height: 70svh` | Hero en mobile (Contacto) |
+| hero Home | 100 % del alto | `height: 100svh` | Hero de la Home, Desktop y Mobile: todo el ancho y el alto de la pantalla (atributo `full-height`, solo de código) |
 
 Los ratios no son variables (Figma no puede ligar una proporción). En código se aplican con `aspect-ratio`.
+
+- **Home: una sección por pantalla.** En Desktop (desde 768 px) cada sección de la Home tiene que entrar en un scroll de pantalla aunque el viewport sea muy ancho. Las imágenes de feature-block, category-card, line-card y project-mosaic tienen un alto máximo atado a `100svh` menos el padding de la sección (`space/section/xl`) y el lugar de los textos, con un piso de `50svh`. Al llegar al tope, la imagen se recorta (`object-fit: cover`); no se angosta ni cambia el layout. En Mobile no hay tope (`docs/decisiones.md`, 2026-10-05 · Home: alturas y meta).
 
 ---
 
@@ -451,7 +454,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | search-field | State: Empty · Focus · Filled. Prop: Show close | Campo con borde del navbar |
 | search-result · search-see-all | State: Default · Hover · Active (solo search-result) · Focus | Miniatura, nombre, SKU, flecha |
 | search-dropdown · search-screen | State: Results · No results (· Empty en search-screen) | Desktop / mobile |
-| hero | Breakpoint: Desktop · Mobile. Props: Eyebrow · Show eyebrow · Title · Description · Show description · Show button | Media + hero/scrim. Eyebrow role/label, título role/display, button Outline en Dark local (CTA por slot). Alto: ratio/wide desktop; 70svh mobile |
+| hero | Breakpoint: Desktop · Mobile. Props: Eyebrow · Show eyebrow · Title · Description · Show description · Show button | Media + hero/scrim. Eyebrow role/label, título role/display, button Outline en Dark local (CTA por slot). Alto: ratio/wide desktop; 70svh mobile. En la Home, pantalla completa (100svh) en los dos |
 | section-header | Breakpoint: Desktop · Mobile. Type: Link · Description · Title · Stacked. Props: Title · Description | role/heading-2 y role/body-lg. Sin separador. Gap título–bajada sm-md, textos–link lg. Bajada Description hasta layout/measure. En Mobile el link no se muestra: la página pone un button al final del bloque |
 | page-header | Breakpoint: Desktop · Mobile. Type: List · Detail. Props: Title · Description · Show breadcrumb · Show description · Show back · Show action | Título role/display. Sin desplegable |
 | breadcrumb · breadcrumb-item | Levels: 3 · 2 / State: Default · Hover · Current. Props: Label · Show separator | role/label. El ítem actual no lleva link ni separador |
