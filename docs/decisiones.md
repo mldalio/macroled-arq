@@ -500,3 +500,13 @@ setup() {
 - **select-menu:** el scroll pasa al host (el listbox) con `tabindex="-1"`, por axe (scrollable-region-focusable) con más de 7 opciones.
 - **`arq-button submit`:** formAssociated; el clic hace `requestSubmit()` del formulario (decisión 2026-10-01 · button). Enter en un campo no envía (un botón formAssociated no es el botón predeterminado del navegador).
 - **Obligatorios:** nombre, email y detalles, con textos de error propios. `TODO` (diseño): textos por caso e indicador de obligatorio. `TODO` (n8n): URL del webhook y formato. `TODO` (contenido): email y teléfono reales (los de Final).
+
+## 2026-10-05 · Breakpoints Tablet y Large, y ancho máximo
+
+- **Modos nuevos en 2 · Semantic · Dimension:** Tablet (768–1023 px) y Large (desde 1440 px), además de Desktop (1024–1439) y Mobile (≤ 767). Valen lo mismo que Desktop salvo `layout/gutter`: Mobile 20 · Tablet 32 · Desktop 40 · Large 64. Type no suma modos: de 768 px en adelante es Desktop.
+- **Por qué:** en 1440 el margen de 40 queda corto, y en tablet el de 40 es mucho para el ancho disponible. Tablet coincide con el tramo en que los listados ya usan `catalog-nav-mobile`.
+- **`layout/max-width` = 1792** (1920 − 2 × 64): el contenido no pasa de ese ancho. A 1920 px el gutter de 64 y el tope coinciden, así no hay salto. Reemplaza la regla anterior «No hay ancho máximo» (DESIGN.md §2).
+- **Fondos a todo el ancho:** el tope va como padding (`--page-gutter: max(layout/gutter, (100vw − layout/max-width) / 2)`, declarado en `:host` por `ArqElement`), no como un contenedor. Hero, navbar, footer, cta-block, la sección Dark de la ficha, compare-bar y variants-table siguen de borde a borde. Se usa `100vw` y no `100%` para que el valor sea el mismo en celdas sticky y carruseles; con una barra de scroll clásica de Windows el contenido queda unos px por debajo de 1792.
+- **Siguen con `layout/gutter`:** overlays que se ubican respecto del viewport (download-modal, select-menu) y lo que solo existe en Mobile (search-screen, menú de nav-link, filter-panel Mobile, carrusel de grid).
+- **Tokens:** `import-tokens.js` mapea Tablet y Large; `build-tokens.js` los escribe como `@media (min-width: 768px) and (max-width: 1023px)` y `@media (min-width: 1440px)`, y permite combinar en un token los modos de breakpoint (no con Dark ni reducedMotion).
+- `TODO` (diseño): en Tablet, la columna de especificaciones de la ficha queda angosta y los títulos de accordion-item se cortan a mitad de palabra (ya pasaba con 40). Falta un layout Tablet para la ficha.
