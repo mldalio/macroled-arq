@@ -716,7 +716,7 @@
 
       <section class="demo-section" aria-labelledby="demo-select">
         <h2 id="demo-select" class="demo-heading role-label">select · &lt;arq-select&gt; (+ select-menu)</h2>
-        <p class="demo-note role-body-sm">Figma 921:2544 · 1061:4867. Field (configurador) y Filter (celda de filter-bar, «Todos» primero). Teclado: flechas, Enter, Espacio, Esc, Inicio/Fin y letras. Las deshabilitadas se saltean (Terracota). Con más de 7 opciones, el menú tiene scroll.</p>
+        <p class="demo-note role-body-sm">Figma 921:2544 · 1061:4867. Field (configurador): etiqueta siempre visible arriba (salvo Disabled) y muestra siempre a la vista, sea o no un acabado. Filter (celda de filter-bar, «Todos» primero). Teclado: flechas, Enter, Espacio, Esc, Inicio/Fin y letras. Las deshabilitadas se saltean (Terracota). Con más de 7 opciones, el menú tiene scroll.</p>
         <div class="demo-option-groups">
           <arq-select label="Acabado" value="Negro" data-demo-options="finishes"></arq-select>
           <arq-select label="Altura (muchas opciones)" value="50 cm" data-demo-options="heights"></arq-select>
@@ -934,6 +934,37 @@
         </div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-compare-product">
+        <h2 id="demo-compare-product" class="demo-heading role-label">compare-product · &lt;arq-compare-product&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1057:2522 (+ empty-hover 1769:26241). Columna de producto de compare-header: foto 1:1 + nombre con link a la ficha + SKU + un select por atributo de variante (Color, Altura…), igual que el configurador de la ficha, con muestra solo en Color (Filled); o una caja clickeable para agregar un producto, del alto de la columna (Empty, hasta 3 lugares — pasale el mouse para ver el Hover). No consulta Typesense: la página arma las opciones.</p>
+        <div class="demo-row demo-compare-products">
+          <arq-compare-product data-demo-compare-product="filled" style="max-width: 280px"></arq-compare-product>
+          <arq-compare-product data-demo-compare-product="empty" style="max-width: 280px"></arq-compare-product>
+        </div>
+        <p class="demo-note role-body-sm">Dark (sección con data-arq-theme="dark"):</p>
+        <div class="demo-row demo-dark" data-arq-theme="dark">
+          <arq-compare-product data-demo-compare-product="filled" style="max-width: 280px"></arq-compare-product>
+        </div>
+        <p class="demo-note role-body-sm" data-demo-compare-product-log>arq:change / arq:remove / arq:add → (todavía nada)</p>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-compare-header">
+        <h2 id="demo-compare-header" class="demo-heading role-label">compare-header · &lt;arq-compare-header&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 1265:4330. Toggle «Solo diferencias» + hasta 3 compare-product, estiradas a la misma altura (un lugar vacío ocupa todo el alto de la columna). Type (Default/Compact) no es una prop: un IntersectionObserver lo cambia solo al desplazar. En Mobile el Default no muestra controles (ni toggle ni espaciador). Para ver el Compact fijo bajo el navbar en una página real, abrí <a href="/demo/comparativa.html?sku=KANU-J-500-12W-N-WW,KANU-P-350-12W-N-WW,TORI-J-450-7W-G-WW">demo/comparativa.html</a>.</p>
+        <div class="demo-bleed">
+          <arq-compare-header data-demo-compare-header="3"></arq-compare-header>
+        </div>
+        <p class="demo-note role-body-sm">2 productos (un lugar vacío), «Solo diferencias» encendido:</p>
+        <div class="demo-bleed">
+          <arq-compare-header data-demo-compare-header="2" only-differences></arq-compare-header>
+        </div>
+        <p class="demo-note role-body-sm">Dark (sección con data-arq-theme="dark"):</p>
+        <div class="demo-bleed demo-dark" data-arq-theme="dark">
+          <arq-compare-header data-demo-compare-header="3"></arq-compare-header>
+        </div>
+        <p class="demo-note role-body-sm" data-demo-compare-header-log>arq:differences / arq:remove / arq:change → (todavía nada)</p>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-compare-bar">
         <h2 id="demo-compare-bar" class="demo-heading role-label">compare-bar · &lt;arq-compare-bar&gt;</h2>
         <p class="demo-note role-body-sm">Figma 1233:3963. Barra fija abajo, en Dark local. Aparece al marcar «Comparar» en las product-card de esta demo (hasta 3) y recuerda la selección (arq:compare). «Comparar» lleva a /arq/comparativa?sku=…</p>
@@ -946,7 +977,7 @@
 
       <section class="demo-section" aria-labelledby="demo-compare-table">
         <h2 id="demo-compare-table" class="demo-heading role-label">compare-table · &lt;arq-compare-table&gt;</h2>
-        <p class="demo-note role-body-sm">Solo código, con compare-group (1263:4320) y compare-row (1263:4317). Tabla real con un solo scroll; etiquetas en layout/compare-label (fijas en Mobile) y columnas de layout/compare-column en Mobile. «Solo diferencias» oculta las filas iguales y los grupos vacíos. Cabecera provisoria con compare-slot (compare-header pendiente). Quitar emite arq:remove.</p>
+        <p class="demo-note role-body-sm">Solo código, con compare-group (1263:4320), compare-section-group (1769:26234) y compare-row (1263:4317). Tabla real con un solo scroll; en Mobile la etiqueta pasa a ocupar toda la fila arriba y los valores quedan debajo (sin columna fija ni sticky). «Solo diferencias» (prop onlyDifferences) oculta las filas iguales y los grupos vacíos. El &lt;thead&gt; no muestra nada: la identidad de cada producto la da arq-compare-header, arriba, en la página (ver demo/comparativa.html, donde además comparten un solo scroll horizontal en Mobile).</p>
         <p class="demo-note role-body-sm">3 productos, con valores faltantes («—») y texto largo:</p>
         <div class="demo-bleed">
           <arq-compare-table data-demo-compare-table="3"></arq-compare-table>
@@ -959,7 +990,6 @@
         <div class="demo-bleed demo-dark" data-arq-theme="dark">
           <arq-compare-table data-demo-compare-table="3" label="Comparación en Dark"></arq-compare-table>
         </div>
-        <p class="demo-note role-body-sm" data-demo-compare-table-log>arq:remove → (todavía nada)</p>
       </section>
 
       <section class="demo-section" aria-labelledby="demo-filter-row">

@@ -1,0 +1,145 @@
+/* compare-header · Figma 1265:4330. Solo tokens semánticos.
+   Desktop es la base; Mobile (max-width: 767px) saca la columna de controles
+   del Default y pasa los productos a columnas fijas (layout/compare-column). */
+
+:host {
+  display: block;
+}
+
+.default {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-xl);
+  padding-inline: var(--page-gutter);
+  padding-block-end: var(--arq-space-section-xs);
+}
+
+/* Centinela 1 × 1 al inicio del bloque: cuando sale por arriba del navbar
+   (IntersectionObserver), se muestra el Compact. */
+.sentinel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--arq-border-default);
+  height: var(--arq-border-default);
+}
+
+/* Controles: mismo ancho que la columna de etiquetas de compare-table
+   (layout/compare-label, 200 Desktop · 120 Mobile): no hay token propio. */
+.controls {
+  flex: none;
+  width: var(--arq-layout-compare-label);
+}
+
+/* stretch: Empty estira su caja a la misma altura que las columnas Filled
+   (compare-product.css: Empty ocupa 100% del alto que le toca). */
+.products {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: stretch;
+  gap: var(--arq-space-gap-xl);
+  min-width: 0;
+}
+
+.products > * {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* Compact: fijo bajo el navbar (alto medido en JS, TODO layout/navbar-height). */
+.compact {
+  position: fixed;
+  top: var(--navbar-height, 0px);
+  left: 0;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-lg);
+  padding-inline: var(--page-gutter);
+  padding-block: var(--arq-space-padding-sm-md);
+  background: var(--arq-color-bg-default);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+.compact .controls {
+  display: flex;
+  align-items: center;
+}
+
+.slots {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: var(--arq-space-gap-lg);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.slots .product {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  min-width: 0;
+}
+
+.mobile-name {
+  display: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--arq-color-text-primary);
+}
+
+@media (max-width: 767px) {
+  /* Mobile: columnas fijas (layout/compare-column, como compare-row) con
+     scroll horizontal. El scroll lo maneja arq-comparativa (junto con
+     compare-table, para que los dos se desplacen igual); acá solo hace falta
+     que el contenido pueda ser más ancho que la pantalla sin recortarse. */
+  .default {
+    width: max-content;
+    min-width: 100%;
+  }
+
+  /* El set no muestra controles en el Default de Mobile (ni toggle ni
+     espaciador): las columnas de producto arrancan directo en el gutter. */
+  .default .controls {
+    display: none;
+  }
+
+  .products > * {
+    flex: none;
+    width: var(--arq-layout-compare-column);
+  }
+
+  /* Compact/Mobile: miniatura compacta (compare-slot Size=Compact) + nombre
+     visible al lado, como la cabecera provisoria que tenía compare-table.
+     El bloque Compact es fijo (no participa del scroll compartido de más
+     abajo): si no entra, se desplaza solo, sin sincronizar con la tabla.
+     TODO (diseño): confirmar si hace falta sincronizarlo igual. */
+  .compact {
+    gap: var(--arq-space-gap-md);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+
+  .slots {
+    flex: none;
+    width: max-content;
+    gap: var(--arq-space-gap-md);
+  }
+
+  .slots .product {
+    flex: none;
+  }
+
+  .slots arq-compare-slot {
+    flex: none;
+  }
+
+  .mobile-name {
+    display: block;
+  }
+}

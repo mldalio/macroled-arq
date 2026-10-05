@@ -1,0 +1,45 @@
+/* comparativa · Figma 1227:12373. Solo tokens semánticos. */
+
+:host {
+  display: block;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+}
+
+.status {
+  margin: 0;
+  padding-inline: var(--page-gutter);
+  padding-block: var(--arq-space-section-xs);
+  color: var(--arq-color-text-secondary);
+}
+
+/* Toggle "Solo diferencias" en Mobile: compare-header no lo muestra ahí (el
+   set lo deja fuera del scroll horizontal, en una fila aparte). En Desktop no
+   hace falta: compare-header ya lo muestra en su columna de controles. */
+.mobile-controls {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .mobile-controls:not([hidden]) {
+    display: flex;
+    align-items: center;
+    padding-inline: var(--page-gutter);
+    padding-block-end: var(--arq-space-gap-md);
+  }
+
+  /* Un solo scroll horizontal para compare-header y compare-table (ficha de
+     compare-header: se desplazan juntos). */
+  .scroll {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+
+  .scroll:focus-visible {
+    outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+    outline-offset: calc(-1 * var(--arq-border-strong));
+  }
+}

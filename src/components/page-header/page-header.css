@@ -74,8 +74,13 @@
   padding-block: var(--arq-space-section-xs) var(--arq-space-section-sm);
 }
 
+/* El tope de ancho de lectura es para la bajada, no para el título: un título
+   corto como "Comparar luminarias" tiene que entrar en una sola línea. */
 :host([type='detail']) .main {
   gap: var(--arq-space-gap-md);
+}
+
+:host([type='detail']) .description {
   max-width: var(--arq-layout-measure-wide);
 }
 

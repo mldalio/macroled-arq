@@ -426,6 +426,17 @@ ArqAccordionItem.define();
 
 ---
 
+## 2026-10-05 · Comparativa
+
+- **Actualiza 2026-10-02 · Comparativa:** el rediseño de compare-product ya está en Figma. Cada columna lleva **un select por campo de `VARIANT_ATTRIBUTES`** (Color, Altura…) y ninguno de familia: para cambiar de producto se quita la columna y se agrega otra. Mismas opciones, etiquetas y disponibilidad que el configurador de la ficha (`variantOptions`, `choose` y `findVariant` de `variants.js`, desde `getCompare()` y `skuForAttribute()`); la muestra de color, solo en los atributos de acabado.
+- **compare-product State=Empty:** caja punteada sin fondo, del alto de la columna, con el `+` sobre `color/surface/subtle` y «Agregar producto» en `role/body`. Es un `<button>` que emite `arq:add`; en Hover el fondo `color/surface/faint` va en toda la columna, el punteado pasa a `color/border/strong` y el ícono pierde su fondo.
+- **`<arq-compare-header>`:** toggle «Solo diferencias» + 3 columnas siempre (las que sobran, en Empty), estiradas a la misma altura. El paso a Compact (fijo bajo el navbar) lo decide un `IntersectionObserver`, no es una prop. En Mobile el Default no lleva columna de controles.
+- **`<arq-comparativa>`:** contenedor de página (como catalog-listing y la ficha): lee `?sku=`, pide `getCompare()` y sincroniza cabecera y tabla. Cada cambio actualiza `?sku=` (`history.replaceState`) y `localStorage` `arq:compare` (la clave de compare-bar). En Mobile las dos comparten un solo scroll horizontal (compare-table con `embedded`) y el toggle va en una fila aparte, fuera del scroll.
+- **compare-table:** se le sacó la cabecera provisoria (ahora la muestra compare-header; el `<thead>` queda solo para la semántica). Siempre arma 3 columnas de valor: con menos productos quedan en blanco, así las líneas no se estiran al ancho que haya. En Mobile la etiqueta pasa arriba y los valores abajo (se sacó la columna sticky, que dejaba un espacio raro a la izquierda), agrupados como compare-section-group; `<table>`, `<thead>` y `<tbody>` pasan a `display: block` y se suman `role=` explícitos para no perder la semántica de tabla.
+- **`space/section/xl`** entre el final de la tabla y el cta-block: vive en el padding inferior del scroll de compare-table, como en Final.
+- **`page-header` Type=Detail:** `layout/measure-wide` aplica solo a la bajada, no a todo el bloque del título (si no, «Comparar luminarias» se baja de línea).
+- **select Type=Field:** etiqueta siempre visible arriba (gap `space/gap/sm`); Default **sin fondo** — hay que ponerle `color/surface/transparent` explícito o queda el gris que el navegador le da a todo `<button>` —, Hover `surface/faint`, Focus y Open `surface/soft`. La muestra sigue siendo condicional (`showSwatch`): solo en acabados.
+
 ## Pendientes
 
 Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe la decisión en su sección. El grupo entre paréntesis es el del `TODO` en el código.
@@ -443,13 +454,14 @@ Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe
 | line-card | Set `1036:2490`: Hover / Focus en el botón, sin borde ni `focus-ring` en la tarjeta. Descripción, ficha `doc/line-card` y copia de DESIGN.md en Plan del proyecto |
 | navbar | Variantes Transparent de Menu, Search y Products (desactualizadas) |
 | Ficha | Pantalla Tablet |
+| select | Descripción del set `921:2544`: Field Default ya no lleva fondo (sigue diciendo `surface/soft`) |
 | Productos | Título de categoría en Final (sigue "Productos"); Productos Current sin flecha (en código queda `has-dropdown`) |
 
 ### Diseño: definir
 
 - **Tokens que faltan:** `layout/navbar-height` (56; lo usan hero, ficha y compare-header Compact); ancho de tarjeta del carrusel mobile (280); sidebar de Productos (240, hoy `layout/card-min`); ratios de las fotos del mosaico; respuesta de faq-item (560, hoy `measure-wide`); columnas del footer (200 / 240); email de cta-block (380, hoy `measure`); medidas sin token de la ficha y la colección (detalle en sus README).
 - **Confirmar lo elegido en código:** posición del navbar (sticky / fixed); foco sobre foto en navbar Transparent; feature-block secundaria en `ratio/wide`; split del FAQ con `space/section/md` dentro de un bloque.
-- **Faltan diseños:** PDF de ficha técnica y de "Descargar comparación"; rediseño de compare-product (cómo se nombra el producto en su select); pantallas de carga, vacío y error de los listados; filter-panel abierto con Iluminar; textos de error y marca de obligatorio del formulario.
+- **Faltan diseños:** PDF de ficha técnica y de "Descargar comparación"; modal para elegir producto desde compare-product Empty (hoy el botón emite `arq:add` y no abre nada); pantallas de carga, vacío y error de los listados; filter-panel abierto con Iluminar; textos de error y marca de obligatorio del formulario.
 - **Contenido de diseño:** secciones del acordeón y reparto de campos, y columnas del glosario (`attributes.js`); características fijas de la meta de las cards y segunda línea en Colección; cantidad de imágenes de cada galería.
 
 ### Base de datos (datos / base)
@@ -477,4 +489,4 @@ Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe
 
 - **n8n:** URL y formato del webhook de Contacto; webhook de la newsletter (cta-block) y su envío con `form-message`.
 - **Webflow:** ver si un campo Rich Text se puede insertar en un Code Embed (reemplazaría el Markdown de STORY).
-- **Código:** elegir la librería de PDF (tiene que poder incrustar Albert Sans).
+- **Código:** elegir la librería de PDF (tiene que poder incrustar Albert Sans); sincronizar el `scrollLeft` del compare-header Compact con la tabla en Mobile.

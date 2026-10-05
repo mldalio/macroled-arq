@@ -1,5 +1,6 @@
 // compare-table · contenedor solo de código (decisión 2026-10-02 · Comparativa)
-// con compare-group (Figma 1263:4320) y compare-row (Figma 1263:4317).
+// con compare-group (Figma 1263:4320), compare-section-group (1769:26234) y
+// compare-row (Figma 1263:4317).
 //
 // Tabla de la comparativa: un grupo por sección (Características lumínicas…)
 // y una fila por dato, con un valor por producto (hasta 3).
@@ -12,18 +13,29 @@
 //
 // - Es un <table> real: un lector de pantalla anuncia el producto (columna) y
 //   el dato (fila) de cada valor. compare-group y compare-row viven adentro.
-// - Un solo scroll horizontal para la cabecera y las filas; la columna de
-//   etiquetas (layout/compare-label) queda fija. En Mobile cada producto mide
-//   layout/compare-column.
-// - "Solo diferencias" (toggle): oculta las filas con todos los valores iguales
+//   La identidad de cada producto la muestra arq-compare-header (arriba de la
+//   tabla, en la página); acá el <thead> queda solo para la semántica de la
+//   tabla (<th scope="col"> con texto visually-hidden).
+// - Desktop: fila horizontal, etiqueta (layout/compare-label) + 3 valores.
+//   Mobile (compare-row Breakpoint=Mobile): la etiqueta pasa a ocupar toda la
+//   fila arriba y los 3 valores quedan en una fila propia debajo (sin columna
+//   fija ni sticky: ya no hace falta, todo el bloque — compare-header incluido
+//   — se desplaza junto, con embedded). Se logra con flex-wrap en <tr>, no con
+//   un segundo <tr>; se agregan roles ARIA explícitos porque algunos lectores
+//   de pantalla pierden la semántica de tabla al cambiarle el display.
+// - compare-section-group: separación entre el título del grupo y su primera
+//   fila (space/padding/md) y entre filas (space/gap/sm), en Mobile.
+// - Con embedded, ese scroll lo maneja el contenedor de afuera (arq-comparativa,
+//   junto con compare-header) y acá queda desactivado.
+// - Siempre se arman 3 columnas de valor (como compare-header, que siempre
+//   muestra 3 compare-product): con menos productos, las columnas de más
+//   quedan en blanco en vez de desaparecer, para que las líneas de la tabla no
+//   se estiren a lo ancho que haya.
+// - "Solo diferencias" (prop onlyDifferences, la página la sincroniza con el
+//   toggle de compare-header): oculta las filas con todos los valores iguales
 //   y el grupo que queda vacío.
-// - Cabecera: por ahora un compare-slot por producto (como compare-header
-//   Compact); quitar emite arq:remove { sku }. TODO (compare-header): cabecera
-//   Default con compare-product cuando esté el rediseño en Figma.
 
 import { ArqElement } from '../../base/arq-element.js';
-import '../toggle/toggle.js';
-import '../compare-slot/compare-slot.js';
 import css from './compare-table.css?inline';
 
 const esc = (text) => String(text ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -36,10 +48,11 @@ class ArqCompareTable extends ArqElement {
   static properties = {
     onlyDifferences: { type: Boolean }, // toggle "Solo diferencias"
     label: { type: String, default: 'Comparación de productos' }, // nombre de la región con scroll
+    embedded: { type: Boolean }, // el scroll horizontal lo maneja el contenedor de afuera
   };
   static template =
     `<div class="scroll" tabindex="0" role="region">` +
-    `<table class="table"><thead></thead></table>` +
+    `<table class="table" role="table"><thead role="rowgroup"></thead></table>` +
     `</div>`;
 
   #data = { products: [], groups: [] };
@@ -54,16 +67,6 @@ class ArqCompareTable extends ArqElement {
   }
 
   setup() {
-    const root = this.shadowRoot;
-    root.querySelector('.table').addEventListener('arq:change', (event) => {
-      if (event.target.localName !== 'arq-toggle') return;
-      event.stopPropagation();
-      this.onlyDifferences = event.detail.checked;
-    });
-    root.querySelector('.table').addEventListener('arq:remove', (event) => {
-      event.stopPropagation();
-      this.emit('remove', { sku: event.detail.sku });
-    });
     MOBILE.addEventListener('change', () => this.#syncBreakpoint());
     this.#build();
   }
@@ -71,10 +74,17 @@ class ArqCompareTable extends ArqElement {
   update(changed) {
     const root = this.shadowRoot;
     if (changed.has('label')) root.querySelector('.scroll').setAttribute('aria-label', this.label ?? '');
-    if (changed.has('onlyDifferences')) {
-      const toggle = root.querySelector('arq-toggle');
-      if (toggle) toggle.checked = this.onlyDifferences;
-      this.#filter();
+    if (changed.has('onlyDifferences')) this.#filter();
+    if (changed.has('embedded')) {
+      const scroll = root.querySelector('.scroll');
+      // embedded: el scroll (y su foco de teclado) lo maneja el contenedor de afuera
+      if (this.embedded) {
+        scroll.removeAttribute('tabindex');
+        scroll.removeAttribute('role');
+      } else {
+        scroll.setAttribute('tabindex', '0');
+        scroll.setAttribute('role', 'region');
+      }
     }
   }
 
@@ -82,33 +92,29 @@ class ArqCompareTable extends ArqElement {
     const root = this.shadowRoot;
     const table = root.querySelector('.table');
     const { products, groups } = this.#data;
-    const n = products.length;
-    // Cabecera: controles (Solo diferencias) + un compare-slot por producto
+    // Cabecera: solo semántica de tabla (la identidad de cada producto la
+    // muestra arq-compare-header, arriba, en la página). Siempre MAX columnas.
     root.querySelector('thead').innerHTML =
-      `<tr><td class="label-cell controls"><arq-toggle show-label class="diff">Solo diferencias</arq-toggle></td>` +
-      products
-        .map(
-          (p) =>
-            `<th scope="col" class="product"><arq-compare-slot sku="${esc(p.sku)}"${p.image ? ` image="${esc(p.image)}"` : ''}>` +
-            `<span slot="name">${esc(p.name)}</span><span slot="meta">${esc(p.meta ?? p.sku)}</span></arq-compare-slot>` +
-            `<span class="mobile-name role-label" aria-hidden="true">${esc(p.name)}</span></th>`,
-        )
+      `<tr role="row"><th scope="col" class="label-cell" role="columnheader"></th>` +
+      Array.from({ length: MAX }, (_, i) => products[i])
+        .map((p) => `<th scope="col" class="product" role="columnheader">${p ? `<span class="visually-hidden">${esc(p.name)} (${esc(p.meta ?? p.sku)})</span>` : ''}</th>`)
         .join('') +
       `</tr>`;
-    root.querySelector('arq-toggle').checked = this.onlyDifferences;
     // Grupos y filas
     for (const body of table.querySelectorAll('tbody')) body.remove();
     for (const group of groups) {
       const body = document.createElement('tbody');
+      body.setAttribute('role', 'rowgroup');
       body.innerHTML =
-        `<tr class="group"><th scope="colgroup" colspan="${n + 1}"><span class="group-label role-label">${esc(group.label)}</span></th></tr>` +
+        `<tr class="group" role="row"><th scope="colgroup" colspan="${MAX + 1}" role="columnheader"><span class="group-label role-label">${esc(group.label)}</span></th></tr>` +
         (group.rows ?? [])
           .map((row) => {
-            const values = products.map((_, i) => row.values?.[i] ?? '—');
-            const same = values.every((v) => String(v) === String(values[0]));
+            const real = products.map((_, i) => row.values?.[i] ?? '—');
+            const same = real.length > 0 && real.every((v) => String(v) === String(real[0]));
+            const values = Array.from({ length: MAX }, (_, i) => real[i] ?? '');
             return (
-              `<tr class="row"${same ? ' data-same' : ''}><th scope="row" class="label-cell row-label">${esc(row.label)}</th>` +
-              values.map((v) => `<td class="value role-body-lg-regular">${esc(v)}</td>`).join('') +
+              `<tr class="row" role="row"${same ? ' data-same' : ''}><th scope="row" class="label-cell row-label" role="rowheader">${esc(row.label)}</th>` +
+              values.map((v) => `<td class="value role-body-lg-regular" role="cell">${esc(v)}</td>`).join('') +
               `</tr>`
             );
           })
@@ -119,11 +125,9 @@ class ArqCompareTable extends ArqElement {
     this.#filter();
   }
 
-  // Mobile (como el set): compare-slot en Compact con el nombre debajo y la
-  // etiqueta de la fila en role/body-sm (Desktop role/body).
+  // Mobile (como el set): etiqueta de la fila en role/body-sm (Desktop role/body).
   #syncBreakpoint() {
     const mobile = MOBILE.matches;
-    for (const slot of this.shadowRoot.querySelectorAll('thead arq-compare-slot')) slot.size = mobile ? 'compact' : 'default';
     for (const label of this.shadowRoot.querySelectorAll('.row-label')) {
       label.classList.toggle('role-body', !mobile);
       label.classList.toggle('role-body-sm', mobile);

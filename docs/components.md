@@ -5,7 +5,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 - Si este archivo no coincide con Figma, manda Figma y se actualiza este archivo.
 - Al crear o modificar un componente en código, actualizar su **Estado en código** y su marca.
 
-**71 de 74 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
+**73 de 74 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
 
 | Componente | Etiqueta | Estado en código |
 | --- | --- | --- |
@@ -25,8 +25,8 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [choice-chip](#choice-chip) | `<arq-choice-chip>` | En código ([README](../src/components/choice-chip/README.md)) |
 | ✅ [compare-bar](#compare-bar) | `<arq-compare-bar>` | En código ([README](../src/components/compare-bar/README.md)) |
 | ✅ [compare-group](#compare-group) | dentro de `<arq-compare-table>` | En código, como parte de compare-table ([README](../src/components/compare-table/README.md)) |
-| ⬜ [compare-header](#compare-header) | `<arq-compare-header>` | Pendiente |
-| ⬜ [compare-product](#compare-product) | `<arq-compare-product>` | Pendiente |
+| ✅ [compare-header](#compare-header) | `<arq-compare-header>` | En código ([README](../src/components/compare-header/README.md)) |
+| ✅ [compare-product](#compare-product) | `<arq-compare-product>` | En código ([README](../src/components/compare-product/README.md)) |
 | ✅ [compare-row](#compare-row) | dentro de `<arq-compare-table>` | En código, como parte de compare-table ([README](../src/components/compare-table/README.md)) |
 | ✅ [compare-slot](#compare-slot) | `<arq-compare-slot>` | En código ([README](../src/components/compare-slot/README.md)) |
 | ✅ [contact-item](#contact-item) | `<arq-contact-item>` | En código ([README](../src/components/contact-item/README.md)) |
@@ -98,6 +98,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ coleccion | `<arq-coleccion>` | Página de colección: cards de sus productos, galería, texto + imagen y mosaico con flechas ([README](../src/components/coleccion/README.md)) |
 | ✅ form-contacto | `<arq-form-contacto>` | Contacto: información por slot y formulario con validación, honeypot y envío a n8n ([README](../src/components/form-contacto/README.md)) |
 | ✅ ficha-producto | `<arq-ficha-producto>` | Ficha de producto: hero con galería y configurador, descargas, especificaciones, descripción, glosario, inspiración y colección ([README](../src/components/ficha-producto/README.md)) |
+| ✅ comparativa | `<arq-comparativa>` | Página Comparativa: combina compare-header y compare-table con los SKU de `?sku=`, con datos del catálogo ([README](../src/components/comparativa/README.md)) |
 
 ### Páginas
 
@@ -109,6 +110,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ Colección | [src/pages/coleccion.html](../src/pages/coleccion.html) | `demo/coleccion.html` (`?collection=`) |
 | ✅ Contacto | [src/pages/contacto.html](../src/pages/contacto.html) | `demo/contacto.html` |
 | ✅ Ficha de producto | [src/pages/ficha.html](../src/pages/ficha.html) | `demo/ficha.html` (`?group=` y `?sku=`) |
+| ✅ Comparativa | [src/pages/comparativa.html](../src/pages/comparativa.html) | `demo/comparativa.html` (`?sku=`) |
 
 ## accordion-item
 

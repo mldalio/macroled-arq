@@ -1,6 +1,6 @@
 # select · `<arq-select>`
 
-Selector con menú desplegable (select-menu). Type=Field: campo del configurador (muestra + nombre). Type=Filter: celda de filter-bar (etiqueta + valor; "Todos" primero).
+Selector con menú desplegable (select-menu). Type=Field: campo del configurador (etiqueta visible arriba + nombre; muestra solo si la opción es un acabado/color). Type=Filter: celda de filter-bar (etiqueta + valor; "Todos" primero).
 
 - Figma: [921-2544](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2544) · ficha `doc/select`
 
@@ -23,9 +23,9 @@ select.addEventListener('arq:change', (e) => console.log(e.detail.value));
 | Figma | Atributo | Prop JS | Valores · por defecto |
 | --- | --- | --- | --- |
 | Type | `type` | `type` | `field` · `filter`. Por defecto `field` |
-| Label | `label` | `label` | Filter: etiqueta visible (`role/label-sm`). Field: nombre accesible |
+| Label | `label` | `label` | Etiqueta visible (`role/label-sm`) arriba del campo, siempre, en los dos Type y en cualquier State (incluido Disabled) |
 | Name (Field) · Value (Filter) | `value` | `value` | Valor elegido; el texto que se ve sale de la opción. Filter sin valor = "Todos" |
-| — (opciones) | — | `options` | Lista `{ value, label?, swatch?, showSwatch?, disabled? }` (solo JS) |
+| — (opciones) | — | `options` | Lista `{ value, label?, swatch?, showSwatch?, disabled? }` (solo JS). La muestra solo se ve si la opción trae `swatch` o `showSwatch` (acabado/color, p. ej. color de carcasa); el resto queda solo texto. `TODO` (diseño): falta definir qué campos cuentan como "color" |
 | State=Disabled | `disabled` | `disabled` | booleano |
 | Open | `open` | `open` | booleano. Mejor `show()` y `close()` |
 | State=Filled | `filled` | `filled` | Lo pone el componente: Filter con un valor elegido |
@@ -42,12 +42,14 @@ select.addEventListener('arq:change', (e) => console.log(e.detail.value));
 
 | Parte | Token |
 | --- | --- |
-| Field | `color/surface/soft` con línea inferior `border/default` en `color/border/strong`; padding `space/padding/sm-md` × `space/padding/md`; gap `space/gap/md`; swatch Large; nombre `role/body-regular`; chevron `icon/md` (hacia arriba abierto) |
+| Field | Sin fondo (Default); línea inferior `border/default` en `color/border/strong`; padding `space/padding/sm-md` × `space/padding/md`; gap etiqueta–trigger `space/gap/sm`; gap interno `space/gap/md`; swatch Large (solo acabado/color); nombre `role/body-regular`; chevron `icon/md` (hacia arriba abierto); etiqueta `role/label-sm` en `color/text/tertiary` |
 | Field Hover | `color/surface/faint` |
+| Field Focus / Open | `color/surface/soft`; Focus además línea en `color/border/focus` |
+| Field Disabled | swatch (si corresponde) con opacidad 0.4 (sin token) |
 | Filter | etiqueta `role/label-sm` en `color/text/tertiary`; valor `role/body-medium`; chevron `icon/sm`; gap `space/gap/sm`, padding inferior `space/padding/sm` y línea inferior `color/border/strong` en todos los estados (Disabled `color/border/disabled`); ancho mínimo `layout/select-filter` (160, la flecha al extremo derecho) |
 | Filter Filled | igual que Filter, con el valor elegido; swatch Small si es un acabado |
 | Disabled | `color/text/disabled`, línea `color/border/disabled` |
-| Menú | select-menu debajo del campo (Filter a `space/gap/sm`) |
+| Menú | select-menu debajo del campo (Filter a `space/gap/sm`); ancho del menú Filter `layout/select-menu-filter` (200, token nuevo) |
 | Foco | `border/strong` en `color/border/focus`, separado 2 px |
 
 ## Pendientes

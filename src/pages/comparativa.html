@@ -1,0 +1,50 @@
+<!--
+  Comparativa · /arq/comparativa · Code Embed de Webflow (docs/decisiones.md, 2026-10-01 · Páginas en Webflow)
+  Pantalla: Final › Comparativa (1227:12373)
+  Se edita acá y se pega en Webflow. dist/arq.js, dist/arq.css y Albert Sans se cargan a nivel sitio.
+
+  Sin datos del CMS: arq-comparativa lee los SKU de ?sku= (hasta 3, los arma
+  compare-bar en Productos/Colecciones) y pide todo a Typesense.
+  TODO (diseño + código): "Descargar comparación" todavía no hace nada. Falta
+  el diseño del PDF (DESIGN.md §12, Ficha técnica en PDF) y, con eso, elegir
+  cómo conectarlo con los SKU de arq-comparativa.
+-->
+<arq-navbar>
+  <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
+  <arq-nav-link slot="links" href="/arq/glosario">Glosario</arq-nav-link>
+  <arq-nav-link slot="links" href="/arq/contacto">Contacto</arq-nav-link>
+</arq-navbar>
+
+<main>
+  <arq-page-header type="detail" show-back back-href="/arq/productos" show-description show-action>
+    <span slot="back">Volver a productos</span>
+    <h1 slot="title">Comparar luminarias</h1>
+    <span slot="description">Cambiá familia o variante desde cada columna.</span>
+    <!-- TODO (diseño + código): sin acción todavía, ver nota arriba -->
+    <arq-button slot="action" show-icon icon="download">Descargar comparación</arq-button>
+  </arq-page-header>
+
+  <arq-comparativa></arq-comparativa>
+</main>
+
+<arq-cta-block>
+  <h2 slot="title">¿Necesitás ayuda para elegir?</h2>
+  <span slot="description">Nuestro equipo técnico te asesora en la selección y el cálculo lumínico de tu proyecto.</span>
+  <arq-button slot="action" show-icon icon="arrow-right" href="/arq/contacto">Hablar con un asesor</arq-button>
+</arq-cta-block>
+
+<arq-footer>
+  <span slot="tagline">Diseño lumínico para la arquitectura contemporánea.</span>
+  <h2 slot="productos-title">Productos</h2>
+  <arq-footer-link slot="productos" href="/arq/productos?environment=Interior">Interior</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?environment=Exterior">Exterior</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?product_type=L%C3%A1mpara">Lámparas y Artefactos</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/colecciones">Colecciones</arq-footer-link>
+  <h2 slot="informacion-title">Información</h2>
+  <arq-footer-link slot="informacion" href="/arq/contacto">Contacto</arq-footer-link>
+  <arq-footer-link slot="informacion" href="/arq/descargas">Descargas</arq-footer-link>
+  <arq-footer-link slot="informacion" href="/arq/glosario">Glosario</arq-footer-link>
+  <h2 slot="redes-title">Redes</h2>
+  <arq-footer-link slot="redes" href="https://www.instagram.com/" target="_blank" show-icon icon="instagram" label="Macroled Arq en Instagram">Instagram</arq-footer-link>
+  <arq-footer-link slot="redes" href="https://www.youtube.com/" target="_blank" show-icon icon="youtube" label="Macroled Arq en YouTube">YouTube</arq-footer-link>
+</arq-footer>

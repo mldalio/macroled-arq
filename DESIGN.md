@@ -487,7 +487,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | file-upload | State: Empty · Attached. Props: Label · Helper | — |
 | form-section-header · form-message | Props: Number · Show number · Label / Tone: Success · Error. Prop: Message | form-message sin ícono |
 | contact-item · link-list | State: Default · Hover · Focus. Props: Label · Value / Props: Title · Show link 3 | Valor como link mailto: / tel: |
-| compare-header · compare-group · compare-row · compare-product | Type: Default · Compact × Breakpoint / Label / Breakpoint + Value 1–3 / State: Filled · Empty | Hasta 3 productos. Cada columna es un producto (grupo): selects de colección, producto y uno por atributo de variante (rediseño de compare-product pendiente) |
+| compare-header · compare-group · compare-row · compare-product | Type: Default · Compact × Breakpoint / Label / Breakpoint + Value 1–3 / State: Filled · Empty | Hasta 3 productos. Cada columna es un producto (grupo): selects de familia (elegir otro producto) y variante |
 | compare-bar · compare-slot | Breakpoint: Desktop · Mobile / Size: Default · Compact. State: Filled · Empty | Barra fija inferior, en Dark local |
 
 El inventario completo con links a Figma está en el [Anexo A](#anexo-a-inventario-de-componentes).
@@ -569,7 +569,6 @@ Aplica a product-card en los listados de Productos y Colecciones (las cards de c
 - **button Loading:** no hay ícono de carga en la librería.
 - **product-card:** qué columnas de la base son la foto de estudio y la de contexto, y de dónde salen las cuatro imágenes de una card de colección.
 - **Ficha técnica en PDF** y **Descargar comparación:** falta el diseño del PDF.
-- **compare-product:** rediseño con selects de colección, producto y uno por atributo de variante (`docs/decisiones.md`, 2026-10-02 · Comparativa).
 - **Galerías** (product-gallery, ambiente, Inspiración, colección): cantidad de imágenes. Si hay más de las que entran, se desliza.
 - **Acabados:** sin definir (imágenes y tabla de códigos).
 
