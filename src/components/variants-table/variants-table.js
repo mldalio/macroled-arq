@@ -18,7 +18,7 @@
 //   dentro de toggle (decisión 2026-10-02 · glosario).
 // - Un solo contenedor con scroll horizontal para el encabezado y las filas; la
 //   columna de inicio (miniatura + sku) y la de descarga quedan fijas
-//   (position: sticky). En mobile el scroll llega al borde de la pantalla.
+//   (position: sticky). El scroll queda dentro de los márgenes de la página.
 // - Filters (Off · On): el botón Filtros (Filled con icon/filter; activo,
 //   Outline con icon/filter-off) muestra filter-bar con un select por cada
 //   filtro. Las opciones que no dan ninguna fila van deshabilitadas

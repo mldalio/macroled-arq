@@ -37,7 +37,8 @@ const templates = new WeakMap();
 // .visually-hidden: texto solo para lectores de pantalla (nombres de controles
 // sin texto visible, labels ocultos con Show label=false, números reales).
 // border/default (1 px) es el tamaño mínimo disponible: con 0 algunos lectores
-// lo descartan.
+// lo descartan. El margen negativo lo deja dentro de su caja: sin él, en el
+// borde de un contenedor con scroll (variants-table) suma 1 px de desborde.
 // Transición de colores (DESIGN.md §6 · Movimiento): una sola regla para el
 // cambio de hover, pressed, foco y selección de todos los componentes, con
 // motion/duration/fast y motion/easing/standard. Solo colores: nunca alto,
@@ -77,6 +78,7 @@ const baseCss = `
   position: absolute;
   width: var(--arq-border-default);
   height: var(--arq-border-default);
+  margin: calc(-1 * var(--arq-border-default));
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
