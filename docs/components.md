@@ -96,7 +96,6 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ featured-products | `<arq-featured-products>` | Productos destacados del Home, por grupo, con datos del catálogo ([README](../src/components/featured-products/README.md)) |
 | ✅ catalog-listing | `<arq-catalog-listing>` | Listado de Productos (y Colecciones): nav, toolbar, grilla, filtros y comparar ([README](../src/components/catalog-listing/README.md)) |
 | ✅ ficha-producto | `<arq-ficha-producto>` | Ficha de producto: hero con galería y configurador, descargas, especificaciones, descripción, glosario, inspiración y colección ([README](../src/components/ficha-producto/README.md)) |
-| ✅ ficha-producto | `<arq-ficha-producto>` | Ficha de producto: hero con galería y configurador, descargas, especificaciones, glosario, descripción, inspiración y colección ([README](../src/components/ficha-producto/README.md)) |
 
 ### Páginas
 
@@ -104,7 +103,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | --- | --- | --- |
 | ✅ Home | [src/pages/home.html](../src/pages/home.html) | `demo/home.html` |
 | ✅ Productos | [src/pages/productos.html](../src/pages/productos.html) | `demo/productos.html` |
-| ✅ Ficha de producto | [src/pages/ficha.html](../src/pages/ficha.html) | `demo/ficha.html` (`?group=` y `?sku=`) |
+| ✅ Colecciones | [src/pages/colecciones.html](../src/pages/colecciones.html) | `demo/colecciones.html` |
 | ✅ Ficha de producto | [src/pages/ficha.html](../src/pages/ficha.html) | `demo/ficha.html` (`?group=` y `?sku=`) |
 
 ## accordion-item

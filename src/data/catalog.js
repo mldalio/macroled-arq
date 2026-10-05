@@ -128,6 +128,7 @@ function collectionCard(collection, groups) {
     id: collection.id,
     name: collection.name,
     meta: applications.join(' · '),
+    finishes: [...new Set(groups.flatMap(finishes))],
     href: collectionHref(collection.id),
     image: images.studio ?? null,
     imageHover: images.context ?? null,

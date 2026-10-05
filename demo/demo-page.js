@@ -17,7 +17,7 @@ import '/demo/demo-inspect.js';
 import catalog from '/demo/fixtures/catalogo.json';
 
 const pages = import.meta.glob('/src/pages/*.html', { query: '?raw', import: 'default' });
-const DEMOS = { '/arq': 'home', '/arq/productos': 'productos' };
+const DEMOS = { '/arq': 'home', '/arq/productos': 'productos', '/arq/colecciones': 'colecciones' };
 
 /** URL de la demo para un link de Arq, o null si esa página no tiene demo. */
 function demoHref(href) {
