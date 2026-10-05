@@ -44,8 +44,8 @@ select.addEventListener('arq:change', (e) => console.log(e.detail.value));
 | --- | --- |
 | Field | `color/surface/soft` con línea inferior `border/default` en `color/border/strong`; padding `space/padding/sm-md` × `space/padding/md`; gap `space/gap/md`; swatch Large; nombre `role/body-regular`; chevron `icon/md` (hacia arriba abierto) |
 | Field Hover | `color/surface/faint` |
-| Filter | etiqueta `role/label-sm` en `color/text/tertiary`; valor `role/body-medium`; chevron `icon/sm`; gap y padding inferior `space/gap/xs` · `space/padding/xs`; ancho mínimo `layout/select-filter` (160, la flecha al extremo derecho) |
-| Filter Filled | gap `space/gap/sm`, padding inferior `space/padding/sm`, línea inferior `color/border/strong`; swatch Small si es un acabado |
+| Filter | etiqueta `role/label-sm` en `color/text/tertiary`; valor `role/body-medium`; chevron `icon/sm`; gap `space/gap/sm`, padding inferior `space/padding/sm` y línea inferior `color/border/strong` en todos los estados (Disabled `color/border/disabled`); ancho mínimo `layout/select-filter` (160, la flecha al extremo derecho) |
+| Filter Filled | igual que Filter, con el valor elegido; swatch Small si es un acabado |
 | Disabled | `color/text/disabled`, línea `color/border/disabled` |
 | Menú | select-menu debajo del campo (Filter a `space/gap/sm`) |
 | Foco | `border/strong` en `color/border/focus`, separado 2 px |

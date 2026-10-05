@@ -169,8 +169,8 @@
     "body": {
       "size": {
         "$type": "number",
-        "$value": "{font.size.14}",
-        "$description": "Tamaño del estilo role/body. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 16.",
+        "$value": "{font.size.16}",
+        "$description": "Tamaño del estilo role/body. Lo usa el estilo de texto: no aplicar directo. 16 en todos los modos (base 1rem).",
         "$extensions": {
           "com.figma": {
             "scopes": [
@@ -184,8 +184,8 @@
       },
       "leading": {
         "$type": "number",
-        "$value": "{font.leading.20}",
-        "$description": "Interlineado del estilo role/body. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 24.",
+        "$value": "{font.leading.24}",
+        "$description": "Interlineado del estilo role/body. Lo usa el estilo de texto: no aplicar directo. 24 en todos los modos.",
         "$extensions": {
           "com.figma": {
             "scopes": [

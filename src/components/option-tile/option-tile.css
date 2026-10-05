@@ -20,7 +20,8 @@
   padding: var(--arq-space-padding-sm-md) var(--arq-space-padding-md);
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-default);
   border-radius: var(--arq-radius-control);
-  color: var(--arq-color-text-tertiary);
+  /* Default en text/secondary (no tertiary): así no se confunde con Disabled */
+  color: var(--arq-color-text-secondary);
   text-align: center;
 }
 
@@ -46,6 +47,7 @@
 :host([disabled]) .tile {
   border-bottom-color: var(--arq-color-border-disabled);
   color: var(--arq-color-text-disabled);
+  text-decoration: line-through;
 }
 
 /* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí, no hay token de offset) */
