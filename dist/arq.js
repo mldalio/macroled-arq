@@ -2310,17 +2310,17 @@ var D = {
 		collection: D.VITE_TYPESENSE_COLLECTION ?? ""
 	}),
 	n8n: Object.freeze({ webhookUrl: D.VITE_N8N_WEBHOOK_URL ?? "" })
-}), k = 250, A = /* @__PURE__ */ new Map(), zt = class extends Error {
+}), k = 250, A = /* @__PURE__ */ new Map(), j = class extends Error {
 	constructor(e, t) {
 		super(`Typesense ${e}: ${t}`), this.name = "TypesenseError", this.status = e;
 	}
 };
-function Bt() {
+function zt() {
 	let { host: e, searchKey: t, collection: n } = O.typesense;
 	return !!(e && t && n);
 }
-async function Vt(e, { signal: t } = {}) {
-	if (!Bt()) throw new zt(0, "falta configurar VITE_TYPESENSE_* en .env");
+async function Bt(e, { signal: t } = {}) {
+	if (!zt()) throw new j(0, "falta configurar VITE_TYPESENSE_* en .env");
 	let { host: n, searchKey: r, collection: i } = O.typesense, a = new URLSearchParams({
 		q: "*",
 		...e
@@ -2331,13 +2331,13 @@ async function Vt(e, { signal: t } = {}) {
 		signal: t
 	}).then(async (e) => {
 		let t = await e.json().catch(() => ({}));
-		if (!e.ok) throw new zt(e.status, t.message ?? e.statusText);
+		if (!e.ok) throw new j(e.status, t.message ?? e.statusText);
 		return t;
 	});
 	return A.set(o, s), s.catch(() => A.delete(o)), s;
 }
-async function j(e = {}, t) {
-	let n = await Vt(e, t);
+async function M(e = {}, t) {
+	let n = await Bt(e, t);
 	return {
 		hits: (n.hits ?? []).map((e) => e.document),
 		found: n.found ?? 0,
@@ -2347,13 +2347,13 @@ async function j(e = {}, t) {
 		}))]))
 	};
 }
-async function Ht(e = {}, t) {
-	let n = await j({
+async function Vt(e = {}, t) {
+	let n = await M({
 		...e,
 		per_page: k,
 		page: 1
 	}, t), r = Math.ceil(n.found / k);
-	return [n, ...await Promise.all(Array.from({ length: Math.max(0, r - 1) }, (n, r) => j({
+	return [n, ...await Promise.all(Array.from({ length: Math.max(0, r - 1) }, (n, r) => M({
 		...e,
 		per_page: k,
 		page: r + 2
@@ -2361,7 +2361,7 @@ async function Ht(e = {}, t) {
 }
 //#endregion
 //#region src/data/attributes.js
-var Ut = Object.freeze([
+var Ht = Object.freeze([
 	{
 		id: "luminicas",
 		label: "Características lumínicas"
@@ -2382,44 +2382,44 @@ var Ut = Object.freeze([
 		id: "comercial",
 		label: "Información comercial"
 	}
-]), M = (e, t, n = {}) => Object.freeze({
+]), N = (e, t, n = {}) => Object.freeze({
 	label: e,
 	section: t,
 	control: "tiles",
 	...n
-}), N = Object.freeze({
-	potencia: M("Potencia", "luminicas", { filter: !0 }),
-	flujo_luminoso: M("Flujo luminoso", "luminicas"),
-	lumenes_lmw: M("Eficiencia luminosa", "luminicas"),
-	temperatura_color: M("Temperatura de color", "luminicas", { filter: !0 }),
-	cri: M("CRI", "luminicas"),
-	angulo_apertura: M("Ángulo de apertura", "luminicas"),
-	ugr: M("UGR", "luminicas"),
-	sdcm: M("SDCM", "luminicas"),
-	tipo_led: M("Tipo de LED", "luminicas"),
-	vida_util: M("Vida útil", "luminicas"),
-	tension_proveedor: M("Tensión de entrada", "electricas"),
-	factor_potencia: M("Factor de potencia", "electricas"),
-	thd: M("THD", "electricas"),
-	dimeable: M("Dimerizable", "electricas"),
-	tipo_driver: M("Driver", "electricas"),
-	emc: M("EMC", "electricas"),
-	color_carcasa: M("Color", "materiales", {
+}), P = Object.freeze({
+	potencia: N("Potencia", "luminicas", { filter: !0 }),
+	flujo_luminoso: N("Flujo luminoso", "luminicas"),
+	lumenes_lmw: N("Eficiencia luminosa", "luminicas"),
+	temperatura_color: N("Temperatura de color", "luminicas", { filter: !0 }),
+	cri: N("CRI", "luminicas"),
+	angulo_apertura: N("Ángulo de apertura", "luminicas"),
+	ugr: N("UGR", "luminicas"),
+	sdcm: N("SDCM", "luminicas"),
+	tipo_led: N("Tipo de LED", "luminicas"),
+	vida_util: N("Vida útil", "luminicas"),
+	tension_proveedor: N("Tensión de entrada", "electricas"),
+	factor_potencia: N("Factor de potencia", "electricas"),
+	thd: N("THD", "electricas"),
+	dimeable: N("Dimerizable", "electricas"),
+	tipo_driver: N("Driver", "electricas"),
+	emc: N("EMC", "electricas"),
+	color_carcasa: N("Color", "materiales", {
 		control: "swatches",
 		column: "Color de carcasa"
 	}),
-	altura: M("Altura", "materiales", { column: "Altura" }),
-	tamanio: M("Medidas", "materiales"),
-	material_cuerpo: M("Material del cuerpo", "materiales"),
-	material_lente: M("Material de la lente", "materiales"),
-	largo_cable: M("Largo de cable", "materiales"),
-	peso: M("Peso", "materiales"),
-	proteccion_ip: M("Grado de protección", "instalacion"),
-	proteccion_ik: M("Resistencia al impacto", "instalacion"),
-	tipo_montaje: M("Montaje", "instalacion"),
-	temperatura_operacion: M("Temperatura de operación", "instalacion"),
-	garantia_proveedor: M("Garantía", "comercial")
-}), Wt = Object.freeze([
+	altura: N("Altura", "materiales", { column: "Altura" }),
+	tamanio: N("Medidas", "materiales"),
+	material_cuerpo: N("Material del cuerpo", "materiales"),
+	material_lente: N("Material de la lente", "materiales"),
+	largo_cable: N("Largo de cable", "materiales"),
+	peso: N("Peso", "materiales"),
+	proteccion_ip: N("Grado de protección", "instalacion"),
+	proteccion_ik: N("Resistencia al impacto", "instalacion"),
+	tipo_montaje: N("Montaje", "instalacion"),
+	temperatura_operacion: N("Temperatura de operación", "instalacion"),
+	garantia_proveedor: N("Garantía", "comercial")
+}), Ut = Object.freeze([
 	{
 		field: "tamanio",
 		label: "Tamaño"
@@ -2461,33 +2461,33 @@ var Ut = Object.freeze([
 		label: "CRI"
 	}
 ]);
-function P(e) {
-	return N[e] ?? {
+function F(e) {
+	return P[e] ?? {
 		label: e,
 		control: "tiles"
 	};
 }
-var Gt = Object.freeze(Object.keys(N).filter((e) => N[e].filter));
-function Kt(e) {
-	return Ut.map((t) => ({
+var Wt = Object.freeze(Object.keys(P).filter((e) => P[e].filter));
+function Gt(e) {
+	return Ht.map((t) => ({
 		...t,
-		rows: Object.entries(N).filter(([n, r]) => r.section === t.id && qt(e[n])).map(([t, n]) => ({
+		rows: Object.entries(P).filter(([n, r]) => r.section === t.id && Kt(e[n])).map(([t, n]) => ({
 			field: t,
 			label: n.label,
 			value: e[t]
 		}))
 	})).filter((e) => e.rows.length);
 }
-var qt = (e) => e != null && String(e).trim() !== "" && e !== "-";
-function Jt(e) {
+var Kt = (e) => e != null && String(e).trim() !== "" && e !== "-";
+function qt(e) {
 	return (Array.isArray(e) ? e : String(e ?? "").split(",")).map((e) => e.trim()).filter(Boolean).map((e) => {
-		let t = Object.keys(N).find((t) => N[t].column === e);
+		let t = Object.keys(P).find((t) => P[t].column === e);
 		return t || console.warn(`[arq] variant_attributes: la columna «${e}» no está en src/data/attributes.js`), t;
 	}).filter(Boolean);
 }
 //#endregion
 //#region src/data/typesense-adapter.js
-var F = {
+var I = {
 	group: "product_group_id",
 	name: "product_name",
 	collection: "collection_id",
@@ -2503,52 +2503,52 @@ var F = {
 	collectionIntro: "collection_intro_text",
 	collectionDescription: "collection_description_text",
 	video: "video_inspiration"
-}, Yt = [
+}, Jt = [
 	"ies",
 	"cad",
 	"manual",
 	"fotometria"
-], I = (e) => e == null ? "" : String(e).trim(), Xt = (e) => Array.isArray(e) ? e : I(e) ? I(e).split(",").map((e) => e.trim()) : [];
+], L = (e) => e == null ? "" : String(e).trim(), Yt = (e) => Array.isArray(e) ? e : L(e) ? L(e).split(",").map((e) => e.trim()) : [];
+function Xt(e) {
+	return {};
+}
 function Zt(e) {
 	return {};
 }
 function Qt(e) {
-	return {};
-}
-function $t(e) {
 	let t = /* @__PURE__ */ new Map();
 	for (let n of e) {
-		let e = I(n[F.group]) || n.sku;
+		let e = L(n[I.group]) || n.sku;
 		t.has(e) || t.set(e, []), t.get(e).push(n);
 	}
 	let n = /* @__PURE__ */ new Map(), r = [...t].map(([e, t]) => {
-		let r = t.find((e) => e[F.isDefault] === !0) ?? t[0], i = I(r[F.collection]) || null;
+		let r = t.find((e) => e[I.isDefault] === !0) ?? t[0], i = L(r[I.collection]) || null;
 		return i && !n.has(i) && n.set(i, {
 			id: i,
-			name: I(r[F.collectionName]) || i,
-			intro: I(r[F.collectionIntro]),
-			description: I(r[F.collectionDescription]),
+			name: L(r[I.collectionName]) || i,
+			intro: L(r[I.collectionIntro]),
+			description: L(r[I.collectionDescription]),
 			images: {}
 		}), {
 			id: e,
-			name: I(r[F.name]) || r.sku,
+			name: L(r[I.name]) || r.sku,
 			collection: i,
-			productType: I(r[F.productType]) || null,
-			environment: Xt(r[F.environment]),
-			application: I(r[F.application]) || null,
-			variantAttributes: Jt(r[F.variantAttributes]),
-			story: I(r[F.story]),
-			inspiration: I(r[F.inspiration]),
-			video: I(r[F.video]),
-			images: Qt(t),
+			productType: L(r[I.productType]) || null,
+			environment: Yt(r[I.environment]),
+			application: L(r[I.application]) || null,
+			variantAttributes: qt(r[I.variantAttributes]),
+			story: L(r[I.story]),
+			inspiration: L(r[I.inspiration]),
+			video: L(r[I.video]),
+			images: Zt(t),
 			specs: {},
 			variants: t.map((e) => ({
 				sku: e.sku,
 				isDefault: e === r,
-				description: I(e[F.description]),
-				attributes: Object.fromEntries(Object.keys(N).map((t) => [t, I(e[t])]).filter(([, e]) => e && e !== "-")),
-				images: Zt(e),
-				downloads: Object.fromEntries(Yt.map((t) => [t, I(e[t])]).filter(([, e]) => e))
+				description: L(e[I.description]),
+				attributes: Object.fromEntries(Object.keys(P).map((t) => [t, L(e[t])]).filter(([, e]) => e && e !== "-")),
+				images: Xt(e),
+				downloads: Object.fromEntries(Jt.map((t) => [t, L(e[t])]).filter(([, e]) => e))
 			}))
 		};
 	});
@@ -2559,16 +2559,16 @@ function $t(e) {
 }
 //#endregion
 //#region src/data/source.js
-async function en() {
-	return $t(await Ht({ q: "*" }));
+async function $t() {
+	return Qt(await Vt({ q: "*" }));
 }
 //#endregion
 //#region src/data/catalog.js
-var L = null;
-function R() {
-	return L ??= en().then(tn), L.catch(() => L = null), L;
+var R = null;
+function z() {
+	return R ??= $t().then(en), R.catch(() => R = null), R;
 }
-function tn({ collections: e, groups: t }) {
+function en({ collections: e, groups: t }) {
 	let n = new Map(e.map((e) => [e.id, e]));
 	for (let e of t) {
 		e.collectionData = n.get(e.collection) ?? null;
@@ -2585,102 +2585,102 @@ function tn({ collections: e, groups: t }) {
 		groupById: new Map(t.map((e) => [e.id, e]))
 	};
 }
-var nn = (e, t) => `/arq/producto/${encodeURIComponent(e)}${t ? `?sku=${encodeURIComponent(t)}` : ""}`, z = (e) => `/arq/coleccion/${encodeURIComponent(e)}`;
-function B({ environment: e, application: t, productType: n } = {}) {
+var tn = (e, t) => `/arq/producto/${encodeURIComponent(e)}${t ? `?sku=${encodeURIComponent(t)}` : ""}`, B = (e) => `/arq/coleccion/${encodeURIComponent(e)}`;
+function V({ environment: e, application: t, productType: n } = {}) {
 	let r = new URLSearchParams();
 	e && r.set("environment", e), t && r.set("application", t), n && r.set("product_type", n);
 	let i = r.toString();
 	return `/arq/productos${i ? `?${i}` : ""}`;
 }
-var V = (e) => e != null && String(e).trim() !== "";
-function rn(e, t) {
+var H = (e) => e != null && String(e).trim() !== "";
+function nn(e, t) {
 	return Object.entries(t).every(([t, n]) => !n?.length || n.includes(e.values[t]));
 }
-function an(e, t) {
-	return [e.defaultVariant, ...e.variants.filter((t) => t !== e.defaultVariant)].find((e) => rn(e, t)) ?? null;
+function rn(e, t) {
+	return [e.defaultVariant, ...e.variants.filter((t) => t !== e.defaultVariant)].find((e) => nn(e, t)) ?? null;
 }
-function H(e, { environment: t, application: n, productType: r, collection: i } = {}) {
+function U(e, { environment: t, application: n, productType: r, collection: i } = {}) {
 	return !(t && !e.environment.includes(t) || n && e.application !== n || r && e.productType !== r || i && e.collection !== i);
 }
-var on = (e = {}) => Object.fromEntries(Object.entries(e).filter(([, e]) => e?.length));
-function sn(e) {
-	return Gt.map((t) => {
+var an = (e = {}) => Object.fromEntries(Object.entries(e).filter(([, e]) => e?.length));
+function on(e) {
+	return Wt.map((t) => {
 		let n = /* @__PURE__ */ new Map();
-		for (let r of e) for (let e of new Set(r.variants.map((e) => e.values[t]).filter(V))) n.set(e, (n.get(e) ?? 0) + 1);
+		for (let r of e) for (let e of new Set(r.variants.map((e) => e.values[t]).filter(H))) n.set(e, (n.get(e) ?? 0) + 1);
 		let r = [...n].map(([e, t]) => ({
 			value: e,
 			count: t
 		})).sort((e, t) => String(e.value).localeCompare(String(t.value), "es", { numeric: !0 }));
 		return {
 			name: t,
-			label: P(t).label,
+			label: F(t).label,
 			options: r
 		};
 	}).filter((e) => e.options.length > 1);
 }
-function cn(e) {
+function sn(e) {
 	return e.productType && e.productType !== "Luminaria" ? e.productType : [e.environment.join(" · "), e.application].filter(Boolean).join(" · ");
 }
-var ln = Object.keys(N).filter((e) => N[e].control === "swatches"), un = (e) => [...new Set(e.variants.flatMap((e) => ln.map((t) => e.values[t])).filter(V))];
-function U(e, t = e.defaultVariant, n = !1) {
+var cn = Object.keys(P).filter((e) => P[e].control === "swatches"), ln = (e) => [...new Set(e.variants.flatMap((e) => cn.map((t) => e.values[t])).filter(H))];
+function W(e, t = e.defaultVariant, n = !1) {
 	let r = {
 		...e.defaultVariant.images,
-		...W(t.images)
+		...G(t.images)
 	};
 	return {
 		id: e.id,
 		sku: t.sku,
 		name: e.name,
-		meta: cn(e),
-		finishes: un(e),
-		href: nn(e.id, n && t !== e.defaultVariant ? t.sku : null),
+		meta: sn(e),
+		finishes: ln(e),
+		href: tn(e.id, n && t !== e.defaultVariant ? t.sku : null),
 		image: r.studio ?? null,
 		imageHover: r.context ?? null,
 		imageLit: r.studioOn ?? null,
 		imageHoverLit: r.contextOn ?? null
 	};
 }
-var W = (e = {}) => Object.fromEntries(Object.entries(e).filter(([, e]) => V(e) && (!Array.isArray(e) || e.length)));
-function dn(e, t) {
+var G = (e = {}) => Object.fromEntries(Object.entries(e).filter(([, e]) => H(e) && (!Array.isArray(e) || e.length)));
+function un(e, t) {
 	let n = [...new Set(t.map((e) => e.application).filter(Boolean))], r = e.images ?? {};
 	return {
 		id: e.id,
 		name: e.name,
 		meta: n.join(" · "),
-		finishes: [...new Set(t.flatMap(un))],
-		href: z(e.id),
+		finishes: [...new Set(t.flatMap(ln))],
+		href: B(e.id),
 		image: r.studio ?? null,
 		imageHover: r.context ?? null,
 		imageLit: r.studioOn ?? null,
 		imageHoverLit: r.contextOn ?? null
 	};
 }
-async function fn({ filters: e, ...t } = {}) {
-	let { groups: n } = await R(), r = n.filter((e) => H(e, t)), i = on(e), a = Object.keys(i).length > 0, o = r.flatMap((e) => {
-		let t = an(e, i);
-		return t ? [U(e, t, a)] : [];
+async function dn({ filters: e, ...t } = {}) {
+	let { groups: n } = await z(), r = n.filter((e) => U(e, t)), i = an(e), a = Object.keys(i).length > 0, o = r.flatMap((e) => {
+		let t = rn(e, i);
+		return t ? [W(e, t, a)] : [];
 	});
 	return {
 		cards: o,
 		count: o.length,
-		filters: sn(r)
+		filters: on(r)
 	};
 }
-async function pn({ filters: e } = {}) {
-	let { collections: t, groups: n } = await R(), r = on(e), i = t.flatMap((e) => {
+async function fn({ filters: e } = {}) {
+	let { collections: t, groups: n } = await z(), r = an(e), i = t.flatMap((e) => {
 		let t = n.filter((t) => t.collection === e.id);
-		return t.some((e) => an(e, r)) ? [dn(e, t)] : [];
+		return t.some((e) => rn(e, r)) ? [un(e, t)] : [];
 	});
 	return {
 		cards: i,
 		count: i.length,
-		filters: sn(n.filter((e) => e.collection))
+		filters: on(n.filter((e) => e.collection))
 	};
 }
-async function mn(e) {
-	let { groups: t, groupById: n } = await R(), r = n.get(e);
+async function pn(e) {
+	let { groups: t, groupById: n } = await z(), r = n.get(e);
 	if (!r) return null;
-	let i = r.collection ? t.filter((e) => e.collection === r.collection && e !== r).map((e) => U(e)) : [], a = r.images ?? {};
+	let i = r.collection ? t.filter((e) => e.collection === r.collection && e !== r).map((e) => W(e)) : [], a = r.images ?? {};
 	return {
 		group: r,
 		collection: r.collectionData,
@@ -2692,26 +2692,26 @@ async function mn(e) {
 		variantAttributes: r.variantAttributes,
 		family: i,
 		images: {
-			ambient: G(a.ambient),
-			description: V(a.description) ? a.description : null,
-			inspiration: G(a.inspiration)
+			ambient: K(a.ambient),
+			description: H(a.description) ? a.description : null,
+			inspiration: K(a.inspiration)
 		},
-		glossary: hn(r),
-		files: yn(r.defaultVariant).filter((e) => e.type === "cad" || e.type === "manual")
+		glossary: mn(r),
+		files: vn(r.defaultVariant).filter((e) => e.type === "cad" || e.type === "manual")
 	};
 }
-var G = (e) => [...new Set([e ?? []].flat().filter(V))];
-function hn(e) {
+var K = (e) => [...new Set([e ?? []].flat().filter(H))];
+function mn(e) {
 	let t = e.defaultVariant.images?.studio ?? null;
 	return {
-		columns: Wt.filter(({ field: t }) => e.variants.some((e) => V(e.values[t]))).map(({ field: e, label: t }) => ({
+		columns: Ut.filter(({ field: t }) => e.variants.some((e) => H(e.values[t]))).map(({ field: e, label: t }) => ({
 			key: e,
 			label: t
 		})),
 		filters: e.variantAttributes.map((e) => ({
 			key: e,
-			label: P(e).label,
-			swatches: P(e).control === "swatches"
+			label: F(e).label,
+			swatches: F(e).control === "swatches"
 		})),
 		rows: e.variants.map((e) => ({
 			sku: e.sku,
@@ -2721,32 +2721,32 @@ function hn(e) {
 		}))
 	};
 }
-async function gn(e) {
-	let { groupById: t } = await R();
+async function hn(e) {
+	let { groupById: t } = await z();
 	return e.map((e) => t.get(e)).filter(Boolean).map((e) => ({
-		...U(e),
-		meta: _n(e)
+		...W(e),
+		meta: gn(e)
 	}));
 }
-function _n(e) {
+function gn(e) {
 	return e.productType && e.productType !== "Luminaria" ? e.productType : e.application ?? e.productType ?? "";
 }
-var vn = {
+var _n = {
 	cad: "CAD 2D/3D",
 	manual: "Manual",
 	ies: "IES",
 	fotometria: "Fotometría"
 };
-function yn(e) {
-	let t = W(e.downloads);
-	return Object.keys(vn).filter((e) => t[e]).map((e) => ({
+function vn(e) {
+	let t = G(e.downloads);
+	return Object.keys(_n).filter((e) => t[e]).map((e) => ({
 		type: e,
-		label: vn[e],
+		label: _n[e],
 		href: t[e]
 	}));
 }
-function bn(e, t) {
-	let n = e.variants.find((e) => e.sku === t) ?? e.defaultVariant, r = W(n.images), i = W(e.defaultVariant.images), a = r.gallery ?? i.gallery ?? [r.studio ?? i.studio].filter(Boolean), o = r.galleryOn ?? (r.gallery ? [] : i.galleryOn ?? []);
+function yn(e, t) {
+	let n = e.variants.find((e) => e.sku === t) ?? e.defaultVariant, r = G(n.images), i = G(e.defaultVariant.images), a = r.gallery ?? i.gallery ?? [r.studio ?? i.studio].filter(Boolean), o = r.galleryOn ?? (r.gallery ? [] : i.galleryOn ?? []);
 	return {
 		sku: n.sku,
 		description: n.description,
@@ -2756,42 +2756,42 @@ function bn(e, t) {
 			srcOn: o[n] ?? null,
 			alt: `${e.name}, imagen ${n + 1}`
 		})),
-		sections: Kt(n.values),
-		downloads: yn(n)
+		sections: Gt(n.values),
+		downloads: vn(n)
 	};
 }
-async function xn(e) {
-	let { collectionById: t, groups: n } = await R(), r = t.get(e);
+async function bn(e) {
+	let { collectionById: t, groups: n } = await z(), r = t.get(e);
 	if (!r) return null;
 	let i = r.images ?? {};
 	return {
 		collection: r,
 		cards: n.filter((t) => t.collection === e).map((e) => ({
-			...U(e),
-			meta: Sn(e)
+			...W(e),
+			meta: xn(e)
 		})),
 		images: {
-			gallery: G(i.gallery),
-			description: V(i.description) ? i.description : null,
-			inspiration: G(i.inspiration)
+			gallery: K(i.gallery),
+			description: H(i.description) ? i.description : null,
+			inspiration: K(i.inspiration)
 		}
 	};
 }
-function Sn(e) {
+function xn(e) {
 	let t = (e) => Number.parseFloat(String(e).replace(",", "."));
-	return e.variantAttributes.filter((e) => P(e).control !== "swatches").map((n) => {
-		let r = [...new Set(e.variants.map((e) => e.values[n]).filter(V))];
+	return e.variantAttributes.filter((e) => F(e).control !== "swatches").map((n) => {
+		let r = [...new Set(e.variants.map((e) => e.values[n]).filter(H))];
 		return r.sort((e, n) => t(e) - t(n) || String(e).localeCompare(String(n), "es")), r.length > 1 ? `${r[0]} – ${r.at(-1)}` : r[0];
 	}).filter(Boolean).join(" · ");
 }
-var K = (e) => String(e ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
-async function Cn(e, { limit: t = 5 } = {}) {
-	let n = K(e).split(/\s+/).filter(Boolean);
+var q = (e) => String(e ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+async function Sn(e, { limit: t = 5 } = {}) {
+	let n = q(e).split(/\s+/).filter(Boolean);
 	if (!n.length) return {
 		results: [],
 		total: 0
 	};
-	let { groups: r, collections: i } = await R(), a = (e) => n.every((t) => K(e).includes(t)), o = r.flatMap((e) => {
+	let { groups: r, collections: i } = await z(), a = (e) => n.every((t) => q(e).includes(t)), o = r.flatMap((e) => {
 		let t = e.variants.find((e) => a(e.sku));
 		if (!t && !a([
 			e.name,
@@ -2800,7 +2800,7 @@ async function Cn(e, { limit: t = 5 } = {}) {
 			e.productType,
 			...e.environment
 		].join(" "))) return [];
-		let n = U(e, t ?? e.defaultVariant, !!t);
+		let n = W(e, t ?? e.defaultVariant, !!t);
 		return [{
 			name: e.name,
 			meta: (t ?? e.defaultVariant).sku,
@@ -2810,7 +2810,7 @@ async function Cn(e, { limit: t = 5 } = {}) {
 	}), s = i.filter((e) => a(e.name)).map((e) => ({
 		name: e.name,
 		meta: "Colección",
-		href: z(e.id),
+		href: B(e.id),
 		image: e.images?.studio ?? null
 	})), c = [...o, ...s];
 	return {
@@ -2818,11 +2818,11 @@ async function Cn(e, { limit: t = 5 } = {}) {
 		total: c.length
 	};
 }
-var wn = (e) => `/arq/buscar?q=${encodeURIComponent(e)}`;
-async function Tn() {
-	let { groups: e, collections: t } = await R(), n = (t) => e.filter((e) => H(e, t)).length, r = (e, t) => ({
+var Cn = (e) => `/arq/buscar?q=${encodeURIComponent(e)}`;
+async function wn() {
+	let { groups: e, collections: t } = await z(), n = (t) => e.filter((e) => U(e, t)).length, r = (e, t) => ({
 		label: e,
-		href: B(t),
+		href: V(t),
 		count: n(t)
 	}), i = (t, n) => {
 		let i = [
@@ -2841,28 +2841,28 @@ async function Tn() {
 			})
 		].filter((e) => e.count);
 		return i.length ? {
-			id: K(t),
+			id: q(t),
 			label: t,
-			href: B({ environment: t }),
+			href: V({ environment: t }),
 			all: {
 				label: n,
-				href: B({ environment: t })
+				href: V({ environment: t })
 			},
 			links: i
 		} : null;
 	}, a = (t, n, r) => {
 		let i = e.filter((e) => e.productType === t).map((e) => ({
 			label: e.name,
-			href: nn(e.id),
+			href: tn(e.id),
 			count: 1
 		}));
 		return i.length ? {
-			id: K(n),
+			id: q(n),
 			label: n,
-			href: B({ productType: t }),
+			href: V({ productType: t }),
 			all: {
 				label: r,
-				href: B({ productType: t })
+				href: V({ productType: t })
 			},
 			links: i
 		} : null;
@@ -2877,7 +2877,7 @@ async function Tn() {
 		collections: t.map((t) => ({
 			label: t.name,
 			meta: [...new Set(e.filter((e) => e.collection === t.id).map((e) => e.application ?? e.productType).filter(Boolean))].join(" · "),
-			href: z(t.id)
+			href: B(t.id)
 		})).filter((e) => e.meta),
 		allCollections: {
 			label: "Ver todas las colecciones",
@@ -2887,10 +2887,10 @@ async function Tn() {
 }
 //#endregion
 //#region src/components/nav-link/nav-link.css?inline
-var En = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-sm);background:var(--arq-color-surface-transparent);max-width:100%;color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;padding:0;text-decoration:none;display:inline-flex;position:relative}.label{white-space:nowrap;min-width:0}.indicator{width:var(--arq-space-gap-sm);height:var(--arq-border-strong);background:var(--arq-color-border-strong);flex:none;display:none}.current .indicator{display:block}.chevron{flex:none;display:none}:host([has-dropdown]) .chevron{display:inline-flex}.chevron .icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm)}[aria-expanded=true] .chevron .icon{transform:rotate(180deg)}.trailing{display:none}.link:after{content:\"\";inset-inline:0;top:calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));height:var(--arq-border-default);background:var(--arq-color-border-strong);visibility:hidden;position:absolute}.link:not(.current):not([aria-expanded=true]):hover:after{visibility:visible}.link:active{color:var(--arq-color-text-tertiary)}.link:active:after{visibility:hidden}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}@media (width>=768px){:host([theme=inverse]) .link,:host([theme=inverse]) .link:active{color:var(--arq-color-text-inverse)}:host([theme=inverse]) .indicator,:host([theme=inverse]) .link:after{background:var(--arq-color-icon-inverse)}:host([theme=inverse]) .chevron{color:var(--arq-color-icon-inverse)}}@media (width<=767px){:host{width:100%;display:flex}.link{width:100%;padding:var(--arq-space-gap-md) var(--arq-layout-gutter)}.label{white-space:normal;flex:1}:host([has-dropdown]) .chevron{display:none}.trailing{flex:none;display:inline-flex}.trailing .icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.trailing [data-icon=arrow-right],.current .trailing [data-icon=chevron-right]{display:none}.current .trailing [data-icon=arrow-right]{display:block}.link:after{display:none}.link:active{background:var(--arq-color-surface-selected);color:var(--arq-color-text-primary)}@media (hover:hover){.link:not(:active):hover{background:var(--arq-color-surface-hover)}}.link:focus-visible{outline-offset:calc(var(--arq-border-strong) * -1)}}", q = matchMedia("(max-width: 767px)");
+var Tn = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-sm);background:var(--arq-color-surface-transparent);max-width:100%;color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;padding:0;text-decoration:none;display:inline-flex;position:relative}.label{white-space:nowrap;min-width:0}.indicator{width:var(--arq-space-gap-sm);height:var(--arq-border-strong);background:var(--arq-color-border-strong);flex:none;display:none}.current .indicator{display:block}.chevron{flex:none;display:none}:host([has-dropdown]) .chevron{display:inline-flex}.chevron .icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm)}[aria-expanded=true] .chevron .icon{transform:rotate(180deg)}.trailing{display:none}.link:after{content:\"\";inset-inline:0;top:calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));height:var(--arq-border-default);background:var(--arq-color-border-strong);visibility:hidden;position:absolute}.link:not(.current):not([aria-expanded=true]):hover:after{visibility:visible}.link:active{color:var(--arq-color-text-tertiary)}.link:active:after{visibility:hidden}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}@media (width>=768px){:host([theme=inverse]) .link,:host([theme=inverse]) .link:active{color:var(--arq-color-text-inverse)}:host([theme=inverse]) .indicator,:host([theme=inverse]) .link:after{background:var(--arq-color-icon-inverse)}:host([theme=inverse]) .chevron{color:var(--arq-color-icon-inverse)}}@media (width<=767px){:host{width:100%;display:flex}.link{width:100%;padding:var(--arq-space-gap-md) var(--arq-layout-gutter)}.label{white-space:normal;flex:1}:host([has-dropdown]) .chevron{display:none}.trailing{flex:none;display:inline-flex}.trailing .icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.trailing [data-icon=arrow-right],.current .trailing [data-icon=chevron-right]{display:none}.current .trailing [data-icon=arrow-right]{display:block}.link:after{display:none}.link:active{background:var(--arq-color-surface-selected);color:var(--arq-color-text-primary)}@media (hover:hover){.link:not(:active):hover{background:var(--arq-color-surface-hover)}}.link:focus-visible{outline-offset:calc(var(--arq-border-strong) * -1)}}", En = matchMedia("(max-width: 767px)");
 (class extends f {
 	static tag = "arq-nav-link";
-	static styles = En;
+	static styles = Tn;
 	static properties = {
 		hasDropdown: { type: Boolean },
 		open: { type: Boolean },
@@ -2905,21 +2905,21 @@ var En = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{b
 	static template = `<a class="link"><span class="indicator" aria-hidden="true"></span><span class="label role-body"><slot></slot></span><span class="chevron">${p("chevron-down")}</span><span class="trailing">${p("chevron-right")}${p("arrow-right")}</span></a>`;
 	#e = null;
 	setup() {
-		this.#e = this.shadowRoot.querySelector(".link");
-		let e = this.shadowRoot.querySelector(".label"), t = () => {
-			e.classList.toggle("role-body", !q.matches), e.classList.toggle("role-body-xl", q.matches);
-		};
-		q.addEventListener("change", t), t();
+		this.#e = this.shadowRoot.querySelector(".link"), En.addEventListener("change", () => this.#t()), this.#t();
+	}
+	#t() {
+		let e = this.shadowRoot.querySelector(".label"), t = !En.matches;
+		e.classList.toggle("role-body", t && !this.current), e.classList.toggle("role-body-regular", t && this.current), e.classList.toggle("role-body-xl", !t);
 	}
 	focus(e) {
 		this.#e ? this.#e.focus(e) : super.focus(e);
 	}
 	update(e) {
-		e.has("hasDropdown") && this.#t();
+		e.has("hasDropdown") && this.#n();
 		let t = this.#e;
-		t.localName === "a" ? (this.href === null ? t.removeAttribute("href") : t.setAttribute("href", this.href), this.current ? t.setAttribute("aria-current", "page") : t.removeAttribute("aria-current")) : t.setAttribute("aria-expanded", String(this.open)), t.classList.toggle("current", this.current);
+		t.localName === "a" ? (this.href === null ? t.removeAttribute("href") : t.setAttribute("href", this.href), this.current ? t.setAttribute("aria-current", "page") : t.removeAttribute("aria-current")) : t.setAttribute("aria-expanded", String(this.open)), t.classList.toggle("current", this.current), e.has("current") && this.#t();
 	}
-	#t() {
+	#n() {
 		let e = this.hasDropdown ? "button" : "a", t = this.#e;
 		if (t.localName === e) return;
 		let n = document.createElement(e);
@@ -3006,10 +3006,12 @@ var Dn = ":host{z-index:4;display:block;position:sticky;top:0}:host([theme=trans
 			e.composedPath().includes(this) || (this.#m(!1), this.mode === "search" && !J.matches && this.#y(!1));
 		});
 		let i = () => {
-			let e = window.scrollY > 0;
-			e !== this.#d && (this.#d = e, this.shadowRoot.querySelector(".navbar").classList.toggle("scrolled", e), this.#c());
+			let e = document.querySelector("arq-hero"), t = e ? e.getBoundingClientRect().bottom <= this.shadowRoot.querySelector(".bar").getBoundingClientRect().bottom : window.scrollY > 0;
+			t !== this.#d && (this.#d = t, this.shadowRoot.querySelector(".navbar").classList.toggle("scrolled", t), this.#c());
 		};
-		window.addEventListener("scroll", i, { passive: !0 }), i(), this.shadowRoot.querySelector("slot[name=\"links\"]").addEventListener("slotchange", () => this.#c()), this.#c();
+		window.addEventListener("scroll", i, { passive: !0 }), window.addEventListener("resize", i, { passive: !0 });
+		let a = document.querySelector("arq-hero");
+		a && new ResizeObserver(i).observe(a), i(), this.shadowRoot.querySelector("slot[name=\"links\"]").addEventListener("slotchange", () => this.#c()), this.#c();
 	}
 	update(e) {
 		e.has("label") && this.shadowRoot.querySelector(".bar").setAttribute("aria-label", this.label ?? ""), (e.has("theme") || e.has("mode")) && this.#c();
@@ -3045,7 +3047,7 @@ var Dn = ":host{z-index:4;display:block;position:sticky;top:0}:host([theme=trans
 		r && this.#h(), r && this.mode === "search" && this.#l("default"), t.hidden = !r, n && (n.open = r), this.#f = r, this.#c();
 	}
 	#h() {
-		this.#e || this.#t || (this.#t = Tn().then((e) => this.navigation = e).catch((e) => console.error("[arq] navbar: no se pudo cargar la navegación", e)).finally(() => this.#t = null));
+		this.#e || this.#t || (this.#t = wn().then((e) => this.navigation = e).catch((e) => console.error("[arq] navbar: no se pudo cargar la navegación", e)).finally(() => this.#t = null));
 	}
 	#g() {
 		let e = this.shadowRoot, t = this.#e;
@@ -3066,7 +3068,7 @@ var Dn = ":host{z-index:4;display:block;position:sticky;top:0}:host([theme=trans
 		this.#i = setTimeout(async () => {
 			let e = this.#a;
 			try {
-				let { results: t, total: n } = await Cn(e, { limit: On });
+				let { results: t, total: n } = await Sn(e, { limit: On });
 				e === this.#a && this.#v(t, n);
 			} catch (e) {
 				console.error("[arq] navbar: no se pudo buscar", e);
@@ -3076,7 +3078,7 @@ var Dn = ":host{z-index:4;display:block;position:sticky;top:0}:host([theme=trans
 	#v(e, t) {
 		let n = this.shadowRoot;
 		this.#n = e, this.#r = -1;
-		let r = this.#a, i = e.map((e) => `<arq-search-result href="${Y(e.href)}"${e.image ? ` image="${Y(e.image)}"` : ""}>${Y(e.name)}<span slot="meta">${Y(e.meta)}</span></arq-search-result>`).join("") + (e.length ? `<arq-search-see-all href="${Y(wn(r))}" term="${Y(r)}" count="${t}"></arq-search-see-all>` : ""), a = r && !e.length, o = n.querySelector(".search-dropdown");
+		let r = this.#a, i = e.map((e) => `<arq-search-result href="${Y(e.href)}"${e.image ? ` image="${Y(e.image)}"` : ""}>${Y(e.name)}<span slot="meta">${Y(e.meta)}</span></arq-search-result>`).join("") + (e.length ? `<arq-search-see-all href="${Y(Cn(r))}" term="${Y(r)}" count="${t}"></arq-search-see-all>` : ""), a = r && !e.length, o = n.querySelector(".search-dropdown");
 		o.state = a ? "no-results" : "results", o.term = r, o.innerHTML = i, this.#y(!!r);
 		let s = n.querySelector(".search-screen");
 		s.innerHTML = a ? `<arq-search-dropdown state="no-results" term="${Y(r)}"></arq-search-dropdown>` : i, this.#C();
@@ -3102,7 +3104,7 @@ var Dn = ":host{z-index:4;display:block;position:sticky;top:0}:host([theme=trans
 	}
 	#w(e) {
 		let t = this.#x()[this.#r];
-		t ? t.click() : e.trim() && location.assign(wn(e.trim()));
+		t ? t.click() : e.trim() && location.assign(Cn(e.trim()));
 	}
 }).define();
 //#endregion
@@ -3216,7 +3218,7 @@ var Fn = ":host{display:block}.group{align-items:flex-start;gap:var(--arq-space-
 }).define();
 //#endregion
 //#region src/components/choice-chip/choice-chip.css?inline
-var In = ":host{vertical-align:middle;cursor:pointer;max-width:100%;display:inline-flex}.chip{box-sizing:border-box;max-width:100%;padding:var(--arq-space-padding-sm-md) var(--arq-space-padding-lg);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);color:var(--arq-color-text-primary);white-space:nowrap;align-items:center;display:inline-flex}:host(:not([disabled]):hover) .chip{border-color:var(--arq-color-border-strong)}:host([selected]) .chip{border-color:var(--arq-color-border-strong);background:var(--arq-color-surface-selected)}:host([disabled]){cursor:default}:host([disabled]) .chip{border-color:var(--arq-color-border-disabled);color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+var In = ":host{vertical-align:middle;cursor:pointer;max-width:100%;display:inline-flex}.chip{box-sizing:border-box;max-width:100%;padding:var(--arq-space-padding-sm-md) var(--arq-space-padding-md);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);color:var(--arq-color-text-primary);white-space:nowrap;flex:1;justify-content:center;align-items:center;display:inline-flex}:host(:not([disabled]):hover) .chip{border-color:var(--arq-color-border-strong)}:host([selected]) .chip{border-color:var(--arq-color-border-strong);background:var(--arq-color-surface-selected)}:host([disabled]){cursor:default}:host([disabled]) .chip{border-color:var(--arq-color-border-disabled);color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
 (class extends f {
 	static tag = "arq-choice-chip";
 	static styles = In;
@@ -3610,7 +3612,7 @@ var Xn = ":host{display:block}.footer{column-gap:var(--arq-space-gap-xl);row-gap
 }).define();
 //#endregion
 //#region src/components/hero/hero.css?inline
-var Qn = ":host{display:block}.hero{aspect-ratio:16/10;background:var(--arq-color-surface-inverse);flex-direction:column;justify-content:flex-end;display:flex;position:relative;overflow:hidden}.media{position:absolute;inset:0}::slotted([slot=media]){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}.scrim{background:linear-gradient(#00000085 0%,#0003 18% 45%,#000000ad 100%);position:absolute;inset:0}.content{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-xl);padding:0 var(--page-gutter) var(--arq-space-section-sm);color:var(--arq-color-text-inverse);display:flex;position:relative}.text{align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column;min-width:0;display:flex}.eyebrow,.title,.description{overflow-wrap:break-word;margin:0}.action{flex:none}@media (width<=767px){.hero{aspect-ratio:auto;height:70svh}.content{justify-content:flex-start;align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column}}:host([full-height]) .hero{aspect-ratio:auto;height:100svh}", $n = [
+var Qn = ":host{display:block}.hero{background:var(--arq-color-surface-inverse);flex-direction:column;justify-content:flex-end;height:70svh;display:flex;position:relative;overflow:hidden}.media{position:absolute;inset:0}::slotted([slot=media]){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}.scrim{background:linear-gradient(#00000085 0%,#0003 18% 45%,#000000ad 100%);position:absolute;inset:0}.content{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-xl);padding:0 var(--page-gutter) var(--arq-space-section-sm);color:var(--arq-color-text-inverse);display:flex;position:relative}.text{align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column;min-width:0;display:flex}.eyebrow,.title,.description{overflow-wrap:break-word;margin:0}.action{flex:none}@media (width<=767px){.content{justify-content:flex-start;align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column}}:host([full-height]) .hero{height:100svh}", $n = [
 	"eyebrow",
 	"description",
 	"action"
@@ -3895,7 +3897,7 @@ var fr = ":host{min-width:0;display:block}.fallback{align-items:flex-start;gap:v
 		this.setAttribute("aria-busy", "true");
 		let r = [];
 		try {
-			r = e.length ? await gn(e) : [];
+			r = e.length ? await hn(e) : [];
 		} catch (e) {
 			console.error("[arq] featured-products: no se pudo cargar el catálogo", e);
 		}
@@ -3994,7 +3996,7 @@ var pr = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 		e && this.#f(r.filters), i.count = r.count, this.#l(r.cards), this.#c(r.count ? "" : n.empty);
 	}
 	#o(e) {
-		return this.unit === "colecciones" ? pn({ filters: e }) : fn({
+		return this.unit === "colecciones" ? fn({ filters: e }) : dn({
 			...this.#e,
 			filters: e
 		});
@@ -4107,7 +4109,7 @@ var yr = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		this.setAttribute("aria-busy", "true"), this.#i(Z.loading);
 		let t = null, n = !1;
 		try {
-			t = e ? await mn(e) : null;
+			t = e ? await pn(e) : null;
 		} catch (e) {
 			n = !0, console.error("[arq] ficha-producto: no se pudo cargar el catálogo", e);
 		}
@@ -4133,7 +4135,7 @@ var yr = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 			href: "/arq/colecciones"
 		}, {
 			label: t.name,
-			href: z(t.id)
+			href: B(t.id)
 		}] : [{
 			label: "Productos",
 			href: "/arq/productos"
@@ -4145,7 +4147,7 @@ var yr = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 			current: !0,
 			textContent: e.name
 		}));
-		for (let e of n.querySelectorAll(".collection-link")) e.hidden = !t, t && (e.href = z(t.id), e.textContent = `Ver colección ${t.name}`);
+		for (let e of n.querySelectorAll(".collection-link")) e.hidden = !t, t && (e.href = B(t.id), e.textContent = `Ver colección ${t.name}`);
 	}
 	#s(e) {
 		let t = this.shadowRoot.querySelector(".hero");
@@ -4154,7 +4156,7 @@ var yr = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 	}
 	#c() {
 		let { variants: e, variantAttributes: t } = this.#e, n = Ie(e, t, this.#t).map(({ attribute: e, options: t }) => {
-			let n = P(e), r = document.createElement("arq-option-group");
+			let n = F(e), r = document.createElement("arq-option-group");
 			r.dataset.attribute = e, r.label = n.label;
 			let i = n.control === "swatches", a = i ? document.createElement("arq-swatch-picker") : r;
 			i && (r.type = "swatches", r.append(a));
@@ -4176,7 +4178,7 @@ var yr = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		let { group: t, variants: n } = this.#e, r = Pe(n, this.#t) ?? n.find((e) => e.isDefault) ?? n[0];
 		if (!r || r.sku === this.#n) return;
 		this.#n = r.sku;
-		let i = bn(t, r.sku), a = this.shadowRoot;
+		let i = yn(t, r.sku), a = this.shadowRoot;
 		a.querySelector(".sku").textContent = i.sku;
 		let o = a.querySelector(".variant-description");
 		if (o.textContent = i.description ?? "", o.hidden = !i.description, a.querySelector("slot[name=\"description\"]").hidden = !!i.description, a.querySelector(".gallery").images = i.images, this.#d(i.sections), this.#f(i.downloads), e) {
@@ -4257,7 +4259,7 @@ var yr = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		t.dataset.sku = e;
 		let n = document.createElement("arq-download-item");
 		n.emphasis = "featured", n.textContent = Z.datasheet;
-		let r = bn(this.#e.group, e).downloads.map((e) => {
+		let r = yn(this.#e.group, e).downloads.map((e) => {
 			let t = document.createElement("arq-download-item");
 			return t.href = e.href, t.textContent = e.label, t;
 		});
@@ -4311,7 +4313,7 @@ var Cr = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		this.setAttribute("aria-busy", "true"), this.#t($.loading);
 		let t = null, n = !1;
 		try {
-			t = e ? await xn(e) : null;
+			t = e ? await bn(e) : null;
 		} catch (e) {
 			n = !0, console.error("[arq] coleccion: no se pudo cargar el catálogo", e);
 		}
@@ -4362,7 +4364,7 @@ function Tr(e, t) {
 wr.define();
 //#endregion
 //#region src/components/form-contacto/form-contacto.css?inline
-var Er = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.layout{column-gap:var(--arq-space-gap-6xl);padding:var(--arq-space-section-lg) var(--page-gutter) var(--arq-space-section-xl);grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;display:grid}.info{gap:var(--arq-space-gap-2xl);flex-direction:column;min-width:0;display:flex}.intro{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.title{color:var(--arq-color-text-primary)}.description{color:var(--arq-color-text-secondary)}::slotted([slot=description]){font:inherit!important;color:inherit!important;margin:0!important}.channels{border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);flex-direction:column;display:flex}.form{gap:var(--arq-space-gap-2xl);flex-direction:column;min-width:0;display:flex}.section{gap:var(--arq-space-gap-lg);border:0;flex-direction:column;min-inline-size:0;margin:0;padding:0;display:flex}.section>legend{width:100%;margin-bottom:var(--arq-space-gap-lg);padding:0;display:block}.choices{gap:var(--arq-space-gap-sm-md);flex-wrap:wrap;display:flex}.fields{gap:var(--arq-space-gap-lg);grid-template-columns:minmax(0,1fr) minmax(0,1fr);display:grid}.honeypot{width:var(--arq-border-default);height:var(--arq-border-default);clip-path:inset(50%);white-space:nowrap;position:absolute;overflow:hidden}.submit{justify-content:space-between;align-items:flex-start;gap:var(--arq-space-gap-lg);display:flex}.submit arq-checkbox{flex:none}.send{align-items:flex-end;gap:var(--arq-space-gap-md);text-align:end;flex-direction:column;min-width:0;margin-inline-start:auto;display:flex}@media (width<=767px){.layout{row-gap:var(--arq-space-gap-6xl);grid-template-columns:minmax(0,1fr)}.fields{grid-template-columns:minmax(0,1fr)}.submit{flex-direction:column;align-items:stretch}.send{text-align:start;align-items:stretch;margin-inline-start:0}.send-button{width:100%}}", Dr = [
+var Er = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.layout{column-gap:var(--arq-space-gap-6xl);padding:var(--arq-space-section-lg) var(--page-gutter) var(--arq-space-section-xl);grid-template-columns:minmax(0,2fr) minmax(0,3fr);align-items:start;display:grid}.info{gap:var(--arq-space-gap-2xl);flex-direction:column;min-width:0;display:flex}.intro{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.title{color:var(--arq-color-text-primary)}.description{color:var(--arq-color-text-secondary)}::slotted([slot=description]){font:inherit!important;color:inherit!important;margin:0!important}.channels{border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);flex-direction:column;display:flex}.form{gap:var(--arq-space-gap-2xl);flex-direction:column;min-width:0;display:flex}.section{gap:var(--arq-space-gap-lg);border:0;flex-direction:column;min-inline-size:0;margin:0;padding:0;display:flex}.section>legend{width:100%;margin-bottom:var(--arq-space-gap-lg);padding:0;display:block}.choices{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.choices.fill>arq-choice-chip{flex:auto}.fields{gap:var(--arq-space-gap-lg);grid-template-columns:minmax(0,1fr) minmax(0,1fr);display:grid}.honeypot{width:var(--arq-border-default);height:var(--arq-border-default);clip-path:inset(50%);white-space:nowrap;position:absolute;overflow:hidden}.submit{justify-content:space-between;align-items:flex-start;gap:var(--arq-space-gap-lg);display:flex}.submit arq-checkbox{flex:none}.send{align-items:flex-end;gap:var(--arq-space-gap-md);text-align:end;flex-direction:column;min-width:0;margin-inline-start:auto;display:flex}@media (width<=767px){.layout{row-gap:var(--arq-space-gap-6xl);grid-template-columns:minmax(0,1fr)}.fields{grid-template-columns:minmax(0,1fr)}.submit{flex-direction:column;align-items:stretch}.send{text-align:start;align-items:stretch;margin-inline-start:0}.send-button{width:100%}}", Dr = [
 	"Asesoramiento lumínico",
 	"Cotización de proyecto",
 	"Consulta técnica",
@@ -4409,12 +4411,16 @@ var Er = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.l
 	static template = "<div class=\"layout\"><div class=\"info\"><div class=\"intro\"><div class=\"title role-heading-2\"><slot name=\"title\"></slot></div><div class=\"description role-body-lg\"><slot name=\"description\"></slot></div></div><div class=\"channels\"><slot name=\"channels\"></slot></div><slot name=\"links\"></slot></div><form class=\"form\" novalidate><fieldset class=\"section topics\"><legend><arq-form-section-header number=\"01\" show-number>Tipo de consulta</arq-form-section-header></legend><div class=\"choices\" role=\"radiogroup\" aria-label=\"Tipo de consulta\">" + Dr.map((e, t) => `<arq-choice-chip name="tipo" value="${jr(e)}"${t ? "" : " selected"}>${jr(e)}</arq-choice-chip>`).join("") + "</div></fieldset><fieldset class=\"section\"><legend><arq-form-section-header number=\"02\" show-number>Tus datos</arq-form-section-header></legend><div class=\"fields\"><arq-input name=\"nombre\" placeholder=\"Tu nombre y apellido\" autocomplete=\"name\" required show-label>Nombre completo</arq-input><arq-input name=\"empresa\" placeholder=\"Nombre del estudio\" autocomplete=\"organization\" show-label>Estudio o empresa</arq-input><arq-input name=\"email\" input-type=\"email\" placeholder=\"nombre@estudio.com\" autocomplete=\"email\" required show-label>Email</arq-input><arq-input name=\"telefono\" input-type=\"tel\" placeholder=\"+54 11 0000-0000\" autocomplete=\"tel\" show-label>Teléfono</arq-input><arq-input name=\"provincia\" type=\"select\" placeholder=\"Seleccioná una provincia\" show-label>Provincia</arq-input><arq-input name=\"ciudad\" placeholder=\"Tu ciudad\" autocomplete=\"address-level2\" show-label>Ciudad</arq-input></div></fieldset><fieldset class=\"section\"><legend><arq-form-section-header number=\"03\" show-number>Tu proyecto</arq-form-section-header></legend><arq-input name=\"detalles\" type=\"textarea\" placeholder=\"Contanos el tipo de espacio, etapa del proyecto y qué necesitás…\" required show-label>Detalles del proyecto</arq-input><arq-file-upload name=\"adjunto\">Planos o imágenes (opcional)<span slot=\"helper\">PDF, DWG, JPG o PNG · hasta 10 MB</span></arq-file-upload></fieldset><div class=\"honeypot\" aria-hidden=\"true\"><label>No completar este campo <input type=\"text\" name=\"website\" tabindex=\"-1\" autocomplete=\"off\"></label></div><div class=\"submit\"><arq-checkbox name=\"novedades\" value=\"si\" show-label>Quiero recibir novedades y lanzamientos</arq-checkbox><div class=\"send\"><arq-button class=\"send-button\" submit show-icon icon=\"arrow-right\">Enviar consulta</arq-button><arq-form-message class=\"message\" hidden></arq-form-message></div></div></form></div>";
 	#e = !1;
 	setup() {
-		let e = this.shadowRoot;
-		new T(e.querySelector(".choices"), { items: "arq-choice-chip" }), e.querySelector("[name=\"provincia\"]").options = Or.map((e) => ({ value: e }));
-		let t = e.querySelector("form");
-		t.addEventListener("submit", (e) => {
-			e.preventDefault(), this.#r(t);
-		}), t.addEventListener("arq:change", (e) => {
+		let e = this.shadowRoot, t = e.querySelector(".choices");
+		new T(t, { items: "arq-choice-chip" });
+		let n = [...t.querySelectorAll("arq-choice-chip")], r = new ResizeObserver(() => t.classList.toggle("fill", n.every((e) => e.offsetTop === n[0].offsetTop)));
+		r.observe(t);
+		for (let e of n) r.observe(e);
+		e.querySelector("[name=\"provincia\"]").options = Or.map((e) => ({ value: e }));
+		let i = e.querySelector("form");
+		i.addEventListener("submit", (e) => {
+			e.preventDefault(), this.#r(i);
+		}), i.addEventListener("arq:change", (e) => {
 			this.#e && e.target.localName === "arq-input" && this.#n(e.target);
 		});
 	}

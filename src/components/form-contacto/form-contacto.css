@@ -1,5 +1,7 @@
 /* form-contacto · Final: Contacto (1278:27919 Desktop · 1311:17151 Mobile).
-   Solo tokens semánticos. Información y formulario en dos columnas iguales;
+   Solo tokens semánticos. Información y formulario en dos columnas 2:3 (en
+   Final son iguales; el formulario más ancho para que los cuatro motivos
+   entren en una fila en 1440, decisiones.md, 2026-10-05 · Contacto: ajustes);
    en Mobile, apilados. */
 
 :host {
@@ -14,7 +16,7 @@
    ese tamaño; se usa space/gap/6xl (128), el más grande. */
 .layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
   column-gap: var(--arq-space-gap-6xl);
   align-items: start;
   padding: var(--arq-space-section-lg) var(--page-gutter) var(--arq-space-section-xl);
@@ -84,7 +86,13 @@
 .choices {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--arq-space-gap-sm-md);
+  gap: var(--arq-space-gap-sm);
+}
+
+/* Si entran en una fila, los chips crecen hasta ocupar el ancho (clase fill,
+   desde form-contacto.js); si hacen wrap, quedan con su ancho */
+.choices.fill > arq-choice-chip {
+  flex: 1 1 auto;
 }
 
 .fields {

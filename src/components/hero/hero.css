@@ -1,6 +1,7 @@
 /* hero · Figma 1311:4340. Solo tokens semánticos, salvo el scrim (abajo).
-   Media a sangre + scrim + contenido abajo. Alto: ratio/wide en Desktop,
-   70svh en Mobile (DESIGN.md §5). Aplica su propio layout/gutter. */
+   Media a sangre + scrim + contenido abajo. Alto: 70svh en Desktop y Mobile
+   (Final usa ratio/wide en Desktop; decisiones.md, 2026-10-05 · Contacto:
+   ajustes). Aplica su propio layout/gutter. */
 
 :host {
   display: block;
@@ -11,7 +12,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  aspect-ratio: 16 / 10;
+  height: 70svh;
   overflow: hidden;
   /* Mientras carga la media (o si falta): fondo oscuro, así el texto
      inverso se sigue leyendo */
@@ -85,13 +86,8 @@
   flex: none;
 }
 
-/* Mobile: 70 % del alto y todo apilado a space/gap/lg */
+/* Mobile: todo apilado a space/gap/lg */
 @media (max-width: 767px) {
-  .hero {
-    aspect-ratio: auto;
-    height: 70svh;
-  }
-
   .content {
     flex-direction: column;
     align-items: flex-start;
@@ -103,6 +99,5 @@
 /* full-height (Home): todo el alto del viewport en Desktop y Mobile
    (decisiones.md, 2026-10-05 · Home: alturas y meta) */
 :host([full-height]) .hero {
-  aspect-ratio: auto;
   height: 100svh;
 }

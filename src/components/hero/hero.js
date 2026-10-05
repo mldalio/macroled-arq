@@ -25,7 +25,7 @@
 //   se muestra si su slot tiene contenido.
 // - Es un <div> y no un <header>: el banner de la página es el navbar.
 // - full-height (solo código, la usa la Home): ocupa todo el alto del viewport
-//   (100svh) en Desktop y Mobile, en lugar de ratio/wide y 70svh.
+//   (100svh) en Desktop y Mobile, en lugar de 70svh.
 
 import { ArqElement } from '../../base/arq-element.js';
 import css from './hero.css?inline';

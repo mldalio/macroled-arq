@@ -23,7 +23,7 @@ Link de primer nivel del navbar (desktop) y fila del menú mobile. Current marca
 
 - Hover, Pressed y Focus son CSS. Breakpoint es CSS: hasta 767 px es la fila del menú mobile.
 - **Sin dropdown:** `<a href>`. **Con dropdown:** `<button aria-expanded>`; al tocarlo emite `arq:toggle` con `{ open: !open }` y el navbar decide abrir o cerrar.
-- **Desktop:** `role/body`, hug. Hover subraya el label (y el chevron). Pressed: texto `color/text/tertiary`. Current: guion antes del label, sin subrayado. Has dropdown: chevron-down (`icon/sm`); Open solo lo gira, sin subrayado.
+- **Desktop:** `role/body`, hug. Hover subraya el label (y el chevron). Pressed: texto `color/text/tertiary`. Current: guion antes del label, sin subrayado, y texto en `role/body-regular` (un peso más, como catalog-nav-item Selected). Has dropdown: chevron-down (`icon/sm`); Open solo lo gira, sin subrayado.
 - **Mobile:** fila a todo el ancho con padding `space/gap/md` × `layout/gutter`, `role/body-xl`. Todas las filas llevan una flecha al final (`chevron-right`; en Current, `arrow-right`), también las que tienen Has dropdown (una sola flecha). Pressed: fondo `color/surface/selected`; Hover (solo con mouse): `color/surface/hover`. Sin borde inferior.
 - Una sola Current por navbar.
 
@@ -31,7 +31,7 @@ Link de primer nivel del navbar (desktop) y fila del menú mobile. Current marca
 
 | Parte | Token |
 | --- | --- |
-| Texto | `color/text/primary` (Pressed desktop `color/text/tertiary`) · `role/body` (mobile `role/body-xl`) |
+| Texto | `color/text/primary` (Pressed desktop `color/text/tertiary`) · `role/body`, Current `role/body-regular` (mobile `role/body-xl`) |
 | Subrayado Hover | `border/default` en `color/border/strong`, 3 px debajo del texto (`space/padding/2xs`, como el button Underline) |
 | Indicador Current | `space/gap/sm` × `border/strong` (8 × 2) en `color/border/strong` |
 | Chevron · flecha mobile | `icon/sm` · `icon/md`, color del texto |

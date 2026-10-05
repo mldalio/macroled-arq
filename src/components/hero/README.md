@@ -34,7 +34,7 @@ Hero de página de Home y Contacto: media a sangre (imagen o video), scrim, eyeb
 
 | Atributo | Tipo | Qué hace |
 | --- | --- | --- |
-| `full-height` | booleano (solo código) | Todo el alto del viewport (`100svh`) en Desktop y Mobile, en lugar de `ratio/wide` y `70svh`. Lo usa la Home |
+| `full-height` | booleano (solo código) | Todo el alto del viewport (`100svh`) en Desktop y Mobile, en lugar de `70svh`. Lo usa la Home |
 
 - **Show eyebrow, Show description y Show button no son atributos:** cada parte aparece si su slot tiene contenido. En Figma Show eyebrow y Show button vienen en `true` y Show description en `false`; en código lo decide el HTML.
 - **Título:** el `<h1>` va en el HTML de la página, `<h1 slot="title">…</h1>`, no dentro del Shadow DOM. El componente le da `role/display` y el color con `::slotted(h1)` (hereda de un contenedor interno, con `!important` porque los estilos del sitio para `h1` ganan sobre `::slotted`). Es el único `<h1>` de la página: en Home y Contacto no va page-header. Para forzar el corte de Figma ("Materia, forma, / atmósfera.") se puede usar `<br>`; si no, se parte solo.
@@ -53,14 +53,14 @@ Hero de página de Home y Contacto: media a sangre (imagen o video), scrim, eyeb
 El navbar **no** va dentro del hero (`docs/decisiones.md`, 2026-10-01 · hero y navbar). Para que se superponga, la página necesita:
 
 1. `<arq-navbar theme="transparent">` antes del hero, con posición absoluta (o fija) arriba, sobre la media. El hero no se corre hacia abajo: la media empieza en el borde superior de la página, como en Figma.
-2. El contenido del hero va abajo (`justify-content: flex-end`), así que la franja de 56 px del navbar no lo tapa mientras haya alto: con `ratio/wide` en Desktop y `70svh` en Mobile, un título de hasta 3–4 líneas queda lejos. Para reservar la franja hace falta un token. `TODO`: crear `layout/navbar-height` (56) en Figma al construir navbar; lo usan hero y compare-header Compact.
+2. El contenido del hero va abajo (`justify-content: flex-end`), así que la franja de 56 px del navbar no lo tapa mientras haya alto: con `70svh`, un título de hasta 3–4 líneas queda lejos. Para reservar la franja hace falta un token. `TODO`: crear `layout/navbar-height` (56) en Figma al construir navbar; lo usan hero y compare-header Compact.
 3. El navbar pasa a Default al hacer scroll: lo resuelve el navbar, no el hero.
 
 ## Layout
 
 | | Desktop | Mobile |
 | --- | --- | --- |
-| Alto | `ratio/wide` (16:10, `aspect-ratio`) | `70svh` |
+| Alto | `70svh` (Final: `ratio/wide`; `TODO` diseño) | `70svh` |
 | Contenido | abajo: texto a la izquierda, CTA abajo a la derecha (separados `space/gap/xl`) | abajo, todo apilado a `space/gap/lg` |
 | Padding | `layout/gutter` a los lados, `space/section/sm` abajo | ídem (valores Mobile) |
 

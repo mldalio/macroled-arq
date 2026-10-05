@@ -16,8 +16,9 @@
 //   atributo mode (solo lectura) para la demo y los estilos de la página.
 // - Theme: default · transparent. Transparent va sobre la foto del hero:
 //   fondo color/overlay/translucent con blur/backdrop, textos e íconos en
-//   inverso (nav-link Theme=Inverse). Pasa a Default al hacer scroll, y
-//   también con un menú o la búsqueda abiertos.
+//   inverso (nav-link Theme=Inverse). Sigue transparente mientras la barra
+//   está sobre el hero y pasa a Default al dejarlo atrás (sin hero, al hacer
+//   scroll); también con un menú o la búsqueda abiertos.
 //   TODO (diseño): las variantes Transparent de Menu, Search y Products del set
 //   están desactualizadas (otra estructura); se usa la versión Default.
 // - Posición: sticky arriba en Default; fixed en Transparent (se superpone al
@@ -198,15 +199,22 @@ class ArqNavbar extends ArqElement {
       }
     });
 
-    // Transparent pasa a Default al hacer scroll
+    // Transparent pasa a Default cuando la barra deja atrás la foto del hero
+    // (el primer <arq-hero> de la página). Sin hero, al empezar el scroll.
     const onScroll = () => {
-      const scrolled = window.scrollY > 0;
+      const hero = document.querySelector('arq-hero');
+      const scrolled = hero
+        ? hero.getBoundingClientRect().bottom <= this.shadowRoot.querySelector('.bar').getBoundingClientRect().bottom
+        : window.scrollY > 0;
       if (scrolled === this.#scrolled) return;
       this.#scrolled = scrolled;
       this.shadowRoot.querySelector('.navbar').classList.toggle('scrolled', scrolled);
       this.#syncLinks();
     };
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    const hero = document.querySelector('arq-hero');
+    if (hero) new ResizeObserver(onScroll).observe(hero);
     onScroll();
 
     this.shadowRoot.querySelector('slot[name="links"]').addEventListener('slotchange', () => this.#syncLinks());

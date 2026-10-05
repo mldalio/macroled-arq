@@ -1,5 +1,7 @@
 /* choice-chip · Figma 1113:2485. Solo tokens semánticos.
-   Sin fondo en Default. */
+   Sin fondo en Default. Padding lateral md (más chico que el set, así los
+   cuatro motivos de Contacto entran en una fila en 1440; decisiones.md,
+   2026-10-05 · Contacto: ajustes). */
 
 :host {
   display: inline-flex;
@@ -12,8 +14,10 @@
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
+  flex: 1;
+  justify-content: center;
   max-width: 100%;
-  padding: var(--arq-space-padding-sm-md) var(--arq-space-padding-lg);
+  padding: var(--arq-space-padding-sm-md) var(--arq-space-padding-md);
   border: var(--arq-border-default) solid var(--arq-color-border-default);
   border-radius: var(--arq-radius-control);
   color: var(--arq-color-text-primary);
