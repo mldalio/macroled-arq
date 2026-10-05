@@ -6,6 +6,7 @@
 //     @media (max-width: 767px) :root   modo mobile (solo los que cambian)
 //     @media (768px–1023px) :root       modo tablet (solo los que cambian)
 //     @media (min-width: 1440px) :root  modo large (solo los que cambian)
+//     @media (min-width: 1920px) :root  modo wide (solo los que cambian)
 //     @media (prefers-reduced-motion: reduce) :root   duraciones de motion/* en 0
 //   src/styles/dark.css    → el mismo bloque [data-arq-theme="dark"], para adoptarlo
 //     en cada Shadow DOM (src/styles/roles.js): así el atributo también funciona
@@ -39,7 +40,7 @@ function treeForMode(node, mode, path = []) {
     if (MODE_GROUPS.filter((group) => group.some((m) => present.includes(m))).length > 1) {
       throw new Error(
         `${path.join('/')}: cruza modos de colecciones distintas (${present.join(', ')}). ` +
-          'Color es Light/Dark, Dimension es Desktop/Mobile/Tablet/Large, Type es Desktop/Mobile y Motion tiene reducedMotion.',
+          'Color es Light/Dark, Dimension es Desktop/Mobile/Tablet/Large, Type es Desktop/Mobile/Wide y Motion tiene reducedMotion.',
       );
     }
     if (!mode || !(mode in modes)) return node;
@@ -172,16 +173,19 @@ const dark = await cssVariables('dark', '[data-arq-theme="dark"]');
 const mobile = await cssVariables('mobile', ':root');
 const tablet = await cssVariables('tablet', ':root');
 const large = await cssVariables('large', ':root');
+const wide = await cssVariables('wide', ':root');
 const reducedMotion = await cssVariables('reducedMotion', ':root');
 
-// Los rangos de los breakpoints no se pisan: el orden de los bloques no importa.
+// Los rangos de cada colección no se pisan; Large (Dimension) y Wide (Type)
+// se superponen pero tocan tokens distintos, así que el orden no importa.
 const sections = [
   `/* Base: Light · Desktop (1024–1439 px) */\n${base}`,
   `/* Dark: con data-arq-theme="dark" (Iluminar o Dark local), nunca por prefers-color-scheme */\n${dark}`,
   `/* Mobile: hasta 767 px */\n@media (max-width: 767px) {\n${indent(mobile)}\n}`,
 ];
 if (tablet) sections.push(`/* Tablet: 768–1023 px */\n@media (min-width: 768px) and (max-width: 1023px) {\n${indent(tablet)}\n}`);
-if (large) sections.push(`/* Large: desde 1440 px */\n@media (min-width: 1440px) {\n${indent(large)}\n}`);
+if (large) sections.push(`/* Large: desde 1440 px (Dimension) */\n@media (min-width: 1440px) {\n${indent(large)}\n}`);
+if (wide) sections.push(`/* Wide: desde 1920 px (Type) */\n@media (min-width: 1920px) {\n${indent(wide)}\n}`);
 if (reducedMotion) {
   sections.push(
     `/* Movimiento reducido: fast, base y slow en 0 (feedback no cambia) */\n` +
@@ -202,7 +206,7 @@ const [{ output: roles }] = await rolesSd.formatPlatform('css');
 await writeFile(OUT_ROLES, roles);
 
 // Control de la salida: nada vacío ni mal serializado.
-const broken = `${base}\n${dark}\n${mobile}\n${reducedMotion}\n${roles}`
+const broken = `${base}\n${dark}\n${mobile}\n${tablet}\n${large}\n${wide}\n${reducedMotion}\n${roles}`
   .split('\n')
   .filter((line) => /undefined|\[object|NaN|:\s*;/.test(line));
 if (broken.length) {
@@ -214,6 +218,6 @@ const countDecls = (css) => (css.match(/^\s*--arq-/gm) ?? []).length;
 const roleCount = (roles.match(/^\.role-/gm) ?? []).length;
 console.log(
   `${count} tokens → ${countDecls(base)} variables base, ${countDecls(dark)} dark, ` +
-    `${countDecls(mobile)} mobile, ${countDecls(tablet)} tablet, ${countDecls(large)} large, ${countDecls(reducedMotion)} reduced-motion y ${roleCount} estilos role/*. ` +
+    `${countDecls(mobile)} mobile, ${countDecls(tablet)} tablet, ${countDecls(large)} large, ${countDecls(wide)} wide, ${countDecls(reducedMotion)} reduced-motion y ${roleCount} estilos role/*. ` +
     'Generados en src/styles/.',
 );

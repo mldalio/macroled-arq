@@ -2,14 +2,14 @@
   "$extensions": {
     "com.figma": {
       "collection": "2 · Semantic · Type",
-      "mode": "Mobile"
+      "mode": "Wide"
     }
   },
   "type": {
     "display": {
       "size": {
         "$type": "number",
-        "$value": "{font.size.40}",
+        "$value": "{font.size.64}",
         "$description": "Tamaño del estilo role/display. Lo usa el estilo de texto: no aplicar directo.",
         "$extensions": {
           "com.figma": {
@@ -24,7 +24,7 @@
       },
       "leading": {
         "$type": "number",
-        "$value": "{font.leading.44}",
+        "$value": "{font.leading.72}",
         "$description": "Interlineado del estilo role/display. Lo usa el estilo de texto: no aplicar directo.",
         "$extensions": {
           "com.figma": {
@@ -41,7 +41,7 @@
     "heading-1": {
       "size": {
         "$type": "number",
-        "$value": "{font.size.32}",
+        "$value": "{font.size.40}",
         "$description": "Tamaño del estilo role/heading-1. Lo usa el estilo de texto: no aplicar directo.",
         "$extensions": {
           "com.figma": {
@@ -56,7 +56,7 @@
       },
       "leading": {
         "$type": "number",
-        "$value": "{font.leading.40}",
+        "$value": "{font.leading.48}",
         "$description": "Interlineado del estilo role/heading-1. Lo usa el estilo de texto: no aplicar directo.",
         "$extensions": {
           "com.figma": {
@@ -73,7 +73,7 @@
     "heading-2": {
       "size": {
         "$type": "number",
-        "$value": "{font.size.24}",
+        "$value": "{font.size.32}",
         "$description": "Tamaño del estilo role/heading-2. Lo usa el estilo de texto: no aplicar directo.",
         "$extensions": {
           "com.figma": {
@@ -88,7 +88,7 @@
       },
       "leading": {
         "$type": "number",
-        "$value": "{font.leading.32}",
+        "$value": "{font.leading.40}",
         "$description": "Interlineado del estilo role/heading-2. Lo usa el estilo de texto: no aplicar directo.",
         "$extensions": {
           "com.figma": {
@@ -105,7 +105,7 @@
     "heading-3": {
       "size": {
         "$type": "number",
-        "$value": "{font.size.20}",
+        "$value": "{font.size.24}",
         "$description": "Tamaño del estilo role/heading-3. Lo usa el estilo de texto: no aplicar directo.",
         "$extensions": {
           "com.figma": {
@@ -120,7 +120,7 @@
       },
       "leading": {
         "$type": "number",
-        "$value": "{font.leading.28}",
+        "$value": "{font.leading.32}",
         "$description": "Interlineado del estilo role/heading-3. Lo usa el estilo de texto: no aplicar directo.",
         "$extensions": {
           "com.figma": {
@@ -137,7 +137,7 @@
     "body-lg": {
       "size": {
         "$type": "number",
-        "$value": "{font.size.16}",
+        "$value": "{font.size.18}",
         "$description": "Tamaño del estilo role/body-lg. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 18.",
         "$extensions": {
           "com.figma": {
@@ -152,7 +152,7 @@
       },
       "leading": {
         "$type": "number",
-        "$value": "{font.leading.24}",
+        "$value": "{font.leading.28}",
         "$description": "Interlineado del estilo role/body-lg. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 28.",
         "$extensions": {
           "com.figma": {
@@ -169,7 +169,7 @@
     "body": {
       "size": {
         "$type": "number",
-        "$value": "{font.size.14}",
+        "$value": "{font.size.16}",
         "$description": "Tamaño del estilo role/body. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 16.",
         "$extensions": {
           "com.figma": {
@@ -184,7 +184,7 @@
       },
       "leading": {
         "$type": "number",
-        "$value": "{font.leading.20}",
+        "$value": "{font.leading.24}",
         "$description": "Interlineado del estilo role/body. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 24.",
         "$extensions": {
           "com.figma": {
@@ -201,7 +201,7 @@
     "body-sm": {
       "size": {
         "$type": "number",
-        "$value": "{font.size.12}",
+        "$value": "{font.size.14}",
         "$description": "Tamaño del estilo role/body-sm. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 14.",
         "$extensions": {
           "com.figma": {
@@ -216,7 +216,7 @@
       },
       "leading": {
         "$type": "number",
-        "$value": "{font.leading.16}",
+        "$value": "{font.leading.20}",
         "$description": "Interlineado del estilo role/body-sm. Lo usa el estilo de texto: no aplicar directo. Wide (desde 1920): 20.",
         "$extensions": {
           "com.figma": {
@@ -297,7 +297,7 @@
     "display-sm": {
       "size": {
         "$type": "number",
-        "$value": "{font.size.32}",
+        "$value": "{font.size.48}",
         "$description": "Tamaño del estilo role/display-sm. Lo usa el estilo de texto: no aplicar directo.",
         "$extensions": {
           "com.figma": {
@@ -312,7 +312,7 @@
       },
       "leading": {
         "$type": "number",
-        "$value": "{font.leading.40}",
+        "$value": "{font.leading.56}",
         "$description": "Interlineado del estilo role/display-sm. Lo usa el estilo de texto: no aplicar directo.",
         "$extensions": {
           "com.figma": {
@@ -361,7 +361,7 @@
     "body-xl": {
       "size": {
         "$type": "number",
-        "$value": "{font.size.16}",
+        "$value": "{font.size.20}",
         "$description": "Tamaño de role/body-xl: 20 en Desktop, 16 en Mobile.",
         "$extensions": {
           "com.figma": {
@@ -376,7 +376,7 @@
       },
       "leading": {
         "$type": "number",
-        "$value": "{font.leading.24}",
+        "$value": "{font.leading.28}",
         "$description": "Interlineado de role/body-xl: 28 en Desktop, 24 en Mobile.",
         "$extensions": {
           "com.figma": {

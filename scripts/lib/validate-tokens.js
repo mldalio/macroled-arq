@@ -6,11 +6,11 @@ import { usesReferences } from 'style-dictionary/utils';
 
 export const MODES_KEY = 'arq.modes';
 // dark: [data-arq-theme="dark"] · mobile: max-width 767px · tablet: 768–1023px ·
-// large: min-width 1440px · reducedMotion: prefers-reduced-motion: reduce
+// large: min-width 1440px (Dimension) · wide: min-width 1920px (Type) · reducedMotion: prefers-reduced-motion: reduce
 // (solo duraciones de motion/*).
-export const MODES = ['dark', 'mobile', 'tablet', 'large', 'reducedMotion'];
-// Modos que se pueden combinar en un mismo token: los breakpoints de Dimension.
-export const MODE_GROUPS = [['dark'], ['mobile', 'tablet', 'large'], ['reducedMotion']];
+export const MODES = ['dark', 'mobile', 'tablet', 'large', 'wide', 'reducedMotion'];
+// Modos que se pueden combinar en un mismo token: los breakpoints (Dimension y Type).
+export const MODE_GROUPS = [['dark'], ['mobile', 'tablet', 'large', 'wide'], ['reducedMotion']];
 
 export const isToken = (node) => node && typeof node === 'object' && '$value' in node;
 
