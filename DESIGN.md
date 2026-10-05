@@ -178,7 +178,7 @@ Hay dos usos del modo Dark. Los dos usan `data-arq-theme="dark"`; cambia quién 
 - **Regla:** un componente con Dark local lo aplica en un contenedor interno; el contenido por slot lo hereda. Quien arma la página no pone el atributo. Si el Dark es de una sección de la página, el atributo va en la sección y los componentes de adentro lo heredan; si la sección la arma un contenedor de página (explora-coleccion en `<arq-ficha-producto>`), lo pone el contenedor.
 - **Dónde funciona el atributo:** en un ancestro del DOM de la página, en el host del componente (`<arq-compare-bar data-arq-theme="dark">`) y en un contenedor dentro del Shadow DOM. Este último caso funciona porque `ArqElement` adopta en cada Shadow DOM la hoja `src/styles/dark.css` (el mismo bloque Dark de `tokens.css`): `tokens.css` solo alcanza el DOM de la página, no lo que está dentro de un componente (`docs/decisiones.md`, 2026-10-01 · Dark dentro del Shadow DOM).
 - El contenido por slot hereda el modo del contenedor donde se muestra, no el de su padre en el HTML.
-- No hay Light local: dentro de un bloque Dark no se puede volver a Light.
+- **Light local**, una sola excepción: filter-panel queda siempre en Light, también con Iluminar. Su `<dialog>` lleva `data-arq-theme="light"` (el bloque `[data-arq-theme="light"]` que genera `npm run tokens`, adoptado en cada Shadow DOM como el Dark). Fuera de ese caso, dentro de un bloque Dark no se vuelve a Light (`docs/decisiones.md`, 2026-10-05 · filter-panel siempre en Light).
 
 Para los dos usos:
 
