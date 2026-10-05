@@ -131,7 +131,7 @@ Hay dos usos del modo Dark. Los dos usan `data-arq-theme="dark"`; cambia quién 
 
 **Iluminar:** switch del usuario. Solo existe en la ficha de producto, Productos y Colecciones.
 
-- **Ficha de producto:** el switch pone el modo Dark en `navbar` y `hero` (desktop y mobile) y cambia la foto; el resto de la página no cambia. `explora-coleccion` ya es Dark siempre (Dark local, abajo). En código: `data-arq-theme="dark"` en `<arq-navbar>` y en la sección hero de la ficha (elementos del DOM de la página).
+- **Ficha de producto:** el switch pone el modo Dark en `navbar` y `hero` (desktop y mobile) y cambia la foto; el resto de la página no cambia. `explora-coleccion` ya es Dark siempre (Dark local, abajo). En código: `<arq-ficha-producto>` pone `data-arq-theme="dark"` en `<arq-navbar>` (DOM de la página) y en el contenedor interno del hero (Shadow DOM), y avisa a la galería con `refreshTheme()` de `src/base/theme.js` (`docs/decisiones.md`, 2026-10-05 · Ficha de producto).
 - **Productos y Colecciones:** el toggle Iluminar de `catalog-toolbar` pasa toda la página a Dark y las product-card muestran sus imágenes con la luz encendida (ver §8, Imágenes de product-card). En código: `data-arq-theme="dark"` en `<html>`.
 - **Home y Contacto** no tienen Iluminar.
 
@@ -141,9 +141,9 @@ Hay dos usos del modo Dark. Los dos usan `data-arq-theme="dark"`; cambia quién 
 | --- | --- | --- |
 | hero (Home, Contacto) | Solo el CTA (button Outline claro). Los textos usan `color/text/inverse` | Contenedor interno del Shadow DOM que envuelve el slot del CTA |
 | compare-bar | Toda la barra | Contenedor interno del Shadow DOM (el que envuelve todo el componente) |
-| explora-coleccion (ficha), con family-card Large | Toda la sección | La sección, en el DOM de la página |
+| explora-coleccion (ficha), con family-card Large | Toda la sección | El contenedor de la sección, dentro del Shadow DOM de `<arq-ficha-producto>` |
 
-- **Regla:** un componente con Dark local lo aplica en un contenedor interno; el contenido por slot lo hereda. Quien arma la página no pone el atributo. Si el Dark es de una sección de la página (explora-coleccion), el atributo va en la sección y los componentes de adentro lo heredan.
+- **Regla:** un componente con Dark local lo aplica en un contenedor interno; el contenido por slot lo hereda. Quien arma la página no pone el atributo. Si el Dark es de una sección de la página, el atributo va en la sección y los componentes de adentro lo heredan; si la sección la arma un contenedor de página (explora-coleccion en `<arq-ficha-producto>`), lo pone el contenedor.
 - **Dónde funciona el atributo:** en un ancestro del DOM de la página, en el host del componente (`<arq-compare-bar data-arq-theme="dark">`) y en un contenedor dentro del Shadow DOM. Este último caso funciona porque `ArqElement` adopta en cada Shadow DOM la hoja `src/styles/dark.css` (el mismo bloque Dark de `tokens.css`): `tokens.css` solo alcanza el DOM de la página, no lo que está dentro de un componente (`docs/decisiones.md`, 2026-10-01 · Dark dentro del Shadow DOM).
 - El contenido por slot hereda el modo del contenedor donde se muestra, no el de su padre en el HTML.
 - No hay Light local: dentro de un bloque Dark no se puede volver a Light.

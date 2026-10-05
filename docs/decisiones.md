@@ -462,3 +462,31 @@ setup() {
 - **Nombre de la card en `<h2>`** en el listado: no hay section-header entre el `<h1>` y las cards (axe: heading-order). En el Home sigue en `<h3>`.
 - **Grilla de catálogo (`arq-grid` sin `columns`):** filas a `space/gap/2xl` y columnas a `space/gap/lg`; en Mobile `space/gap/xl` y `space/gap/md`, como Final.
 - `TODO` (diseño): sidebar de 240 sin token (se usa `layout/card-min`); pantallas de carga, vacío y error; Productos como Current sin flecha en el navbar de Final (se deja `has-dropdown`). `TODO` (urls): filtros en la URL.
+
+## 2026-10-05 · Ficha de producto
+
+- **Embed:** `src/pages/ficha.html` (template de la colección «Productos» del CMS) con navbar, `<arq-ficha-producto data-group>` y footer. El CMS imprime el grupo, el `<h1>`, la descripción corta, la imagen principal y los textos editoriales (STORY e Inspiración); el resto sale de `getProduct()` y `variantDetails()` (`src/data/catalog.js`). `demo/ficha.html` lo carga tal cual; en la demo `?group=<id>` hace de ítem del CMS de otro grupo.
+- **Un contenedor que consulta**, como catalog-listing: arma en su Shadow DOM los bloques de la pantalla Ficha de Final (`1218:10487` · `1220:11334`). Los títulos fijos (Descargas, Glosario, Explora la colección, título del modal) van como `<h2>` por slot desde el embed.
+- **Iluminar dentro del Shadow DOM:** el hero es un contenedor interno de `<arq-ficha-producto>`, no un elemento del DOM de la página como dice DESIGN.md §2 · Modo Dark. El toggle pone `data-arq-theme="dark"` en ese contenedor y en el `<arq-navbar>`, y avisa con `refreshTheme()` (`src/base/theme.js`), porque el observer no ve cambios dentro de un Shadow DOM. Lo mismo para el Dark local de "Explora la colección". Se ve igual que en Final (`1218:11777`). DESIGN.md §2 se actualizó con este criterio.
+- **STORY:** el componente reemplaza el texto del slot `story` por nodos en el DOM de la página (`<h2>` por `##`, `<p>` por línea, `<ul>` por las líneas `-`), así el encabezado sigue en el HTML de la página. La lista lleva la etiqueta "Características del producto" de Final.
+- **Descargas:** botones Outline con `icon/download` que descargan directo, en el orden de Final (CAD 2D/3D, Manual, IES, Fotometría); "Ficha técnica" primero. El download-modal se usa para el ícono de cada fila del glosario, con los archivos de ese SKU.
+- **Ficha técnica:** "Generar ficha técnica" y "Ficha técnica" emiten `arq:datasheet { sku }`. `TODO` (diseño): el PDF sigue sin diseño (2026-10-02 · Ficha técnica en PDF).
+- **Glosario:** columnas en `GLOSSARY_COLUMNS` (`src/data/attributes.js`), con las etiquetas cortas de Final; una columna sin valores en ningún SKU no se muestra. La barra lleva CAD 2D/3D y Manual del SKU predeterminado (`TODO` datos: no hay archivos por grupo).
+- **Galerías:** ambiente, descripción e inspiración salen de las imágenes del grupo (`getProduct().images`), solo las que existen. La de ambiente es una fila con scroll hasta el borde derecho; las de inspiración ocupan la mitad de su columna cada una.
+- **Medidas sin token** (`TODO` diseño, detalle en el README): columnas de 440 → `layout/measure`; separación de 110 → `space/gap/5xl`; lista de 539 → `layout/measure-wide`; alto de la galería de ambiente → 70svh; family-card de 200 y 328 → `layout/card-min` y `layout/card-min-wide`.
+
+## 2026-10-05 · Colecciones
+
+- **Embed:** `src/pages/colecciones.html`, el mismo armado que Productos con `<arq-catalog-listing unit="colecciones">`: page-header List sin bajada (Final `1160:6116`), la misma navegación de categorías y footer. `demo/colecciones.html` lo carga tal cual.
+- **Cards de colección:** acabados (los de todos sus grupos, `listCollections`) y la meta con sus aplicaciones, como Final. Antes mostraban solo la meta. Sin "Comparar".
+- **Navbar:** Productos como Current, como en Final (Colecciones es parte de Productos).
+- `TODO` (diseño): en Final el catalog-nav muestra Interior abierto con "Todo interior" marcado (copia de Productos); en Colecciones ningún ítem es la página actual y los grupos quedan cerrados. `TODO` (datos): las cuatro imágenes de una card de colección (DESIGN.md §8).
+
+## 2026-10-05 · Colección
+
+- **Embed:** `src/pages/coleccion.html` (template de la colección «Colecciones» del CMS): navbar con Productos como Current, page-header List con el breadcrumb (Colecciones / nombre), el `<h1>` y `COLLECTION_INTRO_TEXT` como bajada, `<arq-coleccion data-collection>` con `COLLECTION_DESCRIPTION_TEXT` por slot, y footer. `demo/coleccion.html` lo carga tal cual; en la demo `?collection=<id>` hace de ítem del CMS de otra colección.
+- **`<arq-coleccion>`:** contenedor que consulta (`getCollection()`), como catalog-listing y la ficha. Arma la grilla de product-card, la galería, texto + imagen y el mosaico de Final (`1234:13201` · `1234:13448`). Sin filtros, Comparar ni Iluminar (Final no los tiene).
+- **Meta de la card:** resumen de las variantes (decisión 2026-10-02 · Cards): el rango de cada atributo de variante que no es acabado, por ejemplo «50 cm – 90 cm». `TODO` (diseño): las características fijas que suma Final (12W – 15W) y la segunda línea.
+- **Imágenes de la colección:** galería = `images.gallery`, texto + imagen = `images.description`, mosaico = `images.inspiration`; solo las que existen.
+- **carousel-controls:** además del carrusel observa el tamaño de cada elemento de adentro. Una foto de ancho auto que carga (o llega de la caché) agrandaba el contenido sin avisar y la flecha "Siguiente" quedaba deshabilitada.
+- `TODO` (diseño): medidas sin token (detalle en el README de coleccion).

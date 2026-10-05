@@ -1,0 +1,504 @@
+/* ficha-producto · Final: Ficha (1218:10487 Desktop · 1220:11334 Mobile;
+   Iluminar 1218:11777 · 1220:12601). Solo tokens semánticos.
+   Cada bloque aplica layout/gutter a los lados y space/section/xl abajo, como
+   arq-section (decisiones.md, 2026-10-02 · Layout de página). */
+
+:host {
+  display: block;
+  min-width: 0;
+  color: var(--arq-color-text-primary);
+}
+
+/* Hasta que llegan los datos solo se ve lo que imprime el CMS */
+.page:not([data-ready]) .needs-data {
+  display: none;
+}
+
+/* ── Hero ───────────────────────────────────────────────────────── */
+.hero {
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--arq-layout-gutter) var(--arq-space-section-xl);
+  background: var(--arq-color-bg-default);
+  color: var(--arq-color-text-primary);
+}
+
+/* Cambio de fondo (DESIGN.md §2): con Iluminar el hero baja su padding
+   inferior un escalón y el bloque claro que sigue suma space/section/md. */
+.hero[data-arq-theme='dark'] {
+  padding-bottom: var(--arq-space-section-lg);
+}
+
+.hero[data-arq-theme='dark'] + .details {
+  padding-top: var(--arq-space-section-md);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-xl);
+  padding: var(--arq-space-padding-xl) 0 var(--arq-space-padding-xl-2xl);
+  min-width: 0;
+}
+
+.title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--arq-space-gap-md);
+  min-width: 0;
+}
+
+.title {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+/* TODO (diseño): en Final las columnas miden 770 y 440, separadas 110, sin
+   token. La del configurador usa layout/measure (400), el más cercano (como la
+   bajada de 440 de feature-block), y la separación space/gap/5xl (96). */
+.configurator {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--arq-layout-measure);
+  column-gap: var(--arq-space-gap-5xl);
+  align-items: stretch;
+}
+
+.gallery-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-sm-md);
+  min-width: 0;
+}
+
+.gallery {
+  align-self: stretch;
+}
+
+.configurator-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-4xl);
+  min-width: 0;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xl);
+  min-width: 0;
+}
+
+.status {
+  margin: 0;
+  color: var(--arq-color-text-secondary);
+}
+
+.product {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-lg);
+  min-width: 0;
+}
+
+.description {
+  max-width: 100%;
+  color: var(--arq-color-text-primary);
+  overflow-wrap: break-word;
+}
+
+::slotted([slot='description']) {
+  margin: 0 !important;
+  font: inherit !important;
+  color: inherit !important;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xl-2xl);
+}
+
+.actions {
+  display: flex;
+  gap: var(--arq-space-gap-md);
+}
+
+/* Los dos llenan la fila a partir del ancho de su texto (así no se corta
+   "Generar ficha técnica" en la columna de layout/measure) */
+.actions arq-button {
+  flex: 1 1 auto;
+}
+
+/* ── Descargas + especificaciones ───────────────────────────────── */
+/* TODO (diseño): Descargas mide 440 en Final, sin token; layout/measure (400). */
+.details {
+  display: grid;
+  grid-template-columns: var(--arq-layout-measure) minmax(0, 1fr);
+  gap: var(--arq-space-gap-3xl);
+  align-items: start;
+  padding: 0 var(--arq-layout-gutter) var(--arq-space-section-xl);
+}
+
+.downloads {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-2xl);
+  min-width: 0;
+}
+
+.download-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--arq-space-gap-sm);
+}
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* ── Galería de ambiente ────────────────────────────────────────── */
+/* Fila con scroll que llega al borde derecho de la pantalla (decisión
+   2026-10-02 · Galerías). Cada foto mantiene su proporción.
+   TODO (diseño): las fotos miden 684 de alto en Desktop y 440 en Mobile, sin
+   token; se usa 70svh (el alto del hero mobile, DESIGN.md §5). */
+.ambient {
+  display: flex;
+  gap: var(--arq-space-gap-md);
+  margin-bottom: var(--arq-space-section-xl);
+  padding-left: var(--arq-layout-gutter);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline-start: var(--arq-layout-gutter);
+  scrollbar-width: none;
+}
+
+.ambient::-webkit-scrollbar {
+  display: none;
+}
+
+.ambient img {
+  flex: none;
+  display: block;
+  width: auto;
+  height: 70svh;
+  max-width: none;
+  object-fit: cover;
+  scroll-snap-align: start;
+  background: var(--arq-color-surface-subtle);
+}
+
+/* ── Descripción ────────────────────────────────────────────────── */
+.story-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-2xl);
+  padding: 0 var(--arq-layout-gutter) var(--arq-space-section-xl);
+}
+
+.story {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-lg);
+  color: var(--arq-color-text-primary);
+}
+
+.story-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-lg);
+}
+
+/* STORY: «##» en role/heading-2 y los párrafos en role/body. Las reglas
+   repiten los roles porque el texto llega por slot (no toma la clase). */
+::slotted(h2[slot='story-text']),
+::slotted(h3[slot='story-text']) {
+  font-family: var(--arq-font-family-sans) !important;
+  font-weight: var(--arq-font-weight-light) !important;
+  font-size: var(--arq-type-heading-2-size) !important;
+  line-height: var(--arq-type-heading-2-leading) !important;
+  letter-spacing: var(--arq-font-tracking-normal) !important;
+}
+
+::slotted(p[slot='story-text']) {
+  margin: 0 !important;
+  max-width: var(--arq-layout-measure-wide);
+  font-family: var(--arq-font-family-sans) !important;
+  font-weight: var(--arq-font-weight-light) !important;
+  font-size: var(--arq-type-body-size) !important;
+  line-height: var(--arq-type-body-leading) !important;
+  letter-spacing: var(--arq-font-tracking-normal) !important;
+  color: inherit !important;
+}
+
+/* TODO (diseño): la lista mide 539 en Final, sin token; layout/measure-wide (520). */
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-sm);
+  max-width: var(--arq-layout-measure-wide);
+}
+
+.features-label {
+  margin: 0;
+}
+
+/* TODO (diseño): sangría de la lista de 21 sin token; space/padding/lg. */
+::slotted(ul) {
+  margin: 0 !important;
+  padding: 0 0 0 var(--arq-space-padding-lg) !important;
+  list-style: disc !important;
+  font: inherit !important;
+  color: inherit !important;
+}
+
+/* Otras familias (izquierda, abajo) e imagen de la descripción (derecha) */
+.family-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--arq-space-gap-sm);
+  align-items: end;
+}
+
+.family {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-md);
+  min-width: 0;
+}
+
+.family-label {
+  margin: 0;
+  color: var(--arq-color-text-secondary);
+}
+
+.description-image {
+  grid-column: 2;
+  aspect-ratio: 16 / 10;
+  background: var(--arq-color-surface-subtle);
+}
+
+.description-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Carrusel de family-card (patrón de la descripción del set): scroll-snap,
+   gap space/gap/sm, sin flechas. Alrededor, space/gap/xs para que el anillo de
+   foco no se recorte (como arq-grid).
+   TODO (diseño): las tarjetas miden 200 (Default) y 328 (Large) en Final, sin
+   token; se usan layout/card-min y layout/card-min-wide. */
+.cards {
+  display: flex;
+  gap: var(--arq-space-gap-sm);
+  margin: calc(-1 * var(--arq-space-gap-xs));
+  padding: var(--arq-space-gap-xs);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.cards::-webkit-scrollbar {
+  display: none;
+}
+
+.cards arq-family-card {
+  flex: none;
+  width: var(--arq-layout-card-min);
+  scroll-snap-align: start;
+}
+
+.cards arq-family-card[size='large'] {
+  width: var(--arq-layout-card-min-wide);
+}
+
+/* ── Glosario ───────────────────────────────────────────────────── */
+/* "Ver glosario" lo trae a la vista; el margen deja lugar al navbar fijo.
+   TODO (navbar): falta layout/navbar-height (56); se usa space/gap/4xl. */
+.glossary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-md);
+  padding-bottom: var(--arq-space-section-xl);
+  scroll-margin-top: var(--arq-space-gap-4xl);
+}
+
+.glossary-title {
+  padding: 0 var(--arq-layout-gutter);
+}
+
+::slotted([slot='glossary-title']:focus) {
+  outline: none;
+}
+
+/* ── Inspiración ────────────────────────────────────────────────── */
+/* Texto a la izquierda (un tercio) e imágenes a la derecha (dos tercios),
+   como Final (440 + 880).
+   TODO (diseño): el texto mide 330 y las fotos 440 × 568, sin token; el texto
+   va hasta layout/measure y las fotos en ratio/portrait-soft (4:5). */
+.inspiration {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  align-items: center;
+  padding: 0 var(--arq-layout-gutter) var(--arq-space-section-xl);
+}
+
+.inspiration-text {
+  max-width: var(--arq-layout-measure);
+  color: var(--arq-color-text-primary);
+}
+
+::slotted([slot='inspiration']) {
+  margin: 0 !important;
+  font: inherit !important;
+  color: inherit !important;
+}
+
+.inspiration-images {
+  display: flex;
+  min-width: 0;
+}
+
+.inspiration-images:empty {
+  display: none;
+}
+
+/* Cada foto ocupa la mitad, como los dos lugares de Final: una sola no se estira */
+.inspiration-images img {
+  display: block;
+  flex: 0 1 50%;
+  min-width: 0;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: var(--arq-color-surface-subtle);
+}
+
+/* ── Explora la colección (Dark local) ──────────────────────────── */
+/* TODO (diseño): la introducción mide 440 en Final, sin token; layout/measure. */
+.collection {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-2xl);
+  padding: var(--arq-space-padding-5xl) var(--arq-layout-gutter);
+  background: var(--arq-color-bg-default);
+  color: var(--arq-color-text-primary);
+}
+
+.collection-intro {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-md);
+  width: var(--arq-layout-measure);
+  max-width: 100%;
+}
+
+.collection-cards {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* ── Mobile ─────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .hero {
+    gap: var(--arq-space-gap-2xl);
+  }
+
+  .header {
+    gap: var(--arq-space-gap-2xl);
+    padding-bottom: 0;
+  }
+
+  .title-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--arq-space-gap-xs);
+  }
+
+  .configurator {
+    display: flex;
+    flex-direction: column;
+    gap: var(--arq-space-gap-2xl);
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actions arq-button {
+    flex: none;
+    width: 100%;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--arq-space-gap-2xl);
+  }
+
+  .downloads {
+    gap: var(--arq-space-gap-xl);
+  }
+
+  .ambient {
+    gap: var(--arq-space-gap-sm-md);
+  }
+
+  ::slotted(p[slot='story-text']) {
+    max-width: none;
+  }
+
+  .features {
+    max-width: none;
+  }
+
+  /* Imagen arriba y otras familias debajo, a space/gap/6xl */
+  .family-row {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--arq-space-gap-6xl);
+  }
+
+  .description-image {
+    order: -1;
+  }
+
+  .inspiration {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--arq-space-gap-xl);
+  }
+
+  .inspiration-text {
+    max-width: none;
+  }
+
+  .inspiration-images {
+    flex-direction: column;
+  }
+
+  .inspiration-images img {
+    flex: none;
+    width: 100%;
+  }
+
+  .collection {
+    flex-direction: column;
+    gap: var(--arq-space-gap-4xl);
+  }
+
+  .collection-intro {
+    width: auto;
+  }
+}

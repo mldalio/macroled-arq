@@ -60,6 +60,23 @@ export const ATTRIBUTES = Object.freeze({
   garantia_proveedor: a('Garantía', 'comercial'),
 });
 
+// Columnas del glosario de la ficha (variants-table), en orden, con la
+// etiqueta corta del encabezado, como la Ficha de Final (1218:10708).
+// TODO (diseño): confirmar las columnas. «Regulación» es dimeable y «Fuente»,
+// tipo_led: los valores se muestran como llegan.
+export const GLOSSARY_COLUMNS = Object.freeze([
+  { field: 'tamanio', label: 'Tamaño' },
+  { field: 'potencia', label: 'Potencia' },
+  { field: 'temperatura_color', label: 'Temp.' },
+  { field: 'flujo_luminoso', label: 'Flujo lum.' },
+  { field: 'angulo_apertura', label: 'Ángulo' },
+  { field: 'lumenes_lmw', label: 'Eficiencia' },
+  { field: 'dimeable', label: 'Regulación' },
+  { field: 'proteccion_ip', label: 'IP' },
+  { field: 'tipo_led', label: 'Fuente' },
+  { field: 'cri', label: 'CRI' },
+]);
+
 /** Etiqueta y control de un campo. Un campo sin entrada usa su nombre y tiles. */
 export function attributeInfo(field) {
   return ATTRIBUTES[field] ?? { label: field, control: 'tiles' };

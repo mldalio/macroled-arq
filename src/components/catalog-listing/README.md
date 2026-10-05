@@ -27,7 +27,7 @@ Listado de Productos (y de Colecciones con `unit="colecciones"`): navegación de
 ## Comportamiento
 
 - **Categoría:** sale de la URL (`?environment=`, `?application=`, `?product_type=`, como `categoryHref`). Las URLs de categoría siguen PENDIENTES (`docs/urls.md`). El `catalog-nav-item` cuyo `href` es esta misma página queda `selected` (el orden de los parámetros no importa).
-- **Cards:** una por grupo (`listProducts`) o por colección (`listCollections`). En Productos: acabados (swatch) y "Comparar"; en Colecciones: la meta. El nombre es un `<h2>` (debajo del `<h1>` del page-header).
+- **Cards:** una por grupo (`listProducts`) o por colección (`listCollections`). En Productos: acabados (swatch) y "Comparar"; en Colecciones: acabados de todos sus grupos y la meta (sus aplicaciones), como Final (`1160:6116`). El nombre es un `<h2>` (debajo del `<h1>` del page-header).
 - **Filtros:** las filas del filter-panel salen de los datos de la categoría. Mientras se marcan, solo cambia "Ver N productos"; "Ver N" aplica, la grilla se arma de nuevo y el toolbar muestra el total y la cantidad de filtros.
 - **Comparar** (solo Productos): suma o saca el producto de la compare-bar (hasta 3; si ya hay 3, la card se desmarca). La selección se guarda en `localStorage` (`arq:compare`) y las cards la reflejan al cargar.
 - **Iluminar:** lo resuelve catalog-toolbar (`data-arq-theme="dark"` en `<html>`); las cards pasan a sus imágenes encendidas.

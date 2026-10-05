@@ -16,7 +16,7 @@
 // specs vale para todas las variantes del grupo; attributes de la variante pisa o completa.
 
 import { loadSource } from './source.js';
-import { ATTRIBUTES, FILTER_FIELDS, attributeInfo, specSections } from './attributes.js';
+import { ATTRIBUTES, FILTER_FIELDS, GLOSSARY_COLUMNS, attributeInfo, specSections } from './attributes.js';
 
 let pending = null;
 
@@ -128,6 +128,7 @@ function collectionCard(collection, groups) {
     id: collection.id,
     name: collection.name,
     meta: applications.join(' · '),
+    finishes: [...new Set(groups.flatMap(finishes))],
     href: collectionHref(collection.id),
     image: images.studio ?? null,
     imageHover: images.context ?? null,
@@ -174,7 +175,10 @@ export async function listCollections({ filters } = {}) {
 // ── Ficha de producto ────────────────────────────────────────────────
 /**
  * Ficha de un grupo: { group, collection, variants, variantAttributes,
- * family: cards de las otras familias de la colección }. null si no existe.
+ * family: cards de las otras familias de la colección, images: { ambient[],
+ * description, inspiration[] } (las que no cambian con la variante),
+ * glossary: datos de variants-table, files: descargas de la barra del
+ * glosario }. null si no existe.
  */
 export async function getProduct(groupId) {
   const { groups, groupById } = await loadCatalog();
@@ -183,12 +187,36 @@ export async function getProduct(groupId) {
   const family = group.collection
     ? groups.filter((g) => g.collection === group.collection && g !== group).map((g) => productCard(g))
     : [];
+  const images = group.images ?? {};
   return {
     group,
     collection: group.collectionData,
     variants: group.variants.map((v) => ({ sku: v.sku, isDefault: v === group.defaultVariant, attributes: v.values })),
     variantAttributes: group.variantAttributes,
     family,
+    // Solo las imágenes que existen, sin repetidas (decisión 2026-10-02 · Galerías)
+    images: {
+      ambient: unique(images.ambient),
+      description: hasValue(images.description) ? images.description : null,
+      inspiration: unique(images.inspiration),
+    },
+    glossary: glossary(group),
+    // TODO (datos): la barra del glosario muestra CAD 2D/3D y Manual (Final,
+    // 1218:10708). No hay archivos por grupo en la base: salen del SKU
+    // predeterminado.
+    files: downloads(group.defaultVariant).filter((file) => file.type === 'cad' || file.type === 'manual'),
+  };
+}
+
+const unique = (value) => [...new Set([value ?? []].flat().filter(hasValue))];
+
+/** Datos de variants-table: una fila por SKU del grupo (columnas en attributes.js). */
+function glossary(group) {
+  const fallback = group.defaultVariant.images?.studio ?? null;
+  return {
+    columns: GLOSSARY_COLUMNS.filter(({ field }) => group.variants.some((v) => hasValue(v.values[field]))).map(({ field, label }) => ({ key: field, label })),
+    filters: group.variantAttributes.map((key) => ({ key, label: attributeInfo(key).label })),
+    rows: group.variants.map((v) => ({ sku: v.sku, thumb: v.images?.studio ?? fallback, attributes: v.values, values: v.values })),
   };
 }
 
@@ -201,7 +229,16 @@ export async function getProductCards(groupIds) {
   return groupIds.map((id) => groupById.get(id)).filter(Boolean).map((group) => productCard(group));
 }
 
-const DOWNLOAD_LABELS ={ ies: 'IES', cad: 'CAD 2D/3D', manual: 'Manual', fotometria: 'Fotometría' };
+// En el orden de Descargas de la Ficha de Final (1218:10596)
+const DOWNLOAD_LABELS = { cad: 'CAD 2D/3D', manual: 'Manual', ies: 'IES', fotometria: 'Fotometría' };
+
+/** Archivos de un SKU: [{ type, label, href }], solo los que existen. */
+function downloads(variant) {
+  const files = pick(variant.downloads);
+  return Object.keys(DOWNLOAD_LABELS)
+    .filter((type) => files[type])
+    .map((type) => ({ type, label: DOWNLOAD_LABELS[type], href: files[type] }));
+}
 
 /**
  * Lo que cambia con la variante: descripción, galería, especificaciones por
@@ -219,17 +256,49 @@ export function variantDetails(group, sku) {
     values: variant.values,
     images: gallery.map((src, i) => ({ src, srcOn: galleryOn[i] ?? null, alt: `${group.name}, imagen ${i + 1}` })),
     sections: specSections(variant.values),
-    downloads: Object.entries(pick(variant.downloads)).map(([type, href]) => ({ type, label: DOWNLOAD_LABELS[type] ?? type, href })),
+    downloads: downloads(variant),
   };
 }
 
 // ── Colección ────────────────────────────────────────────────────────
-/** Página de colección: { collection, cards: una por grupo }. null si no existe. */
+/**
+ * Página de colección: { collection, cards: una por grupo, images: { gallery[],
+ * description, inspiration[] } }. null si no existe. La meta de cada card es
+ * el resumen de sus variantes (variantSummary).
+ */
 export async function getCollection(id) {
   const { collectionById, groups } = await loadCatalog();
   const collection = collectionById.get(id);
   if (!collection) return null;
-  return { collection, cards: groups.filter((g) => g.collection === id).map((g) => productCard(g)) };
+  const images = collection.images ?? {};
+  return {
+    collection,
+    cards: groups.filter((g) => g.collection === id).map((g) => ({ ...productCard(g), meta: variantSummary(g) })),
+    images: {
+      gallery: unique(images.gallery),
+      description: hasValue(images.description) ? images.description : null,
+      inspiration: unique(images.inspiration),
+    },
+  };
+}
+
+/**
+ * Resumen de la card (decisión 2026-10-02 · Cards): el rango de cada atributo
+ * de variante que no es acabado («50 cm – 90 cm»), separados por « · ».
+ * TODO (diseño): faltan las una o dos características fijas que suma Final
+ * (p. ej. la potencia) y si van en una segunda línea.
+ */
+function variantSummary(group) {
+  const number = (value) => Number.parseFloat(String(value).replace(',', '.'));
+  return group.variantAttributes
+    .filter((field) => attributeInfo(field).control !== 'swatches')
+    .map((field) => {
+      const values = [...new Set(group.variants.map((v) => v.values[field]).filter(hasValue))];
+      values.sort((a, b) => number(a) - number(b) || String(a).localeCompare(String(b), 'es'));
+      return values.length > 1 ? `${values[0]} – ${values.at(-1)}` : values[0];
+    })
+    .filter(Boolean)
+    .join(' · ');
 }
 
 // ── Comparativa ──────────────────────────────────────────────────────

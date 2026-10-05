@@ -1,0 +1,154 @@
+/* coleccion · Final: Colección (1234:13201 Desktop · 1234:13448 Mobile).
+   Solo tokens semánticos. Cada bloque lleva space/section/xl abajo; los
+   que van a sangre (galería, imagen del texto, mosaico) no llevan gutter de
+   ese lado. */
+
+:host {
+  display: block;
+  min-width: 0;
+  color: var(--arq-color-text-primary);
+}
+
+/* ── Productos: grilla de catálogo (arq-grid sin columns) ───────── */
+.products {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xl);
+  padding: 0 var(--arq-layout-gutter) var(--arq-space-section-xl);
+}
+
+.status {
+  margin: 0;
+  color: var(--arq-color-text-secondary);
+}
+
+/* ── Galería: fotos lado a lado, a sangre ───────────────────────── */
+/* TODO (diseño): las fotos miden 700 × 684, sin ratio; ratio/square, el
+   más cercano. */
+.gallery {
+  display: flex;
+  padding-bottom: var(--arq-space-section-xl);
+}
+
+.gallery img {
+  display: block;
+  flex: 1 1 0;
+  min-width: 0;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background: var(--arq-color-surface-subtle);
+}
+
+/* ── Texto + imagen: un tercio y dos tercios, la imagen a sangre ── */
+/* TODO (diseño): el texto mide 330 (layout/measure) y la imagen 933 × 684
+   (ratio/landscape, el más cercano). */
+.feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  align-items: center;
+  padding: 0 0 var(--arq-space-section-xl) var(--arq-layout-gutter);
+}
+
+.feature-text {
+  max-width: var(--arq-layout-measure);
+  padding-right: var(--arq-layout-gutter);
+  color: var(--arq-color-text-primary);
+}
+
+::slotted([slot='description']) {
+  margin: 0 !important;
+  font: inherit !important;
+  color: inherit !important;
+}
+
+.feature-image {
+  grid-column: 2;
+  aspect-ratio: 5 / 4;
+  background: var(--arq-color-surface-subtle);
+}
+
+.feature-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Mosaico: carrusel con flechas que llega al borde derecho ───── */
+/* TODO (diseño): las fotos miden 684 de alto (440 en Mobile), sin token;
+   70svh, como la galería de ambiente de la ficha. */
+.mosaic {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-lg);
+  padding-bottom: var(--arq-space-section-xl);
+}
+
+.controls {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: var(--arq-layout-gutter);
+}
+
+.track {
+  display: flex;
+  gap: var(--arq-space-gap-md);
+  padding-left: var(--arq-layout-gutter);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline-start: var(--arq-layout-gutter);
+  scrollbar-width: none;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.track img {
+  flex: none;
+  display: block;
+  width: auto;
+  height: 70svh;
+  max-width: none;
+  object-fit: cover;
+  scroll-snap-align: start;
+  background: var(--arq-color-surface-subtle);
+}
+
+.track:focus-visible {
+  outline-offset: calc(-1 * var(--arq-border-strong));
+}
+
+/* ── Mobile ─────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .gallery {
+    flex-direction: column;
+  }
+
+  .gallery img {
+    flex: none;
+    width: 100%;
+  }
+
+  .feature {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--arq-space-gap-xl);
+    padding-left: 0;
+  }
+
+  .feature-text {
+    max-width: none;
+    padding: 0 var(--arq-layout-gutter);
+  }
+
+  /* En Mobile no hay flechas: la foto siguiente asoma (carousel-controls) */
+  .controls {
+    display: none;
+  }
+
+  .track {
+    gap: var(--arq-space-gap-sm-md);
+  }
+}

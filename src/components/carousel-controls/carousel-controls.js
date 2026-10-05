@@ -44,6 +44,8 @@ class ArqCarouselControls extends ArqElement {
   #scrollable = true;
   #onScroll = () => this.#syncFromScroll();
   #resize = new ResizeObserver(() => this.#syncFromScroll());
+  // Elementos que entran al carrusel (cards, fotos que arma la página)
+  #children = new MutationObserver(() => this.#observeChildren());
   #reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   setup() {
@@ -100,7 +102,12 @@ class ArqCarouselControls extends ArqElement {
   #watch(target) {
     this.#watching = true;
     target.addEventListener('scroll', this.#onScroll, { passive: true });
+    // Además del carrusel, cada elemento de adentro: una foto de ancho auto que
+    // carga (o llega de la caché) agranda el contenido sin cambiar el tamaño
+    // del carrusel, y el ResizeObserver del carrusel solo no lo ve.
     this.#resize.observe(target);
+    this.#children.observe(target, { childList: true });
+    this.#observeChildren();
     // aria-controls hacia el carrusel (los botones están dentro de icon-button)
     customElements.whenDefined('arq-icon-button').then(() => {
       for (const button of this.shadowRoot.querySelectorAll('arq-icon-button')) {
@@ -115,7 +122,13 @@ class ArqCarouselControls extends ArqElement {
     if (!this.#target || !this.#watching) return;
     this.#watching = false;
     this.#target.removeEventListener('scroll', this.#onScroll);
-    this.#resize.unobserve(this.#target);
+    this.#children.disconnect();
+    this.#resize.disconnect();
+  }
+
+  #observeChildren() {
+    for (const child of this.#target?.children ?? []) this.#resize.observe(child);
+    this.#syncFromScroll();
   }
 
   #syncFromScroll() {
