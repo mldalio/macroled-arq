@@ -1,8 +1,11 @@
 # Decisiones
 
-Registro de decisiones técnicas que no están en AGENTS.md ni en DESIGN.md. Si una decisión no está escrita acá, las IAs no la conocen.
+Decisiones técnicas que no están en AGENTS.md ni en DESIGN.md. Si una decisión no está escrita acá, las IAs no la conocen.
 
-Formato: fecha · decisión · por qué.
+- Formato: `## fecha · tema` y viñetas cortas (qué y, si no es obvio, por qué). El código cita las secciones por ese título: no renombrarlas.
+- Lo que ya dice DESIGN.md o AGENTS.md no se repite: se enlaza.
+- Una decisión que cambia otra **reemplaza** el texto viejo; no se acumula historial.
+- Los pendientes van **solo** en [Pendientes](#pendientes), al final, agrupados por quién los resuelve. En el código siguen como `TODO (<grupo>)`.
 
 ---
 
@@ -10,44 +13,30 @@ Formato: fecha · decisión · por qué.
 
 ### Albert Sans se carga a nivel página
 
-- En Webflow, la fuente se carga en la página (custom code o fuentes del sitio), **no** en `dist/arq.css` ni dentro del Shadow DOM.
-- `dist/arq.css` tiene solo `tokens.css`.
-- La demo la carga con un `<link>` a Google Fonts (pesos 300–700, `display=swap`).
-- Por qué: el sitio de Macroled puede tener Albert Sans cargada; así no se descarga dos veces ni se pisa su configuración.
+- En Webflow, la fuente la carga la página, no `dist/arq.css` ni el Shadow DOM. La demo usa Google Fonts (300–700, `display=swap`).
+- Por qué: el sitio de Macroled puede tenerla cargada; no se descarga dos veces ni se pisa su configuración.
 
 ### Salida del build
 
-- Vite en modo librería genera solo `dist/arq.js` (ES module) y `dist/arq.css`, con nombre fijo y sin hash, para publicarlos en jsDelivr con tag de versión.
-- La demo no entra al build.
-- `dist/` se commitea.
+- Vite en modo librería: solo `dist/arq.js` (ES module) y `dist/arq.css` (solo `tokens.css`), sin hash. La demo no entra. `dist/` se commitea.
 
 ### CSS de componentes y estilos role/*
 
-- Cada componente importa su CSS con `?inline` y lo aplica en su Shadow DOM.
-- Los estilos `role/*` se generan en `src/styles/roles.css` (clases `.role-<nombre>`, sin prefijo porque viven dentro del Shadow DOM). Se comparten como **una única `CSSStyleSheet`** vía `adoptedStyleSheets` con el helper `src/styles/roles.js` (`adoptStyles(shadowRoot, css)`). La hoja de cada componente también se crea una sola vez y la comparten sus instancias.
-- `roles.css` referencia primitivos de tipografía (`--arq-font-*`) porque así están definidos los estilos de texto en Figma. Los componentes siguen sin usar primitivos directamente: usan las clases `.role-*`.
+- Cada componente importa su CSS con `?inline`. Los `role/*` se generan en `src/styles/roles.css` (clases `.role-<nombre>`) y se comparten como una sola `CSSStyleSheet` (`adoptStyles` de `src/styles/roles.js`). La hoja de cada componente se crea una vez por clase.
+- `roles.css` usa primitivos de tipografía (`--arq-font-*`) porque así están en Figma; los componentes usan las clases, no los primitivos.
 
 ### Formato de tokens/tokens.json
 
-- DTCG (`$type`, `$value`, `$description`). La ruta es el nombre de la variable en Figma sin el nombre de la colección: `color/text/primary` → `color.text.primary` → `--arq-color-text-primary`.
-- `$value` es el valor del **primer modo** (Light o Desktop). El otro modo va en `$extensions["arq.modes"]` con la clave `dark` o `mobile`, **solo si cambia** respecto del primero. Si vale lo mismo, el token no lleva la extensión (el script lo marca como error).
-- Tipos: `color` (hex de 6 u 8 dígitos), `dimension` (`px`), `fontWeight` (número), `fontFamily` (texto), `duration` (`ms`), `cubicBezier` (cuatro números) y `typography` (solo en `role/*`).
-- Los colores con transparencia salen como `rgba()` con el alpha redondeado a 2 decimales (`#1010101A` → `0.1`), porque el hex de Figma no da el porcentaje exacto. Los opacos quedan en hex.
-- Los alias se escriben `{ruta.del.token}` y salen como `var(--arq-…)`.
-- Un token no puede tener más de un modo (`dark`, `mobile` o `reducedMotion`): el script corta con error (hoy los modos no se cruzan entre colecciones). `reducedMotion` solo vale en duraciones.
-- Los estilos de texto `role/*` van en la rama `role` con `$type: typography` y **solo alias** en sus campos (familia, peso, tamaño, interlineado, tracking). No salen como variables: generan `roles.css`.
-  - `fontSize` y `lineHeight` tienen que apuntar a `type/*` (Semantic · Type). En `roles.css` quedan como `var(--arq-type-<rol>-size)`, así el cambio a Mobile llega solo desde `tokens.css`.
-  - `$extensions["arq.textTransform"]` (`uppercase`, por ejemplo en `role/label` y `role/label-sm`) genera `text-transform`.
-  - Los `role/*` no llevan modos.
-- Antes de convertir, `npm run tokens` valida todo el archivo (alias inexistentes, tipos, valores, modos, extensiones desconocidas). Si hay problemas, los lista y no escribe nada.
-- Salida (`npm run tokens`): `:root` (base), `[data-arq-theme="dark"]`, `@media (max-width: 767px) { :root }` y `@media (prefers-reduced-motion: reduce) { :root }`. Nunca `prefers-color-scheme`.
-- `tokens.json` se genera desde Figma con `npm run tokens:import` (ver 2026-10-01 · Tokens desde Figma). La rama `role` no viene de variables y se conserva.
+- DTCG (`$type`, `$value`, `$description`). Ruta = nombre de Figma sin la colección: `color/text/primary` → `--arq-color-text-primary`.
+- `$value` es el primer modo (Light o Desktop). Los demás van en `$extensions["arq.modes"]` (`dark`, `mobile`, `tablet`, `large`, `wide`, `reducedMotion`) **solo si cambian**. Se pueden combinar modos de breakpoint en un token, no con `dark` ni `reducedMotion`. `reducedMotion` solo en duraciones.
+- Tipos: `color`, `dimension` (`px`), `fontWeight`, `fontFamily`, `duration` (`ms`), `cubicBezier`, `typography` (solo `role/*`). Colores con alpha como `rgba()` (2 decimales); opacos en hex. Alias `{ruta}` → `var(--arq-…)`.
+- `role/*`: rama `role`, solo alias. `fontSize` y `lineHeight` apuntan a `type/*` (así el cambio de modo llega desde `tokens.css`). `$extensions["arq.textTransform"]` → `text-transform`. Sin modos.
+- `npm run tokens` valida todo antes de escribir (alias, tipos, valores, modos). Genera `:root`, `[data-arq-theme="dark"]`, `[data-arq-theme="light"]`, las media queries de breakpoint y `prefers-reduced-motion`. Nunca `prefers-color-scheme`.
+- La rama `role` no viene de variables: `npm run tokens:import` la conserva.
 
 ## 2026-09-30 · Base de componentes (src/base/)
 
 ### ArqElement
-
-Todo componente extiende `ArqElement` (`src/base/arq-element.js`):
 
 ```js
 import css from './accordion-item.css?inline';
@@ -56,7 +45,7 @@ class ArqAccordionItem extends ArqElement {
   static tag = 'arq-accordion-item';
   static styles = css;
   static properties = {
-    open: { type: Boolean },                                            // Open
+    open: { type: Boolean },
     type: { type: String, values: ['plain', 'outline'], default: 'plain' },
     count: { type: Number },
   };
@@ -67,527 +56,425 @@ class ArqAccordionItem extends ArqElement {
 ArqAccordionItem.define();
 ```
 
-- **Props = propiedades de Figma**, declaradas una por una. El nombre de Figma pasa a atributo en kebab-case y a prop JS en camelCase: `Show icon` → `show-icon` → `showIcon`. Los valores van en kebab-case en los dos lados: `Layout=Image left` → `layout="image-left"` → `el.layout === 'image-left'`.
-- **No son props:** `Breakpoint` (media query) ni `State=Hover / Pressed / Focus` (`:hover`, `:active`, `:focus-visible`). **Sí son props** los estados que dependen de datos o de la app: `open`, `selected`, `current`, `checked`, `value`, `filled`, `error`, `disabled`, `loading`, `copied`, `applied`.
-- **Tipos:** `Boolean` (atributo de presencia; ausente = `false`), `String` (con `values` y `default` si es una variante) y `Number`. Un valor fuera de `values` vuelve al `default` y avisa solo en `npm run dev`.
-- **Reflejo:** atributo → prop y prop → atributo. Las props asignadas antes de que se registre el elemento se recuperan al registrarlo.
-- **Estilos:** el Shadow DOM adopta, en orden, la hoja de roles, una hoja base (`[hidden] { display: none !important }`) y la del componente. Cada hoja se crea una vez y la comparten todas las instancias.
-- **Render:** `static template` se parsea una vez por clase y se clona en cada instancia. El texto principal llega por slot.
-- **Eventos:** `this.emit('change', detail)` despacha `arq:change` con `bubbles` y `composed`. Nombres: `arq:change` para cambios de valor, `arq:toggle` para abrir / cerrar.
-- **Controladores:** `addController(obj)` llama a `obj.hostUpdate(changed)` después de cada `update()`. Lo usa Disclosure.
-- **Registro:** `define()` no hace nada si el tag ya existe (Webflow puede cargar el script dos veces). Cada componente se importa en `src/main.js`.
+- Props = propiedades de Figma: `Show icon` → atributo `show-icon` → prop `showIcon`. Valores en kebab-case: `layout="image-left"`.
+- Tipos: `Boolean` (presencia), `String` (con `values` y `default`; un valor inválido vuelve al default y avisa en dev) y `Number`. Reflejo atributo ↔ prop; las props asignadas antes del registro se recuperan.
+- Estilos adoptados, en orden: roles, dark, light, base (`[hidden]`, encabezados por slot, transiciones) y la del componente.
+- Eventos: `this.emit('change', detail)` → `arq:change` con `bubbles` y `composed`. `arq:change` para valores, `arq:toggle` para abrir / cerrar.
+- `addController(obj)`: llama a `obj.hostUpdate(changed)` después de `update()`.
+- `define()` no hace nada si el tag existe (Webflow puede cargar el script dos veces). Cada componente se importa en `src/main.js`.
 
 ### Íconos (src/base/icons.js)
 
-- Los 20 de Figma (`icon/*`, sección icons `1075:4571`), leídos por MCP desde la variante `Theme=Default`. El node id de cada uno queda anotado en el archivo.
-- `icon('plus')` devuelve el `<svg>` como string para usar en templates. No hay elemento `<arq-icon>`: los íconos viven dentro de los componentes.
-- `stroke="currentColor"`: el color lo pone el componente con `color/icon/*`. `Theme=Inverse` no es otro SVG, es `color/icon/inverse`.
-- `vector-effect="non-scaling-stroke"`: el trazo queda en 1 px en cualquier tamaño. El tamaño lo define el componente con `--arq-icon-*` (el SVG no trae width/height).
-- `aria-hidden="true"`: el nombre accesible lo lleva el botón o link.
-- `data-icon="<nombre>"` en el SVG, para elegir con CSS cuál mostrar (por ejemplo, plus o minus según `open`).
+- Los 20 de Figma (sección `1075:4571`, `Theme=Default`), con el node id anotado. `icon('plus')` devuelve el `<svg>` como string; no hay `<arq-icon>`.
+- `stroke="currentColor"` (`Theme=Inverse` es `color/icon/inverse`, no otro SVG), `vector-effect="non-scaling-stroke"` (1 px a cualquier tamaño, el tamaño lo da `--arq-icon-*`), `aria-hidden="true"` y `data-icon="<nombre>"` para elegir con CSS.
 
 ### Desplegables (src/base/disclosure.js)
 
-accordion-item, faq-item, filter-row, catalog-nav-group y catalog-nav-trigger usan el controlador `Disclosure`, armado según sus fichas `doc/<nombre>`:
-
-```js
-setup() {
-  this.disclosure = new Disclosure(this, { trigger: button, panel: region });
-}
-```
-
-- Encabezado `<button type="button">` con `aria-expanded` y `aria-controls`. Enter y Espacio son nativos.
-- Panel con el atributo `hidden` (no solo CSS). El contenido va por slot: queda en el HTML aunque esté cerrado.
-- El ícono + / – es decorativo; el estado lo comunica `aria-expanded`.
-- **Desplegables independientes:** pueden quedar varios abiertos (así lo dicen las fichas de accordion-item y faq-item).
-- El estado es la prop `open`. Figma define `Open=True` por defecto en filter-row y catalog-nav-group, pero en código lo decide el HTML o los datos (el grupo de la categoría actual, la fila con filtros aplicados).
-- Cambiar `open` por código no emite eventos. La acción del usuario y `show()` / `hide()` / `toggle()` emiten `arq:toggle` con `{ open }`.
-- Opción `closeOnEscape` (apagada por defecto).
-- **Movimiento:** al abrir, el panel aparece con un fundido de `opacity` en `motion/duration/base` (`@starting-style`). El alto cambia de golpe (no se anima layout) y al cerrar se oculta sin fundido. La hoja la adopta `Disclosure` en el Shadow DOM del host: los componentes no la repiten.
-- Se usa `<button>` y no `<details>` en todos los casos, también en faq-item (su ficha acepta las dos), para tener un solo patrón.
+- `new Disclosure(this, { trigger, panel })`. Encabezado `<button type="button">` con `aria-expanded` y `aria-controls`; panel con el atributo `hidden`, contenido por slot (queda en el HTML aunque esté cerrado). Siempre `<button>`, nunca `<details>`.
+- Independientes: pueden quedar varios abiertos. El estado es `open`; el abierto inicial lo decide el HTML o los datos, no el default de Figma.
+- Cambiar `open` por código no emite; la acción del usuario y `show()` / `hide()` / `toggle()` emiten `arq:toggle` con `{ open }`. `closeOnEscape` apagado por defecto.
+- Movimiento: al abrir, fundido de `opacity` en `motion/duration/base` (`@starting-style`); el alto cambia de golpe y al cerrar no hay fundido.
 
 ### Finales de línea (LF)
 
-- `.gitattributes` fuerza LF en todos los archivos de texto (`* text=auto eol=lf`, SVG incluido) y marca como binarios PNG, JPG, WebP y WOFF2.
-- Coincide con `.editorconfig` (`end_of_line = lf`). Evita diffs que solo cambian finales de línea entre máquinas con distinta configuración de `core.autocrlf` (Windows / macOS).
-- Si se suma otro tipo de binario (por ejemplo `.gif`, `.avif`, `.pdf`), se agrega a `.gitattributes`.
+- `.gitattributes`: `* text=auto eol=lf`; PNG, JPG, WebP y WOFF2 binarios. Un binario nuevo (`.gif`, `.avif`, `.pdf`) se suma ahí.
 
 ### Variables de entorno
 
-- `src/config.js` lee `import.meta.env.VITE_*`. Vite reemplaza los valores al compilar y quedan dentro de `dist/arq.js`: solo se usa la search-only key de Typesense.
+- `src/config.js` lee `import.meta.env.VITE_*` y Vite los deja dentro de `dist/arq.js`: solo la search-only key de Typesense.
 
 ## 2026-10-01 · button
 
-- **`<button>` o `<a>`:** `<arq-button>` sin `href` dibuja un `<button type="button">`; con `href`, un `<a>` (ficha `doc/button`: "`<a>` con la misma clase para navegación"). Un link deshabilitado pierde el `href` y lleva `aria-disabled="true"`.
-- **Foco:** anillo separado, según DESIGN.md §7 (capa `focus-ring` de Figma): `outline` de `border/strong` en `color/border/focus` con `outline-offset: 2px`, en los tres Type.
-- **Subrayado de Underline:** `border/default` en reposo y `border/strong` en hover y pressed. Es un pseudo-elemento absoluto anclado por arriba: pasar a 2 px no cambia el alto del botón.
-- **count-label:** texto para lectores de pantalla en un span oculto visualmente (", 3 filtros activos"); con `count-label`, el número visible del badge lleva `aria-hidden`.
-- **Alto de Outline:** el borde se descuenta del padding para que mida 36 como Filled.
-- **Booleanos con `true` por defecto en Figma** (Show icon, Show underline): en código son atributos de presencia, así que hay que escribirlos.
-
-### Envío de formularios (construido el 2026-10-05 con Contacto)
-
-- `type` es la prop de Figma (Filled · Outline · Underline), así que no se puede usar `type="submit"`.
-- Cuando se construya `form-contacto`, el envío se va a hacer con un atributo **`submit` sin valor**: `<arq-button submit>Enviar</arq-button>`.
-- Implementación prevista: `static formAssociated = true` y `attachInternals()` (`ElementInternals`); al hacer clic, `this.internals.form?.requestSubmit()`. Así el formulario corre su validación y dispara `submit` como con un botón nativo.
-- El `<button>` interno sigue siendo `type="button"`: el envío lo hace `requestSubmit()` desde el host (ver 2026-10-05 · Contacto).
+- Sin `href` dibuja `<button type="button">`; con `href`, `<a>`. Un link deshabilitado pierde el `href` y lleva `aria-disabled="true"`.
+- Subrayado de Underline: pseudo-elemento anclado arriba; pasar de 1 a 2 px no cambia el alto. Outline descuenta el borde del padding para medir igual que Filled.
+- `count-label`: texto para lectores (", 3 filtros activos"); el número visible lleva `aria-hidden`.
+- **`submit`:** `type` es la prop de Figma, así que el envío es el atributo `submit` (`<arq-button submit>`). Es form-associated y el clic hace `requestSubmit()` del formulario; el `<button>` interno sigue `type="button"`. Enter en un campo no envía (no es el botón predeterminado del navegador).
 
 ## 2026-10-01 · logo
 
-- **px como excepción:** los anchos del logo (181 · 158 · 117 px, alto por el viewBox 181 × 16) son medidas del archivo del logo, no del sistema. Van en px dentro de `src/components/logo/logo.css` y no se crean tokens. Es la única excepción a "sin px" en componentes junto con el `outline-offset: 2px` del foco (DESIGN.md §7).
-- **Un solo SVG:** Small y Compact son el mismo dibujo que Default escalado. Los trazos se exportaron de Figma (Size=Default) y quedaron en `logo.js` con `fill="currentColor"`.
-- **Link incluido:** `<arq-logo>` es siempre un link (`href="/arq"` por defecto) con `aria-label="Macroled Arq, inicio"`, según la ficha `doc/logo`.
+- Anchos 181 · 158 · 117 en px dentro de `logo.css`, sin tokens: son medidas del archivo del logo. Única excepción a "sin px" junto con el `outline-offset: 2px` del foco y el scrim del hero.
+- Un solo SVG (`fill="currentColor"`) escalado para los tres tamaños. Siempre es link (`href="/arq"`, `aria-label="Macroled Arq, inicio"`).
 
 ## 2026-10-01 · Textos en mayúsculas (role/label)
 
-- `role/label` y `role/label-sm` ponen la mayúscula con `text-transform`. Chrome arma el nombre accesible con esa transformación ("COLECCIONES") y algunos lectores de pantalla leen las palabras en mayúsculas como siglas.
-- En links con texto `role/label` (por ahora breadcrumb-item), el link lleva `aria-label` con el texto tal como llega del HTML, en caja normal. En elementos sin rol (un `<span>`) no se puede: ARIA no permite `aria-label` ahí.
+- Chrome arma el nombre accesible con el `text-transform` ("COLECCIONES") y algunos lectores lo leen como sigla. En links con `role/label` (breadcrumb-item, tab) el link lleva `aria-label` con el texto en caja normal. En un `<span>` no se puede (ARIA no lo permite).
 
 ## 2026-10-01 · Fase 1 (controles y formularios)
 
-### Foco en campos de texto (excepción)
-
-- En `input` (Text y Textarea) el foco **solo cambia el color de la línea inferior** a `color/border/focus`, sin anillo. Así está en Figma y en la ficha `doc/input`. Es la única excepción a la regla del anillo de DESIGN.md §7.
-- La línea no cambia de grosor (`border/default` en todos los estados): no hay salto de layout.
-
-### Controles de formulario con ElementInternals
-
-- checkbox, toggle, choice-chip, input y file-upload son *form-associated custom elements* (`static formAssociated = true` + `attachInternals()`): mandan su valor con el `<form>` que los contiene (`FormData`), como un control nativo. Un `<input>` dentro del Shadow DOM no lo haría solo.
-- Atributos de formulario: `name` y `value` (como en HTML). `form.reset()` los vuelve al estado inicial.
-
-### Selección única (src/base/single-select.js)
-
-- choice-chip, option-tile, swatch y tab se comportan como opciones de un grupo: una sola elegida, flechas para moverse (roving tabindex), Inicio / Fin. El controlador `SingleSelect` lo arma el contenedor (option-group, swatch-picker, el tablist del mega-menu o el grupo de choice-chip, todavía no construidos). La demo usa contenedores de prueba (`demo-radio-group`, `demo-tablist`).
-- Cada opción sola funciona igual con clic, Enter o Espacio y emite `arq:change`.
-
-### Ayuda de un input deshabilitado
-
-- Con `disabled`, la ayuda (helper) de input queda en `color/text/disabled`, como el label y el valor. No llega a 4.5 de contraste (2.24 en Light, 2.96 en Dark) y es a propósito: WCAG 1.4.3 no exige contraste mínimo a los controles inactivos. axe lo marca en la demo; se ignora para este caso.
-
-### Alto de nav-link en mobile
-
-- La fila de nav-link en mobile mide 56 (padding `space/gap/md` + `role/body-xl`). Figma ya está corregido a 56.
+- **Foco en input Text y Textarea (excepción a DESIGN.md §7):** solo cambia el color de la línea a `color/border/focus`, sin anillo y sin cambiar el grosor.
+- **Form-associated:** checkbox, toggle, choice-chip, input, file-upload y `arq-button submit` usan `ElementInternals`; mandan `name` / `value` con el `<form>` y responden a `form.reset()`.
+- **Selección única (`src/base/single-select.js`):** choice-chip, option-tile, swatch y tab; una elegida, flechas con roving tabindex, Inicio / Fin. Lo arma el contenedor.
+- **input disabled:** la ayuda queda en `color/text/disabled` (sin contraste AA, a propósito: WCAG 1.4.3 no lo exige en controles inactivos). axe lo marca; se ignora.
+- **nav-link Mobile:** 56 de alto (padding `space/gap/md` + `role/body-xl`).
 
 ## 2026-10-01 · Publicación
 
-- **Opción A de docs/setup.md:** el repo [mldalio/macroled-arq](https://github.com/mldalio/macroled-arq) es público y jsDelivr sirve `dist/` desde los tags de GitHub. No hay paquete npm ni hosting aparte.
-- URLs: `https://cdn.jsdelivr.net/gh/mldalio/macroled-arq@vX.Y.Z/dist/arq.js` y `…/dist/arq.css`. Siempre con tag de versión, nunca `@main` ni `@latest` en Webflow.
-- Un tag publicado no se mueve ni se borra: jsDelivr lo cachea. Para corregir, se publica una versión nueva.
-- `package.json` lleva la misma versión que el tag.
+- Repo público [mldalio/macroled-arq](https://github.com/mldalio/macroled-arq); jsDelivr sirve `dist/` desde los tags: `https://cdn.jsdelivr.net/gh/mldalio/macroled-arq@vX.Y.Z/dist/arq.js` (y `arq.css`). Nunca `@main` ni `@latest` en Webflow.
+- Un tag publicado no se mueve ni se borra (jsDelivr lo cachea): se publica una versión nueva. `package.json` lleva la versión del tag.
 
 ## 2026-10-01 · Tokens desde Figma
 
-- No hay export nativo de variables. Claude Code las lee por MCP (`use_figma`, solo lectura) con `scripts/figma/export-variables.figma.js`, una colección por llamada (la respuesta se corta a los 20 KB; 1 · Primitive · Color va en dos partes).
-- `scripts/figma/rows-to-dtcg.js` escribe un archivo por colección y modo en `tokens/figma/<colección>.<modo>.json` (DTCG: grupos por la `/` del nombre, `$type` color · number · string, hex `#rrggbb` o `#rrggbbaa`, alias `{neutral.900}`, `$description` y en `$extensions["com.figma"]` los scopes y el codeSyntax.WEB). Los nombres de archivo van en minúsculas y sin "·": `2-semantic-color.dark.json`. Se commitean.
-- `npm run tokens:import` convierte `tokens/figma/` a `tokens/tokens.json`: modo base Value / Light / Desktop, Dark y Mobile en `arq.modes` solo si cambian, tipos del repo por ruta (`font/weight` → fontWeight, `font/family` → fontFamily, `motion/duration` → duration, `motion/easing` → cubicBezier, el resto de los números → dimension en px). Respeta el orden del `tokens.json` anterior, valida con las mismas reglas que `npm run tokens` (`scripts/lib/validate-tokens.js`) y lista las diferencias.
-- **Figma es la fuente** también de las descripciones de cada variable: el import las pisa.
-- No se importan bronze, cacao, olive, terracotta ni offwhite (paletas de marca sin uso).
+- Claude Code lee las variables por MCP (`use_figma`, solo lectura) con `scripts/figma/export-variables.figma.js`, una colección por llamada (la respuesta se corta a los 20 KB: 1 · Primitive · Color va en dos partes).
+- `scripts/figma/rows-to-dtcg.js` escribe `tokens/figma/<colección>.<modo>.json` (minúsculas, sin "·"). Se commitean.
+- `npm run tokens:import` arma `tokens/tokens.json`: tipos por ruta, modos solo si cambian, orden del archivo anterior, mismas validaciones que `npm run tokens`, lista de diferencias. Las descripciones también vienen de Figma.
+- No se importan bronze, cacao, olive, terracotta ni offwhite.
 
 ## 2026-10-01 · Movimiento
 
-- Colección `2 · Semantic · Motion`: `--arq-motion-duration-fast` (120 ms), `base` (200), `slow` (320), `feedback` (2000) y `--arq-motion-easing-standard`.
-- **prefers-reduced-motion:** no es un modo de Figma. `npm run tokens:import` agrega a fast, base y slow el modo `reducedMotion` = `0ms` y `npm run tokens` lo escribe en `@media (prefers-reduced-motion: reduce)`. feedback no cambia (es un tiempo de lectura).
-- **Una sola regla de transición:** la hoja base de `ArqElement` aplica a todo el Shadow DOM (`*`, `::before`, `::after`) una transición de colores (`color`, `background-color`, `border-color`, `outline-color`, `text-decoration-color`, `fill`, `stroke`) en fast + standard. Cubre hover, pressed, foco y selección de todos los componentes sin repetirla. No llega al contenido por slot (vive en el DOM de Webflow).
-- Al cambiar Iluminar, los colores de los componentes también hacen ese fundido de 120 ms; el fondo de la página (fuera del Shadow DOM) cambia de golpe.
-- Lo que además anima `transform` u `opacity` redeclara la lista completa en ese elemento, porque `transition-property` no se suma: el círculo de toggle (`transform`, fast) y el panel de los desplegables (`opacity`, base).
-- Nunca se anima alto, ancho ni posición. El subrayado de button (1 → 2 px) cambia de golpe.
-- **Tiempos en JS:** el "Copiado" de sku lee `--arq-motion-duration-feedback` con `getComputedStyle`; no hay milisegundos escritos en el código.
+- `reducedMotion` no es un modo de Figma: el import pone `0ms` en fast, base y slow (feedback no cambia).
+- Una sola regla de transición en la hoja base: colores (`color`, `background-color`, `border-color`, `outline-color`, `text-decoration-color`, `fill`, `stroke`) en fast + standard para todo el Shadow DOM. No llega al contenido por slot. Lo que además anima `transform` u `opacity` redeclara la lista completa (no se suma).
+- Al cambiar Iluminar, los componentes funden en 120 ms y el fondo de la página cambia de golpe.
+- Los tiempos en JS se leen de las variables (`getComputedStyle`), nunca en ms escritos.
 
 ## 2026-10-01 · Casos definidos por diseño
 
-- **file-upload:** Drag over y Error son estados internos (`:state(drag-over)`, `:state(error)`), no props: dependen de lo que hace el usuario. Disabled es la prop `disabled`. El mensaje de error es "<problema>. Formatos: <lista>." con la lista armada desde `accept` (JPEG se muestra como JPG).
-- **input:** Textarea con `rows="4"` por defecto y `resize: vertical`.
-- **breadcrumb:** una sola fila. El ítem actual tiene `flex-shrink` mucho mayor que los intermedios: primero se parte en líneas (hasta su palabra más larga) y recién después se cortan los intermedios con "…".
-- **sku:** si falla `navigator.clipboard.writeText`, se selecciona el código (está en el DOM de la página) y se muestra y anuncia "Copialo con Ctrl+C" ("⌘C" si `navigator.userAgentData.platform` o `navigator.platform` es Mac, iPhone o iPad) en `color/text/secondary` durante feedback. Estado interno `:state(copy-failed)`.
-- **spec-row y sku:** `overflow-wrap: anywhere` para que un código sin espacios también se parta.
+- **file-upload:** Drag over y Error son estados internos (`:state(drag-over)`, `:state(error)`). Mensaje: "<problema>. Formatos: <lista>." armado desde `accept` (JPEG como JPG).
+- **input Textarea:** `rows="4"` y `resize: vertical`.
+- **breadcrumb:** una fila; el ítem actual se parte en líneas antes de que los intermedios se corten con "…" (`flex-shrink` mayor).
+- **sku:** si falla el portapapeles, se selecciona el código y se anuncia "Copialo con Ctrl+C" (⌘C en Mac / iOS) durante feedback (`:state(copy-failed)`).
+- **spec-row y sku:** `overflow-wrap: anywhere`.
 
 ## 2026-10-01 · hero y navbar
 
-- **hero no contiene al navbar.** En código cada página tiene un solo `<arq-navbar>`, que va aparte, antes del hero, con `theme="transparent"` y encima de la media del hero. `<arq-hero>` usa solo button.
-- **Por qué:** el navbar es uno por página (también en las páginas sin hero) y tiene su propio comportamiento (scroll, búsqueda, menú, mega-menu). Meterlo dentro del hero lo duplicaría en Home y Contacto.
-- En Figma, hero muestra una instancia de navbar Theme=Transparent (y su descripción lo menciona): es una referencia de composición, no parte del componente.
+- Hero no contiene al navbar: un solo `<arq-navbar>` por página, antes del hero, `theme="transparent"` encima de la media. La instancia de navbar dentro del hero en Figma es solo referencia de composición.
 
 ## 2026-10-01 · faq-item
 
-- **Separador:** línea arriba de cada ítem en `border/default` + `color/border/default`, como el set (1036:2430) y el Home (Final 1203:9906). La descripción del set y la ficha `doc/faq-item` dicen "borde inferior color/border/subtle": manda el set; falta corregir los dos textos en Figma. El último ítem de la lista queda sin línea abajo.
-- **Ancho de la respuesta:** en el set mide 560 fijos y no hay token. Se usa `layout/measure-wide` (520) como ancho máximo en Desktop; en Mobile ocupa todo el ancho. `TODO` hasta que diseño confirme.
-- **Hover solo cerrado:** el set no tiene la variante Open=True + Hover.
-- **Foco alrededor de todo el ítem** (capa focus-ring del set), también abierto: `.item:has(.trigger:focus-visible)`.
-- **El padding del ítem va en el botón**, así todo el alto del encabezado es clickeable. Abierto, el padding inferior del botón es el gap hasta la respuesta (`space/gap/sm-md`) y la respuesta lleva `space/padding/lg` abajo.
+- Separador **arriba** de cada ítem en `border/default` + `color/border/default` (manda el set sobre la descripción y la ficha, que dicen inferior y subtle).
+- Respuesta hasta `layout/measure-wide` en Desktop (el set mide 560 sin token).
+- Hover solo cerrado. Foco alrededor de todo el ítem, también abierto. El padding va en el botón (todo el encabezado es clickeable).
 
 ## 2026-10-01 · footer
 
-- **API:** la bajada (slot `tagline`) y los links (`<arq-footer-link slot="productos|informacion|redes">`) llegan por HTML. Logo, títulos de columna y legal están en el componente; el año sale de `new Date().getFullYear()` (ficha `doc/footer`). Tres columnas fijas: una sección nueva es una columna nueva en el componente.
-- **Logo Compact**, como el set del footer. La ficha `doc/logo` dice "Default en navbar desktop y footer": falta corregirla en Figma.
-- **Anchos sin token:** en el set cada columna mide 200 y la bajada 240. En código toman el ancho de su contenido (`TODO` hasta que diseño cree tokens si los quiere). En Mobile la bajada queda en una línea y el footer mide 20 menos que en Figma.
-- **Información:** Contacto, Descargas y Glosario (la lista de Mobile del set; Desktop no tiene Descargas). Falta igualar el Desktop en Figma.
-- **Legal en un solo elemento:** grilla con el legal debajo de la marca en Desktop (segunda fila en 1fr para que el alto de las columnas no lo empuje) y al final en Mobile.
-- **footer-link:** pasa a `role="listitem"` (como breadcrumb-item), suma la prop `label` (aria-label, para "Macroled Arq en Instagram") y su label se parte en líneas en vez de cortarse con "…", como en el set del footer en Mobile.
+- Bajada (`slot="tagline"`) y links (`<arq-footer-link slot="productos|informacion|redes">`) por HTML; logo, títulos y legal en el componente; año con `new Date().getFullYear()`. Tres columnas fijas.
+- Logo Compact, como el set. Información: Contacto, Descargas y Glosario. Columnas con el ancho de su contenido.
+- footer-link: `role="listitem"`, prop `label` (aria-label) y el texto se parte en líneas en vez de cortarse.
 
 ## 2026-10-01 · Tokens de navbar Transparent
 
-- **Nuevos:** `blur/12` (colección nueva `1 · Primitive · Blur`, una por propiedad como Radius y Border), `blur/backdrop` (2 · Semantic · Dimension, igual en Desktop y Mobile) y `color/overlay/translucent` (2 · Semantic · Color, `alpha/ink-10` en Light y Dark). Ligados en las cinco variantes Theme=Transparent de navbar: fondo translúcido + background blur.
-- `blur/12` no tiene scope en Figma (como `alpha/*`): en el selector solo aparece el semántico.
-- **Blur de Figma ≠ CSS:** el radio del background blur de Figma equivale a la mitad en CSS. En código se escribe `backdrop-filter: blur(calc(var(--arq-blur-backdrop) / 2))`: el token conserva el valor de Figma (12) y la conversión queda en el CSS.
+- `blur/12` (1 · Primitive · Blur, sin scope), `blur/backdrop` y `color/overlay/translucent`.
+- El blur de Figma es el doble que el de CSS: `backdrop-filter: blur(calc(var(--arq-blur-backdrop) / 2))`. El token guarda el valor de Figma.
 
 ## 2026-10-01 · Dark dentro del Shadow DOM
 
-- **Problema:** `tokens.css` vive en el documento. Su selector `[data-arq-theme="dark"]` alcanza el host de un componente o un ancestro del DOM de la página, pero no un elemento dentro de un Shadow DOM: un contenedor interno con el atributo seguía en Light.
-- **Solución:** `npm run tokens` genera también `src/styles/dark.css`, con el mismo bloque Dark. `src/styles/roles.js` lo convierte en una sola `CSSStyleSheet` y `ArqElement` la adopta en cada Shadow DOM, junto con la de roles (compartida entre instancias). No se edita a mano.
-- **Resultado:** `data-arq-theme="dark"` funciona en tres lugares: un ancestro del DOM de la página, el host del componente y un contenedor dentro del Shadow DOM. El contenido por slot hereda el modo del contenedor donde se muestra (las variables CSS siguen el árbol con los slots resueltos). Probado en la demo con `demo-dark-local` (Base): `<arq-button>` Filled y Outline por slot dentro de un contenedor interno Dark.
-- **Regla para Dark local:** un componente con Dark fijo por diseño lo aplica en un contenedor interno; el contenido por slot lo hereda. Quien arma la página no pone el atributo.
-- No hay modo Light local: dentro de un bloque Dark no se puede volver a Light (no existe `[data-arq-theme="light"]`).
+- `tokens.css` no alcanza elementos dentro de un Shadow DOM. `npm run tokens` genera también `src/styles/dark.css` (y `light.css`) y `ArqElement` las adopta en cada Shadow DOM. No se editan a mano.
+- Así `data-arq-theme` funciona en un ancestro de la página, en el host y en un contenedor interno; el contenido por slot hereda el modo del contenedor donde se muestra. Reglas de uso: DESIGN.md §2 · Modo Dark.
 
 ## 2026-10-01 · Modo Dark: Iluminar y Dark local
 
-- **Dos usos, un atributo:** Iluminar (switch del usuario: ficha, Productos y Colecciones) y Dark local (fijo por diseño, para colores claros sobre fotos o fondos oscuros). Los dos son `data-arq-theme="dark"`. Detalle en DESIGN.md §2 · Modo Dark.
-- **Dónde va el atributo en Dark local:**
-  - Componente con Dark propio (hero, compare-bar): en un contenedor interno de su Shadow DOM. El contenido por slot lo hereda y quien arma la página no pone nada.
-  - Sección de página (explora-coleccion de la ficha): en la sección, en el DOM de la página.
-- **hero:** solo el CTA va en Dark (button Outline claro); los textos siguen en `color/text/inverse`, como Figma. El CTA llega por slot (`slot="action"`, editable en Webflow) y el hero envuelve ese slot en un contenedor con `data-arq-theme="dark"`.
-- **explora-coleccion es Dark local, no Iluminar:** en las cuatro pantallas de la ficha (con y sin Iluminar) está en Dark. Iluminar en la ficha cambia navbar, hero y la foto.
+- Detalle en DESIGN.md §2 · Modo Dark. En hero, solo el CTA (slot `action`) va envuelto en Dark; los textos usan `color/text/inverse`.
+- explora-coleccion es Dark local, no Iluminar (Dark en las cuatro pantallas de la ficha).
 
 ## 2026-10-01 · Páginas en Webflow
 
-- **Todo el contenido de Arq se carga con Code Embed.** No se arma nada en el Designer de Webflow.
-- **Páginas estáticas (Home, Contacto, Comparativa):** un Code Embed con el HTML de los componentes.
-- **Ficha de producto:** template de la colección del CMS (slug propio) con un Code Embed que inserta los campos mínimos con campos dinámicos del CMS: nombre como `<h1>`, descripción corta, SKU e imagen principal. El componente busca el resto en Typesense. Desde 2026-10-02 el ítem del CMS es un grupo y el embed imprime su `PRODUCT_GROUP_ID` (ver 2026-10-02 · Base de datos, Ficha de producto por grupo).
-- **Listados (Productos y Colecciones):** salen de Typesense (2026-10-02 · Base de datos, Listados).
-- **`src/pages/`** guarda un archivo por página con el HTML exacto de su embed. Es la fuente: se edita en el repo y se pega en Webflow; no se edita el embed directo en Webflow.
-- **Límite:** cada Code Embed admite hasta 50.000 caracteres (Webflow, "Increased custom code character limit"; antes era 10.000). Es un tope por elemento y no se puede subir.
-  - Una página de Arq entra holgada: el embed lleva solo el HTML de los componentes y el texto indexable; estilos y lógica vienen de `dist/arq.js` y `dist/arq.css` (jsDelivr), y los datos de Typesense.
-  - Si una página se acerca al límite, se parte **por sección**: un Code Embed por bloque de página (hero, categorías, FAQ…), en orden. Cada bloque es un conjunto de componentes que no depende del HTML de otro embed, así que se puede partir en cualquier límite entre secciones. En `src/pages/` la página sigue siendo un archivo, con un comentario `<!-- embed N -->` en cada corte.
-  - Nunca se parte un componente entre dos embeds: el HTML de un elemento tiene que abrir y cerrar en el mismo embed.
+- Todo el contenido de Arq va en Code Embed; nada en el Designer.
+- Estáticas (Home, Contacto, Comparativa): un embed con el HTML de los componentes. Templates del CMS (ficha, colección): embed con campos dinámicos (grupo o colección, `<h1>`, textos indexables); el resto sale de Typesense.
+- `src/pages/` tiene el HTML exacto de cada embed: se edita en el repo y se pega en Webflow.
+- Límite de 50.000 caracteres por embed. Si una página se acerca, se parte por sección (comentario `<!-- embed N -->` en cada corte); nunca un componente entre dos embeds.
 
 ## 2026-10-01 · hero
 
-- **Slots:** media (`<img>` o `<video>`), eyebrow, title, description y action. La media va en el HTML del embed porque es el LCP: el navegador la descubre sin esperar al JS. Show eyebrow, Show description y Show button no son atributos: cada parte se muestra si su slot tiene contenido.
-- **Dark local del CTA:** el slot `action` va envuelto en un contenedor interno con `data-arq-theme="dark"` (DESIGN.md §2). Los textos van en `color/text/inverse`, como Figma.
-- **`<h1>` en el HTML de la página:** el título se escribe `<h1 slot="title">…</h1>` en el embed, no dentro del Shadow DOM, así el encabezado está en el HTML indexable. El componente lo estiliza con `::slotted(h1)`: hereda `role/display` y el color de un contenedor interno (`font: inherit`, sin escribir primitivas), con `!important` porque los estilos del sitio para `h1` ganan sobre `::slotted`.
-- **scrim, excepción fija:** `hero/scrim` es un estilo de relleno de Figma y el export de variables no lo trae. El degradado (negro 52 → 20 → 20 → 68 %) va copiado con sus valores en `src/components/hero/hero.css`, como los px del logo. No es un pendiente: si cambia en Figma, se copia a mano.
-- `TODO` (navbar): crear `layout/navbar-height` (56) en Figma al construir navbar; lo usan hero y compare-header Compact.
-- **`<div>`, no `<header>`:** la ficha pide `<header class="hero">`, pero en esas páginas el navbar es el banner y dos banners es un error de axe.
-- **Video y movimiento reducido:** con `prefers-reduced-motion: reduce` el componente quita el autoplay, pausa el video y vuelve al poster (`load()`); si la preferencia cambia, lo reanuda. Solo afecta a videos que vinieron con `autoplay` en el HTML.
-- **Media con `!important`:** posición y tamaño de la media slotteada van con `!important`, porque los estilos del sitio para `img` ganan sobre `::slotted`.
-- **Gap texto–CTA en Desktop:** `space/gap/xl`; en Figma es justify-between sin gap y un título largo tocaría el CTA.
-- **Fondo de reserva** `color/surface/inverse` mientras carga la media o si falta, para que el texto inverso se lea.
+- Slots: media, eyebrow, title, description y action. Cada parte se muestra si su slot tiene contenido (Show… no son atributos). La media va en el HTML: es el LCP.
+- Título `<h1 slot="title">` en el embed. Media slotteada con `!important` (los estilos del sitio para `img` ganan sobre `::slotted`).
+- **scrim:** `hero/scrim` es un estilo de relleno (no variable): el degradado va copiado en `hero.css`. Si cambia en Figma, se copia a mano.
+- `<div>`, no `<header>`: el navbar ya es el banner (dos banners es error de axe).
+- Con `prefers-reduced-motion`, un video con `autoplay` se pausa y vuelve al poster; se reanuda si cambia la preferencia.
+- Gap texto–CTA Desktop `space/gap/xl`. Fondo de reserva `color/surface/inverse`.
 
 ## 2026-10-01 · cta-block
 
-- **Slots:** title (`<h2>` en el HTML de la página, como el `<h1>` del hero), description, action (`<arq-button>`) y, en Newsletter, email (`<arq-input>`). Aplica su propio `layout/gutter` porque el fondo va a sangre.
-- **Gaps del set, no de la ficha:** título–bajada `space/gap/sm-md` y email–button `space/gap/md` (la ficha dice `sm` y `sm-md`). Falta corregir la ficha.
-- **Newsletter sin envío:** un `<form>` dentro del Shadow DOM no es dueño de un `arq-input` que llega por slot (el formulario dueño se busca en el DOM de la página). Por eso el componente valida el email con `reportValidity()` del `arq-input` al tocar el button o con Enter, y emite `arq:submit` con `{ email }`. `TODO` (formularios): envío a n8n y `form-message`, cuando se defina el webhook de la newsletter y se construya `arq-button submit`.
-- **Email:** 380 fijos en el set, sin token; `layout/measure` (400) con `TODO`.
+- Slots: title (`<h2>`), description, action y, en Newsletter, email (`<arq-input>`). Aplica su propio gutter (fondo a sangre).
+- Gaps del set: título–bajada `space/gap/sm-md`, email–button `space/gap/md`. Email hasta `layout/measure`.
+- Newsletter sin envío: un `<form>` del Shadow DOM no es dueño de un input por slot. Valida con `reportValidity()` y emite `arq:submit` con `{ email }`.
 
 ## 2026-10-01 · Encabezados en el HTML de la página
 
-- **Regla (AGENTS.md):** los encabezados (h1–h6) se escriben en el HTML de la página con slot; el componente los estiliza con `::slotted()` y nunca crea su propia etiqueta de encabezado. Así el encabezado está en el HTML del embed (indexable y con su nivel visible en el DOM de la página).
-- **Componentes:** hero (`<h1 slot="title">`), page-header (`<h1 slot="title">`), section-header y cta-block (`<h2 slot="title">`) y footer (`<h2 slot="productos-title">`, `"informacion-title"`, `"redes-title"`).
-- **Estilo compartido:** la hoja base de `ArqElement` tiene una sola regla `::slotted(h1)…::slotted(h6)` que deja el encabezado sin margen y con `font`, `letter-spacing`, `text-transform` y `color` heredados (`inherit`). Cada componente pone la clase `role/*` y el color en el contenedor del slot: no se escriben primitivas. Va con `!important` porque los estilos del sitio (Webflow) para h1–h6 ganan sobre `::slotted`.
-- **footer:** cada `<nav>` toma su nombre (`aria-label`) del texto de su `<h2>`: un `aria-labelledby` desde el Shadow DOM no puede apuntar a un id del DOM de la página.
+- Regla en AGENTS.md. La hoja base tiene una sola regla `::slotted(h1…h6)` (sin margen, `font`, `letter-spacing`, `text-transform` y `color` heredados, con `!important` contra los estilos de Webflow); cada componente pone la clase `role/*` y el color en el contenedor del slot.
+- footer: cada `<nav>` toma su `aria-label` del texto de su `<h2>` (`aria-labelledby` no cruza el Shadow DOM).
 
 ## 2026-10-01 · Datos sin Typesense
 
-- **Forma propia por componente:** cada componente que recibe datos define su propia forma: un objeto con nombres en inglés y camelCase (por ejemplo `{ name, sku, finishes: [{ slug, name }] }`), documentado en su README. No usa los nombres de Typesense ni los del CMS.
-- **Fixtures:** `demo/fixtures/` usa esa forma, no la de Typesense ni la del CMS. Así la demo prueba el componente tal como lo va a recibir.
-- **`src/data/` traduce:** es el único lugar que lee Typesense (o el CMS) y convierte a la forma de cada componente. Cuando exista `docs/typesense-schema.md`, solo cambia `src/data/`; los componentes y las fixtures no.
-- `TODO` (schema): los campos de las 4 imágenes de product-card (estudio y contexto, luz apagada y encendida) y los códigos de acabado (N, V, R, B, BN, P). El resto del esquema está en `docs/typesense-schema.md` desde 2026-10-02.
-- **Listados:** salen de Typesense (2026-10-02 · Base de datos, Listados).
+- Cada componente que recibe datos define su forma (inglés, camelCase) en su README; las fixtures usan esa forma. `src/data/` es el único que traduce desde Typesense o el CMS.
 
 ## 2026-10-01 · URLs
 
-- Propuesta acordada en `docs/urls.md`. Home en `/arq`; templates del CMS en singular (`/arq/producto/{slug}`, `/arq/coleccion/{slug}`) para no chocar con los listados en plural; `/arq/comparativa`, `/arq/glosario` y `/arq/buscar` como páginas estáticas.
-- Las colecciones (KANU…) son una colección del CMS, con su template.
-- Productos por categoría: PENDIENTE (parámetro o subpágina). Los listados ya están definidos (2026-10-02).
+- `docs/urls.md`: Home `/arq`; templates en singular (`/arq/producto/{slug}`, `/arq/coleccion/{slug}`); `/arq/comparativa`, `/arq/glosario` y `/arq/buscar` estáticas.
 
 ## 2026-10-01 · carousel-controls
 
-- **`for="<id>"`:** el componente maneja el contenedor con scroll de la página: `scrollBy` de un ancho visible (el snap alinea) y Position calculada con el `scrollLeft`. Sin `for`, Position es un atributo fijo y las flechas emiten `arq:prev` / `arq:next`.
-- **Foco:** si la flecha con foco se deshabilita al llegar a una punta, el foco pasa a la otra.
-- **`aria-controls`** con `ariaControlsElements`: un id del DOM de la página no se puede referenciar desde el Shadow DOM.
-- **El carrusel no es parte del componente.** `TODO` (páginas): el contenedor (snap, peek) se resuelve al armar Colección y Home.
+- Con `for="<id>"` maneja el contenedor con scroll (`scrollBy` de un ancho visible, Position por `scrollLeft`) y observa el tamaño de cada hijo (una foto que carga agranda el contenido sin avisar). Sin `for`, Position es fija y emite `arq:prev` / `arq:next`.
+- Si la flecha con foco se deshabilita, el foco pasa a la otra. `aria-controls` con `ariaControlsElements`.
 
 ## 2026-10-01 · Tarjetas con link estirado
 
-- **Patrón común** de las tarjetas que son un link: category-card ahora (line-card lo dejó: 2026-10-05 · line-card: el link es el botón); family-card y product-card lo van a usar. CSS compartido en `src/base/card-link.css` (cada tarjeta lo suma a su hoja).
-- El componente recibe `href`. En el Shadow DOM, el `<a>` envuelve **solo el slot del nombre**, así el nombre accesible es corto.
-- El `::after` del `<a>` cubre toda la tarjeta (`position: absolute; inset: 0`): toda la tarjeta es clickeable.
-- Hover y foco se aplican a la tarjeta con `:has(.card-link:hover)` y `:has(.card-link:focus-visible)`. El anillo de foco rodea la tarjeta, como en los sets. El hover (borde `color/border/hover` en la imagen, outline hacia adentro) va solo con `hover: hover`.
-- Textos de acción como "Ver colección" se ven como button Underline pero son decorativos (`aria-hidden`): nunca dos links al mismo destino.
-- Elementos interactivos dentro de la tarjeta (el checkbox "Comparar" de product-card) van por encima del `::after`: `position: relative` y `z-index: var(--card-above)`.
+- category-card (y family-card, product-card) usan `src/base/card-link.css`: el `<a>` envuelve solo el slot del nombre y su `::after` cubre la tarjeta. Hover y foco con `:has(.card-link:hover)` / `:has(.card-link:focus-visible)`; hover solo con `hover: hover`.
+- Textos tipo "Ver colección" dentro de una tarjeta-link son decorativos (`aria-hidden`). Lo interactivo de adentro (checkbox Comparar) va por encima del `::after` (`z-index: var(--card-above)`).
+- line-card no usa este patrón: ver 2026-10-05 · line-card: el link es el botón.
 
 ## 2026-10-01 · Proporciones de category-card, line-card y feature-block
 
-- **Mandan los ratios del sistema** (DESIGN.md §5), no las medidas de los sets: category-card `ratio/portrait-soft` (4:5) en Desktop y Mobile; line-card `ratio/landscape` (5:4) en Desktop y `ratio/square` (1:1) en Mobile. Se corrigió en Figma el alto de la imagen de las 12 variantes (y el `focus-ring` de las Focus) y se sumó line-card Mobile a `ratio/square` en la tabla.
-- **Gaps de los sets**, no de las fichas (las fichas de line-card y feature-block dicen `space/gap/sm`). Sin borde en reposo en la imagen de category-card (la ficha dice `color/border/subtle`).
-- **feature-block:** imagen principal 4:5 (coincide con el set: 640 × 800). Texto desfasado como el set: `space/padding/xl-2xl` arriba en Image left y `space/padding/6xl` en Image right (la ficha dice que es un espejo). La secundaria tiene alto fijo en el set y no está en la tabla de ratios: `ratio/wide` con `TODO`.
+- Mandan los ratios de DESIGN.md §5, no las medidas de los sets (ya corregidos en Figma). Gaps de los sets, no de las fichas. category-card sin borde en reposo.
+- feature-block: imagen principal 4:5; texto desfasado como el set (`space/padding/xl-2xl` arriba en Image left, `space/padding/6xl` en Image right). Secundaria en `ratio/wide`.
 
 ## 2026-10-02 · Base de datos (estructura v5)
 
-- **Fuente:** `docs/estructura-base-de-datos.md` (versión 5, convertida del .docx). Los datos son tentativos y la base se está armando en Typesense. Campos y tipos: `docs/typesense-schema.md` (propuesta hasta que se confirme con quien arma la base).
-- **Un documento por SKU.** Los SKU con el mismo `PRODUCT_GROUP_ID` forman un producto (una card y una ficha); los grupos con el mismo `COLLECTION_ID`, una colección.
-- **Nombres de campo:** los define el índice de Typesense, no una regla (`Color de carcasa` → `color_carcasa`; ver `docs/typesense-schema.md`, Estado del índice). `variant_attributes` trae los nombres de columna como texto; `src/data/attributes.js` los traduce a campos. Las etiquetas visibles, las secciones del acordeón, los filtros, las filas de la comparativa y las columnas del glosario viven en un único archivo de `src/data/`.
-- De Figma se usan solo las páginas Componentes y Final: el documento cita *baja / media*, que no se usa.
+- Fuente: `docs/estructura-base-de-datos.md` (v5, tentativa). Campos: `docs/typesense-schema.md`.
+- Un documento por SKU. Mismo `PRODUCT_GROUP_ID` = un producto (card y ficha); mismo `COLLECTION_ID` = una colección.
+- Nombres de campo: los define el índice. `src/data/attributes.js` traduce `variant_attributes` y guarda etiquetas, secciones del acordeón, filtros, filas de la comparativa y columnas del glosario.
 
 ### Ficha de producto por grupo
 
-- **CMS Productos: un ítem por grupo**, cargado a mano en Webflow por ahora. Slug = `PRODUCT_GROUP_ID`. Campos: nombre (`PRODUCT_NAME`), SKU predeterminado, slug, meta title, meta description, imagen principal (`IMG_MAIN` del SKU predeterminado), descripción corta y textos editoriales (ver Textos editoriales).
-- **El template imprime el grupo:** `<arq-ficha-producto data-group="kanu-jardin">` con el `<h1>` y los textos por slot. El componente pide a `src/data/` los SKU del grupo.
-- **Variante en la URL:** `?sku=<SKU>` (con `encodeURIComponent`, porque el SKU puede tener espacios o paréntesis). La ficha abre con ese SKU si pertenece al grupo; si no viene o no es del grupo, con el predeterminado (`IS_GROUP_DEFAULT`). Al cambiar la variante se actualiza el parámetro con `history.replaceState` (sin recargar). El canonical es siempre la URL sin parámetro.
-- **Qué cambia con la variante** (Final, Ficha `1218:10486`): galería superior, sku, descripción técnica, acordeón de características, descargas y ficha técnica. No cambian: breadcrumb, título, galería de ambiente, Descripción, Inspiración, Otras familias, Explora la colección ni el glosario (lista todos los SKU del grupo).
+- CMS Productos: un ítem por grupo, slug = `PRODUCT_GROUP_ID`. Campos: nombre, SKU predeterminado, meta title / description, imagen principal, descripción corta y textos editoriales.
+- `?sku=<SKU>` (con `encodeURIComponent`) elige la variante si es del grupo; si no, el predeterminado (`IS_GROUP_DEFAULT`). Se actualiza con `history.replaceState`. Canonical sin parámetro.
+- Cambian con la variante: galería superior, sku, descripción técnica, acordeón, descargas y ficha técnica. El resto de la ficha (y el glosario, que lista todos los SKU) no.
 
 ### Selectores de variante
 
-- Un selector por cada campo de `VARIANT_ATTRIBUTES`, en ese orden. Las opciones son los valores únicos de los SKU del grupo.
-- Solo se ofrecen combinaciones que existen: una opción que no forma un SKU con lo ya elegido va en **Disabled** (option-tile, select-option y swatch; swatch suma el estado Disabled en Figma).
-- **Atributo → control:** el acabado (color) usa option-group Type=Swatches; el resto, Type=Tiles. Cada atributo declara su control en el archivo de etiquetas de `src/data/`. Type=Select queda sin uso por ahora.
-- La misma lógica de combinaciones la usan la ficha, los filtros del glosario y la comparativa: un solo módulo en `src/data/`.
+- Un selector por campo de `VARIANT_ATTRIBUTES`, en ese orden; opciones = valores únicos del grupo, números de menor a mayor y el resto alfabético (`variantValues`).
+- Una opción que no forma un SKU con lo elegido va Disabled. Acabado → option-group Swatches; el resto → Tiles (cada atributo declara su control en `attributes.js`).
+- Un solo módulo de combinaciones (`src/data/variants.js`) para ficha, glosario y comparativa.
 
-### Listados (cierra el PENDIENTE de 2026-10-01)
+### Listados
 
-- **Productos, Colecciones y ficha de colección salen de Typesense**, sin Collection List de Webflow. El embed de la página tiene el componente de la grilla; las cards las dibuja el componente con los datos que le pasa `src/data/`.
-- **Una sola consulta:** el catálogo tiene unos 50 SKU, así que `src/data/` trae todos los documentos de una vez (hasta 250 por página) y agrupa, filtra y cuenta en el navegador. Si el catálogo pasa de 250 SKU, se revisa (`group_by` de Typesense o paginado).
-- **Una card por grupo** en Productos y en la ficha de colección; **una por colección** en Colecciones.
-- **SKU de la card:** el predeterminado. Con filtros técnicos, si el predeterminado no cumple, el primer SKU del grupo que cumple según el orden de la hoja (`sheet_order`); la card enlaza a la ficha con `?sku=`. Sin filtros, siempre el predeterminado.
-- **Conteo** (catalog-toolbar): grupos o colecciones que cumplen el filtro, no SKU.
-- `TODO` (orden de las cards): el de la hoja (primera fila de cada grupo) hasta que se defina otro.
-- **SEO:** las cards no están en el HTML inicial. Las fichas y las colecciones se indexan por sus páginas del CMS (sitemap).
+- Productos, Colecciones y Colección salen de Typesense, sin Collection List. Una consulta trae todo (hasta 250 SKU; si se pasa, `group_by` o paginado) y `src/data/` agrupa, filtra y cuenta.
+- Una card por grupo (por colección en Colecciones). SKU de la card: el predeterminado; con filtros, si no cumple, el primero que cumple por `sheet_order`, con `?sku=`.
+- Conteo: grupos o colecciones, no SKU. Orden: el de la hoja.
+- Las cards no están en el HTML inicial: fichas y colecciones se indexan por sus páginas del CMS.
 
 ### Cards
 
-- **Colecciones con el mismo criterio que Productos:** cuatro imágenes (hover e Iluminar, DESIGN.md §8) y filtros técnicos (una colección aparece si alguno de sus SKU cumple). Sin Comparar. `TODO` (base): de dónde salen las cuatro imágenes de una colección.
-- **family-card** (Default y Large) usa la misma imagen que la card de producto del grupo: estudio, luz apagada (`TODO` hasta definir la columna). "Explora la colección" es Dark local, no Iluminar: no pasa a la versión encendida.
-- **Resumen de la card** (meta): valores de `VARIANT_ATTRIBUTES` (por ejemplo «35 cm – 50 cm») más una o dos características fijas. `TODO`: cuáles.
+- Colecciones: mismo criterio que Productos (cuatro imágenes, filtros técnicos: aparece si algún SKU cumple), sin Comparar.
+- family-card: misma imagen que la product-card del grupo (estudio, luz apagada); en Explora la colección no pasa a la encendida.
+- Meta: rango de cada atributo de variante (no acabado), p. ej. «35 cm – 50 cm», más una o dos características fijas.
 
 ### Navegación
 
-- **Un solo árbol** en `src/data/` para mega-menu, catalog-nav, catalog-nav-mobile y el menú mobile. Cada opción es un filtro sobre `environment`, `application` y `product_type`. Las opciones sin productos se ocultan.
-- **Lámparas:** categoría propia (pestaña "Lámparas y artefactos" del mega-menu, sección Lámparas del lateral, `product_type` = Lámpara) y además aparecen dentro de Interior y Exterior (opción "Lámparas" = Lámpara + ese entorno), como en Final (`1237:13492`). Por eso `environment` admite una lista. `TODO`: confirmar si Artefactos sigue la misma regla (en Final también está dentro de Interior y Exterior).
-- **Nombres:** la aplicación se llama **Colgante** (no Suspensión ni Colgantes). MR16 PRO y AR111 PRO son productos distintos.
-- **catalog-nav-mobile:** la sección actual abierta, con su opción marcada; las demás visibles y cerradas, como en Figma (`1207:3314`). El documento dice "solo la sección actual": se descarta.
-- `TODO` (mega-menu): pestañas, columnas y orden se pasan del Final (`1237:13492`) al árbol al construir mega-menu. URLs de categoría: siguen PENDIENTES (`docs/urls.md`).
+- Un solo árbol en `src/data/` (`getNavigation`) para mega-menu, catalog-nav y menú mobile; cada opción filtra `environment`, `application` y `product_type`. Opciones sin productos se ocultan.
+- Lámparas: categoría propia y también dentro de Interior y Exterior (`environment` admite lista).
+- Nombres: **Colgante** (no Suspensión). MR16 PRO y AR111 PRO son productos distintos.
+- catalog-nav-mobile: la sección actual abierta con su opción marcada; las demás visibles y cerradas.
 
 ### Comparativa
 
-- **Cada columna es un grupo.** Selects en orden: colección (Kanu) → producto de esa colección (Jardín, Pared) → un select por campo de `VARIANT_ATTRIBUTES`, con la misma disponibilidad que la ficha. Ejemplo: Kanu · Jardín · Negro · 50 cm contra Kanu · Pared · sus variantes.
-- Al cambiar un select se actualizan la imagen (`img_main` del SKU elegido) y todas las filas de la columna. Hasta 3 columnas.
-- El set de compare-product (Familia + Variante) **se rediseña en Figma**: pendiente de diseño. `TODO`: cómo se nombra el producto en su select (aplicación o nombre completo) y cómo llegan los productos a `/arq/comparativa`.
+- Cada columna es un grupo, hasta 3. Selects: colección → producto → uno por atributo de variante (misma disponibilidad que la ficha). Un cambio actualiza la imagen y todas las filas.
+- compare-bar lleva a `/arq/comparativa?sku=SKU1,SKU2,SKU3`; la selección se guarda en `localStorage` (`arq:compare`).
+- `<arq-compare-table>` (solo código) arma cabecera, grupos y filas con un único scroll.
 
 ### Galerías
 
-- Galería superior, galería de ambiente, Inspiración y galerías de colección muestran solo las imágenes que existen: los campos vacíos y las URLs repetidas se omiten.
-- Si hay más imágenes de las que entran, la galería se desliza (scroll-snap, como el carrusel de 2026-10-01 · carousel-controls). En product-gallery se desliza la fila de miniaturas (5 en Desktop, 4 en Mobile).
-- `TODO` (diseño): cantidad de imágenes de cada galería.
-- **product-gallery:** Iluminar cambia la imagen grande y también las miniaturas que tienen versión encendida. Las miniaturas se recorren con Tab. Su ancho es `layout/gallery-thumb` (105 Desktop · 76 Mobile, token nuevo) y la separación al borde de la imagen, `space/padding/lg` (en Figma 20, sin token).
-- **catalog-nav:** un solo componente para Desktop y Mobile. catalog-nav-mobile y catalog-nav-trigger viven dentro de `<arq-catalog-nav>` (como toggle-switch dentro de toggle): desde 1024 px es el sidebar; hasta 1023 px, un encabezado con la selección actual que abre los mismos grupos. Así cada link está una sola vez en el HTML (ficha `doc/catalog-nav-mobile`: "reutilizá el mismo HTML"). Se siguen los sets donde la ficha difiere: panel mobile en `color/surface/default` y gap entre ítems `space/gap/sm-md`.
-- **filter-panel:** con el panel abierto el listado no cambia; solo se actualiza el número de "Ver N productos" (la página lo calcula con `arq:filters`). "Ver N" aplica (`arq:apply`) y cierra. La X, el scrim o Esc descartan los cambios y vuelven a lo marcado al abrir. Summary y chips se arman solos con lo marcado. Es un `<dialog>` modal nativo. Ancho Desktop: `layout/filter-panel` (560, token nuevo).
-- **catalog-toolbar · Iluminar:** en Productos y Colecciones el toggle pone `data-arq-theme="dark"` en `<html>` y guarda la preferencia en `localStorage` (`arq:theme`): al volver a Productos o Colecciones arranca como se dejó (ficha `doc/catalog-toolbar`). La ficha de producto no usa esta preferencia. Filtrar se conecta al panel con `for` y muestra solo la cantidad de filtros aplicados.
-- **product-card:** Size=Large pasa sola al aspecto Small hasta 767 px (grilla mobile, ficha `doc/product-card`); `size="small"` la deja Small siempre. El cambio de imagen en hover aplica también a Small (cierra el pendiente de DESIGN.md §12). Las cuatro imágenes van en atributos (`image`, `image-hover`, `image-lit`, `image-hover-lit`) hasta definir las columnas. Se sigue al set: acabados Default (20) en Large y sin borde en la imagen.
-- **family-card:** mandan los ratios del sistema (DESIGN.md §5): `ratio/square` en Default y `ratio/portrait` en Large. Se corrigió el alto de la imagen en las 6 variantes del set (Default 200 × 200, Large 328 × 469) y su descripción (también se quitó "nombre subrayado" en Hover, que el set no tiene). Toma el ancho de su columna; el ancho en el carrusel lo define la Ficha.
-- **download-modal · download-item:** el modal usa el ancho de `layout/filter-panel` (560; el set se ajustó de 581 y el token ahora describe los dos paneles). En Mobile va abajo, a `layout/gutter` de los bordes y ocupando el ancho. En download-item Default el Hover subraya el texto, como dice la descripción (la variante del set no cambiaba nada y se corrigió). Sin `href` la opción es un botón que emite `arq:download` (ficha técnica generada).
-- **Glosario (variants-table):** es un `<table>` real; variants-table-row vive adentro (es la fila), como toggle-switch dentro de toggle. Las columnas miden lo que su contenido (sin anchos fijos); la miniatura usa `layout/table-thumb` (56, token nuevo). Filtros con un select por atributo de variante y las opciones sin filas deshabilitadas (`filterOptions` y `filterVariants` en `src/data/variants.js`).
-- **select:** las opciones las arma el componente con los datos (`options`): así el campo y la lista están en el mismo Shadow DOM y funciona el patrón de select de un valor (combobox + listbox con `aria-activedescendant`; el foco queda en el campo). select-option suma `active` (State=Focus de la opción resaltada). Se sigue al set: Hover del Field en `color/surface/faint` y valor del Filter en `role/body-medium`.
-- **Comparativa:** "Comparar" de compare-bar lleva a `/arq/comparativa?sku=SKU1,SKU2,SKU3`. La selección (hasta 3) se guarda en `localStorage` (`arq:compare`). Tokens nuevos de compare-slot: `layout/compare-thumb` (48), `layout/compare-thumb-sm` (28) y `layout/compare-slot` (400). La tabla de la comparativa es un componente contenedor solo de código, `<arq-compare-table>`, que arma la cabecera, los grupos (compare-group) y las filas (compare-row) con los datos y tiene un único scroll (como variants-table).
-- **Iluminar en componentes:** `src/base/theme.js` detecta si un componente está dentro de un bloque con `data-arq-theme="dark"` y le avisa cuando cambia (un solo MutationObserver en el documento). Lo usan product-gallery y, después, product-card. No ve cambios dentro de un Shadow DOM: el Dark local es fijo.
+- Solo las imágenes que existen (sin vacíos ni repetidas). Si no entran, se desliza (scroll-snap). En product-gallery se desliza la fila de miniaturas (5 Desktop, 4 Mobile), que se recorren con Tab; Iluminar cambia la grande y las miniaturas con versión encendida.
+
+### Componentes del catálogo
+
+- **catalog-nav:** un solo componente; catalog-nav-mobile y catalog-nav-trigger viven adentro. Sidebar desde 1024; hasta 1023, encabezado con la selección que abre los mismos grupos (cada link una sola vez en el HTML). Panel mobile `color/surface/default`, gap `space/gap/sm-md`.
+- **filter-panel:** `<dialog>` modal. Con el panel abierto el listado no cambia; solo "Ver N productos" (la página lo calcula con `arq:filters`). "Ver N" emite `arq:apply` y cierra; X, scrim o Esc descartan. Summary y chips se arman solos.
+- **catalog-toolbar:** Iluminar pone `data-arq-theme="dark"` en `<html>` y lo guarda en `localStorage` (`arq:theme`) para Productos y Colecciones (la ficha no lo usa). Filtrar se conecta al panel con `for`.
+- **product-card:** Large pasa sola a Small hasta 767 px; `size="small"` fija Small. Imágenes en `image`, `image-hover`, `image-lit`, `image-hover-lit`. Acabados Default (20) en Large, sin borde en la imagen.
+- **family-card:** `ratio/square` (Default) y `ratio/portrait` (Large); toma el ancho de su columna.
+- **download-modal · download-item:** modal de ancho `layout/filter-panel`; en Mobile abajo, a `layout/gutter` de los bordes. Hover de Default subraya el texto. Sin `href` emite `arq:download`.
+- **glosario (variants-table):** `<table>` real con variants-table-row adentro; columnas a su contenido, miniatura `layout/table-thumb`. Filtros con un select por atributo y opciones sin filas deshabilitadas (`filterOptions`, `filterVariants`).
+- **select:** arma sus opciones con `options` (combobox + listbox en el mismo Shadow DOM, `aria-activedescendant`, el foco queda en el campo). select-option suma `active`. Hover del Field `color/surface/faint`; valor del Filter `role/body-medium`.
+- **accordion-item:** contiene una spec-list por bloque de especificaciones; las secciones salen de `attributes.js`.
+- **Iluminar en componentes:** `src/base/theme.js` avisa a un componente cuando cambia el `data-arq-theme` de un ancestro (un MutationObserver en el documento). No ve cambios dentro de un Shadow DOM: quien los hace llama a `refreshTheme()`.
 
 ### Textos editoriales
 
-- **Ficha y colección:** `PRODUCT_STORY_TEXT`, `PRODUCT_INSPIRATION_TEXT`, `COLLECTION_INTRO_TEXT` y `COLLECTION_DESCRIPTION_TEXT` van también en el CMS, como texto plano. El template los imprime en el embed y llegan al componente por slot: quedan en el HTML (indexables). No van en el código.
-- **Home y Contacto:** los textos van en su embed de `src/pages/`.
-- La hoja es la fuente; el CMS es una copia cargada a mano. Si no coinciden, manda la hoja.
-- **Markdown de STORY** (`##` título, `-` características): el componente lo lee del texto del slot y arma los nodos con `createElement` y `textContent`, nunca con `innerHTML`. Una línea que no es `##` ni `-` va como párrafo.
-- `TODO` (Webflow): verificar si un campo Rich Text se puede insertar en un Code Embed; si se puede, se evalúa usarlo en lugar del Markdown.
+- `PRODUCT_STORY_TEXT`, `PRODUCT_INSPIRATION_TEXT`, `COLLECTION_INTRO_TEXT` y `COLLECTION_DESCRIPTION_TEXT` van también en el CMS (texto plano) y llegan por slot (indexables). La hoja manda si no coinciden. Home y Contacto: en su embed.
+- Markdown de STORY (`##` título, `-` lista, el resto párrafo): se arma con `createElement` / `textContent`, nunca `innerHTML`.
 
 ### Ficha técnica en PDF
 
-- **Descargable e imprimible.** Se genera en el navegador al hacer clic en "Generar ficha técnica" o en la descarga "Ficha técnica", con los datos del SKU elegido.
-- La librería de PDF se carga desde jsDelivr, con versión fija, **solo al primer clic**: no entra en `dist/arq.js`. Es la única excepción a "solo `dist/arq.js`" y se documenta en el README del componente. Lo mismo para "Descargar comparación".
-- `TODO` (diseño): el diseño del PDF no existe en Figma. `TODO` (código): elegir la librería al construirlo (tiene que poder incrustar Albert Sans).
+- Se genera en el navegador con los datos del SKU elegido. La librería se carga de jsDelivr con versión fija **al primer clic** (no entra en `dist/arq.js`): única excepción, documentada en el README. Igual para "Descargar comparación".
 
 ### Sincronización Sheets → Typesense
 
-- Por ahora no hay acceso a n8n. Mientras se arma la base, la carga la hace quien arma Typesense.
-- **Propuesta para después:** Apps Script dentro de la hoja, con un menú "Publicar en Typesense", sin línea de comandos. La admin key va en las propiedades del script (nunca en el repo) y el código se guarda en el repo. Corre las validaciones del documento (SKU único, un predeterminado por grupo y colección, atributos que existen, combinaciones no ambiguas) y no publica si alguna falla. `TODO`: se define cuando la base esté armada.
-- El CMS de Webflow se carga a mano.
+- Hoy carga la base quien arma Typesense (sin acceso a n8n). Propuesta: Apps Script en la hoja con menú "Publicar en Typesense", admin key en las propiedades del script, código en el repo, validaciones antes de publicar. El CMS se carga a mano.
 
 ### Acabados
 
-- Sin definir. El swatch muestra el neutro con el nombre (DESIGN.md §8) hasta que haya imágenes y la tabla de códigos (N, V, R, B, BN, P).
-
-## 2026-10-05 · Ficha 60/40, scroll de la galería de ambiente y datos mixtos
-
-- **Hero de la ficha:** galería y configurador reparten el ancho 60/40 (`minmax(0, 3fr) minmax(layout/measure, 2fr)`), separados `space/gap/5xl`. Antes el configurador medía `layout/measure` fijo y la galería tomaba el resto (≈ 70 % a 1440 y más en pantallas anchas): la foto quedaba muy grande. Desde 1023 px sigue apilado. En Final (`1218:10539` y, con Iluminar, `1218:11785`) las columnas pasaron de 770 / 440 a 734 / 490 (60/40 de 1320 menos el gap), con el gap enlazado a `space/gap/5xl` (antes 110 sin token). La imagen de product-gallery Desktop (`920:2476`) quedó con la proporción 5:4 fija, para que siga el ancho de la instancia.
-- **Galería de ambiente:** snap `x proximity` (con `mandatory` la fila se re-alineaba en medio de un gesto del trackpad y cada vez que cargaba una foto, y peleaba con el scroll vertical), `overscroll-behavior-x: contain` (al llegar al final no pasa al historial del navegador) y `aspect-ratio: auto 4 / 5` en las fotos: ocupan lugar antes de cargar y después toman su proporción real.
-- **Datos mixtos:** `VITE_DATA_SOURCE=mixto` (solo `npm run dev`) usa lo que trae Typesense y completa lo vacío con `demo/fixtures/completar.js`: primero con el catálogo de ejemplo (mismo SKU o mismo grupo), y si no, con datos inventados. Inventado: grupo y nombre (familia + subfamilia, o el primer tramo del SKU si falta la familia), colección (la familia), color (código del SKU: N negro, B blanco, V verde, R terracota, P plata, BN blanco y negro, y los nombres de DAO), altura (tramo en mm del SKU), atributos de variante (los que cambian entre SKU), textos, especificaciones (las de Kanu Jardín) e imágenes de ejemplo. Lo que el índice ya trae (potencia, tamaño, CRI, UGR, IES, ambiente, subfamilia, `variant_attributes`, predeterminado) no se toca. El build sigue usando solo Typesense.
-- **Orden de las opciones:** el configurador ordena los valores de cada atributo con números de menor a mayor y el resto alfabético (`variantValues`, `src/data/variants.js`): Typesense devuelve los SKU en un orden que no sirve («90 cm» antes que «50 cm»).
+- Sin imágenes: el swatch muestra el neutro con el nombre (DESIGN.md §8).
 
 ## 2026-10-02 · Datos de ejemplo mientras se completa la base
 
-- **Para qué:** armar y diseñar todas las páginas antes de que la base de Typesense esté completa (hoy no trae grupos, nombres, textos ni imágenes: `docs/typesense-schema.md`, Estado del índice).
-- **Dos fuentes, una forma:** `src/data/source.js` carga el catálogo desde Typesense o desde el ejemplo (`demo/fixtures/catalogo.json`). Las dos dan la misma forma (`src/data/catalog.js`), así que páginas y componentes no saben cuál se usa.
-- **Cómo se elige:** `VITE_DATA_SOURCE=mock` en `.env`, solo con `npm run dev` (desde 2026-10-05 también `mixto`, ver 2026-10-05 · Ficha 60/40, scroll de la galería de ambiente y datos mixtos). El build (`dist/arq.js`) siempre usa Typesense y no incluye el ejemplo.
-- **Cuando la base esté completa:** se ajusta solo `src/data/typesense-adapter.js` (nombres de campo de identificación, textos e imágenes) y se cambia `.env` a `typesense`. Mientras falte `product_group_id`, cada SKU es su propio grupo.
-- **Catálogo en memoria:** se carga una vez por página y `catalog.js` resuelve listados, filtros, ficha, comparativa, búsqueda y navegación (2026-10-02 · Listados: una sola consulta).
-- **Campos técnicos:** etiquetas, sección del acordeón y de la comparativa, y filtros en `src/data/attributes.js`. `TODO` (diseño): confirmar las secciones y el reparto de los campos (propuesta a partir de Ficha y Comparativa de Final).
+- `src/data/source.js` carga el catálogo desde Typesense o desde `demo/fixtures/catalogo.json`, con la misma forma (`src/data/catalog.js`). Se elige con `VITE_DATA_SOURCE` (`mock` o `mixto`) solo en `npm run dev`; el build usa siempre Typesense y no incluye el ejemplo.
+- Cuando la base esté completa: se ajusta solo `src/data/typesense-adapter.js` y `.env` pasa a `typesense`. Mientras falte `product_group_id`, cada SKU es su propio grupo.
+- El catálogo se carga una vez por página y `catalog.js` resuelve listados, filtros, ficha, comparativa, búsqueda y navegación.
 
 ## 2026-10-02 · navbar, mega-menu y búsqueda
 
-- **Datos:** el navbar es global (está en todas las páginas) y pide sus datos a `src/data/catalog.js`: la navegación (`getNavigation`) al abrir Productos y la búsqueda (`searchProducts`) al escribir. Es la misma excepción que `<arq-ficha-producto>`: un componente contenedor consulta por `src/data/`; los componentes que muestra (mega-menu, mega-link, search-*) reciben datos.
-- **Árbol de navegación:** secciones Exterior e Interior (aplicaciones + Artefactos y Lámparas de ese entorno), Lámparas y Artefactos (un link por producto) y Colecciones (con sus aplicaciones como bajada). Las opciones sin productos no aparecen. Mismo árbol para el mega-menu y el submenú mobile (Interior, Exterior, Lámparas, Artefactos, como el set).
-- **Mode no es prop:** Default · Search · Menu · Products es el estado de la barra; se refleja en el atributo `mode`.
-- **Menú mobile y búsqueda mobile:** diálogos modales nativos a pantalla completa (foco adentro, Esc). Así la página no tiene que bloquear el scroll de `body`, que no se puede estilar (AGENTS.md).
-- **Transparent:** pasa a Default al desplazar y con un menú o la búsqueda abiertos. Las variantes Transparent de Menu, Search y Products del set están desactualizadas: `TODO` (diseño).
-- **Posición:** sticky en Default y fixed en Transparent (encima del hero). `TODO` (diseño): confirmar.
-- **Resultado activo de la búsqueda:** `aria-activedescendant` no cruza el Shadow DOM; el campo anuncia el activo con `aria-live`.
-- **Tokens nuevos:** `layout/mega-menu-image` (438), `layout/search-field` (360) y `layout/search-thumb` (48). En Figma se enlazaron a la imagen del mega-menu, a search-field (y al ancho de search-dropdown, que ahora mide lo mismo que el campo, como dice su descripción) y a la miniatura de search-result.
+- El navbar es un contenedor que consulta `src/data/` (`getNavigation` al abrir Productos, `searchProducts` al escribir); mega-menu, mega-link y search-* reciben datos.
+- Árbol: Exterior e Interior (aplicaciones + Artefactos y Lámparas de ese entorno), Lámparas y Artefactos (un link por producto), Colecciones (con sus aplicaciones como bajada).
+- Mode (Default · Search · Menu · Products) es estado, reflejado en `mode`.
+- Menú y búsqueda mobile: `<dialog>` modales a pantalla completa (así no hay que bloquear el scroll de `body`).
+- Transparent pasa a Default con un menú o la búsqueda abiertos y al dejar atrás el hero (2026-10-05 · Contacto: ajustes). Sticky en Default, fixed en Transparent.
+- `aria-activedescendant` no cruza el Shadow DOM: el campo anuncia el resultado activo con `aria-live`.
 
 ## 2026-10-02 · Layout de página
 
-- **Componentes de layout, no CSS global:** el layout de las páginas (padding de sección, grillas, carrusel, mosaico, buttons solo Mobile) va en componentes con Shadow DOM: `<arq-section>`, `<arq-grid>` y `<arq-project-mosaic>`. No hay clases de página en `dist/arq.css`.
-- **Por qué:** AGENTS.md prohíbe estilar selectores globales; con componentes el CSS queda encapsulado, no choca con Webflow y se reusa en Colección, Ficha y Contacto. Alternativas descartadas: clases `arq-*` en `arq.css` (el CSS sale del Shadow DOM) y un componente por página (no se reusa).
-- **arq-section:** `layout/gutter` a los lados y `space/section/xl` abajo; `padding-top` para el primer bloque después del hero. Slots `header`, contenido, `action` (siempre) y `mobile-action` (solo hasta 767 px, para el link de un section-header Type=Link). `layout="split"` para el FAQ: encabezado y acción a la izquierda en Desktop.
-- **Gap de sección:** `space/gap/2xl` en Desktop y `space/gap/xl` en Mobile, como el Home de Figma (dos tokens distintos según el breakpoint).
-- **arq-grid:** `columns` en Desktop y `mobile="stack | two-columns | carousel"`. Sin `columns`, la grilla de catálogo de DESIGN.md §2. El carrusel es el propio elemento con scroll (sirve para `carousel-controls for`).
-- **project-mosaic:** grid de 4 columnas y 2 filas en Desktop (así salen las medidas del set: 648 · 312 · 312); en Mobile una a todo el ancho y dos debajo. Ratios más cercanos con `TODO` (ver README).
-- `TODO` (diseño): faltan el token del ancho de tarjeta del carrusel mobile (280) y ratios para las fotos del mosaico; el split del FAQ usa `space/section/md` dentro de un bloque.
+- El layout va en componentes con Shadow DOM (`<arq-section>`, `<arq-grid>`, `<arq-project-mosaic>`), no en clases globales: AGENTS.md prohíbe estilar selectores globales.
+- **arq-section:** gutter a los lados, `space/section/xl` abajo, `padding-top` para el primer bloque tras el hero. Slots `header`, contenido, `action` y `mobile-action` (solo hasta 767). `layout="split"` para el FAQ. Gap `space/gap/2xl` (Desktop) y `space/gap/xl` (Mobile).
+- **arq-grid:** `columns` y `mobile="stack | two-columns | carousel"`; sin `columns`, la grilla de catálogo de DESIGN.md §2. Filas `space/gap/2xl` y columnas `space/gap/lg` (Mobile `xl` y `md`).
+- **project-mosaic:** 4 columnas × 2 filas en Desktop; en Mobile una a todo el ancho y dos debajo.
 
 ## 2026-10-02 · Home
 
-- **Embed:** `src/pages/home.html`, un solo Code Embed (entra holgado en 50.000 caracteres). `demo/home.html` lo carga tal cual con la librería.
-- **Productos destacados por grupo:** el embed lista un `<a href data-group="PRODUCT_GROUP_ID">` por producto y `<arq-featured-products>` trae nombre, meta e imágenes del catálogo (`getProductCards` en `src/data/catalog.js`), en ese orden. Los links quedan en el HTML (indexables) y son la reserva si el catálogo no carga. Es la misma excepción que el navbar: un contenedor que consulta por `src/data/`; las product-card reciben datos.
-- **Proyectos:** mosaico fijo (`arq-project-mosaic`), como Final; no lleva carousel-controls.
-- **Imágenes:** las `src` del embed apuntan a las fotos de ejemplo de la demo (`demo/fixtures/img/home/`, bajadas de Figma y comprimidas). `TODO`: reemplazarlas por URLs de Webflow Assets antes de pegar el embed.
-- `TODO` (contenido): respuestas de dos preguntas del FAQ (Figma muestra solo las preguntas). `TODO` (urls): link de la categoría Lámparas y artefactos (dos tipos de producto; URLs de categoría PENDIENTES). `TODO` (datos): los grupos destacados reales (Figma muestra Sento, que no está en el catálogo de ejemplo).
+- Embed `src/pages/home.html` (uno solo); `demo/home.html` lo carga tal cual.
+- Productos destacados: el embed lista `<a href data-group>` y `<arq-featured-products>` completa nombre, meta e imágenes (`getProductCards`). Los links quedan indexables y sirven de reserva.
+- Proyectos: mosaico fijo, sin carousel-controls.
 
 ## 2026-10-02 · Productos
 
-- **Embed:** `src/pages/productos.html` con page-header List, `<arq-catalog-listing>` y footer. `demo/productos.html` lo carga tal cual (en las demos de páginas, los links a `/arq` y `/arq/productos` apuntan a su demo).
-- **`<arq-catalog-listing>`:** contenedor que consulta por `src/data/` (como el navbar) y arma toolbar, grilla, filter-panel y compare-bar en su Shadow DOM. La navegación (`arq-catalog-nav`) y el título del panel (`<h2>`) llegan por slot desde el HTML: quedan indexables, como pide catalog-nav. Sirve también para Colecciones (`unit="colecciones"`).
-- **Categoría en la URL:** `?environment=`, `?application=`, `?product_type=` (los mismos parámetros que `categoryHref`) mientras las URLs de categoría sigan PENDIENTES. El ítem del catalog-nav que enlaza a la página actual se marca solo, y el `<h1>` del page-header pasa a ser el nombre de su grupo (Interior, Exterior, Lámparas y artefactos o Colecciones; pedido 2026-10-05). Sin ítem actual queda "Productos". `TODO` (diseño): Final sigue mostrando "Productos" como título en las pantallas de categoría.
-- **Links del catalog-nav:** se escriben en el embed siguiendo el árbol de `getNavigation()` (decisión 2026-10-02 · Navegación). `TODO` (datos): hoy siguen el catálogo de ejemplo; revisarlos con la base real.
-- **Acabados en la card:** `listProducts` suma `finishes` (valores de los campos con control `swatches`, hoy `color_carcasa`). Sin imagen hasta que se definan los acabados.
-- **Nombre de la card en `<h2>`** en el listado: no hay section-header entre el `<h1>` y las cards (axe: heading-order). En el Home sigue en `<h3>`.
-- **Grilla de catálogo (`arq-grid` sin `columns`):** filas a `space/gap/2xl` y columnas a `space/gap/lg`; en Mobile `space/gap/xl` y `space/gap/md`, como Final.
-- `TODO` (diseño): sidebar de 240 sin token (se usa `layout/card-min`); pantallas de carga, vacío y error; Productos como Current sin flecha en el navbar de Final (se deja `has-dropdown`). `TODO` (urls): filtros en la URL.
+- Embed `src/pages/productos.html`: page-header List, `<arq-catalog-listing>` y footer. En las demos, los links a `/arq…` apuntan a la demo.
+- `<arq-catalog-listing>` consulta `src/data/` y arma toolbar, grilla, filter-panel y compare-bar; la navegación y el título del panel llegan por slot (indexables). Sirve también para Colecciones (`unit="colecciones"`).
+- Categoría por parámetros (`?environment=`, `?application=`, `?product_type=`). El ítem actual del catalog-nav se marca solo y el `<h1>` pasa al nombre de su grupo; sin ítem, "Productos".
+- `listProducts` suma `finishes` (campos con control `swatches`). Nombre de la card en `<h2>` en el listado (axe: heading-order); `<h3>` en la Home.
 
 ## 2026-10-05 · Ficha de producto
 
-- **Embed:** `src/pages/ficha.html` (template de la colección «Productos» del CMS) con navbar, `<arq-ficha-producto data-group>` y footer. El CMS imprime el grupo, el `<h1>`, la descripción corta, la imagen principal y los textos editoriales (STORY e Inspiración); el resto sale de `getProduct()` y `variantDetails()` (`src/data/catalog.js`). `demo/ficha.html` lo carga tal cual; en la demo `?group=<id>` hace de ítem del CMS de otro grupo.
-- **Un contenedor que consulta**, como catalog-listing: arma en su Shadow DOM los bloques de la pantalla Ficha de Final (`1218:10487` · `1220:11334`). Los títulos fijos (Descargas, Glosario, Explora la colección, título del modal) van como `<h2>` por slot desde el embed.
-- **Iluminar dentro del Shadow DOM:** el hero es un contenedor interno de `<arq-ficha-producto>`, no un elemento del DOM de la página como dice DESIGN.md §2 · Modo Dark. El toggle pone `data-arq-theme="dark"` en ese contenedor y en el `<arq-navbar>`, y avisa con `refreshTheme()` (`src/base/theme.js`), porque el observer no ve cambios dentro de un Shadow DOM. Lo mismo para el Dark local de "Explora la colección". Se ve igual que en Final (`1218:11777`). DESIGN.md §2 se actualizó con este criterio.
-- **STORY:** el componente reemplaza el texto del slot `story` por nodos en el DOM de la página (`<h2>` por `##`, `<p>` por línea, `<ul>` por las líneas `-`), así el encabezado sigue en el HTML de la página. La lista lleva la etiqueta "Características del producto" de Final.
-- **Descargas:** botones Outline con `icon/download` que descargan directo, en el orden de Final (CAD 2D/3D, Manual, IES, Fotometría); "Ficha técnica" primero. El download-modal se usa para el ícono de cada fila del glosario, con los archivos de ese SKU.
-- **Ficha técnica:** "Generar ficha técnica" y "Ficha técnica" emiten `arq:datasheet { sku }`. `TODO` (diseño): el PDF sigue sin diseño (2026-10-02 · Ficha técnica en PDF).
-- **Glosario:** columnas en `GLOSSARY_COLUMNS` (`src/data/attributes.js`), con las etiquetas cortas de Final; una columna sin valores en ningún SKU no se muestra. La barra lleva CAD 2D/3D y Manual del SKU predeterminado (`TODO` datos: no hay archivos por grupo).
-- **Galerías:** ambiente, descripción e inspiración salen de las imágenes del grupo (`getProduct().images`), solo las que existen. La de ambiente es una fila con scroll hasta el borde derecho; las de inspiración ocupan la mitad de su columna cada una.
-- **Medidas sin token** (`TODO` diseño, detalle en el README): columnas de 440 → `layout/measure`; separación de 110 → `space/gap/5xl`; lista de 539 → `layout/measure-wide`; alto de la galería de ambiente → 70svh; family-card de 200 y 328 → `layout/card-min` y `layout/card-min-wide`.
+- Embed `src/pages/ficha.html`: navbar, `<arq-ficha-producto data-group>` y footer. El CMS imprime grupo, `<h1>`, descripción corta, imagen principal y textos editoriales; el resto sale de `getProduct()` y `variantDetails()`. En la demo, `?group=<id>`.
+- Contenedor que consulta y arma en su Shadow DOM los bloques de Final (`1218:10487` · `1220:11334`). Títulos fijos como `<h2>` por slot.
+- **Iluminar:** pone `data-arq-theme="dark"` en el contenedor interno del hero y en `<arq-navbar>`, y llama a `refreshTheme()`. Igual para el Dark local de Explora la colección (DESIGN.md §2).
+- **STORY:** el texto del slot se reemplaza por nodos en el DOM de la página (`<h2>`, `<p>`, `<ul>` con la etiqueta "Características del producto").
+- **Descargas:** botones Outline con `icon/download`; "Ficha técnica" primero y después el orden de Final. El download-modal es para el ícono de cada fila del glosario.
+- "Generar ficha técnica" y "Ficha técnica" emiten `arq:datasheet { sku }`.
+- **Glosario:** columnas en `GLOSSARY_COLUMNS`; las vacías en todos los SKU no se muestran. La barra lleva CAD 2D/3D y Manual del SKU predeterminado.
+- **Galerías:** ambiente, descripción e inspiración desde `getProduct().images`. Ambiente con scroll hasta el borde derecho; inspiración, mitad de columna cada foto.
+
+## 2026-10-05 · Ficha 60/40, scroll de la galería de ambiente y datos mixtos
+
+- **Hero de la ficha:** galería y configurador 60/40 (`minmax(0, 3fr) minmax(layout/measure, 2fr)`), gap `space/gap/5xl`; apilado hasta 1023. Igual en Final (`1218:10539`, Iluminar `1218:11785`); product-gallery Desktop con 5:4 fija.
+- **Galería de ambiente:** snap `x proximity` (`mandatory` peleaba con el trackpad y el scroll vertical), `overscroll-behavior-x: contain` y `aspect-ratio: auto 4 / 5` en las fotos.
+- **`VITE_DATA_SOURCE=mixto`** (solo dev): usa Typesense y completa lo vacío con `demo/fixtures/completar.js` (primero el catálogo de ejemplo por SKU o grupo; si no, datos inventados a partir del SKU y la familia). No pisa lo que el índice ya trae.
 
 ## 2026-10-05 · Colecciones
 
-- **Embed:** `src/pages/colecciones.html`, el mismo armado que Productos con `<arq-catalog-listing unit="colecciones">`: page-header List sin bajada (Final `1160:6116`), la misma navegación de categorías y footer. `demo/colecciones.html` lo carga tal cual.
-- **Cards de colección:** acabados (los de todos sus grupos, `listCollections`) y la meta con sus aplicaciones, como Final. Antes mostraban solo la meta. Sin "Comparar".
-- **Navbar:** Productos como Current, como en Final (Colecciones es parte de Productos).
-- **Todas las colecciones:** el grupo Colecciones del catalog-nav empieza con "Todas las colecciones" (`/arq/colecciones`), como "Todo interior" y "Todo exterior" en los suyos. En Colecciones ese ítem queda marcado solo y su grupo abierto. Ya está en Final (Colecciones Desktop, 1920, 2560, Iluminar y Mobile; Productos Mobile con catálogo abierto) y en la ficha `doc/catalog-nav` (Cómo se usa).
-
-- `TODO` (datos): las cuatro imágenes de una card de colección (DESIGN.md §8).
+- Embed `src/pages/colecciones.html`: igual que Productos con `unit="colecciones"`, page-header sin bajada. Navbar con Productos como Current.
+- Cards con acabados de todos sus grupos y meta con sus aplicaciones; sin Comparar.
+- El grupo Colecciones del catalog-nav empieza con "Todas las colecciones" (`/arq/colecciones`), marcado solo en esa página.
 
 ## 2026-10-05 · Colección
 
-- **Embed:** `src/pages/coleccion.html` (template de la colección «Colecciones» del CMS): navbar con Productos como Current, page-header List con el breadcrumb (Colecciones / nombre), el `<h1>` y `COLLECTION_INTRO_TEXT` como bajada, `<arq-coleccion data-collection>` con `COLLECTION_DESCRIPTION_TEXT` por slot, y footer. `demo/coleccion.html` lo carga tal cual; en la demo `?collection=<id>` hace de ítem del CMS de otra colección.
-- **`<arq-coleccion>`:** contenedor que consulta (`getCollection()`), como catalog-listing y la ficha. Arma la grilla de product-card, la galería, texto + imagen y el mosaico de Final (`1234:13201` · `1234:13448`). Sin filtros, Comparar ni Iluminar (Final no los tiene).
-- **Meta de la card:** resumen de las variantes (decisión 2026-10-02 · Cards): el rango de cada atributo de variante que no es acabado, por ejemplo «50 cm – 90 cm». `TODO` (diseño): las características fijas que suma Final (12W – 15W) y la segunda línea.
-- **Imágenes de la colección:** galería = `images.gallery`, texto + imagen = `images.description`, mosaico = `images.inspiration`; solo las que existen.
-- **carousel-controls:** además del carrusel observa el tamaño de cada elemento de adentro. Una foto de ancho auto que carga (o llega de la caché) agrandaba el contenido sin avisar y la flecha "Siguiente" quedaba deshabilitada.
-- `TODO` (diseño): medidas sin token (detalle en el README de coleccion).
+- Embed `src/pages/coleccion.html`: navbar (Productos Current), page-header List con breadcrumb, `<h1>` y `COLLECTION_INTRO_TEXT`; `<arq-coleccion data-collection>` con `COLLECTION_DESCRIPTION_TEXT` por slot; footer. En la demo, `?collection=<id>`.
+- `<arq-coleccion>` consulta `getCollection()` y arma grilla, galería, texto + imagen y mosaico (Final `1234:13201` · `1234:13448`). Sin filtros, Comparar ni Iluminar.
+- Imágenes: galería `images.gallery`, texto + imagen `images.description`, mosaico `images.inspiration`.
 
 ## 2026-10-05 · Contacto
 
-- **Embed:** `src/pages/contacto.html`: navbar Transparent con Contacto como Current, hero (eyebrow, `<h1>` y bajada, sin botón; foto de ejemplo en `demo/fixtures/img/contacto/`), `<arq-form-contacto>` con la información por slot (`<h2>`, bajada, contact-item y link-list) y footer. `demo/contacto.html` lo carga tal cual.
-- **`<arq-form-contacto>`:** el `<form>` y sus campos viven en su Shadow DOM, así el formulario es dueño de los campos (form-associated) y manda su `FormData` con el adjunto. La información queda en el HTML de la página (indexable). Validación propia al enviar (`novalidate`), honeypot `website` y envío por `fetch` (multipart) a `VITE_N8N_WEBHOOK_URL`. Sin URL, en `npm run dev` se simula el envío; en el build es un error. Estados: enviando (Loading), enviado (form-message Success y formulario vacío) y error (form-message Error, los datos quedan).
-- **input Type=Select** (cierra el pendiente del input): botón `role="combobox"` con la línea del campo y select-menu Type=Text flotando debajo, del ancho del campo, como Figma (`1454:5001`). Se eligió la lista propia (no un `<select>` nativo) para seguir el set.
-- **`src/base/combobox.js`:** el teclado, el resaltado y los clics de un combobox de un valor, compartidos por `arq-select` y `arq-input type="select"` (se sacó de select, sin cambiar su comportamiento). El scroll a la opción resaltada espera al próximo cuadro: al abrir, el menú todavía no se ve.
-- **select-menu:** el scroll pasa al host (el listbox) con `tabindex="-1"`, por axe (scrollable-region-focusable) con más de 7 opciones.
-- **`arq-button submit`:** formAssociated; el clic hace `requestSubmit()` del formulario (decisión 2026-10-01 · button). Enter en un campo no envía (un botón formAssociated no es el botón predeterminado del navegador).
-- **Obligatorios:** nombre, email y detalles, con textos de error propios. `TODO` (diseño): textos por caso e indicador de obligatorio. `TODO` (n8n): URL del webhook y formato. `TODO` (contenido): email y teléfono reales (los de Final).
+- Embed `src/pages/contacto.html`: navbar Transparent (Contacto Current), hero sin botón, `<arq-form-contacto>` con la información por slot y footer.
+- `<arq-form-contacto>`: `<form>` y campos en su Shadow DOM (dueño de los campos form-associated, manda `FormData` con el adjunto). Validación propia (`novalidate`), honeypot `website`, `fetch` multipart a `VITE_N8N_WEBHOOK_URL` (sin URL: simulado en dev, error en el build). Estados: enviando, enviado (Success y formulario vacío), error (los datos quedan). Obligatorios: nombre, email y detalles.
+- **input Type=Select:** botón `role="combobox"` con select-menu Type=Text flotante del ancho del campo (lista propia, no `<select>` nativo).
+- **`src/base/combobox.js`:** teclado, resaltado y clics compartidos por `arq-select` y `arq-input type="select"`. El scroll a la opción resaltada espera al próximo cuadro.
+- **select-menu:** el scroll está en el host con `tabindex="-1"` (axe: scrollable-region-focusable).
 
 ## 2026-10-05 · Breakpoints Tablet y Large, y ancho máximo
 
-- **Modos nuevos en 2 · Semantic · Dimension:** Tablet (768–1023 px) y Large (desde 1440 px), además de Desktop (1024–1439) y Mobile (≤ 767). Valen lo mismo que Desktop salvo `layout/gutter`: Mobile 20 · Tablet 32 · Desktop 40 · Large 64. Type no suma modos: de 768 px en adelante es Desktop.
-- **Por qué:** en 1440 el margen de 40 queda corto, y en tablet el de 40 es mucho para el ancho disponible. Tablet coincide con el tramo en que los listados ya usan `catalog-nav-mobile`.
-- **`layout/max-width` = 1792** (1920 − 2 × 64): el contenido no pasa de ese ancho. A 1920 px el gutter de 64 y el tope coinciden, así no hay salto. Reemplaza la regla anterior «No hay ancho máximo» (DESIGN.md §2).
-- **Fondos a todo el ancho:** el tope va como padding (`--page-gutter: max(layout/gutter, (100vw − layout/max-width) / 2)`, declarado en `:host` por `ArqElement`), no como un contenedor. Hero, navbar, footer, cta-block, la sección Dark de la ficha, compare-bar y variants-table siguen de borde a borde. Se usa `100vw` y no `100%` para que el valor sea el mismo en celdas sticky y carruseles; con una barra de scroll clásica de Windows el contenido queda unos px por debajo de 1792.
-- **Siguen con `layout/gutter`:** overlays que se ubican respecto del viewport (download-modal, select-menu) y lo que solo existe en Mobile (search-screen, menú de nav-link, filter-panel Mobile, carrusel de grid).
-- **Tokens:** `import-tokens.js` mapea Tablet y Large; `build-tokens.js` los escribe como `@media (min-width: 768px) and (max-width: 1023px)` y `@media (min-width: 1440px)`, y permite combinar en un token los modos de breakpoint (no con Dark ni reducedMotion).
-- En Tablet, la columna de especificaciones de la ficha quedaba angosta y los títulos de accordion-item se cortaban a mitad de palabra (ya pasaba con 40): se resuelve en 2026-10-05 · Ficha en Tablet.
+- Modos y valores en DESIGN.md §2 · Breakpoints y grilla y · Ancho máximo.
+- Por qué: en 1440 el margen de 40 quedaba corto y en tablet era mucho. Tablet coincide con el tramo de `catalog-nav-mobile`.
+- `--page-gutter` usa `100vw` (no `100%`) para que valga lo mismo en celdas sticky y carruseles; con barra de scroll clásica de Windows el contenido queda unos px por debajo de 1792.
 
 ## 2026-10-05 · Ficha en Tablet
 
-- **Qué:** Final no tiene Ficha en Tablet. Entre 768 y 1023 px, `<arq-ficha-producto>` apila los bloques de dos columnas como en Mobile: galería y configurador, descargas y especificaciones, texto e imágenes de Inspiración, introducción y cards de Explora la colección. Lo demás queda como Desktop: tipografía (Type no tiene modo Tablet), espaciados, botones del configurador en fila, otras familias e imagen en dos mitades, fotos de Inspiración en fila.
-- **Por qué:** en dos columnas, a 900 px la galería quedaba en ≈ 340 (las miniaturas tapaban la foto) y el acordeón en ≈ 310, con los títulos cortados a mitad de palabra.
-- **Corrección también en Mobile:** apilado, `.details` estira sus hijos (`align-items: stretch`). Antes el acordeón quedaba fijo en ≈ 388 px de 430 a 1023 px en vez de llenar el ancho.
-- `TODO` (diseño): validar o diseñar la Ficha en Tablet en Figma.
+- Entre 768 y 1023 la ficha apila los bloques de dos columnas como Mobile (galería y configurador, descargas y especificaciones, Inspiración, Explora la colección); el resto queda como Desktop.
+- Por qué: a 900 px la galería quedaba en ≈ 340 y el acordeón en ≈ 310, con títulos cortados.
+- Apilado, `.details` estira sus hijos (`align-items: stretch`).
 
 ## 2026-10-05 · Texto y espaciado en rem
 
-- **Qué:** `npm run tokens` escribe en rem (base 16 px, la del `html` de Webflow) los tokens `font/size`, `font/leading` y `font/tracking` (texto) y `space/*` (espaciado). Los semánticos que apuntan a `space` (gap, padding, section, `layout/gutter`, `icon/*`, `swatch/*`) lo siguen por alias. En Figma los valores siguen en px: la conversión es solo del código.
-- **Por qué:** si el usuario agranda el tamaño de fuente del navegador o del sistema, crecen juntos el texto y el aire que lo rodea, y la página mantiene sus proporciones. El zoom del navegador ya escalaba todo.
-- **Siguen en px:** `border/*` (hairlines de 1 y 2 px), `radius/*`, `blur/*`, los `layout/*` con valor propio (anchos de tarjeta, miniaturas, `layout/measure`, `layout/max-width`) y las media queries.
-- **Resultado:** con 16 px de base, las capturas de Home, Productos, Ficha y Contacto (390 y 1440) son idénticas byte a byte a las de antes del cambio.
+- Regla en DESIGN.md §2 · Nombres en código (Unidades). Por qué: si el usuario agranda la fuente, crecen juntos texto y aire. Con base 16 las capturas son idénticas a las de px.
 
 ## 2026-10-05 · variants-table dentro del contenido
 
-- **Qué:** `<arq-variants-table>` deja de ir de borde a borde en todos los breakpoints: la tabla toma el margen de página (`--page-gutter`) y adentro no lleva gutter. Las líneas de las filas y la barra de filtros empiezan en la miniatura y terminan en el ícono de descarga, alineadas con el título. La barra de filtros lleva `space/padding/md` adentro. Reemplaza a «De borde a borde» de DESIGN.md §5 para este componente.
-- **Scroll:** sigue el scroll horizontal cuando la tabla no entra (Mobile y Tablet), dentro de los márgenes y sin barra visible: se desplaza con touch, trackpad o flechas (la región tiene foco). Desde 1440 la tabla entra sin scroll.
-- **Por qué:** con el contenido tope en 1792, la franja de filtros y las líneas llegaban al borde en pantallas anchas y la tabla se veía desconectada del resto; se pidió el mismo criterio en todos los anchos.
-- **visually-hidden:** el texto para lectores de pantalla suma `margin: -1px` (`border/default`): sin el gutter, el de la última columna desbordaba 1 px y aparecía la barra de scroll.
-- Los demás componentes de borde a borde (navbar, footer, page-header, cta-block, hero, compare-bar) siguen con fondos y líneas a todo el ancho.
+- Regla en DESIGN.md §2 · Ancho máximo. La barra de filtros lleva `space/padding/md`; el scroll horizontal no muestra barra y la región tiene foco. Desde 1440 entra sin scroll.
+- visually-hidden suma `margin: -1px` (sin gutter, la última columna desbordaba 1 px).
 
-## 2026-10-05 · Tipografía Wide (desde 1920)
+## 2026-10-05 · Tipografía Wide y texto base en 16
 
-- **Qué:** 2 · Semantic · Type suma el modo **Wide**, `@media (min-width: 1920px)`: `role/body` y sus variantes (regular, medium, strong) pasan de 14/20 a 16/24, `role/body-sm` y `body-sm-medium` de 12/16 a 14/20 y `role/body-lg` (y regular, medium) de 16/24 a 18/28. El resto de los estilos no cambia.
-- **Primitivo nuevo:** `font/size/18`, para que `body-lg` crezca «un poco» sin quedar igual a `body` ni a `body-xl` (20). El interlineado 28 ya existía.
-- **Por qué:** en pantallas de 1920+ el texto de 14 de botones, valores y links se veía chico.
-- **Efecto:** los controles que usan `body-regular` (button, select, option-tile…) crecen 4 px de alto a 1920+ (button de 36 a 40).
-- Se llama Wide (no Large) porque Large es el modo de Dimension desde 1440.
+- `role/body` (y regular, medium, strong) es 16/24 en todos los modos: base de lectura y controles (button, select, option-tile miden 40). En Mobile además evita el zoom de iOS.
+- Modo **Wide** de Type (`min-width: 1920px`): `body-sm` y `body-sm-medium` a 14/20; `body-lg` (y regular, medium) a 18/28, con el primitivo `font/size/18`. Se llama Wide porque Large es de Dimension.
 
 ## 2026-10-05 · Detalles de la ficha y select Filter
 
-- **accordion-item abiertos:** en la ficha, un ítem abierto (fondo `color/surface/faint`) se separa `space/gap/sm` de los de al lado, así dos abiertos seguidos no se pegan (`margin-top` del segundo de cada par, en `ficha-producto.css`).
-- **variants-table-row:** padding lateral `space/padding/sm` en Header y Row, y vertical `space/padding/xs` en Row (64 de alto): la miniatura y el botón de descarga no quedan pegados al borde de la línea ni forman una columna continua. Cambiado también en Figma (`923:2708`, con su descripción).
-- **select Type=Filter:** ancho mínimo `layout/select-filter` (160), así la flecha va al extremo derecho de la celda como en el set (`1128:3232`). **select-menu Type=Filter:** ancho mínimo `layout/select-menu-filter` (200). Los dos son semánticos nuevos de 2 · Semantic · Dimension, enlazados en Figma al set.
-- **Filtros de acabado del glosario:** las opciones muestran la muestra (`swatches` en `filters` de variants-table, desde `attributes.js`); «Todos» va sin muestra. `TODO` (acabados): sin imagen, la muestra es el neutro.
-- **Imágenes de prueba:** la ficha de Kanu Jardín (`demo/ficha.html`) usa las imágenes de Final (`1218:10487` e Iluminar `1218:11777`) en WebP, en `demo/fixtures/img/ficha/`: galería (contexto y estudio, apagada y encendida), ambiente (8), descripción, Inspiración y la foto de estudio de Kanu Pared (otras familias y Explora la colección). Las demás variantes siguen con los SVG de ejemplo.
-
-## 2026-10-05 · Texto base en 16, título de la ficha y estados de opciones
-
-- **role/body a 16/24 en todos los modos** (Desktop, Mobile y Wide; antes 14/20 y 16/24 solo desde 1920). Es la base de lectura, valores y controles (`body-regular`, `body-medium`, `body-strong` lo siguen). Los controles con `body-regular` (button, select, option-tile…) pasan de 36 a 40 de alto. En Mobile además evita el zoom de iOS en campos de menos de 16 px. `role/body-lg` sigue 16/24 (18/28 desde 1920): hasta 1919 px queda igual que `role/body` en tamaño.
-- **Título de la ficha:** el título y «Ver colección» se alinean por la línea de base (la última del título si ocupa dos): `align-items: last baseline` en código y `BASELINE` en `title-row` de Final (`1218:10530`, Iluminar `1218:11782`).
-- **select Type=Filter:** todos los estados llevan la línea inferior `color/border/strong` de Filled, con gap `space/gap/sm` y padding inferior `space/padding/sm` («Todos» se ve igual que un filtro elegido); Disabled, `color/border/disabled`. Cambiado también en el set (`921:2544`) y su descripción.
-- **option-tile:** Default pasa a `color/text/secondary` (antes tertiary, se confundía con Disabled) y Disabled va tachado. Cambiado también en el set (`921:2487`) y su descripción.
-- **Explora la colección:** usa la misma grilla que Inspiración (un tercio + dos tercios, como Final: 440 + 880), así las cards y las fotos de Inspiración empiezan en la misma línea. Inspiración de la demo con las dos fotos de Final.
+- **accordion-item abiertos:** separados `space/gap/sm` entre sí (`ficha-producto.css`).
+- **variants-table-row:** padding lateral `space/padding/sm`, vertical `space/padding/xs` en Row (64 de alto). También en Figma (`923:2708`).
+- **select Type=Filter:** mínimo `layout/select-filter`; select-menu Filter mínimo `layout/select-menu-filter`. Todos los estados con la línea `color/border/strong` (Disabled `color/border/disabled`), gap `space/gap/sm`, padding inferior `space/padding/sm`. También en el set (`921:2544`).
+- **Filtros de acabado del glosario:** opciones con muestra; «Todos» sin muestra.
+- **option-tile:** Default en `color/text/secondary`, Disabled tachado. También en el set (`921:2487`).
+- **Título de la ficha:** título y «Ver colección» por `last baseline` (Final `1218:10530`).
+- **Explora la colección:** misma grilla que Inspiración (un tercio + dos tercios).
+- **Imágenes de prueba:** Kanu Jardín (`demo/ficha.html`) usa las de Final en WebP (`demo/fixtures/img/ficha/`); el resto, SVG de ejemplo.
 
 ## 2026-10-05 · filter-panel siempre en Light
 
-- **Qué:** el panel Filtrar de Productos y Colecciones queda en Light aunque Iluminar ponga la página en Dark (pedido de diseño). Iluminar es para ver los productos encendidos; el panel es un formulario.
-- **Light local:** `npm run tokens` genera también `[data-arq-theme="light"]` con el valor Light de cada token que tiene modo Dark: en `tokens.css` (DOM de la página) y en `src/styles/light.css`, que `ArqElement` adopta en cada Shadow DOM igual que `dark.css`. Sin colores escritos a mano. El `<dialog>` de filter-panel lleva el atributo; el contenido por slot lo hereda.
-- DESIGN.md §2 · Modo Dark: «No hay Light local» pasa a tener esta excepción.
-- `TODO` (diseño): Final no tiene una pantalla con el panel abierto e Iluminar encendido.
+- El panel Filtrar queda en Light aunque Iluminar ponga la página en Dark: es un formulario. Su `<dialog>` lleva `data-arq-theme="light"` (bloque generado por `npm run tokens` en `tokens.css` y `src/styles/light.css`). Única excepción de Light local (DESIGN.md §2).
 
 ## 2026-10-05 · Home: alturas y meta
 
-- **Hero a pantalla completa solo en la Home:** `<arq-hero full-height>` ocupa todo el ancho y el alto del viewport (`100svh`) en Desktop y Mobile. Es un atributo solo de código (no hay prop en Figma); Contacto usa el alto por defecto (2026-10-05 · Contacto: ajustes).
-- **Meta de Productos destacados:** el tipo de producto, no entorno · aplicación (repetía «Exterior · Jardín» en casi todas). Luminaria → su aplicación («Jardín», «Colgante»); otro tipo → el tipo («Lámpara»). Solo en la Home (`getProductCards`); los listados no cambian.
-- **Cada sección de la Home entra en una pantalla (Desktop):** en Figma (1400 de ancho) las secciones miden 780–1056, pero en código las imágenes crecían con el ancho (en 1920, las colecciones destacadas medían 1280). Desde 768 px la imagen de feature-block, category-card, line-card y project-mosaic tiene un alto máximo atado a `100svh` menos el padding de la sección (`space/section/xl`) y el lugar de los textos; al tope se recorta (`object-fit: cover`), sin angostarse. Piso de `50svh` para pantallas bajas. En Mobile no hay tope. Resultado: 1440×900 → secciones de ~900; 1920×1080 → ~1080. Desde 1920 el contenido ya no crece (`layout/max-width`), así que en pantallas más altas las secciones quedan por debajo del alto de pantalla.
+- `<arq-hero full-height>`: 100svh, solo en la Home (atributo solo de código).
+- Meta de Productos destacados: luminaria → su aplicación («Jardín»); otro tipo → el tipo («Lámpara»). Solo en `getProductCards`.
+- Una sección por pantalla en Desktop: regla en DESIGN.md §5. Resultado: 1440×900 → ~900; 1920×1080 → ~1080.
 
 ## 2026-10-05 · Contacto: ajustes
 
-- **Hero de Contacto a 70 % del alto:** el hero sin `full-height` mide `70svh` también en Desktop (antes `ratio/wide`, que en 1440×900 ocupaba toda la pantalla). Contacto es la única página que lo usa así; la Home sigue con `full-height`. `TODO` (diseño): actualizar Final › Contacto y la ficha del hero.
-- **navbar Transparent:** sigue transparente mientras la barra está sobre el hero (el primer `<arq-hero>` de la página) y pasa a Default cuando el borde inferior del hero sube por encima del de la barra. Antes pasaba a Default con el primer píxel de scroll. Aplica a Home y Contacto; sin hero, sigue cambiando al empezar el scroll.
-- **Motivos de consulta en una fila desde 1440:** con el layout de Final no entraban (columna de 584; los cuatro textos a 16 px más los gaps ya sumaban 579). Cambios: choice-chip con padding lateral `space/padding/md` (antes `lg`, el texto sigue en `role/body-regular`); en `form-contacto`, chips a `space/gap/sm` (antes `sm-md`) y columnas información : formulario en 2:3 (antes iguales; en 1440 el formulario mide 710). Si entran en una fila, los chips crecen hasta ocupar el ancho (`flex: 1 1 auto`, texto centrado); si hacen wrap, quedan con su ancho (`form-contacto` lo detecta con un `ResizeObserver`). `TODO` (diseño): actualizar el set de choice-chip (`1113:2485`), su descripción y Final › Contacto.
-- **nav-link Current un peso más:** en Desktop pasa de `role/body` (Light) a `role/body-regular`, como catalog-nav-item Selected. No es un cambio de peso en hover: Current es fijo por página, así que no hace saltar el layout. En Mobile sigue `role/body-xl` (ya es Regular; no hay un rol más pesado de ese tamaño). `TODO` (diseño): actualizar el set de nav-link (`752:2866`).
+- **Hero sin `full-height`:** 70svh en Desktop y Mobile.
+- **navbar Transparent:** transparente mientras está sobre el primer `<arq-hero>`; pasa a Default cuando el borde inferior del hero sube por encima del suyo. Sin hero, al empezar el scroll.
+- **Motivos de consulta en una fila desde 1440:** choice-chip con padding lateral `space/padding/md`; en form-contacto chips a `space/gap/sm` y columnas 2:3. Si entran en una fila crecen (`flex: 1 1 auto`); si hacen wrap, quedan con su ancho (`ResizeObserver`).
+- **nav-link Current Desktop** en `role/body-regular` (un peso más, como catalog-nav-item Selected). No salta el layout: Current es fijo por página.
 
 ## 2026-10-05 · line-card: el link es el botón
 
-- **Solo "Ver colección" es link.** line-card deja el link estirado: la imagen y el nombre no son clickeables. "Ver colección" es un `arq-button` Underline (Show underline, `icon/arrow-right`) con el `href` de la tarjeta; hover, pressed y foco son los del button (subrayado a `border/strong`, anillo alrededor del botón). Sin borde de hover en la imagen. Reemplaza, para line-card, a 2026-10-01 · Tarjetas con link estirado; category-card sigue siendo toda link.
-- Antes, el texto del botón (decorativo) quedaba por encima del `::after` del link y no se podía hacer clic justo ahí.
-- `TODO` (diseño): en el set (`1036:2490`), State=Hover y Focus tienen que mostrar el estado en el botón (button State=Hover / Focus), sin borde en la imagen ni `focus-ring` en la tarjeta; sumar la regla a la descripción del set, a la ficha `doc/line-card` y a la copia de DESIGN.md en Plan del proyecto.
+- Solo "Ver colección" es link: `arq-button` Underline (Show underline, `icon/arrow-right`) con el `href` de la tarjeta; hover, pressed y foco son los del button. Imagen y nombre no son clickeables; sin borde de hover. category-card sigue siendo toda link.
+
+---
+
+## Pendientes
+
+Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe la decisión en su sección. El grupo entre paréntesis es el del `TODO` en el código.
+
+### Diseño: actualizar Figma (el código ya está hecho)
+
+| Dónde | Qué falta |
+| --- | --- |
+| faq-item | Descripción del set y ficha `doc/faq-item`: separador arriba en `color/border/default` (dicen inferior y subtle) |
+| footer | Ficha `doc/logo`: Compact en el footer. Set Desktop: sumar Descargas en Información |
+| cta-block | Ficha: gaps `sm-md` (título–bajada) y `md` (email–button) |
+| choice-chip | Set `1113:2485`, descripción y Final › Contacto: padding `md`, ancho completo en una fila |
+| nav-link | Set `752:2866`: Current en `role/body-regular` |
+| hero | Final › Contacto y ficha `doc/hero`: 70svh |
+| line-card | Set `1036:2490`: Hover / Focus en el botón, sin borde ni `focus-ring` en la tarjeta. Descripción, ficha `doc/line-card` y copia de DESIGN.md en Plan del proyecto |
+| navbar | Variantes Transparent de Menu, Search y Products (desactualizadas) |
+| Ficha | Pantalla Tablet |
+| Productos | Título de categoría en Final (sigue "Productos"); Productos Current sin flecha (en código queda `has-dropdown`) |
+
+### Diseño: definir
+
+- **Tokens que faltan:** `layout/navbar-height` (56; lo usan hero, ficha y compare-header Compact); ancho de tarjeta del carrusel mobile (280); sidebar de Productos (240, hoy `layout/card-min`); ratios de las fotos del mosaico; respuesta de faq-item (560, hoy `measure-wide`); columnas del footer (200 / 240); email de cta-block (380, hoy `measure`); medidas sin token de la ficha y la colección (detalle en sus README).
+- **Confirmar lo elegido en código:** posición del navbar (sticky / fixed); foco sobre foto en navbar Transparent; feature-block secundaria en `ratio/wide`; split del FAQ con `space/section/md` dentro de un bloque.
+- **Faltan diseños:** PDF de ficha técnica y de "Descargar comparación"; rediseño de compare-product (cómo se nombra el producto en su select); pantallas de carga, vacío y error de los listados; filter-panel abierto con Iluminar; textos de error y marca de obligatorio del formulario.
+- **Contenido de diseño:** secciones del acordeón y reparto de campos, y columnas del glosario (`attributes.js`); características fijas de la meta de las cards y segunda línea en Colección; cantidad de imágenes de cada galería.
+
+### Base de datos (datos / base)
+
+- Confirmar nombres de campo con quien arma la base; faltan `product_group_id` y `collection_id` (`typesense-adapter.js`).
+- Qué foto es cada una: las cuatro de product-card (estudio y contexto, apagada y encendida), las de una card de colección y las del mega-menu.
+- Acabados: imágenes y tabla de códigos (N, V, R, B, BN, P).
+- Orden de las cards (hoy, el de la hoja).
+- Archivos de descarga por grupo (hoy CAD y Manual del SKU predeterminado).
+- Regla de Artefactos: ¿también dentro de Interior y Exterior, como Lámparas?
+- Revisar con la base real los links del catalog-nav y los grupos destacados de la Home.
+- Sincronización Sheets → Typesense (Apps Script), cuando la base esté armada.
+
+### URLs
+
+- URLs de categoría (hoy parámetros; incluye el link de "Lámparas y artefactos" en la Home) y filtros en la URL (`docs/urls.md`).
+
+### Contenido
+
+- Respuestas de dos preguntas del FAQ de la Home.
+- Email y teléfono reales de Contacto.
+- Imágenes de Home y Contacto: pasar a URLs de Webflow Assets antes de pegar los embeds.
+
+### Integraciones
+
+- **n8n:** URL y formato del webhook de Contacto; webhook de la newsletter (cta-block) y su envío con `form-message`.
+- **Webflow:** ver si un campo Rich Text se puede insertar en un Code Embed (reemplazaría el Markdown de STORY).
+- **Código:** elegir la librería de PDF (tiene que poder incrustar Albert Sans).
