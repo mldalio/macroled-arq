@@ -39,7 +39,7 @@ valores crudos      roles con modos     usa SOLO Semantic
 | Nivel | Colecciones en Figma | Qué contiene | ¿Se usa en componentes? |
 | --- | --- | --- | --- |
 | 1 · Primitive | 1 · Primitive · Color, Space, Type, Radius, Border | Valores crudos (`neutral/900` = #101010, `space/16` = 16) | Nunca directo |
-| 2 · Semantic | 2 · Semantic · Color (Light/Dark), Dimension y Type (Desktop/Mobile) | Roles de uso general (`color/text/primary`, `space/gap/md`) | Sí: es lo único que usan los componentes |
+| 2 · Semantic | 2 · Semantic · Color (Light/Dark), Dimension (Desktop/Mobile/Tablet/Large) y Type (Desktop/Mobile) | Roles de uso general (`color/text/primary`, `space/gap/md`) | Sí: es lo único que usan los componentes |
 
 No hay nivel de componente (Mapped). Se descartó por escalabilidad: cada componente se enlaza directamente a los semánticos. Si un componente necesita un valor que no existe, se agrega un semántico nuevo que sirva para todos (por ejemplo, `color/surface/inverse-hover`).
 
@@ -47,7 +47,7 @@ No hay nivel de componente (Mapped). Se descartó por escalabilidad: cada compon
 
 1. Los componentes usan solo Semantic. Nunca un Primitive, nunca un valor suelto.
 2. Prohibidos los valores sueltos: nada de `#hex`, `px`, `rem` escritos a mano.
-3. Los modos (Light/Dark, Desktop/Mobile) viven solo en Semantic.
+3. Los modos (Light/Dark, Desktop/Mobile/Tablet/Large) viven solo en Semantic.
 4. Si falta un rol, se agrega en Semantic, para todos. No se crea un color para un caso puntual.
 5. Los nombres de Figma y de código son los mismos.
 6. Texto: todo texto usa un estilo `role/*` y un color Semantic (`color/text/*`). Nunca tamaño, peso, interlineado ni color sueltos. Si ningún rol encaja, se usa el más cercano y se avisa; no se crea un estilo nuevo sin acordarlo.
@@ -89,10 +89,16 @@ Arq vive en `macroled.com.ar/arq`, dentro del mismo sitio de Webflow que el e-co
 /* Dark: solo con data-arq-theme="dark" (Iluminar o Dark local), sin prefers-color-scheme */
 [data-arq-theme="dark"] { --arq-color-text-primary: var(--arq-neutral-100); }
 
-/* Desktop es el valor base; Mobile por media query */
+/* Desktop es el valor base; Mobile, Tablet y Large por media query */
 :root { --arq-layout-gutter: var(--arq-space-40); }
 @media (max-width: 767px) {
   :root { --arq-layout-gutter: var(--arq-space-20); }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  :root { --arq-layout-gutter: var(--arq-space-32); }
+}
+@media (min-width: 1440px) {
+  :root { --arq-layout-gutter: var(--arq-space-64); }
 }
 ```
 
@@ -100,7 +106,16 @@ Las variables CSS atraviesan el Shadow DOM. Un bloque en modo Dark se logra con 
 
 ### Breakpoints y grilla
 
-- **Mobile** hasta 767 px y **Desktop** desde 768 px (modos de Dimension y Type).
+- **Mobile** hasta 767 px y **Desktop** desde 768 px (modos de Type y de Dimension).
+- **Dimension** suma dos modos más, que hoy solo cambian `layout/gutter`: **Tablet** (768–1023 px) y **Large** (desde 1440 px). Desktop queda en 1024–1439 px. Type no tiene Tablet ni Large: de 768 px en adelante usa Desktop.
+
+| Modo de Dimension | Viewport | `layout/gutter` |
+| --- | --- | --- |
+| Mobile | ≤ 767 | 20 |
+| Tablet | 768–1023 | 32 |
+| Desktop | 1024–1439 | 40 |
+| Large | ≥ 1440 | 64 |
+
 - **Listados** (Productos y Colecciones): hasta 1023 px usan `catalog-nav-mobile` en lugar del sidebar `catalog-nav`.
 - **Grilla de catálogo:** `layout/card-min` vale 280 (160 en mobile) y desde 1600 px se usa `layout/card-min-wide` (340). El cambio se resuelve en el CSS de la grilla, no en `tokens.css` (que solo refleja los modos de Figma):
 
@@ -116,14 +131,29 @@ Las variables CSS atraviesan el Shadow DOM. Un bloque en modo Dark se logra con 
 
 `--card-min` es una variable local de la grilla, dentro del Shadow DOM del componente que la contiene: no sale al DOM global.
 
+Medido en Productos (con `catalog-nav` desde 1024 px):
+
 | Viewport | Columnas | Ancho de tarjeta |
 | --- | --- | --- |
 | 390 (mobile) | 2 | ≈ 167 |
-| 1400 | 3 | ≈ 323 |
-| 1920 | 4 | ≈ 366 |
-| 2560 | 6 | ≈ 343 |
+| 900 (tablet) | 2 | ≈ 406 |
+| 1400 | 3 | ≈ 309 |
+| 1920 | 4 | ≈ 344 |
+| 2560 | 4 | ≈ 344 (contenido en `layout/max-width`) |
 
-- No hay ancho máximo: todas las páginas son full width y el margen lateral es siempre `layout/gutter`.
+### Ancho máximo
+
+- El **contenido** de la página llega hasta `layout/max-width` (1792 = 1920 − 2 × 64). Hasta 1920 px manda `layout/gutter`; desde ahí el margen lateral crece y el contenido queda centrado.
+- Los **fondos**, fotos y barras siguen a todo el ancho (hero, navbar, footer, cta-block, la sección Dark de la ficha, compare-bar, variants-table): el tope se aplica como padding, no como un contenedor con `max-width`.
+- En código, los componentes usan `--page-gutter` en lugar de `--arq-layout-gutter` para el margen de página. Es una variable local que `ArqElement` declara en cada `:host`:
+
+```css
+:host {
+  --page-gutter: max(var(--arq-layout-gutter), (100vw - var(--arq-layout-max-width)) / 2);
+}
+```
+
+- Los overlays (download-modal, select-menu) y las pantallas Mobile (search-screen, menú, filter-panel Mobile) siguen con `layout/gutter`: se ubican respecto del viewport, no del contenido.
 
 ### Modo Dark: Iluminar y Dark local
 
@@ -257,11 +287,14 @@ Cómo elegir un token:
 
 ---
 
-## 5. Semantic · Dimension (Desktop / Mobile)
+## 5. Semantic · Dimension (Desktop / Mobile / Tablet / Large)
+
+Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 
 | Token | Desktop | Mobile | Uso |
 | --- | --- | --- | --- |
-| layout/gutter | 40 | 20 | Margen lateral de la página. Lo aplica la sección, no cada componente. Excepción: componentes de borde a borde (navbar, footer, page-header, filter-bar, variants-table) lo usan como padding interno |
+| layout/gutter | 40 | 20 | Margen lateral de la página (Tablet 32 · Large 64, ver §2 · Breakpoints y grilla). Lo aplica la sección, no cada componente. Excepción: componentes de borde a borde (navbar, footer, page-header, filter-bar, variants-table) lo usan como padding interno. En código, a través de `--page-gutter` |
+| layout/max-width | 1792 | 1792 | Ancho máximo del contenido de la página (§2 · Ancho máximo). No es un modo |
 | layout/card-min | 280 | 160 | Ancho mínimo de tarjeta en la grilla de catálogo |
 | layout/card-min-wide | 340 | 340 | Reemplaza a card-min desde 1600 px, en el CSS de la grilla |
 | layout/compare-media-max | 2000 | 2000 | Tope de la media en la comparativa |

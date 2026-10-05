@@ -37,7 +37,7 @@ Bloque de página: margen lateral, padding inferior y el armado encabezado → c
 
 | | Desktop | Mobile |
 | --- | --- | --- |
-| Padding | `layout/gutter` a los lados, `space/section/xl` abajo | ídem (valores Mobile) |
+| Padding | `--page-gutter` a los lados (`layout/gutter`, con tope en `layout/max-width`), `space/section/xl` abajo | ídem (valores Mobile) |
 | Gap encabezado → contenido → acción | `space/gap/2xl` | `space/gap/xl` |
 | `layout="split"` | encabezado y acción en una columna de `layout/measure` (acción a `space/gap/lg`), contenido a la derecha a `space/section/md` | apilado: encabezado, contenido, acción |
 | Fondo | `color/bg/default` | ídem |
