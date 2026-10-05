@@ -517,3 +517,10 @@ setup() {
 - **Por qué:** en dos columnas, a 900 px la galería quedaba en ≈ 340 (las miniaturas tapaban la foto) y el acordeón en ≈ 310, con los títulos cortados a mitad de palabra.
 - **Corrección también en Mobile:** apilado, `.details` estira sus hijos (`align-items: stretch`). Antes el acordeón quedaba fijo en ≈ 388 px de 430 a 1023 px en vez de llenar el ancho.
 - `TODO` (diseño): validar o diseñar la Ficha en Tablet en Figma.
+
+## 2026-10-05 · Texto y espaciado en rem
+
+- **Qué:** `npm run tokens` escribe en rem (base 16 px, la del `html` de Webflow) los tokens `font/size`, `font/leading` y `font/tracking` (texto) y `space/*` (espaciado). Los semánticos que apuntan a `space` (gap, padding, section, `layout/gutter`, `icon/*`, `swatch/*`) lo siguen por alias. En Figma los valores siguen en px: la conversión es solo del código.
+- **Por qué:** si el usuario agranda el tamaño de fuente del navegador o del sistema, crecen juntos el texto y el aire que lo rodea, y la página mantiene sus proporciones. El zoom del navegador ya escalaba todo.
+- **Siguen en px:** `border/*` (hairlines de 1 y 2 px), `radius/*`, `blur/*`, los `layout/*` con valor propio (anchos de tarjeta, miniaturas, `layout/measure`, `layout/max-width`) y las media queries.
+- **Resultado:** con 16 px de base, las capturas de Home, Productos, Ficha y Contacto (390 y 1440) son idénticas byte a byte a las de antes del cambio.
