@@ -335,8 +335,8 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 | ratio/portrait-soft | 4:5 | `aspect-ratio: 4 / 5` | category-card, bloque texto + imágenes |
 | ratio/square | 1:1 | `aspect-ratio: 1 / 1` | compare-product, family-card Default, galería doble, proyectos, line-card (Mobile) |
 | ratio/landscape | 5:4 | `aspect-ratio: 5 / 4` | product-gallery y thumbs, line-card (Desktop), texto + imagen |
-| ratio/wide | 16:10 | `aspect-ratio: 16 / 10` | hero desktop (Contacto), galería de ambiente |
-| hero mobile | 70 % del alto | `height: 70svh` | Hero en mobile (Contacto) |
+| ratio/wide | 16:10 | `aspect-ratio: 16 / 10` | Galería de ambiente |
+| hero | 70 % del alto | `height: 70svh` | Hero de Contacto, Desktop y Mobile (valor por defecto del componente) |
 | hero Home | 100 % del alto | `height: 100svh` | Hero de la Home, Desktop y Mobile: todo el ancho y el alto de la pantalla (atributo `full-height`, solo de código) |
 
 Los ratios no son variables (Figma no puede ligar una proporción). En código se aplican con `aspect-ratio`.
@@ -445,8 +445,8 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | select-menu | Type: Finishes · Filter · Text | Hasta 7 opciones. surface/default, border/default, sin sombra |
 | select-option | State: Default · Hover · Selected · Focus · Disabled. Props: Name · Show swatch | Hover surface/faint, Selected role/body-medium, Focus border/focus |
 | tab | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | role/label; seleccionado con línea border/strong. Un solo tab en todo el sitio |
-| nav-link | Breakpoint: Desktop · Mobile. State: Default · Hover · Pressed · Current · Focus. Open: False · True. Theme: Default · Inverse. Props: Label · Has dropdown | Hover subrayado; Current guion de space/gap/sm × border/strong (8 × 2); Open: solo gira la flecha (sin subrayado) |
-| navbar | Breakpoint: Desktop · Mobile. Mode: Default · Search · Menu · Products. Theme: Default · Transparent | 56 px de alto. Transparent sobre el hero: fondo translúcido (color/overlay/translucent) + blur (blur/backdrop); pasa a Default al hacer scroll |
+| nav-link | Breakpoint: Desktop · Mobile. State: Default · Hover · Pressed · Current · Focus. Open: False · True. Theme: Default · Inverse. Props: Label · Has dropdown | Hover subrayado; Current guion de space/gap/sm × border/strong (8 × 2) y role/body-regular en Desktop (un peso más, como catalog-nav-item Selected); Open: solo gira la flecha (sin subrayado) |
+| navbar | Breakpoint: Desktop · Mobile. Mode: Default · Search · Menu · Products. Theme: Default · Transparent | 56 px de alto. Transparent sobre el hero: fondo translúcido (color/overlay/translucent) + blur (blur/backdrop); sigue así mientras la barra está sobre el hero y pasa a Default al dejarlo atrás (sin hero, al hacer scroll) |
 | mega-menu | Tab: Aplicación · Lámparas y artefactos · Colecciones | Un solo componente; categorías, links y "Ver todo…" salen de los datos. Usa tab y mega-link |
 | mega-link | Type: Link · Group. State: Default · Hover · Focus. Size: Default · Large. Open: False · True. Props: Name · Meta · Show meta · Show image · Show arrow | Link role/body (Large role/body-lg). Group role/body-xl con icon/plus / icon/minus |
 | logo | Size: Default · Small · Compact | 181 / 158 / 117 px |
@@ -454,7 +454,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | search-field | State: Empty · Focus · Filled. Prop: Show close | Campo con borde del navbar |
 | search-result · search-see-all | State: Default · Hover · Active (solo search-result) · Focus | Miniatura, nombre, SKU, flecha |
 | search-dropdown · search-screen | State: Results · No results (· Empty en search-screen) | Desktop / mobile |
-| hero | Breakpoint: Desktop · Mobile. Props: Eyebrow · Show eyebrow · Title · Description · Show description · Show button | Media + hero/scrim. Eyebrow role/label, título role/display, button Outline en Dark local (CTA por slot). Alto: ratio/wide desktop; 70svh mobile. En la Home, pantalla completa (100svh) en los dos |
+| hero | Breakpoint: Desktop · Mobile. Props: Eyebrow · Show eyebrow · Title · Description · Show description · Show button | Media + hero/scrim. Eyebrow role/label, título role/display, button Outline en Dark local (CTA por slot). Alto: 70svh en Desktop y Mobile. En la Home, pantalla completa (100svh) en los dos |
 | section-header | Breakpoint: Desktop · Mobile. Type: Link · Description · Title · Stacked. Props: Title · Description | role/heading-2 y role/body-lg. Sin separador. Gap título–bajada sm-md, textos–link lg. Bajada Description hasta layout/measure. En Mobile el link no se muestra: la página pone un button al final del bloque |
 | page-header | Breakpoint: Desktop · Mobile. Type: List · Detail. Props: Title · Description · Show breadcrumb · Show description · Show back · Show action | Título role/display. Sin desplegable |
 | breadcrumb · breadcrumb-item | Levels: 3 · 2 / State: Default · Hover · Current. Props: Label · Show separator | role/label. El ítem actual no lleva link ni separador |
@@ -475,7 +475,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | filter-panel · filter-row · filter-chip · filter-bar | Breakpoint / Open × State / State: Default · Hover · Focus / State: Default · Applied × Breakpoint | filter-panel desktop con scrim; mobile pantalla completa sin scrim |
 | checkbox | Size: Large · Default. Checked: False · True. State: Default · Hover · Focus · Disabled. Props: Label · Show label | Filtros y "Comparar" en tarjetas |
 | toggle · toggle-switch | Checked: False · True. State: Default · Hover · Focus · Disabled. Props: Label · Show label | Pista 38 × 18, radius/pill |
-| choice-chip | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | Formularios. No confundir con option-tile |
+| choice-chip | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | Formularios. Padding space/padding/sm-md × md. En Contacto, si entran en una fila se estiran a todo el ancho; si no, cada uno con su ancho. No confundir con option-tile |
 | option-group · option-tile | Type: Tiles · Select · Swatches / State: Default · Hover · Selected · Focus · Disabled | Configurador de la ficha. option-tile funciona como radio. Default en color/text/secondary; Disabled en color/text/disabled y tachado |
 | swatch · swatch-picker | Size: Small · Default · Large. State: Default · Hover · Selected · Focus · Disabled | Elegir acabado en la ficha. Cantidad variable en código. Disabled: acabado sin combinación con las otras opciones elegidas |
 | tag | Type: Plain · Outline. Prop: Label | No interactivo |
