@@ -312,6 +312,8 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 | layout/mega-menu-image | 438 | 438 | Ancho de la imagen del mega-menu. El alto sale de ratio/portrait-soft (4:5) |
 | layout/search-field | 360 | 360 | Ancho de search-field en el navbar Desktop; search-dropdown toma el mismo ancho. En Mobile el campo ocupa el ancho disponible |
 | layout/search-thumb | 48 | 48 | Miniatura cuadrada de search-result |
+| layout/select-filter | 160 | 160 | Ancho mínimo de select Type=Filter (celda de filter-bar): la flecha va al extremo derecho |
+| layout/select-menu-filter | 200 | 200 | Ancho mínimo de select-menu Type=Filter |
 | space/section/2xs · xs · sm · md · lg · xl | 32 · 48 · 64 · 96 · 128 · 160 | 24 · 32 · 40 · 56 · 96 · 128 | Solo entre bloques de página (padding de la sección). Es la perilla del ritmo de página |
 | space/gap/xs · sm · sm-md · md · lg · xl · xl-2xl · 2xl · 3xl · 4xl · 5xl · 6xl | 4 · 8 · 12 · 16 · 24 · 32 · 40 · 48 · 64 · 80 · 96 · 128 | 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 56 · 64 · 96 | Entre elementos (gap) |
 | space/padding/2xs · xs · sm · sm-md · md · lg · xl · xl-2xl · 2xl · 3xl · 4xl · 5xl · 6xl | 3 · 4 · 8 · 12 · 16 · 24 · 32 · 40 · 48 · 64 · 80 · 96 · 128 | 3 · 4 · 8 · 12 · 16 · 20 · 24 · 32 · 32 · 48 · 56 · 64 · 96 | Padding interno |
@@ -344,7 +346,7 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 
 `2 · Semantic · Type` guarda tamaño e interlineado por rol (`type/<rol>/size`, `type/<rol>/leading`) con modo Desktop/Mobile y, desde 1920 px, Wide. El color y los estados no son parte del estilo.
 
-**Wide (desde 1920 px):** `role/body`, `body-regular`, `body-medium` y `body-strong` pasan a 16/24; `role/body-sm` y `body-sm-medium` a 14/20; `role/body-lg`, `body-lg-regular` y `body-lg-medium` a 18/28. El resto queda como Desktop. Los controles con `body-regular` (button, select, option-tile) crecen 4 px de alto.
+**Wide (desde 1920 px):** `role/body-sm` y `body-sm-medium` a 14/20; `role/body-lg`, `body-lg-regular` y `body-lg-medium` a 18/28. El resto queda como Desktop. `role/body` y sus variantes ya son 16/24 en todos los modos (base 1rem).
 
 | Estilo | Peso | Desktop | Mobile | Uso |
 | --- | --- | --- | --- | --- |
@@ -357,10 +359,10 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 | role/body-lg | Light | 16/24 | 16/24 | Bajadas |
 | role/body-lg-regular | Regular | 16/24 | 16/24 | Títulos o preguntas de lectura |
 | role/body-lg-medium | Medium | 16/24 | 16/24 | Énfasis sobre body-lg |
-| role/body | Light | 14/20 | 14/20 | Lectura, valores de inputs, links de listas |
-| role/body-regular | Regular | 14/20 | 14/20 | Botones, opciones y controles con texto |
-| role/body-medium | Medium | 14/20 | 14/20 | Énfasis intermedio |
-| role/body-strong | SemiBold | 14/20 | 14/20 | Títulos de columna, nombres en listas |
+| role/body | Light | 16/24 | 16/24 | Lectura, valores de inputs, links de listas |
+| role/body-regular | Regular | 16/24 | 16/24 | Botones, opciones y controles con texto |
+| role/body-medium | Medium | 16/24 | 16/24 | Énfasis intermedio |
+| role/body-strong | SemiBold | 16/24 | 16/24 | Títulos de columna, nombres en listas |
 | role/body-sm | Regular | 12/16 | 12/16 | Metadatos, SKU en listados, legales, ayudas |
 | role/body-sm-medium | Medium | 12/16 | 12/16 | Énfasis sobre body-sm |
 | role/label | Regular | 12/16 | 12/16 | MAYÚSCULAS, tracking 1 px: etiquetas de inputs, tabs, títulos de grupo, breadcrumb |
@@ -433,10 +435,10 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 
 | Componente | Variantes / propiedades | Tokens y notas |
 | --- | --- | --- |
-| button | Type: Filled · Outline · Underline. State: Default · Hover · Pressed · Focus · Disabled · Loading (solo Filled). Props: Label · Show icon · Icon · Show underline · Show count · Show leading icon · Leading icon | Filled: color/action/*. Outline: color/border/strong (el borde no suma al alto: 36 como Filled). Underline: subrayado border/default (1 px) en reposo y border/strong (2 px) en hover y pressed. Focus: anillo separado (ver Foco). Loading: label "Enviando…", aria-busy |
+| button | Type: Filled · Outline · Underline. State: Default · Hover · Pressed · Focus · Disabled · Loading (solo Filled). Props: Label · Show icon · Icon · Show underline · Show count · Show leading icon · Leading icon | Filled: color/action/*. Outline: color/border/strong (el borde no suma al alto: 40 como Filled, con role/body-regular de 16/24). Underline: subrayado border/default (1 px) en reposo y border/strong (2 px) en hover y pressed. Focus: anillo separado (ver Foco). Loading: label "Enviando…", aria-busy |
 | icon-button | Size: Default · Large. Background: None · Surface · Subtle. State: Default · Hover · Pressed · Focus · Disabled. Prop: Icon | Default 24 × 24 (icon/md). Large 48 × 48 (padding sm-md + icon/xl). Surface sobre otra superficie; Subtle para destacar entre mucha información |
 | input | Type: Text · Select · Textarea. State: Empty · Filled · Focus · Error · Disabled. Open: False · True (solo Select). Props: Label · Show label · Helper · Show helper | Línea border/default → focus border/focus → error border/error. Select abierto: border/strong, chevron-up y select-menu Type=Text flotante |
-| select | Type: Field · Filter. State: Default · Hover · Focus · Disabled · Filled. Open: False · True. Props: Name · Label · Value | Filled = Filter con opción elegida |
+| select | Type: Field · Filter. State: Default · Hover · Focus · Disabled · Filled. Open: False · True. Props: Name · Label · Value | Filled = Filter con opción elegida. Filter lleva la línea inferior border/strong en todos los estados («Todos» igual que un filtro elegido) y mide al menos layout/select-filter |
 | select-menu | Type: Finishes · Filter · Text | Hasta 7 opciones. surface/default, border/default, sin sombra |
 | select-option | State: Default · Hover · Selected · Focus · Disabled. Props: Name · Show swatch | Hover surface/faint, Selected role/body-medium, Focus border/focus |
 | tab | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | role/label; seleccionado con línea border/strong. Un solo tab en todo el sitio |
@@ -471,7 +473,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | checkbox | Size: Large · Default. Checked: False · True. State: Default · Hover · Focus · Disabled. Props: Label · Show label | Filtros y "Comparar" en tarjetas |
 | toggle · toggle-switch | Checked: False · True. State: Default · Hover · Focus · Disabled. Props: Label · Show label | Pista 38 × 18, radius/pill |
 | choice-chip | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | Formularios. No confundir con option-tile |
-| option-group · option-tile | Type: Tiles · Select · Swatches / State: Default · Hover · Selected · Focus · Disabled | Configurador de la ficha. option-tile funciona como radio |
+| option-group · option-tile | Type: Tiles · Select · Swatches / State: Default · Hover · Selected · Focus · Disabled | Configurador de la ficha. option-tile funciona como radio. Default en color/text/secondary; Disabled en color/text/disabled y tachado |
 | swatch · swatch-picker | Size: Small · Default · Large. State: Default · Hover · Selected · Focus · Disabled | Elegir acabado en la ficha. Cantidad variable en código. Disabled: acabado sin combinación con las otras opciones elegidas |
 | tag | Type: Plain · Outline. Prop: Label | No interactivo |
 | count-badge | Tone: Primary · Inverse. Prop: Count | Mín. 20, crece con el número |
