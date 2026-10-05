@@ -12,6 +12,11 @@
   flex-direction: column;
 }
 
+/* Field: separación etiqueta–trigger. Filter pisa esto más abajo. */
+:host(:not([type='filter'])) .select {
+  gap: var(--arq-space-gap-sm);
+}
+
 .trigger {
   box-sizing: border-box;
   display: flex;
@@ -58,14 +63,18 @@
 }
 
 /* ── Type=Field ──────────────────────────────────────────────────
-   Default y Open color/surface/soft con línea inferior border/default en
-   color/border/strong; Hover color/surface/faint (el set; la descripción
-   dice surface/subtle). Padding space/padding/sm-md × space/padding/md; la
-   línea se descuenta del padding (48, como el set). */
+   Default sin fondo; Hover color/surface/faint; Focus color/surface/soft con
+   línea color/border/focus; Open color/surface/soft. Línea inferior
+   border/default en color/border/strong (Focus: color/border/focus). Padding
+   space/padding/sm-md × space/padding/md; la línea se descuenta del padding
+   (48, como el set). La muestra (swatch) solo se ve si la opción es un
+   acabado/color (showSwatch): sin imagen cae al neutro de arq-swatch
+   (DESIGN.md §8); si no es un campo de color, no hay swatch. */
 :host(:not([type='filter'])) .trigger {
   padding: var(--arq-space-padding-sm-md) var(--arq-space-padding-md) calc(var(--arq-space-padding-sm-md) - var(--arq-border-default));
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-strong);
-  background: var(--arq-color-surface-soft);
+  /* Sin esto queda el gris que el navegador le pone a todo <button> */
+  background: var(--arq-color-surface-transparent);
   color: var(--arq-color-text-primary);
 }
 
@@ -73,6 +82,15 @@
   :host(:not([type='filter']):not([open])) .trigger:enabled:hover {
     background: var(--arq-color-surface-faint);
   }
+}
+
+:host(:not([type='filter'])[open]) .trigger,
+:host(:not([type='filter'])) .trigger:focus-visible {
+  background: var(--arq-color-surface-soft);
+}
+
+:host(:not([type='filter'])) .trigger:focus-visible {
+  border-bottom-color: var(--arq-color-border-focus);
 }
 
 :host(:not([type='filter'])) .menu {
@@ -87,6 +105,7 @@
 :host([type='filter']) .select {
   gap: var(--arq-space-gap-xs);
   padding-bottom: var(--arq-space-padding-xs);
+  min-width: var(--arq-layout-select-filter);
 }
 
 /* La línea se descuenta del padding (50, como el set) */
@@ -135,6 +154,11 @@
 :host([disabled]) .label,
 :host([disabled]) .icon {
   color: var(--arq-color-text-disabled);
+}
+
+/* Disabled: la muestra se atenúa (como en el set; sin token, valor fijo). */
+:host([disabled]) .swatch {
+  opacity: 0.4;
 }
 
 /* Foco: anillo de DESIGN.md §7 alrededor del campo (2px: valor fijado ahí) */

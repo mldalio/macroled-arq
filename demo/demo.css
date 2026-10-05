@@ -140,6 +140,12 @@
   gap: var(--arq-space-gap-lg);
 }
 
+/* compare-product Empty ocupa el alto de la columna (:host([empty]){height:100%}):
+   acá hace falta un padre con alto definido, como compare-header (align-items: stretch). */
+.demo-compare-products {
+  align-items: stretch;
+}
+
 /* Columna angosta para probar labels largos */
 .demo-narrow {
   display: grid;

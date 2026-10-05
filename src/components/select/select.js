@@ -1,8 +1,9 @@
 // select · Figma 921:2544 · ficha doc/select
 //
 // Selector con menú desplegable (select-menu). Type=Field: campo del
-// configurador (muestra + nombre). Type=Filter: celda de filter-bar (etiqueta
-// + valor; "Todos" primero).
+// configurador (etiqueta siempre visible arriba + nombre; muestra solo si la
+// opción es un acabado/color). Type=Filter: celda de filter-bar (etiqueta +
+// valor; "Todos" primero).
 //
 //   <arq-select type="filter" label="Acabado" name="color_carcasa"></arq-select>
 //   select.options = [
@@ -99,16 +100,13 @@ class ArqSelect extends ArqElement {
     const root = this.shadowRoot;
     const filter = this.type === 'filter';
     const label = root.querySelector('.label');
-    label.hidden = !filter;
+    // La etiqueta se ve siempre arriba del campo, en los dos Type y en
+    // cualquier State (incluido Disabled).
+    label.hidden = false;
     label.textContent = this.label ?? '';
     label.className = `label role-label-sm`;
-    if (filter) {
-      this.trigger.setAttribute('aria-labelledby', `${label.id} ${this.trigger.id}`);
-      this.trigger.removeAttribute('aria-label');
-    } else {
-      this.trigger.removeAttribute('aria-labelledby');
-      if (this.label) this.trigger.setAttribute('aria-label', this.label);
-    }
+    this.trigger.setAttribute('aria-labelledby', `${label.id} ${this.trigger.id}`);
+    this.trigger.removeAttribute('aria-label');
     this.trigger.disabled = this.disabled;
     this.menu.type = filter ? 'filter' : 'finishes';
     if (changed.has('open')) {
@@ -152,7 +150,11 @@ class ArqSelect extends ArqElement {
     const current = list.find((o) => o.value === (this.value ?? '')) ?? (this.type === 'filter' ? list[0] : null);
     const filled = this.type === 'filter' && Boolean(this.value);
     if (this.filled !== filled) this.filled = filled;
-    // Campo: muestra (Field Large; Filter Small, solo si hay un acabado elegido) + nombre
+    // Muestra (swatch): solo si la opción es un acabado/color (showSwatch),
+    // en Field siempre que la haya y en Filter solo con un valor elegido.
+    // TODO (diseño): falta definir qué campos cuentan como "color" (p. ej.
+    // color de carcasa) — hasta entonces, showSwatch lo decide quien arma
+    // las opciones (compare-product no lo usa: solo texto).
     const swatch = this.shadowRoot.querySelector('.swatch');
     const showSwatch = Boolean(current?.showSwatch) && (this.type === 'field' || filled);
     swatch.hidden = !showSwatch;

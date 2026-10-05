@@ -1,0 +1,156 @@
+/* compare-product · Figma 1057:2522 (+ empty-hover 1769:26241). Solo tokens
+   semánticos. Empty ocupa todo el alto de la columna (como un Filled: foto +
+   info + selects), no un cuadrado 1:1 — por eso compare-header estira sus
+   columnas a la misma altura (align-items: stretch). */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.product {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-lg);
+  width: 100%;
+  height: 100%;
+}
+
+/* Media 1:1 (Filled), tope layout/compare-media-max, fondo color/bg/subtle */
+.media {
+  position: relative;
+  width: 100%;
+  max-width: var(--arq-layout-compare-media-max);
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--arq-color-bg-subtle);
+}
+
+.media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.remove {
+  position: absolute;
+  top: var(--arq-space-padding-sm-md);
+  right: var(--arq-space-padding-sm-md);
+}
+
+/* State=Empty: caja punteada sin fondo; la caja entera es un <button> (más
+   adelante abre un modal para elegir producto). El cuadrado 1:1 queda como
+   alto mínimo y crece hasta el alto de la columna cuando compare-header la
+   estira (align-items: stretch). */
+:host([empty]) .media {
+  flex: 1 1 auto;
+  background: var(--arq-color-surface-transparent);
+  border: var(--arq-border-default) dashed var(--arq-color-border-default);
+}
+
+:host([empty]) .remove,
+:host([empty]) .info,
+:host([empty]) .selects {
+  display: none;
+}
+
+/* No va absoluto: así el ícono y el texto le dan alto propio a la caja
+   (si no, Empty se achica a cero cuando nadie la estira). */
+.add {
+  all: unset;
+  display: none;
+  flex: 1 1 auto;
+  align-self: stretch;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--arq-space-gap-sm-md);
+  box-sizing: border-box;
+  cursor: pointer;
+  color: var(--arq-color-text-secondary);
+}
+
+:host([empty]) .add {
+  display: flex;
+}
+
+.add-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--arq-space-padding-sm-md);
+  background: var(--arq-color-surface-subtle);
+}
+
+.add-icon .icon {
+  width: var(--arq-icon-xl);
+  height: var(--arq-icon-xl);
+}
+
+.add:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: calc(-1 * var(--arq-border-strong));
+}
+
+/* State=empty-hover: el fondo color/surface/faint va en toda la columna, el
+   borde punteado pasa a color/border/strong y el ícono pierde su fondo. */
+@media (hover: hover) {
+  :host([empty]) .product:hover {
+    background: var(--arq-color-surface-faint);
+  }
+
+  :host([empty]) .product:hover .media {
+    border-color: var(--arq-color-border-strong);
+  }
+
+  :host([empty]) .product:hover .add-icon {
+    background: var(--arq-color-surface-transparent);
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-sm);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm-md);
+  color: var(--arq-color-text-primary);
+  text-decoration: none;
+}
+
+.title:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: var(--arq-space-gap-xs);
+}
+
+.name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.title .icon {
+  flex: none;
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+}
+
+.sku {
+  margin: 0;
+  color: var(--arq-color-text-tertiary);
+}
+
+.selects {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-sm-md);
+}

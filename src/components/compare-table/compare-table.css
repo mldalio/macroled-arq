@@ -8,16 +8,25 @@
 }
 
 /* Un solo scroll para cabecera y filas; layout/gutter a los lados (en Mobile
-   el scroll llega al borde de la pantalla) */
+   el scroll llega al borde de la pantalla). Al final, space/section/xl antes
+   de lo que sigue en la página (como en Final: esa separación vive dentro de
+   la tabla, no afuera). */
 .scroll {
   overflow-x: auto;
   overscroll-behavior-x: contain;
   padding-inline: var(--arq-layout-gutter);
+  padding-block-end: var(--arq-space-section-xl);
 }
 
 .scroll:focus-visible {
   outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
   outline-offset: calc(-1 * var(--arq-border-strong));
+}
+
+/* embedded: el scroll horizontal lo maneja el contenedor de afuera
+   (arq-comparativa, junto con compare-header) */
+:host([embedded]) .scroll {
+  overflow: visible;
 }
 
 .table {
@@ -41,20 +50,16 @@ td {
   padding-inline-end: var(--arq-space-gap-lg);
 }
 
-/* Cabecera: un producto por columna (compare-slot), padding inferior space/gap/lg */
-thead th,
-thead td {
-  padding-block-end: var(--arq-space-gap-lg);
-  vertical-align: top;
+/* Cabecera: solo semántica de tabla (sin contenido visible; la identidad de
+   cada producto la muestra arq-compare-header, arriba, en la página) */
+thead th {
+  padding: 0;
+  height: 0;
+  border: none;
 }
 
 .product {
   padding-inline-end: var(--arq-space-gap-lg);
-}
-
-.mobile-name {
-  display: none;
-  color: var(--arq-color-text-primary);
 }
 
 /* compare-group: role/label en color/text/primary, arriba space/gap/2xl,
@@ -87,49 +92,62 @@ thead td {
 }
 
 @media (max-width: 767px) {
-  .scroll {
-    padding-inline: 0;
-  }
-
   .table {
-    width: auto;
+    width: max-content;
+    min-width: 100%;
     table-layout: auto;
   }
 
-  /* Etiqueta fija a la izquierda con fondo color/bg/default */
-  .label-cell {
-    position: sticky;
-    left: 0;
-    z-index: 1;
-    min-width: var(--arq-layout-compare-label);
-    max-width: var(--arq-layout-compare-label);
-    padding-inline-start: var(--arq-layout-gutter);
-    box-sizing: content-box;
+  /* compare-row Breakpoint=Mobile: la etiqueta pasa a ocupar toda la fila
+     arriba (en vez de una columna fija al costado) y los valores quedan en su
+     propia línea debajo, dentro del mismo <tr> (flex-wrap, sin un <tr> más).
+     Ya no hace falta sticky ni un ancho de columna reservado a la izquierda:
+     todo el bloque (compare-header incluido) se desplaza junto. */
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--arq-space-gap-sm) var(--arq-space-gap-md);
+    border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
   }
 
-  .value,
-  .product {
-    box-sizing: border-box;
-    min-width: var(--arq-layout-compare-column);
-    max-width: var(--arq-layout-compare-column);
+  .row > * {
+    border-bottom: none;
+    padding-block: 0;
   }
 
-  .product {
-    padding-inline-start: var(--arq-space-padding-md);
+  .row .label-cell {
+    flex: 0 0 100%;
+    width: auto;
+    padding: var(--arq-space-padding-xs) 0;
   }
 
-  thead th .mobile-name {
+  .row .value {
+    flex: 0 0 var(--arq-layout-compare-column);
+    width: var(--arq-layout-compare-column);
+    padding: var(--arq-space-padding-sm) 0 var(--arq-space-padding-sm) var(--arq-space-padding-md);
+  }
+
+  .row .value:first-of-type {
+    border-left: none;
+    padding-inline-start: 0;
+  }
+
+  /* compare-section-group: separación entre el título del grupo y su primera
+     fila (space/padding/md) y entre filas (space/gap/sm). La tabla pasa a
+     bloque para que el margen entre <tr> funcione (el modelo de tabla lo
+     ignora); los role= explícitos de compare-table.js mantienen la semántica
+     para lectores de pantalla. */
+  .table,
+  thead,
+  tbody {
     display: block;
+  }
+
+  .row + .row {
     margin-top: var(--arq-space-gap-sm);
   }
 
-  /* El título del grupo queda a la vista al desplazar */
-  .group th {
-    padding-inline-start: var(--arq-layout-gutter);
-  }
-
-  .group-label {
-    position: sticky;
-    left: var(--arq-layout-gutter);
+  .group + .row {
+    margin-top: var(--arq-space-padding-md);
   }
 }

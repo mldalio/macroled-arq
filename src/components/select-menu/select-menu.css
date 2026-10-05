@@ -11,9 +11,13 @@
   background: var(--arq-color-surface-default);
 }
 
-:host([type='filter']),
 :host([type='text']) {
   width: max-content;
+  max-width: calc(100vw - 2 * var(--arq-layout-gutter));
+}
+
+:host([type='filter']) {
+  width: var(--arq-layout-select-menu-filter);
   max-width: calc(100vw - 2 * var(--arq-layout-gutter));
 }
 

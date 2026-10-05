@@ -17,6 +17,7 @@
 
 import { loadSource } from './source.js';
 import { ATTRIBUTES, FILTER_FIELDS, GLOSSARY_COLUMNS, attributeInfo, specSections } from './attributes.js';
+import { variantOptions, findVariant, choose } from './variants.js';
 
 let pending = null;
 
@@ -302,7 +303,46 @@ function variantSummary(group) {
 }
 
 // ── Comparativa ──────────────────────────────────────────────────────
-/** Datos de compare-table para hasta 3 SKU (los que no existen se omiten). */
+// Los SKU de un grupo con la forma que esperan las funciones de variants.js.
+const variantList = (group) => group.variants.map((v) => ({ sku: v.sku, isDefault: v === group.defaultVariant, attributes: v.values }));
+
+const selectionOf = (group, variant) => Object.fromEntries(group.variantAttributes.map((field) => [field, variant.values[field]]));
+
+/**
+ * Selectores de variante de una columna de la comparativa: uno por campo de
+ * VARIANT_ATTRIBUTES (Color, Altura…), con la misma disponibilidad que el
+ * configurador de la ficha (una opción que no forma un SKU va deshabilitada).
+ *   [{ field, label, value, options: [{ value, label, disabled, showSwatch }] }]
+ */
+function compareAttributes(group, variant) {
+  const selection = selectionOf(group, variant);
+  return variantOptions(variantList(group), group.variantAttributes, selection).map(({ attribute, options }) => {
+    const info = attributeInfo(attribute);
+    return {
+      field: attribute,
+      label: info.label,
+      value: selection[attribute] ?? '',
+      // La muestra solo en los campos de acabado/color (select: swatch solo si es acabado)
+      options: options.map((o) => ({ value: o.value, label: o.value, disabled: o.disabled, showSwatch: info.control === 'swatches' })),
+    };
+  });
+}
+
+/**
+ * SKU que queda al cambiar un atributo de variante en una columna de la
+ * comparativa (mismo criterio que la ficha: choose + findVariant). null si
+ * esa combinación no existe.
+ */
+export async function skuForAttribute(sku, field, value) {
+  const { groups } = await loadCatalog();
+  const group = groups.find((g) => g.variants.some((v) => v.sku === sku));
+  const current = group?.variants.find((v) => v.sku === sku);
+  if (!group || !current) return null;
+  const selection = choose(selectionOf(group, current), field, value);
+  return findVariant(variantList(group), selection)?.sku ?? null;
+}
+
+/** Datos de compare-header + compare-table para hasta 3 SKU (los que no existen se omiten). */
 export async function getCompare(skus) {
   const { groups } = await loadCatalog();
   const found = skus.slice(0, 3).flatMap((sku) => {
@@ -311,7 +351,14 @@ export async function getCompare(skus) {
   });
   const products = found.map(({ group, variant }) => {
     const card = productCard(group, variant, true);
-    return { sku: variant.sku, name: group.name, meta: variant.sku, image: card.image, href: card.href };
+    return {
+      sku: variant.sku,
+      name: group.name,
+      meta: variant.sku,
+      image: card.image,
+      href: card.href,
+      attributes: compareAttributes(group, variant),
+    };
   });
   const sections = specSections(Object.assign({}, ...found.map(({ variant }) => variant.values)));
   const tableGroups = sections.map((section) => ({
