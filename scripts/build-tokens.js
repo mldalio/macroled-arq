@@ -3,6 +3,8 @@
 //   src/styles/tokens.css  → variables --arq-*
 //     :root                             valores base (Light · Desktop)
 //     [data-arq-theme="dark"]           modo dark (solo los tokens que lo tienen)
+//     [data-arq-theme="light"]          Light local: los mismos tokens con su valor Light,
+//                                       para un bloque que queda en Light dentro de Dark
 //     @media (max-width: 767px) :root   modo mobile (solo los que cambian)
 //     @media (768px–1023px) :root       modo tablet (solo los que cambian)
 //     @media (min-width: 1440px) :root  modo large (solo los que cambian)
@@ -11,6 +13,8 @@
 //   src/styles/dark.css    → el mismo bloque [data-arq-theme="dark"], para adoptarlo
 //     en cada Shadow DOM (src/styles/roles.js): así el atributo también funciona
 //     en un contenedor interno de un componente (Dark local)
+//   src/styles/light.css   → el bloque [data-arq-theme="light"], adoptado igual
+//     (Light local: filter-panel queda en Light con Iluminar)
 //   src/styles/roles.css   → estilos de texto role/* como clases .role-<nombre>
 //     (no son variables: los componentes los adoptan con src/styles/roles.js)
 // Nunca se usa prefers-color-scheme: dark solo se activa con data-arq-theme.
@@ -23,6 +27,7 @@ import { MODES, MODE_GROUPS, MODES_KEY, ROLE_PROPS, isToken, validate } from './
 const SOURCE = new URL('../tokens/tokens.json', import.meta.url);
 const OUT_TOKENS = new URL('../src/styles/tokens.css', import.meta.url);
 const OUT_DARK = new URL('../src/styles/dark.css', import.meta.url);
+const OUT_LIGHT = new URL('../src/styles/light.css', import.meta.url);
 const OUT_ROLES = new URL('../src/styles/roles.css', import.meta.url);
 
 const BASE_KEY = 'arq.baseValue';
@@ -143,8 +148,15 @@ function createDictionary(tokens, files) {
   });
 }
 
-async function cssVariables(mode, selector) {
-  const filter = mode ? (token) => !isRole(token) && inMode(token) : (token) => !isRole(token);
+// Un token tiene modo Dark si su valor Dark cambia respecto del base.
+const hasDark = (token) => {
+  const dark = token.original.$extensions?.[MODES_KEY]?.dark;
+  return dark !== undefined && JSON.stringify(dark) !== JSON.stringify(token.original.$value);
+};
+
+// only: filtro extra para la pasada base (el bloque Light local).
+async function cssVariables(mode, selector, only = () => true) {
+  const filter = mode ? (token) => !isRole(token) && inMode(token) : (token) => !isRole(token) && only(token);
   const sd = createDictionary(treeForMode(tokens, mode), [
     {
       destination: 'tokens.css',
@@ -170,6 +182,7 @@ const tokens = treeForMode(source);
 
 const base = await cssVariables(null, ':root');
 const dark = await cssVariables('dark', '[data-arq-theme="dark"]');
+const light = await cssVariables(null, '[data-arq-theme="light"]', hasDark);
 const mobile = await cssVariables('mobile', ':root');
 const tablet = await cssVariables('tablet', ':root');
 const large = await cssVariables('large', ':root');
@@ -181,6 +194,7 @@ const reducedMotion = await cssVariables('reducedMotion', ':root');
 const sections = [
   `/* Base: Light · Desktop (1024–1439 px) */\n${base}`,
   `/* Dark: con data-arq-theme="dark" (Iluminar o Dark local), nunca por prefers-color-scheme */\n${dark}`,
+  `/* Light local: con data-arq-theme="light", un bloque que queda en Light dentro de Dark (filter-panel) */\n${light}`,
   `/* Mobile: hasta 767 px */\n@media (max-width: 767px) {\n${indent(mobile)}\n}`,
 ];
 if (tablet) sections.push(`/* Tablet: 768–1023 px */\n@media (min-width: 768px) and (max-width: 1023px) {\n${indent(tablet)}\n}`);
@@ -201,12 +215,18 @@ await writeFile(
   `${HEADER}/* Lo adopta cada Shadow DOM (src/styles/roles.js): Dark local en un contenedor interno. */\n${dark}\n`,
 );
 
+// Bloque Light local para los Shadow DOM, por el mismo motivo.
+await writeFile(
+  OUT_LIGHT,
+  `${HEADER}/* Lo adopta cada Shadow DOM (src/styles/roles.js): Light local en un contenedor interno. */\n${light}\n`,
+);
+
 const rolesSd = createDictionary(tokens, [{ destination: 'roles.css', format: 'arq/roles', filter: isRole }]);
 const [{ output: roles }] = await rolesSd.formatPlatform('css');
 await writeFile(OUT_ROLES, roles);
 
 // Control de la salida: nada vacío ni mal serializado.
-const broken = `${base}\n${dark}\n${mobile}\n${tablet}\n${large}\n${wide}\n${reducedMotion}\n${roles}`
+const broken = `${base}\n${dark}\n${light}\n${mobile}\n${tablet}\n${large}\n${wide}\n${reducedMotion}\n${roles}`
   .split('\n')
   .filter((line) => /undefined|\[object|NaN|:\s*;/.test(line));
 if (broken.length) {
@@ -217,7 +237,7 @@ if (broken.length) {
 const countDecls = (css) => (css.match(/^\s*--arq-/gm) ?? []).length;
 const roleCount = (roles.match(/^\.role-/gm) ?? []).length;
 console.log(
-  `${count} tokens → ${countDecls(base)} variables base, ${countDecls(dark)} dark, ` +
+  `${count} tokens → ${countDecls(base)} variables base, ${countDecls(dark)} dark, ${countDecls(light)} light local, ` +
     `${countDecls(mobile)} mobile, ${countDecls(tablet)} tablet, ${countDecls(large)} large, ${countDecls(wide)} wide, ${countDecls(reducedMotion)} reduced-motion y ${roleCount} estilos role/*. ` +
     'Generados en src/styles/.',
 );

@@ -40,6 +40,7 @@ panel.addEventListener('arq:apply', (e) => aplicar(e.detail.filters));
 - **Diálogo modal nativo** (`<dialog>` + `showModal()`): el foco queda adentro (arranca en cerrar), Esc y el scrim cierran, y el foco vuelve al botón que lo abrió.
 - **Chips:** tocar uno desmarca su opción y el foco pasa al chip siguiente, al anterior o a cerrar. "Borrar todo" desmarca todo sin cerrar.
 - El cuerpo (las filas) tiene scroll propio; encabezado, chips y footer quedan fijos.
+- **Siempre en Light**, también con Iluminar: el `<dialog>` lleva `data-arq-theme="light"` (Light local, `src/styles/light.css`). Las filas y el título, que llegan por slot, lo heredan.
 
 ## Tokens
 
