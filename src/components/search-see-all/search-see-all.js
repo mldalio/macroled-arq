@@ -2,7 +2,7 @@
 //
 // Última fila de los resultados: lleva a la página con todos los resultados.
 //
-//   <arq-search-see-all href="/arq/buscar?q=kanu" term="kanu" count="12"></arq-search-see-all>
+//   <arq-search-see-all href="/arq/productos?q=kanu" term="kanu" count="12"></arq-search-see-all>
 //
 // - Texto "Ver todos los resultados (N) para “término”" en role/body-sm,
 //   color/text/tertiary; el término en role/body-sm-medium y

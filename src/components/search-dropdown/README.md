@@ -7,7 +7,7 @@ Resultados de la búsqueda en Desktop, debajo de search-field y con su mismo anc
 ```html
 <arq-search-dropdown term="kanu">
   <arq-search-result href="…">Kanu Jardín<span slot="meta">KANU-J-…</span></arq-search-result>
-  <arq-search-see-all href="/arq/buscar?q=kanu" term="kanu" count="12"></arq-search-see-all>
+  <arq-search-see-all href="/arq/productos?q=kanu" term="kanu" count="12"></arq-search-see-all>
 </arq-search-dropdown>
 <arq-search-dropdown state="no-results" term="lámpara roja"></arq-search-dropdown>
 ```
