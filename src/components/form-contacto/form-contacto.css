@@ -17,7 +17,7 @@
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   column-gap: var(--arq-space-gap-6xl);
   align-items: start;
-  padding: var(--arq-space-section-lg) var(--arq-layout-gutter) var(--arq-space-section-xl);
+  padding: var(--arq-space-section-lg) var(--page-gutter) var(--arq-space-section-xl);
 }
 
 /* ── Información ────────────────────────────────────────────────── */

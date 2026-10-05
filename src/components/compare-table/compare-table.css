@@ -12,7 +12,7 @@
 .scroll {
   overflow-x: auto;
   overscroll-behavior-x: contain;
-  padding-inline: var(--arq-layout-gutter);
+  padding-inline: var(--page-gutter);
 }
 
 .scroll:focus-visible {
@@ -103,7 +103,7 @@ thead td {
     z-index: 1;
     min-width: var(--arq-layout-compare-label);
     max-width: var(--arq-layout-compare-label);
-    padding-inline-start: var(--arq-layout-gutter);
+    padding-inline-start: var(--page-gutter);
     box-sizing: content-box;
   }
 
@@ -125,11 +125,11 @@ thead td {
 
   /* El título del grupo queda a la vista al desplazar */
   .group th {
-    padding-inline-start: var(--arq-layout-gutter);
+    padding-inline-start: var(--page-gutter);
   }
 
   .group-label {
     position: sticky;
-    left: var(--arq-layout-gutter);
+    left: var(--page-gutter);
   }
 }

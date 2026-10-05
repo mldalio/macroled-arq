@@ -4,6 +4,8 @@
 //     :root                             valores base (Light · Desktop)
 //     [data-arq-theme="dark"]           modo dark (solo los tokens que lo tienen)
 //     @media (max-width: 767px) :root   modo mobile (solo los que cambian)
+//     @media (768px–1023px) :root       modo tablet (solo los que cambian)
+//     @media (min-width: 1440px) :root  modo large (solo los que cambian)
 //     @media (prefers-reduced-motion: reduce) :root   duraciones de motion/* en 0
 //   src/styles/dark.css    → el mismo bloque [data-arq-theme="dark"], para adoptarlo
 //     en cada Shadow DOM (src/styles/roles.js): así el atributo también funciona
@@ -15,7 +17,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import StyleDictionary from 'style-dictionary';
 import { getReferences } from 'style-dictionary/utils';
-import { MODES, MODES_KEY, ROLE_PROPS, isToken, validate } from './lib/validate-tokens.js';
+import { MODES, MODE_GROUPS, MODES_KEY, ROLE_PROPS, isToken, validate } from './lib/validate-tokens.js';
 
 const SOURCE = new URL('../tokens/tokens.json', import.meta.url);
 const OUT_TOKENS = new URL('../src/styles/tokens.css', import.meta.url);
@@ -34,10 +36,10 @@ function treeForMode(node, mode, path = []) {
   if (isToken(node)) {
     const modes = node.$extensions?.[MODES_KEY] ?? {};
     const present = MODES.filter((m) => m in modes);
-    if (present.length > 1) {
+    if (MODE_GROUPS.filter((group) => group.some((m) => present.includes(m))).length > 1) {
       throw new Error(
-        `${path.join('/')}: tiene más de un modo (${present.join(', ')}). ` +
-          'Hoy los modos no se cruzan: Color es Light/Dark, Dimension/Type son Desktop/Mobile y Motion tiene reducedMotion.',
+        `${path.join('/')}: cruza modos de colecciones distintas (${present.join(', ')}). ` +
+          'Color es Light/Dark, Dimension es Desktop/Mobile/Tablet/Large, Type es Desktop/Mobile y Motion tiene reducedMotion.',
       );
     }
     if (!mode || !(mode in modes)) return node;
@@ -166,13 +168,18 @@ const tokens = treeForMode(source);
 const base = await cssVariables(null, ':root');
 const dark = await cssVariables('dark', '[data-arq-theme="dark"]');
 const mobile = await cssVariables('mobile', ':root');
+const tablet = await cssVariables('tablet', ':root');
+const large = await cssVariables('large', ':root');
 const reducedMotion = await cssVariables('reducedMotion', ':root');
 
+// Los rangos de los breakpoints no se pisan: el orden de los bloques no importa.
 const sections = [
-  `/* Base: Light · Desktop */\n${base}`,
+  `/* Base: Light · Desktop (1024–1439 px) */\n${base}`,
   `/* Dark: con data-arq-theme="dark" (Iluminar o Dark local), nunca por prefers-color-scheme */\n${dark}`,
   `/* Mobile: hasta 767 px */\n@media (max-width: 767px) {\n${indent(mobile)}\n}`,
 ];
+if (tablet) sections.push(`/* Tablet: 768–1023 px */\n@media (min-width: 768px) and (max-width: 1023px) {\n${indent(tablet)}\n}`);
+if (large) sections.push(`/* Large: desde 1440 px */\n@media (min-width: 1440px) {\n${indent(large)}\n}`);
 if (reducedMotion) {
   sections.push(
     `/* Movimiento reducido: fast, base y slow en 0 (feedback no cambia) */\n` +
@@ -205,6 +212,6 @@ const countDecls = (css) => (css.match(/^\s*--arq-/gm) ?? []).length;
 const roleCount = (roles.match(/^\.role-/gm) ?? []).length;
 console.log(
   `${count} tokens → ${countDecls(base)} variables base, ${countDecls(dark)} dark, ` +
-    `${countDecls(mobile)} mobile, ${countDecls(reducedMotion)} reduced-motion y ${roleCount} estilos role/*. ` +
+    `${countDecls(mobile)} mobile, ${countDecls(tablet)} tablet, ${countDecls(large)} large, ${countDecls(reducedMotion)} reduced-motion y ${roleCount} estilos role/*. ` +
     'Generados en src/styles/.',
 );

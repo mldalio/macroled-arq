@@ -17,7 +17,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--arq-space-gap-md);
-  padding: var(--arq-space-padding-md) var(--arq-layout-gutter);
+  padding: var(--arq-space-padding-md) var(--page-gutter);
   border-top: var(--arq-border-default) solid var(--arq-color-border-default);
   background: var(--arq-color-surface-default);
   color: var(--arq-color-text-primary);

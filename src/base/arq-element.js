@@ -49,7 +49,17 @@ const templates = new WeakMap();
 // y con la tipografía y el color del contenedor del componente, que lleva la
 // clase role/*. !important porque los estilos del sitio (Webflow) para h1–h6
 // ganan sobre ::slotted.
+// --page-gutter: margen lateral del contenido de página (DESIGN.md §2 ·
+// Breakpoints y grilla). Es layout/gutter hasta que el viewport supera
+// layout/max-width + 2 × gutter (1920 px); desde ahí crece y el contenido queda
+// centrado en layout/max-width. Va como padding, así los fondos siguen a todo
+// el ancho. 100vw (no 100%) para que dé lo mismo en cualquier contenedor
+// (celdas sticky, carruseles). Variable local: no se declara en :root.
 const baseCss = `
+:host {
+  --page-gutter: max(var(--arq-layout-gutter), (100vw - var(--arq-layout-max-width)) / 2);
+}
+
 :host([hidden]),
 [hidden] {
   display: none !important;

@@ -15,7 +15,7 @@
 .tabs {
   display: flex;
   gap: var(--arq-space-gap-xl);
-  padding: var(--arq-space-gap-md) var(--arq-layout-gutter) 0;
+  padding: var(--arq-space-gap-md) var(--page-gutter) 0;
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
 }
 
@@ -38,7 +38,7 @@
   flex-direction: column;
   gap: var(--arq-space-gap-md);
   min-width: 0;
-  padding: var(--arq-space-gap-xl) var(--arq-layout-gutter);
+  padding: var(--arq-space-gap-xl) var(--page-gutter);
 }
 
 .columns {
