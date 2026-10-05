@@ -49,12 +49,12 @@
   --arq-font-leading-48: 3rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-leading-56: 3.5rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-leading-72: 4.5rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-tracking-tighter: -0.8px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-tracking-tight: -0.4px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-tracking-normal: 0px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-tracking-wide: 0.4px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-tracking-wider: 0.8px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
-  --arq-font-tracking-widest: 1px; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-tracking-tighter: -0.05rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-tracking-tight: -0.025rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-tracking-normal: 0rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-tracking-wide: 0.025rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-tracking-wider: 0.05rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-tracking-widest: 0.0625rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-radius-0: 0px;
   --arq-radius-2: 2px;
   --arq-radius-4: 4px;
