@@ -464,7 +464,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | accordion-item | Open: False · True. State: Default · Hover · Focus. Breakpoint: Desktop · Mobile. Prop: Title | Ficha: bloques de especificaciones con spec-list adentro |
 | spec-list · spec-row | Props: Title / Label · Value | Cantidad de filas libre en código |
 | category-card | Breakpoint: Desktop · Mobile. State: Default · Hover · Focus. Prop: Name | Home. Toda la tarjeta es link. ratio/portrait-soft |
-| line-card | Breakpoint: Desktop · Mobile. State: Default · Hover · Focus. Props: Label · Name · Description | Home, editorial. ratio/landscape (Desktop) · ratio/square (Mobile) |
+| line-card | Breakpoint: Desktop · Mobile. State: Default · Hover · Focus. Props: Label · Name · Description | Home, editorial. El único link es el botón (button Underline): la imagen y el nombre no son clickeables. Hover y Focus en el botón. ratio/landscape (Desktop) · ratio/square (Mobile) |
 | family-card | Size: Default · Large. State: Default · Hover · Focus. Prop: Name | Ficha: otras familias de la colección. Misma imagen que la product-card del grupo (estudio, luz apagada) |
 | product-card | Size: Large · Small. State: Default · Hover · Focus. Props: Name · Meta · Show meta · Show finishes · Show compare | Toma el ancho de su columna (FILL). ratio/portrait. Hover y Iluminar cambian la imagen (ver Imágenes de product-card) |
 | product-gallery · gallery-thumb | Breakpoint: Desktop · Mobile / State: Default · Hover · Selected · Focus | ratio/landscape |
