@@ -1,0 +1,71 @@
+<!--
+  Colecciones · /arq/colecciones · Code Embed de Webflow (docs/decisiones.md, 2026-10-01 · Páginas en Webflow)
+  Pantalla: Final › Colecciones (1160:6116 Desktop · 1160:6530 Mobile · 1254:13048 / 1254:13317 Iluminar)
+  Se edita acá y se pega en Webflow. dist/arq.js, dist/arq.css y Albert Sans se cargan a nivel sitio.
+
+  Una card por colección, desde Typesense (arq-catalog-listing unit="colecciones"), con filtros técnicos:
+  una colección aparece si alguno de sus SKU cumple. Sin comparar. La navegación es la misma que Productos.
+  TODO (datos): de dónde salen las cuatro imágenes de una card de colección (DESIGN.md §8).
+-->
+<arq-navbar>
+  <!-- Colecciones es parte de Productos: en Final, Productos va como Current (sin flecha; se deja has-dropdown) -->
+  <arq-nav-link slot="links" has-dropdown current>Productos</arq-nav-link>
+  <arq-nav-link slot="links" href="/arq/glosario">Glosario</arq-nav-link>
+  <arq-nav-link slot="links" href="/arq/contacto">Contacto</arq-nav-link>
+</arq-navbar>
+
+<main>
+  <arq-page-header show-breadcrumb>
+    <arq-breadcrumb slot="breadcrumb">
+      <arq-breadcrumb-item href="/arq" show-separator>Inicio</arq-breadcrumb-item>
+      <arq-breadcrumb-item current>Colecciones</arq-breadcrumb-item>
+    </arq-breadcrumb>
+    <h1 slot="title">Colecciones</h1>
+  </arq-page-header>
+
+  <arq-catalog-listing unit="colecciones">
+    <arq-catalog-nav slot="nav" label="Categorías">
+      <arq-catalog-nav-group>
+        <span slot="label">Interior</span>
+        <arq-catalog-nav-item href="/arq/productos?environment=Interior">Todo interior</arq-catalog-nav-item>
+        <arq-catalog-nav-item href="/arq/productos?environment=Interior&amp;application=Colgante&amp;product_type=Luminaria">Colgante</arq-catalog-nav-item>
+        <arq-catalog-nav-item href="/arq/productos?environment=Interior&amp;product_type=L%C3%A1mpara">Lámparas</arq-catalog-nav-item>
+      </arq-catalog-nav-group>
+      <arq-catalog-nav-group>
+        <span slot="label">Exterior</span>
+        <arq-catalog-nav-item href="/arq/productos?environment=Exterior">Todo exterior</arq-catalog-nav-item>
+        <arq-catalog-nav-item href="/arq/productos?environment=Exterior&amp;application=Jard%C3%ADn&amp;product_type=Luminaria">Jardín</arq-catalog-nav-item>
+        <arq-catalog-nav-item href="/arq/productos?environment=Exterior&amp;application=Pared&amp;product_type=Luminaria">Pared</arq-catalog-nav-item>
+        <arq-catalog-nav-item href="/arq/productos?environment=Exterior&amp;product_type=L%C3%A1mpara">Lámparas</arq-catalog-nav-item>
+      </arq-catalog-nav-group>
+      <arq-catalog-nav-group>
+        <span slot="label">Lámparas y artefactos</span>
+        <arq-catalog-nav-item href="/arq/productos?product_type=L%C3%A1mpara">Lámparas</arq-catalog-nav-item>
+      </arq-catalog-nav-group>
+      <arq-catalog-nav-group>
+        <span slot="label">Colecciones</span>
+        <arq-catalog-nav-item href="/arq/coleccion/kanu">Kanu</arq-catalog-nav-item>
+        <arq-catalog-nav-item href="/arq/coleccion/tori">Tori</arq-catalog-nav-item>
+        <arq-catalog-nav-item href="/arq/coleccion/douli">Douli</arq-catalog-nav-item>
+        <arq-catalog-nav-item href="/arq/coleccion/yoru">Yoru</arq-catalog-nav-item>
+      </arq-catalog-nav-group>
+    </arq-catalog-nav>
+    <h2 slot="filter-title">Filtrar</h2>
+  </arq-catalog-listing>
+</main>
+
+<arq-footer>
+  <span slot="tagline">Diseño lumínico para la arquitectura contemporánea.</span>
+  <h2 slot="productos-title">Productos</h2>
+  <arq-footer-link slot="productos" href="/arq/productos?environment=Interior">Interior</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?environment=Exterior">Exterior</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?product_type=L%C3%A1mpara">Lámparas y Artefactos</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/colecciones">Colecciones</arq-footer-link>
+  <h2 slot="informacion-title">Información</h2>
+  <arq-footer-link slot="informacion" href="/arq/contacto">Contacto</arq-footer-link>
+  <arq-footer-link slot="informacion" href="/arq/descargas">Descargas</arq-footer-link>
+  <arq-footer-link slot="informacion" href="/arq/glosario">Glosario</arq-footer-link>
+  <h2 slot="redes-title">Redes</h2>
+  <arq-footer-link slot="redes" href="https://www.instagram.com/" target="_blank" show-icon icon="instagram" label="Macroled Arq en Instagram">Instagram</arq-footer-link>
+  <arq-footer-link slot="redes" href="https://www.youtube.com/" target="_blank" show-icon icon="youtube" label="Macroled Arq en YouTube">YouTube</arq-footer-link>
+</arq-footer>

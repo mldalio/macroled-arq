@@ -474,3 +474,10 @@ setup() {
 - **Glosario:** columnas en `GLOSSARY_COLUMNS` (`src/data/attributes.js`), con las etiquetas cortas de Final; una columna sin valores en ningún SKU no se muestra. La barra lleva CAD 2D/3D y Manual del SKU predeterminado (`TODO` datos: no hay archivos por grupo).
 - **Galerías:** ambiente, descripción e inspiración salen de las imágenes del grupo (`getProduct().images`), solo las que existen. La de ambiente es una fila con scroll hasta el borde derecho; las de inspiración ocupan la mitad de su columna cada una.
 - **Medidas sin token** (`TODO` diseño, detalle en el README): columnas de 440 → `layout/measure`; separación de 110 → `space/gap/5xl`; lista de 539 → `layout/measure-wide`; alto de la galería de ambiente → 70svh; family-card de 200 y 328 → `layout/card-min` y `layout/card-min-wide`.
+
+## 2026-10-05 · Colecciones
+
+- **Embed:** `src/pages/colecciones.html`, el mismo armado que Productos con `<arq-catalog-listing unit="colecciones">`: page-header List sin bajada (Final `1160:6116`), la misma navegación de categorías y footer. `demo/colecciones.html` lo carga tal cual.
+- **Cards de colección:** acabados (los de todos sus grupos, `listCollections`) y la meta con sus aplicaciones, como Final. Antes mostraban solo la meta. Sin "Comparar".
+- **Navbar:** Productos como Current, como en Final (Colecciones es parte de Productos).
+- `TODO` (diseño): en Final el catalog-nav muestra Interior abierto con "Todo interior" marcado (copia de Productos); en Colecciones ningún ítem es la página actual y los grupos quedan cerrados. `TODO` (datos): las cuatro imágenes de una card de colección (DESIGN.md §8).

@@ -179,15 +179,15 @@ class ArqCatalogListing extends ArqElement {
     title.slot = 'name';
     title.textContent = data.name;
     card.append(title);
-    // Productos muestra acabados (Figma 1153:5679); Colecciones, la meta.
-    if (compare) {
-      for (const name of data.finishes ?? []) {
-        const swatch = document.createElement('arq-swatch');
-        swatch.slot = 'finishes';
-        swatch.textContent = name;
-        card.append(swatch);
-      }
-    } else if (data.meta) {
+    // Acabados en los dos listados (Figma 1153:5679 y 1160:6116); la meta,
+    // solo en Colecciones (aplicaciones de la colección).
+    for (const name of data.finishes ?? []) {
+      const swatch = document.createElement('arq-swatch');
+      swatch.slot = 'finishes';
+      swatch.textContent = name;
+      card.append(swatch);
+    }
+    if (!compare && data.meta) {
       const meta = document.createElement('span');
       meta.slot = 'meta';
       meta.textContent = data.meta;
