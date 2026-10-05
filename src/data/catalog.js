@@ -261,12 +261,44 @@ export function variantDetails(group, sku) {
 }
 
 // ── Colección ────────────────────────────────────────────────────────
-/** Página de colección: { collection, cards: una por grupo }. null si no existe. */
+/**
+ * Página de colección: { collection, cards: una por grupo, images: { gallery[],
+ * description, inspiration[] } }. null si no existe. La meta de cada card es
+ * el resumen de sus variantes (variantSummary).
+ */
 export async function getCollection(id) {
   const { collectionById, groups } = await loadCatalog();
   const collection = collectionById.get(id);
   if (!collection) return null;
-  return { collection, cards: groups.filter((g) => g.collection === id).map((g) => productCard(g)) };
+  const images = collection.images ?? {};
+  return {
+    collection,
+    cards: groups.filter((g) => g.collection === id).map((g) => ({ ...productCard(g), meta: variantSummary(g) })),
+    images: {
+      gallery: unique(images.gallery),
+      description: hasValue(images.description) ? images.description : null,
+      inspiration: unique(images.inspiration),
+    },
+  };
+}
+
+/**
+ * Resumen de la card (decisión 2026-10-02 · Cards): el rango de cada atributo
+ * de variante que no es acabado («50 cm – 90 cm»), separados por « · ».
+ * TODO (diseño): faltan las una o dos características fijas que suma Final
+ * (p. ej. la potencia) y si van en una segunda línea.
+ */
+function variantSummary(group) {
+  const number = (value) => Number.parseFloat(String(value).replace(',', '.'));
+  return group.variantAttributes
+    .filter((field) => attributeInfo(field).control !== 'swatches')
+    .map((field) => {
+      const values = [...new Set(group.variants.map((v) => v.values[field]).filter(hasValue))];
+      values.sort((a, b) => number(a) - number(b) || String(a).localeCompare(String(b), 'es'));
+      return values.length > 1 ? `${values[0]} – ${values.at(-1)}` : values[0];
+    })
+    .filter(Boolean)
+    .join(' · ');
 }
 
 // ── Comparativa ──────────────────────────────────────────────────────

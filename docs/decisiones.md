@@ -481,3 +481,12 @@ setup() {
 - **Cards de colección:** acabados (los de todos sus grupos, `listCollections`) y la meta con sus aplicaciones, como Final. Antes mostraban solo la meta. Sin "Comparar".
 - **Navbar:** Productos como Current, como en Final (Colecciones es parte de Productos).
 - `TODO` (diseño): en Final el catalog-nav muestra Interior abierto con "Todo interior" marcado (copia de Productos); en Colecciones ningún ítem es la página actual y los grupos quedan cerrados. `TODO` (datos): las cuatro imágenes de una card de colección (DESIGN.md §8).
+
+## 2026-10-05 · Colección
+
+- **Embed:** `src/pages/coleccion.html` (template de la colección «Colecciones» del CMS): navbar con Productos como Current, page-header List con el breadcrumb (Colecciones / nombre), el `<h1>` y `COLLECTION_INTRO_TEXT` como bajada, `<arq-coleccion data-collection>` con `COLLECTION_DESCRIPTION_TEXT` por slot, y footer. `demo/coleccion.html` lo carga tal cual; en la demo `?collection=<id>` hace de ítem del CMS de otra colección.
+- **`<arq-coleccion>`:** contenedor que consulta (`getCollection()`), como catalog-listing y la ficha. Arma la grilla de product-card, la galería, texto + imagen y el mosaico de Final (`1234:13201` · `1234:13448`). Sin filtros, Comparar ni Iluminar (Final no los tiene).
+- **Meta de la card:** resumen de las variantes (decisión 2026-10-02 · Cards): el rango de cada atributo de variante que no es acabado, por ejemplo «50 cm – 90 cm». `TODO` (diseño): las características fijas que suma Final (12W – 15W) y la segunda línea.
+- **Imágenes de la colección:** galería = `images.gallery`, texto + imagen = `images.description`, mosaico = `images.inspiration`; solo las que existen.
+- **carousel-controls:** además del carrusel observa el tamaño de cada elemento de adentro. Una foto de ancho auto que carga (o llega de la caché) agrandaba el contenido sin avisar y la flecha "Siguiente" quedaba deshabilitada.
+- `TODO` (diseño): medidas sin token (detalle en el README de coleccion).
