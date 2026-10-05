@@ -309,8 +309,8 @@ setup() {
 
 ## 2026-10-01 · Tarjetas con link estirado
 
-- **Patrón común** de las tarjetas que son un link: category-card y line-card ahora; family-card y product-card lo van a usar. CSS compartido en `src/base/card-link.css` (cada tarjeta lo suma a su hoja).
-- El componente recibe `href`. En el Shadow DOM, el `<a>` envuelve **solo el slot del nombre** (en line-card, `<h3 slot="name">`), así el nombre accesible es corto.
+- **Patrón común** de las tarjetas que son un link: category-card ahora (line-card lo dejó: 2026-10-05 · line-card: el link es el botón); family-card y product-card lo van a usar. CSS compartido en `src/base/card-link.css` (cada tarjeta lo suma a su hoja).
+- El componente recibe `href`. En el Shadow DOM, el `<a>` envuelve **solo el slot del nombre**, así el nombre accesible es corto.
 - El `::after` del `<a>` cubre toda la tarjeta (`position: absolute; inset: 0`): toda la tarjeta es clickeable.
 - Hover y foco se aplican a la tarjeta con `:has(.card-link:hover)` y `:has(.card-link:focus-visible)`. El anillo de foco rodea la tarjeta, como en los sets. El hover (borde `color/border/hover` en la imagen, outline hacia adentro) va solo con `hover: hover`.
 - Textos de acción como "Ver colección" se ven como button Underline pero son decorativos (`aria-hidden`): nunca dos links al mismo destino.
@@ -585,3 +585,9 @@ setup() {
 - **navbar Transparent:** sigue transparente mientras la barra está sobre el hero (el primer `<arq-hero>` de la página) y pasa a Default cuando el borde inferior del hero sube por encima del de la barra. Antes pasaba a Default con el primer píxel de scroll. Aplica a Home y Contacto; sin hero, sigue cambiando al empezar el scroll.
 - **Motivos de consulta en una fila desde 1440:** con el layout de Final no entraban (columna de 584; los cuatro textos a 16 px más los gaps ya sumaban 579). Cambios: choice-chip con padding lateral `space/padding/md` (antes `lg`, el texto sigue en `role/body-regular`); en `form-contacto`, chips a `space/gap/sm` (antes `sm-md`) y columnas información : formulario en 2:3 (antes iguales; en 1440 el formulario mide 710). Si entran en una fila, los chips crecen hasta ocupar el ancho (`flex: 1 1 auto`, texto centrado); si hacen wrap, quedan con su ancho (`form-contacto` lo detecta con un `ResizeObserver`). `TODO` (diseño): actualizar el set de choice-chip (`1113:2485`), su descripción y Final › Contacto.
 - **nav-link Current un peso más:** en Desktop pasa de `role/body` (Light) a `role/body-regular`, como catalog-nav-item Selected. No es un cambio de peso en hover: Current es fijo por página, así que no hace saltar el layout. En Mobile sigue `role/body-xl` (ya es Regular; no hay un rol más pesado de ese tamaño). `TODO` (diseño): actualizar el set de nav-link (`752:2866`).
+
+## 2026-10-05 · line-card: el link es el botón
+
+- **Solo "Ver colección" es link.** line-card deja el link estirado: la imagen y el nombre no son clickeables. "Ver colección" es un `arq-button` Underline (Show underline, `icon/arrow-right`) con el `href` de la tarjeta; hover, pressed y foco son los del button (subrayado a `border/strong`, anillo alrededor del botón). Sin borde de hover en la imagen. Reemplaza, para line-card, a 2026-10-01 · Tarjetas con link estirado; category-card sigue siendo toda link.
+- Antes, el texto del botón (decorativo) quedaba por encima del `::after` del link y no se podía hacer clic justo ahí.
+- `TODO` (diseño): en el set (`1036:2490`), State=Hover y Focus tienen que mostrar el estado en el botón (button State=Hover / Focus), sin borde en la imagen ni `focus-ring` en la tarjeta; sumar la regla a la descripción del set, a la ficha `doc/line-card` y a la copia de DESIGN.md en Plan del proyecto.

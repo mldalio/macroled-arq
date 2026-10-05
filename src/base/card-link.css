@@ -1,6 +1,7 @@
-/* Link estirado: patrón común de las tarjetas (category-card, line-card y,
-   cuando se construyan, family-card y product-card). docs/decisiones.md,
-   2026-10-01 · Tarjetas con link estirado.
+/* Link estirado: patrón común de las tarjetas (category-card y, cuando se
+   construyan, family-card y product-card). docs/decisiones.md, 2026-10-01 ·
+   Tarjetas con link estirado. line-card solo usa la imagen por slot
+   (.card-media): su único link es el botón (2026-10-05).
 
    Estructura que espera cada componente:
      .card            contenedor de la tarjeta (position: relative)
