@@ -107,7 +107,6 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | --- | --- | --- |
 | ✅ Home | [src/pages/home.html](../src/pages/home.html) | `demo/home.html` |
 | ✅ Productos | [src/pages/productos.html](../src/pages/productos.html) | `demo/productos.html` |
-| ✅ Colecciones | [src/pages/colecciones.html](../src/pages/colecciones.html) | `demo/colecciones.html` |
 | ✅ Colección | [src/pages/coleccion.html](../src/pages/coleccion.html) | `demo/coleccion.html` (`?collection=`) |
 | ✅ Contacto | [src/pages/contacto.html](../src/pages/contacto.html) | `demo/contacto.html` |
 | ✅ Ficha de producto | [src/pages/ficha.html](../src/pages/ficha.html) | `demo/ficha.html` (`?group=` y `?sku=`) |

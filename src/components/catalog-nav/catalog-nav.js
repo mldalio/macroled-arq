@@ -51,12 +51,25 @@ class ArqCatalogNav extends ArqElement {
       trigger: this.shadowRoot.querySelector('.trigger'),
       panel: this.shadowRoot.querySelector('.panel'),
     });
-    const sync = () => this.#syncCurrent();
+    const sync = () => {
+      this.#syncCurrent();
+      this.#openCurrentGroup();
+    };
     this.shadowRoot.querySelector('slot').addEventListener('slotchange', sync);
     new MutationObserver(sync).observe(this, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['selected'] });
     // Mobile: al elegir una subcategoría se cierra el panel.
     this.addEventListener('click', (event) => {
       if (event.target.closest?.('arq-catalog-nav-item')) this.disclosure.hide();
+    });
+    // El sidebar funciona como índice: abrir un grupo lleva a su primer link
+    // ("Todo interior", "Todo exterior", etc.), no deja un acordeón sin
+    // cambiar el listado. Se activa el <a> real para que Webflow y la demo
+    // conserven su navegación normal.
+    this.addEventListener('arq:toggle', (event) => {
+      const group = event.target;
+      if (group.localName !== 'arq-catalog-nav-group' || !event.detail.open) return;
+      for (const candidate of this.querySelectorAll('arq-catalog-nav-group')) candidate.open = candidate === group;
+      group.querySelector(':scope > arq-catalog-nav-item')?.shadowRoot?.querySelector('a')?.click();
     });
     sync();
     this.#openCurrentGroup();
@@ -77,9 +90,9 @@ class ArqCatalogNav extends ArqElement {
   }
 
   #openCurrentGroup() {
-    if (this.querySelector('arq-catalog-nav-group[open]')) return;
     const group = this.#selected()?.closest('arq-catalog-nav-group');
-    if (group) group.open = true;
+    if (!group) return;
+    for (const candidate of this.querySelectorAll('arq-catalog-nav-group')) candidate.open = candidate === group;
   }
 }
 

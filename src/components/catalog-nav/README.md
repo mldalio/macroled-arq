@@ -1,5 +1,7 @@
 # catalog-nav · `<arq-catalog-nav>`
 
+En Desktop el panel no lleva padding lateral. Cuando la URL selecciona una categoría, abre únicamente su grupo; las demás secciones quedan cerradas.
+
 Navegación de categorías de Productos y Colecciones. Un solo componente para Desktop y Mobile: incluye catalog-nav-mobile y catalog-nav-trigger, así cada link está una sola vez en el HTML (decisión 2026-10-02 · catalog-nav).
 
 - Figma: [1035-2411](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1035-2411) (catalog-nav) · [1207-3314](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1207-3314) (catalog-nav-mobile) · [1215-3337](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1215-3337) (catalog-nav-trigger)

@@ -9,6 +9,15 @@
   position: sticky;
   top: 0;
   z-index: 4;
+  transition: transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
+}
+
+/* Solo el listado de catálogo solicita esta barra compacta. Al bajar deja el
+   toolbar fijo a la vista; al subir vuelve para que la navegación esté cerca. */
+@media (min-width: 1024px) {
+  :host([data-arq-catalog-hidden]) {
+    transform: translateY(-100%);
+  }
 }
 
 :host([theme='transparent']) {

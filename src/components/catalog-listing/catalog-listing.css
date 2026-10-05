@@ -47,7 +47,27 @@
     display: grid;
     grid-template-columns: var(--arq-layout-card-min) minmax(0, 1fr);
     column-gap: var(--arq-space-section-sm);
-    align-items: start;
+  }
+
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    background: var(--arq-color-bg-default);
+  }
+
+  .nav {
+    position: sticky;
+    top: 0;
+    align-self: start;
+  }
+
+  .toolbar.nav-visible {
+    top: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
+  }
+
+  .nav.nav-visible {
+    top: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
   }
 }
 

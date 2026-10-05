@@ -45,6 +45,7 @@ class ArqCatalogToolbar extends ArqElement {
   static properties = {
     count: { type: Number }, // Count (número)
     unit: { type: String, values: ['productos', 'colecciones'], default: 'productos' },
+    state: { type: String, values: ['default', 'scroll'], default: 'default' }, // State
     showIluminar: { type: Boolean }, // Show iluminar
     for: { type: String }, // id del arq-filter-panel
     filterCount: { type: Number }, // filtros aplicados (Show count del botón Filtrar)

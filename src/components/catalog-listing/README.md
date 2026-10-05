@@ -1,5 +1,9 @@
 # catalog-listing · `<arq-catalog-listing>`
 
+El título de una subcategoría es el nombre del ítem elegido; los enlaces principales de cada grupo conservan el nombre del grupo.
+
+La vista `?view=colecciones` de `/arq/productos` usa cards de colección; el resto de las vistas usa cards de producto.
+
 Listado de Productos (y de Colecciones con `unit="colecciones"`): navegación de categorías, catalog-toolbar, grilla de product-card, filter-panel y compare-bar. Es un contenedor de página que pide los datos a `src/data/catalog.js`, como el navbar. Pantallas: Final, Productos (`1153:5679` · `1155:5837` · filtros `1199:20568`). Decisión: `docs/decisiones.md`, 2026-10-02 · Productos.
 
 ```html
@@ -42,7 +46,7 @@ Listado de Productos (y de Colecciones con `unit="colecciones"`): navegación de
 | --- | --- | --- | --- |
 | Armado | sidebar a la izquierda, contenido a la derecha a `space/section/sm` | nav (catalog-nav-mobile), toolbar y grilla apilados a `space/gap/xl` | ídem |
 | Toolbar → grilla | `space/gap/xl-2xl` | `space/gap/xl-2xl` | `space/gap/xl` |
-| Grilla | `arq-grid` sin `columns` (auto-fill con `layout/card-min`; filas a `space/gap/2xl`, columnas a `space/gap/lg`) | ídem | filas a `space/gap/xl`, columnas a `space/gap/md` |
+| Grilla | 3 columnas hasta 1919 px; 4 desde 1920 px | auto-fill | filas a `space/gap/xl`, columnas a `space/gap/md` |
 | Padding | `layout/gutter` a los lados, `space/section/xl` abajo | ídem | ídem (valores Mobile) |
 
 ## Pendientes

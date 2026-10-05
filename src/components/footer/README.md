@@ -12,7 +12,7 @@ Footer de Macroled Arq, último elemento de todas las páginas, full width. Marc
   <arq-footer-link slot="productos" href="/arq/productos/interior">Interior</arq-footer-link>
   <arq-footer-link slot="productos" href="/arq/productos/exterior">Exterior</arq-footer-link>
   <arq-footer-link slot="productos" href="/arq/productos/lamparas-y-artefactos">Lámparas y Artefactos</arq-footer-link>
-  <arq-footer-link slot="productos" href="/arq/colecciones">Colecciones</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?view=colecciones">Colecciones</arq-footer-link>
 
   <h2 slot="informacion-title">Información</h2>
   <arq-footer-link slot="informacion" href="/arq/contacto">Contacto</arq-footer-link>

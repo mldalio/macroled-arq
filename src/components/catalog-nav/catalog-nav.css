@@ -23,11 +23,15 @@
 .panel,
 .panel[hidden] {
   display: block !important;
-  padding-inline: var(--arq-space-padding-md);
 }
 
 /* ── Mobile (hasta 1023 px): catalog-nav-mobile ─────────────────── */
 @media (max-width: 1023px) {
+  .panel,
+  .panel[hidden] {
+    padding-inline: var(--arq-space-padding-md);
+  }
+
   /* Bordes superior e inferior border/default en color/border/default */
   .nav {
     border-block: var(--arq-border-default) solid var(--arq-color-border-default);

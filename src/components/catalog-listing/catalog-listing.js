@@ -37,6 +37,8 @@ import '../swatch/swatch.js';
 import css from './catalog-listing.css?inline';
 
 const CATEGORY_PARAMS = { environment: 'environment', application: 'application', product_type: 'productType' };
+const LISTING_DESKTOP = matchMedia('(min-width: 1024px)');
+const LISTING_WIDE = matchMedia('(min-width: 1920px)');
 
 const TEXT = {
   productos: { loading: 'Cargando productos…', empty: 'No hay productos con estos filtros.', error: 'No se pudieron cargar los productos. Probá de nuevo en unos minutos.' },
@@ -67,11 +69,17 @@ class ArqCatalogListing extends ArqElement {
   #filters = {};
   #cards = new Map(); // product-card → datos de la card
   #request = 0;
+  #lastScrollY = 0;
 
   setup() {
+    // Productos y Colecciones comparten el mismo embed. "Todas las
+    // colecciones" cambia solamente la vista del listado.
+    if (new URLSearchParams(location.search).get('view') === 'colecciones') this.unit = 'colecciones';
     const root = this.shadowRoot;
     this.#category = categoryFromUrl();
     this.#query = new URLSearchParams(location.search).get('q')?.trim() ?? '';
+    this.#syncScrollState();
+    window.addEventListener('scroll', this.#onScroll, { passive: true });
     root.querySelector('slot[name="nav"]').addEventListener('slotchange', () => this.#markNav());
 
     const panel = root.querySelector('arq-filter-panel');
@@ -82,6 +90,14 @@ class ArqCatalogListing extends ArqElement {
     });
 
     const grid = root.querySelector('.grid');
+    const syncGridColumns = () => {
+      // El catálogo usa tres cards junto al sidebar; desde el modo Wide la
+      // composición pasa a cuatro. Antes del sidebar vuelve al auto-fill.
+      grid.columns = LISTING_DESKTOP.matches ? (LISTING_WIDE.matches ? 4 : 3) : null;
+    };
+    LISTING_DESKTOP.addEventListener('change', syncGridColumns);
+    LISTING_WIDE.addEventListener('change', syncGridColumns);
+    syncGridColumns();
     const bar = root.querySelector('.compare');
     grid.addEventListener('arq:compare', (event) => {
       const card = event.target;
@@ -106,6 +122,24 @@ class ArqCatalogListing extends ArqElement {
     const box = bar.shadowRoot?.querySelector('.bar');
     const height = !bar.hidden && box && !box.hidden ? box.getBoundingClientRect().height : 0;
     this.shadowRoot.querySelector('.compare-space').style.height = height ? `${height}px` : '';
+  }
+
+  #onScroll = () => this.#syncScrollState();
+
+  #syncScrollState() {
+    const y = window.scrollY;
+    const scrolling = y > 0;
+    const direction = y > this.#lastScrollY ? 'down' : 'up';
+    this.#lastScrollY = y;
+    const html = document.documentElement;
+    if (scrolling) html.setAttribute('data-arq-catalog-scroll', direction);
+    else html.removeAttribute('data-arq-catalog-scroll');
+    const toolbar = this.shadowRoot?.querySelector('.toolbar');
+    if (toolbar) toolbar.state = scrolling ? 'scroll' : 'default';
+    const navbar = document.querySelector('arq-navbar');
+    navbar?.toggleAttribute('data-arq-catalog-hidden', scrolling && direction === 'down');
+    this.shadowRoot?.querySelector('.toolbar')?.classList.toggle('nav-visible', scrolling && direction === 'up');
+    this.shadowRoot?.querySelector('.nav')?.classList.toggle('nav-visible', scrolling && direction === 'up');
   }
 
   update(changed) {
@@ -243,6 +277,8 @@ class ArqCatalogListing extends ArqElement {
       if (item.selected) current ??= item;
     }
     this.#titleFromNav(current);
+    const header = document.querySelector('arq-page-header');
+    if (header) header.showDescription = this.unit !== 'colecciones';
   }
 
   // Con ?q=, el <h1> del page-header nombra la búsqueda.
@@ -257,7 +293,14 @@ class ArqCatalogListing extends ArqElement {
   // Exterior, Lámparas y artefactos, Colecciones). Sin ítem actual queda el
   // del HTML (Productos).
   #titleFromNav(item) {
-    const label = item?.closest('arq-catalog-nav-group')?.querySelector('[slot="label"]')?.textContent.trim();
+    const group = item?.closest('arq-catalog-nav-group');
+    const firstItem = group?.querySelector(':scope > arq-catalog-nav-item');
+    // El primer link de cada grupo es su vista completa (Todo interior,
+    // Todo exterior, Lámparas y artefactos o Todas las colecciones). Las
+    // subcategorías sí pasan a ser el título de la página.
+    const label = item && item !== firstItem
+      ? item.textContent.trim()
+      : group?.querySelector('[slot="label"]')?.textContent.trim();
     const title = document.querySelector('arq-page-header > [slot="title"]');
     if (label && title) title.textContent = label;
   }

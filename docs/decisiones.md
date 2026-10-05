@@ -348,9 +348,9 @@ ArqAccordionItem.define();
 
 ## 2026-10-05 · Colecciones
 
-- Embed `src/pages/colecciones.html`: igual que Productos con `unit="colecciones"`, page-header sin bajada. Navbar con Productos como Current.
+- Colecciones es una vista del embed `src/pages/productos.html`: `/arq/productos?view=colecciones`. No es una página aparte; el page-header oculta la bajada en esa vista.
 - Cards con acabados de todos sus grupos y meta con sus aplicaciones; sin Comparar.
-- El grupo Colecciones del catalog-nav empieza con "Todas las colecciones" (`/arq/colecciones`), marcado solo en esa página.
+- El grupo Colecciones del catalog-nav empieza con "Todas las colecciones" (`/arq/productos?view=colecciones`), marcado solo en esa vista.
 
 ## 2026-10-05 · Colección
 

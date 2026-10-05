@@ -9,7 +9,7 @@ Hero de página de Home y Contacto: media a sangre (imagen o video), scrim, eyeb
   <img slot="media" src="…" alt="Dos balizas de jardín encendidas" fetchpriority="high">
   <span slot="eyebrow">Iluminación profesional</span>
   <h1 slot="title">Materia, forma, atmósfera.</h1>
-  <arq-button slot="action" type="outline" href="/arq/colecciones">Explorar colecciones</arq-button>
+  <arq-button slot="action" type="outline" href="/arq/productos?view=colecciones">Explorar colecciones</arq-button>
 </arq-hero>
 
 <arq-hero>

@@ -524,7 +524,7 @@ export async function getNavigation() {
     collections: collections
       .map((c) => ({ label: c.name, meta: [...new Set(groups.filter((g) => g.collection === c.id).map((g) => g.application ?? g.productType).filter(Boolean))].join(' · '), href: collectionHref(c.id) }))
       .filter((c) => c.meta),
-    allCollections: { label: 'Ver todas las colecciones', href: '/arq/colecciones' },
+    allCollections: { label: 'Ver todas las colecciones', href: '/arq/productos?view=colecciones' },
   };
 }
 

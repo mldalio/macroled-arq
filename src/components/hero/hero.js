@@ -8,7 +8,7 @@
 //     <span slot="eyebrow">Iluminación profesional</span>
 //     <h1 slot="title">Materia, forma, atmósfera.</h1>
 //     <span slot="description">Bajada opcional.</span>
-//     <arq-button slot="action" type="outline" href="/arq/colecciones">Explorar colecciones</arq-button>
+//     <arq-button slot="action" type="outline" href="/arq/productos?view=colecciones">Explorar colecciones</arq-button>
 //   </arq-hero>
 //
 // - El <h1> va en el HTML de la página (slot title): el componente lo estiliza

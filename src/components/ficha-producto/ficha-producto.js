@@ -234,7 +234,7 @@ class ArqFichaProducto extends ArqElement {
     const root = this.shadowRoot;
     const crumbs = collection
       ? [
-          { label: 'Colecciones', href: '/arq/colecciones' },
+          { label: 'Colecciones', href: '/arq/productos?view=colecciones' },
           { label: collection.name, href: collectionHref(collection.id) },
         ]
       : [{ label: 'Productos', href: '/arq/productos' }];

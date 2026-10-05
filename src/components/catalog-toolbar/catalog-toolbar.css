@@ -17,6 +17,12 @@
   border-block: var(--arq-border-default) solid var(--arq-color-border-subtle);
 }
 
+/* State=Scroll: la barra fija gana espacio vertical sin modificar sus
+   controles ni su altura mínima de foco. */
+:host([state='scroll']) .bar {
+  padding-block: var(--arq-space-padding-sm);
+}
+
 /* Count: role/body en color/text/secondary */
 .count {
   margin: 0;
