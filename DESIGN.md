@@ -56,6 +56,7 @@ No hay nivel de componente (Mapped). Se descartó por escalabilidad: cada compon
 
 - Prefijo obligatorio: `--arq-`. Las barras pasan a guiones: `color/text/primary` → `--arq-color-text-primary`.
 - El nombre de la colección no forma parte del nombre CSS.
+- **Unidades:** en Figma todo se mide en px; en `tokens.css`, el texto (`font/size`, `font/leading`, `font/tracking`) y el espaciado (`space/*`, y por alias `space/gap`, `space/padding`, `space/section`, `layout/gutter`, `icon/*` y `swatch/*`) salen en **rem** (base 16 px), para respetar el tamaño de fuente que elige el usuario. Siguen en px `border/*`, `radius/*`, `blur/*`, los `layout/*` con valor propio (anchos de tarjeta, miniaturas, `layout/max-width`) y las media queries. Con la base de 16 px el resultado es idéntico al de Figma.
 
 | Figma | CSS |
 | --- | --- |
@@ -190,7 +191,7 @@ Para los dos usos:
 Estos valores **no se usan en componentes**. Están acá para entender de dónde salen los semánticos.
 
 - **Color:** neutral (0–900, con 25, 75, 150, 725, 750 y 775), bronze, cacao, olive, terracotta (50–900), offwhite, red / green / amber y alpha. Bronze, cacao, olive, terracotta y offwhite quedan en Figma como paleta de marca, pero **no se exportan a `tokens.json`** hasta que un semántico los use.
-- **Espaciado (px):** 0 · 2 · 3 · 4 · 6 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 56 · 64 · 80 · 96 · 128 · 160.
+- **Espaciado (px en Figma, rem en código):** 0 · 2 · 3 · 4 · 6 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 56 · 64 · 80 · 96 · 128 · 160.
 - **Tipografía:** familia única Albert Sans; pesos 300–700; tamaños 10 · 11 · 12 · 14 · 16 · 20 · 24 · 32 · 40 · 48 · 64.
 - **Radio:** `radius/0 · 2 · 4 · 8 · 16 · 24 · full`. **Borde:** `border/1 · border/2`. **Blur:** `blur/12`.
 
