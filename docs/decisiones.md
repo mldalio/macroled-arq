@@ -125,12 +125,12 @@ setup() {
 - **Alto de Outline:** el borde se descuenta del padding para que mida 36 como Filled.
 - **Booleanos con `true` por defecto en Figma** (Show icon, Show underline): en código son atributos de presencia, así que hay que escribirlos.
 
-### Envío de formularios (todavía no se construye)
+### Envío de formularios (construido el 2026-10-05 con Contacto)
 
 - `type` es la prop de Figma (Filled · Outline · Underline), así que no se puede usar `type="submit"`.
 - Cuando se construya `form-contacto`, el envío se va a hacer con un atributo **`submit` sin valor**: `<arq-button submit>Enviar</arq-button>`.
 - Implementación prevista: `static formAssociated = true` y `attachInternals()` (`ElementInternals`); al hacer clic, `this.internals.form?.requestSubmit()`. Así el formulario corre su validación y dispara `submit` como con un botón nativo.
-- Hasta entonces el `<button>` interno es siempre `type="button"`.
+- El `<button>` interno sigue siendo `type="button"`: el envío lo hace `requestSubmit()` desde el host (ver 2026-10-05 · Contacto).
 
 ## 2026-10-01 · logo
 
@@ -490,3 +490,13 @@ setup() {
 - **Imágenes de la colección:** galería = `images.gallery`, texto + imagen = `images.description`, mosaico = `images.inspiration`; solo las que existen.
 - **carousel-controls:** además del carrusel observa el tamaño de cada elemento de adentro. Una foto de ancho auto que carga (o llega de la caché) agrandaba el contenido sin avisar y la flecha "Siguiente" quedaba deshabilitada.
 - `TODO` (diseño): medidas sin token (detalle en el README de coleccion).
+
+## 2026-10-05 · Contacto
+
+- **Embed:** `src/pages/contacto.html`: navbar Transparent con Contacto como Current, hero (eyebrow, `<h1>` y bajada, sin botón; foto de ejemplo en `demo/fixtures/img/contacto/`), `<arq-form-contacto>` con la información por slot (`<h2>`, bajada, contact-item y link-list) y footer. `demo/contacto.html` lo carga tal cual.
+- **`<arq-form-contacto>`:** el `<form>` y sus campos viven en su Shadow DOM, así el formulario es dueño de los campos (form-associated) y manda su `FormData` con el adjunto. La información queda en el HTML de la página (indexable). Validación propia al enviar (`novalidate`), honeypot `website` y envío por `fetch` (multipart) a `VITE_N8N_WEBHOOK_URL`. Sin URL, en `npm run dev` se simula el envío; en el build es un error. Estados: enviando (Loading), enviado (form-message Success y formulario vacío) y error (form-message Error, los datos quedan).
+- **input Type=Select** (cierra el pendiente del input): botón `role="combobox"` con la línea del campo y select-menu Type=Text flotando debajo, del ancho del campo, como Figma (`1454:5001`). Se eligió la lista propia (no un `<select>` nativo) para seguir el set.
+- **`src/base/combobox.js`:** el teclado, el resaltado y los clics de un combobox de un valor, compartidos por `arq-select` y `arq-input type="select"` (se sacó de select, sin cambiar su comportamiento). El scroll a la opción resaltada espera al próximo cuadro: al abrir, el menú todavía no se ve.
+- **select-menu:** el scroll pasa al host (el listbox) con `tabindex="-1"`, por axe (scrollable-region-focusable) con más de 7 opciones.
+- **`arq-button submit`:** formAssociated; el clic hace `requestSubmit()` del formulario (decisión 2026-10-01 · button). Enter en un campo no envía (un botón formAssociated no es el botón predeterminado del navegador).
+- **Obligatorios:** nombre, email y detalles, con textos de error propios. `TODO` (diseño): textos por caso e indicador de obligatorio. `TODO` (n8n): URL del webhook y formato. `TODO` (contenido): email y teléfono reales (los de Final).

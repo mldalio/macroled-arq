@@ -29,7 +29,9 @@ Campo de formulario con línea inferior (sin caja). Text para datos cortos (nomb
 | Show label | `show-label` | `showLabel` | booleano. **En Figma viene en `true`; en código, sin el atributo el label queda solo para lectores de pantalla** (email del Home) |
 | Helper | slot `helper` | — | aclaración ("Te respondemos en 48 h") |
 | Show helper | `show-helper` | `showHelper` | booleano |
-| Type | `type` | `type` | `text` · `textarea` (def. `text`). `select`: todavía no (ver Pendientes) |
+| Type | `type` | `type` | `text` · `select` · `textarea` (def. `text`) |
+| Open | `open` | `open` | booleano, solo Select: lista abierta. Lo maneja el componente |
+| — (opciones de Select) | — | `options` | Lista `{ value, label?, disabled? }` (solo JS) |
 | State=Error | `error` | `error` | mensaje de error. Con `error`, la línea pasa a `color/border/error`, el mensaje reemplaza al helper y siempre se ve |
 | State=Disabled | `disabled` | `disabled` | booleano |
 | — | `input-type` | `inputType` | `text` · `email` · `tel` · `url` · `number` · `search` (teclado del celular y validación) |
@@ -40,6 +42,21 @@ Campo de formulario con línea inferior (sin caja). Text para datos cortos (nomb
 - **Formulario:** manda `name=value` con el `<form>` (ElementInternals) y le pasa la validación nativa (`required`, `input-type="email"`…): `form.reportValidity()` la muestra. `form.reset()` vuelve al valor inicial.
 - **Validación:** se valida al salir del campo o al enviar, no mientras se escribe. El texto del error lo pone el formulario con `error`.
 - Eventos: `arq:input` (cada tecla) y `arq:change` (al salir del campo), con `{ value }`.
+- **`validity`** (solo lectura): el `ValidityState` del campo (`valueMissing`, `typeMismatch`…), para que el formulario elija el texto del error.
+
+### Type=Select
+
+```html
+<arq-input type="select" name="provincia" placeholder="Seleccioná una provincia" required show-label>Provincia</arq-input>
+```
+
+```js
+provincia.options = [{ value: 'Buenos Aires' }, { value: 'Córdoba' }];
+```
+
+- El campo es un `<button role="combobox">` con la línea del input, el valor (o el placeholder) y el chevron. Abierto (Open=True): línea `color/border/strong`, `icon/chevron-up` y select-menu Type=Text flotando debajo, del ancho del campo (descripción del set Type=Text). Hasta 7 opciones a la vista; con más, scroll.
+- **Teclado:** el mismo de `arq-select` (`src/base/combobox.js`): flechas, Enter, Espacio, Inicio, Fin o una letra abren; abierto, flechas, Inicio, Fin y letras resaltan (saltean las deshabilitadas), Enter o Espacio eligen, Esc y Tab cierran. El foco queda en el campo.
+- **Formulario:** manda `name=value` del valor elegido; con `required` y sin valor es inválido (`valueMissing`). `form.reset()` vuelve al `value` inicial. Elegir emite `arq:input` y `arq:change`.
 
 ## Tokens
 
@@ -54,7 +71,6 @@ Campo de formulario con línea inferior (sin caja). Text para datos cortos (nomb
 
 ## Pendientes
 
-- `TODO` **Type=Select:** se construye con select-menu Type=Text, reusando el teclado y la posición de `arq-select` (ya existe). Hoy `type="select"` avisa en consola y se ve como Text.
 - **Foco:** solo cambia el color de la línea, sin anillo (excepción a DESIGN.md §7, anotada en `docs/decisiones.md`).
 - **Textarea:** 4 filas visibles por defecto (`rows="4"`; se cambia con el atributo `rows`) y solo se agranda hacia abajo (`resize: vertical`), según la descripción del set.
 - `TODO` Textos de error por caso de validación, indicador de campo obligatorio y estado Hover: no están diseñados.

@@ -27,6 +27,11 @@ class ArqSelectMenu extends ArqElement {
 
   setup() {
     this.setAttribute('role', 'listbox');
+    // Con más de 7 opciones el listbox tiene scroll, y una región con scroll
+    // tiene que poder recibir el foco (axe: scrollable-region-focusable).
+    // tabindex -1: no suma una parada de Tab; el teclado se maneja desde el
+    // campo (src/base/combobox.js).
+    if (!this.hasAttribute('tabindex')) this.setAttribute('tabindex', '-1');
   }
 }
 

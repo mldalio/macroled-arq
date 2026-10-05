@@ -54,6 +54,72 @@ textarea.control {
   resize: vertical;
 }
 
+/* ── Type=Select ────────────────────────────────────────────────
+   El campo es un botón (combobox) con el valor o el placeholder y el
+   chevron (icon/md). Abierto (Open=True): línea color/border/strong,
+   chevron-up y select-menu Type=Text debajo, del ancho del campo
+   (descripción del set Type=Text). */
+:host([type='select']) .field {
+  position: relative;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  text-align: start;
+  cursor: pointer;
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+}
+
+.select-value {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.select-value.placeholder {
+  color: var(--arq-color-text-tertiary);
+}
+
+.chevron {
+  display: inline-flex;
+  flex: none;
+}
+
+.icon {
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+  color: var(--arq-color-icon-primary);
+}
+
+:host(:not([open])) [data-icon='chevron-up'],
+:host([open]) [data-icon='chevron-down'] {
+  display: none;
+}
+
+.menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  max-width: none;
+}
+
+:host([open]) .field,
+:host([open]) .field:focus-within {
+  border-bottom-color: var(--arq-color-border-strong);
+}
+
+:host([disabled]) .trigger {
+  cursor: default;
+}
+
+:host([disabled]) .icon {
+  color: var(--arq-color-icon-disabled);
+}
+
 .helper {
   margin: 0;
   color: var(--arq-color-text-tertiary);

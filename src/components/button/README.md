@@ -29,6 +29,7 @@ Botón del sistema en tres jerarquías: Filled (acción principal), Outline (sec
 | State=Loading | `loading` | `loading` | booleano · solo Filled. Label "Enviando…", `aria-busy="true"`, deshabilitado, sin íconos ni badge |
 | — | `href` | `href` | Con `href` se dibuja un `<a>` (navegación); sin `href`, un `<button type="button">` |
 | — | `target` | `target` | Para links. Con `_blank` suma `rel="noopener"` |
+| — | `submit` | `submit` | booleano · envía el `<form>` del que es parte (ElementInternals + `requestSubmit()`): corre la validación y dispara `submit`, como un botón nativo. No es prop de Figma (`type` ya es Filled · Outline · Underline) |
 
 - Los booleanos son atributos de presencia (AGENTS.md): Show icon y Show underline, que en Figma valen `true` por defecto, en código están desactivados hasta que se escribe el atributo.
 - Hover, Pressed y Focus no son props: `:hover`, `:active`, `:focus-visible`.
@@ -54,5 +55,5 @@ Botón del sistema en tres jerarquías: Filled (acción principal), Outline (sec
 ## Pendientes
 
 - `TODO` Offset del subrayado: Figma lo pone 3 px debajo del texto y no hay token; se usa `space/padding/2xs` (3).
-- `TODO` Enviar formularios: todavía no se construye. Se va a hacer con un atributo `submit` sin valor (ver `docs/decisiones.md`). Hasta entonces el botón es siempre `type="button"`.
+- Enter en un campo de texto no envía el formulario: un botón formAssociated no es el "botón predeterminado" del navegador. Se envía con el botón (clic, Enter o Espacio sobre él).
 - `TODO` Sin ícono de carga en Loading (no existe en la librería).

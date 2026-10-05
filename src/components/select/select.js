@@ -25,6 +25,7 @@
 
 import { ArqElement } from '../../base/arq-element.js';
 import { icon } from '../../base/icons.js';
+import { Combobox } from '../../base/combobox.js';
 import '../select-menu/select-menu.js';
 import '../swatch/swatch.js';
 import css from './select.css?inline';
@@ -47,7 +48,7 @@ class ArqSelect extends ArqElement {
   static template =
     `<div class="select">` +
     `<span class="label role-label-sm" hidden></span>` +
-    `<button type="button" class="trigger" role="combobox" aria-haspopup="listbox" aria-expanded="false">` +
+    `<button type="button" class="trigger" aria-expanded="false">` +
     `<arq-swatch class="swatch" aria-hidden="true" hidden></arq-swatch>` +
     `<span class="value"></span>` +
     `<span class="chevron">${icon('chevron-down')}${icon('chevron-up')}</span>` +
@@ -56,9 +57,7 @@ class ArqSelect extends ArqElement {
     `</div>`;
 
   #options = [];
-  #active = -1;
-  #typed = '';
-  #typedAt = 0;
+  #combobox = null;
 
   get options() {
     return this.#options;
@@ -77,21 +76,16 @@ class ArqSelect extends ArqElement {
     this.menu.id = `${id}-menu`;
     root.querySelector('.label').id = `${id}-label`;
     this.trigger.id = `${id}-trigger`;
-    this.trigger.setAttribute('aria-controls', this.menu.id);
-    this.trigger.addEventListener('click', () => (this.open ? this.close() : this.show()));
-    this.trigger.addEventListener('keydown', (event) => this.#onKeydown(event));
-    this.trigger.addEventListener('blur', () => {
-      // Tab o clic afuera: se cierra sin elegir.
-      setTimeout(() => {
-        if (this.open && !this.matches(':focus-within')) this.close(false);
-      });
+    // Teclado, resaltado y clics: src/base/combobox.js (el mismo de input Select)
+    this.#combobox = new Combobox({
+      trigger: this.trigger,
+      menu: this.menu,
+      options: () => this.#list(),
+      selected: () => this.#list().findIndex((o) => o.value === (this.value ?? '')),
+      isOpen: () => this.open,
+      setOpen: (open) => (this.open = open),
+      choose: (index) => this.#choose(index),
     });
-    this.menu.addEventListener('pointerdown', (event) => event.preventDefault()); // el foco queda en el campo
-    this.menu.addEventListener('click', (event) => {
-      const option = event.target.closest('arq-select-option');
-      if (option && !option.disabled) this.#choose(Number(option.dataset.index));
-    });
-    this.menu.addEventListener('arq:change', (event) => event.stopPropagation());
     this.#render();
   }
 
@@ -114,7 +108,7 @@ class ArqSelect extends ArqElement {
     if (changed.has('open')) {
       this.menu.hidden = !this.open;
       this.trigger.setAttribute('aria-expanded', String(this.open));
-      if (!this.open) this.#setActive(-1);
+      if (!this.open) this.#combobox.closed();
     }
     this.#render();
   }
@@ -122,16 +116,12 @@ class ArqSelect extends ArqElement {
   /** Abre el menú con la opción elegida resaltada. */
   show() {
     if (this.disabled) return;
-    this.open = true;
-    const list = this.#list();
-    const selected = list.findIndex((o) => o.value === (this.value ?? ''));
-    this.#setActive(selected >= 0 && !list[selected].disabled ? selected : this.#next(-1, 1));
+    this.#combobox.show();
   }
 
   /** Cierra el menú. */
   close(focus = true) {
-    this.open = false;
-    if (focus) this.trigger.focus();
+    this.#combobox.close(focus);
   }
 
   /** El foco va al campo. */
@@ -180,71 +170,12 @@ class ArqSelect extends ArqElement {
     });
   }
 
-  #setActive(index) {
-    this.#active = index;
-    const items = [...this.menu.children];
-    items.forEach((el, i) => (el.active = i === index));
-    if (index >= 0 && items[index]) {
-      this.trigger.setAttribute('aria-activedescendant', items[index].id);
-      items[index].scrollIntoView({ block: 'nearest' });
-    } else {
-      this.trigger.removeAttribute('aria-activedescendant');
-    }
-  }
-
-  #next(from, step) {
-    const list = this.#list();
-    for (let i = from + step; i >= 0 && i < list.length; i += step) if (!list[i].disabled) return i;
-    return from;
-  }
-
+  // El combobox ya validó la opción y cierra el menú después.
   #choose(index) {
     const option = this.#list()[index];
-    if (!option || option.disabled) return;
     const changed = option.value !== (this.value ?? '');
     this.value = option.value;
-    this.close();
     if (changed) this.emit('change', { value: option.value });
-  }
-
-  #typeahead(key) {
-    const now = Date.now();
-    this.#typed = now - this.#typedAt > 500 ? key : this.#typed + key;
-    this.#typedAt = now;
-    const list = this.#list();
-    const start = this.#active >= 0 ? this.#active : 0;
-    const order = [...list.keys()].slice(start + 1).concat([...list.keys()].slice(0, start + 1));
-    const hit = order.find((i) => !list[i].disabled && list[i].label.toLowerCase().startsWith(this.#typed.toLowerCase()));
-    if (hit !== undefined) this.#setActive(hit);
-  }
-
-  #onKeydown(event) {
-    const { key } = event;
-    const list = this.#list();
-    if (!this.open) {
-      if (['ArrowDown', 'ArrowUp', 'Enter', ' ', 'Home', 'End'].includes(key)) {
-        event.preventDefault();
-        this.show();
-        if (key === 'Home') this.#setActive(this.#next(-1, 1));
-        if (key === 'End') this.#setActive(this.#next(list.length, -1));
-      } else if (key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
-        this.show();
-        this.#typeahead(key);
-      }
-      return;
-    }
-    if (key === 'ArrowDown') this.#setActive(this.#next(this.#active, 1));
-    else if (key === 'ArrowUp') this.#setActive(this.#next(this.#active, -1));
-    else if (key === 'Home') this.#setActive(this.#next(-1, 1));
-    else if (key === 'End') this.#setActive(this.#next(list.length, -1));
-    else if (key === 'Enter' || key === ' ') this.#choose(this.#active);
-    else if (key === 'Escape') this.close();
-    else if (key === 'Tab') {
-      this.close(false);
-      return;
-    } else if (key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) this.#typeahead(key);
-    else return;
-    event.preventDefault();
   }
 }
 

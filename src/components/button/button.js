@@ -9,6 +9,11 @@
 //
 // State de Figma: Hover, Pressed y Focus son :hover, :active y :focus-visible.
 // Disabled y Loading son props (disabled, loading).
+//
+// Envío de formularios: con el atributo submit (sin valor), el clic envía el
+// <form> del que es parte (ElementInternals + requestSubmit): corre la
+// validación y dispara submit, como un botón nativo.
+//   <arq-button submit show-icon icon="arrow-right">Enviar consulta</arq-button>
 
 import { ArqElement } from '../../base/arq-element.js';
 import { icon } from '../../base/icons.js';
@@ -25,6 +30,7 @@ function warn(message) {
 class ArqButton extends ArqElement {
   static tag = 'arq-button';
   static styles = css;
+  static formAssociated = true;
   static properties = {
     type: { type: String, values: ['filled', 'outline', 'underline'], default: 'filled' }, // Type
     showIcon: { type: Boolean }, // Show icon
@@ -39,6 +45,7 @@ class ArqButton extends ArqElement {
     loading: { type: Boolean }, // State=Loading (solo Filled)
     href: { type: String },
     target: { type: String },
+    submit: { type: Boolean }, // envía el <form> (no es prop de Figma)
   };
   // Sin espacios entre etiquetas, para no sumar espacios al nombre accesible.
   // El texto de count-label va junto al slot, dentro del label.
@@ -55,9 +62,13 @@ class ArqButton extends ArqElement {
   `.replace(/>\s+</g, '><').trim();
 
   #control = null;
+  #internals = this.attachInternals();
 
   setup() {
     this.#control = this.shadowRoot.querySelector('.control');
+    this.addEventListener('click', () => {
+      if (this.submit && !this.href && !this.disabled && !this.loading) this.#internals.form?.requestSubmit();
+    });
     // Un <a> sin href todavía recibe clics: deshabilitado o cargando no hace nada.
     this.addEventListener(
       'click',
