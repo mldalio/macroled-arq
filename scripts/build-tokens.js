@@ -101,19 +101,21 @@ StyleDictionary.registerTransform({
     ),
 });
 
-// font/size/*, font/leading/* y font/tracking/* en rem (base 16px, la del
-// html de Webflow) para que el texto respete el zoom y el tamaño de fuente
-// del usuario/SO. El resto de las dimensiones (space, radius, border,
-// layout…) sigue en px: es geometría de layout, no tipografía.
+// En rem (base 16px, la del html de Webflow), para que respeten el tamaño de
+// fuente del usuario/SO:
+// - font/size/*, font/leading/* y font/tracking/*: el texto.
+// - space/*: el espaciado. Los semánticos que apuntan a space (space/gap,
+//   padding y section, layout/gutter, icon/*, swatch/*) lo siguen por alias.
+// Siguen en px border/* (hairlines de 1 y 2 px), radius/*, blur/* y los
+// layout/* con valor propio (anchos de tarjeta, miniaturas, max-width): son
+// geometría fija. Las media queries también van en px.
 const REM_BASE_PX = 16;
+const isRemToken = (path) =>
+  path[0] === 'space' || (path[0] === 'font' && ['size', 'leading', 'tracking'].includes(path[1]));
 StyleDictionary.registerTransform({
-  name: 'arq/type/rem',
+  name: 'arq/rem',
   type: 'value',
-  filter: (token) =>
-    token.$type === 'dimension' &&
-    token.path[0] === 'font' &&
-    ['size', 'leading', 'tracking'].includes(token.path[1]) &&
-    /^-?[\d.]+px$/.test(token.$value),
+  filter: (token) => token.$type === 'dimension' && isRemToken(token.path) && /^-?[\d.]+px$/.test(token.$value),
   transform: (token) => `${Number((parseFloat(token.$value) / REM_BASE_PX).toFixed(4))}rem`,
 });
 
@@ -132,7 +134,7 @@ function createDictionary(tokens, files) {
           'arq/color/round-alpha',
           'fontFamily/css',
           'cubicBezier/css',
-          'arq/type/rem',
+          'arq/rem',
         ],
         files,
       },
