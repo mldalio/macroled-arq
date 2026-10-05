@@ -15,9 +15,15 @@
 // (required, type="email"…) al formulario.
 // State: Empty / Filled salen del valor; Focus es :focus-within; Error es la
 // prop error (mensaje); Disabled es disabled.
-// Type=Select: TODO, se construye con select y select-menu.
+// Type=Select: un botón role="combobox" con la línea del campo y la lista
+// select-menu Type=Text flotando debajo (Figma Open=True), con el mismo
+// teclado que arq-select (src/base/combobox.js). Las opciones van en la prop
+// options (solo JS): [{ value, label?, disabled? }].
 
 import { ArqElement } from '../../base/arq-element.js';
+import { Combobox } from '../../base/combobox.js';
+import { icon } from '../../base/icons.js';
+import '../select-menu/select-menu.js';
 import css from './input.css?inline';
 
 const uid = (() => {
@@ -44,6 +50,7 @@ class ArqInput extends ArqElement {
     placeholder: { type: String },
     autocomplete: { type: String },
     required: { type: Boolean },
+    open: { type: Boolean }, // Open (solo Select)
   };
   static template =
     `<div class="input">` +
@@ -57,6 +64,21 @@ class ArqInput extends ArqElement {
   #control = null;
   #ids = { control: uid(), helper: uid(), error: uid() };
   #initial = '';
+  #options = [];
+  #selectValue = '';
+  #combobox = null;
+
+  /** Opciones de Type=Select: [{ value, label?, disabled? }] (solo JS). */
+  get options() {
+    return this.#options;
+  }
+
+  set options(list) {
+    this.#options = Array.isArray(list)
+      ? list.map((o) => ({ value: String(o.value), label: o.label ?? String(o.value), disabled: Boolean(o.disabled) }))
+      : [];
+    if (this.#combobox) this.#renderSelect();
+  }
 
   setup() {
     this.#initial = this.getAttribute('value') ?? '';
@@ -64,19 +86,21 @@ class ArqInput extends ArqElement {
     root.querySelector('.label').htmlFor = this.#ids.control;
     root.querySelector('.helper').id = this.#ids.helper;
     root.querySelector('.error').id = this.#ids.error;
-    if (this.type === 'select') {
-      console.warn('[arq] <arq-input type="select"> todavía no está: se construye con select y select-menu. Se muestra como Text.');
-    }
   }
 
   /** Valor actual (lo que la persona escribió). El atributo value es el inicial. */
   get value() {
+    if (this.#combobox) return this.#selectValue;
     return this.#control?.value ?? this.getAttribute('value') ?? '';
   }
 
   set value(next) {
     const text = next == null ? '' : String(next);
-    if (this.#control) {
+    if (this.#combobox) {
+      this.#selectValue = text;
+      this.#renderSelect();
+      this.#sync();
+    } else if (this.#control) {
       this.#control.value = text;
       this.#sync();
     } else {
@@ -99,13 +123,19 @@ class ArqInput extends ArqElement {
     return this.#internals.reportValidity();
   }
 
+  /** ValidityState del campo (valueMissing, typeMismatch…), para elegir el mensaje. */
+  get validity() {
+    return this.#internals.validity;
+  }
+
   update(changed) {
     if (changed.has('type') || !this.#control) this.#renderControl();
     const control = this.#control;
     const root = this.shadowRoot;
 
     if (control.localName === 'input') control.type = this.inputType;
-    for (const attr of FORWARDED) {
+    const select = Boolean(this.#combobox);
+    for (const attr of select ? [] : FORWARDED) {
       if (this.hasAttribute(attr)) control.setAttribute(attr, this.getAttribute(attr));
       else control.removeAttribute(attr);
     }
@@ -128,6 +158,14 @@ class ArqInput extends ArqElement {
     if (describedBy.length) control.setAttribute('aria-describedby', describedBy.join(' '));
     else control.removeAttribute('aria-describedby');
 
+    if (select) {
+      if (changed.has('open')) {
+        root.querySelector('.menu').hidden = !this.open;
+        control.setAttribute('aria-expanded', String(this.open));
+        if (!this.open) this.#combobox.closed();
+      }
+      this.#renderSelect();
+    }
     this.#sync();
   }
 
@@ -139,10 +177,16 @@ class ArqInput extends ArqElement {
     this.#control.disabled = disabled || this.disabled;
   }
 
-  // <input> para Text (y Select hasta que exista), <textarea> para Textarea.
+  // <input> para Text, <textarea> para Textarea, <button> combobox para Select.
   #renderControl() {
-    const tag = this.type === 'textarea' ? 'textarea' : 'input';
+    const tag = { textarea: 'textarea', select: 'button' }[this.type] ?? 'input';
     if (this.#control?.localName === tag) return;
+    this.#combobox = null;
+    this.shadowRoot.querySelector('.menu')?.remove();
+    if (tag === 'button') {
+      this.#renderSelectControl();
+      return;
+    }
     const next = document.createElement(tag);
     next.className = 'control role-body';
     next.id = this.#ids.control;
@@ -157,9 +201,71 @@ class ArqInput extends ArqElement {
     this.#control = next;
   }
 
+  #renderSelectControl() {
+    const root = this.shadowRoot;
+    const trigger = document.createElement('button');
+    trigger.type = 'button';
+    trigger.className = 'control trigger role-body';
+    trigger.id = this.#ids.control;
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.innerHTML = `<span class="select-value"></span><span class="chevron">${icon('chevron-down')}${icon('chevron-up')}</span>`;
+    const field = root.querySelector('.field');
+    field.replaceChildren(trigger);
+    const menu = document.createElement('arq-select-menu');
+    menu.type = 'text';
+    menu.className = 'menu';
+    menu.id = `${this.#ids.control}-menu`;
+    menu.hidden = true;
+    field.append(menu);
+    this.#control = trigger;
+    this.#selectValue = this.getAttribute('value') ?? '';
+    this.#combobox = new Combobox({
+      trigger,
+      menu,
+      options: () => this.#options,
+      selected: () => this.#options.findIndex((o) => o.value === this.#selectValue),
+      isOpen: () => this.open,
+      setOpen: (open) => (this.open = open),
+      choose: (index) => {
+        const option = this.#options[index];
+        if (option.value === this.#selectValue) return;
+        this.value = option.value;
+        this.emit('input', { value: option.value });
+        this.emit('change', { value: option.value });
+      },
+    });
+  }
+
+  // Campo (valor elegido o placeholder) y opciones del menú. Las opciones se
+  // reusan: así el resaltado no se pierde.
+  #renderSelect() {
+    const root = this.shadowRoot;
+    const current = this.#options.find((o) => o.value === this.#selectValue);
+    const value = root.querySelector('.select-value');
+    value.textContent = current?.label ?? this.placeholder ?? '';
+    value.classList.toggle('placeholder', !current);
+    const menu = root.querySelector('.menu');
+    while (menu.children.length > this.#options.length) menu.lastElementChild.remove();
+    while (menu.children.length < this.#options.length) menu.append(document.createElement('arq-select-option'));
+    this.#options.forEach((o, i) => {
+      const el = menu.children[i];
+      el.id = `${menu.id}-${i}`;
+      el.value = o.value;
+      el.textContent = o.label;
+      el.disabled = o.disabled;
+      el.selected = o === current;
+    });
+  }
+
   // Valor y validez nativa → formulario.
   #sync() {
     const control = this.#control;
+    if (this.#combobox) {
+      this.#internals.setFormValue(this.#selectValue || null);
+      if (this.required && !this.#selectValue) this.#internals.setValidity({ valueMissing: true }, 'Elegí una opción.', control);
+      else this.#internals.setValidity({});
+      return;
+    }
     this.#internals.setFormValue(control.value);
     if (control.validity.valid) this.#internals.setValidity({});
     else this.#internals.setValidity(control.validity, control.validationMessage, control);

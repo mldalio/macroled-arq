@@ -37,4 +37,4 @@ Opción en forma de chip para elegir entre pocas opciones visibles (2 a 6) en un
 
 ## Pendientes
 
-- `TODO` Contenedor del grupo (`<fieldset>` + `<legend>`, `role="radiogroup"`): no existe en Figma y la separación entre chips no está definida (falta tomarla de la pantalla de Contacto). La demo usa `space/gap/sm`.
+- Contenedor del grupo: no existe en Figma. En Contacto (`arq-form-contacto`) es un `<fieldset>` con su `<legend>` y adentro un `role="radiogroup"` con `SingleSelect`; los chips van a `space/gap/sm-md`, como la pantalla de Final (`1278:27940`). La demo usa `space/gap/sm`.

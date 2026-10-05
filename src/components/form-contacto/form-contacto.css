@@ -1,0 +1,154 @@
+/* form-contacto · Final: Contacto (1278:27919 Desktop · 1311:17151 Mobile).
+   Solo tokens semánticos. Información y formulario en dos columnas iguales;
+   en Mobile, apilados. */
+
+:host {
+  display: block;
+  min-width: 0;
+  color: var(--arq-color-text-primary);
+}
+
+/* Primer bloque después del hero: space/section/lg arriba (Final) y
+   space/section/xl abajo.
+   TODO (diseño): las columnas están separadas 160 en Final y no hay gap de
+   ese tamaño; se usa space/gap/6xl (128), el más grande. */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: var(--arq-space-gap-6xl);
+  align-items: start;
+  padding: var(--arq-space-section-lg) var(--arq-layout-gutter) var(--arq-space-section-xl);
+}
+
+/* ── Información ────────────────────────────────────────────────── */
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-2xl);
+  min-width: 0;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-md);
+}
+
+.title {
+  color: var(--arq-color-text-primary);
+}
+
+.description {
+  color: var(--arq-color-text-secondary);
+}
+
+::slotted([slot='description']) {
+  margin: 0 !important;
+  font: inherit !important;
+  color: inherit !important;
+}
+
+/* Canales: cada contact-item trae su línea superior; la lista cierra abajo */
+.channels {
+  display: flex;
+  flex-direction: column;
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+/* ── Formulario ─────────────────────────────────────────────────── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-2xl);
+  min-width: 0;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-lg);
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* El legend no es un ítem flex: el espacio debajo va como margen */
+.section > legend {
+  display: block;
+  width: 100%;
+  margin-bottom: var(--arq-space-gap-lg);
+  padding: 0;
+}
+
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--arq-space-gap-sm-md);
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--arq-space-gap-lg);
+}
+
+/* Honeypot: fuera de la vista sin display: none (algunos bots lo detectan) */
+.honeypot {
+  position: absolute;
+  width: var(--arq-border-default);
+  height: var(--arq-border-default);
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Checkbox y envío en la misma fila; el mensaje va debajo del botón,
+   alineado a la derecha, y se parte en líneas si no entra (enviado, Final). */
+.submit {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-lg);
+}
+
+.submit arq-checkbox {
+  flex: none;
+}
+
+.send {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--arq-space-gap-md);
+  min-width: 0;
+  margin-inline-start: auto;
+  text-align: end;
+}
+
+/* ── Mobile ─────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--arq-space-gap-6xl);
+  }
+
+  .fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .submit {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .send {
+    align-items: stretch;
+    margin-inline-start: 0;
+    text-align: start;
+  }
+
+  .send-button {
+    width: 100%;
+  }
+}

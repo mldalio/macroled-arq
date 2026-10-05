@@ -16,8 +16,11 @@ const finishes = [
   { value: 'Blanco', label: 'Blanco', swatch: `${IMG}acabado-blanco.svg` },
 ];
 const heights = ['35 cm', '50 cm', '90 cm', '120 cm', '150 cm', '180 cm', '200 cm', '240 cm', '300 cm'].map((v) => ({ value: v, label: v }));
-for (const select of document.querySelectorAll('arq-select[data-demo-options]')) {
-  select.options = select.dataset.demoOptions === 'heights' ? heights : finishes;
+// input Type=Select: opciones de solo texto (Figma 1454:5001)
+const areas = ['Comercial', 'Técnica', 'Proyectos', 'Otro'].map((v) => ({ value: v }));
+const OPTIONS = { heights, finishes, areas };
+for (const select of document.querySelectorAll(':is(arq-select, arq-input)[data-demo-options]')) {
+  select.options = OPTIONS[select.dataset.demoOptions] ?? finishes;
 }
 const selectLog = document.querySelector('[data-demo-select-log]');
 document.addEventListener('arq:change', (event) => {

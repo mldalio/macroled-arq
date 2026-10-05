@@ -1,0 +1,52 @@
+<!--
+  Contacto · /arq/contacto · Code Embed de Webflow (docs/decisiones.md, 2026-10-01 · Páginas en Webflow y 2026-10-05 · Contacto)
+  Pantalla: Final › Contacto (1278:27912 Desktop · 1311:17149 Mobile · 1311:17459 / 1311:17499 enviado)
+  Se edita acá y se pega en Webflow. dist/arq.js, dist/arq.css y Albert Sans se cargan a nivel sitio.
+
+  El formulario (arq-form-contacto) envía al webhook de n8n de src/config.js (VITE_N8N_WEBHOOK_URL).
+  El estado "enviado" es la misma página (docs/urls.md).
+  TODO (imágenes): la src del hero apunta a la foto de ejemplo de la demo; antes de pegar en Webflow, reemplazarla por la URL de Webflow Assets.
+  TODO (contenido): email y teléfono son los de Final; confirmar los datos reales.
+-->
+<arq-navbar theme="transparent">
+  <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
+  <arq-nav-link slot="links" href="/arq/glosario">Glosario</arq-nav-link>
+  <arq-nav-link slot="links" href="/arq/contacto" current>Contacto</arq-nav-link>
+</arq-navbar>
+
+<main>
+  <arq-hero>
+    <img slot="media" src="/demo/fixtures/img/contacto/hero.jpg" alt="" fetchpriority="high">
+    <span slot="eyebrow">Contacto</span>
+    <h1 slot="title">Hablemos de tu proyecto.</h1>
+    <span slot="description">Asesoramiento para arquitectura e interiorismo.</span>
+  </arq-hero>
+
+  <arq-form-contacto>
+    <h2 slot="title">Te acompañamos en cada etapa.</h2>
+    <p slot="description">Desde la selección de luminarias hasta el cálculo lumínico, trabajamos junto a estudios, arquitectos e interioristas.</p>
+    <arq-contact-item slot="channels" href="mailto:info@macroled.com.ar"><span slot="label">Email</span>info@macroled.com.ar</arq-contact-item>
+    <arq-contact-item slot="channels" href="tel:+541140000000"><span slot="label">Teléfono</span>+54 11 4000-0000</arq-contact-item>
+    <arq-link-list slot="links">
+      <span slot="title">Recursos técnicos</span>
+      <arq-button type="underline" show-underline show-icon icon="arrow-right" href="/arq/descargas">Centro de descargas</arq-button>
+      <arq-button type="underline" show-underline show-icon icon="arrow-right" href="/arq/glosario">Glosario técnico</arq-button>
+    </arq-link-list>
+  </arq-form-contacto>
+</main>
+
+<arq-footer>
+  <span slot="tagline">Diseño lumínico para la arquitectura contemporánea.</span>
+  <h2 slot="productos-title">Productos</h2>
+  <arq-footer-link slot="productos" href="/arq/productos?environment=Interior">Interior</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?environment=Exterior">Exterior</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?product_type=L%C3%A1mpara">Lámparas y Artefactos</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/colecciones">Colecciones</arq-footer-link>
+  <h2 slot="informacion-title">Información</h2>
+  <arq-footer-link slot="informacion" href="/arq/contacto">Contacto</arq-footer-link>
+  <arq-footer-link slot="informacion" href="/arq/descargas">Descargas</arq-footer-link>
+  <arq-footer-link slot="informacion" href="/arq/glosario">Glosario</arq-footer-link>
+  <h2 slot="redes-title">Redes</h2>
+  <arq-footer-link slot="redes" href="https://www.instagram.com/" target="_blank" show-icon icon="instagram" label="Macroled Arq en Instagram">Instagram</arq-footer-link>
+  <arq-footer-link slot="redes" href="https://www.youtube.com/" target="_blank" show-icon icon="youtube" label="Macroled Arq en YouTube">YouTube</arq-footer-link>
+</arq-footer>

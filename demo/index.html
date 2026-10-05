@@ -1322,7 +1322,7 @@
 
       <section class="demo-section" aria-labelledby="demo-input">
         <h2 id="demo-input" class="demo-heading role-label">input · &lt;arq-input&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 930:2364. Text y Textarea × Empty, Filled, Focus (con Tab o clic), Error y Disabled; con helper, sin label visible (email del Home) y texto largo. «Validar» corre la validación nativa del formulario.</p>
+        <p class="demo-note role-body-sm">Figma 930:2364. Text, Select y Textarea × Empty, Filled, Focus (con Tab o clic), Error y Disabled; Select Open=True al abrirlo (con muchas opciones, scroll); con helper, sin label visible (email del Home) y texto largo. «Validar» corre la validación nativa del formulario.</p>
         <form class="demo-form-grid" data-demo-form novalidate>
           <arq-input name="nombre" placeholder="Tu nombre completo" autocomplete="name" required show-label>Nombre</arq-input>
           <arq-input name="empresa" value="Estudio Lorem Ipsum" show-label>Empresa (Filled)</arq-input>
@@ -1330,6 +1330,11 @@
           <arq-input name="telefono" input-type="tel" value="nombre@empresa" error="Revisá el formato: solo números, con código de área" show-label show-helper>Teléfono (Error)<span slot="helper">Con código de área</span></arq-input>
           <arq-input name="cuit" value="30-12345678-9" disabled show-label show-helper>CUIT (Disabled)<span slot="helper">No se puede editar</span></arq-input>
           <arq-input name="newsletter" input-type="email" placeholder="Tu email (sin label visible)">Email para el newsletter</arq-input>
+          <arq-input type="select" name="area" placeholder="Elegí un área" required show-label data-demo-options="areas">Área (Select)</arq-input>
+          <arq-input type="select" name="area-filled" value="Técnica" show-label data-demo-options="areas">Área (Select Filled)</arq-input>
+          <arq-input type="select" name="altura" placeholder="Elegí una altura" show-label show-helper data-demo-options="heights">Altura (Select, muchas opciones)<span slot="helper">Con más de 7, la lista tiene scroll</span></arq-input>
+          <arq-input type="select" name="area-error" placeholder="Elegí un área" error="Elegí un área" show-label data-demo-options="areas">Área (Select Error)</arq-input>
+          <arq-input type="select" name="area-disabled" value="Comercial" disabled show-label data-demo-options="areas">Área (Select Disabled)</arq-input>
           <arq-input type="textarea" name="mensaje" placeholder="Contanos más sobre tu consulta o proyecto…" show-label class="demo-span">Mensaje</arq-input>
           <arq-input type="textarea" name="mensaje-error" error="Contanos un poco más (mínimo 20 caracteres)" show-label class="demo-span">Mensaje (Error)</arq-input>
           <div class="demo-row demo-span">
@@ -1344,6 +1349,7 @@
           <arq-input value="nombre@empresa" error="Revisá el formato del email" show-label>Email (Error)</arq-input>
           <arq-input value="30-12345678-9" disabled show-label>CUIT (Disabled)</arq-input>
           <arq-input input-type="email" placeholder="Tu email">Email para el newsletter</arq-input>
+          <arq-input type="select" value="Proyectos" show-label data-demo-options="areas">Área (Select)</arq-input>
         </div>
       </section>
 

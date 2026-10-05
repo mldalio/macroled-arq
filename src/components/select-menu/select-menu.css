@@ -18,10 +18,16 @@
 }
 
 /* Hasta 7 opciones a la vista (cada una: space/padding/md × 2 + una línea de
-   role/body + su línea inferior); con más, scroll. type/body/leading se usa
-   solo para medir el alto de una opción, no para estilar texto. */
-.menu {
-  max-height: calc(7 * (2 * var(--arq-space-padding-md) + var(--arq-type-body-leading) + var(--arq-border-default)));
+   role/body + su línea inferior) más el borde; con más, scroll. El scroll va
+   en el host (el listbox, que puede recibir el foco: axe
+   scrollable-region-focusable). type/body/leading se usa solo para medir el
+   alto de una opción, no para estilar texto. */
+:host {
+  max-height: calc(7 * (2 * var(--arq-space-padding-md) + var(--arq-type-body-leading) + var(--arq-border-default)) + 2 * var(--arq-border-default));
   overflow-y: auto;
   overscroll-behavior: contain;
+}
+
+:host(:focus) {
+  outline: none;
 }
