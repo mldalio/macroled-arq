@@ -1,0 +1,57 @@
+<!--
+  Ficha de producto · /arq/producto/{slug} · template de la colección «Productos» del CMS + Code Embed
+  (docs/decisiones.md, 2026-10-01 · Páginas en Webflow y 2026-10-02 · Ficha de producto por grupo)
+  Pantalla: Final › Ficha (1218:10487 Desktop · 1220:11334 Mobile · 1218:11777 / 1220:12601 Iluminar)
+  Se edita acá y se pega en Webflow. dist/arq.js, dist/arq.css y Albert Sans se cargan a nivel sitio.
+
+  Campos del CMS (un ítem por grupo): en Webflow, cada valor de ejemplo se reemplaza por su campo dinámico:
+    data-group  → slug (PRODUCT_GROUP_ID)
+    <h1>        → nombre (PRODUCT_NAME)
+    description → descripción corta
+    <img>       → imagen principal (IMG_MAIN del SKU predeterminado) · alt: nombre
+    story       → PRODUCT_STORY_TEXT (texto plano con Markdown limitado: «## » título, «- » característica)
+    inspiration → PRODUCT_INSPIRATION_TEXT
+  El resto (variantes, galería, especificaciones, descargas, glosario, otras familias) sale de Typesense.
+  La variante elegida va en ?sku=; el canonical es la URL sin parámetro (Webflow).
+  TODO (Webflow): la imagen de ejemplo es de la demo; en el template va el campo de imagen del CMS.
+-->
+<arq-navbar>
+  <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
+  <arq-nav-link slot="links" href="/arq/glosario">Glosario</arq-nav-link>
+  <arq-nav-link slot="links" href="/arq/contacto">Contacto</arq-nav-link>
+</arq-navbar>
+
+<main>
+  <arq-ficha-producto data-group="kanu-jardin">
+    <h1 slot="title">Kanu Jardín</h1>
+    <p slot="description">Bolardo Macroled KANU de 50 cm, color negro, 2700K, 12W, AC100-240V, 140º, 40lm/W, IP65, IK06</p>
+    <img slot="image" src="/demo/fixtures/img/producto-1.svg" alt="Kanu Jardín" fetchpriority="high">
+    <h2 slot="downloads-title">Descargas</h2>
+    <div slot="story">## Luz que acompaña y define los recorridos exteriores.
+- Iluminación dirigida para acompañar recorridos y zonas de circulación.
+- Diseño vertical que controla la emisión de luz y reduce el deslumbramiento.
+- Proporciones compactas para una presencia visual discreta.
+- Pensada para crear secuencias de luz y marcar recorridos mediante la repetición.
+- Apta para proyectos residenciales, comerciales y de hospitalidad.</div>
+    <h2 slot="glossary-title">Glosario</h2>
+    <p slot="inspiration">Diseñada para integrarse al paisaje, la presencia natural y la calidez del entorno, Kanu Jardín acompaña accesos y jardines con una luz que parece nacer de la propia vegetación.</p>
+    <h2 slot="collection-title">Explora la colección</h2>
+    <h2 slot="modal-title">Descargas</h2>
+  </arq-ficha-producto>
+</main>
+
+<arq-footer>
+  <span slot="tagline">Diseño lumínico para la arquitectura contemporánea.</span>
+  <h2 slot="productos-title">Productos</h2>
+  <arq-footer-link slot="productos" href="/arq/productos?environment=Interior">Interior</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?environment=Exterior">Exterior</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?product_type=L%C3%A1mpara">Lámparas y Artefactos</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/colecciones">Colecciones</arq-footer-link>
+  <h2 slot="informacion-title">Información</h2>
+  <arq-footer-link slot="informacion" href="/arq/contacto">Contacto</arq-footer-link>
+  <arq-footer-link slot="informacion" href="/arq/descargas">Descargas</arq-footer-link>
+  <arq-footer-link slot="informacion" href="/arq/glosario">Glosario</arq-footer-link>
+  <h2 slot="redes-title">Redes</h2>
+  <arq-footer-link slot="redes" href="https://www.instagram.com/" target="_blank" show-icon icon="instagram" label="Macroled Arq en Instagram">Instagram</arq-footer-link>
+  <arq-footer-link slot="redes" href="https://www.youtube.com/" target="_blank" show-icon icon="youtube" label="Macroled Arq en YouTube">YouTube</arq-footer-link>
+</arq-footer>
