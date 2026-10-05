@@ -163,6 +163,14 @@
   min-width: 0;
 }
 
+/* Un ítem abierto (fondo color/surface/faint) se separa space/gap/sm de los
+   de al lado, así dos abiertos seguidos no se pegan. Va en margin-top del
+   segundo de cada par para no sumar dos veces. */
+.accordion arq-accordion-item[open] + arq-accordion-item,
+.accordion arq-accordion-item + arq-accordion-item[open] {
+  margin-top: var(--arq-space-gap-sm);
+}
+
 /* ── Galería de ambiente ────────────────────────────────────────── */
 /* Fila con scroll que llega al borde derecho de la pantalla (decisión
    2026-10-02 · Galerías). Cada foto mantiene su proporción.

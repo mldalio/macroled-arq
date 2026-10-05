@@ -84,6 +84,12 @@
    (role/body-medium) y chevron icon/sm. Gap y padding inferior space/gap/xs
    y space/padding/xs; Filled: space/gap/sm y space/padding/sm con línea
    inferior color/border/strong (como el set). */
+/* La celda mide al menos layout/select-filter (160): la flecha va al extremo
+   derecho, como el set */
+:host([type='filter']) {
+  min-width: var(--arq-layout-select-filter);
+}
+
 :host([type='filter']) .select {
   gap: var(--arq-space-gap-xs);
   padding-bottom: var(--arq-space-padding-xs);

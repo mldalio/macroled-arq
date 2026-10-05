@@ -215,7 +215,7 @@ function glossary(group) {
   const fallback = group.defaultVariant.images?.studio ?? null;
   return {
     columns: GLOSSARY_COLUMNS.filter(({ field }) => group.variants.some((v) => hasValue(v.values[field]))).map(({ field, label }) => ({ key: field, label })),
-    filters: group.variantAttributes.map((key) => ({ key, label: attributeInfo(key).label })),
+    filters: group.variantAttributes.map((key) => ({ key, label: attributeInfo(key).label, swatches: attributeInfo(key).control === 'swatches' })),
     rows: group.variants.map((v) => ({ sku: v.sku, thumb: v.images?.studio ?? fallback, attributes: v.values, values: v.values })),
   };
 }

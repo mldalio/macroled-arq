@@ -29,4 +29,4 @@ Lista desplegable de select: `arq-select-option` en una lista (`role="listbox"`)
 | --- | --- |
 | Fondo · borde | `color/surface/default` · `border/default` en `color/border/default` |
 | Alto máximo | 7 opciones (cada una `space/padding/md` × 2 + una línea de `role/body` + su línea inferior) |
-| Ancho Filter · Text | el de sus opciones, al menos el del campo; como máximo, el ancho de la pantalla menos `layout/gutter` × 2 |
+| Ancho Filter · Text | el de sus opciones, al menos el del campo (Filter: al menos `layout/select-menu-filter`, 200); como máximo, el ancho de la pantalla menos `layout/gutter` × 2 |

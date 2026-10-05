@@ -276,6 +276,36 @@
           }
         }
       }
+    },
+    "select-filter": {
+      "$type": "number",
+      "$value": 160,
+      "$description": "Ancho mínimo de select Type=Filter (celda de filter-bar): la flecha va al extremo derecho de la celda.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-select-filter)"
+          }
+        }
+      }
+    },
+    "select-menu-filter": {
+      "$type": "number",
+      "$value": 200,
+      "$description": "Ancho de select-menu Type=Filter (menú de un select Filter).",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-select-menu-filter)"
+          }
+        }
+      }
     }
   },
   "space": {

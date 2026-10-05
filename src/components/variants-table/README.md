@@ -15,7 +15,7 @@ Tabla de variantes de la ficha (Glosario): una fila por SKU del grupo con sus da
 ```js
 tabla.data = {
   columns: [{ key: 'potencia', label: 'Potencia' }, …],          // src/data/attributes.js
-  filters: [{ key: 'color_carcasa', label: 'Color' }, …],     // VARIANT_ATTRIBUTES
+  filters: [{ key: 'color_carcasa', label: 'Color', swatches: true }, …],  // VARIANT_ATTRIBUTES; swatches: opciones con muestra (acabados)
   rows: [{ sku: 'KANU-J-500-12W-N-WW', thumb: '…', attributes: { color_carcasa: 'Negro', altura: '50 cm' }, values: { potencia: '12 W', … } }],
 };
 tabla.addEventListener('arq:downloads', (e) => llenarModal(e.detail.sku));

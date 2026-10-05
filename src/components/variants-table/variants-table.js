@@ -9,7 +9,7 @@
 //
 //   tabla.data = {
 //     columns: [{ key: 'potencia', label: 'Potencia' }, …],
-//     filters: [{ key: 'color_carcasa', label: 'Color' }, { key: 'altura', label: 'Altura' }],
+//     filters: [{ key: 'color_carcasa', label: 'Color', swatches: true }, { key: 'altura', label: 'Altura' }],
 //     rows: [{ sku: 'KANU-…', thumb: '…', attributes: { color_carcasa: 'Negro', … }, values: { potencia: '12 W', … } }],
 //   };
 //
@@ -143,7 +143,10 @@ class ArqVariantsTable extends ArqElement {
     // Opciones de cada filtro (las que no dan filas, deshabilitadas)
     const groups = filterOptions(rows, keys, this.#values);
     root.querySelectorAll('.filter-bar arq-select').forEach((select, i) => {
-      select.options = groups[i].options.map((o) => ({ value: o.value, label: o.value, disabled: o.disabled }));
+      // Acabados (swatches): opción con muestra, como select-menu Filter del set.
+      // TODO (acabados): sin imagen, la muestra es el neutro (DESIGN.md §8).
+      const showSwatch = Boolean(filters[i].swatches);
+      select.options = groups[i].options.map((o) => ({ value: o.value, label: o.value, disabled: o.disabled, showSwatch }));
       select.value = this.#values[select.name] ?? '';
     });
     // Filas que cumplen los filtros
