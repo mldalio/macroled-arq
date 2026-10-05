@@ -52,18 +52,20 @@ El HTML del embed completo está en [src/pages/ficha.html](../../pages/ficha.htm
 
 ## Layout
 
+Tablet (768–1023 px) usa la columna Desktop salvo en los bloques marcados: ahí se apila como Mobile, con los espaciados de Desktop (`TODO` diseño: Final no tiene Ficha en Tablet).
+
 | Bloque | Desktop | Mobile |
 | --- | --- | --- |
-| Todos | `layout/gutter` a los lados, `space/section/xl` abajo | ídem |
+| Todos | `--page-gutter` a los lados (`layout/gutter` con tope en `layout/max-width`), `space/section/xl` abajo | ídem |
 | Hero · encabezado | `space/padding/xl` arriba, `space/padding/xl-2xl` abajo, gap `space/gap/xl`; título y "Ver colección" en fila a `space/gap/md` | gap `space/gap/2xl`; "Ver colección" debajo a `space/gap/xs` |
-| Hero · configurador | galería (resto) + columna de `layout/measure`, a `space/gap/5xl` | apilado a `space/gap/2xl` |
+| Hero · configurador | galería (resto) + columna de `layout/measure`, a `space/gap/5xl` | apilado a `space/gap/2xl` (también Tablet) |
 | Columna del configurador | info (`space/gap/xl`: sku y descripción a `space/gap/lg`, opciones a `space/gap/xl-2xl`) y acciones abajo (`space/gap/md`) | acciones a todo el ancho, una debajo de la otra |
-| Descargas + acordeón | columna de `layout/measure` + acordeón, a `space/gap/3xl` | apilado a `space/gap/2xl` |
+| Descargas + acordeón | columna de `layout/measure` + acordeón, a `space/gap/3xl` | apilado a `space/gap/2xl`, acordeón a todo el ancho (también Tablet) |
 | Galería de ambiente | fila con scroll hasta el borde derecho, gap `space/gap/md` | gap `space/gap/sm-md` |
 | Descripción | textos a `space/gap/lg`; otras familias e imagen (`ratio/wide`) en dos mitades, abajo, a `space/gap/sm` | imagen arriba, otras familias a `space/gap/6xl` |
 | Glosario | título a `space/gap/md` de la tabla | ídem |
-| Inspiración | texto (un tercio) e imágenes (dos tercios) en `ratio/portrait-soft` | apilado a `space/gap/xl` |
-| Explora la colección | Dark local, padding `space/padding/5xl`; introducción de `layout/measure` y cards a `space/gap/2xl` | apilado a `space/gap/4xl` |
+| Inspiración | texto (un tercio) e imágenes (dos tercios) en `ratio/portrait-soft` | apilado a `space/gap/xl` (también Tablet, con las fotos en fila y el texto hasta `layout/measure`) |
+| Explora la colección | Dark local, padding `space/padding/5xl`; introducción de `layout/measure` y cards a `space/gap/2xl` | apilado a `space/gap/4xl` (también Tablet) |
 
 ## Pendientes
 
