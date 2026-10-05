@@ -1,16 +1,31 @@
 /* variants-table · Figma 1068:5582 + variants-table-row 923:2708.
-   Solo tokens semánticos. Componente de borde a borde: la barra y las filas
-   llevan layout/gutter a los lados; el scroll llega al borde de la pantalla. */
+   Solo tokens semánticos. La tabla ocupa el ancho del contenido de la página:
+   el host toma el margen de página (--page-gutter) y adentro no hay gutter, así
+   en todos los breakpoints las líneas empiezan en la miniatura y terminan en el
+   ícono de descarga. La barra de filtros queda del mismo ancho, con
+   space/padding/md adentro (docs/decisiones.md, 2026-10-05 · variants-table
+   dentro del contenido). */
 
 :host {
   display: flex;
   flex-direction: column;
   gap: var(--arq-space-gap-md);
   min-width: 0;
+  margin-inline: var(--page-gutter);
+}
+
+.toolbar,
+.scroll {
+  --page-gutter: var(--arq-space-0);
+}
+
+/* filter-bar calcula su propio --page-gutter en su :host; esta regla gana */
+.filter-bar {
+  --page-gutter: var(--arq-space-padding-md);
 }
 
 /* Barra: Filtros a la izquierda, descargas a la derecha; padding
-   space/padding/md y layout/gutter */
+   space/padding/md arriba y abajo; a los lados, el borde del contenido */
 .toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -26,10 +41,16 @@
   gap: var(--arq-space-gap-sm);
 }
 
-/* Un solo contenedor con scroll para encabezado y filas */
+/* Un solo contenedor con scroll para encabezado y filas, sin barra visible:
+   se desplaza con el trackpad, el touch o las flechas (tiene foco). */
 .scroll {
   overflow-x: auto;
   overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.scroll::-webkit-scrollbar {
+  display: none;
 }
 
 .scroll:focus-visible {
@@ -75,7 +96,7 @@ tbody td {
   }
 }
 
-/* Columna fija de inicio (miniatura + sku), con layout/gutter a la izquierda */
+/* Columna fija de inicio (miniatura + sku), pegada al borde izquierdo */
 .start {
   position: sticky;
   left: 0;
@@ -111,7 +132,7 @@ tbody td {
   object-fit: cover;
 }
 
-/* Columna fija de fin (descarga), con layout/gutter a la derecha */
+/* Columna fija de fin (descarga), pegada al borde derecho */
 .end {
   position: sticky;
   right: 0;

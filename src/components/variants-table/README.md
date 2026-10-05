@@ -43,11 +43,12 @@ tabla.addEventListener('arq:downloads', (e) => llenarModal(e.detail.sku));
 
 | Parte | Token |
 | --- | --- |
-| Barra | padding `space/padding/md` × `layout/gutter`; gap barra–tabla `space/gap/md` |
+| Barra | padding `space/padding/md` arriba y abajo, sin padding lateral; gap barra–tabla `space/gap/md` |
 | Encabezado | `role/label` en `color/text/tertiary`, padding vertical `space/padding/sm-md` |
 | Filas | valores `role/body` en `color/text/primary`; Hover `color/surface/faint`; fondo de las fijas `color/bg/default` |
 | Separadores | `border/default` en `color/border/subtle` |
-| Entre columnas | `space/gap/sm`; `layout/gutter` al inicio y al final |
+| Entre columnas | `space/gap/sm`; sin padding al inicio ni al final |
+| Ancho | El del contenido de la página en todos los breakpoints (margen `--page-gutter`, sin gutter adentro): las líneas van de la miniatura al ícono de descarga; la barra de filtros con `space/padding/md` adentro. Scroll horizontal sin barra visible cuando no entra |
 | Miniatura | `layout/table-thumb` (56, token nuevo), fondo `color/surface/subtle` |
 
 ## Pendientes

@@ -524,3 +524,19 @@ setup() {
 - **Por qué:** si el usuario agranda el tamaño de fuente del navegador o del sistema, crecen juntos el texto y el aire que lo rodea, y la página mantiene sus proporciones. El zoom del navegador ya escalaba todo.
 - **Siguen en px:** `border/*` (hairlines de 1 y 2 px), `radius/*`, `blur/*`, los `layout/*` con valor propio (anchos de tarjeta, miniaturas, `layout/measure`, `layout/max-width`) y las media queries.
 - **Resultado:** con 16 px de base, las capturas de Home, Productos, Ficha y Contacto (390 y 1440) son idénticas byte a byte a las de antes del cambio.
+
+## 2026-10-05 · variants-table dentro del contenido
+
+- **Qué:** `<arq-variants-table>` deja de ir de borde a borde en todos los breakpoints: la tabla toma el margen de página (`--page-gutter`) y adentro no lleva gutter. Las líneas de las filas y la barra de filtros empiezan en la miniatura y terminan en el ícono de descarga, alineadas con el título. La barra de filtros lleva `space/padding/md` adentro. Reemplaza a «De borde a borde» de DESIGN.md §5 para este componente.
+- **Scroll:** sigue el scroll horizontal cuando la tabla no entra (Mobile y Tablet), dentro de los márgenes y sin barra visible: se desplaza con touch, trackpad o flechas (la región tiene foco). Desde 1440 la tabla entra sin scroll.
+- **Por qué:** con el contenido tope en 1792, la franja de filtros y las líneas llegaban al borde en pantallas anchas y la tabla se veía desconectada del resto; se pidió el mismo criterio en todos los anchos.
+- **visually-hidden:** el texto para lectores de pantalla suma `margin: -1px` (`border/default`): sin el gutter, el de la última columna desbordaba 1 px y aparecía la barra de scroll.
+- Los demás componentes de borde a borde (navbar, footer, page-header, cta-block, hero, compare-bar) siguen con fondos y líneas a todo el ancho.
+
+## 2026-10-05 · Tipografía Wide (desde 1920)
+
+- **Qué:** 2 · Semantic · Type suma el modo **Wide**, `@media (min-width: 1920px)`: `role/body` y sus variantes (regular, medium, strong) pasan de 14/20 a 16/24, `role/body-sm` y `body-sm-medium` de 12/16 a 14/20 y `role/body-lg` (y regular, medium) de 16/24 a 18/28. El resto de los estilos no cambia.
+- **Primitivo nuevo:** `font/size/18`, para que `body-lg` crezca «un poco» sin quedar igual a `body` ni a `body-xl` (20). El interlineado 28 ya existía.
+- **Por qué:** en pantallas de 1920+ el texto de 14 de botones, valores y links se veía chico.
+- **Efecto:** los controles que usan `body-regular` (button, select, option-tile…) crecen 4 px de alto a 1920+ (button de 36 a 40).
+- Se llama Wide (no Large) porque Large es el modo de Dimension desde 1440.
