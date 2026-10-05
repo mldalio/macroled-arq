@@ -26,14 +26,18 @@
 
 const hasValue = (value) => value !== undefined && value !== null && String(value).trim() !== '';
 
-/** Valores únicos de un atributo, en el orden de los SKU. */
+/**
+ * Valores únicos de un atributo, ordenados con números de menor a mayor
+ * ("50 cm" antes que "90 cm") y el resto alfabético: Typesense no devuelve
+ * los SKU en un orden útil.
+ */
 export function variantValues(variants, attribute) {
   const values = [];
   for (const variant of variants) {
     const value = variant.attributes[attribute];
     if (hasValue(value) && !values.includes(value)) values.push(value);
   }
-  return values;
+  return values.sort((a, b) => String(a).localeCompare(String(b), 'es', { numeric: true }));
 }
 
 /** El SKU que coincide con todos los atributos de la selección, o null. */

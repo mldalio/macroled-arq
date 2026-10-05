@@ -1,5 +1,5 @@
 // navbar, mega-menu y búsqueda en la demo. El navbar pide sus datos a
-// src/data/catalog.js (catálogo de ejemplo con VITE_DATA_SOURCE=mock); el
+// src/data/catalog.js (VITE_DATA_SOURCE=mixto o mock); el
 // mega-menu suelto recibe el mismo árbol.
 
 import { getNavigation } from '/src/data/catalog.js';
