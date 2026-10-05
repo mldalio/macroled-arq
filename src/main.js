@@ -77,6 +77,7 @@ import './components/grid/grid.js';
 import './components/project-mosaic/project-mosaic.js';
 import './components/featured-products/featured-products.js';
 import './components/catalog-listing/catalog-listing.js';
+import './components/ficha-producto/ficha-producto.js';
 
 if (!window.Arq) {
   window.Arq = Object.freeze({ version });

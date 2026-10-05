@@ -14,6 +14,8 @@
 //   cuando cambia data-arq-theme en cualquier elemento del DOM de la página
 //   (Iluminar lo pone en <html> o en una sección). No ve cambios dentro de un
 //   Shadow DOM: el Dark local de un componente es fijo y no cambia imágenes.
+//   Un componente que cambia el modo de un contenedor interno (el hero de la
+//   ficha) avisa con refreshTheme().
 // - Cada componente queda registrado con una referencia débil (y el método
 //   por su nombre, para no guardar una función que lo retenga): si sale de la
 //   página y se descarta, deja de recibir avisos sin tener que desregistrarlo.
@@ -34,6 +36,16 @@ export function isDark(element) {
     if (node.hasAttribute?.('data-arq-theme')) return node.getAttribute('data-arq-theme') === 'dark';
   }
   return false;
+}
+
+/**
+ * Avisa ya a los componentes registrados. Para un data-arq-theme que cambia
+ * dentro de un Shadow DOM, que el observer no ve: la ficha de producto, cuyo
+ * hero es un contenedor interno de <arq-ficha-producto>, lo llama al cambiar
+ * Iluminar.
+ */
+export function refreshTheme() {
+  checkAll();
 }
 
 function checkAll() {
