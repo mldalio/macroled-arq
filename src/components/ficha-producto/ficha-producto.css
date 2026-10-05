@@ -58,8 +58,8 @@
 }
 
 /* Galería y configurador reparten el ancho 60/40 (3fr · 2fr), con
-   layout/measure (400) como mínimo del configurador. Separación
-   space/gap/5xl (96); en Final mide 110, sin token
+   layout/measure (400) como mínimo del configurador, separados
+   space/gap/5xl (Final: 734 + 96 + 490)
    (docs/decisiones.md, 2026-10-05 · Ficha 60/40, scroll de la galería de ambiente y datos mixtos). */
 .configurator {
   display: grid;
