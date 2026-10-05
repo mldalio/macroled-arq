@@ -99,3 +99,10 @@
     gap: var(--arq-space-gap-lg);
   }
 }
+
+/* full-height (Home): todo el alto del viewport en Desktop y Mobile
+   (decisiones.md, 2026-10-05 · Home: alturas y meta) */
+:host([full-height]) .hero {
+  aspect-ratio: auto;
+  height: 100svh;
+}

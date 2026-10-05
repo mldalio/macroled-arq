@@ -572,3 +572,9 @@ setup() {
 - **Light local:** `npm run tokens` genera también `[data-arq-theme="light"]` con el valor Light de cada token que tiene modo Dark: en `tokens.css` (DOM de la página) y en `src/styles/light.css`, que `ArqElement` adopta en cada Shadow DOM igual que `dark.css`. Sin colores escritos a mano. El `<dialog>` de filter-panel lleva el atributo; el contenido por slot lo hereda.
 - DESIGN.md §2 · Modo Dark: «No hay Light local» pasa a tener esta excepción.
 - `TODO` (diseño): Final no tiene una pantalla con el panel abierto e Iluminar encendido.
+
+## 2026-10-05 · Home: alturas y meta
+
+- **Hero a pantalla completa solo en la Home:** `<arq-hero full-height>` ocupa todo el ancho y el alto del viewport (`100svh`) en Desktop y Mobile. Es un atributo solo de código (no hay prop en Figma); Contacto sigue con `ratio/wide` y `70svh`.
+- **Meta de Productos destacados:** el tipo de producto, no entorno · aplicación (repetía «Exterior · Jardín» en casi todas). Luminaria → su aplicación («Jardín», «Colgante»); otro tipo → el tipo («Lámpara»). Solo en la Home (`getProductCards`); los listados no cambian.
+- **Cada sección de la Home entra en una pantalla (Desktop):** en Figma (1400 de ancho) las secciones miden 780–1056, pero en código las imágenes crecían con el ancho (en 1920, las colecciones destacadas medían 1280). Desde 768 px la imagen de feature-block, category-card, line-card y project-mosaic tiene un alto máximo atado a `100svh` menos el padding de la sección (`space/section/xl`) y el lugar de los textos; al tope se recorta (`object-fit: cover`), sin angostarse. Piso de `50svh` para pantallas bajas. En Mobile no hay tope. Resultado: 1440×900 → secciones de ~900; 1920×1080 → ~1080. Desde 1920 el contenido ya no crece (`layout/max-width`), así que en pantallas más altas las secciones quedan por debajo del alto de pantalla.

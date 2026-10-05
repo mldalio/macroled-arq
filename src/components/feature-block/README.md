@@ -39,6 +39,9 @@ Bloque editorial del Home con imagen protagonista: foto grande (y una secundaria
 | Imagen → textos | `space/gap/6xl` | `space/gap/lg` |
 | Textos | a `space/gap/xl`; arriba `space/padding/xl-2xl` (Image left) o `space/padding/6xl` (Image right, desfasado como el set) | a `space/gap/md`, `space/padding/sm` arriba |
 | Secundaria | debajo de los textos, en su columna (`ratio/wide`) | al final del bloque |
+| Alto máximo de la imagen | `100svh` − `space/section/xl` (mín. `50svh`); al tope se recorta, sin angostarse | sin tope |
+
+El tope hace que la sección entre en una pantalla aunque el viewport sea muy ancho (`docs/decisiones.md`, 2026-10-05 · Home: alturas y meta).
 
 ## Tokens
 

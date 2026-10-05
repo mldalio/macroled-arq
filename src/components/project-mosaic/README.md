@@ -24,6 +24,7 @@ Mosaico de fotos de proyectos ("Diseño que inspira" del Home). Componente de la
 | Armado | 1.ª a la izquierda a todo el alto; 2.ª arriba a la derecha; 3.ª y 4.ª abajo a la derecha | 1.ª a todo el ancho; 2.ª y 3.ª debajo; la 4.ª no se ve |
 | Proporción | 3.ª y 4.ª `ratio/square` (dan el alto de las filas) | todas `ratio/portrait-soft` (4:5) |
 | Gap | `space/gap/lg` | `space/gap/sm-md` |
+| Alto máximo | `100svh` − 2 × `space/section/xl` (mín. `50svh`), mitad por fila; al tope las fotos se recortan | sin tope |
 | Sin foto (o cargando) | fondo `color/bg/subtle` | ídem |
 
 - Más de cuatro fotos no se muestran (la cantidad de las galerías está pendiente, DESIGN.md §12).

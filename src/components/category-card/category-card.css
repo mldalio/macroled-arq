@@ -38,6 +38,16 @@
   color: var(--arq-color-icon-primary);
 }
 
+/* Desktop: la sección (encabezado + tarjetas) entra en una pantalla. La
+   imagen no pasa del alto del viewport menos dos space/section/xl (padding
+   de la sección y lugar para encabezado y nombre); al tope se recorta.
+   Piso de 50svh (decisiones.md, 2026-10-05 · Home: alturas y meta). */
+@media (min-width: 768px) {
+  .card-media {
+    max-height: max(50svh, 100svh - var(--arq-space-section-xl) * 2);
+  }
+}
+
 @media (max-width: 767px) {
   .card {
     gap: var(--arq-space-gap-md);

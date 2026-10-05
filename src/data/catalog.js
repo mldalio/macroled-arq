@@ -222,11 +222,19 @@ function glossary(group) {
 
 /**
  * Cards de grupos elegidos a mano (Productos destacados del Home), en el
- * mismo orden. Un grupo que no existe se saltea.
+ * mismo orden. Un grupo que no existe se saltea. La meta es el tipo de
+ * producto (decisiones.md, 2026-10-05 · Home: alturas y meta).
  */
 export async function getProductCards(groupIds) {
   const { groupById } = await loadCatalog();
-  return groupIds.map((id) => groupById.get(id)).filter(Boolean).map((group) => productCard(group));
+  return groupIds.map((id) => groupById.get(id)).filter(Boolean).map((group) => ({ ...productCard(group), meta: productKind(group) }));
+}
+
+// Tipo de producto: la aplicación de una luminaria («Jardín», «Colgante») o
+// el tipo si no es luminaria («Lámpara»).
+function productKind(group) {
+  if (group.productType && group.productType !== 'Luminaria') return group.productType;
+  return group.application ?? group.productType ?? '';
 }
 
 // En el orden de Descargas de la Ficha de Final (1218:10596)

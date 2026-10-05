@@ -42,6 +42,9 @@ Patrón común de las tarjetas (`src/base/card-link.css`, `docs/decisiones.md` �
 | Entre textos | `space/gap/md`, con `space/padding/sm` arriba | `space/gap/sm-md` |
 | Antes de "Ver colección" | + `space/gap/sm` (espaciador del set) | + `space/gap/xs` |
 | Bajada | hasta `layout/measure` | ancho completo |
+| Alto máximo de la imagen | `100svh` − 2 × `space/section/xl` − `space/gap/6xl` (mín. `50svh`); al tope se recorta | sin tope |
+
+El tope hace que la sección entre en una pantalla aunque el viewport sea muy ancho (`docs/decisiones.md`, 2026-10-05 · Home: alturas y meta).
 
 ## Tokens
 

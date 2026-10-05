@@ -35,6 +35,9 @@ Patrón común de las tarjetas (`src/base/card-link.css`, `docs/decisiones.md` �
 | Imagen | `ratio/portrait-soft` (4:5) | `ratio/portrait-soft` (4:5) |
 | Imagen → nombre | `space/gap/lg` | `space/gap/md` |
 | Ancho | el de su columna (FILL) | el de su columna; en el Home va en un carrusel de tarjetas de 280 |
+| Alto máximo de la imagen | `100svh` − 2 × `space/section/xl` (mín. `50svh`); al tope se recorta | sin tope |
+
+El tope hace que la sección entre en una pantalla aunque el viewport sea muy ancho (`docs/decisiones.md`, 2026-10-05 · Home: alturas y meta).
 
 Un nombre largo se parte en líneas; la flecha queda a la derecha.
 
