@@ -565,3 +565,10 @@ setup() {
 - **select Type=Filter:** todos los estados llevan la línea inferior `color/border/strong` de Filled, con gap `space/gap/sm` y padding inferior `space/padding/sm` («Todos» se ve igual que un filtro elegido); Disabled, `color/border/disabled`. Cambiado también en el set (`921:2544`) y su descripción.
 - **option-tile:** Default pasa a `color/text/secondary` (antes tertiary, se confundía con Disabled) y Disabled va tachado. Cambiado también en el set (`921:2487`) y su descripción.
 - **Explora la colección:** usa la misma grilla que Inspiración (un tercio + dos tercios, como Final: 440 + 880), así las cards y las fotos de Inspiración empiezan en la misma línea. Inspiración de la demo con las dos fotos de Final.
+
+## 2026-10-05 · filter-panel siempre en Light
+
+- **Qué:** el panel Filtrar de Productos y Colecciones queda en Light aunque Iluminar ponga la página en Dark (pedido de diseño). Iluminar es para ver los productos encendidos; el panel es un formulario.
+- **Light local:** `npm run tokens` genera también `[data-arq-theme="light"]` con el valor Light de cada token que tiene modo Dark: en `tokens.css` (DOM de la página) y en `src/styles/light.css`, que `ArqElement` adopta en cada Shadow DOM igual que `dark.css`. Sin colores escritos a mano. El `<dialog>` de filter-panel lleva el atributo; el contenido por slot lo hereda.
+- DESIGN.md §2 · Modo Dark: «No hay Light local» pasa a tener esta excepción.
+- `TODO` (diseño): Final no tiene una pantalla con el panel abierto e Iluminar encendido.

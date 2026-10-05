@@ -18,6 +18,8 @@
 //
 // - Diálogo modal nativo (<dialog> + showModal): el foco queda adentro, Esc y el
 //   scrim lo cierran y al cerrar vuelve al botón que lo abrió.
+// - Siempre en Light, también con Iluminar: el <dialog> lleva
+//   data-arq-theme="light" (Light local, decisión 2026-10-05 · filter-panel).
 // - Summary ("3 filtros activos") y los filter-chip de lo aplicado se arman
 //   solos con los checkbox marcados; sin filtros no se muestran (Show summary
 //   y Show applied).
@@ -47,7 +49,7 @@ class ArqFilterPanel extends ArqElement {
     unit: { type: String, values: ['productos', 'colecciones'], default: 'productos' },
   };
   static template =
-    `<dialog class="dialog">` +
+    `<dialog class="dialog" data-arq-theme="light">` +
     `<div class="sheet">` +
     `<div class="header">` +
     `<div class="titles"><div class="title role-heading-1"><slot name="title"></slot></div><p class="summary role-body" hidden></p></div>` +

@@ -1,0 +1,42 @@
+/* Generado por npm run tokens desde tokens/tokens.json. No editar a mano. */
+/* Lo adopta cada Shadow DOM (src/styles/roles.js): Light local en un contenedor interno. */
+[data-arq-theme="light"] {
+  --arq-color-bg-default: var(--arq-neutral-0); /** Fondo de página y de secciones completas (body, section). */
+  --arq-color-bg-subtle: var(--arq-neutral-100); /** Fondo alternativo para diferenciar una sección de página de la siguiente. */
+  --arq-color-bg-inverse: var(--arq-neutral-900); /** Fondo de sección invertida, por ejemplo un footer oscuro en modo Light. */
+  --arq-color-surface-default: var(--arq-neutral-0); /** Fondo principal de página, tarjetas y paneles. */
+  --arq-color-surface-faint: var(--arq-neutral-25); /** Fondo apenas despegado de surface/default: hover de opciones sin fondo (option-tile). */
+  --arq-color-surface-hover: var(--arq-neutral-50); /** Fondo al pasar el cursor sobre un elemento interactivo que está sobre surface/default. */
+  --arq-color-surface-soft: var(--arq-neutral-75); /** Fondo suave entre hover y subtle: estado seleccionado liviano (option-tile). */
+  --arq-color-surface-subtle: var(--arq-neutral-100); /** Fondo secundario: bloques destacados, bandas de sección, filas alternas. */
+  --arq-color-surface-selected: var(--arq-neutral-150); /** Fondo de un elemento seleccionado: opción de filtro, fila, chip de variante. */
+  --arq-color-surface-strong: var(--arq-neutral-200); /** Componente que se despega bien del fondo: placeholders, fondos de imagen, chips seleccionados. */
+  --arq-color-surface-inverse: var(--arq-neutral-900); /** Fondo de máximo contraste: botón primario, footer, bandas oscuras. Siempre con color/text/inverse encima. */
+  --arq-color-surface-inverse-hover: var(--arq-neutral-750); /** Hover de un fondo color/surface/inverse (botón primario). */
+  --arq-color-surface-inverse-pressed: var(--arq-neutral-600); /** Pressed de un fondo color/surface/inverse (botón primario). */
+  --arq-color-text-primary: var(--arq-neutral-900); /** Títulos, nombres de producto y texto de máxima jerarquía. */
+  --arq-color-text-secondary: var(--arq-neutral-750); /** Texto de lectura: párrafos, descripciones, valores de especificaciones. */
+  --arq-color-text-tertiary: var(--arq-neutral-600); /** Texto secundario: metadatos, etiquetas, ayudas, captions, SKU. */
+  --arq-color-text-inverse: var(--arq-neutral-0); /** Texto e íconos sobre surface/inverse. */
+  --arq-color-text-accent: var(--arq-neutral-900); /** Texto de acento, como links destacados. Mismo tono que color/accent/default (Light neutral/900, Dark neutral/150). */
+  --arq-color-text-disabled: var(--arq-neutral-400); /** Texto e íconos de elementos deshabilitados. No usar para texto que se tiene que leer. */
+  --arq-color-text-error: var(--arq-red-600); /** Mensajes de error y validación. */
+  --arq-color-text-success: var(--arq-green-600); /** Mensajes de confirmación (por ejemplo, formulario enviado). */
+  --arq-color-text-warning: var(--arq-amber-600); /** Avisos (por ejemplo, sin stock o plazo de entrega largo). */
+  --arq-color-icon-primary: var(--arq-neutral-900); /** Íconos junto a títulos o de máxima jerarquía. */
+  --arq-color-icon-secondary: var(--arq-neutral-750); /** Íconos de uso general. */
+  --arq-color-icon-tertiary: var(--arq-neutral-600); /** Íconos secundarios o de apoyo. */
+  --arq-color-icon-accent: var(--arq-neutral-900); /** Íconos de acento (activo o destacado). Mismo tono que color/accent/default. */
+  --arq-color-icon-inverse: var(--arq-neutral-0); /** Íconos sobre color/surface/inverse o color/bg/inverse. */
+  --arq-color-icon-disabled: var(--arq-neutral-400); /** Íconos de elementos deshabilitados. */
+  --arq-color-border-subtle: var(--arq-alpha-ink-10); /** Divisores y bordes de tarjetas. El borde por defecto. */
+  --arq-color-border-default: var(--arq-alpha-ink-22); /** Bordes de controles en reposo: inputs, chips, checkboxes. */
+  --arq-color-border-strong: var(--arq-neutral-900); /** Bordes de énfasis: elemento seleccionado, botón secundario. */
+  --arq-color-border-disabled: var(--arq-neutral-200); /** Bordes de controles deshabilitados. */
+  --arq-color-border-focus: var(--arq-neutral-900); /** Anillo de foco de teclado. Obligatorio en todo elemento interactivo. */
+  --arq-color-border-error: var(--arq-red-600); /** Borde de un campo con error. Acompañar siempre con color/text/error. */
+  --arq-color-action-primary: var(--arq-neutral-900); /** Acción principal: fondo del botón Filled; texto e ícono de Outline y Underline. Negro en Light, casi blanco en Dark. */
+  --arq-color-action-primary-hover: var(--arq-neutral-750); /** Hover de la acción principal. */
+  --arq-color-action-on-primary: var(--arq-neutral-0); /** Texto e íconos sobre color/action/primary. */
+  --arq-color-accent-default: var(--arq-neutral-900); /** Acento para detalles: foco, estados activos, etiquetas. Light neutral/900, Dark neutral/150. Nunca fondo de botones ni de bloques grandes. */
+}
