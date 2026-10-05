@@ -22,7 +22,7 @@ Flechas anterior / siguiente para un carrusel con scroll horizontal (mosaico de 
 
 ## Comportamiento
 
-- **Con `for`:** cada flecha hace `scrollBy` de un ancho visible del carrusel y el snap lo alinea. Position se calcula con el `scrollLeft` (y al cambiar el tamaño): Start deshabilita la anterior, End la siguiente. Si todo el contenido entra, las dos quedan deshabilitadas.
+- **Con `for`:** cada flecha hace `scrollBy` de un ancho visible del carrusel y el snap lo alinea. Position se calcula con el `scrollLeft` (y al cambiar el tamaño del carrusel o de lo que tiene adentro, como una foto que carga): Start deshabilita la anterior, End la siguiente. Si todo el contenido entra, las dos quedan deshabilitadas.
 - **Sin `for`:** Position queda como esté en el atributo y las flechas emiten `arq:prev` y `arq:next` (para un carrusel que se maneje de otra forma).
 - **Foco:** si la flecha que tiene el foco se deshabilita (al llegar a una punta), el foco pasa a la otra.
 - **`aria-controls`:** se pone con `ariaControlsElements` (un id del DOM de la página no se puede referenciar desde el Shadow DOM). En navegadores que no lo soportan, no se pone.
@@ -40,4 +40,4 @@ Flechas anterior / siguiente para un carrusel con scroll horizontal (mosaico de 
 
 ## Pendientes
 
-- `TODO` (páginas): el contenedor con scroll (snap y peek) no es parte del componente; se resuelve al armar Colección y Home (DESIGN.md §12: carousel se resuelve en código). En la demo hay un carrusel de prueba con CSS de la demo.
+- El contenedor con scroll (snap y peek) no es parte del componente: lo arma la página (en Colección, el mosaico de `arq-coleccion`; DESIGN.md §12: carousel se resuelve en código). En la demo hay un carrusel de prueba con CSS de la demo.

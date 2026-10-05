@@ -4,13 +4,15 @@
 //   <body data-demo-page="home"></body>   →   src/pages/home.html
 //
 // Los links a una página de Arq que tiene demo (/arq → home, /arq/productos →
-// productos, /arq/producto/<grupo> → ficha) se cambian a su demo, con el mismo
+// productos, /arq/producto/<grupo> → ficha, /arq/coleccion/<id> → coleccion)
+// se cambian a su demo, con el mismo
 // ?query, para poder navegar. Los del HTML se cambian al insertarlo; los que
 // arman los componentes (cards, breadcrumb), al hacer clic.
 //
 // Ficha: en Webflow cada grupo tiene su ítem del CMS. En la demo, ?group=<id>
 // hace de ítem: cambia data-group y los textos del embed por los del catálogo
-// de ejemplo (demo/fixtures/catalogo.json).
+// de ejemplo (demo/fixtures/catalogo.json). Colección: lo mismo con
+// ?collection=<id>.
 
 import '/src/main.js';
 import '/demo/demo-inspect.js';
@@ -29,8 +31,32 @@ function demoHref(href) {
     url.searchParams.set('group', product[1]);
     return `/demo/ficha.html?${url.searchParams}`;
   }
+  const collection = path.match(/^\/arq\/coleccion\/(.+)$/);
+  if (collection) {
+    url.searchParams.set('collection', collection[1]);
+    return `/demo/coleccion.html?${url.searchParams}`;
+  }
   const demo = DEMOS[path];
   return demo ? `/demo/${demo}.html${url.search}` : null;
+}
+
+// Simula el ítem del CMS de otra colección (solo demo)
+function cmsCollection(content) {
+  const id = new URLSearchParams(location.search).get('collection');
+  const page = content.querySelector('arq-coleccion');
+  if (!id || !page) return;
+  page.setAttribute('data-collection', id);
+  const collection = catalog.collections.find((c) => c.id === id);
+  const name = collection?.name ?? id;
+  content.querySelector('arq-breadcrumb-item[current]').textContent = name;
+  content.querySelector('arq-page-header [slot="title"]').textContent = `Colección ${name}`;
+  const intro = content.querySelector('arq-page-header [slot="description"]');
+  if (collection?.intro) intro.textContent = collection.intro;
+  else intro.remove();
+  const description = page.querySelector('[slot="description"]');
+  if (collection?.description) description.textContent = collection.description;
+  else description.remove();
+  document.title = `Macroled Arq · Colección ${name}`;
 }
 
 // Simula el ítem del CMS de otro grupo (solo demo)
@@ -68,6 +94,7 @@ if (load) {
     if (demo) link.setAttribute('href', demo);
   }
   cmsItem(template.content);
+  cmsCollection(template.content);
   document.body.replaceChildren(template.content);
 } else document.body.textContent = `No existe src/pages/${name}.html`;
 
