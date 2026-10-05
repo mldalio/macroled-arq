@@ -487,7 +487,7 @@ setup() {
 - **Embed:** `src/pages/colecciones.html`, el mismo armado que Productos con `<arq-catalog-listing unit="colecciones">`: page-header List sin bajada (Final `1160:6116`), la misma navegación de categorías y footer. `demo/colecciones.html` lo carga tal cual.
 - **Cards de colección:** acabados (los de todos sus grupos, `listCollections`) y la meta con sus aplicaciones, como Final. Antes mostraban solo la meta. Sin "Comparar".
 - **Navbar:** Productos como Current, como en Final (Colecciones es parte de Productos).
-- `TODO` (diseño): en Final el catalog-nav muestra Interior abierto con "Todo interior" marcado (copia de Productos); en Colecciones ningún ítem es la página actual y los grupos quedan cerrados. `TODO` (datos): las cuatro imágenes de una card de colección (DESIGN.md §8).
+- **Todas las colecciones:** el grupo Colecciones del catalog-nav empieza con "Todas las colecciones" (`/arq/colecciones`), como "Todo interior" y "Todo exterior" en los suyos. En Colecciones ese ítem queda marcado solo y su grupo abierto. `TODO` (diseño): sumarlo en Final y en la ficha `doc/catalog-nav` (hoy Final muestra Interior abierto con "Todo interior" marcado, copia de Productos). `TODO` (datos): las cuatro imágenes de una card de colección (DESIGN.md §8).
 
 ## 2026-10-05 · Colección
 
