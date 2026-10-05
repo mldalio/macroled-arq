@@ -443,6 +443,14 @@ ArqAccordionItem.define();
 - Se filtra en memoria sobre el catálogo ya cargado, sin otra consulta a Typesense.
 - Solo demo: `vite.config.js` redirige `/arq/productos` a `demo/productos.html` en `npm run dev`, porque Enter navega con `location.assign` y `demo-page.js` solo cambia links.
 
+## 2026-10-05 · Glosario
+
+- Pantalla nueva en Final › Glosario (`1795:18552`): navbar, page-header List con breadcrumb y bajada, variants-table y footer. Solo instancias de componentes existentes.
+- **Todos los SKU del catálogo** en una sola variants-table, en el orden de los grupos (`getGlossary()` en `src/data/catalog.js`). Las columnas son las de la ficha (`GLOSSARY_COLUMNS`); las vacías en todos los SKU no se muestran.
+- **Filtros:** los selectores de variante de todos los grupos más los filtros de los listados (`FILTER_FIELDS`), solo los que tienen al menos dos valores.
+- **Sin descargas en la barra:** CAD 2D/3D y Manual son del grupo en la ficha y acá no hay grupo. Cada fila abre el download-modal con "Ficha técnica" y los archivos de ese SKU.
+- `<arq-glosario>`: contenedor de página, como coleccion. El page-header va en el embed.
+
 ## Pendientes
 
 Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe la decisión en su sección. El grupo entre paréntesis es el del `TODO` en el código.
@@ -468,6 +476,7 @@ Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe
 - **Tokens que faltan:** `layout/navbar-height` (56; lo usan hero, ficha y compare-header Compact); ancho de tarjeta del carrusel mobile (280); sidebar de Productos (240, hoy `layout/card-min`); ratios de las fotos del mosaico; respuesta de faq-item (560, hoy `measure-wide`); columnas del footer (200 / 240); email de cta-block (380, hoy `measure`); medidas sin token de la ficha y la colección (detalle en sus README).
 - **Confirmar lo elegido en código:** posición del navbar (sticky / fixed); foco sobre foto en navbar Transparent; feature-block secundaria en `ratio/wide`; split del FAQ con `space/section/md` dentro de un bloque.
 - **Faltan diseños:** PDF de ficha técnica y de "Descargar comparación"; modal para elegir producto desde compare-product Empty (hoy el botón emite `arq:add` y no abre nada); pantallas de carga, vacío y error de los listados; filter-panel abierto con Iluminar; textos de error y marca de obligatorio del formulario.
+- **Glosario:** columna o filtro de colección / producto (el SKU solo puede no alcanzar para ubicar un producto); cómo se muestran muchos SKU (paginación, «Ver más» o agrupado por colección); filtros para todo el catálogo; bajada del page-header.
 - **Contenido de diseño:** secciones del acordeón y reparto de campos, y columnas del glosario (`attributes.js`); características fijas de la meta de las cards y segunda línea en Colección; cantidad de imágenes de cada galería.
 
 ### Base de datos (datos / base)

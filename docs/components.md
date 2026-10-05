@@ -98,6 +98,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ coleccion | `<arq-coleccion>` | Página de colección: cards de sus productos, galería, texto + imagen y mosaico con flechas ([README](../src/components/coleccion/README.md)) |
 | ✅ form-contacto | `<arq-form-contacto>` | Contacto: información por slot y formulario con validación, honeypot y envío a n8n ([README](../src/components/form-contacto/README.md)) |
 | ✅ ficha-producto | `<arq-ficha-producto>` | Ficha de producto: hero con galería y configurador, descargas, especificaciones, descripción, glosario, inspiración y colección ([README](../src/components/ficha-producto/README.md)) |
+| ✅ glosario | `<arq-glosario>` | Página Glosario: variants-table con todos los SKU del catálogo y el modal de descargas de cada fila ([README](../src/components/glosario/README.md)) |
 | ✅ comparativa | `<arq-comparativa>` | Página Comparativa: combina compare-header y compare-table con los SKU de `?sku=`, con datos del catálogo ([README](../src/components/comparativa/README.md)) |
 
 ### Páginas
@@ -111,6 +112,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ Contacto | [src/pages/contacto.html](../src/pages/contacto.html) | `demo/contacto.html` |
 | ✅ Ficha de producto | [src/pages/ficha.html](../src/pages/ficha.html) | `demo/ficha.html` (`?group=` y `?sku=`) |
 | ✅ Comparativa | [src/pages/comparativa.html](../src/pages/comparativa.html) | `demo/comparativa.html` (`?sku=`) |
+| ✅ Glosario | [src/pages/glosario.html](../src/pages/glosario.html) | `demo/glosario.html` |
 
 ## accordion-item
 

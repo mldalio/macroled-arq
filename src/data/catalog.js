@@ -232,6 +232,38 @@ function glossary(group) {
 }
 
 /**
+ * Página Glosario: variants-table con todos los SKU del catálogo, en el orden
+ * de los grupos. Filtros: los selectores de variante de todos los grupos y los
+ * filtros de los listados (attributes.js), con al menos dos valores. Sin
+ * archivos en la barra: no hay un grupo (decisiones.md, 2026-10-05 · Glosario).
+ */
+export async function getGlossary() {
+  const { groups } = await loadCatalog();
+  const variants = groups.flatMap((group) => group.variants.map((variant) => ({ group, variant })));
+  const used = new Set([...groups.flatMap((g) => g.variantAttributes), ...FILTER_FIELDS]);
+  const fields = Object.keys(ATTRIBUTES).filter(
+    (field) => used.has(field) && new Set(variants.map(({ variant }) => variant.values[field]).filter(hasValue)).size > 1,
+  );
+  return {
+    columns: GLOSSARY_COLUMNS.filter(({ field }) => variants.some(({ variant }) => hasValue(variant.values[field]))).map(({ field, label }) => ({ key: field, label })),
+    filters: fields.map((key) => ({ key, label: attributeInfo(key).label, swatches: attributeInfo(key).control === 'swatches' })),
+    rows: variants.map(({ group, variant }) => ({
+      sku: variant.sku,
+      thumb: variant.images?.studio ?? group.defaultVariant.images?.studio ?? null,
+      attributes: variant.values,
+      values: variant.values,
+    })),
+  };
+}
+
+/** Archivos de un SKU de cualquier grupo (modal de descargas del Glosario). [] si no existe. */
+export async function skuDownloads(sku) {
+  const { groups } = await loadCatalog();
+  const variant = groups.flatMap((group) => group.variants).find((v) => v.sku === sku);
+  return variant ? downloads(variant) : [];
+}
+
+/**
  * Cards de grupos elegidos a mano (Productos destacados del Home), en el
  * mismo orden. Un grupo que no existe se saltea. La meta es el tipo de
  * producto (decisiones.md, 2026-10-05 · Home: alturas y meta).
