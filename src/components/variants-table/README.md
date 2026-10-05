@@ -48,6 +48,7 @@ tabla.addEventListener('arq:downloads', (e) => llenarModal(e.detail.sku));
 | Filas | valores `role/body` en `color/text/primary`; Hover `color/surface/faint`; fondo de las fijas `color/bg/default` |
 | Separadores | `border/default` en `color/border/subtle` |
 | Entre columnas | `space/gap/sm`; `layout/gutter` al inicio y al final |
+| Ancho | De borde a borde hasta 1920 px; desde ahí, centrada con `layout/max-width` + 2 × `layout/gutter` (lo que mide a 1920), con `layout/gutter` adentro |
 | Miniatura | `layout/table-thumb` (56, token nuevo), fondo `color/surface/subtle` |
 
 ## Pendientes

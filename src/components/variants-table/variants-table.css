@@ -2,11 +2,26 @@
    Solo tokens semánticos. Componente de borde a borde: la barra y las filas
    llevan layout/gutter a los lados; el scroll llega al borde de la pantalla. */
 
+/* Desde 1920 px la tabla deja de ir de borde a borde: se centra con el ancho
+   que tiene a 1920 (layout/max-width + 2 × layout/gutter), así la barra de
+   filtros y las líneas de las filas no llegan al borde de la pantalla. Adentro
+   el margen vuelve a ser layout/gutter (DESIGN.md §2 · Ancho máximo). */
 :host {
+  --page-gutter: var(--arq-layout-gutter);
+
   display: flex;
   flex-direction: column;
   gap: var(--arq-space-gap-md);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: calc(var(--arq-layout-max-width) + 2 * var(--arq-layout-gutter));
   min-width: 0;
+  margin-inline: auto;
+}
+
+/* filter-bar calcula su propio --page-gutter: acá toma el de la tabla */
+.filter-bar {
+  --page-gutter: inherit;
 }
 
 /* Barra: Filtros a la izquierda, descargas a la derecha; padding

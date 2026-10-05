@@ -517,3 +517,10 @@ setup() {
 - **Por qué:** en dos columnas, a 900 px la galería quedaba en ≈ 340 (las miniaturas tapaban la foto) y el acordeón en ≈ 310, con los títulos cortados a mitad de palabra.
 - **Corrección también en Mobile:** apilado, `.details` estira sus hijos (`align-items: stretch`). Antes el acordeón quedaba fijo en ≈ 388 px de 430 a 1023 px en vez de llenar el ancho.
 - `TODO` (diseño): validar o diseñar la Ficha en Tablet en Figma.
+
+## 2026-10-05 · variants-table desde 1920
+
+- **Qué:** desde 1920 px `<arq-variants-table>` (barra, filter-bar y filas) deja de ir de borde a borde: se centra con el ancho que tiene a 1920 (`layout/max-width` + 2 × `layout/gutter` = 1920) y adentro usa `layout/gutter`. Hasta 1920 no cambia.
+- **Por qué:** con el contenido de la página tope en 1792, la franja de filtros y las líneas de las filas llegaban al borde de pantallas de 2560 y la tabla se veía desconectada del título. Así se ve igual que a 1920.
+- **Cómo:** el host fija `--page-gutter: var(--arq-layout-gutter)`, `max-width` y `margin-inline: auto`; el filter-bar de adentro hereda ese `--page-gutter`.
+- Los demás componentes de borde a borde (navbar, footer, page-header, cta-block, hero, compare-bar) siguen con fondos y líneas a todo el ancho.
