@@ -18,7 +18,7 @@
     'legal columns';
   column-gap: var(--arq-space-gap-xl);
   row-gap: var(--arq-space-gap-md);
-  padding: var(--arq-space-section-sm) var(--arq-layout-gutter);
+  padding: var(--arq-space-section-sm) var(--page-gutter);
   border-top: var(--arq-border-default) solid var(--arq-color-border-subtle);
   background: var(--arq-color-surface-default);
 }

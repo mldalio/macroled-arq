@@ -2,13 +2,13 @@
   "$extensions": {
     "com.figma": {
       "collection": "2 · Semantic · Dimension",
-      "mode": "Mobile"
+      "mode": "Tablet"
     }
   },
   "layout": {
     "gutter": {
       "$type": "number",
-      "$value": "{space.20}",
+      "$value": "{space.32}",
       "$description": "Margen lateral de la página. Mobile 20 · Tablet (768–1023) 32 · Desktop (1024–1439) 40 · Large (desde 1440) 64. Desde 1920 el margen crece para que el contenido no pase de layout/max-width; los fondos siguen a todo el ancho.",
       "$extensions": {
         "com.figma": {
@@ -24,7 +24,7 @@
     },
     "card-min": {
       "$type": "number",
-      "$value": 160,
+      "$value": 280,
       "$description": "Ancho mínimo de tarjeta en la grilla de catálogo (auto-fill). Desde 1600 px se reemplaza por layout/card-min-wide con una media query.",
       "$extensions": {
         "com.figma": {
@@ -99,7 +99,7 @@
     },
     "gallery-thumb": {
       "$type": "number",
-      "$value": 76,
+      "$value": 105,
       "$description": "Ancho de gallery-thumb en product-gallery (105 Desktop · 76 Mobile). El alto sale de ratio/landscape (5:4).",
       "$extensions": {
         "com.figma": {
@@ -189,7 +189,7 @@
     },
     "compare-label": {
       "$type": "number",
-      "$value": 120,
+      "$value": 200,
       "$description": "Columna de etiquetas de la comparativa (compare-row, compare-group y la columna de controles de compare-header). En Mobile queda fija al desplazar.",
       "$extensions": {
         "com.figma": {
@@ -282,7 +282,7 @@
     "section": {
       "2xs": {
         "$type": "number",
-        "$value": "{space.24}",
+        "$value": "{space.32}",
         "$description": "Separación mínima entre bloques de página.",
         "$extensions": {
           "com.figma": {
@@ -297,7 +297,7 @@
       },
       "xs": {
         "$type": "number",
-        "$value": "{space.32}",
+        "$value": "{space.48}",
         "$description": "Separación ajustada entre bloques de página.",
         "$extensions": {
           "com.figma": {
@@ -312,7 +312,7 @@
       },
       "sm": {
         "$type": "number",
-        "$value": "{space.40}",
+        "$value": "{space.64}",
         "$description": "Separación reducida entre bloques de página.",
         "$extensions": {
           "com.figma": {
@@ -327,7 +327,7 @@
       },
       "md": {
         "$type": "number",
-        "$value": "{space.56}",
+        "$value": "{space.96}",
         "$description": "Separación estándar entre secciones y arriba/abajo de la página.",
         "$extensions": {
           "com.figma": {
@@ -342,7 +342,7 @@
       },
       "lg": {
         "$type": "number",
-        "$value": "{space.96}",
+        "$value": "{space.128}",
         "$description": "Separación amplia entre secciones.",
         "$extensions": {
           "com.figma": {
@@ -357,7 +357,7 @@
       },
       "xl": {
         "$type": "number",
-        "$value": "{space.128}",
+        "$value": "{space.160}",
         "$description": "Separación máxima, para secciones destacadas.",
         "$extensions": {
           "com.figma": {
@@ -434,7 +434,7 @@
       },
       "lg": {
         "$type": "number",
-        "$value": "{space.20}",
+        "$value": "{space.24}",
         "$description": "Entre grupos dentro de un bloque.",
         "$extensions": {
           "com.figma": {
@@ -449,7 +449,7 @@
       },
       "xl": {
         "$type": "number",
-        "$value": "{space.24}",
+        "$value": "{space.32}",
         "$description": "Entre el encabezado de una sección y su contenido, o columnas grandes.",
         "$extensions": {
           "com.figma": {
@@ -464,7 +464,7 @@
       },
       "xl-2xl": {
         "$type": "number",
-        "$value": "{space.32}",
+        "$value": "{space.40}",
         "$description": "Gap entre xl y 2xl: 40 en Desktop, 32 en Mobile.",
         "$extensions": {
           "com.figma": {
@@ -479,7 +479,7 @@
       },
       "2xl": {
         "$type": "number",
-        "$value": "{space.40}",
+        "$value": "{space.48}",
         "$description": "Entre grupos grandes de contenido dentro de una sección.",
         "$extensions": {
           "com.figma": {
@@ -494,7 +494,7 @@
       },
       "3xl": {
         "$type": "number",
-        "$value": "{space.48}",
+        "$value": "{space.64}",
         "$description": "Distancia entre elementos grandes dentro de un bloque (64 desktop / 48 mobile).",
         "$extensions": {
           "com.figma": {
@@ -509,7 +509,7 @@
       },
       "4xl": {
         "$type": "number",
-        "$value": "{space.56}",
+        "$value": "{space.80}",
         "$description": "Distancia entre elementos grandes dentro de un bloque (80 desktop / 56 mobile).",
         "$extensions": {
           "com.figma": {
@@ -524,7 +524,7 @@
       },
       "5xl": {
         "$type": "number",
-        "$value": "{space.64}",
+        "$value": "{space.96}",
         "$description": "Distancia entre elementos grandes dentro de un bloque (96 desktop / 64 mobile).",
         "$extensions": {
           "com.figma": {
@@ -539,7 +539,7 @@
       },
       "6xl": {
         "$type": "number",
-        "$value": "{space.96}",
+        "$value": "{space.128}",
         "$description": "Distancia entre elementos grandes dentro de un bloque (128 desktop / 96 mobile).",
         "$extensions": {
           "com.figma": {
@@ -616,7 +616,7 @@
       },
       "lg": {
         "$type": "number",
-        "$value": "{space.20}",
+        "$value": "{space.24}",
         "$description": "Relleno de tarjetas grandes y side sheets.",
         "$extensions": {
           "com.figma": {
@@ -631,7 +631,7 @@
       },
       "xl": {
         "$type": "number",
-        "$value": "{space.24}",
+        "$value": "{space.32}",
         "$description": "Relleno de modales y bloques destacados.",
         "$extensions": {
           "com.figma": {
@@ -646,7 +646,7 @@
       },
       "2xl": {
         "$type": "number",
-        "$value": "{space.32}",
+        "$value": "{space.48}",
         "$description": "Relleno de bloques muy aireados.",
         "$extensions": {
           "com.figma": {
@@ -676,7 +676,7 @@
       },
       "xl-2xl": {
         "$type": "number",
-        "$value": "{space.32}",
+        "$value": "{space.40}",
         "$description": "Padding entre xl y 2xl: 40 en Desktop, 32 en Mobile.",
         "$extensions": {
           "com.figma": {
@@ -691,7 +691,7 @@
       },
       "3xl": {
         "$type": "number",
-        "$value": "{space.48}",
+        "$value": "{space.64}",
         "$description": "Padding interno de bloques grandes (64 desktop / 48 mobile).",
         "$extensions": {
           "com.figma": {
@@ -706,7 +706,7 @@
       },
       "4xl": {
         "$type": "number",
-        "$value": "{space.56}",
+        "$value": "{space.80}",
         "$description": "Padding interno de bloques grandes (80 desktop / 56 mobile).",
         "$extensions": {
           "com.figma": {
@@ -721,7 +721,7 @@
       },
       "5xl": {
         "$type": "number",
-        "$value": "{space.64}",
+        "$value": "{space.96}",
         "$description": "Padding interno de bloques grandes (96 desktop / 64 mobile).",
         "$extensions": {
           "com.figma": {
@@ -736,7 +736,7 @@
       },
       "6xl": {
         "$type": "number",
-        "$value": "{space.96}",
+        "$value": "{space.128}",
         "$description": "Padding interno de bloques grandes (128 desktop / 96 mobile).",
         "$extensions": {
           "com.figma": {
@@ -863,7 +863,7 @@
     },
     "lg": {
       "$type": "number",
-      "$value": "{space.24}",
+      "$value": "{space.20}",
       "$description": "Íconos destacados.",
       "$extensions": {
         "com.figma": {

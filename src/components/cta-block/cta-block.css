@@ -12,7 +12,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--arq-space-gap-xl);
-  padding: var(--arq-space-section-md) var(--arq-layout-gutter);
+  padding: var(--arq-space-section-md) var(--page-gutter);
   background: var(--arq-color-bg-subtle);
 }
 

@@ -58,7 +58,7 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: var(--arq-space-gap-xl);
-  padding: 0 var(--arq-layout-gutter) var(--arq-space-section-sm);
+  padding: 0 var(--page-gutter) var(--arq-space-section-sm);
   color: var(--arq-color-text-inverse);
 }
 

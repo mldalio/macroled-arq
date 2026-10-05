@@ -14,7 +14,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--arq-space-gap-xl);
-  padding: 0 var(--arq-layout-gutter) var(--arq-space-section-xl);
+  padding: 0 var(--page-gutter) var(--arq-space-section-xl);
 }
 
 .status {
@@ -46,12 +46,12 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   align-items: center;
-  padding: 0 0 var(--arq-space-section-xl) var(--arq-layout-gutter);
+  padding: 0 0 var(--arq-space-section-xl) var(--page-gutter);
 }
 
 .feature-text {
   max-width: var(--arq-layout-measure);
-  padding-right: var(--arq-layout-gutter);
+  padding-right: var(--page-gutter);
   color: var(--arq-color-text-primary);
 }
 
@@ -87,16 +87,16 @@
 .controls {
   display: flex;
   justify-content: flex-end;
-  padding-right: var(--arq-layout-gutter);
+  padding-right: var(--page-gutter);
 }
 
 .track {
   display: flex;
   gap: var(--arq-space-gap-md);
-  padding-left: var(--arq-layout-gutter);
+  padding-left: var(--page-gutter);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  scroll-padding-inline-start: var(--arq-layout-gutter);
+  scroll-padding-inline-start: var(--page-gutter);
   scrollbar-width: none;
 }
 
@@ -140,7 +140,7 @@
 
   .feature-text {
     max-width: none;
-    padding: 0 var(--arq-layout-gutter);
+    padding: 0 var(--page-gutter);
   }
 
   /* En Mobile no hay flechas: la foto siguiente asoma (carousel-controls) */

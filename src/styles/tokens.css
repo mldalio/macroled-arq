@@ -1,6 +1,6 @@
 /* Generado por npm run tokens desde tokens/tokens.json. No editar a mano. */
 
-/* Base: Light · Desktop */
+/* Base: Light · Desktop (1024–1439 px) */
 :root {
   --arq-space-0: 0px;
   --arq-space-2: 2px;
@@ -138,6 +138,7 @@
   --arq-layout-mega-menu-image: 438px; /** Ancho de la imagen del mega-menu (a la derecha de las columnas). El alto sale de ratio/portrait-soft (4:5). */
   --arq-layout-search-field: 360px; /** Ancho de search-field en el navbar Desktop. search-dropdown toma el mismo ancho. En Mobile (search-screen) el campo ocupa el ancho disponible. */
   --arq-layout-search-thumb: 48px; /** Miniatura cuadrada de search-result. */
+  --arq-layout-max-width: 1792px; /** Ancho máximo del contenido de la página (1920 − 2 × 64). Desde 1920 px el margen lateral es max(layout/gutter, (100% − layout/max-width) / 2). Los fondos, fotos y barras siguen a todo el ancho; solo el contenido se centra. No es un modo. */
   --arq-motion-duration-fast: 120ms; /** Hover, toggle, foco. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-base: 200ms; /** Desplegables (disclosure) y menús. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-slow: 320ms; /** Fundido de imágenes de product-card. En ms. Con prefers-reduced-motion: 0. */
@@ -222,7 +223,7 @@
   --arq-color-accent-default: var(--arq-neutral-900); /** Acento para detalles: foco, estados activos, etiquetas. Light neutral/900, Dark neutral/150. Nunca fondo de botones ni de bloques grandes. */
   --arq-color-overlay-scrim: var(--arq-alpha-black-60); /** Fondo semitransparente detrás de modales y paneles laterales. */
   --arq-color-overlay-translucent: var(--arq-alpha-ink-10); /** Fondo translúcido para barras sobre fotos (navbar Transparent), junto con blur/backdrop. Igual en Light y Dark. */
-  --arq-layout-gutter: var(--arq-space-40); /** Margen lateral de la página. */
+  --arq-layout-gutter: var(--arq-space-40); /** Margen lateral de la página. Mobile 20 · Tablet (768–1023) 32 · Desktop (1024–1439) 40 · Large (desde 1440) 64. Desde 1920 el margen crece para que el contenido no pase de layout/max-width; los fondos siguen a todo el ancho. */
   --arq-icon-sm: var(--arq-space-12); /** Íconos dentro de texto pequeño o chips. */
   --arq-icon-md: var(--arq-space-16); /** Íconos por defecto (botones, navegación). */
   --arq-icon-lg: var(--arq-space-20); /** Íconos destacados. */
@@ -327,7 +328,7 @@
     --arq-space-padding-4xl: var(--arq-space-56); /** Padding interno de bloques grandes (80 desktop / 56 mobile). */
     --arq-space-padding-5xl: var(--arq-space-64); /** Padding interno de bloques grandes (96 desktop / 64 mobile). */
     --arq-space-padding-6xl: var(--arq-space-96); /** Padding interno de bloques grandes (128 desktop / 96 mobile). */
-    --arq-layout-gutter: var(--arq-space-20); /** Margen lateral de la página. */
+    --arq-layout-gutter: var(--arq-space-20); /** Margen lateral de la página. Mobile 20 · Tablet (768–1023) 32 · Desktop (1024–1439) 40 · Large (desde 1440) 64. Desde 1920 el margen crece para que el contenido no pase de layout/max-width; los fondos siguen a todo el ancho. */
     --arq-icon-lg: var(--arq-space-24); /** Íconos destacados. */
     --arq-type-display-size: var(--arq-font-size-40); /** Tamaño del estilo role/display. Lo usa el estilo de texto: no aplicar directo. */
     --arq-type-display-leading: var(--arq-font-leading-44); /** Interlineado del estilo role/display. Lo usa el estilo de texto: no aplicar directo. */
@@ -341,6 +342,20 @@
     --arq-type-heading-3-leading: var(--arq-font-leading-28); /** Interlineado del estilo role/heading-3. Lo usa el estilo de texto: no aplicar directo. */
     --arq-type-body-xl-size: var(--arq-font-size-16); /** Tamaño de role/body-xl: 20 en Desktop, 16 en Mobile. */
     --arq-type-body-xl-leading: var(--arq-font-leading-24); /** Interlineado de role/body-xl: 28 en Desktop, 24 en Mobile. */
+  }
+}
+
+/* Tablet: 768–1023 px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  :root {
+    --arq-layout-gutter: var(--arq-space-32); /** Margen lateral de la página. Mobile 20 · Tablet (768–1023) 32 · Desktop (1024–1439) 40 · Large (desde 1440) 64. Desde 1920 el margen crece para que el contenido no pase de layout/max-width; los fondos siguen a todo el ancho. */
+  }
+}
+
+/* Large: desde 1440 px */
+@media (min-width: 1440px) {
+  :root {
+    --arq-layout-gutter: var(--arq-space-64); /** Margen lateral de la página. Mobile 20 · Tablet (768–1023) 32 · Desktop (1024–1439) 40 · Large (desde 1440) 64. Desde 1920 el margen crece para que el contenido no pase de layout/max-width; los fondos siguen a todo el ancho. */
   }
 }
 

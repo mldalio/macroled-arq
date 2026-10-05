@@ -9,7 +9,7 @@
   display: block;
   box-sizing: border-box;
   min-width: 0;
-  padding: 0 var(--arq-layout-gutter) var(--arq-space-section-xl);
+  padding: 0 var(--page-gutter) var(--arq-space-section-xl);
   background: var(--arq-color-bg-default);
 }
 

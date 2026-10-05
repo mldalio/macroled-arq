@@ -3,8 +3,8 @@
 // DTCG generado por MCP con scripts/figma/) a tokens/tokens.json en el formato
 // del repo (ver docs/decisiones.md · Formato de tokens/tokens.json):
 //   - Un solo árbol: el nombre de la colección no forma parte de la ruta.
-//   - $value es el modo base (Value, Light o Desktop); Dark y Mobile van en
-//     $extensions["arq.modes"] solo si cambian.
+//   - $value es el modo base (Value, Light o Desktop); Dark, Mobile, Tablet y
+//     Large van en $extensions["arq.modes"] solo si cambian.
 //   - Tipos del repo: color (hex en mayúsculas), dimension (px), fontWeight,
 //     fontFamily, duration (ms) y cubicBezier.
 //   - motion/duration/fast, base y slow suman el modo reducedMotion = 0ms.
@@ -22,7 +22,7 @@ const FIGMA_DIR = new URL('../tokens/figma/', import.meta.url);
 const TARGET = new URL('../tokens/tokens.json', import.meta.url);
 
 // Modo de Figma → modo del repo (null = valor base).
-const MODE_MAP = { Value: null, Light: null, Desktop: null, Dark: 'dark', Mobile: 'mobile' };
+const MODE_MAP = { Value: null, Light: null, Desktop: null, Dark: 'dark', Mobile: 'mobile', Tablet: 'tablet', Large: 'large' };
 const EXCLUDED_GROUPS = ['bronze', 'cacao', 'olive', 'terracotta', 'offwhite'];
 const REDUCED_MOTION = ['motion.duration.fast', 'motion.duration.base', 'motion.duration.slow'];
 // Orden de los grupos de primer nivel en tokens.json (los nuevos van al final).

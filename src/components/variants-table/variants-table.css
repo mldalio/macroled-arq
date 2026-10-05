@@ -17,7 +17,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--arq-space-gap-md);
-  padding: var(--arq-space-padding-md) var(--arq-layout-gutter);
+  padding: var(--arq-space-padding-md) var(--page-gutter);
 }
 
 .downloads {
@@ -80,7 +80,7 @@ tbody td {
   position: sticky;
   left: 0;
   z-index: 1;
-  padding-inline-start: var(--arq-layout-gutter);
+  padding-inline-start: var(--page-gutter);
 }
 
 .cell-start {
@@ -117,6 +117,6 @@ tbody td {
   right: 0;
   z-index: 1;
   width: 1%;
-  padding-inline: var(--arq-space-gap-sm) var(--arq-layout-gutter);
+  padding-inline: var(--arq-space-gap-sm) var(--page-gutter);
   text-align: end;
 }
