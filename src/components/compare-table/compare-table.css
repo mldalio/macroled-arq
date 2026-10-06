@@ -178,3 +178,90 @@ thead th {
     margin-top: var(--arq-space-padding-md);
   }
 }
+
+/* Impresión: siempre como la tabla de Desktop (como Macroled): etiqueta a
+   la izquierda y los valores al lado, con líneas verticales de todo el alto
+   de la fila. Sin scroll y sin las columnas vacías; las columnas con producto
+   se reparten el ancho (--columns lo pone el JS). Todas las filas son grilla:
+   así el título de un grupo ocupa todo el ancho aunque falten columnas. Una
+   fila no se corta entre hojas y el título de un grupo no queda solo al pie. */
+@media print {
+  .scroll {
+    overflow: visible;
+  }
+
+  .empty,
+  thead {
+    display: none;
+  }
+
+  .table,
+  tbody,
+  .group,
+  .group th {
+    display: block;
+  }
+
+  .group {
+    break-inside: avoid;
+    break-after: avoid;
+  }
+
+  /* stretch: cada celda ocupa todo el alto de la fila (la línea vertical
+     también); el texto se centra como en la tabla de pantalla. */
+  .row {
+    display: grid;
+    grid-template-columns: auto repeat(var(--columns, 3), minmax(0, 1fr));
+    break-inside: avoid;
+  }
+
+  .row > * {
+    display: flex;
+    align-items: center;
+  }
+}
+
+/* Una hoja A4 mide menos de 768 px y llega con las reglas Mobile (etiqueta
+   arriba, valores en columnas de 60vw con scroll): se vuelven a las de
+   Desktop. */
+@media print and (max-width: 767px) {
+  .scroll {
+    padding-inline: var(--page-gutter);
+  }
+
+  .group th {
+    padding-inline: 0;
+  }
+
+  .row {
+    box-sizing: border-box;
+    padding-inline: 0;
+    gap: 0;
+    overflow: visible;
+    border-bottom: none;
+  }
+
+  .row + .row,
+  .group + .row {
+    margin-top: 0;
+  }
+
+  .row > * {
+    padding-block: var(--arq-space-padding-md);
+    border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  }
+
+  .row .label-cell {
+    position: static;
+    grid-column: auto;
+    width: var(--arq-layout-compare-label);
+    padding-inline: 0 var(--arq-space-gap-lg);
+  }
+
+  .row .value,
+  .row .value:first-of-type {
+    width: auto;
+    padding-inline: var(--arq-space-padding-md) var(--arq-space-gap-lg);
+    border-left: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  }
+}

@@ -44,3 +44,15 @@
     outline-offset: calc(-1 * var(--arq-border-strong));
   }
 }
+
+/* Impresión: "Solo diferencias" se imprime como esté, pero el toggle no. */
+@media print {
+  .mobile-controls,
+  .mobile-controls:not([hidden]) {
+    display: none;
+  }
+
+  .scroll {
+    overflow: visible;
+  }
+}

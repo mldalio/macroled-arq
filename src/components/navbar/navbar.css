@@ -219,3 +219,34 @@
     gap: var(--arq-space-gap-sm);
   }
 }
+
+/* Impresión (comparativa: "Imprimir comparación", window.print): solo el
+   logo, en el flujo de la página y sin fondo translúcido ni línea. */
+@media print {
+  :host,
+  :host([theme='transparent']),
+  :host([data-arq-compare-hidden]) {
+    position: static;
+    transform: none;
+  }
+
+  .bar,
+  .over-photo .bar {
+    padding-inline: var(--page-gutter);
+    border-bottom: none;
+    background: var(--arq-color-bg-default);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .over-photo .logo {
+    color: var(--arq-color-text-primary);
+  }
+
+  .right,
+  .actions,
+  .mega,
+  .menu {
+    display: none;
+  }
+}

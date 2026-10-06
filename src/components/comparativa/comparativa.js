@@ -21,6 +21,11 @@
 //   tabla"); compare-table va con `embedded` para no tener scroll propio. El
 //   set no muestra el toggle "Solo diferencias" dentro de compare-header en
 //   Mobile: va en una fila aparte, fuera del scroll, como en Final.
+// - Imprimir (como macroled.com.ar/comparativa): el botón de la página con
+//   data-arq-print llama a window.print() (main.js). Cada componente trae su
+//   @media print. Mientras se imprime, el título del documento pasa a
+//   «Comparativa · <productos> · Macroled Arq»: es el nombre que propone el
+//   navegador al guardar como PDF.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { getCompare, skuForAttribute } from '../../data/catalog.js';
@@ -34,6 +39,7 @@ const MAX = 3;
 const MOBILE = matchMedia('(max-width: 767px)');
 
 const TEXT = {
+  printTitle: (names) => `Comparativa · ${names.join(' · ')} · Macroled Arq`,
   empty: 'Elegí hasta 3 productos para comparar desde el listado de Productos.',
   error: 'No se pudo cargar la comparación. Probá de nuevo en unos minutos.',
 };
@@ -72,7 +78,9 @@ class ArqComparativa extends ArqElement {
     `</div>`;
 
   #skus = [];
+  #names = [];
   #onlyDifferences = false;
+  #pageTitle = null;
 
   setup() {
     const root = this.shadowRoot;
@@ -104,6 +112,30 @@ class ArqComparativa extends ArqElement {
     this.#skus = readSkus();
     this.#load();
   }
+
+  connectedCallback() {
+    super.connectedCallback?.();
+    addEventListener('beforeprint', this.#beforePrint);
+    addEventListener('afterprint', this.#afterPrint);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback?.();
+    removeEventListener('beforeprint', this.#beforePrint);
+    removeEventListener('afterprint', this.#afterPrint);
+  }
+
+  #beforePrint = () => {
+    if (!this.#names.length) return;
+    this.#pageTitle ??= document.title;
+    document.title = TEXT.printTitle(this.#names);
+  };
+
+  #afterPrint = () => {
+    if (this.#pageTitle === null) return;
+    document.title = this.#pageTitle;
+    this.#pageTitle = null;
+  };
 
   #syncScrollA11y() {
     const scroll = this.shadowRoot.querySelector('.scroll');
@@ -153,6 +185,7 @@ class ArqComparativa extends ArqElement {
     // SKU que no existían se omiten (getCompare): la URL y la selección
     // guardada reflejan lo que realmente se está mostrando.
     this.#skus = data.products.map((p) => p.sku);
+    this.#names = data.products.map((p) => p.name).filter(Boolean);
     if (!this.#skus.length) {
       this.#status(TEXT.empty);
       scroll.hidden = true;

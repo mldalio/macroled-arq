@@ -154,3 +154,17 @@
   flex-direction: column;
   gap: var(--arq-space-gap-sm-md);
 }
+
+/* Impresión: foto, nombre y SKU. Quitar y los selects son de la pantalla; un
+   lugar vacío no se imprime (compare-table tampoco imprime su columna). */
+@media print {
+  .remove,
+  .selects,
+  .title .icon {
+    display: none;
+  }
+
+  :host([empty]) {
+    display: none;
+  }
+}
