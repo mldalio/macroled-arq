@@ -173,6 +173,7 @@ Hay dos usos del modo Dark. Los dos usan `data-arq-theme="dark"`; cambia quién 
 | --- | --- | --- |
 | hero (Home, Contacto) | Solo el CTA (button Outline claro). Los textos usan `color/text/inverse` | Contenedor interno del Shadow DOM que envuelve el slot del CTA |
 | compare-bar | Toda la barra | Contenedor interno del Shadow DOM (el que envuelve todo el componente) |
+| footer | Todo el footer | El `<footer>` interno del Shadow DOM |
 | explora-coleccion (ficha), con family-card Large | Toda la sección | El contenedor de la sección, dentro del Shadow DOM de `<arq-ficha-producto>` |
 
 - **Regla:** un componente con Dark local lo aplica en un contenedor interno; el contenido por slot lo hereda. Quien arma la página no pone el atributo. Si el Dark es de una sección de la página, el atributo va en la sección y los componentes de adentro lo heredan; si la sección la arma un contenedor de página (explora-coleccion en `<arq-ficha-producto>`), lo pone el contenedor.
@@ -314,6 +315,8 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 | layout/search-thumb | 48 | 48 | Miniatura cuadrada de search-result |
 | layout/select-filter | 160 | 160 | Ancho mínimo de select Type=Filter (celda de filter-bar): la flecha va al extremo derecho |
 | layout/select-menu-filter | 200 | 200 | Ancho mínimo de select-menu Type=Filter |
+| layout/footer-column | 200 | 200 | Ancho de cada columna de links del footer en Desktop. En Mobile las columnas se reparten el ancho |
+| layout/footer-tagline | 240 | 240 | Ancho máximo de la bajada de la marca en el footer |
 | space/section/2xs · xs · sm · md · lg · xl | 32 · 48 · 64 · 96 · 128 · 160 | 24 · 32 · 40 · 56 · 96 · 128 | Solo entre bloques de página (padding de la sección). Es la perilla del ritmo de página |
 | space/gap/xs · sm · sm-md · md · lg · xl · xl-2xl · 2xl · 3xl · 4xl · 5xl · 6xl | 4 · 8 · 12 · 16 · 24 · 32 · 40 · 48 · 64 · 80 · 96 · 128 | 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 56 · 64 · 96 | Entre elementos (gap) |
 | space/padding/2xs · xs · sm · sm-md · md · lg · xl · xl-2xl · 2xl · 3xl · 4xl · 5xl · 6xl | 3 · 4 · 8 · 12 · 16 · 24 · 32 · 40 · 48 · 64 · 80 · 96 · 128 | 3 · 4 · 8 · 12 · 16 · 20 · 24 · 32 · 32 · 48 · 56 · 64 · 96 | Padding interno |

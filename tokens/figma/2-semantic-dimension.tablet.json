@@ -306,6 +306,36 @@
           }
         }
       }
+    },
+    "footer-column": {
+      "$type": "number",
+      "$value": 200,
+      "$description": "Ancho de cada columna de links del footer en Desktop (Productos, Información, Redes). En Mobile las columnas se reparten el ancho.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-footer-column)"
+          }
+        }
+      }
+    },
+    "footer-tagline": {
+      "$type": "number",
+      "$value": 240,
+      "$description": "Ancho máximo de la bajada de la marca en el footer (Desktop y Mobile).",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-footer-tagline)"
+          }
+        }
+      }
     }
   },
   "space": {

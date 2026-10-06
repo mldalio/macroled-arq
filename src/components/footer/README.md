@@ -40,10 +40,11 @@ Las rutas son de ejemplo: las definitivas van en `docs/urls.md`.
 | Breakpoint | — | media query: hasta 767 px es Mobile |
 
 - **Títulos de columna:** un `<h2>` por columna en el HTML de la página (AGENTS.md: los encabezados van en el HTML). El componente les da `role/body-strong` con `::slotted()` y nombra cada `<nav>` con su texto.
-- **En el componente:** el logo (`<arq-logo size="compact">`, link a `/arq`) y el legal "© <año> Macroled Arq." (en mayúsculas por estilo). El año sale de `new Date().getFullYear()`.
+- **En el componente:** el logo (`<arq-logo>` Size=Default, del tamaño del de la navbar; link a `/arq`) y el legal "© <año> Macroled Arq." (en mayúsculas por estilo). El año sale de `new Date().getFullYear()`.
 - **Cantidad de links libre** en cada columna. Si se suma una sección, va una columna nueva en el componente, no más links en otra.
 - **Redes:** `target="_blank"` (footer-link suma `rel="noopener"`) y `label` con el nombre completo ("Macroled Arq en Instagram").
 - **Accesibilidad:** `<footer>` con cada columna como `<nav>` nombrada con el texto de su `<h2>` (`aria-label`: un `aria-labelledby` no cruza del Shadow DOM al DOM de la página) y una lista (`role="list"`); cada footer-link es un `listitem`.
+- **Dark local** (DESIGN.md §2): el `<footer>` interno lleva `data-arq-theme="dark"`; quien arma la página no pone el atributo. Se ve igual con Iluminar apagado o encendido.
 - Aplica su propio `layout/gutter` (componente de borde a borde): la página no le suma margen lateral.
 
 ## Layout
@@ -51,7 +52,7 @@ Las rutas son de ejemplo: las definitivas van en `docs/urls.md`.
 | | Desktop | Mobile |
 | --- | --- | --- |
 | Armado | marca a la izquierda (logo, bajada, legal) y columnas a la derecha | marca, columnas y legal apilados, a `space/gap/xl` |
-| Columnas | ancho de su contenido, separadas `space/gap/xl` | tres de igual ancho; un link largo se parte en líneas |
+| Columnas | `layout/footer-column` cada una (en Tablet se angostan si no entran), separadas `space/gap/xl` | tres de igual ancho; un link largo se parte en líneas |
 | Padding | `space/section/sm` arriba y abajo, `layout/gutter` a los lados | ídem (valores Mobile) |
 
 ## Tokens
@@ -60,7 +61,7 @@ Las rutas son de ejemplo: las definitivas van en `docs/urls.md`.
 | --- | --- |
 | Fondo | `color/surface/default` |
 | Borde superior | `border/default` en `color/border/subtle` |
-| Bajada | `color/text/secondary` · `role/body` |
+| Bajada | `color/text/secondary` · `role/body`, hasta `layout/footer-tagline` |
 | Legal | `color/text/tertiary` · `role/body-sm` |
 | Títulos de columna | `color/text/primary` · `role/body-strong`, con `space/gap/sm` abajo |
 | Gap marca | `space/gap/md` |
@@ -69,5 +70,4 @@ Las rutas son de ejemplo: las definitivas van en `docs/urls.md`.
 
 ## Pendientes
 
-- `TODO` (diseño): en el set cada columna mide 200 fijos y la bajada 240 fijos, sin token. En código toman el ancho de su contenido. En Mobile la bajada queda en una línea (en Figma, dos) y el footer mide 20 menos.
 - Información: Contacto y Descargas (la página Glosario pasó a llamarse Descargas, decisiones.md 2026-10-06 · Descargas).

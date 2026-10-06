@@ -33,9 +33,9 @@ class ArqFooter extends ArqElement {
   static tag = 'arq-footer';
   static styles = css;
   static template =
-    `<footer class="footer">` +
+    `<footer class="footer" data-arq-theme="dark">` +
     `<div class="brand">` +
-    `<arq-logo size="compact"></arq-logo>` +
+    `<arq-logo></arq-logo>` +
     `<p class="tagline role-body"><slot name="tagline"></slot></p>` +
     `</div>` +
     `<div class="columns">` +
