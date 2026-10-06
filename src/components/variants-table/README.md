@@ -30,7 +30,7 @@ tabla.addEventListener('arq:downloads', (e) => llenarModal(e.detail.sku));
 | — (descargas de la barra) | slot `downloads` | — | `arq-button` Outline con `icon/download` (los archivos del grupo) |
 | — | `downloads` | `downloads` | `id` del `arq-download-modal` que abre el ícono de cada fila |
 | — | `label` | `label` | Nombre de la región con scroll (único en la página). Por defecto «Variantes» |
-| — (solo de código) | `show-search` | `showSearch` | booleano. search-field «Buscar por SKU o nombre…» a la izquierda de Filtros (página Descargas) |
+| Show search | `show-search` | `showSearch` | booleano. search-field «Buscar por SKU o nombre…» a la izquierda de Filtros (página Descargas) |
 | — (solo de código) | `show-sort` | `showSort` | booleano. select Filter «Ordenar por» a la derecha: SKU (A–Z) · SKU (Z–A). Hoy no lo usa ninguna página |
 | Breakpoint | — | — | Media query: hasta 767 px |
 | variants-table-row · Type · State | — | — | Header y Row son el `<thead>` y las filas del `<tbody>`; Hover es CSS |
@@ -39,9 +39,10 @@ tabla.addEventListener('arq:downloads', (e) => llenarModal(e.detail.sku));
 - **Un solo contenedor con scroll** para encabezado y filas (se puede desplazar con el teclado). La columna de inicio (miniatura + sku Compact) y la de descarga quedan fijas (`position: sticky`) con fondo propio. En mobile el scroll llega al borde de la pantalla.
 - **Filtros:** Off, botón Filled con `icon/filter` (con `show-search`, Outline); On, Outline con `icon/filter-off` y debajo filter-bar con un select por filtro. Las opciones que no dan ninguna fila van deshabilitadas y la tabla muestra solo las filas que cumplen (`src/data/variants.js`: `filterOptions`, `filterVariants`). Al apagar Filtros se limpian.
 - **Descarga de cada fila:** columna «Descargas» (`role/label`; en Mobile sin título visible) con icon-button Size=Large Background=Outline ("Descargas de <SKU>"); emite `arq:downloads { sku }` y, con `downloads`, abre ese download-modal.
-- **Buscador y orden** (solo de código, decisiones.md 2026-10-06 · Descargas): el buscador filtra mientras se escribe por SKU y por `row.search` (nombre del producto y de la colección), sin tildes ni mayúsculas (`searchVariants`); el orden usa `sortVariants` (`src/data/variants.js`). Se combinan con los filtros. Sin filas, la tabla se oculta y aparece «Ningún SKU coincide con la búsqueda o los filtros.»; la cantidad de filas se anuncia en una región `role="status"`.
+- **Buscador y orden** (Show search en Figma; el orden es solo de código. decisiones.md 2026-10-06 · Descargas): el buscador filtra mientras se escribe por SKU y por `row.search` (nombre del producto y de la colección), sin tildes ni mayúsculas (`searchVariants`); el orden usa `sortVariants` (`src/data/variants.js`). Se combinan con los filtros. Sin filas, la tabla se oculta y aparece «Ningún SKU coincide con la búsqueda o los filtros.»; la cantidad de filas se anuncia en una región `role="status"`.
 - **Barra** (alineada abajo, gap `space/gap/md`): sin buscador (ficha), Filtros a la izquierda y las descargas a la derecha. Con buscador (Descargas), el buscador a todo el ancho y Filtros al lado, a `space/gap/sm-md`, igual en Mobile. Filtros va siempre en Outline (Filled competiría con la acción del page-header) y toma el alto del buscador (42; el button mide 40). Con `show-sort`, Ordenar por va a la derecha (en Mobile, en la fila de abajo). Sin botones de descarga, su lugar no ocupa espacio.
-- **Columnas:** la de inicio y la de Descargas miden su contenido; el ancho que sobra se reparte entre las de datos. Del sku a los datos, `space/gap/lg`. Descargas va centrada.
+- **Columnas:** miniatura, sku y Descargas miden su contenido; el ancho que sobra se reparte entre las de datos. Del sku a los datos, `space/gap/sm-md`. Descargas va centrada.
+- **Columnas fijas:** en Desktop, miniatura y sku (celdas separadas) y Descargas. Hasta 1023 px solo la miniatura y Descargas: el sku se desplaza con los datos (ficha `doc/variants-table`: «mobile: solo miniatura»).
 - **Columnas:** miden lo que su contenido (en Figma 96 fijas, sin token). Un valor que falta se muestra como "—".
 
 ## Tokens
@@ -58,7 +59,7 @@ tabla.addEventListener('arq:downloads', (e) => llenarModal(e.detail.sku));
 
 ## Pendientes
 
-- `TODO` (Figma): buscador y orden son solo de código; el set de variants-table no tiene esas props (están en la pantalla 1808:20165). En Figma el icon-button de la fila mide 36 (sin token): en código es Size=Large (48). El encabezado «Descargas» va en `color/text/tertiary` como el resto (en la pantalla, secondary).
+- El buscador es la prop Show search del set (`show-search`). «Ordenar por» (`show-sort`) es solo de código y hoy no se usa.
 
 - `TODO` (datos) Columnas del glosario (`docs/typesense-schema.md`, columnas técnicas). La demo usa las de la Ficha de Final con valores de ejemplo.
-- Las filas miden 73 (miniatura de 56, `space/padding/sm` arriba y abajo y la línea); en Figma, 56.
+- Las filas miden 73 (miniatura de 56, `space/padding/sm` arriba y abajo y la línea); en Figma, 72 (la línea va por dentro).
