@@ -2317,11 +2317,11 @@ var M = {
 	MODE: "production",
 	PROD: !0,
 	SSR: !1,
-	VITE_DATA_SOURCE: "mixto",
+	VITE_DATA_SOURCE: "mock",
 	VITE_N8N_WEBHOOK_URL: "",
-	VITE_TYPESENSE_COLLECTION: "macroled_arq",
-	VITE_TYPESENSE_HOST: "https://typesense.coresagroup.com",
-	VITE_TYPESENSE_SEARCH_KEY: "87MlPgGKNghOVMpUQZnlsI9PRNqScWRu"
+	VITE_TYPESENSE_COLLECTION: "",
+	VITE_TYPESENSE_HOST: "",
+	VITE_TYPESENSE_SEARCH_KEY: ""
 }, Rt = Object.freeze({
 	typesense: Object.freeze({
 		host: M.VITE_TYPESENSE_HOST ?? "",
