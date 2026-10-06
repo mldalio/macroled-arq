@@ -50,12 +50,14 @@ No se usa Storybook. Los componentes se prueban en `demo/index.html`.
 tokens/figma/                 ← export de variables de Figma por MCP (una colección y modo por archivo)
 tokens/tokens.json            ← generado con npm run tokens:import (no editar)
 src/styles/tokens.css         ← generado con npm run tokens (no editar)
+src/styles/print-tokens.js    ← generado con npm run tokens: valores resueltos para el PDF (no editar)
 src/base/                     ← ArqElement (clase base), icons.js, disclosure.js
 src/components/<nombre>/      ← <nombre>.js, <nombre>.css, README.md
 src/pages/                    ← un archivo por página con el HTML exacto de su Code Embed de Webflow (fuente: se edita acá y se pega en Webflow)
 demo/index.html               ← página de prueba: todos los componentes y sus estados
 demo/fixtures/                ← datos de ejemplo (JSON) para la demo
 src/data/                     ← único acceso a Typesense
+src/pdf/                      ← ficha técnica en PDF (pdfmake desde jsDelivr al primer clic)
 src/config.js                 ← endpoints (webhook de n8n, host de Typesense)
 docs/components.md            ← índice de componentes con la descripción de Figma de cada uno
 docs/typesense-schema.md      ← campos disponibles en Typesense
