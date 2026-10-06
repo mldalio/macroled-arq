@@ -92,8 +92,20 @@ thead th {
 }
 
 @media (max-width: 767px) {
+  /* Columnas de 60 % del ancho de pantalla, igual que compare-header. TODO
+     (token): sin variable en Figma. El gutter va dentro de cada fila y del
+     título de grupo, no en .scroll: así el scroll llega al borde derecho. */
+  :host {
+    --column-width: 60vw;
+  }
+
   .scroll {
     overflow-x: visible;
+    padding-inline: 0;
+  }
+
+  .group th {
+    padding-inline: var(--page-gutter);
   }
 
   .table {
@@ -108,7 +120,8 @@ thead th {
      con compare-header; no hay columna sticky. */
   .row {
     display: grid;
-    grid-template-columns: repeat(3, var(--arq-layout-compare-column));
+    grid-template-columns: repeat(3, var(--column-width));
+    padding-inline: var(--page-gutter);
     column-gap: var(--arq-space-gap-md);
     row-gap: var(--arq-space-gap-sm);
     width: 100%;
@@ -129,7 +142,7 @@ thead th {
   .row .label-cell {
     position: sticky;
     z-index: 1;
-    inset-inline-start: 0;
+    inset-inline-start: var(--page-gutter);
     grid-column: 1 / -1;
     width: auto;
     padding: var(--arq-space-padding-xs) 0;
@@ -137,7 +150,7 @@ thead th {
   }
 
   .row .value {
-    width: var(--arq-layout-compare-column);
+    width: var(--column-width);
     padding: var(--arq-space-padding-sm) 0 var(--arq-space-padding-sm) var(--arq-space-padding-md);
   }
 

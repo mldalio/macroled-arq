@@ -40,7 +40,7 @@ header.addEventListener('arq:add', (e) => abrirModalDeProductos(e.detail.index))
 
 ## Scroll horizontal en Mobile
 
-En Mobile, el Default desplaza solo la tira de productos (`layout/compare-column`, como los valores de compare-row); el resto de la cabecera queda fijo. `arq-comparativa` sincroniza su `scrollLeft` con todas las filas de `arq-compare-table` y con la tira del Compact. Si se usa compare-header suelto en Mobile (como en esta demo, `demo/index.html`), su tira de productos conserva scroll propio.
+En Mobile, el Default desplaza solo la tira de productos (60 % del ancho de pantalla, igual que los valores de compare-table; el gutter va dentro de la tira y el scroll llega al borde derecho. TODO (token): el 60 % no tiene variable en Figma); el resto de la cabecera queda fijo. `arq-comparativa` sincroniza su `scrollLeft` con todas las filas de `arq-compare-table` y con la tira del Compact. Si se usa compare-header suelto en Mobile (como en esta demo, `demo/index.html`), su tira de productos conserva scroll propio.
 
 ## Adaptaciones sobre el set de Figma
 
