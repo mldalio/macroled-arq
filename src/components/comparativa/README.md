@@ -17,7 +17,7 @@ El HTML del embed completo está en [src/pages/comparativa.html](../../pages/com
   - `arq:change { index, field, value }` de compare-header → `field` es un atributo de variante (`altura`, `color_carcasa`…): resuelve el SKU de esa combinación con `skuForAttribute()`, la misma lógica que el configurador de la ficha, y vuelve a pedir los datos.
 - Después de cada carga actualiza `?sku=` (`history.replaceState`, como `ficha-producto`) y `localStorage` `arq:compare` (la misma clave que lee/escribe `compare-bar`), para que la selección siga igual al volver a Productos o Colecciones.
 - Sin productos (`?sku=` vacío o ningún SKU existe en el catálogo): mensaje con link a Productos, sin mostrar compare-header ni compare-table.
-- **Mobile:** compare-header y compare-table comparten un solo contenedor con scroll horizontal (`arq-compare-table` va con el atributo `embedded`, así no tiene scroll propio). El toggle "Solo diferencias" no va dentro de compare-header en Mobile (el set no lo muestra ahí): este componente agrega una fila aparte, fuera del scroll, con su propio `<arq-toggle>` sincronizado con el de compare-header.
+- **Mobile:** la etiqueta de cada compare-row y los controles quedan fijos; solo las tiras de valores y productos hacen scroll horizontal. `arq-comparativa` sincroniza esas tiras entre filas y Header Default/Compact. El toggle de Default va en una fila propia; el de Compact queda debajo de sus productos, ambos sincronizados.
 
 ## Pendientes
 

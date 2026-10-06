@@ -20,6 +20,15 @@
   }
 }
 
+/* La comparativa Mobile reemplaza temporalmente la navegación por su
+   compare-header Compact. El atributo lo controla compare-header al cruzar
+   su centinela; al volver al Default se restaura la barra. */
+@media (max-width: 767px) {
+  :host([data-arq-compare-hidden]) {
+    transform: translateY(-100%);
+  }
+}
+
 :host([theme='transparent']) {
   position: fixed;
   inset-inline: 0;

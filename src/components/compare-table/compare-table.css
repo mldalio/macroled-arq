@@ -92,22 +92,33 @@ thead th {
 }
 
 @media (max-width: 767px) {
+  .scroll {
+    overflow-x: visible;
+  }
+
   .table {
-    width: max-content;
-    min-width: 100%;
+    width: 100%;
+    min-width: 0;
     table-layout: auto;
   }
 
-  /* compare-row Breakpoint=Mobile: la etiqueta pasa a ocupar toda la fila
-     arriba (en vez de una columna fija al costado) y los valores quedan en su
-     propia línea debajo, dentro del mismo <tr> (flex-wrap, sin un <tr> más).
-     Ya no hace falta sticky ni un ancho de columna reservado a la izquierda:
-     todo el bloque (compare-header incluido) se desplaza junto. */
+  /* compare-row Breakpoint=Mobile: la etiqueta ocupa toda la fila arriba y
+     los valores quedan debajo, dentro del mismo <tr>. El contenedor de la
+     comparativa desplaza horizontalmente solo estas columnas y lo sincroniza
+     con compare-header; no hay columna sticky. */
   .row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--arq-space-gap-sm) var(--arq-space-gap-md);
+    display: grid;
+    grid-template-columns: repeat(3, var(--arq-layout-compare-column));
+    column-gap: var(--arq-space-gap-md);
+    row-gap: var(--arq-space-gap-sm);
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
     border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  }
+
+  .row::-webkit-scrollbar {
+    display: none;
   }
 
   .row > * {
@@ -116,13 +127,16 @@ thead th {
   }
 
   .row .label-cell {
-    flex: 0 0 100%;
+    position: sticky;
+    z-index: 1;
+    inset-inline-start: 0;
+    grid-column: 1 / -1;
     width: auto;
     padding: var(--arq-space-padding-xs) 0;
+    background: var(--arq-color-bg-default);
   }
 
   .row .value {
-    flex: 0 0 var(--arq-layout-compare-column);
     width: var(--arq-layout-compare-column);
     padding: var(--arq-space-padding-sm) 0 var(--arq-space-padding-sm) var(--arq-space-padding-md);
   }

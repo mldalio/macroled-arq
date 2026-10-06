@@ -42,9 +42,9 @@ class ArqCompareHeader extends ArqElement {
   static template =
     `<div class="header">` +
     `<div class="default">` +
-    `<span class="sentinel" aria-hidden="true"></span>` +
     `<div class="controls"><arq-toggle show-label class="diff"></arq-toggle></div>` +
     `<div class="products"></div>` +
+    `<span class="sentinel" aria-hidden="true"></span>` +
     `</div>` +
     `<div class="compact" hidden>` +
     `<div class="controls"><arq-toggle show-label class="diff-compact"></arq-toggle></div>` +
@@ -54,6 +54,8 @@ class ArqCompareHeader extends ArqElement {
 
   #products = [];
   #io = null;
+  #syncingScroll = false;
+  #defaultWasVisible = false;
 
   /** Hasta 3: cada item { sku, name, href, image, meta, family, variant } o null (Empty). */
   get products() {
@@ -92,14 +94,21 @@ class ArqCompareHeader extends ArqElement {
       event.stopPropagation();
       this.emit('remove', { sku: event.detail.sku });
     });
+    for (const strip of root.querySelectorAll('.products, .slots')) {
+      strip.addEventListener('scroll', () => this.#onScroll(strip));
+    }
     MOBILE.addEventListener('change', () => this.#syncBreakpoint());
     this.#syncNavbarOffset();
-    addEventListener('resize', () => this.#syncNavbarOffset());
+    addEventListener('resize', () => {
+      this.#syncNavbarOffset();
+      if (MOBILE.matches) document.querySelector('arq-navbar')?.removeAttribute('data-arq-compare-hidden');
+    });
     this.#render();
   }
 
   disconnectedCallback() {
     this.#io?.disconnect();
+    document.querySelector('arq-navbar')?.removeAttribute('data-arq-compare-hidden');
   }
 
   update(changed) {
@@ -161,6 +170,30 @@ class ArqCompareHeader extends ArqElement {
   #syncBreakpoint() {
     const mobile = MOBILE.matches;
     for (const slot of this.shadowRoot.querySelectorAll('.slots arq-compare-slot')) slot.size = mobile ? 'compact' : 'default';
+    document.querySelector('arq-navbar')?.removeAttribute('data-arq-compare-hidden');
+  }
+
+  // Lo usa arq-comparativa para alinear el Compact fijo con el scroll
+  // compartido de Default + compare-table en Mobile.
+  setScrollLeft(left) {
+    if (!MOBILE.matches) return;
+    for (const strip of this.shadowRoot.querySelectorAll('.products, .slots')) strip.scrollLeft = left;
+  }
+
+  // arq-comparativa llama esto después de quitar hidden de su contenedor. El
+  // observer inicial puede correr mientras ese contenedor no tiene geometría.
+  refreshCompact() {
+    this.#syncNavbarOffset();
+  }
+
+  #onScroll(source) {
+    if (!MOBILE.matches || this.#syncingScroll) return;
+    this.#syncingScroll = true;
+    for (const strip of this.shadowRoot.querySelectorAll('.products, .slots')) {
+      if (strip !== source) strip.scrollLeft = source.scrollLeft;
+    }
+    this.emit('scroll', { left: source.scrollLeft });
+    this.#syncingScroll = false;
   }
 
   #syncNavbarOffset() {
@@ -170,20 +203,28 @@ class ArqCompareHeader extends ArqElement {
     this.#watch(height);
   }
 
-  // IntersectionObserver sobre un centinela al inicio del Default: cuando sale
-  // por arriba del navbar, se muestra el Compact (rootMargin usa el alto medido).
+  // El centinela queda al final del Default. Su posición vertical permite
+  // distinguir que la cabecera ya pasó por arriba de que aún esté más abajo.
   #watch(navbarHeight = 0) {
     this.#io?.disconnect();
+    this.#defaultWasVisible = false;
+    this.#setCompact(false);
     const sentinel = this.shadowRoot.querySelector('.sentinel');
-    this.#io = new IntersectionObserver(([entry]) => this.#setCompact(!entry.isIntersecting), {
-      rootMargin: `${-navbarHeight}px 0px 0px 0px`,
+    this.#io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) this.#defaultWasVisible = true;
+      this.#setCompact(this.#defaultWasVisible && entry.boundingClientRect.top < 0);
+    }, {
+      rootMargin: `${MOBILE.matches ? 0 : -navbarHeight}px 0px 0px 0px`,
       threshold: 0,
     });
     this.#io.observe(sentinel);
   }
 
   #setCompact(compact) {
+    if (!this.getClientRects().length) return;
     this.shadowRoot.querySelector('.compact').hidden = !compact;
+    const navbar = document.querySelector('arq-navbar');
+    if (navbar && MOBILE.matches) navbar.toggleAttribute('data-arq-compare-hidden', compact);
   }
 }
 

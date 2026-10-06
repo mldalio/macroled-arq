@@ -25,16 +25,16 @@ header.addEventListener('arq:differences', (e) => (tabla.onlyDifferences = e.det
 | --- | --- | --- | --- |
 | toggle "Solo diferencias" | `only-differences` | `onlyDifferences` | Booleano. Oculta las filas con todos los valores iguales y el grupo que queda vacío. Lo pone la página desde el toggle de `arq-compare-header` |
 | — (datos) | — | `data` | `{ products, groups }` (arriba). Un valor que falta se muestra como «—» |
-| — | `label` | `label` | Nombre de la región con scroll. Por defecto "Comparación de productos" |
-| — | `embedded` | `embedded` | Booleano. El scroll horizontal (y su foco de teclado) lo maneja el contenedor de afuera — lo usa `arq-comparativa` para compartir un solo scroll con `arq-compare-header` en Mobile |
-| Breakpoint | — | — | Media query: hasta 767 px, etiqueta fija y columnas de `layout/compare-column` |
+| — | `label` | `label` | Nombre de la región de comparación. Por defecto "Comparación de productos" |
+| — | `embedded` | `embedded` | Booleano. En Mobile, `arq-comparativa` sincroniza las tiras de valores con las de `arq-compare-header` |
+| Breakpoint | — | — | Media query: hasta 767 px, etiqueta arriba y columnas de `layout/compare-column` debajo |
 
 - **Tabla real** (`<table>`): cada valor se anuncia con su producto (encabezado de columna) y su dato (encabezado de fila). El `<thead>` no muestra nada: solo texto `visually-hidden` con nombre y SKU de cada producto, para que un lector de pantalla anuncie la columna. La identidad visible de cada producto (foto, nombre, selects, quitar) la muestra **arq-compare-header**, siempre arriba de la tabla en la página.
 - **Siempre 3 columnas de valor**, como `arq-compare-header` (que siempre muestra 3 compare-product): con menos de 3 productos, las columnas de más quedan en blanco en vez de desaparecer, para que la tabla no se estire al ancho que haya y las líneas queden donde quedarían con 3.
-- **Un solo scroll** horizontal para la cabecera y las filas (salvo con `embedded`, ver arriba). La región tiene foco para desplazarla con teclado.
+- **Desktop:** un solo scroll horizontal para la cabecera y las filas (salvo con `embedded`, ver arriba). La región tiene foco para desplazarla con teclado. **Mobile:** cada fila desplaza solo sus valores; `arq-comparativa` sincroniza esas tiras.
 - **Quitar un producto** es acción de `arq-compare-header` (`arq:remove { sku }`), no de esta tabla: la página actualiza `?sku=` y vuelve a pasar `data` a los dos componentes.
 - **Al final, `space/section/xl`** antes de lo que sigue en la página (como en Final: esa separación vive en el padding inferior del scroll de la tabla, no afuera).
-- **Mobile (compare-row Breakpoint=Mobile):** la etiqueta pasa a ocupar toda la fila arriba (en vez de una columna fija al costado) y los 3 valores quedan en su propia línea debajo, dentro del mismo `<tr>` (con `flex-wrap`, no un segundo `<tr>`). Ya no hay columna sticky: todo el bloque, compare-header incluido, se desplaza junto con `embedded` (ver demo/comparativa.html). `<table>`, `<thead>` y `<tbody>` pasan a `display: block` para que el margen entre filas (compare-section-group) funcione; `compare-table.js` agrega `role="table"/"row"/"cell"/…` explícitos porque algunos lectores de pantalla pierden la semántica de tabla al cambiarle el display.
+- **Mobile (compare-row Breakpoint=Mobile):** la etiqueta ocupa toda la fila arriba, fuera de la tira desplazable. Debajo, una grilla fija de tres columnas `layout/compare-column` (160) hace scroll horizontal sin llevarse la etiqueta; no hay un segundo `<tr>`. `arq-comparativa` sincroniza ese desplazamiento con las variantes Default y Compact de compare-header (ver demo/comparativa.html). `<table>`, `<thead>` y `<tbody>` pasan a `display: block` para que el margen entre filas (compare-section-group) funcione; `compare-table.js` agrega `role="table"/"row"/"cell"/…` explícitos porque algunos lectores de pantalla pierden la semántica de tabla al cambiarle el display.
 - **compare-section-group:** separación entre el título del grupo y su primera fila (`space/padding/md`) y entre filas (`space/gap/sm`), en Mobile.
 - Los datos los arma `src/data/` (la tabla no consulta). Cantidad de grupos y filas libre.
 

@@ -9,6 +9,15 @@ for (const table of document.querySelectorAll('[data-demo-compare-table]')) {
   table.data = { products: data.products.slice(0, count), groups: data.groups };
 }
 
+// compare-row se implementa dentro de compare-table. Esta instancia aislada
+// deja revisar sus dos breakpoints sin mostrar el resto de la comparativa.
+for (const table of document.querySelectorAll('[data-demo-compare-row]')) {
+  table.data = {
+    products: data.products.slice(0, 3),
+    groups: [{ label: 'Características lumínicas', rows: [data.groups[0].rows[0]] }],
+  };
+}
+
 // ── compare-product ─────────────────────────────────────────────────────
 // Un select por atributo de variante, como el configurador de la ficha
 // (la muestra solo en el de color).
