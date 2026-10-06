@@ -17,7 +17,6 @@ Footer de Macroled Arq, último elemento de todas las páginas, full width. Marc
   <h2 slot="informacion-title">Información</h2>
   <arq-footer-link slot="informacion" href="/arq/contacto">Contacto</arq-footer-link>
   <arq-footer-link slot="informacion" href="/arq/descargas">Descargas</arq-footer-link>
-  <arq-footer-link slot="informacion" href="/arq/glosario">Glosario</arq-footer-link>
 
   <h2 slot="redes-title">Redes</h2>
   <arq-footer-link slot="redes" href="https://www.instagram.com/…" target="_blank"
@@ -71,4 +70,4 @@ Las rutas son de ejemplo: las definitivas van en `docs/urls.md`.
 ## Pendientes
 
 - `TODO` (diseño): en el set cada columna mide 200 fijos y la bajada 240 fijos, sin token. En código toman el ancho de su contenido. En Mobile la bajada queda en una línea (en Figma, dos) y el footer mide 20 menos.
-- En el set, Información tiene Contacto y Glosario en Desktop y Contacto, Descargas y Glosario en Mobile. Se usa la lista de Mobile; falta sumar Descargas al Desktop en Figma.
+- Información: Contacto y Descargas (la página Glosario pasó a llamarse Descargas, decisiones.md 2026-10-06 · Descargas). `TODO` (Figma): el set todavía muestra Glosario (Desktop: Contacto y Glosario; Mobile: Contacto, Descargas y Glosario).

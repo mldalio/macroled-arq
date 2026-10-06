@@ -18,6 +18,7 @@
 import { loadSource } from './source.js';
 import { ATTRIBUTES, FILTER_FIELDS, GLOSSARY_COLUMNS, attributeInfo, specSections } from './attributes.js';
 import { variantOptions, findVariant, choose } from './variants.js';
+import { normalize, queryWords, matchesWords } from './text.js';
 
 let pending = null;
 
@@ -232,12 +233,14 @@ function glossary(group) {
 }
 
 /**
- * Página Glosario: variants-table con todos los SKU del catálogo, en el orden
+ * Página Descargas: variants-table con todos los SKU del catálogo, en el orden
  * de los grupos. Filtros: los selectores de variante de todos los grupos y los
  * filtros de los listados (attributes.js), con al menos dos valores. Sin
  * archivos en la barra: no hay un grupo (decisiones.md, 2026-10-05 · Glosario).
+ * search: nombre del producto y de la colección, para el buscador (además del
+ * SKU), decisiones.md, 2026-10-06 · Descargas.
  */
-export async function getGlossary() {
+export async function getDownloadsTable() {
   const { groups } = await loadCatalog();
   const variants = groups.flatMap((group) => group.variants.map((variant) => ({ group, variant })));
   const used = new Set([...groups.flatMap((g) => g.variantAttributes), ...FILTER_FIELDS]);
@@ -250,13 +253,14 @@ export async function getGlossary() {
     rows: variants.map(({ group, variant }) => ({
       sku: variant.sku,
       thumb: variant.images?.studio ?? group.defaultVariant.images?.studio ?? null,
+      search: [group.name, group.collectionData?.name].filter(Boolean).join(' '),
       attributes: variant.values,
       values: variant.values,
     })),
   };
 }
 
-/** Archivos de un SKU de cualquier grupo (modal de descargas del Glosario). [] si no existe. */
+/** Archivos de un SKU de cualquier grupo (modal de la página Descargas). [] si no existe. */
 export async function skuDownloads(sku) {
   const { groups } = await loadCatalog();
   const variant = groups.flatMap((group) => group.variants).find((v) => v.sku === sku);
@@ -426,28 +430,7 @@ export async function getCompare(skus) {
 // La usan search-dropdown (searchProducts) y el listado de Productos con ?q=
 // (listProducts), con el mismo criterio (decisiones.md, 2026-10-05 · Búsqueda
 // en Productos): cada palabra tiene que aparecer, sin importar tildes,
-// mayúsculas ni plural.
-// TODO (búsqueda): sinónimos ("jardín" → parque, patio…): falta decidir si van
-// en el front o en Typesense (decisiones.md, Pendientes).
-const normalize = (text) => String(text ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-
-// Formas de una palabra: ella misma y su singular ("jardines" → "jardin").
-function forms(word) {
-  const all = [word];
-  if (word.length > 3 && word.endsWith('es')) all.push(word.slice(0, -2));
-  if (word.length > 3 && word.endsWith('s')) all.push(word.slice(0, -1));
-  return all;
-}
-
-/** Palabras de la búsqueda: por cada una, la lista de textos que valen. */
-function queryWords(query) {
-  return normalize(query).split(/\s+/).filter(Boolean).map(forms);
-}
-
-const matchesWords = (text, words) => {
-  const value = normalize(text);
-  return words.every((options) => options.some((option) => value.includes(option)));
-};
+// mayúsculas ni plural (src/data/text.js).
 
 const groupText = (group) => [group.name, group.collectionData?.name, group.application, group.productType, ...group.environment].join(' ');
 

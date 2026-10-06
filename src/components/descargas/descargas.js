@@ -1,42 +1,47 @@
-// glosario · contenedor de página (Final: Glosario 1795:18553 Desktop ·
-// 1795:18955 Mobile)
+// descargas · contenedor de página (Figma: Descargas (antes Glosario)
+// 1801:19315 → Desktop 1808:20165 · Mobile 1808:20882 · modal 1802:30817 /
+// 1802:30903)
 //
-// Página Glosario: variants-table con todos los SKU del catálogo y el modal de
-// descargas de cada fila. El embed imprime el page-header (breadcrumb, <h1> y
-// bajada); el componente pide las filas a getGlossary() (src/data/catalog.js),
-// como coleccion.
+// Página Descargas (antes Glosario, decisiones.md 2026-10-06 · Descargas):
+// variants-table con todos los SKU del catálogo, buscador por SKU o nombre
+// y el modal de descargas de cada fila. El embed imprime el page-header
+// (Volver, <h1>, bajada y Descargar catálogo general); el componente pide las
+// filas a getDownloadsTable() (src/data/catalog.js), como coleccion.
 //
-//   <arq-glosario>
+//   <arq-descargas>
 //     <h2 slot="modal-title">Descargas</h2>
-//   </arq-glosario>
+//   </arq-descargas>
 //
 // - Sin descargas en la barra de la tabla: en la ficha son las del grupo y acá
-//   no hay grupo (Final oculta CAD 2D/3D y Manual).
-// - "Ficha técnica" del modal emite arq:datasheet { sku }, como la ficha.
+//   no hay grupo.
+// - El modal muestra el SKU debajo del título. "Ficha técnica" emite
+//   arq:datasheet { sku }, como la ficha; los archivos llevan los nombres de
+//   siempre (los formatos de Figma, «DWG + STEP», son de ejemplo).
 //   TODO (diseño): el PDF no tiene diseño; se genera cuando exista.
+//   «Descargar todo (.zip)» de Figma queda afuera por ahora.
 
 import { ArqElement } from '../../base/arq-element.js';
-import { getGlossary, skuDownloads } from '../../data/catalog.js';
+import { getDownloadsTable, skuDownloads } from '../../data/catalog.js';
 import '../variants-table/variants-table.js';
 import '../download-modal/download-modal.js';
 import '../download-item/download-item.js';
-import css from './glosario.css?inline';
+import css from './descargas.css?inline';
 
 const TEXT = {
-  loading: 'Cargando glosario…',
-  empty: 'Todavía no hay productos en el glosario.',
-  error: 'No se pudo cargar el glosario. Probá de nuevo en unos minutos.',
-  label: 'Glosario de productos',
+  loading: 'Cargando descargas…',
+  empty: 'Todavía no hay productos para descargar.',
+  error: 'No se pudieron cargar las descargas. Probá de nuevo en unos minutos.',
+  label: 'Descargas por SKU',
   datasheet: 'Ficha técnica',
 };
 
-class ArqGlosario extends ArqElement {
-  static tag = 'arq-glosario';
+class ArqDescargas extends ArqElement {
+  static tag = 'arq-descargas';
   static styles = css;
   static properties = {};
   static template =
     `<p class="status role-body" role="status" hidden></p>` +
-    `<arq-variants-table class="table" downloads="downloads-modal" hidden></arq-variants-table>` +
+    `<arq-variants-table class="table" downloads="downloads-modal" show-search hidden></arq-variants-table>` +
     `<arq-download-modal id="downloads-modal"><slot name="modal-title" slot="title"></slot></arq-download-modal>`;
 
   setup() {
@@ -44,8 +49,9 @@ class ArqGlosario extends ArqElement {
     root.querySelector('.table').label = TEXT.label;
     root.querySelector('.table').addEventListener('arq:downloads', (event) => this.#fillModal(event.detail.sku));
     root.querySelector('arq-download-modal').addEventListener('arq:download', (event) => {
+      // Solo la ficha técnica (sin href) emite arq:download: se genera.
       event.stopPropagation();
-      const { sku } = event.currentTarget.dataset;
+      const { sku } = event.currentTarget;
       if (sku) this.emit('datasheet', { sku });
     });
     this.#load();
@@ -56,9 +62,9 @@ class ArqGlosario extends ArqElement {
     this.#status(TEXT.loading);
     let data = null;
     try {
-      data = await getGlossary();
+      data = await getDownloadsTable();
     } catch (error) {
-      console.error('[arq] glosario: no se pudo cargar el catálogo', error);
+      console.error('[arq] descargas: no se pudo cargar el catálogo', error);
     }
     this.removeAttribute('aria-busy');
     if (!data) {
@@ -81,14 +87,13 @@ class ArqGlosario extends ArqElement {
   // enseguida porque el catálogo ya está cargado.
   async #fillModal(sku) {
     const modal = this.shadowRoot.querySelector('arq-download-modal');
-    modal.dataset.sku = sku;
-    const featured = document.createElement('arq-download-item');
-    featured.emphasis = 'featured';
-    featured.textContent = TEXT.datasheet;
+    modal.sku = sku;
+    const datasheet = document.createElement('arq-download-item');
+    datasheet.textContent = TEXT.datasheet;
     for (const item of modal.querySelectorAll(':scope > arq-download-item')) item.remove();
-    modal.append(featured);
+    modal.append(datasheet);
     const files = await skuDownloads(sku);
-    if (modal.dataset.sku !== sku) return;
+    if (modal.sku !== sku) return;
     modal.append(
       ...files.map((file) => {
         const item = document.createElement('arq-download-item');
@@ -100,6 +105,6 @@ class ArqGlosario extends ArqElement {
   }
 }
 
-ArqGlosario.define();
+ArqDescargas.define();
 
-export { ArqGlosario };
+export { ArqDescargas };

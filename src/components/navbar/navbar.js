@@ -4,7 +4,7 @@
 //
 //   <arq-navbar theme="transparent">
 //     <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
-//     <arq-nav-link slot="links" href="/arq/glosario">Glosario</arq-nav-link>
+//     <arq-nav-link slot="links" href="/arq/descargas">Descargas</arq-nav-link>
 //     <arq-nav-link slot="links" href="/arq/contacto" current>Contacto</arq-nav-link>
 //   </arq-navbar>
 //

@@ -20,23 +20,39 @@
 //   columna de inicio (miniatura + sku) y la de descarga quedan fijas
 //   (position: sticky). El scroll queda dentro de los márgenes de la página.
 // - Filters (Off · On): el botón Filtros (Filled con icon/filter; activo,
-//   Outline con icon/filter-off) muestra filter-bar con un select por cada
+//   Outline con icon/filter-off; con show-search, siempre Outline) muestra filter-bar con un select por cada
 //   filtro. Las opciones que no dan ninguna fila van deshabilitadas
 //   (src/data/variants.js) y la tabla muestra solo las filas que cumplen.
-// - Descarga de cada fila: icon-button Background=Subtle; emite
-//   arq:downloads { sku } y, con downloads="<id>", abre ese download-modal.
+// - Descarga de cada fila: icon-button Size=Large Background=Outline (columna
+//   «Descargas»); emite arq:downloads { sku } y, con downloads="<id>", abre ese
+//   download-modal.
 // - Columnas: miden lo que su contenido (sin anchos fijos).
+// - Solo de código (página Descargas, Figma 1808:20165 · 1808:20882): show-search
+//   suma search-field («Buscar por SKU o nombre…», busca en el SKU y en
+//   row.search) y show-sort, el select «Ordenar por» (SORT_ORDERS). Los dos
+//   filtran y ordenan junto con los filtros (src/data/variants.js).
 
 import { ArqElement } from '../../base/arq-element.js';
-import { filterOptions, filterVariants } from '../../data/variants.js';
+import { filterOptions, filterVariants, searchVariants, sortVariants, SORT_ORDERS } from '../../data/variants.js';
 import '../button/button.js';
 import '../icon-button/icon-button.js';
 import '../sku/sku.js';
 import '../filter-bar/filter-bar.js';
+import '../search-field/search-field.js';
 import '../select/select.js';
 import css from './variants-table.css?inline';
 
 const esc = (text) => String(text ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+
+const TEXT = {
+  search: 'Buscar por SKU o nombre…',
+  searchLabel: 'Buscar por SKU o nombre',
+  sort: 'Ordenar por',
+  downloads: 'Descargas',
+  // TODO (contenido): texto sin diseño
+  empty: 'Ningún SKU coincide con la búsqueda o los filtros.',
+  count: (n) => (n === 1 ? '1 variante' : `${n} variantes`),
+};
 
 class ArqVariantsTable extends ArqElement {
   static tag = 'arq-variants-table';
@@ -45,21 +61,29 @@ class ArqVariantsTable extends ArqElement {
     filters: { type: Boolean }, // Filters: Off · On
     downloads: { type: String }, // id del arq-download-modal que abre el ícono de cada fila
     label: { type: String, default: 'Variantes' }, // nombre de la región con scroll (único en la página)
+    showSearch: { type: Boolean }, // solo de código: buscador por SKU o nombre
+    showSort: { type: Boolean }, // solo de código: select «Ordenar por»
   };
   static template =
     `<div class="controls">` +
     `<div class="toolbar">` +
+    `<arq-search-field class="search" placeholder="${TEXT.search}" label="${TEXT.searchLabel}" hidden></arq-search-field>` +
     `<arq-button class="toggle-filters" show-icon icon="filter">Filtros</arq-button>` +
     `<div class="downloads"><slot name="downloads"></slot></div>` +
+    `<arq-select class="sort" type="filter" label="${TEXT.sort}" hidden></arq-select>` +
     `</div>` +
     `<arq-filter-bar class="filter-bar" hidden></arq-filter-bar>` +
     `</div>` +
     `<div class="scroll" tabindex="0" role="region" aria-label="Variantes">` +
     `<table class="table"><thead></thead><tbody></tbody></table>` +
-    `</div>`;
+    `</div>` +
+    `<p class="empty role-body" hidden>${TEXT.empty}</p>` +
+    `<span class="visually-hidden count" role="status"></span>`;
 
   #data = { columns: [], filters: [], rows: [] };
   #values = {};
+  #query = '';
+  #order = SORT_ORDERS[0].value;
 
   get data() {
     return this.#data;
@@ -77,7 +101,28 @@ class ArqVariantsTable extends ArqElement {
     root.querySelector('.filter-bar').addEventListener('arq:filters', (event) => {
       event.stopPropagation();
       this.#values = event.detail.filters;
-      this.#refresh();
+      this.#refresh(true);
+    });
+    root.querySelector('.search').addEventListener('arq:input', (event) => {
+      event.stopPropagation();
+      this.#query = event.detail.value;
+      this.#refresh(true);
+    });
+    // Enter no envía a otra página: la tabla ya se filtró al escribir.
+    root.querySelector('.search').addEventListener('arq:submit', (event) => event.stopPropagation());
+    // Sin botones de descarga en la barra (página Descargas), no ocupa lugar
+    const downloads = root.querySelector('slot[name="downloads"]');
+    const toggleDownloads = () => (downloads.parentElement.hidden = !downloads.assignedElements().length);
+    downloads.addEventListener('slotchange', toggleDownloads);
+    toggleDownloads();
+    const sort = root.querySelector('.sort');
+    // La primera opción («Todos» en un Filter) es el orden por defecto.
+    sort.allLabel = SORT_ORDERS[0].label;
+    sort.options = SORT_ORDERS.slice(1);
+    sort.addEventListener('arq:change', (event) => {
+      event.stopPropagation();
+      this.#order = event.detail.value || SORT_ORDERS[0].value;
+      this.#refresh(true);
     });
     root.querySelector('tbody').addEventListener('click', (event) => {
       const button = event.target.closest('arq-icon-button[data-sku]');
@@ -93,9 +138,14 @@ class ArqVariantsTable extends ArqElement {
   update(changed) {
     const root = this.shadowRoot;
     if (changed.has('label')) root.querySelector('.scroll').setAttribute('aria-label', this.label ?? 'Variantes');
-    if (!changed.has('filters')) return;
+    if (changed.has('showSearch')) root.querySelector('.search').hidden = !this.showSearch;
+    if (changed.has('showSort')) root.querySelector('.sort').hidden = !this.showSort;
+    if (changed.has('showSearch') || changed.has('showSort')) this.#refresh();
     const button = root.querySelector('.toggle-filters');
-    button.type = this.filters ? 'outline' : 'filled';
+    // Con buscador (página Descargas), Filtros va siempre en Outline: Filled
+    // competiría con la acción del page-header (Descargar catálogo general).
+    if (changed.has('filters') || changed.has('showSearch')) button.type = this.filters || this.showSearch ? 'outline' : 'filled';
+    if (!changed.has('filters')) return;
     button.icon = this.filters ? 'filter-off' : 'filter';
     // aria-expanded y aria-controls en el <button> interno (el que tiene el foco)
     customElements.whenDefined('arq-button').then(() => {
@@ -110,7 +160,7 @@ class ArqVariantsTable extends ArqElement {
       this.#values = {};
       for (const select of root.querySelectorAll('.filter-bar arq-select')) select.value = '';
       root.querySelector('.filter-bar').applied = false;
-      this.#refresh();
+      this.#refresh(true);
     }
   }
 
@@ -121,7 +171,7 @@ class ArqVariantsTable extends ArqElement {
     root.querySelector('thead').innerHTML =
       `<tr><th scope="col" class="start role-label"><span class="th-sku">SKU</span></th>` +
       columns.map((c) => `<th scope="col" class="role-label">${esc(c.label)}</th>`).join('') +
-      `<th scope="col" class="end"><span class="visually-hidden">Descargas</span></th></tr>`;
+      `<th scope="col" class="end role-label"><span class="th-downloads">${TEXT.downloads}</span></th></tr>`;
     // Filtros: un select por atributo
     const bar = root.querySelector('.filter-bar');
     bar.replaceChildren(
@@ -136,9 +186,13 @@ class ArqVariantsTable extends ArqElement {
     this.#refresh();
   }
 
-  #refresh() {
+  // announce: después de buscar, filtrar u ordenar se anuncia la cantidad de filas.
+  #refresh(announce = false) {
     const root = this.shadowRoot;
-    const { columns, filters, rows } = this.#data;
+    const { columns, filters } = this.#data;
+    // Buscador y orden (solo con show-search / show-sort)
+    let rows = this.showSearch ? searchVariants(this.#data.rows, this.#query) : this.#data.rows;
+    if (this.showSort) rows = sortVariants(rows, this.#order);
     const keys = filters.map((f) => f.key);
     // Opciones de cada filtro (las que no dan filas, deshabilitadas)
     const groups = filterOptions(rows, keys, this.#values);
@@ -160,10 +214,15 @@ class ArqVariantsTable extends ArqElement {
           `<arq-sku size="compact">${esc(row.sku)}</arq-sku>` +
           `</span></th>` +
           columns.map((c) => `<td class="role-body">${esc(row.values?.[c.key] ?? '—')}</td>`).join('') +
-          `<td class="end"><arq-icon-button icon="download" background="subtle" data-sku="${esc(row.sku)}">Descargas de ${esc(row.sku)}</arq-icon-button></td>` +
+          `<td class="end"><arq-icon-button icon="download" size="large" background="outline" data-sku="${esc(row.sku)}">Descargas de ${esc(row.sku)}</arq-icon-button></td>` +
           `</tr>`,
       )
       .join('');
+    // Sin filas: la tabla se oculta y queda el aviso
+    const empty = !visible.length && this.#data.rows.length > 0;
+    root.querySelector('.scroll').hidden = empty;
+    root.querySelector('.empty').hidden = !empty;
+    if (announce) root.querySelector('.count').textContent = TEXT.count(visible.length);
   }
 }
 

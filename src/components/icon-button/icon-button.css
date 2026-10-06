@@ -113,3 +113,20 @@
   color: var(--arq-color-icon-disabled);
   cursor: default;
 }
+
+/* ── Background=Outline (acompaña a un button Outline: descarga de cada fila
+   de variants-table). Borde border/default en color/border/strong, sin fondo.
+   El borde no suma al tamaño (24 / 48, como el set): se descuenta del padding. */
+
+:host([background='outline']) .control {
+  padding: calc(var(--arq-space-padding-xs) - var(--arq-border-default));
+  border: var(--arq-border-default) solid var(--arq-color-border-strong);
+}
+
+:host([background='outline'][size='large']) .control {
+  padding: calc(var(--arq-space-padding-sm-md) - var(--arq-border-default));
+}
+
+:host([background='outline']) .control:disabled {
+  border-color: var(--arq-color-border-disabled);
+}
