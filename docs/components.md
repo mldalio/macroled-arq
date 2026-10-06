@@ -46,7 +46,6 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [footer](#footer) | `<arq-footer>` | En código ([README](../src/components/footer/README.md)) |
 | ✅ [footer-link](#footer-link) | `<arq-footer-link>` | En código ([README](../src/components/footer-link/README.md)) |
 | ✅ [form-message](#form-message) | `<arq-form-message>` | En código ([README](../src/components/form-message/README.md)) |
-| ✅ [form-section-header](#form-section-header) | `<arq-form-section-header>` | En código ([README](../src/components/form-section-header/README.md)) |
 | ✅ [gallery-thumb](#gallery-thumb) | `<arq-gallery-thumb>` | En código ([README](../src/components/gallery-thumb/README.md)) |
 | ✅ [hero](#hero) | `<arq-hero>` | En código ([README](../src/components/hero/README.md)) |
 | ✅ [icon-button](#icon-button) | `<arq-icon-button>` | En código ([README](../src/components/icon-button/README.md)) |
@@ -282,7 +281,7 @@ Lugar de producto en compare-bar. State=Filled (foto en "thumb": reemplazá el r
 - Figma: [1303-4340](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1303-4340)
 - Propiedades: Label; Value; State: Default · Hover · Focus
 
-Canal de contacto: etiqueta (role/label, color/text/tertiary) + valor (role/body-lg-regular). El valor es un link: mailto: para email, tel: para teléfono. Borde inferior color/border/subtle. Estados Default · Hover (subrayado) · Focus.
+Canal de contacto: etiqueta (role/label, color/text/tertiary) + valor (role/body-lg-regular). El valor es un link: mailto: para email, tel: para teléfono. Sin línea ni padding vertical: la separación la pone la lista (space/gap/lg en Contacto). Estados Default · Hover (subrayado) · Focus.
 
 ## count-badge
 
@@ -404,13 +403,6 @@ Link del footer. Estados: Default, Hover, Pressed y Focus. Propiedades: Label, S
 
 Mensaje de resultado debajo del botón de envío. Tone=Success (color/text/success) / Error (color/text/error) y role/body (sin ícono: no hay icon/check ni icon/alert en la librería). En código: role="status" (éxito) o role="alert" (error). Contacto: después de enviar solo se muestra el mensaje de confirmación.
 
-## form-section-header
-
-- Figma: [1303-4382](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1303-4382)
-- Propiedades: Number; Show number; Label
-
-Título de sección de un formulario: número opcional (color/text/tertiary) + label (color/text/primary), ambos role/label en mayúsculas, con borde inferior color/border/strong. Mismo patrón que compare-group. Ancho FILL.
-
 ## gallery-thumb
 
 - Figma: [920-2474](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=920-2474)
@@ -439,7 +431,7 @@ State=Disabled: ícono en color/icon/disabled, sin interacción (atributo disabl
 - Figma: [930-2364](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=930-2364)
 - Propiedades: Label; Show label; Helper; Show helper; Type: Text · Select · Textarea; State: Empty · Filled · Focus · Error · Disabled; Open: False · True
 
-Campo de formulario con línea inferior. Type: Text, Select (flecha; en Focus la lista está abierta) y Textarea. State: Empty (placeholder), Filled, Focus (línea color/border/focus), Error (línea color/border/error y mensaje) y Disabled. Props: Label, Show label (false para campos sin etiqueta, como el email del Home), Helper y Show helper. En Error el mensaje siempre se ve. Sobre fondos oscuros: modo Dark.
+Campo de formulario en caja: borde color/border/default y fondo color/surface/default, 40 de alto como button. Type: Text, Select (flecha; en Focus la lista está abierta) y Textarea. State: Empty (placeholder), Filled, Hover (borde color/border/hover), Focus (anillo separado color/border/focus, DESIGN.md §7), Error (borde color/border/error y mensaje) y Disabled (borde color/border/disabled). Props: Label, Show label (false para campos sin etiqueta, como el email del Home), Helper y Show helper. En Error el mensaje siempre se ve. Sobre fondos oscuros: modo Dark.
 
 Textarea: 4 filas visibles; solo se agranda hacia abajo (resize: vertical).
 
