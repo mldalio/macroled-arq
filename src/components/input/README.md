@@ -1,6 +1,6 @@
 # input · `<arq-input>`
 
-Campo de formulario con línea inferior (sin caja). Text para datos cortos (nombre, email, teléfono) y Textarea para mensajes. Cubre Contacto, el email del Home (sin label visible) y la versión oscura (modo Dark).
+Campo de formulario en caja con borde leve (`color/border/default`, 40 de alto como button), en línea con choice-chip y file-upload. Hasta 2026-10-06 era solo una línea inferior, que es como sigue el set en Figma. Text para datos cortos (nombre, email, teléfono) y Textarea para mensajes. Cubre Contacto, el email del Home (sin label visible) y la versión oscura (modo Dark).
 
 - Figma: [930-2364](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=930-2364) · ficha `doc/input` (`1451:5397`)
 
@@ -32,12 +32,12 @@ Campo de formulario con línea inferior (sin caja). Text para datos cortos (nomb
 | Type | `type` | `type` | `text` · `select` · `textarea` (def. `text`) |
 | Open | `open` | `open` | booleano, solo Select: lista abierta. Lo maneja el componente |
 | — (opciones de Select) | — | `options` | Lista `{ value, label?, disabled? }` (solo JS) |
-| State=Error | `error` | `error` | mensaje de error. Con `error`, la línea pasa a `color/border/error`, el mensaje reemplaza al helper y siempre se ve |
+| State=Error | `error` | `error` | mensaje de error. Con `error`, el borde pasa a `color/border/error`, el mensaje reemplaza al helper y siempre se ve |
 | State=Disabled | `disabled` | `disabled` | booleano |
 | — | `input-type` | `inputType` | `text` · `email` · `tel` · `url` · `number` · `search` (teclado del celular y validación) |
 | — | `name` · `value` · `placeholder` · `autocomplete` · `required` · `minlength` · `maxlength` · `pattern` · `inputmode` · `rows` | | pasan al control nativo |
 
-- State Empty / Filled salen del valor; Focus es CSS.
+- State Empty / Filled salen del valor. Hover: borde `color/border/hover`. Focus: anillo de DESIGN.md §7 alrededor de la caja.
 - **Es un `<input>` / `<textarea>` real** con su `<label for>`. El helper y el error van en `aria-describedby`; con error, `aria-invalid="true"` y el mensaje se anuncia (`aria-live`).
 - **Formulario:** manda `name=value` con el `<form>` (ElementInternals) y le pasa la validación nativa (`required`, `input-type="email"`…): `form.reportValidity()` la muestra. `form.reset()` vuelve al valor inicial.
 - **Validación:** se valida al salir del campo o al enviar, no mientras se escribe. El texto del error lo pone el formulario con `error`.
@@ -54,7 +54,7 @@ Campo de formulario con línea inferior (sin caja). Text para datos cortos (nomb
 provincia.options = [{ value: 'Buenos Aires' }, { value: 'Córdoba' }];
 ```
 
-- El campo es un `<button role="combobox">` con la línea del input, el valor (o el placeholder) y el chevron. Abierto (Open=True): línea `color/border/strong`, `icon/chevron-up` y select-menu Type=Text flotando debajo, del ancho del campo (descripción del set Type=Text). Hasta 7 opciones a la vista; con más, scroll.
+- El campo es un `<button role="combobox">` con la caja del input, el valor (o el placeholder) y el chevron. Abierto (Open=True): borde `color/border/strong`, `icon/chevron-up` y select-menu Type=Text flotando debajo, del ancho del campo (descripción del set Type=Text). Hasta 7 opciones a la vista; con más, scroll.
 - **Teclado:** el mismo de `arq-select` (`src/base/combobox.js`): flechas, Enter, Espacio, Inicio, Fin o una letra abren; abierto, flechas, Inicio, Fin y letras resaltan (saltean las deshabilitadas), Enter o Espacio eligen, Esc y Tab cierran. El foco queda en el campo.
 - **Formulario:** manda `name=value` del valor elegido; con `required` y sin valor es inválido (`valueMissing`). `form.reset()` vuelve al `value` inicial. Elegir emite `arq:input` y `arq:change`.
 

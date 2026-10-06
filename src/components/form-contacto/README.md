@@ -20,13 +20,13 @@ El HTML del embed completo está en [src/pages/contacto.html](../../pages/contac
 | --- | --- |
 | `title` | `<h2>` de la introducción (`role/heading-2`) |
 | `description` | Bajada (`role/body-lg`, `color/text/secondary`) |
-| `channels` | `arq-contact-item` (email, teléfono); la lista cierra con una línea `color/border/subtle` |
+| `channels` | `arq-contact-item` (email, teléfono), sin líneas, a `space/gap/lg` |
 | `links` | Un `arq-link-list` ("Recursos técnicos") |
 
 ## Formulario
 
 - **Vive en el Shadow DOM** del componente: así el `<form>` es dueño de sus campos (todos son form-associated, con ElementInternals) y su `FormData` lleva todo, incluido el archivo.
-- **Campos** (Final): 01 Tipo de consulta (`tipo`: choice-chip, Asesoramiento lumínico elegido), 02 Tus datos (`nombre`, `empresa`, `email`, `telefono`, `provincia` con input Type=Select y las 24 jurisdicciones, `ciudad`), 03 Tu proyecto (`detalles` y `adjunto`), `novedades` (checkbox) y Enviar consulta (`arq-button submit`).
+- **Campos** (Final): Tipo de consulta (`tipo`: choice-chip, Asesoramiento lumínico elegido), Tus datos (`nombre`, `empresa`, `email`, `telefono`, `provincia` con input Type=Select y las 24 jurisdicciones, `ciudad`), Tu proyecto (`detalles` y `adjunto`), `novedades` (checkbox) y Enviar consulta (`arq-button submit`).
 - **Validación** al enviar (`novalidate`: sin los globos del navegador): cada campo inválido muestra su mensaje con la prop `error` de arq-input y el foco va al primero. Después del primer intento, cada campo se revalida al salir de él. Obligatorios: nombre, email y detalles.
 - **Honeypot:** un campo `website` fuera de la vista y del orden de Tab. Si llega con texto, se muestra la confirmación y no se envía nada. No viaja en el `FormData`.
 - **Envío:** `POST` con `multipart/form-data` (por el adjunto) a `config.n8n.webhookUrl` (`VITE_N8N_WEBHOOK_URL`). Sin URL, en `npm run dev` el envío se simula (para probar los estados) y en el build es un error.
@@ -39,7 +39,7 @@ El HTML del embed completo está en [src/pages/contacto.html](../../pages/contac
 | --- | --- | --- |
 | Bloque | dos columnas iguales a `space/gap/6xl`; `space/section/lg` arriba, `space/section/xl` abajo, `layout/gutter` a los lados | apiladas a `space/gap/6xl` |
 | Información | intro (título y bajada a `space/gap/md`), canales y links a `space/gap/2xl` | ídem |
-| Formulario | secciones a `space/gap/2xl`; dentro, `space/gap/lg` | ídem |
+| Formulario | secciones y envío a `space/gap/2xl`, sin fondo; dentro, `space/gap/lg`. Título de cada sección: `<legend>` en `role/heading-3`, sin número ni línea | ídem |
 | Tipo de consulta | chips a `space/gap/sm-md`, en varias líneas | ídem |
 | Tus datos | dos campos por fila a `space/gap/lg` | uno por fila |
 | Envío | checkbox a la izquierda; botón y mensaje a la derecha, a `space/gap/md` | apilados; botón a todo el ancho |

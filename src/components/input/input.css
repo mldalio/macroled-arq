@@ -1,6 +1,9 @@
 /* input · Figma 930:2364. Solo tokens semánticos.
-   Campo con línea inferior (sin caja). La línea es border/default en todos los
-   estados: solo cambia el color, no hay salto de layout. */
+   Campo en caja con borde leve (color/border/default), como choice-chip y
+   file-upload; antes era solo una línea inferior (decisiones.md, 2026-10-06 ·
+   Contacto: títulos e inputs). El borde es border/default en todos los
+   estados: solo cambia el color, no hay salto de layout.
+   TODO (Figma): el set 930:2364 sigue con la línea inferior. */
 
 :host {
   display: block;
@@ -17,13 +20,25 @@
   color: var(--arq-color-text-tertiary);
 }
 
-/* padding vertical: Figma usa space/gap/sm (8) */
+/* Caja de 40 de alto, como button: padding space/padding/sm (el borde se
+   descuenta) × space/padding/sm-md. Fondo color/surface/default, así se
+   recorta también sobre color/bg/subtle (newsletter del cta-block). */
 .field {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: var(--arq-space-gap-sm);
-  padding-block: var(--arq-space-gap-sm);
-  border-bottom: var(--arq-border-default) solid var(--arq-color-border-default);
+  padding: calc(var(--arq-space-padding-sm) - var(--arq-border-default)) var(--arq-space-padding-sm-md);
+  border: var(--arq-border-default) solid var(--arq-color-border-default);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-default);
+}
+
+/* State=Hover: borde color/border/hover */
+@media (hover: hover) {
+  :host(:not([disabled]):not([error]):not([open])) .field:hover {
+    border-color: var(--arq-color-border-hover);
+  }
 }
 
 .control {
@@ -56,7 +71,7 @@ textarea.control {
 
 /* ── Type=Select ────────────────────────────────────────────────
    El campo es un botón (combobox) con el valor o el placeholder y el
-   chevron (icon/md). Abierto (Open=True): línea color/border/strong,
+   chevron (icon/md). Abierto (Open=True): borde color/border/strong,
    chevron-up y select-menu Type=Text debajo, del ancho del campo
    (descripción del set Type=Text). */
 :host([type='select']) .field {
@@ -98,18 +113,19 @@ textarea.control {
   display: none;
 }
 
+/* Del ancho de la caja (borde incluido), pegado debajo */
 .menu {
   position: absolute;
-  top: 100%;
-  left: 0;
+  top: calc(100% + var(--arq-border-default));
+  left: calc(-1 * var(--arq-border-default));
   z-index: 2;
-  width: 100%;
+  width: calc(100% + 2 * var(--arq-border-default));
   max-width: none;
 }
 
 :host([open]) .field,
 :host([open]) .field:focus-within {
-  border-bottom-color: var(--arq-color-border-strong);
+  border-color: var(--arq-color-border-strong);
 }
 
 :host([disabled]) .trigger {
@@ -130,21 +146,22 @@ textarea.control {
   color: var(--arq-color-text-error);
 }
 
-/* State=Focus: solo cambia el color de la línea (excepción a §7, anotada en
-   docs/decisiones.md). El control no lleva outline propio. */
+/* State=Focus: anillo de DESIGN.md §7 alrededor de la caja (2px: valor
+   fijado ahí). El control no lleva outline propio. */
 .control:focus,
 .control:focus-visible {
   outline: none;
 }
 
-.field:focus-within {
-  border-bottom-color: var(--arq-color-border-focus);
+.field:has(.control:focus-visible) {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
 }
 
-/* State=Error */
+/* State=Error: el borde queda en error también con foco */
 :host([error]) .field,
 :host([error]) .field:focus-within {
-  border-bottom-color: var(--arq-color-border-error);
+  border-color: var(--arq-color-border-error);
 }
 
 /* State=Disabled */
@@ -156,5 +173,5 @@ textarea.control {
 }
 
 :host([disabled]) .field {
-  border-bottom-color: var(--arq-color-border-disabled);
+  border-color: var(--arq-color-border-disabled);
 }

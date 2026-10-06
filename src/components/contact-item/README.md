@@ -24,10 +24,10 @@ Canal de contacto (Contacto): etiqueta y valor. El valor es un link.
 
 | Parte | Token |
 | --- | --- |
-| Ítem | padding vertical `space/padding/lg`, gap `space/gap/sm`, línea `border/default` en `color/border/subtle` |
+| Ítem | gap `space/gap/sm`, sin línea ni padding: la separación la pone la lista (decisiones.md, 2026-10-06). En el set, línea arriba y padding vertical `space/padding/lg` |
 | Textos | etiqueta `role/label` en `color/text/tertiary` · valor `role/body-lg-regular` en `color/text/primary` |
 | Subrayado (Hover) | `border/default`, a `space/padding/2xs` del texto |
 
 ## Pendientes
 
-- `TODO` (diseño) La línea va arriba, como el set; la descripción y la ficha dicen "borde inferior".
+- `TODO` (Figma): el set todavía tiene la línea y el padding vertical.
