@@ -183,3 +183,42 @@
     display: block;
   }
 }
+
+/* Impresión ("Imprimir comparación"): solo el Default, sin el toggle ni
+   scroll, con las columnas de compare-table al imprimir (tabla de Desktop):
+   el lugar de la columna de etiquetas (layout/compare-label + space/gap/lg)
+   queda vacío y cada producto lleva el mismo padding que un valor, así la
+   foto y el nombre arrancan donde arranca su columna. Una hoja A4 llega con
+   las reglas Mobile: se vuelven a las de Desktop. */
+@media print {
+  .compact {
+    display: none;
+  }
+
+  .default {
+    gap: 0;
+    padding-inline: var(--page-gutter);
+    break-inside: avoid;
+  }
+
+  .default .controls {
+    display: block;
+    padding-inline-end: var(--arq-space-gap-lg);
+  }
+
+  .controls arq-toggle {
+    visibility: hidden;
+  }
+
+  .products {
+    gap: 0;
+    padding-inline: 0;
+    overflow: visible;
+  }
+
+  .products > * {
+    flex: 1 1 0;
+    width: auto;
+    padding-inline: var(--arq-space-padding-md) var(--arq-space-gap-lg);
+  }
+}

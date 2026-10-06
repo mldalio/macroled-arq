@@ -104,12 +104,16 @@ class ArqCompareTable extends ArqElement {
     const root = this.shadowRoot;
     const table = root.querySelector('.table');
     const { products, groups } = this.#data;
+    // Columnas con producto: al imprimir, las vacías no se imprimen y las
+    // demás se reparten el ancho (compare-table.css · @media print).
+    root.querySelector('.scroll').style.setProperty('--columns', String(Math.max(1, Math.min(MAX, products.length))));
+    const empty = (i) => (i >= products.length ? ' empty' : '');
     // Cabecera: solo semántica de tabla (la identidad de cada producto la
     // muestra arq-compare-header, arriba, en la página). Siempre MAX columnas.
     root.querySelector('thead').innerHTML =
       `<tr role="row"><th scope="col" class="label-cell" role="columnheader"></th>` +
       Array.from({ length: MAX }, (_, i) => products[i])
-        .map((p) => `<th scope="col" class="product" role="columnheader">${p ? `<span class="visually-hidden">${esc(p.name)} (${esc(p.meta ?? p.sku)})</span>` : ''}</th>`)
+        .map((p, i) => `<th scope="col" class="product${empty(i)}" role="columnheader">${p ? `<span class="visually-hidden">${esc(p.name)} (${esc(p.meta ?? p.sku)})</span>` : ''}</th>`)
         .join('') +
       `</tr>`;
     // Grupos y filas
@@ -126,7 +130,7 @@ class ArqCompareTable extends ArqElement {
             const values = Array.from({ length: MAX }, (_, i) => real[i] ?? '');
             return (
               `<tr class="row" role="row"${same ? ' data-same' : ''}><th scope="row" class="label-cell row-label" role="rowheader">${esc(row.label)}</th>` +
-              values.map((v) => `<td class="value role-body-lg-regular" role="cell">${esc(v)}</td>`).join('') +
+              values.map((v, i) => `<td class="value${empty(i)} role-body-lg-regular" role="cell">${esc(v)}</td>`).join('') +
               `</tr>`
             );
           })

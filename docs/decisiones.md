@@ -284,7 +284,7 @@ ArqAccordionItem.define();
 
 ### Ficha técnica en PDF
 
-- Se genera en el navegador con los datos del SKU elegido. La librería se carga de jsDelivr con versión fija **al primer clic** (no entra en `dist/arq.js`): única excepción, documentada en el README. Igual para "Descargar comparación".
+- Se genera en el navegador con los datos del SKU elegido. La librería se carga de jsDelivr con versión fija **al primer clic** (no entra en `dist/arq.js`): única excepción, documentada en el README.
 
 ### Sincronización Sheets → Typesense
 
@@ -494,6 +494,15 @@ ArqAccordionItem.define();
 - **Token nuevo:** `layout/pdf-spec-label` (260), ancho de la etiqueta de pdf-spec-row.
 - **Nombre al guardar desde el visor:** Chrome lo toma solo de la última parte de la URL; con un blob es un código al azar. No usa el título del PDF, el nombre de un `File` ni `Content-Disposition` (probado). Para que se llame `ficha-tecnica-<sku>.pdf` hace falta servir el PDF desde una URL que termine así (ver Pendientes).
 
+## 2026-10-06 · Comparativa: imprimir
+
+- Funciona como macroled.com.ar/comparativa: «Imprimir comparación» llama a `window.print()` y cada componente trae su `@media print`. No se genera un PDF aparte: desde el diálogo del navegador se imprime o se guarda como PDF. La ficha técnica sigue con su PDF en pestaña nueva.
+- El botón lleva `data-arq-print` y lo engancha `main.js` (sirve para cualquier página). Sin ícono: no hay ícono de impresora en la librería.
+- La tabla se imprime siempre como en Desktop (etiqueta a la izquierda, valores al lado, líneas verticales de todo el alto de la fila), también en una hoja A4, que mide menos de 768 px y llega con las reglas Mobile: con la etiqueta arriba las divisiones no se entendían. Sin las columnas vacías; los productos de arriba quedan alineados con sus columnas. Tokens en modo Mobile, como el PDF de la ficha.
+- Al imprimir no aparecen navbar (queda el logo), volver, bajada y acción de page-header, toggle «Solo diferencias», selects, quitar, cta-block, compare-bar ni footer. Las reglas valen para cualquier página que se imprima.
+- Mientras se imprime, `document.title` es «Comparativa · <productos> · Macroled Arq»: Chrome lo propone como nombre del PDF.
+- Sin `@page`: tamaño y márgenes quedan los del navegador (no se toca la impresión del resto del sitio de Macroled).
+
 ## Pendientes
 
 Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe la decisión en su sección. El grupo entre paréntesis es el del `TODO` en el código.
@@ -519,7 +528,7 @@ Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe
 
 - **Tokens que faltan:** `layout/navbar-height` (56; lo usan hero, ficha y compare-header Compact); ancho de tarjeta del carrusel mobile (280); sidebar de Productos (240, hoy `layout/card-min`); ratios de las fotos del mosaico; respuesta de faq-item (560, hoy `measure-wide`); columnas del footer (200 / 240); email de cta-block (380, hoy `measure`); medidas sin token de la ficha y la colección (detalle en sus README).
 - **Confirmar lo elegido en código:** posición del navbar (sticky / fixed); foco sobre foto en navbar Transparent; feature-block secundaria en `ratio/wide`; split del FAQ con `space/section/md` dentro de un bloque.
-- **Faltan diseños:** PDF de "Descargar comparación"; mensaje de error si no se puede generar la ficha técnica en PDF; modal para elegir producto desde compare-product Empty (hoy el botón emite `arq:add` y no abre nada); pantallas de carga, vacío y error de los listados; filter-panel abierto con Iluminar; textos de error y marca de obligatorio del formulario.
+- **Faltan diseños:** versión impresa de la comparativa y botón «Imprimir comparación» en Final (hoy armados como en Macroled); mensaje de error si no se puede generar la ficha técnica en PDF; modal para elegir producto desde compare-product Empty (hoy el botón emite `arq:add` y no abre nada); pantallas de carga, vacío y error de los listados; filter-panel abierto con Iluminar; textos de error y marca de obligatorio del formulario.
 - **Descargas (antes Glosario):** URL del catálogo general (no está en la base); columna o filtro de colección / producto (el SKU solo puede no alcanzar para ubicar un producto); cómo se muestran muchos SKU (paginación, «Ver más» o agrupado por colección); filtros para todo el catálogo; bajada del page-header.
 - **Contenido de diseño:** secciones del acordeón y reparto de campos, y columnas del glosario (`attributes.js`); características fijas de la meta de las cards y segunda línea en Colección; cantidad de imágenes de cada galería.
 

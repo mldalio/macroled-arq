@@ -83,3 +83,10 @@
     width: 100%;
   }
 }
+
+/* Impresión: no se imprime (es navegación o una acción de la pantalla). */
+@media print {
+  :host {
+    display: none;
+  }
+}

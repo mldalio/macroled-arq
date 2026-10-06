@@ -98,6 +98,12 @@ document.addEventListener('arq:datasheet', (event) => {
   pending.catch((error) => console.error('[arq] ficha técnica:', error));
 });
 
+// Imprimir la página (comparativa: "Imprimir comparación", como
+// macroled.com.ar/comparativa). Cada componente trae su @media print.
+document.addEventListener('click', (event) => {
+  if (event.target.closest?.('[data-arq-print]')) window.print();
+});
+
 if (!window.Arq) {
   window.Arq = Object.freeze({ version });
 }

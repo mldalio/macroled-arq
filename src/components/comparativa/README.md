@@ -21,4 +21,5 @@ El HTML del embed completo está en [src/pages/comparativa.html](../../pages/com
 
 ## Pendientes
 
-- `TODO` (diseño + código): "Descargar comparación" (botón en `page-header`, fuera de este componente) todavía no hace nada — falta el diseño del PDF (`DESIGN.md` §12 · Ficha técnica en PDF).
+- **Imprimir:** "Imprimir comparación" (botón en `page-header` con `data-arq-print`, fuera de este componente) abre el diálogo de impresión del navegador, como macroled.com.ar/comparativa; desde ahí se imprime o se guarda como PDF. La tabla se imprime como en Desktop (etiqueta a la izquierda, valores al lado), sin scroll ni columnas vacías y oculta navbar (queda el logo), page-header (queda el título), toggle, selects, quitar, cta-block y footer. Mientras se imprime, `document.title` pasa a «Comparativa · <productos> · Macroled Arq», el nombre que propone el navegador al guardar.
+- `TODO` (diseño): la impresión no tiene diseño en Figma (se armó como la de Macroled). El botón cambió de «Descargar comparación» con `icon/download` a «Imprimir comparación» sin ícono (no hay ícono de impresora en la librería).

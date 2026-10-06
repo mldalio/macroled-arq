@@ -113,3 +113,14 @@
     width: 100%;
   }
 }
+
+/* Impresión: queda solo el título; volver, breadcrumb, bajada y acción son
+   de la pantalla. */
+@media print {
+  .back,
+  .breadcrumb,
+  .description,
+  .action {
+    display: none;
+  }
+}

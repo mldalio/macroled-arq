@@ -13,7 +13,7 @@
 //     <span slot="back">Volver a productos</span>
 //     <h1 slot="title">Comparativa</h1>
 //     <span slot="description">…</span>
-//     <arq-button slot="action" show-icon icon="download">Descargar comparación</arq-button>
+//     <arq-button slot="action" data-arq-print>Imprimir comparación</arq-button>
 //   </arq-page-header>
 //
 // El <h1> llega por slot title (AGENTS.md: los encabezados van en el HTML) y
