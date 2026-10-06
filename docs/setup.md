@@ -153,7 +153,7 @@ Lau construye todos los componentes. El orden sale de las dependencias (descripc
 
 ✅ = ya en código (en `main`, con README y en la demo). El estado de cada componente está en `docs/components.md`.
 
-**Fase 1, ya en código (no están en las tablas):** button, icon-button, input (Text y Textarea), checkbox, toggle (con toggle-switch), choice-chip, option-tile, swatch, tab, select-option, file-upload, form-message, form-section-header, sku, spec-row, filter-chip, gallery-thumb, count-badge, divider, logo, nav-link, footer-link, breadcrumb, breadcrumb-item, section-header, page-header.
+**Fase 1, ya en código (no están en las tablas):** button, icon-button, input (Text y Textarea), checkbox, toggle (con toggle-switch), choice-chip, option-tile, swatch, tab, select-option, file-upload, form-message, sku, spec-row, filter-chip, gallery-thumb, count-badge, divider, logo, nav-link, footer-link, breadcrumb, breadcrumb-item, section-header, page-header.
 
 **En espera de diseño:** tag.
 

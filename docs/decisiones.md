@@ -472,6 +472,7 @@ ArqAccordionItem.define();
 - Se probó el formulario sobre un fondo leve (cada bloque en caja y después todo en una sola caja) y se descartó: queda sin fondo. El `<legend>` va con `float` para ser un ítem flex (separado por el gap).
 - **Sin líneas en la columna de información:** contact-item sin línea superior ni padding vertical; los canales van a `space/gap/lg`, sin línea de cierre.
 - **Figma:** los sets de input (`930:2364`) y contact-item (`1303:4340`) y la pantalla Contacto siguen como antes: falta actualizarlos.
+- **form-section-header, de baja:** sin uso desde este cambio; se sacó del repo (componente, demo y docs/components.md). En Figma el set queda marcado como en desuso.
 
 ## Pendientes
 
