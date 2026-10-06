@@ -44,5 +44,5 @@ El HTML del embed completo está en [src/pages/descargas.html](../../pages/desca
 ## Pendientes
 
 - `TODO` (datos): URL del catálogo general (el embed apunta a `#`).
-- `TODO` (diseño): el PDF de la ficha técnica no tiene diseño.
+- `TODO` (diseño): mensaje de error si no se puede generar la ficha técnica en PDF (la genera `src/pdf/` con `arq:datasheet`). La opción del modal (download-item) no tiene estado de carga: la pestaña nueva se abre en el clic.
 - Para decidir con diseño (`docs/decisiones.md` · Pendientes): cómo se muestran muchos SKU (paginación, «Ver más» o agrupado).

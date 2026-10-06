@@ -17,18 +17,23 @@
 //     (Light local: filter-panel queda en Light con Iluminar)
 //   src/styles/roles.css   → estilos de texto role/* como clases .role-<nombre>
 //     (no son variables: los componentes los adoptan con src/styles/roles.js)
+//   src/styles/print-tokens.js → valores resueltos (px y hex) de los semánticos
+//     y los role/*, para la ficha técnica en PDF (src/pdf/): pdfmake no lee
+//     variables CSS. Color en Light, Dimension en Desktop y Type en Mobile,
+//     como los frames ficha_pdf de Figma («Escala Type en modo Mobile»)
 // Nunca se usa prefers-color-scheme: dark solo se activa con data-arq-theme.
 
 import { readFile, writeFile } from 'node:fs/promises';
 import StyleDictionary from 'style-dictionary';
 import { getReferences } from 'style-dictionary/utils';
-import { MODES, MODE_GROUPS, MODES_KEY, ROLE_PROPS, isToken, validate } from './lib/validate-tokens.js';
+import { MODES, MODE_GROUPS, MODES_KEY, ROLE_PROPS, collectTokens, isToken, validate } from './lib/validate-tokens.js';
 
 const SOURCE = new URL('../tokens/tokens.json', import.meta.url);
 const OUT_TOKENS = new URL('../src/styles/tokens.css', import.meta.url);
 const OUT_DARK = new URL('../src/styles/dark.css', import.meta.url);
 const OUT_LIGHT = new URL('../src/styles/light.css', import.meta.url);
 const OUT_ROLES = new URL('../src/styles/roles.css', import.meta.url);
+const OUT_PRINT = new URL('../src/styles/print-tokens.js', import.meta.url);
 
 const BASE_KEY = 'arq.baseValue';
 
@@ -225,8 +230,52 @@ const rolesSd = createDictionary(tokens, [{ destination: 'roles.css', format: 'a
 const [{ output: roles }] = await rolesSd.formatPlatform('css');
 await writeFile(OUT_ROLES, roles);
 
+// Valores para impresión (ficha técnica en PDF). Solo Semantic y role/*: los
+// primitivos (space/16, neutral/900, font/size/40…) no se exportan. Las
+// dimensiones salen en px como número; los colores, en hex como en Figma.
+const PRINT_MODE = { type: 'mobile' };
+const isPrintToken = ([group, sub]) =>
+  ['color', 'layout', 'type', 'role'].includes(group) ||
+  (group === 'space' && ['gap', 'padding', 'section'].includes(sub)) ||
+  (group === 'border' && !/^\d+$/.test(sub)) ||
+  (group === 'font' && sub === 'family');
+const printList = collectTokens(source);
+const printByPath = new Map(printList.map(({ path, token }) => [path.join('.'), { path, token }]));
+const printValue = ({ path, token }) => {
+  const mode = PRINT_MODE[path[0]];
+  const value = token.$extensions?.[MODES_KEY]?.[mode] ?? token.$value;
+  return resolvePrint(value);
+};
+const resolvePrint = (value) => {
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    return Object.fromEntries(Object.entries(value).map(([key, v]) => [key, resolvePrint(v)]));
+  }
+  const alias = typeof value === 'string' && value.match(/^\{([^}]+)\}$/);
+  if (alias) return printValue(printByPath.get(alias[1]));
+  if (typeof value === 'string' && /^-?[\d.]+px$/.test(value)) return parseFloat(value);
+  return value;
+};
+const printTokens = {};
+const printRoles = {};
+for (const entry of printList) {
+  if (!isPrintToken(entry.path)) continue;
+  if (entry.path[0] === 'role') {
+    const transform = entry.token.$extensions?.['arq.textTransform'];
+    printRoles[entry.path.slice(1).join('-')] = { ...printValue(entry), ...(transform ? { textTransform: transform } : {}) };
+  } else {
+    printTokens[entry.path.join('/')] = printValue(entry);
+  }
+}
+const print =
+  `// Generado por npm run tokens desde tokens/tokens.json. No editar a mano.\n` +
+  `// Valores resueltos para la ficha técnica en PDF (src/pdf/): Color Light,\n` +
+  `// Dimension Desktop y Type Mobile. Dimensiones en px (número).\n\n` +
+  `export const PRINT_TOKENS = Object.freeze(${JSON.stringify(printTokens, null, 2)});\n\n` +
+  `export const PRINT_ROLES = Object.freeze(${JSON.stringify(printRoles, null, 2)});\n`;
+await writeFile(OUT_PRINT, print);
+
 // Control de la salida: nada vacío ni mal serializado.
-const broken = `${base}\n${dark}\n${light}\n${mobile}\n${tablet}\n${large}\n${wide}\n${reducedMotion}\n${roles}`
+const broken = `${base}\n${dark}\n${light}\n${mobile}\n${tablet}\n${large}\n${wide}\n${reducedMotion}\n${roles}\n${print}`
   .split('\n')
   .filter((line) => /undefined|\[object|NaN|:\s*;/.test(line));
 if (broken.length) {

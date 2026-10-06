@@ -8,7 +8,8 @@
 //   <arq-button type="underline" show-leading-icon href="/arq/productos">Volver a productos</arq-button>
 //
 // State de Figma: Hover, Pressed y Focus son :hover, :active y :focus-visible.
-// Disabled y Loading son props (disabled, loading).
+// Disabled y Loading son props (disabled, loading). Loading existe en Filled y
+// Outline; loading-label cambia el texto de carga ("Generando…").
 //
 // Envío de formularios: con el atributo submit (sin valor), el clic envía el
 // <form> del que es parte (ElementInternals + requestSubmit): corre la
@@ -20,8 +21,9 @@ import { icon } from '../../base/icons.js';
 import '../count-badge/count-badge.js';
 import css from './button.css?inline';
 
-// Label de State=Loading, según la descripción de Figma.
+// Label de State=Loading por defecto, según la descripción de Figma.
 const LOADING_LABEL = 'Enviando…';
+const LOADING_TYPES = ['filled', 'outline'];
 
 function warn(message) {
   if (import.meta.env.DEV) console.warn(`[arq] ${message}`);
@@ -42,7 +44,8 @@ class ArqButton extends ArqElement {
     showLeadingIcon: { type: Boolean }, // Show leading icon
     leadingIcon: { type: String, default: 'chevron-left' }, // Leading icon (default de Figma)
     disabled: { type: Boolean }, // State=Disabled
-    loading: { type: Boolean }, // State=Loading (solo Filled)
+    loading: { type: Boolean }, // State=Loading (Filled y Outline)
+    loadingLabel: { type: String }, // texto de carga (def. "Enviando…"); no es prop de Figma
     href: { type: String },
     target: { type: String },
     submit: { type: Boolean }, // envía el <form> (no es prop de Figma)
@@ -54,7 +57,7 @@ class ArqButton extends ArqElement {
       <span class="leading" hidden></span>
       <span class="text">
         <span class="label"><slot></slot><span class="visually-hidden" hidden></span></span>
-        <span class="label" data-loading hidden>${LOADING_LABEL}</span>
+        <span class="label" data-loading hidden></span>
       </span>
       <arq-count-badge class="count" hidden></arq-count-badge>
       <span class="trailing" hidden></span>
@@ -90,21 +93,23 @@ class ArqButton extends ArqElement {
 
   update(changed) {
     if (changed.has('href')) this.#renderControl();
-    if (changed.has('loading') && this.loading && this.type !== 'filled') {
-      warn(`<arq-button> loading es solo para type="filled" (Figma: State=Loading solo Filled).`);
+    if (changed.has('loading') && this.loading && !LOADING_TYPES.includes(this.type)) {
+      warn(`<arq-button> loading es solo para type="filled" y "outline" (Figma: State=Loading).`);
     }
 
     const root = this.shadowRoot;
     const control = this.#control;
     const loading = this.loading;
+    const loadingLabel = this.loadingLabel?.trim() || LOADING_LABEL;
     const inactive = this.disabled || loading;
+    root.querySelector('.label[data-loading]').textContent = loadingLabel;
 
     control.classList.toggle('inactive', inactive);
     // En Loading el label del slot queda oculto, pero el navegador lo sigue
     // sumando al nombre accesible ("Enviar Enviando…"): se fija con aria-label.
     if (loading) {
       control.setAttribute('aria-busy', 'true');
-      control.setAttribute('aria-label', LOADING_LABEL);
+      control.setAttribute('aria-label', loadingLabel);
     } else {
       control.removeAttribute('aria-busy');
       control.removeAttribute('aria-label');

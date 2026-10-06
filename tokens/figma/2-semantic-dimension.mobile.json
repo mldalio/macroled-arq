@@ -307,6 +307,17 @@
         }
       }
     },
+    "featured-thumb": {
+      "$type": "number",
+      "$value": 120,
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ]
+        }
+      }
+    },
     "footer-column": {
       "$type": "number",
       "$value": 200,
@@ -333,6 +344,21 @@
           ],
           "codeSyntax": {
             "WEB": "var(--arq-layout-footer-tagline)"
+          }
+        }
+      }
+    },
+    "pdf-spec-label": {
+      "$type": "number",
+      "$value": 260,
+      "$description": "Ancho fijo de la etiqueta de pdf-spec-row en la ficha técnica PDF (A4). El valor ocupa el resto de la fila.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-pdf-spec-label)"
           }
         }
       }
