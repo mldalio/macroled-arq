@@ -482,7 +482,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | count-badge | Tone: Primary · Inverse. Prop: Count | Mín. 20, crece con el número |
 | divider | Orientation: Horizontal · Vertical. Emphasis: Subtle · Default | — |
 | sku | Size: Default · Compact. State: Default · Hover · Copied. Prop: Code | Botón de copiar. Código en role/body-lg (Default) o role/body (Compact) |
-| variants-table · variants-table-row | Filters: Off · On × Breakpoint / Type: Header · Row. State: Default · Hover | Un solo contenedor con overflow-x; columnas fijas con position: sticky. Sin scroll por fila. Descarga de cada fila: icon-button Large Outline, columna «Descargas» centrada; filas con padding vertical space/padding/sm. En la página Descargas suma un buscador a todo el ancho con Filtros en Outline al lado (solo de código: show-search) |
+| variants-table · variants-table-row | Filters: Off · On × Breakpoint / Type: Header · Row. State: Default · Hover | Un solo contenedor con overflow-x; columnas fijas con position: sticky. Sin scroll por fila. Descarga de cada fila: icon-button Large Outline, columna «Descargas» centrada; filas con padding vertical space/padding/sm. En la página Descargas suma un buscador a todo el ancho con Filtros en Outline al lado (Show search) |
 | download-modal · download-item | Breakpoint: Desktop · Mobile / Emphasis: Default · Featured. State: Default · Hover · Focus | Desktop: esquina inferior derecha a layout/gutter. Mobile: abajo, a layout/gutter de los bordes. Siempre con scrim; la página de atrás no se desplaza. En Descargas, sku Compact debajo del título |
 | file-upload | State: Empty · Attached. Props: Label · Helper | — |
 | form-section-header · form-message | Props: Number · Show number · Label / Tone: Success · Error. Prop: Message | form-message sin ícono |
@@ -652,7 +652,7 @@ Link a cada set en Figma (`node-id`). Base: `https://www.figma.com/design/djAb2r
 | tag | [981-2305](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=981-2305) | Label; Type: Plain · Outline |
 | toggle | [926-3102](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=926-3102) | Label; Show label; Checked: False · True; State: Default · Hover · Focus · Disabled |
 | toggle-switch | [1131-6383](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1131-6383) | Checked: False · True; State: Default · Hover · Focus · Disabled |
-| variants-table | [1068-5582](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1068-5582) | Filters: Off · On; Breakpoint: Desktop · Mobile |
+| variants-table | [1068-5582](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1068-5582) | Show search; Filters: Off · On; Breakpoint: Desktop · Mobile |
 | variants-table-row | [923-2708](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=923-2708) | Type: Header · Row; State: Default · Hover |
 
 **Íconos (20):** arrow-down, arrow-left, arrow-right, arrow-up, arrow-up-right, chevron-down, chevron-left, chevron-right, chevron-up, close, copy, download, filter, filter-off, instagram, menu, minus, plus, search, youtube. Cada uno con `Theme: Default · Inverse`.
