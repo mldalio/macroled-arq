@@ -90,6 +90,14 @@ class ArqComparativa extends ArqElement {
       this.#load();
     });
     header.addEventListener('arq:change', (event) => this.#onChange(event.detail));
+    // Mobile: solo las tiras de valores y de productos se desplazan. La tabla
+    // alinea todas sus filas; compare-header alinea Default y Compact.
+    header.addEventListener('arq:scroll', (event) => {
+      if (MOBILE.matches) table.setScrollLeft(event.detail.left);
+    });
+    table.addEventListener('arq:scroll', (event) => {
+      if (MOBILE.matches) header.setScrollLeft(event.detail.left);
+    });
     // Solo hace falta ser foco-de-teclado cuando el scroll compartido existe (Mobile).
     MOBILE.addEventListener('change', () => this.#syncScrollA11y());
     this.#syncScrollA11y();
@@ -159,6 +167,7 @@ class ArqComparativa extends ArqElement {
     table.data = { products: data.products, groups: data.groups };
     table.onlyDifferences = this.#onlyDifferences;
     root.querySelector('.diff-mobile').checked = this.#onlyDifferences;
+    requestAnimationFrame(() => header.refreshCompact());
     writeStorage(data.products);
     const url = new URL(location.href);
     url.searchParams.set('sku', this.#skus.map(encodeURIComponent).join(','));

@@ -7,6 +7,8 @@
 .page {
   display: flex;
   flex-direction: column;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .status {
@@ -34,8 +36,7 @@
   /* Un solo scroll horizontal para compare-header y compare-table (ficha de
      compare-header: se desplazan juntos). */
   .scroll {
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
+    overflow-x: visible;
   }
 
   .scroll:focus-visible {

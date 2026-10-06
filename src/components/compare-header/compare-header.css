@@ -4,6 +4,8 @@
 
 :host {
   display: block;
+  position: relative;
+  z-index: 2;
 }
 
 .default {
@@ -19,7 +21,7 @@
    (IntersectionObserver), se muestra el Compact. */
 .sentinel {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   width: var(--arq-border-default);
   height: var(--arq-border-default);
@@ -53,7 +55,7 @@
   top: var(--navbar-height, 0px);
   left: 0;
   right: 0;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   align-items: center;
   gap: var(--arq-space-gap-lg);
@@ -63,9 +65,13 @@
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
 }
 
+/* El texto del toggle va en una sola línea: la columna se ajusta al contenido
+   en vez de fijarse a layout/compare-label. */
 .compact .controls {
   display: flex;
   align-items: center;
+  width: auto;
+  white-space: nowrap;
 }
 
 .slots {
@@ -99,8 +105,8 @@
      compare-table, para que los dos se desplacen igual); acá solo hace falta
      que el contenido pueda ser más ancho que la pantalla sin recortarse. */
   .default {
-    width: max-content;
-    min-width: 100%;
+    width: 100%;
+    min-width: 0;
   }
 
   /* El set no muestra controles en el Default de Mobile (ni toggle ni
@@ -114,25 +120,48 @@
     width: var(--arq-layout-compare-column);
   }
 
+  .products {
+    gap: var(--arq-space-gap-md);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .products::-webkit-scrollbar,
+  .slots::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Compact/Mobile: miniatura compacta (compare-slot Size=Compact) + nombre
      visible al lado, como la cabecera provisoria que tenía compare-table.
      El bloque Compact es fijo (no participa del scroll compartido de más
      abajo): si no entra, se desplaza solo, sin sincronizar con la tabla.
      TODO (diseño): confirmar si hace falta sincronizarlo igual. */
   .compact {
+    top: 0;
+    flex-direction: column;
+    align-items: stretch;
     gap: var(--arq-space-gap-md);
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
+    overflow: visible;
   }
 
   .slots {
-    flex: none;
-    width: max-content;
+    order: 1;
+    flex: 1 1 auto;
+    width: 100%;
     gap: var(--arq-space-gap-md);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .compact .controls {
+    order: 2;
+    width: auto;
   }
 
   .slots .product {
     flex: none;
+    width: var(--arq-layout-compare-column);
   }
 
   .slots arq-compare-slot {

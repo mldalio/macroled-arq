@@ -980,7 +980,12 @@
 
       <section class="demo-section" aria-labelledby="demo-compare-table">
         <h2 id="demo-compare-table" class="demo-heading role-label">compare-table · &lt;arq-compare-table&gt;</h2>
-        <p class="demo-note role-body-sm">Solo código, con compare-group (1263:4320), compare-section-group (1769:26234) y compare-row (1263:4317). Tabla real con un solo scroll; en Mobile la etiqueta pasa a ocupar toda la fila arriba y los valores quedan debajo (sin columna fija ni sticky). «Solo diferencias» (prop onlyDifferences) oculta las filas iguales y los grupos vacíos. El &lt;thead&gt; no muestra nada: la identidad de cada producto la da arq-compare-header, arriba, en la página (ver demo/comparativa.html, donde además comparten un solo scroll horizontal en Mobile).</p>
+        <p class="demo-note role-body-sm">Solo código, con compare-group (1263:4320), compare-section-group (1769:26234) y compare-row (1263:4317). Tabla real con un solo scroll: en Mobile, la etiqueta ocupa toda la fila arriba y los valores de 160 px quedan debajo, como zona desplazable. «Solo diferencias» (prop onlyDifferences) oculta las filas iguales y los grupos vacíos. El &lt;thead&gt; no muestra nada: la identidad de cada producto la da arq-compare-header, arriba, en la página (ver demo/comparativa.html, donde el desplazamiento se sincroniza también con el compare-header Compact).</p>
+        <h3 class="demo-subheading role-body-strong">compare-row · una fila aislada</h3>
+        <p class="demo-note role-body-sm">compare-row no es un Web Component independiente: es la fila interna de compare-table. Este caso deja visible una única fila; en Mobile la etiqueta queda arriba y los valores debajo se desplazan horizontalmente.</p>
+        <div class="demo-bleed">
+          <arq-compare-table data-demo-compare-row></arq-compare-table>
+        </div>
         <p class="demo-note role-body-sm">3 productos, con valores faltantes («—») y texto largo:</p>
         <div class="demo-bleed">
           <arq-compare-table data-demo-compare-table="3"></arq-compare-table>

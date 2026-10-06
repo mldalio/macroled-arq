@@ -17,12 +17,11 @@
 //   tabla, en la página); acá el <thead> queda solo para la semántica de la
 //   tabla (<th scope="col"> con texto visually-hidden).
 // - Desktop: fila horizontal, etiqueta (layout/compare-label) + 3 valores.
-//   Mobile (compare-row Breakpoint=Mobile): la etiqueta pasa a ocupar toda la
-//   fila arriba y los 3 valores quedan en una fila propia debajo (sin columna
-//   fija ni sticky: ya no hace falta, todo el bloque — compare-header incluido
-//   — se desplaza junto, con embedded). Se logra con flex-wrap en <tr>, no con
-//   un segundo <tr>; se agregan roles ARIA explícitos porque algunos lectores
-//   de pantalla pierden la semántica de tabla al cambiarle el display.
+//   Mobile (compare-row Breakpoint=Mobile): la etiqueta ocupa toda la fila
+//   arriba y los valores de 160 (layout/compare-column) quedan debajo. Se
+//   desplazan horizontalmente junto con compare-header, en un solo <tr>; se
+//   agregan roles ARIA explícitos porque algunos lectores de pantalla pierden
+//   la semántica de tabla al cambiarle el display.
 // - compare-section-group: separación entre el título del grupo y su primera
 //   fila (space/padding/md) y entre filas (space/gap/sm), en Mobile.
 // - Con embedded, ese scroll lo maneja el contenedor de afuera (arq-comparativa,
@@ -56,6 +55,7 @@ class ArqCompareTable extends ArqElement {
     `</div>`;
 
   #data = { products: [], groups: [] };
+  #syncingScroll = false;
 
   get data() {
     return this.#data;
@@ -68,6 +68,18 @@ class ArqCompareTable extends ArqElement {
 
   setup() {
     MOBILE.addEventListener('change', () => this.#syncBreakpoint());
+    this.shadowRoot.querySelector('.table').addEventListener(
+      'scroll',
+      (event) => {
+        const row = event.target;
+        if (!MOBILE.matches || this.#syncingScroll || !row.classList?.contains('row')) return;
+        this.#syncingScroll = true;
+        this.setScrollLeft(row.scrollLeft);
+        this.emit('scroll', { left: row.scrollLeft });
+        this.#syncingScroll = false;
+      },
+      true,
+    );
     this.#build();
   }
 
@@ -132,6 +144,12 @@ class ArqCompareTable extends ArqElement {
       label.classList.toggle('role-body', !mobile);
       label.classList.toggle('role-body-sm', mobile);
     }
+  }
+
+  // arq-comparativa alinea esta tira de valores con compare-header. Al mover
+  // una fila, todas las filas reciben el mismo desplazamiento.
+  setScrollLeft(left) {
+    for (const row of this.shadowRoot.querySelectorAll('.row')) row.scrollLeft = left;
   }
 
   // Solo diferencias: oculta filas iguales y grupos vacíos.

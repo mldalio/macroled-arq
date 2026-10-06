@@ -1,6 +1,6 @@
 # compare-header · `<arq-compare-header>`
 
-Cabecera de la página Comparativa: toggle "Solo diferencias" + hasta 3 compare-product, estiradas a la misma altura. Cuando el bloque sale de pantalla al desplazar, se muestra solo una versión mini fija bajo el navbar (compare-slot por producto). El cambio Default ↔ Compact no es una prop: lo decide el propio componente con un `IntersectionObserver`.
+Cabecera de la página Comparativa: toggle "Solo diferencias" + hasta 3 compare-product, estiradas a la misma altura. Cuando el bloque completo termina de pasar al desplazar, se muestra una versión mini fija arriba (compare-slot por producto y el toggle debajo). El cambio Default ↔ Compact no es una prop: lo decide el propio componente con un `IntersectionObserver`.
 
 - Figma: [1265-4330](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1265-4330) · ficha `doc/compare-header`
 
@@ -35,17 +35,17 @@ header.addEventListener('arq:add', (e) => abrirModalDeProductos(e.detail.index))
 
 - **No consulta Typesense**: la página arma `products` con `src/data/catalog.js` (AGENTS.md · Datos).
 - **Eventos:** `arq:differences { value }` al tocar el toggle; `arq:remove { sku }` al quitar un producto (Default o Compact); `arq:change { index, field, value }` al elegir un select en un compare-product (`index`: 0-2, qué columna); `arq:add { index }` al clickear un lugar vacío (sin acción todavía, ver compare-product).
-- **Type (Default/Compact) no es una prop**: un `IntersectionObserver` sobre un centinela al inicio del bloque Default decide cuándo mostrar el Compact, fijo bajo el navbar.
+- **Type (Default/Compact) no es una prop**: un `IntersectionObserver` sobre un centinela al final del bloque Default decide cuándo mostrar el Compact. En Mobile, Compact oculta la navbar y queda fijo arriba; al volver a tocar Default al subir, se quita y restaura la navbar.
 - **`layout/navbar-height` no existe** (`docs/decisiones.md`, 2026-10-01 · hero, `TODO` abierto): mientras tanto se mide el alto real de `<arq-navbar>` en el DOM de la página con `getBoundingClientRect()` y se vuelve a medir en cada resize.
 
 ## Scroll horizontal en Mobile
 
-En Mobile, el Default usa columnas fijas (`layout/compare-column`, como compare-row) y puede ser más ancho que la pantalla: `.default` queda en `width: max-content` para que el scroll lo maneje quien lo contiene. **No tiene scroll propio**: `arq-comparativa` lo envuelve junto con `arq-compare-table` en un único contenedor con scroll, para que las dos partes se desplacen juntas (ficha: "el scroll horizontal se sincroniza con la tabla"). Si se usa compare-header suelto en Mobile (como en esta demo, `demo/index.html`), hay que envolverlo de la misma forma para que no se recorte.
+En Mobile, el Default desplaza solo la tira de productos (`layout/compare-column`, como los valores de compare-row); el resto de la cabecera queda fijo. `arq-comparativa` sincroniza su `scrollLeft` con todas las filas de `arq-compare-table` y con la tira del Compact. Si se usa compare-header suelto en Mobile (como en esta demo, `demo/index.html`), su tira de productos conserva scroll propio.
 
 ## Adaptaciones sobre el set de Figma
 
 - **Sin controles en el Default de Mobile:** el set no muestra ahí ni el toggle ni una columna de controles (a diferencia de Desktop, que sí tiene su columna de 200): las columnas de producto arrancan directo en el gutter.
-- **Compact/Mobile con scroll propio, no sincronizado:** el Compact es `position: fixed` y no participa del scroll compartido de Default + compare-table; si su contenido no entra en la pantalla, se desplaza con su propio scroll horizontal independiente. La ficha pide sincronizar su `scrollLeft` con el de la tabla; eso queda pendiente como tarea aparte (requiere JS extra para espejar la posición de scroll entre dos contenedores separados). Su columna de controles (120) se mantiene como espaciador.
+- **Compact/Mobile:** la tira de productos se sincroniza con el Default y las filas de compare-table; el toggle "Solo diferencias" queda debajo, fuera de la tira desplazable. Al aparecer Compact, oculta la navbar Mobile y ocupa el borde superior hasta que vuelve a mostrarse Default.
 - **Compact/Mobile sin quitar:** el `product` mobile del set no tiene icon-button de quitar (solo miniatura + nombre); para sacar un producto en mobile hay que volver a desplazarse hasta el Default. Replicado tal cual el set, aunque la ficha ("Código y accesibilidad") menciona un icon-button para quitar que no aparece en la variante estática.
 - **Ancho de la columna de controles (Desktop):** sin token propio para 200; se reusa `layout/compare-label` (mismo valor, usado también en compare-table) con un comentario `TODO` en el CSS.
 

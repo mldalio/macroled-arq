@@ -246,14 +246,14 @@ Barra fija inferior para comparar productos (hasta 3). Título + count-badge con
 - Figma: [1263-4320](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1263-4320)
 - Propiedades: Label
 
-Título de grupo de la tabla comparativa (role/label en mayúsculas, borde inferior color/border/strong). Ancho FILL; en mobile queda fijo a la izquierda al hacer scroll horizontal.
+Título de grupo de la tabla comparativa (role/label en mayúsculas, borde inferior color/border/strong). Ancho FILL; en Mobile queda sobre sus filas y no participa del desplazamiento horizontal de valores.
 
 ## compare-header
 
 - Figma: [1265-4330](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1265-4330)
 - Propiedades: Type: Default · Compact; Breakpoint: Desktop · Mobile
 
-Cabecera de la comparativa. Type=Default: columna de controles (toggle "Solo diferencias") + compare-product por columna; es estática. Type=Compact: versión mini que aparece fija arriba (position: fixed/sticky bajo el navbar) cuando la cabecera Default sale de pantalla; usa compare-slot (Default en desktop con nombre, SKU y quitar; Compact en mobile con miniatura + nombre). En mobile las columnas (144 + gap 16) se alinean con compare-row Mobile y el scroll horizontal se sincroniza con la tabla; la columna de controles (120) queda fija.
+Cabecera de la comparativa. Type=Default: columna de controles (toggle "Solo diferencias") + compare-product por columna; es estática. Type=Compact: versión mini que aparece fija arriba cuando la cabecera Default sale de pantalla; usa compare-slot (Default en desktop con nombre, SKU y quitar; Compact en mobile con miniatura + nombre). En Mobile, los productos forman una tira horizontal sincronizada con los valores de compare-row; "Solo diferencias" queda debajo de esa tira. Al mostrarse Compact se oculta la navbar Mobile y se restaura al volver a Default.
 
 ## compare-product
 
@@ -267,7 +267,7 @@ Columna de producto en compare-header. State=Filled (foto, nombre, SKU, link, se
 - Figma: [1263-4317](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1263-4317)
 - Propiedades: Label; Value 1–3; Show value 1–3; Breakpoint: Desktop · Mobile
 
-Fila de la tabla comparativa: etiqueta + un valor por producto (hasta 3; Show value 1–3 oculta las columnas sin producto). Valores en role/body-lg-regular. Breakpoint=Mobile: etiqueta de 120 fija (sticky left, fondo color/bg/default) y columnas de 160 dentro de un scroll horizontal. "Solo diferencias" activo: las filas con valores iguales se ocultan (y el compare-group si queda vacío). No confundir con spec-row (ficha).
+Fila de la tabla comparativa: etiqueta + un valor por producto (hasta 3; Show value 1–3 oculta las columnas sin producto). Valores en role/body-lg-regular. Breakpoint=Mobile: la etiqueta ocupa toda la fila arriba y las columnas de 160 quedan debajo, dentro del scroll horizontal compartido con compare-header Default y Compact. "Solo diferencias" activo: las filas con valores iguales se ocultan (y el compare-group si queda vacío). No confundir con spec-row (ficha).
 
 ## compare-slot
 
