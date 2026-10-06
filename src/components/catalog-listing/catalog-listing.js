@@ -147,6 +147,7 @@ class ArqCatalogListing extends ArqElement {
     const root = this.shadowRoot;
     root.querySelector('.toolbar').unit = this.unit;
     root.querySelector('arq-filter-panel').unit = this.unit;
+    root.querySelector('arq-filter-panel').showCategories = this.unit === 'productos';
     root.querySelector('.compare').hidden = this.unit !== 'productos';
     if (this.#query && this.unit === 'productos') this.#titleFromQuery();
     this.#load({ rows: true });
@@ -277,8 +278,26 @@ class ArqCatalogListing extends ArqElement {
       if (item.selected) current ??= item;
     }
     this.#titleFromNav(current);
+    this.#syncPanelCategories(nav, current);
     const header = document.querySelector('arq-page-header');
     if (header) header.showDescription = this.unit !== 'colecciones';
+  }
+
+  // El panel Mobile reutiliza los grupos y enlaces del HTML del sidebar.
+  // El original sigue en su slot para Desktop y Tablet.
+  #syncPanelCategories(nav, current) {
+    const panel = this.shadowRoot.querySelector('arq-filter-panel');
+    const categories = panel.querySelector('[slot="categories"]') ?? document.createElement('nav');
+    categories.slot = 'categories';
+    categories.setAttribute('aria-label', 'Categorías de productos');
+    const selectedGroup = current?.closest('arq-catalog-nav-group');
+    const groups = [...nav.querySelectorAll(':scope > arq-catalog-nav-group')].map((group) => {
+      const copy = group.cloneNode(true);
+      copy.open = group === selectedGroup;
+      return copy;
+    });
+    categories.replaceChildren(...groups);
+    if (!categories.isConnected) panel.append(categories);
   }
 
   // Con ?q=, el <h1> del page-header nombra la búsqueda.

@@ -21,6 +21,8 @@ panel.addEventListener('arq:filters', (e) => (panel.count = contar(e.detail.filt
 panel.addEventListener('arq:apply', (e) => aplicar(e.detail.filters));
 ```
 
+En Productos Mobile, `show-categories` agrega las tabs `arq-tab` Características y Categorías. El listado aporta un `<nav slot="categories">` con `arq-catalog-nav-group` y `arq-catalog-nav-item`; el grupo actual aparece abierto. Al abrir el panel se selecciona Características. En Categorías, los enlaces navegan directamente y las acciones de filtros técnicos quedan ocultas. Desktop y Colecciones mantienen el panel habitual.
+
 ## Props
 
 | Figma | Atributo / slot | Prop JS | Valores · por defecto |
@@ -41,6 +43,8 @@ panel.addEventListener('arq:apply', (e) => aplicar(e.detail.filters));
 - **Chips:** tocar uno desmarca su opción y el foco pasa al chip siguiente, al anterior o a cerrar. "Borrar todo" desmarca todo sin cerrar.
 - El cuerpo (las filas) tiene scroll propio; encabezado, chips y footer quedan fijos.
 - **Siempre en Light**, también con Iluminar: el `<dialog>` lleva `data-arq-theme="light"` (Light local, `src/styles/light.css`). Las filas y el título, que llegan por slot, lo heredan.
+
+`show-categories` es un atributo booleano opcional. El slot `categories` recibe el árbol de navegación; no cambia el slot por defecto de `arq-filter-row`.
 
 ## Tokens
 

@@ -370,6 +370,8 @@ Filtro aplicado que se puede quitar (todo el chip es el botón; en código: butt
 
 ## filter-panel
 
+En Productos Mobile, el panel incorpora `arq-tab` para Características y Categorías. La segunda tab reutiliza los grupos e ítems del navegador del catálogo; Desktop y Colecciones mantienen el panel de filtros habitual.
+
 - Figma: [1225-13576](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1225-13576)
 - Propiedades: Title; Summary; Show summary; Show applied; Breakpoint: Desktop · Mobile
 
