@@ -151,7 +151,6 @@
   gap: var(--arq-space-gap-sm-md);
 }
 
-<<<<<<< HEAD
 /* Variante elegida como texto: solo al imprimir (en pantalla están los
    selects). Etiqueta role/label en color/text/tertiary, como el label del
    select; valor role/body-regular en color/text/primary. */
@@ -195,7 +194,7 @@
     display: none;
   }
 }
-=======
+
 /* ── Size=Compact ────────────────────────────────────────────────
    Versión mini para el compare-header Compact (Figma 1912:5841, 1912:5860 y
    1912:5864). Miniatura layout/compare-thumb en color/surface/subtle, nombre
@@ -313,4 +312,3 @@
   outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
   outline-offset: calc(-1 * var(--arq-border-strong));
 }
->>>>>>> feat/arq-select-unificado

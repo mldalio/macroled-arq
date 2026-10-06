@@ -68,9 +68,7 @@ class ArqCompareProduct extends ArqElement {
     `<p class="sku role-label"></p>` +
     `</div>` +
     `<div class="selects"></div>` +
-<<<<<<< HEAD
     `<dl class="variant"></dl>` +
-=======
     `</div>` +
     `<div class="compact">` +
     `<div class="thumb"><img alt="" hidden></div>` +
@@ -83,7 +81,6 @@ class ArqCompareProduct extends ArqElement {
     `<span class="compact-plus">${icon('plus')}</span>` +
     `<span class="compact-add-label role-body-sm"></span>` +
     `</button>` +
->>>>>>> feat/arq-select-unificado
     `</div>`;
 
   #data = null;
