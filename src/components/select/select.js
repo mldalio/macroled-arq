@@ -21,8 +21,14 @@
 //   en el campo.
 // - Emite arq:change { value } al elegir. Filled (Filter con un valor) se pone
 //   solo como atributo.
-// - Donde la descripción difiere del set se sigue al set (Hover del Field en
-//   color/surface/faint; valor del Filter en role/body-medium).
+// - Field y Filter se construyen igual (etiqueta sin gap + trigger con línea
+//   inferior); Hover y Open en color/surface/faint en los dos, y el texto va
+//   en role/body-regular, salvo el valor elegido de Filter (Filled), que va en
+//   role/body-medium.
+// - show-swatch (Figma: Show swatch): muestra la muestra de color en todas las
+//   opciones. Sin el atributo, cada opción decide con swatch / showSwatch.
+//   En Figma la prop viene activada; en código va desactivada (atributo de
+//   presencia).
 
 import { ArqElement } from '../../base/arq-element.js';
 import { icon } from '../../base/icons.js';
@@ -45,6 +51,7 @@ class ArqSelect extends ArqElement {
     open: { type: Boolean }, // Open
     filled: { type: Boolean }, // State=Filled (lo pone el componente)
     allLabel: { type: String, default: 'Todos' }, // primera opción de Filter
+    showSwatch: { type: Boolean }, // Show swatch: muestra de color en las opciones
   };
   static template =
     `<div class="select">` +
@@ -129,7 +136,14 @@ class ArqSelect extends ArqElement {
 
   // Opciones con "Todos" primero en Filter.
   #list() {
-    const list = this.#options.map((o) => ({ value: String(o.value), label: o.label ?? String(o.value), swatch: o.swatch, showSwatch: Boolean(o.swatch || o.showSwatch), disabled: Boolean(o.disabled) }));
+    const list = this.#options.map((o) => ({
+      value: String(o.value),
+      label: o.label ?? String(o.value),
+      swatch: o.swatch,
+      // show-swatch del select lo activa para todas; una opción lo apaga con showSwatch: false
+      showSwatch: o.showSwatch === false ? false : Boolean(o.swatch || o.showSwatch || this.showSwatch),
+      disabled: Boolean(o.disabled),
+    }));
     if (this.type === 'filter') list.unshift({ value: '', label: this.allLabel ?? 'Todos', showSwatch: false, disabled: false });
     return list;
   }
@@ -143,18 +157,20 @@ class ArqSelect extends ArqElement {
     // Muestra (swatch): solo si la opción es un acabado/color (showSwatch),
     // en Field siempre que la haya y en Filter solo con un valor elegido.
     // TODO (diseño): falta definir qué campos cuentan como "color" (p. ej.
-    // color de carcasa) — hasta entonces, showSwatch lo decide quien arma
-    // las opciones (compare-product no lo usa: solo texto).
+    // color de carcasa) — hasta entonces, show-swatch (en el select) o
+    // showSwatch (en cada opción) lo decide quien arma el select.
     const swatch = this.shadowRoot.querySelector('.swatch');
     const showSwatch = Boolean(current?.showSwatch) && (this.type === 'field' || filled);
     swatch.hidden = !showSwatch;
-    swatch.setAttribute('size', this.type === 'field' ? 'large' : 'small');
+    // Field: swatch/md · Filter: swatch/sm (Figma 921:2544)
+    swatch.setAttribute('size', this.type === 'field' ? 'default' : 'small');
     if (current?.swatch) swatch.setAttribute('src', current.swatch);
     else swatch.removeAttribute('src');
     swatch.textContent = current?.label ?? '';
     const value = this.shadowRoot.querySelector('.value');
     value.textContent = current?.label ?? '';
-    value.className = `value ${this.type === 'filter' && !this.disabled ? 'role-body-medium' : 'role-body-regular'}`;
+    // role/body-regular en reposo; el valor elegido de Filter (Filled), en role/body-medium
+    value.className = `value ${filled && !this.disabled ? 'role-body-medium' : 'role-body-regular'}`;
     // Menú: se reusan las opciones (el resaltado no se pierde)
     const menu = this.menu;
     while (menu.children.length > list.length) menu.lastElementChild.remove();

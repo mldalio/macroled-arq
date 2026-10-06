@@ -253,14 +253,14 @@ Título de grupo de la tabla comparativa (role/label en mayúsculas, borde infer
 - Figma: [1265-4330](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1265-4330)
 - Propiedades: Type: Default · Compact; Breakpoint: Desktop · Mobile
 
-Cabecera de la comparativa. Type=Default: columna de controles (toggle "Solo diferencias") + compare-product por columna; es estática. Type=Compact: versión mini que aparece fija arriba cuando la cabecera Default sale de pantalla; usa compare-slot (Default en desktop con nombre, SKU y quitar; Compact en mobile con miniatura + nombre). En Mobile, los productos forman una tira horizontal sincronizada con los valores de compare-row; "Solo diferencias" queda debajo de esa tira. Al mostrarse Compact se oculta la navbar Mobile y se restaura al volver a Default.
+Cabecera de la comparativa. Type=Default: columna de controles (toggle "Solo diferencias") + compare-product por columna; es estática. Type=Compact: versión mini que aparece fija arriba cuando la cabecera Default sale de pantalla; usa compare-product Size=Compact (miniatura + nombre + quitar; el SKU solo en Desktop; un lugar libre es la caja «Agregar producto»). compare-slot queda solo para compare-bar. En Mobile, los productos forman una tira horizontal sincronizada con los valores de compare-row; "Solo diferencias" queda debajo de esa tira. Al mostrarse Compact se oculta la navbar Mobile y se restaura al volver a Default.
 
 ## compare-product
 
 - Figma: [1057-2522](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1057-2522)
-- Propiedades: Name; SKU; State: Filled · Empty
+- Propiedades: Name; SKU; Show SKU; Size: Default · Compact; State: Filled · Empty · empty-hover
 
-Columna de producto en compare-header. State=Filled (foto, nombre, SKU, link, selects de familia y variante, quitar) / Empty (agregar luminaria, cuando hay menos de 3). Toma el ancho de la columna (FILL). La imagen mantiene proporción 1:1 (aspect ratio bloqueado): al cambiar el ancho de la columna, el alto de la media acompaña. La media tiene un tope de layout/compare-media-max.
+Columna de producto en compare-header. Size=Default: State=Filled (foto, nombre, SKU, link, selects de atributo de variante, quitar) / Empty (agregar luminaria, cuando hay menos de 3). Size=Compact: versión mini para el compare-header Compact. Filled: miniatura (layout/compare-thumb), nombre en role/label, SKU en role/body-sm (Show SKU; en Mobile se oculta) y quitar. Empty: caja punteada border/default del alto de la miniatura con «+» y «Agregar producto» en role/body-sm; empty-hover: fondo surface/faint y borde border/strong. Toma el ancho de la columna (FILL). La imagen mantiene proporción 1:1 (aspect ratio bloqueado): al cambiar el ancho de la columna, el alto de la media acompaña. La media tiene un tope de layout/compare-media-max.
 
 ## compare-row
 
@@ -274,7 +274,7 @@ Fila de la tabla comparativa: etiqueta + un valor por producto (hasta 3; Show va
 - Figma: [1233-3656](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1233-3656)
 - Propiedades: Name; Meta; Size: Default · Compact; State: Filled · Empty
 
-Lugar de producto en compare-bar. State=Filled (foto en "thumb": reemplazá el relleno por la imagen del producto, nombre, meta e icon-button para quitar) / Empty (agregar producto). Size=Default para desktop, Compact (solo miniatura) para mobile. Size=Default tiene ancho máximo 400 para que no se estire en pantallas anchas.
+Lugar de producto en compare-bar (compare-header Compact usa compare-product Size=Compact). State=Filled (foto en "thumb": reemplazá el relleno por la imagen del producto, nombre, meta e icon-button para quitar) / Empty (agregar producto). Size=Default para desktop, Compact (solo miniatura) para mobile. Size=Default tiene ancho máximo 400 para que no se estire en pantallas anchas.
 
 ## contact-item
 
@@ -581,9 +581,9 @@ Encabezado de bloque dentro de una página (no de la página: eso es page-header
 ## select
 
 - Figma: [921-2544](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2544)
-- Propiedades: Name; Label; Value; Type: Field · Filter; State: Default · Hover · Focus · Disabled · Filled; Open: False · True
+- Propiedades: Name; Label; Value; Show swatch; Type: Field · Filter; State: Default · Hover · Focus · Disabled · Filled; Open: False · True
 
-Selector con menú desplegable (arq-select). Type=Field: campo del configurador (muestra swatch/lg + nombre role/body-regular + chevron-down, hacia arriba en Open; Default surface/soft con línea inferior border/strong; Hover y Open surface/subtle; menú select-menu Finishes a todo el ancho). Type=Filter: celda de la filter-bar (etiqueta role/label-sm text/tertiary (caso extremo: 10 px) + valor + chevron icon/sm; Default "Todos" en text/secondary; Hover text/primary; Filled = filtro elegido: valor role/body-medium text/primary y muestra swatch/sm si es acabado; todos los estados llevan la línea inferior border/strong (Disabled: border/disabled), con gap space/gap/sm y padding inferior space/padding/sm, y miden al menos layout/select-filter; Open con select-menu Filter). Focus: anillo border/focus. Disabled: text/disabled. Props: Name (valor del Field), Label y Value (Filter; en Filled el valor elegido va como override).
+Selector con menú desplegable (arq-select). Dos tipos con la misma construcción: etiqueta arriba (role/label-sm, text/tertiary) y un trigger con línea inferior border/strong, padding vertical space/padding/sm-md (es la única separación con la etiqueta: gap 0 entre etiqueta y trigger), gap space/gap/sm-md entre swatch, texto y chevron, texto role/body-regular y chevron. Type=Field: campo del configurador y de compare-product; ancho del contenedor; swatch/md y chevron icon/md. Type=Filter: celda de la filter-bar y del glosario; mide al menos layout/select-filter; swatch/sm y chevron icon/sm; Filled = filtro elegido, valor en role/body-medium. Hover (los dos): fondo color/surface/faint en el trigger; el texto no cambia. Open: mismo fondo que Hover, chevron hacia arriba y select-menu debajo (Field: Finishes o Text; Filter: Filter). Focus: anillo border/focus de border/strong alrededor del trigger. Disabled: text/disabled y línea border/disabled. Props: Name (valor del Field), Label y Value (Filter; en Filled el valor elegido va como override) y Show swatch (muestra u oculta la muestra de acabado; en código, show-swatch).
 
 ## select-menu
 

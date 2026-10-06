@@ -3,7 +3,8 @@
 // Columna de producto dentro de compare-header: foto, nombre + link a la
 // ficha, SKU y un select por atributo de variante (State=Filled); o una caja
 // clickeable para agregar un producto cuando queda un lugar libre (State=
-// Empty, hasta 3).
+// Empty, hasta 3). Size=Compact es la versión mini del compare-header Compact:
+// miniatura + nombre (+ SKU) + quitar, o una caja punteada «Agregar producto».
 //
 //   <arq-compare-product></arq-compare-product>
 //   product.data = {
@@ -14,6 +15,7 @@
 //     ],
 //   };
 //   product.addEventListener('arq:add', () => abrirModalDeProductos());  // State=Empty
+//   <arq-compare-product size="compact" show-sku></arq-compare-product>   // Size=Compact
 //
 // - State lo pone el componente (atributo empty): Empty si no hay data.
 // - Emite arq:change { field, value } al elegir un select (field: el campo del
@@ -27,6 +29,13 @@
 // - Imagen 1:1 (aspect-ratio bloqueado), tope layout/compare-media-max.
 // - Las opciones de familia/variante se arman en la página: el componente
 //   solo las muestra (AGENTS.md · Datos).
+// - Size=Compact usa los mismos datos pero no muestra selects ni link: foto
+//   layout/compare-thumb, nombre en role/label y, con show-sku, el SKU. Quitar
+//   y agregar emiten los mismos eventos. compare-slot ya no se usa acá: queda
+//   solo para compare-bar.
+// - show-sku (Figma: Show SKU, activada en Figma) solo aplica a Size=Compact:
+//   en código va desactivada por defecto (atributo de presencia). En Default
+//   el SKU siempre se ve.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { icon } from '../../base/icons.js';
@@ -39,6 +48,8 @@ class ArqCompareProduct extends ArqElement {
   static styles = css;
   static properties = {
     addLabel: { type: String, default: 'Agregar producto' },
+    size: { type: String, values: ['default', 'compact'], default: 'default' }, // Size
+    showSku: { type: Boolean }, // Show SKU (solo Size=Compact)
   };
   static template =
     `<div class="product">` +
@@ -55,6 +66,18 @@ class ArqCompareProduct extends ArqElement {
     `<p class="sku role-label"></p>` +
     `</div>` +
     `<div class="selects"></div>` +
+    `</div>` +
+    `<div class="compact">` +
+    `<div class="thumb"><img alt="" hidden></div>` +
+    `<div class="compact-info">` +
+    `<span class="compact-name role-label"></span>` +
+    `<span class="compact-sku role-body-sm"></span>` +
+    `</div>` +
+    `<arq-icon-button icon="close" class="compact-remove"></arq-icon-button>` +
+    `<button type="button" class="compact-add">` +
+    `<span class="compact-plus">${icon('plus')}</span>` +
+    `<span class="compact-add-label role-body-sm"></span>` +
+    `</button>` +
     `</div>`;
 
   #data = null;
@@ -74,6 +97,8 @@ class ArqCompareProduct extends ArqElement {
     const root = this.shadowRoot;
     root.querySelector('.remove').addEventListener('click', () => this.emit('remove', { sku: this.#data?.sku ?? null }));
     root.querySelector('.add').addEventListener('click', () => this.emit('add'));
+    root.querySelector('.compact-remove').addEventListener('click', () => this.emit('remove', { sku: this.#data?.sku ?? null }));
+    root.querySelector('.compact-add').addEventListener('click', () => this.emit('add'));
     root.querySelector('.selects').addEventListener('arq:change', (event) => {
       event.stopPropagation();
       const field = event.target.dataset.field;
@@ -107,6 +132,24 @@ class ArqCompareProduct extends ArqElement {
     // Siempre con nombre accesible, aunque esté oculto en State=Empty (icon-button lo exige).
     root.querySelector('.remove').textContent = data ? `Quitar ${data.name}` : 'Quitar';
     this.#renderSelects(data);
+    this.#renderCompact(data);
+  }
+
+  // Size=Compact: miniatura + nombre + SKU + quitar, o la caja de agregar.
+  #renderCompact(data) {
+    const root = this.shadowRoot;
+    const thumb = root.querySelector('.thumb img');
+    if (data?.image) {
+      thumb.src = data.image;
+      thumb.hidden = false;
+    } else {
+      thumb.removeAttribute('src');
+      thumb.hidden = true;
+    }
+    root.querySelector('.compact-name').textContent = data?.name ?? '';
+    root.querySelector('.compact-sku').textContent = data?.sku ?? '';
+    root.querySelector('.compact-add-label').textContent = this.addLabel ?? '';
+    root.querySelector('.compact-remove').textContent = data ? `Quitar ${data.name}` : 'Quitar';
   }
 
   // Un select por atributo de variante (Color, Altura…), como el configurador

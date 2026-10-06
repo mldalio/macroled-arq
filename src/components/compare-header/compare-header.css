@@ -83,20 +83,9 @@
   overflow: hidden;
 }
 
-.slots .product {
-  display: flex;
+.slots > * {
   flex: 1 1 0;
-  align-items: center;
-  gap: var(--arq-space-gap-sm);
   min-width: 0;
-}
-
-.mobile-name {
-  display: none;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--arq-color-text-primary);
 }
 
 @media (max-width: 767px) {
@@ -139,8 +128,8 @@
     display: none;
   }
 
-  /* Compact/Mobile: miniatura compacta (compare-slot Size=Compact) + nombre
-     visible al lado, como la cabecera provisoria que tenía compare-table.
+  /* Compact/Mobile: miniatura + nombre (compare-product Size=Compact, sin SKU)
+     visible al lado y el botón de quitar.
      El bloque Compact es fijo (no participa del scroll compartido de más
      abajo): si no entra, se desplaza solo, sin sincronizar con la tabla.
      TODO (diseño): confirmar si hace falta sincronizarlo igual. */
@@ -170,16 +159,8 @@
     padding-inline: var(--page-gutter);
   }
 
-  .slots .product {
+  .slots > * {
     flex: none;
     width: var(--column-width);
-  }
-
-  .slots arq-compare-slot {
-    flex: none;
-  }
-
-  .mobile-name {
-    display: block;
   }
 }
