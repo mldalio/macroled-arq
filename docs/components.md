@@ -267,7 +267,7 @@ Columna de producto en compare-header. State=Filled (foto, nombre, SKU, link, se
 - Figma: [1263-4317](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1263-4317)
 - Propiedades: Label; Value 1–3; Show value 1–3; Breakpoint: Desktop · Mobile
 
-Fila de la tabla comparativa: etiqueta + un valor por producto (hasta 3; Show value 1–3 oculta las columnas sin producto). Valores en role/body-lg-regular. Breakpoint=Mobile: la etiqueta ocupa toda la fila arriba y las columnas de 160 quedan debajo, dentro del scroll horizontal compartido con compare-header Default y Compact. "Solo diferencias" activo: las filas con valores iguales se ocultan (y el compare-group si queda vacío). No confundir con spec-row (ficha).
+Fila de la tabla comparativa: etiqueta + un valor por producto (hasta 3; Show value 1–3 oculta las columnas sin producto). Valores en role/body-lg-regular. Breakpoint=Mobile: la etiqueta ocupa toda la fila arriba y las columnas de 60 % del ancho de pantalla quedan debajo, dentro del scroll horizontal compartido con compare-header Default y Compact. "Solo diferencias" activo: las filas con valores iguales se ocultan (y el compare-group si queda vacío). No confundir con spec-row (ficha).
 
 ## compare-slot
 
