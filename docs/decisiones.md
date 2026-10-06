@@ -147,7 +147,7 @@ ArqAccordionItem.define();
 ## 2026-10-01 · footer
 
 - Bajada (`slot="tagline"`) y links (`<arq-footer-link slot="productos|informacion|redes">`) por HTML; logo, títulos y legal en el componente; año con `new Date().getFullYear()`. Tres columnas fijas.
-- Logo Compact, como el set. Información: Contacto, Descargas y Glosario. Columnas con el ancho de su contenido.
+- Logo Compact, como el set. Información: Contacto, Descargas y Glosario. Columnas de `layout/footer-column` y bajada hasta `layout/footer-tagline` (2026-10-06 · Anchos del footer).
 - footer-link: `role="listitem"`, prop `label` (aria-label) y el texto se parte en líneas en vez de cortarse.
 
 ## 2026-10-01 · Tokens de navbar Transparent
@@ -473,6 +473,12 @@ ArqAccordionItem.define();
 - **Sin líneas en la columna de información:** contact-item sin línea superior ni padding vertical; los canales van a `space/gap/lg`, sin línea de cierre.
 - **Figma:** los sets de input (`930:2364`) y contact-item (`1303:4340`) y la pantalla Contacto siguen como antes: falta actualizarlos.
 - **form-section-header, de baja:** sin uso desde este cambio; se sacó del repo (componente, demo y docs/components.md). En Figma el set queda marcado como en desuso.
+
+## 2026-10-06 · Anchos del footer
+
+- Tokens nuevos en 2 · Semantic · Dimension: `layout/footer-column` (200) y `layout/footer-tagline` (240), enlazados al ancho de las columnas Desktop y de la bajada en el set `788:3104`. Por qué: con el ancho de su contenido las columnas quedaban amontonadas y no repartidas como en Figma.
+- En Tablet (768–1023) las columnas se angostan por igual si no entran (`flex: 0 1`). En Mobile siguen repartiéndose el ancho.
+- **Footer en Dark local** (`data-arq-theme="dark"` en el `<footer>` interno) y **logo Size=Default**, del mismo tamaño que el de la navbar, en Desktop y Mobile. Pedido de diseño. **Figma:** falta pasar el set `788:3104` a modo Dark y su logo a Size=Default.
 
 ## Pendientes
 

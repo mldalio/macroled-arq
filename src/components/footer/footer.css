@@ -11,7 +11,9 @@
    que el alto de las columnas no empuje el legal hacia abajo. */
 .footer {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  /* La marca no baja de layout/footer-tagline: en Tablet se angostan las
+     columnas, no la bajada */
+  grid-template-columns: minmax(var(--arq-layout-footer-tagline), 1fr) minmax(0, auto);
   grid-template-rows: auto 1fr;
   grid-template-areas:
     'brand columns'
@@ -32,9 +34,9 @@
   min-width: 0;
 }
 
-/* TODO (diseño): en el set la bajada mide 240 fijos y no hay token; toma el
-   ancho de su texto (decisión 2026-10-01 · footer). */
+/* Bajada: hasta layout/footer-tagline, como el set (Desktop y Mobile) */
 .tagline {
+  max-width: var(--arq-layout-footer-tagline);
   margin: 0;
   color: var(--arq-color-text-secondary);
   overflow-wrap: break-word;
@@ -56,9 +58,12 @@
   gap: var(--arq-space-gap-xl);
 }
 
-/* TODO (diseño): en el set cada columna mide 200 fijos y no hay token; toma
-   el ancho de su contenido (decisión 2026-10-01 · footer). */
+/* Cada columna mide layout/footer-column, como el set; en Tablet, si no
+   entran, se angostan por igual. Es width y no flex-basis: la pista auto de
+   la grilla se mide con el ancho intrínseco, que ignora flex-basis. */
 .column {
+  flex: 0 1 auto;
+  width: var(--arq-layout-footer-column);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
