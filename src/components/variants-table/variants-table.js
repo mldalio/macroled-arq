@@ -14,6 +14,9 @@
 //   };
 //
 // - Es un <table> real: un lector de pantalla anuncia la columna de cada valor.
+//   Miniatura y sku van en celdas separadas: hasta 1023 px solo la miniatura
+//   queda fija y el sku se desplaza con los datos (ficha doc/variants-table:
+//   «mobile: solo miniatura»).
 //   variants-table-row vive adentro (la fila de la tabla), como toggle-switch
 //   dentro de toggle (decisión 2026-10-02 · glosario).
 // - Un solo contenedor con scroll horizontal para el encabezado y las filas; la
@@ -49,6 +52,7 @@ const TEXT = {
   searchLabel: 'Buscar por SKU o nombre',
   sort: 'Ordenar por',
   downloads: 'Descargas',
+  image: 'Imagen',
   // TODO (contenido): texto sin diseño
   empty: 'Ningún SKU coincide con la búsqueda o los filtros.',
   count: (n) => (n === 1 ? '1 variante' : `${n} variantes`),
@@ -169,7 +173,8 @@ class ArqVariantsTable extends ArqElement {
     const { columns, filters } = this.#data;
     // Encabezado: SKU (columna fija de inicio) · columnas · descarga (fija de fin)
     root.querySelector('thead').innerHTML =
-      `<tr><th scope="col" class="start role-label"><span class="th-sku">SKU</span></th>` +
+      `<tr><th scope="col" class="start"><span class="visually-hidden">${TEXT.image}</span></th>` +
+      `<th scope="col" class="sku-col role-label">SKU</th>` +
       columns.map((c) => `<th scope="col" class="role-label">${esc(c.label)}</th>`).join('') +
       `<th scope="col" class="end role-label"><span class="th-downloads">${TEXT.downloads}</span></th></tr>`;
     // Filtros: un select por atributo
@@ -209,10 +214,8 @@ class ArqVariantsTable extends ArqElement {
       .map(
         (row) =>
           `<tr>` +
-          `<th scope="row" class="start"><span class="cell-start">` +
-          `<span class="thumb">${row.thumb ? `<img src="${esc(row.thumb)}" alt="" loading="lazy">` : ''}</span>` +
-          `<arq-sku size="compact">${esc(row.sku)}</arq-sku>` +
-          `</span></th>` +
+          `<td class="start"><span class="thumb">${row.thumb ? `<img src="${esc(row.thumb)}" alt="" loading="lazy">` : ''}</span></td>` +
+          `<th scope="row" class="sku-col"><arq-sku size="compact">${esc(row.sku)}</arq-sku></th>` +
           columns.map((c) => `<td class="role-body">${esc(row.values?.[c.key] ?? '—')}</td>`).join('') +
           `<td class="end"><arq-icon-button icon="download" size="large" background="outline" data-sku="${esc(row.sku)}">Descargas de ${esc(row.sku)}</arq-icon-button></td>` +
           `</tr>`,

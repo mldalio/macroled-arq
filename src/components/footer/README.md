@@ -70,4 +70,4 @@ Las rutas son de ejemplo: las definitivas van en `docs/urls.md`.
 ## Pendientes
 
 - `TODO` (diseño): en el set cada columna mide 200 fijos y la bajada 240 fijos, sin token. En código toman el ancho de su contenido. En Mobile la bajada queda en una línea (en Figma, dos) y el footer mide 20 menos.
-- Información: Contacto y Descargas (la página Glosario pasó a llamarse Descargas, decisiones.md 2026-10-06 · Descargas). `TODO` (Figma): el set todavía muestra Glosario (Desktop: Contacto y Glosario; Mobile: Contacto, Descargas y Glosario).
+- Información: Contacto y Descargas (la página Glosario pasó a llamarse Descargas, decisiones.md 2026-10-06 · Descargas).
