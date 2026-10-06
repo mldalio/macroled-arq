@@ -1,6 +1,6 @@
 # compare-header · `<arq-compare-header>`
 
-Cabecera de la página Comparativa: toggle "Solo diferencias" + hasta 3 compare-product, estiradas a la misma altura. Cuando el bloque completo termina de pasar al desplazar, se muestra una versión mini fija arriba (compare-slot por producto y el toggle debajo). El cambio Default ↔ Compact no es una prop: lo decide el propio componente con un `IntersectionObserver`.
+Cabecera de la página Comparativa: toggle "Solo diferencias" + hasta 3 compare-product, estiradas a la misma altura. Cuando el bloque completo termina de pasar al desplazar, se muestra una versión mini fija arriba (compare-product Size=Compact por producto y el toggle debajo; compare-slot ya no se usa acá). El cambio Default ↔ Compact no es una prop: lo decide el propio componente con un `IntersectionObserver`.
 
 - Figma: [1265-4330](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1265-4330) · ficha `doc/compare-header`
 
@@ -46,7 +46,7 @@ En Mobile, el Default desplaza solo la tira de productos (60 % del ancho de pant
 
 - **Sin controles en el Default de Mobile:** el set no muestra ahí ni el toggle ni una columna de controles (a diferencia de Desktop, que sí tiene su columna de 200): las columnas de producto arrancan directo en el gutter.
 - **Compact/Mobile:** la tira de productos se sincroniza con el Default y las filas de compare-table; el toggle "Solo diferencias" queda debajo, fuera de la tira desplazable. Al aparecer Compact, oculta la navbar Mobile y ocupa el borde superior hasta que vuelve a mostrarse Default.
-- **Compact/Mobile sin quitar:** el `product` mobile del set no tiene icon-button de quitar (solo miniatura + nombre); para sacar un producto en mobile hay que volver a desplazarse hasta el Default. Replicado tal cual el set, aunque la ficha ("Código y accesibilidad") menciona un icon-button para quitar que no aparece en la variante estática.
+- **Compact usa compare-product Size=Compact** (cambio de 2026-10-06): miniatura + nombre + quitar, y un lugar libre es la caja punteada «Agregar producto» (`arq:add { index }`). El SKU se muestra solo en Desktop (`show-sku`, que el componente enciende y apaga según el breakpoint); en Mobile queda solo el nombre.
 - **Ancho de la columna de controles (Desktop):** sin token propio para 200; se reusa `layout/compare-label` (mismo valor, usado también en compare-table) con un comentario `TODO` en el CSS.
 
 ## Tokens

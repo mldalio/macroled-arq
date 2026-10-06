@@ -1,6 +1,6 @@
 # compare-slot · `<arq-compare-slot>`
 
-Lugar de producto en compare-bar (y en compare-header Compact, cuando se construya).
+Lugar de producto en compare-bar. compare-header Compact usa `compare-product` Size=Compact, no compare-slot.
 
 - Figma: [1233-3656](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1233-3656) · ficha `doc/compare-slot`
 

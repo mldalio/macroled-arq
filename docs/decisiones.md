@@ -480,6 +480,7 @@ ArqAccordionItem.define();
 - En Tablet (768–1023) las columnas se angostan por igual si no entran (`flex: 0 1`). En Mobile siguen repartiéndose el ancho.
 - **Footer en Dark local** (`data-arq-theme="dark"` en el `<footer>` interno) y **logo Size=Default**, del mismo tamaño que el de la navbar, en Desktop y Mobile. Pedido de diseño. **Figma:** falta pasar el set `788:3104` a modo Dark y su logo a Size=Default.
 
+<<<<<<< HEAD
 ## 2026-10-06 · Ficha técnica en PDF
 
 - Diseño: `ficha_pdf · componentes` (Figma `1907:27213`): pdf-page, pdf-header, pdf-cover-title, pdf-spec-group, pdf-spec-row y pdf-footer. Código en `src/pdf/`; lo dispara `arq:datasheet { sku }` (ficha y Descargas) desde `main.js`.
@@ -502,6 +503,14 @@ ArqAccordionItem.define();
 - Al imprimir no aparecen navbar (queda el logo), volver, bajada y acción de page-header, toggle «Solo diferencias», selects, quitar, cta-block, compare-bar ni footer. Las reglas valen para cualquier página que se imprima.
 - Mientras se imprime, `document.title` es «Comparativa · <productos> · Macroled Arq»: Chrome lo propone como nombre del PDF.
 - Sin `@page`: tamaño y márgenes quedan los del navegador (no se toca la impresión del resto del sitio de Macroled).
+=======
+## 2026-10-06 · select unificado y compare-product Compact
+
+- **select:** Field y Filter se construyen igual (etiqueta sin gap + trigger con línea inferior y padding vertical `space/padding/sm-md`). Reposo en `role/body-regular`; Hover y Open en `color/surface/faint` en los dos; solo Filter Filled va en `role/body-medium`. Nueva prop `show-swatch` (Figma: Show swatch, activada en Figma; en código, atributo de presencia desactivado por defecto).
+- **Focus del select:** anillo `border/strong` en `color/border/focus` separado 2 px (DESIGN.md §7). Figma lo dibuja pegado al trigger porque no tiene offset.
+- **compare-product Size=Compact** reemplaza a compare-slot en el compare-header Compact. compare-slot queda solo para compare-bar. `show-sku` solo aplica a Compact (en Default el SKU siempre se ve); el compare-header lo enciende en Desktop y lo apaga en Mobile.
+- **filter-bar:** con la nueva construcción, la celda de Filter mide 70 (antes 55) y la barra crece.
+>>>>>>> feat/arq-select-unificado
 
 ## Pendientes
 
@@ -526,6 +535,7 @@ Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe
 
 ### Diseño: definir
 
+- **Hover de select Filter en filter-bar:** el hover `color/surface/faint` coincide con el fondo de la barra (`color/surface/faint`) y no se ve. Decidir otro color de hover (p. ej. `color/surface/hover`) o el fondo de la barra. `TODO (diseño)`
 - **Tokens que faltan:** `layout/navbar-height` (56; lo usan hero, ficha y compare-header Compact); ancho de tarjeta del carrusel mobile (280); sidebar de Productos (240, hoy `layout/card-min`); ratios de las fotos del mosaico; respuesta de faq-item (560, hoy `measure-wide`); columnas del footer (200 / 240); email de cta-block (380, hoy `measure`); medidas sin token de la ficha y la colección (detalle en sus README).
 - **Confirmar lo elegido en código:** posición del navbar (sticky / fixed); foco sobre foto en navbar Transparent; feature-block secundaria en `ratio/wide`; split del FAQ con `space/section/md` dentro de un bloque.
 - **Faltan diseños:** versión impresa de la comparativa y botón «Imprimir comparación» en Final (hoy armados como en Macroled); mensaje de error si no se puede generar la ficha técnica en PDF; modal para elegir producto desde compare-product Empty (hoy el botón emite `arq:add` y no abre nada); pantallas de carga, vacío y error de los listados; filter-panel abierto con Iluminar; textos de error y marca de obligatorio del formulario.

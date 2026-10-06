@@ -719,17 +719,23 @@
 
       <section class="demo-section" aria-labelledby="demo-select">
         <h2 id="demo-select" class="demo-heading role-label">select · &lt;arq-select&gt; (+ select-menu)</h2>
-        <p class="demo-note role-body-sm">Figma 921:2544 · 1061:4867. Field (configurador): etiqueta siempre visible arriba (salvo Disabled) y muestra siempre a la vista, sea o no un acabado. Filter (celda de filter-bar, «Todos» primero). Teclado: flechas, Enter, Espacio, Esc, Inicio/Fin y letras. Las deshabilitadas se saltean (Terracota). Con más de 7 opciones, el menú tiene scroll.</p>
+        <p class="demo-note role-body-sm">Figma 921:2544 · 1061:4867. Field y Filter se construyen igual: etiqueta arriba sin gap (la separación es el padding vertical del trigger, space/padding/sm-md) y un trigger con línea inferior. Reposo en role/body-regular; Hover y Open en color/surface/faint en los dos (el texto no cambia); Filter con un valor elegido (Filled) en role/body-medium. La muestra de color se ve con show-swatch (Figma: Show swatch) o si la opción trae imagen / showSwatch. Teclado: flechas, Enter, Espacio, Esc, Inicio/Fin y letras. Las deshabilitadas se saltean (Terracota). Con más de 7 opciones, el menú tiene scroll.</p>
         <div class="demo-option-groups">
           <arq-select label="Acabado" value="Negro" data-demo-options="finishes"></arq-select>
           <arq-select label="Altura (muchas opciones)" value="50 cm" data-demo-options="heights"></arq-select>
           <arq-select label="Acabado (deshabilitado)" value="Negro" disabled data-demo-options="finishes"></arq-select>
+        </div>
+        <p class="demo-note role-body-sm">Show swatch: sin el atributo, el Field no muestra muestra si las opciones no la piden; con show-swatch la muestra en todas (sin imagen, el neutro).</p>
+        <div class="demo-option-groups">
+          <arq-select label="Altura (sin show-swatch)" value="50 cm" data-demo-options="heights"></arq-select>
+          <arq-select label="Altura (show-swatch)" value="50 cm" show-swatch data-demo-options="heights"></arq-select>
         </div>
         <div class="demo-row">
           <arq-select type="filter" label="Acabado" data-demo-options="finishes"></arq-select>
           <arq-select type="filter" label="Acabado" value="Negro" data-demo-options="finishes"></arq-select>
           <arq-select type="filter" label="Altura" data-demo-options="heights"></arq-select>
           <arq-select type="filter" label="Acabado" disabled data-demo-options="finishes"></arq-select>
+          <arq-select type="filter" label="Altura (show-swatch)" value="50 cm" show-swatch data-demo-options="heights"></arq-select>
         </div>
         <p class="demo-note role-body-sm" data-demo-select-log>arq:change → (todavía nada)</p>
         <div class="demo-dark" data-arq-theme="dark">
@@ -924,7 +930,7 @@
 
       <section class="demo-section" aria-labelledby="demo-compare-slot">
         <h2 id="demo-compare-slot" class="demo-heading role-label">compare-slot · &lt;arq-compare-slot&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 1233:3656. Default (foto layout/compare-thumb, ancho máximo layout/compare-slot) y Compact (miniatura 7:10). Filled si tiene nombre; Empty «Agregar producto». Quitar emite arq:remove.</p>
+        <p class="demo-note role-body-sm">Figma 1233:3656. Default (foto layout/compare-thumb, ancho máximo layout/compare-slot) y Compact (miniatura 7:10). Filled si tiene nombre; Empty «Agregar producto». Quitar emite arq:remove. Solo se usa en compare-bar: el compare-header Compact usa compare-product Size=Compact.</p>
         <div class="demo-dark" data-arq-theme="dark">
           <div class="demo-compare-slots">
             <arq-compare-slot sku="KANU-J-500-12W-N-WW" image="/demo/fixtures/img/card-estudio.svg"><span slot="name">Kanu Jardín</span><span slot="meta">Exterior · Jardín</span></arq-compare-slot>
@@ -946,16 +952,26 @@
           <arq-compare-product data-demo-compare-product="filled" style="max-width: 280px"></arq-compare-product>
           <arq-compare-product data-demo-compare-product="empty" style="max-width: 280px"></arq-compare-product>
         </div>
+        <p class="demo-note role-body-sm">Size=Compact (Figma 1912:5841 · 1912:5860 · 1912:5864): miniatura layout/compare-thumb + nombre + quitar, o una caja punteada «Agregar producto» (pasale el mouse para ver empty-hover). Con show-sku se ve el SKU (Desktop del compare-header Compact); sin él, solo el nombre (Mobile).</p>
+        <div class="demo-row demo-compare-compact">
+          <arq-compare-product size="compact" show-sku data-demo-compare-product="filled"></arq-compare-product>
+          <arq-compare-product size="compact" data-demo-compare-product="filled"></arq-compare-product>
+          <arq-compare-product size="compact" data-demo-compare-product="empty"></arq-compare-product>
+        </div>
         <p class="demo-note role-body-sm">Dark (sección con data-arq-theme="dark"):</p>
         <div class="demo-row demo-dark" data-arq-theme="dark">
           <arq-compare-product data-demo-compare-product="filled" style="max-width: 280px"></arq-compare-product>
+        </div>
+        <div class="demo-row demo-dark demo-compare-compact" data-arq-theme="dark">
+          <arq-compare-product size="compact" show-sku data-demo-compare-product="filled"></arq-compare-product>
+          <arq-compare-product size="compact" data-demo-compare-product="empty"></arq-compare-product>
         </div>
         <p class="demo-note role-body-sm" data-demo-compare-product-log>arq:change / arq:remove / arq:add → (todavía nada)</p>
       </section>
 
       <section class="demo-section" aria-labelledby="demo-compare-header">
         <h2 id="demo-compare-header" class="demo-heading role-label">compare-header · &lt;arq-compare-header&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 1265:4330. Toggle «Solo diferencias» + hasta 3 compare-product, estiradas a la misma altura (un lugar vacío ocupa todo el alto de la columna). Type (Default/Compact) no es una prop: un IntersectionObserver lo cambia solo al desplazar. En Mobile el Default no muestra controles (ni toggle ni espaciador). Para ver el Compact fijo bajo el navbar en una página real, abrí <a href="/demo/comparativa.html?sku=KANU-J-500-12W-N-WW,KANU-P-350-12W-N-WW,TORI-J-450-7W-G-WW">demo/comparativa.html</a>.</p>
+        <p class="demo-note role-body-sm">Figma 1265:4330. Toggle «Solo diferencias» + hasta 3 compare-product, estiradas a la misma altura (un lugar vacío ocupa todo el alto de la columna). Type (Default/Compact) no es una prop: un IntersectionObserver lo cambia solo al desplazar; el Compact usa compare-product Size=Compact (con SKU en Desktop, solo el nombre en Mobile). En Mobile el Default no muestra controles (ni toggle ni espaciador). Para ver el Compact fijo bajo el navbar en una página real, abrí <a href="/demo/comparativa.html?sku=KANU-J-500-12W-N-WW,KANU-P-350-12W-N-WW,TORI-J-450-7W-G-WW">demo/comparativa.html</a>.</p>
         <div class="demo-bleed">
           <arq-compare-header data-demo-compare-header="3"></arq-compare-header>
         </div>

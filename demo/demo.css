@@ -146,6 +146,16 @@
   align-items: stretch;
 }
 
+/* compare-product Size=Compact: filas del ancho de una columna del compare-header */
+.demo-compare-compact {
+  align-items: center;
+}
+
+.demo-compare-compact > arq-compare-product {
+  flex: 1 1 16rem;
+  max-width: 24rem;
+}
+
 /* Columna angosta para probar labels largos */
 .demo-narrow {
   display: grid;

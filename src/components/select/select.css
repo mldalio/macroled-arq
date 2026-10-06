@@ -1,31 +1,45 @@
 /* select · Figma 921:2544. Solo tokens semánticos.
-   Type=Field es la base. El menú (select-menu) flota debajo del campo. */
+   Field y Filter se construyen igual: etiqueta arriba (sin gap) y un trigger
+   con la línea inferior. Lo único que cambia entre los dos Type es el ancho
+   (Filter mide al menos layout/select-filter), el tamaño de la muestra y del
+   chevron, y el valor Filled en role/body-medium. El menú (select-menu)
+   flota debajo del campo. */
 
 :host {
   display: block;
   min-width: 0;
 }
 
+/* La separación entre la etiqueta y el campo es solo el padding vertical del
+   trigger (space/padding/sm-md): el gap es 0. */
 .select {
   position: relative;
   display: flex;
   flex-direction: column;
 }
 
-/* Field: separación etiqueta–trigger. Filter pisa esto más abajo. */
-:host(:not([type='filter'])) .select {
-  gap: var(--arq-space-gap-sm);
+.label {
+  color: var(--arq-color-text-tertiary);
 }
 
+/* Trigger: padding vertical space/padding/sm-md, sin padding lateral, gap
+   space/gap/sm-md entre muestra, texto y chevron. La línea inferior
+   (border/default en color/border/strong) se descuenta del padding para que
+   el campo mida 48, como el set. */
 .trigger {
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  gap: var(--arq-space-gap-md);
+  gap: var(--arq-space-gap-sm-md);
   width: 100%;
   margin: 0;
+  padding: var(--arq-space-padding-sm-md) 0 calc(var(--arq-space-padding-sm-md) - var(--arq-border-default));
   border: 0;
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-strong);
   border-radius: var(--arq-radius-control);
+  /* Sin esto queda el gris que el navegador le pone a todo <button> */
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-primary);
   font: inherit;
   text-align: start;
   cursor: pointer;
@@ -54,6 +68,17 @@
   display: none;
 }
 
+/* Hover y Open (los dos Type): fondo color/surface/faint, el texto no cambia. */
+@media (hover: hover) {
+  :host(:not([open])) .trigger:enabled:hover {
+    background: var(--arq-color-surface-faint);
+  }
+}
+
+:host([open]) .trigger {
+  background: var(--arq-color-surface-faint);
+}
+
 /* Menú flotante debajo del campo */
 .menu {
   position: absolute;
@@ -63,89 +88,29 @@
 }
 
 /* ── Type=Field ──────────────────────────────────────────────────
-   Default sin fondo; Hover color/surface/faint; Focus color/surface/soft con
-   línea color/border/focus; Open color/surface/soft. Línea inferior
-   border/default en color/border/strong (Focus: color/border/focus). Padding
-   space/padding/sm-md × space/padding/md; la línea se descuenta del padding
-   (48, como el set). La muestra (swatch) solo se ve si la opción es un
-   acabado/color (showSwatch): sin imagen cae al neutro de arq-swatch
-   (DESIGN.md §8); si no es un campo de color, no hay swatch. */
-:host(:not([type='filter'])) .trigger {
-  padding: var(--arq-space-padding-sm-md) var(--arq-space-padding-md) calc(var(--arq-space-padding-sm-md) - var(--arq-border-default));
-  border-bottom: var(--arq-border-default) solid var(--arq-color-border-strong);
-  /* Sin esto queda el gris que el navegador le pone a todo <button> */
-  background: var(--arq-color-surface-transparent);
-  color: var(--arq-color-text-primary);
-}
-
-@media (hover: hover) {
-  :host(:not([type='filter']):not([open])) .trigger:enabled:hover {
-    background: var(--arq-color-surface-faint);
-  }
-}
-
-:host(:not([type='filter'])[open]) .trigger,
-:host(:not([type='filter'])) .trigger:focus-visible {
-  background: var(--arq-color-surface-soft);
-}
-
-:host(:not([type='filter'])) .trigger:focus-visible {
-  border-bottom-color: var(--arq-color-border-focus);
-}
-
+   Ancho del contenedor; el menú (Finishes) ocupa todo el ancho del campo.
+   Muestra swatch/md; chevron icon/md. La muestra se ve con show-swatch (o si
+   la opción trae imagen / showSwatch): sin imagen cae al neutro de arq-swatch
+   (DESIGN.md §8). */
 :host(:not([type='filter'])) .menu {
   right: 0;
 }
 
 /* ── Type=Filter ─────────────────────────────────────────────────
-   Etiqueta role/label-sm en color/text/tertiary + fila con valor
-   (role/body-medium) y chevron icon/sm. En todos los estados, gap
-   space/gap/sm y padding inferior space/padding/sm con línea inferior
-   color/border/strong (como el set). */
-/* La celda mide al menos layout/select-filter (160): la flecha va al extremo
-   derecho, como el set */
+   La celda mide al menos layout/select-filter (160): la flecha va al
+   extremo derecho, como el set. Muestra swatch/sm y chevron icon/sm. El
+   valor elegido (Filled) va en role/body-medium (ver select.js). */
 :host([type='filter']) {
   min-width: var(--arq-layout-select-filter);
 }
 
-/* Todos los estados llevan la línea inferior de Filled (el set): «Todos» se
-   ve igual que un filtro elegido. La línea se descuenta del padding. */
-:host([type='filter']) .select {
-  gap: var(--arq-space-gap-sm);
-  padding-bottom: calc(var(--arq-space-padding-sm) - var(--arq-border-default));
-  border-bottom: var(--arq-border-default) solid var(--arq-color-border-strong);
-}
-
-:host([type='filter'][disabled]) .select {
-  border-bottom-color: var(--arq-color-border-disabled);
-}
-
-.label {
-  color: var(--arq-color-text-tertiary);
-}
-
 :host([type='filter']) .trigger {
   justify-content: space-between;
-  gap: var(--arq-space-gap-sm);
-  padding: 0;
-  background: var(--arq-color-surface-transparent);
-  color: var(--arq-color-text-primary);
 }
 
 :host([type='filter']) .icon {
   width: var(--arq-icon-sm);
   height: var(--arq-icon-sm);
-}
-
-/* Hover del Filter: el valor pasa a color/text/tertiary (el set) */
-@media (hover: hover) {
-  :host([type='filter']:not([open])) .trigger:enabled:hover .value {
-    color: var(--arq-color-text-tertiary);
-  }
-}
-
-:host([type='filter']) .menu {
-  margin-top: var(--arq-space-gap-sm);
 }
 
 /* ── Disabled ───────────────────────────────────────────────────── */

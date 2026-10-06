@@ -3,7 +3,8 @@
 // Cabecera de la página Comparativa. Type=Default: columna de controles
 // (toggle "Solo diferencias") + hasta 3 compare-product. Type=Compact:
 // versión mini que queda fija bajo el navbar cuando el Default sale de
-// pantalla (compare-slot por producto). Type no es una prop: el propio
+// pantalla (compare-product Size=Compact por producto; compare-slot queda solo
+// para compare-bar). Type no es una prop: el propio
 // componente mide el scroll con un IntersectionObserver y cambia solo.
 //
 //   <arq-compare-header></arq-compare-header>
@@ -20,13 +21,12 @@
 // - No consulta Typesense: recibe los datos ya armados (AGENTS.md · Datos).
 // - TODO (navbar): falta el token layout/navbar-height (docs/decisiones.md,
 //   2026-10-01 · hero). Mientras tanto se mide el alto real de <arq-navbar>.
-// - Mobile: columnas de compare-slot Compact (28 de ancho) con el nombre al
-//   lado, igual que la cabecera provisoria que tenía compare-table.
+// - Compact: miniatura + nombre + quitar. El SKU se ve solo en Desktop
+//   (show-sku): en Mobile el Compact muestra solo el nombre, como el set.
 
 import { ArqElement } from '../../base/arq-element.js';
 import '../toggle/toggle.js';
 import '../compare-product/compare-product.js';
-import '../compare-slot/compare-slot.js';
 import css from './compare-header.css?inline';
 
 const MAX = 3;
@@ -94,6 +94,11 @@ class ArqCompareHeader extends ArqElement {
       event.stopPropagation();
       this.emit('remove', { sku: event.detail.sku });
     });
+    root.querySelector('.slots').addEventListener('arq:add', (event) => {
+      event.stopPropagation();
+      const index = [...root.querySelectorAll('.slots arq-compare-product')].indexOf(event.target);
+      this.emit('add', { index });
+    });
     for (const strip of root.querySelectorAll('.products, .slots')) {
       strip.addEventListener('scroll', () => this.#onScroll(strip));
     }
@@ -120,8 +125,8 @@ class ArqCompareHeader extends ArqElement {
     }
   }
 
-  // Siempre se muestran MAX columnas: sin producto, compare-product/compare-slot
-  // quedan en State=Empty (ficha: "con menos, compare-product Empty").
+  // Siempre se muestran MAX columnas: sin producto, compare-product (Default y
+  // Compact) queda en State=Empty (ficha: "con menos, compare-product Empty").
   #render() {
     const root = this.shadowRoot;
     const products = root.querySelector('.products');
@@ -135,32 +140,13 @@ class ArqCompareHeader extends ArqElement {
       }
       product.data = data;
 
-      let slot = slots.children[i];
-      if (!slot) {
-        slot = document.createElement('div');
-        slot.className = 'product';
-        slot.innerHTML = '<arq-compare-slot></arq-compare-slot><span class="mobile-name role-label" aria-hidden="true"></span>';
-        slots.append(slot);
+      let compact = slots.children[i];
+      if (!compact) {
+        compact = document.createElement('arq-compare-product');
+        compact.size = 'compact';
+        slots.append(compact);
       }
-      const compareSlot = slot.querySelector('arq-compare-slot');
-      if (data) {
-        compareSlot.sku = data.sku;
-        if (data.image) compareSlot.image = data.image;
-        else compareSlot.removeAttribute('image');
-        compareSlot.replaceChildren();
-        const name = document.createElement('span');
-        name.slot = 'name';
-        name.textContent = data.name ?? '';
-        const meta = document.createElement('span');
-        meta.slot = 'meta';
-        meta.textContent = data.meta ?? data.sku ?? '';
-        compareSlot.append(name, meta);
-      } else {
-        compareSlot.removeAttribute('sku');
-        compareSlot.removeAttribute('image');
-        compareSlot.replaceChildren();
-      }
-      slot.querySelector('.mobile-name').textContent = data?.name ?? '';
+      compact.data = data;
     }
     while (products.children.length > MAX) products.lastElementChild.remove();
     while (slots.children.length > MAX) slots.lastElementChild.remove();
@@ -169,7 +155,8 @@ class ArqCompareHeader extends ArqElement {
 
   #syncBreakpoint() {
     const mobile = MOBILE.matches;
-    for (const slot of this.shadowRoot.querySelectorAll('.slots arq-compare-slot')) slot.size = mobile ? 'compact' : 'default';
+    // El SKU del Compact solo en Desktop (Show SKU)
+    for (const compact of this.shadowRoot.querySelectorAll('.slots arq-compare-product')) compact.showSku = !mobile;
     document.querySelector('arq-navbar')?.removeAttribute('data-arq-compare-hidden');
   }
 
