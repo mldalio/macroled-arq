@@ -6,6 +6,7 @@ Botón de solo ícono. Size Default (24 × 24) para navbar, tablas y controles c
 
 ```html
 <arq-icon-button icon="search">Buscar</arq-icon-button>
+<arq-icon-button icon="download" size="large" background="outline">Descargas de KANU-J-500-12W-N-WW</arq-icon-button>
 <arq-icon-button icon="plus" size="large">Abrir especificaciones</arq-icon-button>
 <arq-icon-button icon="download" background="subtle">Descargar ficha técnica</arq-icon-button>
 ```
@@ -17,10 +18,10 @@ Botón de solo ícono. Size Default (24 × 24) para navbar, tablas y controles c
 | — (nombre accesible) | slot por defecto | — | **Obligatorio.** Qué hace el botón ("Buscar", "Cerrar"). Queda oculto visualmente; si falta, avisa con `console.warn` |
 | Icon | `icon` | `icon` | cualquier nombre de `src/base/icons.js` (def. `search`) |
 | Size | `size` | `size` | `default` · `large` (def. `default`) |
-| Background | `background` | `background` | `none` · `surface` · `subtle` (def. `none`) |
+| Background | `background` | `background` | `none` · `surface` · `subtle` · `outline` (def. `none`) |
 | State=Disabled | `disabled` | `disabled` | booleano · atributo `disabled` nativo en el `<button>` interno |
 
-- **Background=None** sobre `color/surface/default` (lo más común: navbar, cerrar paneles, + / – de acordeones). **Surface** cuando va sobre otra superficie (faint, subtle…). **Subtle** para que la acción se note entre mucha información (descarga en la tabla de variantes).
+- **Background=None** sobre `color/surface/default` (lo más común: navbar, cerrar paneles, + / – de acordeones). **Surface** cuando va sobre otra superficie (faint, subtle…). **Subtle** para que la acción se note entre mucha información. **Outline** acompaña a un button Outline: la descarga de cada fila de variants-table (Size=Large).
 - Hover, Pressed y Focus no son props: `:hover`, `:active`, `:focus-visible`.
 - `el.focus()` enfoca el `<button>` interno. Deshabilitado, el clic no se propaga.
 - Si un ícono es clickeable, va siempre dentro de icon-button.
@@ -34,6 +35,8 @@ Botón de solo ícono. Size Default (24 × 24) para navbar, tablas y controles c
 | Fondo None · hover · pressed | transparente · `color/surface/hover` · `color/surface/selected` |
 | Fondo Surface · hover · pressed | `color/surface/default` · `color/surface/subtle` · `color/surface/selected` |
 | Fondo Subtle · hover · pressed | `color/surface/subtle` · `color/surface/selected` · `color/surface/strong` |
+| Outline | borde `border/default` en `color/border/strong` (Disabled `color/border/disabled`), sin fondo; hover `color/surface/hover` · pressed `color/surface/selected`. El borde se descuenta del padding: mide 24 / 48 como el resto |
+| Outline | borde `border/default` en `color/border/strong` (Disabled `color/border/disabled`), sin fondo; hover `color/surface/hover` · pressed `color/surface/selected`. El borde se descuenta del padding: mide 24 / 48 como el resto |
 | Foco | `border/strong` en `color/border/focus`, separado 2 px (DESIGN.md §7) |
 | Radio | `radius/control` |
 

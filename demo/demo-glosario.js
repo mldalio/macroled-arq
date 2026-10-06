@@ -40,6 +40,7 @@ const data = {
   rows: group.variants.map((v) => ({
     sku: v.sku,
     thumb: `${IMG}card-estudio.svg`,
+    search: group.name,
     attributes: v.attributes,
     values: Object.fromEntries(
       [v.attributes.altura, '12 W', '2700 K', '820 lm', '60°', '68 lm/W', 'No Dim', 'IP65', 'LED', '90'].map((value, i) => [`c${i}`, value]),

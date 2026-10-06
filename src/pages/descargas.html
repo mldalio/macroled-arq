@@ -1,30 +1,29 @@
 <!--
-  Glosario · /arq/glosario · Code Embed de Webflow (docs/decisiones.md, 2026-10-01 · Páginas en Webflow y 2026-10-05 · Glosario)
-  Pantalla: Final › Glosario (1795:18553 Desktop · 1795:18955 Mobile)
+  Descargas · /arq/descargas · Code Embed de Webflow (docs/decisiones.md, 2026-10-01 · Páginas en Webflow y 2026-10-06 · Descargas)
+  Pantalla: Descargas (antes Glosario) (1801:19315 → Desktop 1808:20165 · Mobile 1808:20882). Antes se llamaba Glosario.
   Se edita acá y se pega en Webflow. dist/arq.js, dist/arq.css y Albert Sans se cargan a nivel sitio.
 
-  Todos los SKU del catálogo en una variants-table (arq-glosario), desde Typesense.
+  Todos los SKU del catálogo en una variants-table con buscador y orden (arq-descargas), desde Typesense.
   TODO (contenido): la bajada es una propuesta; confirmar el texto.
+  TODO (datos): URL del catálogo general (PDF). Hasta tenerla, el botón apunta a "#".
 -->
 <arq-navbar>
   <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
-  <arq-nav-link slot="links" href="/arq/glosario" current>Glosario</arq-nav-link>
+  <arq-nav-link slot="links" href="/arq/descargas" current>Descargas</arq-nav-link>
   <arq-nav-link slot="links" href="/arq/contacto">Contacto</arq-nav-link>
 </arq-navbar>
 
 <main>
-  <arq-page-header show-breadcrumb show-description>
-    <arq-breadcrumb slot="breadcrumb">
-      <arq-breadcrumb-item href="/arq" show-separator>Inicio</arq-breadcrumb-item>
-      <arq-breadcrumb-item current>Glosario</arq-breadcrumb-item>
-    </arq-breadcrumb>
-    <h1 slot="title">Glosario</h1>
+  <arq-page-header type="detail" show-back back-href="/arq/productos" show-description show-action>
+    <span slot="back">Volver a productos</span>
+    <h1 slot="title">Descargas</h1>
     <p slot="description">Todos los códigos de Arq con sus datos técnicos. Filtrá por característica y descargá los archivos de cada variante.</p>
+    <arq-button slot="action" show-icon icon="download" href="#">Descargar catálogo general</arq-button>
   </arq-page-header>
 
-  <arq-glosario>
+  <arq-descargas>
     <h2 slot="modal-title">Descargas</h2>
-  </arq-glosario>
+  </arq-descargas>
 </main>
 
 <arq-footer>
@@ -33,11 +32,10 @@
   <arq-footer-link slot="productos" href="/arq/productos?environment=Interior">Interior</arq-footer-link>
   <arq-footer-link slot="productos" href="/arq/productos?environment=Exterior">Exterior</arq-footer-link>
   <arq-footer-link slot="productos" href="/arq/productos?product_type=L%C3%A1mpara">Lámparas y Artefactos</arq-footer-link>
-  <arq-footer-link slot="productos" href="/arq/colecciones">Colecciones</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?view=colecciones">Colecciones</arq-footer-link>
   <h2 slot="informacion-title">Información</h2>
   <arq-footer-link slot="informacion" href="/arq/contacto">Contacto</arq-footer-link>
   <arq-footer-link slot="informacion" href="/arq/descargas">Descargas</arq-footer-link>
-  <arq-footer-link slot="informacion" href="/arq/glosario">Glosario</arq-footer-link>
   <h2 slot="redes-title">Redes</h2>
   <arq-footer-link slot="redes" href="https://www.instagram.com/" target="_blank" show-icon icon="instagram" label="Macroled Arq en Instagram">Instagram</arq-footer-link>
   <arq-footer-link slot="redes" href="https://www.youtube.com/" target="_blank" show-icon icon="youtube" label="Macroled Arq en YouTube">YouTube</arq-footer-link>

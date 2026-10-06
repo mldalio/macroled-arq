@@ -286,6 +286,13 @@
           <arq-icon-button icon="download" size="large" background="subtle">Descargar</arq-icon-button>
           <arq-icon-button icon="close" size="large" background="subtle" disabled>Cerrar (deshabilitado)</arq-icon-button>
         </div>
+        <h3 class="demo-subheading role-body-sm">Background=Outline · Default y Large (descarga de cada fila de variants-table) · el último de cada uno, Disabled</h3>
+        <div class="demo-row">
+          <arq-icon-button icon="download" background="outline">Descargar</arq-icon-button>
+          <arq-icon-button icon="close" background="outline" disabled>Cerrar (deshabilitado)</arq-icon-button>
+          <arq-icon-button icon="download" size="large" background="outline">Descargar</arq-icon-button>
+          <arq-icon-button icon="close" size="large" background="outline" disabled>Cerrar (deshabilitado)</arq-icon-button>
+        </div>
 
         <h3 class="demo-subheading role-body-sm">Contenedor en modo Dark (data-arq-theme="dark"): Default y Large × None, Surface, Subtle, y Disabled</h3>
         <div class="demo-row demo-dark" data-arq-theme="dark">
@@ -295,6 +302,7 @@
           <arq-icon-button icon="search" size="large">Buscar (large, none)</arq-icon-button>
           <arq-icon-button icon="search" size="large" background="surface">Buscar (large, surface)</arq-icon-button>
           <arq-icon-button icon="search" size="large" background="subtle">Buscar (large, subtle)</arq-icon-button>
+          <arq-icon-button icon="download" size="large" background="outline">Descargar (large, outline)</arq-icon-button>
           <arq-icon-button icon="close" disabled>Cerrar (deshabilitado)</arq-icon-button>
         </div>
       </section>
@@ -698,6 +706,7 @@
         <div class="demo-row">
           <arq-button type="outline" show-icon icon="download" data-demo-download-open="demo-descargas">Descargas (ficha)</arq-button>
           <arq-button type="outline" show-icon icon="download" data-demo-download-open="demo-descargas-pocas">Descargas (solo IES)</arq-button>
+          <arq-button type="outline" show-icon icon="download" data-demo-download-open="demo-descargas-sku">Descargas (con SKU)</arq-button>
         </div>
         <arq-download-modal id="demo-descargas">
           <h2 slot="title">Descargas</h2>
@@ -705,6 +714,15 @@
           <arq-download-item href="/demo/fixtures/img/producto-1.svg">Instrucciones</arq-download-item>
           <arq-download-item href="/demo/fixtures/img/producto-2.svg">CAD 2D/3D</arq-download-item>
           <arq-download-item href="/demo/fixtures/img/producto-3.svg">Fotometrías</arq-download-item>
+          <arq-download-item href="/demo/fixtures/img/producto-1.svg">IES</arq-download-item>
+        </arq-download-modal>
+        <!-- Página Descargas (Figma 1802:30817 · 1802:30903): sku debajo del título -->
+        <arq-download-modal id="demo-descargas-sku" sku="KANU-J-500-12W-N-WW">
+          <h2 slot="title">Descargas</h2>
+          <arq-download-item>Ficha técnica</arq-download-item>
+          <arq-download-item href="/demo/fixtures/img/producto-1.svg">Manual</arq-download-item>
+          <arq-download-item href="/demo/fixtures/img/producto-2.svg">CAD 2D/3D</arq-download-item>
+          <arq-download-item href="/demo/fixtures/img/producto-3.svg">Fotometría</arq-download-item>
           <arq-download-item href="/demo/fixtures/img/producto-1.svg">IES</arq-download-item>
         </arq-download-modal>
         <arq-download-modal id="demo-descargas-pocas">
@@ -755,8 +773,10 @@
           <arq-button slot="downloads" type="outline" show-icon icon="download" href="/demo/fixtures/img/producto-1.svg">CAD 2D/3D</arq-button>
           <arq-button slot="downloads" type="outline" show-icon icon="download" href="/demo/fixtures/img/producto-2.svg">Manual</arq-button>
         </arq-variants-table>
+        <p class="demo-note role-body-sm">Página Descargas (Figma 1808:20165 · 1808:20882), solo de código: show-search (busca en el SKU y el nombre: probá «900» o «kanu»). En Dark, además show-sort («Ordenar por» SKU A–Z / Z–A), que hoy no usa ninguna página.</p>
+        <arq-variants-table data-demo-glosario show-search downloads="demo-descargas-sku" label="Variantes con buscador"></arq-variants-table>
         <div class="demo-dark" data-arq-theme="dark">
-          <arq-variants-table data-demo-glosario filters label="Variantes (Dark)"></arq-variants-table>
+          <arq-variants-table data-demo-glosario filters show-search show-sort label="Variantes (Dark)"></arq-variants-table>
         </div>
       </section>
 
@@ -1414,7 +1434,7 @@
         <nav class="demo-nav" aria-label="Navegación de prueba">
           <arq-nav-link has-dropdown data-demo-dropdown>Productos</arq-nav-link>
           <arq-nav-link href="#demo-nav-link" current>Colecciones</arq-nav-link>
-          <arq-nav-link href="#demo-nav-link">Glosario</arq-nav-link>
+          <arq-nav-link href="#demo-nav-link">Descargas</arq-nav-link>
           <arq-nav-link href="#demo-nav-link">Contacto</arq-nav-link>
         </nav>
         <div class="demo-dark" data-arq-theme="dark">
@@ -1432,7 +1452,7 @@
         <div class="demo-navbar">
           <arq-navbar>
             <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
-            <arq-nav-link slot="links" href="#demo-navbar">Glosario</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-navbar">Descargas</arq-nav-link>
             <arq-nav-link slot="links" href="#demo-navbar" current>Contacto</arq-nav-link>
           </arq-navbar>
           <div class="demo-placeholder role-body-sm">Contenido de la página</div>
@@ -1441,7 +1461,7 @@
         <div class="demo-navbar demo-navbar--photo">
           <arq-navbar theme="transparent" label="Principal (sobre foto)">
             <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
-            <arq-nav-link slot="links" href="#demo-navbar">Glosario</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-navbar">Descargas</arq-nav-link>
             <arq-nav-link slot="links" href="#demo-navbar">Contacto</arq-nav-link>
           </arq-navbar>
           <img src="/demo/fixtures/img/hero-1.svg" alt="">
@@ -1450,7 +1470,7 @@
         <div class="demo-navbar">
           <arq-navbar data-arq-theme="dark" label="Principal (Dark)">
             <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
-            <arq-nav-link slot="links" href="#demo-navbar">Glosario</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-navbar">Descargas</arq-nav-link>
             <arq-nav-link slot="links" href="#demo-navbar">Contacto</arq-nav-link>
           </arq-navbar>
         </div>

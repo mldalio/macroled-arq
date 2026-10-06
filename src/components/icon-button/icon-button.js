@@ -7,6 +7,7 @@
 //   <arq-icon-button icon="search">Buscar</arq-icon-button>
 //   <arq-icon-button icon="plus" size="large">Abrir especificaciones</arq-icon-button>
 //   <arq-icon-button icon="download" background="subtle">Descargar</arq-icon-button>
+//   <arq-icon-button icon="download" size="large" background="outline">Descargas de …</arq-icon-button>
 //
 // State de Figma: Hover, Pressed y Focus son :hover, :active y :focus-visible.
 // Disabled es la prop disabled (atributo disabled nativo en el <button>).
@@ -23,7 +24,7 @@ class ArqIconButton extends ArqElement {
   static properties = {
     icon: { type: String, default: 'search' }, // Icon (default de Figma)
     size: { type: String, values: ['default', 'large'], default: 'default' }, // Size
-    background: { type: String, values: ['none', 'surface', 'subtle'], default: 'none' }, // Background
+    background: { type: String, values: ['none', 'surface', 'subtle', 'outline'], default: 'none' }, // Background
     disabled: { type: Boolean }, // State=Disabled
   };
   static template = `<button type="button" class="control"><span class="glyph"></span><span class="visually-hidden"><slot></slot></span></button>`;

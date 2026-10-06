@@ -98,7 +98,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ coleccion | `<arq-coleccion>` | Página de colección: cards de sus productos, galería, texto + imagen y mosaico con flechas ([README](../src/components/coleccion/README.md)) |
 | ✅ form-contacto | `<arq-form-contacto>` | Contacto: información por slot y formulario con validación, honeypot y envío a n8n ([README](../src/components/form-contacto/README.md)) |
 | ✅ ficha-producto | `<arq-ficha-producto>` | Ficha de producto: hero con galería y configurador, descargas, especificaciones, descripción, glosario, inspiración y colección ([README](../src/components/ficha-producto/README.md)) |
-| ✅ glosario | `<arq-glosario>` | Página Glosario: variants-table con todos los SKU del catálogo y el modal de descargas de cada fila ([README](../src/components/glosario/README.md)) |
+| ✅ descargas | `<arq-descargas>` | Página Descargas (antes Glosario): variants-table con todos los SKU del catálogo, buscador y el modal de descargas de cada fila ([README](../src/components/descargas/README.md)) |
 | ✅ comparativa | `<arq-comparativa>` | Página Comparativa: combina compare-header y compare-table con los SKU de `?sku=`, con datos del catálogo ([README](../src/components/comparativa/README.md)) |
 
 ### Páginas
@@ -111,7 +111,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ Contacto | [src/pages/contacto.html](../src/pages/contacto.html) | `demo/contacto.html` |
 | ✅ Ficha de producto | [src/pages/ficha.html](../src/pages/ficha.html) | `demo/ficha.html` (`?group=` y `?sku=`) |
 | ✅ Comparativa | [src/pages/comparativa.html](../src/pages/comparativa.html) | `demo/comparativa.html` (`?sku=`) |
-| ✅ Glosario | [src/pages/glosario.html](../src/pages/glosario.html) | `demo/glosario.html` |
+| ✅ Descargas | [src/pages/descargas.html](../src/pages/descargas.html) | `demo/descargas.html` |
 
 ## accordion-item
 
@@ -317,7 +317,7 @@ Opción del modal de descargas, con texto role/body-xl (más grande que un butto
 - Figma: [1375-4948](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1375-4948)
 - Propiedades: Title; Breakpoint: Desktop · Mobile
 
-Modal de descargas con opciones download-item. Desktop: esquina inferior derecha, separado layout/gutter del borde, ancho layout/filter-panel (560). Mobile: abajo, a layout/gutter de los bordes y ocupando el ancho (alto según el contenido). Siempre con color/overlay/scrim detrás.
+Modal de descargas con opciones download-item. Desktop: esquina inferior derecha, separado layout/gutter del borde, ancho layout/filter-panel (560). Mobile: abajo, a layout/gutter de los bordes y ocupando el ancho (alto según el contenido). Siempre con color/overlay/scrim detrás; mientras está abierto, la página de atrás no se desplaza. Página Descargas: sku Compact debajo del título (código: atributo sku), opciones Emphasis=Default.
 
 ## family-card
 
@@ -428,11 +428,11 @@ Hero de página compartido por Home y Contacto: media (imagen o video; reemplaz�
 ## icon-button
 
 - Figma: [752-2882](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=752-2882)
-- Propiedades: Icon; Size: Default · Large; Background: None · Surface · Subtle; State: Default · Hover · Pressed · Focus · Disabled
+- Propiedades: Icon; Size: Default · Large; Background: None · Surface · Subtle · Outline; State: Default · Hover · Pressed · Focus · Disabled
 
 Botón de ícono. Size: Default (24 × 24, ícono icon/md; navbar, tablas y controles chicos) o Large (48 × 48 = padding space/padding/sm-md + ícono icon/xl de 24; acciones de bloques, como el acordeón). Background: None (sin fondo, sobre surface/default), Surface (fondo surface/default, para cuando va sobre otro surface: faint, subtle…) y Subtle (fondo surface/subtle; para que la acción se note entre mucha información, como la descarga de cada fila de la tabla de variantes). State: Default, Hover (None: surface/hover; Surface: surface/subtle; Subtle: surface/selected), Pressed (Subtle: surface/strong; el resto surface/selected), Focus (anillo border/focus). Prototipo: Default pasa a Hover al pasar el mouse y Hover a Pressed al presionar. Cambiar el ícono con la propiedad Icon.
 
-State=Disabled: ícono en color/icon/disabled, sin interacción (atributo disabled nativo).
+State=Disabled: ícono en color/icon/disabled, sin interacción (atributo disabled nativo). Outline (borde color/border/strong de border/default, sin fondo; Hover surface/hover, Pressed surface/selected, Disabled border/disabled): acción con ícono solo que acompaña a un button Outline, como la descarga de cada fila de variants-table (Size=Large, Desktop y Mobile).
 
 ## input
 
@@ -679,14 +679,16 @@ Switch del toggle (pista + círculo), compartido por todas las variantes de togg
 - Figma: [1068-5582](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1068-5582)
 - Propiedades: Filters: Off · On; Breakpoint: Desktop · Mobile
 
-Tabla de variantes de la ficha (Glosario; el título va aparte como título de sección). Filters=Off: botón Filtros en button Filled con icon/filter. Filters=On: button Outline con icon/filter-off y debajo filter-bar. A la derecha, descargas con button Outline + icon/download. Filas: variants-table-row Header + una Row por SKU. Componente de borde a borde: ocupa todo el ancho de la página para que la filter-bar llegue al borde; toolbar y filas llevan padding lateral layout/gutter. En mobile el scroll de las columnas llega al borde de la pantalla. Scroll: en Figma cada fila tiene su propio frame scroll porque Figma no puede sincronizar el desplazamiento entre instancias; es solo una especificación de qué columnas se mueven. En código la tabla usa un único contenedor con overflow-x: auto que envuelve header y filas, así los títulos se desplazan junto con los datos; las celdas de inicio (miniatura + SKU) y de fin (descarga) van con position: sticky (left: 0 / right: 0) y fondo propio (bg/default, surface/faint en Hover) para tapar lo que pasa por debajo.
+Tabla de variantes: Glosario de la ficha (el título va aparte como título de sección) y página Descargas (todos los SKU del catálogo). Filters=Off: botón Filtros en button Filled con icon/filter. Filters=On: button Outline con icon/filter-off y debajo filter-bar. A la derecha, descargas con button Outline + icon/download. Filas: variants-table-row Header + una Row por SKU. Componente de borde a borde: ocupa todo el ancho de la página para que la filter-bar llegue al borde; toolbar y filas llevan padding lateral layout/gutter. En mobile el scroll de las columnas llega al borde de la pantalla. Scroll: en Figma cada fila tiene su propio frame scroll porque Figma no puede sincronizar el desplazamiento entre instancias; es solo una especificación de qué columnas se mueven. En código la tabla usa un único contenedor con overflow-x: auto que envuelve header y filas, así los títulos se desplazan junto con los datos; las celdas de inicio (miniatura + SKU) y de fin (descarga) van con position: sticky (left: 0 / right: 0) y fondo propio (bg/default, surface/faint en Hover) para tapar lo que pasa por debajo.
+
+Página Descargas (solo en código: show-search): search-field «Buscar por SKU o nombre…» a todo el ancho y Filtros al lado, siempre en button Outline (Filled competiría con la acción del page-header) y del mismo alto que el buscador; busca en el SKU, el producto y la colección; sin descargas en la barra. Igual en Mobile. Sin filas que coincidan, un aviso. En código, las columnas fijas miden su contenido y el ancho que sobra se reparte entre las de datos.
 
 ## variants-table-row
 
 - Figma: [923-2708](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=923-2708)
 - Propiedades: Type: Header · Row; State: Default · Hover
 
-Fila de la tabla de variantes (Glosario). Tres zonas: fixed-start (miniatura 56 + sku Compact) y fixed-end (icon-button Background=Subtle de descarga, para que se note entre tanta información; abre el modal con todo lo asociado al producto; en el Header va sin título) quedan fijas; scroll contiene las columnas de datos y es lo único que se desplaza en horizontal, junto con sus títulos del Header. En Figma el scroll de cada fila es solo especificación; en código hay un único scroll compartido por header y filas (ver la descripción de variants-table). Type: Header (role/label text/tertiary) y Row (valores role/body). Separador inferior border/subtle, gap space/gap/sm y padding lateral space/padding/sm y, en Row, vertical space/padding/xs (la miniatura y el botón de descarga no quedan pegados al borde de la línea). Row State: Default y Hover (surface/faint).
+Fila de la tabla de variantes (Glosario de la ficha y página Descargas). Tres zonas: fixed-start (miniatura 56 + sku Compact) y fixed-end (descarga: icon-button Size=Large Background=Outline con icon/download, centrado en la columna; abre el modal con los archivos del SKU. El Header lleva «Descargas» en role/label, centrado; en Mobile, sin título) quedan fijas; scroll contiene las columnas de datos y es lo único que se desplaza en horizontal, junto con sus títulos del Header. En Figma el scroll de cada fila es solo especificación; en código hay un único scroll compartido por header y filas (ver la descripción de variants-table). Type: Header (role/label text/tertiary) y Row (valores role/body). Separador inferior border/subtle, gap space/gap/sm y padding lateral space/padding/sm y, en Row, vertical space/padding/sm (la miniatura y el botón de descarga no quedan pegados al borde de la línea). Row State: Default y Hover (surface/faint). Breakpoint: Desktop · Mobile (en Mobile el Header de la descarga va sin título). Pendiente en el set: Desktop todavía muestra button «Archivos» y las Row tienen padding xs (decisiones.md, 2026-10-06 · Descargas).
 
 ## Íconos
 

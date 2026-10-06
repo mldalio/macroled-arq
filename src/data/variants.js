@@ -2,7 +2,7 @@
 //
 // Funciones puras, sin acceso a Typesense: reciben los SKU de un grupo ya
 // traducidos y los campos de VARIANT_ATTRIBUTES en orden. Las usan la ficha,
-// los filtros del glosario y la comparativa.
+// los filtros del glosario (variants-table) y la comparativa.
 //
 //   const variants = [
 //     { sku: 'KANU-J-500-12W-N-WW', isDefault: true, attributes: { color_carcasa: 'Negro', altura: '50 cm' } },
@@ -23,6 +23,8 @@
  * @typedef {{ sku: string, isDefault?: boolean, attributes: Record<string, string> }} Variant
  * @typedef {Record<string, string>} Selection  campo → valor elegido
  */
+
+import { queryWords, matchesWords } from './text.js';
 
 const hasValue = (value) => value !== undefined && value !== null && String(value).trim() !== '';
 
@@ -102,4 +104,29 @@ export function filterOptions(variants, attributes, filters) {
 /** Nueva selección al elegir `value` en `attribute`. */
 export function choose(selection, attribute, value) {
   return { ...selection, [attribute]: value };
+}
+
+// ── Buscador y orden de la página Descargas (variants-table) ──────
+// decisiones.md, 2026-10-06 · Descargas.
+
+/** SKU que coinciden con la búsqueda: en el SKU o en `search` (nombre del producto y de la colección). */
+export function searchVariants(variants, query) {
+  const words = queryWords(query ?? '');
+  if (!words.length) return variants;
+  return variants.filter((variant) => matchesWords(`${variant.sku} ${variant.search ?? ''}`, words));
+}
+
+// Órdenes del select «Ordenar por»: por SKU (decisiones.md, 2026-10-06 · Descargas).
+export const SORT_ORDERS = Object.freeze([
+  { value: 'sku-asc', label: 'SKU (A–Z)' },
+  { value: 'sku-desc', label: 'SKU (Z–A)' },
+]);
+
+const collator = new Intl.Collator('es', { numeric: true, sensitivity: 'base' });
+
+/** Copia ordenada por SKU (`sku-asc` · `sku-desc`). Otro valor deja el orden como está. */
+export function sortVariants(variants, order) {
+  if (order !== 'sku-asc' && order !== 'sku-desc') return variants;
+  const sign = order === 'sku-desc' ? -1 : 1;
+  return [...variants].sort((a, b) => sign * collator.compare(a.sku, b.sku));
 }

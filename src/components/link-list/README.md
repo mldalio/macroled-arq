@@ -8,7 +8,6 @@ Lista corta de links con título. Se usa en "Recursos técnicos" de Contacto.
 <arq-link-list>
   <span slot="title">Recursos técnicos</span>
   <arq-button type="underline" show-underline show-icon icon="arrow-right" href="/arq/descargas">Centro de descargas</arq-button>
-  <arq-button type="underline" show-underline show-icon icon="arrow-right" href="/arq/glosario">Glosario técnico</arq-button>
 </arq-link-list>
 ```
 

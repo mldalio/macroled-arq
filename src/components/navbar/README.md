@@ -7,7 +7,7 @@ Barra de navegación de Macroled Arq, primer elemento de todas las páginas: log
 ```html
 <arq-navbar>
   <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
-  <arq-nav-link slot="links" href="/arq/glosario">Glosario</arq-nav-link>
+  <arq-nav-link slot="links" href="/arq/descargas">Descargas</arq-nav-link>
   <arq-nav-link slot="links" href="/arq/contacto" current>Contacto</arq-nav-link>
 </arq-navbar>
 

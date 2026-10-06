@@ -29,21 +29,51 @@
   --page-gutter: var(--arq-space-padding-md);
 }
 
-/* Barra: Filtros a la izquierda, descargas a la derecha; padding
-   space/padding/md arriba y abajo; a los lados, el borde del contenido */
+/* Barra, alineada abajo. Padding space/padding/md arriba y abajo; a los
+   lados, el borde del contenido. Ficha: Filtros a la izquierda y las
+   descargas a la derecha. Con buscador (página Descargas): el buscador a
+   todo el ancho y Filtros al lado, a space/gap/sm-md; con show-sort, Ordenar
+   por a la derecha (decisiones.md, 2026-10-06 · Descargas) */
 .toolbar {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
+  align-items: flex-end;
   gap: var(--arq-space-gap-md);
   padding: var(--arq-space-padding-md) var(--page-gutter);
+}
+
+:host([show-search]) .toolbar {
+  column-gap: var(--arq-space-gap-sm-md);
+}
+
+.downloads,
+.sort {
+  margin-inline-start: auto;
+}
+
+/* Buscador: ocupa todo el ancho que deja Filtros */
+.search {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* Filtros mide lo mismo que el buscador (42: search-field suma su borde; el
+   button Outline lo descuenta y mide 40): toma el alto de la fila */
+:host([show-search]) .toggle-filters {
+  align-self: stretch;
 }
 
 .downloads {
   display: flex;
   flex-wrap: wrap;
   gap: var(--arq-space-gap-sm);
+}
+
+/* Sin filas que cumplan la búsqueda o los filtros */
+.empty {
+  margin: 0;
+  padding-block: var(--arq-space-padding-md);
+  color: var(--arq-color-text-secondary);
 }
 
 /* Un solo contenedor con scroll para encabezado y filas, sin barra visible:
@@ -70,7 +100,9 @@
 }
 
 /* Celdas: separador inferior border/default en color/border/subtle; entre
-   columnas space/gap/sm. Las columnas miden lo que su contenido. */
+   columnas space/gap/sm como mínimo. Las fijas miden lo que su contenido
+   (width: 1%) y el ancho que sobra se reparte entre las columnas de datos:
+   así el SKU no se lleva el espacio y los datos no quedan apretados. */
 th,
 td {
   padding: 0 var(--arq-space-gap-sm) 0 0;
@@ -89,10 +121,12 @@ thead th {
   font-weight: inherit;
 }
 
-/* Filas (Type=Row): valores role/body en color/text/primary; alto de la
-   miniatura (layout/table-thumb). Hover color/surface/faint. */
+/* Filas (Type=Row): valores role/body en color/text/primary. Padding vertical
+   space/padding/sm (en Figma, xs): el botón de descarga no queda pegado a la
+   línea. Hover color/surface/faint. */
+tbody th,
 tbody td {
-  padding-block: var(--arq-space-padding-xs);
+  padding-block: var(--arq-space-padding-sm);
   color: var(--arq-color-text-primary);
 }
 
@@ -102,12 +136,14 @@ tbody td {
   }
 }
 
-/* Columna fija de inicio (miniatura + sku), pegada al borde izquierdo */
+/* Columna fija de inicio (miniatura + sku), pegada al borde izquierdo. Del
+   sku a la primera columna de datos, space/gap/lg */
 .start {
   position: sticky;
   left: 0;
   z-index: 1;
-  padding-inline-start: var(--page-gutter);
+  width: 1%;
+  padding-inline: var(--page-gutter) var(--arq-space-gap-lg);
 }
 
 .cell-start {
@@ -138,12 +174,26 @@ tbody td {
   object-fit: cover;
 }
 
-/* Columna fija de fin (descarga), pegada al borde derecho */
-.end {
+/* Columna fija de fin (Descargas), pegada al borde derecho. Encabezado
+   «Descargas» en role/label y el icon-button centrados en la columna */
+th.end,
+td.end {
   position: sticky;
   right: 0;
   z-index: 1;
   width: 1%;
   padding-inline: var(--arq-space-gap-sm) var(--page-gutter);
-  text-align: end;
+  text-align: center;
+}
+
+@media (max-width: 767px) {
+  /* Mobile: el encabezado de la columna de descarga va sin título (variants-table-row) */
+  .th-downloads {
+    position: absolute;
+    width: var(--arq-border-default);
+    height: var(--arq-border-default);
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 }
