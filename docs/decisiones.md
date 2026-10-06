@@ -101,7 +101,7 @@ ArqAccordionItem.define();
 
 ## 2026-10-01 · Fase 1 (controles y formularios)
 
-- **Foco en input Text y Textarea (excepción a DESIGN.md §7):** solo cambia el color de la línea a `color/border/focus`, sin anillo y sin cambiar el grosor.
+- ~~**Foco en input Text y Textarea (excepción a DESIGN.md §7):** solo cambia el color de la línea a `color/border/focus`, sin anillo y sin cambiar el grosor.~~ Reemplazado: 2026-10-06 · Contacto: títulos e inputs.
 - **Form-associated:** checkbox, toggle, choice-chip, input, file-upload y `arq-button submit` usan `ElementInternals`; mandan `name` / `value` con el `<form>` y responden a `form.reset()`.
 - **Selección única (`src/base/single-select.js`):** choice-chip, option-tile, swatch y tab; una elegida, flechas con roving tabindex, Inicio / Fin. Lo arma el contenedor.
 - **input disabled:** la ayuda queda en `color/text/disabled` (sin contraste AA, a propósito: WCAG 1.4.3 no lo exige en controles inactivos). axe lo marca; se ignora.
@@ -464,6 +464,14 @@ ArqAccordionItem.define();
 - **Columnas y filas de la tabla:** las fijas (sku y Descargas) miden su contenido y el ancho que sobra se reparte entre las de datos; del sku a los datos, `space/gap/sm-md`; Descargas, centrada. Hasta 1023 px solo la miniatura queda fija y el sku se desplaza con los datos (la ficha de Figma ya lo pedía para Mobile; en Tablet deja ver más columnas). Padding vertical de las filas `space/padding/sm` (en Figma, xs), así el botón de descarga no queda pegado a la línea. Vale también para la ficha.
 - **Figma (06/10):** descripciones de variants-table, variants-table-row, download-modal e icon-button; fichas `doc/` de esos cuatro; copias de DESIGN.md y COMPONENTS.md del Plan; notas de Dev Mode en la pantalla y el modal. Dibujo: pantalla Descargas y modal como el código; variants-table con prop Show search (buscador + Filtros del mismo alto); variants-table-row con icon-button Outline en Desktop, columna centrada y filas de 72 (padding sm); navbar y footer con «Descargas»; «Glosario técnico» oculto en Contacto. La pantalla vieja quedó como «Glosario (anterior · reemplazada por Descargas)».
 - `<arq-descargas>` reemplaza a `<arq-glosario>`; `getDownloadsTable()` a `getGlossary()` y suma `search` a cada fila.
+
+## 2026-10-06 · Contacto: títulos e inputs
+
+- **Títulos de bloque del formulario** (Tipo de consulta, Tus datos, Tu proyecto): el `<legend>` de cada `<fieldset>` en `role/heading-3`, sin número ni línea inferior. Ya no usa form-section-header (el componente queda en el repo, sin uso). No es un `<h3>`: el formulario vive en el Shadow DOM y los componentes no crean encabezados; el legend ya nombra el grupo para lectores de pantalla.
+- **input en caja:** borde `color/border/default` en los cuatro lados y fondo `color/surface/default`, 40 de alto (como button), padding `space/padding/sm` × `space/padding/sm-md`. Hover `color/border/hover`; Focus con el anillo de §7 (se deja la excepción de solo cambiar el color de la línea); Error `color/border/error`; Open `color/border/strong`. Vale en todo el sitio (también el newsletter del cta-block). Por qué: la línea sola no se parecía a choice-chip, file-upload ni button.
+- Se probó el formulario sobre un fondo leve (cada bloque en caja y después todo en una sola caja) y se descartó: queda sin fondo. El `<legend>` va con `float` para ser un ítem flex (separado por el gap).
+- **Sin líneas en la columna de información:** contact-item sin línea superior ni padding vertical; los canales van a `space/gap/lg`, sin línea de cierre.
+- **Figma:** los sets de input (`930:2364`) y contact-item (`1303:4340`) y la pantalla Contacto siguen como antes: falta actualizarlos.
 
 ## Pendientes
 

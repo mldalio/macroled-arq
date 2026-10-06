@@ -50,11 +50,11 @@
   color: inherit !important;
 }
 
-/* Canales: cada contact-item trae su línea superior; la lista cierra abajo */
+/* Canales: sin líneas, separados por space/gap/lg */
 .channels {
   display: flex;
   flex-direction: column;
-  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  gap: var(--arq-space-gap-lg);
 }
 
 /* ── Formulario ─────────────────────────────────────────────────── */
@@ -75,12 +75,17 @@
   border: 0;
 }
 
-/* El legend no es un ítem flex: el espacio debajo va como margen */
+/* Título de cada bloque: el <legend> del fieldset en role/heading-3, sin
+   número ni línea (antes form-section-header). No es un <h3>: el componente
+   no crea encabezados (AGENTS.md) y el legend ya nombra el grupo.
+   Con float el legend deja de ir sobre el borde del fieldset: queda dentro
+   del fieldset y pasa a ser un ítem flex (separado por el gap). */
 .section > legend {
-  display: block;
+  float: left;
   width: 100%;
-  margin-bottom: var(--arq-space-gap-lg);
+  margin: 0;
   padding: 0;
+  color: var(--arq-color-text-primary);
 }
 
 .choices {

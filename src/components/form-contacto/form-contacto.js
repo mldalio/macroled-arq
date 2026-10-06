@@ -14,6 +14,8 @@
 //
 // - El <form> y sus campos viven en el Shadow DOM del componente: así el
 //   formulario es dueño de los campos (ElementInternals) y manda su FormData.
+// - Cada bloque es un <fieldset> con su <legend> en role/heading-3, sin
+//   número ni línea (decisiones.md, 2026-10-06 · Contacto: títulos e inputs).
 // - Validación al enviar: cada campo inválido muestra su mensaje (prop error
 //   de arq-input) y el foco va al primero. Después, se revalida al salir del
 //   campo. Sin validación nativa del navegador (novalidate).
@@ -26,7 +28,6 @@
 import { ArqElement } from '../../base/arq-element.js';
 import { SingleSelect } from '../../base/single-select.js';
 import { config } from '../../config.js';
-import '../form-section-header/form-section-header.js';
 import '../choice-chip/choice-chip.js';
 import '../input/input.js';
 import '../file-upload/file-upload.js';
@@ -75,13 +76,13 @@ class ArqFormContacto extends ArqElement {
     `</div>` +
     `<form class="form" novalidate>` +
     `<fieldset class="section topics">` +
-    `<legend><arq-form-section-header number="01" show-number>Tipo de consulta</arq-form-section-header></legend>` +
+    `<legend class="role-heading-3">Tipo de consulta</legend>` +
     `<div class="choices" role="radiogroup" aria-label="Tipo de consulta">` +
     TOPICS.map((topic, i) => `<arq-choice-chip name="tipo" value="${esc(topic)}"${i ? '' : ' selected'}>${esc(topic)}</arq-choice-chip>`).join('') +
     `</div>` +
     `</fieldset>` +
     `<fieldset class="section">` +
-    `<legend><arq-form-section-header number="02" show-number>Tus datos</arq-form-section-header></legend>` +
+    `<legend class="role-heading-3">Tus datos</legend>` +
     `<div class="fields">` +
     `<arq-input name="nombre" placeholder="Tu nombre y apellido" autocomplete="name" required show-label>Nombre completo</arq-input>` +
     `<arq-input name="empresa" placeholder="Nombre del estudio" autocomplete="organization" show-label>Estudio o empresa</arq-input>` +
@@ -92,7 +93,7 @@ class ArqFormContacto extends ArqElement {
     `</div>` +
     `</fieldset>` +
     `<fieldset class="section">` +
-    `<legend><arq-form-section-header number="03" show-number>Tu proyecto</arq-form-section-header></legend>` +
+    `<legend class="role-heading-3">Tu proyecto</legend>` +
     `<arq-input name="detalles" type="textarea" placeholder="Contanos el tipo de espacio, etapa del proyecto y qué necesitás…" required show-label>Detalles del proyecto</arq-input>` +
     `<arq-file-upload name="adjunto">Planos o imágenes (opcional)<span slot="helper">PDF, DWG, JPG o PNG · hasta 10 MB</span></arq-file-upload>` +
     `</fieldset>` +
