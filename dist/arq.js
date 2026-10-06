@@ -433,49 +433,33 @@ var he = ":host{display:block}.message{color:var(--arq-color-text-success);margi
 	}
 }).define();
 //#endregion
-//#region src/components/form-section-header/form-section-header.css?inline
-var ge = ":host{width:100%;display:block}.header{align-items:baseline;gap:var(--arq-space-gap-md);padding-bottom:var(--arq-space-padding-sm-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-strong);display:flex}.number{color:var(--arq-color-text-tertiary);flex:none}.label{min-width:0;color:var(--arq-color-text-primary)}";
-(class extends f {
-	static tag = "arq-form-section-header";
-	static styles = ge;
-	static properties = {
-		number: { type: String },
-		showNumber: { type: Boolean }
-	};
-	static template = "<span class=\"header role-label\"><span class=\"number\" hidden></span><span class=\"label\"><slot></slot></span></span>";
-	update() {
-		let e = this.shadowRoot.querySelector(".number");
-		e.textContent = this.number ?? "", e.hidden = !this.showNumber || !this.number;
-	}
-}).define();
-//#endregion
 //#region src/components/spec-row/spec-row.css?inline
-var _e = ":host{display:block}.row{justify-content:space-between;align-items:flex-start;gap:var(--arq-space-gap-lg);padding-block:var(--arq-space-padding-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);margin:0;display:flex}.label{overflow-wrap:anywhere;min-width:0;color:var(--arq-color-text-tertiary)}.value{overflow-wrap:anywhere;min-width:0;color:var(--arq-color-text-primary);text-align:end;margin:0}";
+var ge = ":host{display:block}.row{justify-content:space-between;align-items:flex-start;gap:var(--arq-space-gap-lg);padding-block:var(--arq-space-padding-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);margin:0;display:flex}.label{overflow-wrap:anywhere;min-width:0;color:var(--arq-color-text-tertiary)}.value{overflow-wrap:anywhere;min-width:0;color:var(--arq-color-text-primary);text-align:end;margin:0}";
 (class extends f {
 	static tag = "arq-spec-row";
-	static styles = _e;
+	static styles = ge;
 	static template = "<dl class=\"row role-body-regular\"><dt class=\"label\"><slot name=\"label\"></slot></dt><dd class=\"value\"><slot></slot></dd></dl>";
 }).define();
 //#endregion
 //#region src/components/spec-list/spec-list.css?inline
-var ve = ":host{min-width:0;display:block}.list{flex-direction:column;display:flex}";
+var _e = ":host{min-width:0;display:block}.list{flex-direction:column;display:flex}";
 (class extends f {
 	static tag = "arq-spec-list";
-	static styles = ve;
+	static styles = _e;
 	static template = "<div class=\"list\"><slot></slot></div>";
 }).define();
 //#endregion
 //#region src/base/disclosure.js
-var ye = 0, be = "\n[data-disclosure-panel] {\n  transition-property: opacity, color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;\n  transition-duration: var(--arq-motion-duration-base);\n  transition-timing-function: var(--arq-motion-easing-standard);\n}\n\n@starting-style {\n  [data-disclosure-panel]:not([hidden]) {\n    opacity: 0;\n  }\n}\n", m;
-function xe(e) {
-	m || (m = new CSSStyleSheet(), m.replaceSync(be)), e.adoptedStyleSheets.includes(m) || (e.adoptedStyleSheets = [...e.adoptedStyleSheets, m]);
+var ve = 0, ye = "\n[data-disclosure-panel] {\n  transition-property: opacity, color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;\n  transition-duration: var(--arq-motion-duration-base);\n  transition-timing-function: var(--arq-motion-easing-standard);\n}\n\n@starting-style {\n  [data-disclosure-panel]:not([hidden]) {\n    opacity: 0;\n  }\n}\n", m;
+function be(e) {
+	m || (m = new CSSStyleSheet(), m.replaceSync(ye)), e.adoptedStyleSheets.includes(m) || (e.adoptedStyleSheets = [...e.adoptedStyleSheets, m]);
 }
 var h = class {
 	#e;
 	#t;
 	#n;
 	constructor(e, { trigger: t, panel: n, closeOnEscape: r = !1 }) {
-		this.#e = e, this.#t = t, this.#n = n, n.id ||= `arq-disclosure-${++ye}`, n.setAttribute("data-disclosure-panel", ""), xe(e.shadowRoot), t.type = "button", t.setAttribute("aria-controls", n.id), t.addEventListener("click", () => this.toggle()), r && e.addEventListener("keydown", (e) => {
+		this.#e = e, this.#t = t, this.#n = n, n.id ||= `arq-disclosure-${++ve}`, n.setAttribute("data-disclosure-panel", ""), be(e.shadowRoot), t.type = "button", t.setAttribute("aria-controls", n.id), t.addEventListener("click", () => this.toggle()), r && e.addEventListener("keydown", (e) => {
 			e.key === "Escape" && this.open && (e.stopPropagation(), this.hide(), this.#t.focus());
 		}), e.addController(this);
 	}
@@ -499,10 +483,10 @@ var h = class {
 		let e = this.open;
 		this.#t.setAttribute("aria-expanded", String(e)), this.#n.hidden = !e;
 	}
-}, Se = ":host{min-width:0;display:block}.item{border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);background:var(--arq-color-surface-transparent)}:host([open]) .item{background:var(--arq-color-surface-faint);border-bottom:0}.trigger{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-xl-2xl) var(--arq-space-padding-2xl);padding-bottom:calc(var(--arq-space-padding-xl-2xl) - var(--arq-border-default));background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .trigger{padding-bottom:var(--arq-space-gap-xl)}.title{overflow-wrap:break-word;flex:1 1 0;min-width:0}.icon-box{padding:var(--arq-space-padding-sm-md);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}:host([open]) .icon-box{background:var(--arq-color-surface-default)}.icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.content{padding:0 var(--arq-space-padding-2xl) var(--arq-space-padding-2xl)}@media (hover:hover){:host(:not([open])) .item:has(.trigger:hover){background:var(--arq-color-surface-faint)}:host(:not([open])) .trigger:hover .icon-box{background:var(--arq-color-surface-hover)}}.item:has(.trigger:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus{outline:none}@media (width<=767px){.trigger{padding-inline:var(--arq-space-padding-xl);padding-bottom:calc(var(--arq-space-padding-2xl) - var(--arq-border-default))}.content{padding-inline:var(--arq-space-padding-xl)}}";
+}, xe = ":host{min-width:0;display:block}.item{border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);background:var(--arq-color-surface-transparent)}:host([open]) .item{background:var(--arq-color-surface-faint);border-bottom:0}.trigger{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-xl-2xl) var(--arq-space-padding-2xl);padding-bottom:calc(var(--arq-space-padding-xl-2xl) - var(--arq-border-default));background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .trigger{padding-bottom:var(--arq-space-gap-xl)}.title{overflow-wrap:break-word;flex:1 1 0;min-width:0}.icon-box{padding:var(--arq-space-padding-sm-md);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}:host([open]) .icon-box{background:var(--arq-color-surface-default)}.icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.content{padding:0 var(--arq-space-padding-2xl) var(--arq-space-padding-2xl)}@media (hover:hover){:host(:not([open])) .item:has(.trigger:hover){background:var(--arq-color-surface-faint)}:host(:not([open])) .trigger:hover .icon-box{background:var(--arq-color-surface-hover)}}.item:has(.trigger:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus{outline:none}@media (width<=767px){.trigger{padding-inline:var(--arq-space-padding-xl);padding-bottom:calc(var(--arq-space-padding-2xl) - var(--arq-border-default))}.content{padding-inline:var(--arq-space-padding-xl)}}";
 (class extends f {
 	static tag = "arq-accordion-item";
-	static styles = Se;
+	static styles = xe;
 	static properties = { open: { type: Boolean } };
 	static template = `<div class="item"><button type="button" class="trigger"><span class="title role-heading-2"><slot name="title"></slot></span><span class="icon-box">${p("plus")}${p("minus")}</span></button><div class="content" part="panel"><slot></slot></div></div>`;
 	setup() {
@@ -514,10 +498,10 @@ var h = class {
 }).define();
 //#endregion
 //#region src/components/filter-chip/filter-chip.css?inline
-var Ce = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.chip{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-xs);max-width:100%;padding:var(--arq-space-padding-xs) var(--arq-space-padding-sm);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);margin:0;display:inline-flex}.label{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm);flex:none}.chip:hover{border-color:var(--arq-color-text-primary)}.chip:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.chip:focus:not(:focus-visible){outline:none}";
+var Se = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.chip{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-xs);max-width:100%;padding:var(--arq-space-padding-xs) var(--arq-space-padding-sm);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);margin:0;display:inline-flex}.label{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm);flex:none}.chip:hover{border-color:var(--arq-color-text-primary)}.chip:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.chip:focus:not(:focus-visible){outline:none}";
 (class extends f {
 	static tag = "arq-filter-chip";
-	static styles = Ce;
+	static styles = Se;
 	static template = `<button type="button" class="chip role-body-sm"><span class="label"><slot></slot></span>${p("close")}</button>`;
 	#e = null;
 	setup() {
@@ -531,10 +515,10 @@ var Ce = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.chip{b
 }).define();
 //#endregion
 //#region src/components/select-option/select-option.css?inline
-var we = ":host{cursor:pointer;display:block}:host([disabled]){cursor:default}.option{align-items:center;gap:var(--arq-space-gap-sm);padding:var(--arq-space-padding-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex}:host(:not([disabled]):hover) .option{background:var(--arq-color-surface-faint)}.swatch{box-sizing:border-box;width:var(--arq-swatch-sm);height:var(--arq-swatch-sm);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);flex:none;position:relative;overflow:hidden}.swatch img{object-fit:cover;width:100%;height:100%;display:block}.name{min-width:0;color:var(--arq-color-text-primary)}:host([disabled]) .name{color:var(--arq-color-text-disabled)}:host([active]) .option{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(-1 * var(--arq-border-strong))}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+var Ce = ":host{cursor:pointer;display:block}:host([disabled]){cursor:default}.option{align-items:center;gap:var(--arq-space-gap-sm);padding:var(--arq-space-padding-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex}:host(:not([disabled]):hover) .option{background:var(--arq-color-surface-faint)}.swatch{box-sizing:border-box;width:var(--arq-swatch-sm);height:var(--arq-swatch-sm);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);flex:none;position:relative;overflow:hidden}.swatch img{object-fit:cover;width:100%;height:100%;display:block}.name{min-width:0;color:var(--arq-color-text-primary)}:host([disabled]) .name{color:var(--arq-color-text-disabled)}:host([active]) .option{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(-1 * var(--arq-border-strong))}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
 (class extends f {
 	static tag = "arq-select-option";
-	static styles = we;
+	static styles = Ce;
 	static properties = {
 		showSwatch: { type: Boolean },
 		swatchSrc: { type: String },
@@ -565,10 +549,10 @@ var we = ":host{cursor:pointer;display:block}:host([disabled]){cursor:default}.o
 }).define();
 //#endregion
 //#region src/components/select-menu/select-menu.css?inline
-var Te = ":host{box-sizing:border-box;border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);min-width:100%;display:block}:host([type=filter]),:host([type=text]){width:max-content;max-width:calc(100vw - 2 * var(--arq-layout-gutter))}:host([type=filter]){min-width:max(100%, var(--arq-layout-select-menu-filter))}:host{max-height:calc(7 * (2 * var(--arq-space-padding-md) + var(--arq-type-body-leading) + var(--arq-border-default)) + 2 * var(--arq-border-default));overscroll-behavior:contain;overflow-y:auto}:host(:focus){outline:none}";
+var we = ":host{box-sizing:border-box;border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);min-width:100%;display:block}:host([type=filter]),:host([type=text]){width:max-content;max-width:calc(100vw - 2 * var(--arq-layout-gutter))}:host([type=filter]){min-width:max(100%, var(--arq-layout-select-menu-filter))}:host{max-height:calc(7 * (2 * var(--arq-space-padding-md) + var(--arq-type-body-leading) + var(--arq-border-default)) + 2 * var(--arq-border-default));overscroll-behavior:contain;overflow-y:auto}:host(:focus){outline:none}";
 (class extends f {
 	static tag = "arq-select-menu";
-	static styles = Te;
+	static styles = we;
 	static properties = { type: {
 		type: String,
 		values: [
@@ -585,7 +569,7 @@ var Te = ":host{box-sizing:border-box;border:var(--arq-border-default) solid var
 }).define();
 //#endregion
 //#region src/base/combobox.js
-var Ee = class {
+var Te = class {
 	#e;
 	#t = -1;
 	#n = "";
@@ -661,7 +645,7 @@ var Ee = class {
 		else return;
 		e.preventDefault();
 	}
-}, De = "[role=\"radiogroup\"], [role=\"tablist\"]", g = class {
+}, Ee = "[role=\"radiogroup\"], [role=\"tablist\"]", g = class {
 	constructor(e, { role: t, state: n }) {
 		this.host = e, this.state = n, e.hasAttribute("role") || e.setAttribute("role", t), e.choose = () => this.choose(), e.addEventListener("click", () => this.choose()), e.addEventListener("keydown", (e) => {
 			(e.key === "Enter" || e.key === " ") && (e.preventDefault(), this.choose());
@@ -676,12 +660,12 @@ var Ee = class {
 	}
 	hostUpdate() {
 		let e = this.host;
-		e.setAttribute(this.state, String(!!e.selected)), e.disabled ? e.setAttribute("aria-disabled", "true") : e.removeAttribute("aria-disabled"), e.parentElement?.closest(De) || e.setAttribute("tabindex", e.disabled ? "-1" : "0");
+		e.setAttribute(this.state, String(!!e.selected)), e.disabled ? e.setAttribute("aria-disabled", "true") : e.removeAttribute("aria-disabled"), e.parentElement?.closest(Ee) || e.setAttribute("tabindex", e.disabled ? "-1" : "0");
 	}
-}, Oe = ":host{vertical-align:middle;flex:none;display:inline-flex}.swatch{box-sizing:border-box;width:var(--arq-swatch-sm);height:var(--arq-swatch-sm);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);display:block;position:relative;overflow:hidden}:host([size=default]) .swatch{width:var(--arq-swatch-md);height:var(--arq-swatch-md)}:host([size=large]) .swatch{width:var(--arq-swatch-lg);height:var(--arq-swatch-lg)}.swatch img{object-fit:cover;width:100%;height:100%;display:block}.swatch:after{content:\"\";border:var(--arq-border-default) solid var(--arq-color-border-subtle);border-radius:inherit;pointer-events:none;position:absolute;inset:0}:host([role=radio]){cursor:pointer}:host([role=radio]:not([disabled]):hover) .swatch:after,:host([selected]) .swatch:after{border-width:var(--arq-border-strong);border-color:var(--arq-color-border-strong)}:host([disabled]){cursor:default}:host([disabled]) .swatch:after{border-color:var(--arq-color-border-disabled)}:host([disabled]) .swatch:before{content:\"\";background:linear-gradient(to bottom right, transparent calc(50% - var(--arq-border-default) / 2), var(--arq-color-icon-tertiary) calc(50% - var(--arq-border-default) / 2), var(--arq-color-icon-tertiary) calc(50% + var(--arq-border-default) / 2), transparent calc(50% + var(--arq-border-default) / 2));pointer-events:none;position:absolute;inset:0}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+}, De = ":host{vertical-align:middle;flex:none;display:inline-flex}.swatch{box-sizing:border-box;width:var(--arq-swatch-sm);height:var(--arq-swatch-sm);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);display:block;position:relative;overflow:hidden}:host([size=default]) .swatch{width:var(--arq-swatch-md);height:var(--arq-swatch-md)}:host([size=large]) .swatch{width:var(--arq-swatch-lg);height:var(--arq-swatch-lg)}.swatch img{object-fit:cover;width:100%;height:100%;display:block}.swatch:after{content:\"\";border:var(--arq-border-default) solid var(--arq-color-border-subtle);border-radius:inherit;pointer-events:none;position:absolute;inset:0}:host([role=radio]){cursor:pointer}:host([role=radio]:not([disabled]):hover) .swatch:after,:host([selected]) .swatch:after{border-width:var(--arq-border-strong);border-color:var(--arq-color-border-strong)}:host([disabled]){cursor:default}:host([disabled]) .swatch:after{border-color:var(--arq-color-border-disabled)}:host([disabled]) .swatch:before{content:\"\";background:linear-gradient(to bottom right, transparent calc(50% - var(--arq-border-default) / 2), var(--arq-color-icon-tertiary) calc(50% - var(--arq-border-default) / 2), var(--arq-color-icon-tertiary) calc(50% + var(--arq-border-default) / 2), transparent calc(50% + var(--arq-border-default) / 2));pointer-events:none;position:absolute;inset:0}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
 (class extends f {
 	static tag = "arq-swatch";
-	static styles = Oe;
+	static styles = De;
 	static properties = {
 		size: {
 			type: String,
@@ -719,10 +703,10 @@ var Ee = class {
 }).define();
 //#endregion
 //#region src/components/select/select.css?inline
-var ke = ":host{min-width:0;display:block}.select{flex-direction:column;display:flex;position:relative}:host(:not([type=filter])) .select{gap:var(--arq-space-gap-sm)}.trigger{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-md);border-radius:var(--arq-radius-control);width:100%;font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}.value{overflow-wrap:break-word;flex:auto;min-width:0}.chevron{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary)}:host(:not([open])) [data-icon=chevron-up],:host([open]) [data-icon=chevron-down]{display:none}.menu{z-index:2;position:absolute;top:100%;left:0}:host(:not([type=filter])) .trigger{padding:var(--arq-space-padding-sm-md) var(--arq-space-padding-md) calc(var(--arq-space-padding-sm-md) - var(--arq-border-default));border-bottom:var(--arq-border-default) solid var(--arq-color-border-strong);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary)}@media (hover:hover){:host(:not([type=filter]):not([open])) .trigger:enabled:hover{background:var(--arq-color-surface-faint)}}:host(:not([type=filter])[open]) .trigger,:host(:not([type=filter])) .trigger:focus-visible{background:var(--arq-color-surface-soft)}:host(:not([type=filter])) .trigger:focus-visible{border-bottom-color:var(--arq-color-border-focus)}:host(:not([type=filter])) .menu{right:0}:host([type=filter]){min-width:var(--arq-layout-select-filter)}:host([type=filter]) .select{gap:var(--arq-space-gap-sm);padding-bottom:calc(var(--arq-space-padding-sm) - var(--arq-border-default));border-bottom:var(--arq-border-default) solid var(--arq-color-border-strong)}:host([type=filter][disabled]) .select{border-bottom-color:var(--arq-color-border-disabled)}.label{color:var(--arq-color-text-tertiary)}:host([type=filter]) .trigger{justify-content:space-between;gap:var(--arq-space-gap-sm);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);padding:0}:host([type=filter]) .icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm)}@media (hover:hover){:host([type=filter]:not([open])) .trigger:enabled:hover .value{color:var(--arq-color-text-tertiary)}}:host([type=filter]) .menu{margin-top:var(--arq-space-gap-sm)}:host([disabled]) .trigger{cursor:default;border-bottom-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-disabled)}:host([disabled]) .label,:host([disabled]) .icon{color:var(--arq-color-text-disabled)}:host([disabled]) .swatch{opacity:.4}.trigger:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus:not(:focus-visible){outline:none}", Ae = 0;
+var Oe = ":host{min-width:0;display:block}.select{flex-direction:column;display:flex;position:relative}:host(:not([type=filter])) .select{gap:var(--arq-space-gap-sm)}.trigger{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-md);border-radius:var(--arq-radius-control);width:100%;font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}.value{overflow-wrap:break-word;flex:auto;min-width:0}.chevron{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary)}:host(:not([open])) [data-icon=chevron-up],:host([open]) [data-icon=chevron-down]{display:none}.menu{z-index:2;position:absolute;top:100%;left:0}:host(:not([type=filter])) .trigger{padding:var(--arq-space-padding-sm-md) var(--arq-space-padding-md) calc(var(--arq-space-padding-sm-md) - var(--arq-border-default));border-bottom:var(--arq-border-default) solid var(--arq-color-border-strong);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary)}@media (hover:hover){:host(:not([type=filter]):not([open])) .trigger:enabled:hover{background:var(--arq-color-surface-faint)}}:host(:not([type=filter])[open]) .trigger,:host(:not([type=filter])) .trigger:focus-visible{background:var(--arq-color-surface-soft)}:host(:not([type=filter])) .trigger:focus-visible{border-bottom-color:var(--arq-color-border-focus)}:host(:not([type=filter])) .menu{right:0}:host([type=filter]){min-width:var(--arq-layout-select-filter)}:host([type=filter]) .select{gap:var(--arq-space-gap-sm);padding-bottom:calc(var(--arq-space-padding-sm) - var(--arq-border-default));border-bottom:var(--arq-border-default) solid var(--arq-color-border-strong)}:host([type=filter][disabled]) .select{border-bottom-color:var(--arq-color-border-disabled)}.label{color:var(--arq-color-text-tertiary)}:host([type=filter]) .trigger{justify-content:space-between;gap:var(--arq-space-gap-sm);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);padding:0}:host([type=filter]) .icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm)}@media (hover:hover){:host([type=filter]:not([open])) .trigger:enabled:hover .value{color:var(--arq-color-text-tertiary)}}:host([type=filter]) .menu{margin-top:var(--arq-space-gap-sm)}:host([disabled]) .trigger{cursor:default;border-bottom-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-disabled)}:host([disabled]) .label,:host([disabled]) .icon{color:var(--arq-color-text-disabled)}:host([disabled]) .swatch{opacity:.4}.trigger:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus:not(:focus-visible){outline:none}", ke = 0;
 (class extends f {
 	static tag = "arq-select";
-	static styles = ke;
+	static styles = Oe;
 	static properties = {
 		type: {
 			type: String,
@@ -750,8 +734,8 @@ var ke = ":host{min-width:0;display:block}.select{flex-direction:column;display:
 		this.#e = Array.isArray(e) ? e : [], this.isConnected && this.#r();
 	}
 	setup() {
-		let e = this.shadowRoot, t = `arq-select-${++Ae}`;
-		this.trigger = e.querySelector(".trigger"), this.menu = e.querySelector(".menu"), this.menu.id = `${t}-menu`, e.querySelector(".label").id = `${t}-label`, this.trigger.id = `${t}-trigger`, this.#t = new Ee({
+		let e = this.shadowRoot, t = `arq-select-${++ke}`;
+		this.trigger = e.querySelector(".trigger"), this.menu = e.querySelector(".menu"), this.menu.id = `${t}-menu`, e.querySelector(".label").id = `${t}-label`, this.trigger.id = `${t}-trigger`, this.#t = new Te({
 			trigger: this.trigger,
 			menu: this.menu,
 			options: () => this.#n(),
@@ -812,10 +796,10 @@ var ke = ":host{min-width:0;display:block}.select{flex-direction:column;display:
 }).define();
 //#endregion
 //#region src/components/filter-bar/filter-bar.css?inline
-var je = ":host{min-width:0;display:block}.bar{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-lg);padding:calc(var(--arq-space-padding-md) - var(--arq-border-default)) var(--page-gutter);border-block:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-faint);display:flex}.filters{align-items:stretch;gap:var(--arq-space-gap-lg);flex-wrap:wrap;min-width:0;display:flex}::slotted(arq-select){flex:none}::slotted(arq-select:not(:first-child)){border-inline-start:var(--arq-border-default) solid var(--arq-color-border-subtle);padding-inline-start:var(--arq-space-gap-lg)}.clear{flex:none}@media (width<=767px){.bar{align-items:stretch;gap:var(--arq-space-gap-md);flex-direction:column}.filters{gap:var(--arq-space-gap-md);flex-direction:column}::slotted(arq-select:not(:first-child)){border-inline-start:0;padding-inline-start:0}.clear{align-self:flex-start}}";
+var Ae = ":host{min-width:0;display:block}.bar{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-lg);padding:calc(var(--arq-space-padding-md) - var(--arq-border-default)) var(--page-gutter);border-block:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-faint);display:flex}.filters{align-items:stretch;gap:var(--arq-space-gap-lg);flex-wrap:wrap;min-width:0;display:flex}::slotted(arq-select){flex:none}::slotted(arq-select:not(:first-child)){border-inline-start:var(--arq-border-default) solid var(--arq-color-border-subtle);padding-inline-start:var(--arq-space-gap-lg)}.clear{flex:none}@media (width<=767px){.bar{align-items:stretch;gap:var(--arq-space-gap-md);flex-direction:column}.filters{gap:var(--arq-space-gap-md);flex-direction:column}::slotted(arq-select:not(:first-child)){border-inline-start:0;padding-inline-start:0}.clear{align-self:flex-start}}";
 (class extends f {
 	static tag = "arq-filter-bar";
-	static styles = je;
+	static styles = Ae;
 	static properties = { applied: { type: Boolean } };
 	static template = "<div class=\"bar\"><div class=\"filters\" role=\"group\" aria-label=\"Filtros\"><slot></slot></div><arq-button type=\"underline\" show-underline class=\"clear\" hidden>Limpiar filtros</arq-button></div>";
 	setup() {
@@ -846,51 +830,51 @@ var je = ":host{min-width:0;display:block}.bar{justify-content:space-between;ali
 //#endregion
 //#region src/data/text.js
 var _ = (e) => String(e ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
-function Me(e) {
+function je(e) {
 	let t = [e];
 	return e.length > 3 && e.endsWith("es") && t.push(e.slice(0, -2)), e.length > 3 && e.endsWith("s") && t.push(e.slice(0, -1)), t;
 }
-function Ne(e) {
-	return _(e).split(/\s+/).filter(Boolean).map(Me);
+function Me(e) {
+	return _(e).split(/\s+/).filter(Boolean).map(je);
 }
 var v = (e, t) => {
 	let n = _(e);
 	return t.every((e) => e.some((e) => n.includes(e)));
-}, Pe = (e) => e != null && String(e).trim() !== "";
-function Fe(e, t) {
+}, Ne = (e) => e != null && String(e).trim() !== "";
+function Pe(e, t) {
 	let n = [];
 	for (let r of e) {
 		let e = r.attributes[t];
-		Pe(e) && !n.includes(e) && n.push(e);
+		Ne(e) && !n.includes(e) && n.push(e);
 	}
 	return n.sort((e, t) => String(e).localeCompare(String(t), "es", { numeric: !0 }));
 }
-function Ie(e, t) {
+function Fe(e, t) {
 	let n = Object.keys(t);
 	return e.find((e) => n.every((n) => e.attributes[n] === t[n])) ?? null;
 }
-function Le(e, t, n) {
+function Ie(e, t, n) {
 	let r = e.find((e) => n && e.sku === n) ?? e.find((e) => e.isDefault) ?? e[0];
 	return r ? Object.fromEntries(t.map((e) => [e, r.attributes[e]])) : {};
 }
-function y(e, t, n) {
+function Le(e, t, n) {
 	return t.map((r) => ({
 		attribute: r,
-		options: Fe(e, r).map((i) => ({
+		options: Pe(e, r).map((i) => ({
 			value: i,
 			selected: n[r] === i,
 			disabled: !e.some((e) => e.attributes[r] === i && t.every((t) => t === r || e.attributes[t] === n[t]))
 		}))
 	}));
 }
-var Re = (e, t, n) => Object.entries(t).every(([t, r]) => t === n || !Pe(r) || e.attributes[t] === r);
+var Re = (e, t, n) => Object.entries(t).every(([t, r]) => t === n || !Ne(r) || e.attributes[t] === r);
 function ze(e, t) {
 	return e.filter((e) => Re(e, t));
 }
 function Be(e, t, n) {
 	return t.map((t) => ({
 		attribute: t,
-		options: Fe(e, t).map((r) => ({
+		options: Pe(e, t).map((r) => ({
 			value: r,
 			selected: n[t] === r,
 			disabled: !e.some((e) => e.attributes[t] === r && Re(e, n, t))
@@ -904,10 +888,10 @@ function Ve(e, t, n) {
 	};
 }
 function He(e, t) {
-	let n = Ne(t ?? "");
+	let n = Me(t ?? "");
 	return n.length ? e.filter((e) => v(`${e.sku} ${e.search ?? ""}`, n)) : e;
 }
-var b = Object.freeze([{
+var y = Object.freeze([{
 	value: "sku-asc",
 	label: "SKU (A–Z)"
 }, {
@@ -1024,12 +1008,12 @@ var Ye = ":host{min-width:0;display:block}.field{align-items:center;gap:var(--ar
 }).define();
 //#endregion
 //#region src/components/variants-table/variants-table.css?inline
-var Xe = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page-gutter);flex-direction:column;display:flex}.toolbar{--page-gutter:var(--arq-space-0)}.scroll{--page-gutter:var(--arq-space-padding-sm)}.filter-bar{--page-gutter:var(--arq-space-padding-md)}.toolbar{align-items:flex-end;gap:var(--arq-space-gap-md);padding:var(--arq-space-padding-md) var(--page-gutter);flex-wrap:wrap;display:flex}:host([show-search]) .toolbar{column-gap:var(--arq-space-gap-sm-md)}.downloads,.sort{margin-inline-start:auto}.search{flex:1 1 0;min-width:0}:host([show-search]) .toggle-filters{align-self:stretch}.downloads{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.empty{padding-block:var(--arq-space-padding-md);color:var(--arq-color-text-secondary);margin:0}.scroll{overscroll-behavior-x:contain;scrollbar-width:none;overflow-x:auto}.scroll::-webkit-scrollbar{display:none}.scroll:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(-1 * var(--arq-border-strong))}.table{border-collapse:collapse;border-spacing:0;width:100%}th,td{padding:0 var(--arq-space-gap-sm) 0 0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-bg-default);text-align:start;white-space:nowrap;vertical-align:middle}thead th{padding-block:var(--arq-space-padding-sm-md);color:var(--arq-color-text-tertiary);font-weight:inherit}tbody th,tbody td{padding-block:var(--arq-space-padding-sm);color:var(--arq-color-text-primary)}@media (hover:hover){tbody tr:hover>*{background:var(--arq-color-surface-faint)}}.start{z-index:1;width:1%;padding-inline:var(--page-gutter) var(--arq-space-gap-sm);position:sticky;left:0}.sku-col{left:calc(var(--page-gutter) + var(--arq-layout-table-thumb) + var(--arq-space-gap-sm));z-index:1;width:1%;font-weight:inherit;padding-inline-end:var(--arq-space-gap-sm-md);position:sticky}.thumb{width:var(--arq-layout-table-thumb);height:var(--arq-layout-table-thumb);background:var(--arq-color-surface-subtle);flex:none;display:block;overflow:hidden}.thumb img{object-fit:cover;width:100%;height:100%;display:block}th.end,td.end{z-index:1;width:1%;padding-inline:var(--arq-space-gap-sm) var(--page-gutter);text-align:center;position:sticky;right:0}@media (width<=1023px){.sku-col{position:static}}@media (width<=767px){.th-downloads{width:var(--arq-border-default);height:var(--arq-border-default);clip-path:inset(50%);white-space:nowrap;position:absolute;overflow:hidden}}", x = (e) => String(e ?? "").replace(/[&<>"]/g, (e) => ({
+var Xe = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page-gutter);flex-direction:column;display:flex}.toolbar{--page-gutter:var(--arq-space-0)}.scroll{--page-gutter:var(--arq-space-padding-sm)}.filter-bar{--page-gutter:var(--arq-space-padding-md)}.toolbar{align-items:flex-end;gap:var(--arq-space-gap-md);padding:var(--arq-space-padding-md) var(--page-gutter);flex-wrap:wrap;display:flex}:host([show-search]) .toolbar{column-gap:var(--arq-space-gap-sm-md)}.downloads,.sort{margin-inline-start:auto}.search{flex:1 1 0;min-width:0}:host([show-search]) .toggle-filters{align-self:stretch}.downloads{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.empty{padding-block:var(--arq-space-padding-md);color:var(--arq-color-text-secondary);margin:0}.scroll{overscroll-behavior-x:contain;scrollbar-width:none;overflow-x:auto}.scroll::-webkit-scrollbar{display:none}.scroll:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(-1 * var(--arq-border-strong))}.table{border-collapse:collapse;border-spacing:0;width:100%}th,td{padding:0 var(--arq-space-gap-sm) 0 0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-bg-default);text-align:start;white-space:nowrap;vertical-align:middle}thead th{padding-block:var(--arq-space-padding-sm-md);color:var(--arq-color-text-tertiary);font-weight:inherit}tbody th,tbody td{padding-block:var(--arq-space-padding-sm);color:var(--arq-color-text-primary)}@media (hover:hover){tbody tr:hover>*{background:var(--arq-color-surface-faint)}}.start{z-index:1;width:1%;padding-inline:var(--page-gutter) var(--arq-space-gap-sm);position:sticky;left:0}.sku-col{left:calc(var(--page-gutter) + var(--arq-layout-table-thumb) + var(--arq-space-gap-sm));z-index:1;width:1%;font-weight:inherit;padding-inline-end:var(--arq-space-gap-sm-md);position:sticky}.thumb{width:var(--arq-layout-table-thumb);height:var(--arq-layout-table-thumb);background:var(--arq-color-surface-subtle);flex:none;display:block;overflow:hidden}.thumb img{object-fit:cover;width:100%;height:100%;display:block}th.end,td.end{z-index:1;width:1%;padding-inline:var(--arq-space-gap-sm) var(--page-gutter);text-align:center;position:sticky;right:0}@media (width<=1023px){.sku-col{position:static}}@media (width<=767px){.th-downloads{width:var(--arq-border-default);height:var(--arq-border-default);clip-path:inset(50%);white-space:nowrap;position:absolute;overflow:hidden}}", b = (e) => String(e ?? "").replace(/[&<>"]/g, (e) => ({
 	"&": "&amp;",
 	"<": "&lt;",
 	">": "&gt;",
 	"\"": "&quot;"
-})[e]), S = {
+})[e]), x = {
 	search: "Buscar por SKU o nombre…",
 	searchLabel: "Buscar por SKU o nombre",
 	sort: "Ordenar por",
@@ -1051,7 +1035,7 @@ var Xe = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 		showSearch: { type: Boolean },
 		showSort: { type: Boolean }
 	};
-	static template = `<div class="controls"><div class="toolbar"><arq-search-field class="search" placeholder="${S.search}" label="${S.searchLabel}" hidden></arq-search-field><arq-button class="toggle-filters" show-icon icon="filter">Filtros</arq-button><div class="downloads"><slot name="downloads"></slot></div><arq-select class="sort" type="filter" label="${S.sort}" hidden></arq-select></div><arq-filter-bar class="filter-bar" hidden></arq-filter-bar></div><div class="scroll" tabindex="0" role="region" aria-label="Variantes"><table class="table"><thead></thead><tbody></tbody></table></div><p class="empty role-body" hidden>${S.empty}</p><span class="visually-hidden count" role="status"></span>`;
+	static template = `<div class="controls"><div class="toolbar"><arq-search-field class="search" placeholder="${x.search}" label="${x.searchLabel}" hidden></arq-search-field><arq-button class="toggle-filters" show-icon icon="filter">Filtros</arq-button><div class="downloads"><slot name="downloads"></slot></div><arq-select class="sort" type="filter" label="${x.sort}" hidden></arq-select></div><arq-filter-bar class="filter-bar" hidden></arq-filter-bar></div><div class="scroll" tabindex="0" role="region" aria-label="Variantes"><table class="table"><thead></thead><tbody></tbody></table></div><p class="empty role-body" hidden>${x.empty}</p><span class="visually-hidden count" role="status"></span>`;
 	#e = {
 		columns: [],
 		filters: [],
@@ -1059,7 +1043,7 @@ var Xe = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 	};
 	#t = {};
 	#n = "";
-	#r = b[0].value;
+	#r = y[0].value;
 	get data() {
 		return this.#e;
 	}
@@ -1080,8 +1064,8 @@ var Xe = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 		let t = e.querySelector("slot[name=\"downloads\"]"), n = () => t.parentElement.hidden = !t.assignedElements().length;
 		t.addEventListener("slotchange", n), n();
 		let r = e.querySelector(".sort");
-		r.allLabel = b[0].label, r.options = b.slice(1), r.addEventListener("arq:change", (e) => {
-			e.stopPropagation(), this.#r = e.detail.value || b[0].value, this.#a(!0);
+		r.allLabel = y[0].label, r.options = y.slice(1), r.addEventListener("arq:change", (e) => {
+			e.stopPropagation(), this.#r = e.detail.value || y[0].value, this.#a(!0);
 		}), e.querySelector("tbody").addEventListener("click", (e) => {
 			let t = e.target.closest("arq-icon-button[data-sku]");
 			if (!t) return;
@@ -1104,7 +1088,7 @@ var Xe = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 	}
 	#i() {
 		let e = this.shadowRoot, { columns: t, filters: n } = this.#e;
-		e.querySelector("thead").innerHTML = `<tr><th scope="col" class="start"><span class="visually-hidden">${S.image}</span></th><th scope="col" class="sku-col role-label">SKU</th>` + t.map((e) => `<th scope="col" class="role-label">${x(e.label)}</th>`).join("") + `<th scope="col" class="end role-label"><span class="th-downloads">${S.downloads}</span></th></tr>`, e.querySelector(".filter-bar").replaceChildren(...n.map((e) => {
+		e.querySelector("thead").innerHTML = `<tr><th scope="col" class="start"><span class="visually-hidden">${x.image}</span></th><th scope="col" class="sku-col role-label">SKU</th>` + t.map((e) => `<th scope="col" class="role-label">${b(e.label)}</th>`).join("") + `<th scope="col" class="end role-label"><span class="th-downloads">${x.downloads}</span></th></tr>`, e.querySelector(".filter-bar").replaceChildren(...n.map((e) => {
 			let t = document.createElement("arq-select");
 			return t.type = "filter", t.label = e.label, t.name = e.key, t;
 		})), this.#a();
@@ -1123,9 +1107,9 @@ var Xe = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 			})), e.value = this.#t[e.name] ?? "";
 		});
 		let s = ze(i, this.#t);
-		t.querySelector("tbody").innerHTML = s.map((e) => `<tr><td class="start"><span class="thumb">${e.thumb ? `<img src="${x(e.thumb)}" alt="" loading="lazy">` : ""}</span></td><th scope="row" class="sku-col"><arq-sku size="compact">${x(e.sku)}</arq-sku></th>` + n.map((t) => `<td class="role-body">${x(e.values?.[t.key] ?? "—")}</td>`).join("") + `<td class="end"><arq-icon-button icon="download" size="large" background="outline" data-sku="${x(e.sku)}">Descargas de ${x(e.sku)}</arq-icon-button></td></tr>`).join("");
+		t.querySelector("tbody").innerHTML = s.map((e) => `<tr><td class="start"><span class="thumb">${e.thumb ? `<img src="${b(e.thumb)}" alt="" loading="lazy">` : ""}</span></td><th scope="row" class="sku-col"><arq-sku size="compact">${b(e.sku)}</arq-sku></th>` + n.map((t) => `<td class="role-body">${b(e.values?.[t.key] ?? "—")}</td>`).join("") + `<td class="end"><arq-icon-button icon="download" size="large" background="outline" data-sku="${b(e.sku)}">Descargas de ${b(e.sku)}</arq-icon-button></td></tr>`).join("");
 		let c = !s.length && this.#e.rows.length > 0;
-		t.querySelector(".scroll").hidden = c, t.querySelector(".empty").hidden = !c, e && (t.querySelector(".count").textContent = S.count(s.length));
+		t.querySelector(".scroll").hidden = c, t.querySelector(".empty").hidden = !c, e && (t.querySelector(".count").textContent = x.count(s.length));
 	}
 }).define();
 //#endregion
@@ -1160,39 +1144,39 @@ var Ze = ":host{display:block}.thumb{box-sizing:border-box;aspect-ratio:5/4;bord
 }).define();
 //#endregion
 //#region src/base/theme.js
-var C = /* @__PURE__ */ new Set(), w = null;
-function Qe(e) {
+var S = /* @__PURE__ */ new Set(), Qe = null;
+function $e(e) {
 	if (e.assignedSlot) return e.assignedSlot;
 	if (e.parentElement) return e.parentElement;
 	let t = e.parentNode;
 	return t instanceof ShadowRoot ? t.host : null;
 }
-function $e(e) {
-	for (let t = e; t; t = Qe(t)) if (t.hasAttribute?.("data-arq-theme")) return t.getAttribute("data-arq-theme") === "dark";
+function et(e) {
+	for (let t = e; t; t = $e(t)) if (t.hasAttribute?.("data-arq-theme")) return t.getAttribute("data-arq-theme") === "dark";
 	return !1;
 }
-function et() {
-	tt();
-}
 function tt() {
-	for (let e of C) {
+	nt();
+}
+function nt() {
+	for (let e of S) {
 		let t = e.ref.deref();
 		if (!t) {
-			C.delete(e);
+			S.delete(e);
 			continue;
 		}
 		if (!t.isConnected) continue;
-		let n = $e(t);
+		let n = et(t);
 		n !== e.dark && (e.dark = n, t[e.method](n));
 	}
 }
-function nt(e, t) {
+function rt(e, t) {
 	let n = {
 		ref: new WeakRef(e),
-		dark: $e(e),
+		dark: et(e),
 		method: t
 	};
-	C.add(n), w || (w = new MutationObserver(tt), w.observe(document.documentElement, {
+	S.add(n), Qe || (Qe = new MutationObserver(nt), Qe.observe(document.documentElement, {
 		attributes: !0,
 		subtree: !0,
 		attributeFilter: ["data-arq-theme"]
@@ -1200,10 +1184,10 @@ function nt(e, t) {
 }
 //#endregion
 //#region src/components/product-gallery/product-gallery.css?inline
-var rt = ":host{min-width:0;display:block}.gallery{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex;position:relative}.image{aspect-ratio:5/4;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);overflow:hidden}::slotted(img){object-fit:cover!important;width:100%!important;height:100%!important;display:block!important}.thumbs{gap:var(--arq-space-gap-sm);margin:calc(-1 * var(--arq-space-padding-xs));padding:var(--arq-space-padding-xs);scroll-snap-type:x mandatory;scrollbar-width:none;display:flex;overflow-x:auto}.thumbs::-webkit-scrollbar{display:none}arq-gallery-thumb{width:var(--arq-layout-gallery-thumb);scroll-snap-align:start;flex:none}@media (width>=768px){.thumbs{left:var(--arq-space-padding-lg);bottom:var(--arq-space-padding-lg);max-width:calc(100% - 2 * var(--arq-space-padding-lg));position:absolute}}";
+var it = ":host{min-width:0;display:block}.gallery{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex;position:relative}.image{aspect-ratio:5/4;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);overflow:hidden}::slotted(img){object-fit:cover!important;width:100%!important;height:100%!important;display:block!important}.thumbs{gap:var(--arq-space-gap-sm);margin:calc(-1 * var(--arq-space-padding-xs));padding:var(--arq-space-padding-xs);scroll-snap-type:x mandatory;scrollbar-width:none;display:flex;overflow-x:auto}.thumbs::-webkit-scrollbar{display:none}arq-gallery-thumb{width:var(--arq-layout-gallery-thumb);scroll-snap-align:start;flex:none}@media (width>=768px){.thumbs{left:var(--arq-space-padding-lg);bottom:var(--arq-space-padding-lg);max-width:calc(100% - 2 * var(--arq-space-padding-lg));position:absolute}}";
 (class extends f {
 	static tag = "arq-product-gallery";
-	static styles = rt;
+	static styles = it;
 	static properties = {};
 	static template = "<div class=\"gallery\"><div class=\"image\"><slot name=\"image\"></slot></div><div class=\"thumbs\" hidden></div></div>";
 	#e = [];
@@ -1219,7 +1203,7 @@ var rt = ":host{min-width:0;display:block}.gallery{gap:var(--arq-space-gap-sm);f
 		this.shadowRoot.querySelector(".thumbs").addEventListener("click", (e) => {
 			let t = e.target.closest("arq-gallery-thumb");
 			t && this.select(Number(t.dataset.index));
-		}), nt(this, "themeChanged"), this.#a();
+		}), rt(this, "themeChanged"), this.#a();
 	}
 	themeChanged(e) {
 		this.#n = e, this.#a();
@@ -1255,10 +1239,10 @@ var rt = ":host{min-width:0;display:block}.gallery{gap:var(--arq-space-gap-sm);f
 }).define();
 //#endregion
 //#region src/base/card-link.css?inline
-var T = ".card{--card-above:1;position:relative}.card-link{color:inherit;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);text-decoration:none;display:block}.card-link:after{content:\"\";position:absolute;inset:0}.card-link:focus{outline:none}.card:has(.card-link:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}@media (hover:hover){.card:has(.card-link:hover) .card-media{outline:var(--arq-border-default) solid var(--arq-color-border-hover);outline-offset:calc(var(--arq-border-default) * -1)}}.card-media{background:var(--arq-color-bg-subtle);overflow:hidden}.card-media ::slotted(*){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}", it = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.card-media{aspect-ratio:1;background:var(--arq-color-surface-subtle)}:host([size=large]) .card-media{aspect-ratio:7/10}.name{max-width:100%;color:var(--arq-color-text-secondary);overflow-wrap:break-word;align-self:flex-start}:host([size=large]) .name{color:var(--arq-color-text-primary)}";
+var C = ".card{--card-above:1;position:relative}.card-link{color:inherit;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);text-decoration:none;display:block}.card-link:after{content:\"\";position:absolute;inset:0}.card-link:focus{outline:none}.card:has(.card-link:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}@media (hover:hover){.card:has(.card-link:hover) .card-media{outline:var(--arq-border-default) solid var(--arq-color-border-hover);outline-offset:calc(var(--arq-border-default) * -1)}}.card-media{background:var(--arq-color-bg-subtle);overflow:hidden}.card-media ::slotted(*){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}", at = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.card-media{aspect-ratio:1;background:var(--arq-color-surface-subtle)}:host([size=large]) .card-media{aspect-ratio:7/10}.name{max-width:100%;color:var(--arq-color-text-secondary);overflow-wrap:break-word;align-self:flex-start}:host([size=large]) .name{color:var(--arq-color-text-primary)}";
 (class extends f {
 	static tag = "arq-family-card";
-	static styles = T + it;
+	static styles = C + at;
 	static properties = {
 		size: {
 			type: String,
@@ -1275,10 +1259,10 @@ var T = ".card{--card-above:1;position:relative}.card-link{color:inherit;-webkit
 }).define();
 //#endregion
 //#region src/components/download-item/download-item.css?inline
-var at = ":host{min-width:0;display:block}.row{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0 calc(var(--arq-space-padding-md) - var(--arq-border-default));border:0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);margin:0;text-decoration:none;display:flex}.label{overflow-wrap:break-word;flex:auto;min-width:0}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}:host([emphasis=featured]) .row{padding:calc(var(--arq-space-padding-md) - var(--arq-border-default)) calc(var(--arq-space-padding-lg) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong)}@media (hover:hover){:host(:not([emphasis=featured])) .row:hover .label{text-decoration:underline;text-decoration-thickness:var(--arq-border-default)}:host([emphasis=featured]) .row:hover{background:var(--arq-color-surface-faint)}}.row:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.row:focus:not(:focus-visible){outline:none}";
+var ot = ":host{min-width:0;display:block}.row{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0 calc(var(--arq-space-padding-md) - var(--arq-border-default));border:0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);margin:0;text-decoration:none;display:flex}.label{overflow-wrap:break-word;flex:auto;min-width:0}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}:host([emphasis=featured]) .row{padding:calc(var(--arq-space-padding-md) - var(--arq-border-default)) calc(var(--arq-space-padding-lg) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong)}@media (hover:hover){:host(:not([emphasis=featured])) .row:hover .label{text-decoration:underline;text-decoration-thickness:var(--arq-border-default)}:host([emphasis=featured]) .row:hover{background:var(--arq-color-surface-faint)}}.row:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.row:focus:not(:focus-visible){outline:none}";
 (class extends f {
 	static tag = "arq-download-item";
-	static styles = at;
+	static styles = ot;
 	static properties = {
 		emphasis: {
 			type: String,
@@ -1304,7 +1288,7 @@ var at = ":host{min-width:0;display:block}.row{box-sizing:border-box;align-items
 }).define();
 //#endregion
 //#region src/base/scroll-lock.js
-var ot = {
+var st = {
 	ArrowDown: 1,
 	ArrowUp: -1,
 	PageDown: 1,
@@ -1313,7 +1297,7 @@ var ot = {
 	Home: -1,
 	" ": 1
 };
-function E(e, t, n) {
+function w(e, t, n) {
 	for (let r of e.composedPath()) {
 		if (!(r instanceof Element)) continue;
 		let { overflowY: e } = getComputedStyle(r);
@@ -1322,26 +1306,26 @@ function E(e, t, n) {
 	}
 	return !1;
 }
-var st = (e) => e.composedPath().some((e) => e instanceof Element && (e.matches("input, textarea, select, [contenteditable=\"\"], [contenteditable=\"true\"]") || e.getAttribute("role") === "combobox"));
-function ct(e) {
+var ct = (e) => e.composedPath().some((e) => e instanceof Element && (e.matches("input, textarea, select, [contenteditable=\"\"], [contenteditable=\"true\"]") || e.getAttribute("role") === "combobox"));
+function lt(e) {
 	e.addEventListener("wheel", (t) => {
-		t.deltaY && !E(t, e, t.deltaY) && t.preventDefault();
+		t.deltaY && !w(t, e, t.deltaY) && t.preventDefault();
 	}, { passive: !1 });
 	let t = 0;
 	e.addEventListener("touchstart", (e) => t = e.touches[0].clientY, { passive: !0 }), e.addEventListener("touchmove", (n) => {
 		let r = t - n.touches[0].clientY;
-		r && !E(n, e, r) && n.preventDefault();
+		r && !w(n, e, r) && n.preventDefault();
 	}, { passive: !1 }), e.addEventListener("keydown", (t) => {
-		let n = ot[t.key];
-		!n || t.altKey || t.ctrlKey || t.metaKey || st(t) || t.key === " " && t.composedPath().some((e) => e instanceof Element && e.matches("button, a[href], [role=\"button\"]")) || E(t, e, n) || t.preventDefault();
+		let n = st[t.key];
+		!n || t.altKey || t.ctrlKey || t.metaKey || ct(t) || t.key === " " && t.composedPath().some((e) => e instanceof Element && e.matches("button, a[href], [role=\"button\"]")) || w(t, e, n) || t.preventDefault();
 	});
 }
 //#endregion
 //#region src/components/download-modal/download-modal.css?inline
-var lt = ":host{display:contents}.dialog{box-sizing:border-box;width:100%;max-width:none;height:100%;max-height:none;padding:var(--arq-layout-gutter);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);overscroll-behavior:contain;border:0;margin:0;position:fixed;inset:0;overflow-y:auto}.dialog[open]{flex-direction:column;display:flex}.dialog::backdrop{background:var(--arq-color-overlay-scrim)}.sheet{box-sizing:border-box;gap:var(--arq-space-gap-2xl);width:var(--arq-layout-filter-panel);max-width:100%;padding:var(--arq-space-padding-xl-2xl);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);flex-direction:column;flex:none;margin:auto 0 0 auto;display:flex}.header{justify-content:space-between;align-items:flex-start;gap:var(--arq-space-gap-md);display:flex}.title-wrap{gap:var(--arq-space-gap-sm);flex-direction:column;min-width:0;display:flex}.title{min-width:0;color:var(--arq-color-text-primary)}.content{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.list{flex-direction:column;display:flex}@media (width<=767px){.sheet{width:auto;margin-inline-start:0}}";
+var ut = ":host{display:contents}.dialog{box-sizing:border-box;width:100%;max-width:none;height:100%;max-height:none;padding:var(--arq-layout-gutter);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);overscroll-behavior:contain;border:0;margin:0;position:fixed;inset:0;overflow-y:auto}.dialog[open]{flex-direction:column;display:flex}.dialog::backdrop{background:var(--arq-color-overlay-scrim)}.sheet{box-sizing:border-box;gap:var(--arq-space-gap-2xl);width:var(--arq-layout-filter-panel);max-width:100%;padding:var(--arq-space-padding-xl-2xl);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);flex-direction:column;flex:none;margin:auto 0 0 auto;display:flex}.header{justify-content:space-between;align-items:flex-start;gap:var(--arq-space-gap-md);display:flex}.title-wrap{gap:var(--arq-space-gap-sm);flex-direction:column;min-width:0;display:flex}.title{min-width:0;color:var(--arq-color-text-primary)}.content{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.list{flex-direction:column;display:flex}@media (width<=767px){.sheet{width:auto;margin-inline-start:0}}";
 (class extends f {
 	static tag = "arq-download-modal";
-	static styles = lt;
+	static styles = ut;
 	static properties = {
 		open: { type: Boolean },
 		sku: { type: String }
@@ -1350,7 +1334,7 @@ var lt = ":host{display:contents}.dialog{box-sizing:border-box;width:100%;max-wi
 	#e = null;
 	#t = null;
 	setup() {
-		this.#e = this.shadowRoot.querySelector("dialog"), ct(this.#e), this.shadowRoot.querySelector(".close").addEventListener("click", () => this.close()), this.#e.addEventListener("click", (e) => {
+		this.#e = this.shadowRoot.querySelector("dialog"), lt(this.#e), this.shadowRoot.querySelector(".close").addEventListener("click", () => this.close()), this.#e.addEventListener("click", (e) => {
 			e.target === this.#e && this.close();
 		}), this.#e.addEventListener("cancel", (e) => {
 			e.preventDefault(), this.close();
@@ -1394,10 +1378,10 @@ var lt = ":host{display:contents}.dialog{box-sizing:border-box;width:100%;max-wi
 }).define();
 //#endregion
 //#region src/components/catalog-nav-item/catalog-nav-item.css?inline
-var ut = ":host{min-width:0;display:flex}.link{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;color:var(--arq-color-text-tertiary);-webkit-tap-highlight-color:var(--arq-color-surface-transparent);text-decoration:none;display:inline-flex}.label{overflow-wrap:break-word;min-width:0}.indicator{width:var(--arq-space-gap-sm-md);height:var(--arq-border-default);background:var(--arq-color-text-primary);flex:none;display:none}@media (hover:hover){.link:hover{color:var(--arq-color-text-primary)}}:host([selected]) .link{color:var(--arq-color-text-primary)}:host([selected]) .indicator{display:block}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}";
+var dt = ":host{min-width:0;display:flex}.link{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;color:var(--arq-color-text-tertiary);-webkit-tap-highlight-color:var(--arq-color-surface-transparent);text-decoration:none;display:inline-flex}.label{overflow-wrap:break-word;min-width:0}.indicator{width:var(--arq-space-gap-sm-md);height:var(--arq-border-default);background:var(--arq-color-text-primary);flex:none;display:none}@media (hover:hover){.link:hover{color:var(--arq-color-text-primary)}}:host([selected]) .link{color:var(--arq-color-text-primary)}:host([selected]) .indicator{display:block}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}";
 (class extends f {
 	static tag = "arq-catalog-nav-item";
-	static styles = ut;
+	static styles = dt;
 	static properties = {
 		size: {
 			type: String,
@@ -1420,10 +1404,10 @@ var ut = ":host{min-width:0;display:flex}.link{align-items:center;gap:var(--arq-
 }).define();
 //#endregion
 //#region src/components/catalog-nav-group/catalog-nav-group.css?inline
-var dt = ":host{min-width:0;display:block}.group{border-top:var(--arq-border-default) solid var(--arq-color-border-subtle)}.header{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-secondary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .header{padding-bottom:var(--arq-space-gap-md);color:var(--arq-color-text-primary)}.label{overflow-wrap:break-word;min-width:0}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}@media (hover:hover){.header:hover .icon-box{background:var(--arq-color-surface-hover)}}.items{align-items:flex-start;gap:var(--arq-space-gap-sm-md);padding-bottom:calc(var(--arq-space-padding-md) + var(--arq-space-padding-xs));flex-direction:column;display:flex}.header:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.header:focus:not(:focus-visible){outline:none}";
+var ft = ":host{min-width:0;display:block}.group{border-top:var(--arq-border-default) solid var(--arq-color-border-subtle)}.header{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-secondary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .header{padding-bottom:var(--arq-space-gap-md);color:var(--arq-color-text-primary)}.label{overflow-wrap:break-word;min-width:0}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}@media (hover:hover){.header:hover .icon-box{background:var(--arq-color-surface-hover)}}.items{align-items:flex-start;gap:var(--arq-space-gap-sm-md);padding-bottom:calc(var(--arq-space-padding-md) + var(--arq-space-padding-xs));flex-direction:column;display:flex}.header:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.header:focus:not(:focus-visible){outline:none}";
 (class extends f {
 	static tag = "arq-catalog-nav-group";
-	static styles = dt;
+	static styles = ft;
 	static properties = { open: { type: Boolean } };
 	static template = `<div class="group"><button type="button" class="header"><span class="label role-label"><slot name="label"></slot></span><span class="icon-box">${p("plus")}${p("minus")}</span></button><div class="items" role="list" part="panel"><slot></slot></div></div>`;
 	setup() {
@@ -1435,10 +1419,10 @@ var dt = ":host{min-width:0;display:block}.group{border-top:var(--arq-border-def
 }).define();
 //#endregion
 //#region src/components/catalog-nav/catalog-nav.css?inline
-var ft = ":host{min-width:0;display:block}.nav{background:var(--arq-color-surface-default)}.trigger{display:none}.panel,.panel[hidden]{display:block!important}@media (width<=1023px){.panel,.panel[hidden]{padding-inline:var(--arq-space-padding-md)}.nav{border-block:var(--arq-border-default) solid var(--arq-color-border-default)}.panel[hidden]{display:none!important}.trigger{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .trigger{background:var(--arq-color-surface-faint)}@media (hover:hover){.trigger:hover{background:var(--arq-color-surface-faint)}:host(:not([open])) .trigger:hover .icon-box{background:var(--arq-color-surface-hover)}}.trigger:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus:not(:focus-visible){outline:none}}.current{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;display:inline-flex}.current-label{overflow-wrap:break-word;min-width:0}.indicator{width:var(--arq-space-gap-sm-md);height:var(--arq-border-default);background:var(--arq-color-text-primary);flex:none}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}:host([open]) .icon-box{background:var(--arq-color-surface-default)}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}";
+var pt = ":host{min-width:0;display:block}.nav{background:var(--arq-color-surface-default)}.trigger{display:none}.panel,.panel[hidden]{display:block!important}@media (width<=1023px){.panel,.panel[hidden]{padding-inline:var(--arq-space-padding-md)}.nav{border-block:var(--arq-border-default) solid var(--arq-color-border-default)}.panel[hidden]{display:none!important}.trigger{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .trigger{background:var(--arq-color-surface-faint)}@media (hover:hover){.trigger:hover{background:var(--arq-color-surface-faint)}:host(:not([open])) .trigger:hover .icon-box{background:var(--arq-color-surface-hover)}}.trigger:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus:not(:focus-visible){outline:none}}.current{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;display:inline-flex}.current-label{overflow-wrap:break-word;min-width:0}.indicator{width:var(--arq-space-gap-sm-md);height:var(--arq-border-default);background:var(--arq-color-text-primary);flex:none}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}:host([open]) .icon-box{background:var(--arq-color-surface-default)}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}";
 (class extends f {
 	static tag = "arq-catalog-nav";
-	static styles = ft;
+	static styles = pt;
 	static properties = {
 		open: { type: Boolean },
 		label: {
@@ -1488,10 +1472,10 @@ var ft = ":host{min-width:0;display:block}.nav{background:var(--arq-color-surfac
 }).define();
 //#endregion
 //#region src/components/checkbox/checkbox.css?inline
-var pt = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.row{align-items:center;gap:var(--arq-space-gap-sm);max-width:100%;padding-block:var(--arq-space-gap-xs);cursor:pointer;display:inline-flex;position:relative}.control{width:var(--arq-icon-md);height:var(--arq-icon-md);flex:none;justify-content:center;align-items:center;display:inline-flex}.box{box-sizing:border-box;width:var(--arq-icon-sm);height:var(--arq-icon-sm);border:var(--arq-border-default) solid var(--arq-color-icon-tertiary);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default)}.label{min-width:0;color:var(--arq-color-text-secondary)}.row:hover .box{border-color:var(--arq-color-icon-primary)}.row:hover .label{color:var(--arq-color-text-primary)}.native:checked+.control .box{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}.row:hover .native:checked+.control .box{border-color:var(--arq-color-action-primary-hover);background:var(--arq-color-action-primary-hover)}:host([disabled]) .row{cursor:default}:host([disabled]) .box,:host([disabled]) .row:hover .box{border-color:var(--arq-color-icon-disabled)}:host([disabled]) .native:checked+.control .box{border-color:var(--arq-color-icon-disabled);background:var(--arq-color-icon-disabled)}:host([disabled]) .label,:host([disabled]) .row:hover .label{color:var(--arq-color-text-disabled)}.native:focus-visible+.control .box{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}";
+var mt = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.row{align-items:center;gap:var(--arq-space-gap-sm);max-width:100%;padding-block:var(--arq-space-gap-xs);cursor:pointer;display:inline-flex;position:relative}.control{width:var(--arq-icon-md);height:var(--arq-icon-md);flex:none;justify-content:center;align-items:center;display:inline-flex}.box{box-sizing:border-box;width:var(--arq-icon-sm);height:var(--arq-icon-sm);border:var(--arq-border-default) solid var(--arq-color-icon-tertiary);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default)}.label{min-width:0;color:var(--arq-color-text-secondary)}.row:hover .box{border-color:var(--arq-color-icon-primary)}.row:hover .label{color:var(--arq-color-text-primary)}.native:checked+.control .box{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}.row:hover .native:checked+.control .box{border-color:var(--arq-color-action-primary-hover);background:var(--arq-color-action-primary-hover)}:host([disabled]) .row{cursor:default}:host([disabled]) .box,:host([disabled]) .row:hover .box{border-color:var(--arq-color-icon-disabled)}:host([disabled]) .native:checked+.control .box{border-color:var(--arq-color-icon-disabled);background:var(--arq-color-icon-disabled)}:host([disabled]) .label,:host([disabled]) .row:hover .label{color:var(--arq-color-text-disabled)}.native:focus-visible+.control .box{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}";
 (class extends f {
 	static tag = "arq-checkbox";
-	static styles = pt;
+	static styles = mt;
 	static formAssociated = !0;
 	static properties = {
 		size: {
@@ -1536,10 +1520,10 @@ var pt = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.row{al
 }).define();
 //#endregion
 //#region src/components/filter-row/filter-row.css?inline
-var mt = ":host{min-width:0;display:block}.row{border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.header{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .header{padding-bottom:var(--arq-space-gap-md)}.label{overflow-wrap:break-word;min-width:0}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.options{align-items:flex-start;gap:var(--arq-space-gap-sm-md);padding-bottom:calc(var(--arq-space-padding-sm) + var(--arq-space-padding-md));flex-direction:column;display:flex}@media (hover:hover){.row:has(.header:hover){border-bottom-color:var(--arq-color-border-default)}.header:hover .icon-box{background:var(--arq-color-surface-hover)}}.row:has(.header:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.header:focus{outline:none}";
+var ht = ":host{min-width:0;display:block}.row{border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.header{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .header{padding-bottom:var(--arq-space-gap-md)}.label{overflow-wrap:break-word;min-width:0}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.options{align-items:flex-start;gap:var(--arq-space-gap-sm-md);padding-bottom:calc(var(--arq-space-padding-sm) + var(--arq-space-padding-md));flex-direction:column;display:flex}@media (hover:hover){.row:has(.header:hover){border-bottom-color:var(--arq-color-border-default)}.header:hover .icon-box{background:var(--arq-color-surface-hover)}}.row:has(.header:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.header:focus{outline:none}";
 (class extends f {
 	static tag = "arq-filter-row";
-	static styles = mt;
+	static styles = ht;
 	static properties = { open: { type: Boolean } };
 	static template = `<div class="row"><button type="button" class="header"><span class="label role-body-xl"><slot name="label"></slot></span><span class="icon-box">${p("plus")}${p("minus")}</span></button><div class="options" role="group" part="panel"><slot></slot></div></div>`;
 	setup() {
@@ -1555,14 +1539,73 @@ var mt = ":host{min-width:0;display:block}.row{border-bottom:var(--arq-border-de
 	}
 }).define();
 //#endregion
-//#region src/components/filter-panel/filter-panel.css?inline
-var ht = ":host{display:contents}.dialog{box-sizing:border-box;width:var(--arq-layout-filter-panel);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);max-width:100%;height:100dvh;max-height:none;color:var(--arq-color-text-primary);margin:0;padding:0;inset:0 0 0 auto;overflow:hidden}.dialog::backdrop{background:var(--arq-color-overlay-scrim)}.sheet{box-sizing:border-box;gap:var(--arq-space-gap-lg);height:100%;padding:var(--arq-space-padding-xl-2xl);flex-direction:column;display:flex}.header{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.titles{gap:var(--arq-space-gap-xs);flex-direction:column;min-width:0;display:flex}.title{color:var(--arq-color-text-primary)}.summary{color:var(--arq-color-text-secondary);margin:0}.applied{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.body{min-height:0;margin:calc(-1 * var(--arq-space-padding-xs));padding:var(--arq-space-padding-xs);overscroll-behavior:contain;flex:auto;overflow-y:auto}.footer{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-lg);display:flex}@media (width<=767px){.dialog{border:0;width:100%;inset:0}.dialog::backdrop{background:var(--arq-color-surface-transparent)}.sheet{gap:var(--arq-space-gap-xl);padding:var(--arq-space-padding-lg) var(--arq-layout-gutter)}.footer{justify-content:flex-start}.apply{flex:auto}}", gt = {
+//#region src/components/tab/tab.css?inline
+var gt = ":host{cursor:pointer;flex:none;display:inline-flex}.tab{padding-bottom:var(--arq-space-gap-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-surface-transparent);color:var(--arq-color-text-tertiary);white-space:nowrap;display:inline-flex}:host(:not([disabled]):hover) .tab{color:var(--arq-color-text-primary)}:host([selected]) .tab{border-bottom-color:var(--arq-color-border-strong);color:var(--arq-color-text-primary)}:host([disabled]){cursor:default}:host([disabled]) .tab{color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+(class extends f {
+	static tag = "arq-tab";
+	static styles = gt;
+	static properties = {
+		selected: { type: Boolean },
+		disabled: { type: Boolean },
+		value: { type: String }
+	};
+	static template = "<span class=\"tab role-label\"><slot></slot></span>";
+	setup() {
+		this.selectable = new g(this, {
+			role: "tab",
+			state: "aria-selected"
+		});
+		let e = () => {
+			let e = this.textContent.trim();
+			e && this.setAttribute("aria-label", e);
+		};
+		this.shadowRoot.querySelector("slot").addEventListener("slotchange", e), e();
+	}
+}).define();
+//#endregion
+//#region src/base/single-select.js
+var _t = ["ArrowRight", "ArrowDown"], vt = ["ArrowLeft", "ArrowUp"], T = class {
+	constructor(e, { items: t }) {
+		this.host = e, this.selector = t, e.addEventListener("keydown", (e) => this.#t(e)), e.addEventListener("arq:change", (e) => this.#e(e)), new MutationObserver(() => this.refresh()).observe(e, {
+			childList: !0,
+			subtree: !0,
+			attributes: !0,
+			attributeFilter: ["selected", "disabled"]
+		}), this.refresh();
+	}
+	get items() {
+		return [...this.host.querySelectorAll(this.selector)];
+	}
+	get enabledItems() {
+		return this.items.filter((e) => !e.disabled);
+	}
+	get selected() {
+		return this.items.find((e) => e.selected) ?? null;
+	}
+	refresh() {
+		let e = this.enabledItems, t = this.selected && !this.selected.disabled ? this.selected : e[0];
+		for (let e of this.items) e.setAttribute("tabindex", e === t ? "0" : "-1");
+	}
+	#e(e) {
+		let t = e.target;
+		if (this.items.includes(t) && t.selected) {
+			for (let e of this.items) e !== t && e.selected && (e.selected = !1);
+			this.refresh();
+		}
+	}
+	#t(e) {
+		let t = this.enabledItems, n = t.indexOf(e.target);
+		if (n === -1) return;
+		let r = null;
+		_t.includes(e.key) ? r = t[(n + 1) % t.length] : vt.includes(e.key) ? r = t[(n - 1 + t.length) % t.length] : e.key === "Home" ? r = t[0] : e.key === "End" && (r = t[t.length - 1]), r && (e.preventDefault(), r.focus(), r.choose?.());
+	}
+}, yt = ":host{display:contents}.dialog{box-sizing:border-box;width:var(--arq-layout-filter-panel);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);max-width:100%;height:100dvh;max-height:none;color:var(--arq-color-text-primary);margin:0;padding:0;inset:0 0 0 auto;overflow:hidden}.dialog::backdrop{background:var(--arq-color-overlay-scrim)}.sheet{box-sizing:border-box;gap:var(--arq-space-gap-lg);height:100%;padding:var(--arq-space-padding-xl-2xl);flex-direction:column;display:flex}.header{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.titles{gap:var(--arq-space-gap-xs);flex-direction:column;min-width:0;display:flex}.title{color:var(--arq-color-text-primary)}.summary{color:var(--arq-color-text-secondary);margin:0}.applied{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.tabs{display:none}.body{min-height:0;margin:calc(-1 * var(--arq-space-padding-xs));padding:var(--arq-space-padding-xs);overscroll-behavior:contain;flex:auto;overflow-y:auto}.footer{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-lg);display:flex}@media (width<=767px){.dialog{border:0;width:100%;inset:0}.dialog::backdrop{background:var(--arq-color-surface-transparent)}.sheet{gap:var(--arq-space-gap-xl);padding:var(--arq-space-padding-lg) var(--arq-layout-gutter)}:host([show-categories]) .tabs{gap:var(--arq-space-gap-xl);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);flex:none;display:flex;overflow-x:auto}.categories-panel{min-width:0}.footer{justify-content:flex-start}.apply{flex:auto}}", bt = {
 	productos: ["producto", "productos"],
 	colecciones: ["colección", "colecciones"]
 };
 (class extends f {
 	static tag = "arq-filter-panel";
-	static styles = ht;
+	static styles = yt;
 	static properties = {
 		open: { type: Boolean },
 		count: { type: Number },
@@ -1570,27 +1613,33 @@ var ht = ":host{display:contents}.dialog{box-sizing:border-box;width:var(--arq-l
 			type: String,
 			values: ["productos", "colecciones"],
 			default: "productos"
-		}
+		},
+		showCategories: { type: Boolean }
 	};
-	static template = "<dialog class=\"dialog\" data-arq-theme=\"light\"><div class=\"sheet\"><div class=\"header\"><div class=\"titles\"><div class=\"title role-heading-1\"><slot name=\"title\"></slot></div><p class=\"summary role-body\" hidden></p></div><arq-icon-button icon=\"close\" size=\"large\" class=\"close\">Cerrar filtros</arq-icon-button></div><div class=\"applied\" hidden></div><div class=\"body\"><slot></slot></div><div class=\"footer\"><arq-button type=\"underline\" show-underline class=\"clear\">Borrar todo</arq-button><arq-button class=\"apply\"></arq-button></div></div></dialog>";
+	static template = "<dialog class=\"dialog\" data-arq-theme=\"light\"><div class=\"sheet\"><div class=\"header\"><div class=\"titles\"><div class=\"title role-heading-1\"><slot name=\"title\"></slot></div><p class=\"summary role-body\" hidden></p></div><arq-icon-button icon=\"close\" size=\"large\" class=\"close\">Cerrar filtros</arq-icon-button></div><div class=\"applied\" hidden></div><div class=\"tabs\" role=\"tablist\" aria-label=\"Tipo de filtro\"><arq-tab value=\"features\" id=\"features-tab\" aria-controls=\"features-panel\" selected>Características</arq-tab><arq-tab value=\"categories\" id=\"categories-tab\" aria-controls=\"categories-panel\">Categorías</arq-tab></div><div class=\"body\"><div class=\"features-panel\" id=\"features-panel\" role=\"tabpanel\" aria-labelledby=\"features-tab\"><slot></slot></div><div class=\"categories-panel\" id=\"categories-panel\" role=\"tabpanel\" aria-labelledby=\"categories-tab\" hidden><slot name=\"categories\"></slot></div></div><div class=\"footer\"><arq-button type=\"underline\" show-underline class=\"clear\">Borrar todo</arq-button><arq-button class=\"apply\"></arq-button></div></div></dialog>";
 	#e = null;
 	#t = null;
 	#n = null;
 	setup() {
 		let e = this.shadowRoot;
-		this.#e = e.querySelector("dialog"), e.querySelector(".close").addEventListener("click", () => this.close()), e.querySelector(".clear").addEventListener("click", () => this.clear()), e.querySelector(".apply").addEventListener("click", () => this.apply()), this.#e.addEventListener("click", (e) => {
+		this.#e = e.querySelector("dialog"), e.querySelector(".close").addEventListener("click", () => this.close()), e.querySelector(".clear").addEventListener("click", () => this.clear()), e.querySelector(".apply").addEventListener("click", () => this.apply()), new T(e.querySelector(".tabs"), { items: "arq-tab" }), e.querySelector(".tabs").addEventListener("arq:change", (e) => {
+			this.#i(e.detail.value);
+		}), this.addEventListener("arq:toggle", (e) => {
+			let t = e.target;
+			if (t.localName === "arq-catalog-nav-group" && e.detail.open && t.closest("[slot=\"categories\"]")) for (let e of this.querySelectorAll("[slot=\"categories\"] arq-catalog-nav-group")) e.open = e === t;
+		}), this.#e.addEventListener("click", (e) => {
 			e.target === this.#e && this.close();
 		}), this.#e.addEventListener("cancel", (e) => {
 			e.preventDefault(), this.close();
 		}), e.querySelector(".applied").addEventListener("click", (e) => {
 			let t = e.target.closest("arq-filter-chip");
-			t && this.#d(t);
+			t && this.#f(t);
 		}), this.addEventListener("arq:change", (e) => {
-			e.target.localName === "arq-checkbox" && this.#s();
-		}), e.querySelector("slot[name=\"title\"]").addEventListener("slotchange", () => this.#o()), this.#o(), this.#l();
+			e.target.localName === "arq-checkbox" && this.#c();
+		}), e.querySelector("slot[name=\"title\"]").addEventListener("slotchange", () => this.#s()), this.#s(), this.#u();
 	}
 	update(e) {
-		e.has("open") && (this.open && !this.#e.open && this.#r(), !this.open && this.#e.open && this.#i()), (e.has("count") || e.has("unit")) && this.#u();
+		e.has("open") && (this.open && !this.#e.open && this.#r(), !this.open && this.#e.open && this.#a()), (e.has("count") || e.has("unit")) && this.#d(), e.has("showCategories") && this.#i("features");
 	}
 	get options() {
 		return [...this.querySelectorAll("arq-filter-row > arq-checkbox")];
@@ -1605,14 +1654,14 @@ var ht = ":host{display:contents}.dialog{box-sizing:border-box;width:var(--arq-l
 		return e;
 	}
 	show(e) {
-		this.#n = e ?? this.#a(), this.open = !0;
+		this.#n = e ?? this.#o(), this.open = !0;
 	}
 	close() {
 		let e = this.#t;
 		if (this.#t = null, e && [...e].some(([e, t]) => e.checked !== t)) {
 			for (let [t, n] of e) t.checked = n;
-			this.#s();
-		} else this.#l();
+			this.#c();
+		} else this.#u();
 		this.open = !1;
 	}
 	apply() {
@@ -1620,60 +1669,64 @@ var ht = ":host{display:contents}.dialog{box-sizing:border-box;width:var(--arq-l
 	}
 	clear() {
 		for (let e of this.options) e.checked = !1;
-		this.#s();
+		this.#c();
 	}
 	#r() {
-		this.#t = new Map(this.options.map((e) => [e, e.checked])), this.#l(), this.#e.showModal();
+		this.#t = new Map(this.options.map((e) => [e, e.checked])), this.#i("features"), this.#u(), this.#e.showModal();
 	}
-	#i() {
-		this.#t && this.close(), this.#e.close(), this.#n?.focus?.(), this.#n = null;
+	#i(e) {
+		let t = this.showCategories && e === "categories", n = this.shadowRoot;
+		n.querySelector("#features-tab").selected = !t, n.querySelector("#categories-tab").selected = t, n.querySelector(".features-panel").hidden = t, n.querySelector(".categories-panel").hidden = !t, n.querySelector(".summary").hidden = t || this.#l().length === 0, n.querySelector(".applied").hidden = t || this.#l().length === 0, n.querySelector(".footer").hidden = t;
 	}
 	#a() {
+		this.#t && this.close(), this.#e.close(), this.#n?.focus?.(), this.#n = null;
+	}
+	#o() {
 		let e = document.activeElement;
 		for (; e?.shadowRoot?.activeElement;) e = e.shadowRoot.activeElement;
 		let t = e?.getRootNode?.();
 		return t instanceof ShadowRoot ? t.host : e;
 	}
-	#o() {
+	#s() {
 		let e = this.querySelector("[slot=\"title\"]")?.textContent.trim();
 		this.#e.setAttribute("aria-label", e || "Filtrar");
 	}
-	#s() {
-		this.#l(), this.emit("filters", { filters: this.filters });
-	}
 	#c() {
-		return this.options.filter((e) => e.checked);
+		this.#u(), this.emit("filters", { filters: this.filters });
 	}
 	#l() {
-		let e = this.#c(), t = this.shadowRoot, n = t.querySelector(".summary");
-		n.hidden = e.length === 0, n.textContent = `${e.length} ${e.length === 1 ? "filtro activo" : "filtros activos"}`;
+		return this.options.filter((e) => e.checked);
+	}
+	#u() {
+		let e = this.#l(), t = this.shadowRoot, n = t.querySelector(".summary");
+		n.hidden = e.length === 0 || t.querySelector("#categories-tab").selected, n.textContent = `${e.length} ${e.length === 1 ? "filtro activo" : "filtros activos"}`;
 		let r = t.querySelector(".applied");
-		for (r.hidden = e.length === 0; r.children.length > e.length;) r.lastElementChild.remove();
+		for (r.hidden = e.length === 0 || t.querySelector("#categories-tab").selected; r.children.length > e.length;) r.lastElementChild.remove();
 		for (; r.children.length < e.length;) r.append(document.createElement("arq-filter-chip"));
 		e.forEach((e, t) => {
 			let n = r.children[t];
 			n.textContent = e.textContent.trim(), n.option = e;
-		}), this.#u();
+		}), this.#d();
 	}
-	#u() {
+	#d() {
 		let e = this.shadowRoot.querySelector(".apply");
 		if (!e) return;
-		let [t, n] = gt[this.unit] ?? gt.productos;
+		let [t, n] = bt[this.unit] ?? bt.productos;
 		e.textContent = Number.isFinite(this.count) ? `Ver ${this.count} ${this.count === 1 ? t : n}` : `Ver ${n}`;
 	}
-	#d(e) {
+	#f(e) {
 		let t = [...this.shadowRoot.querySelectorAll(".applied arq-filter-chip")].indexOf(e);
-		e.option.checked = !1, this.#s();
+		e.option.checked = !1, this.#c();
 		let n = [...this.shadowRoot.querySelectorAll(".applied arq-filter-chip")];
 		(n[t] ?? n[t - 1] ?? this.shadowRoot.querySelector(".close")).focus();
 	}
 }).define();
 //#endregion
 //#region src/components/toggle/toggle.css?inline
-var _t = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.toggle{align-items:center;gap:var(--arq-space-gap-sm);cursor:pointer;max-width:100%;display:inline-flex;position:relative}.track{box-sizing:border-box;width:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm) * 2 + var(--arq-space-gap-sm));height:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm));padding:calc(var(--arq-space-padding-2xs) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong);border-radius:var(--arq-radius-pill);background:var(--arq-color-surface-transparent);flex:none;align-items:center;display:inline-flex}.thumb{width:var(--arq-icon-sm);height:var(--arq-icon-sm);border-radius:var(--arq-radius-pill);background:var(--arq-color-icon-primary);transition-property:transform,color,background-color,border-color,outline-color,text-decoration-color,fill,stroke}.label{min-width:0;color:var(--arq-color-text-primary)}.toggle:hover .track{background:var(--arq-color-surface-hover)}.native:checked+.track{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}.native:checked+.track .thumb{background:var(--arq-color-action-on-primary);transform:translateX(calc(var(--arq-icon-sm) + var(--arq-space-gap-sm)))}.toggle:hover .native:checked+.track{border-color:var(--arq-color-action-primary-hover);background:var(--arq-color-action-primary-hover)}:host([disabled]) .toggle{cursor:default}:host([disabled]) .track,:host([disabled]) .toggle:hover .track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-transparent)}:host([disabled]) .native:checked+.track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-strong)}:host([disabled]) .thumb,:host([disabled]) .native:checked+.track .thumb{background:var(--arq-color-icon-disabled)}:host([disabled]) .label{color:var(--arq-color-text-disabled)}.native:focus-visible+.track{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}";
+var xt = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.toggle{align-items:center;gap:var(--arq-space-gap-sm);cursor:pointer;max-width:100%;display:inline-flex;position:relative}.track{box-sizing:border-box;width:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm) * 2 + var(--arq-space-gap-sm));height:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm));padding:calc(var(--arq-space-padding-2xs) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong);border-radius:var(--arq-radius-pill);background:var(--arq-color-surface-transparent);flex:none;align-items:center;display:inline-flex}.thumb{width:var(--arq-icon-sm);height:var(--arq-icon-sm);border-radius:var(--arq-radius-pill);background:var(--arq-color-icon-primary);transition-property:transform,color,background-color,border-color,outline-color,text-decoration-color,fill,stroke}.label{min-width:0;color:var(--arq-color-text-primary)}.toggle:hover .track{background:var(--arq-color-surface-hover)}.native:checked+.track{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}.native:checked+.track .thumb{background:var(--arq-color-action-on-primary);transform:translateX(calc(var(--arq-icon-sm) + var(--arq-space-gap-sm)))}.toggle:hover .native:checked+.track{border-color:var(--arq-color-action-primary-hover);background:var(--arq-color-action-primary-hover)}:host([disabled]) .toggle{cursor:default}:host([disabled]) .track,:host([disabled]) .toggle:hover .track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-transparent)}:host([disabled]) .native:checked+.track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-strong)}:host([disabled]) .thumb,:host([disabled]) .native:checked+.track .thumb{background:var(--arq-color-icon-disabled)}:host([disabled]) .label{color:var(--arq-color-text-disabled)}.native:focus-visible+.track{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}";
 (class extends f {
 	static tag = "arq-toggle";
-	static styles = _t;
+	static styles = xt;
 	static formAssociated = !0;
 	static properties = {
 		checked: { type: Boolean },
@@ -1712,25 +1765,25 @@ var _t = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.toggle
 }).define();
 //#endregion
 //#region src/components/catalog-toolbar/catalog-toolbar.css?inline
-var vt = ":host{min-width:0;display:block}.bar{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);padding-block:var(--arq-space-padding-md);border-block:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex}:host([state=scroll]) .bar{padding-block:var(--arq-space-padding-sm)}.count{min-width:0;color:var(--arq-color-text-secondary);white-space:nowrap;margin:0}.actions{align-items:center;gap:var(--arq-space-gap-xl);flex:none;display:flex}.lead{align-items:stretch;gap:var(--arq-space-gap-xl);display:flex}@media (width<=767px){.actions,.lead{gap:var(--arq-space-gap-lg)}}", yt = {
+var St = ":host{min-width:0;display:block}.bar{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);padding-block:var(--arq-space-padding-md);border-block:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex}:host([state=scroll]) .bar{padding-block:var(--arq-space-padding-sm)}.count{min-width:0;color:var(--arq-color-text-secondary);white-space:nowrap;margin:0}.actions{align-items:center;gap:var(--arq-space-gap-xl);flex:none;display:flex}.lead{align-items:stretch;gap:var(--arq-space-gap-xl);display:flex}@media (width<=767px){.actions,.lead{gap:var(--arq-space-gap-lg)}}", Ct = {
 	productos: ["producto", "productos"],
 	colecciones: ["colección", "colecciones"]
-}, bt = "arq:theme";
-function xt() {
+}, wt = "arq:theme";
+function Tt() {
 	try {
-		return localStorage.getItem(bt);
+		return localStorage.getItem(wt);
 	} catch {
 		return null;
 	}
 }
-function St(e) {
+function Et(e) {
 	try {
-		localStorage.setItem(bt, e);
+		localStorage.setItem(wt, e);
 	} catch {}
 }
 (class extends f {
 	static tag = "arq-catalog-toolbar";
-	static styles = vt;
+	static styles = St;
 	static properties = {
 		count: { type: Number },
 		unit: {
@@ -1756,7 +1809,7 @@ function St(e) {
 		if (this.#t = e.querySelector(".iluminar"), this.#n = e.querySelector(".filter"), this.#n.addEventListener("click", () => this.#u()), this.#t.addEventListener("arq:change", (e) => {
 			e.stopPropagation(), this.#a(e.detail.checked, !0);
 		}), this.showIluminar) {
-			let e = xt();
+			let e = Tt();
 			(e === "dark" || e === "light") && this.#a(e === "dark", !1);
 		}
 		new MutationObserver(() => this.#o()).observe(document.documentElement, {
@@ -1768,7 +1821,7 @@ function St(e) {
 		(e.has("count") || e.has("unit")) && this.#r(), e.has("showIluminar") && (this.shadowRoot.querySelector(".lead").hidden = !this.showIluminar), e.has("for") && this.#s(), e.has("filterCount") && this.#i();
 	}
 	#r() {
-		let [e, t] = yt[this.unit] ?? yt.productos, n = this.shadowRoot.querySelector(".count");
+		let [e, t] = Ct[this.unit] ?? Ct.productos, n = this.shadowRoot.querySelector(".count");
 		n.textContent = Number.isFinite(this.count) ? `${this.count} ${this.count === 1 ? e : t}` : "";
 	}
 	#i() {
@@ -1777,7 +1830,7 @@ function St(e) {
 	}
 	#a(e, t) {
 		let n = document.documentElement;
-		e ? n.setAttribute("data-arq-theme", "dark") : n.removeAttribute("data-arq-theme"), t && St(e ? "dark" : "light");
+		e ? n.setAttribute("data-arq-theme", "dark") : n.removeAttribute("data-arq-theme"), t && Et(e ? "dark" : "light");
 	}
 	#o() {
 		this.#t.checked = document.documentElement.getAttribute("data-arq-theme") === "dark";
@@ -1806,10 +1859,10 @@ function St(e) {
 }).define();
 //#endregion
 //#region src/components/product-card/product-card.css?inline
-var Ct = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.card.is-small{gap:var(--arq-space-gap-sm)}.card-media{aspect-ratio:7/10;background:var(--arq-color-surface-subtle);position:relative}@media (hover:hover){.card:has(.card-link:hover) .card-media{outline:none}}.img{object-fit:cover;visibility:hidden;width:100%;height:100%;position:absolute;inset:0}.img.loaded{visibility:visible}.hover{opacity:0;transition-property:opacity,color,background-color,border-color,outline-color,text-decoration-color,fill,stroke;transition-duration:var(--arq-motion-duration-slow);transition-timing-function:var(--arq-motion-easing-standard)}.card.has-hover:has(.card-link:focus-visible) .hover{opacity:1}@media (hover:hover){.card.has-hover:has(.card-link:hover) .hover{opacity:1}}.fallback{padding:var(--arq-space-padding-md);color:var(--arq-color-text-secondary);text-align:center;overflow-wrap:break-word;justify-content:center;align-items:center;display:flex;position:absolute;inset:0}.info{align-items:flex-start;gap:var(--arq-space-gap-xs);padding-top:var(--arq-space-gap-xs);padding-bottom:var(--arq-space-gap-sm);flex-direction:column;display:flex}.title{align-items:center;gap:var(--arq-space-gap-sm);align-self:stretch;display:flex}.name{min-width:0;color:var(--arq-color-text-primary);overflow-wrap:break-word;flex:auto}.finishes{align-items:center;gap:var(--arq-space-gap-xs);flex:none;display:flex}.meta{-webkit-line-clamp:2;color:var(--arq-color-text-secondary);overflow-wrap:break-word;-webkit-box-orient:vertical;margin:0;display:-webkit-box;overflow:hidden}.meta[hidden]{display:none}.compare{z-index:var(--card-above);position:relative}", wt = matchMedia("(max-width: 767px)");
+var Dt = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.card.is-small{gap:var(--arq-space-gap-sm)}.card-media{aspect-ratio:7/10;background:var(--arq-color-surface-subtle);position:relative}@media (hover:hover){.card:has(.card-link:hover) .card-media{outline:none}}.img{object-fit:cover;visibility:hidden;width:100%;height:100%;position:absolute;inset:0}.img.loaded{visibility:visible}.hover{opacity:0;transition-property:opacity,color,background-color,border-color,outline-color,text-decoration-color,fill,stroke;transition-duration:var(--arq-motion-duration-slow);transition-timing-function:var(--arq-motion-easing-standard)}.card.has-hover:has(.card-link:focus-visible) .hover{opacity:1}@media (hover:hover){.card.has-hover:has(.card-link:hover) .hover{opacity:1}}.fallback{padding:var(--arq-space-padding-md);color:var(--arq-color-text-secondary);text-align:center;overflow-wrap:break-word;justify-content:center;align-items:center;display:flex;position:absolute;inset:0}.info{align-items:flex-start;gap:var(--arq-space-gap-xs);padding-top:var(--arq-space-gap-xs);padding-bottom:var(--arq-space-gap-sm);flex-direction:column;display:flex}.title{align-items:center;gap:var(--arq-space-gap-sm);align-self:stretch;display:flex}.name{min-width:0;color:var(--arq-color-text-primary);overflow-wrap:break-word;flex:auto}.finishes{align-items:center;gap:var(--arq-space-gap-xs);flex:none;display:flex}.meta{-webkit-line-clamp:2;color:var(--arq-color-text-secondary);overflow-wrap:break-word;-webkit-box-orient:vertical;margin:0;display:-webkit-box;overflow:hidden}.meta[hidden]{display:none}.compare{z-index:var(--card-above);position:relative}", Ot = matchMedia("(max-width: 767px)");
 (class extends f {
 	static tag = "arq-product-card";
-	static styles = T + Ct;
+	static styles = C + Dt;
 	static properties = {
 		size: {
 			type: String,
@@ -1843,7 +1896,7 @@ var Ct = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex
 		]) e.querySelector(`slot[name="${t}"]`).addEventListener("slotchange", () => this.#i());
 		e.querySelector(".compare").addEventListener("arq:change", (e) => {
 			e.stopPropagation(), this.compared = e.detail.checked, this.emit("compare", { checked: e.detail.checked });
-		}), wt.addEventListener("change", () => this.#r()), nt(this, "themeChanged");
+		}), Ot.addEventListener("change", () => this.#r()), rt(this, "themeChanged");
 	}
 	themeChanged(e) {
 		this.#e = e, this.#a();
@@ -1858,7 +1911,7 @@ var Ct = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex
 		n.hidden = !this.showCompare, n.checked = this.compared, e.has("size") && this.#r(), [...e].some((e) => e.startsWith("image")) && this.#a(), this.#i();
 	}
 	#n() {
-		return this.size === "small" || wt.matches;
+		return this.size === "small" || Ot.matches;
 	}
 	#r() {
 		let e = this.#n(), t = this.shadowRoot;
@@ -1882,10 +1935,10 @@ var Ct = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex
 }).define();
 //#endregion
 //#region src/components/compare-slot/compare-slot.css?inline
-var Tt = ":host{min-width:0;display:block}.slot{align-items:center;gap:var(--arq-space-gap-sm-md);max-width:var(--arq-layout-compare-slot);display:flex}.thumb{width:var(--arq-layout-compare-thumb);height:var(--arq-layout-compare-thumb);background:var(--arq-color-surface-subtle);flex:none;justify-content:center;align-items:center;display:flex;position:relative;overflow:hidden}.thumb img{object-fit:cover;width:100%;height:100%;position:absolute;inset:0}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary)}:host([filled]) .icon{display:none}.info{gap:var(--arq-space-gap-xs);flex-direction:column;flex:auto;min-width:0;display:flex}.name{color:var(--arq-color-text-primary);overflow-wrap:break-word}.meta,.empty{color:var(--arq-color-text-secondary);overflow-wrap:break-word}:host(:not([filled])) .name,:host(:not([filled])) .meta,.empty:empty{display:none}.remove{flex:none}:host([size=compact]) .slot{max-width:none}:host([size=compact]) .thumb{width:var(--arq-layout-compare-thumb-sm);aspect-ratio:7/10;height:auto}:host([size=compact]) .info{width:var(--arq-border-default);height:var(--arq-border-default);clip-path:inset(50%);white-space:nowrap;position:absolute;overflow:hidden}";
+var kt = ":host{min-width:0;display:block}.slot{align-items:center;gap:var(--arq-space-gap-sm-md);max-width:var(--arq-layout-compare-slot);display:flex}.thumb{width:var(--arq-layout-compare-thumb);height:var(--arq-layout-compare-thumb);background:var(--arq-color-surface-subtle);flex:none;justify-content:center;align-items:center;display:flex;position:relative;overflow:hidden}.thumb img{object-fit:cover;width:100%;height:100%;position:absolute;inset:0}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary)}:host([filled]) .icon{display:none}.info{gap:var(--arq-space-gap-xs);flex-direction:column;flex:auto;min-width:0;display:flex}.name{color:var(--arq-color-text-primary);overflow-wrap:break-word}.meta,.empty{color:var(--arq-color-text-secondary);overflow-wrap:break-word}:host(:not([filled])) .name,:host(:not([filled])) .meta,.empty:empty{display:none}.remove{flex:none}:host([size=compact]) .slot{max-width:none}:host([size=compact]) .thumb{width:var(--arq-layout-compare-thumb-sm);aspect-ratio:7/10;height:auto}:host([size=compact]) .info{width:var(--arq-border-default);height:var(--arq-border-default);clip-path:inset(50%);white-space:nowrap;position:absolute;overflow:hidden}";
 (class extends f {
 	static tag = "arq-compare-slot";
-	static styles = Tt;
+	static styles = kt;
 	static properties = {
 		size: {
 			type: String,
@@ -1919,49 +1972,49 @@ var Tt = ":host{min-width:0;display:block}.slot{align-items:center;gap:var(--arq
 }).define();
 //#endregion
 //#region src/components/compare-bar/compare-bar.css?inline
-var Et = ":host{display:contents}.bar{z-index:3;box-sizing:border-box;gap:var(--arq-space-gap-md);padding:var(--arq-space-padding-md) var(--page-gutter);border-top:var(--arq-border-default) solid var(--arq-color-border-default);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);flex-direction:column;display:flex;position:fixed;inset:auto 0 0}.head{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.title{align-items:center;gap:var(--arq-space-gap-sm);margin:0;display:inline-flex}.row{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-2xl);display:flex}.slots{align-items:stretch;gap:var(--arq-space-gap-lg);flex:auto;min-width:0;display:flex}.slots arq-compare-slot{flex:1 1 0;min-width:0}.actions{align-items:center;gap:var(--arq-space-gap-xl);flex:none;display:flex}.clear-mobile{display:none}@media (width<=767px){.bar{gap:var(--arq-space-gap-sm-md);padding-bottom:var(--arq-space-padding-lg);border-top-color:var(--arq-color-border-subtle)}.clear-mobile{display:inline-flex}.clear-desktop{display:none}.row{gap:var(--arq-space-gap-md)}.slots{gap:var(--arq-space-gap-sm);flex:none}.slots arq-compare-slot{flex:none}.actions,.go{flex:auto}}", D = "arq:compare", O = 3, Dt = matchMedia("(max-width: 767px)");
-function Ot() {
+var At = ":host{display:contents}.bar{z-index:3;box-sizing:border-box;gap:var(--arq-space-gap-md);padding:var(--arq-space-padding-md) var(--page-gutter);border-top:var(--arq-border-default) solid var(--arq-color-border-default);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);flex-direction:column;display:flex;position:fixed;inset:auto 0 0}.head{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.title{align-items:center;gap:var(--arq-space-gap-sm);margin:0;display:inline-flex}.row{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-2xl);display:flex}.slots{align-items:stretch;gap:var(--arq-space-gap-lg);flex:auto;min-width:0;display:flex}.slots arq-compare-slot{flex:1 1 0;min-width:0}.actions{align-items:center;gap:var(--arq-space-gap-xl);flex:none;display:flex}.clear-mobile{display:none}@media (width<=767px){.bar{gap:var(--arq-space-gap-sm-md);padding-bottom:var(--arq-space-padding-lg);border-top-color:var(--arq-color-border-subtle)}.clear-mobile{display:inline-flex}.clear-desktop{display:none}.row{gap:var(--arq-space-gap-md)}.slots{gap:var(--arq-space-gap-sm);flex:none}.slots arq-compare-slot{flex:none}.actions,.go{flex:auto}}", E = "arq:compare", D = 3, jt = matchMedia("(max-width: 767px)");
+function Mt() {
 	try {
-		let e = JSON.parse(localStorage.getItem(D) ?? "[]");
-		return Array.isArray(e) ? e.filter((e) => e && e.sku).slice(0, O) : [];
+		let e = JSON.parse(localStorage.getItem(E) ?? "[]");
+		return Array.isArray(e) ? e.filter((e) => e && e.sku).slice(0, D) : [];
 	} catch {
 		return [];
 	}
 }
-function kt(e) {
+function Nt(e) {
 	try {
-		localStorage.setItem(D, JSON.stringify(e));
+		localStorage.setItem(E, JSON.stringify(e));
 	} catch {}
 }
 (class extends f {
 	static tag = "arq-compare-bar";
-	static styles = Et;
+	static styles = At;
 	static properties = { href: {
 		type: String,
 		default: "/arq/comparativa"
 	} };
 	static template = "<section class=\"bar\" data-arq-theme=\"dark\" aria-label=\"Comparar productos\" hidden><div class=\"head\"><p class=\"title role-body-lg\"><span>Productos seleccionados</span><arq-count-badge class=\"count\"></arq-count-badge></p><arq-button type=\"underline\" show-underline class=\"clear clear-mobile\">Borrar todo</arq-button></div><div class=\"row\"><div class=\"slots\"></div><div class=\"actions\"><arq-button type=\"underline\" show-underline class=\"clear clear-desktop\">Borrar todo</arq-button><arq-button class=\"go\">Comparar</arq-button></div></div></section>";
-	#e = Ot();
+	#e = Mt();
 	get items() {
 		return [...this.#e];
 	}
 	set items(e) {
-		this.#e = (Array.isArray(e) ? e : []).filter((e) => e && e.sku).slice(0, O), this.#t();
+		this.#e = (Array.isArray(e) ? e : []).filter((e) => e && e.sku).slice(0, D), this.#t();
 	}
 	setup() {
 		let e = this.shadowRoot;
 		for (let t of e.querySelectorAll(".clear")) t.addEventListener("click", () => this.clear());
 		e.querySelector(".slots").addEventListener("arq:remove", (e) => {
 			e.stopPropagation(), this.remove(e.detail.sku);
-		}), Dt.addEventListener("change", () => this.#n()), addEventListener("storage", (e) => {
-			e.key === D && (this.#e = Ot(), this.#n(), this.emit("compare-change", { items: this.items }));
+		}), jt.addEventListener("change", () => this.#n()), addEventListener("storage", (e) => {
+			e.key === E && (this.#e = Mt(), this.#n(), this.emit("compare-change", { items: this.items }));
 		}), this.#n();
 	}
 	update(e) {
 		e.has("href") && this.#n();
 	}
 	add(e) {
-		return !e?.sku || this.has(e.sku) || this.#e.length >= O ? !1 : (this.#e.push({
+		return !e?.sku || this.has(e.sku) || this.#e.length >= D ? !1 : (this.#e.push({
 			sku: e.sku,
 			name: e.name ?? "",
 			meta: e.meta ?? "",
@@ -1979,15 +2032,15 @@ function kt(e) {
 		return this.#e.some((t) => t.sku === e);
 	}
 	#t() {
-		kt(this.#e), this.#n(), this.emit("compare-change", { items: this.items });
+		Nt(this.#e), this.#n(), this.emit("compare-change", { items: this.items });
 	}
 	#n() {
 		let e = this.shadowRoot;
 		if (!e.querySelector(".bar")) return;
 		let t = this.#e;
 		e.querySelector(".bar").hidden = t.length === 0, e.querySelector(".count").count = t.length;
-		let n = Dt.matches, r = e.querySelector(".slots"), i = [];
-		for (let e = 0; e < O; e++) {
+		let n = jt.matches, r = e.querySelector(".slots"), i = [];
+		for (let e = 0; e < D; e++) {
 			if (e > 0 && !n) {
 				let e = document.createElement("arq-divider");
 				e.setAttribute("orientation", "vertical"), e.setAttribute("emphasis", "default"), i.push(e);
@@ -2009,10 +2062,10 @@ function kt(e) {
 }).define();
 //#endregion
 //#region src/components/compare-product/compare-product.css?inline
-var At = ":host{min-width:0;display:block}.product{gap:var(--arq-space-gap-lg);flex-direction:column;width:100%;height:100%;display:flex}.media{width:100%;max-width:var(--arq-layout-compare-media-max);aspect-ratio:1;background:var(--arq-color-bg-subtle);justify-content:center;align-items:center;display:flex;position:relative;overflow:hidden}.media img{object-fit:cover;width:100%;height:100%;position:absolute;inset:0}.remove{top:var(--arq-space-padding-sm-md);right:var(--arq-space-padding-sm-md);position:absolute}:host([empty]) .media{background:var(--arq-color-surface-transparent);border:var(--arq-border-default) dashed var(--arq-color-border-default);flex:auto}:host([empty]) .remove,:host([empty]) .info,:host([empty]) .selects{display:none}.add{all:unset;justify-content:center;align-self:stretch;align-items:center;gap:var(--arq-space-gap-sm-md);box-sizing:border-box;cursor:pointer;color:var(--arq-color-text-secondary);flex-direction:column;flex:auto;display:none}:host([empty]) .add{display:flex}.add-icon{padding:var(--arq-space-padding-sm-md);background:var(--arq-color-surface-subtle);justify-content:center;align-items:center;display:flex}.add-icon .icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl)}.add:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(-1 * var(--arq-border-strong))}@media (hover:hover){:host([empty]) .product:hover{background:var(--arq-color-surface-faint)}:host([empty]) .product:hover .media{border-color:var(--arq-color-border-strong)}:host([empty]) .product:hover .add-icon{background:var(--arq-color-surface-transparent)}}.info{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.title{align-items:center;gap:var(--arq-space-gap-sm-md);color:var(--arq-color-text-primary);text-decoration:none;display:flex}.title:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:var(--arq-space-gap-xs)}.name{overflow-wrap:break-word;flex:auto;min-width:0}.title .icon{width:var(--arq-icon-md);height:var(--arq-icon-md);flex:none}.sku{color:var(--arq-color-text-tertiary);margin:0}.selects{gap:var(--arq-space-gap-sm-md);flex-direction:column;display:flex}";
+var Pt = ":host{min-width:0;display:block}.product{gap:var(--arq-space-gap-lg);flex-direction:column;width:100%;height:100%;display:flex}.media{width:100%;max-width:var(--arq-layout-compare-media-max);aspect-ratio:1;background:var(--arq-color-bg-subtle);justify-content:center;align-items:center;display:flex;position:relative;overflow:hidden}.media img{object-fit:cover;width:100%;height:100%;position:absolute;inset:0}.remove{top:var(--arq-space-padding-sm-md);right:var(--arq-space-padding-sm-md);position:absolute}:host([empty]) .media{background:var(--arq-color-surface-transparent);border:var(--arq-border-default) dashed var(--arq-color-border-default);flex:auto}:host([empty]) .remove,:host([empty]) .info,:host([empty]) .selects{display:none}.add{all:unset;justify-content:center;align-self:stretch;align-items:center;gap:var(--arq-space-gap-sm-md);box-sizing:border-box;cursor:pointer;color:var(--arq-color-text-secondary);flex-direction:column;flex:auto;display:none}:host([empty]) .add{display:flex}.add-icon{padding:var(--arq-space-padding-sm-md);background:var(--arq-color-surface-subtle);justify-content:center;align-items:center;display:flex}.add-icon .icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl)}.add:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(-1 * var(--arq-border-strong))}@media (hover:hover){:host([empty]) .product:hover{background:var(--arq-color-surface-faint)}:host([empty]) .product:hover .media{border-color:var(--arq-color-border-strong)}:host([empty]) .product:hover .add-icon{background:var(--arq-color-surface-transparent)}}.info{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.title{align-items:center;gap:var(--arq-space-gap-sm-md);color:var(--arq-color-text-primary);text-decoration:none;display:flex}.title:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:var(--arq-space-gap-xs)}.name{overflow-wrap:break-word;flex:auto;min-width:0}.title .icon{width:var(--arq-icon-md);height:var(--arq-icon-md);flex:none}.sku{color:var(--arq-color-text-tertiary);margin:0}.selects{gap:var(--arq-space-gap-sm-md);flex-direction:column;display:flex}";
 (class extends f {
 	static tag = "arq-compare-product";
-	static styles = At;
+	static styles = Pt;
 	static properties = { addLabel: {
 		type: String,
 		default: "Agregar producto"
@@ -2065,10 +2118,10 @@ var At = ":host{min-width:0;display:block}.product{gap:var(--arq-space-gap-lg);f
 }).define();
 //#endregion
 //#region src/components/compare-header/compare-header.css?inline
-var jt = ":host{display:block}.default{align-items:flex-start;gap:var(--arq-space-gap-xl);padding-inline:var(--page-gutter);padding-block-end:var(--arq-space-section-xs);display:flex;position:relative}.sentinel{width:var(--arq-border-default);height:var(--arq-border-default);position:absolute;top:0;left:0}.controls{width:var(--arq-layout-compare-label);flex:none}.products{align-items:stretch;gap:var(--arq-space-gap-xl);flex:auto;min-width:0;display:flex}.products>*{flex:1 1 0;min-width:0}.compact{top:var(--navbar-height,0px);z-index:1;align-items:center;gap:var(--arq-space-gap-lg);padding-inline:var(--page-gutter);padding-block:var(--arq-space-padding-sm-md);background:var(--arq-color-bg-default);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex;position:fixed;left:0;right:0}.compact .controls{align-items:center;display:flex}.slots{align-items:center;gap:var(--arq-space-gap-lg);flex:auto;min-width:0;display:flex;overflow:hidden}.slots .product{align-items:center;gap:var(--arq-space-gap-sm);flex:1 1 0;min-width:0;display:flex}.mobile-name{text-overflow:ellipsis;white-space:nowrap;color:var(--arq-color-text-primary);display:none;overflow:hidden}@media (width<=767px){.default{width:max-content;min-width:100%}.default .controls{display:none}.products>*{width:var(--arq-layout-compare-column);flex:none}.compact{gap:var(--arq-space-gap-md);overscroll-behavior-x:contain;overflow-x:auto}.slots{gap:var(--arq-space-gap-md);flex:none;width:max-content}.slots .product,.slots arq-compare-slot{flex:none}.mobile-name{display:block}}", k = 3, Mt = matchMedia("(max-width: 767px)");
+var Ft = ":host{z-index:2;display:block;position:relative}.default{align-items:flex-start;gap:var(--arq-space-gap-xl);padding-inline:var(--page-gutter);padding-block-end:var(--arq-space-section-xs);display:flex;position:relative}.sentinel{width:var(--arq-border-default);height:var(--arq-border-default);position:absolute;bottom:0;left:0}.controls{width:var(--arq-layout-compare-label);flex:none}.products{align-items:stretch;gap:var(--arq-space-gap-xl);flex:auto;min-width:0;display:flex}.products>*{flex:1 1 0;min-width:0}.compact{top:var(--navbar-height,0px);z-index:2;align-items:center;gap:var(--arq-space-gap-lg);padding-inline:var(--page-gutter);padding-block:var(--arq-space-padding-sm-md);background:var(--arq-color-bg-default);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex;position:fixed;left:0;right:0}.compact .controls{white-space:nowrap;align-items:center;width:auto;display:flex}.slots{align-items:center;gap:var(--arq-space-gap-lg);flex:auto;min-width:0;display:flex;overflow:hidden}.slots .product{align-items:center;gap:var(--arq-space-gap-sm);flex:1 1 0;min-width:0;display:flex}.mobile-name{text-overflow:ellipsis;white-space:nowrap;color:var(--arq-color-text-primary);display:none;overflow:hidden}@media (width<=767px){.default{width:100%;min-width:0}.default .controls{display:none}.products>*{width:var(--arq-layout-compare-column);flex:none}.products{gap:var(--arq-space-gap-md);scrollbar-width:none;overflow-x:auto}.products::-webkit-scrollbar{display:none}.slots::-webkit-scrollbar{display:none}.compact{align-items:stretch;gap:var(--arq-space-gap-md);flex-direction:column;top:0;overflow:visible}.slots{gap:var(--arq-space-gap-md);overscroll-behavior-x:contain;scrollbar-width:none;flex:auto;order:1;width:100%;overflow-x:auto}.compact .controls{order:2;width:auto}.slots .product{width:var(--arq-layout-compare-column);flex:none}.slots arq-compare-slot{flex:none}.mobile-name{display:block}}", O = 3, k = matchMedia("(max-width: 767px)");
 (class extends f {
 	static tag = "arq-compare-header";
-	static styles = jt;
+	static styles = Ft;
 	static properties = {
 		onlyDifferences: { type: Boolean },
 		diffLabel: {
@@ -2076,14 +2129,16 @@ var jt = ":host{display:block}.default{align-items:flex-start;gap:var(--arq-spac
 			default: "Solo diferencias"
 		}
 	};
-	static template = "<div class=\"header\"><div class=\"default\"><span class=\"sentinel\" aria-hidden=\"true\"></span><div class=\"controls\"><arq-toggle show-label class=\"diff\"></arq-toggle></div><div class=\"products\"></div></div><div class=\"compact\" hidden><div class=\"controls\"><arq-toggle show-label class=\"diff-compact\"></arq-toggle></div><div class=\"slots\"></div></div></div>";
+	static template = "<div class=\"header\"><div class=\"default\"><div class=\"controls\"><arq-toggle show-label class=\"diff\"></arq-toggle></div><div class=\"products\"></div><span class=\"sentinel\" aria-hidden=\"true\"></span></div><div class=\"compact\" hidden><div class=\"controls\"><arq-toggle show-label class=\"diff-compact\"></arq-toggle></div><div class=\"slots\"></div></div></div>";
 	#e = [];
 	#t = null;
+	#n = !1;
+	#r = !1;
 	get products() {
 		return this.#e;
 	}
 	set products(e) {
-		this.#e = (Array.isArray(e) ? e : []).slice(0, k), this.isConnected && this.#n();
+		this.#e = (Array.isArray(e) ? e : []).slice(0, O), this.isConnected && this.#i();
 	}
 	setup() {
 		let e = this.shadowRoot;
@@ -2106,17 +2161,21 @@ var jt = ":host{display:block}.default{align-items:flex-start;gap:var(--arq-spac
 			this.emit("add", { index: n });
 		}), e.querySelector(".slots").addEventListener("arq:remove", (e) => {
 			e.stopPropagation(), this.emit("remove", { sku: e.detail.sku });
-		}), Mt.addEventListener("change", () => this.#r()), this.#i(), addEventListener("resize", () => this.#i()), this.#n();
+		});
+		for (let t of e.querySelectorAll(".products, .slots")) t.addEventListener("scroll", () => this.#o(t));
+		k.addEventListener("change", () => this.#a()), this.#s(), addEventListener("resize", () => {
+			this.#s(), k.matches && document.querySelector("arq-navbar")?.removeAttribute("data-arq-compare-hidden");
+		}), this.#i();
 	}
 	disconnectedCallback() {
-		this.#t?.disconnect();
+		this.#t?.disconnect(), document.querySelector("arq-navbar")?.removeAttribute("data-arq-compare-hidden");
 	}
 	update(e) {
 		if (e.has("diffLabel") || e.has("onlyDifferences")) for (let e of this.shadowRoot.querySelectorAll("arq-toggle")) e.textContent = this.diffLabel ?? "", e.checked = this.onlyDifferences;
 	}
-	#n() {
+	#i() {
 		let e = this.shadowRoot, t = e.querySelector(".products"), n = e.querySelector(".slots");
-		for (let e = 0; e < k; e++) {
+		for (let e = 0; e < O; e++) {
 			let r = this.#e[e] ?? null, i = t.children[e];
 			i || (i = document.createElement("arq-compare-product"), t.append(i)), i.data = r;
 			let a = n.children[e];
@@ -2131,41 +2190,60 @@ var jt = ":host{display:block}.default{align-items:flex-start;gap:var(--arq-spac
 			} else o.removeAttribute("sku"), o.removeAttribute("image"), o.replaceChildren();
 			a.querySelector(".mobile-name").textContent = r?.name ?? "";
 		}
-		for (; t.children.length > k;) t.lastElementChild.remove();
-		for (; n.children.length > k;) n.lastElementChild.remove();
-		this.#r();
+		for (; t.children.length > O;) t.lastElementChild.remove();
+		for (; n.children.length > O;) n.lastElementChild.remove();
+		this.#a();
 	}
-	#r() {
-		let e = Mt.matches;
+	#a() {
+		let e = k.matches;
 		for (let t of this.shadowRoot.querySelectorAll(".slots arq-compare-slot")) t.size = e ? "compact" : "default";
+		document.querySelector("arq-navbar")?.removeAttribute("data-arq-compare-hidden");
 	}
-	#i() {
+	setScrollLeft(e) {
+		if (k.matches) for (let t of this.shadowRoot.querySelectorAll(".products, .slots")) t.scrollLeft = e;
+	}
+	refreshCompact() {
+		this.#s();
+	}
+	#o(e) {
+		if (!(!k.matches || this.#n)) {
+			this.#n = !0;
+			for (let t of this.shadowRoot.querySelectorAll(".products, .slots")) t !== e && (t.scrollLeft = e.scrollLeft);
+			this.emit("scroll", { left: e.scrollLeft }), this.#n = !1;
+		}
+	}
+	#s() {
 		let e = document.querySelector("arq-navbar"), t = e ? Math.round(e.getBoundingClientRect().height) : 0;
-		this.shadowRoot.querySelector(".compact").style.setProperty("--navbar-height", `${t}px`), this.#a(t);
+		this.shadowRoot.querySelector(".compact").style.setProperty("--navbar-height", `${t}px`), this.#c(t);
 	}
-	#a(e = 0) {
-		this.#t?.disconnect();
+	#c(e = 0) {
+		this.#t?.disconnect(), this.#r = !1, this.#l(!1);
 		let t = this.shadowRoot.querySelector(".sentinel");
-		this.#t = new IntersectionObserver(([e]) => this.#o(!e.isIntersecting), {
-			rootMargin: `${-e}px 0px 0px 0px`,
+		this.#t = new IntersectionObserver(([e]) => {
+			e.isIntersecting && (this.#r = !0), this.#l(this.#r && e.boundingClientRect.top < 0);
+		}, {
+			rootMargin: `${k.matches ? 0 : -e}px 0px 0px 0px`,
 			threshold: 0
 		}), this.#t.observe(t);
 	}
-	#o(e) {
+	#l(e) {
+		if (!this.getClientRects().length) return;
 		this.shadowRoot.querySelector(".compact").hidden = !e;
+		let t = document.querySelector("arq-navbar");
+		t && k.matches && t.toggleAttribute("data-arq-compare-hidden", e);
 	}
 }).define();
 //#endregion
 //#region src/components/compare-table/compare-table.css?inline
-var Nt = ":host{min-width:0;display:block}.scroll{overscroll-behavior-x:contain;padding-inline:var(--page-gutter);padding-block-end:var(--arq-space-section-xl);overflow-x:auto}.scroll:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(-1 * var(--arq-border-strong))}:host([embedded]) .scroll{overflow:visible}.table{border-collapse:collapse;table-layout:fixed;width:100%}th,td{background:var(--arq-color-bg-default);text-align:start;vertical-align:middle;font-weight:inherit;padding:0}.label-cell{width:var(--arq-layout-compare-label);padding-inline-end:var(--arq-space-gap-lg)}thead th{border:none;height:0;padding:0}.product{padding-inline-end:var(--arq-space-gap-lg)}.group th{padding-block:var(--arq-space-gap-2xl) var(--arq-space-padding-sm-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-strong);color:var(--arq-color-text-primary)}.row>*{padding-block:var(--arq-space-padding-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.row-label{color:var(--arq-color-text-secondary);overflow-wrap:break-word}.value{padding-inline:var(--arq-space-padding-md) var(--arq-space-gap-lg);border-left:var(--arq-border-default) solid var(--arq-color-border-subtle);color:var(--arq-color-text-primary);overflow-wrap:break-word}@media (width<=767px){.table{table-layout:auto;width:max-content;min-width:100%}.row{gap:var(--arq-space-gap-sm) var(--arq-space-gap-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);flex-wrap:wrap;display:flex}.row>*{border-bottom:none;padding-block:0}.row .label-cell{width:auto;padding:var(--arq-space-padding-xs) 0;flex:0 0 100%}.row .value{flex:0 0 var(--arq-layout-compare-column);width:var(--arq-layout-compare-column);padding:var(--arq-space-padding-sm) 0 var(--arq-space-padding-sm) var(--arq-space-padding-md)}.row .value:first-of-type{border-left:none;padding-inline-start:0}.table,thead,tbody{display:block}.row+.row{margin-top:var(--arq-space-gap-sm)}.group+.row{margin-top:var(--arq-space-padding-md)}}", A = (e) => String(e ?? "").replace(/[&<>"]/g, (e) => ({
+var It = ":host{min-width:0;display:block}.scroll{overscroll-behavior-x:contain;padding-inline:var(--page-gutter);padding-block-end:var(--arq-space-section-xl);overflow-x:auto}.scroll:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(-1 * var(--arq-border-strong))}:host([embedded]) .scroll{overflow:visible}.table{border-collapse:collapse;table-layout:fixed;width:100%}th,td{background:var(--arq-color-bg-default);text-align:start;vertical-align:middle;font-weight:inherit;padding:0}.label-cell{width:var(--arq-layout-compare-label);padding-inline-end:var(--arq-space-gap-lg)}thead th{border:none;height:0;padding:0}.product{padding-inline-end:var(--arq-space-gap-lg)}.group th{padding-block:var(--arq-space-gap-2xl) var(--arq-space-padding-sm-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-strong);color:var(--arq-color-text-primary)}.row>*{padding-block:var(--arq-space-padding-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.row-label{color:var(--arq-color-text-secondary);overflow-wrap:break-word}.value{padding-inline:var(--arq-space-padding-md) var(--arq-space-gap-lg);border-left:var(--arq-border-default) solid var(--arq-color-border-subtle);color:var(--arq-color-text-primary);overflow-wrap:break-word}@media (width<=767px){.scroll{overflow-x:visible}.table{table-layout:auto;width:100%;min-width:0}.row{grid-template-columns:repeat(3, var(--arq-layout-compare-column));column-gap:var(--arq-space-gap-md);row-gap:var(--arq-space-gap-sm);scrollbar-width:none;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);width:100%;display:grid;overflow-x:auto}.row::-webkit-scrollbar{display:none}.row>*{border-bottom:none;padding-block:0}.row .label-cell{z-index:1;width:auto;padding:var(--arq-space-padding-xs) 0;background:var(--arq-color-bg-default);grid-column:1/-1;position:sticky;inset-inline-start:0}.row .value{width:var(--arq-layout-compare-column);padding:var(--arq-space-padding-sm) 0 var(--arq-space-padding-sm) var(--arq-space-padding-md)}.row .value:first-of-type{border-left:none;padding-inline-start:0}.table,thead,tbody{display:block}.row+.row{margin-top:var(--arq-space-gap-sm)}.group+.row{margin-top:var(--arq-space-padding-md)}}", A = (e) => String(e ?? "").replace(/[&<>"]/g, (e) => ({
 	"&": "&amp;",
 	"<": "&lt;",
 	">": "&gt;",
 	"\"": "&quot;"
-})[e]), Pt = 3, Ft = matchMedia("(max-width: 767px)");
+})[e]), j = 3, Lt = matchMedia("(max-width: 767px)");
 (class extends f {
 	static tag = "arq-compare-table";
-	static styles = Nt;
+	static styles = It;
 	static properties = {
 		onlyDifferences: { type: Boolean },
 		label: {
@@ -2179,43 +2257,50 @@ var Nt = ":host{min-width:0;display:block}.scroll{overscroll-behavior-x:contain;
 		products: [],
 		groups: []
 	};
+	#t = !1;
 	get data() {
 		return this.#e;
 	}
 	set data(e) {
 		this.#e = {
-			products: (e?.products ?? []).slice(0, Pt),
+			products: (e?.products ?? []).slice(0, j),
 			groups: e?.groups ?? []
-		}, this.isConnected && this.#t();
+		}, this.isConnected && this.#n();
 	}
 	setup() {
-		Ft.addEventListener("change", () => this.#n()), this.#t();
+		Lt.addEventListener("change", () => this.#r()), this.shadowRoot.querySelector(".table").addEventListener("scroll", (e) => {
+			let t = e.target;
+			!Lt.matches || this.#t || !t.classList?.contains("row") || (this.#t = !0, this.setScrollLeft(t.scrollLeft), this.emit("scroll", { left: t.scrollLeft }), this.#t = !1);
+		}, !0), this.#n();
 	}
 	update(e) {
 		let t = this.shadowRoot;
-		if (e.has("label") && t.querySelector(".scroll").setAttribute("aria-label", this.label ?? ""), e.has("onlyDifferences") && this.#r(), e.has("embedded")) {
+		if (e.has("label") && t.querySelector(".scroll").setAttribute("aria-label", this.label ?? ""), e.has("onlyDifferences") && this.#i(), e.has("embedded")) {
 			let e = t.querySelector(".scroll");
 			this.embedded ? (e.removeAttribute("tabindex"), e.removeAttribute("role")) : (e.setAttribute("tabindex", "0"), e.setAttribute("role", "region"));
 		}
 	}
-	#t() {
+	#n() {
 		let e = this.shadowRoot, t = e.querySelector(".table"), { products: n, groups: r } = this.#e;
-		e.querySelector("thead").innerHTML = "<tr role=\"row\"><th scope=\"col\" class=\"label-cell\" role=\"columnheader\"></th>" + Array.from({ length: Pt }, (e, t) => n[t]).map((e) => `<th scope="col" class="product" role="columnheader">${e ? `<span class="visually-hidden">${A(e.name)} (${A(e.meta ?? e.sku)})</span>` : ""}</th>`).join("") + "</tr>";
+		e.querySelector("thead").innerHTML = "<tr role=\"row\"><th scope=\"col\" class=\"label-cell\" role=\"columnheader\"></th>" + Array.from({ length: j }, (e, t) => n[t]).map((e) => `<th scope="col" class="product" role="columnheader">${e ? `<span class="visually-hidden">${A(e.name)} (${A(e.meta ?? e.sku)})</span>` : ""}</th>`).join("") + "</tr>";
 		for (let e of t.querySelectorAll("tbody")) e.remove();
 		for (let e of r) {
 			let r = document.createElement("tbody");
 			r.setAttribute("role", "rowgroup"), r.innerHTML = `<tr class="group" role="row"><th scope="colgroup" colspan="4" role="columnheader"><span class="group-label role-label">${A(e.label)}</span></th></tr>` + (e.rows ?? []).map((e) => {
-				let t = n.map((t, n) => e.values?.[n] ?? "—"), r = t.length > 0 && t.every((e) => String(e) === String(t[0])), i = Array.from({ length: Pt }, (e, n) => t[n] ?? "");
+				let t = n.map((t, n) => e.values?.[n] ?? "—"), r = t.length > 0 && t.every((e) => String(e) === String(t[0])), i = Array.from({ length: j }, (e, n) => t[n] ?? "");
 				return `<tr class="row" role="row"${r ? " data-same" : ""}><th scope="row" class="label-cell row-label" role="rowheader">${A(e.label)}</th>` + i.map((e) => `<td class="value role-body-lg-regular" role="cell">${A(e)}</td>`).join("") + "</tr>";
 			}).join(""), t.append(r);
 		}
-		this.#n(), this.#r();
-	}
-	#n() {
-		let e = Ft.matches;
-		for (let t of this.shadowRoot.querySelectorAll(".row-label")) t.classList.toggle("role-body", !e), t.classList.toggle("role-body-sm", e);
+		this.#r(), this.#i();
 	}
 	#r() {
+		let e = Lt.matches;
+		for (let t of this.shadowRoot.querySelectorAll(".row-label")) t.classList.toggle("role-body", !e), t.classList.toggle("role-body-sm", e);
+	}
+	setScrollLeft(e) {
+		for (let t of this.shadowRoot.querySelectorAll(".row")) t.scrollLeft = e;
+	}
+	#i() {
 		let e = this.onlyDifferences;
 		for (let t of this.shadowRoot.querySelectorAll("tbody")) {
 			let n = 0;
@@ -2226,52 +2311,52 @@ var Nt = ":host{min-width:0;display:block}.scroll{overscroll-behavior-x:contain;
 }).define();
 //#endregion
 //#region src/config.js
-var j = {
+var M = {
 	BASE_URL: "/",
 	DEV: !1,
 	MODE: "production",
 	PROD: !0,
 	SSR: !1,
-	VITE_DATA_SOURCE: "mixto",
+	VITE_DATA_SOURCE: "mock",
 	VITE_N8N_WEBHOOK_URL: "",
-	VITE_TYPESENSE_COLLECTION: "macroled_arq",
-	VITE_TYPESENSE_HOST: "https://typesense.coresagroup.com",
-	VITE_TYPESENSE_SEARCH_KEY: "87MlPgGKNghOVMpUQZnlsI9PRNqScWRu"
-}, It = Object.freeze({
+	VITE_TYPESENSE_COLLECTION: "",
+	VITE_TYPESENSE_HOST: "",
+	VITE_TYPESENSE_SEARCH_KEY: ""
+}, Rt = Object.freeze({
 	typesense: Object.freeze({
-		host: j.VITE_TYPESENSE_HOST ?? "",
-		searchKey: j.VITE_TYPESENSE_SEARCH_KEY ?? "",
-		collection: j.VITE_TYPESENSE_COLLECTION ?? ""
+		host: M.VITE_TYPESENSE_HOST ?? "",
+		searchKey: M.VITE_TYPESENSE_SEARCH_KEY ?? "",
+		collection: M.VITE_TYPESENSE_COLLECTION ?? ""
 	}),
-	n8n: Object.freeze({ webhookUrl: j.VITE_N8N_WEBHOOK_URL ?? "" })
-}), Lt = 250, M = /* @__PURE__ */ new Map(), Rt = class extends Error {
+	n8n: Object.freeze({ webhookUrl: M.VITE_N8N_WEBHOOK_URL ?? "" })
+}), zt = 250, N = /* @__PURE__ */ new Map(), Bt = class extends Error {
 	constructor(e, t) {
 		super(`Typesense ${e}: ${t}`), this.name = "TypesenseError", this.status = e;
 	}
 };
-function zt() {
-	let { host: e, searchKey: t, collection: n } = It.typesense;
+function Vt() {
+	let { host: e, searchKey: t, collection: n } = Rt.typesense;
 	return !!(e && t && n);
 }
-async function Bt(e, { signal: t } = {}) {
-	if (!zt()) throw new Rt(0, "falta configurar VITE_TYPESENSE_* en .env");
-	let { host: n, searchKey: r, collection: i } = It.typesense, a = new URLSearchParams({
+async function Ht(e, { signal: t } = {}) {
+	if (!Vt()) throw new Bt(0, "falta configurar VITE_TYPESENSE_* en .env");
+	let { host: n, searchKey: r, collection: i } = Rt.typesense, a = new URLSearchParams({
 		q: "*",
 		...e
 	}), o = `${n.replace(/\/$/, "")}/collections/${encodeURIComponent(i)}/documents/search?${a}`;
-	if (M.has(o)) return M.get(o);
+	if (N.has(o)) return N.get(o);
 	let s = fetch(o, {
 		headers: { "X-TYPESENSE-API-KEY": r },
 		signal: t
 	}).then(async (e) => {
 		let t = await e.json().catch(() => ({}));
-		if (!e.ok) throw new Rt(e.status, t.message ?? e.statusText);
+		if (!e.ok) throw new Bt(e.status, t.message ?? e.statusText);
 		return t;
 	});
-	return M.set(o, s), s.catch(() => M.delete(o)), s;
+	return N.set(o, s), s.catch(() => N.delete(o)), s;
 }
-async function Vt(e = {}, t) {
-	let n = await Bt(e, t);
+async function Ut(e = {}, t) {
+	let n = await Ht(e, t);
 	return {
 		hits: (n.hits ?? []).map((e) => e.document),
 		found: n.found ?? 0,
@@ -2281,21 +2366,21 @@ async function Vt(e = {}, t) {
 		}))]))
 	};
 }
-async function Ht(e = {}, t) {
-	let n = await Vt({
+async function Wt(e = {}, t) {
+	let n = await Ut({
 		...e,
-		per_page: Lt,
+		per_page: zt,
 		page: 1
-	}, t), r = Math.ceil(n.found / Lt);
-	return [n, ...await Promise.all(Array.from({ length: Math.max(0, r - 1) }, (n, r) => Vt({
+	}, t), r = Math.ceil(n.found / zt);
+	return [n, ...await Promise.all(Array.from({ length: Math.max(0, r - 1) }, (n, r) => Ut({
 		...e,
-		per_page: Lt,
+		per_page: zt,
 		page: r + 2
 	}, t)))].flatMap((e) => e.hits);
 }
 //#endregion
 //#region src/data/attributes.js
-var Ut = Object.freeze([
+var Gt = Object.freeze([
 	{
 		id: "luminicas",
 		label: "Características lumínicas"
@@ -2316,44 +2401,44 @@ var Ut = Object.freeze([
 		id: "comercial",
 		label: "Información comercial"
 	}
-]), N = (e, t, n = {}) => Object.freeze({
+]), P = (e, t, n = {}) => Object.freeze({
 	label: e,
 	section: t,
 	control: "tiles",
 	...n
-}), P = Object.freeze({
-	potencia: N("Potencia", "luminicas", { filter: !0 }),
-	flujo_luminoso: N("Flujo luminoso", "luminicas"),
-	lumenes_lmw: N("Eficiencia luminosa", "luminicas"),
-	temperatura_color: N("Temperatura de color", "luminicas", { filter: !0 }),
-	cri: N("CRI", "luminicas"),
-	angulo_apertura: N("Ángulo de apertura", "luminicas"),
-	ugr: N("UGR", "luminicas"),
-	sdcm: N("SDCM", "luminicas"),
-	tipo_led: N("Tipo de LED", "luminicas"),
-	vida_util: N("Vida útil", "luminicas"),
-	tension_proveedor: N("Tensión de entrada", "electricas"),
-	factor_potencia: N("Factor de potencia", "electricas"),
-	thd: N("THD", "electricas"),
-	dimeable: N("Dimerizable", "electricas"),
-	tipo_driver: N("Driver", "electricas"),
-	emc: N("EMC", "electricas"),
-	color_carcasa: N("Color", "materiales", {
+}), F = Object.freeze({
+	potencia: P("Potencia", "luminicas", { filter: !0 }),
+	flujo_luminoso: P("Flujo luminoso", "luminicas"),
+	lumenes_lmw: P("Eficiencia luminosa", "luminicas"),
+	temperatura_color: P("Temperatura de color", "luminicas", { filter: !0 }),
+	cri: P("CRI", "luminicas"),
+	angulo_apertura: P("Ángulo de apertura", "luminicas"),
+	ugr: P("UGR", "luminicas"),
+	sdcm: P("SDCM", "luminicas"),
+	tipo_led: P("Tipo de LED", "luminicas"),
+	vida_util: P("Vida útil", "luminicas"),
+	tension_proveedor: P("Tensión de entrada", "electricas"),
+	factor_potencia: P("Factor de potencia", "electricas"),
+	thd: P("THD", "electricas"),
+	dimeable: P("Dimerizable", "electricas"),
+	tipo_driver: P("Driver", "electricas"),
+	emc: P("EMC", "electricas"),
+	color_carcasa: P("Color", "materiales", {
 		control: "swatches",
 		column: "Color de carcasa"
 	}),
-	altura: N("Altura", "materiales", { column: "Altura" }),
-	tamanio: N("Medidas", "materiales"),
-	material_cuerpo: N("Material del cuerpo", "materiales"),
-	material_lente: N("Material de la lente", "materiales"),
-	largo_cable: N("Largo de cable", "materiales"),
-	peso: N("Peso", "materiales"),
-	proteccion_ip: N("Grado de protección", "instalacion"),
-	proteccion_ik: N("Resistencia al impacto", "instalacion"),
-	tipo_montaje: N("Montaje", "instalacion"),
-	temperatura_operacion: N("Temperatura de operación", "instalacion"),
-	garantia_proveedor: N("Garantía", "comercial")
-}), Wt = Object.freeze([
+	altura: P("Altura", "materiales", { column: "Altura" }),
+	tamanio: P("Medidas", "materiales"),
+	material_cuerpo: P("Material del cuerpo", "materiales"),
+	material_lente: P("Material de la lente", "materiales"),
+	largo_cable: P("Largo de cable", "materiales"),
+	peso: P("Peso", "materiales"),
+	proteccion_ip: P("Grado de protección", "instalacion"),
+	proteccion_ik: P("Resistencia al impacto", "instalacion"),
+	tipo_montaje: P("Montaje", "instalacion"),
+	temperatura_operacion: P("Temperatura de operación", "instalacion"),
+	garantia_proveedor: P("Garantía", "comercial")
+}), Kt = Object.freeze([
 	{
 		field: "tamanio",
 		label: "Tamaño"
@@ -2395,33 +2480,33 @@ var Ut = Object.freeze([
 		label: "CRI"
 	}
 ]);
-function F(e) {
-	return P[e] ?? {
+function I(e) {
+	return F[e] ?? {
 		label: e,
 		control: "tiles"
 	};
 }
-var Gt = Object.freeze(Object.keys(P).filter((e) => P[e].filter));
-function Kt(e) {
-	return Ut.map((t) => ({
+var qt = Object.freeze(Object.keys(F).filter((e) => F[e].filter));
+function Jt(e) {
+	return Gt.map((t) => ({
 		...t,
-		rows: Object.entries(P).filter(([n, r]) => r.section === t.id && qt(e[n])).map(([t, n]) => ({
+		rows: Object.entries(F).filter(([n, r]) => r.section === t.id && Yt(e[n])).map(([t, n]) => ({
 			field: t,
 			label: n.label,
 			value: e[t]
 		}))
 	})).filter((e) => e.rows.length);
 }
-var qt = (e) => e != null && String(e).trim() !== "" && e !== "-";
-function Jt(e) {
+var Yt = (e) => e != null && String(e).trim() !== "" && e !== "-";
+function Xt(e) {
 	return (Array.isArray(e) ? e : String(e ?? "").split(",")).map((e) => e.trim()).filter(Boolean).map((e) => {
-		let t = Object.keys(P).find((t) => P[t].column === e);
+		let t = Object.keys(F).find((t) => F[t].column === e);
 		return t || console.warn(`[arq] variant_attributes: la columna «${e}» no está en src/data/attributes.js`), t;
 	}).filter(Boolean);
 }
 //#endregion
 //#region src/data/typesense-adapter.js
-var I = {
+var L = {
 	group: "product_group_id",
 	name: "product_name",
 	collection: "collection_id",
@@ -2437,52 +2522,52 @@ var I = {
 	collectionIntro: "collection_intro_text",
 	collectionDescription: "collection_description_text",
 	video: "video_inspiration"
-}, Yt = [
+}, Zt = [
 	"ies",
 	"cad",
 	"manual",
 	"fotometria"
-], L = (e) => e == null ? "" : String(e).trim(), Xt = (e) => Array.isArray(e) ? e : L(e) ? L(e).split(",").map((e) => e.trim()) : [];
-function Zt(e) {
-	return {};
-}
-function Qt(e) {
-	return {};
-}
+], R = (e) => e == null ? "" : String(e).trim(), Qt = (e) => Array.isArray(e) ? e : R(e) ? R(e).split(",").map((e) => e.trim()) : [];
 function $t(e) {
+	return {};
+}
+function en(e) {
+	return {};
+}
+function tn(e) {
 	let t = /* @__PURE__ */ new Map();
 	for (let n of e) {
-		let e = L(n[I.group]) || n.sku;
+		let e = R(n[L.group]) || n.sku;
 		t.has(e) || t.set(e, []), t.get(e).push(n);
 	}
 	let n = /* @__PURE__ */ new Map(), r = [...t].map(([e, t]) => {
-		let r = t.find((e) => e[I.isDefault] === !0) ?? t[0], i = L(r[I.collection]) || null;
+		let r = t.find((e) => e[L.isDefault] === !0) ?? t[0], i = R(r[L.collection]) || null;
 		return i && !n.has(i) && n.set(i, {
 			id: i,
-			name: L(r[I.collectionName]) || i,
-			intro: L(r[I.collectionIntro]),
-			description: L(r[I.collectionDescription]),
+			name: R(r[L.collectionName]) || i,
+			intro: R(r[L.collectionIntro]),
+			description: R(r[L.collectionDescription]),
 			images: {}
 		}), {
 			id: e,
-			name: L(r[I.name]) || r.sku,
+			name: R(r[L.name]) || r.sku,
 			collection: i,
-			productType: L(r[I.productType]) || null,
-			environment: Xt(r[I.environment]),
-			application: L(r[I.application]) || null,
-			variantAttributes: Jt(r[I.variantAttributes]),
-			story: L(r[I.story]),
-			inspiration: L(r[I.inspiration]),
-			video: L(r[I.video]),
-			images: Qt(t),
+			productType: R(r[L.productType]) || null,
+			environment: Qt(r[L.environment]),
+			application: R(r[L.application]) || null,
+			variantAttributes: Xt(r[L.variantAttributes]),
+			story: R(r[L.story]),
+			inspiration: R(r[L.inspiration]),
+			video: R(r[L.video]),
+			images: en(t),
 			specs: {},
 			variants: t.map((e) => ({
 				sku: e.sku,
 				isDefault: e === r,
-				description: L(e[I.description]),
-				attributes: Object.fromEntries(Object.keys(P).map((t) => [t, L(e[t])]).filter(([, e]) => e && e !== "-")),
-				images: Zt(e),
-				downloads: Object.fromEntries(Yt.map((t) => [t, L(e[t])]).filter(([, e]) => e))
+				description: R(e[L.description]),
+				attributes: Object.fromEntries(Object.keys(F).map((t) => [t, R(e[t])]).filter(([, e]) => e && e !== "-")),
+				images: $t(e),
+				downloads: Object.fromEntries(Zt.map((t) => [t, R(e[t])]).filter(([, e]) => e))
 			}))
 		};
 	});
@@ -2493,16 +2578,16 @@ function $t(e) {
 }
 //#endregion
 //#region src/data/source.js
-async function en() {
-	return $t(await Ht({ q: "*" }));
+async function nn() {
+	return tn(await Wt({ q: "*" }));
 }
 //#endregion
 //#region src/data/catalog.js
-var R = null;
-function z() {
-	return R ??= en().then(tn), R.catch(() => R = null), R;
+var z = null;
+function B() {
+	return z ??= nn().then(rn), z.catch(() => z = null), z;
 }
-function tn({ collections: e, groups: t }) {
+function rn({ collections: e, groups: t }) {
 	let n = new Map(e.map((e) => [e.id, e]));
 	for (let e of t) {
 		e.collectionData = n.get(e.collection) ?? null;
@@ -2519,115 +2604,115 @@ function tn({ collections: e, groups: t }) {
 		groupById: new Map(t.map((e) => [e.id, e]))
 	};
 }
-var nn = (e, t) => `/arq/producto/${encodeURIComponent(e)}${t ? `?sku=${encodeURIComponent(t)}` : ""}`, B = (e) => `/arq/coleccion/${encodeURIComponent(e)}`;
-function V({ environment: e, application: t, productType: n } = {}) {
+var an = (e, t) => `/arq/producto/${encodeURIComponent(e)}${t ? `?sku=${encodeURIComponent(t)}` : ""}`, V = (e) => `/arq/coleccion/${encodeURIComponent(e)}`;
+function H({ environment: e, application: t, productType: n } = {}) {
 	let r = new URLSearchParams();
 	e && r.set("environment", e), t && r.set("application", t), n && r.set("product_type", n);
 	let i = r.toString();
 	return `/arq/productos${i ? `?${i}` : ""}`;
 }
-var H = (e) => e != null && String(e).trim() !== "";
-function rn(e, t) {
+var U = (e) => e != null && String(e).trim() !== "";
+function on(e, t) {
 	return Object.entries(t).every(([t, n]) => !n?.length || n.includes(e.values[t]));
 }
-function an(e, t, n = e.defaultVariant) {
+function sn(e, t, n = e.defaultVariant) {
 	return [
 		n,
 		e.defaultVariant,
 		...e.variants
-	].filter((e, t, n) => n.indexOf(e) === t).find((e) => rn(e, t)) ?? null;
+	].filter((e, t, n) => n.indexOf(e) === t).find((e) => on(e, t)) ?? null;
 }
-function on(e, { environment: t, application: n, productType: r, collection: i } = {}) {
+function cn(e, { environment: t, application: n, productType: r, collection: i } = {}) {
 	return !(t && !e.environment.includes(t) || n && e.application !== n || r && e.productType !== r || i && e.collection !== i);
 }
-var sn = (e = {}) => Object.fromEntries(Object.entries(e).filter(([, e]) => e?.length));
-function cn(e) {
-	return Gt.map((t) => {
+var ln = (e = {}) => Object.fromEntries(Object.entries(e).filter(([, e]) => e?.length));
+function un(e) {
+	return qt.map((t) => {
 		let n = /* @__PURE__ */ new Map();
-		for (let r of e) for (let e of new Set(r.variants.map((e) => e.values[t]).filter(H))) n.set(e, (n.get(e) ?? 0) + 1);
+		for (let r of e) for (let e of new Set(r.variants.map((e) => e.values[t]).filter(U))) n.set(e, (n.get(e) ?? 0) + 1);
 		let r = [...n].map(([e, t]) => ({
 			value: e,
 			count: t
 		})).sort((e, t) => String(e.value).localeCompare(String(t.value), "es", { numeric: !0 }));
 		return {
 			name: t,
-			label: F(t).label,
+			label: I(t).label,
 			options: r
 		};
 	}).filter((e) => e.options.length > 1);
 }
-function ln(e) {
+function dn(e) {
 	return e.productType && e.productType !== "Luminaria" ? e.productType : [e.environment.join(" · "), e.application].filter(Boolean).join(" · ");
 }
-var un = Object.keys(P).filter((e) => P[e].control === "swatches"), dn = (e) => [...new Set(e.variants.flatMap((e) => un.map((t) => e.values[t])).filter(H))];
-function U(e, t = e.defaultVariant, n = !1) {
+var fn = Object.keys(F).filter((e) => F[e].control === "swatches"), pn = (e) => [...new Set(e.variants.flatMap((e) => fn.map((t) => e.values[t])).filter(U))];
+function W(e, t = e.defaultVariant, n = !1) {
 	let r = {
 		...e.defaultVariant.images,
-		...W(t.images)
+		...G(t.images)
 	};
 	return {
 		id: e.id,
 		sku: t.sku,
 		name: e.name,
-		meta: ln(e),
-		finishes: dn(e),
-		href: nn(e.id, n && t !== e.defaultVariant ? t.sku : null),
+		meta: dn(e),
+		finishes: pn(e),
+		href: an(e.id, n && t !== e.defaultVariant ? t.sku : null),
 		image: r.studio ?? null,
 		imageHover: r.context ?? null,
 		imageLit: r.studioOn ?? null,
 		imageHoverLit: r.contextOn ?? null
 	};
 }
-var W = (e = {}) => Object.fromEntries(Object.entries(e).filter(([, e]) => H(e) && (!Array.isArray(e) || e.length)));
-function fn(e, t) {
+var G = (e = {}) => Object.fromEntries(Object.entries(e).filter(([, e]) => U(e) && (!Array.isArray(e) || e.length)));
+function mn(e, t) {
 	let n = [...new Set(t.map((e) => e.application).filter(Boolean))], r = e.images ?? {};
 	return {
 		id: e.id,
 		name: e.name,
 		meta: n.join(" · "),
-		finishes: [...new Set(t.flatMap(dn))],
-		href: B(e.id),
+		finishes: [...new Set(t.flatMap(pn))],
+		href: V(e.id),
 		image: r.studio ?? null,
 		imageHover: r.context ?? null,
 		imageLit: r.studioOn ?? null,
 		imageHoverLit: r.contextOn ?? null
 	};
 }
-async function pn({ filters: e, query: t, ...n } = {}) {
-	let { groups: r } = await z(), i = Ne(t ?? ""), a = /* @__PURE__ */ new Map();
+async function hn({ filters: e, query: t, ...n } = {}) {
+	let { groups: r } = await B(), i = Me(t ?? ""), a = /* @__PURE__ */ new Map();
 	for (let e of r) {
-		if (!on(e, n)) continue;
-		let t = i.length ? jn(e, i) : {
+		if (!cn(e, n)) continue;
+		let t = i.length ? Pn(e, i) : {
 			variant: e.defaultVariant,
 			bySku: !1
 		};
 		t && a.set(e, t);
 	}
-	let o = [...a.keys()], s = sn(e), c = Object.keys(s).length > 0, l = o.flatMap((e) => {
-		let t = a.get(e), n = an(e, s, t.variant);
-		return n ? [U(e, n, c || t.bySku)] : [];
+	let o = [...a.keys()], s = ln(e), c = Object.keys(s).length > 0, l = o.flatMap((e) => {
+		let t = a.get(e), n = sn(e, s, t.variant);
+		return n ? [W(e, n, c || t.bySku)] : [];
 	});
 	return {
 		cards: l,
 		count: l.length,
-		filters: cn(o)
+		filters: un(o)
 	};
 }
-async function mn({ filters: e } = {}) {
-	let { collections: t, groups: n } = await z(), r = sn(e), i = t.flatMap((e) => {
+async function gn({ filters: e } = {}) {
+	let { collections: t, groups: n } = await B(), r = ln(e), i = t.flatMap((e) => {
 		let t = n.filter((t) => t.collection === e.id);
-		return t.some((e) => an(e, r)) ? [fn(e, t)] : [];
+		return t.some((e) => sn(e, r)) ? [mn(e, t)] : [];
 	});
 	return {
 		cards: i,
 		count: i.length,
-		filters: cn(n.filter((e) => e.collection))
+		filters: un(n.filter((e) => e.collection))
 	};
 }
-async function hn(e) {
-	let { groups: t, groupById: n } = await z(), r = n.get(e);
+async function _n(e) {
+	let { groups: t, groupById: n } = await B(), r = n.get(e);
 	if (!r) return null;
-	let i = r.collection ? t.filter((e) => e.collection === r.collection && e !== r).map((e) => U(e)) : [], a = r.images ?? {};
+	let i = r.collection ? t.filter((e) => e.collection === r.collection && e !== r).map((e) => W(e)) : [], a = r.images ?? {};
 	return {
 		group: r,
 		collection: r.collectionData,
@@ -2639,26 +2724,26 @@ async function hn(e) {
 		variantAttributes: r.variantAttributes,
 		family: i,
 		images: {
-			ambient: G(a.ambient),
-			description: H(a.description) ? a.description : null,
-			inspiration: G(a.inspiration)
+			ambient: K(a.ambient),
+			description: U(a.description) ? a.description : null,
+			inspiration: K(a.inspiration)
 		},
-		glossary: gn(r),
-		files: K(r.defaultVariant).filter((e) => e.type === "cad" || e.type === "manual")
+		glossary: vn(r),
+		files: wn(r.defaultVariant).filter((e) => e.type === "cad" || e.type === "manual")
 	};
 }
-var G = (e) => [...new Set([e ?? []].flat().filter(H))];
-function gn(e) {
+var K = (e) => [...new Set([e ?? []].flat().filter(U))];
+function vn(e) {
 	let t = e.defaultVariant.images?.studio ?? null;
 	return {
-		columns: Wt.filter(({ field: t }) => e.variants.some((e) => H(e.values[t]))).map(({ field: e, label: t }) => ({
+		columns: Kt.filter(({ field: t }) => e.variants.some((e) => U(e.values[t]))).map(({ field: e, label: t }) => ({
 			key: e,
 			label: t
 		})),
 		filters: e.variantAttributes.map((e) => ({
 			key: e,
-			label: F(e).label,
-			swatches: F(e).control === "swatches"
+			label: I(e).label,
+			swatches: I(e).control === "swatches"
 		})),
 		rows: e.variants.map((e) => ({
 			sku: e.sku,
@@ -2668,20 +2753,20 @@ function gn(e) {
 		}))
 	};
 }
-async function _n() {
-	let { groups: e } = await z(), t = e.flatMap((e) => e.variants.map((t) => ({
+async function yn() {
+	let { groups: e } = await B(), t = e.flatMap((e) => e.variants.map((t) => ({
 		group: e,
 		variant: t
-	}))), n = /* @__PURE__ */ new Set([...e.flatMap((e) => e.variantAttributes), ...Gt]), r = Object.keys(P).filter((e) => n.has(e) && new Set(t.map(({ variant: t }) => t.values[e]).filter(H)).size > 1);
+	}))), n = /* @__PURE__ */ new Set([...e.flatMap((e) => e.variantAttributes), ...qt]), r = Object.keys(F).filter((e) => n.has(e) && new Set(t.map(({ variant: t }) => t.values[e]).filter(U)).size > 1);
 	return {
-		columns: Wt.filter(({ field: e }) => t.some(({ variant: t }) => H(t.values[e]))).map(({ field: e, label: t }) => ({
+		columns: Kt.filter(({ field: e }) => t.some(({ variant: t }) => U(t.values[e]))).map(({ field: e, label: t }) => ({
 			key: e,
 			label: t
 		})),
 		filters: r.map((e) => ({
 			key: e,
-			label: F(e).label,
-			swatches: F(e).control === "swatches"
+			label: I(e).label,
+			swatches: I(e).control === "swatches"
 		})),
 		rows: t.map(({ group: e, variant: t }) => ({
 			sku: t.sku,
@@ -2692,36 +2777,36 @@ async function _n() {
 		}))
 	};
 }
-async function vn(e) {
-	let { groups: t } = await z(), n = t.flatMap((e) => e.variants).find((t) => t.sku === e);
-	return n ? K(n) : [];
+async function bn(e) {
+	let { groups: t } = await B(), n = t.flatMap((e) => e.variants).find((t) => t.sku === e);
+	return n ? wn(n) : [];
 }
-async function yn(e) {
-	let { groupById: t } = await z();
+async function xn(e) {
+	let { groupById: t } = await B();
 	return e.map((e) => t.get(e)).filter(Boolean).map((e) => ({
-		...U(e),
-		meta: bn(e)
+		...W(e),
+		meta: Sn(e)
 	}));
 }
-function bn(e) {
+function Sn(e) {
 	return e.productType && e.productType !== "Luminaria" ? e.productType : e.application ?? e.productType ?? "";
 }
-var xn = {
+var Cn = {
 	cad: "CAD 2D/3D",
 	manual: "Manual",
 	ies: "IES",
 	fotometria: "Fotometría"
 };
-function K(e) {
-	let t = W(e.downloads);
-	return Object.keys(xn).filter((e) => t[e]).map((e) => ({
+function wn(e) {
+	let t = G(e.downloads);
+	return Object.keys(Cn).filter((e) => t[e]).map((e) => ({
 		type: e,
-		label: xn[e],
+		label: Cn[e],
 		href: t[e]
 	}));
 }
-function Sn(e, t) {
-	let n = e.variants.find((e) => e.sku === t) ?? e.defaultVariant, r = W(n.images), i = W(e.defaultVariant.images), a = r.gallery ?? i.gallery ?? [r.studio ?? i.studio].filter(Boolean), o = r.galleryOn ?? (r.gallery ? [] : i.galleryOn ?? []);
+function Tn(e, t) {
+	let n = e.variants.find((e) => e.sku === t) ?? e.defaultVariant, r = G(n.images), i = G(e.defaultVariant.images), a = r.gallery ?? i.gallery ?? [r.studio ?? i.studio].filter(Boolean), o = r.galleryOn ?? (r.gallery ? [] : i.galleryOn ?? []);
 	return {
 		sku: n.sku,
 		description: n.description,
@@ -2731,43 +2816,43 @@ function Sn(e, t) {
 			srcOn: o[n] ?? null,
 			alt: `${e.name}, imagen ${n + 1}`
 		})),
-		sections: Kt(n.values),
-		downloads: K(n)
+		sections: Jt(n.values),
+		downloads: wn(n)
 	};
 }
-async function Cn(e) {
-	let { collectionById: t, groups: n } = await z(), r = t.get(e);
+async function En(e) {
+	let { collectionById: t, groups: n } = await B(), r = t.get(e);
 	if (!r) return null;
 	let i = r.images ?? {};
 	return {
 		collection: r,
 		cards: n.filter((t) => t.collection === e).map((e) => ({
-			...U(e),
-			meta: wn(e)
+			...W(e),
+			meta: Dn(e)
 		})),
 		images: {
-			gallery: G(i.gallery),
-			description: H(i.description) ? i.description : null,
-			inspiration: G(i.inspiration)
+			gallery: K(i.gallery),
+			description: U(i.description) ? i.description : null,
+			inspiration: K(i.inspiration)
 		}
 	};
 }
-function wn(e) {
+function Dn(e) {
 	let t = (e) => Number.parseFloat(String(e).replace(",", "."));
-	return e.variantAttributes.filter((e) => F(e).control !== "swatches").map((n) => {
-		let r = [...new Set(e.variants.map((e) => e.values[n]).filter(H))];
+	return e.variantAttributes.filter((e) => I(e).control !== "swatches").map((n) => {
+		let r = [...new Set(e.variants.map((e) => e.values[n]).filter(U))];
 		return r.sort((e, n) => t(e) - t(n) || String(e).localeCompare(String(n), "es")), r.length > 1 ? `${r[0]} – ${r.at(-1)}` : r[0];
 	}).filter(Boolean).join(" · ");
 }
-var Tn = (e) => e.variants.map((t) => ({
+var On = (e) => e.variants.map((t) => ({
 	sku: t.sku,
 	isDefault: t === e.defaultVariant,
 	attributes: t.values
-})), En = (e, t) => Object.fromEntries(e.variantAttributes.map((e) => [e, t.values[e]]));
-function Dn(e, t) {
-	let n = En(e, t);
-	return y(Tn(e), e.variantAttributes, n).map(({ attribute: e, options: t }) => {
-		let r = F(e);
+})), kn = (e, t) => Object.fromEntries(e.variantAttributes.map((e) => [e, t.values[e]]));
+function An(e, t) {
+	let n = kn(e, t);
+	return Le(On(e), e.variantAttributes, n).map(({ attribute: e, options: t }) => {
+		let r = I(e);
 		return {
 			field: e,
 			label: r.label,
@@ -2781,30 +2866,30 @@ function Dn(e, t) {
 		};
 	});
 }
-async function On(e, t, n) {
-	let { groups: r } = await z(), i = r.find((t) => t.variants.some((t) => t.sku === e)), a = i?.variants.find((t) => t.sku === e);
+async function jn(e, t, n) {
+	let { groups: r } = await B(), i = r.find((t) => t.variants.some((t) => t.sku === e)), a = i?.variants.find((t) => t.sku === e);
 	if (!i || !a) return null;
-	let o = Ve(En(i, a), t, n);
-	return Ie(Tn(i), o)?.sku ?? null;
+	let o = Ve(kn(i, a), t, n);
+	return Fe(On(i), o)?.sku ?? null;
 }
-async function kn(e) {
-	let { groups: t } = await z(), n = e.slice(0, 3).flatMap((e) => {
+async function Mn(e) {
+	let { groups: t } = await B(), n = e.slice(0, 3).flatMap((e) => {
 		let n = t.find((t) => t.variants.some((t) => t.sku === e));
 		return n ? [{
 			group: n,
 			variant: n.variants.find((t) => t.sku === e)
 		}] : [];
 	}), r = n.map(({ group: e, variant: t }) => {
-		let n = U(e, t, !0);
+		let n = W(e, t, !0);
 		return {
 			sku: t.sku,
 			name: e.name,
 			meta: t.sku,
 			image: n.image,
 			href: n.href,
-			attributes: Dn(e, t)
+			attributes: An(e, t)
 		};
-	}), i = Kt(Object.assign({}, ...n.map(({ variant: e }) => e.values))).map((e) => ({
+	}), i = Jt(Object.assign({}, ...n.map(({ variant: e }) => e.values))).map((e) => ({
 		label: e.label,
 		rows: e.rows.map((e) => ({
 			label: e.label,
@@ -2822,33 +2907,33 @@ async function kn(e) {
 		groups: i
 	};
 }
-var An = (e) => [
+var Nn = (e) => [
 	e.name,
 	e.collectionData?.name,
 	e.application,
 	e.productType,
 	...e.environment
 ].join(" ");
-function jn(e, t) {
+function Pn(e, t) {
 	let n = e.variants.find((e) => v(e.sku, t));
 	return n ? {
 		variant: n,
 		bySku: !0
-	} : v(An(e), t) ? {
+	} : v(Nn(e), t) ? {
 		variant: e.defaultVariant,
 		bySku: !1
 	} : null;
 }
-async function Mn(e, { limit: t = 5 } = {}) {
-	let n = Ne(e);
+async function Fn(e, { limit: t = 5 } = {}) {
+	let n = Me(e);
 	if (!n.length) return {
 		results: [],
 		total: 0
 	};
-	let { groups: r, collections: i } = await z(), a = r.flatMap((e) => {
-		let t = jn(e, n);
+	let { groups: r, collections: i } = await B(), a = r.flatMap((e) => {
+		let t = Pn(e, n);
 		if (!t) return [];
-		let r = U(e, t.variant, t.bySku);
+		let r = W(e, t.variant, t.bySku);
 		return [{
 			name: e.name,
 			meta: t.variant.sku,
@@ -2858,7 +2943,7 @@ async function Mn(e, { limit: t = 5 } = {}) {
 	}), o = i.filter((e) => v(e.name, n)).map((e) => ({
 		name: e.name,
 		meta: "Colección",
-		href: B(e.id),
+		href: V(e.id),
 		image: e.images?.studio ?? null
 	})), s = [...a, ...o];
 	return {
@@ -2866,11 +2951,11 @@ async function Mn(e, { limit: t = 5 } = {}) {
 		total: s.length
 	};
 }
-var Nn = (e) => `/arq/productos?q=${encodeURIComponent(e)}`;
-async function Pn() {
-	let { groups: e, collections: t } = await z(), n = (t) => e.filter((e) => on(e, t)).length, r = (e, t) => ({
+var In = (e) => `/arq/productos?q=${encodeURIComponent(e)}`;
+async function Ln() {
+	let { groups: e, collections: t } = await B(), n = (t) => e.filter((e) => cn(e, t)).length, r = (e, t) => ({
 		label: e,
-		href: V(t),
+		href: H(t),
 		count: n(t)
 	}), i = (t, n) => {
 		let i = [
@@ -2891,26 +2976,26 @@ async function Pn() {
 		return i.length ? {
 			id: _(t),
 			label: t,
-			href: V({ environment: t }),
+			href: H({ environment: t }),
 			all: {
 				label: n,
-				href: V({ environment: t })
+				href: H({ environment: t })
 			},
 			links: i
 		} : null;
 	}, a = (t, n, r) => {
 		let i = e.filter((e) => e.productType === t).map((e) => ({
 			label: e.name,
-			href: nn(e.id),
+			href: an(e.id),
 			count: 1
 		}));
 		return i.length ? {
 			id: _(n),
 			label: n,
-			href: V({ productType: t }),
+			href: H({ productType: t }),
 			all: {
 				label: r,
-				href: V({ productType: t })
+				href: H({ productType: t })
 			},
 			links: i
 		} : null;
@@ -2925,7 +3010,7 @@ async function Pn() {
 		collections: t.map((t) => ({
 			label: t.name,
 			meta: [...new Set(e.filter((e) => e.collection === t.id).map((e) => e.application ?? e.productType).filter(Boolean))].join(" · "),
-			href: B(t.id)
+			href: V(t.id)
 		})).filter((e) => e.meta),
 		allCollections: {
 			label: "Ver todas las colecciones",
@@ -2935,17 +3020,17 @@ async function Pn() {
 }
 //#endregion
 //#region src/components/comparativa/comparativa.css?inline
-var Fn = ":host{display:block}.page{flex-direction:column;display:flex}.status{padding-inline:var(--page-gutter);padding-block:var(--arq-space-section-xs);color:var(--arq-color-text-secondary);margin:0}.mobile-controls{display:none}@media (width<=767px){.mobile-controls:not([hidden]){padding-inline:var(--page-gutter);align-items:center;padding-block-end:var(--arq-space-gap-md);display:flex}.scroll{overscroll-behavior-x:contain;overflow-x:auto}.scroll:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(-1 * var(--arq-border-strong))}}", In = "arq:compare", Ln = 3, Rn = matchMedia("(max-width: 767px)"), zn = {
+var Rn = ":host{display:block}.page{flex-direction:column;max-width:100%;display:flex;overflow-x:clip}.status{padding-inline:var(--page-gutter);padding-block:var(--arq-space-section-xs);color:var(--arq-color-text-secondary);margin:0}.mobile-controls{display:none}@media (width<=767px){.mobile-controls:not([hidden]){padding-inline:var(--page-gutter);align-items:center;padding-block-end:var(--arq-space-gap-md);display:flex}.scroll{overflow-x:visible}.scroll:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(-1 * var(--arq-border-strong))}}", zn = "arq:compare", Bn = 3, q = matchMedia("(max-width: 767px)"), Vn = {
 	empty: "Elegí hasta 3 productos para comparar desde el listado de Productos.",
 	error: "No se pudo cargar la comparación. Probá de nuevo en unos minutos."
 };
-function Bn() {
+function Hn() {
 	let e = new URLSearchParams(location.search).get("sku");
-	return e ? e.split(",").map((e) => decodeURIComponent(e.trim())).filter(Boolean).slice(0, Ln) : [];
+	return e ? e.split(",").map((e) => decodeURIComponent(e.trim())).filter(Boolean).slice(0, Bn) : [];
 }
-function Vn(e) {
+function Un(e) {
 	try {
-		localStorage.setItem(In, JSON.stringify(e.map((e) => ({
+		localStorage.setItem(zn, JSON.stringify(e.map((e) => ({
 			sku: e.sku,
 			name: e.name,
 			meta: e.meta,
@@ -2955,7 +3040,7 @@ function Vn(e) {
 }
 (class extends f {
 	static tag = "arq-comparativa";
-	static styles = Fn;
+	static styles = Rn;
 	static properties = {};
 	static template = "<div class=\"page\"><p class=\"status role-body\" role=\"status\" hidden></p><div class=\"mobile-controls\" hidden><arq-toggle show-label class=\"diff-mobile\">Solo diferencias</arq-toggle></div><div class=\"scroll\" aria-label=\"Comparación de productos\" hidden><arq-compare-header class=\"header\"></arq-compare-header><arq-compare-table class=\"table\" embedded></arq-compare-table></div></div>";
 	#e = [];
@@ -2966,24 +3051,28 @@ function Vn(e) {
 		};
 		t.addEventListener("arq:differences", (e) => r(e.detail.value)), e.querySelector(".diff-mobile").addEventListener("arq:change", (e) => r(e.detail.checked)), t.addEventListener("arq:remove", (e) => {
 			this.#e = this.#e.filter((t) => t !== e.detail.sku), this.#i();
-		}), t.addEventListener("arq:change", (e) => this.#r(e.detail)), Rn.addEventListener("change", () => this.#n()), this.#n(), this.#e = Bn(), this.#i();
+		}), t.addEventListener("arq:change", (e) => this.#r(e.detail)), t.addEventListener("arq:scroll", (e) => {
+			q.matches && n.setScrollLeft(e.detail.left);
+		}), n.addEventListener("arq:scroll", (e) => {
+			q.matches && t.setScrollLeft(e.detail.left);
+		}), q.addEventListener("change", () => this.#n()), this.#n(), this.#e = Hn(), this.#i();
 	}
 	#n() {
 		let e = this.shadowRoot.querySelector(".scroll");
-		Rn.matches ? (e.setAttribute("tabindex", "0"), e.setAttribute("role", "region")) : (e.removeAttribute("tabindex"), e.removeAttribute("role"));
+		q.matches ? (e.setAttribute("tabindex", "0"), e.setAttribute("role", "region")) : (e.removeAttribute("tabindex"), e.removeAttribute("role"));
 	}
 	async #r({ index: e, field: t, value: n }) {
 		let r = this.#e[e];
 		if (!n || !r) return;
-		let i = await On(r, t, n);
-		i && i !== r && (this.#e[e] = i, this.#e = this.#e.slice(0, Ln), this.#i());
+		let i = await jn(r, t, n);
+		i && i !== r && (this.#e[e] = i, this.#e = this.#e.slice(0, Bn), this.#i());
 	}
 	async #i() {
 		let e = this.shadowRoot, t = e.querySelector(".header"), n = e.querySelector(".table"), r = e.querySelector(".scroll"), i = e.querySelector(".mobile-controls");
 		this.setAttribute("aria-busy", "true");
 		let a = null, o = !1;
 		try {
-			a = this.#e.length ? await kn(this.#e) : {
+			a = this.#e.length ? await Mn(this.#e) : {
 				products: [],
 				groups: []
 			};
@@ -2991,17 +3080,17 @@ function Vn(e) {
 			o = !0, console.error("[arq] comparativa: no se pudo cargar el catálogo", e);
 		}
 		if (this.removeAttribute("aria-busy"), !a || o && !a.products.length) {
-			this.#a(o ? zn.error : zn.empty), r.hidden = !0, i.hidden = !0;
+			this.#a(o ? Vn.error : Vn.empty), r.hidden = !0, i.hidden = !0;
 			return;
 		}
 		if (this.#e = a.products.map((e) => e.sku), !this.#e.length) {
-			this.#a(zn.empty), r.hidden = !0, i.hidden = !0;
+			this.#a(Vn.empty), r.hidden = !0, i.hidden = !0;
 			return;
 		}
 		this.#a(""), r.hidden = !1, i.hidden = !1, t.products = a.products, t.onlyDifferences = this.#t, n.data = {
 			products: a.products,
 			groups: a.groups
-		}, n.onlyDifferences = this.#t, e.querySelector(".diff-mobile").checked = this.#t, Vn(a.products);
+		}, n.onlyDifferences = this.#t, e.querySelector(".diff-mobile").checked = this.#t, requestAnimationFrame(() => t.refreshCompact()), Un(a.products);
 		let s = new URL(location.href);
 		s.searchParams.set("sku", this.#e.map(encodeURIComponent).join(",")), history.replaceState(history.state, "", s);
 	}
@@ -3012,10 +3101,10 @@ function Vn(e) {
 }).define();
 //#endregion
 //#region src/components/mega-link/mega-link.css?inline
-var Hn = ":host{min-width:0;display:block}.link{align-items:center;gap:var(--arq-space-gap-sm);padding-block:var(--arq-space-gap-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);color:var(--arq-color-text-primary);text-decoration:none;display:flex}.link[href]:hover{background:var(--arq-color-surface-hover)}.link:focus-visible,.trigger:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.text{gap:var(--arq-space-gap-xs);flex-direction:column;flex:1;min-width:0;display:flex}.name{overflow-wrap:break-word}.meta{color:var(--arq-color-text-tertiary)}.arrow{color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.group{border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.trigger{align-items:center;gap:var(--arq-space-gap-sm);width:100%;padding:var(--arq-space-gap-md) 0;color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;background:0 0;border:0;display:flex}.trigger:hover{background:var(--arq-color-surface-hover)}.trigger .name{flex:1;min-width:0}.toggle{color:var(--arq-color-icon-primary);flex:none;display:inline-flex}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.links{padding-bottom:var(--arq-space-gap-md);flex-direction:column;align-items:flex-start;display:flex}::slotted(a){width:100%;padding-block:var(--arq-space-gap-sm);color:var(--arq-color-text-primary);font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-body-lg-size);line-height:var(--arq-type-body-lg-leading);letter-spacing:var(--arq-font-tracking-normal);text-decoration:none;display:block}::slotted(a:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}::slotted(arq-button){margin-block:var(--arq-space-gap-sm)}", Un = `<a class="link"><span class="text"><span class="name role-body"><slot></slot></span><span class="meta role-caption"><slot name="meta"></slot></span></span><span class="arrow">${p("arrow-right")}</span></a>`, Wn = `<div class="group"><button type="button" class="trigger"><span class="name role-body-xl"><slot></slot></span><span class="toggle">${p("plus")}${p("minus")}</span></button><div class="links"><slot name="links"></slot></div></div>`;
+var Wn = ":host{min-width:0;display:block}.link{align-items:center;gap:var(--arq-space-gap-sm);padding-block:var(--arq-space-gap-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);color:var(--arq-color-text-primary);text-decoration:none;display:flex}.link[href]:hover{background:var(--arq-color-surface-hover)}.link:focus-visible,.trigger:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.text{gap:var(--arq-space-gap-xs);flex-direction:column;flex:1;min-width:0;display:flex}.name{overflow-wrap:break-word}.meta{color:var(--arq-color-text-tertiary)}.arrow{color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.group{border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.trigger{align-items:center;gap:var(--arq-space-gap-sm);width:100%;padding:var(--arq-space-gap-md) 0;color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;background:0 0;border:0;display:flex}.trigger:hover{background:var(--arq-color-surface-hover)}.trigger .name{flex:1;min-width:0}.toggle{color:var(--arq-color-icon-primary);flex:none;display:inline-flex}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.links{padding-bottom:var(--arq-space-gap-md);flex-direction:column;align-items:flex-start;display:flex}::slotted(a){width:100%;padding-block:var(--arq-space-gap-sm);color:var(--arq-color-text-primary);font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-body-lg-size);line-height:var(--arq-type-body-lg-leading);letter-spacing:var(--arq-font-tracking-normal);text-decoration:none;display:block}::slotted(a:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}::slotted(arq-button){margin-block:var(--arq-space-gap-sm)}", Gn = `<a class="link"><span class="text"><span class="name role-body"><slot></slot></span><span class="meta role-caption"><slot name="meta"></slot></span></span><span class="arrow">${p("arrow-right")}</span></a>`, Kn = `<div class="group"><button type="button" class="trigger"><span class="name role-body-xl"><slot></slot></span><span class="toggle">${p("plus")}${p("minus")}</span></button><div class="links"><slot name="links"></slot></div></div>`;
 (class extends f {
 	static tag = "arq-mega-link";
-	static styles = Hn;
+	static styles = Wn;
 	static properties = {
 		type: {
 			type: String,
@@ -3033,7 +3122,7 @@ var Hn = ":host{min-width:0;display:block}.link{align-items:center;gap:var(--arq
 	};
 	setup() {
 		let e = this.shadowRoot, t = document.createElement("template");
-		t.innerHTML = this.type === "group" ? Wn : Un, e.append(t.content), this.type === "group" ? this.disclosure = new h(this, {
+		t.innerHTML = this.type === "group" ? Kn : Gn, e.append(t.content), this.type === "group" ? this.disclosure = new h(this, {
 			trigger: e.querySelector(".trigger"),
 			panel: e.querySelector(".links")
 		}) : e.querySelector("slot[name=\"meta\"]").addEventListener("slotchange", () => this.#e());
@@ -3055,72 +3144,13 @@ var Hn = ":host{min-width:0;display:block}.link{align-items:center;gap:var(--arq
 	}
 }).define();
 //#endregion
-//#region src/base/single-select.js
-var Gn = ["ArrowRight", "ArrowDown"], Kn = ["ArrowLeft", "ArrowUp"], q = class {
-	constructor(e, { items: t }) {
-		this.host = e, this.selector = t, e.addEventListener("keydown", (e) => this.#t(e)), e.addEventListener("arq:change", (e) => this.#e(e)), new MutationObserver(() => this.refresh()).observe(e, {
-			childList: !0,
-			subtree: !0,
-			attributes: !0,
-			attributeFilter: ["selected", "disabled"]
-		}), this.refresh();
-	}
-	get items() {
-		return [...this.host.querySelectorAll(this.selector)];
-	}
-	get enabledItems() {
-		return this.items.filter((e) => !e.disabled);
-	}
-	get selected() {
-		return this.items.find((e) => e.selected) ?? null;
-	}
-	refresh() {
-		let e = this.enabledItems, t = this.selected && !this.selected.disabled ? this.selected : e[0];
-		for (let e of this.items) e.setAttribute("tabindex", e === t ? "0" : "-1");
-	}
-	#e(e) {
-		let t = e.target;
-		if (this.items.includes(t) && t.selected) {
-			for (let e of this.items) e !== t && e.selected && (e.selected = !1);
-			this.refresh();
-		}
-	}
-	#t(e) {
-		let t = this.enabledItems, n = t.indexOf(e.target);
-		if (n === -1) return;
-		let r = null;
-		Gn.includes(e.key) ? r = t[(n + 1) % t.length] : Kn.includes(e.key) ? r = t[(n - 1 + t.length) % t.length] : e.key === "Home" ? r = t[0] : e.key === "End" && (r = t[t.length - 1]), r && (e.preventDefault(), r.focus(), r.choose?.());
-	}
-}, qn = ":host{cursor:pointer;flex:none;display:inline-flex}.tab{padding-bottom:var(--arq-space-gap-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-surface-transparent);color:var(--arq-color-text-tertiary);white-space:nowrap;display:inline-flex}:host(:not([disabled]):hover) .tab{color:var(--arq-color-text-primary)}:host([selected]) .tab{border-bottom-color:var(--arq-color-border-strong);color:var(--arq-color-text-primary)}:host([disabled]){cursor:default}:host([disabled]) .tab{color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
-(class extends f {
-	static tag = "arq-tab";
-	static styles = qn;
-	static properties = {
-		selected: { type: Boolean },
-		disabled: { type: Boolean },
-		value: { type: String }
-	};
-	static template = "<span class=\"tab role-label\"><slot></slot></span>";
-	setup() {
-		this.selectable = new g(this, {
-			role: "tab",
-			state: "aria-selected"
-		});
-		let e = () => {
-			let e = this.textContent.trim();
-			e && this.setAttribute("aria-label", e);
-		};
-		this.shadowRoot.querySelector("slot").addEventListener("slotchange", e), e();
-	}
-}).define();
-//#endregion
 //#region src/components/mega-menu/mega-menu.css?inline
-var Jn = ":host{display:block}.menu{background:var(--arq-color-surface-default);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.tabs{gap:var(--arq-space-gap-xl);padding:var(--arq-space-gap-md) var(--page-gutter) 0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex}.body{align-items:stretch;display:flex}.panels{flex:1;min-width:0;display:flex}.panel{gap:var(--arq-space-gap-md);min-width:0;padding:var(--arq-space-gap-xl) var(--page-gutter);flex-direction:column;flex:1;display:flex}.columns{gap:var(--arq-space-gap-xl);flex:1;display:flex}.column{justify-content:space-between;align-items:flex-start;gap:var(--arq-space-gap-md);flex-direction:column;flex:1;min-width:0;display:flex}.top{gap:var(--arq-space-gap-md);flex-direction:column;align-self:stretch;display:flex}.title{color:var(--arq-color-text-primary);margin:0}.links{flex-direction:column;align-self:stretch;display:flex}.panel--colecciones .column{justify-content:flex-start;align-items:stretch}.panel--colecciones .all{align-self:flex-start}.image{width:var(--arq-layout-mega-menu-image);aspect-ratio:4/5;background:var(--arq-color-surface-subtle);flex:none;position:relative}.image img{object-fit:cover;width:100%;height:100%;position:absolute;inset:0}", J = (e) => String(e ?? "").replace(/[&<>"]/g, (e) => ({
+var qn = ":host{display:block}.menu{background:var(--arq-color-surface-default);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.tabs{gap:var(--arq-space-gap-xl);padding:var(--arq-space-gap-md) var(--page-gutter) 0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex}.body{align-items:stretch;display:flex}.panels{flex:1;min-width:0;display:flex}.panel{gap:var(--arq-space-gap-md);min-width:0;padding:var(--arq-space-gap-xl) var(--page-gutter);flex-direction:column;flex:1;display:flex}.columns{gap:var(--arq-space-gap-xl);flex:1;display:flex}.column{justify-content:space-between;align-items:flex-start;gap:var(--arq-space-gap-md);flex-direction:column;flex:1;min-width:0;display:flex}.top{gap:var(--arq-space-gap-md);flex-direction:column;align-self:stretch;display:flex}.title{color:var(--arq-color-text-primary);margin:0}.links{flex-direction:column;align-self:stretch;display:flex}.panel--colecciones .column{justify-content:flex-start;align-items:stretch}.panel--colecciones .all{align-self:flex-start}.image{width:var(--arq-layout-mega-menu-image);aspect-ratio:4/5;background:var(--arq-color-surface-subtle);flex:none;position:relative}.image img{object-fit:cover;width:100%;height:100%;position:absolute;inset:0}", J = (e) => String(e ?? "").replace(/[&<>"]/g, (e) => ({
 	"&": "&amp;",
 	"<": "&lt;",
 	">": "&gt;",
 	"\"": "&quot;"
-})[e]), Yn = [
+})[e]), Jn = [
 	{
 		id: "aplicacion",
 		label: "Aplicación"
@@ -3133,14 +3163,14 @@ var Jn = ":host{display:block}.menu{background:var(--arq-color-surface-default);
 		id: "colecciones",
 		label: "Colecciones"
 	}
-], Xn = 3, Zn = 0;
+], Yn = 3, Xn = 0;
 (class extends f {
 	static tag = "arq-mega-menu";
-	static styles = Jn;
+	static styles = qn;
 	static properties = {
 		tab: {
 			type: String,
-			values: Yn.map((e) => e.id),
+			values: Jn.map((e) => e.id),
 			default: "aplicacion"
 		},
 		label: {
@@ -3151,7 +3181,7 @@ var Jn = ":host{display:block}.menu{background:var(--arq-color-surface-default);
 	static template = "<div class=\"menu\"><div class=\"tabs\" role=\"tablist\"></div><div class=\"body\"><div class=\"panels\"></div><div class=\"image\"><img alt=\"\" hidden></div></div></div>";
 	#e = null;
 	#t = {};
-	#n = ++Zn;
+	#n = ++Xn;
 	get navigation() {
 		return this.#e;
 	}
@@ -3166,7 +3196,7 @@ var Jn = ":host{display:block}.menu{background:var(--arq-color-surface-default);
 	}
 	setup() {
 		let e = this.shadowRoot, t = e.querySelector(".tabs");
-		this.select = new q(t, { items: "arq-tab" }), t.addEventListener("arq:change", (e) => {
+		this.select = new T(t, { items: "arq-tab" }), t.addEventListener("arq:change", (e) => {
 			e.stopPropagation(), this.tab = e.detail.value;
 		});
 		let n = e.querySelector("img");
@@ -3185,7 +3215,7 @@ var Jn = ":host{display:block}.menu{background:var(--arq-color-surface-default);
 		return e === "aplicacion" ? [t.exterior, t.interior].filter(Boolean) : e === "lamparas" ? [t.lamparas, t.artefactos].filter(Boolean) : [];
 	}
 	#i() {
-		let e = this.shadowRoot, t = this.#e, n = Yn.filter((e) => e.id === "colecciones" ? t?.collections?.length : this.#r(e.id).length);
+		let e = this.shadowRoot, t = this.#e, n = Jn.filter((e) => e.id === "colecciones" ? t?.collections?.length : this.#r(e.id).length);
 		n.length && !n.some((e) => e.id === this.tab) && (this.tab = n[0].id);
 		let r = (e) => ({
 			tab: `mega-tab-${this.#n}-${e.id}`,
@@ -3200,8 +3230,8 @@ var Jn = ":host{display:block}.menu{background:var(--arq-color-surface-default);
 		return "<div class=\"columns\">" + e.map((e) => `<div class="column"><div class="top"><p class="title role-heading-3">${J(e.label)}</p><div class="links">${e.links.map((e) => `<arq-mega-link href="${J(e.href)}" show-arrow>${J(e.label)}</arq-mega-link>`).join("")}</div></div><arq-button type="underline" show-underline href="${J(e.all.href)}">${J(e.all.label)}</arq-button></div>`).join("") + "</div>";
 	}
 	#o(e) {
-		let t = e?.collections ?? [], n = Math.ceil(t.length / Xn);
-		return "<p class=\"title role-heading-3\">Colecciones</p><div class=\"columns\">" + Array.from({ length: Xn }, (e, r) => t.slice(r * n, (r + 1) * n)).map((e) => `<div class="links column">${e.map((e) => `<arq-mega-link href="${J(e.href)}" show-arrow>${J(e.label)}<span slot="meta">${J(e.meta)}</span></arq-mega-link>`).join("")}</div>`).join("") + `</div><arq-button class="all" type="underline" show-underline href="${J(e?.allCollections?.href)}">${J(e?.allCollections?.label)}</arq-button>`;
+		let t = e?.collections ?? [], n = Math.ceil(t.length / Yn);
+		return "<p class=\"title role-heading-3\">Colecciones</p><div class=\"columns\">" + Array.from({ length: Yn }, (e, r) => t.slice(r * n, (r + 1) * n)).map((e) => `<div class="links column">${e.map((e) => `<arq-mega-link href="${J(e.href)}" show-arrow>${J(e.label)}<span slot="meta">${J(e.meta)}</span></arq-mega-link>`).join("")}</div>`).join("") + `</div><arq-button class="all" type="underline" show-underline href="${J(e?.allCollections?.href)}">${J(e?.allCollections?.label)}</arq-button>`;
 	}
 	#s() {
 		let e = this.shadowRoot.querySelector("img"), t = this.#t[this.tab];
@@ -3210,10 +3240,10 @@ var Jn = ":host{display:block}.menu{background:var(--arq-color-surface-default);
 }).define();
 //#endregion
 //#region src/components/search-result/search-result.css?inline
-var Qn = ":host{min-width:0;display:block}.result{align-items:center;gap:var(--arq-space-gap-md);padding:var(--arq-space-gap-sm) var(--search-inline,var(--arq-space-padding-md));border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);text-decoration:none;display:flex}.result[href]:hover,.result.active{background:var(--arq-color-surface-hover)}.result:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(var(--arq-border-strong) * -1)}.thumb{width:var(--arq-layout-search-thumb);height:var(--arq-layout-search-thumb);background:var(--arq-color-surface-subtle);flex:none}.thumb img{object-fit:cover;width:100%;height:100%;display:block}.text{gap:var(--arq-space-gap-xs);flex-direction:column;flex:1;min-width:0;display:flex}.name,.meta{overflow-wrap:break-word}.meta{color:var(--arq-color-text-tertiary)}.arrow{color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}";
+var Zn = ":host{min-width:0;display:block}.result{align-items:center;gap:var(--arq-space-gap-md);padding:var(--arq-space-gap-sm) var(--search-inline,var(--arq-space-padding-md));border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);text-decoration:none;display:flex}.result[href]:hover,.result.active{background:var(--arq-color-surface-hover)}.result:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(var(--arq-border-strong) * -1)}.thumb{width:var(--arq-layout-search-thumb);height:var(--arq-layout-search-thumb);background:var(--arq-color-surface-subtle);flex:none}.thumb img{object-fit:cover;width:100%;height:100%;display:block}.text{gap:var(--arq-space-gap-xs);flex-direction:column;flex:1;min-width:0;display:flex}.name,.meta{overflow-wrap:break-word}.meta{color:var(--arq-color-text-tertiary)}.arrow{color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}";
 (class extends f {
 	static tag = "arq-search-result";
-	static styles = Qn;
+	static styles = Zn;
 	static properties = {
 		href: { type: String },
 		image: { type: String },
@@ -3239,10 +3269,10 @@ var Qn = ":host{min-width:0;display:block}.result{align-items:center;gap:var(--a
 }).define();
 //#endregion
 //#region src/components/search-see-all/search-see-all.css?inline
-var $n = ":host{min-width:0;display:block}.row{align-items:center;gap:var(--arq-space-gap-md);padding:var(--arq-space-gap-sm) var(--search-inline,var(--arq-space-padding-md));color:var(--arq-color-icon-tertiary);text-decoration:none;display:flex}.row[href]:hover{background:var(--arq-color-surface-hover)}.row:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(var(--arq-border-strong) * -1)}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);flex:none}.text{min-width:0;color:var(--arq-color-text-tertiary);overflow-wrap:break-word;flex:1}.term{color:var(--arq-color-text-primary)}";
+var Qn = ":host{min-width:0;display:block}.row{align-items:center;gap:var(--arq-space-gap-md);padding:var(--arq-space-gap-sm) var(--search-inline,var(--arq-space-padding-md));color:var(--arq-color-icon-tertiary);text-decoration:none;display:flex}.row[href]:hover{background:var(--arq-color-surface-hover)}.row:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(var(--arq-border-strong) * -1)}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);flex:none}.text{min-width:0;color:var(--arq-color-text-tertiary);overflow-wrap:break-word;flex:1}.term{color:var(--arq-color-text-primary)}";
 (class extends f {
 	static tag = "arq-search-see-all";
-	static styles = $n;
+	static styles = Qn;
 	static properties = {
 		href: { type: String },
 		term: {
@@ -3267,10 +3297,10 @@ var $n = ":host{min-width:0;display:block}.row{align-items:center;gap:var(--arq-
 }).define();
 //#endregion
 //#region src/components/search-dropdown/search-dropdown.css?inline
-var er = ":host{min-width:0;display:block}.dropdown{background:var(--arq-color-surface-default);border:var(--arq-border-default) solid var(--arq-color-border-subtle)}.results{flex-direction:column;display:flex}.message{gap:var(--arq-space-gap-sm);padding:var(--arq-space-padding-md) var(--arq-space-padding-md);flex-direction:column;display:flex}.message p{margin:0}.title{color:var(--arq-color-text-primary)}.help{color:var(--arq-color-text-tertiary)}.explore{align-items:center;gap:var(--arq-space-gap-sm);padding:var(--arq-space-padding-sm) var(--arq-space-padding-md);border-top:var(--arq-border-default) solid var(--arq-color-border-subtle);color:var(--arq-color-text-tertiary);text-decoration:none;display:flex}.explore:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(var(--arq-border-strong) * -1)}.explore .icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}";
+var $n = ":host{min-width:0;display:block}.dropdown{background:var(--arq-color-surface-default);border:var(--arq-border-default) solid var(--arq-color-border-subtle)}.results{flex-direction:column;display:flex}.message{gap:var(--arq-space-gap-sm);padding:var(--arq-space-padding-md) var(--arq-space-padding-md);flex-direction:column;display:flex}.message p{margin:0}.title{color:var(--arq-color-text-primary)}.help{color:var(--arq-color-text-tertiary)}.explore{align-items:center;gap:var(--arq-space-gap-sm);padding:var(--arq-space-padding-sm) var(--arq-space-padding-md);border-top:var(--arq-border-default) solid var(--arq-color-border-subtle);color:var(--arq-color-text-tertiary);text-decoration:none;display:flex}.explore:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(var(--arq-border-strong) * -1)}.explore .icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}";
 (class extends f {
 	static tag = "arq-search-dropdown";
-	static styles = er;
+	static styles = $n;
 	static properties = {
 		state: {
 			type: String,
@@ -3294,10 +3324,10 @@ var er = ":host{min-width:0;display:block}.dropdown{background:var(--arq-color-s
 }).define();
 //#endregion
 //#region src/components/search-screen/search-screen.css?inline
-var tr = ":host{display:contents}.dialog{box-sizing:border-box;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);width:100%;max-width:none;height:100dvh;max-height:none;color:var(--arq-color-text-primary);border:0;margin:0;padding:0;inset:0}.screen{flex-direction:column;height:100%;display:flex}.header{align-items:center;gap:var(--arq-space-gap-sm);padding:var(--arq-space-gap-md) var(--arq-layout-gutter);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);flex:none;display:flex}.field{flex:1}.content{overscroll-behavior:contain;--search-inline:var(--arq-layout-gutter);flex:1;overflow-y:auto}";
+var er = ":host{display:contents}.dialog{box-sizing:border-box;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);width:100%;max-width:none;height:100dvh;max-height:none;color:var(--arq-color-text-primary);border:0;margin:0;padding:0;inset:0}.screen{flex-direction:column;height:100%;display:flex}.header{align-items:center;gap:var(--arq-space-gap-sm);padding:var(--arq-space-gap-md) var(--arq-layout-gutter);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);flex:none;display:flex}.field{flex:1}.content{overscroll-behavior:contain;--search-inline:var(--arq-layout-gutter);flex:1;overflow-y:auto}";
 (class extends f {
 	static tag = "arq-search-screen";
-	static styles = tr;
+	static styles = er;
 	static properties = {
 		open: { type: Boolean },
 		label: {
@@ -3329,10 +3359,10 @@ var tr = ":host{display:contents}.dialog{box-sizing:border-box;border-radius:var
 }).define();
 //#endregion
 //#region src/components/nav-link/nav-link.css?inline
-var nr = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-sm);background:var(--arq-color-surface-transparent);max-width:100%;color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;padding:0;text-decoration:none;display:inline-flex;position:relative}.label{white-space:nowrap;min-width:0}.indicator{width:var(--arq-space-gap-sm);height:var(--arq-border-strong);background:var(--arq-color-border-strong);flex:none;display:none}.current .indicator{display:block}.chevron{flex:none;display:none}:host([has-dropdown]) .chevron{display:inline-flex}.chevron .icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm)}[aria-expanded=true] .chevron .icon{transform:rotate(180deg)}.trailing{display:none}.link:after{content:\"\";inset-inline:0;top:calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));height:var(--arq-border-default);background:var(--arq-color-border-strong);visibility:hidden;position:absolute}.link:not(.current):not([aria-expanded=true]):hover:after{visibility:visible}.link:active{color:var(--arq-color-text-tertiary)}.link:active:after{visibility:hidden}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}@media (width>=768px){:host([theme=inverse]) .link,:host([theme=inverse]) .link:active{color:var(--arq-color-text-inverse)}:host([theme=inverse]) .indicator,:host([theme=inverse]) .link:after{background:var(--arq-color-icon-inverse)}:host([theme=inverse]) .chevron{color:var(--arq-color-icon-inverse)}}@media (width<=767px){:host{width:100%;display:flex}.link{width:100%;padding:var(--arq-space-gap-md) var(--arq-layout-gutter)}.label{white-space:normal;flex:1}:host([has-dropdown]) .chevron{display:none}.trailing{flex:none;display:inline-flex}.trailing .icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.trailing [data-icon=arrow-right],.current .trailing [data-icon=chevron-right]{display:none}.current .trailing [data-icon=arrow-right]{display:block}.link:after{display:none}.link:active{background:var(--arq-color-surface-selected);color:var(--arq-color-text-primary)}@media (hover:hover){.link:not(:active):hover{background:var(--arq-color-surface-hover)}}.link:focus-visible{outline-offset:calc(var(--arq-border-strong) * -1)}}", rr = matchMedia("(max-width: 767px)");
+var tr = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-sm);background:var(--arq-color-surface-transparent);max-width:100%;color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;padding:0;text-decoration:none;display:inline-flex;position:relative}.label{white-space:nowrap;min-width:0}.indicator{width:var(--arq-space-gap-sm);height:var(--arq-border-strong);background:var(--arq-color-border-strong);flex:none;display:none}.current .indicator{display:block}.chevron{flex:none;display:none}:host([has-dropdown]) .chevron{display:inline-flex}.chevron .icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm)}[aria-expanded=true] .chevron .icon{transform:rotate(180deg)}.trailing{display:none}.link:after{content:\"\";inset-inline:0;top:calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));height:var(--arq-border-default);background:var(--arq-color-border-strong);visibility:hidden;position:absolute}.link:not(.current):not([aria-expanded=true]):hover:after{visibility:visible}.link:active{color:var(--arq-color-text-tertiary)}.link:active:after{visibility:hidden}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}@media (width>=768px){:host([theme=inverse]) .link,:host([theme=inverse]) .link:active{color:var(--arq-color-text-inverse)}:host([theme=inverse]) .indicator,:host([theme=inverse]) .link:after{background:var(--arq-color-icon-inverse)}:host([theme=inverse]) .chevron{color:var(--arq-color-icon-inverse)}}@media (width<=767px){:host{width:100%;display:flex}.link{width:100%;padding:var(--arq-space-gap-md) var(--arq-layout-gutter)}.label{white-space:normal;flex:1}:host([has-dropdown]) .chevron{display:none}.trailing{flex:none;display:inline-flex}.trailing .icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.trailing [data-icon=arrow-right],.current .trailing [data-icon=chevron-right]{display:none}.current .trailing [data-icon=arrow-right]{display:block}.link:after{display:none}.link:active{background:var(--arq-color-surface-selected);color:var(--arq-color-text-primary)}@media (hover:hover){.link:not(:active):hover{background:var(--arq-color-surface-hover)}}.link:focus-visible{outline-offset:calc(var(--arq-border-strong) * -1)}}", nr = matchMedia("(max-width: 767px)");
 (class extends f {
 	static tag = "arq-nav-link";
-	static styles = nr;
+	static styles = tr;
 	static properties = {
 		hasDropdown: { type: Boolean },
 		open: { type: Boolean },
@@ -3347,10 +3377,10 @@ var nr = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{b
 	static template = `<a class="link"><span class="indicator" aria-hidden="true"></span><span class="label role-body"><slot></slot></span><span class="chevron">${p("chevron-down")}</span><span class="trailing">${p("chevron-right")}${p("arrow-right")}</span></a>`;
 	#e = null;
 	setup() {
-		this.#e = this.shadowRoot.querySelector(".link"), rr.addEventListener("change", () => this.#t()), this.#t();
+		this.#e = this.shadowRoot.querySelector(".link"), nr.addEventListener("change", () => this.#t()), this.#t();
 	}
 	#t() {
-		let e = this.shadowRoot.querySelector(".label"), t = !rr.matches;
+		let e = this.shadowRoot.querySelector(".label"), t = !nr.matches;
 		e.classList.toggle("role-body", t && !this.current), e.classList.toggle("role-body-regular", t && this.current), e.classList.toggle("role-body-xl", !t);
 	}
 	focus(e) {
@@ -3370,15 +3400,15 @@ var nr = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{b
 }).define();
 //#endregion
 //#region src/components/navbar/navbar.css?inline
-var ir = ":host{z-index:4;transition:transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);display:block;position:sticky;top:0}@media (width>=1024px){:host([data-arq-catalog-hidden]){transform:translateY(-100%)}}:host([theme=transparent]){position:fixed;inset-inline:0}.navbar{position:relative}.bar{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-xl);height:calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));padding:0 var(--page-gutter);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);display:flex}.over-photo .bar{background:var(--arq-color-overlay-translucent);-webkit-backdrop-filter:blur(var(--arq-blur-backdrop))}.over-photo .logo{color:var(--arq-color-text-inverse)}.over-photo .search-open,.over-photo .actions arq-icon-button{color:var(--arq-color-icon-inverse)}.logo{flex:none}.right{align-items:center;gap:var(--arq-space-gap-xl);min-width:0;display:flex}.links{align-items:center;gap:var(--arq-space-gap-xl);display:flex}.search{align-items:center;display:flex;position:relative}.search-box{width:var(--arq-layout-search-field);position:relative}.search-dropdown{top:100%;position:absolute;inset-inline:0}.actions{display:none}.mega{top:100%;position:absolute;inset-inline:0}.menu{box-sizing:border-box;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);width:100%;max-width:none;height:100dvh;max-height:none;color:var(--arq-color-text-primary);overscroll-behavior:contain;border:0;margin:0;padding:0;inset:0}.menu-bar{box-sizing:border-box;height:calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));padding:0 var(--page-gutter);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);justify-content:space-between;align-items:center;display:flex}.menu-main{padding-block:var(--arq-space-gap-sm);flex-direction:column;display:flex}.menu-products{padding:var(--arq-space-gap-sm) 0 var(--arq-space-gap-xl);flex-direction:column;display:flex}.back{align-items:center;gap:var(--arq-space-gap-xs);padding:var(--arq-space-gap-sm) var(--page-gutter);color:var(--arq-color-text-secondary);text-align:start;cursor:pointer;background:0 0;border:0;display:flex}.back .icon{box-sizing:content-box;width:var(--arq-icon-md);height:var(--arq-icon-md);padding:var(--arq-space-padding-xs);color:var(--arq-color-icon-primary)}.back:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(var(--arq-border-strong) * -1)}.groups{padding:var(--arq-space-gap-md) var(--page-gutter) var(--arq-space-padding-md);flex-direction:column;display:flex}.collections{padding:var(--arq-space-gap-md) var(--page-gutter) 0}@media (width<=767px){.right{display:contents}.links,.search{display:none}.actions{align-items:center;gap:var(--arq-space-gap-sm);display:flex}}", Y = matchMedia("(max-width: 767px)"), X = (e) => String(e ?? "").replace(/[&<>"]/g, (e) => ({
+var rr = ":host{z-index:4;transition:transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);display:block;position:sticky;top:0}@media (width>=1024px){:host([data-arq-catalog-hidden]){transform:translateY(-100%)}}@media (width<=767px){:host([data-arq-compare-hidden]){transform:translateY(-100%)}}:host([theme=transparent]){position:fixed;inset-inline:0}.navbar{position:relative}.bar{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-xl);height:calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));padding:0 var(--page-gutter);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);display:flex}.over-photo .bar{background:var(--arq-color-overlay-translucent);-webkit-backdrop-filter:blur(var(--arq-blur-backdrop))}.over-photo .logo{color:var(--arq-color-text-inverse)}.over-photo .search-open,.over-photo .actions arq-icon-button{color:var(--arq-color-icon-inverse)}.logo{flex:none}.right{align-items:center;gap:var(--arq-space-gap-xl);min-width:0;display:flex}.links{align-items:center;gap:var(--arq-space-gap-xl);display:flex}.search{align-items:center;display:flex;position:relative}.search-box{width:var(--arq-layout-search-field);position:relative}.search-dropdown{top:100%;position:absolute;inset-inline:0}.actions{display:none}.mega{top:100%;position:absolute;inset-inline:0}.menu{box-sizing:border-box;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);width:100%;max-width:none;height:100dvh;max-height:none;color:var(--arq-color-text-primary);overscroll-behavior:contain;border:0;margin:0;padding:0;inset:0}.menu-bar{box-sizing:border-box;height:calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));padding:0 var(--page-gutter);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);justify-content:space-between;align-items:center;display:flex}.menu-main{padding-block:var(--arq-space-gap-sm);flex-direction:column;display:flex}.menu-products{padding:var(--arq-space-gap-sm) 0 var(--arq-space-gap-xl);flex-direction:column;display:flex}.back{align-items:center;gap:var(--arq-space-gap-xs);padding:var(--arq-space-gap-sm) var(--page-gutter);color:var(--arq-color-text-secondary);text-align:start;cursor:pointer;background:0 0;border:0;display:flex}.back .icon{box-sizing:content-box;width:var(--arq-icon-md);height:var(--arq-icon-md);padding:var(--arq-space-padding-xs);color:var(--arq-color-icon-primary)}.back:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(var(--arq-border-strong) * -1)}.groups{padding:var(--arq-space-gap-md) var(--page-gutter) var(--arq-space-padding-md);flex-direction:column;display:flex}.collections{padding:var(--arq-space-gap-md) var(--page-gutter) 0}@media (width<=767px){.right{display:contents}.links,.search{display:none}.actions{align-items:center;gap:var(--arq-space-gap-sm);display:flex}}", Y = matchMedia("(max-width: 767px)"), X = (e) => String(e ?? "").replace(/[&<>"]/g, (e) => ({
 	"&": "&amp;",
 	"<": "&lt;",
 	">": "&gt;",
 	"\"": "&quot;"
-})[e]), ar = 5, or = 150;
+})[e]), ir = 5, ar = 150;
 (class extends f {
 	static tag = "arq-navbar";
-	static styles = ir;
+	static styles = rr;
 	static properties = {
 		theme: {
 			type: String,
@@ -3489,7 +3519,7 @@ var ir = ":host{z-index:4;transition:transform var(--arq-motion-duration-base) v
 		r && this.#h(), r && this.mode === "search" && this.#l("default"), t.hidden = !r, n && (n.open = r), this.#f = r, this.#c();
 	}
 	#h() {
-		this.#e || this.#t || (this.#t = Pn().then((e) => this.navigation = e).catch((e) => console.error("[arq] navbar: no se pudo cargar la navegación", e)).finally(() => this.#t = null));
+		this.#e || this.#t || (this.#t = Ln().then((e) => this.navigation = e).catch((e) => console.error("[arq] navbar: no se pudo cargar la navegación", e)).finally(() => this.#t = null));
 	}
 	#g() {
 		let e = this.shadowRoot, t = this.#e;
@@ -3510,17 +3540,17 @@ var ir = ":host{z-index:4;transition:transform var(--arq-motion-duration-base) v
 		this.#i = setTimeout(async () => {
 			let e = this.#a;
 			try {
-				let { results: t, total: n } = await Mn(e, { limit: ar });
+				let { results: t, total: n } = await Fn(e, { limit: ir });
 				e === this.#a && this.#v(t, n);
 			} catch (e) {
 				console.error("[arq] navbar: no se pudo buscar", e);
 			}
-		}, or);
+		}, ar);
 	}
 	#v(e, t) {
 		let n = this.shadowRoot;
 		this.#n = e, this.#r = -1;
-		let r = this.#a, i = e.map((e) => `<arq-search-result href="${X(e.href)}"${e.image ? ` image="${X(e.image)}"` : ""}>${X(e.name)}<span slot="meta">${X(e.meta)}</span></arq-search-result>`).join("") + (e.length ? `<arq-search-see-all href="${X(Nn(r))}" term="${X(r)}" count="${t}"></arq-search-see-all>` : ""), a = r && !e.length, o = n.querySelector(".search-dropdown");
+		let r = this.#a, i = e.map((e) => `<arq-search-result href="${X(e.href)}"${e.image ? ` image="${X(e.image)}"` : ""}>${X(e.name)}<span slot="meta">${X(e.meta)}</span></arq-search-result>`).join("") + (e.length ? `<arq-search-see-all href="${X(In(r))}" term="${X(r)}" count="${t}"></arq-search-see-all>` : ""), a = r && !e.length, o = n.querySelector(".search-dropdown");
 		o.state = a ? "no-results" : "results", o.term = r, o.innerHTML = i, this.#y(!!r);
 		let s = n.querySelector(".search-screen");
 		s.innerHTML = a ? `<arq-search-dropdown state="no-results" term="${X(r)}"></arq-search-dropdown>` : i, this.#C();
@@ -3546,15 +3576,15 @@ var ir = ":host{z-index:4;transition:transform var(--arq-motion-duration-base) v
 	}
 	#w(e) {
 		let t = this.#x()[this.#r];
-		t ? t.click() : e.trim() && location.assign(Nn(e.trim()));
+		t ? t.click() : e.trim() && location.assign(In(e.trim()));
 	}
 }).define();
 //#endregion
 //#region src/components/contact-item/contact-item.css?inline
-var sr = ":host{min-width:0;display:block}.item{align-items:flex-start;gap:var(--arq-space-gap-sm);padding-block:var(--arq-space-padding-lg);border-top:var(--arq-border-default) solid var(--arq-color-border-subtle);flex-direction:column;display:flex;position:relative}.label{color:var(--arq-color-text-tertiary)}.value{max-width:100%;color:var(--arq-color-text-primary);overflow-wrap:anywhere;text-decoration:none}.value[href]:hover{text-decoration:underline;text-decoration-thickness:var(--arq-border-default);text-underline-offset:var(--arq-space-padding-2xs)}.value:focus-visible{outline:none}.item:has(.value:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}";
+var or = ":host{min-width:0;display:block}.item{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;display:flex;position:relative}.label{color:var(--arq-color-text-tertiary)}.value{max-width:100%;color:var(--arq-color-text-primary);overflow-wrap:anywhere;text-decoration:none}.value[href]:hover{text-decoration:underline;text-decoration-thickness:var(--arq-border-default);text-underline-offset:var(--arq-space-padding-2xs)}.value:focus-visible{outline:none}.item:has(.value:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}";
 (class extends f {
 	static tag = "arq-contact-item";
-	static styles = sr;
+	static styles = or;
 	static properties = { href: { type: String } };
 	static template = "<div class=\"item\"><span class=\"label role-label\"><slot name=\"label\"></slot></span><a class=\"value role-body-lg-regular\"><slot></slot></a></div>";
 	focus(e) {
@@ -3567,14 +3597,14 @@ var sr = ":host{min-width:0;display:block}.item{align-items:flex-start;gap:var(-
 }).define();
 //#endregion
 //#region src/components/link-list/link-list.css?inline
-var cr = ":host{min-width:0;display:block}.list{align-items:flex-start;gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.title{color:var(--arq-color-text-tertiary)}.links{align-items:flex-start;gap:var(--arq-space-gap-md);flex-direction:column;display:flex}", lr = 0;
+var sr = ":host{min-width:0;display:block}.list{align-items:flex-start;gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.title{color:var(--arq-color-text-tertiary)}.links{align-items:flex-start;gap:var(--arq-space-gap-md);flex-direction:column;display:flex}", cr = 0;
 (class extends f {
 	static tag = "arq-link-list";
-	static styles = cr;
+	static styles = sr;
 	static template = "<nav class=\"list\"><span class=\"title role-label\"><slot name=\"title\"></slot></span><div class=\"links\" role=\"list\"><slot></slot></div></nav>";
 	setup() {
 		let e = this.shadowRoot, t = e.querySelector(".title");
-		t.id = `arq-link-list-${++lr}`, e.querySelector("nav").setAttribute("aria-labelledby", t.id);
+		t.id = `arq-link-list-${++cr}`, e.querySelector("nav").setAttribute("aria-labelledby", t.id);
 		let n = e.querySelector("slot:not([name])"), r = () => {
 			for (let e of n.assignedElements()) e.setAttribute("role", "listitem");
 		};
@@ -3583,10 +3613,10 @@ var cr = ":host{min-width:0;display:block}.list{align-items:flex-start;gap:var(-
 }).define();
 //#endregion
 //#region src/components/option-tile/option-tile.css?inline
-var ur = ":host{flex:1 1 max-content;cursor:pointer;min-width:0;display:flex}.tile{box-sizing:border-box;min-width:0;padding:var(--arq-space-padding-sm-md) var(--arq-space-padding-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);color:var(--arq-color-text-secondary);text-align:center;flex:1;justify-content:center;align-items:center;display:flex}:host(:not([disabled]):not([selected]):hover) .tile{border-bottom-color:var(--arq-color-border-hover);background:var(--arq-color-surface-faint);color:var(--arq-color-text-primary)}:host([selected]) .tile{border-bottom-color:var(--arq-color-border-strong);background:var(--arq-color-surface-soft);color:var(--arq-color-text-primary)}:host([disabled]){cursor:default}:host([disabled]) .tile{border-bottom-color:var(--arq-color-border-disabled);color:var(--arq-color-text-disabled);text-decoration:line-through}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+var lr = ":host{flex:1 1 max-content;cursor:pointer;min-width:0;display:flex}.tile{box-sizing:border-box;min-width:0;padding:var(--arq-space-padding-sm-md) var(--arq-space-padding-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);color:var(--arq-color-text-secondary);text-align:center;flex:1;justify-content:center;align-items:center;display:flex}:host(:not([disabled]):not([selected]):hover) .tile{border-bottom-color:var(--arq-color-border-hover);background:var(--arq-color-surface-faint);color:var(--arq-color-text-primary)}:host([selected]) .tile{border-bottom-color:var(--arq-color-border-strong);background:var(--arq-color-surface-soft);color:var(--arq-color-text-primary)}:host([disabled]){cursor:default}:host([disabled]) .tile{border-bottom-color:var(--arq-color-border-disabled);color:var(--arq-color-text-disabled);text-decoration:line-through}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
 (class extends f {
 	static tag = "arq-option-tile";
-	static styles = ur;
+	static styles = lr;
 	static properties = {
 		selected: { type: Boolean },
 		disabled: { type: Boolean },
@@ -3602,14 +3632,14 @@ var ur = ":host{flex:1 1 max-content;cursor:pointer;min-width:0;display:flex}.ti
 }).define();
 //#endregion
 //#region src/components/swatch-picker/swatch-picker.css?inline
-var dr = ":host{align-items:center;gap:var(--arq-space-gap-sm-md);flex-wrap:wrap;display:flex}";
+var ur = ":host{align-items:center;gap:var(--arq-space-gap-sm-md);flex-wrap:wrap;display:flex}";
 (class extends f {
 	static tag = "arq-swatch-picker";
-	static styles = dr;
+	static styles = ur;
 	static properties = { label: { type: String } };
 	static template = "<slot></slot>";
 	setup() {
-		this.setAttribute("role", "radiogroup"), this.select = new q(this, { items: "arq-swatch" });
+		this.setAttribute("role", "radiogroup"), this.select = new T(this, { items: "arq-swatch" });
 		let e = () => {
 			for (let e of this.select.items) {
 				let t = e.hasAttribute("selected") ? "large" : "default";
@@ -3629,10 +3659,10 @@ var dr = ":host{align-items:center;gap:var(--arq-space-gap-sm-md);flex-wrap:wrap
 }).define();
 //#endregion
 //#region src/components/option-group/option-group.css?inline
-var fr = ":host{display:block}.group{align-items:flex-start;gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.label{color:var(--arq-color-text-secondary)}.options{gap:var(--arq-space-gap-sm);flex-wrap:wrap;align-self:stretch;display:flex}:host([type=swatches]) .options,:host([type=select]) .options{display:block}";
+var dr = ":host{display:block}.group{align-items:flex-start;gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.label{color:var(--arq-color-text-secondary)}.options{gap:var(--arq-space-gap-sm);flex-wrap:wrap;align-self:stretch;display:flex}:host([type=swatches]) .options,:host([type=select]) .options{display:block}";
 (class extends f {
 	static tag = "arq-option-group";
-	static styles = fr;
+	static styles = dr;
 	static properties = {
 		label: { type: String },
 		type: {
@@ -3647,7 +3677,7 @@ var fr = ":host{display:block}.group{align-items:flex-start;gap:var(--arq-space-
 	};
 	static template = "<div class=\"group\"><span class=\"label role-label\"></span><div class=\"options\"><slot></slot></div></div>";
 	setup() {
-		this.select = new q(this, { items: "arq-option-tile" }), this.shadowRoot.querySelector("slot").addEventListener("slotchange", () => this.#e());
+		this.select = new T(this, { items: "arq-option-tile" }), this.shadowRoot.querySelector("slot").addEventListener("slotchange", () => this.#e());
 	}
 	update(e) {
 		e.has("label") && (this.shadowRoot.querySelector(".label").textContent = this.label ?? ""), this.type === "tiles" ? (this.setAttribute("role", "radiogroup"), this.label ? this.setAttribute("aria-label", this.label) : this.removeAttribute("aria-label")) : (this.removeAttribute("role"), this.removeAttribute("aria-label")), this.#e();
@@ -3660,10 +3690,10 @@ var fr = ":host{display:block}.group{align-items:flex-start;gap:var(--arq-space-
 }).define();
 //#endregion
 //#region src/components/choice-chip/choice-chip.css?inline
-var pr = ":host{vertical-align:middle;cursor:pointer;max-width:100%;display:inline-flex}.chip{box-sizing:border-box;max-width:100%;padding:var(--arq-space-padding-sm-md) var(--arq-space-padding-md);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);color:var(--arq-color-text-primary);white-space:nowrap;flex:1;justify-content:center;align-items:center;display:inline-flex}:host(:not([disabled]):hover) .chip{border-color:var(--arq-color-border-strong)}:host([selected]) .chip{border-color:var(--arq-color-border-strong);background:var(--arq-color-surface-selected)}:host([disabled]){cursor:default}:host([disabled]) .chip{border-color:var(--arq-color-border-disabled);color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+var fr = ":host{vertical-align:middle;cursor:pointer;max-width:100%;display:inline-flex}.chip{box-sizing:border-box;max-width:100%;padding:var(--arq-space-padding-sm-md) var(--arq-space-padding-md);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);color:var(--arq-color-text-primary);white-space:nowrap;flex:1;justify-content:center;align-items:center;display:inline-flex}:host(:not([disabled]):hover) .chip{border-color:var(--arq-color-border-strong)}:host([selected]) .chip{border-color:var(--arq-color-border-strong);background:var(--arq-color-surface-selected)}:host([disabled]){cursor:default}:host([disabled]) .chip{border-color:var(--arq-color-border-disabled);color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
 (class extends f {
 	static tag = "arq-choice-chip";
-	static styles = pr;
+	static styles = fr;
 	static formAssociated = !0;
 	static properties = {
 		selected: { type: Boolean },
@@ -3689,10 +3719,10 @@ var pr = ":host{vertical-align:middle;cursor:pointer;max-width:100%;display:inli
 }).define();
 //#endregion
 //#region src/components/input/input.css?inline
-var mr = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.label{color:var(--arq-color-text-tertiary)}.field{align-items:center;gap:var(--arq-space-gap-sm);padding-block:var(--arq-space-gap-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);display:flex}.control{box-sizing:border-box;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);width:100%;min-width:0;color:var(--arq-color-text-primary);border:0;flex:1;margin:0;padding:0}.control::placeholder{color:var(--arq-color-text-tertiary);opacity:1}:host([type=textarea]) .field{align-items:stretch}textarea.control{resize:vertical}:host([type=select]) .field{position:relative}.trigger{align-items:center;gap:var(--arq-space-gap-sm);text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);display:flex}.select-value{overflow-wrap:break-word;flex:auto;min-width:0}.select-value.placeholder{color:var(--arq-color-text-tertiary)}.chevron{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary)}:host(:not([open])) [data-icon=chevron-up],:host([open]) [data-icon=chevron-down]{display:none}.menu{z-index:2;width:100%;max-width:none;position:absolute;top:100%;left:0}:host([open]) .field,:host([open]) .field:focus-within{border-bottom-color:var(--arq-color-border-strong)}:host([disabled]) .trigger{cursor:default}:host([disabled]) .icon{color:var(--arq-color-icon-disabled)}.helper{color:var(--arq-color-text-tertiary);margin:0}.error{color:var(--arq-color-text-error);margin:0}.control:focus,.control:focus-visible{outline:none}.field:focus-within{border-bottom-color:var(--arq-color-border-focus)}:host([error]) .field,:host([error]) .field:focus-within{border-bottom-color:var(--arq-color-border-error)}:host([disabled]) .label,:host([disabled]) .helper,:host([disabled]) .control,:host([disabled]) .control::placeholder{color:var(--arq-color-text-disabled)}:host([disabled]) .field{border-bottom-color:var(--arq-color-border-disabled)}", hr = (() => {
+var pr = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.label{color:var(--arq-color-text-tertiary)}.field{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-sm);padding:calc(var(--arq-space-padding-sm) - var(--arq-border-default)) var(--arq-space-padding-sm-md);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);display:flex}@media (hover:hover){:host(:not([disabled]):not([error]):not([open])) .field:hover{border-color:var(--arq-color-border-hover)}}.control{box-sizing:border-box;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);width:100%;min-width:0;color:var(--arq-color-text-primary);border:0;flex:1;margin:0;padding:0}.control::placeholder{color:var(--arq-color-text-tertiary);opacity:1}:host([type=textarea]) .field{align-items:stretch}textarea.control{resize:vertical}:host([type=select]) .field{position:relative}.trigger{align-items:center;gap:var(--arq-space-gap-sm);text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);display:flex}.select-value{overflow-wrap:break-word;flex:auto;min-width:0}.select-value.placeholder{color:var(--arq-color-text-tertiary)}.chevron{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary)}:host(:not([open])) [data-icon=chevron-up],:host([open]) [data-icon=chevron-down]{display:none}.menu{top:calc(100% + var(--arq-border-default));left:calc(-1 * var(--arq-border-default));z-index:2;width:calc(100% + 2 * var(--arq-border-default));max-width:none;position:absolute}:host([open]) .field,:host([open]) .field:focus-within{border-color:var(--arq-color-border-strong)}:host([disabled]) .trigger{cursor:default}:host([disabled]) .icon{color:var(--arq-color-icon-disabled)}.helper{color:var(--arq-color-text-tertiary);margin:0}.error{color:var(--arq-color-text-error);margin:0}.control:focus,.control:focus-visible{outline:none}.field:has(.control:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host([error]) .field,:host([error]) .field:focus-within{border-color:var(--arq-color-border-error)}:host([disabled]) .label,:host([disabled]) .helper,:host([disabled]) .control,:host([disabled]) .control::placeholder{color:var(--arq-color-text-disabled)}:host([disabled]) .field{border-color:var(--arq-color-border-disabled)}", mr = (() => {
 	let e = 0;
 	return () => `arq-input-${++e}`;
-})(), gr = 4, _r = [
+})(), hr = 4, gr = [
 	"placeholder",
 	"autocomplete",
 	"required",
@@ -3704,7 +3734,7 @@ var mr = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex
 ];
 (class extends f {
 	static tag = "arq-input";
-	static styles = mr;
+	static styles = pr;
 	static formAssociated = !0;
 	static properties = {
 		type: {
@@ -3742,9 +3772,9 @@ var mr = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex
 	#e = this.attachInternals();
 	#t = null;
 	#n = {
-		control: hr(),
-		helper: hr(),
-		error: hr()
+		control: mr(),
+		helper: mr(),
+		error: mr()
 	};
 	#r = "";
 	#i = [];
@@ -3789,8 +3819,8 @@ var mr = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex
 		let t = this.#t, n = this.shadowRoot;
 		t.localName === "input" && (t.type = this.inputType);
 		let r = !!this.#o;
-		for (let e of r ? [] : _r) this.hasAttribute(e) ? t.setAttribute(e, this.getAttribute(e)) : t.removeAttribute(e);
-		t.localName === "textarea" && !this.hasAttribute("rows") && (t.rows = gr), t.disabled = this.disabled, n.querySelector(".label").classList.toggle("visually-hidden", !this.showLabel);
+		for (let e of r ? [] : gr) this.hasAttribute(e) ? t.setAttribute(e, this.getAttribute(e)) : t.removeAttribute(e);
+		t.localName === "textarea" && !this.hasAttribute("rows") && (t.rows = hr), t.disabled = this.disabled, n.querySelector(".label").classList.toggle("visually-hidden", !this.showLabel);
 		let i = !!this.error, a = n.querySelector(".helper"), o = n.querySelector(".error");
 		o.textContent = this.error ?? "", o.hidden = !i, a.hidden = i || !this.showHelper, t.setAttribute("aria-invalid", String(i));
 		let s = [i ? this.#n.error : null, a.hidden ? null : this.#n.helper].filter(Boolean);
@@ -3823,7 +3853,7 @@ var mr = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex
 		let n = e.querySelector(".field");
 		n.replaceChildren(t);
 		let r = document.createElement("arq-select-menu");
-		r.type = "text", r.className = "menu", r.id = `${this.#n.control}-menu`, r.hidden = !0, n.append(r), this.#t = t, this.#a = this.getAttribute("value") ?? "", this.#o = new Ee({
+		r.type = "text", r.className = "menu", r.id = `${this.#n.control}-menu`, r.hidden = !0, n.append(r), this.#t = t, this.#a = this.getAttribute("value") ?? "", this.#o = new Te({
 			trigger: t,
 			menu: r,
 			options: () => this.#i,
@@ -3858,26 +3888,26 @@ var mr = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex
 }).define();
 //#endregion
 //#region src/components/file-upload/file-upload.css?inline
-var vr = ":host{width:100%;display:block}.upload{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.label{color:var(--arq-color-text-secondary)}.zone,.attached{box-sizing:border-box;padding:var(--arq-space-padding-lg);border:var(--arq-border-default) dashed var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-bg-subtle);align-items:center;display:flex;position:relative}.zone{cursor:pointer}.attached{justify-content:space-between;gap:var(--arq-space-gap-sm-md);border-style:solid}.empty{align-items:center;gap:var(--arq-space-gap-sm-md);min-width:0;display:flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}.prompt,.file{min-width:0;color:var(--arq-color-text-primary)}.file{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.remove{flex:none}.helper{color:var(--arq-color-text-tertiary);margin:0}.error{color:var(--arq-color-text-error);margin:0}.drop{min-width:0;color:var(--arq-color-text-primary);display:none}:host(:state(drag-over)) .zone{border-color:var(--arq-color-border-strong);background:var(--arq-color-surface-hover)}:host(:state(drag-over)) .prompt{display:none}:host(:state(drag-over)) .drop{display:inline}:host(:state(error)) .zone{border-color:var(--arq-color-border-error)}:host([disabled]) .zone{border-color:var(--arq-color-border-disabled);cursor:default}:host([disabled]) .label,:host([disabled]) .prompt,:host([disabled]) .file,:host([disabled]) .helper{color:var(--arq-color-text-disabled)}:host([disabled]) .icon{color:var(--arq-color-icon-disabled)}.zone:has(.native:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}", yr = ".pdf,.dwg,.jpg,.jpeg,.png", br = 10, xr = {
+var _r = ":host{width:100%;display:block}.upload{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.label{color:var(--arq-color-text-secondary)}.zone,.attached{box-sizing:border-box;padding:var(--arq-space-padding-lg);border:var(--arq-border-default) dashed var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-bg-subtle);align-items:center;display:flex;position:relative}.zone{cursor:pointer}.attached{justify-content:space-between;gap:var(--arq-space-gap-sm-md);border-style:solid}.empty{align-items:center;gap:var(--arq-space-gap-sm-md);min-width:0;display:flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}.prompt,.file{min-width:0;color:var(--arq-color-text-primary)}.file{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.remove{flex:none}.helper{color:var(--arq-color-text-tertiary);margin:0}.error{color:var(--arq-color-text-error);margin:0}.drop{min-width:0;color:var(--arq-color-text-primary);display:none}:host(:state(drag-over)) .zone{border-color:var(--arq-color-border-strong);background:var(--arq-color-surface-hover)}:host(:state(drag-over)) .prompt{display:none}:host(:state(drag-over)) .drop{display:inline}:host(:state(error)) .zone{border-color:var(--arq-color-border-error)}:host([disabled]) .zone{border-color:var(--arq-color-border-disabled);cursor:default}:host([disabled]) .label,:host([disabled]) .prompt,:host([disabled]) .file,:host([disabled]) .helper{color:var(--arq-color-text-disabled)}:host([disabled]) .icon{color:var(--arq-color-icon-disabled)}.zone:has(.native:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}", vr = ".pdf,.dwg,.jpg,.jpeg,.png", yr = 10, br = {
 	type: "El formato no está admitido.",
 	size: (e) => `El archivo supera los ${e} MB.`
 };
-function Sr(e) {
+function xr(e) {
 	let t = [...new Set(e.split(",").map((e) => e.trim().replace(/^\./, "").toUpperCase()).filter(Boolean).map((e) => e === "JPEG" ? "JPG" : e))];
 	return t.length > 1 ? `${t.slice(0, -1).join(", ")} o ${t.at(-1)}` : t.join("");
 }
 (class extends f {
 	static tag = "arq-file-upload";
-	static styles = vr;
+	static styles = _r;
 	static formAssociated = !0;
 	static properties = {
 		accept: {
 			type: String,
-			default: yr
+			default: vr
 		},
 		maxSize: {
 			type: Number,
-			default: br
+			default: yr
 		},
 		name: { type: String },
 		required: { type: Boolean },
@@ -3935,8 +3965,8 @@ function Sr(e) {
 		this.#s(e, ""), this.emit("change", { file: e });
 	}
 	#o(e) {
-		let t = this.accept.split(",").map((e) => e.trim().toLowerCase()).filter(Boolean), n = `.${e.name.split(".").pop()?.toLowerCase()}`, r = t.length ? ` Formatos: ${Sr(this.accept)}.` : "";
-		return t.length && !t.includes(n) ? xr.type + r : this.maxSize && e.size > this.maxSize * 1024 * 1024 ? xr.size(this.maxSize) + r : "";
+		let t = this.accept.split(",").map((e) => e.trim().toLowerCase()).filter(Boolean), n = `.${e.name.split(".").pop()?.toLowerCase()}`, r = t.length ? ` Formatos: ${xr(this.accept)}.` : "";
+		return t.length && !t.includes(n) ? br.type + r : this.maxSize && e.size > this.maxSize * 1024 * 1024 ? br.size(this.maxSize) + r : "";
 	}
 	#s(e, t) {
 		this.#n = e, this.#r = t, this.#e.setFormValue(e), this.required && !e ? this.#e.setValidity({ valueMissing: !0 }, "Adjuntá un archivo.", this.#t) : this.#e.setValidity({}), this.#l();
@@ -3953,10 +3983,10 @@ function Sr(e) {
 }).define();
 //#endregion
 //#region src/components/section-header/section-header.css?inline
-var Cr = ":host{min-width:0;display:block}.header{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-lg);min-width:0;display:flex}.text{gap:var(--arq-space-gap-sm-md);flex-direction:column;min-width:0;display:flex}.title,.description{overflow-wrap:break-word;margin:0}.title{color:var(--arq-color-text-primary)}.description{color:var(--arq-color-text-secondary)}.link{flex:none}:host([type=description]) .text{display:contents}:host([type=description]) .description{flex:0 1 var(--arq-layout-measure);max-width:var(--arq-layout-measure)}:host([type=stacked]) .header{flex-direction:column;justify-content:flex-start;align-items:flex-start}:host([type=stacked]) .text{align-self:stretch}@media (width<=767px){.header{flex-direction:column;justify-content:flex-start;align-items:flex-start}.text{width:100%}:host([type=description]) .text{display:flex}:host([type=description]) .description{flex:none;max-width:none}:host([type=link]) .link,:host(:not([type])) .link{display:none}}", wr = ["description", "stacked"], Tr = ["link", "stacked"];
+var Sr = ":host{min-width:0;display:block}.header{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-lg);min-width:0;display:flex}.text{gap:var(--arq-space-gap-sm-md);flex-direction:column;min-width:0;display:flex}.title,.description{overflow-wrap:break-word;margin:0}.title{color:var(--arq-color-text-primary)}.description{color:var(--arq-color-text-secondary)}.link{flex:none}:host([type=description]) .text{display:contents}:host([type=description]) .description{flex:0 1 var(--arq-layout-measure);max-width:var(--arq-layout-measure)}:host([type=stacked]) .header{flex-direction:column;justify-content:flex-start;align-items:flex-start}:host([type=stacked]) .text{align-self:stretch}@media (width<=767px){.header{flex-direction:column;justify-content:flex-start;align-items:flex-start}.text{width:100%}:host([type=description]) .text{display:flex}:host([type=description]) .description{flex:none;max-width:none}:host([type=link]) .link,:host(:not([type])) .link{display:none}}", Cr = ["description", "stacked"], wr = ["link", "stacked"];
 (class extends f {
 	static tag = "arq-section-header";
-	static styles = Cr;
+	static styles = Sr;
 	static properties = {
 		type: {
 			type: String,
@@ -3976,17 +4006,17 @@ var Cr = ":host{min-width:0;display:block}.header{justify-content:space-between;
 	}
 	update() {
 		let e = this.shadowRoot, t = e.querySelector("slot[name=\"description\"]").assignedNodes({ flatten: !0 }).some((e) => e.textContent.trim());
-		e.querySelector(".description").hidden = !wr.includes(this.type) || !t;
-		let n = e.querySelector(".link"), r = Tr.includes(this.type) && !!this.href;
+		e.querySelector(".description").hidden = !Cr.includes(this.type) || !t;
+		let n = e.querySelector(".link"), r = wr.includes(this.type) && !!this.href;
 		n.hidden = !r, r ? n.setAttribute("href", this.href) : n.removeAttribute("href");
 	}
 }).define();
 //#endregion
 //#region src/components/page-header/page-header.css?inline
-var Er = ":host{min-width:0;display:block}.header{align-items:flex-start;gap:var(--arq-space-gap-xl-2xl);padding:var(--arq-space-section-sm) var(--page-gutter) var(--arq-space-section-xs);flex-direction:column;display:flex}.row{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-lg);align-self:stretch;min-width:0;display:flex}.main,.heading{flex-direction:column;min-width:0;display:flex}.heading{gap:var(--arq-space-gap-lg)}.title,.description{overflow-wrap:break-word;margin:0}.title{color:var(--arq-color-text-primary)}.description{color:var(--arq-color-text-secondary)}.action{flex:none}:host(:not([type=detail])) .main{display:contents}:host(:not([type=detail])) .description{flex:0 1 var(--arq-layout-measure);max-width:var(--arq-layout-measure)}:host([type=detail]) .header{padding-block:var(--arq-space-section-xs) var(--arq-space-section-sm)}:host([type=detail]) .main{gap:var(--arq-space-gap-md)}:host([type=detail]) .description{max-width:var(--arq-layout-measure-wide)}@media (width<=767px){.row{align-items:stretch;gap:var(--arq-space-gap-lg);flex-direction:column}:host(:not([type=detail])) .main{gap:var(--arq-space-gap-lg);display:flex}:host(:not([type=detail])) .description,:host([type=detail]) .main{flex:none;max-width:none}:host([type=detail]) .row{gap:var(--arq-space-gap-xl-2xl)}.action ::slotted(*){width:100%}}";
+var Tr = ":host{min-width:0;display:block}.header{align-items:flex-start;gap:var(--arq-space-gap-xl-2xl);padding:var(--arq-space-section-sm) var(--page-gutter) var(--arq-space-section-xs);flex-direction:column;display:flex}.row{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-lg);align-self:stretch;min-width:0;display:flex}.main,.heading{flex-direction:column;min-width:0;display:flex}.heading{gap:var(--arq-space-gap-lg)}.title,.description{overflow-wrap:break-word;margin:0}.title{color:var(--arq-color-text-primary)}.description{color:var(--arq-color-text-secondary)}.action{flex:none}:host(:not([type=detail])) .main{display:contents}:host(:not([type=detail])) .description{flex:0 1 var(--arq-layout-measure);max-width:var(--arq-layout-measure)}:host([type=detail]) .header{padding-block:var(--arq-space-section-xs) var(--arq-space-section-sm)}:host([type=detail]) .main{gap:var(--arq-space-gap-md)}:host([type=detail]) .description{max-width:var(--arq-layout-measure-wide)}@media (width<=767px){.row{align-items:stretch;gap:var(--arq-space-gap-lg);flex-direction:column}:host(:not([type=detail])) .main{gap:var(--arq-space-gap-lg);display:flex}:host(:not([type=detail])) .description,:host([type=detail]) .main{flex:none;max-width:none}:host([type=detail]) .row{gap:var(--arq-space-gap-xl-2xl)}.action ::slotted(*){width:100%}}";
 (class extends f {
 	static tag = "arq-page-header";
-	static styles = Er;
+	static styles = Tr;
 	static properties = {
 		type: {
 			type: String,
@@ -4012,10 +4042,10 @@ var Er = ":host{min-width:0;display:block}.header{align-items:flex-start;gap:var
 }).define();
 //#endregion
 //#region src/components/faq-item/faq-item.css?inline
-var Dr = ":host{min-width:0;display:block}.item{border-top:var(--arq-border-default) solid var(--arq-color-border-default)}.trigger{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-lg);width:100%;padding:var(--arq-space-padding-lg) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .trigger{padding-bottom:var(--arq-space-gap-sm-md)}.question{overflow-wrap:break-word;flex:1 1 0;min-width:0}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.answer{max-width:var(--arq-layout-measure-wide);padding-bottom:var(--arq-space-padding-lg);color:var(--arq-color-text-secondary);overflow-wrap:break-word}::slotted(a){color:var(--arq-color-text-primary);text-decoration:underline}@media (hover:hover){:host(:not([open])) .trigger:hover{background:var(--arq-color-surface-faint)}}.item:has(.trigger:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus{outline:none}@media (width<=767px){.answer{max-width:none}}";
+var Er = ":host{min-width:0;display:block}.item{border-top:var(--arq-border-default) solid var(--arq-color-border-default)}.trigger{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-lg);width:100%;padding:var(--arq-space-padding-lg) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .trigger{padding-bottom:var(--arq-space-gap-sm-md)}.question{overflow-wrap:break-word;flex:1 1 0;min-width:0}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.answer{max-width:var(--arq-layout-measure-wide);padding-bottom:var(--arq-space-padding-lg);color:var(--arq-color-text-secondary);overflow-wrap:break-word}::slotted(a){color:var(--arq-color-text-primary);text-decoration:underline}@media (hover:hover){:host(:not([open])) .trigger:hover{background:var(--arq-color-surface-faint)}}.item:has(.trigger:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus{outline:none}@media (width<=767px){.answer{max-width:none}}";
 (class extends f {
 	static tag = "arq-faq-item";
-	static styles = Dr;
+	static styles = Er;
 	static properties = { open: { type: Boolean } };
 	static template = `<div class="item"><button type="button" class="trigger"><span class="question role-body-lg-regular"><slot name="question"></slot></span>${p("plus")}${p("minus")}</button><div class="answer role-body" part="panel"><slot></slot></div></div>`;
 	setup() {
@@ -4027,15 +4057,15 @@ var Dr = ":host{min-width:0;display:block}.item{border-top:var(--arq-border-defa
 }).define();
 //#endregion
 //#region src/components/footer/footer.css?inline
-var Or = ":host{display:block}.footer{column-gap:var(--arq-space-gap-xl);row-gap:var(--arq-space-gap-md);padding:var(--arq-space-section-sm) var(--page-gutter);border-top:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-default);grid-template:\"brand columns\"\"legal columns\"1fr/minmax(0,1fr) auto;display:grid}.brand{align-items:flex-start;gap:var(--arq-space-gap-md);flex-direction:column;grid-area:brand;min-width:0;display:flex}.tagline{color:var(--arq-color-text-secondary);overflow-wrap:break-word;margin:0}.legal{color:var(--arq-color-text-tertiary);text-transform:uppercase;grid-area:legal;align-self:start;margin:0}.columns{align-items:flex-start;gap:var(--arq-space-gap-xl);grid-area:columns;display:flex}.column{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;min-width:0;display:flex}.title{padding-bottom:var(--arq-space-gap-sm);color:var(--arq-color-text-primary);margin:0}.list{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;max-width:100%;display:flex}@media (width<=767px){.footer{row-gap:var(--arq-space-gap-xl);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"brand\"\"columns\"\"legal\"}.column{flex:1 1 0}}", kr = [
+var Dr = ":host{display:block}.footer{column-gap:var(--arq-space-gap-xl);row-gap:var(--arq-space-gap-md);padding:var(--arq-space-section-sm) var(--page-gutter);border-top:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-default);grid-template:\"brand columns\"\"legal columns\"1fr/minmax(0,1fr) auto;display:grid}.brand{align-items:flex-start;gap:var(--arq-space-gap-md);flex-direction:column;grid-area:brand;min-width:0;display:flex}.tagline{color:var(--arq-color-text-secondary);overflow-wrap:break-word;margin:0}.legal{color:var(--arq-color-text-tertiary);text-transform:uppercase;grid-area:legal;align-self:start;margin:0}.columns{align-items:flex-start;gap:var(--arq-space-gap-xl);grid-area:columns;display:flex}.column{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;min-width:0;display:flex}.title{padding-bottom:var(--arq-space-gap-sm);color:var(--arq-color-text-primary);margin:0}.list{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;max-width:100%;display:flex}@media (width<=767px){.footer{row-gap:var(--arq-space-gap-xl);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"brand\"\"columns\"\"legal\"}.column{flex:1 1 0}}", Or = [
 	"productos",
 	"informacion",
 	"redes"
 ];
 (class extends f {
 	static tag = "arq-footer";
-	static styles = Or;
-	static template = "<footer class=\"footer\"><div class=\"brand\"><arq-logo size=\"compact\"></arq-logo><p class=\"tagline role-body\"><slot name=\"tagline\"></slot></p></div><div class=\"columns\">" + kr.map((e) => `<nav class="column" data-column="${e}"><div class="title role-body-strong"><slot name="${e}-title"></slot></div><div class="list" role="list"><slot name="${e}"></slot></div></nav>`).join("") + "</div><p class=\"legal role-body-sm\">© <span class=\"year\"></span> Macroled Arq.</p></footer>";
+	static styles = Dr;
+	static template = "<footer class=\"footer\"><div class=\"brand\"><arq-logo size=\"compact\"></arq-logo><p class=\"tagline role-body\"><slot name=\"tagline\"></slot></p></div><div class=\"columns\">" + Or.map((e) => `<nav class="column" data-column="${e}"><div class="title role-body-strong"><slot name="${e}-title"></slot></div><div class="list" role="list"><slot name="${e}"></slot></div></nav>`).join("") + "</div><p class=\"legal role-body-sm\">© <span class=\"year\"></span> Macroled Arq.</p></footer>";
 	setup() {
 		let e = this.shadowRoot;
 		e.querySelector(".year").textContent = String((/* @__PURE__ */ new Date()).getFullYear());
@@ -4043,7 +4073,7 @@ var Or = ":host{display:block}.footer{column-gap:var(--arq-space-gap-xl);row-gap
 			e.querySelector(".tagline").hidden = !t.assignedNodes({ flatten: !0 }).some((e) => e.textContent.trim());
 		};
 		t.addEventListener("slotchange", n), n();
-		for (let t of kr) {
+		for (let t of Or) {
 			let n = e.querySelector(`[data-column="${t}"]`), r = e.querySelector(`slot[name="${t}-title"]`), i = () => {
 				let e = r.assignedNodes({ flatten: !0 }).map((e) => e.textContent).join(" ").trim();
 				e ? n.setAttribute("aria-label", e) : n.removeAttribute("aria-label");
@@ -4054,14 +4084,14 @@ var Or = ":host{display:block}.footer{column-gap:var(--arq-space-gap-xl);row-gap
 }).define();
 //#endregion
 //#region src/components/hero/hero.css?inline
-var Ar = ":host{display:block}.hero{background:var(--arq-color-surface-inverse);flex-direction:column;justify-content:flex-end;height:70svh;display:flex;position:relative;overflow:hidden}.media{position:absolute;inset:0}::slotted([slot=media]){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}.scrim{background:linear-gradient(#00000085 0%,#0003 18% 45%,#000000ad 100%);position:absolute;inset:0}.content{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-xl);padding:0 var(--page-gutter) var(--arq-space-section-sm);color:var(--arq-color-text-inverse);display:flex;position:relative}.text{align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column;min-width:0;display:flex}.eyebrow,.title,.description{overflow-wrap:break-word;margin:0}.action{flex:none}@media (width<=767px){.content{justify-content:flex-start;align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column}}:host([full-height]) .hero{height:100svh}", jr = [
+var kr = ":host{display:block}.hero{background:var(--arq-color-surface-inverse);flex-direction:column;justify-content:flex-end;height:70svh;display:flex;position:relative;overflow:hidden}.media{position:absolute;inset:0}::slotted([slot=media]){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}.scrim{background:linear-gradient(#00000085 0%,#0003 18% 45%,#000000ad 100%);position:absolute;inset:0}.content{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-xl);padding:0 var(--page-gutter) var(--arq-space-section-sm);color:var(--arq-color-text-inverse);display:flex;position:relative}.text{align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column;min-width:0;display:flex}.eyebrow,.title,.description{overflow-wrap:break-word;margin:0}.action{flex:none}@media (width<=767px){.content{justify-content:flex-start;align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column}}:host([full-height]) .hero{height:100svh}", Ar = [
 	"eyebrow",
 	"description",
 	"action"
 ];
 (class extends f {
 	static tag = "arq-hero";
-	static styles = Ar;
+	static styles = kr;
 	static properties = { fullHeight: { type: Boolean } };
 	static template = "<div class=\"hero\"><div class=\"media\"><slot name=\"media\"></slot></div><div class=\"scrim\" aria-hidden=\"true\"></div><div class=\"content\"><div class=\"text\"><p class=\"eyebrow role-label\" hidden><slot name=\"eyebrow\"></slot></p><div class=\"title role-display\"><slot name=\"title\"></slot></div><p class=\"description role-body-lg\" hidden><slot name=\"description\"></slot></p></div><div class=\"action\" data-arq-theme=\"dark\" hidden><slot name=\"action\"></slot></div></div></div>";
 	#e = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -4071,7 +4101,7 @@ var Ar = ":host{display:block}.hero{background:var(--arq-color-surface-inverse);
 	}
 	update() {
 		let e = this.shadowRoot, t = (t) => e.querySelector(`slot[name="${t}"]`).assignedNodes({ flatten: !0 }).some((e) => e.nodeType === Node.ELEMENT_NODE || e.textContent.trim());
-		for (let n of jr) e.querySelector(`.${n}`).hidden = !t(n);
+		for (let n of Ar) e.querySelector(`.${n}`).hidden = !t(n);
 		this.#n();
 	}
 	#t = /* @__PURE__ */ new WeakSet();
@@ -4087,10 +4117,10 @@ var Ar = ":host{display:block}.hero{background:var(--arq-color-surface-inverse);
 }).define();
 //#endregion
 //#region src/components/cta-block/cta-block.css?inline
-var Mr = ":host{min-width:0;display:block}.block{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-xl);padding:var(--arq-space-section-md) var(--page-gutter);background:var(--arq-color-bg-subtle);display:flex}.text{gap:var(--arq-space-gap-sm-md);flex-direction:column;min-width:0;display:flex}.title{color:var(--arq-color-text-primary);overflow-wrap:break-word}.description{max-width:var(--arq-layout-measure-wide);color:var(--arq-color-text-secondary);overflow-wrap:break-word;margin:0}.action{align-items:center;gap:var(--arq-space-gap-md);flex:none;display:flex}.email{width:var(--arq-layout-measure)}::slotted(arq-input){width:100%;display:block}@media (width<=767px){.block{flex-direction:column;align-items:stretch}.description{max-width:none}.action{align-items:stretch;gap:var(--arq-space-gap-xl);flex-direction:column}.email{width:auto}::slotted(arq-button){width:100%}}";
+var jr = ":host{min-width:0;display:block}.block{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-xl);padding:var(--arq-space-section-md) var(--page-gutter);background:var(--arq-color-bg-subtle);display:flex}.text{gap:var(--arq-space-gap-sm-md);flex-direction:column;min-width:0;display:flex}.title{color:var(--arq-color-text-primary);overflow-wrap:break-word}.description{max-width:var(--arq-layout-measure-wide);color:var(--arq-color-text-secondary);overflow-wrap:break-word;margin:0}.action{align-items:center;gap:var(--arq-space-gap-md);flex:none;display:flex}.email{width:var(--arq-layout-measure)}::slotted(arq-input){width:100%;display:block}@media (width<=767px){.block{flex-direction:column;align-items:stretch}.description{max-width:none}.action{align-items:stretch;gap:var(--arq-space-gap-xl);flex-direction:column}.email{width:auto}::slotted(arq-button){width:100%}}";
 (class extends f {
 	static tag = "arq-cta-block";
-	static styles = Mr;
+	static styles = jr;
 	static properties = { type: {
 		type: String,
 		values: ["button", "newsletter"],
@@ -4116,18 +4146,18 @@ var Mr = ":host{min-width:0;display:block}.block{justify-content:space-between;a
 }).define();
 //#endregion
 //#region src/components/carousel-controls/carousel-controls.css?inline
-var Nr = ":host{display:inline-flex}.controls{align-items:center;gap:var(--arq-space-gap-sm);display:flex}@media (width<=767px){:host{display:none}}", Pr = [
+var Mr = ":host{display:inline-flex}.controls{align-items:center;gap:var(--arq-space-gap-sm);display:flex}@media (width<=767px){:host{display:none}}", Nr = [
 	"start",
 	"middle",
 	"end"
 ];
 (class extends f {
 	static tag = "arq-carousel-controls";
-	static styles = Nr;
+	static styles = Mr;
 	static properties = {
 		position: {
 			type: String,
-			values: Pr,
+			values: Nr,
 			default: "start"
 		},
 		for: { type: String },
@@ -4204,10 +4234,10 @@ var Nr = ":host{display:inline-flex}.controls{align-items:center;gap:var(--arq-s
 }).define();
 //#endregion
 //#region src/components/category-card/category-card.css?inline
-var Fr = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.card-media{aspect-ratio:4/5}.caption{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.name{min-width:0;color:var(--arq-color-text-primary);overflow-wrap:break-word}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}@media (width>=768px){.card-media{max-height:max(50svh, 100svh - var(--arq-space-section-xl) * 2)}}@media (width<=767px){.card{gap:var(--arq-space-gap-md)}}";
+var Pr = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.card-media{aspect-ratio:4/5}.caption{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.name{min-width:0;color:var(--arq-color-text-primary);overflow-wrap:break-word}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}@media (width>=768px){.card-media{max-height:max(50svh, 100svh - var(--arq-space-section-xl) * 2)}}@media (width<=767px){.card{gap:var(--arq-space-gap-md)}}";
 (class extends f {
 	static tag = "arq-category-card";
-	static styles = T + Fr;
+	static styles = C + Pr;
 	static properties = { href: { type: String } };
 	static template = `<div class="card"><div class="card-media"><slot name="image"></slot></div><div class="caption"><a class="card-link name role-heading-3"><slot name="name"></slot></a>${p("arrow-right")}</div></div>`;
 	update(e) {
@@ -4218,18 +4248,18 @@ var Fr = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex
 }).define();
 //#endregion
 //#region src/components/line-card/line-card.css?inline
-var Ir = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.card-media{aspect-ratio:5/4}.content{align-items:flex-start;gap:var(--arq-space-gap-md);padding-top:var(--arq-space-padding-sm);flex-direction:column;display:flex}.label,.description{margin:0}.label{color:var(--arq-color-text-tertiary)}.name{max-width:100%;color:var(--arq-color-text-primary);overflow-wrap:break-word}.description{max-width:var(--arq-layout-measure);color:var(--arq-color-text-secondary);overflow-wrap:break-word}.cta{margin-top:calc(var(--arq-space-gap-sm) + var(--arq-space-gap-md))}@media (width>=768px){.card-media{max-height:max(50svh, 100svh - var(--arq-space-section-xl) * 2 - var(--arq-space-gap-6xl))}}@media (width<=767px){.card-media{aspect-ratio:1}.content{gap:var(--arq-space-gap-sm-md);padding-top:0}.description{max-width:none}.cta{margin-top:calc(var(--arq-space-gap-xs) + var(--arq-space-gap-sm-md))}}", Lr = ["label", "description"];
+var Fr = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.card-media{aspect-ratio:5/4}.content{align-items:flex-start;gap:var(--arq-space-gap-md);padding-top:var(--arq-space-padding-sm);flex-direction:column;display:flex}.label,.description{margin:0}.label{color:var(--arq-color-text-tertiary)}.name{max-width:100%;color:var(--arq-color-text-primary);overflow-wrap:break-word}.description{max-width:var(--arq-layout-measure);color:var(--arq-color-text-secondary);overflow-wrap:break-word}.cta{margin-top:calc(var(--arq-space-gap-sm) + var(--arq-space-gap-md))}@media (width>=768px){.card-media{max-height:max(50svh, 100svh - var(--arq-space-section-xl) * 2 - var(--arq-space-gap-6xl))}}@media (width<=767px){.card-media{aspect-ratio:1}.content{gap:var(--arq-space-gap-sm-md);padding-top:0}.description{max-width:none}.cta{margin-top:calc(var(--arq-space-gap-xs) + var(--arq-space-gap-sm-md))}}", Ir = ["label", "description"];
 (class extends f {
 	static tag = "arq-line-card";
-	static styles = T + Ir;
+	static styles = C + Fr;
 	static properties = { href: { type: String } };
 	static template = "<div class=\"card\"><div class=\"card-media\"><slot name=\"image\"></slot></div><div class=\"content\"><p class=\"label role-label\" hidden><slot name=\"label\"></slot></p><div class=\"name role-heading-1\"><slot name=\"name\"></slot></div><p class=\"description role-body-lg\" hidden><slot name=\"description\"></slot></p><arq-button class=\"cta\" type=\"underline\" show-underline show-icon icon=\"arrow-right\"><slot name=\"action\">Ver colección</slot></arq-button></div></div>";
 	setup() {
-		for (let e of Lr) this.shadowRoot.querySelector(`slot[name="${e}"]`).addEventListener("slotchange", () => this.update(/* @__PURE__ */ new Set()));
+		for (let e of Ir) this.shadowRoot.querySelector(`slot[name="${e}"]`).addEventListener("slotchange", () => this.update(/* @__PURE__ */ new Set()));
 	}
 	update(e) {
 		let t = this.shadowRoot;
-		for (let e of Lr) t.querySelector(`.${e}`).hidden = !t.querySelector(`slot[name="${e}"]`).assignedNodes({ flatten: !0 }).some((e) => e.nodeType === Node.ELEMENT_NODE || e.textContent.trim());
+		for (let e of Ir) t.querySelector(`.${e}`).hidden = !t.querySelector(`slot[name="${e}"]`).assignedNodes({ flatten: !0 }).some((e) => e.nodeType === Node.ELEMENT_NODE || e.textContent.trim());
 		if (e.has("href")) {
 			let e = t.querySelector(".cta");
 			this.href ? e.setAttribute("href", this.href) : e.removeAttribute("href");
@@ -4238,7 +4268,7 @@ var Ir = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex
 }).define();
 //#endregion
 //#region src/components/feature-block/feature-block.css?inline
-var Rr = ":host{min-width:0;display:block}.block{column-gap:var(--arq-space-gap-6xl);grid-template:\"image content\"\"image secondary\"1fr/50% minmax(0,1fr);align-items:start;display:grid}:host([layout=image-right]) .block{grid-template-columns:minmax(0,1fr) 50%;grid-template-areas:\"content image\"\"secondary image\"}.block:has(.secondary[hidden]){grid-template-areas:\"image content\"\"image content\"}:host([layout=image-right]) .block:has(.secondary[hidden]){grid-template-areas:\"content image\"\"content image\"}.media{background:var(--arq-color-bg-subtle);overflow:hidden}.image{aspect-ratio:4/5;grid-area:image}.secondary{aspect-ratio:16/10;margin-top:calc(var(--arq-space-gap-xl) * 2 + var(--arq-space-gap-lg));grid-area:secondary}.media ::slotted(*){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}.content{align-items:flex-start;gap:var(--arq-space-gap-xl);padding-top:var(--arq-space-padding-xl-2xl);flex-direction:column;grid-area:content;display:flex}:host([layout=image-right]) .content{padding-top:var(--arq-space-padding-6xl)}.label,.description{margin:0}.label{color:var(--arq-color-text-tertiary)}.title{max-width:100%;color:var(--arq-color-text-primary);overflow-wrap:break-word}.description{max-width:var(--arq-layout-measure);color:var(--arq-color-text-secondary);overflow-wrap:break-word}@media (width>=768px){.image{width:100%;max-height:max(50svh, 100svh - var(--arq-space-section-xl))}}@media (width<=767px){.block,:host([layout=image-right]) .block{row-gap:var(--arq-space-gap-lg);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"image\"\"content\"\"secondary\"}.block:has(.secondary[hidden]){row-gap:var(--arq-space-gap-lg);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"image\"\"content\"\"secondary\"}:host([layout=image-right]) .block:has(.secondary[hidden]){row-gap:var(--arq-space-gap-lg);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"image\"\"content\"\"secondary\"}.content,:host([layout=image-right]) .content{gap:var(--arq-space-gap-md);padding-top:var(--arq-space-padding-sm)}.secondary{margin-top:0}.description{max-width:none}}", zr = [
+var Lr = ":host{min-width:0;display:block}.block{column-gap:var(--arq-space-gap-6xl);grid-template:\"image content\"\"image secondary\"1fr/50% minmax(0,1fr);align-items:start;display:grid}:host([layout=image-right]) .block{grid-template-columns:minmax(0,1fr) 50%;grid-template-areas:\"content image\"\"secondary image\"}.block:has(.secondary[hidden]){grid-template-areas:\"image content\"\"image content\"}:host([layout=image-right]) .block:has(.secondary[hidden]){grid-template-areas:\"content image\"\"content image\"}.media{background:var(--arq-color-bg-subtle);overflow:hidden}.image{aspect-ratio:4/5;grid-area:image}.secondary{aspect-ratio:16/10;margin-top:calc(var(--arq-space-gap-xl) * 2 + var(--arq-space-gap-lg));grid-area:secondary}.media ::slotted(*){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}.content{align-items:flex-start;gap:var(--arq-space-gap-xl);padding-top:var(--arq-space-padding-xl-2xl);flex-direction:column;grid-area:content;display:flex}:host([layout=image-right]) .content{padding-top:var(--arq-space-padding-6xl)}.label,.description{margin:0}.label{color:var(--arq-color-text-tertiary)}.title{max-width:100%;color:var(--arq-color-text-primary);overflow-wrap:break-word}.description{max-width:var(--arq-layout-measure);color:var(--arq-color-text-secondary);overflow-wrap:break-word}@media (width>=768px){.image{width:100%;max-height:max(50svh, 100svh - var(--arq-space-section-xl))}}@media (width<=767px){.block,:host([layout=image-right]) .block{row-gap:var(--arq-space-gap-lg);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"image\"\"content\"\"secondary\"}.block:has(.secondary[hidden]){row-gap:var(--arq-space-gap-lg);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"image\"\"content\"\"secondary\"}:host([layout=image-right]) .block:has(.secondary[hidden]){row-gap:var(--arq-space-gap-lg);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"image\"\"content\"\"secondary\"}.content,:host([layout=image-right]) .content{gap:var(--arq-space-gap-md);padding-top:var(--arq-space-padding-sm)}.secondary{margin-top:0}.description{max-width:none}}", Rr = [
 	"label",
 	"description",
 	"action",
@@ -4246,7 +4276,7 @@ var Rr = ":host{min-width:0;display:block}.block{column-gap:var(--arq-space-gap-
 ];
 (class extends f {
 	static tag = "arq-feature-block";
-	static styles = Rr;
+	static styles = Lr;
 	static properties = { layout: {
 		type: String,
 		values: ["image-left", "image-right"],
@@ -4254,23 +4284,23 @@ var Rr = ":host{min-width:0;display:block}.block{column-gap:var(--arq-space-gap-
 	} };
 	static template = "<div class=\"block\"><div class=\"media image\"><slot name=\"image\"></slot></div><div class=\"content\"><p class=\"label role-label\" hidden><slot name=\"label\"></slot></p><div class=\"title role-display-sm\"><slot name=\"title\"></slot></div><p class=\"description role-body-lg\" hidden><slot name=\"description\"></slot></p><div class=\"action\" hidden><slot name=\"action\"></slot></div></div><div class=\"media secondary\" hidden><slot name=\"secondary\"></slot></div></div>";
 	setup() {
-		for (let e of zr) this.shadowRoot.querySelector(`slot[name="${e}"]`).addEventListener("slotchange", () => this.update());
+		for (let e of Rr) this.shadowRoot.querySelector(`slot[name="${e}"]`).addEventListener("slotchange", () => this.update());
 	}
 	update() {
 		let e = this.shadowRoot;
-		for (let t of zr) e.querySelector(`.${t}`).hidden = !e.querySelector(`slot[name="${t}"]`).assignedNodes({ flatten: !0 }).some((e) => e.nodeType === Node.ELEMENT_NODE || e.textContent.trim());
+		for (let t of Rr) e.querySelector(`.${t}`).hidden = !e.querySelector(`slot[name="${t}"]`).assignedNodes({ flatten: !0 }).some((e) => e.nodeType === Node.ELEMENT_NODE || e.textContent.trim());
 	}
 }).define();
 //#endregion
 //#region src/components/section/section.css?inline
-var Br = ":host{--section-gap:var(--arq-space-gap-2xl);box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) var(--arq-space-section-xl);background:var(--arq-color-bg-default);display:block}:host([padding-top]){padding-top:var(--arq-space-section-xl)}.section{gap:var(--section-gap);flex-direction:column;min-width:0;display:flex}.head,.body{min-width:0}.action,.mobile-action{align-self:flex-start}@media (width>=768px){.mobile-action{display:none}:host([layout=split]) .section{grid-template-columns:var(--arq-layout-measure) minmax(0, 1fr);column-gap:var(--arq-space-section-md);row-gap:var(--arq-space-gap-lg);grid-template-rows:auto 1fr;grid-template-areas:\"head body\"\"action body\";align-items:start;display:grid}:host([layout=split]) .head{grid-area:head}:host([layout=split]) .body{grid-area:body}:host([layout=split]) .action{grid-area:action}}@media (width<=767px){:host{--section-gap:var(--arq-space-gap-xl)}}", Vr = [
+var zr = ":host{--section-gap:var(--arq-space-gap-2xl);box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) var(--arq-space-section-xl);background:var(--arq-color-bg-default);display:block}:host([padding-top]){padding-top:var(--arq-space-section-xl)}.section{gap:var(--section-gap);flex-direction:column;min-width:0;display:flex}.head,.body{min-width:0}.action,.mobile-action{align-self:flex-start}@media (width>=768px){.mobile-action{display:none}:host([layout=split]) .section{grid-template-columns:var(--arq-layout-measure) minmax(0, 1fr);column-gap:var(--arq-space-section-md);row-gap:var(--arq-space-gap-lg);grid-template-rows:auto 1fr;grid-template-areas:\"head body\"\"action body\";align-items:start;display:grid}:host([layout=split]) .head{grid-area:head}:host([layout=split]) .body{grid-area:body}:host([layout=split]) .action{grid-area:action}}@media (width<=767px){:host{--section-gap:var(--arq-space-gap-xl)}}", Br = [
 	"header",
 	"action",
 	"mobile-action"
 ];
 (class extends f {
 	static tag = "arq-section";
-	static styles = Br;
+	static styles = zr;
 	static properties = {
 		layout: {
 			type: String,
@@ -4281,7 +4311,7 @@ var Br = ":host{--section-gap:var(--arq-space-gap-2xl);box-sizing:border-box;min
 	};
 	static template = "<div class=\"section\"><div class=\"head\" hidden><slot name=\"header\"></slot></div><div class=\"body\"><slot></slot></div><div class=\"action\" hidden><slot name=\"action\"></slot></div><div class=\"mobile-action\" hidden><slot name=\"mobile-action\"></slot></div></div>";
 	setup() {
-		for (let e of Vr) {
+		for (let e of Br) {
 			let t = this.shadowRoot.querySelector(`slot[name="${e}"]`), n = () => t.parentElement.hidden = t.assignedElements({ flatten: !0 }).length === 0;
 			t.addEventListener("slotchange", n), n();
 		}
@@ -4289,10 +4319,10 @@ var Br = ":host{--section-gap:var(--arq-space-gap-2xl);box-sizing:border-box;min
 }).define();
 //#endregion
 //#region src/components/grid/grid.css?inline
-var Hr = ":host{min-width:0;display:block}.grid{--card-min:var(--arq-layout-card-min);grid-template-columns:repeat(var(--columns,1), minmax(0, 1fr));gap:var(--arq-space-gap-lg);align-items:start;display:grid}.grid.auto{grid-template-columns:repeat(auto-fill, minmax(var(--card-min), 1fr));gap:var(--arq-space-gap-2xl) var(--arq-space-gap-lg)}@media (width>=1600px){.grid.auto{--card-min:var(--arq-layout-card-min-wide)}}::slotted(*){min-width:0}@media (width<=767px){.grid.auto{gap:var(--arq-space-gap-xl) var(--arq-space-gap-md)}.grid:not(.auto){gap:var(--arq-space-section-md);grid-template-columns:minmax(0,1fr)}:host([mobile=two-columns]) .grid{gap:var(--arq-space-gap-sm-md);grid-template-columns:repeat(2,minmax(0,1fr))}:host([mobile=carousel]){overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;margin-block:calc(var(--arq-space-gap-xs) * -1);margin-inline:calc(var(--arq-space-gap-xs) * -1) calc(var(--arq-layout-gutter) * -1);padding-block:var(--arq-space-gap-xs);padding-inline-start:var(--arq-space-gap-xs);scroll-padding-inline-start:var(--arq-space-gap-xs);overflow-x:auto;container-type:inline-size}:host([mobile=carousel])::-webkit-scrollbar{display:none}:host([mobile=carousel]) .grid{gap:var(--arq-space-gap-sm-md);width:max-content;padding-inline-end:var(--arq-layout-gutter);display:flex}:host([mobile=carousel]) ::slotted(*){width:calc((100cqi - var(--arq-layout-gutter)) * .8);scroll-snap-align:start;flex:none}}";
+var Vr = ":host{min-width:0;display:block}.grid{--card-min:var(--arq-layout-card-min);grid-template-columns:repeat(var(--columns,1), minmax(0, 1fr));gap:var(--arq-space-gap-lg);align-items:start;display:grid}.grid.auto{grid-template-columns:repeat(auto-fill, minmax(var(--card-min), 1fr));gap:var(--arq-space-gap-2xl) var(--arq-space-gap-lg)}@media (width>=1600px){.grid.auto{--card-min:var(--arq-layout-card-min-wide)}}::slotted(*){min-width:0}@media (width<=767px){.grid.auto{gap:var(--arq-space-gap-xl) var(--arq-space-gap-md)}.grid:not(.auto){gap:var(--arq-space-section-md);grid-template-columns:minmax(0,1fr)}:host([mobile=two-columns]) .grid{gap:var(--arq-space-gap-sm-md);grid-template-columns:repeat(2,minmax(0,1fr))}:host([mobile=carousel]){overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;margin-block:calc(var(--arq-space-gap-xs) * -1);margin-inline:calc(var(--arq-space-gap-xs) * -1) calc(var(--arq-layout-gutter) * -1);padding-block:var(--arq-space-gap-xs);padding-inline-start:var(--arq-space-gap-xs);scroll-padding-inline-start:var(--arq-space-gap-xs);overflow-x:auto;container-type:inline-size}:host([mobile=carousel])::-webkit-scrollbar{display:none}:host([mobile=carousel]) .grid{gap:var(--arq-space-gap-sm-md);width:max-content;padding-inline-end:var(--arq-layout-gutter);display:flex}:host([mobile=carousel]) ::slotted(*){width:calc((100cqi - var(--arq-layout-gutter)) * .8);scroll-snap-align:start;flex:none}}";
 (class extends f {
 	static tag = "arq-grid";
-	static styles = Hr;
+	static styles = Vr;
 	static properties = {
 		columns: { type: Number },
 		mobile: {
@@ -4313,18 +4343,18 @@ var Hr = ":host{min-width:0;display:block}.grid{--card-min:var(--arq-layout-card
 }).define();
 //#endregion
 //#region src/components/project-mosaic/project-mosaic.css?inline
-var Ur = ":host{min-width:0;display:block}.mosaic{gap:var(--arq-space-gap-lg);grid-template-rows:1fr 1fr;grid-template-columns:repeat(4,minmax(0,1fr));display:grid}::slotted(img){background:var(--arq-color-bg-subtle);min-width:0;box-sizing:border-box!important;object-fit:cover!important;width:100%!important;max-width:none!important;height:100%!important;display:block!important}::slotted(img:first-child){contain:size;grid-area:1/1/span 2/span 2}::slotted(img:nth-child(2)){contain:size;grid-area:1/3/auto/span 2}::slotted(img:nth-child(3)),::slotted(img:nth-child(4)){aspect-ratio:1;grid-row:2;height:auto!important;max-height:calc((max(50svh, 100svh - var(--arq-space-section-xl) * 2) - var(--arq-space-gap-lg)) / 2)!important}::slotted(img:nth-child(n+5)){display:none!important}@media (width<=767px){.mosaic{gap:var(--arq-space-gap-sm-md);grid-template-rows:none;grid-template-columns:repeat(2,minmax(0,1fr))}::slotted(img){aspect-ratio:4/5;contain:none;height:auto!important}::slotted(img:first-child){contain:none;grid-area:auto/1/auto/-1}::slotted(img:nth-child(2)),::slotted(img:nth-child(3)){aspect-ratio:4/5;contain:none;grid-area:auto;max-height:none!important}::slotted(img:nth-child(4)){display:none!important}}";
+var Hr = ":host{min-width:0;display:block}.mosaic{gap:var(--arq-space-gap-lg);grid-template-rows:1fr 1fr;grid-template-columns:repeat(4,minmax(0,1fr));display:grid}::slotted(img){background:var(--arq-color-bg-subtle);min-width:0;box-sizing:border-box!important;object-fit:cover!important;width:100%!important;max-width:none!important;height:100%!important;display:block!important}::slotted(img:first-child){contain:size;grid-area:1/1/span 2/span 2}::slotted(img:nth-child(2)){contain:size;grid-area:1/3/auto/span 2}::slotted(img:nth-child(3)),::slotted(img:nth-child(4)){aspect-ratio:1;grid-row:2;height:auto!important;max-height:calc((max(50svh, 100svh - var(--arq-space-section-xl) * 2) - var(--arq-space-gap-lg)) / 2)!important}::slotted(img:nth-child(n+5)){display:none!important}@media (width<=767px){.mosaic{gap:var(--arq-space-gap-sm-md);grid-template-rows:none;grid-template-columns:repeat(2,minmax(0,1fr))}::slotted(img){aspect-ratio:4/5;contain:none;height:auto!important}::slotted(img:first-child){contain:none;grid-area:auto/1/auto/-1}::slotted(img:nth-child(2)),::slotted(img:nth-child(3)){aspect-ratio:4/5;contain:none;grid-area:auto;max-height:none!important}::slotted(img:nth-child(4)){display:none!important}}";
 (class extends f {
 	static tag = "arq-project-mosaic";
-	static styles = Ur;
+	static styles = Hr;
 	static template = "<div class=\"mosaic\"><slot></slot></div>";
 }).define();
 //#endregion
 //#region src/components/featured-products/featured-products.css?inline
-var Wr = ":host{min-width:0;display:block}.fallback{align-items:flex-start;gap:var(--arq-space-gap-sm);color:var(--arq-color-text-primary);flex-direction:column;display:flex}";
+var Ur = ":host{min-width:0;display:block}.fallback{align-items:flex-start;gap:var(--arq-space-gap-sm);color:var(--arq-color-text-primary);flex-direction:column;display:flex}";
 (class extends f {
 	static tag = "arq-featured-products";
-	static styles = Wr;
+	static styles = Ur;
 	static template = "<arq-grid class=\"grid\" columns=\"4\" mobile=\"two-columns\"></arq-grid><div class=\"fallback role-body\" hidden><slot></slot></div>";
 	#e = "";
 	#t = 0;
@@ -4339,7 +4369,7 @@ var Wr = ":host{min-width:0;display:block}.fallback{align-items:flex-start;gap:v
 		this.setAttribute("aria-busy", "true");
 		let r = [];
 		try {
-			r = e.length ? await yn(e) : [];
+			r = e.length ? await xn(e) : [];
 		} catch (e) {
 			console.error("[arq] featured-products: no se pudo cargar el catálogo", e);
 		}
@@ -4362,11 +4392,11 @@ var Wr = ":host{min-width:0;display:block}.fallback{align-items:flex-start;gap:v
 }).define();
 //#endregion
 //#region src/components/catalog-listing/catalog-listing.css?inline
-var Gr = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) var(--arq-space-section-xl);background:var(--arq-color-bg-default);display:block}.layout{gap:var(--arq-space-gap-xl);flex-direction:column;min-width:0;display:flex}.nav{min-width:0}.content{gap:var(--arq-space-gap-xl-2xl);flex-direction:column;min-width:0;display:flex}.status{color:var(--arq-color-text-secondary);margin:0}.status:empty{display:none}@media (width>=1024px){.layout{grid-template-columns:var(--arq-layout-card-min) minmax(0, 1fr);column-gap:var(--arq-space-section-sm);display:grid}.toolbar{z-index:3;background:var(--arq-color-bg-default);position:sticky;top:0}.nav{align-self:start;position:sticky;top:0}.toolbar.nav-visible,.nav.nav-visible{top:calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl))}}@media (width<=767px){.content{gap:var(--arq-space-gap-xl)}}", Kr = {
+var Wr = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) var(--arq-space-section-xl);background:var(--arq-color-bg-default);display:block}.layout{gap:var(--arq-space-gap-xl);flex-direction:column;min-width:0;display:flex}.nav{min-width:0}.content{gap:var(--arq-space-gap-xl-2xl);flex-direction:column;min-width:0;display:flex}.status{color:var(--arq-color-text-secondary);margin:0}.status:empty{display:none}@media (width>=1024px){.layout{grid-template-columns:var(--arq-layout-card-min) minmax(0, 1fr);column-gap:var(--arq-space-section-sm);display:grid}.toolbar{z-index:3;background:var(--arq-color-bg-default);position:sticky;top:0}.nav{align-self:start;position:sticky;top:0}.toolbar.nav-visible,.nav.nav-visible{top:calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl))}}@media (width<=767px){:host(:not([unit=colecciones])) .nav{display:none}.content{gap:var(--arq-space-gap-xl)}}", Gr = {
 	environment: "environment",
 	application: "application",
 	product_type: "productType"
-}, qr = matchMedia("(min-width: 1024px)"), Jr = matchMedia("(min-width: 1920px)"), Yr = {
+}, Kr = matchMedia("(min-width: 1024px)"), qr = matchMedia("(min-width: 1920px)"), Jr = {
 	productos: {
 		loading: "Cargando productos…",
 		empty: "No hay productos con estos filtros.",
@@ -4377,9 +4407,9 @@ var Gr = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 		empty: "No hay colecciones con estos filtros.",
 		error: "No se pudieron cargar las colecciones. Probá de nuevo en unos minutos."
 	}
-}, Xr = class extends f {
+}, Yr = class extends f {
 	static tag = "arq-catalog-listing";
-	static styles = Gr;
+	static styles = Wr;
 	static properties = { unit: {
 		type: String,
 		values: ["productos", "colecciones"],
@@ -4395,15 +4425,15 @@ var Gr = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 	setup() {
 		new URLSearchParams(location.search).get("view") === "colecciones" && (this.unit = "colecciones");
 		let e = this.shadowRoot;
-		this.#e = Zr(), this.#t = new URLSearchParams(location.search).get("q")?.trim() ?? "", this.#c(), window.addEventListener("scroll", this.#s, { passive: !0 }), e.querySelector("slot[name=\"nav\"]").addEventListener("slotchange", () => this.#_());
+		this.#e = Xr(), this.#t = new URLSearchParams(location.search).get("q")?.trim() ?? "", this.#c(), window.addEventListener("scroll", this.#s, { passive: !0 }), e.querySelector("slot[name=\"nav\"]").addEventListener("slotchange", () => this.#_());
 		let t = e.querySelector("arq-filter-panel");
 		t.addEventListener("arq:filters", (e) => this.#d(e.detail.filters)), t.addEventListener("arq:apply", (e) => {
 			this.#n = e.detail.filters, this.#l();
 		});
 		let n = e.querySelector(".grid"), r = () => {
-			n.columns = qr.matches ? Jr.matches ? 4 : 3 : null;
+			n.columns = Kr.matches ? qr.matches ? 4 : 3 : null;
 		};
-		qr.addEventListener("change", r), Jr.addEventListener("change", r), r();
+		Kr.addEventListener("change", r), qr.addEventListener("change", r), r();
 		let i = e.querySelector(".compare");
 		n.addEventListener("arq:compare", (e) => {
 			let t = e.target, n = this.#r.get(t);
@@ -4433,10 +4463,10 @@ var Gr = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 	update(e) {
 		if (!e.has("unit")) return;
 		let t = this.shadowRoot;
-		t.querySelector(".toolbar").unit = this.unit, t.querySelector("arq-filter-panel").unit = this.unit, t.querySelector(".compare").hidden = this.unit !== "productos", this.#t && this.unit === "productos" && this.#v(), this.#l({ rows: !0 });
+		t.querySelector(".toolbar").unit = this.unit, t.querySelector("arq-filter-panel").unit = this.unit, t.querySelector("arq-filter-panel").showCategories = this.unit === "productos", t.querySelector(".compare").hidden = this.unit !== "productos", this.#t && this.unit === "productos" && this.#y(), this.#l({ rows: !0 });
 	}
 	async #l({ rows: e = !1 } = {}) {
-		let t = ++this.#i, n = Yr[this.unit] ?? Yr.productos;
+		let t = ++this.#i, n = Jr[this.unit] ?? Jr.productos;
 		this.setAttribute("aria-busy", "true"), e && this.#f(n.loading);
 		let r = null;
 		try {
@@ -4454,7 +4484,7 @@ var Gr = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 		e && this.#g(r.filters), i.count = r.count, this.#p(r.cards), this.#f(r.count ? "" : this.#t && this.unit === "productos" ? `No hay productos para «${this.#t}».` : n.empty);
 	}
 	#u(e) {
-		return this.unit === "colecciones" ? mn({ filters: e }) : pn({
+		return this.unit === "colecciones" ? gn({ filters: e }) : hn({
 			...this.#e,
 			query: this.#t,
 			filters: e
@@ -4515,44 +4545,53 @@ var Gr = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 		let t = location.pathname + location.search, n = null;
 		for (let r of e.querySelectorAll("arq-catalog-nav-item")) {
 			let e = r.getAttribute("href");
-			r.selected = !!e && Qr(e, t), r.selected && (n ??= r);
+			r.selected = !!e && Zr(e, t), r.selected && (n ??= r);
 		}
-		this.#y(n);
+		this.#b(n), this.#v(e, n);
 		let r = document.querySelector("arq-page-header");
 		r && (r.showDescription = this.unit !== "colecciones");
 	}
-	#v() {
+	#v(e, t) {
+		let n = this.shadowRoot.querySelector("arq-filter-panel"), r = n.querySelector("[slot=\"categories\"]") ?? document.createElement("nav");
+		r.slot = "categories", r.setAttribute("aria-label", "Categorías de productos");
+		let i = t?.closest("arq-catalog-nav-group"), a = [...e.querySelectorAll(":scope > arq-catalog-nav-group")].map((e) => {
+			let t = e.cloneNode(!0);
+			return t.open = e === i, t;
+		});
+		r.replaceChildren(...a), r.isConnected || n.append(r);
+	}
+	#y() {
 		let e = document.querySelector("arq-page-header > [slot=\"title\"]");
 		e && (e.textContent = `Resultados para «${this.#t}»`);
 	}
-	#y(e) {
+	#b(e) {
 		let t = e?.closest("arq-catalog-nav-group"), n = t?.querySelector(":scope > arq-catalog-nav-item"), r = e && e !== n ? e.textContent.trim() : t?.querySelector("[slot=\"label\"]")?.textContent.trim(), i = document.querySelector("arq-page-header > [slot=\"title\"]");
 		r && i && (i.textContent = r);
 	}
 };
-function Zr() {
+function Xr() {
 	let e = new URLSearchParams(location.search), t = {};
-	for (let [n, r] of Object.entries(Kr)) {
+	for (let [n, r] of Object.entries(Gr)) {
 		let i = e.get(n);
 		i && (t[r] = i);
 	}
 	return t;
 }
-function Qr(e, t) {
+function Zr(e, t) {
 	let n = new URL(e, location.href), r = (e) => [...new URLSearchParams(e)].sort().join("&"), i = new URL(t, location.href);
 	return n.pathname.replace(/\/$/, "") === i.pathname.replace(/\/$/, "") && r(n.search) === r(i.search);
 }
-Xr.define();
+Yr.define();
 //#endregion
 //#region src/components/ficha-producto/ficha-producto.css?inline
-var $r = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.page:not([data-ready]) .needs-data{display:none}.hero{padding:0 var(--page-gutter) var(--arq-space-section-xl);background:var(--arq-color-bg-default);color:var(--arq-color-text-primary);flex-direction:column;display:flex}.hero[data-arq-theme=dark]{padding-bottom:var(--arq-space-section-lg)}.hero[data-arq-theme=dark]+.details{padding-top:var(--arq-space-section-md)}.header{align-items:flex-start;gap:var(--arq-space-gap-xl);padding:var(--arq-space-padding-xl) 0 var(--arq-space-padding-xl-2xl);flex-direction:column;min-width:0;display:flex}.title-row{align-items:last baseline;gap:var(--arq-space-gap-md);flex-wrap:wrap;min-width:0;display:flex}.title{overflow-wrap:break-word;min-width:0}.configurator{grid-template-columns:minmax(0, 3fr) minmax(var(--arq-layout-measure), 2fr);column-gap:var(--arq-space-gap-5xl);align-items:stretch;display:grid}.gallery-column{align-items:flex-start;gap:var(--arq-space-gap-sm-md);flex-direction:column;min-width:0;display:flex}.gallery{align-self:stretch}.configurator-column{justify-content:space-between;gap:var(--arq-space-gap-4xl);flex-direction:column;min-width:0;display:flex}.info{gap:var(--arq-space-gap-xl);flex-direction:column;min-width:0;display:flex}.status{color:var(--arq-color-text-secondary);margin:0}.product{align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column;min-width:0;display:flex}.description{max-width:100%;color:var(--arq-color-text-primary);overflow-wrap:break-word}::slotted([slot=description]){font:inherit!important;color:inherit!important;margin:0!important}.options{gap:var(--arq-space-gap-xl-2xl);flex-direction:column;display:flex}.actions{gap:var(--arq-space-gap-md);display:flex}.actions arq-button{flex:auto}.details{grid-template-columns:var(--arq-layout-measure) minmax(0, 1fr);gap:var(--arq-space-gap-3xl);padding:0 var(--page-gutter) var(--arq-space-section-xl);align-items:start;display:grid}.downloads{gap:var(--arq-space-gap-2xl);flex-direction:column;min-width:0;display:flex}.download-buttons{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.accordion{flex-direction:column;min-width:0;display:flex}.accordion arq-accordion-item[open]+arq-accordion-item,.accordion arq-accordion-item+arq-accordion-item[open]{margin-top:var(--arq-space-gap-sm)}.ambient{gap:var(--arq-space-gap-md);margin-bottom:var(--arq-space-section-xl);padding-left:var(--page-gutter);overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none;scroll-padding-inline-start:var(--page-gutter);display:flex;overflow-x:auto}.ambient::-webkit-scrollbar{display:none}.ambient img{aspect-ratio:auto 4/5;object-fit:cover;scroll-snap-align:start;background:var(--arq-color-surface-subtle);flex:none;width:auto;max-width:none;height:70svh;display:block}.story-block{gap:var(--arq-space-gap-2xl);padding:0 var(--page-gutter) var(--arq-space-section-xl);flex-direction:column;display:flex}.story{gap:var(--arq-space-gap-lg);color:var(--arq-color-text-primary);flex-direction:column;display:flex}.story-text{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}::slotted(h2[slot=story-text]),::slotted(h3[slot=story-text]){font-family:var(--arq-font-family-sans)!important;font-weight:var(--arq-font-weight-light)!important;font-size:var(--arq-type-heading-2-size)!important;line-height:var(--arq-type-heading-2-leading)!important;letter-spacing:var(--arq-font-tracking-normal)!important}::slotted(p[slot=story-text]){max-width:var(--arq-layout-measure-wide);font-family:var(--arq-font-family-sans)!important;font-weight:var(--arq-font-weight-light)!important;font-size:var(--arq-type-body-size)!important;line-height:var(--arq-type-body-leading)!important;letter-spacing:var(--arq-font-tracking-normal)!important;color:inherit!important;margin:0!important}.features{gap:var(--arq-space-gap-sm);max-width:var(--arq-layout-measure-wide);flex-direction:column;display:flex}.features-label{margin:0}::slotted(ul){padding:0 0 0 var(--arq-space-padding-lg)!important;font:inherit!important;color:inherit!important;margin:0!important;list-style:outside!important}.family-row{gap:var(--arq-space-gap-sm);grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:end;display:grid}.family{gap:var(--arq-space-gap-md);flex-direction:column;min-width:0;display:flex}.family-label{color:var(--arq-color-text-secondary);margin:0}.description-image{aspect-ratio:16/10;background:var(--arq-color-surface-subtle);grid-column:2}.description-image img{object-fit:cover;width:100%;height:100%;display:block}.cards{gap:var(--arq-space-gap-sm);margin:calc(-1 * var(--arq-space-gap-xs));padding:var(--arq-space-gap-xs);scroll-snap-type:x mandatory;scrollbar-width:none;display:flex;overflow-x:auto}.cards::-webkit-scrollbar{display:none}.cards arq-family-card{width:var(--arq-layout-card-min);scroll-snap-align:start;flex:none}.cards arq-family-card[size=large]{width:var(--arq-layout-card-min-wide)}.glossary{gap:var(--arq-space-gap-md);padding-bottom:var(--arq-space-section-xl);scroll-margin-top:var(--arq-space-gap-4xl);flex-direction:column;display:flex}.glossary-title{padding:0 var(--page-gutter)}::slotted([slot=glossary-title]:focus){outline:none}.inspiration{padding:0 var(--page-gutter) var(--arq-space-section-xl);grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:center;display:grid}.inspiration-text{max-width:var(--arq-layout-measure);color:var(--arq-color-text-primary)}::slotted([slot=inspiration]){font:inherit!important;color:inherit!important;margin:0!important}.inspiration-images{min-width:0;display:flex}.inspiration-images:empty{display:none}.inspiration-images img{aspect-ratio:4/5;object-fit:cover;background:var(--arq-color-surface-subtle);flex:0 50%;min-width:0;display:block}.collection{padding:var(--arq-space-padding-5xl) var(--page-gutter);background:var(--arq-color-bg-default);color:var(--arq-color-text-primary);grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:start;display:grid}.collection-intro{align-items:flex-start;gap:var(--arq-space-gap-md);max-width:var(--arq-layout-measure);flex-direction:column;display:flex}.collection-cards{flex:auto;min-width:0}@media (width<=1023px){.hero{gap:var(--arq-space-gap-2xl)}.header{padding-bottom:0}.configurator{gap:var(--arq-space-gap-2xl);flex-direction:column;display:flex}.details{align-items:stretch;gap:var(--arq-space-gap-2xl);flex-direction:column;display:flex}.inspiration{align-items:stretch;gap:var(--arq-space-gap-xl);flex-direction:column;display:flex}.collection{gap:var(--arq-space-gap-4xl);flex-direction:column;display:flex}}@media (width<=767px){.header{gap:var(--arq-space-gap-2xl)}.title-row{align-items:flex-start;gap:var(--arq-space-gap-xs);flex-direction:column}.actions{flex-direction:column}.actions arq-button{flex:none;width:100%}.downloads{gap:var(--arq-space-gap-xl)}.ambient{gap:var(--arq-space-gap-sm-md)}::slotted(p[slot=story-text]),.features{max-width:none}.family-row{align-items:stretch;gap:var(--arq-space-gap-6xl);flex-direction:column;display:flex}.description-image{order:-1}.inspiration-text{max-width:none}.inspiration-images{flex-direction:column}.inspiration-images img{flex:none;width:100%}}", Z = {
+var Qr = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.page:not([data-ready]) .needs-data{display:none}.hero{padding:0 var(--page-gutter) var(--arq-space-section-xl);background:var(--arq-color-bg-default);color:var(--arq-color-text-primary);flex-direction:column;display:flex}.hero[data-arq-theme=dark]{padding-bottom:var(--arq-space-section-lg)}.hero[data-arq-theme=dark]+.details{padding-top:var(--arq-space-section-md)}.header{align-items:flex-start;gap:var(--arq-space-gap-xl);padding:var(--arq-space-padding-xl) 0 var(--arq-space-padding-xl-2xl);flex-direction:column;min-width:0;display:flex}.title-row{align-items:last baseline;gap:var(--arq-space-gap-md);flex-wrap:wrap;min-width:0;display:flex}.title{overflow-wrap:break-word;min-width:0}.configurator{grid-template-columns:minmax(0, 3fr) minmax(var(--arq-layout-measure), 2fr);column-gap:var(--arq-space-gap-5xl);align-items:stretch;display:grid}.gallery-column{align-items:flex-start;gap:var(--arq-space-gap-sm-md);flex-direction:column;min-width:0;display:flex}.gallery{align-self:stretch}.configurator-column{justify-content:space-between;gap:var(--arq-space-gap-4xl);flex-direction:column;min-width:0;display:flex}.info{gap:var(--arq-space-gap-xl);flex-direction:column;min-width:0;display:flex}.status{color:var(--arq-color-text-secondary);margin:0}.product{align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column;min-width:0;display:flex}.description{max-width:100%;color:var(--arq-color-text-primary);overflow-wrap:break-word}::slotted([slot=description]){font:inherit!important;color:inherit!important;margin:0!important}.options{gap:var(--arq-space-gap-xl-2xl);flex-direction:column;display:flex}.actions{gap:var(--arq-space-gap-md);display:flex}.actions arq-button{flex:auto}.details{grid-template-columns:var(--arq-layout-measure) minmax(0, 1fr);gap:var(--arq-space-gap-3xl);padding:0 var(--page-gutter) var(--arq-space-section-xl);align-items:start;display:grid}.downloads{gap:var(--arq-space-gap-2xl);flex-direction:column;min-width:0;display:flex}.download-buttons{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.accordion{flex-direction:column;min-width:0;display:flex}.accordion arq-accordion-item[open]+arq-accordion-item,.accordion arq-accordion-item+arq-accordion-item[open]{margin-top:var(--arq-space-gap-sm)}.ambient{gap:var(--arq-space-gap-md);margin-bottom:var(--arq-space-section-xl);padding-left:var(--page-gutter);overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none;scroll-padding-inline-start:var(--page-gutter);display:flex;overflow-x:auto}.ambient::-webkit-scrollbar{display:none}.ambient img{aspect-ratio:auto 4/5;object-fit:cover;scroll-snap-align:start;background:var(--arq-color-surface-subtle);flex:none;width:auto;max-width:none;height:70svh;display:block}.story-block{gap:var(--arq-space-gap-2xl);padding:0 var(--page-gutter) var(--arq-space-section-xl);flex-direction:column;display:flex}.story{gap:var(--arq-space-gap-lg);color:var(--arq-color-text-primary);flex-direction:column;display:flex}.story-text{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}::slotted(h2[slot=story-text]),::slotted(h3[slot=story-text]){font-family:var(--arq-font-family-sans)!important;font-weight:var(--arq-font-weight-light)!important;font-size:var(--arq-type-heading-2-size)!important;line-height:var(--arq-type-heading-2-leading)!important;letter-spacing:var(--arq-font-tracking-normal)!important}::slotted(p[slot=story-text]){max-width:var(--arq-layout-measure-wide);font-family:var(--arq-font-family-sans)!important;font-weight:var(--arq-font-weight-light)!important;font-size:var(--arq-type-body-size)!important;line-height:var(--arq-type-body-leading)!important;letter-spacing:var(--arq-font-tracking-normal)!important;color:inherit!important;margin:0!important}.features{gap:var(--arq-space-gap-sm);max-width:var(--arq-layout-measure-wide);flex-direction:column;display:flex}.features-label{margin:0}::slotted(ul){padding:0 0 0 var(--arq-space-padding-lg)!important;font:inherit!important;color:inherit!important;margin:0!important;list-style:outside!important}.family-row{gap:var(--arq-space-gap-sm);grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:end;display:grid}.family{gap:var(--arq-space-gap-md);flex-direction:column;min-width:0;display:flex}.family-label{color:var(--arq-color-text-secondary);margin:0}.description-image{aspect-ratio:16/10;background:var(--arq-color-surface-subtle);grid-column:2}.description-image img{object-fit:cover;width:100%;height:100%;display:block}.cards{gap:var(--arq-space-gap-sm);margin:calc(-1 * var(--arq-space-gap-xs));padding:var(--arq-space-gap-xs);scroll-snap-type:x mandatory;scrollbar-width:none;display:flex;overflow-x:auto}.cards::-webkit-scrollbar{display:none}.cards arq-family-card{width:var(--arq-layout-card-min);scroll-snap-align:start;flex:none}.cards arq-family-card[size=large]{width:var(--arq-layout-card-min-wide)}.glossary{gap:var(--arq-space-gap-md);padding-bottom:var(--arq-space-section-xl);scroll-margin-top:var(--arq-space-gap-4xl);flex-direction:column;display:flex}.glossary-title{padding:0 var(--page-gutter)}::slotted([slot=glossary-title]:focus){outline:none}.inspiration{padding:0 var(--page-gutter) var(--arq-space-section-xl);grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:center;display:grid}.inspiration-text{max-width:var(--arq-layout-measure);color:var(--arq-color-text-primary)}::slotted([slot=inspiration]){font:inherit!important;color:inherit!important;margin:0!important}.inspiration-images{min-width:0;display:flex}.inspiration-images:empty{display:none}.inspiration-images img{aspect-ratio:4/5;object-fit:cover;background:var(--arq-color-surface-subtle);flex:0 50%;min-width:0;display:block}.collection{padding:var(--arq-space-padding-5xl) var(--page-gutter);background:var(--arq-color-bg-default);color:var(--arq-color-text-primary);grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:start;display:grid}.collection-intro{align-items:flex-start;gap:var(--arq-space-gap-md);max-width:var(--arq-layout-measure);flex-direction:column;display:flex}.collection-cards{flex:auto;min-width:0}@media (width<=1023px){.hero{gap:var(--arq-space-gap-2xl)}.header{padding-bottom:0}.configurator{gap:var(--arq-space-gap-2xl);flex-direction:column;display:flex}.details{align-items:stretch;gap:var(--arq-space-gap-2xl);flex-direction:column;display:flex}.inspiration{align-items:stretch;gap:var(--arq-space-gap-xl);flex-direction:column;display:flex}.collection{gap:var(--arq-space-gap-4xl);flex-direction:column;display:flex}}@media (width<=767px){.header{gap:var(--arq-space-gap-2xl)}.title-row{align-items:flex-start;gap:var(--arq-space-gap-xs);flex-direction:column}.actions{flex-direction:column}.actions arq-button{flex:none;width:100%}.downloads{gap:var(--arq-space-gap-xl)}.ambient{gap:var(--arq-space-gap-sm-md)}::slotted(p[slot=story-text]),.features{max-width:none}.family-row{align-items:stretch;gap:var(--arq-space-gap-6xl);flex-direction:column;display:flex}.description-image{order:-1}.inspiration-text{max-width:none}.inspiration-images{flex-direction:column}.inspiration-images img{flex:none;width:100%}}", Z = {
 	loading: "Cargando producto…",
 	notFound: "No encontramos este producto.",
 	error: "No se pudo cargar el producto. Probá de nuevo en unos minutos.",
 	datasheet: "Ficha técnica"
-}, ei = () => matchMedia("(prefers-reduced-motion: reduce)").matches, ti = class extends f {
+}, $r = () => matchMedia("(prefers-reduced-motion: reduce)").matches, ei = class extends f {
 	static tag = "arq-ficha-producto";
-	static styles = $r;
+	static styles = Qr;
 	static properties = {};
 	static template = "<div class=\"page\"><div class=\"hero\"><div class=\"header\"><arq-breadcrumb class=\"breadcrumb needs-data\"></arq-breadcrumb><div class=\"title-row\"><div class=\"title role-display\"><slot name=\"title\"></slot></div><arq-button class=\"collection-link needs-data\" type=\"underline\" show-underline show-icon icon=\"arrow-up-right\" hidden></arq-button></div></div><div class=\"configurator\"><div class=\"gallery-column\"><arq-toggle class=\"iluminar needs-data\" show-label>Iluminar</arq-toggle><arq-product-gallery class=\"gallery\"></arq-product-gallery></div><div class=\"configurator-column\"><div class=\"info\"><p class=\"status role-body\" role=\"status\" hidden></p><div class=\"product\"><arq-sku class=\"sku needs-data\"></arq-sku><div class=\"description role-body-regular\"><slot name=\"description\"></slot><span class=\"variant-description\" hidden></span></div></div><div class=\"options needs-data\"></div></div><div class=\"actions needs-data\"><arq-button class=\"datasheet\" show-icon icon=\"arrow-up-right\">Generar ficha técnica</arq-button><arq-button class=\"to-glossary\" type=\"outline\" show-icon icon=\"arrow-up-right\">Ver glosario</arq-button></div></div></div></div><div class=\"details needs-data\"><div class=\"downloads\"><div class=\"downloads-title role-display-sm\"><slot name=\"downloads-title\"></slot></div><div class=\"download-buttons\"></div></div><div class=\"accordion\"></div></div><div class=\"ambient needs-data\" role=\"region\" aria-label=\"Galería de ambiente\" tabindex=\"0\" hidden></div><div class=\"story-block\"><div class=\"story\"><div class=\"story-text\"><slot name=\"story-text\"></slot></div><div class=\"features\" hidden><p class=\"features-label role-body-medium\">Características del producto</p><div class=\"features-list role-body\"><slot name=\"story-list\"></slot></div></div></div><div class=\"family-row needs-data\" hidden><div class=\"family\" hidden><p class=\"family-label role-label\">Otras familias de la colección</p><div class=\"cards family-cards\"></div></div><div class=\"description-image\" hidden><img alt=\"\" loading=\"lazy\"></div></div></div><div class=\"glossary needs-data\"><div class=\"glossary-title role-display-sm\"><slot name=\"glossary-title\"></slot></div><arq-variants-table class=\"table\" downloads=\"downloads-modal\"></arq-variants-table></div><div class=\"inspiration\" hidden><div class=\"inspiration-text role-body-xl\"><slot name=\"inspiration\"></slot></div><div class=\"inspiration-images needs-data\"></div></div><div class=\"collection needs-data\" data-arq-theme=\"dark\" hidden><div class=\"collection-intro\"><div class=\"collection-title role-heading-2\"><slot name=\"collection-title\"></slot></div><arq-button class=\"collection-link\" type=\"underline\" show-underline show-icon icon=\"arrow-up-right\"></arq-button></div><div class=\"cards collection-cards\"></div></div></div><arq-download-modal id=\"downloads-modal\"><slot name=\"modal-title\" slot=\"title\"></slot></arq-download-modal>";
 	#e = null;
@@ -4574,7 +4613,7 @@ var $r = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		this.setAttribute("aria-busy", "true"), this.#i(Z.loading);
 		let t = null, n = !1;
 		try {
-			t = e ? await hn(e) : null;
+			t = e ? await _n(e) : null;
 		} catch (e) {
 			n = !0, console.error("[arq] ficha-producto: no se pudo cargar el catálogo", e);
 		}
@@ -4584,7 +4623,7 @@ var $r = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		}
 		this.#e = t, this.#i("");
 		let r = new URLSearchParams(location.search).get("sku");
-		this.#t = Le(t.variants, t.variantAttributes, r), this.#o(), this.#c(), this.#l(), this.#u(), this.#h(), this.#_(), this.#v(), this.#x(), this.#S(), this.shadowRoot.querySelector(".page").toggleAttribute("data-ready", !0);
+		this.#t = Ie(t.variants, t.variantAttributes, r), this.#o(), this.#c(), this.#l(), this.#u(), this.#h(), this.#_(), this.#v(), this.#x(), this.#S(), this.shadowRoot.querySelector(".page").toggleAttribute("data-ready", !0);
 	}
 	#i(e) {
 		let t = this.shadowRoot.querySelector(".status");
@@ -4600,7 +4639,7 @@ var $r = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 			href: "/arq/productos?view=colecciones"
 		}, {
 			label: t.name,
-			href: B(t.id)
+			href: V(t.id)
 		}] : [{
 			label: "Productos",
 			href: "/arq/productos"
@@ -4612,16 +4651,16 @@ var $r = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 			current: !0,
 			textContent: e.name
 		}));
-		for (let e of n.querySelectorAll(".collection-link")) e.hidden = !t, t && (e.href = B(t.id), e.textContent = `Ver colección ${t.name}`);
+		for (let e of n.querySelectorAll(".collection-link")) e.hidden = !t, t && (e.href = V(t.id), e.textContent = `Ver colección ${t.name}`);
 	}
 	#s(e) {
 		let t = this.shadowRoot.querySelector(".hero");
 		for (let n of [t, ...document.querySelectorAll("arq-navbar")]) e ? n.setAttribute("data-arq-theme", "dark") : n.removeAttribute("data-arq-theme");
-		et();
+		tt();
 	}
 	#c() {
-		let { variants: e, variantAttributes: t } = this.#e, n = y(e, t, this.#t).map(({ attribute: e, options: t }) => {
-			let n = F(e), r = document.createElement("arq-option-group");
+		let { variants: e, variantAttributes: t } = this.#e, n = Le(e, t, this.#t).map(({ attribute: e, options: t }) => {
+			let n = I(e), r = document.createElement("arq-option-group");
 			r.dataset.attribute = e, r.label = n.label;
 			let i = n.control === "swatches", a = i ? document.createElement("arq-swatch-picker") : r;
 			i && (r.type = "swatches", r.append(a));
@@ -4635,15 +4674,15 @@ var $r = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 	}
 	#l() {
 		let { variants: e, variantAttributes: t } = this.#e, n = this.shadowRoot;
-		for (let { attribute: r, options: i } of y(e, t, this.#t)) n.querySelectorAll(`.options [data-attribute="${CSS.escape(r)}"] :is(arq-swatch, arq-option-tile)`).forEach((e, t) => {
+		for (let { attribute: r, options: i } of Le(e, t, this.#t)) n.querySelectorAll(`.options [data-attribute="${CSS.escape(r)}"] :is(arq-swatch, arq-option-tile)`).forEach((e, t) => {
 			e.selected = i[t].selected, e.disabled = i[t].disabled;
 		});
 	}
 	#u({ updateUrl: e = !1 } = {}) {
-		let { group: t, variants: n } = this.#e, r = Ie(n, this.#t) ?? n.find((e) => e.isDefault) ?? n[0];
+		let { group: t, variants: n } = this.#e, r = Fe(n, this.#t) ?? n.find((e) => e.isDefault) ?? n[0];
 		if (!r || r.sku === this.#n) return;
 		this.#n = r.sku;
-		let i = Sn(t, r.sku), a = this.shadowRoot;
+		let i = Tn(t, r.sku), a = this.shadowRoot;
 		a.querySelector(".sku").textContent = i.sku;
 		let o = a.querySelector(".variant-description");
 		if (o.textContent = i.description ?? "", o.hidden = !i.description, a.querySelector("slot[name=\"description\"]").hidden = !!i.description, a.querySelector(".gallery").images = i.images, this.#d(i.sections), this.#f(i.downloads), e) {
@@ -4679,7 +4718,7 @@ var $r = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 	}
 	#m() {
 		this.shadowRoot.querySelector(".glossary").scrollIntoView({
-			behavior: ei() ? "auto" : "smooth",
+			behavior: $r() ? "auto" : "smooth",
 			block: "start"
 		});
 		let e = this.querySelector(":scope > [slot=\"glossary-title\"]");
@@ -4687,7 +4726,7 @@ var $r = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 	}
 	#h() {
 		let { group: e, images: t } = this.#e, n = this.shadowRoot.querySelector(".ambient");
-		n.hidden = !t.ambient.length, n.replaceChildren(...t.ambient.map((t, n) => ni(t, `${e.name}, ambiente ${n + 1}`)));
+		n.hidden = !t.ambient.length, n.replaceChildren(...t.ambient.map((t, n) => ti(t, `${e.name}, ambiente ${n + 1}`)));
 	}
 	#g() {
 		let e = this.shadowRoot, t = this.querySelector(":scope > [slot=\"story\"]");
@@ -4708,7 +4747,7 @@ var $r = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 	}
 	#_() {
 		let { family: e, images: t } = this.#e, n = this.shadowRoot;
-		n.querySelector(".family").hidden = !e.length, n.querySelector(".family-cards").replaceChildren(...e.map((e) => ri(e)));
+		n.querySelector(".family").hidden = !e.length, n.querySelector(".family-cards").replaceChildren(...e.map((e) => ni(e)));
 		let r = n.querySelector(".description-image");
 		r.hidden = !t.description, t.description && (r.querySelector("img").src = t.description), n.querySelector(".family-row").hidden = !e.length && !t.description;
 	}
@@ -4724,7 +4763,7 @@ var $r = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		t.dataset.sku = e;
 		let n = document.createElement("arq-download-item");
 		n.emphasis = "featured", n.textContent = Z.datasheet;
-		let r = Sn(this.#e.group, e).downloads.map((e) => {
+		let r = Tn(this.#e.group, e).downloads.map((e) => {
 			let t = document.createElement("arq-download-item");
 			return t.href = e.href, t.textContent = e.label, t;
 		});
@@ -4737,37 +4776,37 @@ var $r = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 	}
 	#x() {
 		let { group: e, images: t } = this.#e;
-		this.shadowRoot.querySelector(".inspiration-images").replaceChildren(...t.inspiration.map((t, n) => ni(t, `${e.name}, inspiración ${n + 1}`))), this.#b();
+		this.shadowRoot.querySelector(".inspiration-images").replaceChildren(...t.inspiration.map((t, n) => ti(t, `${e.name}, inspiración ${n + 1}`))), this.#b();
 	}
 	#S() {
 		let { collection: e, family: t } = this.#e, n = this.shadowRoot.querySelector(".collection");
-		n.hidden = !e || !t.length, n.querySelector(".collection-cards").replaceChildren(...t.map((e) => ri(e, "large")));
+		n.hidden = !e || !t.length, n.querySelector(".collection-cards").replaceChildren(...t.map((e) => ni(e, "large")));
 	}
 };
-function ni(e, t) {
+function ti(e, t) {
 	let n = document.createElement("img");
 	return n.src = e, n.alt = t, n.loading = "lazy", n;
 }
-function ri(e, t) {
+function ni(e, t) {
 	let n = document.createElement("arq-family-card");
 	if (n.href = e.href, t && (n.size = t), e.image) {
-		let t = ni(e.image, "");
+		let t = ti(e.image, "");
 		t.slot = "image", n.append(t);
 	}
 	let r = document.createElement("h3");
 	return r.slot = "name", r.textContent = e.name, n.append(r), n;
 }
-ti.define();
+ei.define();
 //#endregion
 //#region src/components/coleccion/coleccion.css?inline
-var ii = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.products{gap:var(--arq-space-gap-xl);padding:0 var(--page-gutter) var(--arq-space-section-xl);flex-direction:column;display:flex}.status{color:var(--arq-color-text-secondary);margin:0}.gallery{padding-bottom:var(--arq-space-section-xl);display:flex}.gallery img{aspect-ratio:1;object-fit:cover;background:var(--arq-color-surface-subtle);flex:1 1 0;min-width:0;display:block}.feature{padding:0 0 var(--arq-space-section-xl) var(--page-gutter);grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:center;display:grid}.feature-text{max-width:var(--arq-layout-measure);padding-right:var(--page-gutter);color:var(--arq-color-text-primary)}::slotted([slot=description]){font:inherit!important;color:inherit!important;margin:0!important}.feature-image{aspect-ratio:5/4;background:var(--arq-color-surface-subtle);grid-column:2}.feature-image img{object-fit:cover;width:100%;height:100%;display:block}.mosaic{gap:var(--arq-space-gap-lg);padding-bottom:var(--arq-space-section-xl);flex-direction:column;display:flex}.controls{padding-right:var(--page-gutter);justify-content:flex-end;display:flex}.track{gap:var(--arq-space-gap-md);padding-left:var(--page-gutter);scroll-snap-type:x mandatory;scrollbar-width:none;scroll-padding-inline-start:var(--page-gutter);display:flex;overflow-x:auto}.track::-webkit-scrollbar{display:none}.track img{object-fit:cover;scroll-snap-align:start;background:var(--arq-color-surface-subtle);flex:none;width:auto;max-width:none;height:70svh;display:block}.track:focus-visible{outline-offset:calc(-1 * var(--arq-border-strong))}@media (width<=767px){.gallery{flex-direction:column}.gallery img{flex:none;width:100%}.feature{align-items:stretch;gap:var(--arq-space-gap-xl);flex-direction:column;padding-left:0;display:flex}.feature-text{max-width:none;padding:0 var(--page-gutter)}.controls{display:none}.track{gap:var(--arq-space-gap-sm-md)}}", Q = {
+var ri = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.products{gap:var(--arq-space-gap-xl);padding:0 var(--page-gutter) var(--arq-space-section-xl);flex-direction:column;display:flex}.status{color:var(--arq-color-text-secondary);margin:0}.gallery{padding-bottom:var(--arq-space-section-xl);display:flex}.gallery img{aspect-ratio:1;object-fit:cover;background:var(--arq-color-surface-subtle);flex:1 1 0;min-width:0;display:block}.feature{padding:0 0 var(--arq-space-section-xl) var(--page-gutter);grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:center;display:grid}.feature-text{max-width:var(--arq-layout-measure);padding-right:var(--page-gutter);color:var(--arq-color-text-primary)}::slotted([slot=description]){font:inherit!important;color:inherit!important;margin:0!important}.feature-image{aspect-ratio:5/4;background:var(--arq-color-surface-subtle);grid-column:2}.feature-image img{object-fit:cover;width:100%;height:100%;display:block}.mosaic{gap:var(--arq-space-gap-lg);padding-bottom:var(--arq-space-section-xl);flex-direction:column;display:flex}.controls{padding-right:var(--page-gutter);justify-content:flex-end;display:flex}.track{gap:var(--arq-space-gap-md);padding-left:var(--page-gutter);scroll-snap-type:x mandatory;scrollbar-width:none;scroll-padding-inline-start:var(--page-gutter);display:flex;overflow-x:auto}.track::-webkit-scrollbar{display:none}.track img{object-fit:cover;scroll-snap-align:start;background:var(--arq-color-surface-subtle);flex:none;width:auto;max-width:none;height:70svh;display:block}.track:focus-visible{outline-offset:calc(-1 * var(--arq-border-strong))}@media (width<=767px){.gallery{flex-direction:column}.gallery img{flex:none;width:100%}.feature{align-items:stretch;gap:var(--arq-space-gap-xl);flex-direction:column;padding-left:0;display:flex}.feature-text{max-width:none;padding:0 var(--page-gutter)}.controls{display:none}.track{gap:var(--arq-space-gap-sm-md)}}", Q = {
 	loading: "Cargando colección…",
 	notFound: "No encontramos esta colección.",
 	empty: "Esta colección todavía no tiene productos.",
 	error: "No se pudo cargar la colección. Probá de nuevo en unos minutos."
-}, ai = class extends f {
+}, ii = class extends f {
 	static tag = "arq-coleccion";
-	static styles = ii;
+	static styles = ri;
 	static properties = {};
 	static template = "<div class=\"products\"><p class=\"status role-body\" role=\"status\" hidden></p><arq-grid class=\"grid\"></arq-grid></div><div class=\"gallery\" hidden></div><div class=\"feature\" hidden><div class=\"feature-text role-body-xl\"><slot name=\"description\"></slot></div><div class=\"feature-image\" hidden><img alt=\"\" loading=\"lazy\"></div></div><div class=\"mosaic\" hidden><div class=\"controls\"><arq-carousel-controls for=\"mosaic-track\" label-prev=\"Fotos anteriores\" label-next=\"Fotos siguientes\"></arq-carousel-controls></div><div class=\"track\" id=\"mosaic-track\" role=\"region\" aria-label=\"Fotos de la colección\" tabindex=\"0\"></div></div>";
 	setup() {
@@ -4778,7 +4817,7 @@ var ii = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		this.setAttribute("aria-busy", "true"), this.#t(Q.loading);
 		let t = null, n = !1;
 		try {
-			t = e ? await Cn(e) : null;
+			t = e ? await En(e) : null;
 		} catch (e) {
 			n = !0, console.error("[arq] coleccion: no se pudo cargar el catálogo", e);
 		}
@@ -4811,25 +4850,25 @@ var ii = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 	}
 	#r({ collection: e, images: t }) {
 		let n = this.shadowRoot, r = n.querySelector(".gallery");
-		r.hidden = !t.gallery.length, r.replaceChildren(...t.gallery.map((t, n) => oi(t, `${e.name}, imagen ${n + 1}`)));
+		r.hidden = !t.gallery.length, r.replaceChildren(...t.gallery.map((t, n) => ai(t, `${e.name}, imagen ${n + 1}`)));
 		let i = n.querySelector(".feature-image");
 		i.hidden = !t.description, t.description && (i.querySelector("img").src = t.description), this.#i();
 		let a = n.querySelector(".mosaic");
-		a.hidden = !t.inspiration.length, n.querySelector(".track").replaceChildren(...t.inspiration.map((t, n) => oi(t, `${e.name}, proyecto ${n + 1}`)));
+		a.hidden = !t.inspiration.length, n.querySelector(".track").replaceChildren(...t.inspiration.map((t, n) => ai(t, `${e.name}, proyecto ${n + 1}`)));
 	}
 	#i() {
 		let e = this.shadowRoot, t = e.querySelector("slot[name=\"description\"]").assignedElements().length > 0;
 		e.querySelector(".feature-text").hidden = !t, e.querySelector(".feature").hidden = !t && e.querySelector(".feature-image").hidden;
 	}
 };
-function oi(e, t) {
+function ai(e, t) {
 	let n = document.createElement("img");
 	return n.src = e, n.alt = t, n.loading = "lazy", n;
 }
-ai.define();
+ii.define();
 //#endregion
 //#region src/components/descargas/descargas.css?inline
-var si = ":host{min-width:0;padding-bottom:var(--arq-space-section-xl);color:var(--arq-color-text-primary);display:block}.status{padding:0 var(--page-gutter);color:var(--arq-color-text-secondary);margin:0}", $ = {
+var oi = ":host{min-width:0;padding-bottom:var(--arq-space-section-xl);color:var(--arq-color-text-primary);display:block}.status{padding:0 var(--page-gutter);color:var(--arq-color-text-secondary);margin:0}", $ = {
 	loading: "Cargando descargas…",
 	empty: "Todavía no hay productos para descargar.",
 	error: "No se pudieron cargar las descargas. Probá de nuevo en unos minutos.",
@@ -4838,7 +4877,7 @@ var si = ":host{min-width:0;padding-bottom:var(--arq-space-section-xl);color:var
 };
 (class extends f {
 	static tag = "arq-descargas";
-	static styles = si;
+	static styles = oi;
 	static properties = {};
 	static template = "<p class=\"status role-body\" role=\"status\" hidden></p><arq-variants-table class=\"table\" downloads=\"downloads-modal\" show-search hidden></arq-variants-table><arq-download-modal id=\"downloads-modal\"><slot name=\"modal-title\" slot=\"title\"></slot></arq-download-modal>";
 	setup() {
@@ -4853,7 +4892,7 @@ var si = ":host{min-width:0;padding-bottom:var(--arq-space-section-xl);color:var
 		this.setAttribute("aria-busy", "true"), this.#t($.loading);
 		let e = null;
 		try {
-			e = await _n();
+			e = await yn();
 		} catch (e) {
 			console.error("[arq] descargas: no se pudo cargar el catálogo", e);
 		}
@@ -4876,7 +4915,7 @@ var si = ":host{min-width:0;padding-bottom:var(--arq-space-section-xl);color:var
 		n.textContent = $.datasheet;
 		for (let e of t.querySelectorAll(":scope > arq-download-item")) e.remove();
 		t.append(n);
-		let r = await vn(e);
+		let r = await bn(e);
 		t.sku === e && t.append(...r.map((e) => {
 			let t = document.createElement("arq-download-item");
 			return t.href = e.href, t.textContent = e.label, t;
@@ -4885,12 +4924,12 @@ var si = ":host{min-width:0;padding-bottom:var(--arq-space-section-xl);color:var
 }).define();
 //#endregion
 //#region src/components/form-contacto/form-contacto.css?inline
-var ci = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.layout{column-gap:var(--arq-space-gap-6xl);padding:var(--arq-space-section-lg) var(--page-gutter) var(--arq-space-section-xl);grid-template-columns:minmax(0,2fr) minmax(0,3fr);align-items:start;display:grid}.info{gap:var(--arq-space-gap-2xl);flex-direction:column;min-width:0;display:flex}.intro{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.title{color:var(--arq-color-text-primary)}.description{color:var(--arq-color-text-secondary)}::slotted([slot=description]){font:inherit!important;color:inherit!important;margin:0!important}.channels{border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);flex-direction:column;display:flex}.form{gap:var(--arq-space-gap-2xl);flex-direction:column;min-width:0;display:flex}.section{gap:var(--arq-space-gap-lg);border:0;flex-direction:column;min-inline-size:0;margin:0;padding:0;display:flex}.section>legend{width:100%;margin-bottom:var(--arq-space-gap-lg);padding:0;display:block}.choices{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.choices.fill>arq-choice-chip{flex:auto}.fields{gap:var(--arq-space-gap-lg);grid-template-columns:minmax(0,1fr) minmax(0,1fr);display:grid}.honeypot{width:var(--arq-border-default);height:var(--arq-border-default);clip-path:inset(50%);white-space:nowrap;position:absolute;overflow:hidden}.submit{justify-content:space-between;align-items:flex-start;gap:var(--arq-space-gap-lg);display:flex}.submit arq-checkbox{flex:none}.send{align-items:flex-end;gap:var(--arq-space-gap-md);text-align:end;flex-direction:column;min-width:0;margin-inline-start:auto;display:flex}@media (width<=767px){.layout{row-gap:var(--arq-space-gap-6xl);grid-template-columns:minmax(0,1fr)}.fields{grid-template-columns:minmax(0,1fr)}.submit{flex-direction:column;align-items:stretch}.send{text-align:start;align-items:stretch;margin-inline-start:0}.send-button{width:100%}}", li = [
+var si = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.layout{column-gap:var(--arq-space-gap-6xl);padding:var(--arq-space-section-lg) var(--page-gutter) var(--arq-space-section-xl);grid-template-columns:minmax(0,2fr) minmax(0,3fr);align-items:start;display:grid}.info{gap:var(--arq-space-gap-2xl);flex-direction:column;min-width:0;display:flex}.intro{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.title{color:var(--arq-color-text-primary)}.description{color:var(--arq-color-text-secondary)}::slotted([slot=description]){font:inherit!important;color:inherit!important;margin:0!important}.channels{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.form{gap:var(--arq-space-gap-2xl);flex-direction:column;min-width:0;display:flex}.section{gap:var(--arq-space-gap-lg);border:0;flex-direction:column;min-inline-size:0;margin:0;padding:0;display:flex}.section>legend{float:left;width:100%;color:var(--arq-color-text-primary);margin:0;padding:0}.choices{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.choices.fill>arq-choice-chip{flex:auto}.fields{gap:var(--arq-space-gap-lg);grid-template-columns:minmax(0,1fr) minmax(0,1fr);display:grid}.honeypot{width:var(--arq-border-default);height:var(--arq-border-default);clip-path:inset(50%);white-space:nowrap;position:absolute;overflow:hidden}.submit{justify-content:space-between;align-items:flex-start;gap:var(--arq-space-gap-lg);display:flex}.submit arq-checkbox{flex:none}.send{align-items:flex-end;gap:var(--arq-space-gap-md);text-align:end;flex-direction:column;min-width:0;margin-inline-start:auto;display:flex}@media (width<=767px){.layout{row-gap:var(--arq-space-gap-6xl);grid-template-columns:minmax(0,1fr)}.fields{grid-template-columns:minmax(0,1fr)}.submit{flex-direction:column;align-items:stretch}.send{text-align:start;align-items:stretch;margin-inline-start:0}.send-button{width:100%}}", ci = [
 	"Asesoramiento lumínico",
 	"Cotización de proyecto",
 	"Consulta técnica",
 	"Garantía"
-], ui = [
+], li = [
 	"Buenos Aires",
 	"Ciudad Autónoma de Buenos Aires",
 	"Catamarca",
@@ -4915,29 +4954,29 @@ var ci = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.l
 	"Santiago del Estero",
 	"Tierra del Fuego",
 	"Tucumán"
-], di = {
+], ui = {
 	nombre: "Completá tu nombre.",
 	email: {
 		valueMissing: "Completá tu email.",
 		typeMismatch: "Revisá el formato del email."
 	},
 	detalles: "Contanos un poco sobre tu proyecto."
-}, fi = {
+}, di = {
 	sent: "Recibimos tu consulta. Te respondemos a la brevedad.",
 	error: "No pudimos enviar tu consulta. Probá de nuevo en unos minutos."
-}, pi = (e) => e.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;"), mi = class extends f {
+}, fi = (e) => e.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;"), pi = class extends f {
 	static tag = "arq-form-contacto";
-	static styles = ci;
+	static styles = si;
 	static properties = {};
-	static template = "<div class=\"layout\"><div class=\"info\"><div class=\"intro\"><div class=\"title role-heading-2\"><slot name=\"title\"></slot></div><div class=\"description role-body-lg\"><slot name=\"description\"></slot></div></div><div class=\"channels\"><slot name=\"channels\"></slot></div><slot name=\"links\"></slot></div><form class=\"form\" novalidate><fieldset class=\"section topics\"><legend><arq-form-section-header number=\"01\" show-number>Tipo de consulta</arq-form-section-header></legend><div class=\"choices\" role=\"radiogroup\" aria-label=\"Tipo de consulta\">" + li.map((e, t) => `<arq-choice-chip name="tipo" value="${pi(e)}"${t ? "" : " selected"}>${pi(e)}</arq-choice-chip>`).join("") + "</div></fieldset><fieldset class=\"section\"><legend><arq-form-section-header number=\"02\" show-number>Tus datos</arq-form-section-header></legend><div class=\"fields\"><arq-input name=\"nombre\" placeholder=\"Tu nombre y apellido\" autocomplete=\"name\" required show-label>Nombre completo</arq-input><arq-input name=\"empresa\" placeholder=\"Nombre del estudio\" autocomplete=\"organization\" show-label>Estudio o empresa</arq-input><arq-input name=\"email\" input-type=\"email\" placeholder=\"nombre@estudio.com\" autocomplete=\"email\" required show-label>Email</arq-input><arq-input name=\"telefono\" input-type=\"tel\" placeholder=\"+54 11 0000-0000\" autocomplete=\"tel\" show-label>Teléfono</arq-input><arq-input name=\"provincia\" type=\"select\" placeholder=\"Seleccioná una provincia\" show-label>Provincia</arq-input><arq-input name=\"ciudad\" placeholder=\"Tu ciudad\" autocomplete=\"address-level2\" show-label>Ciudad</arq-input></div></fieldset><fieldset class=\"section\"><legend><arq-form-section-header number=\"03\" show-number>Tu proyecto</arq-form-section-header></legend><arq-input name=\"detalles\" type=\"textarea\" placeholder=\"Contanos el tipo de espacio, etapa del proyecto y qué necesitás…\" required show-label>Detalles del proyecto</arq-input><arq-file-upload name=\"adjunto\">Planos o imágenes (opcional)<span slot=\"helper\">PDF, DWG, JPG o PNG · hasta 10 MB</span></arq-file-upload></fieldset><div class=\"honeypot\" aria-hidden=\"true\"><label>No completar este campo <input type=\"text\" name=\"website\" tabindex=\"-1\" autocomplete=\"off\"></label></div><div class=\"submit\"><arq-checkbox name=\"novedades\" value=\"si\" show-label>Quiero recibir novedades y lanzamientos</arq-checkbox><div class=\"send\"><arq-button class=\"send-button\" submit show-icon icon=\"arrow-right\">Enviar consulta</arq-button><arq-form-message class=\"message\" hidden></arq-form-message></div></div></form></div>";
+	static template = "<div class=\"layout\"><div class=\"info\"><div class=\"intro\"><div class=\"title role-heading-2\"><slot name=\"title\"></slot></div><div class=\"description role-body-lg\"><slot name=\"description\"></slot></div></div><div class=\"channels\"><slot name=\"channels\"></slot></div><slot name=\"links\"></slot></div><form class=\"form\" novalidate><fieldset class=\"section topics\"><legend class=\"role-heading-3\">Tipo de consulta</legend><div class=\"choices\" role=\"radiogroup\" aria-label=\"Tipo de consulta\">" + ci.map((e, t) => `<arq-choice-chip name="tipo" value="${fi(e)}"${t ? "" : " selected"}>${fi(e)}</arq-choice-chip>`).join("") + "</div></fieldset><fieldset class=\"section\"><legend class=\"role-heading-3\">Tus datos</legend><div class=\"fields\"><arq-input name=\"nombre\" placeholder=\"Tu nombre y apellido\" autocomplete=\"name\" required show-label>Nombre completo</arq-input><arq-input name=\"empresa\" placeholder=\"Nombre del estudio\" autocomplete=\"organization\" show-label>Estudio o empresa</arq-input><arq-input name=\"email\" input-type=\"email\" placeholder=\"nombre@estudio.com\" autocomplete=\"email\" required show-label>Email</arq-input><arq-input name=\"telefono\" input-type=\"tel\" placeholder=\"+54 11 0000-0000\" autocomplete=\"tel\" show-label>Teléfono</arq-input><arq-input name=\"provincia\" type=\"select\" placeholder=\"Seleccioná una provincia\" show-label>Provincia</arq-input><arq-input name=\"ciudad\" placeholder=\"Tu ciudad\" autocomplete=\"address-level2\" show-label>Ciudad</arq-input></div></fieldset><fieldset class=\"section\"><legend class=\"role-heading-3\">Tu proyecto</legend><arq-input name=\"detalles\" type=\"textarea\" placeholder=\"Contanos el tipo de espacio, etapa del proyecto y qué necesitás…\" required show-label>Detalles del proyecto</arq-input><arq-file-upload name=\"adjunto\">Planos o imágenes (opcional)<span slot=\"helper\">PDF, DWG, JPG o PNG · hasta 10 MB</span></arq-file-upload></fieldset><div class=\"honeypot\" aria-hidden=\"true\"><label>No completar este campo <input type=\"text\" name=\"website\" tabindex=\"-1\" autocomplete=\"off\"></label></div><div class=\"submit\"><arq-checkbox name=\"novedades\" value=\"si\" show-label>Quiero recibir novedades y lanzamientos</arq-checkbox><div class=\"send\"><arq-button class=\"send-button\" submit show-icon icon=\"arrow-right\">Enviar consulta</arq-button><arq-form-message class=\"message\" hidden></arq-form-message></div></div></form></div>";
 	#e = !1;
 	setup() {
 		let e = this.shadowRoot, t = e.querySelector(".choices");
-		new q(t, { items: "arq-choice-chip" });
+		new T(t, { items: "arq-choice-chip" });
 		let n = [...t.querySelectorAll("arq-choice-chip")], r = new ResizeObserver(() => t.classList.toggle("fill", n.every((e) => e.offsetTop === n[0].offsetTop)));
 		r.observe(t);
 		for (let e of n) r.observe(e);
-		e.querySelector("[name=\"provincia\"]").options = ui.map((e) => ({ value: e }));
+		e.querySelector("[name=\"provincia\"]").options = li.map((e) => ({ value: e }));
 		let i = e.querySelector("form");
 		i.addEventListener("submit", (e) => {
 			e.preventDefault(), this.#r(i);
@@ -4947,7 +4986,7 @@ var ci = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.l
 	}
 	#t(e) {
 		if (e.checkValidity()) return "";
-		let t = di[e.name];
+		let t = ui[e.name];
 		return typeof t == "string" ? t : e.validity.typeMismatch && t?.typeMismatch || t?.valueMissing || "Revisá este campo.";
 	}
 	#n(e) {
@@ -4968,19 +5007,19 @@ var ci = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.l
 		o.delete("website"), this.emit("submit", { data: o }), i.loading = !0;
 		let c = !1;
 		try {
-			c = s || await hi(o);
+			c = s || await mi(o);
 		} catch (e) {
 			console.error("[arq] form-contacto: no se pudo enviar", e);
 		}
-		if (i.loading = !1, a.tone = c ? "success" : "error", a.textContent = c ? fi.sent : fi.error, a.hidden = !1, c) {
+		if (i.loading = !1, a.tone = c ? "success" : "error", a.textContent = c ? di.sent : di.error, a.hidden = !1, c) {
 			e.reset(), this.#e = !1;
 			for (let e of n) e.removeAttribute("error");
 			this.emit("sent", {});
 		} else this.emit("error", {});
 	}
 };
-async function hi(e) {
-	let t = It.n8n.webhookUrl;
+async function mi(e) {
+	let t = Rt.n8n.webhookUrl;
 	return t ? (await fetch(t, {
 		method: "POST",
 		body: e
@@ -4988,5 +5027,5 @@ async function hi(e) {
 }
 //#endregion
 //#region src/main.js
-mi.define(), window.Arq || (window.Arq = Object.freeze({ version: e }));
+pi.define(), window.Arq || (window.Arq = Object.freeze({ version: e }));
 //#endregion
