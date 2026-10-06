@@ -28,6 +28,8 @@ Listado de Productos (y de Colecciones con `unit="colecciones"`): navegación de
 | slot `nav` | — | un `arq-catalog-nav` con los links de categoría (en el HTML: indexables) |
 | slot `filter-title` | — | el `<h2>` del filter-panel ("Filtrar") |
 
+En Productos Mobile (hasta 767 px), el árbol de navegación aparece en la tab Categorías de Filtrar. Los grupos y enlaces se copian del `arq-catalog-nav` del HTML para conservar sus URLs y la selección actual. Tablet y Desktop mantienen la navegación existente.
+
 ## Comportamiento
 
 - **Categoría:** sale de la URL (`?environment=`, `?application=`, `?product_type=`, como `categoryHref`). Las URLs de categoría siguen PENDIENTES (`docs/urls.md`). El `catalog-nav-item` cuyo `href` es esta misma página queda `selected` (el orden de los parámetros no importa).

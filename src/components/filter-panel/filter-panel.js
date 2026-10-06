@@ -36,6 +36,8 @@ import '../button/button.js';
 import '../icon-button/icon-button.js';
 import '../filter-chip/filter-chip.js';
 import '../filter-row/filter-row.js';
+import '../tab/tab.js';
+import { SingleSelect } from '../../base/single-select.js';
 import css from './filter-panel.css?inline';
 
 const UNITS = { productos: ['producto', 'productos'], colecciones: ['colección', 'colecciones'] };
@@ -47,6 +49,7 @@ class ArqFilterPanel extends ArqElement {
     open: { type: Boolean },
     count: { type: Number }, // resultado para "Ver N productos" (lo calcula la página)
     unit: { type: String, values: ['productos', 'colecciones'], default: 'productos' },
+    showCategories: { type: Boolean }, // Productos Mobile: tabs de características y categorías
   };
   static template =
     `<dialog class="dialog" data-arq-theme="light">` +
@@ -56,7 +59,14 @@ class ArqFilterPanel extends ArqElement {
     `<arq-icon-button icon="close" size="large" class="close">Cerrar filtros</arq-icon-button>` +
     `</div>` +
     `<div class="applied" hidden></div>` +
-    `<div class="body"><slot></slot></div>` +
+    `<div class="tabs" role="tablist" aria-label="Tipo de filtro">` +
+    `<arq-tab value="features" id="features-tab" aria-controls="features-panel" selected>Características</arq-tab>` +
+    `<arq-tab value="categories" id="categories-tab" aria-controls="categories-panel">Categorías</arq-tab>` +
+    `</div>` +
+    `<div class="body">` +
+    `<div class="features-panel" id="features-panel" role="tabpanel" aria-labelledby="features-tab"><slot></slot></div>` +
+    `<div class="categories-panel" id="categories-panel" role="tabpanel" aria-labelledby="categories-tab" hidden><slot name="categories"></slot></div>` +
+    `</div>` +
     `<div class="footer">` +
     `<arq-button type="underline" show-underline class="clear">Borrar todo</arq-button>` +
     `<arq-button class="apply"></arq-button>` +
@@ -75,6 +85,17 @@ class ArqFilterPanel extends ArqElement {
     root.querySelector('.close').addEventListener('click', () => this.close());
     root.querySelector('.clear').addEventListener('click', () => this.clear());
     root.querySelector('.apply').addEventListener('click', () => this.apply());
+    new SingleSelect(root.querySelector('.tabs'), { items: 'arq-tab' });
+    root.querySelector('.tabs').addEventListener('arq:change', (event) => {
+      this.#activateTab(event.detail.value);
+    });
+    this.addEventListener('arq:toggle', (event) => {
+      const group = event.target;
+      if (group.localName !== 'arq-catalog-nav-group' || !event.detail.open || !group.closest('[slot="categories"]')) return;
+      for (const candidate of this.querySelectorAll('[slot="categories"] arq-catalog-nav-group')) {
+        candidate.open = candidate === group;
+      }
+    });
     // Scrim: el clic en el ::backdrop llega al <dialog> (el contenido está en .sheet).
     this.#dialog.addEventListener('click', (event) => {
       if (event.target === this.#dialog) this.close();
@@ -103,6 +124,7 @@ class ArqFilterPanel extends ArqElement {
       if (!this.open && this.#dialog.open) this.#closeDialog();
     }
     if (changed.has('count') || changed.has('unit')) this.#renderApply();
+    if (changed.has('showCategories')) this.#activateTab('features');
   }
 
   /** Checkbox de todas las filas. */
@@ -155,8 +177,21 @@ class ArqFilterPanel extends ArqElement {
 
   #showDialog() {
     this.#snapshot = new Map(this.options.map((option) => [option, option.checked]));
+    this.#activateTab('features');
     this.#render();
     this.#dialog.showModal();
+  }
+
+  #activateTab(value) {
+    const categories = this.showCategories && value === 'categories';
+    const root = this.shadowRoot;
+    root.querySelector('#features-tab').selected = !categories;
+    root.querySelector('#categories-tab').selected = categories;
+    root.querySelector('.features-panel').hidden = categories;
+    root.querySelector('.categories-panel').hidden = !categories;
+    root.querySelector('.summary').hidden = categories || this.#checked().length === 0;
+    root.querySelector('.applied').hidden = categories || this.#checked().length === 0;
+    root.querySelector('.footer').hidden = categories;
   }
 
   #closeDialog() {
@@ -192,10 +227,10 @@ class ArqFilterPanel extends ArqElement {
     const checked = this.#checked();
     const root = this.shadowRoot;
     const summary = root.querySelector('.summary');
-    summary.hidden = checked.length === 0;
+    summary.hidden = checked.length === 0 || root.querySelector('#categories-tab').selected;
     summary.textContent = `${checked.length} ${checked.length === 1 ? 'filtro activo' : 'filtros activos'}`;
     const applied = root.querySelector('.applied');
-    applied.hidden = checked.length === 0;
+    applied.hidden = checked.length === 0 || root.querySelector('#categories-tab').selected;
     // Los chips se reusan para no perder el foco al quitar uno.
     while (applied.children.length > checked.length) applied.lastElementChild.remove();
     while (applied.children.length < checked.length) applied.append(document.createElement('arq-filter-chip'));

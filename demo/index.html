@@ -1033,7 +1033,7 @@
           <arq-button type="outline" data-demo-filter-open="demo-panel-vacio">Filtrar (sin filtros, Colecciones)</arq-button>
         </div>
         <p class="demo-note role-body-sm" data-demo-filter-log="demo-panel-productos">arq:apply → (todavía nada)</p>
-        <arq-filter-panel id="demo-panel-productos">
+        <arq-filter-panel id="demo-panel-productos" show-categories>
           <h2 slot="title">Filtrar</h2>
           <arq-filter-row open>
             <span slot="label">Potencia</span>
@@ -1073,6 +1073,18 @@
           <h2 slot="title">Filtrar</h2>
           <arq-filter-row>
             <span slot="label">Aplicación</span>
+          <nav slot="categories" aria-label="Categorías de productos">
+            <arq-catalog-nav-group>
+              <span slot="label">Interior</span>
+              <arq-catalog-nav-item href="/demo/productos.html?environment=Interior">Todo interior</arq-catalog-nav-item>
+            </arq-catalog-nav-group>
+            <arq-catalog-nav-group open>
+              <span slot="label">Exterior</span>
+              <arq-catalog-nav-item href="/demo/productos.html?environment=Exterior">Todo exterior</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="/demo/productos.html?environment=Exterior&amp;application=Jard%C3%ADn&amp;product_type=Luminaria" selected>Jardín</arq-catalog-nav-item>
+              <arq-catalog-nav-item href="/demo/productos.html?environment=Exterior&amp;application=Pared&amp;product_type=Luminaria">Pared</arq-catalog-nav-item>
+            </arq-catalog-nav-group>
+          </nav>
             <arq-checkbox size="large" show-label name="aplicacion" value="jardin">Jardín</arq-checkbox>
             <arq-checkbox size="large" show-label name="aplicacion" value="pared">Pared</arq-checkbox>
           </arq-filter-row>

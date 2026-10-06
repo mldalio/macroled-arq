@@ -71,6 +71,10 @@
   gap: var(--arq-space-gap-sm);
 }
 
+.tabs {
+  display: none;
+}
+
 /* Filas con scroll propio. El padding space/padding/xs deja lugar al anillo
    de foco de las filas, que el overflow cortaría; el margen lo compensa. */
 .body {
@@ -106,6 +110,18 @@
   .sheet {
     gap: var(--arq-space-gap-xl);
     padding: var(--arq-space-padding-lg) var(--arq-layout-gutter);
+  }
+
+  :host([show-categories]) .tabs {
+    display: flex;
+    flex: none;
+    gap: var(--arq-space-gap-xl);
+    border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+    overflow-x: auto;
+  }
+
+  .categories-panel {
+    min-width: 0;
   }
 
   .footer {

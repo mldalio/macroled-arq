@@ -72,6 +72,10 @@
 }
 
 @media (max-width: 767px) {
+  :host(:not([unit='colecciones'])) .nav {
+    display: none;
+  }
+
   .content {
     gap: var(--arq-space-gap-xl);
   }
