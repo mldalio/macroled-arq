@@ -34,7 +34,7 @@ El HTML del embed completo está en [src/pages/ficha.html](../../pages/ficha.htm
 | slot `modal-title` | `<h2>` del download-modal del glosario |
 
 - Los encabezados van en el HTML de la página (AGENTS.md). Los nombres de las family-card (`<h3>`) los arma el componente con los datos, como las cards de catalog-listing.
-- **Eventos:** `arq:variant { sku }` al mostrar una variante. `arq:datasheet { sku }` al pedir la ficha técnica ("Generar ficha técnica", "Ficha técnica" de Descargas y del modal del glosario).
+- **Eventos:** `arq:variant { sku }` al mostrar una variante. `arq:datasheet { sku }` al pedir la ficha técnica ("Generar ficha técnica", "Ficha técnica" de Descargas y del modal del glosario). Mientras se arma el PDF, el botón que se tocó queda en State=Loading con "Generando…" (Filled o Outline).
 
 ## Comportamiento
 
@@ -70,7 +70,7 @@ Tablet (768–1023 px) usa la columna Desktop salvo en los bloques marcados: ah�
 ## Pendientes
 
 - `TODO` (diseño) Medidas sin token: Descargas e introducción de Explora 440 (`layout/measure`), lista de características 539 (`layout/measure-wide`), sangría de la lista 21 (`space/padding/lg`), alto de la galería de ambiente 684 / 440 (70svh), texto de Inspiración 330 (`layout/measure`), fotos de Inspiración 440 × 568 (`ratio/portrait-soft`) y family-card de 200 y 328 (`layout/card-min` y `layout/card-min-wide`).
-- `TODO` (diseño) PDF de la ficha técnica: sin diseño ni librería. Hoy los botones emiten `arq:datasheet` y no generan nada.
+- `TODO` (diseño) Mensaje de error si no se puede generar la ficha técnica en PDF (hoy queda en consola).
 - `TODO` (navbar) Falta `layout/navbar-height` (56): el margen al llegar al glosario usa `space/gap/4xl`.
 - `TODO` (datos) Archivos de la barra del glosario: no hay descargas por grupo; salen del SKU predeterminado. Imágenes de los acabados, `alt` de las fotos y columnas del glosario (`src/data/attributes.js`).
 - `TODO` (diseño) "Características del producto" va en `role/body-medium` como Desktop; en Mobile Final lo muestra en Regular.

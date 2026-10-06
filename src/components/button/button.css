@@ -131,6 +131,13 @@
   color: var(--arq-color-text-disabled);
 }
 
+/* State=Loading: borde y texto de reposo con el fondo de hover */
+:host([type='outline']) .control[aria-busy='true'] {
+  border-color: var(--arq-color-border-strong);
+  background: var(--arq-color-surface-hover);
+  color: var(--arq-color-action-primary);
+}
+
 /* ── Underline ────────────────────────────────────────────────── */
 
 :host([type='underline']) .control {

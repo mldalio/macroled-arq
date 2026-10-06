@@ -480,6 +480,20 @@ ArqAccordionItem.define();
 - En Tablet (768–1023) las columnas se angostan por igual si no entran (`flex: 0 1`). En Mobile siguen repartiéndose el ancho.
 - **Footer en Dark local** (`data-arq-theme="dark"` en el `<footer>` interno) y **logo Size=Default**, del mismo tamaño que el de la navbar, en Desktop y Mobile. Pedido de diseño. **Figma:** falta pasar el set `788:3104` a modo Dark y su logo a Size=Default.
 
+## 2026-10-06 · Ficha técnica en PDF
+
+- Diseño: `ficha_pdf · componentes` (Figma `1907:27213`): pdf-page, pdf-header, pdf-cover-title, pdf-spec-group, pdf-spec-row y pdf-footer. Código en `src/pdf/`; lo dispara `arq:datasheet { sku }` (ficha y Descargas) desde `main.js`.
+- **Se abre, no se descarga:** el PDF se muestra en una pestaña nueva, en el visor del navegador. La pestaña se abre vacía en el clic (para que no la bloqueen) y carga el PDF cuando está listo. Si el navegador la bloquea, se descarga.
+- **Librería:** pdfmake 0.3.11, de jsDelivr por `/+esm` (módulo ES, sin globales) al primer clic, con Albert Sans de `@fontsource/albert-sans`. Versiones fijas en `src/config.js`. Pagina sola y repite encabezado y pie.
+- **Hojas:** la portada es la hoja 1; las especificaciones arrancan en la 2 y suman hojas si no entran. Una sección no se parte: si no entra en lo que queda, pasa entera a la hoja siguiente. Solo una sección más alta que una hoja se corta y repite su título. El pie de la hoja 2 en adelante es el aviso legal.
+- **Secciones:** las mismas del acordeón de la ficha (`specSections` de `attributes.js`), con todas las que tienen datos: con los datos reales son tres hojas.
+- **Imagen:** la principal del SKU (`img_main` → `images.main`); si falta, la de estudio. Se lee con CORS y se pasa a JPEG en un canvas (pdfmake no acepta WebP). Sin CORS, la portada sale con el fondo `color/bg/subtle` sin imagen. Requisito para el servidor de imágenes (S3): `Access-Control-Allow-Origin` para macroled.com.ar.
+- **Tokens (excepción):** pdfmake no lee variables CSS. `npm run tokens` genera también `src/styles/print-tokens.js` con los valores resueltos de Semantic y `role/*`: Color Light, Dimension Desktop y Type Mobile, como los frames de Figma («Escala Type en modo Mobile»). Se convierten px → pt (× 0,75). Nada se escribe a mano.
+- El logo pasó a `src/base/logo-paths.js` para usarlo en arq-logo y en el PDF.
+- **Mientras se genera:** el botón que se tocó pasa a State=Loading con "Generando…". Se agregó en Figma `Type=Outline, State=Loading` (fondo de Hover, sin íconos), y en código `loading-label`. La promesa llega al componente en `event.detail.pending`.
+- **Token nuevo:** `layout/pdf-spec-label` (260), ancho de la etiqueta de pdf-spec-row.
+- **Nombre al guardar desde el visor:** Chrome lo toma solo de la última parte de la URL; con un blob es un código al azar. No usa el título del PDF, el nombre de un `File` ni `Content-Disposition` (probado). Para que se llame `ficha-tecnica-<sku>.pdf` hace falta servir el PDF desde una URL que termine así (ver Pendientes).
+
 ## Pendientes
 
 Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe la decisión en su sección. El grupo entre paréntesis es el del `TODO` en el código.
@@ -498,13 +512,14 @@ Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe
 | navbar | Variantes Transparent de Menu, Search y Products (desactualizadas) |
 | Ficha | Pantalla Tablet |
 | select | Descripción del set `921:2544`: Field Default ya no lleva fondo (sigue diciendo `surface/soft`) |
+| layout/featured-thumb | Variable de Dimension (160 / 120 Mobile) sin descripción ni nombre CSS en Figma; entró al repo con la exportación de `layout/pdf-spec-label` |
 | Productos | Título de categoría en Final (sigue "Productos"); Productos Current sin flecha (en código queda `has-dropdown`) |
 
 ### Diseño: definir
 
 - **Tokens que faltan:** `layout/navbar-height` (56; lo usan hero, ficha y compare-header Compact); ancho de tarjeta del carrusel mobile (280); sidebar de Productos (240, hoy `layout/card-min`); ratios de las fotos del mosaico; respuesta de faq-item (560, hoy `measure-wide`); columnas del footer (200 / 240); email de cta-block (380, hoy `measure`); medidas sin token de la ficha y la colección (detalle en sus README).
 - **Confirmar lo elegido en código:** posición del navbar (sticky / fixed); foco sobre foto en navbar Transparent; feature-block secundaria en `ratio/wide`; split del FAQ con `space/section/md` dentro de un bloque.
-- **Faltan diseños:** PDF de ficha técnica y de "Descargar comparación"; modal para elegir producto desde compare-product Empty (hoy el botón emite `arq:add` y no abre nada); pantallas de carga, vacío y error de los listados; filter-panel abierto con Iluminar; textos de error y marca de obligatorio del formulario.
+- **Faltan diseños:** PDF de "Descargar comparación"; mensaje de error si no se puede generar la ficha técnica en PDF; modal para elegir producto desde compare-product Empty (hoy el botón emite `arq:add` y no abre nada); pantallas de carga, vacío y error de los listados; filter-panel abierto con Iluminar; textos de error y marca de obligatorio del formulario.
 - **Descargas (antes Glosario):** URL del catálogo general (no está en la base); columna o filtro de colección / producto (el SKU solo puede no alcanzar para ubicar un producto); cómo se muestran muchos SKU (paginación, «Ver más» o agrupado por colección); filtros para todo el catálogo; bajada del page-header.
 - **Contenido de diseño:** secciones del acordeón y reparto de campos, y columnas del glosario (`attributes.js`); características fijas de la meta de las cards y segunda línea en Colección; cantidad de imágenes de cada galería.
 
@@ -537,4 +552,6 @@ Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe
 
 - **n8n:** URL y formato del webhook de Contacto; webhook de la newsletter (cta-block) y su envío con `form-message`.
 - **Webflow:** ver si un campo Rich Text se puede insertar en un Code Embed (reemplazaría el Markdown de STORY).
-- **Código:** elegir la librería de PDF (tiene que poder incrustar Albert Sans); sincronizar el `scrollLeft` del compare-header Compact con la tabla en Mobile.
+- **Nombre del PDF en el visor:** decidir si se sirve la ficha técnica desde una URL propia (`…/ficha-tecnica-<sku>.pdf`) para que Chrome la guarde con ese nombre. Opciones: función en un servidor (Cloudflare Worker, Vercel, n8n) que genere o devuelva el PDF. Hoy se guarda con un código al azar.
+- **S3:** confirmar que el servidor de imágenes responde con CORS (`Access-Control-Allow-Origin`); si no, la ficha técnica en PDF sale sin foto. Hoy Typesense no tiene imágenes cargadas y no se pudo probar.
+- **Código:** sincronizar el `scrollLeft` del compare-header Compact con la tabla en Mobile.

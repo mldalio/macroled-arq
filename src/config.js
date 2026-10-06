@@ -13,4 +13,12 @@ export const config = Object.freeze({
   n8n: Object.freeze({
     webhookUrl: env.VITE_N8N_WEBHOOK_URL ?? '',
   }),
+  // Ficha técnica en PDF: se cargan de jsDelivr con versión fija al primer clic
+  // y no entran en dist/arq.js (decisiones.md, 2026-10-02 · Ficha técnica en PDF).
+  // pdfmake por /+esm: módulo ES, sin globales. La fuente, de @fontsource;
+  // {weight} se reemplaza por el peso (300, 400…).
+  pdf: Object.freeze({
+    pdfmakeUrl: 'https://cdn.jsdelivr.net/npm/pdfmake@0.3.11/build/pdfmake.min.js/+esm',
+    fontUrl: 'https://cdn.jsdelivr.net/npm/@fontsource/albert-sans@5.3.0/files/albert-sans-latin-{weight}-normal.woff',
+  }),
 });

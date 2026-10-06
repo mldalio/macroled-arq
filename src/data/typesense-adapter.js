@@ -37,7 +37,8 @@ const text = (value) => (value === undefined || value === null ? '' : String(val
 const list = (value) => (Array.isArray(value) ? value : text(value) ? text(value).split(',').map((v) => v.trim()) : []);
 
 // TODO (base): qué posición de cada lista multimagen_* es cada foto (estudio,
-// contexto, luz encendida, galería). Hasta entonces, sin imágenes.
+// contexto, luz encendida, galería). Hasta entonces, sin imágenes. La
+// principal (img_main) va en images.main: la usa la ficha técnica en PDF.
 function variantImages(_doc) {
   return {};
 }

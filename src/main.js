@@ -3,6 +3,7 @@
 
 import './styles/global.css';
 import { version } from '../package.json';
+import { openDatasheet } from './pdf/ficha-tecnica.js';
 
 // Registro de componentes (uno por línea, cuando existan):
 // import './components/<nombre>/<nombre>.js';
@@ -83,6 +84,19 @@ import './components/ficha-producto/ficha-producto.js';
 import './components/coleccion/coleccion.js';
 import './components/descargas/descargas.js';
 import './components/form-contacto/form-contacto.js';
+
+// Ficha técnica en PDF: la piden la ficha de producto y Descargas con
+// arq:datasheet { sku }. Se abre en una pestaña nueva: el evento llega dentro
+// del clic, así que el navegador no la bloquea. La promesa queda en
+// event.detail.pending para que quien la pidió muestre el botón en Loading.
+// TODO (diseño): no hay mensaje de error; hoy el error queda en consola.
+document.addEventListener('arq:datasheet', (event) => {
+  const sku = event.detail?.sku;
+  if (!sku) return;
+  const pending = openDatasheet(sku);
+  event.detail.pending = pending;
+  pending.catch((error) => console.error('[arq] ficha técnica:', error));
+});
 
 if (!window.Arq) {
   window.Arq = Object.freeze({ version });

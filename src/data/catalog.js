@@ -11,7 +11,7 @@
 //   group: { id, name, collection, productType, environment[], application, variantAttributes[],
 //            story, inspiration, video, images: { ambient[], description, inspiration }, specs: { campo: valor },
 //            variants: [{ sku, isDefault, description, attributes: { campo: valor },
-//                         images: { studio, studioOn, context, contextOn, gallery[], galleryOn[] },
+//                         images: { main, studio, studioOn, context, contextOn, gallery[], galleryOn[] },
 //                         downloads: { ies, cad, manual, fotometria } }] }
 // specs vale para todas las variantes del grupo; attributes de la variante pisa o completa.
 
@@ -265,6 +265,27 @@ export async function skuDownloads(sku) {
   const { groups } = await loadCatalog();
   const variant = groups.flatMap((group) => group.variants).find((v) => v.sku === sku);
   return variant ? downloads(variant) : [];
+}
+
+/**
+ * Datos de la ficha técnica en PDF de un SKU de cualquier grupo: { name, sku,
+ * image, sections }, o null si no existe. image es la imagen principal
+ * (img_main en Typesense); si falta, la de estudio de la variante o de la
+ * predeterminada. sections, como el acordeón de la ficha.
+ */
+export async function getDatasheet(sku) {
+  const { groups } = await loadCatalog();
+  const group = groups.find((g) => g.variants.some((v) => v.sku === sku));
+  if (!group) return null;
+  const variant = group.variants.find((v) => v.sku === sku);
+  const own = pick(variant.images);
+  const base = pick(group.defaultVariant.images);
+  return {
+    name: group.name,
+    sku: variant.sku,
+    image: own.main ?? own.studio ?? base.main ?? base.studio ?? null,
+    sections: specSections(variant.values),
+  };
 }
 
 /**

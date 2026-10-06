@@ -9,6 +9,7 @@ Botón del sistema en tres jerarquías: Filled (acción principal), Outline (sec
 <arq-button type="outline" show-icon icon="filter-off" show-count count="3" count-label="filtros activos">Filtrar</arq-button>
 <arq-button type="underline" show-leading-icon href="/arq/productos">Volver a productos</arq-button>
 <arq-button loading>Enviar</arq-button>
+<arq-button type="outline" loading loading-label="Generando…">Ficha técnica</arq-button>
 ```
 
 ## Props
@@ -26,7 +27,8 @@ Botón del sistema en tres jerarquías: Filled (acción principal), Outline (sec
 | Show leading icon | `show-leading-icon` | `showLeadingIcon` | booleano · ícono a la izquierda |
 | Leading icon | `leading-icon` | `leadingIcon` | nombre de ícono (def. `chevron-left`) |
 | State=Disabled | `disabled` | `disabled` | booleano |
-| State=Loading | `loading` | `loading` | booleano · solo Filled. Label "Enviando…", `aria-busy="true"`, deshabilitado, sin íconos ni badge |
+| State=Loading | `loading` | `loading` | booleano · Filled y Outline (fondo de Hover). Label de carga, `aria-busy="true"`, deshabilitado, sin íconos ni badge |
+| — | `loading-label` | `loadingLabel` | texto de carga (def. "Enviando…", al enviar un formulario). "Generando…" mientras se arma la ficha técnica en PDF. No es prop de Figma: en Figma es el Label de la variante Loading |
 | — | `href` | `href` | Con `href` se dibuja un `<a>` (navegación); sin `href`, un `<button type="button">` |
 | — | `target` | `target` | Para links. Con `_blank` suma `rel="noopener"` |
 | — | `submit` | `submit` | booleano · envía el `<form>` del que es parte (ElementInternals + `requestSubmit()`): corre la validación y dispara `submit`, como un botón nativo. No es prop de Figma (`type` ya es Filled · Outline · Underline) |
@@ -44,7 +46,7 @@ Botón del sistema en tres jerarquías: Filled (acción principal), Outline (sec
 | Texto e ícono Filled | `color/action/on-primary` |
 | Texto e ícono Outline y Underline | `color/action/primary` (Underline pressed: `color/text/tertiary`) |
 | Borde Outline | `border/default` en `color/border/strong` |
-| Fondo Outline hover · pressed | `color/surface/hover` · `color/surface/selected` |
+| Fondo Outline hover · pressed · loading | `color/surface/hover` · `color/surface/selected` · `color/surface/hover` |
 | Subrayado | `border/default` (1 px) en reposo y `border/strong` (2 px) en hover y pressed, en `color/border/strong` (pressed: `color/text/tertiary`). No cambia el alto |
 | Disabled | `color/text/disabled`, `color/border/disabled`, fondo Filled `color/surface/subtle` |
 | Foco | anillo `border/strong` en `color/border/focus`, separado 2 px (`outline-offset`, DESIGN.md §7). No cambia el tamaño |

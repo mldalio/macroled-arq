@@ -61,6 +61,7 @@ const TEXT = {
   notFound: 'No encontramos este producto.',
   error: 'No se pudo cargar el producto. Probá de nuevo en unos minutos.',
   datasheet: 'Ficha técnica',
+  generating: 'Generando…',
 };
 
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -165,10 +166,11 @@ class ArqFichaProducto extends ArqElement {
       this.#refreshOptions();
       this.#showVariant({ updateUrl: true });
     });
-    root.querySelector('.datasheet').addEventListener('click', () => this.#datasheet(this.#sku));
+    root.querySelector('.datasheet').addEventListener('click', (event) => this.#datasheet(this.#sku, event.currentTarget));
     root.querySelector('.to-glossary').addEventListener('click', () => this.#toGlossary());
     root.querySelector('.download-buttons').addEventListener('click', (event) => {
-      if (event.target.closest('[data-datasheet]')) this.#datasheet(this.#sku);
+      const datasheet = event.target.closest('[data-datasheet]');
+      if (datasheet) this.#datasheet(this.#sku, datasheet);
     });
 
     // Glosario: el ícono de cada fila abre el modal con los archivos de ese SKU
@@ -379,10 +381,17 @@ class ArqFichaProducto extends ArqElement {
     this.shadowRoot.querySelector('.download-buttons').replaceChildren(datasheet, ...files.map((file) => button(file.label, file.href)));
   }
 
-  #datasheet(sku) {
-    // TODO (diseño): el PDF de la ficha técnica no tiene diseño en Figma y la
-    // librería no está elegida (decisiones.md, 2026-10-02 · Ficha técnica en PDF).
-    if (sku) this.emit('datasheet', { sku });
+  // El PDF lo genera src/pdf/ficha-tecnica.js (lo engancha main.js), que deja
+  // la promesa en detail.pending: mientras tanto el botón queda en Loading.
+  #datasheet(sku, button = null) {
+    if (!sku) return;
+    const detail = { sku };
+    this.emit('datasheet', detail);
+    if (!button || !detail.pending) return;
+    button.loadingLabel = TEXT.generating;
+    button.loading = true;
+    const done = () => (button.loading = false);
+    detail.pending.then(done, done);
   }
 
   #toGlossary() {

@@ -264,7 +264,7 @@ Figma manda: valores, modos y descripciones de las variables. No se edita `token
 
    Claude lee las variables con `use_figma` en modo solo lectura, una colección por llamada, y escribe un archivo por colección y modo (`tokens/figma/<colección>.<modo>.json`).
 3. `npm run tokens:import` → convierte `tokens/figma/` a `tokens/tokens.json`, lo valida y lista lo nuevo, lo quitado y lo cambiado. Revisar que esa lista sea lo esperado.
-4. `npm run tokens` → regenera `src/styles/tokens.css` y `roles.css`.
+4. `npm run tokens` → regenera `src/styles/tokens.css`, `roles.css` y `print-tokens.js` (valores para la ficha técnica en PDF).
 5. `npm run build`, revisar la demo y commit de `tokens/figma/`, `tokens/tokens.json` y `src/styles/` juntos.
 
 Los estilos de texto `role/*` no son variables: el import los conserva tal como están en `tokens.json`.
