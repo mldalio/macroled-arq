@@ -317,6 +317,7 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 | layout/select-menu-filter | 200 | 200 | Ancho mínimo de select-menu Type=Filter |
 | layout/footer-column | 200 | 200 | Ancho de cada columna de links del footer en Desktop. En Mobile las columnas se reparten el ancho |
 | layout/footer-tagline | 240 | 240 | Ancho máximo de la bajada de la marca en el footer |
+| layout/pdf-spec-label | 260 | 260 | Ancho fijo de la etiqueta de pdf-spec-row en la ficha técnica PDF (A4) |
 | space/section/2xs · xs · sm · md · lg · xl | 32 · 48 · 64 · 96 · 128 · 160 | 24 · 32 · 40 · 56 · 96 · 128 | Solo entre bloques de página (padding de la sección). Es la perilla del ritmo de página |
 | space/gap/xs · sm · sm-md · md · lg · xl · xl-2xl · 2xl · 3xl · 4xl · 5xl · 6xl | 4 · 8 · 12 · 16 · 24 · 32 · 40 · 48 · 64 · 80 · 96 · 128 | 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 56 · 64 · 96 | Entre elementos (gap) |
 | space/padding/2xs · xs · sm · sm-md · md · lg · xl · xl-2xl · 2xl · 3xl · 4xl · 5xl · 6xl | 3 · 4 · 8 · 12 · 16 · 24 · 32 · 40 · 48 · 64 · 80 · 96 · 128 | 3 · 4 · 8 · 12 · 16 · 20 · 24 · 32 · 32 · 48 · 56 · 64 · 96 | Padding interno |
@@ -441,7 +442,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 
 | Componente | Variantes / propiedades | Tokens y notas |
 | --- | --- | --- |
-| button | Type: Filled · Outline · Underline. State: Default · Hover · Pressed · Focus · Disabled · Loading (solo Filled). Props: Label · Show icon · Icon · Show underline · Show count · Show leading icon · Leading icon | Filled: color/action/*. Outline: color/border/strong (el borde no suma al alto: 40 como Filled, con role/body-regular de 16/24). Underline: subrayado border/default (1 px) en reposo y border/strong (2 px) en hover y pressed. Focus: anillo separado (ver Foco). Loading: label "Enviando…", aria-busy |
+| button | Type: Filled · Outline · Underline. State: Default · Hover · Pressed · Focus · Disabled · Loading (Filled y Outline). Props: Label · Show icon · Icon · Show underline · Show count · Show leading icon · Leading icon | Filled: color/action/*. Outline: color/border/strong (el borde no suma al alto: 40 como Filled, con role/body-regular de 16/24). Underline: subrayado border/default (1 px) en reposo y border/strong (2 px) en hover y pressed. Focus: anillo separado (ver Foco). Loading: fondo de Hover, sin íconos; label de carga ("Enviando…" en formularios, "Generando…" en la ficha técnica), aria-busy |
 | icon-button | Size: Default · Large. Background: None · Surface · Subtle · Outline. State: Default · Hover · Pressed · Focus · Disabled. Prop: Icon | Default 24 × 24 (icon/md). Large 48 × 48 (padding sm-md + icon/xl). Surface sobre otra superficie; Subtle para destacar entre mucha información; Outline (borde color/border/strong) para la descarga de cada fila de variants-table |
 | input | Type: Text · Select · Textarea. State: Empty · Filled · Focus · Error · Disabled. Open: False · True (solo Select). Props: Label · Show label · Helper · Show helper | Caja de 40 (como button): borde border/default en color/border/default y fondo color/surface/default. Hover color/border/hover · Focus anillo separado (§7) · Error color/border/error · Disabled color/border/disabled. Select abierto: border/strong, chevron-up y select-menu Type=Text flotante |
 | select | Type: Field · Filter. State: Default · Hover · Focus · Disabled · Filled. Open: False · True. Props: Name · Label · Value | Filled = Filter con opción elegida. Filter lleva la línea inferior border/strong en todos los estados («Todos» igual que un filtro elegido) y mide al menos layout/select-filter |
@@ -492,6 +493,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | contact-item · link-list | State: Default · Hover · Focus. Props: Label · Value / Props: Title · Show link 3 | Valor como link mailto: / tel:. contact-item sin línea ni padding vertical: la lista los separa |
 | compare-header · compare-group · compare-row · compare-product | Type: Default · Compact × Breakpoint / Label / Breakpoint + Value 1–3 / State: Filled · Empty | Hasta 3 productos. Cada columna es un producto (grupo): selects de familia (elegir otro producto) y variante |
 | compare-bar · compare-slot | Breakpoint: Desktop · Mobile / Size: Default · Compact. State: Filled · Empty | Barra fija inferior, en Dark local |
+| pdf-page · pdf-header · pdf-cover-title · pdf-spec-group · pdf-spec-row · pdf-footer | Type: Portada · Especificaciones / Meta · Meta 2 · Show meta 2 / Eyebrow · Name · SKU / Title / Label · Value / Note · Page | Ficha técnica en PDF (A4), no son Web Components: los arma `src/pdf/` con pdfmake. Type en modo Mobile, Dimension en Desktop, Color en Light (`src/styles/print-tokens.js`). Se abre en una pestaña nueva; las especificaciones suman hojas y una sección no se parte |
 
 El inventario completo con links a Figma está en el [Anexo A](#anexo-a-inventario-de-componentes).
 
@@ -571,7 +573,8 @@ Aplica a product-card en los listados de Productos y Colecciones (las cards de c
 - **project-mosaic y carousel:** se resuelven en código (grid + aspect-ratio; snap y peek), no como componentes de Figma.
 - **button Loading:** no hay ícono de carga en la librería.
 - **product-card:** qué columnas de la base son la foto de estudio y la de contexto, y de dónde salen las cuatro imágenes de una card de colección.
-- **Ficha técnica en PDF** y **Descargar comparación:** falta el diseño del PDF.
+- **Descargar comparación:** falta el diseño del PDF.
+- **Ficha técnica en PDF:** falta el mensaje de error si no se puede generar. Al guardarla desde el visor de Chrome, el nombre es un código al azar (sale de la URL del blob): para que se llame `ficha-tecnica-<sku>.pdf` hace falta servirla desde una URL propia.
 - **Galerías** (product-gallery, ambiente, Inspiración, colección): cantidad de imágenes. Si hay más de las que entran, se desliza.
 - **Acabados:** sin definir (imágenes y tabla de códigos).
 
@@ -634,6 +637,12 @@ Link a cada set en Figma (`node-id`). Base: `https://www.figma.com/design/djAb2r
 | option-group | [921-2560](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2560) | Label; Type: Tiles · Select · Swatches |
 | option-tile | [921-2487](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2487) | Label; State: Default · Hover · Selected · Focus · Disabled |
 | page-header | [1244-4016](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1244-4016) | Title; Description; Show breadcrumb; Show description; Show back; Show action; Breakpoint: Desktop · Mobile; Type: List · Detail |
+| pdf-cover-title | [1907-27095](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-27095) | Eyebrow; Name; SKU |
+| pdf-footer | [1907-27023](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-27023) | Note; Page |
+| pdf-header | [1907-27058](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-27058) | Meta; Meta 2; Show meta 2 |
+| pdf-page | [1907-27212](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-27212) | Type: Portada · Especificaciones |
+| pdf-spec-group | [1907-27070](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-27070) | Title |
+| pdf-spec-row | [1907-8279](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-8279) | Label; Value |
 | product-card | [990-2372](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=990-2372) | Name; Meta; Show meta; Show finishes; Show compare; Size: Large · Small; State: Default · Hover · Focus |
 | product-gallery | [920-2490](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=920-2490) | Breakpoint: Desktop · Mobile |
 | search-dropdown | [796-2271](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=796-2271) | State: Results · No results |
