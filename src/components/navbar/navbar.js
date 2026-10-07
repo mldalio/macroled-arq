@@ -21,8 +21,6 @@
 //   scroll); también con el menú mobile o el mega-menu abiertos. La búsqueda
 //   desktop queda sobre la foto, con el campo en blanco (Default). La lupa y
 //   el menú van en Dark local sobre la foto.
-//   TODO (diseño): las variantes Transparent de Menu y Products del set
-//   tienen otra estructura (no a pantalla completa); se usa la versión Default.
 // - Posición: sticky arriba en Default; fixed en Transparent (se superpone al
 //   hero). TODO (diseño): confirmar.
 // - Datos: la navegación (getNavigation) y la búsqueda (searchProducts) salen

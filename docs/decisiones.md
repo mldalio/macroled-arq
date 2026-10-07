@@ -514,7 +514,7 @@ ArqAccordionItem.define();
 
 - Con Theme=Transparent, abrir la búsqueda en Desktop ya no pasa la barra a Default: la barra sigue translúcida y `arq-search-field` queda en blanco, como en Default (set `1009:2333` y descripción del set actualizados).
 - Sobre la foto, la lupa y el menú (icon-button) van en Dark local (`data-arq-theme="dark"`, lo pone el navbar), como el button sobre fotos: en Light su hover `color/surface/hover` era un cuadrado claro que tapaba el ícono inverso.
-- El menú mobile y el mega-menu siguen pasando la barra a Default.
+- El menú mobile y el mega-menu siguen pasando la barra a Default. En Figma, las variantes Transparent de Menu y Products quedaron iguales a las Default, y la ficha `doc/navbar` está actualizada.
 
 ## Pendientes
 
@@ -531,7 +531,6 @@ Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe
 | nav-link | Set `752:2866`: Current en `role/body-regular` |
 | hero | Final › Contacto y ficha `doc/hero`: 70svh |
 | line-card | Set `1036:2490`: Hover / Focus en el botón, sin borde ni `focus-ring` en la tarjeta. Descripción, ficha `doc/line-card` y copia de DESIGN.md en Plan del proyecto |
-| navbar | Variantes Transparent de Menu y Products (desactualizadas) |
 | Ficha | Pantalla Tablet |
 | select | Descripción del set `921:2544`: Field Default ya no lleva fondo (sigue diciendo `surface/soft`) |
 | layout/featured-thumb | Variable de Dimension (160 / 120 Mobile) sin descripción ni nombre CSS en Figma; entró al repo con la exportación de `layout/pdf-spec-label` |

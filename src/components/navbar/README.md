@@ -47,7 +47,6 @@ Barra de navegación de Macroled Arq, primer elemento de todas las páginas: log
 
 ## Pendientes
 
-- `TODO` (diseño) Las variantes Transparent de Menu y Products del set tienen otra estructura (el menú no ocupa la pantalla). Se usa la versión Default con el menú abierto.
 - icon-button no tiene Theme=Inverse: sobre la foto se usa Dark local (hover `color/surface/hover` en Dark), como dice la descripción del set.
 - `TODO` (diseño) Confirmar la posición: sticky en Default y fixed en Transparent.
 - `TODO` (diseño) Foco sobre la foto (Transparent): `color/border/focus` se ve poco sobre una foto oscura.
