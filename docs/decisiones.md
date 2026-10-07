@@ -306,7 +306,7 @@ ArqAccordionItem.define();
 - Árbol: Exterior e Interior (aplicaciones + Artefactos y Lámparas de ese entorno), Lámparas y Artefactos (un link por producto), Colecciones (con sus aplicaciones como bajada).
 - Mode (Default · Search · Menu · Products) es estado, reflejado en `mode`.
 - Menú y búsqueda mobile: `<dialog>` modales a pantalla completa (así no hay que bloquear el scroll de `body`).
-- Transparent pasa a Default con un menú o la búsqueda abiertos y al dejar atrás el hero (2026-10-05 · Contacto: ajustes). Sticky en Default, fixed en Transparent.
+- Transparent pasa a Default con el menú mobile o el mega-menu abiertos y al dejar atrás el hero (2026-10-05 · Contacto: ajustes). La búsqueda desktop sigue sobre la foto (2026-10-07 · navbar: búsqueda sobre la foto). Sticky en Default, fixed en Transparent.
 - `aria-activedescendant` no cruza el Shadow DOM: el campo anuncia el resultado activo con `aria-live`.
 
 ## 2026-10-02 · Layout de página
@@ -510,6 +510,12 @@ ArqAccordionItem.define();
 - **compare-product Size=Compact** reemplaza a compare-slot en el compare-header Compact. compare-slot queda solo para compare-bar. `show-sku` solo aplica a Compact (en Default el SKU siempre se ve); el compare-header lo enciende en Desktop y lo apaga en Mobile.
 - **filter-bar:** con la nueva construcción, la celda de Filter mide 70 (antes 55) y la barra crece.
 
+## 2026-10-07 · navbar: búsqueda sobre la foto
+
+- Con Theme=Transparent, abrir la búsqueda en Desktop ya no pasa la barra a Default: la barra sigue translúcida y `arq-search-field` queda en blanco, como en Default (set `1009:2333` y descripción del set actualizados).
+- Sobre la foto, la lupa y el menú (icon-button) van en Dark local (`data-arq-theme="dark"`, lo pone el navbar), como el button sobre fotos: en Light su hover `color/surface/hover` era un cuadrado claro que tapaba el ícono inverso.
+- El menú mobile y el mega-menu siguen pasando la barra a Default.
+
 ## Pendientes
 
 Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe la decisión en su sección. El grupo entre paréntesis es el del `TODO` en el código.
@@ -525,7 +531,7 @@ Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe
 | nav-link | Set `752:2866`: Current en `role/body-regular` |
 | hero | Final › Contacto y ficha `doc/hero`: 70svh |
 | line-card | Set `1036:2490`: Hover / Focus en el botón, sin borde ni `focus-ring` en la tarjeta. Descripción, ficha `doc/line-card` y copia de DESIGN.md en Plan del proyecto |
-| navbar | Variantes Transparent de Menu, Search y Products (desactualizadas) |
+| navbar | Variantes Transparent de Menu y Products (desactualizadas) |
 | Ficha | Pantalla Tablet |
 | select | Descripción del set `921:2544`: Field Default ya no lleva fondo (sigue diciendo `surface/soft`) |
 | layout/featured-thumb | Variable de Dimension (160 / 120 Mobile) sin descripción ni nombre CSS en Figma; entró al repo con la exportación de `layout/pdf-spec-label` |

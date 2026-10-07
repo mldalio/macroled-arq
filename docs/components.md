@@ -495,7 +495,7 @@ Theme=Inverse: para navbar Theme=Transparent sobre foto (label color/text/invers
 - Figma: [753-2907](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=753-2907)
 - Propiedades: Breakpoint: Desktop · Mobile; Mode: Default · Menu · Search · Products; Theme: Default · Transparent
 
-Barra de navegación de Macroled Arq. Breakpoint: Desktop · Mobile. Mode: Default, Search (buscador abierto), Menu (menú mobile abierto) y Products (submenú de Productos en mobile, con "volver"). En desktop, Productos abierto = nav-link Open=True con mega-menu debajo. Theme: Default · Transparent (sobre la foto del hero; pasa a Default al hacer scroll). Theme=Transparent: fondo translúcido color/overlay/translucent + background blur blur/backdrop. El link de la página actual va en State=Current; el que despliega un menú usa Has dropdown.
+Barra de navegación de Macroled Arq. Breakpoint: Desktop · Mobile. Mode: Default, Search (buscador abierto), Menu (menú mobile abierto) y Products (submenú de Productos en mobile, con "volver"). En desktop, Productos abierto = nav-link Open=True con mega-menu debajo. Theme: Default · Transparent (sobre la foto del hero; pasa a Default al hacer scroll). Theme=Transparent: fondo translúcido color/overlay/translucent + background blur blur/backdrop. El link de la página actual va en State=Current; el que despliega un menú usa Has dropdown. Theme=Transparent con Mode=Search (desktop): la barra sigue translúcida y search-field queda igual que en Default (fondo color/surface/default, texto y cruz en color/text/primary). Sobre la foto, la lupa y el menú (icon-button) van en modo Dark local (en código, data-arq-theme="dark"): ícono claro, hover y foco del modo Dark.
 
 ## option-group
 
