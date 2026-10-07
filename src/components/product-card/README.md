@@ -35,7 +35,7 @@ Tarjeta de producto (Productos) o de colección (Colecciones, página de colecci
 
 - **No son props:** State=Hover y State=Focus (CSS).
 - **Link estirado** (`src/base/card-link.css`): el `<a>` envuelve solo el nombre; su `::after` cubre la tarjeta. El foco rodea la tarjeta. "Comparar" va por encima del link.
-- **Imágenes** (DESIGN.md §8): en reposo, estudio; con hover o foco, contexto, con un fundido entre dos `<img>` (`motion/duration/slow`, instantáneo con movimiento reducido). Dentro de un bloque con `data-arq-theme="dark"` (Iluminar) pasa a las encendidas (`src/base/theme.js`). En táctiles no hay hover. Aplica también a Size=Small (decisión 2026-10-02 · product-card).
+- **Imágenes** (DESIGN.md §8): en reposo, estudio; con hover sobre la imagen o foco, contexto (sobre el nombre o «Comparar» la imagen no cambia), con un fundido entre dos `<img>` (`motion/duration/slow`, instantáneo con movimiento reducido). Dentro de un bloque con `data-arq-theme="dark"` (Iluminar) pasa a las encendidas (`src/base/theme.js`). En táctiles no hay hover. Aplica también a Size=Small (decisión 2026-10-02 · product-card).
 - **Faltantes:** sin contexto no hay cambio; sin encendida queda la apagada; sin estudio, fondo `color/surface/subtle` con el nombre.
 - **Carga:** solo la imagen visible de entrada (`loading="lazy"`); la de hover al primer hover o foco; las encendidas al activar Iluminar. Las imágenes son decorativas (`alt=""`): el nombre lo da el link.
 - **Evento:** `arq:compare { checked }` al marcar o desmarcar "Comparar" (la página arma la compare-bar).

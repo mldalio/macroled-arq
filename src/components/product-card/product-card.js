@@ -13,7 +13,8 @@
 //   </arq-product-card>
 //
 // - Link estirado (src/base/card-link.css): el <a> envuelve solo el nombre.
-// - Imágenes (DESIGN.md §8): reposo = estudio; hover y foco = contexto, con un
+// - Imágenes (DESIGN.md §8): reposo = estudio; hover sobre la imagen y foco =
+//   contexto, con un
 //   fundido entre dos <img> (motion/duration/slow). Iluminar (data-arq-theme=
 //   "dark" en un ancestro, src/base/theme.js) pasa a las versiones encendidas.
 //   Sin contexto no hay cambio; sin encendida queda la apagada; sin estudio, un
@@ -79,8 +80,19 @@ class ArqProductCard extends ArqElement {
       this.#hoverWanted = true;
       this.#renderImages();
     };
-    root.querySelector('.card').addEventListener('pointerenter', wantHover);
+    const card = root.querySelector('.card');
+    card.addEventListener('pointerenter', wantHover);
     root.querySelector('.card-link').addEventListener('focus', wantHover);
+    // El cambio de imagen es solo con el mouse sobre la imagen. El ::after del
+    // link tapa .card-media (no recibe :hover), así que se mide la posición.
+    const media = root.querySelector('.card-media');
+    const setMediaHover = (on) => card.classList.toggle('is-media-hover', on);
+    card.addEventListener('pointermove', (event) => {
+      if (event.pointerType !== 'mouse') return;
+      const r = media.getBoundingClientRect();
+      setMediaHover(event.clientX >= r.left && event.clientX < r.right && event.clientY >= r.top && event.clientY < r.bottom);
+    });
+    card.addEventListener('pointerleave', () => setMediaHover(false));
     for (const name of ['name', 'meta', 'finishes']) {
       root.querySelector(`slot[name="${name}"]`).addEventListener('slotchange', () => this.#renderSlots());
     }
