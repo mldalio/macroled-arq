@@ -1,15 +1,13 @@
 <!--
   Colección · /arq/coleccion/{slug} · template de la colección «Colecciones» del CMS + Code Embed
-  (docs/decisiones.md, 2026-10-01 · Páginas en Webflow y 2026-10-05 · Colección)
+  (docs/decisiones.md, 2026-10-01 · Páginas en Webflow y 2026-10-05 · Colección; 2026-10-07 · Base de datos sin IDs)
   Pantalla: Final › Colección (1234:13201 Desktop · 1234:13448 Mobile)
   Se edita acá y se pega en Webflow. dist/arq.js, dist/arq.css y Albert Sans se cargan a nivel sitio.
 
-  Campos del CMS (un ítem por colección): en Webflow, cada valor de ejemplo se reemplaza por su campo dinámico:
-    data-collection         → slug (COLLECTION_ID)
+  Campos del CMS (un ítem por colección, solo nombre y slug): en Webflow, cada valor de ejemplo se reemplaza por su campo dinámico:
+    data-collection          → slug (el id de la colección: su product_name en minúsculas con guiones, kanu)
     breadcrumb actual y <h1> → nombre
-    description (page-header) → COLLECTION_INTRO_TEXT
-    description (colección)   → COLLECTION_DESCRIPTION_TEXT
-  Las cards (una por grupo) y las fotos salen de Typesense.
+  El resto sale de Typesense: la intro (en el page-header), la descripción, las cards (una por grupo) y las fotos.
 -->
 <arq-navbar>
   <!-- La colección es parte de Productos: Productos va como Current (sin flecha; se deja has-dropdown) -->
@@ -25,12 +23,9 @@
       <arq-breadcrumb-item current>Kanu</arq-breadcrumb-item>
     </arq-breadcrumb>
     <h1 slot="title">Colección Kanu</h1>
-    <span slot="description">La colección Kanu parte de la idea de modularidad y configurabilidad sencilla. Con un sistema click, permite que el módulo óptico se adapte a diferentes marcos para conseguir distintos efectos de luz y resultados. Se destaca el confort visual de todas las piezas, lo que la hace ideal para todo tipo de proyecto. La versatilidad es el punto fuerte de Kanu.</span>
   </arq-page-header>
 
-  <arq-coleccion data-collection="kanu">
-    <p slot="description">La colección Kanu parte de la idea de modularidad y configurabilidad sencilla. Eso permite adaptarse a cada proyecto sin renunciar a una alta calidad lumínica ya que el desarrollo de las lentes fue concebido para minimizar deslumbramiento y maximizar el rendimiento lumínico.</p>
-  </arq-coleccion>
+  <arq-coleccion data-collection="kanu"></arq-coleccion>
 </main>
 
 <arq-footer>

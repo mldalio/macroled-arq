@@ -3,14 +3,17 @@
 //
 // Página de una colección: grilla de product-card (una por grupo), galería,
 // texto + imagen y mosaico de fotos con carousel-controls. El template del CMS
-// imprime el page-header (breadcrumb, <h1> e intro) y el texto de
-// descripción; el componente pide el resto a getCollection()
-// (src/data/catalog.js), como catalog-listing.
+// imprime el page-header (breadcrumb y <h1>); el componente pide el resto a
+// getCollection() (src/data/catalog.js), como catalog-listing, textos
+// incluidos (decisiones.md, 2026-10-07 · Base de datos sin IDs).
 //
-//   <arq-coleccion data-collection="kanu">
-//     <p slot="description">COLLECTION_DESCRIPTION_TEXT</p>
-//   </arq-coleccion>
+//   <arq-coleccion data-collection="kanu"></arq-coleccion>
 //
+// - Textos de los datos, escritos en el DOM de la página: la intro
+//   (collection_intro_text) en el slot description del <arq-page-header> y la
+//   descripción (collection_description_text) en el slot description de este
+//   componente. Si un dato falta, esa parte no se muestra, aunque el HTML
+//   traiga texto: así se ve qué falta en la base.
 // - Las imágenes muestran solo las que existen (decisión 2026-10-02 ·
 //   Galerías); un bloque sin imágenes no se muestra.
 // - Sin Iluminar ni Comparar (Final).
@@ -73,6 +76,7 @@ class ArqColeccion extends ArqElement {
       return;
     }
     this.#status(data.cards.length ? '' : TEXT.empty);
+    this.#renderTexts(data.collection);
     this.#renderCards(data.cards);
     this.#renderImages(data);
   }
@@ -81,6 +85,13 @@ class ArqColeccion extends ArqElement {
     const status = this.shadowRoot.querySelector('.status');
     status.textContent = message;
     status.hidden = !message;
+  }
+
+  // Solo los textos de los datos: sin dato, se quita el del HTML.
+  #renderTexts({ intro, description }) {
+    const header = document.querySelector('arq-page-header');
+    if (header) slotText(header, 'span', intro);
+    slotText(this, 'p', description);
   }
 
   #renderCards(cards) {
@@ -137,6 +148,21 @@ class ArqColeccion extends ArqElement {
     root.querySelector('.feature-text').hidden = !text;
     root.querySelector('.feature').hidden = !text && root.querySelector('.feature-image').hidden;
   }
+}
+
+/** Escribe text en el hijo slot="description" de host (lo crea si falta; sin text, lo quita). */
+function slotText(host, tag, text) {
+  let element = host.querySelector(':scope > [slot="description"]');
+  if (!text) {
+    element?.remove();
+    return;
+  }
+  if (!element) {
+    element = document.createElement(tag);
+    element.slot = 'description';
+    host.append(element);
+  }
+  element.textContent = text;
 }
 
 function image(src, alt) {

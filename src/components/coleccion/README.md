@@ -1,12 +1,10 @@
 # coleccion · `<arq-coleccion>`
 
-Contenido de la página de una colección: grilla de product-card (una por grupo), galería, texto + imagen y mosaico de fotos con carousel-controls. Contenedor de página, sin set en Figma: sale de la pantalla Colección de Final (`1234:13201` Desktop · `1234:13448` Mobile). Decisión: `docs/decisiones.md`, 2026-10-05 · Colección.
+Contenido de la página de una colección: grilla de product-card (una por grupo), galería, texto + imagen y mosaico de fotos con carousel-controls. Contenedor de página, sin set en Figma: sale de la pantalla Colección de Final (`1234:13201` Desktop · `1234:13448` Mobile). Decisión: `docs/decisiones.md`, 2026-10-05 · Colección. Los textos salen de los datos, no del CMS (2026-10-07 · Base de datos sin IDs).
 
 ```html
-<arq-page-header show-breadcrumb show-description>…breadcrumb, <h1> e intro del CMS…</arq-page-header>
-<arq-coleccion data-collection="kanu">
-  <p slot="description">COLLECTION_DESCRIPTION_TEXT</p>
-</arq-coleccion>
+<arq-page-header show-breadcrumb show-description>…breadcrumb y <h1> del CMS…</arq-page-header>
+<arq-coleccion data-collection="kanu"></arq-coleccion>
 ```
 
 El HTML del embed completo está en [src/pages/coleccion.html](../../pages/coleccion.html).
@@ -15,10 +13,10 @@ El HTML del embed completo está en [src/pages/coleccion.html](../../pages/colec
 
 | Atributo / slot | Contenido |
 | --- | --- |
-| `data-collection` | `COLLECTION_ID` del ítem del CMS. El componente pide la colección a `getCollection()` (`src/data/catalog.js`) |
-| slot `description` | Texto del bloque texto + imagen (`role/body-xl`) |
+| `data-collection` | Slug del ítem del CMS = id de la colección (`kanu`). El componente pide la colección a `getCollection()` (`src/data/catalog.js`) |
+| slot `description` | Lo escribe el componente con `collection_description_text` (`role/body-xl`). No se carga en el HTML |
 
-- El page-header (breadcrumb, `<h1>` e intro) va aparte, en el embed: es del CMS y queda indexable.
+- El page-header (breadcrumb y `<h1>`) va aparte, en el embed: es del CMS. El componente escribe la intro (`collection_intro_text`) en el slot `description` del `<arq-page-header>` de la página. Si un dato falta, esa parte no se muestra, aunque el HTML traiga texto: así se ve qué falta en la base.
 
 ## Comportamiento
 

@@ -9,11 +9,10 @@
 // ?query, para poder navegar. Los del HTML se cambian al insertarlo; los que
 // arman los componentes (cards, breadcrumb), al hacer clic.
 //
-// Ficha: en Webflow cada grupo tiene su ítem del CMS, que imprime los textos
-// indexables. En la demo, el catálogo activo (VITE_DATA_SOURCE: Typesense,
-// mixto o el ejemplo) hace de ítem: ?group=<id> cambia data-group, y los
-// textos del embed se cambian por los del grupo. Colección: lo mismo con
-// ?collection=<id>.
+// Ficha: en Webflow cada grupo tiene su ítem del CMS, con nombre y slug. En la
+// demo, ?group=<id> hace de ítem: cambia data-group y el nombre, que sale del
+// catálogo activo (VITE_DATA_SOURCE). El resto lo trae el componente.
+// Colección: lo mismo con ?collection=<id>.
 
 import '/src/main.js';
 import '/demo/demo-inspect.js';
@@ -51,12 +50,6 @@ async function cmsCollection(content) {
   const name = collection?.name ?? id;
   content.querySelector('arq-breadcrumb-item[current]').textContent = name;
   content.querySelector('arq-page-header [slot="title"]').textContent = `Colección ${name}`;
-  const intro = content.querySelector('arq-page-header [slot="description"]');
-  if (collection?.intro) intro.textContent = collection.intro;
-  else intro.remove();
-  const description = page.querySelector('[slot="description"]');
-  if (collection?.description) description.textContent = collection.description;
-  else description.remove();
   document.title = `Macroled Arq · Colección ${name}`;
 }
 
@@ -67,20 +60,7 @@ async function cmsItem(content) {
   const id = new URLSearchParams(location.search).get('group') ?? ficha.dataset.group;
   ficha.setAttribute('data-group', id);
   const group = (await getProduct(id).catch(() => null))?.group;
-  const set = (selector, text) => {
-    const element = ficha.querySelector(selector);
-    if (!element) return;
-    if (text) element.textContent = text;
-    else element.remove();
-  };
-  set('[slot="title"]', group?.name ?? id);
-  set('[slot="description"]', group?.variants.find((v) => v.isDefault)?.description);
-  set('[slot="story"]', group?.story);
-  set('[slot="inspiration"]', group?.inspiration);
-  const img = ficha.querySelector('img[slot="image"]');
-  const main = group?.variants.find((v) => v.isDefault)?.images?.gallery?.[0];
-  if (img && main) img.src = main;
-  else img?.remove();
+  ficha.querySelector('[slot="title"]').textContent = group?.name ?? id;
   document.title = `Macroled Arq · ${group?.name ?? id}`;
 }
 

@@ -4,31 +4,34 @@
 // Ficha de un producto (grupo): hero con galería y configurador, descargas y
 // especificaciones, galería de ambiente, descripción, glosario, inspiración y
 // "Explora la colección". El template del CMS imprime el grupo y los textos
-// indexables; el componente pide el resto a src/data/catalog.js (AGENTS.md ·
-// Datos; decisiones.md, 2026-10-02 · Ficha de producto por grupo).
+// y el nombre; el componente pide el resto a src/data/catalog.js, textos
+// incluidos (AGENTS.md · Datos; decisiones.md, 2026-10-02 · Ficha de producto
+// por grupo y 2026-10-07 · Base de datos sin IDs).
 //
 //   <arq-ficha-producto data-group="kanu-jardin">
 //     <h1 slot="title">Kanu Jardín</h1>
-//     <p slot="description">Descripción corta</p>
-//     <img slot="image" src="…" alt="Kanu Jardín" fetchpriority="high">
 //     <h2 slot="downloads-title">Descargas</h2>
-//     <div slot="story">## Título\nPárrafo\n- Característica</div>
 //     <h2 slot="glossary-title">Glosario</h2>
-//     <p slot="inspiration">Texto de inspiración</p>
 //     <h2 slot="collection-title">Explora la colección</h2>
 //     <h2 slot="modal-title">Descargas</h2>
 //   </arq-ficha-producto>
 //
+// - Textos solo de los datos: descripción corta (description de la variante),
+//   STORY (product_story_text) e inspiración (product_inspiration_text). Se
+//   escriben en el DOM de la página, en sus slots. Si un dato falta, esa parte
+//   no se muestra, aunque el HTML traiga texto: así se ve qué falta en la base.
+//   Opcional: <img slot="image"> con la imagen principal (LCP); sin ella, la
+//   galería la crea.
 // - Variante: ?sku= si es del grupo; si no, la predeterminada. Al elegir otra
 //   se actualiza ?sku= con history.replaceState (la predeterminada va sin
 //   parámetro). Cambian galería, sku, descripción, acordeón y descargas.
 // - Iluminar: data-arq-theme="dark" en el hero (contenedor interno) y en el
 //   <arq-navbar> de la página; la galería pasa a las fotos encendidas. No se
 //   guarda (la preferencia arq:theme es de los listados).
-// - STORY (Markdown limitado): el componente lo lee del slot story y arma en el
-//   DOM de la página un <h2> por cada «##», un <p> por línea y un <ul> con las
-//   líneas «-», con createElement y textContent (nunca innerHTML). Así el
-//   encabezado queda en el HTML de la página.
+// - STORY (Markdown limitado): el componente arma con el texto, en el DOM de
+//   la página, un <h2> con la primera línea (el título, con o sin «## »), un
+//   <p> por línea y un <ul> con las líneas «-», con createElement y textContent
+//   (nunca innerHTML). Así el encabezado queda en el HTML de la página.
 // - "Generar ficha técnica" y "Ficha técnica" emiten arq:datasheet { sku }.
 //   TODO (diseño): el PDF no tiene diseño; se genera cuando exista.
 
@@ -91,7 +94,7 @@ class ArqFichaProducto extends ArqElement {
     `<p class="status role-body" role="status" hidden></p>` +
     `<div class="product">` +
     `<arq-sku class="sku needs-data"></arq-sku>` +
-    `<div class="description role-body-regular"><slot name="description"></slot><span class="variant-description" hidden></span></div>` +
+    `<div class="description role-body-regular"><span class="variant-description" hidden></span></div>` +
     `</div>` +
     `<div class="options needs-data"></div>` +
     `</div>` +
@@ -113,7 +116,7 @@ class ArqFichaProducto extends ArqElement {
     `<div class="ambient needs-data" role="region" aria-label="Galería de ambiente" tabindex="0" hidden></div>` +
     // Descripción (STORY) + otras familias + imagen
     `<div class="story-block">` +
-    `<div class="story">` +
+    `<div class="story" hidden>` +
     `<div class="story-text"><slot name="story-text"></slot></div>` +
     `<div class="features" hidden>` +
     `<p class="features-label role-body-medium">Características del producto</p>` +
@@ -154,7 +157,6 @@ class ArqFichaProducto extends ArqElement {
   setup() {
     const root = this.shadowRoot;
     this.#moveMainImage();
-    this.#renderStory();
     root.querySelector('slot[name="inspiration"]').addEventListener('slotchange', () => this.#syncInspiration());
     this.#syncInspiration();
 
@@ -206,6 +208,8 @@ class ArqFichaProducto extends ArqElement {
     const sku = new URLSearchParams(location.search).get('sku');
     this.#selection = initialSelection(product.variants, product.variantAttributes, sku);
     this.#renderHeader();
+    this.#renderStory(product.group.story);
+    this.#renderInspirationText(product.group.inspiration);
     this.#buildOptions();
     this.#refreshOptions();
     this.#showVariant();
@@ -320,7 +324,6 @@ class ArqFichaProducto extends ArqElement {
     const description = root.querySelector('.variant-description');
     description.textContent = details.description ?? '';
     description.hidden = !details.description;
-    root.querySelector('slot[name="description"]').hidden = Boolean(details.description);
     root.querySelector('.gallery').images = details.images;
     this.#renderSpecs(details.sections);
     this.#renderDownloads(details.downloads);
@@ -414,32 +417,29 @@ class ArqFichaProducto extends ArqElement {
   }
 
   // ── Descripción ───────────────────────────────────────────────────
-  // STORY llega como texto en el slot story. Se arma en el DOM de la página:
-  // «## » → <h2> (los siguientes, <h3>), «- » → <li> de un <ul>, el resto <p>.
-  #renderStory() {
+  // STORY (solo de los datos) se arma en el DOM de la página: la primera línea
+  // es el título (<h2>, con o sin «## »), los demás «## » → <h3>,
+  // «- » → <li> de un <ul>, el resto <p>.
+  #renderStory(story) {
     const root = this.shadowRoot;
-    const raw = this.querySelector(':scope > [slot="story"]');
-    if (!raw) {
-      root.querySelector('.story').hidden = true;
-      return;
-    }
-    const lines = raw.textContent.split('\n').map((line) => line.trim()).filter(Boolean);
+    this.querySelector(':scope > [slot="story"]')?.remove();
+    const lines = String(story ?? '').split('\n').map((line) => line.trim()).filter(Boolean);
     const nodes = [];
     let list = null;
-    let headings = 0;
     for (const line of lines) {
-      if (line.startsWith('- ')) {
+      const item = line.match(/^[-–•]\s+(.*)$/);
+      if (item) {
         list ??= Object.assign(document.createElement('ul'), { slot: 'story-list' });
-        list.append(Object.assign(document.createElement('li'), { textContent: line.slice(2).trim() }));
+        list.append(Object.assign(document.createElement('li'), { textContent: item[1] }));
         continue;
       }
       const heading = line.startsWith('## ');
-      const node = document.createElement(heading ? (headings++ ? 'h3' : 'h2') : 'p');
+      const node = document.createElement(!nodes.length ? 'h2' : heading ? 'h3' : 'p');
       node.slot = 'story-text';
       node.textContent = heading ? line.slice(3).trim() : line;
       nodes.push(node);
     }
-    raw.replaceWith(...nodes, ...(list ? [list] : []));
+    this.append(...nodes, ...(list ? [list] : []));
     root.querySelector('.story-text').hidden = !nodes.length;
     root.querySelector('.features').hidden = !list;
     root.querySelector('.story').hidden = !nodes.length && !list;
@@ -493,6 +493,21 @@ class ArqFichaProducto extends ArqElement {
   }
 
   // ── Inspiración ───────────────────────────────────────────────────
+  // Solo el texto de los datos: si falta, se quita el del HTML.
+  #renderInspirationText(text) {
+    let element = this.querySelector(':scope > [slot="inspiration"]');
+    if (!text) {
+      element?.remove();
+      return;
+    }
+    if (!element) {
+      element = document.createElement('p');
+      element.slot = 'inspiration';
+      this.append(element);
+    }
+    element.textContent = text;
+  }
+
   #syncInspiration() {
     const root = this.shadowRoot;
     const text = root.querySelector('slot[name="inspiration"]').assignedElements().length > 0;

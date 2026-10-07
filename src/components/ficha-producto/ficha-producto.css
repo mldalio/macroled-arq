@@ -234,7 +234,7 @@
   gap: var(--arq-space-gap-lg);
 }
 
-/* STORY: «##» en role/heading-2 y los párrafos en role/body. Las reglas
+/* STORY: el título en role/heading-2 y los párrafos en role/body. Las reglas
    repiten los roles porque el texto llega por slot (no toma la clase). */
 ::slotted(h2[slot='story-text']),
 ::slotted(h3[slot='story-text']) {
@@ -272,7 +272,7 @@
 ::slotted(ul) {
   margin: 0 !important;
   padding: 0 0 0 var(--arq-space-padding-lg) !important;
-  list-style: disc !important;
+  list-style-type: '- ' !important;
   font: inherit !important;
   color: inherit !important;
 }

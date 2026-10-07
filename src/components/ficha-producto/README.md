@@ -1,17 +1,12 @@
 # ficha-producto · `<arq-ficha-producto>`
 
-Ficha de un producto (grupo): hero con galería y configurador, descargas y especificaciones, galería de ambiente, descripción con otras familias, glosario, inspiración y "Explora la colección". Es un contenedor de página, sin set en Figma: sale de la pantalla Ficha de Final (`1218:10487` Desktop · `1220:11334` Mobile · `1218:11777` / `1220:12601` Iluminar). Decisión: `docs/decisiones.md`, 2026-10-05 · Ficha de producto.
+Ficha de un producto (grupo): hero con galería y configurador, descargas y especificaciones, galería de ambiente, descripción con otras familias, glosario, inspiración y "Explora la colección". Es un contenedor de página, sin set en Figma: sale de la pantalla Ficha de Final (`1218:10487` Desktop · `1220:11334` Mobile · `1218:11777` / `1220:12601` Iluminar). Decisión: `docs/decisiones.md`, 2026-10-05 · Ficha de producto. Los textos salen de los datos, no del CMS (2026-10-07 · Base de datos sin IDs).
 
 ```html
 <arq-ficha-producto data-group="kanu-jardin">
   <h1 slot="title">Kanu Jardín</h1>
-  <p slot="description">Descripción corta</p>
-  <img slot="image" src="…" alt="Kanu Jardín" fetchpriority="high">
   <h2 slot="downloads-title">Descargas</h2>
-  <div slot="story">## Luz que acompaña y define los recorridos exteriores.
-- Iluminación dirigida para acompañar recorridos.</div>
   <h2 slot="glossary-title">Glosario</h2>
-  <p slot="inspiration">Texto de inspiración</p>
   <h2 slot="collection-title">Explora la colección</h2>
   <h2 slot="modal-title">Descargas</h2>
 </arq-ficha-producto>
@@ -23,13 +18,11 @@ El HTML del embed completo está en [src/pages/ficha.html](../../pages/ficha.htm
 
 | Atributo / slot | Contenido |
 | --- | --- |
-| `data-group` | `PRODUCT_GROUP_ID` del ítem del CMS. El componente pide el grupo a `getProduct()` (`src/data/catalog.js`) |
+| `data-group` | Slug del ítem del CMS = id del grupo (`kanu-jardin`). El componente pide el grupo a `getProduct()` (`src/data/catalog.js`) |
 | slot `title` | `<h1>` con el nombre (`role/display`) |
-| slot `description` | Descripción corta del CMS. Se reemplaza por la descripción de la variante cuando la trae |
-| slot `image` | `<img>` principal (LCP, `fetchpriority="high"`). Pasa a la galería: es la que muestra la primera imagen de la variante |
+| slot `image` | Opcional. `<img>` principal (LCP, `fetchpriority="high"`). Pasa a la galería: es la que muestra la primera imagen de la variante. Sin ella, la galería la crea |
 | slot `downloads-title` · `glossary-title` | `<h2>` de Descargas y Glosario (`role/display-sm`) |
-| slot `story` | `PRODUCT_STORY_TEXT` como texto. Ver Descripción |
-| slot `inspiration` | `PRODUCT_INSPIRATION_TEXT` (`role/body-xl`) |
+| slot `inspiration` | Lo escribe el componente con `product_inspiration_text` (`role/body-xl`). No se carga en el HTML |
 | slot `collection-title` | `<h2>` de "Explora la colección" (`role/heading-2`) |
 | slot `modal-title` | `<h2>` del download-modal del glosario |
 
@@ -45,7 +38,8 @@ El HTML del embed completo está en [src/pages/ficha.html](../../pages/ficha.htm
 - **Descargas:** "Ficha técnica" (se genera) y los archivos del SKU elegido, en el orden de Final (CAD 2D/3D, Manual, IES, Fotometría). Un archivo que falta no se muestra.
 - **Acordeón:** una sección por grupo de especificaciones. La primera abre abierta; al cambiar de variante quedan abiertas las mismas.
 - **Glosario:** variants-table con una fila por SKU (columnas en `GLOSSARY_COLUMNS` de `src/data/attributes.js`). En la barra, CAD 2D/3D y Manual. El ícono de cada fila abre el download-modal con los archivos de ese SKU.
-- **Descripción (STORY):** el componente lee el texto del slot `story` y lo reemplaza en el DOM de la página por un `<h2>` por cada `## ` (los siguientes, `<h3>`), un `<p>` por línea y un `<ul>` con las líneas `- `, con `createElement` y `textContent` (nunca `innerHTML`). La lista va con la etiqueta "Características del producto".
+- **Textos solo de los datos:** descripción corta (`description` de la variante), story e inspiración. Si un dato falta, esa parte no se muestra, aunque el HTML traiga texto: así se ve qué falta en la base.
+- **Descripción (STORY):** el componente toma `product_story_text` del grupo y lo arma en el DOM de la página: la primera línea es el título (`<h2>` en `role/heading-2`, con o sin `## `), cada `## ` siguiente un `<h3>`, cada línea `- ` un ítem de la lista (con guion) y el resto un `<p>`, con `createElement` y `textContent` (nunca `innerHTML`). La lista va con la etiqueta "Características del producto": no se escribe en la hoja.
 - **Otras familias y Explora la colección:** family-card de los otros grupos de la colección (Default y Large), en un carrusel con scroll-snap si no entran. Sin colección no se muestran, el breadcrumb pasa a Productos / nombre y no está "Ver colección".
 - **Imágenes:** ambiente, descripción e inspiración muestran solo las que existen; un bloque sin imágenes ni texto no se muestra.
 - **Estados:** mientras carga (`aria-busy`) solo se ve lo que imprime el CMS y "Cargando producto…". Si el grupo no existe, "No encontramos este producto."; si falla la carga, "No se pudo cargar el producto. Probá de nuevo en unos minutos.".
