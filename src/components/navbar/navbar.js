@@ -18,9 +18,11 @@
 //   fondo color/overlay/translucent con blur/backdrop, textos e íconos en
 //   inverso (nav-link Theme=Inverse). Sigue transparente mientras la barra
 //   está sobre el hero y pasa a Default al dejarlo atrás (sin hero, al hacer
-//   scroll); también con un menú o la búsqueda abiertos.
-//   TODO (diseño): las variantes Transparent de Menu, Search y Products del set
-//   están desactualizadas (otra estructura); se usa la versión Default.
+//   scroll); también con el menú mobile o el mega-menu abiertos. La búsqueda
+//   desktop queda sobre la foto, con el campo en blanco (Default). La lupa y
+//   el menú van en Dark local sobre la foto.
+//   TODO (diseño): las variantes Transparent de Menu y Products del set
+//   tienen otra estructura (no a pantalla completa); se usa la versión Default.
 // - Posición: sticky arriba en Default; fixed en Transparent (se superpone al
 //   hero). TODO (diseño): confirmar.
 // - Datos: la navegación (getNavigation) y la búsqueda (searchProducts) salen
@@ -240,11 +242,19 @@ class ArqNavbar extends ArqElement {
     root.querySelector('.logo').size = MOBILE.matches ? 'small' : 'default';
   }
 
-  // Theme=Inverse en los nav-link sobre foto (Transparent sin scroll).
+  // Theme=Inverse en los nav-link sobre foto (Transparent sin scroll). La
+  // búsqueda desktop sigue sobre la foto; el menú mobile y
+  // el mega-menu pasan a Default.
   #syncLinks() {
-    const inverse = this.theme === 'transparent' && this.mode === 'default' && !this.#scrolled && !this.#megaOpen;
+    const overPhoto = this.mode === 'default' || (this.mode === 'search' && !MOBILE.matches);
+    const inverse = this.theme === 'transparent' && overPhoto && !this.#scrolled && !this.#megaOpen;
     this.shadowRoot.querySelector('.navbar').classList.toggle('over-photo', inverse);
     for (const link of this.querySelectorAll('arq-nav-link')) link.theme = inverse ? 'inverse' : 'default';
+    // Lupa y menú: Dark local sobre la foto
+    for (const button of this.shadowRoot.querySelectorAll('.search-open, .actions arq-icon-button')) {
+      if (inverse) button.setAttribute('data-arq-theme', 'dark');
+      else button.removeAttribute('data-arq-theme');
+    }
   }
 
   // ── Modos ────────────────────────────────────────────────────────

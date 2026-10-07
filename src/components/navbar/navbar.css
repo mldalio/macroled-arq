@@ -67,10 +67,10 @@
   color: var(--arq-color-text-inverse);
 }
 
-.over-photo .search-open,
-.over-photo .actions arq-icon-button {
-  color: var(--arq-color-icon-inverse);
-}
+/* Lupa y menú sobre la foto: van en Dark local (data-arq-theme="dark", lo
+   pone navbar.js), como el button sobre fotos (DESIGN.md §8 · Reutilización).
+   Así el ícono, el hover y el anillo de foco son claros u oscuros según
+   corresponde, sin el cuadrado claro de color/surface/hover en Light. */
 
 .logo {
   flex: none;
