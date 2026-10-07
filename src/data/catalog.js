@@ -105,8 +105,10 @@ function meta(group) {
 const FINISH_FIELDS = Object.keys(ATTRIBUTES).filter((field) => ATTRIBUTES[field].control === 'swatches');
 const finishes = (group) => [...new Set(group.variants.flatMap((v) => FINISH_FIELDS.map((field) => v.values[field])).filter(hasValue))];
 
+// Las fotos son de la variante que muestra la card; sin fotos propias, la card
+// muestra el fondo neutro con el nombre (ver variantDetails).
 function productCard(group, variant = group.defaultVariant, withSku = false) {
-  const images = { ...group.defaultVariant.images, ...pick(variant.images) };
+  const images = pick(variant.images);
   return {
     id: group.id,
     sku: variant.sku,
@@ -222,13 +224,16 @@ export async function getProduct(groupId) {
 
 const unique = (value) => [...new Set([value ?? []].flat().filter(hasValue))];
 
-/** Datos de variants-table: una fila por SKU del grupo (columnas en attributes.js). */
+/**
+ * Datos de variants-table: una fila por SKU del grupo (columnas en attributes.js).
+ * Un SKU sin foto propia muestra el neutro, sin la del predeterminado (como la
+ * galería, decisiones.md 2026-10-07): así se ve qué falta cargar.
+ */
 function glossary(group) {
-  const fallback = group.defaultVariant.images?.studio ?? null;
   return {
     columns: GLOSSARY_COLUMNS.filter(({ field }) => group.variants.some((v) => hasValue(v.values[field]))).map(({ field, label }) => ({ key: field, label })),
     filters: group.variantAttributes.map((key) => ({ key, label: attributeInfo(key).label, swatches: attributeInfo(key).control === 'swatches' })),
-    rows: group.variants.map((v) => ({ sku: v.sku, thumb: v.images?.studio ?? fallback, attributes: v.values, values: v.values })),
+    rows: group.variants.map((v) => ({ sku: v.sku, thumb: v.images?.studio ?? null, attributes: v.values, values: v.values })),
   };
 }
 
@@ -252,7 +257,7 @@ export async function getDownloadsTable() {
     filters: fields.map((key) => ({ key, label: attributeInfo(key).label, swatches: attributeInfo(key).control === 'swatches' })),
     rows: variants.map(({ group, variant }) => ({
       sku: variant.sku,
-      thumb: variant.images?.studio ?? group.defaultVariant.images?.studio ?? null,
+      thumb: variant.images?.studio ?? null,
       search: [group.name, group.collectionData?.name].filter(Boolean).join(' '),
       attributes: variant.values,
       values: variant.values,
@@ -318,14 +323,15 @@ function downloads(variant) {
 
 /**
  * Lo que cambia con la variante: descripción, galería, especificaciones por
- * sección y descargas. Las imágenes que faltan salen de la predeterminada.
+ * sección y descargas. Una variante sin fotos propias no toma las de la
+ * predeterminada (serían de otro color o tamaño): la galería queda vacía y se
+ * ve el fondo neutro (decisiones.md, 2026-10-07 · Base de datos sin IDs).
  */
 export function variantDetails(group, sku) {
   const variant = group.variants.find((v) => v.sku === sku) ?? group.defaultVariant;
   const own = pick(variant.images);
-  const base = pick(group.defaultVariant.images);
-  const gallery = own.gallery ?? base.gallery ?? [own.studio ?? base.studio].filter(Boolean);
-  const galleryOn = own.galleryOn ?? (own.gallery ? [] : base.galleryOn ?? []);
+  const gallery = own.gallery ?? [own.studio].filter(Boolean);
+  const galleryOn = own.galleryOn ?? [own.studioOn ?? null];
   return {
     sku: variant.sku,
     description: variant.description,

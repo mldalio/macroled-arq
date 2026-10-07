@@ -38,6 +38,7 @@ class ArqProductGallery extends ArqElement {
   #images = [];
   #index = 0;
   #dark = false;
+  #received = false; // ya llegaron los datos: antes no se oculta la imagen del HTML
 
   get images() {
     return this.#images;
@@ -45,6 +46,7 @@ class ArqProductGallery extends ArqElement {
 
   set images(list) {
     this.#images = Array.isArray(list) ? list.filter((image) => image && image.src) : [];
+    this.#received = true;
     this.#index = 0;
     if (this.isConnected) this.#render();
   }
@@ -94,6 +96,9 @@ class ArqProductGallery extends ArqElement {
       if (img.getAttribute('src') !== src) img.src = src;
       img.alt = current.alt ?? '';
     }
+    // Sin imágenes (variante sin fotos): se ve el fondo del marco. Estilo en
+    // línea porque el <img> está en el DOM de la página (Webflow le da display).
+    if (img && this.#received) img.style.display = current ? '' : 'none';
     const row = this.shadowRoot.querySelector('.thumbs');
     row.hidden = images.length < 2;
     if (row.hidden) {

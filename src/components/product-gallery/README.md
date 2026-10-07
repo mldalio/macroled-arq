@@ -48,5 +48,6 @@ gallery.images = [
 ## Pendientes
 
 - `TODO` (diseño) En Figma las miniaturas están a 20 del borde de la imagen y no hay token: se usa `space/padding/lg` (decisión 2026-10-02).
-- `TODO` (datos) Qué columnas forman `images` y en qué orden. Propuesta del documento de estructura: `IMG_MAIN`, `IMG_AMBIENT_1`, `IMG_PERS_1`, `IMG_PERS_2`, `IMG_DETAIL_1`, `IMG_DETAIL_2` (vacías y repetidas se omiten); `srcOn` desde `IMG_MAIN_ON` e `IMG_AMBIENT_1_ON`. Los `alt` todavía no tienen campo.
+- Orden de `images`: main, ambient_1, front, back, left, right, pers_1, pers_2, detail_1, detail_2 (las que existen), con `srcOn` desde su versión `_on` (`docs/typesense-schema.md`). Con `images` vacía (variante sin fotos), la imagen grande se oculta y se ve el fondo del marco; antes de recibir `images` no se oculta la del HTML.
+- `TODO` (datos) Los `alt` todavía no tienen campo.
 - En Mobile el alto de la miniatura sale 61 (76 × 4/5); en Figma es 60.

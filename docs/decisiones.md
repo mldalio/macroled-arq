@@ -516,6 +516,19 @@ ArqAccordionItem.define();
 - Sobre la foto, la lupa y el menú (icon-button) van en Dark local (`data-arq-theme="dark"`, lo pone el navbar), como el button sobre fotos: en Light su hover `color/surface/hover` era un cuadrado claro que tapaba el ícono inverso.
 - El menú mobile y el mega-menu siguen pasando la barra a Default. En Figma, las variantes Transparent de Menu y Products quedaron iguales a las Default, y la ficha `doc/navbar` está actualizada.
 
+## 2026-10-07 · Base de datos sin IDs
+
+Reemplaza a 2026-10-02 · Base de datos (estructura v5) en cómo se identifican productos y colecciones. Detalle de campos e imágenes: `docs/typesense-schema.md`.
+
+- **Sin `PRODUCT_GROUP_ID` ni `COLLECTION_ID`** (pedido del equipo: no sumar columnas a la hoja si otra sirve). Un producto son las filas con el mismo `product_name`; su id sale del nombre (`kanu-jardin`) y es el slug de la ficha y del ítem del CMS. Si cambia el nombre, cambia la URL: para renombrar sin perderla habría que sumar un id.
+- **Colecciones:** una fila propia (`product_type` «Colección», SKU `col-<id>`) con sus textos e imágenes; su `familia` lista las familias que reúne. COLLECTION_ID, COLLECTION_NAME, IS_COLLECTION_DEFAULT, COLLECTION_APPLICATIONS y las columnas `_REFS` ya no se usan.
+- **Accesorios** (frame `ficha-accesorios/productos`, `1498:19001`, que ahora sí entra en el alcance): productos con `product_type` «Accesorio» y ficha propia; `compatible_with` dice con qué producto se usan. No entran en las colecciones. Las secciones de la ficha (requeridos, compatibles) y su componente se definen más adelante.
+- **Encabezados de la hoja = nombres de campo** de Typesense. La sincronización (n8n) pasa cada columna con su nombre y arma las listas `multimagen_*` con posición fija: una foto que falta queda como `""` en su lugar.
+- **Galería de la ficha:** main, ambient_1, front, back, left, right, pers_1, pers_2, detail_1, detail_2; con Iluminar, cada una a su `_on`. Una variante sin fotos propias muestra el fondo neutro, no las del predeterminado. Lo mismo la miniatura de su fila en el glosario y en Descargas: así se ve qué falta cargar.
+- **CMS de Webflow:** solo el ítem de cada producto y colección (nombre y slug), para que exista su URL. Todo el resto, textos incluidos, viene de Typesense. TODO (código): hoy la ficha y la colección leen la descripción corta, el story, la inspiración y los textos de colección del slot del CMS; tienen que tomarlos de los datos.
+- **Navegación:** ambiente = `macrofamilia`, aplicación = `subfamilia`.
+- `VITE_DATA_SOURCE=typesense` en desarrollo; `mock` y `mixto` siguen disponibles.
+
 ## Pendientes
 
 Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe la decisión en su sección. El grupo entre paréntesis es el del `TODO` en el código.

@@ -9,14 +9,15 @@
 // ?query, para poder navegar. Los del HTML se cambian al insertarlo; los que
 // arman los componentes (cards, breadcrumb), al hacer clic.
 //
-// Ficha: en Webflow cada grupo tiene su ítem del CMS. En la demo, ?group=<id>
-// hace de ítem: cambia data-group y los textos del embed por los del catálogo
-// de ejemplo (demo/fixtures/catalogo.json). Colección: lo mismo con
+// Ficha: en Webflow cada grupo tiene su ítem del CMS, que imprime los textos
+// indexables. En la demo, el catálogo activo (VITE_DATA_SOURCE: Typesense,
+// mixto o el ejemplo) hace de ítem: ?group=<id> cambia data-group, y los
+// textos del embed se cambian por los del grupo. Colección: lo mismo con
 // ?collection=<id>.
 
 import '/src/main.js';
 import '/demo/demo-inspect.js';
-import catalog from '/demo/fixtures/catalogo.json';
+import { getProduct, getCollection } from '/src/data/catalog.js';
 
 const pages = import.meta.glob('/src/pages/*.html', { query: '?raw', import: 'default' });
 const DEMOS = { '/arq': 'home', '/arq/productos': 'productos', '/arq/contacto': 'contacto', '/arq/comparativa': 'comparativa', '/arq/descargas': 'descargas' };
@@ -41,12 +42,12 @@ function demoHref(href) {
 }
 
 // Simula el ítem del CMS de otra colección (solo demo)
-function cmsCollection(content) {
-  const id = new URLSearchParams(location.search).get('collection');
+async function cmsCollection(content) {
   const page = content.querySelector('arq-coleccion');
-  if (!id || !page) return;
+  if (!page) return;
+  const id = new URLSearchParams(location.search).get('collection') ?? page.dataset.collection;
   page.setAttribute('data-collection', id);
-  const collection = catalog.collections.find((c) => c.id === id);
+  const collection = (await getCollection(id).catch(() => null))?.collection;
   const name = collection?.name ?? id;
   content.querySelector('arq-breadcrumb-item[current]').textContent = name;
   content.querySelector('arq-page-header [slot="title"]').textContent = `Colección ${name}`;
@@ -60,12 +61,12 @@ function cmsCollection(content) {
 }
 
 // Simula el ítem del CMS de otro grupo (solo demo)
-function cmsItem(content) {
-  const id = new URLSearchParams(location.search).get('group');
+async function cmsItem(content) {
   const ficha = content.querySelector('arq-ficha-producto');
-  if (!id || !ficha) return;
+  if (!ficha) return;
+  const id = new URLSearchParams(location.search).get('group') ?? ficha.dataset.group;
   ficha.setAttribute('data-group', id);
-  const group = catalog.groups.find((g) => g.id === id);
+  const group = (await getProduct(id).catch(() => null))?.group;
   const set = (selector, text) => {
     const element = ficha.querySelector(selector);
     if (!element) return;
@@ -93,8 +94,8 @@ if (load) {
     const demo = demoHref(link.getAttribute('href'));
     if (demo) link.setAttribute('href', demo);
   }
-  cmsItem(template.content);
-  cmsCollection(template.content);
+  await cmsItem(template.content);
+  await cmsCollection(template.content);
   document.body.replaceChildren(template.content);
 } else document.body.textContent = `No existe src/pages/${name}.html`;
 

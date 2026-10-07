@@ -7,7 +7,8 @@
 // - filter: es filtro en los listados (filter-panel). Solo los campos facet del
 //   índice real pueden filtrar en Typesense (docs/typesense-schema.md).
 // - control: selector de variante: 'swatches' (acabado) o 'tiles' (el resto).
-// - column: nombre de la columna en la hoja, como llega en variant_attributes.
+// - column: nombre anterior de la columna en la hoja. variant_attributes ahora
+//   trae nombres de campo; column queda para el catálogo mixto (demo/fixtures/completar.js).
 //
 // El orden de las claves es el orden en que se muestran.
 // TODO (diseño): confirmar las secciones y qué campos van en cada una. Las
@@ -102,18 +103,19 @@ export function specSections(values) {
 const hasValue = (value) => value !== undefined && value !== null && String(value).trim() !== '' && value !== '-';
 
 /**
- * Campos de los selectores de variante a partir de variant_attributes
- * («Color de carcasa, Altura» → ['color_carcasa', 'altura']). Una columna sin
- * entrada en ATTRIBUTES se omite y avisa en consola.
+ * Campos de los selectores de variante a partir de variant_attributes, con
+ * nombres de campo («color_carcasa, altura» → ['color_carcasa', 'altura']).
+ * También acepta el nombre de columna anterior («Color de carcasa»), que usa el
+ * catálogo de ejemplo. Un campo sin entrada en ATTRIBUTES se omite y avisa en consola.
  */
 export function variantFields(variantAttributes) {
-  const columns = Array.isArray(variantAttributes) ? variantAttributes : String(variantAttributes ?? '').split(',');
-  return columns
-    .map((column) => column.trim())
+  const names = Array.isArray(variantAttributes) ? variantAttributes : String(variantAttributes ?? '').split(',');
+  return names
+    .map((name) => name.trim())
     .filter(Boolean)
-    .map((column) => {
-      const field = Object.keys(ATTRIBUTES).find((key) => ATTRIBUTES[key].column === column);
-      if (!field) console.warn(`[arq] variant_attributes: la columna «${column}» no está en src/data/attributes.js`);
+    .map((name) => {
+      const field = ATTRIBUTES[name] ? name : Object.keys(ATTRIBUTES).find((key) => ATTRIBUTES[key].column === name);
+      if (!field) console.warn(`[arq] variant_attributes: el campo «${name}» no está en src/data/attributes.js`);
       return field;
     })
     .filter(Boolean);

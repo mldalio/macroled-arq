@@ -1,38 +1,75 @@
 # Typesense · esquema de la colección de Arq
 
-Campos disponibles en Typesense. Los componentes y `src/data/` usan **solo** los campos de esta tabla: si un campo no está acá, no existe.
+Campos disponibles en Typesense. Los componentes y `src/data/` usan **solo** los campos de este documento: si un campo no está acá, no existe.
 
-- Fuente: Google Sheets «Macroled ARQ - Base de datos», pestaña Propuesta → Typesense. Estructura y reglas de cada columna: `docs/estructura-base-de-datos.md` (versión 5, datos tentativos).
-- **Un documento por SKU.** Los SKU con el mismo `PRODUCT_GROUP_ID` forman un producto (una card, una ficha); los grupos con el mismo `COLLECTION_ID` forman una colección. Los datos de grupo y de colección se repiten iguales en sus filas.
+- Fuente: Google Sheets «Macroled ARQ - Base de datos - Final». Los **encabezados de la hoja son los nombres de campo** (`product_name`, `description`, `color_carcasa`…). La sincronización (n8n, fuera del repo) pasa cada columna con su mismo nombre.
+- **Un documento por fila**, `id` = `sku`. Estructura y decisiones: `docs/decisiones.md`, 2026-10-07 · Base de datos sin IDs.
 - En el front se usa solo la search-only key (ver `.env.example`).
-- **Estado:** el índice ya existe pero está incompleto. Lo que hay hoy está en **Estado del índice**; las tablas siguientes son la propuesta original (versión 5) y quedan como referencia de lo que falta.
+- El único archivo que conoce estos campos es `src/data/typesense-adapter.js` (los técnicos, `src/data/attributes.js`).
 
-## Estado del índice (2026-10-02)
+## Estado del índice (2026-10-07)
 
-Leído con la search-only key en `typesense.coresagroup.com`, colección `macroled_arq`. **132 documentos**, uno por SKU (`id` = `sku`). El acceso desde el front está en `src/data/typesense.js`.
+Colección `macroled_arq` en `typesense.coresagroup.com`: 139 documentos (132 SKU y 7 colecciones). Con fotos y textos de prueba: Kanu Jardín (SKU predeterminado) y la colección Kanu.
 
-**Campos que existen** (los nombres mandan sobre la propuesta de abajo):
+### Cómo se arma el catálogo
 
-| Grupo | Campos |
+| Qué | Cómo | Campo |
+| --- | --- | --- |
+| Producto (grupo) | Filas con el mismo nombre. El id (slug de la ficha y del CMS) sale del nombre: «Kanu Jardín» → `kanu-jardin` | `product_name` |
+| Fila no publicada | Sin nombre | `product_name` vacío |
+| SKU predeterminado | Un `true` por producto; si no hay, el primero | `is_group_default` (bool) |
+| Selectores de variante | Nombres de campo separados por coma: «color_carcasa, altura» | `variant_attributes` |
+| Colección | Fila con `product_type` «Colección» (SKU `col-<id>`). Su `familia` lista las familias que reúne («Tori, Mini Tori»); el id sale del nombre | `product_type`, `familia`, `product_name` |
+| Pertenencia a una colección | La colección cuya `familia` incluye la del producto. Los accesorios no entran. Una colección sin productos publicados no se muestra | `familia` |
+| Accesorio | `product_type` «Accesorio». Con qué producto se usa: su nombre | `compatible_with` |
+| Navegación | Ambiente = `macrofamilia` (Exterior · Interior); aplicación = `subfamilia`; tipo = `product_type` (Luminaria · Lámpara · Artefacto) | |
+
+### Imágenes: listas con posición fija
+
+Cada lista guarda siempre sus fotos en la misma posición; una foto que falta queda como `""` en su lugar. Una lista sin ninguna foto llega vacía (`[]`). La arma la sincronización a partir de las columnas `img_*` de la hoja.
+
+| Lista | Posiciones |
 | --- | --- |
-| Identificación | `id`, `sku`, `product_name`, `product_type`, `familia`, `macrofamilia`, `subfamilia`, `application`, `environment`, `collection_name`, `is_group_default`, `is_collection_default`, `variant_attributes` (texto: «Color de carcasa, Altura»), `nombre_origen` |
-| Textos | `description`, `product_story_text`, `product_inspiration_text`, `collection_intro_text`, `collection_description_text`, `escena_uso_sugerido` |
-| Imágenes y video | `multimagen_producto`, `multimagen_ambiente`, `multimagen_detalles`, `multimagen_perspectivas`, `multimagen_vistas` (listas), `video_inspiration` |
-| Descargas | `ies`, `cad`, `manual`, `fotometria` |
-| Técnicos | `altura`, `angulo_apertura`, `anti_high_volt`, `certificado_lm80`, `clase_proteccion`, `color_carcasa`, `conector`, `corriente_entrada`, `corriente_irrupcion`, `corriente_salida`, `cri`, `desviacion_color`, `dimeable`, `emc`, `factor_potencia`, `flujo_luminoso`, `frecuencia`, `garantia_pack`, `garantia_proveedor`, `grupo_seguridad_fotobiologica`, `instalacion`, `largo_cable`, `lumenes_lmw`, `marca_driver`, `marca_led`, `material_cuerpo`, `material_lente`, `max_lum_b16`, `max_lum_c10`, `max_lum_c16`, `no_flicker`, `on_off_switch`, `peso`, `potencia`, `proteccion_ik`, `proteccion_ip`, `protector_spd`, `sdcm`, `tamanio`, `td_distorsion_tonal`, `temperatura_color`, `temperatura_operacion`, `tension_pack`, `tension_proveedor`, `tension_salida`, `thd`, `tiempo_arranque`, `tiempo_irrupcion`, `tipo_driver`, `tipo_led`, `tipo_montaje`, `ugr`, `vida_util` |
+| `multimagen_producto` | 0 `img_main` · 1 `img_main_on` |
+| `multimagen_vistas` | 0 `img_front` · 1 `img_front_on` · 2 `img_back` · 3 `img_back_on` · 4 `img_left` · 5 `img_left_on` · 6 `img_right` · 7 `img_right_on` |
+| `multimagen_perspectivas` | 0 `img_pers_1` · 1 `img_pers_1_on` · 2 `img_pers_2` · 3 `img_pers_2_on` |
+| `multimagen_detalles` | 0 `img_detail_1` · 1 `img_detail_1_on` · 2 `img_detail_2` · 3 `img_detail_2_on` |
+| `multimagen_ambiente` | 0 `img_ambient_1` · 1 `img_ambient_1_on` · 2–5 `img_ambient_2` a `img_ambient_5` · 6 `img_ambient_6` · 7 `img_ambient_7` |
+| `multimagen_coleccion` | 0 `img_collection` · 1 `img_collection_on` · 2 `collection_description_image` |
+| `collection_gallery_images`, `collection_inspiration_images` | Largo variable, en el orden de la celda (URLs separadas por salto de línea o coma) |
 
-- **Facets** (filtros con cantidades): `familia`, `macrofamilia`, `subfamilia`, `potencia`, `temperatura_color`. No son facet: `product_type`, `environment`, `application`, `collection_name`, `is_group_default`, `proteccion_ip`, `color_carcasa`, `altura`, `variant_attributes`.
-- **Con datos:** `sku` (132), `potencia` (61), `cri` y `tamanio` (58), `familia`, `macrofamilia`, `subfamilia` y `product_type` (56), `emc`, `sdcm`, `thd` y `ugr` (54), `ies` (47), `variant_attributes` (11), `nombre_origen` (4). El resto está vacío en todos los documentos, incluidos `product_name`, `description`, todas las imágenes, `color_carcasa` y `altura`. 2 documentos con `is_group_default`.
-- Valores actuales: `macrofamilia` Exterior · Interior; `subfamilia` Jardín · Pared · Colgante; `familia` Tori, Douli, Kanu, Sento, Yoru, Nobu, Köen, Mini Tori; `product_type` Luminaria.
+Dónde se usa cada foto:
 
-**Diferencias con la propuesta (para quien arma la base):**
+| Lugar | Fotos | Con Iluminar |
+| --- | --- | --- |
+| product-card | Reposo `img_main` · hover `img_ambient_1` | `_on` de cada una; sin `_on`, la apagada |
+| Galería de la ficha | `img_main`, `img_ambient_1`, front, back, left, right, pers_1, pers_2, detail_1, detail_2 (las que existen) | Cada una a su `_on` |
+| Ficha: ambiente · descripción · inspiración | `img_ambient_2` a `5` · `img_ambient_6` · `img_ambient_7` (del SKU predeterminado) | No cambian |
+| Card de colección | `img_collection` | `img_collection_on` |
+| Página de colección | Galería, `collection_description_image`, inspiración | No cambian |
 
-- `TODO` **Falta `product_group_id`** (y `collection_id`): es el vínculo con el CMS y el slug de la ficha (AGENTS.md · Datos). Sin él no se pueden armar fichas, cards por grupo ni selectores de variante.
-- `TODO` Imágenes: el índice usa listas `multimagen_*` en lugar de las columnas `img_*`. Falta definir qué posición de cada lista es cada foto (estudio, contexto, luz encendida, galería).
-- `TODO` Navegación: ¿`macrofamilia` reemplaza a `environment` y `subfamilia` a `application`? ¿`familia` es la colección? Hasta confirmarlo, `src/data/` no los usa como tales.
-- `TODO` `variant_attributes` llega como texto, no como lista: `src/data/attributes.js` lo separa por comas y traduce cada columna a su campo.
-- `TODO` Tipos: los técnicos llegan como texto con unidad (`12W`, `10*60cm`, `-`). Para filtros por rango harían falta números.
-- No hay `sheet_order` (orden de la hoja).
+- Una variante sin fotos propias no toma las del predeterminado (serían de otro color o tamaño): se ve el fondo neutro.
+- La card de colección no cambia en hover: tiene solo foto de reposo (decidido así por ahora; DESIGN.md §8 pide cuatro imágenes).
+
+### Otros campos
+
+- Textos: `description` (por SKU), `product_story_text`, `product_inspiration_text`, `escena_uso_sugerido`, `collection_intro_text`, `collection_description_text`. `video_inspiration`.
+- Descargas: `ies`, `cad`, `manual`, `fotometria`.
+- Sin uso en el sitio todavía: `categoria`, `new` (bool), `nombre_origen`.
+- Técnicos: los de `src/data/attributes.js`, más `tension_pack`, `tension_salida`, `frecuencia`, `corriente_entrada`, `corriente_salida`, `marca_driver`, `anti_high_volt`, `on_off_switch`, `protector_spd`, `no_flicker`, `corriente_irrupcion`, `tiempo_irrupcion`, `clase_proteccion`, `max_lum_b16`, `max_lum_c10`, `max_lum_c16`, `td_distorsion_tonal`, `marca_led`, `tiempo_arranque`, `certificado_lm80`, `desviacion_color`, `grupo_seguridad_fotobiologica`, `conector`, `garantia_pack`, `instalacion`. Llegan como texto con unidad («12W», «50 cm», «-»).
+- Facets: `familia`, `macrofamilia`, `subfamilia`, `potencia`, `temperatura_color`, `angulo_apertura`.
+
+### Esquema y pendientes
+
+- Los campos de la versión anterior siguen como obligatorios (`optional: false`): la sincronización los manda siempre, vacíos si no hay dato. Los nuevos (`categoria`, `new`, `compatible_with`, `multimagen_coleccion`, `collection_gallery_images`, `collection_inspiration_images`) son opcionales. Se quitaron `application`, `collection_name`, `environment` e `is_collection_default`.
+- `TODO` (base): `altura` vacía en Tori y Sento (es lo que distingue sus variantes); `proteccion_ik` pierde el cero inicial (la hoja la toma como número).
+- `TODO` (seguridad): el `.env` de desarrollo usa una clave con permisos de escritura; antes de un release hace falta una search-only.
+
+---
+
+## Propuesta original (versión 5) · histórico
+
+Lo que sigue es la propuesta con la que se armó la base. **No es el estado actual**: no existen `product_group_id`, `collection_id` ni las columnas `img_*` como campos de Typesense. Queda como referencia de los usos de cada dato.
 
 ## Nombres de campo
 

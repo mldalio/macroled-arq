@@ -7,7 +7,7 @@
 | `catalog.js` | API de las páginas: `listProducts`, `listCollections`, `getProduct` + `variantDetails`, `getProductCards`, `getCollection`, `getCompare`, `searchProducts`, `getNavigation` y las URLs (`productHref`…) |
 | `source.js` | Elige la fuente: Typesense, mixto o el ejemplo (`VITE_DATA_SOURCE`, solo en `npm run dev`) |
 | `typesense.js` | Cliente de Typesense con la search-only key |
-| `typesense-adapter.js` | Documentos de Typesense → catálogo. Lo único que cambia cuando la base esté completa |
+| `typesense-adapter.js` | Documentos de Typesense → catálogo: grupos por nombre, colecciones, accesorios e imágenes por posición (`docs/typesense-schema.md`) |
 | `attributes.js` | Etiquetas, secciones y filtros de los campos técnicos |
 | `variants.js` | Selectores de variante (funciones puras) |
 
