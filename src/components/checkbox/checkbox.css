@@ -44,9 +44,10 @@
   color: var(--arq-color-text-secondary);
 }
 
-/* State=Hover */
+/* State=Hover: borde border/strong; la caja es border-box, no cambia de tamaño */
 .row:hover .box {
-  border-color: var(--arq-color-icon-primary);
+  border-width: var(--arq-border-strong);
+  border-color: var(--arq-color-border-strong);
 }
 
 .row:hover .label {
@@ -71,6 +72,7 @@
 
 :host([disabled]) .box,
 :host([disabled]) .row:hover .box {
+  border-width: var(--arq-border-default);
   border-color: var(--arq-color-icon-disabled);
 }
 

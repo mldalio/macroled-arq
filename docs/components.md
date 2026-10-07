@@ -226,6 +226,8 @@ Size: Default (role/body, 14) o Large (role/body-lg, 16) — en lugar de sobresc
 
 Marcado: caja llena en color/action/primary, sin tilde. Label en color/text/secondary (primary en hover).
 
+Hover sin marcar: borde de la caja border/strong (2 px) en color/border/strong; el tamaño no cambia.
+
 ## choice-chip
 
 - Figma: [1113-2485](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1113-2485)

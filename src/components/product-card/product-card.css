@@ -61,8 +61,10 @@
   opacity: 1;
 }
 
+/* Hover solo sobre la imagen (.is-media-hover lo pone el JS): sobre el
+   nombre o "Comparar" la imagen no cambia */
 @media (hover: hover) {
-  .card.has-hover:has(.card-link:hover) .hover {
+  .card.has-hover.is-media-hover .hover {
     opacity: 1;
   }
 }
