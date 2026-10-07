@@ -31,7 +31,7 @@ Checkbox con label. Se usa en las opciones de filter-row (panel de filtros, Size
 | Parte | Token |
 | --- | --- |
 | Caja · control | `icon/sm` (12) dentro de `icon/md` (16) · `radius/control` |
-| Caja sin marcar | fondo `color/surface/default`, borde `border/default` en `color/icon/tertiary` (Hover `color/icon/primary`) |
+| Caja sin marcar | fondo `color/surface/default`, borde `border/default` en `color/icon/tertiary` (Hover `border/strong` en `color/border/strong`, sin cambiar el tamaño) |
 | Caja marcada | `color/action/primary` (Hover `color/action/primary-hover`) |
 | Disabled | `color/icon/disabled` · texto `color/text/disabled` |
 | Label | `color/text/secondary` (Hover `color/text/primary`) · `role/body` (Large `role/body-lg`) |
