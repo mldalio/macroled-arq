@@ -77,7 +77,7 @@ Arq vive en `macroled.com.ar/arq`, dentro del mismo sitio de Webflow que el e-co
 - **Atributos:** `data-arq-*` (el tema va en `data-arq-theme="dark"`). **Eventos:** `arq:<nombre>` (`arq:change`). **localStorage:** `arq:<clave>`. **@keyframes:** `arq-<nombre>`. **JS:** un único global, `window.Arq`.
 - **Slots:** el contenido que se pasa por slot vive en el DOM de Webflow y hereda sus estilos. Lo que tiene que verse igual en cualquier sitio va dentro del componente, no por slot.
 - **Tipografía:** Albert Sans se carga a nivel página, no dentro del Shadow DOM.
-- **SEO:** el template del CMS imprime h1 y descripción en el HTML y los pasa por slot; el resto lo trae el componente desde Typesense.
+- **SEO:** el template del CMS imprime el `<h1>` (nombre) en el HTML y lo pasa por slot; el resto, textos incluidos, lo trae el componente desde Typesense y lo escribe en el DOM de la página.
 - **URLs:** las páginas de colección del CMS se anidan en la carpeta `/arq` (CMS Folders de Webflow). Una carpeta y una colección no pueden compartir slug en el mismo nivel.
 - En Figma no se usa el prefijo: componentes, variantes, props y variables mantienen su nombre. El prefijo se agrega en código; el code syntax de cada variable ya lo trae (`var(--arq-…)`).
 

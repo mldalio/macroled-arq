@@ -11,7 +11,7 @@ Reglas para todas las IAs que trabajan en este repo (Claude, Codex, Cursor u otr
 
 - Sitio en `macroled.com.ar/arq`. Se desarrolla en este repo y se carga dentro de páginas de Webflow que comparten sitio y dominio con el e-commerce de Macroled.
 - Las páginas de colección del CMS se anidan en la carpeta `/arq` de Webflow.
-- **Datos:** Google Sheets es la fuente maestra y alimenta Typesense, con un documento por SKU (estructura en `docs/estructura-base-de-datos.md`). Webflow CMS tiene dos colecciones, Productos y Colecciones, cargadas a mano, y guarda solo lo que Google necesita leer en el HTML. **Productos tiene un ítem por grupo** (`PRODUCT_GROUP_ID`): nombre, SKU predeterminado, slug, meta title, meta description, imagen principal, descripción corta y textos editoriales. Colecciones tiene un ítem por colección (`COLLECTION_ID`) con los campos equivalentes y sus textos editoriales. URLs en `docs/urls.md`; decisiones en `docs/decisiones.md` (2026-10-02 · Base de datos).
+- **Datos:** Google Sheets es la fuente maestra y alimenta Typesense, con un documento por SKU (campos e imágenes en `docs/typesense-schema.md`). Webflow CMS tiene dos colecciones, Productos y Colecciones, cargadas a mano, **solo con nombre y slug**: el ítem existe para que exista la URL. **Productos tiene un ítem por grupo** y Colecciones uno por colección. Todo el resto, textos incluidos, lo trae el componente desde Typesense. URLs en `docs/urls.md`; decisiones en `docs/decisiones.md` (2026-10-07 · Base de datos sin IDs).
 - **Formulario de contacto:** webhook de n8n.
 
 ## Fuente de verdad
@@ -108,17 +108,17 @@ dist/arq.js · dist/arq.css    ← única salida que carga Webflow
 - En el front, solo la **search-only key** de la colección de Arq. Nunca escribir, commitear ni pedir la admin key.
 - Campos disponibles: `docs/typesense-schema.md`. **No inventar campos.**
 - La **admin key** de Typesense solo la usa la sincronización Sheets → Typesense, fuera del repo y fuera del front.
-- El template del CMS imprime el grupo y el componente busca sus SKU:
+- El template del CMS imprime el grupo y el nombre; el componente busca sus SKU y sus textos:
 
 ```html
 <arq-ficha-producto data-group="kanu-jardin">
-  <h1>Kanu Jardín</h1>          <!-- CMS: indexable -->
-  <p>Descripción corta</p>
+  <h1 slot="title">Kanu Jardín</h1>   <!-- CMS: nombre -->
 </arq-ficha-producto>
 ```
 
-- **Grupo:** `PRODUCT_GROUP_ID` es el vínculo entre Webflow CMS y Typesense, y el slug de la ficha. La variante elegida va en `?sku=`; sin parámetro, el SKU predeterminado del grupo.
+- **Grupo:** las filas con el mismo `product_name`. Su id es el nombre en minúsculas con guiones (`kanu-jardin`): es el vínculo entre Webflow CMS y Typesense, y el slug de la ficha. Colección: lo mismo con el nombre de su fila «Colección» (`kanu`). La variante elegida va en `?sku=`; sin parámetro, el SKU predeterminado del grupo.
 - **SKU:** el criterio de formato está pendiente: tratarlo como identificador opaco, tal como viene de Sheets (puede tener espacios o paréntesis). No usarlo directo como `id` HTML ni como slug.
+- **Textos:** solo de los datos. Si falta un dato, esa parte no se muestra (sin texto de respaldo en el HTML), para ver qué falta en la base.
 - **Listados:** salen de Typesense con una sola consulta; `src/data/` agrupa, filtra y cuenta (una card por grupo, o por colección en Colecciones). No se usa Collection List de Webflow.
 - **product-card:** cada producto trae cuatro imágenes (estudio y contexto, con la luz apagada y encendida). Reglas de uso en DESIGN.md §8 · Imágenes de product-card.
 - Acabados: Sheets trae el nombre como texto; se normaliza a slug en inglés con un único archivo de mapeo. Si falta la imagen, mostrar un neutro con el nombre.
