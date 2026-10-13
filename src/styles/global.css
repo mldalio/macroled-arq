@@ -26,8 +26,17 @@
   transition-timing-function: var(--arq-illumination-bg-easing);
 }
 
+/* ── Hover de la card (prueba) ──────────────────────────────────── */
+/* Fundido más lento y parejo entre las dos fotos que el motion/duration/slow
+   del sistema. TODO: pasar a tokens si se aprueba. */
+:root {
+  --arq-hover-image-duration: 500ms;
+  --arq-hover-image-easing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 @media (prefers-reduced-motion: reduce) {
   :root {
+    --arq-hover-image-duration: 0ms;
     --arq-illumination-image-duration: 0ms;
     --arq-illumination-bg-duration: 0ms;
   }
