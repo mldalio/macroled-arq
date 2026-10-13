@@ -108,8 +108,24 @@ class ArqProductCard extends ArqElement {
 
   /** Iluminar (src/base/theme.js): pasa a las imágenes encendidas. */
   themeChanged(dark) {
+    const root = this.shadowRoot;
+    const base = root.querySelector('.base');
+    const hover = root.querySelector('.hover');
+    const hoverActive = Number.parseFloat(getComputedStyle(hover).opacity) > 0.5 && hover.classList.contains('loaded');
+    const visible = hoverActive ? hover : base;
+    const previousSrc = visible.currentSrc || visible.getAttribute('src');
+    const nextSrc = hoverActive
+      ? (dark ? this.imageHoverLit || this.imageHover : this.imageHover)
+      : (dark ? this.imageLit || this.image : this.image);
+    const overlay = previousSrc && nextSrc && previousSrc !== new URL(nextSrc, location.href).href
+      ? this.#createThemeOverlay(root.querySelector('.card-media'), previousSrc)
+      : null;
     this.#dark = dark;
     this.#renderImages();
+    if (overlay) {
+      const nextImage = hoverActive ? hover : base;
+      this.#fadeThemeOverlay(overlay);
+    }
   }
 
   update(changed) {
@@ -163,6 +179,11 @@ class ArqProductCard extends ArqElement {
     this.#renderFallback(!baseSrc);
     root.querySelector('.card').classList.toggle('has-hover', Boolean(baseSrc && hoverSrc));
     this.#setSrc(hover, this.#hoverWanted ? hoverSrc : null);
+    // Iluminar: la imagen de estudio del otro modo queda en caché, así el fundido
+    // arranca al instante y termina junto con el fondo. TODO (diseño): §8 pide
+    // cargarla al activar Iluminar; confirmar el precargado.
+    const otherSrc = this.#dark ? this.image : this.imageLit;
+    if (baseSrc && otherSrc && otherSrc !== baseSrc) new Image().src = otherSrc;
   }
 
   #setSrc(img, src) {
@@ -170,6 +191,30 @@ class ArqProductCard extends ArqElement {
     img.classList.remove('loaded');
     if (src) img.src = src;
     else img.removeAttribute('src');
+  }
+
+  #createThemeOverlay(media, src) {
+    media.querySelector('.theme-transition')?.remove();
+    const overlay = document.createElement('img');
+    overlay.className = 'theme-transition';
+    overlay.src = src;
+    overlay.alt = '';
+    overlay.setAttribute('aria-hidden', 'true');
+    media.append(overlay);
+    return overlay;
+  }
+
+  // El fundido arranca en el mismo instante que el cambio de fondo: el reflow
+  // fija opacity 1 como punto de partida y la transición empieza de inmediato.
+  #fadeThemeOverlay(overlay) {
+    if (!overlay.isConnected) return;
+    overlay.addEventListener('transitionend', (event) => {
+      if (event.propertyName === 'opacity') overlay.remove();
+    }, { once: true });
+    void overlay.offsetWidth;
+    overlay.classList.add('fade-out');
+    const duration = getComputedStyle(overlay).transitionDuration.split(',')[0];
+    if (!Number.parseFloat(duration)) overlay.remove();
   }
 
   #renderFallback(show) {

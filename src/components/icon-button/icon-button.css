@@ -24,6 +24,10 @@
   border-radius: var(--arq-radius-control);
   background: var(--arq-color-surface-transparent);
   color: inherit;
+  /* Hereda el color: sin transición de color propia (se sumaría a la del padre). */
+  transition-property: background-color, border-color, outline-color;
+  transition-duration: var(--arq-motion-duration-fast);
+  transition-delay: 0s;
   cursor: pointer;
   -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
 }

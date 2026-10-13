@@ -40,6 +40,9 @@
   width: var(--arq-space-gap-sm);
   height: var(--arq-border-strong);
   background: var(--arq-color-border-strong);
+  transition-property: background-color;
+  transition-duration: var(--arq-theme-text-duration, var(--arq-motion-duration-fast));
+  transition-delay: var(--arq-theme-text-delay, 0s);
 }
 
 .current .indicator {

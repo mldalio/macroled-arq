@@ -7,11 +7,12 @@
   min-width: 0;
 }
 
-/* Desktop: lista de grupos, fondo color/surface/default, padding lateral
+/* Desktop: lista de grupos, fondo transparente para compartir el fondo de
+   la página durante Iluminar, padding lateral
    space/padding/md. El ancho lo da la columna del listado (240 en Figma).
    TODO (listados): token del ancho de la columna al armar la grilla. */
 .nav {
-  background: var(--arq-color-surface-default);
+  background: var(--arq-color-surface-transparent);
 }
 
 .trigger {
@@ -54,7 +55,7 @@
     margin: 0;
     padding: var(--arq-space-padding-md);
     border: 0;
-    background: var(--arq-color-surface-default);
+    background: var(--arq-color-surface-transparent);
     color: var(--arq-color-text-primary);
     font: inherit;
     text-align: start;

@@ -8,6 +8,10 @@
   min-width: 0;
   padding: 0 var(--page-gutter) var(--arq-space-section-xl);
   background: var(--arq-color-bg-default);
+  transition-property: background-color;
+  transition-duration: var(--arq-illumination-bg-duration);
+  transition-delay: 0s;
+  transition-timing-function: var(--arq-illumination-bg-easing);
 }
 
 .layout {
@@ -53,7 +57,7 @@
     position: sticky;
     top: 0;
     z-index: 3;
-    background: var(--arq-color-bg-default);
+    background: var(--arq-color-surface-transparent);
   }
 
   .nav {

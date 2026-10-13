@@ -2,9 +2,30 @@
    --arq-* (dist/arq.css) llegan con src/main.js. Esto imita el estilo base de
    Webflow (body sin margen, Albert Sans) y no sale de la demo. */
 
+/* Imita el fondo y el texto del sitio de Webflow. El fondo de las pantallas con
+   Iluminar lo pone <main class="arq-page"> (src/styles/global.css), que sí viaja
+   en el embed. */
+html {
+  background: var(--arq-color-bg-default);
+  transition-property: background-color;
+  transition-duration: var(--arq-illumination-bg-duration);
+  transition-timing-function: var(--arq-illumination-bg-easing);
+}
+
 body {
   margin: 0;
   font-family: 'Albert Sans', sans-serif;
-  background: var(--arq-color-bg-default);
   color: var(--arq-color-text-primary);
+  /* El texto arranca después del fondo y funde despacio. */
+  transition-property: color;
+  transition-duration: var(--arq-theme-text-duration, 0s);
+  transition-delay: var(--arq-theme-text-delay, 0s);
+  transition-timing-function: var(--arq-theme-text-easing, linear);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  body {
+    transition: none;
+  }
 }

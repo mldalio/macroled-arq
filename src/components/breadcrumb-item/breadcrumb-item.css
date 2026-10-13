@@ -19,6 +19,7 @@
 .label {
   overflow: hidden;
   color: inherit;
+  transition: none; /* hereda el color de .item: no se suma otra transición */
   text-decoration: none;
   text-overflow: ellipsis;
   white-space: nowrap;

@@ -2,3 +2,33 @@
    Nada de html, body ni selectores globales: solo variables --arq-*.
    Albert Sans se carga a nivel página, no acá (ver docs/decisiones.md). */
 @import './tokens.css';
+
+/* ── Iluminar (prueba) ──────────────────────────────────────────── */
+/* Duración y curva del encendido/apagado: imágenes y fondos (más corta) con la misma curva. TODO: pasar a tokens del sistema si se aprueba. */
+:root {
+  --arq-illumination-image-duration: 1200ms;
+  --arq-illumination-bg-duration: 2100ms;
+  /* Fondo: curva suave de entrada y salida. Imagen: sale rápido y se asienta,
+     para que el cruce de fotos termine visualmente junto con el fondo. */
+  --arq-illumination-bg-easing: cubic-bezier(0.45, 0, 0.2, 1);
+  --arq-illumination-image-easing: cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+/* Fondo de la página en las pantallas con Iluminar (Productos, Colecciones): va
+   en el <main> del embed (class="arq-page"), no en body ni en html. Lo que queda
+   transparente (page-header) deja ver esta capa, que funde en el mismo cuadro que
+   catalog-listing y el navbar; el fondo del lienzo (html) se actualiza uno o dos
+   cuadros después y dejaba una franja. */
+.arq-page {
+  background: var(--arq-color-bg-default);
+  transition-property: background-color;
+  transition-duration: var(--arq-illumination-bg-duration);
+  transition-timing-function: var(--arq-illumination-bg-easing);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --arq-illumination-image-duration: 0ms;
+    --arq-illumination-bg-duration: 0ms;
+  }
+}

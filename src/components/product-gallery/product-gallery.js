@@ -39,6 +39,7 @@ class ArqProductGallery extends ArqElement {
   #index = 0;
   #dark = false;
   #received = false; // ya llegaron los datos: antes no se oculta la imagen del HTML
+  #transitionImage = null;
 
   get images() {
     return this.#images;
@@ -62,8 +63,10 @@ class ArqProductGallery extends ArqElement {
 
   /** Iluminar (src/base/theme.js): pasa a las versiones encendidas. */
   themeChanged(dark) {
+    const current = this.#images[this.#index];
+    const previousSrc = current ? this.#src(current) : null;
     this.#dark = dark;
-    this.#render();
+    this.#render(previousSrc);
   }
 
   /** Muestra en grande la imagen `index` de images. */
@@ -87,14 +90,21 @@ class ArqProductGallery extends ArqElement {
     return img;
   }
 
-  #render() {
+  #render(previousSrc = null) {
     const images = this.#images;
     const current = images[this.#index];
     const img = this.#mainImage();
     if (img && current) {
       const src = this.#src(current);
-      if (img.getAttribute('src') !== src) img.src = src;
+      if (img.getAttribute('src') !== src) {
+        if (previousSrc && img.getAttribute('src') === previousSrc && src !== previousSrc) this.#crossfade(img, previousSrc, src);
+        else img.src = src;
+      }
       img.alt = current.alt ?? '';
+      // Iluminar: la versión del otro modo ya queda en caché, así el fundido
+      // arranca al instante y termina junto con el fondo.
+      const other = this.#dark ? current.src : current.srcOn;
+      if (other && other !== src) new Image().src = other;
     }
     // Sin imágenes (variante sin fotos): se ve el fondo del marco. Estilo en
     // línea porque el <img> está en el DOM de la página (Webflow le da display).
@@ -115,6 +125,28 @@ class ArqProductGallery extends ArqElement {
       thumb.alt = image.alt ?? '';
       thumb.selected = i === this.#index;
     });
+  }
+
+  #crossfade(img, previousSrc, nextSrc) {
+    this.#transitionImage?.remove();
+    const previous = document.createElement('img');
+    previous.className = 'theme-transition';
+    previous.src = previousSrc;
+    previous.alt = '';
+    previous.setAttribute('aria-hidden', 'true');
+    this.#transitionImage = previous;
+    this.shadowRoot.querySelector('.image').append(previous);
+    img.src = nextSrc;
+
+    // El fundido arranca en el mismo instante que el cambio de fondo (la
+    // versión nueva ya está en caché por la precarga).
+    previous.addEventListener('transitionend', (event) => {
+      if (event.propertyName === 'opacity') previous.remove();
+    }, { once: true });
+    void previous.offsetWidth;
+    previous.classList.add('fade-out');
+    const duration = getComputedStyle(previous).transitionDuration.split(',')[0];
+    if (!Number.parseFloat(duration)) previous.remove();
   }
 }
 
