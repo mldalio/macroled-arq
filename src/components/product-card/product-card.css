@@ -53,8 +53,8 @@
 .hover {
   opacity: 0;
   transition-property: opacity, color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
-  transition-duration: var(--arq-motion-duration-slow);
-  transition-timing-function: var(--arq-motion-easing-standard);
+  transition-duration: var(--arq-hover-image-duration, var(--arq-motion-duration-slow));
+  transition-timing-function: var(--arq-hover-image-easing, var(--arq-motion-easing-standard));
 }
 
 .card.has-hover:has(.card-link:focus-visible) .hover {

@@ -2,3 +2,17 @@
    Nada de html, body ni selectores globales: solo variables --arq-*.
    Albert Sans se carga a nivel página, no acá (ver docs/decisiones.md). */
 @import './tokens.css';
+
+/* ── Hover de la card (prueba) ──────────────────────────────────── */
+/* Fundido más lento y parejo entre las dos fotos que el motion/duration/slow
+   del sistema. TODO: pasar a tokens si se aprueba. */
+:root {
+  --arq-hover-image-duration: 500ms;
+  --arq-hover-image-easing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --arq-hover-image-duration: 0ms;
+  }
+}
