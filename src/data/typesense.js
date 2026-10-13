@@ -26,6 +26,16 @@ export class TypesenseError extends Error {
   }
 }
 
+/** Variables de .env que faltan para conectar con Typesense. */
+export function missingConfig() {
+  const { host, searchKey, collection } = config.typesense;
+  return [
+    [host, 'VITE_TYPESENSE_HOST'],
+    [searchKey, 'VITE_TYPESENSE_SEARCH_KEY'],
+    [collection, 'VITE_TYPESENSE_COLLECTION'],
+  ].filter(([value]) => !value).map(([, name]) => name);
+}
+
 /** ¿Está configurado el acceso (.env)? */
 export function isConfigured() {
   const { host, searchKey, collection } = config.typesense;
@@ -43,7 +53,7 @@ export function inFilter(field, values) {
 }
 
 async function request(params, { signal } = {}) {
-  if (!isConfigured()) throw new TypesenseError(0, 'falta configurar VITE_TYPESENSE_* en .env');
+  if (!isConfigured()) throw new TypesenseError(0, `falta configurar ${missingConfig().join(', ')} (.env)`);
   const { host, searchKey, collection } = config.typesense;
   const query = new URLSearchParams({ q: '*', ...params });
   const url = `${host.replace(/\/$/, '')}/collections/${encodeURIComponent(collection)}/documents/search?${query}`;

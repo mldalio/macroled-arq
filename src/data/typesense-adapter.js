@@ -1,8 +1,48 @@
-// Documentos de Typesense (uno por fila de la hoja) → catálogo ({ collections,
-// groups }, la forma de catalog.js). Único lugar que conoce los campos de
-// identificación, textos e imágenes del índice; los técnicos están en attributes.js.
-// Estructura de la hoja y del índice: docs/typesense-schema.md (decisiones.md,
-// 2026-10-07 · Base de datos sin IDs).
+// ─────────────────────────────────────────────────────────────────────────────
+// typesense-adapter · de los documentos de Typesense a lo que muestra el sitio
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// QUÉ HACE
+//   Typesense guarda UN DOCUMENTO POR FILA DE LA HOJA, o sea uno por SKU. Los
+//   componentes, en cambio, trabajan con PRODUCTOS (grupos con sus variantes) y
+//   COLECCIONES. Este archivo hace esa traducción: recibe la lista de documentos
+//   crudos y devuelve { collections, groups }, la forma que documenta catalog.js.
+//
+// DÓNDE ENCAJA
+//   Google Sheets ──(n8n, fuera del repo)──▶ Typesense ──▶ typesense.js (trae los
+//   documentos) ──▶ ESTE ARCHIVO ──▶ catalog.js (listados, ficha, buscador…) ──▶
+//   componentes. Lo llama source.js; las páginas y los componentes no lo conocen.
+//
+// EJEMPLO
+//   3 documentos con SKU distinto y el mismo product_name «Kanu Jardín» → 1 grupo
+//   «Kanu Jardín» (id: kanu-jardin) con 3 variantes. Una card del listado es 1
+//   grupo, no 1 SKU.
+//
+// ES EL ÚNICO LUGAR QUE CONOCE LOS NOMBRES DE CAMPO DEL ÍNDICE
+//   (los de identificación, textos e imágenes; los técnicos están en
+//   attributes.js). Si en la hoja o en n8n cambia el nombre de una columna, se
+//   corrige acá y el resto del proyecto no se entera:
+//   - FIELDS:      nombre de campo de identificación, textos y colecciones.
+//   - IMAGE_SLOTS: posición de cada foto dentro de las listas multimagen_*. Tiene
+//                  que coincidir con el orden en que n8n arma esas listas.
+//   - GALLERY:     orden de la galería de la ficha.
+//   - attributes.js: campos técnicos (potencia, IP, color…) y sus etiquetas.
+//   Lista completa de campos: docs/typesense-schema.md.
+//
+// SI ALGO NO APARECE EN EL SITIO
+//   1. ¿El campo llega a Typesense? Abrir un documento en el panel o en la consola
+//      de red y mirar su nombre exacto.
+//   2. ¿El nombre coincide con FIELDS / IMAGE_SLOTS / attributes.js?
+//   3. Una fila sin product_name no se publica (se omite a propósito).
+//   4. Si falta una foto, el componente muestra su fallback: un gris con el nombre.
+//
+// NO HACE
+//   No consulta Typesense, no guarda nada ni toca la pantalla: solo transforma
+//   datos. Todo acceso a la base pasa por typesense.js (AGENTS.md · Datos).
+//
+// REGLAS DE TRANSFORMACIÓN
+//   Estructura de la hoja y del índice: docs/typesense-schema.md (decisiones.md,
+//   2026-10-07 · Base de datos sin IDs).
 //
 // - Producto (grupo): las filas con el mismo product_name. El id (slug de la
 //   ficha y del CMS) sale del nombre: «Kanu Jardín» → kanu-jardin. Una fila sin
