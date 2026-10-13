@@ -10,6 +10,9 @@
 //   role/body-sm en color/text/tertiary (slot meta: SKU, o "Colección").
 // - Show image: sale de image. Sin imagen no hay miniatura (la ficha pide no
 //   dejar el gris vacío).
+// - Type: default (miniatura, nombre, SKU y flecha) o simple (miniatura y
+//   nombre, sin SKU ni flecha ni línea: la fila del search-sheet). No existe
+//   en Figma: variante de prueba. TODO (diseño).
 // - State: Hover (:hover), Focus (:focus-visible) y Active (prop active: el
 //   resultado elegido con ↑ / ↓ mientras el foco sigue en el campo). Hover y
 //   Active: fondo color/surface/hover.
@@ -22,6 +25,7 @@ class ArqSearchResult extends ArqElement {
   static tag = 'arq-search-result';
   static styles = css;
   static properties = {
+    type: { type: String, values: ['default', 'simple'], default: 'default' }, // Type (solo de código)
     href: { type: String },
     image: { type: String }, // Show image
     active: { type: Boolean }, // State=Active

@@ -10,6 +10,9 @@
 // - Emite arq:input { value } al escribir, arq:submit { value } con Enter y
 //   arq:close al tocar la cruz. ↑ / ↓ emiten arq:navigate { step } para mover
 //   el resultado activo (el foco sigue en el campo).
+// - Type: box (el campo del navbar, con borde) o line (solo una línea inferior
+//   y la lupa a la izquierda: el campo del search-sheet). No existe en Figma:
+//   variante de prueba. TODO (diseño): diseñarla en el set antes de adoptarla.
 // - Show close viene en true en Figma; en código es un atributo de presencia.
 // - Resultado activo para lectores de pantalla: los resultados viven en otro
 //   Shadow DOM y aria-activedescendant no lo cruza. El campo anuncia el activo
@@ -17,6 +20,7 @@
 //   TODO (a11y): revisar con lector de pantalla cuando esté la página de búsqueda.
 
 import { ArqElement } from '../../base/arq-element.js';
+import { icon } from '../../base/icons.js';
 import '../icon-button/icon-button.js';
 import css from './search-field.css?inline';
 
@@ -24,6 +28,7 @@ class ArqSearchField extends ArqElement {
   static tag = 'arq-search-field';
   static styles = css;
   static properties = {
+    type: { type: String, values: ['box', 'line'], default: 'box' }, // Type (solo de código, ver arriba)
     showClose: { type: Boolean }, // Show close
     value: { type: String, default: '' },
     placeholder: { type: String, default: 'Buscar productos…' },
@@ -32,6 +37,7 @@ class ArqSearchField extends ArqElement {
   };
   static template =
     `<div class="field">` +
+    `<span class="lead">${icon('search')}</span>` +
     `<input class="input role-body" type="search" autocomplete="off" spellcheck="false" enterkeyhint="search">` +
     `<arq-icon-button class="close" icon="close">Cerrar búsqueda</arq-icon-button>` +
     `</div>` +

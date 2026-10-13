@@ -303,6 +303,18 @@ export async function getProductCards(groupIds) {
   return groupIds.map((id) => groupById.get(id)).filter(Boolean).map((group) => ({ ...productCard(group), meta: productKind(group) }));
 }
 
+/**
+ * Productos recomendados del buscador (search-sheet con el campo vacío): las
+ * primeras cards del catálogo que tienen foto de estudio, en el orden de la
+ * base. TODO (negocio): el criterio de "recomendado" no está definido (más
+ * vistos, destacados a mano, novedades…); hasta entonces es este.
+ */
+export async function getRecommendedProducts({ limit = 8 } = {}) {
+  const { groups } = await loadCatalog();
+  const cards = groups.map((group) => ({ ...productCard(group), meta: productKind(group) }));
+  return [...cards.filter((card) => card.image), ...cards.filter((card) => !card.image)].slice(0, limit);
+}
+
 // Tipo de producto: la aplicación de una luminaria («Jardín», «Colgante») o
 // el tipo si no es luminaria («Lámpara»).
 function productKind(group) {
@@ -472,8 +484,8 @@ function searchMatch(group, words) {
 }
 
 /**
- * Búsqueda por nombre, colección, aplicación o SKU: { results: [{ name, meta,
- * href, image }], total }. Un resultado por grupo (meta: el SKU; si coincide
+ * Búsqueda por nombre, colección, aplicación o SKU: { results: [{ kind:
+ * 'product' | 'collection', name, meta, href, image }], total }. Un resultado por grupo (meta: el SKU; si coincide
  * un SKU, ese) y uno por colección (meta: "Colección"), como search-dropdown.
  */
 export async function searchProducts(query, { limit = 5 } = {}) {
@@ -484,11 +496,11 @@ export async function searchProducts(query, { limit = 5 } = {}) {
     const match = searchMatch(group, words);
     if (!match) return [];
     const card = productCard(group, match.variant, match.bySku);
-    return [{ name: group.name, meta: match.variant.sku, href: card.href, image: card.image }];
+    return [{ kind: 'product', name: group.name, meta: match.variant.sku, href: card.href, image: card.image }];
   });
   const found = collections
     .filter((c) => matchesWords(c.name, words))
-    .map((c) => ({ name: c.name, meta: 'Colección', href: collectionHref(c.id), image: c.images?.studio ?? null }));
+    .map((c) => ({ kind: 'collection', name: c.name, meta: 'Colección', href: collectionHref(c.id), image: c.images?.studio ?? null }));
   const results = [...products, ...found];
   return { results: results.slice(0, limit), total: results.length };
 }

@@ -59,3 +59,35 @@
 .close {
   flex: none;
 }
+
+/* Type=Line (solo de código): sin caja ni fondo, solo la línea inferior de
+   border/default en color/border/default (en foco, color/border/focus: el
+   alto no cambia) y la lupa a la izquierda en color/icon/tertiary. El
+   padding vertical es space/gap/md y el lateral 0, para alinear con el
+   resto de la página. */
+.lead {
+  display: none;
+}
+
+:host([type='line']) .lead {
+  display: inline-flex;
+  flex: none;
+  color: var(--arq-color-icon-tertiary);
+}
+
+:host([type='line']) .field {
+  gap: var(--arq-space-gap-sm-md);
+  padding: var(--arq-space-gap-md) 0;
+  border-width: 0 0 var(--arq-border-default);
+  border-color: var(--arq-color-border-default);
+  background: none;
+}
+
+:host([type='line']) .field:focus-within {
+  border-color: var(--arq-color-border-focus);
+}
+
+.lead .icon {
+  width: var(--arq-icon-lg);
+  height: var(--arq-icon-lg);
+}

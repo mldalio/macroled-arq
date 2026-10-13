@@ -470,6 +470,20 @@
       <section class="demo-section" aria-labelledby="demo-accordion-item">
         <h2 id="demo-accordion-item" class="demo-heading role-label">accordion-item · &lt;arq-accordion-item&gt;</h2>
         <p class="demo-note role-body-sm">Figma 922:2645. Las tres secciones de la Ficha (1218:10632): abierto con spec-list, cerrados, título largo y sin filas. Pueden quedar varios abiertos. Hover solo cerrado; foco alrededor de todo el ítem.</p>
+        <p class="demo-note role-body-sm">Ficha v2 (2118:33571): sin fondo al abrir, ícono con borde, y spec-list con columns (dos columnas desde 1024 px).</p>
+        <div class="demo-accordion">
+          <arq-accordion-item open>
+            <span slot="title">Características lumínicas (dos columnas)</span>
+            <arq-spec-list columns>
+              <arq-spec-row><span slot="label">Flujo luminoso</span>850 lm</arq-spec-row>
+              <arq-spec-row><span slot="label">Temperatura de color</span>2700 K</arq-spec-row>
+              <arq-spec-row><span slot="label">CRI</span>90</arq-spec-row>
+              <arq-spec-row><span slot="label">Ángulo de apertura</span>40°</arq-spec-row>
+              <arq-spec-row><span slot="label">Eficiencia luminosa</span>77 lm/W</arq-spec-row>
+              <arq-spec-row><span slot="label">Potencia</span>12 W</arq-spec-row>
+            </arq-spec-list>
+          </arq-accordion-item>
+        </div>
         <div class="demo-accordion">
           <arq-accordion-item open>
             <span slot="title">Características lumínicas</span>
@@ -736,6 +750,11 @@
           <arq-select type="filter" label="Altura" data-demo-options="heights"></arq-select>
           <arq-select type="filter" label="Acabado" disabled data-demo-options="finishes"></arq-select>
           <arq-select type="filter" label="Altura (show-swatch)" value="50 cm" show-swatch data-demo-options="heights"></arq-select>
+        </div>
+        <p class="demo-note role-body-sm">Etiqueta según el Type: Field, role/label de 12 px; Filter, de 14 px (glosario de variantes).</p>
+        <div class="demo-row">
+          <arq-select label="Acabado (Field · 12 px)" data-demo-options="finishes"></arq-select>
+          <arq-select type="filter" label="Acabado (Filter · 14 px)" data-demo-options="finishes"></arq-select>
         </div>
         <p class="demo-note role-body-sm" data-demo-select-log>arq:change → (todavía nada)</p>
         <div class="demo-dark" data-arq-theme="dark">
@@ -1125,6 +1144,8 @@
           <arq-sku size="compact">KANU-J-500-12W-N-WW</arq-sku>
           <arq-sku copied>KANU-J-500-12W-N-WW</arq-sku>
           <arq-sku size="compact" copied>KANU-J-500-12W-N-WW</arq-sku>
+          <arq-sku size="underline">KANU-J-500-12W-N-WW</arq-sku>
+          <arq-sku size="underline" copied>KANU-J-500-12W-N-WW</arq-sku>
         </div>
         <div class="demo-row">
           <arq-button type="outline" data-demo-clipboard-fail>Simular falla del portapapeles</arq-button>
@@ -1318,14 +1339,14 @@
         <h2 id="demo-tab" class="demo-heading role-label">tab · &lt;arq-tab&gt;</h2>
         <p class="demo-note role-body-sm">Figma 929:2287. En un tablist de prueba (como el del mega-menu): ← → cambian, Inicio / Fin, Hover, Selected, Focus y Disabled.</p>
         <demo-tablist role="tablist" label="Productos">
-          <arq-tab value="aplicacion" selected>Aplicación</arq-tab>
+          <arq-tab value="por-espacio" selected>Por espacio</arq-tab>
           <arq-tab value="lamparas">Lámparas y artefactos</arq-tab>
           <arq-tab value="colecciones">Colecciones</arq-tab>
           <arq-tab value="proyectos" disabled>Proyectos</arq-tab>
         </demo-tablist>
         <div class="demo-dark" data-arq-theme="dark">
           <demo-tablist role="tablist" label="Productos (Dark)">
-            <arq-tab value="aplicacion" selected>Aplicación</arq-tab>
+            <arq-tab value="por-espacio" selected>Por espacio</arq-tab>
             <arq-tab value="lamparas">Lámparas y artefactos</arq-tab>
             <arq-tab value="proyectos" disabled>Proyectos</arq-tab>
           </demo-tablist>
@@ -1466,7 +1487,7 @@
 
       <section class="demo-section" aria-labelledby="demo-navbar">
         <h2 id="demo-navbar" class="demo-heading role-label">navbar · &lt;arq-navbar&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 753:2907. Productos abre el mega-menu (Desktop) o el submenú (Mobile, con «volver»). La lupa abre la búsqueda: escribí «kanu», «jardín» o un SKU; ↑ ↓ eligen y Enter abre; Esc cierra. Datos del catálogo: Typesense. En la demo la barra no queda fija.</p>
+        <p class="demo-note role-body-sm">Figma 753:2907. Productos abre el mega-menu (Desktop) o el submenú (Mobile, con «volver»): ahí cada fila (Interior, Exterior, Lámparas y artefactos, Colecciones) abre su propio submenú (Mode=Interior, Exterior, Lámparas y artefactos y Colecciones; probar con «Ver a 390»). «Volver» y Esc suben un nivel. La lupa abre la búsqueda: escribí «kanu», «jardín» o un SKU; ↑ ↓ eligen y Enter abre; Esc cierra. Datos del catálogo: Typesense. En la demo la barra no queda fija.</p>
         <div class="demo-navbar">
           <arq-navbar>
             <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
@@ -1494,9 +1515,22 @@
         </div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-search-sheet">
+        <h2 id="demo-search-sheet" class="demo-heading role-label">search-sheet · &lt;arq-search-sheet&gt; (prueba)</h2>
+        <p class="demo-note role-body-sm">Componente de prueba, sin set en Figma. Con <code>search="sheet"</code> en el navbar, la lupa abre en Desktop un top sheet: campo Type=Line y, con el campo vacío, productos recomendados con «Ver todos los productos»; al escribir (kanu, jardín, un SKU), los productos y colecciones que coinciden. ↑ ↓ eligen, Enter abre, Esc, la cruz o un clic en el scrim cierran. En Mobile sigue la search-screen.</p>
+        <div class="demo-navbar">
+          <arq-navbar search="sheet" label="Principal (search-sheet)">
+            <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-search-sheet">Descargas</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-search-sheet">Contacto</arq-nav-link>
+          </arq-navbar>
+          <div class="demo-placeholder role-body-sm">Contenido de la página</div>
+        </div>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-mega-menu">
         <h2 id="demo-mega-menu" class="demo-heading role-label">mega-menu · &lt;arq-mega-menu&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 841:2282. Pestañas Aplicación, Lámparas y artefactos y Colecciones (← → cambian). Columnas, links y «Ver todo…» salen de los datos; una pestaña sin datos no se muestra. Imagen layout/mega-menu-image × ratio/portrait-soft (sin imagen: color/surface/subtle). Solo Desktop.</p>
+        <p class="demo-note role-body-sm">Figma 841:2282. Pestañas Por espacio, Lámparas y artefactos y Colecciones (← → cambian). Columnas, links y «Ver todo…» salen de los datos; una pestaña sin datos no se muestra. Imagen layout/mega-menu-image × ratio/portrait-soft (sin imagen: color/surface/subtle). Solo Desktop.</p>
         <div class="demo-bleed">
           <arq-mega-menu data-demo-mega-menu></arq-mega-menu>
         </div>
@@ -1504,16 +1538,19 @@
 
       <section class="demo-section" aria-labelledby="demo-mega-link">
         <h2 id="demo-mega-link" class="demo-heading role-label">mega-link · &lt;arq-mega-link&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 840:2070. Type=Link Size Default y Large, con bajada y texto largo; Type=Group cerrado y abierto (+ / –). Hover y Focus con el mouse y con Tab.</p>
+        <p class="demo-note role-body-sm">Figma 840:2070. Type=Link Size Default y Large (los dos únicos tamaños), con bajada, miniatura (Show image), flecha chevron-right como fila que entra a un submenú (button) y texto largo; Type=Group cerrado y abierto (+ / –). Hover y Focus con el mouse y con Tab.</p>
         <div class="demo-mega-links">
           <div>
             <arq-mega-link href="#demo-mega-link" show-arrow>Jardín</arq-mega-link>
             <arq-mega-link href="#demo-mega-link" show-arrow>Kanu<span slot="meta">Jardín · Pared</span></arq-mega-link>
             <arq-mega-link href="#demo-mega-link" show-arrow>Una colección con un nombre largo que ocupa dos líneas<span slot="meta">Embutir · Aplicar · Colgante</span></arq-mega-link>
             <arq-mega-link href="#demo-mega-link">Sin flecha</arq-mega-link>
+            <arq-mega-link button show-arrow icon="chevron-right">Fila que abre un submenú (button)</arq-mega-link>
           </div>
           <div>
             <arq-mega-link href="#demo-mega-link" size="large" show-arrow>Jardín</arq-mega-link>
+            <arq-mega-link href="#demo-mega-link" size="large" show-image>Mini Kai Round</arq-mega-link>
+            <arq-mega-link href="#demo-mega-link" size="large" show-image>Kanu<span slot="meta">Jardín · Pared</span></arq-mega-link>
             <arq-mega-link type="group">Exterior
               <a slot="links" href="#demo-mega-link">Jardín</a>
               <a slot="links" href="#demo-mega-link">Pared</a>

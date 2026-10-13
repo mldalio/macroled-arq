@@ -1,0 +1,133 @@
+/* search-sheet · componente de prueba. Solo tokens semánticos. */
+
+:host {
+  display: contents;
+}
+
+/* <dialog> sin los estilos del navegador: pegado arriba, a todo el ancho y
+   hasta 100dvh (si el contenido no entra, scrollea adentro). Sin sombra:
+   se separa de la página por el scrim. */
+.dialog {
+  box-sizing: border-box;
+  inset: 0 0 auto 0;
+  width: 100%;
+  max-width: none;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--arq-radius-control);
+  background: transparent;
+  color: var(--arq-color-text-primary);
+  overflow: hidden;
+}
+
+.dialog::backdrop {
+  background: var(--arq-color-overlay-scrim);
+}
+
+/* Baja desde arriba: solo transform (DESIGN.md §6 · Movimiento) */
+.dialog[open] .sheet {
+  animation: arq-search-sheet-in var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
+}
+
+@keyframes arq-search-sheet-in {
+  from {
+    transform: translateY(-100%);
+  }
+}
+
+.sheet {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  max-height: 100dvh;
+  background: var(--arq-color-surface-default);
+}
+
+/* Barra: mismo alto que la del navbar (space/gap/md × 2 + icon/xl) y mismo
+   margen lateral (--page-gutter), logo a la izquierda y cruz a la derecha */
+.bar {
+  box-sizing: border-box;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  height: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
+  padding: 0 var(--page-gutter);
+}
+
+/* Campo Type=Line, a todo el ancho de la página */
+.field-row {
+  flex: none;
+  padding: var(--arq-space-gap-sm) var(--page-gutter) 0;
+}
+
+/* Contenido con scroll propio. Arriba space/gap/xl, abajo space/section/2xs
+   (aire antes del borde inferior del sheet) */
+.content {
+  flex: 1;
+  min-height: 0;
+  padding: var(--arq-space-gap-xl) var(--page-gutter) var(--arq-space-section-2xs);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* Las filas de resultado no llevan padding lateral: se alinean con el campo */
+  --search-inline: 0;
+}
+
+/* ── Recomendados ── */
+.recommended {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-lg);
+}
+
+.title {
+  margin: 0;
+  color: var(--arq-color-text-tertiary);
+}
+
+/* Fila de tarjetas en una sola línea, con scroll horizontal sin barra visible
+   (como variants-table). --cols: cuántas entran enteras; la siguiente asoma
+   (peek) para que se vea que se desliza. Desktop 6, Tablet 4, Mobile 2. */
+.cards {
+  --cols: 6;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - var(--arq-space-gap-md) * (var(--cols) - 1)) / (var(--cols) + 0.4));
+  gap: var(--arq-space-gap-md);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+
+.cards::-webkit-scrollbar {
+  display: none;
+}
+
+.cards ::slotted(*) {
+  scroll-snap-align: start;
+}
+
+@media (max-width: 1023px) {
+  .cards {
+    --cols: 4;
+  }
+}
+
+@media (max-width: 767px) {
+  .cards {
+    --cols: 2;
+  }
+}
+
+.all {
+  display: flex;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog[open] .sheet {
+    animation: none;
+  }
+}

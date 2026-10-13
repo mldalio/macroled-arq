@@ -74,3 +74,18 @@
   width: var(--arq-icon-md);
   height: var(--arq-icon-md);
 }
+
+/* Type=Simple (solo de código): miniatura y nombre, sin SKU, flecha ni línea.
+   El nombre pasa a role/body-regular (el de los links de lista) */
+:host([type='simple']) .result {
+  border-bottom: 0;
+}
+
+:host([type='simple']) .meta,
+:host([type='simple']) .arrow {
+  display: none;
+}
+
+:host([type='simple']) .name {
+  font-weight: var(--arq-font-weight-regular);
+}

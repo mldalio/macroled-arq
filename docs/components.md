@@ -65,6 +65,8 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [search-dropdown](#search-dropdown) | `<arq-search-dropdown>` | En código ([README](../src/components/search-dropdown/README.md)) |
 | ✅ [search-field](#search-field) | `<arq-search-field>` | En código ([README](../src/components/search-field/README.md)) |
 | ✅ [search-result](#search-result) | `<arq-search-result>` | En código ([README](../src/components/search-result/README.md)) |
+| 🧪 [search-collection](#search-collection) | `<arq-search-collection>` | Prueba, sin set en Figma ([README](../src/components/search-collection/README.md)) |
+| 🧪 [search-sheet](#search-sheet) | `<arq-search-sheet>` | Prueba, sin set en Figma ([README](../src/components/search-sheet/README.md)) |
 | ✅ [search-screen](#search-screen) | `<arq-search-screen>` | En código ([README](../src/components/search-screen/README.md)) |
 | ✅ [search-see-all](#search-see-all) | `<arq-search-see-all>` | En código ([README](../src/components/search-see-all/README.md)) |
 | ✅ [section-header](#section-header) | `<arq-section-header>` | En código ([README](../src/components/section-header/README.md)) |
@@ -82,6 +84,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [toggle-switch](#toggle-switch) | — | Dentro de toggle ([README](../src/components/toggle/README.md)) |
 | ✅ [variants-table](#variants-table) | `<arq-variants-table>` | En código ([README](../src/components/variants-table/README.md)) |
 | ✅ [variants-table-row](#variants-table-row) | — | Dentro de variants-table ([README](../src/components/variants-table/README.md)) |
+| ✅ variants-table-card | — | Mobile (hasta 767 px): una tarjeta por variante en lugar de la tabla (Figma 2399:31269, [README](../src/components/variants-table/README.md)) |
 
 ### Componentes de layout de página (sin set en Figma)
 
@@ -119,7 +122,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 
 Uso: bloques de especificaciones de la ficha (características lumínicas, eléctricas, materiales), con spec-list adentro. No confundir con faq-item.
 
-Ítem de acordeón de la ficha (botón con aria-expanded). Título role/heading-2. Open=False: sin fondo, línea inferior border/default, ícono plus en icon-button Size=Large, Background=None (48 × 48, ícono 24). Open=True: fondo surface/faint, ícono minus en icon-button Size=Large, Background=Surface (48 × 48, ícono 24), divisor border/default y contenido libre (en la ficha, spec-list). Padding space/padding/xl-2xl arriba (y abajo cerrado), space/padding/2xl a los lados (y abajo abierto); gap space/gap/xl. State: Default, Hover (solo Open=False: surface/faint), Focus (anillo border/focus).
+Ítem de acordeón de la ficha (botón con aria-expanded). Título role/body-xl. Open=False y Open=True: sin fondo, línea inferior border/default, ícono plus / minus en icon-button Size=Large con borde border/default (48 × 48, ícono 24); contenido libre (en la ficha, spec-list en dos columnas). Padding space/padding/xl-2xl arriba y abajo cerrado, space/padding/lg abierto, space/padding/xl a los lados; gap space/gap/xs. (Ficha v2: el set 922:2645 todavía tiene el diseño anterior; TODO actualizar en Figma.) State: Default, Hover (solo Open=False: surface/faint), Focus (anillo border/focus).
 
 ## breadcrumb
 
@@ -142,9 +145,11 @@ Textos largos: si no es Current, se corta con "…"; Current se parte en varias 
 ## button
 
 - Figma: [907-2375](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=907-2375)
-- Propiedades: Label; Show icon; Icon; Show underline; Show count; Show leading icon; Leading icon; Type: Filled · Outline · Underline; State: Default · Hover · Pressed · Focus · Disabled · Loading
+- Propiedades: Label; Show icon; Icon; Show underline; Show count; Show leading icon; Leading icon; Type: Filled · Outline · Underline; State: Default · Hover · Pressed · Focus · Disabled · Loading. El ícono es opcional (Show icon).
 
 Botón. Type: Filled (acción principal), Outline (borde) y Underline (texto subrayado). State: Default, Hover, Pressed, Focus y Disabled. Props: Label, Show icon, Icon y Show underline (solo Underline: en false queda como texto simple y el subrayado aparece en hover). Sobre fotos o fondos oscuros, poner el contenedor en modo Dark: Filled pasa a fondo claro.
+
+Flechas: → (icon/arrow-right) para navegación interna dentro del sitio y acciones (Enviar consulta, Ver todo…). ↗ (icon/arrow-up-right) para recursos externos o que abren en otra pestaña o descargan (Centro de descargas, Escribinos por mail, PDF, redes). El ícono es opcional: en código, solo con `show-icon`.
 
 Subrayado (Underline): 1 px en reposo y 2 px en hover y pressed. Focus: anillo separado del botón (capa focus-ring, 2 px, color/border/focus, 2 px de separación).
 
@@ -170,9 +175,9 @@ Sidebar de filtros del catálogo (Interior abierto, resto cerrado). Compuesto po
 ## catalog-nav-group
 
 - Figma: [1035-2410](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1035-2410)
-- Propiedades: Label; Open: True · False
+- Propiedades: Label; Open: True · False; Selected: False · True
 
-Grupo acordeón de filtros. Open=True muestra la lista de catalog-nav-item y el signo –; Open=False muestra +.
+Grupo acordeón de filtros. Open=True muestra la lista de catalog-nav-item y el signo –; Open=False muestra +. Selected marca el grupo de la categoría actual (sin diferencia visual en Figma); en código lo maneja el grupo, no el ítem.
 
 ## catalog-nav-item
 
@@ -200,7 +205,7 @@ Encabezado desplegable de catalog-nav-mobile. Mismo patrón que accordion-item: 
 ## catalog-toolbar
 
 - Figma: [1244-4058](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1244-4058)
-- Propiedades: Count; Show iluminar; Breakpoint: Desktop · Mobile
+- Propiedades: Count; Show iluminar; Breakpoint: Desktop · Mobile; State: Default · Scroll (en código, atributo `state="scroll"`: la barra compacta del catálogo al desplazarse, con padding vertical `space/padding/sm`)
 
 Barra sobre la grilla de Productos y Colecciones: cantidad, toggle Iluminar, divider vertical y botón Filtrar (button Outline expuesto: con filtros activos, Show count + icon/filter-off). Mismo contenido en Desktop y Mobile.
 
@@ -418,7 +423,7 @@ Miniatura de la galería de producto, proporción 5:4 (105 × 84). La imagen se 
 ## hero
 
 - Figma: [1311-4340](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1311-4340)
-- Propiedades: Eyebrow; Show eyebrow; Title; Description; Show description; Show button; Breakpoint: Desktop · Mobile
+- Propiedades: Eyebrow; Show eyebrow; Title; Description; Show description; Show button; Breakpoint: Desktop · Mobile; Size: Default · Compact (solo en Figma: título en role/display-lg para el hero compacto de páginas internas como Contacto; en código todavía no existe, `TODO`: el hero solo tiene `full-height`)
 
 Hero de página compartido por Home y Contacto: media (imagen o video; reemplazá el relleno de "media" en la instancia), scrim, eyebrow (role/label), título role/display, bajada opcional y button Outline opcional. Textos claros sobre la foto (el scrim hero/scrim asegura el contraste). El navbar no es parte del hero: va aparte, con Theme=Transparent, superpuesto arriba (la instancia del set es referencia). Props: Eyebrow, Title, Description, Show eyebrow, Show description, Show button.
 
@@ -470,16 +475,16 @@ Logo de Macroled Arq. Default en desktop, Small en mobile.
 ## mega-link
 
 - Figma: [840-2070](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=840-2070)
-- Propiedades: Name; Meta; Show meta; Show image; Show arrow; Type: Link · Group; State: Default · Hover · Focus; Open: False · True; Size: Default · Large
+- Propiedades: Name; Meta; Show meta; Show image; Show arrow; Type: Link · Group; State: Default · Hover · Focus; Open: False · True; Size: Default · Large (2026-10-13: se quitaron XL y Small)
 
 Link del mega menú y del submenú mobile: nombre, bajada opcional (Show meta, para colecciones) y flecha. Type: Link (link simple; Size Default o Large) · Group (grupo desplegable con icon/plus / icon/minus, Open False · True). State: Default, Hover y Focus.
 
 ## mega-menu
 
 - Figma: [841-2282](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=841-2282)
-- Propiedades: Tab: Aplicación · Lámparas y artefactos · Colecciones
+- Propiedades: Tab: Por espacio · Lámparas y artefactos · Colecciones
 
-Mega menú de Productos (desktop). Se abre desde nav-link "Productos" (Open=True) y se muestra debajo del navbar. Tres pestañas: Aplicación (Exterior / Interior), Lámparas y artefactos, y Colecciones. La imagen de la derecha se puede cambiar según la pestaña. Es un solo componente: categorías, links y el texto de "Ver todo…" salen de los datos.
+Mega menú de Productos (desktop). Se abre desde nav-link "Productos" (Open=True) y se muestra debajo del navbar. Tres pestañas: Por espacio (Exterior / Interior), Lámparas y artefactos, y Colecciones. La imagen de la derecha se puede cambiar según la pestaña. Es un solo componente: categorías, links y el texto de "Ver todo…" salen de los datos.
 
 ## nav-link
 
@@ -495,9 +500,9 @@ Theme=Inverse: para navbar Theme=Transparent sobre foto (label color/text/invers
 ## navbar
 
 - Figma: [753-2907](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=753-2907)
-- Propiedades: Breakpoint: Desktop · Mobile; Mode: Default · Menu · Search · Products; Theme: Default · Transparent
+- Propiedades: Breakpoint: Desktop · Mobile; Mode: Default · Search · Menu · Products · Colecciones · Interior · Exterior · Lámparas y artefactos; Theme: Default · Transparent
 
-Barra de navegación de Macroled Arq. Breakpoint: Desktop · Mobile. Mode: Default, Search (buscador abierto), Menu (menú mobile abierto) y Products (submenú de Productos en mobile, con "volver"). En desktop, Productos abierto = nav-link Open=True con mega-menu debajo. Theme: Default · Transparent (sobre la foto del hero; pasa a Default al hacer scroll). Theme=Transparent: fondo translúcido color/overlay/translucent + background blur blur/backdrop. El link de la página actual va en State=Current; el que despliega un menú usa Has dropdown. Theme=Transparent con Mode=Search (desktop): la barra sigue translúcida y search-field queda igual que en Default (fondo color/surface/default, texto y cruz en color/text/primary). Sobre la foto, la lupa y el menú (icon-button) van en modo Dark local (en código, data-arq-theme="dark"): ícono claro, hover y foco del modo Dark. Con Mode=Menu y Products (mobile) la barra pasa a Default: las variantes Transparent son iguales a las Default.
+Barra de navegación de Macroled Arq. Breakpoint: Desktop · Mobile. Mode: Default, Search (buscador abierto), Menu (menú mobile abierto), Products (submenú de Productos en mobile, con "volver") y los cuatro submenús que abre Products en mobile: Interior, Exterior, Lámparas y artefactos y Colecciones (volver con el nombre del nivel, links en mega-link Size=Large y "Ver todo…" al pie). En desktop, Productos abierto = nav-link Open=True con mega-menu debajo. Theme: Default · Transparent (sobre la foto del hero; pasa a Default al hacer scroll). Theme=Transparent: fondo translúcido color/overlay/translucent + background blur blur/backdrop. El link de la página actual va en State=Current; el que despliega un menú usa Has dropdown. Theme=Transparent con Mode=Search (desktop): la barra sigue translúcida y search-field queda igual que en Default (fondo color/surface/default, texto y cruz en color/text/primary). Sobre la foto, la lupa y el menú (icon-button) van en modo Dark local (en código, data-arq-theme="dark"): ícono claro, hover y foco del modo Dark. Con Mode=Menu y Products (mobile) la barra pasa a Default: las variantes Transparent son iguales a las Default.
 
 ## option-group
 
@@ -546,12 +551,25 @@ Galería de la ficha: imagen principal + fila de gallery-thumb (la primera en Se
 
 Desplegable de resultados en desktop. State: Results · No results. Aparece debajo del campo cuando hay texto escrito, con el mismo ancho que el campo. Muestra hasta 4-5 productos y "Ver todos los resultados". Con el campo vacío no se muestra.
 
+## search-collection
+
+- Figma: **no existe** (componente de prueba)
+
+Resultado de búsqueda de una colección: imagen ratio/landscape, etiqueta «Colección», nombre en role/heading-3 y flecha. Más llamativo que search-result; va en el search-sheet.
+
+## search-sheet
+
+- Figma: **no existe** (componente de prueba)
+- Código: `search` = `sheet` en navbar; `type` = `line` en search-field
+
+Búsqueda de Desktop como top sheet que baja desde arriba con scrim: barra (logo + cerrar), search-field Type=Line y, con el campo vacío, productos recomendados (product-card Small en una fila con scroll) y un button Underline «Ver todos los productos»; al escribir, los productos y colecciones que coinciden. Los resultados van en dos grupos: Productos (search-result Type=Simple, sin SKU) y Colecciones (search-collection). Mobile sigue con search-screen. TODO: diseñarlo en Figma.
+
 ## search-field
 
 - Figma: [795-2179](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=795-2179)
 - Propiedades: Show close; State: Empty · Focus · Filled
 
-Campo de búsqueda. En desktop reemplaza a la lupa dentro del navbar y la cruz cierra la búsqueda. En mobile va sin cruz (Show close = false), junto a la flecha de volver. Estados: Empty, Focus (borde color/border/focus de border/focus) y Filled.
+Campo de búsqueda. En desktop reemplaza a la lupa dentro del navbar y la cruz cierra la búsqueda. En mobile va sin cruz (Show close = false), junto a la flecha de volver. Estados: Empty, Focus (borde color/border/focus de border/focus) y Filled. En código suma `type="line"` (solo línea inferior y lupa a la izquierda, para el search-sheet): variante de prueba, no está en Figma.
 
 ## search-result
 
@@ -586,7 +604,7 @@ Encabezado de bloque dentro de una página (no de la página: eso es page-header
 - Figma: [921-2544](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2544)
 - Propiedades: Name; Label; Value; Show swatch; Type: Field · Filter; State: Default · Hover · Focus · Disabled · Filled; Open: False · True
 
-Selector con menú desplegable (arq-select). Dos tipos con la misma construcción: etiqueta arriba (role/label-sm, text/tertiary) y un trigger con línea inferior border/strong, padding vertical space/padding/sm-md (es la única separación con la etiqueta: gap 0 entre etiqueta y trigger), gap space/gap/sm-md entre swatch, texto y chevron, texto role/body-regular y chevron. Type=Field: campo del configurador y de compare-product; ancho del contenedor; swatch/md y chevron icon/md. Type=Filter: celda de la filter-bar y del glosario; mide al menos layout/select-filter; swatch/sm y chevron icon/sm; Filled = filtro elegido, valor en role/body-medium. Hover (los dos): fondo color/surface/faint en el trigger; el texto no cambia. Open: mismo fondo que Hover, chevron hacia arriba y select-menu debajo (Field: Finishes o Text; Filter: Filter). Focus: anillo border/focus de border/strong alrededor del trigger. Disabled: text/disabled y línea border/disabled. Props: Name (valor del Field), Label y Value (Filter; en Filled el valor elegido va como override) y Show swatch (muestra u oculta la muestra de acabado; en código, show-swatch).
+Selector con menú desplegable (arq-select). Dos tipos con la misma construcción: etiqueta arriba (role/label de 12 px, o 14 px en el glosario; text/tertiary) y un trigger con línea inferior border/strong, padding vertical space/padding/sm-md (es la única separación con la etiqueta: gap 0 entre etiqueta y trigger), gap space/gap/sm-md entre swatch, texto y chevron, texto role/body-regular y chevron. Type=Field: campo del configurador y de compare-product; ancho del contenedor; swatch/md y chevron icon/md. Type=Filter: celda de la filter-bar y del glosario; mide al menos layout/select-filter; swatch/sm y chevron icon/sm; Filled = filtro elegido, valor en role/body-medium. Hover (los dos): fondo color/surface/faint en el trigger; el texto no cambia. Open: mismo fondo que Hover, chevron hacia arriba y select-menu debajo (Field: Finishes o Text; Filter: Filter). Focus: anillo border/focus de border/strong alrededor del trigger. Disabled: text/disabled y línea border/disabled. Props: Name (valor del Field), Label y Value (Filter; en Filled el valor elegido va como override) y Show swatch (muestra u oculta la muestra de acabado; en código, show-swatch).
 
 ## select-menu
 

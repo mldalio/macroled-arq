@@ -31,3 +31,7 @@ Fila de resultado de búsqueda: miniatura, nombre, SKU y flecha. Va dentro de se
 | Miniatura | `layout/search-thumb` (token nuevo, 48), fondo `color/surface/subtle` |
 | Textos | nombre `role/body-strong` en `color/text/primary` · meta `role/body-sm` en `color/text/tertiary`, gap `space/gap/xs` |
 | Flecha | `icon/md` en `color/icon/primary` |
+
+## Type (solo de código)
+
+`type="simple"`: miniatura y nombre, sin SKU, flecha ni línea (fila de productos del [search-sheet](../search-sheet/README.md)). Por defecto `default`. No está en Figma (TODO).

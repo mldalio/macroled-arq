@@ -33,3 +33,7 @@ Campo de búsqueda. En Desktop va en el navbar con la cruz que cierra la búsque
 ## Pendientes
 
 - `TODO` (a11y) Los resultados viven en otro Shadow DOM y `aria-activedescendant` no lo cruza: el activo se anuncia con `aria-live`. Revisar con lector de pantalla.
+
+## Type (solo de código)
+
+`type="box"` (por defecto, el campo con borde del navbar) o `type="line"`: sin caja, lupa a la izquierda y línea inferior `color/border/default` (en foco, `color/border/focus`). Lo usa el [search-sheet](../search-sheet/README.md). No está en Figma (TODO).

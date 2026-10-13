@@ -541,6 +541,16 @@ Reemplaza a 2026-10-02 · Base de datos (estructura v5) en cómo se identifican 
 - **Cambiar o rotar la clave:** se edita en `.env`, se compila (`npm run build`) y se commitea `dist/`; hasta publicar el release, el sitio de Webflow sigue con la clave anterior. Revocar la vieja en Typesense recién después.
 - **Errores:** si falta una variable, la consola de `npm run dev` dice cuál (`missingConfig()` en `typesense.js`).
 
+## 2026-10-13 · Navbar mobile por niveles, mega-link Default/Large y tokens de tipo
+
+- **Auditoría Figma ↔ código** (página Componentes): se revisaron descripciones y propiedades de los 79 sets contra `docs/components.md`, DESIGN.md y los READMEs.
+- **navbar:** Mode suma Colecciones, Interior, Exterior y Lámparas y artefactos (`colecciones`, `interior`, `exterior`, `lamparas-y-artefactos`). En Mobile, Productos lista los cuatro como `arq-mega-link button` (chevron-right) y cada uno abre su submenú con "volver" (con el nombre del nivel), links Size=Large y "Ver todo…". Reemplaza a los grupos desplegables (Type=Group) del submenú anterior. Volver y Esc suben un nivel.
+- **mega-link:** solo Size Default y Large. Se quitaron XL y Small de Figma (las 28 instancias del mega-menu pasaron a Large y Default). Suma `show-image` + `image` (miniatura), `icon` (ícono de la flecha) y `button` (fila que abre un submenú). El padding vertical de Link pasó a `space/gap/md` como el set.
+- **mega-menu:** la pestaña Aplicación se llama **Por espacio** (`por-espacio`, antes `aplicacion`). Las columnas Por espacio y Lámparas y artefactos usan mega-link Large; Colecciones, Default.
+- **catalog-nav-group:** Selected lo guarda el grupo (`selected`); se marca solo si contiene un ítem `selected`. catalog-nav y catalog-listing leen el grupo, no el ítem.
+- **Tokens (Figma → `tokens/figma/`):** `type/body-compact`, `type/display-lg`, `space/5`, `font/size/80`, `font/leading/100` nuevos y `layout/mega-menu-image` 438 → 420. Estilos `role/body-compact` (+ regular, medium, strong), `role/display-lg` y `role/heading-3-light` agregados a `tokens.json` (no son variables: no los trae el import).
+- **Sin tocar (lo pidió diseño):** variants-table-row, compare-product, hero Size Compact y la columna extra del mega-menu de Figma (títulos `role/heading-1`, Colecciones en 4 columnas, panel «imagen · preview hover»). Quedan anotados como `TODO` en los READMEs.
+
 ## Pendientes
 
 Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe la decisión en su sección. El grupo entre paréntesis es el del `TODO` en el código.
@@ -602,3 +612,24 @@ Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe
 - **Nombre del PDF en el visor:** decidir si se sirve la ficha técnica desde una URL propia (`…/ficha-tecnica-<sku>.pdf`) para que Chrome la guarde con ese nombre. Opciones: función en un servidor (Cloudflare Worker, Vercel, n8n) que genere o devuelva el PDF. Hoy se guarda con un código al azar.
 - **S3:** confirmar que el servidor de imágenes responde con CORS (`Access-Control-Allow-Origin`); si no, la ficha técnica en PDF sale sin foto. Hoy Typesense no tiene imágenes cargadas y no se pudo probar.
 - **Código:** sincronizar el `scrollLeft` del compare-header Compact con la tabla en Mobile.
+
+## 2026-10-13 · Ficha v2 (accordion-item, variants-table, select, spec-row)
+
+La pantalla de la ficha pasa de Final › Ficha (1218:10487) a **Ficha v2** (2085:26124, solo Desktop) y la tabla del glosario suma su vista Mobile (2180:11245). Cambios en código:
+
+- **Hero:** galería a sangre a la izquierda (14 de 24 columnas, 4:3) con las miniaturas en columna y Iluminar sobre la foto; configurador a la derecha con breadcrumb, título, sku (compact), descripción, opciones, «Comparar» y dos botones («Generar ficha técnica» · «Ver descargas»). Se quita el bloque Descargas de la ficha: los archivos están en el glosario (CAD / Manual y el ícono de cada fila). «Comparar» usa una compare-bar propia de la ficha con la variante elegida.
+- **accordion-item:** título `role/body-xl`, sin fondo al abrir, borde en el ícono, padding abierto `space/padding/lg`. spec-row: etiqueta y valor en la misma fila (padding `space/padding/sm`, valor en `role/body`). spec-list suma `columns` (dos columnas desde 1024 px).
+- **variants-table:** botón Filtros siempre Filled (icon/close abierto) con la cantidad al lado; filter-bar `stacked` (fondo `surface/soft`); encabezado `role/body-regular`; valores `role/body-lg-regular`; sku `size="underline"` (código subrayado en `role/caption-medium`, «Copiado» en su lugar). En Mobile, tarjetas por variante en lugar de tabla.
+- **select:** la etiqueta depende del Type, como en Figma: Field, `role/label` (12 px; compare-product); Filter, 14 px (glosario), compuesta con variables porque no existe un estilo `role/*` de 14 px en mayúsculas. `role/label-sm` (10 px) se dejó de usar en select.
+- **Figma (hecho el 2026-10-13):** se actualizaron los sets accordion-item, spec-row, select (etiquetas), filter-bar (fondo soft, columna), variants-table y variants-table-row; se creó variants-table-card (Mobile); `layout/table-thumb` pasó de 56 a 100 (tokens reimportados). La pantalla mobile está en PRUEBA como «Ficha v2 · Mobile 390» y la desktop como «Ficha v2 1920» / «Ficha v2 1440». Pendiente: pasar el accordion y spec-row de las pantallas desktop (hoy son frames, no instancias) a instancias.
+
+## 2026-10-13 · Búsqueda como top sheet (prueba)
+
+Prueba de una búsqueda de Desktop que baja desde arriba (referencia: occhio.com). No cambia lo que hay: se activa con `<arq-navbar search="sheet">`; por defecto sigue el campo en la barra con su dropdown.
+
+- **Nuevo:** `arq-search-sheet` (diálogo modal, scrim, `arq-search-sheet-in`), `search-field type="line"` y `getRecommendedProducts()` en `src/data/catalog.js`. Ninguno está en Figma.
+- **Recomendados:** hoy son los primeros grupos del catálogo con foto. El criterio real (destacados a mano, novedades, más vistos) está sin definir.
+- **Mobile:** sin cambios (search-screen).
+- **Pendiente si se adopta:** diseñar sheet y Type=Line en Figma, Mobile, animación de cierre, y decidir si reemplaza al campo en la barra y a search-dropdown.
+- **Resultados del sheet:** Productos como fila de miniatura + nombre (`search-result type="simple"`) y Colecciones como card propia (`arq-search-collection`). `searchProducts()` devuelve `kind: 'product' | 'collection'` en cada resultado. Nada de esto está en Figma.
+- **Dato a revisar:** con la base actual, buscar "kanu" no devuelve colecciones (la fila «Colección» entra como producto, sku `col-kanu`), así que el grupo Colecciones no aparece hasta que el adaptador las reconozca.
