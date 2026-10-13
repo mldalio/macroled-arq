@@ -79,3 +79,22 @@ export function watchTheme(host, method) {
   }
   host[method](watch.dark);
 }
+
+// Iluminar: el texto, los íconos y los bordes no funden a la par del fondo:
+// arrancan después del fondo (25 %) y funden despacio y parejo (50 % de su
+// duración), para no quedar claro sobre claro y sin un corte duro. Las variables van en <html> (atraviesan
+// los Shadow DOM) y se quitan al terminar, así hover y foco no se retrasan.
+// Debe coincidir con --arq-illumination-bg-duration (global.css).
+const TEXT_VARS = ['--arq-theme-text-delay', '--arq-theme-text-duration', '--arq-theme-text-easing'];
+let themeTimer = 0;
+
+/** Llamar justo antes de cambiar data-arq-theme por Iluminar. */
+export function animateThemeChange(bgMs = 2100) {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const style = document.documentElement.style;
+  style.setProperty(TEXT_VARS[0], `${Math.round(bgMs * 0.25)}ms`);
+  style.setProperty(TEXT_VARS[1], `${Math.round(bgMs * 0.5)}ms`);
+  style.setProperty(TEXT_VARS[2], 'cubic-bezier(0.4, 0, 0.2, 1)');
+  clearTimeout(themeTimer);
+  themeTimer = setTimeout(() => TEXT_VARS.forEach((name) => style.removeProperty(name)), bgMs + 100);
+}

@@ -15,6 +15,7 @@
   gap: var(--arq-space-gap-md);
   padding-block: var(--arq-space-padding-md);
   border-block: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  background: var(--arq-color-surface-transparent);
 }
 
 /* State=Scroll: la barra fija gana espacio vertical sin modificar sus

@@ -21,6 +21,10 @@
   padding: 0 var(--page-gutter) var(--arq-space-section-xl);
   background: var(--arq-color-bg-default);
   color: var(--arq-color-text-primary);
+  transition-property: background-color, color;
+  transition-duration: var(--arq-illumination-bg-duration), var(--arq-theme-text-duration, var(--arq-motion-duration-fast));
+  transition-delay: 0s, var(--arq-theme-text-delay, 0s);
+  transition-timing-function: var(--arq-illumination-bg-easing), var(--arq-theme-text-easing, var(--arq-motion-easing-standard));
 }
 
 /* Cambio de fondo (DESIGN.md §2): con Iluminar el hero baja su padding
@@ -531,3 +535,4 @@
     width: 100%;
   }
 }
+

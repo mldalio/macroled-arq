@@ -30,6 +30,9 @@
   width: var(--arq-space-gap-sm-md);
   height: var(--arq-border-default);
   background: var(--arq-color-text-primary);
+  transition-property: background-color;
+  transition-duration: var(--arq-theme-text-duration, var(--arq-motion-duration-fast));
+  transition-delay: var(--arq-theme-text-delay, 0s);
 }
 
 /* State=Hover */

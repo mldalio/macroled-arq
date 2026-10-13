@@ -11,6 +11,9 @@
 .link {
   display: inline-flex;
   color: inherit;
+  /* Hereda el color del host: sin transición propia, o se suma a la del host
+     y el logo termina de cambiar mucho después que el resto. */
+  transition: none;
 }
 
 /* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí, no hay token de offset) */

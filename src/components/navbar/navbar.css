@@ -53,6 +53,12 @@
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
   background: var(--arq-color-surface-default);
   color: var(--arq-color-text-primary);
+  /* color sin transición: lo heredan el logo, los links y los íconos, que
+     funden cada uno por su cuenta (si no, la espera se suma y la barra tarda de más). */
+  transition-property: background-color, border-color;
+  transition-duration: var(--arq-illumination-bg-duration), var(--arq-theme-text-duration, var(--arq-motion-duration-fast));
+  transition-delay: 0s, var(--arq-theme-text-delay, 0s);
+  transition-timing-function: var(--arq-illumination-bg-easing), var(--arq-theme-text-easing, var(--arq-motion-easing-standard));
 }
 
 /* Theme=Transparent sobre la foto: color/overlay/translucent + blur/backdrop,
@@ -250,3 +256,4 @@
     display: none;
   }
 }
+

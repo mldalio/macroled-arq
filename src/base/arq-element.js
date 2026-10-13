@@ -70,8 +70,16 @@ const baseCss = `
 *::before,
 *::after {
   transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
-  transition-duration: var(--arq-motion-duration-fast);
-  transition-timing-function: var(--arq-motion-easing-standard);
+  transition-duration: var(--arq-theme-text-duration, var(--arq-motion-duration-fast)), var(--arq-motion-duration-fast), var(--arq-theme-text-duration, var(--arq-motion-duration-fast)), var(--arq-motion-duration-fast), var(--arq-theme-text-duration, var(--arq-motion-duration-fast)), var(--arq-theme-text-duration, var(--arq-motion-duration-fast)), var(--arq-theme-text-duration, var(--arq-motion-duration-fast));
+  transition-delay: var(--arq-theme-text-delay, 0s), 0s, var(--arq-theme-text-delay, 0s), 0s, var(--arq-theme-text-delay, 0s), var(--arq-theme-text-delay, 0s), var(--arq-theme-text-delay, 0s);
+  transition-timing-function: var(--arq-theme-text-easing, var(--arq-motion-easing-standard));
+}
+
+/* Íconos SVG: heredan el color del texto que los rodea. Sin transición propia,
+   porque se sumaría a la del padre y cambiarían mucho después (logo, flechas). */
+svg,
+svg * {
+  transition: none;
 }
 
 .visually-hidden {

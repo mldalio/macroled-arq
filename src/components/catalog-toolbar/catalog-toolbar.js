@@ -17,6 +17,7 @@
 //   sigue a <html> si otro lo cambia. La ficha tiene su propio Iluminar.
 
 import { ArqElement } from '../../base/arq-element.js';
+import { animateThemeChange } from '../../base/theme.js';
 import '../button/button.js';
 import '../divider/divider.js';
 import '../toggle/toggle.js';
@@ -105,6 +106,7 @@ class ArqCatalogToolbar extends ArqElement {
   }
 
   #setDark(dark, save) {
+    if (save) animateThemeChange();
     const html = document.documentElement;
     if (dark) html.setAttribute('data-arq-theme', 'dark');
     else html.removeAttribute('data-arq-theme');
