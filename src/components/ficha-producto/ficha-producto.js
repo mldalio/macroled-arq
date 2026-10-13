@@ -1,8 +1,8 @@
-// ficha-producto · contenedor de página (Final: Ficha 1218:10487 · 1220:11334;
-// Iluminar 1218:11777 · 1220:12601)
+// ficha-producto · contenedor de página (Final: Ficha v2 2085:26124 Desktop;
+// Mobile: la v1 1220:11334 con los componentes nuevos; Iluminar 1218:11777 · 1220:12601)
 //
-// Ficha de un producto (grupo): hero con galería y configurador, descargas y
-// especificaciones, galería de ambiente, descripción, glosario, inspiración y
+// Ficha de un producto (grupo): hero con galería y configurador (con el
+// encabezado adentro), especificaciones en un acordeón, galería de ambiente, descripción, glosario, inspiración y
 // "Explora la colección". El template del CMS imprime el grupo y los textos
 // y el nombre; el componente pide el resto a src/data/catalog.js, textos
 // incluidos (AGENTS.md · Datos; decisiones.md, 2026-10-02 · Ficha de producto
@@ -10,7 +10,6 @@
 //
 //   <arq-ficha-producto data-group="kanu-jardin">
 //     <h1 slot="title">Kanu Jardín</h1>
-//     <h2 slot="downloads-title">Descargas</h2>
 //     <h2 slot="glossary-title">Glosario</h2>
 //     <h2 slot="collection-title">Explora la colección</h2>
 //     <h2 slot="modal-title">Descargas</h2>
@@ -32,7 +31,9 @@
 //   la página, un <h2> con la primera línea (el título, con o sin «## »), un
 //   <p> por línea y un <ul> con las líneas «-», con createElement y textContent
 //   (nunca innerHTML). Así el encabezado queda en el HTML de la página.
-// - "Generar ficha técnica" y "Ficha técnica" emiten arq:datasheet { sku }.
+// - "Ver descargas" lleva al glosario, donde está la descarga de cada SKU.
+// - Comparar: suma la variante elegida a la compare-bar de la ficha (hasta 3).
+// - "Generar ficha técnica" y "Ficha técnica" (modal del glosario) emiten arq:datasheet { sku }.
 //   TODO (diseño): el PDF no tiene diseño; se genera cuando exista.
 
 import { ArqElement } from '../../base/arq-element.js';
@@ -44,6 +45,8 @@ import '../breadcrumb/breadcrumb.js';
 import '../breadcrumb-item/breadcrumb-item.js';
 import '../button/button.js';
 import '../toggle/toggle.js';
+import '../checkbox/checkbox.js';
+import '../compare-bar/compare-bar.js';
 import '../product-gallery/product-gallery.js';
 import '../sku/sku.js';
 import '../option-group/option-group.js';
@@ -75,42 +78,42 @@ class ArqFichaProducto extends ArqElement {
   static properties = {};
   static template =
     `<div class="page">` +
-    // Hero: Iluminar pone data-arq-theme="dark" en este contenedor
+    // Hero (Ficha v2, 2085:27570): galería a sangre a la izquierda y configurador
+    // a la derecha, con el encabezado adentro. Iluminar pone data-arq-theme="dark"
+    // en este contenedor.
     `<div class="hero">` +
+    `<div class="configurator">` +
+    `<div class="gallery-column">` +
+    `<arq-product-gallery class="gallery" fill></arq-product-gallery>` +
+    `<arq-toggle class="iluminar needs-data" show-label>Iluminar</arq-toggle>` +
+    `</div>` +
+    `<div class="configurator-column">` +
     `<div class="header">` +
     `<arq-breadcrumb class="breadcrumb needs-data"></arq-breadcrumb>` +
     `<div class="title-row">` +
     `<div class="title role-display"><slot name="title"></slot></div>` +
-    `<arq-button class="collection-link needs-data" type="underline" show-underline show-icon icon="arrow-up-right" hidden></arq-button>` +
+    `<arq-sku class="sku needs-data" size="compact"></arq-sku>` +
     `</div>` +
     `</div>` +
-    `<div class="configurator">` +
-    `<div class="gallery-column">` +
-    `<arq-toggle class="iluminar needs-data" show-label>Iluminar</arq-toggle>` +
-    `<arq-product-gallery class="gallery"></arq-product-gallery>` +
-    `</div>` +
-    `<div class="configurator-column">` +
     `<div class="info">` +
     `<p class="status role-body" role="status" hidden></p>` +
     `<div class="product">` +
-    `<arq-sku class="sku needs-data"></arq-sku>` +
     `<div class="description role-body-regular"><span class="variant-description" hidden></span></div>` +
     `</div>` +
     `<div class="options needs-data"></div>` +
     `</div>` +
-    `<div class="actions needs-data">` +
-    `<arq-button class="datasheet" show-icon icon="arrow-up-right">Generar ficha técnica</arq-button>` +
-    `<arq-button class="to-glossary" type="outline" show-icon icon="arrow-up-right">Ver glosario</arq-button>` +
+    `<div class="buy needs-data">` +
+    `<arq-checkbox class="compare" show-label>Comparar</arq-checkbox>` +
+    `<div class="actions">` +
+    `<arq-button class="datasheet">Generar ficha técnica</arq-button>` +
+    `<arq-button class="to-glossary" type="outline">Ver descargas</arq-button>` +
     `</div>` +
     `</div>` +
     `</div>` +
     `</div>` +
-    // Descargas + especificaciones (cambian con la variante)
+    `</div>` +
+    // Especificaciones (cambian con la variante)
     `<div class="details needs-data">` +
-    `<div class="downloads">` +
-    `<div class="downloads-title role-display-sm"><slot name="downloads-title"></slot></div>` +
-    `<div class="download-buttons"></div>` +
-    `</div>` +
     `<div class="accordion"></div>` +
     `</div>` +
     `<div class="ambient needs-data" role="region" aria-label="Galería de ambiente" tabindex="0" hidden></div>` +
@@ -124,11 +127,12 @@ class ArqFichaProducto extends ArqElement {
     `</div>` +
     `</div>` +
     `<div class="family-row needs-data" hidden>` +
+    `<div class="description-image" hidden><img alt="" loading="lazy"></div>` +
     `<div class="family" hidden>` +
     `<p class="family-label role-label">Otras familias de la colección</p>` +
     `<div class="cards family-cards"></div>` +
+    `<arq-button class="family-link" type="underline" show-underline show-icon icon="arrow-up-right" hidden></arq-button>` +
     `</div>` +
-    `<div class="description-image" hidden><img alt="" loading="lazy"></div>` +
     `</div>` +
     `</div>` +
     `<div class="glossary needs-data">` +
@@ -148,6 +152,7 @@ class ArqFichaProducto extends ArqElement {
     `<div class="cards collection-cards"></div>` +
     `</div>` +
     `</div>` +
+    `<arq-compare-bar class="compare-bar"></arq-compare-bar>` +
     `<arq-download-modal id="downloads-modal"><slot name="modal-title" slot="title"></slot></arq-download-modal>`;
 
   #product = null;
@@ -170,9 +175,17 @@ class ArqFichaProducto extends ArqElement {
     });
     root.querySelector('.datasheet').addEventListener('click', (event) => this.#datasheet(this.#sku, event.currentTarget));
     root.querySelector('.to-glossary').addEventListener('click', () => this.#toGlossary());
-    root.querySelector('.download-buttons').addEventListener('click', (event) => {
-      const datasheet = event.target.closest('[data-datasheet]');
-      if (datasheet) this.#datasheet(this.#sku, datasheet);
+    // Comparar: suma o saca la variante elegida de la compare-bar (hasta 3)
+    const compare = root.querySelector('.compare');
+    const bar = root.querySelector('.compare-bar');
+    compare.addEventListener('arq:change', (event) => {
+      event.stopPropagation();
+      if (!this.#sku) return;
+      if (!event.detail.checked) bar.remove(this.#sku);
+      else if (!bar.add(this.#compareItem())) compare.checked = false; // ya hay 3
+    });
+    bar.addEventListener('arq:compare-change', () => {
+      compare.checked = bar.has(this.#sku);
     });
 
     // Glosario: el ícono de cada fila abre el modal con los archivos de ese SKU
@@ -327,7 +340,8 @@ class ArqFichaProducto extends ArqElement {
     description.hidden = !details.description;
     root.querySelector('.gallery').images = details.images;
     this.#renderSpecs(details.sections);
-    this.#renderDownloads(details.downloads);
+    const compare = root.querySelector('.compare');
+    compare.checked = root.querySelector('.compare-bar').has(details.sku);
 
     if (updateUrl) {
       const url = new URL(location.href);
@@ -354,6 +368,7 @@ class ArqFichaProducto extends ArqElement {
         title.slot = 'title';
         title.textContent = section.label;
         const list = document.createElement('arq-spec-list');
+        list.columns = true;
         for (const row of section.rows) {
           const spec = document.createElement('arq-spec-row');
           const label = document.createElement('span');
@@ -368,21 +383,10 @@ class ArqFichaProducto extends ArqElement {
     );
   }
 
-  // Descargas: la ficha técnica (se genera) y los archivos del SKU elegido.
-  // Un archivo que falta no se muestra (README de download-item).
-  #renderDownloads(files) {
-    const button = (label, href) => {
-      const element = document.createElement('arq-button');
-      element.type = 'outline';
-      element.showIcon = true;
-      element.icon = 'download';
-      if (href) element.href = href;
-      element.textContent = label;
-      return element;
-    };
-    const datasheet = button(TEXT.datasheet);
-    datasheet.dataset.datasheet = '';
-    this.shadowRoot.querySelector('.download-buttons').replaceChildren(datasheet, ...files.map((file) => button(file.label, file.href)));
+  #compareItem() {
+    const { group } = this.#product;
+    const details = variantDetails(group, this.#sku);
+    return { sku: this.#sku, name: group.name, meta: this.#sku, image: details.images?.[0]?.src ?? null };
   }
 
   // El PDF lo genera src/pdf/ficha-tecnica.js (lo engancha main.js), que deja
@@ -447,9 +451,15 @@ class ArqFichaProducto extends ArqElement {
   }
 
   #renderFamily() {
-    const { family, images } = this.#product;
+    const { family, images, collection } = this.#product;
     const root = this.shadowRoot;
     root.querySelector('.family').hidden = !family.length;
+    const familyLink = root.querySelector('.family-link');
+    familyLink.hidden = !collection;
+    if (collection) {
+      familyLink.href = collectionHref(collection.id);
+      familyLink.textContent = `Ver colección ${collection.name}`;
+    }
     root.querySelector('.family-cards').replaceChildren(...family.map((card) => familyCard(card)));
     const picture = root.querySelector('.description-image');
     picture.hidden = !images.description;

@@ -19,7 +19,7 @@ Botón del sistema en tres jerarquías: Filled (acción principal), Outline (sec
 | Label | slot por defecto | — | Texto de la acción (infinitivo o sustantivo corto, sin punto final) |
 | Type | `type` | `type` | `filled` · `outline` · `underline` (def. `filled`) |
 | Show icon | `show-icon` | `showIcon` | booleano · ícono a la derecha. **En Figma viene en `true`; en código, sin el atributo no hay ícono** |
-| Icon | `icon` | `icon` | cualquier nombre de `src/base/icons.js` (def. `arrow-up-right`) |
+| Icon | `icon` | `icon` | cualquier nombre de `src/base/icons.js` (def. `arrow-up-right`). **El ícono es opcional**: se muestra solo con `show-icon`; sin él, el botón es solo texto. Regla de flechas (descripción del set): `arrow-right` (→) para navegación interna y acciones del sitio (Enviar consulta, Ver todo…); `arrow-up-right` (↗) para recursos externos, que abren otra pestaña o descargan (Centro de descargas, Escribinos por mail, PDF, redes) |
 | Show underline | `show-underline` | `showUnderline` | booleano · solo Underline. **En Figma viene en `true`; en código, sin el atributo el subrayado aparece solo en hover y pressed** (p. ej. "Volver a productos") |
 | Show count | `show-count` | `showCount` | booleano · [`<arq-count-badge>`](../count-badge/README.md) después del label (Tone=Inverse en Filled, Primary en Outline y Underline) |
 | — (Count del badge) | `count` | `count` | número. Con `0` o sin `count` no se muestra el badge |

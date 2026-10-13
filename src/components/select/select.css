@@ -22,6 +22,19 @@
   color: var(--arq-color-text-tertiary);
 }
 
+/* Type=Filter: etiqueta de 14 px (glosario de variantes). Es role/label con el
+   tamaño de role/body-compact. TODO (diseño): no hay un estilo role/* de 14 px
+   en MAYÚSCULAS con tracking (role/label-sm se eliminó); hasta que exista se
+   compone con tokens semánticos (peso, interlineado y tracking de role/label). */
+.label-large {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-regular);
+  font-size: var(--arq-type-body-compact-size);
+  line-height: var(--arq-type-label-leading);
+  letter-spacing: var(--arq-font-tracking-widest);
+  text-transform: uppercase;
+}
+
 /* Trigger: padding vertical space/padding/sm-md, sin padding lateral, gap
    space/gap/sm-md entre muestra, texto y chevron. La línea inferior
    (border/default en color/border/strong) se descuenta del padding para que

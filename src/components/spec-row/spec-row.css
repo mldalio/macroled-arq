@@ -1,33 +1,39 @@
-/* spec-row · Figma 922:2497. Solo tokens semánticos.
-   Label y Value en role/body-regular. */
+/* spec-row · Figma 922:2497, con el cambio de la Ficha v2 (2165:43335).
+   Solo tokens semánticos. Etiqueta en role/body-regular y valor en role/body
+   (Light), los dos en color/text/primary, uno al lado del otro.
+   TODO (Figma): el set 922:2497 todavía tiene el diseño anterior (padding
+   space/padding/md, etiqueta tertiary, valor a la derecha). */
 
 :host {
   display: block;
 }
 
-/* gap space/gap/lg: separación mínima entre etiqueta y valor (descripción).
-   Textos largos (descripción del set): etiqueta y valor se parten en varias
-   líneas; nunca se cortan. Una palabra sin espacios (un código) también se parte. */
+/* La etiqueta ocupa una columna fija y el valor sigue a su lado. En Figma la
+   columna mide 300, sin token: layout/measure (400) como máximo, y nunca más
+   de la mitad de la fila.
+   Textos largos: etiqueta y valor se parten en varias líneas; nunca se cortan.
+   Una palabra sin espacios (un código) también se parte. */
 .row {
   display: flex;
   align-items: flex-start; /* con varias líneas, las dos columnas arrancan arriba */
-  justify-content: space-between;
-  gap: var(--arq-space-gap-lg);
+  gap: var(--arq-space-gap-md);
   margin: 0;
-  padding-block: var(--arq-space-padding-md);
+  padding-block: var(--arq-space-padding-sm);
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
 }
 
 .label {
+  flex: 0 1 var(--arq-layout-measure);
   min-width: 0;
+  max-width: 50%;
   overflow-wrap: anywhere;
-  color: var(--arq-color-text-tertiary);
+  color: var(--arq-color-text-primary);
 }
 
 .value {
+  flex: 1 1 0;
   min-width: 0;
   overflow-wrap: anywhere;
   margin: 0;
   color: var(--arq-color-text-primary);
-  text-align: end;
 }

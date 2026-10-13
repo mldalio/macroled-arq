@@ -27,12 +27,12 @@ Navegación de categorías de Productos y Colecciones. Un solo componente para D
 | --- | --- | --- | --- |
 | — (grupos) | slot por defecto | — | `arq-catalog-nav-group`, cantidad libre |
 | catalog-nav-mobile · Open | `open` | `open` | booleano. Solo cuenta hasta 1023 px |
-| catalog-nav-trigger · Label | — | — | Sale solo del `arq-catalog-nav-item` elegido (`selected`) |
+| catalog-nav-trigger · Label | — | — | Sale solo del `arq-catalog-nav-item` `selected` del grupo `selected` |
 | — | `label` | `label` | Nombre del `<nav>` para lectores de pantalla. Por defecto «Categorías» (también es el texto del encabezado si no hay ítem elegido) |
 
 - **Desde 1024 px** (corte de los listados, AGENTS.md): sidebar con los grupos.
 - **Hasta 1023 px:** encabezado con la selección actual (`<button>` con `aria-expanded`). Al tocarlo se abren los mismos grupos; todos visibles y el de la categoría actual abierto, como Figma. Al elegir un ítem, el panel se cierra.
-- **Grupo abierto:** lo decide el HTML (`open` en el grupo de la categoría actual). Si ninguno viene abierto, se abre el que tiene el ítem elegido.
+- **Grupo abierto:** lo decide el HTML (`open` en el grupo de la categoría actual). Si ninguno viene abierto, se abre el grupo `selected` (el que guarda la categoría actual; se marca solo si contiene un ítem `selected`).
 - **Links en el HTML del embed:** los arma la página con el árbol de navegación de `src/data/` (decisión 2026-10-02 · Navegación); así quedan indexables.
 - **Ancho:** el de su columna. En Figma la columna del sidebar mide 240.
 

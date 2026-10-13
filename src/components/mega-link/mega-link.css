@@ -6,19 +6,33 @@
 }
 
 /* ── Type=Link ───────────────────────────────────────────────────── */
-/* Fila: padding vertical space/gap/sm, gap space/gap/sm, línea inferior
-   color/border/subtle. Hover: fondo color/surface/hover. */
+/* Fila: padding vertical space/gap/md, gap space/gap/sm, línea inferior
+   color/border/subtle. Hover: fondo color/surface/hover. Con button es un
+   <button> (entra a un submenú): mismos valores, sin estilos del navegador. */
 .link {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: var(--arq-space-gap-sm);
-  padding-block: var(--arq-space-gap-sm);
+  width: 100%;
+  margin: 0;
+  padding: var(--arq-space-gap-md) 0;
+  border: 0;
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  background: none;
   color: var(--arq-color-text-primary);
+  font: inherit;
+  text-align: start;
   text-decoration: none;
 }
 
-.link[href]:hover {
+button.link {
+  cursor: pointer;
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+}
+
+.link[href]:hover,
+button.link:hover {
   background: var(--arq-color-surface-hover);
 }
 
@@ -44,6 +58,23 @@
 
 .meta {
   color: var(--arq-color-text-tertiary);
+}
+
+/* Miniatura (Show image): cuadrada, color/surface/subtle de fondo.
+   TODO: mide 60 en Figma y no hay token; layout/table-thumb (56) es el más
+   cercano. */
+.thumb {
+  flex: none;
+  width: var(--arq-layout-table-thumb);
+  height: var(--arq-layout-table-thumb);
+  background: var(--arq-color-surface-subtle);
+}
+
+.thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Flecha icon/md en color/icon/primary */

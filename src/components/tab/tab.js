@@ -4,7 +4,7 @@
 // página. Hoy la usa el mega-menu de Productos. Si cada opción lleva a otra
 // URL, se usa nav-link.
 //
-//   <arq-tab aria-controls="panel-aplicacion" selected>Aplicación</arq-tab>
+//   <arq-tab aria-controls="panel-por-espacio" selected>Por espacio</arq-tab>
 //
 // El elemento es la pestaña (role="tab", aria-selected). Clic, Enter o
 // Espacio la eligen y emite arq:change. El tablist (role="tablist", flechas

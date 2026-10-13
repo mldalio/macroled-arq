@@ -193,8 +193,8 @@ Para los dos usos:
 Estos valores **no se usan en componentes**. Están acá para entender de dónde salen los semánticos.
 
 - **Color:** neutral (0–900, con 25, 75, 150, 725, 750 y 775), bronze, cacao, olive, terracotta (50–900), offwhite, red / green / amber y alpha. Bronze, cacao, olive, terracotta y offwhite quedan en Figma como paleta de marca, pero **no se exportan a `tokens.json`** hasta que un semántico los use.
-- **Espaciado (px en Figma, rem en código):** 0 · 2 · 3 · 4 · 6 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 56 · 64 · 80 · 96 · 128 · 160.
-- **Tipografía:** familia única Albert Sans; pesos 300–700; tamaños 10 · 11 · 12 · 14 · 16 · 18 · 20 · 24 · 32 · 40 · 48 · 64.
+- **Espaciado (px en Figma, rem en código):** 0 · 2 · 3 · 4 · 5 · 6 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 56 · 64 · 80 · 96 · 128 · 160.
+- **Tipografía:** familia única Albert Sans; pesos 300–700; tamaños 10 · 11 · 12 · 14 · 16 · 18 · 20 · 24 · 32 · 40 · 48 · 64 · 80.
 - **Radio:** `radius/0 · 2 · 4 · 8 · 16 · 24 · full`. **Borde:** `border/1 · border/2`. **Blur:** `blur/12`.
 
 ### Primitivas de color que usa Semantic
@@ -310,7 +310,7 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 | layout/compare-slot | 400 | 400 | Ancho máximo de compare-slot Default |
 | layout/compare-label | 200 | 120 | Columna de etiquetas de la comparativa (fija en Mobile) |
 | layout/compare-column | 160 | 160 | Columna de producto de la comparativa en Mobile (en Desktop se reparten el ancho) |
-| layout/mega-menu-image | 438 | 438 | Ancho de la imagen del mega-menu. El alto sale de ratio/portrait-soft (4:5) |
+| layout/mega-menu-image | 420 | 420 | Ancho de la imagen del mega-menu. El alto sale de ratio/portrait-soft (4:5) |
 | layout/search-field | 360 | 360 | Ancho de search-field en el navbar Desktop; search-dropdown toma el mismo ancho. En Mobile el campo ocupa el ancho disponible |
 | layout/search-thumb | 48 | 48 | Miniatura cuadrada de search-result |
 | layout/select-filter | 160 | 160 | Ancho mínimo de select Type=Filter (celda de filter-bar): la flecha va al extremo derecho |
@@ -358,10 +358,12 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 | Estilo | Peso | Desktop | Mobile | Uso |
 | --- | --- | --- | --- | --- |
 | role/display | Light | 64/72 | 40/44 | Titulares principales |
+| role/display-lg | Light | 80/100 | 48/56 | Título del hero compacto (Contacto y páginas internas) |
 | role/display-sm | Light | 48/56 | 32/40 | Titulares secundarios |
 | role/heading-1 | Light | 40/48 | 32/40 | Título de página |
 | role/heading-2 | Light | 32/40 | 24/32 | Título de sección |
 | role/heading-3 | Regular | 24/32 | 20/28 | Subtítulos, columnas del mega menú, category-card |
+| role/heading-3-light | Light | 24/32 | 20/28 | Heading 3 en Light: preguntas del FAQ |
 | role/body-xl | Regular | 20/28 | 16/24 | Acciones grandes (opciones del modal de descargas) |
 | role/body-lg | Light | 16/24 | 16/24 | Bajadas |
 | role/body-lg-regular | Regular | 16/24 | 16/24 | Títulos o preguntas de lectura |
@@ -370,6 +372,10 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 | role/body-regular | Regular | 16/24 | 16/24 | Botones, opciones y controles con texto |
 | role/body-medium | Medium | 16/24 | 16/24 | Énfasis intermedio |
 | role/body-strong | SemiBold | 16/24 | 16/24 | Títulos de columna, nombres en listas |
+| role/body-compact | Light | 14/24 | 14/24 | Cuerpo compacto (antes era el tamaño de role/body) |
+| role/body-compact-regular | Regular | 14/24 | 14/24 | Botones, opciones, controles y listas densas |
+| role/body-compact-medium | Medium | 14/24 | 14/24 | Énfasis sobre body-compact-regular |
+| role/body-compact-strong | SemiBold | 14/24 | 14/24 | Énfasis fuerte en tamaño compacto |
 | role/body-sm | Regular | 12/16 | 12/16 | Metadatos, SKU en listados, legales, ayudas |
 | role/body-sm-medium | Medium | 12/16 | 12/16 | Énfasis sobre body-sm |
 | role/label | Regular | 12/16 | 12/16 | MAYÚSCULAS, tracking 1 px: etiquetas de inputs, tabs, títulos de grupo, breadcrumb |
@@ -450,15 +456,15 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | select-option | State: Default · Hover · Selected · Focus · Disabled. Props: Name · Show swatch | Hover surface/faint, Selected role/body-medium, Focus border/focus |
 | tab | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | role/label; seleccionado con línea border/strong. Un solo tab en todo el sitio |
 | nav-link | Breakpoint: Desktop · Mobile. State: Default · Hover · Pressed · Current · Focus. Open: False · True. Theme: Default · Inverse. Props: Label · Has dropdown | Hover subrayado; Current guion de space/gap/sm × border/strong (8 × 2) y role/body-regular en Desktop (un peso más, como catalog-nav-item Selected); Open: solo gira la flecha (sin subrayado) |
-| navbar | Breakpoint: Desktop · Mobile. Mode: Default · Search · Menu · Products. Theme: Default · Transparent | 56 px de alto. Transparent sobre el hero: fondo translúcido (color/overlay/translucent) + blur (blur/backdrop); sigue así mientras la barra está sobre el hero y pasa a Default al dejarlo atrás (sin hero, al hacer scroll) |
-| mega-menu | Tab: Aplicación · Lámparas y artefactos · Colecciones | Un solo componente; categorías, links y "Ver todo…" salen de los datos. Usa tab y mega-link |
+| navbar | Breakpoint: Desktop · Mobile. Mode: Default · Search · Menu · Products · Colecciones · Interior · Exterior · Lámparas y artefactos. Theme: Default · Transparent | 56 px de alto. Transparent sobre el hero: fondo translúcido (color/overlay/translucent) + blur (blur/backdrop); sigue así mientras la barra está sobre el hero y pasa a Default al dejarlo atrás (sin hero, al hacer scroll) |
+| mega-menu | Tab: Por espacio · Lámparas y artefactos · Colecciones | Un solo componente; categorías, links y "Ver todo…" salen de los datos. Usa tab y mega-link |
 | mega-link | Type: Link · Group. State: Default · Hover · Focus. Size: Default · Large. Open: False · True. Props: Name · Meta · Show meta · Show image · Show arrow | Link role/body (Large role/body-lg). Group role/body-xl con icon/plus / icon/minus |
 | logo | Size: Default · Small · Compact | 181 / 158 / 117 px |
 | footer · footer-link | Breakpoint: Desktop · Mobile / State: Default · Hover · Pressed · Focus | — |
 | search-field | State: Empty · Focus · Filled. Prop: Show close | Campo con borde del navbar |
 | search-result · search-see-all | State: Default · Hover · Active (solo search-result) · Focus | Miniatura, nombre, SKU, flecha |
 | search-dropdown · search-screen | State: Results · No results (· Empty en search-screen) | Desktop / mobile |
-| hero | Breakpoint: Desktop · Mobile. Props: Eyebrow · Show eyebrow · Title · Description · Show description · Show button | Media + hero/scrim. Eyebrow role/label, título role/display, button Outline en Dark local (CTA por slot). Alto: 70svh en Desktop y Mobile. En la Home, pantalla completa (100svh) en los dos |
+| hero | Breakpoint: Desktop · Mobile. Size: Default · Compact (solo en Figma, sin código todavía). Props: Eyebrow · Show eyebrow · Title · Description · Show description · Show button | Media + hero/scrim. Eyebrow role/label, título role/display, button Outline en Dark local (CTA por slot). Alto: 70svh en Desktop y Mobile. En la Home, pantalla completa (100svh) en los dos |
 | section-header | Breakpoint: Desktop · Mobile. Type: Link · Description · Title · Stacked. Props: Title · Description | role/heading-2 y role/body-lg. Sin separador. Gap título–bajada sm-md, textos–link lg. Bajada Description hasta layout/measure. En Mobile el link no se muestra: la página pone un button al final del bloque |
 | page-header | Breakpoint: Desktop · Mobile. Type: List · Detail. Props: Title · Description · Show breadcrumb · Show description · Show back · Show action | Título role/display. Sin desplegable |
 | breadcrumb · breadcrumb-item | Levels: 3 · 2 / State: Default · Hover · Current. Props: Label · Show separator | role/label. El ítem actual no lleva link ni separador |
@@ -473,8 +479,8 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | product-card | Size: Large · Small. State: Default · Hover · Focus. Props: Name · Meta · Show meta · Show finishes · Show compare | Toma el ancho de su columna (FILL). ratio/portrait. Hover y Iluminar cambian la imagen (ver Imágenes de product-card) |
 | product-gallery · gallery-thumb | Breakpoint: Desktop · Mobile / State: Default · Hover · Selected · Focus | ratio/landscape |
 | carousel-controls | Position: Start · Middle · End | icon-button Large con flechas |
-| catalog-toolbar | Breakpoint: Desktop · Mobile. Props: Count · Show iluminar | Cantidad ("11 productos" / "10 colecciones"), toggle Iluminar y botón Filtrar |
-| catalog-nav · catalog-nav-group · catalog-nav-item | — / Open: True · False / Size: Large · Default. State: Default · Hover · Selected · Focus | Sidebar desde 1024 px |
+| catalog-toolbar | Breakpoint: Desktop · Mobile. State: Default · Scroll. Props: Count · Show iluminar | Cantidad ("11 productos" / "10 colecciones"), toggle Iluminar y botón Filtrar |
+| catalog-nav · catalog-nav-group · catalog-nav-item | — / Open: True · False. Selected: False · True / Size: Large · Default. State: Default · Hover · Selected · Focus | Sidebar desde 1024 px |
 | catalog-nav-mobile · catalog-nav-trigger | Open: False · True / Open × State: Default · Hover · Focus | Hasta 1023 px. Abierto: la sección actual abierta con su opción marcada; las demás visibles y cerradas |
 | filter-panel · filter-row · filter-chip · filter-bar | Breakpoint / Open × State / State: Default · Hover · Focus / State: Default · Applied × Breakpoint | filter-panel desktop con scrim; mobile pantalla completa sin scrim |
 | checkbox | Size: Large · Default. Checked: False · True. State: Default · Hover · Focus · Disabled. Props: Label · Show label | Filtros y "Comparar" en tarjetas |
@@ -592,11 +598,11 @@ Link a cada set en Figma (`node-id`). Base: `https://www.figma.com/design/djAb2r
 | button | [907-2375](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=907-2375) | Label; Show icon; Icon; Show underline; Show count; Show leading icon; Leading icon; Type: Filled · Outline · Underline; State: Default · Hover · Pressed · Focus · Disabled · Loading |
 | carousel-controls | [1410-17825](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1410-17825) | Position: Start · Middle · End |
 | catalog-nav | [1035-2411](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1035-2411) | — |
-| catalog-nav-group | [1035-2410](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1035-2410) | Label; Open: True · False |
+| catalog-nav-group | [1035-2410](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1035-2410) | Label; Open: True · False; Selected: False · True |
 | catalog-nav-item | [1035-2382](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1035-2382) | Label; Size: Large · Default; State: Default · Hover · Selected · Focus |
 | catalog-nav-mobile | [1207-3314](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1207-3314) | Open: False · True |
 | catalog-nav-trigger | [1215-3337](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1215-3337) | Label; Open: False · True; State: Default · Hover · Focus |
-| catalog-toolbar | [1244-4058](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1244-4058) | Count; Show iluminar; Breakpoint: Desktop · Mobile |
+| catalog-toolbar | [1244-4058](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1244-4058) | Count; Show iluminar; Breakpoint: Desktop · Mobile; State: Default · Scroll |
 | category-card | [1036-2461](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1036-2461) | Name; Breakpoint: Desktop · Mobile; State: Default · Hover · Focus |
 | checkbox | [975-2322](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=975-2322) | Label; Show label; Size: Large · Default; Checked: False · True; State: Default · Hover · Focus · Disabled |
 | choice-chip | [1113-2485](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1113-2485) | Label; State: Default · Hover · Selected · Focus · Disabled |
@@ -624,16 +630,16 @@ Link a cada set en Figma (`node-id`). Base: `https://www.figma.com/design/djAb2r
 | footer-link | [788-2930](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=788-2930) | Label; Show icon; Icon; State: Default · Hover · Pressed · Focus |
 | form-message | [1311-4871](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1311-4871) | Message; Tone: Success · Error |
 | gallery-thumb | [920-2474](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=920-2474) | State: Default · Hover · Selected · Focus |
-| hero | [1311-4340](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1311-4340) | Eyebrow; Show eyebrow; Title; Description; Show description; Show button; Breakpoint: Desktop · Mobile |
+| hero | [1311-4340](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1311-4340) | Eyebrow; Show eyebrow; Title; Description; Show description; Show button; Breakpoint: Desktop · Mobile; Size: Default · Compact |
 | icon-button | [752-2882](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=752-2882) | Icon; Size: Default · Large; Background: None · Surface · Subtle · Outline; State: Default · Hover · Pressed · Focus · Disabled |
 | input | [930-2364](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=930-2364) | Label; Show label; Helper; Show helper; Type: Text · Select · Textarea; State: Empty · Filled · Focus · Error · Disabled; Open: False · True |
 | line-card | [1036-2490](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1036-2490) | Label; Name; Description; Breakpoint: Desktop · Mobile; State: Default · Hover · Focus |
 | link-list | [1303-4377](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1303-4377) | Title; Show link 3 |
 | logo | [751-4307](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=751-4307) | Size: Default · Small · Compact |
 | mega-link | [840-2070](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=840-2070) | Name; Meta; Show meta; Show image; Show arrow; Type: Link · Group; State: Default · Hover · Focus; Open: False · True; Size: Default · Large |
-| mega-menu | [841-2282](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=841-2282) | Tab: Aplicación · Lámparas y artefactos · Colecciones |
+| mega-menu | [841-2282](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=841-2282) | Tab: Por espacio · Lámparas y artefactos · Colecciones |
 | nav-link | [752-2866](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=752-2866) | Label; Has dropdown; Breakpoint: Desktop · Mobile; State: Default · Hover · Pressed · Focus · Current; Open: False · True; Theme: Default · Inverse |
-| navbar | [753-2907](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=753-2907) | Breakpoint: Desktop · Mobile; Mode: Default · Menu · Search · Products; Theme: Default · Transparent |
+| navbar | [753-2907](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=753-2907) | Breakpoint: Desktop · Mobile; Mode: Default · Menu · Search · Products · Colecciones · Interior · Exterior · Lámparas y artefactos; Theme: Default · Transparent |
 | option-group | [921-2560](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2560) | Label; Type: Tiles · Select · Swatches |
 | option-tile | [921-2487](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2487) | Label; State: Default · Hover · Selected · Focus · Disabled |
 | page-header | [1244-4016](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1244-4016) | Title; Description; Show breadcrumb; Show description; Show back; Show action; Breakpoint: Desktop · Mobile; Type: List · Detail |

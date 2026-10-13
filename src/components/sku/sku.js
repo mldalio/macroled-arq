@@ -4,6 +4,8 @@
 //
 //   <arq-sku>KANU-J-500-12W-N-WW</arq-sku>                    Size=Default (configurador, con etiqueta SKU)
 //   <arq-sku size="compact">KANU-J-500-12W-N-WW</arq-sku>     Size=Compact (fila de la tabla de variantes)
+//   <arq-sku size="underline">KANU-J-500-12W-N-WW</arq-sku>   Size=Underline (columna del glosario: código subrayado en role/caption-medium, sin ícono;
+//                                                              «Copiado» reemplaza al código, no va al lado)
 //
 // Toda la fila (código + ícono) es el botón: así el área táctil supera 24 × 24.
 // Al copiar, State=Copied: "Copiado" en lugar del ícono durante
@@ -37,7 +39,7 @@ class ArqSku extends ArqElement {
   static tag = 'arq-sku';
   static styles = css;
   static properties = {
-    size: { type: String, values: ['default', 'compact'], default: 'default' }, // Size
+    size: { type: String, values: ['default', 'compact', 'underline'], default: 'default' }, // Size
     copied: { type: Boolean }, // State=Copied
   };
   static template =
@@ -94,8 +96,15 @@ class ArqSku extends ArqElement {
   }
 
   update() {
-    this.shadowRoot.querySelector('.code').classList.toggle('role-body-lg', this.size !== 'compact');
-    this.shadowRoot.querySelector('.code').classList.toggle('role-body', this.size === 'compact');
+    const code = this.shadowRoot.querySelector('.code');
+    code.classList.toggle('role-body-lg', this.size === 'default');
+    code.classList.toggle('role-body', this.size === 'compact');
+    code.classList.toggle('role-caption-medium', this.size === 'underline');
+    // Underline: el aviso ocupa el lugar del código, con el mismo estilo
+    for (const notice of this.shadowRoot.querySelectorAll('.copied, .failed')) {
+      notice.classList.toggle('role-caption', this.size !== 'underline');
+      notice.classList.toggle('role-caption-medium', this.size === 'underline');
+    }
     this.#announce();
   }
 

@@ -26,7 +26,13 @@
 
 /* filter-bar calcula su propio --page-gutter en su :host; esta regla gana */
 .filter-bar {
-  --page-gutter: var(--arq-space-padding-md);
+  --page-gutter: var(--arq-space-padding-xl-2xl);
+}
+
+@media (max-width: 767px) {
+  .filter-bar {
+    --page-gutter: var(--arq-space-padding-md);
+  }
 }
 
 /* Barra, alineada abajo. Padding space/padding/md arriba y abajo; a los
@@ -49,6 +55,18 @@
 .downloads,
 .sort {
   margin-inline-start: auto;
+}
+
+/* Cantidad de variantes, al lado del botón Filtros (role/body en
+   color/text/secondary) */
+.count-text {
+  align-self: center;
+  margin: 0;
+  color: var(--arq-color-text-secondary);
+}
+
+:host([show-search]) .count-text {
+  display: none;
 }
 
 /* Buscador: ocupa todo el ancho que deja Filtros */
@@ -156,6 +174,7 @@ tbody td {
   font-weight: inherit;
 }
 
+/* Miniatura layout/table-thumb (100 en la Ficha v2: fila de 116) */
 .thumb {
   display: block;
   flex: none;
@@ -201,5 +220,86 @@ td.end {
     overflow: hidden;
     clip-path: inset(50%);
     white-space: nowrap;
+  }
+}
+
+/* ── Mobile: tarjetas (Figma 2180:11245) ────────────────────────────
+   Una tarjeta por variante: imagen (alto fijo por proporción 16:10 → 350 × 219
+   en 390), fila con el sku subrayado y la descarga, y los datos en dos
+   columnas con separador border/subtle. Entre tarjetas space/gap/6xl.
+   La tabla se oculta; las tarjetas solo existen hasta 767 px. */
+.cards {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  :host {
+    gap: var(--arq-space-gap-xl);
+  }
+
+  /* La barra queda en el margen de página: sin padding lateral propio */
+  .toolbar {
+    padding-inline: 0;
+  }
+
+  .scroll {
+    display: none;
+  }
+
+  .cards:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--arq-space-gap-6xl);
+    padding-bottom: var(--arq-space-section-xs);
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--arq-space-gap-md);
+  }
+
+  .card-image {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--arq-color-surface-subtle);
+  }
+
+  .card-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--arq-space-gap-md);
+  }
+
+  .card-data {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0;
+  }
+
+  .datum {
+    display: flex;
+    flex-direction: column;
+    gap: var(--arq-space-gap-sm);
+    padding-block: var(--arq-space-padding-sm);
+    border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  }
+
+  .datum dt {
+    color: var(--arq-color-text-secondary);
+  }
+
+  .datum dd {
+    margin: 0;
+    color: var(--arq-color-text-primary);
+    overflow-wrap: anywhere;
   }
 }

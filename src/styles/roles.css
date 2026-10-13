@@ -9,6 +9,15 @@
   letter-spacing: var(--arq-font-tracking-tighter);
 }
 
+/* Título del hero compacto (Contacto y páginas internas). 80/100 desktop, 48/56 mobile. */
+.role-display-lg {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-light);
+  font-size: var(--arq-type-display-lg-size);
+  line-height: var(--arq-type-display-lg-leading);
+  letter-spacing: var(--arq-font-tracking-tighter);
+}
+
 /* Titulares secundarios. */
 .role-display-sm {
   font-family: var(--arq-font-family-sans);
@@ -40,6 +49,15 @@
 .role-heading-3 {
   font-family: var(--arq-font-family-sans);
   font-weight: var(--arq-font-weight-regular);
+  font-size: var(--arq-type-heading-3-size);
+  line-height: var(--arq-type-heading-3-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Heading 3 en Light: preguntas del FAQ. */
+.role-heading-3-light {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-light);
   font-size: var(--arq-type-heading-3-size);
   line-height: var(--arq-type-heading-3-leading);
   letter-spacing: var(--arq-font-tracking-normal);
@@ -114,6 +132,42 @@
   font-weight: var(--arq-font-weight-semibold);
   font-size: var(--arq-type-body-size);
   line-height: var(--arq-type-body-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Texto de cuerpo compacto de 14 px en Light. */
+.role-body-compact {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-light);
+  font-size: var(--arq-type-body-compact-size);
+  line-height: var(--arq-type-body-compact-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Texto de 14 px en Regular: botones, opciones, controles y listas densas (ej. colecciones del mega menú). */
+.role-body-compact-regular {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-regular);
+  font-size: var(--arq-type-body-compact-size);
+  line-height: var(--arq-type-body-compact-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Texto de 14 px en Medium: énfasis sobre role/body-compact-regular. */
+.role-body-compact-medium {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-medium);
+  font-size: var(--arq-type-body-compact-size);
+  line-height: var(--arq-type-body-compact-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Texto de 14 px en SemiBold: énfasis fuerte en tamaño compacto. */
+.role-body-compact-strong {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-semibold);
+  font-size: var(--arq-type-body-compact-size);
+  line-height: var(--arq-type-body-compact-leading);
   letter-spacing: var(--arq-font-tracking-normal);
 }
 

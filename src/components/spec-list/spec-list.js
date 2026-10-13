@@ -9,6 +9,9 @@
 //     <arq-spec-row><span slot="label">CRI</span>90</arq-spec-row>
 //   </arq-spec-list>
 //
+// columns (solo de código): reparte las filas en dos columnas desde 1024 px,
+// como la Ficha v2 (dos spec-list en Figma).
+//
 // Sin prop Title (decisión 2026-10-02 · accordion-item): el set no tiene capa de
 // título; el nombre del bloque lo da el accordion-item que la contiene.
 // Cada spec-row arma su propio <dl> (los <dt>/<dd> no cruzan el Shadow DOM).
@@ -19,6 +22,9 @@ import css from './spec-list.css?inline';
 class ArqSpecList extends ArqElement {
   static tag = 'arq-spec-list';
   static styles = css;
+  static properties = {
+    columns: { type: Boolean }, // solo de código: dos columnas desde 1024 px
+  };
   static template = `<div class="list"><slot></slot></div>`;
 }
 

@@ -1,12 +1,13 @@
 # sku · `<arq-sku>`
 
-Código de producto con botón de copiar. Size=Default en el configurador de la ficha (con etiqueta SKU); Compact en las filas de la tabla de variantes.
+Código de producto con botón de copiar. Size=Default en el configurador de la ficha (con etiqueta SKU); Compact en las filas de la tabla de variantes; Underline en la columna de SKU del glosario (código largo en columna angosta).
 
 - Figma: [920-2539](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=920-2539) · ficha `doc/sku` (`1462:8671`)
 
 ```html
 <arq-sku>KANU-J-500-12W-N-WW</arq-sku>
 <arq-sku size="compact">KANU-J-500-12W-N-WW</arq-sku>
+<arq-sku size="underline">KANU-J-500-12W-N-WW</arq-sku>
 ```
 
 ## Props
@@ -14,9 +15,10 @@ Código de producto con botón de copiar. Size=Default en el configurador de la 
 | Figma | Atributo | Prop JS | Valores · por defecto |
 | --- | --- | --- | --- |
 | Code | slot por defecto | `code` (solo lectura) | el SKU tal como viene de Sheets (identificador opaco: puede tener espacios o paréntesis) |
-| Size | `size` | `size` | `default` · `compact` (def. `default`) |
+| Size | `size` | `size` | `default` · `compact` · `underline` (def. `default`) |
 | State=Copied | `copied` | `copied` | booleano; lo pone el componente al copiar y lo saca pasado `motion/duration/feedback` (2000 ms) |
 
+- **Size=Underline** (Ficha v2): solo el código, subrayado, en `role/caption-medium`; sin etiqueta ni ícono. Al hacer clic, «Copiado» (o el aviso de error) **reemplaza al código en el mismo lugar**, no va al costado, porque el SKU es muy largo. Se usa en las filas de la tabla y en las tarjetas Mobile de variants-table.
 - State=Hover es CSS (el ícono pasa a `color/icon/primary`).
 - **Copiar:** toda la fila (código + ícono) es el botón. Copia con `navigator.clipboard.writeText` y emite `arq:copy` con `{ code }`. `el.copy()` hace lo mismo por código.
 - **Accesibilidad:** el botón se llama "Copiar SKU KANU-J-500-12W-N-WW". "Copiado" se anuncia con `aria-live="polite"`.

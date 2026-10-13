@@ -1,29 +1,26 @@
-/* accordion-item · Figma 922:2645. Solo tokens semánticos.
-   Desktop es la base; Mobile (max-width: 767px) cambia el padding lateral y
-   el inferior cerrado, como las variantes Breakpoint=Mobile. */
+/* accordion-item · Figma 922:2645, con el cambio de la Ficha v2 (2085:26124 ·
+   2118:33571). Solo tokens semánticos.
+   Desktop es la base; Mobile (max-width: 767px) no cambia el padding lateral
+   (ya es space/padding/xl).
+   TODO (Figma): el set 922:2645 todavía tiene el diseño anterior (título
+   role/heading-2, fondo faint abierto, padding 2xl); la Ficha v2 usa este. */
 
 :host {
   display: block;
   min-width: 0;
 }
 
-/* Open=False: sin fondo, línea inferior border/default.
-   Open=True: fondo color/surface/faint, sin línea. */
+/* Cerrado y abierto: línea inferior border/default, sin fondo. La línea de
+   arriba del primer ítem la pone quien los agrupa (la ficha). */
 .item {
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-default);
   background: var(--arq-color-surface-transparent);
 }
 
-:host([open]) .item {
-  border-bottom: 0;
-  background: var(--arq-color-surface-faint);
-}
-
 /* Encabezado. El padding del ítem va en el botón para que todo el alto sea
-   clickeable: arriba space/padding/xl-2xl, a los lados space/padding/2xl,
-   abajo space/padding/xl-2xl cerrado o space/gap/xl (gap hasta el contenido)
-   abierto. Gap título–ícono space/gap/md. Cerrado, la línea inferior se
-   descuenta del padding: el ítem mide como el set (128), donde el borde va
+   clickeable: a los lados space/padding/xl; arriba y abajo space/padding/xl-2xl
+   cerrado, space/padding/lg abierto. Gap título–ícono space/gap/md. Cerrado,
+   la línea inferior se descuenta del padding: el ítem mide 128, con el borde
    por dentro. */
 .trigger {
   box-sizing: border-box;
@@ -32,7 +29,7 @@
   gap: var(--arq-space-gap-md);
   width: 100%;
   margin: 0;
-  padding: var(--arq-space-padding-xl-2xl) var(--arq-space-padding-2xl);
+  padding: var(--arq-space-padding-xl-2xl) var(--arq-space-padding-xl);
   padding-bottom: calc(var(--arq-space-padding-xl-2xl) - var(--arq-border-default));
   border: 0;
   background: var(--arq-color-surface-transparent);
@@ -43,8 +40,9 @@
   -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
 }
 
+/* Abierto: padding space/padding/lg y gap space/gap/xs hasta el contenido */
 :host([open]) .trigger {
-  padding-bottom: var(--arq-space-gap-xl);
+  padding-block: var(--arq-space-padding-lg) var(--arq-space-gap-xs);
 }
 
 .title {
@@ -53,19 +51,17 @@
   overflow-wrap: break-word;
 }
 
-/* Ícono con las medidas de icon-button Size=Large: space/padding/sm-md + icon/xl.
-   Background=None cerrado; Background=Surface (color/surface/default) abierto. */
+/* Ícono con las medidas de icon-button Size=Large (space/padding/sm-md +
+   icon/xl) y borde border/default en color/border/default, sin fondo, tanto
+   cerrado como abierto. */
 .icon-box {
   display: inline-flex;
   flex: none;
   padding: var(--arq-space-padding-sm-md);
+  border: var(--arq-border-default) solid var(--arq-color-border-default);
   border-radius: var(--arq-radius-control);
   background: var(--arq-color-surface-transparent);
   color: var(--arq-color-icon-primary);
-}
-
-:host([open]) .icon-box {
-  background: var(--arq-color-surface-default);
 }
 
 .icon {
@@ -78,14 +74,14 @@
   display: none;
 }
 
-/* Contenido (en la ficha, spec-list en Fill): a los lados space/padding/2xl,
-   abajo space/padding/2xl */
+/* Contenido (en la ficha, spec-list en una o dos columnas): a los lados
+   space/padding/xl y abajo space/padding/lg */
 .content {
-  padding: 0 var(--arq-space-padding-2xl) var(--arq-space-padding-2xl);
+  padding: 0 var(--arq-space-padding-xl) var(--arq-space-padding-lg);
 }
 
-/* State=Hover: solo cerrado. Fondo color/surface/faint y el ícono como
-   icon-button Background=None en Hover (color/surface/hover). */
+/* State=Hover: solo cerrado. Fondo color/surface/faint y el ícono en
+   color/surface/hover. */
 @media (hover: hover) {
   :host(:not([open])) .item:has(.trigger:hover) {
     background: var(--arq-color-surface-faint);
@@ -105,17 +101,4 @@
 
 .trigger:focus {
   outline: none;
-}
-
-/* Breakpoint=Mobile: a los lados space/padding/xl; abajo cerrado
-   space/padding/2xl (como el set) */
-@media (max-width: 767px) {
-  .trigger {
-    padding-inline: var(--arq-space-padding-xl);
-    padding-bottom: calc(var(--arq-space-padding-2xl) - var(--arq-border-default));
-  }
-
-  .content {
-    padding-inline: var(--arq-space-padding-xl);
-  }
 }

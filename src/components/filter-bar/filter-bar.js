@@ -25,6 +25,7 @@ class ArqFilterBar extends ArqElement {
   static styles = css;
   static properties = {
     applied: { type: Boolean }, // State=Applied (lo pone el componente)
+    stacked: { type: Boolean }, // solo de código: fondo soft, filtros y «Limpiar» en columna (glosario)
   };
   static template =
     `<div class="bar">` +

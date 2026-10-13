@@ -19,8 +19,9 @@
 // - Hasta 1023 px: catalog-nav-mobile. Un encabezado (catalog-nav-trigger,
 //   <button> con aria-expanded) muestra la selección actual; al tocarlo se
 //   abren los mismos grupos. Open es la prop open (solo cuenta en Mobile).
-// - El texto del encabezado es el del catalog-nav-item elegido (selected).
-// - Si ningún grupo viene abierto, se abre el que tiene el ítem elegido.
+// - La categoría actual la guarda el grupo (catalog-nav-group selected); el
+//   texto del encabezado es el del catalog-nav-item selected de ese grupo.
+// - Si ningún grupo viene abierto, se abre el grupo selected.
 // - Al elegir un ítem en Mobile, el panel se cierra.
 
 import { ArqElement } from '../../base/arq-element.js';
@@ -79,8 +80,13 @@ class ArqCatalogNav extends ArqElement {
     if (changed.has('label')) this.shadowRoot.querySelector('.nav').setAttribute('aria-label', this.label ?? '');
   }
 
+  // Grupo de la categoría actual (Selected del set) e ítem elegido dentro de él.
+  #selectedGroup() {
+    return this.querySelector('arq-catalog-nav-group[selected]');
+  }
+
   #selected() {
-    return this.querySelector('arq-catalog-nav-item[selected]');
+    return (this.#selectedGroup() ?? this).querySelector('arq-catalog-nav-item[selected]');
   }
 
   #syncCurrent() {
@@ -90,7 +96,7 @@ class ArqCatalogNav extends ArqElement {
   }
 
   #openCurrentGroup() {
-    const group = this.#selected()?.closest('arq-catalog-nav-group');
+    const group = this.#selectedGroup();
     if (!group) return;
     for (const candidate of this.querySelectorAll('arq-catalog-nav-group')) candidate.open = candidate === group;
   }

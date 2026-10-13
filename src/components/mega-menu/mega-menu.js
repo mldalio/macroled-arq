@@ -7,10 +7,10 @@
 //   menu.navigation = await getNavigation();   // src/data/catalog.js
 //
 // - Un solo componente: pestañas, columnas, links y "Ver todo…" salen de los
-//   datos (descripción del set). Tres pestañas: Aplicación (Exterior ·
+//   datos (descripción del set). Tres pestañas: Por espacio (Exterior ·
 //   Interior), Lámparas y artefactos, y Colecciones (tres columnas de
 //   mega-link con bajada). Una pestaña sin columnas no se muestra.
-// - Tab es la prop tab (aplicacion · lamparas · colecciones). Tablist con
+// - Tab es la prop tab (por-espacio · lamparas · colecciones). Tablist con
 //   tab + SingleSelect: ← → cambian de pestaña, Inicio / Fin.
 // - Imagen a la derecha: ancho layout/mega-menu-image y ratio/portrait-soft;
 //   puede cambiar por pestaña (prop images). Sin imagen, color/surface/subtle.
@@ -27,7 +27,7 @@ import css from './mega-menu.css?inline';
 
 const esc = (text) => String(text ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const TABS = [
-  { id: 'aplicacion', label: 'Aplicación' },
+  { id: 'por-espacio', label: 'Por espacio' },
   { id: 'lamparas', label: 'Lámparas y artefactos' },
   { id: 'colecciones', label: 'Colecciones' },
 ];
@@ -38,7 +38,7 @@ class ArqMegaMenu extends ArqElement {
   static tag = 'arq-mega-menu';
   static styles = css;
   static properties = {
-    tab: { type: String, values: TABS.map((t) => t.id), default: 'aplicacion' }, // Tab
+    tab: { type: String, values: TABS.map((t) => t.id), default: 'por-espacio' }, // Tab
     label: { type: String, default: 'Productos' }, // nombre del tablist
   };
   static template =
@@ -64,7 +64,7 @@ class ArqMegaMenu extends ArqElement {
     if (this.shadowRoot.querySelector('.tabs')) this.#render();
   }
 
-  /** Imagen por pestaña: { aplicacion: url, lamparas: url, colecciones: url }. */
+  /** Imagen por pestaña: { 'por-espacio': url, lamparas: url, colecciones: url }. */
   get images() {
     return this.#images;
   }
@@ -100,7 +100,7 @@ class ArqMegaMenu extends ArqElement {
 
   #columns(tab) {
     const s = this.#navigation?.sections ?? {};
-    if (tab === 'aplicacion') return [s.exterior, s.interior].filter(Boolean);
+    if (tab === 'por-espacio') return [s.exterior, s.interior].filter(Boolean);
     if (tab === 'lamparas') return [s.lamparas, s.artefactos].filter(Boolean);
     return [];
   }
@@ -124,7 +124,7 @@ class ArqMegaMenu extends ArqElement {
     this.#syncImage();
   }
 
-  // Aplicación y Lámparas y artefactos: una columna por sección, con título
+  // Por espacio y Lámparas y artefactos: una columna por sección, con título
   // (role/heading-3), links y "Ver todo…" al pie.
   #sectionColumns(sections) {
     return (
@@ -134,7 +134,7 @@ class ArqMegaMenu extends ArqElement {
           (section) =>
             `<div class="column">` +
             `<div class="top"><p class="title role-heading-3">${esc(section.label)}</p>` +
-            `<div class="links">${section.links.map((l) => `<arq-mega-link href="${esc(l.href)}" show-arrow>${esc(l.label)}</arq-mega-link>`).join('')}</div></div>` +
+            `<div class="links">${section.links.map((l) => `<arq-mega-link size="large" href="${esc(l.href)}" show-arrow>${esc(l.label)}</arq-mega-link>`).join('')}</div></div>` +
             `<arq-button type="underline" show-underline href="${esc(section.all.href)}">${esc(section.all.label)}</arq-button>` +
             `</div>`,
         )

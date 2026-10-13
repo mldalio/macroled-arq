@@ -1,5 +1,6 @@
-/* ficha-producto · Final: Ficha (1218:10487 Desktop · 1220:11334 Mobile;
-   Iluminar 1218:11777 · 1220:12601). Solo tokens semánticos.
+/* ficha-producto · Final: Ficha v2 (2085:26124 Desktop; Mobile: la v1
+   1220:11334 con los componentes nuevos; Iluminar 1218:11777 · 1220:12601).
+   Solo tokens semánticos.
    Cada bloque aplica layout/gutter a los lados y space/section/xl abajo, como
    arq-section (decisiones.md, 2026-10-02 · Layout de página). */
 
@@ -15,10 +16,11 @@
 }
 
 /* ── Hero ───────────────────────────────────────────────────────── */
+/* Ficha v2 (2085:27570): sin padding lateral; la galería llega al borde
+   izquierdo y el configurador deja el margen de página a la derecha. Abajo,
+   space/section/sm. */
 .hero {
-  display: flex;
-  flex-direction: column;
-  padding: 0 var(--page-gutter) var(--arq-space-section-xl);
+  padding: 0 0 var(--arq-space-section-sm);
   background: var(--arq-color-bg-default);
   color: var(--arq-color-text-primary);
   transition-property: background-color, color;
@@ -27,14 +29,50 @@
   transition-timing-function: var(--arq-illumination-bg-easing), var(--arq-theme-text-easing, var(--arq-motion-easing-standard));
 }
 
-/* Cambio de fondo (DESIGN.md §2): con Iluminar el hero baja su padding
-   inferior un escalón y el bloque claro que sigue suma space/section/md. */
-.hero[data-arq-theme='dark'] {
-  padding-bottom: var(--arq-space-section-lg);
-}
-
+/* Con Iluminar el bloque claro que sigue suma space/section/md (DESIGN.md §2) */
 .hero[data-arq-theme='dark'] + .details {
   padding-top: var(--arq-space-section-md);
+}
+
+/* Galería (14 columnas de 24) y configurador (9), separados space/gap/3xl:
+   14fr · 9fr. La galería mantiene 4:3 (1093 × 813 en Final) y el configurador
+   toma su alto. */
+.configurator {
+  display: grid;
+  grid-template-columns: minmax(0, 14fr) minmax(0, 9fr);
+  column-gap: var(--arq-space-gap-3xl);
+  align-items: stretch;
+}
+
+.gallery-column {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 4 / 3;
+  min-width: 0;
+}
+
+.gallery {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* Iluminar: sobre la foto, abajo a la derecha */
+.iluminar {
+  position: absolute;
+  z-index: 2;
+  right: var(--arq-space-padding-xl-2xl);
+  bottom: var(--arq-space-padding-xl);
+}
+
+/* Configurador: encabezado y datos arriba, comparar y acciones abajo */
+.configurator-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-4xl);
+  min-width: 0;
+  padding-right: var(--page-gutter);
 }
 
 .header {
@@ -42,17 +80,16 @@
   flex-direction: column;
   align-items: flex-start;
   gap: var(--arq-space-gap-xl);
-  padding: var(--arq-space-padding-xl) 0 var(--arq-space-padding-xl-2xl);
+  padding-top: var(--arq-space-padding-xl);
   min-width: 0;
 }
 
+/* Título y sku debajo, space/gap/sm entre los dos */
 .title-row {
   display: flex;
-  flex-wrap: wrap;
-  /* Título y «Ver colección» apoyados en la misma línea de base (la última
-     del título, si ocupa dos) */
-  align-items: last baseline;
-  gap: var(--arq-space-gap-md);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-sm);
   min-width: 0;
 }
 
@@ -61,41 +98,11 @@
   overflow-wrap: break-word;
 }
 
-/* Galería y configurador reparten el ancho 60/40 (3fr · 2fr), con
-   layout/measure (400) como mínimo del configurador, separados
-   space/gap/5xl (Final: 734 + 96 + 490)
-   (docs/decisiones.md, 2026-10-05 · Ficha 60/40, scroll de la galería de ambiente y datos mixtos). */
-.configurator {
-  display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(var(--arq-layout-measure), 2fr);
-  column-gap: var(--arq-space-gap-5xl);
-  align-items: stretch;
-}
-
-.gallery-column {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--arq-space-gap-sm-md);
-  min-width: 0;
-}
-
-.gallery {
-  align-self: stretch;
-}
-
-.configurator-column {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: var(--arq-space-gap-4xl);
-  min-width: 0;
-}
-
 .info {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
-  gap: var(--arq-space-gap-xl);
+  gap: var(--arq-space-gap-lg);
   min-width: 0;
 }
 
@@ -114,7 +121,7 @@
 
 .description {
   max-width: 100%;
-  color: var(--arq-color-text-primary);
+  color: var(--arq-color-text-tertiary);
   overflow-wrap: break-word;
 }
 
@@ -127,7 +134,13 @@
 .options {
   display: flex;
   flex-direction: column;
-  gap: var(--arq-space-gap-xl-2xl);
+  gap: var(--arq-space-gap-lg);
+}
+
+.buy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-md);
 }
 
 .actions {
@@ -135,47 +148,25 @@
   gap: var(--arq-space-gap-md);
 }
 
-/* Los dos llenan la fila a partir del ancho de su texto (así no se corta
-   "Generar ficha técnica" en la columna de layout/measure) */
+/* Los dos botones se reparten la fila */
 .actions arq-button {
-  flex: 1 1 auto;
+  flex: 1 1 0;
 }
 
-/* ── Descargas + especificaciones ───────────────────────────────── */
-/* TODO (diseño): Descargas mide 440 en Final, sin token; layout/measure (400). */
+/* ── Especificaciones ───────────────────────────────────────────── */
+/* Ficha v2 (2118:33571): el acordeón ocupa todo el ancho, con space/section/lg
+   a la izquierda y el margen de página a la derecha; la línea de arriba la
+   pone el acordeón. Descargas ya no tiene bloque propio (están en el glosario
+   y en "Ver descargas"). */
 .details {
-  display: grid;
-  grid-template-columns: var(--arq-layout-measure) minmax(0, 1fr);
-  gap: var(--arq-space-gap-3xl);
-  align-items: start;
-  padding: 0 var(--page-gutter) var(--arq-space-section-xl);
-}
-
-.downloads {
-  display: flex;
-  flex-direction: column;
-  gap: var(--arq-space-gap-2xl);
-  min-width: 0;
-}
-
-.download-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--arq-space-gap-sm);
+  padding: var(--arq-space-gap-4xl) var(--page-gutter) var(--arq-space-gap-4xl) var(--arq-space-section-lg);
 }
 
 .accordion {
   display: flex;
   flex-direction: column;
   min-width: 0;
-}
-
-/* Un ítem abierto (fondo color/surface/faint) se separa space/gap/sm de los
-   de al lado, así dos abiertos seguidos no se pegan. Va en margin-top del
-   segundo de cada par para no sumar dos veces. */
-.accordion arq-accordion-item[open] + arq-accordion-item,
-.accordion arq-accordion-item + arq-accordion-item[open] {
-  margin-top: var(--arq-space-gap-sm);
+  border-top: var(--arq-border-default) solid var(--arq-color-border-default);
 }
 
 /* ── Galería de ambiente ────────────────────────────────────────── */
@@ -222,7 +213,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--arq-space-gap-2xl);
-  padding: 0 var(--page-gutter) var(--arq-space-section-xl);
+  padding: 0 var(--page-gutter) var(--arq-space-section-xl) var(--arq-space-section-lg);
 }
 
 .story {
@@ -281,7 +272,8 @@
   color: inherit !important;
 }
 
-/* Otras familias (izquierda, abajo) e imagen de la descripción (derecha) */
+/* Imagen de la descripción (izquierda) y otras familias (derecha, abajo):
+   Ficha v2 2145:39292 */
 .family-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -290,6 +282,7 @@
 }
 
 .family {
+  grid-column: 2;
   display: flex;
   flex-direction: column;
   gap: var(--arq-space-gap-md);
@@ -301,8 +294,13 @@
   color: var(--arq-color-text-secondary);
 }
 
+.family-link {
+  align-self: flex-start;
+}
+
 .description-image {
-  grid-column: 2;
+  grid-column: 1;
+  grid-row: 1;
   aspect-ratio: 16 / 10;
   background: var(--arq-color-surface-subtle);
 }
@@ -350,6 +348,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--arq-space-gap-md);
+  padding-top: var(--arq-space-section-sm);
   padding-bottom: var(--arq-space-section-xl);
   scroll-margin-top: var(--arq-space-gap-4xl);
 }
@@ -369,9 +368,10 @@
    va hasta layout/measure y las fotos en ratio/portrait-soft (4:5). */
 .inspiration {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  grid-template-columns: minmax(0, var(--arq-layout-measure)) minmax(0, 1fr);
+  column-gap: var(--arq-space-gap-4xl);
   align-items: center;
-  padding: 0 var(--page-gutter) var(--arq-space-section-xl);
+  padding: 0 var(--page-gutter) var(--arq-space-section-xl) var(--arq-space-section-lg);
 }
 
 .inspiration-text {
@@ -385,8 +385,13 @@
   color: inherit !important;
 }
 
+/* Ficha v2 (2118:33229): una foto ancha (984 × 568) y una vertical (346 × 447)
+   alineadas arriba, space/gap/sm-md entre las dos. Con una sola, ocupa todo el
+   ancho. */
 .inspiration-images {
   display: flex;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-sm-md);
   min-width: 0;
 }
 
@@ -394,14 +399,21 @@
   display: none;
 }
 
-/* Cada foto ocupa la mitad, como los dos lugares de Final: una sola no se estira */
 .inspiration-images img {
   display: block;
-  flex: 0 1 50%;
   min-width: 0;
-  aspect-ratio: 4 / 5;
   object-fit: cover;
   background: var(--arq-color-surface-subtle);
+}
+
+.inspiration-images img:first-child {
+  flex: 984 1 0;
+  aspect-ratio: 16 / 10;
+}
+
+.inspiration-images img:not(:first-child) {
+  flex: 346 1 0;
+  aspect-ratio: 4 / 5;
 }
 
 /* ── Explora la colección (Dark local) ──────────────────────────── */
@@ -431,19 +443,17 @@
 }
 
 /* ── Tablet y Mobile (hasta 1023 px) ────────────────────────────── */
-/* TODO (diseño): Final no tiene Ficha en Tablet. Hasta 1023 px se apilan los
-   bloques de dos columnas como en Mobile (galería y configurador, descargas y
-   especificaciones, texto e imágenes de inspiración, introducción y tarjetas
-   de la colección), con la tipografía y los espaciados de Desktop. En dos
-   columnas, la galería quedaba en ≈ 340 y los títulos de accordion-item se
-   cortaban a mitad de palabra (docs/decisiones.md, 2026-10-05 · Ficha en Tablet). */
+/* TODO (diseño): la Ficha v2 solo tiene Desktop; Mobile sigue siendo la v1
+   (1220:11334) con los componentes nuevos. Hasta 1023 px se apilan los bloques
+   de dos columnas como en Mobile: encabezado, galería, datos y acciones (el
+   configurador deja de ser una columna y sus partes pasan a la fila del hero),
+   texto e imágenes de inspiración, introducción y tarjetas de la colección,
+   con la tipografía y los espaciados de Desktop, y el margen lateral de
+   página en lugar de space/section/lg (docs/decisiones.md, 2026-10-05 · Ficha
+   en Tablet). */
 @media (max-width: 1023px) {
   .hero {
-    gap: var(--arq-space-gap-2xl);
-  }
-
-  .header {
-    padding-bottom: 0;
+    padding-top: 0;
   }
 
   .configurator {
@@ -452,11 +462,38 @@
     gap: var(--arq-space-gap-2xl);
   }
 
+  .configurator-column {
+    display: contents;
+  }
+
+  .header {
+    order: -1;
+    padding: var(--arq-space-padding-xl) var(--page-gutter) 0;
+  }
+
+  .gallery-column {
+    aspect-ratio: auto;
+    margin-inline: var(--page-gutter);
+  }
+
+  .iluminar {
+    position: static;
+    align-self: flex-start;
+    margin-bottom: var(--arq-space-gap-sm-md);
+    order: -1;
+  }
+
+  .info,
+  .buy {
+    padding-inline: var(--page-gutter);
+  }
+
   .details {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--arq-space-gap-2xl);
+    padding: var(--arq-space-section-xs) var(--page-gutter);
+  }
+
+  .story-block {
+    padding-inline: var(--page-gutter);
   }
 
   .inspiration {
@@ -464,6 +501,7 @@
     flex-direction: column;
     align-items: stretch;
     gap: var(--arq-space-gap-xl);
+    padding-inline: var(--page-gutter);
   }
 
   .collection {
@@ -479,12 +517,6 @@
     gap: var(--arq-space-gap-2xl);
   }
 
-  .title-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--arq-space-gap-xs);
-  }
-
   .actions {
     flex-direction: column;
   }
@@ -492,10 +524,6 @@
   .actions arq-button {
     flex: none;
     width: 100%;
-  }
-
-  .downloads {
-    gap: var(--arq-space-gap-xl);
   }
 
   .ambient {
@@ -518,10 +546,6 @@
     gap: var(--arq-space-gap-6xl);
   }
 
-  .description-image {
-    order: -1;
-  }
-
   .inspiration-text {
     max-width: none;
   }
@@ -530,9 +554,13 @@
     flex-direction: column;
   }
 
-  .inspiration-images img {
+  .inspiration-images img:first-child,
+  .inspiration-images img:not(:first-child) {
     flex: none;
     width: 100%;
   }
-}
 
+  .glossary {
+    padding-top: var(--arq-space-section-xs);
+  }
+}

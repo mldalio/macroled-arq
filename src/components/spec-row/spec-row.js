@@ -14,7 +14,7 @@ import css from './spec-row.css?inline';
 class ArqSpecRow extends ArqElement {
   static tag = 'arq-spec-row';
   static styles = css;
-  static template = `<dl class="row role-body-regular"><dt class="label"><slot name="label"></slot></dt><dd class="value"><slot></slot></dd></dl>`;
+  static template = `<dl class="row role-body-regular"><dt class="label"><slot name="label"></slot></dt><dd class="value role-body"><slot></slot></dd></dl>`;
 }
 
 ArqSpecRow.define();

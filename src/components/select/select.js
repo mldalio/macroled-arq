@@ -25,6 +25,9 @@
 //   inferior); Hover y Open en color/surface/faint en los dos, y el texto va
 //   en role/body-regular, salvo el valor elegido de Filter (Filled), que va en
 //   role/body-medium.
+// - Etiqueta según el Type (Figma 921:2544): Field, role/label de 12 px
+//   (compare-product); Filter, de 14 px (filter-bar: glosario de la ficha y
+//   página Descargas). role/label-sm (10 px) ya no se usa acá.
 // - show-swatch (Figma: Show swatch): muestra la muestra de color en todas las
 //   opciones. Sin el atributo, cada opción decide con swatch / showSwatch.
 //   En Figma la prop viene activada; en código va desactivada (atributo de
@@ -55,7 +58,7 @@ class ArqSelect extends ArqElement {
   };
   static template =
     `<div class="select">` +
-    `<span class="label role-label-sm" hidden></span>` +
+    `<span class="label" hidden></span>` +
     `<button type="button" class="trigger" aria-expanded="false">` +
     `<arq-swatch class="swatch" aria-hidden="true" hidden></arq-swatch>` +
     `<span class="value"></span>` +
@@ -105,7 +108,8 @@ class ArqSelect extends ArqElement {
     // cualquier State (incluido Disabled).
     label.hidden = false;
     label.textContent = this.label ?? '';
-    label.className = `label role-label-sm`;
+    // Type=Field: role/label (12 px). Type=Filter: 14 px (select.css).
+    label.className = `label ${filter ? 'label-large' : 'role-label'}`;
     this.trigger.setAttribute('aria-labelledby', `${label.id} ${this.trigger.id}`);
     this.trigger.removeAttribute('aria-label');
     this.trigger.disabled = this.disabled;

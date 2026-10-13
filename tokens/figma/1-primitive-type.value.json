@@ -243,6 +243,15 @@
             }
           }
         }
+      },
+      "80": {
+        "$type": "number",
+        "$value": 80,
+        "$extensions": {
+          "com.figma": {
+            "scopes": []
+          }
+        }
       }
     },
     "leading": {
@@ -386,6 +395,15 @@
             "codeSyntax": {
               "WEB": "var(--arq-font-leading-72)"
             }
+          }
+        }
+      },
+      "100": {
+        "$type": "number",
+        "$value": 100,
+        "$extensions": {
+          "com.figma": {
+            "scopes": []
           }
         }
       }

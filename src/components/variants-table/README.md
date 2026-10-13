@@ -32,7 +32,7 @@ tabla.addEventListener('arq:downloads', (e) => llenarModal(e.detail.sku));
 | — | `label` | `label` | Nombre de la región con scroll (único en la página). Por defecto «Variantes» |
 | Show search | `show-search` | `showSearch` | booleano. search-field «Buscar por SKU o nombre…» a la izquierda de Filtros (página Descargas) |
 | — (solo de código) | `show-sort` | `showSort` | booleano. select Filter «Ordenar por» a la derecha: SKU (A–Z) · SKU (Z–A). Hoy no lo usa ninguna página |
-| Breakpoint | — | — | Media query: hasta 767 px |
+| Breakpoint | — | — | Media query: hasta 767 px. Mobile (Figma 2180:11245) reemplaza la tabla por una **tarjeta por variante**: imagen (16:10), sku subrayado con el botón de descarga y los datos en dos columnas (`role/body-sm` + `role/body-sm-medium`). La tabla y las tarjetas son dos listas del mismo dato; CSS muestra una u otra |
 | variants-table-row · Type · State | — | — | Header y Row son el `<thead>` y las filas del `<tbody>`; Hover es CSS |
 
 - **Tabla real** (`<table>`, decisión 2026-10-02 · glosario): un lector de pantalla anuncia la columna de cada valor. El SKU es el encabezado de cada fila.
@@ -50,12 +50,14 @@ tabla.addEventListener('arq:downloads', (e) => llenarModal(e.detail.sku));
 | Parte | Token |
 | --- | --- |
 | Barra | padding `space/padding/md` arriba y abajo, sin padding lateral; gap barra–tabla `space/gap/md` |
-| Encabezado | `role/label` en `color/text/tertiary`, padding vertical `space/padding/sm-md` |
-| Filas | valores `role/body` en `color/text/primary`; padding vertical `space/padding/sm` (en Figma, xs: el botón de descarga quedaba pegado a la línea); Hover `color/surface/faint`; fondo de las fijas `color/bg/default` |
+| Botón Filtros · cantidad | Filled con `icon/filter` (abierto: `icon/close`, también Filled; con `show-search`, Outline) · «N variantes» en `role/body`, `color/text/secondary` |
+| Barra de filtros | `filter-bar` `stacked`: fondo `color/surface/soft`, padding `space/padding/2xl` arriba y abajo y `space/padding/xl-2xl` a los lados; selects Type=Filter (etiqueta de 14 px) |
+| Encabezado | `role/body-regular` en `color/text/tertiary`, padding vertical `space/padding/sm-md` |
+| Filas | valores `role/body-lg-regular` en `color/text/primary`; sku subrayado (`arq-sku size="underline"`); padding vertical `space/padding/sm` (en Figma, xs: el botón de descarga quedaba pegado a la línea); Hover `color/surface/faint`; fondo de las fijas `color/bg/default` |
 | Separadores | `border/default` en `color/border/subtle` |
 | Entre columnas | `space/gap/sm`; sin padding al inicio ni al final |
 | Ancho | El del contenido de la página en todos los breakpoints (margen `--page-gutter`, sin gutter adentro): las líneas van de la miniatura al ícono de descarga; la barra de filtros con `space/padding/md` adentro. Scroll horizontal sin barra visible cuando no entra |
-| Miniatura | `layout/table-thumb` (56, token nuevo), fondo `color/surface/subtle` |
+| Miniatura | `layout/table-thumb` (100 desde la Ficha v2; filas de 116), fondo `color/surface/subtle` |
 
 ## Pendientes
 

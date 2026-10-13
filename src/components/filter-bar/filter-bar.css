@@ -63,3 +63,23 @@
     align-self: flex-start;
   }
 }
+
+/* stacked (solo de código; Ficha v2, glosario 2302:47432): fondo
+   color/surface/soft, sin líneas, padding space/padding/2xl arriba y abajo y
+   "Limpiar filtros" debajo de los filtros. TODO (Figma): el set 1068:5165 no
+   tiene esta versión. */
+:host([stacked]) .bar {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--arq-space-gap-xl);
+  padding-block: var(--arq-space-padding-2xl);
+  border-block: 0;
+  background: var(--arq-color-surface-soft);
+}
+
+@media (max-width: 767px) {
+  :host([stacked]) .bar {
+    align-items: stretch;
+  }
+}

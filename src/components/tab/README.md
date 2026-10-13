@@ -1,12 +1,12 @@
 # tab · `<arq-tab>`
 
-Pestaña para cambiar entre vistas de un mismo contenido sin salir de la página (Aplicación, Lámparas y artefactos, Colecciones en el mega-menu). Si cada opción lleva a otra URL, se usa nav-link.
+Pestaña para cambiar entre vistas de un mismo contenido sin salir de la página (Por espacio, Lámparas y artefactos, Colecciones en el mega-menu). Si cada opción lleva a otra URL, se usa nav-link.
 
 - Figma: [929-2287](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=929-2287) · ficha `doc/tab` (`1451:5248`)
 
 ```html
 <!-- dentro del tablist del mega-menu (role="tablist") -->
-<arq-tab value="aplicacion" aria-controls="panel-aplicacion" selected>Aplicación</arq-tab>
+<arq-tab value="por-espacio" aria-controls="panel-por-espacio" selected>Por espacio</arq-tab>
 <arq-tab value="lamparas" aria-controls="panel-lamparas">Lámparas y artefactos</arq-tab>
 <arq-tab value="colecciones" aria-controls="panel-colecciones">Colecciones</arq-tab>
 ```

@@ -184,7 +184,7 @@ La base aporta los valores; el código decide la presentación. Las opciones sin
 
 *[Captura: image9, no incluida en el repo]*
 
-Mega menú, pestaña Aplicación. Cada opción muestra el filtro que ejecuta. Exterior no muestra Aplicar, Artefactos ni Lámparas porque en la demo no hay productos con esos valores.
+Mega menú, pestaña Por espacio. Cada opción muestra el filtro que ejecuta. Exterior no muestra Aplicar, Artefactos ni Lámparas porque en la demo no hay productos con esos valores.
 
 *[Captura: image10, no incluida en el repo]*
 
@@ -208,7 +208,7 @@ ENVIRONMENT y PRODUCT_TYPE ya están en Propuesta, a la derecha de APPLICATION. 
 
 | **Campo** | **Valores y uso** |
 | --- | --- |
-| ENVIRONMENT | Interior o Exterior. Primer nivel de la pestaña Aplicación y secciones Interior y Exterior del lateral. |
+| ENVIRONMENT | Interior o Exterior. Primer nivel de la pestaña Por espacio y secciones Interior y Exterior del lateral. |
 | PRODUCT_TYPE | Luminaria, Lámpara o Artefacto. Separa Lámparas y Artefactos de las luminarias, tanto en el mega menú como en el lateral. |
 | APPLICATION | Ya existe. Segundo nivel bajo Interior y Exterior: Jardín, Bañadores, Aplicar, Pared, Embutir, Suspensión. Vacío en lámparas y artefactos. |
 

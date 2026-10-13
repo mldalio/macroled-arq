@@ -23,13 +23,18 @@
 //   columna de inicio (miniatura + sku) y la de descarga quedan fijas
 //   (position: sticky). El scroll queda dentro de los márgenes de la página.
 // - Filters (Off · On): el botón Filtros (Filled con icon/filter; activo,
-//   Outline con icon/filter-off; con show-search, siempre Outline) muestra filter-bar con un select por cada
-//   filtro. Las opciones que no dan ninguna fila van deshabilitadas
+//   Filled con icon/close, como la Ficha v2; con show-search, siempre Outline)
+//   muestra filter-bar (stacked) con un select Type=Filter por cada filtro. Al
+//   lado del botón, la cantidad de variantes («4 variantes»). Las opciones que no dan ninguna fila van deshabilitadas
 //   (src/data/variants.js) y la tabla muestra solo las filas que cumplen.
 // - Descarga de cada fila: icon-button Size=Large Background=Outline (columna
 //   «Descargas»); emite arq:downloads { sku } y, con downloads="<id>", abre ese
 //   download-modal.
 // - Columnas: miden lo que su contenido (sin anchos fijos).
+// - Mobile (hasta 767 px, Figma 2180:11245): en lugar de la tabla, una tarjeta
+//   por variante (imagen, sku subrayado con la descarga y los datos en dos
+//   columnas). La tabla y las tarjetas son dos listas del mismo dato; CSS
+//   muestra una u otra (la oculta tampoco la leen los lectores de pantalla).
 // - Solo de código (página Descargas, Figma 1808:20165 · 1808:20882): show-search
 //   suma search-field («Buscar por SKU o nombre…», busca en el SKU y en
 //   row.search) y show-sort, el select «Ordenar por» (SORT_ORDERS). Los dos
@@ -73,14 +78,16 @@ class ArqVariantsTable extends ArqElement {
     `<div class="toolbar">` +
     `<arq-search-field class="search" placeholder="${TEXT.search}" label="${TEXT.searchLabel}" hidden></arq-search-field>` +
     `<arq-button class="toggle-filters" show-icon icon="filter">Filtros</arq-button>` +
+    `<p class="count-text role-body"></p>` +
     `<div class="downloads"><slot name="downloads"></slot></div>` +
     `<arq-select class="sort" type="filter" label="${TEXT.sort}" hidden></arq-select>` +
     `</div>` +
-    `<arq-filter-bar class="filter-bar" hidden></arq-filter-bar>` +
+    `<arq-filter-bar class="filter-bar" stacked hidden></arq-filter-bar>` +
     `</div>` +
     `<div class="scroll" tabindex="0" role="region" aria-label="Variantes">` +
     `<table class="table"><thead></thead><tbody></tbody></table>` +
     `</div>` +
+    `<div class="cards"></div>` +
     `<p class="empty role-body" hidden>${TEXT.empty}</p>` +
     `<span class="visually-hidden count" role="status"></span>`;
 
@@ -128,7 +135,7 @@ class ArqVariantsTable extends ArqElement {
       this.#order = event.detail.value || SORT_ORDERS[0].value;
       this.#refresh(true);
     });
-    root.querySelector('tbody').addEventListener('click', (event) => {
+    root.addEventListener('click', (event) => {
       const button = event.target.closest('arq-icon-button[data-sku]');
       if (!button) return;
       const sku = button.dataset.sku;
@@ -148,9 +155,9 @@ class ArqVariantsTable extends ArqElement {
     const button = root.querySelector('.toggle-filters');
     // Con buscador (página Descargas), Filtros va siempre en Outline: Filled
     // competiría con la acción del page-header (Descargar catálogo general).
-    if (changed.has('filters') || changed.has('showSearch')) button.type = this.filters || this.showSearch ? 'outline' : 'filled';
+    if (changed.has('filters') || changed.has('showSearch')) button.type = this.showSearch ? 'outline' : 'filled';
     if (!changed.has('filters')) return;
-    button.icon = this.filters ? 'filter-off' : 'filter';
+    button.icon = this.filters ? 'close' : 'filter';
     // aria-expanded y aria-controls en el <button> interno (el que tiene el foco)
     customElements.whenDefined('arq-button').then(() => {
       const control = button.shadowRoot?.querySelector('.control');
@@ -174,9 +181,9 @@ class ArqVariantsTable extends ArqElement {
     // Encabezado: SKU (columna fija de inicio) · columnas · descarga (fija de fin)
     root.querySelector('thead').innerHTML =
       `<tr><th scope="col" class="start"><span class="visually-hidden">${TEXT.image}</span></th>` +
-      `<th scope="col" class="sku-col role-label">SKU</th>` +
-      columns.map((c) => `<th scope="col" class="role-label">${esc(c.label)}</th>`).join('') +
-      `<th scope="col" class="end role-label"><span class="th-downloads">${TEXT.downloads}</span></th></tr>`;
+      `<th scope="col" class="sku-col role-body-regular">SKU</th>` +
+      columns.map((c) => `<th scope="col" class="role-body-regular">${esc(c.label)}</th>`).join('') +
+      `<th scope="col" class="end role-body-regular"><span class="th-downloads">${TEXT.downloads}</span></th></tr>`;
     // Filtros: un select por atributo
     const bar = root.querySelector('.filter-bar');
     bar.replaceChildren(
@@ -215,15 +222,30 @@ class ArqVariantsTable extends ArqElement {
         (row) =>
           `<tr>` +
           `<td class="start"><span class="thumb">${row.thumb ? `<img src="${esc(row.thumb)}" alt="" loading="lazy">` : ''}</span></td>` +
-          `<th scope="row" class="sku-col"><arq-sku size="compact">${esc(row.sku)}</arq-sku></th>` +
-          columns.map((c) => `<td class="role-body">${esc(row.values?.[c.key] ?? '—')}</td>`).join('') +
+          `<th scope="row" class="sku-col"><arq-sku size="underline">${esc(row.sku)}</arq-sku></th>` +
+          columns.map((c) => `<td class="role-body-lg-regular">${esc(row.values?.[c.key] ?? '—')}</td>`).join('') +
           `<td class="end"><arq-icon-button icon="download" size="large" background="outline" data-sku="${esc(row.sku)}">Descargas de ${esc(row.sku)}</arq-icon-button></td>` +
           `</tr>`,
       )
       .join('');
+    // Mobile: una tarjeta por variante (Figma 2180:11245)
+    root.querySelector('.cards').innerHTML = visible
+      .map(
+        (row) =>
+          `<article class="card">` +
+          `<div class="card-image">${row.thumb ? `<img src="${esc(row.thumb)}" alt="" loading="lazy">` : ''}</div>` +
+          `<div class="card-head"><arq-sku size="underline">${esc(row.sku)}</arq-sku>` +
+          `<arq-icon-button icon="download" size="large" background="outline" data-sku="${esc(row.sku)}">Descargas de ${esc(row.sku)}</arq-icon-button></div>` +
+          `<dl class="card-data">` +
+          columns.map((c) => `<div class="datum"><dt class="role-body-sm">${esc(c.label)}</dt><dd class="role-body-sm-medium">${esc(row.values?.[c.key] ?? '—')}</dd></div>`).join('') +
+          `</dl></article>`,
+      )
+      .join('');
+    root.querySelector('.count-text').textContent = TEXT.count(visible.length);
     // Sin filas: la tabla se oculta y queda el aviso
     const empty = !visible.length && this.#data.rows.length > 0;
     root.querySelector('.scroll').hidden = empty;
+    root.querySelector('.cards').hidden = empty;
     root.querySelector('.empty').hidden = !empty;
     if (announce) root.querySelector('.count').textContent = TEXT.count(visible.length);
   }

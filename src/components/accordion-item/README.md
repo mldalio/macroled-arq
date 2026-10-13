@@ -21,27 +21,27 @@ Bloque desplegable de especificaciones de la ficha (características lumínicas,
 
 | Figma | Atributo | Prop JS | Valores · por defecto |
 | --- | --- | --- | --- |
-| Title | slot `title` | — | Texto del encabezado (`role/heading-2`) |
+| Title | slot `title` | — | Texto del encabezado (`role/body-xl`) |
 | Open | `open` | `open` | booleano · cerrado por defecto |
 | — (contenido) | slot por defecto | — | En la ficha, una `arq-spec-list` |
 
 - **No son props:** State=Hover (`:hover`, solo cerrado, como el set), State=Focus (`:focus-visible`, anillo alrededor de todo el ítem) y Breakpoint (media query `max-width: 767px`).
 - **Comportamiento** (`src/base/disclosure.js`): el encabezado es un `<button>` con `aria-expanded` y `aria-controls`; Enter y Espacio abren y cierran. El contenido queda en el HTML aunque esté cerrado. Pueden quedar varios abiertos. La acción del usuario emite `arq:toggle` con `{ open }`.
 - **Título:** va dentro del botón, por eso se escribe como `<span slot="title">` y no como `h2` / `h3` (un encabezado dentro de un botón pierde su rol). Mismo criterio que faq-item.
-- **Ícono +/–:** medidas de icon-button Size=Large (48 × 48, ícono 24), pero es parte del botón: no hay un botón dentro de otro. Cerrado como Background=None (Hover `color/surface/hover`); abierto como Background=Surface.
-- **Sin divisor** bajo el título al abrir (decisión 2026-10-02 · accordion-item): como Open=True Default y la Ficha de Final. La variante Open=True Focus del set sí lo tiene.
-- **Alto:** cerrado mide 128, como el set: la línea inferior se descuenta del padding.
+- **Ícono +/–:** medidas de icon-button Size=Large (48 × 48, ícono 24) con borde `border/default` en `color/border/default`, sin fondo, cerrado y abierto; es parte del botón: no hay un botón dentro de otro.
+- **Ficha v2** (2085:26124 · 2118:33571): sin fondo al abrir; línea inferior `border/default` abierto y cerrado (la de arriba del primero la pone el acordeón de la ficha); contenido en una o dos columnas (`<arq-spec-list columns>`).
+- **Alto:** cerrado mide 128: la línea inferior se descuenta del padding.
+- `TODO` (Figma): el set 922:2645 y su descripción todavía tienen el diseño anterior (título `role/heading-2`, fondo `surface/faint` abierto, padding `space/padding/2xl`). Manda la Ficha v2.
 
 ## Tokens
 
 | Parte | Token |
 | --- | --- |
-| Padding | `space/padding/xl-2xl` arriba (y abajo cerrado) · `space/padding/2xl` a los lados (Mobile `space/padding/xl`) y abajo abierto (Mobile cerrado también `space/padding/2xl`) |
-| Gap título–ícono · encabezado–contenido | `space/gap/md` · `space/gap/xl` |
-| Título | `role/heading-2` en `color/text/primary` |
-| Cerrado | línea inferior `border/default` en `color/border/default`, sin fondo. Hover `color/surface/faint` |
-| Abierto | fondo `color/surface/faint`, sin línea; ícono sobre `color/surface/default` |
-| Ícono | `space/padding/sm-md` + `icon/xl`, `color/icon/primary` |
+| Padding | cerrado `space/padding/xl-2xl` arriba y abajo · abierto `space/padding/lg` arriba y abajo · `space/padding/xl` a los lados |
+| Gap título–ícono · encabezado–contenido | `space/gap/md` · `space/gap/xs` |
+| Título | `role/body-xl` en `color/text/primary` |
+| Cerrado y abierto | línea inferior `border/default` en `color/border/default`, sin fondo. Hover (solo cerrado) `color/surface/faint` |
+| Ícono | `space/padding/sm-md` + `icon/xl`, `color/icon/primary`, borde `border/default` en `color/border/default` |
 | Foco | `border/strong` en `color/border/focus`, separado 2 px (DESIGN.md §7) |
 
 ## Pendientes

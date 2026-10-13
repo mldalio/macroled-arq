@@ -3,12 +3,18 @@
 // Grupo desplegable del sidebar de catálogo: una macrofamilia (Interior,
 // Exterior, Lámparas…) con su lista de catalog-nav-item.
 //
-//   <arq-catalog-nav-group open>
+//   <arq-catalog-nav-group open selected>
 //     <span slot="label">Interior</span>
 //     <arq-catalog-nav-item href="…" selected>Todo interior</arq-catalog-nav-item>
 //     <arq-catalog-nav-item href="…">Embutir</arq-catalog-nav-item>
 //   </arq-catalog-nav-group>
 //
+// - Selected (Figma: prop Selected del set): el grupo guarda la categoría
+//   actual. Es el grupo, no el ítem, el que le dice a catalog-nav cuál abrir y
+//   qué texto mostrar en Mobile. Si el HTML solo marca un ítem como selected,
+//   el grupo se marca solo; si se marca el grupo a mano, se respeta. Figma no
+//   dibuja diferencia entre Selected=False y Selected=True: es estado, no
+//   estilo.
 // - Encabezado <button> con aria-expanded (Disclosure); la lista queda en el
 //   HTML aunque esté cerrada (indexable).
 // - Open: lo decide el HTML (el grupo de la categoría actual). Si ningún grupo
@@ -26,6 +32,7 @@ class ArqCatalogNavGroup extends ArqElement {
   static styles = css;
   static properties = {
     open: { type: Boolean }, // Open
+    selected: { type: Boolean }, // Selected (el grupo de la categoría actual)
   };
   static template =
     `<div class="group">` +
@@ -36,11 +43,28 @@ class ArqCatalogNavGroup extends ArqElement {
     `<div class="items" role="list" part="panel"><slot></slot></div>` +
     `</div>`;
 
+  #auto = false; // selected lo puso el grupo al ver un ítem selected (no el HTML)
+
   setup() {
     this.disclosure = new Disclosure(this, {
       trigger: this.shadowRoot.querySelector('.header'),
       panel: this.shadowRoot.querySelector('.items'),
     });
+    const sync = () => this.#syncSelected();
+    this.shadowRoot.querySelector('slot:not([name])').addEventListener('slotchange', sync);
+    new MutationObserver(sync).observe(this, { subtree: true, attributes: true, attributeFilter: ['selected'] });
+    sync();
+  }
+
+  #syncSelected() {
+    const hasItem = Boolean(this.querySelector(':scope > arq-catalog-nav-item[selected]'));
+    if (hasItem && !this.selected) {
+      this.#auto = true;
+      this.selected = true;
+    } else if (!hasItem && this.selected && this.#auto) {
+      this.#auto = false;
+      this.selected = false;
+    }
   }
 }
 
