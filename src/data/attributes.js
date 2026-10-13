@@ -8,7 +8,7 @@
 //   índice real pueden filtrar en Typesense (docs/typesense-schema.md).
 // - control: selector de variante: 'swatches' (acabado) o 'tiles' (el resto).
 // - column: nombre anterior de la columna en la hoja. variant_attributes ahora
-//   trae nombres de campo; column queda para el catálogo mixto (demo/fixtures/completar.js).
+//   trae nombres de campo; column queda sin uso desde que no hay catálogo mixto.
 //
 // El orden de las claves es el orden en que se muestran.
 // TODO (diseño): confirmar las secciones y qué campos van en cada una. Las

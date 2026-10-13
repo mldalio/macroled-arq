@@ -32,7 +32,7 @@ Barra de navegación de Macroled Arq, primer elemento de todas las páginas: log
 - **Mobile:** el menú es un diálogo modal a pantalla completa (Mode=Menu) con los nav-link apilados; el foco arranca en cerrar. Productos entra al submenú (Mode=Products): volver, un `arq-mega-link` Type=Group por sección (Interior, Exterior, Lámparas, Artefactos) y "Ver colecciones". Esc vuelve un paso. La lupa abre `arq-search-screen`.
 - **Transparent:** fondo `color/overlay/translucent` con `blur/backdrop`; logo, nav-links (Theme=Inverse) e íconos en inverso. Sigue transparente mientras la barra está sobre el hero (el primer `<arq-hero>` de la página) y pasa a Default al dejarlo atrás; sin hero, al empezar a desplazar la página. Con la búsqueda abierta (Desktop) sigue sobre la foto, con `arq-search-field` en blanco (como en Default). La lupa y el menú van en Dark local (`data-arq-theme="dark"`) sobre la foto: ícono claro y hover y foco oscuros, sin el cuadrado claro de `color/surface/hover`. Pasa a Default con el menú mobile o el mega-menu abiertos.
 - **Posición:** sticky arriba en Default; fixed en Transparent, encima del hero.
-- **Datos:** navegación y búsqueda salen de `src/data/catalog.js` (decisión 2026-10-02 · navbar). Con `VITE_DATA_SOURCE=mock` usa el catálogo de ejemplo.
+- **Datos:** navegación y búsqueda salen de `src/data/catalog.js` (decisión 2026-10-02 · navbar).
 - **Dark (Iluminar en la ficha):** `data-arq-theme="dark"` en el `<arq-navbar>` (DESIGN.md §2).
 
 ## Tokens

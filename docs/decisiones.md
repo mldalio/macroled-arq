@@ -296,8 +296,7 @@ ArqAccordionItem.define();
 
 ## 2026-10-02 · Datos de ejemplo mientras se completa la base
 
-- `src/data/source.js` carga el catálogo desde Typesense o desde `demo/fixtures/catalogo.json`, con la misma forma (`src/data/catalog.js`). Se elige con `VITE_DATA_SOURCE` (`mock` o `mixto`) solo en `npm run dev`; el build usa siempre Typesense y no incluye el ejemplo.
-- Cuando la base esté completa: se ajusta solo `src/data/typesense-adapter.js` y `.env` pasa a `typesense`. Mientras falte `product_group_id`, cada SKU es su propio grupo.
+- Reemplazada por 2026-10-13 · Datos solo desde Typesense: no hay más catálogo de ejemplo ni mixto.
 - El catálogo se carga una vez por página y `catalog.js` resuelve listados, filtros, ficha, comparativa, búsqueda y navegación.
 
 ## 2026-10-02 · navbar, mega-menu y búsqueda
@@ -344,7 +343,6 @@ ArqAccordionItem.define();
 
 - **Hero de la ficha:** galería y configurador 60/40 (`minmax(0, 3fr) minmax(layout/measure, 2fr)`), gap `space/gap/5xl`; apilado hasta 1023. Igual en Final (`1218:10539`, Iluminar `1218:11785`); product-gallery Desktop con 5:4 fija.
 - **Galería de ambiente:** snap `x proximity` (`mandatory` peleaba con el trackpad y el scroll vertical), `overscroll-behavior-x: contain` y `aspect-ratio: auto 4 / 5` en las fotos.
-- **`VITE_DATA_SOURCE=mixto`** (solo dev): usa Typesense y completa lo vacío con `demo/fixtures/completar.js` (primero el catálogo de ejemplo por SKU o grupo; si no, datos inventados a partir del SKU y la familia). No pisa lo que el índice ya trae.
 
 ## 2026-10-05 · Colecciones
 
@@ -527,7 +525,6 @@ Reemplaza a 2026-10-02 · Base de datos (estructura v5) en cómo se identifican 
 - **Galería de la ficha:** main, ambient_1, front, back, left, right, pers_1, pers_2, detail_1, detail_2; con Iluminar, cada una a su `_on`. Una variante sin fotos propias muestra el fondo neutro, no las del predeterminado. Lo mismo la miniatura de su fila en el glosario y en Descargas: así se ve qué falta cargar.
 - **CMS de Webflow:** solo el ítem de cada producto y colección (nombre y slug), para que exista su URL. Todo el resto, textos incluidos, viene de Typesense: la ficha toma la descripción corta, el story y la inspiración de los datos, y la colección su intro y su descripción. Si un dato falta, esa parte no se muestra: no hay texto de respaldo en el HTML, para ver qué falta en la base. Story: la primera línea es el título (`role/heading-2`) y las características van con `- ` (la etiqueta «Características del producto» la pone el componente). Reemplaza a 2026-10-02 en que esos textos van en el CMS.
 - **Navegación:** ambiente = `macrofamilia`, aplicación = `subfamilia`.
-- `VITE_DATA_SOURCE=typesense` en desarrollo; `mock` y `mixto` siguen disponibles.
 
 ## 2026-10-13 · Iluminar: fondo de página y transición
 
@@ -536,6 +533,13 @@ Reemplaza a 2026-10-02 · Base de datos (estructura v5) en cómo se identifican 
 - **Texto, íconos y bordes:** no funden a la par del fondo. `animateThemeChange()` (`src/base/theme.js`) pone en `<html>`, solo durante el cambio, la espera (25 %), la duración (50 %) y la curva del texto; hover y foco no se afectan. Si cambia la duración del fondo, se cambia también el valor por defecto de esa función.
 - **Herencia de color:** un elemento que hereda el color de otro no lleva transición propia (logo, íconos SVG, etiqueta del breadcrumb, icon-button); si no, la espera se suma y cambia tarde.
 - **Imágenes:** la card y la galería precargan la versión del otro modo para que el fundido arranque junto con el fondo. TODO (diseño): DESIGN.md §8 pide cargarla al activar Iluminar.
+
+## 2026-10-13 · Datos solo desde Typesense
+
+- **Una sola fuente:** `src/data/source.js` consulta Typesense, en desarrollo y en el build. Se eliminaron los modos `mock` y `mixto` (`VITE_DATA_SOURCE`) y los archivos `demo/fixtures/catalogo.json` y `completar.js`; quedan en el historial de Git. Lo que la base no trae se ve vacío (o con el fallback de cada componente): se completa en la base, no en el código.
+- **Configuración en el repo:** `.env` se commitea con host, colección y **search-only key**; Vite lo lee con `npm run dev` y con `npm run build`. Cada persona puede pisar valores en `.env.local` (ignorado por Git). La clave es pública por diseño: Webflow carga `dist/arq.js`, que la lleva dentro (AGENTS.md · Datos). Requisitos de la clave: acción `documents:search` y colección `macroled_arq` únicamente. La admin key nunca va en el repo.
+- **Cambiar o rotar la clave:** se edita en `.env`, se compila (`npm run build`) y se commitea `dist/`; hasta publicar el release, el sitio de Webflow sigue con la clave anterior. Revocar la vieja en Typesense recién después.
+- **Errores:** si falta una variable, la consola de `npm run dev` dice cuál (`missingConfig()` en `typesense.js`).
 
 ## Pendientes
 

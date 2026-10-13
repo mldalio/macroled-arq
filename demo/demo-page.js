@@ -11,7 +11,7 @@
 //
 // Ficha: en Webflow cada grupo tiene su ítem del CMS, con nombre y slug. En la
 // demo, ?group=<id> hace de ítem: cambia data-group y el nombre, que sale del
-// catálogo activo (VITE_DATA_SOURCE). El resto lo trae el componente.
+// catálogo de Typesense. El resto lo trae el componente.
 // Colección: lo mismo con ?collection=<id>.
 
 import '/src/main.js';
