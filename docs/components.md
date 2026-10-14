@@ -23,7 +23,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [catalog-toolbar](#catalog-toolbar) | `<arq-catalog-toolbar>` | En código ([README](../src/components/catalog-toolbar/README.md)) · Figma cambió, falta en código: State=Scroll con el nombre de la página |
 | ✅ [category-card](#category-card) | `<arq-category-card>` | En código ([README](../src/components/category-card/README.md)) |
 | ✅ [checkbox](#checkbox) | `<arq-checkbox>` | En código ([README](../src/components/checkbox/README.md)) |
-| ✅ [choice-chip](#choice-chip) | `<arq-choice-chip>` | En código ([README](../src/components/choice-chip/README.md)) · Selected en `color/surface/inverse` según el dibujo del set (la descripción de Figma todavía dice `surface/selected`) |
+| ✅ [choice-chip](#choice-chip) | `<arq-choice-chip>` | En código ([README](../src/components/choice-chip/README.md)) · Selected en `color/surface/inverse` |
 | ✅ [compare-bar](#compare-bar) | `<arq-compare-bar>` | En código ([README](../src/components/compare-bar/README.md)) |
 | ✅ [compare-group](#compare-group) | dentro de `<arq-compare-table>` | En código, como parte de compare-table ([README](../src/components/compare-table/README.md)) |
 | ✅ [compare-header](#compare-header) | `<arq-compare-header>` | En código ([README](../src/components/compare-header/README.md)) |
@@ -47,13 +47,13 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [footer](#footer) | `<arq-footer>` | En código ([README](../src/components/footer/README.md)) |
 | ✅ [footer-link](#footer-link) | `<arq-footer-link>` | En código ([README](../src/components/footer-link/README.md)) |
 | ✅ [form-message](#form-message) | `<arq-form-message>` | En código ([README](../src/components/form-message/README.md)) |
-| ⬜ [form-section-header](#form-section-header) | — | Sin componente: Contacto aplica su dibujo al `<legend>` de cada bloque (role/heading-3, línea border/default; decisiones.md, 2026-10-14 · Contacto v3). La descripción de Figma está desactualizada |
+| ⬜ [form-section-header](#form-section-header) | — | Sin componente: Contacto aplica su dibujo al `<legend>` de cada bloque (role/heading-3, línea border/default; decisiones.md, 2026-10-14 · Contacto v3) |
 | ✅ [gallery-thumb](#gallery-thumb) | `<arq-gallery-thumb>` | En código ([README](../src/components/gallery-thumb/README.md)) |
 | ✅ [hero](#hero) | `<arq-hero>` | En código ([README](../src/components/hero/README.md)) · Size=Compact (`size="compact"`) con alto mínimo de 41svh / 47svh |
 | ✅ [icon-button](#icon-button) | `<arq-icon-button>` | En código ([README](../src/components/icon-button/README.md)) |
 | ✅ [input](#input) | `<arq-input>` | En código ([README](../src/components/input/README.md)) |
 | ✅ [line-card](#line-card) | `<arq-line-card>` | En código ([README](../src/components/line-card/README.md)) |
-| ✅ [link-list](#link-list) | `<arq-link-list>` | En código ([README](../src/components/link-list/README.md)) · título en role/body-lg-regular según el dibujo del set (la descripción todavía dice role/label) |
+| ✅ [link-list](#link-list) | `<arq-link-list>` | En código ([README](../src/components/link-list/README.md)) |
 | ✅ [logo](#logo) | `<arq-logo>` | En código ([README](../src/components/logo/README.md)) |
 | ✅ [mega-link](#mega-link) | `<arq-mega-link>` | En código ([README](../src/components/mega-link/README.md)) |
 | ✅ [mega-menu](#mega-menu) | `<arq-mega-menu>` | En código ([README](../src/components/mega-menu/README.md)) · Figma cambió, falta en código: pestaña «Por espacio» y títulos en role/heading-1 y role/heading-2 |
@@ -241,7 +241,7 @@ Hover sin marcar: borde de la caja border/strong (2 px) en color/border/strong; 
 
 Uso: elegir una opción en formularios (p. ej. motivo de consulta en Contacto). No confundir con option-tile, que configura el producto en la ficha.
 
-Opción seleccionable en forma de chip para elegir entre pocas opciones visibles (p. ej. motivo de consulta en Contacto). Default, Hover (borde color/border/strong), Selected (fondo color/surface/selected), Focus (anillo color/border/focus) y Disabled. Se comporta como radio: una selección por grupo. En código: <input type="radio"> dentro de <label>.
+Opción seleccionable en forma de chip para elegir entre pocas opciones visibles (p. ej. motivo de consulta en Contacto). Default (borde color/border/default, sin fondo), Hover (borde color/border/strong), Selected (fondo color/surface/inverse, borde color/border/strong y texto color/text/inverse), Focus (anillo color/border/focus) y Disabled. Label role/body-regular; padding space/padding/sm × space/padding/md. Cada chip con su ancho, a space/gap/sm-md. Se comporta como radio: una selección por grupo. En código: <arq-choice-chip> (role="radio").
 
 ## compare-bar
 
@@ -361,7 +361,7 @@ Bloque editorial destacado: imagen grande (y secundaria opcional) + eyebrow, tí
 
 Zona para adjuntar un archivo al formulario (planos, planillas). Empty: zona con icon/plus y ayuda; Attached: nombre del archivo + quitar. Props: Label y Helper (formatos y tamaño máximo). En código: <input type="file"> real con drag & drop.
 
-Un solo archivo. State: Empty, Attached, Drag over (archivo arrastrado encima: borde color/border/strong y fondo color/surface/hover), Error (borde color/border/error; el mensaje reemplaza a la ayuda, en color/text/error: "El archivo supera los 10 MB. Formatos: …" o "El formato no está admitido. Formatos: …") y Disabled. Formatos: PDF, DWG, JPG o PNG, hasta 10 MB.
+Un solo archivo. State: Empty, Attached, Drag over (archivo arrastrado encima: borde color/border/strong y fondo color/surface/hover), Error (borde color/border/error; el mensaje reemplaza a la ayuda, en color/text/error: "El archivo supera los 25 MB. Formatos: …" o "El formato no está admitido. Formatos: …") y Disabled. Formatos: PDF, DWG, JPG o PNG. Tamaño máximo según el formulario: en Contacto, 25 MB (en código, max-size; 10 por defecto).
 
 ## filter-bar
 
@@ -417,7 +417,7 @@ Mensaje de resultado debajo del botón de envío. Tone=Success (color/text/succe
 - Figma: [1303-4382](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1303-4382)
 - Propiedades: Number; Show number; Label
 
-Título de sección de un formulario: número opcional (color/text/tertiary) + label (color/text/primary), ambos role/label en mayúsculas, con borde inferior color/border/strong. Mismo patrón que compare-group. Ancho FILL.
+Título de sección de un formulario: label en role/heading-3 (color/text/primary) y número opcional en role/label (color/text/tertiary), alineados por baseline a space/gap/md, con borde inferior border/default en color/border/default y padding inferior space/padding/sm. Ancho FILL. En código no es un componente: es el estilo del <legend> de cada <fieldset> de arq-form-contacto.
 
 ## gallery-thumb
 
@@ -431,7 +431,7 @@ Miniatura de la galería de producto, proporción 5:4 (105 × 84). La imagen se 
 - Figma: [1311-4340](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1311-4340)
 - Propiedades: Eyebrow; Show eyebrow; Title; Description; Show description; Show button; Breakpoint: Desktop · Mobile; Size: Default · Compact
 
-Hero de página compartido por Home y Contacto: media (imagen o video; reemplazá el relleno de "media" en la instancia), scrim, eyebrow (role/label), título role/display (Size=Default) o role/display-lg (Size=Compact), bajada opcional y button Outline opcional. Textos claros sobre la foto (el scrim hero/scrim asegura el contraste). El navbar no es parte del hero: va aparte, con Theme=Transparent, superpuesto arriba (la instancia del set es referencia). Size: Default · Compact. Compact es el hero más bajo de Contacto y de las páginas internas, con el título en role/display-lg. Props: Eyebrow, Title, Description, Show eyebrow, Show description, Show button, Size.
+Hero de página compartido por Home y Contacto: media (imagen o video; reemplazá el relleno de "media" en la instancia), scrim, eyebrow (role/label), título role/display (Size=Default) o role/display-lg (Size=Compact), bajada opcional y button Outline opcional. Textos claros sobre la foto (el scrim hero/scrim asegura el contraste). El navbar no es parte del hero: va aparte, con Theme=Transparent, superpuesto arriba (la instancia del set es referencia). Size: Default · Compact. Compact es el hero más bajo de Contacto y de las páginas internas, con el título en role/display-lg. Alto en código: Default 70svh (Home: 100svh); Compact con un mínimo de 41svh en Desktop y 47svh en Mobile (la proporción del set: 520 y 480 contra 880 y 720), y crece si el texto no entra. Props: Eyebrow, Title, Description, Show eyebrow, Show description, Show button, Size.
 
 ## icon-button
 
@@ -467,7 +467,7 @@ La imagen tiene la proporción bloqueada: al crecer la columna crece en alto sin
 - Figma: [1303-4377](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1303-4377)
 - Propiedades: Title; Show link 3
 
-Lista de links con título (role/label). Cada link es button Underline con ícono (expuesto para editar label y destino). Hasta 3 links (Show link 3). Uso: "Recursos técnicos" en Contacto.
+Lista de links con título (role/body-lg-regular, color/text/secondary); título y links a space/gap/sm. Cada link es button Underline con ícono (expuesto para editar label y destino): icon/arrow-up-right para descargas o destinos externos, icon/arrow-right para navegación interna. Hasta 3 links (Show link 3). Uso: "Recursos técnicos" en Contacto.
 
 ## logo
 

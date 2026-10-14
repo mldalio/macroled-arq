@@ -1,8 +1,7 @@
 /* choice-chip · Figma 1113:2485. Solo tokens semánticos.
    Sin fondo en Default. Padding space/padding/sm × space/padding/md, como el
-   set. Selected en fondo color/surface/inverse con texto inverso (dibujo del
-   set; la descripción todavía dice surface/selected: decisiones.md,
-   2026-10-14 · Contacto v3). */
+   set. Selected en fondo color/surface/inverse con texto inverso
+   (decisiones.md, 2026-10-14 · Contacto v3). */
 
 :host {
   display: inline-flex;

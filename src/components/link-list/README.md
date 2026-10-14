@@ -26,5 +26,5 @@ Lista corta de links con título. Se usa en "Recursos técnicos" de Contacto.
 
 | Parte | Token |
 | --- | --- |
-| Título | `role/body-lg-regular` en `color/text/secondary` (dibujo del set; la descripción de Figma todavía dice `role/label`) |
+| Título | `role/body-lg-regular` en `color/text/secondary` |
 | Separación | `space/gap/sm` entre el título y los links y entre links, como el set |

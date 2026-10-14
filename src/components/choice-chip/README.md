@@ -30,7 +30,7 @@ Opción en forma de chip para elegir entre pocas opciones visibles (2 a 6) en un
 | Parte | Token |
 | --- | --- |
 | Borde | `border/default` en `color/border/default` (Hover y Selected `color/border/strong`, Disabled `color/border/disabled`) |
-| Fondo y texto Selected | `color/surface/inverse` y `color/text/inverse` (dibujo del set; la descripción de Figma todavía dice `color/surface/selected`) |
+| Fondo y texto Selected | `color/surface/inverse` y `color/text/inverse` |
 | Texto | `color/text/primary` (Disabled `color/text/disabled`) · `role/body-regular` |
 | Padding | `space/padding/sm` × `space/padding/md` (42 de alto). Texto centrado: si el contenedor lo estira, el chip ocupa el ancho que le den |
 | Foco | `border/strong` en `color/border/focus`, separado 2 px (DESIGN.md §7) |
