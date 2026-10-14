@@ -1,12 +1,14 @@
 <!--
   Contacto · /arq/contacto · Code Embed de Webflow (docs/decisiones.md, 2026-10-01 · Páginas en Webflow y 2026-10-05 · Contacto)
-  Pantalla: Final › Contacto (1278:27912 Desktop · 1311:17149 Mobile · 1311:17459 / 1311:17499 enviado)
+  Pantalla: Contacto v3 · propuesta (2295:23055, solo Desktop; decisiones.md, 2026-10-14 · Contacto v3).
+  Antes: Final › Contacto (1278:27912 Desktop · 1311:17149 Mobile · 1311:17459 / 1311:17499 enviado)
   Se edita acá y se pega en Webflow. dist/arq.js, dist/arq.css y Albert Sans se cargan a nivel sitio.
 
   El formulario (arq-form-contacto) envía al webhook de n8n de src/config.js (VITE_N8N_WEBHOOK_URL).
   El estado "enviado" es la misma página (docs/urls.md).
   TODO (imágenes): la src del hero apunta a la foto de ejemplo de la demo; antes de pegar en Webflow, reemplazarla por la URL de Webflow Assets.
   TODO (contenido): email y teléfono son los de Final; confirmar los datos reales.
+  TODO (contenido): faltan las respuestas de dos preguntas frecuentes (Figma muestra solo las preguntas).
 -->
 <arq-navbar theme="transparent">
   <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
@@ -15,22 +17,43 @@
 </arq-navbar>
 
 <main>
-  <arq-hero>
+  <arq-hero size="compact">
     <img slot="media" src="/demo/fixtures/img/contacto/hero.jpg" alt="" fetchpriority="high">
     <span slot="eyebrow">Contacto</span>
     <h1 slot="title">Hablemos de tu proyecto.</h1>
-    <span slot="description">Asesoramiento para arquitectura e interiorismo.</span>
+    <span slot="description">Asesoramiento lumínico para arquitectura e interiorismo.</span>
   </arq-hero>
 
   <arq-form-contacto>
     <h2 slot="title">Te acompañamos en cada etapa.</h2>
     <p slot="description">Desde la selección de luminarias hasta el cálculo lumínico, trabajamos junto a estudios, arquitectos e interioristas.</p>
+    <span slot="channels-title">Contacto</span>
     <arq-contact-item slot="channels" href="mailto:info@macroled.com.ar"><span slot="label">Email</span>info@macroled.com.ar</arq-contact-item>
     <arq-contact-item slot="channels" href="tel:+541140000000"><span slot="label">Teléfono</span>+54 11 4000-0000</arq-contact-item>
     <arq-link-list slot="links">
       <span slot="title">Recursos técnicos</span>
-      <arq-button type="underline" show-underline show-icon icon="arrow-right" href="/arq/descargas">Centro de descargas</arq-button>
+      <arq-button type="underline" show-underline show-icon icon="arrow-up-right" href="/arq/descargas">Centro de descargas</arq-button>
     </arq-link-list>
+
+    <h2 slot="faq-title">Preguntas frecuentes</h2>
+    <p slot="faq-description">¿No encontrás lo que buscás? Nuestro equipo técnico te acompaña en cada etapa del proyecto.</p>
+    <arq-button slot="faq-action" type="underline" show-underline show-icon icon="arrow-up-right" href="mailto:info@macroled.com.ar">Escribinos</arq-button>
+    <arq-faq-item slot="faq" open>
+      <span slot="question">¿Desarrollan luminarias a medida para proyectos?</span>
+      Sí. Nuestro equipo técnico adapta medidas, acabados y temperatura de color según los requerimientos de cada proyecto.
+    </arq-faq-item>
+    <arq-faq-item slot="faq">
+      <span slot="question">¿Dónde descargo los archivos IES?</span>
+      En la ficha de cada producto o en el <a href="/arq/descargas">Centro de descargas</a>.
+    </arq-faq-item>
+    <arq-faq-item slot="faq">
+      <span slot="question">¿Qué garantía tienen los productos?</span>
+      Respuesta pendiente.
+    </arq-faq-item>
+    <arq-faq-item slot="faq">
+      <span slot="question">¿Cómo accedo a condiciones para estudios y distribuidores?</span>
+      Respuesta pendiente.
+    </arq-faq-item>
   </arq-form-contacto>
 </main>
 

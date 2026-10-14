@@ -23,7 +23,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [catalog-toolbar](#catalog-toolbar) | `<arq-catalog-toolbar>` | En código ([README](../src/components/catalog-toolbar/README.md)) · Figma cambió, falta en código: State=Scroll con el nombre de la página |
 | ✅ [category-card](#category-card) | `<arq-category-card>` | En código ([README](../src/components/category-card/README.md)) |
 | ✅ [checkbox](#checkbox) | `<arq-checkbox>` | En código ([README](../src/components/checkbox/README.md)) |
-| ✅ [choice-chip](#choice-chip) | `<arq-choice-chip>` | En código ([README](../src/components/choice-chip/README.md)) |
+| ✅ [choice-chip](#choice-chip) | `<arq-choice-chip>` | En código ([README](../src/components/choice-chip/README.md)) · Selected en `color/surface/inverse` según el dibujo del set (la descripción de Figma todavía dice `surface/selected`) |
 | ✅ [compare-bar](#compare-bar) | `<arq-compare-bar>` | En código ([README](../src/components/compare-bar/README.md)) |
 | ✅ [compare-group](#compare-group) | dentro de `<arq-compare-table>` | En código, como parte de compare-table ([README](../src/components/compare-table/README.md)) |
 | ✅ [compare-header](#compare-header) | `<arq-compare-header>` | En código ([README](../src/components/compare-header/README.md)) |
@@ -47,13 +47,13 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [footer](#footer) | `<arq-footer>` | En código ([README](../src/components/footer/README.md)) |
 | ✅ [footer-link](#footer-link) | `<arq-footer-link>` | En código ([README](../src/components/footer-link/README.md)) |
 | ✅ [form-message](#form-message) | `<arq-form-message>` | En código ([README](../src/components/form-message/README.md)) |
-| ⬜ [form-section-header](#form-section-header) | — | Pendiente de definir: Contacto usa `<legend>` en role/heading-3 (DESIGN.md §8) y Figma usa este set |
+| ⬜ [form-section-header](#form-section-header) | — | Sin componente: Contacto aplica su dibujo al `<legend>` de cada bloque (role/heading-3, línea border/default; decisiones.md, 2026-10-14 · Contacto v3). La descripción de Figma está desactualizada |
 | ✅ [gallery-thumb](#gallery-thumb) | `<arq-gallery-thumb>` | En código ([README](../src/components/gallery-thumb/README.md)) |
-| ✅ [hero](#hero) | `<arq-hero>` | En código ([README](../src/components/hero/README.md)) · Figma cambió, falta en código: Size=Compact (título role/display-lg) |
+| ✅ [hero](#hero) | `<arq-hero>` | En código ([README](../src/components/hero/README.md)) · Size=Compact (`size="compact"`) con alto mínimo de 41svh / 47svh |
 | ✅ [icon-button](#icon-button) | `<arq-icon-button>` | En código ([README](../src/components/icon-button/README.md)) |
 | ✅ [input](#input) | `<arq-input>` | En código ([README](../src/components/input/README.md)) |
 | ✅ [line-card](#line-card) | `<arq-line-card>` | En código ([README](../src/components/line-card/README.md)) |
-| ✅ [link-list](#link-list) | `<arq-link-list>` | En código ([README](../src/components/link-list/README.md)) |
+| ✅ [link-list](#link-list) | `<arq-link-list>` | En código ([README](../src/components/link-list/README.md)) · título en role/body-lg-regular según el dibujo del set (la descripción todavía dice role/label) |
 | ✅ [logo](#logo) | `<arq-logo>` | En código ([README](../src/components/logo/README.md)) |
 | ✅ [mega-link](#mega-link) | `<arq-mega-link>` | En código ([README](../src/components/mega-link/README.md)) |
 | ✅ [mega-menu](#mega-menu) | `<arq-mega-menu>` | En código ([README](../src/components/mega-menu/README.md)) · Figma cambió, falta en código: pestaña «Por espacio» y títulos en role/heading-1 y role/heading-2 |
@@ -97,7 +97,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ featured-products | `<arq-featured-products>` | Productos destacados del Home, por grupo, con datos del catálogo ([README](../src/components/featured-products/README.md)) |
 | ✅ catalog-listing | `<arq-catalog-listing>` | Listado de Productos (y Colecciones): nav, toolbar, grilla, filtros y comparar ([README](../src/components/catalog-listing/README.md)) |
 | ✅ coleccion | `<arq-coleccion>` | Página de colección: cards de sus productos, galería, texto + imagen y mosaico con flechas ([README](../src/components/coleccion/README.md)) |
-| ✅ form-contacto | `<arq-form-contacto>` | Contacto: información por slot y formulario con validación, honeypot y envío a n8n ([README](../src/components/form-contacto/README.md)) |
+| ✅ form-contacto | `<arq-form-contacto>` | Contacto (v3): información por slot (fija al desplazar en Desktop), formulario con validación, honeypot y envío a n8n, y preguntas frecuentes opcionales por slot ([README](../src/components/form-contacto/README.md)) |
 | ✅ ficha-producto | `<arq-ficha-producto>` | Ficha de producto: hero con galería y configurador, descargas, especificaciones, descripción, glosario, inspiración y colección ([README](../src/components/ficha-producto/README.md)) |
 | ✅ descargas | `<arq-descargas>` | Página Descargas (antes Glosario): variants-table con todos los SKU del catálogo, buscador y el modal de descargas de cada fila ([README](../src/components/descargas/README.md)) |
 | ✅ comparativa | `<arq-comparativa>` | Página Comparativa: combina compare-header y compare-table con los SKU de `?sku=`, con datos del catálogo ([README](../src/components/comparativa/README.md)) |

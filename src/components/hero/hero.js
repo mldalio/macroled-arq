@@ -26,6 +26,8 @@
 // - Es un <div> y no un <header>: el banner de la página es el navbar.
 // - full-height (solo código, la usa la Home): ocupa todo el alto del viewport
 //   (100svh) en Desktop y Mobile, en lugar de 70svh.
+// - size="compact" (Size=Compact, Contacto): título en role/display-lg y hero
+//   más bajo (decisiones.md, 2026-10-14 · Contacto v3).
 
 import { ArqElement } from '../../base/arq-element.js';
 import css from './hero.css?inline';
@@ -37,6 +39,7 @@ class ArqHero extends ArqElement {
   static styles = css;
   static properties = {
     fullHeight: { type: Boolean },
+    size: { type: String, values: ['default', 'compact'], default: 'default' }, // Size
   };
   static template =
     `<div class="hero">` +
@@ -69,6 +72,9 @@ class ArqHero extends ArqElement {
         .assignedNodes({ flatten: true })
         .some((node) => node.nodeType === Node.ELEMENT_NODE || node.textContent.trim());
     for (const name of OPTIONAL) root.querySelector(`.${name}`).hidden = !filled(name);
+    const title = root.querySelector('.title');
+    title.classList.toggle('role-display', this.size !== 'compact');
+    title.classList.toggle('role-display-lg', this.size === 'compact');
     this.#syncVideo();
   }
 
