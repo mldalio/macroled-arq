@@ -745,5 +745,5 @@ En Mobile, compare-bar muestra los productos elegidos uno arriba de otro, como l
 
 - Solo se muestran los elegidos (sin lugares vacíos), para que la barra no tape más pantalla de la necesaria.
 - «Borrar todo» sigue arriba, junto al título.
-- Figma (compare-bar Breakpoint=Mobile, 1233:3962) todavía muestra la versión anterior.
+- **Plegar (Open):** como en macroled, el título es un botón con chevron que pliega la lista; plegada quedan el título, «Borrar todo» y «Comparar». Arranca abierta y se vuelve a abrir al agregar un producto. Usa el disclosure base. Solo Mobile.
 

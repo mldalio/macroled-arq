@@ -67,8 +67,66 @@
   gap: var(--arq-space-gap-xl);
 }
 
-.clear-mobile {
+.clear-mobile,
+.toggle {
   display: none;
+}
+
+/* En Desktop la lista siempre se ve (Open es solo de Mobile) */
+.slots[hidden] {
+  display: flex;
+}
+
+/* Open (Mobile): el título es el botón que pliega la lista. Ícono como
+   icon-button Size=Default, Background=None (24 = space/padding/xs + icon/md);
+   chevron-down abierta, chevron-up plegada. */
+.toggle {
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--arq-color-surface-transparent);
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+}
+
+.icon-box {
+  display: inline-flex;
+  flex: none;
+  padding: var(--arq-space-padding-xs);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-icon-primary);
+}
+
+.icon-box svg {
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+}
+
+:host(:not([open])) [data-icon='chevron-down'],
+:host([open]) [data-icon='chevron-up'] {
+  display: none;
+}
+
+@media (hover: hover) {
+  .toggle:hover .icon-box {
+    background: var(--arq-color-surface-hover);
+  }
+}
+
+/* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí) */
+.toggle:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.toggle:focus:not(:focus-visible) {
+  outline: none;
 }
 
 /* ── Mobile (como macroled.com.ar): productos uno arriba de otro, "Borrar
@@ -80,11 +138,17 @@
     border-top-color: var(--arq-color-border-subtle);
   }
 
-  .clear-mobile {
+  .clear-mobile,
+  .toggle {
     display: inline-flex;
   }
 
-  .clear-desktop {
+  .clear-desktop,
+  .title-desktop {
+    display: none;
+  }
+
+  .slots[hidden] {
     display: none;
   }
 
