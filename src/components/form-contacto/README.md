@@ -1,14 +1,19 @@
 # form-contacto · `<arq-form-contacto>`
 
-Bloque principal de Contacto: la información a la izquierda (por slot, desde el embed) y el formulario a la derecha, que envía por `fetch` al webhook de n8n. Contenedor de página, sin set en Figma: sale de la pantalla Contacto de Final (`1278:27919` Desktop · `1311:17151` Mobile; enviado `1311:17461` · `1311:17501`). Decisión: `docs/decisiones.md`, 2026-10-05 · Contacto.
+Bloque principal de Contacto: la información a la izquierda (por slot, desde el embed) y el formulario a la derecha, que envía por `fetch` al webhook de n8n. Debajo, opcional, las preguntas frecuentes. Contenedor de página, sin set en Figma: sale de la pantalla «Contacto v3 · propuesta» (`2295:23055`, solo Desktop; antes Final `1278:27919` · `1311:17151`). Decisiones: `docs/decisiones.md`, 2026-10-05 · Contacto y 2026-10-14 · Contacto v3.
 
 ```html
 <arq-form-contacto>
   <h2 slot="title">Te acompañamos en cada etapa.</h2>
   <p slot="description">Desde la selección de luminarias hasta el cálculo lumínico…</p>
+  <span slot="channels-title">Contacto</span>
   <arq-contact-item slot="channels" href="mailto:info@macroled.com.ar"><span slot="label">Email</span>info@macroled.com.ar</arq-contact-item>
   <arq-contact-item slot="channels" href="tel:+541140000000"><span slot="label">Teléfono</span>+54 11 4000-0000</arq-contact-item>
   <arq-link-list slot="links">…</arq-link-list>
+  <h2 slot="faq-title">Preguntas frecuentes</h2>
+  <p slot="faq-description">¿No encontrás lo que buscás?…</p>
+  <arq-button slot="faq-action" type="underline" show-underline show-icon icon="arrow-up-right" href="mailto:…">Escribinos</arq-button>
+  <arq-faq-item slot="faq" open>…</arq-faq-item>
 </arq-form-contacto>
 ```
 
@@ -18,15 +23,20 @@ El HTML del embed completo está en [src/pages/contacto.html](../../pages/contac
 
 | Slot | Contenido |
 | --- | --- |
-| `title` | `<h2>` de la introducción (`role/heading-2`) |
-| `description` | Bajada (`role/body-lg`, `color/text/secondary`) |
-| `channels` | `arq-contact-item` (email, teléfono), sin líneas, a `space/gap/lg` |
+| `title` | `<h2>` de la introducción (`role/display-sm`) |
+| `description` | Bajada (`role/body`, `color/text/secondary`) |
+| `channels-title` | Título de los canales ("Contacto", `role/body-lg-regular`, `color/text/secondary`). Sin contenido, no se muestra |
+| `channels` | `arq-contact-item` (email, teléfono), sin líneas, a `space/gap/sm` |
 | `links` | Un `arq-link-list` ("Recursos técnicos") |
+| `faq-title` | `<h2>` de las preguntas frecuentes (`role/display-sm`) |
+| `faq-description` | Bajada (`role/body`, hasta `layout/measure`) |
+| `faq-action` | Un `arq-button` Underline ("Escribinos") |
+| `faq` | `arq-faq-item`. Sin preguntas, el bloque no se muestra |
 
 ## Formulario
 
 - **Vive en el Shadow DOM** del componente: así el `<form>` es dueño de sus campos (todos son form-associated, con ElementInternals) y su `FormData` lleva todo, incluido el archivo.
-- **Campos** (Final): Tipo de consulta (`tipo`: choice-chip, Asesoramiento lumínico elegido), Tus datos (`nombre`, `empresa`, `email`, `telefono`, `provincia` con input Type=Select y las 24 jurisdicciones, `ciudad`), Tu proyecto (`detalles` y `adjunto`), `novedades` (checkbox) y Enviar consulta (`arq-button submit`).
+- **Campos** (v3): Tipo de consulta (`tipo`: choice-chip, Asesoramiento lumínico elegido), Tus datos (`nombre`, `empresa`, `email`, `telefono`, `provincia` con input Type=Select y las 24 jurisdicciones, `ciudad`), Tu proyecto (`detalles`, textarea de 6 filas, y `adjunto`, hasta 25 MB), `novedades` (checkbox) y Enviar consulta (`arq-button submit`).
 - **Validación** al enviar (`novalidate`: sin los globos del navegador): cada campo inválido muestra su mensaje con la prop `error` de arq-input y el foco va al primero. Después del primer intento, cada campo se revalida al salir de él. Obligatorios: nombre, email y detalles.
 - **Honeypot:** un campo `website` fuera de la vista y del orden de Tab. Si llega con texto, se muestra la confirmación y no se envía nada. No viaja en el `FormData`.
 - **Envío:** `POST` con `multipart/form-data` (por el adjunto) a `config.n8n.webhookUrl` (`VITE_N8N_WEBHOOK_URL`). Sin URL, en `npm run dev` el envío se simula (para probar los estados) y en el build es un error.
@@ -37,15 +47,20 @@ El HTML del embed completo está en [src/pages/contacto.html](../../pages/contac
 
 | Parte | Desktop | Mobile |
 | --- | --- | --- |
-| Bloque | dos columnas iguales a `space/gap/6xl`; `space/section/lg` arriba, `space/section/xl` abajo, `layout/gutter` a los lados | apiladas a `space/gap/6xl` |
-| Información | intro (título y bajada a `space/gap/md`), canales y links a `space/gap/2xl` | ídem |
-| Formulario | secciones y envío a `space/gap/2xl`, sin fondo; dentro, `space/gap/lg`. Título de cada sección: `<legend>` en `role/heading-3`, sin número ni línea | ídem |
-| Tipo de consulta | chips a `space/gap/sm-md`, en varias líneas | ídem |
+| Bloque | dos columnas 2:3 a `space/gap/6xl`; `space/section/md` arriba, `space/section/xl` abajo, `layout/gutter` a los lados | apiladas a `space/gap/6xl` |
+| Información | fija al desplazar (`position: sticky`, a `space/section/md` del borde). Intro (título y bajada a `space/gap/lg`, con línea inferior `color/border/default` y `space/padding/lg`), canales y links a `space/gap/2xl` | sin sticky |
+| Formulario | secciones a `space/gap/3xl`, sin fondo; dentro, `space/gap/lg`. Título de cada sección: `<legend>` con el dibujo de form-section-header (`role/heading-3`, línea `color/border/default`, padding inferior `space/padding/sm`) | ídem |
+| Tipo de consulta | chips con su ancho a `space/gap/sm-md`, en varias líneas si no entran | ídem |
 | Tus datos | dos campos por fila a `space/gap/lg` | uno por fila |
-| Envío | checkbox a la izquierda; botón y mensaje a la derecha, a `space/gap/md` | apilados; botón a todo el ancho |
+| Envío | checkbox arriba; botón y mensaje debajo, a la izquierda, a `space/gap/xl` | botón a todo el ancho |
+| Preguntas frecuentes | fondo `color/surface/faint`, `space/section/lg` arriba y abajo, misma grilla: texto a la izquierda y preguntas alineadas con el formulario | apiladas a `space/gap/2xl` |
 
 ## Pendientes
 
 - `TODO` (n8n): falta `VITE_N8N_WEBHOOK_URL` y confirmar el formato que espera el webhook.
-- `TODO` (diseño): textos de error por caso e indicador de campo obligatorio (README de input). Las columnas están a 160 en Final y no hay gap de ese tamaño (`space/gap/6xl`, 128).
+- `TODO` (diseño): textos de error por caso e indicador de campo obligatorio (README de input).
+- `TODO` (diseño): v3 no tiene Mobile ni estado enviado; Mobile apila las columnas.
+- `TODO` (diseño): distancia del sticky al navbar (falta `layout/navbar-height`).
+- `TODO` (diseño): el hover de faq-item (`color/surface/faint`) no se ve sobre el fondo faint del bloque.
+- `TODO` (n8n): confirmar que el webhook acepte adjuntos de 25 MB.
 - `TODO` (contenido): email y teléfono son los de Final; confirmar los datos reales.

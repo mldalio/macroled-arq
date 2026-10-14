@@ -1,21 +1,30 @@
-// form-contacto · contenedor de página (Final: Contacto 1278:27919 Desktop ·
-// 1311:17151 Mobile; enviado 1311:17461 · 1311:17501)
+// form-contacto · contenedor de página (Contacto v3 · propuesta, 2295:23055;
+// antes Final: Contacto 1278:27919 Desktop · 1311:17151 Mobile; enviado
+// 1311:17461 · 1311:17501)
 //
 // Bloque de Contacto: a la izquierda la información (por slot, desde el
-// embed: indexable) y a la derecha el formulario, que envía por fetch al
-// webhook de n8n (src/config.js; AGENTS.md · Formulario).
+// embed: indexable; fija al desplazar en Desktop) y a la derecha el
+// formulario, que envía por fetch al webhook de n8n (src/config.js;
+// AGENTS.md · Formulario). Debajo, opcional, las preguntas frecuentes en la
+// misma grilla.
 //
 //   <arq-form-contacto>
 //     <h2 slot="title">Te acompañamos en cada etapa.</h2>
 //     <p slot="description">Desde la selección de luminarias…</p>
+//     <span slot="channels-title">Contacto</span>
 //     <arq-contact-item slot="channels" href="mailto:…">…</arq-contact-item>
 //     <arq-link-list slot="links">…</arq-link-list>
+//     <h2 slot="faq-title">Preguntas frecuentes</h2>
+//     <p slot="faq-description">¿No encontrás lo que buscás?…</p>
+//     <arq-button slot="faq-action" type="underline" …>Escribinos</arq-button>
+//     <arq-faq-item slot="faq">…</arq-faq-item>
 //   </arq-form-contacto>
 //
 // - El <form> y sus campos viven en el Shadow DOM del componente: así el
 //   formulario es dueño de los campos (ElementInternals) y manda su FormData.
-// - Cada bloque es un <fieldset> con su <legend> en role/heading-3, sin
-//   número ni línea (decisiones.md, 2026-10-06 · Contacto: títulos e inputs).
+// - Cada bloque es un <fieldset> con su <legend> en role/heading-3 y línea
+//   inferior, como el set form-section-header (decisiones.md, 2026-10-14 ·
+//   Contacto v3).
 // - Validación al enviar: cada campo inválido muestra su mensaje (prop error
 //   de arq-input) y el foco va al primero. Después, se revalida al salir del
 //   campo. Sin validación nativa del navegador (novalidate).
@@ -53,6 +62,13 @@ const ERRORS = {
   detalles: 'Contanos un poco sobre tu proyecto.',
 };
 
+// Tamaño máximo del adjunto (Contacto v3; el set file-upload dice 10 MB).
+// TODO (n8n): confirmar que el webhook acepte 25 MB.
+const MAX_FILE_MB = 25;
+
+// Slots opcionales: el contenedor de cada uno no se muestra si está vacío
+const OPTIONAL = { 'channels-title': '.channels-title', faq: '.faq' };
+
 const TEXT = {
   sent: 'Recibimos tu consulta. Te respondemos a la brevedad.',
   error: 'No pudimos enviar tu consulta. Probá de nuevo en unos minutos.',
@@ -68,10 +84,13 @@ class ArqFormContacto extends ArqElement {
     `<div class="layout">` +
     `<div class="info">` +
     `<div class="intro">` +
-    `<div class="title role-heading-2"><slot name="title"></slot></div>` +
-    `<div class="description role-body-lg"><slot name="description"></slot></div>` +
+    `<div class="title role-display-sm"><slot name="title"></slot></div>` +
+    `<div class="description role-body"><slot name="description"></slot></div>` +
     `</div>` +
-    `<div class="channels"><slot name="channels"></slot></div>` +
+    `<div class="channels">` +
+    `<span class="channels-title role-body-lg-regular" hidden><slot name="channels-title"></slot></span>` +
+    `<slot name="channels"></slot>` +
+    `</div>` +
     `<slot name="links"></slot>` +
     `</div>` +
     `<form class="form" novalidate>` +
@@ -85,17 +104,18 @@ class ArqFormContacto extends ArqElement {
     `<legend class="role-heading-3">Tus datos</legend>` +
     `<div class="fields">` +
     `<arq-input name="nombre" placeholder="Tu nombre y apellido" autocomplete="name" required show-label>Nombre completo</arq-input>` +
-    `<arq-input name="empresa" placeholder="Nombre del estudio" autocomplete="organization" show-label>Estudio o empresa</arq-input>` +
+    `<arq-input name="empresa" placeholder="Nombre del estudio" autocomplete="organization" show-label>Estudio o empresa (opcional)</arq-input>` +
     `<arq-input name="email" input-type="email" placeholder="nombre@estudio.com" autocomplete="email" required show-label>Email</arq-input>` +
-    `<arq-input name="telefono" input-type="tel" placeholder="+54 11 0000-0000" autocomplete="tel" show-label>Teléfono</arq-input>` +
-    `<arq-input name="provincia" type="select" placeholder="Seleccioná una provincia" show-label>Provincia</arq-input>` +
-    `<arq-input name="ciudad" placeholder="Tu ciudad" autocomplete="address-level2" show-label>Ciudad</arq-input>` +
+    `<arq-input name="telefono" input-type="tel" placeholder="+54 11 0000-0000" autocomplete="tel" show-label>Teléfono (opcional)</arq-input>` +
+    `<arq-input name="provincia" type="select" placeholder="Seleccioná una provincia" show-label>Provincia (opcional)</arq-input>` +
+    `<arq-input name="ciudad" placeholder="Tu ciudad" autocomplete="address-level2" show-label>Ciudad (opcional)</arq-input>` +
     `</div>` +
     `</fieldset>` +
     `<fieldset class="section">` +
     `<legend class="role-heading-3">Tu proyecto</legend>` +
-    `<arq-input name="detalles" type="textarea" placeholder="Contanos el tipo de espacio, etapa del proyecto y qué necesitás…" required show-label>Detalles del proyecto</arq-input>` +
-    `<arq-file-upload name="adjunto">Planos o imágenes (opcional)<span slot="helper">PDF, DWG, JPG o PNG · hasta 10 MB</span></arq-file-upload>` +
+    // 6 filas: el campo de Contacto v3 es más alto que las 4 del set de input
+    `<arq-input name="detalles" type="textarea" rows="6" placeholder="Contanos el tipo de espacio, etapa del proyecto y qué necesitás…" required show-label>Detalles del proyecto</arq-input>` +
+    `<arq-file-upload name="adjunto" max-size="${MAX_FILE_MB}">Planos o imágenes (opcional)<span slot="helper">PDF, DWG, JPG o PNG · hasta ${MAX_FILE_MB} MB. ¿Pesa más? Pegá un link de Drive o WeTransfer en el detalle.</span></arq-file-upload>` +
     `</fieldset>` +
     // Honeypot: fuera de la vista y del orden de Tab; una persona no lo completa
     `<div class="honeypot" aria-hidden="true"><label>No completar este campo <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>` +
@@ -107,6 +127,16 @@ class ArqFormContacto extends ArqElement {
     `</div>` +
     `</div>` +
     `</form>` +
+    `</div>` +
+    // Preguntas frecuentes (Contacto v3): todo por slot, en la misma grilla
+    // que la consulta. Sin preguntas, el bloque no se muestra.
+    `<div class="faq" hidden>` +
+    `<div class="faq-text">` +
+    `<div class="faq-title role-display-sm"><slot name="faq-title"></slot></div>` +
+    `<div class="faq-description role-body"><slot name="faq-description"></slot></div>` +
+    `<slot name="faq-action"></slot>` +
+    `</div>` +
+    `<div class="faq-items"><slot name="faq"></slot></div>` +
     `</div>`;
 
   #validated = false;
@@ -115,13 +145,14 @@ class ArqFormContacto extends ArqElement {
     const root = this.shadowRoot;
     const choices = root.querySelector('.choices');
     new SingleSelect(choices, { items: 'arq-choice-chip' });
-    // Los chips ocupan todo el ancho solo si entran en una fila; si hacen
-    // wrap, quedan con su ancho (decisiones.md, 2026-10-05 · Contacto: ajustes)
-    const chips = [...choices.querySelectorAll('arq-choice-chip')];
-    const fit = () => choices.classList.toggle('fill', chips.every((chip) => chip.offsetTop === chips[0].offsetTop));
-    const observer = new ResizeObserver(fit);
-    observer.observe(choices);
-    for (const chip of chips) observer.observe(chip);
+    for (const [name, selector] of Object.entries(OPTIONAL)) {
+      const slot = root.querySelector(`slot[name="${name}"]`);
+      const sync = () => {
+        root.querySelector(selector).hidden = !slot.assignedNodes().length;
+      };
+      slot.addEventListener('slotchange', sync);
+      sync();
+    }
     root.querySelector('[name="provincia"]').options = PROVINCES.map((value) => ({ value }));
     const form = root.querySelector('form');
     form.addEventListener('submit', (event) => {
