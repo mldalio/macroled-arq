@@ -9,8 +9,8 @@
 
 /* Desktop: lista de grupos, fondo transparente para compartir el fondo de
    la página durante Iluminar, padding lateral
-   space/padding/md. El ancho lo da la columna del listado (240 en Figma).
-   TODO (listados): token del ancho de la columna al armar la grilla. */
+   space/padding/md. El ancho lo da la columna del listado
+   (layout/catalog-nav). */
 .nav {
   background: var(--arq-color-surface-transparent);
 }

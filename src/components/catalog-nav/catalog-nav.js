@@ -53,6 +53,7 @@ class ArqCatalogNav extends ArqElement {
     });
     const sync = () => {
       this.#syncCurrent();
+      this.#markSelectedGroup();
       this.#openCurrentGroup();
     };
     this.shadowRoot.querySelector('slot').addEventListener('slotchange', sync);
@@ -87,6 +88,16 @@ class ArqCatalogNav extends ArqElement {
     const item = this.#selected();
     this.shadowRoot.querySelector('.current-label').textContent = item ? item.textContent.trim() : this.label ?? '';
     this.shadowRoot.querySelector('.indicator').hidden = !item;
+  }
+
+  // catalog-nav-group Selected: el grupo del ítem elegido. Solo se escribe si
+  // cambia, porque el MutationObserver también mira el atributo selected.
+  #markSelectedGroup() {
+    const group = this.#selected()?.closest('arq-catalog-nav-group');
+    for (const candidate of this.querySelectorAll('arq-catalog-nav-group')) {
+      const selected = candidate === group;
+      if (candidate.selected !== selected) candidate.selected = selected;
+    }
   }
 
   #openCurrentGroup() {
