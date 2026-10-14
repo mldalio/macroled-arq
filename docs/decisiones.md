@@ -740,3 +740,11 @@ En Mobile la comparativa funciona como macroled.com.ar/comparativa: un solo desp
 - **Menú del select en la comparativa:** Size=Small abre el menú del ancho del campo; antes, en Mobile, se salía de la columna, lo recortaba la tira y desplazaba toda la página.
 - **No incluido (no está en Figma):** el aviso «Deslizá hacia la derecha para ver los demás productos» de macroled.
 
+## 2026-10-14 · compare-bar Mobile apilada
+
+En Mobile, compare-bar muestra los productos elegidos uno arriba de otro, como la barra de macroled.com.ar: cada uno con foto, nombre, meta y quitar (compare-slot Default), separados por divider Horizontal Subtle, y «Comparar» debajo a todo el ancho. Reemplaza la fila de miniaturas Compact con «Comparar» al lado: con miniaturas no se leía qué producto era cada una.
+
+- Solo se muestran los elegidos (sin lugares vacíos), para que la barra no tape más pantalla de la necesaria.
+- «Borrar todo» sigue arriba, junto al título.
+- **Plegar (Open), en Desktop y Mobile:** como en macroled, el título es un botón con chevron que pliega la lista; plegada quedan el título, «Borrar todo» y «Comparar» (en Desktop, en una sola línea y con el chevron en la punta derecha). Arranca abierta y se vuelve a abrir al agregar un producto. Usa el disclosure base.
+
