@@ -101,3 +101,22 @@
 :host([full-height]) .hero {
   height: 100svh;
 }
+
+/* Size=Compact (Contacto): el set mide 520 en Desktop y 480 en Mobile, contra
+   880 y 720 del Default. En código, la misma proporción sobre los 70svh del
+   Default: 41svh (Desktop) y 47svh (Mobile). Es un mínimo: si el texto no
+   entra, el hero crece. El padding superior deja libre la franja del navbar.
+   TODO (diseño): no hay regla ni token para el alto de Compact; con
+   layout/navbar-height el padding superior saldría de ahí
+   (decisiones.md, 2026-10-14 · Contacto v3). */
+:host([size='compact']) .hero {
+  height: auto;
+  min-height: 41svh;
+  padding-top: var(--arq-space-section-md);
+}
+
+@media (max-width: 767px) {
+  :host([size='compact']) .hero {
+    min-height: 47svh;
+  }
+}

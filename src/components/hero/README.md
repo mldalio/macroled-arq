@@ -35,6 +35,7 @@ Hero de página de Home y Contacto: media a sangre (imagen o video), scrim, eyeb
 | Atributo | Tipo | Qué hace |
 | --- | --- | --- |
 | `full-height` | booleano (solo código) | Todo el alto del viewport (`100svh`) en Desktop y Mobile, en lugar de `70svh`. Lo usa la Home |
+| `size` (Size) | `default` · `compact` | `compact`: título en `role/display-lg` y hero más bajo, con un alto mínimo de `41svh` (Desktop) o `47svh` (Mobile), la proporción del set (520 y 480 contra 880 y 720 del Default). Si el texto no entra, crece. Lo usa Contacto. `TODO` (diseño): alto de Compact sin regla ni token |
 
 - **Show eyebrow, Show description y Show button no son atributos:** cada parte aparece si su slot tiene contenido. En Figma Show eyebrow y Show button vienen en `true` y Show description en `false`; en código lo decide el HTML.
 - **Título:** el `<h1>` va en el HTML de la página, `<h1 slot="title">…</h1>`, no dentro del Shadow DOM. El componente le da `role/display` y el color con `::slotted(h1)` (hereda de un contenedor interno, con `!important` porque los estilos del sitio para `h1` ganan sobre `::slotted`). Es el único `<h1>` de la página: en Home y Contacto no va page-header. Para forzar el corte de Figma ("Materia, forma, / atmósfera.") se puede usar `<br>`; si no, se parte solo.

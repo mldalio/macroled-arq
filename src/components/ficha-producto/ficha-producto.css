@@ -21,7 +21,7 @@
    space/section/sm. */
 .hero {
   padding: 0 0 var(--arq-space-section-sm);
-  background: var(--arq-color-bg-default);
+  background: var(--arq-color-surface-default);
   color: var(--arq-color-text-primary);
   transition-property: background-color, color;
   transition-duration: var(--arq-illumination-bg-duration), var(--arq-theme-text-duration, var(--arq-motion-duration-fast));
@@ -425,7 +425,7 @@
   grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   align-items: start;
   padding: var(--arq-space-padding-5xl) var(--page-gutter);
-  background: var(--arq-color-bg-default);
+  background: var(--arq-color-surface-default);
   color: var(--arq-color-text-primary);
 }
 

@@ -6,17 +6,17 @@
 }
 
 /* ── Type=Link ───────────────────────────────────────────────────── */
-/* Fila: padding vertical space/gap/md, gap space/gap/sm, línea inferior
-   color/border/subtle. Hover: fondo color/surface/hover. Con button es un
-   <button> (entra a un submenú): mismos valores, sin estilos del navegador. */
+/* Fila Default (mega-menu, frame 2295:23636): padding vertical
+   space/gap/sm-md, gap space/gap/md hasta la flecha, línea inferior
+   color/border/subtle. Hover: fondo color/surface/hover. */
 .link {
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  gap: var(--arq-space-gap-sm);
+  gap: var(--arq-space-gap-md);
   width: 100%;
   margin: 0;
-  padding: var(--arq-space-gap-md) 0;
+  padding: var(--arq-space-gap-sm-md) 0;
   border: 0;
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
   background: none;
@@ -26,14 +26,27 @@
   text-decoration: none;
 }
 
+/* Default con bajada (Colecciones, frame 2295:23730): filas de 68. El
+   padding de Figma (10) no tiene token: space/gap/sm da 69. TODO (token). */
+.link.with-meta {
+  padding-block: var(--arq-space-gap-sm);
+}
+
+/* Large (submenús mobile) y submenu (lista de Productos mobile): padding
+   vertical space/gap/md y gap space/gap/sm */
+:host([size='large']) .link,
 button.link {
-  cursor: pointer;
-  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+  gap: var(--arq-space-gap-sm);
+  padding-block: var(--arq-space-gap-md);
 }
 
 .link[href]:hover,
 button.link:hover {
   background: var(--arq-color-surface-hover);
+}
+
+button.link {
+  cursor: pointer;
 }
 
 .link:focus-visible,
@@ -42,14 +55,18 @@ button.link:hover {
   outline-offset: 2px;
 }
 
-/* Nombre (role/body · Large role/body-lg) y bajada (role/caption,
-   color/text/tertiary), separados space/gap/xs */
+/* Nombre (role/body-xl · Large y submenu role/heading-3) y bajada en
+   color/text/tertiary: Default role/body-compact-regular pegada al nombre
+   (Figma: 2, sin token) · Large role/caption a space/gap/xs */
 .text {
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: var(--arq-space-gap-xs);
   min-width: 0;
+}
+
+:host([size='large']) .text {
+  gap: var(--arq-space-gap-xs);
 }
 
 .name {
@@ -60,28 +77,45 @@ button.link:hover {
   color: var(--arq-color-text-tertiary);
 }
 
-/* Miniatura (Show image): cuadrada, color/surface/subtle de fondo.
-   TODO: mide 60 en Figma y no hay token; layout/table-thumb (56) es el más
-   cercano. */
+/* Miniatura (Show image): cuadrada de 60, fondo color/surface/subtle sin
+   imagen. 60 no tiene token: layout/search-thumb + space/gap/sm-md (48 + 12
+   en Mobile, donde se usa). TODO (token layout/mega-link-thumb). */
 .thumb {
+  position: relative;
   flex: none;
-  width: var(--arq-layout-table-thumb);
-  height: var(--arq-layout-table-thumb);
+  width: calc(var(--arq-layout-search-thumb) + var(--arq-space-gap-sm-md));
+  aspect-ratio: 1 / 1;
   background: var(--arq-color-surface-subtle);
 }
 
+.thumb[hidden] {
+  display: none;
+}
+
 .thumb img {
-  display: block;
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-/* Flecha icon/md en color/icon/primary */
-.arrow {
+/* Flecha (arrow-right) y chevron (submenu): icon/md en color/icon/primary.
+   La flecha solo se ve en Hover y Focus; ocupa su lugar siempre, para que
+   el texto no se mueva. */
+.arrow,
+.chevron {
   display: inline-flex;
   flex: none;
   color: var(--arq-color-icon-primary);
+}
+
+.arrow[hidden] {
+  display: none;
+}
+
+.link:not(:hover, :focus-visible) .arrow {
+  visibility: hidden;
 }
 
 .icon {

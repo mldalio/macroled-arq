@@ -362,6 +362,36 @@
           }
         }
       }
+    },
+    "carousel-button": {
+      "$type": "number",
+      "$value": 44,
+      "$description": "Lado del botón anterior/siguiente de los carruseles (cuadrado).",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-carousel-button)"
+          }
+        }
+      }
+    },
+    "catalog-nav": {
+      "$type": "number",
+      "$value": 240,
+      "$description": "Ancho del sidebar catalog-nav en Productos y Colecciones (desde 1024 px). Hasta 1023 px se usa catalog-nav-mobile.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-catalog-nav)"
+          }
+        }
+      }
     }
   },
   "space": {

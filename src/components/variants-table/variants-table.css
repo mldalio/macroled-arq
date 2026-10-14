@@ -125,7 +125,7 @@ th,
 td {
   padding: 0 var(--arq-space-gap-sm) 0 0;
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
-  background: var(--arq-color-bg-default);
+  background: var(--arq-color-surface-default);
   text-align: start;
   white-space: nowrap;
   vertical-align: middle;

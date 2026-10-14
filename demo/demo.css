@@ -4,7 +4,7 @@
 .demo {
   margin: 0;
   color: var(--arq-color-text-primary);
-  background: var(--arq-color-bg-default);
+  background: var(--arq-color-surface-default);
 }
 
 .demo-header {
@@ -167,7 +167,7 @@
 /* Bloque en modo Dark: el atributo redefine los tokens en el contenedor */
 .demo-dark {
   padding: var(--arq-space-padding-lg);
-  background: var(--arq-color-bg-default);
+  background: var(--arq-color-surface-default);
   color: var(--arq-color-text-primary);
 }
 
@@ -537,7 +537,7 @@
   top: 0;
   z-index: 3;
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
-  background: var(--arq-color-bg-default);
+  background: var(--arq-color-surface-default);
 }
 
 .demo-controls {
@@ -644,14 +644,14 @@
   z-index: 2;
   display: flex;
   justify-content: center;
-  background: var(--arq-color-bg-subtle);
+  background: var(--arq-color-surface-subtle);
 }
 
 .demo-frame iframe {
   height: 100%;
   border: 0;
   border-inline: var(--arq-border-default) solid var(--arq-color-border-subtle);
-  background: var(--arq-color-bg-default);
+  background: var(--arq-color-surface-default);
 }
 
 .demo-framed body {

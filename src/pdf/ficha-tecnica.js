@@ -68,7 +68,7 @@ async function countLines(text, role) {
   return lines;
 }
 
-// Imagen recortada como object-fit: cover sobre color/bg/subtle, en JPEG.
+// Imagen recortada como object-fit: cover sobre color/surface/subtle, en JPEG.
 function coverImage(src, widthPx, heightPx) {
   if (!src) return Promise.resolve(null);
   return new Promise((resolve) => {
@@ -81,7 +81,7 @@ function coverImage(src, widthPx, heightPx) {
         canvas.width = Math.round(widthPx * IMAGE_SCALE);
         canvas.height = Math.round(heightPx * IMAGE_SCALE);
         const context = canvas.getContext('2d');
-        context.fillStyle = T['color/bg/subtle'];
+        context.fillStyle = T['color/surface/subtle'];
         context.fillRect(0, 0, canvas.width, canvas.height);
         const scale = Math.max(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight);
         const w = img.naturalWidth * scale;

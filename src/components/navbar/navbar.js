@@ -12,11 +12,15 @@
 //   Productos: en Desktop el mega-menu debajo de la barra; en Mobile el submenú
 //   de Productos dentro del menú.
 // - Mode no es prop: es el estado de la barra (Default · Search · Menu ·
-//   Products · Colecciones · Interior · Exterior · Lámparas y artefactos), que
-//   cambia con las acciones del usuario. Se refleja en el atributo mode (solo
-//   lectura) para la demo y los estilos de la página. En Mobile el menú baja
-//   por niveles: Menu → Products → un submenú (Interior, Exterior, Lámparas y
-//   artefactos o Colecciones); "volver" y Esc suben un nivel.
+//   Products · Interior · Exterior · Colecciones), que cambia con las
+//   acciones del usuario. Se refleja en el atributo mode (solo lectura) para
+//   la demo y los estilos de la página.
+// - Products (Mobile, frame 2295:23568): lista de Interior, Exterior y
+//   Colecciones (mega-link submenu, chevron-right). Cada fila entra a su
+//   submenú con «volver» y el nombre del nivel: links en mega-link Size=Large
+//   y "Ver todo…" al pie (frame 2295:23605; Colecciones con miniatura, y la
+//   lista se desplaza con "Ver todo" fijo abajo). Lámparas y artefactos no
+//   está en la lista del frame (en Desktop sí, como pestaña).
 // - Theme: default · transparent. Transparent va sobre la foto del hero:
 //   fondo color/overlay/translucent con blur/backdrop, textos e íconos en
 //   inverso (nav-link Theme=Inverse). Sigue transparente mientras la barra
@@ -63,25 +67,18 @@ import css from './navbar.css?inline';
 
 const MOBILE = matchMedia('(max-width: 767px)');
 const esc = (text) => String(text ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
-// Submenús de Productos en Mobile (Mode de Figma, en kebab-case): título del
-// "volver" y orden de la lista de Productos.
-const SUBMENUS = {
-  interior: 'Interior',
-  exterior: 'Exterior',
-  'lamparas-y-artefactos': 'Lámparas y artefactos',
-  colecciones: 'Colecciones',
-};
 const SEARCH_LIMIT = 5; // search-dropdown: "hasta 4 o 5" resultados
 const DEBOUNCE = 150;
+const SUBMENUS = ['interior', 'exterior', 'colecciones']; // orden del frame 2295:23568
 
 class ArqNavbar extends ArqElement {
   static tag = 'arq-navbar';
   static styles = css;
   static properties = {
     theme: { type: String, values: ['default', 'transparent'], default: 'default' }, // Theme
-    mode: { type: String, values: ['default', 'search', 'menu', 'products', ...Object.keys(SUBMENUS)], default: 'default' }, // Mode (lo pone el componente)
-    label: { type: String, default: 'Principal' }, // nombre del <nav>
+    mode: { type: String, values: ['default', 'search', 'menu', 'products', ...SUBMENUS], default: 'default' }, // Mode (lo pone el componente)
     search: { type: String, values: ['inline', 'sheet'], default: 'sheet' }, // cómo se abre la búsqueda (solo de código)
+    label: { type: String, default: 'Principal' }, // nombre del <nav>
   };
   static template =
     `<header class="navbar">` +
@@ -110,9 +107,14 @@ class ArqNavbar extends ArqElement {
     `<arq-icon-button class="menu-close" icon="close" background="subtle">Cerrar menú</arq-icon-button>` +
     `</div>` +
     `<div class="menu-main"></div>` +
+    `<div class="menu-products" hidden>` +
+    `<button type="button" class="back role-body-medium">${icon('chevron-left')}<span>Productos</span></button>` +
+    `<div class="groups"></div>` +
+    `</div>` +
     `<div class="menu-sub" hidden>` +
-    `<button type="button" class="back role-body-medium">${icon('chevron-left')}<span class="back-label">Productos</span></button>` +
-    `<div class="panel"></div>` +
+    `<button type="button" class="back back-sub role-body-medium">${icon('chevron-left')}<span class="sub-label"></span></button>` +
+    `<div class="sub-list"></div>` +
+    `<div class="sub-cta"></div>` +
     `</div>` +
     `</dialog>` +
     `<arq-search-screen class="search-screen"></arq-search-screen>` +
@@ -120,11 +122,11 @@ class ArqNavbar extends ArqElement {
 
   #navigation = null;
   #loadingNavigation = null;
+  #recommended = null;
   #results = [];
   #active = -1;
   #timer = 0;
   #query = '';
-  #recommended = null;
 
   /** Árbol de navegación. Si no se pasa, se pide a src/data al abrir Productos. */
   get navigation() {
@@ -217,13 +219,14 @@ class ArqNavbar extends ArqElement {
     root.querySelector('.menu-close').addEventListener('click', () => this.#setMode('default'));
     menu.addEventListener('cancel', (event) => {
       event.preventDefault();
-      this.#setMode(this.#inSubmenu(this.mode) ? this.#parentMode() : 'default');
+      this.#setMode(SUBMENUS.includes(this.mode) ? 'products' : this.mode === 'products' ? 'menu' : 'default');
     });
-    root.querySelector('.back').addEventListener('click', () => this.#setMode(this.#parentMode()));
-    // Productos → submenú: las filas de la lista son mega-link button
-    root.querySelector('.panel').addEventListener('click', (event) => {
-      const row = event.target.closest?.('arq-mega-link[data-mode]');
-      if (row) this.#setMode(row.dataset.mode);
+    root.querySelector('.back').addEventListener('click', () => this.#setMode('menu'));
+    root.querySelector('.back-sub').addEventListener('click', () => this.#setMode('products'));
+    // Filas de Productos: entran a su submenú
+    root.querySelector('.groups').addEventListener('click', (event) => {
+      const row = event.target.closest('arq-mega-link[data-sub]');
+      if (row) this.#setMode(row.dataset.sub);
     });
 
     // Mega-menu: Esc (con el foco en Productos o adentro) y clic afuera
@@ -315,8 +318,9 @@ class ArqNavbar extends ArqElement {
     if (desktopSearch) requestAnimationFrame(() => root.querySelector('.search-field').focus());
     if (mode !== 'search') this.#clearSearch();
 
-    // Menú mobile (Menu, Products y los submenús)
-    const inMenu = mode === 'menu' || this.#inSubmenu(mode);
+    // Menú mobile (Menu, Products y sus submenús)
+    const sub = SUBMENUS.includes(mode);
+    const inMenu = mode === 'menu' || mode === 'products' || sub;
     if (inMenu && !menu.open) {
       this.#menuOpener = root.querySelector('.menu-open');
       menu.showModal();
@@ -327,16 +331,17 @@ class ArqNavbar extends ArqElement {
       this.#menuOpener?.focus();
     }
     root.querySelector('.menu-main').hidden = mode !== 'menu';
-    root.querySelector('.menu-sub').hidden = !this.#inSubmenu(mode);
-    if (this.#inSubmenu(mode)) {
+    root.querySelector('.menu-products').hidden = mode !== 'products';
+    root.querySelector('.menu-sub').hidden = !sub;
+    if (sub) this.#renderSub(mode);
+    if (mode === 'products') {
       this.#ensureNavigation();
-      this.#renderPanel();
-      // Al volver de un submenú a Productos, el foco vuelve a la fila que lo abrió
-      requestAnimationFrame(() => {
-        if (mode === 'products' && previous in SUBMENUS) root.querySelector(`arq-mega-link[data-mode="${previous}"]`)?.focus();
-        else root.querySelector('.back').focus();
-      });
-    } else if (mode === 'menu' && this.#inSubmenu(previous)) {
+      // Volviendo de un submenú, el foco va a su fila; si no, a «volver»
+      const row = SUBMENUS.includes(previous) && root.querySelector(`.groups [data-sub="${previous}"]`);
+      requestAnimationFrame(() => (row || root.querySelector('.back')).focus());
+    } else if (sub) {
+      requestAnimationFrame(() => root.querySelector('.back-sub').focus());
+    } else if (mode === 'menu' && previous === 'products') {
       requestAnimationFrame(() => this.#productsLink()?.focus());
     }
     if (mode !== 'search') {
@@ -344,16 +349,6 @@ class ArqNavbar extends ArqElement {
       root.querySelector('.search-sheet').open = false;
     }
     this.#syncLinks();
-  }
-
-  // Products y los cuatro submenús viven en el mismo panel del menú mobile.
-  #inSubmenu(mode) {
-    return mode === 'products' || mode in SUBMENUS;
-  }
-
-  // Nivel de arriba: submenú → Productos → Menu.
-  #parentMode() {
-    return this.mode in SUBMENUS ? 'products' : 'menu';
   }
 
   // search="sheet" (por defecto): la búsqueda es el top sheet, en todos los anchos
@@ -392,55 +387,52 @@ class ArqNavbar extends ArqElement {
   }
 
   #renderNavigation() {
-    this.shadowRoot.querySelector('.mega').navigation = this.#navigation;
-    if (this.#inSubmenu(this.mode)) this.#renderPanel();
-  }
-
-  // Menú mobile (Figma: navbar Mode=Products, Interior, Exterior, Lámparas y
-  // artefactos y Colecciones). Products lista los submenús como mega-link
-  // button con chevron-right; cada submenú lista sus links (Size=Large) y un
-  // "Ver todo…" (button Underline con arrow-right) al pie.
-  #renderPanel() {
     const root = this.shadowRoot;
     const nav = this.#navigation;
-    const s = nav?.sections ?? {};
-    const mode = this.mode;
-    root.querySelector('.back-label').textContent = mode in SUBMENUS ? SUBMENUS[mode] : 'Productos';
-    const links = (section, { image } = {}) =>
-      section.links
-        .map((l) => `<arq-mega-link size="large" href="${esc(l.href)}"${image ? ' show-image' : ''}>${esc(l.label)}</arq-mega-link>`)
-        .join('');
-    const action = (to) =>
-      `<div class="action"><arq-button type="underline" show-underline show-icon icon="arrow-right" href="${esc(to.href)}">${esc(to.label)}</arq-button></div>`;
-    const group = (section, { eyebrow, image } = {}) =>
-      `<div class="group">${eyebrow ? `<p class="eyebrow role-label">${esc(section.label)}</p>` : ''}${links(section, { image })}</div>${action(section.all)}`;
+    root.querySelector('.mega').navigation = nav;
+    // Products Mobile: una fila por submenú con datos
+    root.querySelector('.groups').innerHTML = SUBMENUS.map((id) => ({ id, label: this.#subLabel(id) }))
+      .filter((s) => s.label)
+      .map((s) => `<arq-mega-link submenu data-sub="${s.id}">${esc(s.label)}</arq-mega-link>`)
+      .join('');
+    if (SUBMENUS.includes(this.mode)) this.#renderSub(this.mode);
+  }
 
-    let html = '';
-    if (mode === 'products') {
-      const rows = {
-        interior: s.interior,
-        exterior: s.exterior,
-        'lamparas-y-artefactos': s.lamparas || s.artefactos,
-        colecciones: nav?.collections?.length,
-      };
-      html = `<div class="group">${Object.entries(SUBMENUS)
-        .filter(([id]) => rows[id])
-        .map(([id, label]) => `<arq-mega-link button show-arrow icon="chevron-right" data-mode="${id}">${esc(label)}</arq-mega-link>`)
-        .join('')}</div>`;
-    } else if (mode === 'interior' && s.interior) html = group(s.interior);
-    else if (mode === 'exterior' && s.exterior) html = group(s.exterior);
-    else if (mode === 'lamparas-y-artefactos') {
-      html = [s.lamparas, s.artefactos]
-        .filter(Boolean)
-        .map((section) => group(section, { eyebrow: true, image: true }))
+  // Nombre del submenú; vacío si no tiene datos
+  #subLabel(id) {
+    const nav = this.#navigation;
+    if (id === 'colecciones') return nav?.collections?.length ? 'Colecciones' : '';
+    return nav?.sections?.[id]?.label ?? '';
+  }
+
+  // Submenú Mobile: «volver» con el nombre del nivel, links en mega-link
+  // Size=Large y "Ver todo…" al pie (Colecciones: con miniatura y "Ver todo"
+  // sin flecha, frame 2295:23605).
+  #renderSub(id) {
+    const root = this.shadowRoot;
+    const nav = this.#navigation;
+    const box = root.querySelector('.menu-sub');
+    box.classList.toggle('menu-sub--colecciones', id === 'colecciones');
+    root.querySelector('.sub-label').textContent = this.#subLabel(id);
+    let links = '';
+    let cta = '';
+    if (id === 'colecciones') {
+      links = (nav?.collections ?? [])
+        .map(
+          (c) =>
+            `<arq-mega-link size="large" show-image href="${esc(c.href)}"${c.thumb ? ` image="${esc(c.thumb)}"` : ''}>${esc(c.label)}` +
+            `<span slot="meta">${esc(c.meta)}</span></arq-mega-link>`,
+        )
         .join('');
-    } else if (mode === 'colecciones' && nav?.collections?.length) {
-      html =
-        `<div class="group">${nav.collections
-          .map((c) => `<arq-mega-link size="large" show-image href="${esc(c.href)}">${esc(c.label)}<span slot="meta">${esc(c.meta)}</span></arq-mega-link>`)
-          .join('')}</div>` + action(nav.allCollections);
+      if (nav?.allCollections) cta = `<arq-button type="underline" show-underline href="${esc(nav.allCollections.href)}">Ver todo</arq-button>`;
+    } else {
+      const section = nav?.sections?.[id];
+      links = (section?.links ?? []).map((l) => `<arq-mega-link size="large" href="${esc(l.href)}">${esc(l.label)}</arq-mega-link>`).join('');
+      if (section) cta = `<arq-button type="underline" show-underline show-icon icon="arrow-right" href="${esc(section.all.href)}">${esc(section.all.label)}</arq-button>`;
     }
-    root.querySelector('.panel').innerHTML = html;
+    root.querySelector('.sub-list').innerHTML = links;
+    root.querySelector('.sub-cta').innerHTML = cta;
+    root.querySelector('.sub-list').scrollTop = 0;
   }
 
   // ── Búsqueda ─────────────────────────────────────────────────────

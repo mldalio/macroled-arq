@@ -6,9 +6,10 @@
 //   <arq-catalog-nav-item href="/arq/productos?…">Embutir</arq-catalog-nav-item>
 //
 // - Es un <a href>; el texto llega por slot (queda en el HTML del embed).
-// - Selected = la subcategoría actual: guion "—", role/body-regular en
+// - Selected = la subcategoría actual: guion "—", peso Regular en
 //   color/text/primary y aria-current="page". Una sola por lista.
-// - Size: Default (role/body) o Large (role/body-lg). Hover y Focus son CSS.
+// - Size: Default (role/body-compact, 14) o Large (role/body-lg, 16). Hover y
+//   Focus son CSS.
 // - Va con role="listitem": el grupo es la lista.
 
 import { ArqElement } from '../../base/arq-element.js';
@@ -35,7 +36,7 @@ class ArqCatalogNavItem extends ArqElement {
     if (this.selected) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
     const large = this.size === 'large';
-    const role = `role-body${large ? '-lg' : ''}${this.selected ? '-regular' : ''}`;
+    const role = `role-body-${large ? 'lg' : 'compact'}${this.selected ? '-regular' : ''}`;
     this.shadowRoot.querySelector('.label').className = `label ${role}`;
   }
 }

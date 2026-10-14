@@ -30,11 +30,11 @@ Opción en forma de chip para elegir entre pocas opciones visibles (2 a 6) en un
 | Parte | Token |
 | --- | --- |
 | Borde | `border/default` en `color/border/default` (Hover y Selected `color/border/strong`, Disabled `color/border/disabled`) |
-| Fondo Selected | `color/surface/selected` |
+| Fondo y texto Selected | `color/surface/inverse` y `color/text/inverse` |
 | Texto | `color/text/primary` (Disabled `color/text/disabled`) · `role/body-regular` |
-| Padding | `space/padding/sm-md` × `space/padding/md`. Texto centrado: si el contenedor lo estira (Contacto), el chip ocupa el ancho que le den |
+| Padding | `space/padding/sm` × `space/padding/md` (42 de alto). Texto centrado: si el contenedor lo estira, el chip ocupa el ancho que le den |
 | Foco | `border/strong` en `color/border/focus`, separado 2 px (DESIGN.md §7) |
 
 ## Pendientes
 
-- Contenedor del grupo: no existe en Figma. En Contacto (`arq-form-contacto`) es un `<fieldset>` con su `<legend>` y adentro un `role="radiogroup"` con `SingleSelect`; los chips van a `space/gap/sm` (Final, `1278:27940`: `space/gap/sm-md`; se juntaron para que entren cuatro en una fila en 1440). La demo usa `space/gap/sm`.
+- Contenedor del grupo: no existe en Figma. En Contacto (`arq-form-contacto`) es un `<fieldset>` con su `<legend>` y adentro un `role="radiogroup"` con `SingleSelect`; los chips van a `space/gap/sm-md`, cada uno con su ancho (Contacto v3, decisiones.md, 2026-10-14). La demo usa `space/gap/sm`.

@@ -1,9 +1,6 @@
 /* Generado por npm run tokens desde tokens/tokens.json. No editar a mano. */
 /* Lo adopta cada Shadow DOM (src/styles/roles.js): Dark local en un contenedor interno. */
 [data-arq-theme="dark"] {
-  --arq-color-bg-default: var(--arq-neutral-800); /** Fondo de página y de secciones completas (body, section). */
-  --arq-color-bg-subtle: var(--arq-neutral-750); /** Fondo alternativo para diferenciar una sección de página de la siguiente. */
-  --arq-color-bg-inverse: var(--arq-neutral-0); /** Fondo de sección invertida, por ejemplo un footer oscuro en modo Light. */
   --arq-color-surface-default: var(--arq-neutral-800); /** Fondo principal de página, tarjetas y paneles. */
   --arq-color-surface-faint: var(--arq-neutral-775); /** Fondo apenas despegado de surface/default: hover de opciones sin fondo (option-tile). */
   --arq-color-surface-hover: var(--arq-neutral-775); /** Fondo al pasar el cursor sobre un elemento interactivo que está sobre surface/default. */

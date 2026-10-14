@@ -1,17 +1,22 @@
 /* catalog-nav-item · Figma 1035:2382. Solo tokens semánticos.
-   Sin padding propio: el espacio entre ítems lo da el grupo. */
+   Alto 32: padding space/padding/xs arriba y abajo y space/padding/sm-md a la
+   izquierda (los ítems van pegados en el riel del grupo). */
 
 :host {
   display: flex;
   min-width: 0;
 }
 
+/* State=Default: Size=Default en color/text/secondary, Size=Large en
+   color/text/tertiary */
 .link {
   display: inline-flex;
   align-items: center;
   gap: var(--arq-space-gap-sm);
   min-width: 0;
-  color: var(--arq-color-text-tertiary);
+  padding-block: var(--arq-space-padding-xs);
+  padding-inline-start: var(--arq-space-padding-sm-md);
+  color: var(--arq-color-text-secondary);
   text-decoration: none;
   -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
 }
@@ -33,6 +38,10 @@
   transition-property: background-color;
   transition-duration: var(--arq-theme-text-duration, var(--arq-motion-duration-fast));
   transition-delay: var(--arq-theme-text-delay, 0s);
+}
+
+:host([size='large']) .link {
+  color: var(--arq-color-text-tertiary);
 }
 
 /* State=Hover */

@@ -183,7 +183,7 @@ Hay dos usos del modo Dark. Los dos usan `data-arq-theme="dark"`; cambia quién 
 
 Para los dos usos:
 
-- El negro es `color/bg/default` en Dark (`neutral/800`, #1C1C1C).
+- El negro es `color/surface/default` en Dark (`neutral/800`, #1C1C1C).
 - **Cambio de fondo:** cuando una sección pasa a oscuro, su padding inferior baja un escalón (`space/section/xl` → `space/section/lg`) y la sección clara que sigue suma padding superior `space/section/md`. Desktop: 128 + 96 · Mobile: 96 + 56. Con el fondo igual, la sección siguiente no lleva padding superior. En código, el ajuste va atado a `data-arq-theme="dark"` en la sección.
 
 ---
@@ -231,7 +231,7 @@ Estos valores **no se usan en componentes**. Están acá para entender de dónde
 
 Cómo elegir un token:
 
-1. **¿Qué propiedad es?** Fondo de sección → `color/bg/*`. Fondo de elemento → `color/surface/*`. Texto → `color/text/*`. Ícono → `color/icon/*`. Borde → `color/border/*`. Acción principal → `color/action/*`. Marca → `color/accent/*`. Modal o barra translúcida → `color/overlay/*`.
+1. **¿Qué propiedad es?** Fondo de sección o de elemento → `color/surface/*`. Texto → `color/text/*`. Ícono → `color/icon/*`. Borde → `color/border/*`. Acción principal → `color/action/*`. Marca → `color/accent/*`. Modal o barra translúcida → `color/overlay/*`.
 2. **¿Qué jerarquía tiene?** primary para títulos, secondary para lectura, tertiary para lo secundario. Fondos: default, subtle, strong, inverse.
 3. **¿En qué estado está?** hover, pressed, selected, disabled, focus, error, success, warning.
 
@@ -250,7 +250,6 @@ Cómo elegir un token:
 | color/surface/inverse-hover | neutral/750 | neutral/150 | Hover sobre fondo inverso |
 | color/surface/inverse-pressed | neutral/600 | neutral/200 | Pressed sobre fondo inverso |
 | color/surface/transparent | alpha/transparent | alpha/transparent | Fondo transparente explícito |
-| color/bg/default · subtle · inverse | = surface | = surface | Fondo de las secciones de página. Para elementos (tarjetas, paneles, campos) se usa color/surface/* |
 
 ### Texto e íconos
 
@@ -305,7 +304,7 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 | layout/measure-wide | 520 | 520 | Ancho máximo de un texto de lectura en una columna principal (page-header Detail). En Mobile el texto ocupa todo el ancho |
 | layout/gallery-thumb | 105 | 76 | Ancho de gallery-thumb en product-gallery. El alto sale de ratio/landscape (5:4) |
 | layout/filter-panel | 560 | 560 | Ancho de los paneles en Desktop: filter-panel y download-modal. En Mobile no se usa |
-| layout/table-thumb | 56 | 56 | Miniatura cuadrada de cada fila de la tabla de variantes (Glosario de la ficha y página Descargas) |
+| layout/table-thumb | 100 | 100 | Miniatura cuadrada de cada fila de la tabla de variantes (Glosario de la ficha y página Descargas) |
 | layout/compare-thumb · compare-thumb-sm | 48 · 28 | 48 · 28 | Foto de compare-slot Default (cuadrada) y Compact (ancho; alto por ratio/portrait) |
 | layout/compare-slot | 400 | 400 | Ancho máximo de compare-slot Default |
 | layout/compare-label | 200 | 120 | Columna de etiquetas de la comparativa (fija en Mobile) |
@@ -313,6 +312,8 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 | layout/mega-menu-image | 420 | 420 | Ancho de la imagen del mega-menu. El alto sale de ratio/portrait-soft (4:5) |
 | layout/search-field | 360 | 360 | Ancho de search-field en el navbar Desktop; search-dropdown toma el mismo ancho. En Mobile el campo ocupa el ancho disponible |
 | layout/search-thumb | 48 | 48 | Miniatura cuadrada de search-result |
+| layout/catalog-nav | 240 | 240 | Ancho del sidebar catalog-nav en Productos y Colecciones (desde 1024 px) |
+| layout/carousel-button | 44 | 44 | Lado del botón anterior / siguiente de los carruseles (carousel-button) |
 | layout/select-filter | 160 | 160 | Ancho mínimo de select Type=Filter (celda de filter-bar): la flecha va al extremo derecho |
 | layout/select-menu-filter | 200 | 200 | Ancho mínimo de select-menu Type=Filter |
 | layout/footer-column | 200 | 200 | Ancho de cada columna de links del footer en Desktop. En Mobile las columnas se reparten el ancho |
@@ -340,7 +341,8 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 | ratio/square | 1:1 | `aspect-ratio: 1 / 1` | compare-product, family-card Default, galería doble, proyectos, line-card (Mobile) |
 | ratio/landscape | 5:4 | `aspect-ratio: 5 / 4` | product-gallery y thumbs, line-card (Desktop), texto + imagen |
 | ratio/wide | 16:10 | `aspect-ratio: 16 / 10` | Galería de ambiente |
-| hero | 70 % del alto | `height: 70svh` | Hero de Contacto, Desktop y Mobile (valor por defecto del componente) |
+| hero | 70 % del alto | `height: 70svh` | Hero Size=Default, Desktop y Mobile (valor por defecto del componente) |
+| hero Compact | mínimo 41 % (Desktop) · 47 % (Mobile) | `min-height: 41svh` · `47svh` | Hero Size=Compact (Contacto): la proporción del set (520 y 480 contra 880 y 720). Si el texto no entra, crece |
 | hero Home | 100 % del alto | `height: 100svh` | Hero de la Home, Desktop y Mobile: todo el ancho y el alto de la pantalla (atributo `full-height`, solo de código) |
 
 Los ratios no son variables (Figma no puede ligar una proporción). En código se aplican con `aspect-ratio`.
@@ -357,14 +359,15 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 
 | Estilo | Peso | Desktop | Mobile | Uso |
 | --- | --- | --- | --- | --- |
+| role/display-lg | Light | 80/100 | 48/56 | Título del hero Compact y del page-header List en Desktop |
 | role/display | Light | 64/72 | 40/44 | Titulares principales |
 | role/display-lg | Light | 80/100 | 48/56 | Título del hero compacto (Contacto y páginas internas) |
 | role/display-sm | Light | 48/56 | 32/40 | Titulares secundarios |
 | role/heading-1 | Light | 40/48 | 32/40 | Título de página |
 | role/heading-2 | Light | 32/40 | 24/32 | Título de sección |
-| role/heading-3 | Regular | 24/32 | 20/28 | Subtítulos, columnas del mega menú, category-card |
-| role/heading-3-light | Light | 24/32 | 20/28 | Heading 3 en Light: preguntas del FAQ |
-| role/body-xl | Regular | 20/28 | 16/24 | Acciones grandes (opciones del modal de descargas) |
+| role/heading-3 | Regular | 24/32 | 20/28 | Subtítulos, category-card, nav-link en Mobile |
+| role/heading-3-light | Light | 24/32 | 20/28 | Preguntas del FAQ |
+| role/body-xl | Regular | 20/28 | 16/24 | Acciones grandes (opciones del modal de descargas), títulos de accordion-item y catalog-nav-group |
 | role/body-lg | Light | 16/24 | 16/24 | Bajadas |
 | role/body-lg-regular | Regular | 16/24 | 16/24 | Títulos o preguntas de lectura |
 | role/body-lg-medium | Medium | 16/24 | 16/24 | Énfasis sobre body-lg |
@@ -372,13 +375,14 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 | role/body-regular | Regular | 16/24 | 16/24 | Botones, opciones y controles con texto |
 | role/body-medium | Medium | 16/24 | 16/24 | Énfasis intermedio |
 | role/body-strong | SemiBold | 16/24 | 16/24 | Títulos de columna, nombres en listas |
-| role/body-compact | Light | 14/24 | 14/24 | Cuerpo compacto (antes era el tamaño de role/body) |
-| role/body-compact-regular | Regular | 14/24 | 14/24 | Botones, opciones, controles y listas densas |
+| role/body-compact | Light | 14/24 | 14/24 | Listas densas (ítems de catalog-nav) |
+| role/body-compact-regular | Regular | 14/24 | 14/24 | Controles y listas densas (ítem elegido de catalog-nav) |
 | role/body-compact-medium | Medium | 14/24 | 14/24 | Énfasis sobre body-compact-regular |
-| role/body-compact-strong | SemiBold | 14/24 | 14/24 | Énfasis fuerte en tamaño compacto |
+| role/body-compact-strong | SemiBold | 14/24 | 14/24 | Énfasis fuerte en 14 px |
 | role/body-sm | Regular | 12/16 | 12/16 | Metadatos, SKU en listados, legales, ayudas |
 | role/body-sm-medium | Medium | 12/16 | 12/16 | Énfasis sobre body-sm |
-| role/label | Regular | 12/16 | 12/16 | MAYÚSCULAS, tracking 1 px: etiquetas de inputs, tabs, títulos de grupo, breadcrumb |
+| role/label-lg | Regular | 14/16 | 14/16 | MAYÚSCULAS, tracking 1 px: etiqueta de select Type=Filter |
+| role/label | Regular | 12/16 | 12/16 | MAYÚSCULAS, tracking 1 px: eyebrows, títulos de grupo, breadcrumb |
 | role/label-sm | Medium | 10/14 | 10/14 | MAYÚSCULAS, tracking 1 px. Solo donde 12 no entra (celdas de filtro) |
 | role/caption | Regular | 12/14 | 12/14 | Notas mínimas, "Copiado" |
 | role/caption-medium | Medium | 12/14 | 12/14 | Énfasis sobre caption |
@@ -450,13 +454,13 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | --- | --- | --- |
 | button | Type: Filled · Outline · Underline. State: Default · Hover · Pressed · Focus · Disabled · Loading (Filled y Outline). Props: Label · Show icon · Icon · Show underline · Show count · Show leading icon · Leading icon | Filled: color/action/*. Outline: color/border/strong (el borde no suma al alto: 40 como Filled, con role/body-regular de 16/24). Underline: subrayado border/default (1 px) en reposo y border/strong (2 px) en hover y pressed. Focus: anillo separado (ver Foco). Loading: fondo de Hover, sin íconos; label de carga ("Enviando…" en formularios, "Generando…" en la ficha técnica), aria-busy |
 | icon-button | Size: Default · Large. Background: None · Surface · Subtle · Outline. State: Default · Hover · Pressed · Focus · Disabled. Prop: Icon | Default 24 × 24 (icon/md). Large 48 × 48 (padding sm-md + icon/xl). Surface sobre otra superficie; Subtle para destacar entre mucha información; Outline (borde color/border/strong) para la descarga de cada fila de variants-table |
-| input | Type: Text · Select · Textarea. State: Empty · Filled · Focus · Error · Disabled. Open: False · True (solo Select). Props: Label · Show label · Helper · Show helper | Caja de 40 (como button): borde border/default en color/border/default y fondo color/surface/default. Hover color/border/hover · Focus anillo separado (§7) · Error color/border/error · Disabled color/border/disabled. Select abierto: border/strong, chevron-up y select-menu Type=Text flotante |
-| select | Type: Field · Filter. State: Default · Hover · Focus · Disabled · Filled. Open: False · True. Props: Name · Label · Value | Filled = Filter con opción elegida. Filter lleva la línea inferior border/strong en todos los estados («Todos» igual que un filtro elegido) y mide al menos layout/select-filter |
+| input | Type: Text · Select · Textarea. State: Empty · Filled · Focus · Error · Disabled. Open: False · True (solo Select). Props: Label · Show label · Helper · Show helper | Label role/body-regular en color/text/primary. Caja de 40 (como button): borde border/default en color/border/default y fondo color/surface/default. Hover color/border/hover · Focus anillo separado (§7) · Error color/border/error · Disabled color/border/disabled. Select abierto: border/strong, chevron-up y select-menu Type=Text flotante |
+| select | Type: Field · Filter. State: Default · Hover · Focus · Disabled · Filled. Open: False · True. Props: Name · Label · Value · Show swatch | Etiqueta role/label (Field) o role/label-lg (Filter). Filled = Filter con opción elegida. Filter lleva la línea inferior border/strong en todos los estados («Todos» igual que un filtro elegido) y mide al menos layout/select-filter |
 | select-menu | Type: Finishes · Filter · Text | Hasta 7 opciones. surface/default, border/default, sin sombra |
 | select-option | State: Default · Hover · Selected · Focus · Disabled. Props: Name · Show swatch | Hover surface/faint, Selected role/body-medium, Focus border/focus |
-| tab | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | role/label; seleccionado con línea border/strong. Un solo tab en todo el sitio |
-| nav-link | Breakpoint: Desktop · Mobile. State: Default · Hover · Pressed · Current · Focus. Open: False · True. Theme: Default · Inverse. Props: Label · Has dropdown | Hover subrayado; Current guion de space/gap/sm × border/strong (8 × 2) y role/body-regular en Desktop (un peso más, como catalog-nav-item Selected); Open: solo gira la flecha (sin subrayado) |
-| navbar | Breakpoint: Desktop · Mobile. Mode: Default · Search · Menu · Products · Colecciones · Interior · Exterior · Lámparas y artefactos. Theme: Default · Transparent | 56 px de alto. Transparent sobre el hero: fondo translúcido (color/overlay/translucent) + blur (blur/backdrop); sigue así mientras la barra está sobre el hero y pasa a Default al dejarlo atrás (sin hero, al hacer scroll) |
+| tab | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | role/body-regular en color/text/secondary; seleccionado en role/body-medium con línea border/strong. Un solo tab en todo el sitio |
+| nav-link | Breakpoint: Desktop · Mobile. State: Default · Hover · Pressed · Current · Focus. Open: False · True. Theme: Default · Inverse. Props: Label · Has dropdown | Hover subrayado; Current guion de space/gap/sm × border/strong (8 × 2) y role/body-medium en Desktop; Open: solo gira la flecha (sin subrayado) |
+| navbar | Breakpoint: Desktop · Mobile. Mode: Default · Search · Menu · Products · Interior · Exterior · Lámparas y artefactos · Colecciones. Theme: Default · Transparent | 56 px de alto. Los cuatro Modes por sección son los submenús que abre Products en Mobile. Transparent sobre el hero: fondo translúcido (color/overlay/translucent) + blur (blur/backdrop); sigue así mientras la barra está sobre el hero y pasa a Default al dejarlo atrás (sin hero, al hacer scroll) |
 | mega-menu | Tab: Por espacio · Lámparas y artefactos · Colecciones | Un solo componente; categorías, links y "Ver todo…" salen de los datos. Usa tab y mega-link |
 | mega-link | Type: Link · Group. State: Default · Hover · Focus. Size: Default · Large. Open: False · True. Props: Name · Meta · Show meta · Show image · Show arrow | Link role/body (Large role/body-lg). Group role/body-xl con icon/plus / icon/minus |
 | logo | Size: Default · Small · Compact | 181 / 158 / 117 px |
@@ -464,14 +468,14 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | search-field | State: Empty · Focus · Filled. Prop: Show close | Campo con borde del navbar |
 | search-result · search-see-all | State: Default · Hover · Active (solo search-result) · Focus | Miniatura, nombre, SKU, flecha |
 | search-dropdown · search-screen | State: Results · No results (· Empty en search-screen) | Desktop / mobile |
-| hero | Breakpoint: Desktop · Mobile. Size: Default · Compact (solo en Figma, sin código todavía). Props: Eyebrow · Show eyebrow · Title · Description · Show description · Show button | Media + hero/scrim. Eyebrow role/label, título role/display, button Outline en Dark local (CTA por slot). Alto: 70svh en Desktop y Mobile. En la Home, pantalla completa (100svh) en los dos |
+| hero | Breakpoint: Desktop · Mobile. Size: Default · Compact. Props: Eyebrow · Show eyebrow · Title · Description · Show description · Show button | Media + hero/scrim. Eyebrow role/label, título role/display (Compact: role/display-lg, hero más bajo de Contacto y páginas internas), button Outline en Dark local (CTA por slot). Alto: 70svh en Desktop y Mobile; Compact, mínimo 41svh (Desktop) y 47svh (Mobile). En la Home, pantalla completa (100svh) en los dos |
 | section-header | Breakpoint: Desktop · Mobile. Type: Link · Description · Title · Stacked. Props: Title · Description | role/heading-2 y role/body-lg. Sin separador. Gap título–bajada sm-md, textos–link lg. Bajada Description hasta layout/measure. En Mobile el link no se muestra: la página pone un button al final del bloque |
-| page-header | Breakpoint: Desktop · Mobile. Type: List · Detail. Props: Title · Description · Show breadcrumb · Show description · Show back · Show action | Título role/display. Sin desplegable |
+| page-header | Breakpoint: Desktop · Mobile. Type: List · Detail. Props: Title · Description · Show breadcrumb · Show description · Show back · Show action | Título role/display-lg y bajada role/body en Desktop Type=List; role/display y role/body-lg en Mobile y en Detail. Sin desplegable |
 | breadcrumb · breadcrumb-item | Levels: 3 · 2 / State: Default · Hover · Current. Props: Label · Show separator | role/label. El ítem actual no lleva link ni separador |
-| cta-block | Type: Button · Newsletter. Breakpoint: Desktop · Mobile. Props: Title · Description | Fondo color/bg/subtle, padding space/section/md |
+| cta-block | Type: Button · Newsletter. Breakpoint: Desktop · Mobile. Props: Title · Description | Fondo color/surface/subtle, padding space/section/md |
 | feature-block | Layout: Image left · Image right. Breakpoint: Desktop · Mobile. Props: Label · Title · Description · Show secondary image | Breakpoint=Mobile apila |
-| faq-item | Open: False · True. State: Default · Hover · Focus. Props: Question · Answer | Home. No confundir con accordion-item |
-| accordion-item | Open: False · True. State: Default · Hover · Focus. Breakpoint: Desktop · Mobile. Prop: Title | Ficha: bloques de especificaciones con spec-list adentro |
+| faq-item | Open: False · True. State: Default · Hover · Focus. Props: Question · Answer | Home y Contacto. Pregunta role/heading-3-light, línea superior color/border/default. No confundir con accordion-item |
+| accordion-item | Open: False · True. State: Default · Hover · Focus. Breakpoint: Desktop · Mobile. Prop: Title | Ficha: bloques de especificaciones con spec-list adentro. Título role/body-xl; ícono en icon-button Large Outline |
 | spec-list · spec-row | Props: Title / Label · Value | Cantidad de filas libre en código |
 | category-card | Breakpoint: Desktop · Mobile. State: Default · Hover · Focus. Prop: Name | Home. Toda la tarjeta es link. ratio/portrait-soft |
 | line-card | Breakpoint: Desktop · Mobile. State: Default · Hover · Focus. Props: Label · Name · Description | Home, editorial. El único link es el botón (button Underline): la imagen y el nombre no son clickeables. Hover y Focus en el botón. ratio/landscape (Desktop) · ratio/square (Mobile) |
@@ -479,24 +483,24 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | product-card | Size: Large · Small. State: Default · Hover · Focus. Props: Name · Meta · Show meta · Show finishes · Show compare | Toma el ancho de su columna (FILL). ratio/portrait. Hover y Iluminar cambian la imagen (ver Imágenes de product-card) |
 | product-gallery · gallery-thumb | Breakpoint: Desktop · Mobile / State: Default · Hover · Selected · Focus | ratio/landscape |
 | carousel-controls | Position: Start · Middle · End | icon-button Large con flechas |
-| catalog-toolbar | Breakpoint: Desktop · Mobile. State: Default · Scroll. Props: Count · Show iluminar | Cantidad ("11 productos" / "10 colecciones"), toggle Iluminar y botón Filtrar |
-| catalog-nav · catalog-nav-group · catalog-nav-item | — / Open: True · False. Selected: False · True / Size: Large · Default. State: Default · Hover · Selected · Focus | Sidebar desde 1024 px |
+| carousel-button | Direction: Previous · Next. State: Default · Disabled | Cuadrado de layout/carousel-button, borde color/border/disabled, chevron icon/md. Carruseles de Destacados y Proyectos |
+| catalog-toolbar | Breakpoint: Desktop · Mobile. State: Default · Scroll. Props: Count · Show iluminar | Cantidad ("11 productos" / "10 colecciones"), toggle Iluminar y botón Filtrar. Scroll suma el nombre de la página (role/body-lg) |
+| catalog-nav · catalog-nav-group · catalog-nav-item | — / Open: True · False. Selected: False · True / Size: Large · Default. State: Default · Hover · Selected · Focus | Sidebar desde 1024 px, de layout/catalog-nav. Grupo: label role/body-xl, chevron, línea inferior y lista con riel. Ítem: role/body-compact (Default) o role/body-lg (Large) |
 | catalog-nav-mobile · catalog-nav-trigger | Open: False · True / Open × State: Default · Hover · Focus | Hasta 1023 px. Abierto: la sección actual abierta con su opción marcada; las demás visibles y cerradas |
 | filter-panel · filter-row · filter-chip · filter-bar | Breakpoint / Open × State / State: Default · Hover · Focus / State: Default · Applied × Breakpoint | filter-panel desktop con scrim; mobile pantalla completa sin scrim |
 | checkbox | Size: Large · Default. Checked: False · True. State: Default · Hover · Focus · Disabled. Props: Label · Show label | Filtros y "Comparar" en tarjetas |
 | toggle · toggle-switch | Checked: False · True. State: Default · Hover · Focus · Disabled. Props: Label · Show label | Pista 38 × 18, radius/pill |
-| choice-chip | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | Formularios. Padding space/padding/sm-md × md. En Contacto, si entran en una fila se estiran a todo el ancho; si no, cada uno con su ancho. No confundir con option-tile |
+| choice-chip | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | Formularios. Padding space/padding/sm × md; Selected en color/surface/inverse con texto color/text/inverse. Cada chip con su ancho, a space/gap/sm-md. No confundir con option-tile |
 | option-group · option-tile | Type: Tiles · Select · Swatches / State: Default · Hover · Selected · Focus · Disabled | Configurador de la ficha. option-tile funciona como radio. Default en color/text/secondary; Disabled en color/text/disabled y tachado |
 | swatch · swatch-picker | Size: Small · Default · Large. State: Default · Hover · Selected · Focus · Disabled | Elegir acabado en la ficha. Cantidad variable en código. Disabled: acabado sin combinación con las otras opciones elegidas |
-| tag | Type: Plain · Outline. Prop: Label | No interactivo |
 | count-badge | Tone: Primary · Inverse. Prop: Count | Mín. 20, crece con el número |
 | divider | Orientation: Horizontal · Vertical. Emphasis: Subtle · Default | — |
-| sku | Size: Default · Compact. State: Default · Hover · Copied. Prop: Code | Botón de copiar. Código en role/body-lg (Default) o role/body (Compact) |
-| variants-table · variants-table-row | Filters: Off · On × Breakpoint / Type: Header · Row. State: Default · Hover | Un solo contenedor con overflow-x; columnas fijas con position: sticky. Sin scroll por fila. Descarga de cada fila: icon-button Large Outline, columna «Descargas» centrada; filas con padding vertical space/padding/sm. En la página Descargas suma un buscador a todo el ancho con Filtros en Outline al lado (Show search) |
+| sku | Size: Default · Compact · Underline. State: Default · Hover · Copied. Prop: Code | Botón de copiar. Código en role/body-lg (Default), role/body (Compact) o role/caption-medium subrayado, sin ícono (Underline, tabla de variantes) |
+| variants-table · variants-table-row · variants-table-card | Filters: Off · On × Breakpoint / Type: Header · Row. State: Default · Hover. Breakpoint / — | Un solo contenedor con overflow-x; columnas fijas con position: sticky. Sin scroll por fila. Descarga de cada fila: icon-button Large Outline, columna «Descargas» centrada; filas con padding vertical space/padding/sm. En la página Descargas suma un buscador a todo el ancho con Filtros en Outline al lado (Show search) |
 | download-modal · download-item | Breakpoint: Desktop · Mobile / Emphasis: Default · Featured. State: Default · Hover · Focus | Desktop: esquina inferior derecha a layout/gutter. Mobile: abajo, a layout/gutter de los bordes. Siempre con scrim; la página de atrás no se desplaza. En Descargas, sku Compact debajo del título |
-| file-upload | State: Empty · Attached. Props: Label · Helper | — |
-| form-message | Tone: Success · Error. Prop: Message | Sin ícono. Los títulos de bloque de un formulario son el `<legend>` de cada `<fieldset>` en role/heading-3, sin número ni línea |
-| contact-item · link-list | State: Default · Hover · Focus. Props: Label · Value / Props: Title · Show link 3 | Valor como link mailto: / tel:. contact-item sin línea ni padding vertical: la lista los separa |
+| file-upload | State: Empty · Attached · Drag over · Error · Disabled. Props: Label · Helper | Label role/body-regular en color/text/primary. Tamaño máximo por formulario (`max-size`, 10 MB por defecto; Contacto: 25 MB) |
+| form-message | Tone: Success · Error. Prop: Message | Sin ícono. Los títulos de bloque de un formulario son el `<legend>` de cada `<fieldset>`, con el dibujo de form-section-header: role/heading-3 y línea inferior border/default en color/border/default |
+| contact-item · link-list | State: Default · Hover · Focus. Props: Label · Value / Props: Title · Show link 3 | Etiqueta role/body-sm en color/text/tertiary; valor como link mailto: / tel:. contact-item sin línea ni padding vertical: la lista los separa. link-list: título role/body-lg-regular en color/text/secondary, todo a space/gap/sm |
 | compare-header · compare-group · compare-row · compare-product | Type: Default · Compact × Breakpoint / Label / Breakpoint + Value 1–3 / State: Filled · Empty | Hasta 3 productos. Cada columna es un producto (grupo): selects de familia (elegir otro producto) y variante |
 | compare-bar · compare-slot | Breakpoint: Desktop · Mobile / Size: Default · Compact. State: Filled · Empty | Barra fija inferior, en Dark local |
 | pdf-page · pdf-header · pdf-cover-title · pdf-spec-group · pdf-spec-row · pdf-footer | Type: Portada · Especificaciones / Meta · Meta 2 · Show meta 2 / Eyebrow · Name · SKU / Title / Label · Value / Note · Page | Ficha técnica en PDF (A4), no son Web Components: los arma `src/pdf/` con pdfmake. Type en modo Mobile, Dimension en Desktop, Color en Light (`src/styles/print-tokens.js`). Se abre en una pestaña nueva; las especificaciones suman hojas y una sección no se parte |
@@ -596,6 +600,7 @@ Link a cada set en Figma (`node-id`). Base: `https://www.figma.com/design/djAb2r
 | breadcrumb | [1244-12667](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1244-12667) | Levels: 3 · 2 |
 | breadcrumb-item | [1053-4430](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1053-4430) | Label; Show separator; State: Default · Hover · Current |
 | button | [907-2375](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=907-2375) | Label; Show icon; Icon; Show underline; Show count; Show leading icon; Leading icon; Type: Filled · Outline · Underline; State: Default · Hover · Pressed · Focus · Disabled · Loading |
+| carousel-button | [2387-8532](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2387-8532) | Direction: Previous · Next; State: Default · Disabled |
 | carousel-controls | [1410-17825](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1410-17825) | Position: Start · Middle · End |
 | catalog-nav | [1035-2411](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1035-2411) | — |
 | catalog-nav-group | [1035-2410](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1035-2410) | Label; Open: True · False; Selected: False · True |
@@ -609,7 +614,7 @@ Link a cada set en Figma (`node-id`). Base: `https://www.figma.com/design/djAb2r
 | compare-bar | [1233-3963](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1233-3963) | Title; Breakpoint: Desktop · Mobile |
 | compare-group | [1263-4320](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1263-4320) | Label |
 | compare-header | [1265-4330](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1265-4330) | Type: Default · Compact; Breakpoint: Desktop · Mobile |
-| compare-product | [1057-2522](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1057-2522) | Name; SKU; State: Filled · Empty |
+| compare-product | [1057-2522](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1057-2522) | Name; SKU; Show SKU; Size: Default · Compact; State: Filled · Empty · empty-hover |
 | compare-row | [1263-4317](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1263-4317) | Label; Value 1–3; Show value 1–3; Breakpoint: Desktop · Mobile |
 | compare-slot | [1233-3656](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1233-3656) | Name; Meta; Size: Default · Compact; State: Filled · Empty |
 | contact-item | [1303-4340](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1303-4340) | Label; Value; State: Default · Hover · Focus |
@@ -621,7 +626,7 @@ Link a cada set en Figma (`node-id`). Base: `https://www.figma.com/design/djAb2r
 | family-card | [1094-5766](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1094-5766) | Name; Size: Default · Large; State: Default · Hover · Focus |
 | faq-item | [1036-2430](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1036-2430) | Question; Answer; Open: False · True; State: Default · Hover · Focus |
 | feature-block | [1036-2535](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1036-2535) | Label; Title; Description; Show secondary image; Layout: Image left · Image right; Breakpoint: Desktop · Mobile |
-| file-upload | [1113-2499](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1113-2499) | Label; Helper; State: Empty · Attached |
+| file-upload | [1113-2499](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1113-2499) | Label; Helper; State: Empty · Attached · Drag over · Error · Disabled |
 | filter-bar | [1068-5165](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1068-5165) | State: Default · Applied; Breakpoint: Desktop · Mobile |
 | filter-chip | [1238-3693](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1238-3693) | Label; State: Default · Hover · Focus |
 | filter-panel | [1225-13576](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1225-13576) | Title; Summary; Show summary; Show applied; Breakpoint: Desktop · Mobile |
@@ -657,19 +662,19 @@ Link a cada set en Figma (`node-id`). Base: `https://www.figma.com/design/djAb2r
 | search-screen | [796-2351](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=796-2351) | State: Empty · Results · No results |
 | search-see-all | [795-2206](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=795-2206) | State: Default · Hover · Focus |
 | section-header | [1036-2448](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1036-2448) | Title; Description; Breakpoint: Desktop · Mobile; Type: Link · Description · Title · Stacked |
-| select | [921-2544](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2544) | Name; Label; Value; Type: Field · Filter; State: Default · Hover · Focus · Disabled · Filled; Open: False · True |
+| select | [921-2544](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2544) | Name; Label; Value; Show swatch; Type: Field · Filter; State: Default · Hover · Focus · Disabled · Filled; Open: False · True |
 | select-menu | [1061-4867](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1061-4867) | Type: Finishes · Filter · Text |
 | select-option | [921-2500](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2500) | Name; Show swatch; State: Default · Hover · Selected · Focus · Disabled |
-| sku | [920-2539](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=920-2539) | Code; Size: Default · Compact; State: Default · Hover · Copied |
+| sku | [920-2539](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=920-2539) | Code; Size: Default · Compact · Underline; State: Default · Hover · Copied |
 | spec-list | [922-2500](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=922-2500) | Title |
 | spec-row | [922-2497](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=922-2497) | Label; Value |
 | swatch | [1063-4880](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1063-4880) | Size: Small · Default · Large; State: Default · Hover · Selected · Focus · Disabled |
 | swatch-picker | [1063-4881](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1063-4881) | — |
 | tab | [929-2287](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=929-2287) | Label; State: Default · Hover · Selected · Focus · Disabled |
-| tag | [981-2305](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=981-2305) | Label; Type: Plain · Outline |
 | toggle | [926-3102](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=926-3102) | Label; Show label; Checked: False · True; State: Default · Hover · Focus · Disabled |
 | toggle-switch | [1131-6383](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1131-6383) | Checked: False · True; State: Default · Hover · Focus · Disabled |
 | variants-table | [1068-5582](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1068-5582) | Show search; Filters: Off · On; Breakpoint: Desktop · Mobile |
-| variants-table-row | [923-2708](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=923-2708) | Type: Header · Row; State: Default · Hover |
+| variants-table-card | [2399-31269](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2399-31269) | — |
+| variants-table-row | [923-2708](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=923-2708) | Type: Header · Row; State: Default · Hover; Breakpoint: Mobile · Desktop |
 
 **Íconos (20):** arrow-down, arrow-left, arrow-right, arrow-up, arrow-up-right, chevron-down, chevron-left, chevron-right, chevron-up, close, copy, download, filter, filter-off, instagram, menu, minus, plus, search, youtube. Cada uno con `Theme: Default · Inverse`.

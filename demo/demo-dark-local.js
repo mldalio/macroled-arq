@@ -20,7 +20,7 @@ const css = `
   align-items: center;
   gap: var(--arq-space-gap-md);
   padding: var(--arq-space-padding-lg);
-  background: var(--arq-color-bg-default);
+  background: var(--arq-color-surface-default);
   color: var(--arq-color-text-primary);
 }
 p { margin: 0; }

@@ -37,8 +37,8 @@ Zona para adjuntar un archivo al formulario de Contacto (planos, renders, fotos)
 
 | Parte | Token |
 | --- | --- |
-| Label | `color/text/secondary` · `role/label` |
-| Zona | fondo `color/bg/subtle`, borde `border/default` en `color/border/default` (punteado en Empty, lleno en Attached) · padding `space/padding/lg` · gap `space/gap/sm-md` |
+| Label | `color/text/primary` · `role/body-regular` |
+| Zona | fondo `color/surface/subtle`, borde `border/default` en `color/border/default` (punteado en Empty, lleno en Attached) · padding `space/padding/lg` · gap `space/gap/sm-md` |
 | Ícono · texto de la zona | `plus` en `icon/md`, `color/icon/primary` · `color/text/primary` `role/body` |
 | Nombre del archivo | `color/text/primary` · `role/body-regular` |
 | Helper · error | `color/text/tertiary` · `color/text/error` · `role/body-sm` |

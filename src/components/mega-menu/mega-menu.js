@@ -1,4 +1,5 @@
-// mega-menu · Figma 841:2282 · ficha doc/mega-menu (1446:7723)
+// mega-menu · Figma 841:2282 · frames 2295:23636 · 2295:23691 · 2295:23730 ·
+// ficha doc/mega-menu (1446:7723)
 //
 // Mega menú de Productos (desktop). Lo abre el nav-link "Productos" del
 // navbar y va debajo de la barra, a todo el ancho.
@@ -7,14 +8,17 @@
 //   menu.navigation = await getNavigation();   // src/data/catalog.js
 //
 // - Un solo componente: pestañas, columnas, links y "Ver todo…" salen de los
-//   datos (descripción del set). Tres pestañas: Por espacio (Exterior ·
-//   Interior), Lámparas y artefactos, y Colecciones (tres columnas de
+//   datos. Tres pestañas: Por espacio (Interior · Exterior), Lámparas y
+//   artefactos (Lámparas · Artefactos), y Colecciones (cuatro columnas de
 //   mega-link con bajada). Una pestaña sin columnas no se muestra.
-// - Tab es la prop tab (por-espacio · lamparas · colecciones). Tablist con
-//   tab + SingleSelect: ← → cambian de pestaña, Inicio / Fin.
-// - Imagen a la derecha: ancho layout/mega-menu-image y ratio/portrait-soft;
-//   puede cambiar por pestaña (prop images). Sin imagen, color/surface/subtle.
-//   TODO (datos): de dónde salen las imágenes de cada pestaña.
+// - Tab es la prop tab (por-espacio · lamparas-y-artefactos · colecciones).
+//   Tablist con tab + SingleSelect: ← → cambian de pestaña, Inicio / Fin.
+// - Preview a la derecha (frame "imagen · preview hover"): la foto del link
+//   con el mouse encima o con el foco, con eyebrow (role/label) y nombre
+//   (role/heading-2) sobre la foto. Al cambiar de pestaña muestra el primer
+//   link. Ancho layout/mega-menu-image, ratio/portrait-soft como mínimo; si
+//   el contenido es más alto, la foto se estira. Sin foto, color/surface/subtle.
+//   La prop images ({ pestaña: url }) pisa la foto inicial de cada pestaña.
 // - El panel no se abre ni se cierra solo: lo muestra el navbar (atributo
 //   hidden en el host).
 
@@ -28,10 +32,10 @@ import css from './mega-menu.css?inline';
 const esc = (text) => String(text ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const TABS = [
   { id: 'por-espacio', label: 'Por espacio' },
-  { id: 'lamparas', label: 'Lámparas y artefactos' },
+  { id: 'lamparas-y-artefactos', label: 'Lámparas y artefactos' },
   { id: 'colecciones', label: 'Colecciones' },
 ];
-const COLLECTION_COLUMNS = 3;
+const COLLECTION_COLUMNS = 4;
 let uid = 0;
 
 class ArqMegaMenu extends ArqElement {
@@ -46,7 +50,13 @@ class ArqMegaMenu extends ArqElement {
     `<div class="tabs" role="tablist"></div>` +
     `<div class="body">` +
     `<div class="panels"></div>` +
-    `<div class="image"><img alt="" hidden></div>` +
+    `<div class="preview" aria-hidden="true">` +
+    `<img alt="" hidden>` +
+    `<div class="caption">` +
+    `<p class="eyebrow role-label"></p>` +
+    `<p class="preview-title role-heading-2"></p>` +
+    `</div>` +
+    `</div>` +
     `</div>` +
     `</div>`;
 
@@ -64,14 +74,14 @@ class ArqMegaMenu extends ArqElement {
     if (this.shadowRoot.querySelector('.tabs')) this.#render();
   }
 
-  /** Imagen por pestaña: { 'por-espacio': url, lamparas: url, colecciones: url }. */
+  /** Foto inicial por pestaña: { 'por-espacio': url, 'lamparas-y-artefactos': url, colecciones: url }. */
   get images() {
     return this.#images;
   }
 
   set images(value) {
     this.#images = value ?? {};
-    this.#syncImage();
+    if (this.shadowRoot.querySelector('.tabs')) this.#resetPreview();
   }
 
   setup() {
@@ -82,9 +92,17 @@ class ArqMegaMenu extends ArqElement {
       event.stopPropagation();
       this.tab = event.detail.value;
     });
-    const img = root.querySelector('img');
+    const img = root.querySelector('.preview img');
     img.addEventListener('load', () => (img.hidden = false));
     img.addEventListener('error', () => (img.hidden = true));
+    // Preview: el link con el mouse encima o con el foco
+    const panels = root.querySelector('.panels');
+    const onLink = (event) => {
+      const link = event.target.closest?.('arq-mega-link');
+      if (link) this.#showPreview(link);
+    };
+    panels.addEventListener('pointerover', onLink);
+    panels.addEventListener('focusin', onLink);
     this.#render();
   }
 
@@ -94,14 +112,14 @@ class ArqMegaMenu extends ArqElement {
     if (changed.has('tab')) {
       for (const tab of root.querySelectorAll('arq-tab')) tab.selected = tab.value === this.tab;
       for (const panel of root.querySelectorAll('[role="tabpanel"]')) panel.hidden = panel.dataset.tab !== this.tab;
-      this.#syncImage();
+      this.#resetPreview();
     }
   }
 
   #columns(tab) {
     const s = this.#navigation?.sections ?? {};
-    if (tab === 'por-espacio') return [s.exterior, s.interior].filter(Boolean);
-    if (tab === 'lamparas') return [s.lamparas, s.artefactos].filter(Boolean);
+    if (tab === 'por-espacio') return [s.interior, s.exterior].filter(Boolean);
+    if (tab === 'lamparas-y-artefactos') return [s.lamparas, s.artefactos].filter(Boolean);
     return [];
   }
 
@@ -121,11 +139,19 @@ class ArqMegaMenu extends ArqElement {
       })
       .join('');
     this.select.refresh();
-    this.#syncImage();
+    this.#resetPreview();
+  }
+
+  // Datos del preview en el link: foto, eyebrow y nombre
+  #link(link, eyebrow, meta = '') {
+    return (
+      `<arq-mega-link href="${esc(link.href)}" show-arrow data-image="${esc(link.image ?? '')}" data-eyebrow="${esc(eyebrow)}" data-title="${esc(link.label)}">` +
+      `${esc(link.label)}${meta ? `<span slot="meta">${esc(meta)}</span>` : ''}</arq-mega-link>`
+    );
   }
 
   // Por espacio y Lámparas y artefactos: una columna por sección, con título
-  // (role/heading-3), links y "Ver todo…" al pie.
+  // (role/heading-1), links y "Ver todo…" (→) al pie.
   #sectionColumns(sections) {
     return (
       `<div class="columns">` +
@@ -133,9 +159,9 @@ class ArqMegaMenu extends ArqElement {
         .map(
           (section) =>
             `<div class="column">` +
-            `<div class="top"><p class="title role-heading-3">${esc(section.label)}</p>` +
-            `<div class="links">${section.links.map((l) => `<arq-mega-link size="large" href="${esc(l.href)}" show-arrow>${esc(l.label)}</arq-mega-link>`).join('')}</div></div>` +
-            `<arq-button type="underline" show-underline href="${esc(section.all.href)}">${esc(section.all.label)}</arq-button>` +
+            `<div class="top"><p class="title role-heading-1">${esc(section.label)}</p>` +
+            `<div class="links">${section.links.map((l) => this.#link(l, `${section.label} · ${l.label}`)).join('')}</div></div>` +
+            `<arq-button class="all" type="underline" show-underline show-icon icon="arrow-right" href="${esc(section.all.href)}">${esc(section.all.label)}</arq-button>` +
             `</div>`,
         )
         .join('') +
@@ -143,36 +169,54 @@ class ArqMegaMenu extends ArqElement {
     );
   }
 
-  // Colecciones: un título, los links repartidos en tres columnas (con la
-  // bajada de aplicaciones) y un solo "Ver todas las colecciones".
+  // Colecciones: un título, los links repartidos en cuatro columnas (con la
+  // bajada de aplicaciones; las primeras columnas llevan uno más si no da
+  // justo) y un solo "Ver todas las colecciones" (↗, como el frame).
   #collections(nav) {
     const list = nav?.collections ?? [];
-    const size = Math.ceil(list.length / COLLECTION_COLUMNS);
-    const columns = Array.from({ length: COLLECTION_COLUMNS }, (_, i) => list.slice(i * size, (i + 1) * size));
+    const base = Math.floor(list.length / COLLECTION_COLUMNS);
+    const extra = list.length % COLLECTION_COLUMNS;
+    let start = 0;
+    const columns = Array.from({ length: COLLECTION_COLUMNS }, (_, i) => {
+      const size = base + (i < extra ? 1 : 0);
+      const items = list.slice(start, start + size);
+      start += size;
+      return items;
+    });
     return (
-      `<p class="title role-heading-3">Colecciones</p>` +
-      `<div class="columns">` +
-      columns
-        .map(
-          (items) =>
-            `<div class="links column">${items
-              .map((c) => `<arq-mega-link href="${esc(c.href)}" show-arrow>${esc(c.label)}<span slot="meta">${esc(c.meta)}</span></arq-mega-link>`)
-              .join('')}</div>`,
-        )
-        .join('') +
+      `<p class="title role-heading-1">Colecciones</p>` +
+      `<div class="columns columns--collections">` +
+      columns.map((items) => `<div class="links column">${items.map((c) => this.#link(c, c.eyebrow, c.meta)).join('')}</div>`).join('') +
       `</div>` +
-      `<arq-button class="all" type="underline" show-underline href="${esc(nav?.allCollections?.href)}">${esc(nav?.allCollections?.label)}</arq-button>`
+      `<arq-button class="all" type="underline" show-underline show-icon icon="arrow-up-right" href="${esc(nav?.allCollections?.href)}">${esc(nav?.allCollections?.label)}</arq-button>`
     );
   }
 
-  #syncImage() {
-    const img = this.shadowRoot.querySelector('img');
-    const src = this.#images[this.tab];
-    if (src) img.src = src;
-    else {
+  // Al cambiar de pestaña: la foto de images[pestaña] o la del primer link
+  #resetPreview() {
+    const first = this.shadowRoot.querySelector(`[role="tabpanel"][data-tab="${this.tab}"] arq-mega-link`);
+    if (first) this.#showPreview(first, this.#images[this.tab]);
+    else this.#setPreview(this.#images[this.tab], '', '');
+  }
+
+  #showPreview(link, image) {
+    this.#setPreview(image || link.dataset.image, link.dataset.eyebrow, link.dataset.title);
+  }
+
+  #setPreview(src, eyebrow, title) {
+    const root = this.shadowRoot;
+    const img = root.querySelector('.preview img');
+    // La foto anterior queda hasta que carga la nueva (sin parpadeo)
+    if (src) {
+      if (img.getAttribute('src') !== src) img.src = src;
+    } else {
       img.removeAttribute('src');
       img.hidden = true;
     }
+    root.querySelector('.eyebrow').textContent = eyebrow ?? '';
+    root.querySelector('.eyebrow').hidden = !eyebrow;
+    root.querySelector('.preview-title').textContent = title ?? '';
+    root.querySelector('.caption').hidden = !title;
   }
 }
 

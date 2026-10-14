@@ -34,7 +34,7 @@ Navegación de categorías de Productos y Colecciones. Un solo componente para D
 - **Hasta 1023 px:** encabezado con la selección actual (`<button>` con `aria-expanded`). Al tocarlo se abren los mismos grupos; todos visibles y el de la categoría actual abierto, como Figma. Al elegir un ítem, el panel se cierra.
 - **Grupo abierto:** lo decide el HTML (`open` en el grupo de la categoría actual). Si ninguno viene abierto, se abre el grupo `selected` (el que guarda la categoría actual; se marca solo si contiene un ítem `selected`).
 - **Links en el HTML del embed:** los arma la página con el árbol de navegación de `src/data/` (decisión 2026-10-02 · Navegación); así quedan indexables.
-- **Ancho:** el de su columna. En Figma la columna del sidebar mide 240.
+- **Ancho:** el de su columna; en los listados, `layout/catalog-nav` (240).
 
 ## Tokens
 
@@ -49,5 +49,4 @@ Navegación de categorías de Productos y Colecciones. Un solo componente para D
 
 ## Pendientes
 
-- `TODO` (listados) El ancho de la columna del sidebar (240 en Figma) no tiene token: se define al armar la grilla del listado.
 - `TODO` (urls) Las URLs de categoría siguen PENDIENTES (`docs/urls.md`); la demo usa links de ejemplo.

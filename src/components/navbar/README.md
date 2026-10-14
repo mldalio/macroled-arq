@@ -20,7 +20,7 @@ Barra de navegación de Macroled Arq, primer elemento de todas las páginas: log
 | --- | --- | --- | --- |
 | — (links) | slot `links` | — | `arq-nav-link`. El que tiene `has-dropdown` abre Productos. La página pone `current` en la sección actual |
 | Theme | `theme` | `theme` | `default` · `transparent` (def. `default`) |
-| Mode | `mode` | `mode` | Lo pone el componente: `default` · `search` · `menu` · `products` · `colecciones` · `interior` · `exterior` · `lamparas-y-artefactos`. No se escribe en el HTML |
+| Mode | `mode` | `mode` | Lo pone el componente: `default` · `search` · `menu` · `products` · `interior` · `exterior` · `colecciones`. No se escribe en el HTML |
 | Breakpoint | — | — | Media query: hasta 767 px, logo Small, lupa y menú |
 | — | `label` | `label` | Nombre del `<nav>`. Por defecto "Principal" |
 | — (datos) | — | `navigation` | Árbol de `getNavigation()`. Si no se pasa, el navbar lo pide a `src/data/` al abrir Productos |
@@ -29,7 +29,7 @@ Barra de navegación de Macroled Arq, primer elemento de todas las páginas: log
 
 - **Productos (Desktop):** abre el `arq-mega-menu` debajo de la barra (`aria-expanded` en el nav-link). Esc o un clic afuera lo cierran; el foco vuelve a Productos.
 - **Búsqueda (Desktop):** la lupa se reemplaza por `arq-search-field` (ancho `layout/search-field`) con el foco adentro. Al escribir aparece `arq-search-dropdown` debajo, con hasta 5 resultados y "Ver todos los resultados". ↑ / ↓ marcan el resultado activo (el foco sigue en el campo), Enter lo abre (o va a `/arq/productos?q=` si no hay activo). Esc cierra el dropdown y después la búsqueda; la cruz cierra.
-- **Mobile:** el menú es un diálogo modal a pantalla completa (Mode=Menu) con los nav-link apilados; el foco arranca en cerrar. Productos entra al submenú (Mode=Products): volver y una fila `arq-mega-link` (`button`, chevron-right) por submenú: Interior, Exterior, Lámparas y artefactos y Colecciones. Cada fila abre su submenú (Mode=Interior, Exterior, Lámparas y artefactos o Colecciones): volver con el nombre del nivel, los links en `arq-mega-link` Size=Large y un "Ver todo…" (button Underline con `arrow-right`) al pie. Lámparas y artefactos suma dos títulos (Lámparas y Artefactos, `role/label`) con su "Ver todas…" cada uno; Lámparas, Artefactos y Colecciones llevan miniatura (`show-image`) y Colecciones además la bajada. Volver y Esc suben un nivel (submenú → Productos → Menu); el foco vuelve a la fila que abrió el submenú. La lupa abre `arq-search-screen`.
+- **Mobile:** el menú es un diálogo modal a pantalla completa (Mode=Menu) con los nav-link apilados; el foco arranca en cerrar. Productos entra al submenú (Mode=Products, frame 2295:23568): volver y una fila por nivel (Interior, Exterior, Colecciones; `arq-mega-link submenu`, chevron-right). Cada fila entra a su nivel (Mode Interior · Exterior · Colecciones): volver con el nombre del nivel, links en `arq-mega-link` Size=Large y "Ver todo…" al pie; Colecciones con miniatura, la lista se desplaza y "Ver todo" queda fijo abajo (frame 2295:23605). Lámparas y artefactos no está en la lista del frame. Esc vuelve un paso; al volver, el foco queda en la fila de la que se salió. La lupa abre `arq-search-screen`.
 - **Transparent:** fondo `color/overlay/translucent` con `blur/backdrop`; logo, nav-links (Theme=Inverse) e íconos en inverso. Sigue transparente mientras la barra está sobre el hero (el primer `<arq-hero>` de la página) y pasa a Default al dejarlo atrás; sin hero, al empezar a desplazar la página. Con la búsqueda abierta (Desktop) sigue sobre la foto, con `arq-search-field` en blanco (como en Default). La lupa y el menú van en Dark local (`data-arq-theme="dark"`) sobre la foto: ícono claro y hover y foco oscuros, sin el cuadrado claro de `color/surface/hover`. Pasa a Default con el menú mobile o el mega-menu abiertos.
 - **Posición:** sticky arriba en Default; fixed en Transparent, encima del hero.
 - **Datos:** navegación y búsqueda salen de `src/data/catalog.js` (decisión 2026-10-02 · navbar).
@@ -43,15 +43,14 @@ Barra de navegación de Macroled Arq, primer elemento de todas las páginas: log
 | Links | gap `space/gap/xl` |
 | Transparent | `color/overlay/translucent` + `blur/backdrop`; `color/text/inverse` y `color/icon/inverse` |
 | Búsqueda | `layout/search-field` (campo y dropdown) |
-| Submenú mobile | volver `role/body-medium` en `color/text/secondary`, padding `space/gap/sm` × `layout/gutter`; grupos de links con `space/gap/md` arriba y `space/padding/md` abajo; título de grupo `role/label` en `color/text/tertiary`; "Ver todo…" con `space/gap/md` arriba (un grupo después de un "Ver todo…" arranca con `space/padding/lg`); abajo del menú `space/gap/xl` |
+| Submenú mobile | volver `role/body-medium` en `color/text/secondary`, padding `space/gap/sm` × `layout/gutter`; grupos con `space/gap/md` arriba y `space/padding/md` abajo; abajo del menú `space/gap/xl` |
 
 ## Pendientes
-
-- `TODO` (datos) El título de grupo y el texto de "Ver todo…" salen de `getNavigation()` («Ver todo Interior»); Figma los escribe en minúscula («Ver todo interior»).
 
 - icon-button no tiene Theme=Inverse: sobre la foto se usa Dark local (hover `color/surface/hover` en Dark), como dice la descripción del set.
 - `TODO` (diseño) Confirmar la posición: sticky en Default y fixed en Transparent.
 - `TODO` (diseño) Foco sobre la foto (Transparent): `color/border/focus` se ve poco sobre una foto oscura.
+
 
 ## Búsqueda: top sheet (prueba)
 

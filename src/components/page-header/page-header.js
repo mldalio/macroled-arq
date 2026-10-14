@@ -17,7 +17,8 @@
 //   </arq-page-header>
 //
 // El <h1> llega por slot title (AGENTS.md: los encabezados van en el HTML) y
-// toma role/display del contenedor (::slotted de la hoja base). Es un
+// toma el estilo del contenedor (::slotted de la hoja base): role/display-lg
+// en Desktop Type=List y role/display en Mobile y en Type=Detail. Es un
 // <div> y no un <header> (dentro del Shadow DOM podría tomarse como el banner
 // de la página). Aplica su propio layout/gutter, como navbar y footer.
 //
@@ -29,6 +30,8 @@
 import { ArqElement } from '../../base/arq-element.js';
 import '../button/button.js';
 import css from './page-header.css?inline';
+
+const mobile = matchMedia('(max-width: 767px)');
 
 class ArqPageHeader extends ArqElement {
   static tag = 'arq-page-header';
@@ -60,6 +63,7 @@ class ArqPageHeader extends ArqElement {
     for (const slot of this.shadowRoot.querySelectorAll('slot[name]')) {
       slot.addEventListener('slotchange', () => this.update());
     }
+    mobile.addEventListener('change', () => this.update());
   }
 
   update() {
@@ -81,6 +85,16 @@ class ArqPageHeader extends ArqElement {
     back.hidden = !hasBack;
     if (hasBack) back.setAttribute('href', this.backHref);
     else back.removeAttribute('href');
+
+    // Desktop Type=List: título role/display-lg y bajada role/body. Mobile y
+    // Type=Detail: role/display y role/body-lg.
+    const large = !detail && !mobile.matches;
+    const title = root.querySelector('.title');
+    title.classList.toggle('role-display-lg', large);
+    title.classList.toggle('role-display', !large);
+    const description = root.querySelector('.description');
+    description.classList.toggle('role-body', large);
+    description.classList.toggle('role-body-lg', !large);
   }
 }
 

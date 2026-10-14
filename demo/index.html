@@ -417,19 +417,19 @@
         <div class="demo-row">
           <arq-link-list>
             <span slot="title">Recursos técnicos</span>
-            <arq-button type="underline" show-underline show-icon icon="arrow-right" href="#demo-link-list">Centro de descargas</arq-button>
+            <arq-button type="underline" show-underline show-icon icon="arrow-up-right" href="#demo-link-list">Centro de descargas</arq-button>
             <arq-button type="underline" show-underline show-icon icon="arrow-right" href="#demo-link-list">Glosario técnico</arq-button>
           </arq-link-list>
           <arq-link-list>
             <span slot="title">Más recursos</span>
-            <arq-button type="underline" show-underline show-icon icon="arrow-right" href="#demo-link-list">Catálogo PDF · 8 MB</arq-button>
-            <arq-button type="underline" show-underline show-icon icon="arrow-right" href="#demo-link-list">Archivos IES</arq-button>
+            <arq-button type="underline" show-underline show-icon icon="arrow-up-right" href="#demo-link-list">Catálogo PDF · 8 MB</arq-button>
+            <arq-button type="underline" show-underline show-icon icon="arrow-up-right" href="#demo-link-list">Archivos IES</arq-button>
             <arq-button type="underline" show-underline show-icon icon="arrow-right" href="#demo-link-list">Glosario técnico</arq-button>
           </arq-link-list>
           <div class="demo-dark" data-arq-theme="dark">
             <arq-link-list>
               <span slot="title">Recursos técnicos (Dark)</span>
-              <arq-button type="underline" show-underline show-icon icon="arrow-right" href="#demo-link-list">Centro de descargas</arq-button>
+              <arq-button type="underline" show-underline show-icon icon="arrow-up-right" href="#demo-link-list">Centro de descargas</arq-button>
             </arq-link-list>
           </div>
         </div>
@@ -1487,7 +1487,7 @@
 
       <section class="demo-section" aria-labelledby="demo-navbar">
         <h2 id="demo-navbar" class="demo-heading role-label">navbar · &lt;arq-navbar&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 753:2907. Productos abre el mega-menu (Desktop) o el submenú (Mobile, con «volver»): ahí cada fila (Interior, Exterior, Lámparas y artefactos, Colecciones) abre su propio submenú (Mode=Interior, Exterior, Lámparas y artefactos y Colecciones; probar con «Ver a 390»). «Volver» y Esc suben un nivel. La lupa abre la búsqueda (search-sheet, más abajo; en todos los anchos): escribí «kanu», «jardín» o un SKU; ↑ ↓ eligen y Enter abre; Esc cierra. <code>search="inline"</code> vuelve a la versión anterior (campo en la barra con search-dropdown, y search-screen en Mobile). Datos del catálogo: Typesense. En la demo la barra no queda fija.</p>
+        <p class="demo-note role-body-sm">Figma 753:2907 y frames 2295:23568 · 2295:23605. Productos abre el mega-menu (Desktop) o, en Mobile, la lista Interior · Exterior · Colecciones: cada fila entra a su submenú (con «volver»; Colecciones con miniaturas y «Ver todo» fijo abajo). La lupa abre la búsqueda: escribí «kanu», «jardín» o un SKU; ↑ ↓ eligen y Enter abre; Esc cierra. Datos del catálogo: Typesense. En la demo la barra no queda fija.</p>
         <div class="demo-navbar">
           <arq-navbar>
             <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
@@ -1544,7 +1544,7 @@
 
       <section class="demo-section" aria-labelledby="demo-mega-menu">
         <h2 id="demo-mega-menu" class="demo-heading role-label">mega-menu · &lt;arq-mega-menu&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 841:2282. Pestañas Por espacio, Lámparas y artefactos y Colecciones (← → cambian). Columnas, links y «Ver todo…» salen de los datos; una pestaña sin datos no se muestra. Imagen layout/mega-menu-image × ratio/portrait-soft (sin imagen: color/surface/subtle). Solo Desktop.</p>
+        <p class="demo-note role-body-sm">Figma 841:2282 y frames 2295:23636 · 23691 · 23730. Pestañas Por espacio, Lámparas y artefactos y Colecciones (← → cambian). Columnas, links y «Ver todo…» salen de los datos; una pestaña sin datos no se muestra. Preview: pasá el mouse o el foco por un link y cambian la foto, el eyebrow y el nombre (sin foto: color/surface/subtle, sin texto). Solo Desktop.</p>
         <div class="demo-bleed">
           <arq-mega-menu data-demo-mega-menu></arq-mega-menu>
         </div>
@@ -1936,6 +1936,26 @@
           </arq-hero>
         </div>
 
+        <p class="demo-subheading role-body-sm">Size=Compact (Contacto: role/display-lg, alto mínimo 41svh · 47svh en Mobile)</p>
+        <div class="demo-bleed">
+          <arq-hero size="compact">
+            <img slot="media" src="/demo/fixtures/img/contacto/hero.jpg" alt="" loading="lazy">
+            <span slot="eyebrow">Contacto</span>
+            <h1 slot="title">Hablemos de tu proyecto.</h1>
+            <span slot="description">Asesoramiento lumínico para arquitectura e interiorismo.</span>
+          </arq-hero>
+        </div>
+
+        <p class="demo-subheading role-body-sm">Size=Compact con título largo y botón (crece si el texto no entra)</p>
+        <div class="demo-bleed">
+          <arq-hero size="compact">
+            <img slot="media" src="/demo/fixtures/img/hero-1.svg" alt="" loading="lazy">
+            <span slot="eyebrow">Iluminación profesional</span>
+            <h1 slot="title">Iluminación arquitectónica para espacios exteriores, jardines y fachadas</h1>
+            <arq-button slot="action" type="outline" href="#demo-hero">Explorar colecciones</arq-button>
+          </arq-hero>
+        </div>
+
         <p class="demo-subheading role-body-sm">Sin eyebrow y sin botón</p>
         <div class="demo-bleed">
           <arq-hero>
@@ -2255,7 +2275,7 @@
           </arq-section>
         </div>
 
-        <p class="demo-subheading role-body-sm">arq-project-mosaic con una foto sin src, mientras carga (queda el fondo color/bg/subtle)</p>
+        <p class="demo-subheading role-body-sm">arq-project-mosaic con una foto sin src, mientras carga (queda el fondo color/surface/subtle)</p>
         <div class="demo-bleed demo-layout">
           <arq-section>
             <arq-project-mosaic>
@@ -2289,7 +2309,7 @@
           </arq-catalog-listing>
         </div>
 
-        <p class="demo-subheading role-body-sm">Contenedor en modo Dark (arq-section usa color/bg/default)</p>
+        <p class="demo-subheading role-body-sm">Contenedor en modo Dark (arq-section usa color/surface/default)</p>
         <div class="demo-bleed demo-layout demo-dark" data-arq-theme="dark">
           <arq-section padding-top>
             <arq-section-header slot="header" type="link" href="#demo-layout">

@@ -38,9 +38,6 @@ export const PRINT_TOKENS = Object.freeze({
   "border/default": 1,
   "border/focus": 1,
   "border/strong": 2,
-  "color/bg/default": "#FFFFFF",
-  "color/bg/subtle": "#F0F0F0",
-  "color/bg/inverse": "#101010",
   "color/surface/default": "#FFFFFF",
   "color/surface/faint": "#FBFBFB",
   "color/surface/hover": "#F7F7F7",
@@ -104,6 +101,8 @@ export const PRINT_TOKENS = Object.freeze({
   "layout/footer-tagline": 240,
   "layout/featured-thumb": 160,
   "layout/pdf-spec-label": 260,
+  "layout/carousel-button": 44,
+  "layout/catalog-nav": 240,
   "type/display/size": 40,
   "type/display/leading": 44,
   "type/display-sm/size": 32,
@@ -131,22 +130,24 @@ export const PRINT_TOKENS = Object.freeze({
   "type/body-compact/size": 14,
   "type/body-compact/leading": 24,
   "type/display-lg/size": 48,
-  "type/display-lg/leading": 56
+  "type/display-lg/leading": 56,
+  "type/label-lg/size": 14,
+  "type/label-lg/leading": 16
 });
 
 export const PRINT_ROLES = Object.freeze({
-  "display": {
-    "fontFamily": "Albert Sans",
-    "fontWeight": 300,
-    "fontSize": 40,
-    "lineHeight": 44,
-    "letterSpacing": -0.8
-  },
   "display-lg": {
     "fontFamily": "Albert Sans",
     "fontWeight": 300,
     "fontSize": 48,
     "lineHeight": 56,
+    "letterSpacing": -0.8
+  },
+  "display": {
+    "fontFamily": "Albert Sans",
+    "fontWeight": 300,
+    "fontSize": 40,
+    "lineHeight": 44,
     "letterSpacing": -0.8
   },
   "display-sm": {
@@ -281,6 +282,14 @@ export const PRINT_ROLES = Object.freeze({
     "fontSize": 12,
     "lineHeight": 16,
     "letterSpacing": 0
+  },
+  "label-lg": {
+    "fontFamily": "Albert Sans",
+    "fontWeight": 400,
+    "fontSize": 14,
+    "lineHeight": 16,
+    "letterSpacing": 1,
+    "textTransform": "uppercase"
   },
   "label": {
     "fontFamily": "Albert Sans",

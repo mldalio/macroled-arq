@@ -58,7 +58,7 @@ product.addEventListener('arq:add', () => abrirModalDeProductos()); // TODO: el 
 
 | Parte | Token |
 | --- | --- |
-| Fondo de media (Filled) | `color/bg/subtle` |
+| Fondo de media (Filled) | `color/surface/subtle` |
 | Borde (Empty) | `color/border/default`, punteado; Hover `color/border/strong` |
 | Fondo (Empty Hover) | `color/surface/faint` |
 | Ícono «+» (Empty) | `icon/xl` (24) con padding `space/padding/sm-md` (icon-button Large, Background=None: sin fondo) |

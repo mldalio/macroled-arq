@@ -8,12 +8,12 @@
 
 /* El subrayado de Selected es un borde inferior de border/default (1 px, set de
    Figma) que existe en todos los estados (transparente): elegir no mueve el
-   layout. padding-bottom: Figma usa space/gap/sm. */
+   layout. Default en color/text/secondary. */
 .tab {
   display: inline-flex;
-  padding-bottom: var(--arq-space-gap-sm);
+  padding-bottom: var(--arq-space-padding-sm-md);
   border-bottom: var(--arq-border-default) solid var(--arq-color-surface-transparent);
-  color: var(--arq-color-text-tertiary);
+  color: var(--arq-color-text-secondary);
   white-space: nowrap;
 }
 

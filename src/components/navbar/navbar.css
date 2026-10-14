@@ -143,6 +143,17 @@
   overscroll-behavior: contain;
 }
 
+/* Columna: barra arriba y el nivel abierto debajo (un submenú largo se
+   desplaza dentro de su lista) */
+.menu[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-bar {
+  flex: none;
+}
+
 .menu-bar {
   box-sizing: border-box;
   display: flex;
@@ -160,15 +171,14 @@
   padding-block: var(--arq-space-gap-sm);
 }
 
-/* Submenú (Mode=Products, Interior, Exterior, Lámparas y artefactos y
-   Colecciones): arriba space/gap/sm, abajo space/gap/xl */
-.menu-sub {
+/* Mode=Products: arriba space/gap/sm, abajo space/gap/xl */
+.menu-products {
   display: flex;
   flex-direction: column;
   padding: var(--arq-space-gap-sm) 0 var(--arq-space-gap-xl);
 }
 
-/* Volver: chevron-left + nombre del nivel (role/body-medium,
+/* Volver: chevron-left + "Productos" (role/body-medium,
    color/text/secondary), gap space/gap/xs, padding space/gap/sm ×
    layout/gutter */
 .back {
@@ -196,28 +206,60 @@
   outline-offset: calc(var(--arq-border-strong) * -1);
 }
 
-/* Grupo de links: arriba space/gap/md, abajo space/padding/md, a los lados
-   layout/gutter. El título del grupo (Lámparas, Artefactos) es role/label en
-   color/text/tertiary. */
-.group {
+/* Lista de Productos (mega-link submenu) y links de un submenú (mega-link
+   Size=Large): arriba space/gap/md, abajo space/padding/md, a los lados
+   layout/gutter */
+.groups,
+.sub-list {
   display: flex;
   flex-direction: column;
   padding: var(--arq-space-gap-md) var(--page-gutter) var(--arq-space-padding-md);
 }
 
-.eyebrow {
-  margin: 0;
-  color: var(--arq-color-text-tertiary);
+/* Submenú (Mode Interior · Exterior · Colecciones): arriba space/gap/sm,
+   abajo space/gap/xl. Si la lista no entra, se desplaza y "Ver todo…" queda
+   fijo abajo. */
+.menu-sub {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  padding: var(--arq-space-gap-sm) 0 var(--arq-space-gap-xl);
 }
 
-/* "Ver todo…": arriba space/gap/md. Un grupo que sigue a otro "Ver todo…"
-   arranca con space/padding/lg. */
-.action {
+.menu-sub[hidden] {
+  display: none;
+}
+
+.back-sub {
+  flex: none;
+}
+
+.sub-list {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* "Ver todo…": arriba space/gap/md, a los lados layout/gutter */
+.sub-cta {
+  flex: none;
   padding: var(--arq-space-gap-md) var(--page-gutter) 0;
 }
 
-.action + .group {
-  padding-top: var(--arq-space-padding-lg);
+.sub-cta:empty {
+  display: none;
+}
+
+/* Colecciones (frame 2295:23605): la lista arranca pegada a «volver» y
+   "Ver todo" cierra con space/padding/md abajo */
+.menu-sub--colecciones {
+  padding-bottom: var(--arq-space-padding-md);
+}
+
+.menu-sub--colecciones .sub-list {
+  padding-block: 0;
 }
 
 @media (max-width: 767px) {
@@ -252,7 +294,7 @@
   .over-photo .bar {
     padding-inline: var(--page-gutter);
     border-bottom: none;
-    background: var(--arq-color-bg-default);
+    background: var(--arq-color-surface-default);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }

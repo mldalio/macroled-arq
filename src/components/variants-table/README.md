@@ -51,7 +51,7 @@ tabla.addEventListener('arq:downloads', (e) => llenarModal(e.detail.sku));
 | --- | --- |
 | Barra | padding `space/padding/md` arriba y abajo, sin padding lateral; gap barra–tabla `space/gap/md` |
 | Botón Filtros · cantidad | Filled con `icon/filter` (abierto: `icon/close`, también Filled; con `show-search`, Outline) · «N variantes» en `role/body`, `color/text/secondary` |
-| Barra de filtros | `filter-bar` `stacked`: fondo `color/surface/soft`, padding `space/padding/2xl` arriba y abajo y `space/padding/xl-2xl` a los lados; selects Type=Filter (etiqueta de 14 px) |
+| Barra de filtros | `filter-bar` `stacked`: fondo `color/surface/soft`, padding `space/padding/2xl` arriba y abajo y `space/padding/xl-2xl` a los lados; selects Type=Filter (etiqueta `role/label-lg`) |
 | Encabezado | `role/body-regular` en `color/text/tertiary`, padding vertical `space/padding/sm-md` |
 | Filas | valores `role/body-lg-regular` en `color/text/primary`; sku subrayado (`arq-sku size="underline"`); padding vertical `space/padding/sm` (en Figma, xs: el botón de descarga quedaba pegado a la línea); Hover `color/surface/faint`; fondo de las fijas `color/bg/default` |
 | Separadores | `border/default` en `color/border/subtle` |

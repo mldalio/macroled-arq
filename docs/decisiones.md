@@ -551,6 +551,40 @@ Reemplaza a 2026-10-02 · Base de datos (estructura v5) en cómo se identifican 
 - **Tokens (Figma → `tokens/figma/`):** `type/body-compact`, `type/display-lg`, `space/5`, `font/size/80`, `font/leading/100` nuevos y `layout/mega-menu-image` 438 → 420. Estilos `role/body-compact` (+ regular, medium, strong), `role/display-lg` y `role/heading-3-light` agregados a `tokens.json` (no son variables: no los trae el import).
 - **Sin tocar (lo pidió diseño):** variants-table-row, compare-product, hero Size Compact y la columna extra del mega-menu de Figma (títulos `role/heading-1`, Colecciones en 4 columnas, panel «imagen · preview hover»). Quedan anotados como `TODO` en los READMEs.
 
+## 2026-10-14 · Baja de tag
+
+- El componente tag (Figma `981:2305`) no se va a usar: se quitó de DESIGN.md, `docs/components.md` y `docs/setup.md`. No había código. product-card resuelve el tipo de producto con Meta.
+
+## 2026-10-14 · Tipografía y catalog-nav (Productos v2)
+
+- Figma sumó `role/display-lg`, `role/heading-3-light` y `role/body-compact` (con regular, medium y strong), y cambió el estilo de varios sets (page-header, accordion-item, faq-item, tab, input, file-upload, contact-item, nav-link Mobile). El código sigue a los sets.
+- **catalog-nav:** grupo con label role/body-xl, chevron, línea inferior y lista con riel; ítem en role/body-compact. Nuevo `layout/catalog-nav` (240) para el ancho del sidebar; entre sidebar y contenido, `space/section/xs`, como la pantalla.
+- **carousel-button:** el chevron medía 14 sin token; se enlazó a `icon/md` (16), el de icon-button.
+- **Meta de product-card:** solo en Colecciones, no en Productos (aunque la pantalla v2 de Figma la muestre).
+- **color/bg/\*** se quitó de Figma: los fondos de sección usan color/surface/\* (mismo valor). Se reemplazó en código, en el PDF y en la documentación.
+- **role/label-lg** (Regular 14/16, mayúsculas, tracking 1 px): nuevo estilo para la etiqueta de select Type=Filter. Field sigue en role/label.
+- **nav-link Current (Desktop):** role/body-medium, como la pantalla de Figma (antes role/body-regular).
+- La página «Final-final» de Figma es de prueba: junta los frames con cambios hasta que se pasen a «Final». No es fuente de pantallas.
+
+## 2026-10-14 · Contacto v3
+
+- **Pantalla:** Contacto v3 (`2295:23055`; venía de «Final-final» como «Contacto v3 · propuesta») reemplaza a Final › Contacto. Solo tenía Desktop: en código, Mobile apila las columnas. En Figma se sumaron, en la sección Contacto de Final, «Contacto v3 · enviado» (`2473:30758`), «Contacto v3 · mobile» (`2473:30918`) y «Contacto v3 · mobile · enviado» (`2473:31283`), armados desde el Desktop con los modos Mobile de Dimension y Type, como el código (`TODO` diseño: revisarlos). Los frames anteriores quedaron debajo como «Contacto (anterior · reemplazada por v3)».
+- **Manda el dibujo de los sets** (sus descripciones y fichas `doc/` estaban viejas; se actualizaron el mismo día): choice-chip Selected en `color/surface/inverse` con texto `color/text/inverse` y padding `space/padding/sm` × `md`; form-section-header en `role/heading-3` con línea `border/default` en `color/border/default`; link-list con título `role/body-lg-regular` en `color/text/secondary` y todo a `space/gap/sm`.
+- **Títulos de bloque del formulario:** el `<legend>` de cada `<fieldset>` toma el dibujo de form-section-header (reemplaza 2026-10-06 · Contacto: títulos e inputs, que lo dejaba sin línea). No vuelve el componente: el legend tiene que ser hijo directo del fieldset.
+- **hero Size=Compact** (`size="compact"`): título en `role/display-lg`. Alto mínimo proporcional al Default (520/880 y 480/720 del set sobre 70svh): `41svh` en Desktop y `47svh` en Mobile; si el texto no entra, crece. Padding superior `space/section/md` para no quedar bajo el navbar.
+- **form-contacto:** columna de información fija al desplazar (sticky a `space/section/md`) en Desktop; intro en `role/display-sm` y `role/body`, con línea inferior; título «Contacto» sobre los canales (slot `channels-title`); campos opcionales con «(opcional)» en la etiqueta; textarea de 6 filas; chips con su ancho (se quita el estirado a una fila de 2026-10-05 · Contacto: ajustes); checkbox arriba y botón debajo, a la izquierda.
+- **Adjunto hasta 25 MB** (el set file-upload dice 10), con la ayuda «¿Pesa más? Pegá un link de Drive o WeTransfer en el detalle.» `TODO` (n8n): que el webhook acepte 25 MB.
+- **Preguntas frecuentes en Contacto:** van dentro de `<arq-form-contacto>` por slots (`faq-title`, `faq-description`, `faq-action`, `faq`), en la misma grilla que la consulta, para que las preguntas queden alineadas con el formulario. Fondo `color/surface/faint`, `space/section/lg` arriba y abajo. «Escribinos» lleva al formulario de la misma página (`href="#formulario"`, el `id` de `<arq-form-contacto>`) con `icon/arrow-right`, como la instancia de v3 y la descripción de button (→ es navegación interna).
+- **Figma (14/10):** descripciones de choice-chip, form-section-header, link-list, hero y file-upload; fichas `doc/` de esos cinco (con la fila Size en `doc/hero`); anotación de form-section-header (es el estilo del `<legend>`, no un Web Component); copia de COMPONENTS.md del Plan.
+
+## 2026-10-14 · Navbar y mega-menu v2
+
+- **Fuente:** los frames de «Final-final» `2295:23636`, `2295:23691` y `2295:23730` (mega-menu) y `2295:23568` y `2295:23605` (menú mobile) son el diseño final y mandan sobre los sets mega-menu y navbar.
+- **mega-menu:** pestaña «Por espacio» (Interior · Exterior), títulos `role/heading-1`, Colecciones en cuatro columnas, «Ver todo…» con → al pie y «Ver todas las colecciones» con ↗ (como el frame), todos a la misma altura. Preview a la derecha: la foto del link con el mouse o el foco, con eyebrow y nombre sobre un degradado. `TODO` (datos): qué foto muestra una categoría (hoy, la del primer producto de la categoría con foto).
+- **Menú mobile:** Productos es una lista Interior · Exterior · Colecciones que entra a cada nivel (Mode Interior · Exterior · Colecciones del set navbar), con «volver» y «Ver todo…» al pie; Colecciones con miniatura y «Ver todo» fijo abajo. Lámparas y artefactos no está en la lista del frame (en Desktop sí, como pestaña).
+- **Textos del menú mobile:** todas las filas en `role/heading-3` (20/28), como los nav-link del Menú; bajada en `role/caption`. Se probaron en Figma tres opciones (actual, todo `role/body-xl`, todo `role/heading-3`) y se eligió la última: tres tamaños claros (20 navegar, 16 acciones, 12 bajada).
+- **mega-link (set `840:2070` actualizado):** Default en `role/body-xl` con padding `space/gap/sm-md` y gap `space/gap/md`, bajada `role/body-compact-regular`; Large en `role/heading-3`; la flecha solo en Hover y Focus. Show image (miniatura de 60) implementado; el 60 no tiene token. En código, `submenu` (fila con chevron-right que abre un nivel del menú mobile).
+
 ## Pendientes
 
 Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe la decisión en su sección. El grupo entre paréntesis es el del `TODO` en el código.

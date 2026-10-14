@@ -1,8 +1,7 @@
-/* form-contacto · Final: Contacto (1278:27919 Desktop · 1311:17151 Mobile).
-   Solo tokens semánticos. Información y formulario en dos columnas 2:3 (en
-   Final son iguales; el formulario más ancho para que los cuatro motivos
-   entren en una fila en 1440, decisiones.md, 2026-10-05 · Contacto: ajustes);
-   en Mobile, apilados. */
+/* form-contacto · Final › Contacto v3 (2295:23055 Desktop · 2473:30918
+   Mobile; decisiones.md, 2026-10-14 · Contacto v3). Solo tokens semánticos. Información y formulario
+   en dos columnas 2:3 (en v3, 468 y el resto de 1312); en Mobile, apilados.
+   Debajo, opcional, las preguntas frecuentes en la misma grilla. */
 
 :host {
   display: block;
@@ -10,16 +9,22 @@
   color: var(--arq-color-text-primary);
 }
 
-/* Primer bloque después del hero: space/section/lg arriba (Final) y
-   space/section/xl abajo.
-   TODO (diseño): las columnas están separadas 160 en Final y no hay gap de
-   ese tamaño; se usa space/gap/6xl (128), el más grande. */
-.layout {
+/* Primer bloque después del hero: space/section/md arriba y space/section/xl
+   abajo (v3). Columnas a space/gap/6xl. */
+.layout,
+.faq {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
   column-gap: var(--arq-space-gap-6xl);
   align-items: start;
-  padding: var(--arq-space-section-lg) var(--page-gutter) var(--arq-space-section-xl);
+}
+
+.layout {
+  padding: var(--arq-space-section-md) var(--page-gutter) var(--arq-space-section-xl);
+}
+
+.faq[hidden] {
+  display: none;
 }
 
 /* ── Información ────────────────────────────────────────────────── */
@@ -30,38 +35,52 @@
   min-width: 0;
 }
 
+/* Título y bajada, con línea inferior color/border/default */
 .intro {
   display: flex;
   flex-direction: column;
-  gap: var(--arq-space-gap-md);
+  gap: var(--arq-space-gap-lg);
+  padding-bottom: var(--arq-space-padding-lg);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-default);
 }
 
 .title {
   color: var(--arq-color-text-primary);
 }
 
-.description {
+.description,
+.faq-description {
   color: var(--arq-color-text-secondary);
 }
 
-::slotted([slot='description']) {
+::slotted([slot='description']),
+::slotted([slot='faq-description']) {
   margin: 0 !important;
   font: inherit !important;
   color: inherit !important;
 }
 
-/* Canales: sin líneas, separados por space/gap/lg */
+/* Canales: título («Contacto») y contact-item, todo a space/gap/sm, sin
+   líneas */
 .channels {
   display: flex;
   flex-direction: column;
-  gap: var(--arq-space-gap-lg);
+  gap: var(--arq-space-gap-sm);
+}
+
+.channels-title {
+  color: var(--arq-color-text-secondary);
+}
+
+.channels-title[hidden] {
+  display: none;
 }
 
 /* ── Formulario ─────────────────────────────────────────────────── */
 .form {
   display: flex;
   flex-direction: column;
-  gap: var(--arq-space-gap-2xl);
+  gap: var(--arq-space-gap-3xl);
   min-width: 0;
 }
 
@@ -75,29 +94,27 @@
   border: 0;
 }
 
-/* Título de cada bloque: el <legend> del fieldset en role/heading-3, sin
-   número ni línea (antes form-section-header). No es un <h3>: el componente
-   no crea encabezados (AGENTS.md) y el legend ya nombra el grupo.
-   Con float el legend deja de ir sobre el borde del fieldset: queda dentro
-   del fieldset y pasa a ser un ítem flex (separado por el gap). */
+/* Título de cada bloque: el <legend> del fieldset, con el dibujo del set
+   form-section-header (role/heading-3, línea inferior border/default en
+   color/border/default, padding inferior space/padding/sm). No es un <h3>:
+   el componente no crea encabezados (AGENTS.md) y el legend ya nombra el
+   grupo. Con float el legend deja de ir sobre el borde del fieldset: queda
+   dentro y pasa a ser un ítem flex (separado por el gap). */
 .section > legend {
   float: left;
+  box-sizing: border-box;
   width: 100%;
   margin: 0;
-  padding: 0;
+  padding: 0 0 var(--arq-space-padding-sm);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-default);
   color: var(--arq-color-text-primary);
 }
 
+/* Motivos: cada chip con su ancho, a space/gap/sm-md */
 .choices {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--arq-space-gap-sm);
-}
-
-/* Si entran en una fila, los chips crecen hasta ocupar el ancho (clase fill,
-   desde form-contacto.js); si hacen wrap, quedan con su ancho */
-.choices.fill > arq-choice-chip {
-  flex: 1 1 auto;
+  gap: var(--arq-space-gap-sm-md);
 }
 
 .fields {
@@ -116,49 +133,88 @@
   white-space: nowrap;
 }
 
-/* Checkbox y envío en la misma fila; el mensaje va debajo del botón,
-   alineado a la derecha, y se parte en líneas si no entra (enviado, Final). */
+/* Checkbox arriba y el envío debajo, a la izquierda; el mensaje va debajo
+   del botón */
 .submit {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: flex-start;
-  gap: var(--arq-space-gap-lg);
-}
-
-.submit arq-checkbox {
-  flex: none;
+  gap: var(--arq-space-gap-xl);
 }
 
 .send {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: var(--arq-space-gap-md);
+  align-items: flex-start;
+  gap: var(--arq-space-gap-sm);
   min-width: 0;
-  margin-inline-start: auto;
-  text-align: end;
+}
+
+/* ── Preguntas frecuentes ───────────────────────────────────────── */
+/* Fondo color/surface/faint y space/section/lg arriba y abajo (v3).
+   TODO (diseño): el hover de faq-item también es color/surface/faint, así
+   que sobre este fondo no se ve. */
+.faq {
+  padding: var(--arq-space-section-lg) var(--page-gutter);
+  background: var(--arq-color-surface-faint);
+}
+
+.faq-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-lg);
+  min-width: 0;
+}
+
+.faq-title {
+  color: var(--arq-color-text-primary);
+}
+
+/* Bajada junto a otro elemento: hasta layout/measure (en v3, 340) */
+.faq-description {
+  max-width: var(--arq-layout-measure);
+}
+
+.faq-items {
+  min-width: 0;
+}
+
+/* ── Desktop: la información queda fija al desplazar ────────────── */
+/* TODO (diseño): v3 la marca «sticky» sin decir a qué distancia del navbar.
+   space/section/md deja libre los 56 del navbar; con layout/navbar-height
+   saldría de ahí. */
+@media (min-width: 768px) {
+  .info {
+    position: sticky;
+    top: var(--arq-space-section-md);
+  }
 }
 
 /* ── Mobile ─────────────────────────────────────────────────────── */
+/* Columnas apiladas (Contacto v3 · mobile, 2473:30918).
+   TODO (diseño): revisar ese Mobile, armado desde el Desktop. */
 @media (max-width: 767px) {
-  .layout {
+  .layout,
+  .faq {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .layout {
     row-gap: var(--arq-space-gap-6xl);
+  }
+
+  .faq {
+    row-gap: var(--arq-space-gap-2xl);
   }
 
   .fields {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .submit {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
+  .submit,
   .send {
     align-items: stretch;
-    margin-inline-start: 0;
-    text-align: start;
   }
 
   .send-button {

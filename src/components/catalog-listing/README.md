@@ -53,7 +53,7 @@ En Productos Mobile (hasta 767 px), el árbol de navegación aparece en la tab C
 
 ## Pendientes
 
-- `TODO` (diseño): el sidebar mide 240 en Figma y no hay token; se usa `layout/card-min` (280). Entre sidebar y contenido el set usa `space/section/sm`, un token de separación entre bloques.
+- Sidebar de `layout/catalog-nav` (240) y `space/section/xs` hasta el contenido, como la pantalla de Figma.
 - `TODO` (diseño): no hay pantalla de carga, vacío ni error; los textos son provisorios.
 - `TODO` (diseño): no hay pantalla de resultados de búsqueda; el título y el vacío con `?q=` son de código.
 - `TODO` (búsqueda): sinónimos, en el front o en Typesense (`docs/decisiones.md`, Pendientes).

@@ -305,6 +305,21 @@
           }
         }
       }
+    },
+    "5": {
+      "$type": "number",
+      "$value": 5,
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT",
+            "GAP"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-space-5)"
+          }
+        }
+      }
     }
   }
 }

@@ -15,7 +15,7 @@ Pestaña para cambiar entre vistas de un mismo contenido sin salir de la página
 
 | Figma | Atributo | Prop JS | Valores |
 | --- | --- | --- | --- |
-| Label | slot por defecto | — | nombre de la pestaña, en caja normal (la mayúscula la pone `role/label`) |
+| Label | slot por defecto | — | nombre de la pestaña |
 | State=Selected | `selected` | `selected` | booleano · vista activa |
 | State=Disabled | `disabled` | `disabled` | booleano |
 | — | `value` | `value` | valor que se envía en `arq:change` |
@@ -23,16 +23,15 @@ Pestaña para cambiar entre vistas de un mismo contenido sin salir de la página
 - Hover y Focus son CSS.
 - **Comportamiento:** el elemento es la pestaña (`role="tab"`, `aria-selected`, `aria-disabled`). Clic, Enter o Espacio la eligen y emite `arq:change` con `{ value, selected: true }`.
 - **Tablist (mega-menu):** contenedor `role="tablist"` con `SingleSelect` (`src/base/single-select.js`): ← → cambian de pestaña (activación automática), Inicio / Fin a la primera / última, una sola Selected. Separación `space/gap/xl` y línea `border/default` en `color/border/subtle` debajo. Cada pestaña con `aria-controls` y su panel con `role="tabpanel"` y `aria-labelledby`.
-- El nombre accesible va en caja normal (`aria-label`), aunque se vea en mayúsculas.
 
 ## Tokens
 
 | Parte | Token |
 | --- | --- |
-| Texto Default · Hover / Selected · Disabled | `color/text/tertiary` · `color/text/primary` · `color/text/disabled` |
+| Texto Default · Hover / Selected · Disabled | `color/text/secondary` · `color/text/primary` · `color/text/disabled` |
 | Subrayado Selected | `border/default` (1 px) en `color/border/strong` |
-| Padding inferior | `space/gap/sm` (como en Figma) |
-| Texto | `role/label` |
+| Padding inferior | `space/padding/sm-md` |
+| Texto | `role/body-regular` en `color/text/secondary`; Selected `role/body-medium` en `color/text/primary` |
 | Foco | `border/strong` en `color/border/focus`, separado 2 px (DESIGN.md §7) |
 
 ## Pendientes

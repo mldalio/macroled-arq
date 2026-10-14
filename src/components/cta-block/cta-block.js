@@ -1,7 +1,7 @@
 // cta-block · Figma 1265:4464 · ficha doc/cta-block (1455:7747)
 //
 // Bloque de cierre de página (último antes del footer, uno por página), con
-// fondo color/bg/subtle a sangre. Type=Button lleva una acción; Type=Newsletter
+// fondo color/surface/subtle a sangre. Type=Button lleva una acción; Type=Newsletter
 // un email + button.
 //
 //   <arq-cta-block>

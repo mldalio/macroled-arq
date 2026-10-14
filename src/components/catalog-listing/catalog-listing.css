@@ -7,7 +7,7 @@
   box-sizing: border-box;
   min-width: 0;
   padding: 0 var(--page-gutter) var(--arq-space-section-xl);
-  background: var(--arq-color-bg-default);
+  background: var(--arq-color-surface-default);
   transition-property: background-color;
   transition-duration: var(--arq-illumination-bg-duration);
   transition-delay: 0s;
@@ -42,15 +42,13 @@
   display: none;
 }
 
-/* Sidebar + contenido.
-   TODO (diseño): la columna del sidebar mide 240 en Figma y no hay token; se
-   usa layout/card-min (280), el más cercano. Entre columnas el set usa
-   space/section/sm, un token de separación entre bloques (DESIGN.md §5). */
+/* Sidebar + contenido: columna layout/catalog-nav y, entre columnas,
+   space/section/xs (el que usa la pantalla de Figma). */
 @media (min-width: 1024px) {
   .layout {
     display: grid;
-    grid-template-columns: var(--arq-layout-card-min) minmax(0, 1fr);
-    column-gap: var(--arq-space-section-sm);
+    grid-template-columns: var(--arq-layout-catalog-nav) minmax(0, 1fr);
+    column-gap: var(--arq-space-section-xs);
   }
 
   .toolbar {

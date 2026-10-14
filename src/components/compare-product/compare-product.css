@@ -16,7 +16,7 @@
   height: 100%;
 }
 
-/* Media 1:1 (Filled), tope layout/compare-media-max, fondo color/bg/subtle */
+/* Media 1:1 (Filled), tope layout/compare-media-max, fondo color/surface/subtle */
 .media {
   position: relative;
   width: 100%;
@@ -26,7 +26,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: var(--arq-color-bg-subtle);
+  background: var(--arq-color-surface-subtle);
 }
 
 .media img {

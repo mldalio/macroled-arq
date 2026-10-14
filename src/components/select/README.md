@@ -23,7 +23,7 @@ select.addEventListener('arq:change', (e) => console.log(e.detail.value));
 | Figma | Atributo | Prop JS | Valores · por defecto |
 | --- | --- | --- | --- |
 | Type | `type` | `type` | `field` · `filter`. Por defecto `field` |
-| Label | `label` | `label` | Etiqueta visible arriba (Field: `role/label`, 12 px; Filter: 14 px) del campo, siempre, en los dos Type y en cualquier State (incluido Disabled) |
+| Label | `label` | `label` | Etiqueta visible (`role/label` en Field, `role/label-lg` en Filter) arriba del campo, siempre, en los dos Type y en cualquier State (incluido Disabled) |
 | Name (Field) · Value (Filter) | `value` | `value` | Valor elegido; el texto que se ve sale de la opción. Filter sin valor = "Todos" |
 | — (opciones) | — | `options` | Lista `{ value, label?, swatch?, showSwatch?, disabled? }` (solo JS). La muestra solo se ve si la opción trae `swatch` o `showSwatch` (acabado/color, p. ej. color de carcasa); el resto queda solo texto. `TODO` (diseño): falta definir qué campos cuentan como "color" |
 | Show swatch | `show-swatch` | `showSwatch` | booleano. Muestra la muestra de color en todas las opciones (sin imagen, el neutro de swatch). En Figma viene activada; en código va desactivada por defecto (atributo de presencia). Una opción puede apagarla con `showSwatch: false` |
@@ -45,7 +45,7 @@ select.addEventListener('arq:change', (e) => console.log(e.detail.value));
 | Parte | Token |
 | --- | --- |
 | Trigger (los dos Type) | línea inferior `border/default` en `color/border/strong`; padding vertical `space/padding/sm-md` (se descuenta la línea: el campo mide 48), sin padding lateral; gap `space/gap/sm-md`; texto `role/body-regular` |
-| Etiqueta | `role/label` (Default) o 14 px (Large) en `color/text/tertiary`, sin gap con el trigger |
+| Etiqueta | `role/label` (Field) o `role/label-lg` (Filter) en `color/text/tertiary`, sin gap con el trigger |
 | Hover y Open | `color/surface/faint` |
 | Field | ancho del contenedor; swatch Default (`swatch/md`); chevron `icon/md` (hacia arriba abierto) |
 | Filter | ancho mínimo `layout/select-filter` (160, la flecha al extremo derecho); swatch Small (`swatch/sm`); chevron `icon/sm`; Filled con el valor en `role/body-medium` |

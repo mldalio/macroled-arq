@@ -22,18 +22,17 @@ class ArqTab extends ArqElement {
     disabled: { type: Boolean }, // State=Disabled
     value: { type: String },
   };
-  static template = `<span class="tab role-label"><slot></slot></span>`;
+  static template = `<span class="tab role-body-regular"><slot></slot></span>`;
 
   setup() {
     this.selectable = new Selectable(this, { role: 'tab', state: 'aria-selected' });
-    // role/label pone mayúsculas: el nombre accesible va en caja normal
-    // (docs/decisiones.md · Textos en mayúsculas).
-    const sync = () => {
-      const text = this.textContent.trim();
-      if (text) this.setAttribute('aria-label', text);
-    };
-    this.shadowRoot.querySelector('slot').addEventListener('slotchange', sync);
-    sync();
+  }
+
+  // Default role/body-regular · Selected role/body-medium
+  update() {
+    const tab = this.shadowRoot.querySelector('.tab');
+    tab.classList.toggle('role-body-regular', !this.selected);
+    tab.classList.toggle('role-body-medium', this.selected);
   }
 }
 

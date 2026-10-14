@@ -45,7 +45,7 @@ Un nombre largo se parte en líneas; la flecha queda a la derecha.
 
 | Parte | Token |
 | --- | --- |
-| Imagen (sin imagen) | `color/bg/subtle` |
+| Imagen (sin imagen) | `color/surface/subtle` |
 | Nombre | `color/text/primary` · `role/heading-3` |
 | Flecha | `icon/arrow-right` · `icon/md` · `color/icon/primary` |
 | Hover | `border/default` en `color/border/hover` (imagen) |

@@ -537,16 +537,29 @@ export const searchHref = (query) => `/arq/productos?q=${encodeURIComponent(quer
  * Árbol único para mega-menu, menú mobile y catalog-nav (decisiones.md,
  * 2026-10-02 · Navegación), con las secciones del mega-menu de Figma (841:2282):
  *   { sections: { exterior, interior, lamparas, artefactos }, collections, allCollections }
- *   sección: { id, label, href, all: { label, href }, links: [{ label, href, count }] }
- *   colección: { label, meta, href }
+ *   sección: { id, label, href, all: { label, href }, links: [{ label, href, count, image, thumb }] }
+ *   colección: { label, meta, href, eyebrow, image, thumb }
  * Exterior e Interior: aplicaciones de luminarias + Artefactos y Lámparas de
  * ese entorno. Lámparas y Artefactos: un link por producto. Las opciones sin
  * productos no aparecen; una sección sin links es null.
+ * image: foto del preview del mega-menu (contexto; sin contexto, estudio).
+ * thumb: miniatura del submenú mobile (estudio). eyebrow: texto sobre la foto
+ * del preview en Colecciones ("Línea Interior", frame 2295:23730).
+ * TODO (datos): qué foto muestra el preview de una categoría (Embutir,
+ * Jardín…). Por ahora, la del primer producto de la categoría que tenga foto.
  */
 export async function getNavigation() {
   const { groups, collections } = await loadCatalog();
   const count = (filter) => groups.filter((g) => inCategory(g, filter)).length;
-  const link = (label, filter) => ({ label, href: categoryHref(filter), count: count(filter) });
+  const groupImages = (g) => {
+    const images = pick(g.defaultVariant.images);
+    return { image: images.context ?? images.studio ?? null, thumb: images.studio ?? null };
+  };
+  const categoryImages = (filter) => {
+    const found = groups.filter((g) => inCategory(g, filter)).map(groupImages).find((i) => i.image);
+    return found ?? { image: null, thumb: null };
+  };
+  const link = (label, filter) => ({ label, href: categoryHref(filter), count: count(filter), ...categoryImages(filter) });
   const environmentSection = (environment, allLabel) => {
     const applications = [...new Set(groups.filter((g) => g.productType === 'Luminaria' && g.environment.includes(environment)).map((g) => g.application).filter(Boolean))];
     const links = [
@@ -557,19 +570,30 @@ export async function getNavigation() {
     return links.length ? { id: normalize(environment), label: environment, href: categoryHref({ environment }), all: { label: allLabel, href: categoryHref({ environment }) }, links } : null;
   };
   const typeSection = (productType, label, allLabel) => {
-    const links = groups.filter((g) => g.productType === productType).map((g) => ({ label: g.name, href: productHref(g.id), count: 1 }));
+    const links = groups.filter((g) => g.productType === productType).map((g) => ({ label: g.name, href: productHref(g.id), count: 1, ...groupImages(g) }));
     return links.length ? { id: normalize(label), label, href: categoryHref({ productType }), all: { label: allLabel, href: categoryHref({ productType }) }, links } : null;
+  };
+  const collectionLink = (c) => {
+    const own = groups.filter((g) => g.collection === c.id);
+    const images = pick(c.images);
+    const environments = [...new Set(own.flatMap((g) => g.environment))];
+    return {
+      label: c.name,
+      meta: [...new Set(own.map((g) => g.application ?? g.productType).filter(Boolean))].join(' · '),
+      href: collectionHref(c.id),
+      eyebrow: environments.length ? `Línea ${environments.join(' · ')}` : '',
+      image: images.context ?? images.studio ?? null,
+      thumb: images.studio ?? null,
+    };
   };
   return {
     sections: {
-      exterior: environmentSection('Exterior', 'Ver todo Exterior'),
-      interior: environmentSection('Interior', 'Ver todo Interior'),
+      interior: environmentSection('Interior', 'Ver todo interior'),
+      exterior: environmentSection('Exterior', 'Ver todo exterior'),
       lamparas: typeSection('Lámpara', 'Lámparas', 'Ver todas las lámparas'),
       artefactos: typeSection('Artefacto', 'Artefactos', 'Ver todos los artefactos'),
     },
-    collections: collections
-      .map((c) => ({ label: c.name, meta: [...new Set(groups.filter((g) => g.collection === c.id).map((g) => g.application ?? g.productType).filter(Boolean))].join(' · '), href: collectionHref(c.id) }))
-      .filter((c) => c.meta),
+    collections: collections.map(collectionLink).filter((c) => c.meta),
     allCollections: { label: 'Ver todas las colecciones', href: '/arq/productos?view=colecciones' },
   };
 }
