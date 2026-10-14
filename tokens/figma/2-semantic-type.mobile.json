@@ -389,6 +389,69 @@
           }
         }
       }
+    },
+    "body-compact": {
+      "size": {
+        "$type": "number",
+        "$value": "{font.size.14}",
+        "$description": "Cuerpo compacto de 14 px (antes era el tamaño de type/body).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-body-compact-size)"
+            }
+          }
+        }
+      },
+      "leading": {
+        "$type": "number",
+        "$value": "{font.leading.24}",
+        "$description": "Interlineado de type/body-compact.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-body-compact-leading)"
+            }
+          }
+        }
+      }
+    },
+    "display-lg": {
+      "size": {
+        "$type": "number",
+        "$value": "{font.size.48}",
+        "$description": "Título de hero compacto (páginas internas como Contacto). 80 px desktop, 48 px mobile.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-display-lg-size)"
+            }
+          }
+        }
+      },
+      "leading": {
+        "$type": "number",
+        "$value": "{font.leading.56}",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-display-lg-leading)"
+            }
+          }
+        }
+      }
     }
   }
 }

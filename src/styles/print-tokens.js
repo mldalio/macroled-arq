@@ -88,13 +88,13 @@ export const PRINT_TOKENS = Object.freeze({
   "layout/measure-wide": 520,
   "layout/gallery-thumb": 105,
   "layout/filter-panel": 560,
-  "layout/table-thumb": 56,
+  "layout/table-thumb": 100,
   "layout/compare-thumb": 48,
   "layout/compare-thumb-sm": 28,
   "layout/compare-slot": 400,
   "layout/compare-label": 200,
   "layout/compare-column": 160,
-  "layout/mega-menu-image": 438,
+  "layout/mega-menu-image": 420,
   "layout/search-field": 360,
   "layout/search-thumb": 48,
   "layout/max-width": 1792,
@@ -104,6 +104,8 @@ export const PRINT_TOKENS = Object.freeze({
   "layout/footer-tagline": 240,
   "layout/featured-thumb": 160,
   "layout/pdf-spec-label": 260,
+  "layout/carousel-button": 44,
+  "layout/catalog-nav": 240,
   "type/display/size": 40,
   "type/display/leading": 44,
   "type/display-sm/size": 32,
@@ -127,10 +129,21 @@ export const PRINT_TOKENS = Object.freeze({
   "type/label-sm/size": 10,
   "type/label-sm/leading": 14,
   "type/caption/size": 12,
-  "type/caption/leading": 14
+  "type/caption/leading": 14,
+  "type/body-compact/size": 14,
+  "type/body-compact/leading": 24,
+  "type/display-lg/size": 48,
+  "type/display-lg/leading": 56
 });
 
 export const PRINT_ROLES = Object.freeze({
+  "display-lg": {
+    "fontFamily": "Albert Sans",
+    "fontWeight": 300,
+    "fontSize": 48,
+    "lineHeight": 56,
+    "letterSpacing": -0.8
+  },
   "display": {
     "fontFamily": "Albert Sans",
     "fontWeight": 300,
@@ -162,6 +175,13 @@ export const PRINT_ROLES = Object.freeze({
   "heading-3": {
     "fontFamily": "Albert Sans",
     "fontWeight": 400,
+    "fontSize": 20,
+    "lineHeight": 28,
+    "letterSpacing": 0
+  },
+  "heading-3-light": {
+    "fontFamily": "Albert Sans",
+    "fontWeight": 300,
     "fontSize": 20,
     "lineHeight": 28,
     "letterSpacing": 0
@@ -219,6 +239,34 @@ export const PRINT_ROLES = Object.freeze({
     "fontFamily": "Albert Sans",
     "fontWeight": 600,
     "fontSize": 16,
+    "lineHeight": 24,
+    "letterSpacing": 0
+  },
+  "body-compact": {
+    "fontFamily": "Albert Sans",
+    "fontWeight": 300,
+    "fontSize": 14,
+    "lineHeight": 24,
+    "letterSpacing": 0
+  },
+  "body-compact-regular": {
+    "fontFamily": "Albert Sans",
+    "fontWeight": 400,
+    "fontSize": 14,
+    "lineHeight": 24,
+    "letterSpacing": 0
+  },
+  "body-compact-medium": {
+    "fontFamily": "Albert Sans",
+    "fontWeight": 500,
+    "fontSize": 14,
+    "lineHeight": 24,
+    "letterSpacing": 0
+  },
+  "body-compact-strong": {
+    "fontFamily": "Albert Sans",
+    "fontWeight": 600,
+    "fontSize": 14,
     "lineHeight": 24,
     "letterSpacing": 0
   },

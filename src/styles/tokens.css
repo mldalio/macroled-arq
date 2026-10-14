@@ -6,6 +6,7 @@
   --arq-space-2: 0.125rem;
   --arq-space-3: 0.1875rem;
   --arq-space-4: 0.25rem;
+  --arq-space-5: 0.3125rem;
   --arq-space-6: 0.375rem;
   --arq-space-8: 0.5rem;
   --arq-space-12: 0.75rem;
@@ -39,6 +40,7 @@
   --arq-font-size-40: 2.5rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-size-48: 3rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-size-64: 4rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-size-80: 5rem;
   --arq-font-leading-14: 0.875rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-leading-16: 1rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-leading-20: 1.25rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
@@ -50,6 +52,7 @@
   --arq-font-leading-48: 3rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-leading-56: 3.5rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-leading-72: 4.5rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
+  --arq-font-leading-100: 6.25rem;
   --arq-font-tracking-tighter: -0.05rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-tracking-tight: -0.025rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
   --arq-font-tracking-normal: 0rem; /** Primitivo. No usar directo: aplicar un estilo role/*. */
@@ -130,13 +133,13 @@
   --arq-layout-measure-wide: 520px; /** Ancho máximo de un texto de lectura en una columna principal (título y bajada de page-header Detail). En Mobile el texto ocupa todo el ancho. */
   --arq-layout-gallery-thumb: 105px; /** Ancho de gallery-thumb en product-gallery (105 Desktop · 76 Mobile). El alto sale de ratio/landscape (5:4). */
   --arq-layout-filter-panel: 560px; /** Ancho de los paneles en Desktop: filter-panel (lateral sobre el scrim) y download-modal. En Mobile el CSS no usa este valor. */
-  --arq-layout-table-thumb: 56px; /** Miniatura cuadrada de cada fila de la tabla de variantes (glosario de la ficha). */
+  --arq-layout-table-thumb: 100px; /** Miniatura cuadrada de cada fila de la tabla de variantes (glosario de la ficha). */
   --arq-layout-compare-thumb: 48px; /** Foto cuadrada de compare-slot Size=Default (compare-bar y compare-header Compact en Desktop). */
   --arq-layout-compare-thumb-sm: 28px; /** Ancho de compare-slot Size=Compact (miniatura en Mobile). El alto sale de ratio/portrait (7:10). */
   --arq-layout-compare-slot: 400px; /** Ancho máximo de compare-slot Size=Default, para que no se estire en pantallas anchas. */
   --arq-layout-compare-label: 200px; /** Columna de etiquetas de la comparativa (compare-row, compare-group y la columna de controles de compare-header). En Mobile queda fija al desplazar. */
   --arq-layout-compare-column: 160px; /** Ancho de cada columna de producto de la comparativa en Mobile (con scroll horizontal). En Desktop las columnas se reparten el ancho. */
-  --arq-layout-mega-menu-image: 438px; /** Ancho de la imagen del mega-menu (a la derecha de las columnas). El alto sale de ratio/portrait-soft (4:5). */
+  --arq-layout-mega-menu-image: 420px; /** Ancho de la imagen del mega-menu (a la derecha de las columnas). El alto sale de ratio/portrait-soft (4:5). */
   --arq-layout-search-field: 360px; /** Ancho de search-field en el navbar Desktop. search-dropdown toma el mismo ancho. En Mobile (search-screen) el campo ocupa el ancho disponible. */
   --arq-layout-search-thumb: 48px; /** Miniatura cuadrada de search-result. */
   --arq-layout-max-width: 1792px; /** Ancho máximo del contenido de la página (1920 − 2 × 64). Desde 1920 px el margen lateral es max(layout/gutter, (100% − layout/max-width) / 2). Los fondos, fotos y barras siguen a todo el ancho; solo el contenido se centra. No es un modo. */
@@ -146,6 +149,8 @@
   --arq-layout-footer-tagline: 240px; /** Ancho máximo de la bajada de la marca en el footer (Desktop y Mobile). */
   --arq-layout-featured-thumb: 160px;
   --arq-layout-pdf-spec-label: 260px; /** Ancho fijo de la etiqueta de pdf-spec-row en la ficha técnica PDF (A4). El valor ocupa el resto de la fila. */
+  --arq-layout-carousel-button: 44px; /** Lado del botón anterior/siguiente de los carruseles (cuadrado). */
+  --arq-layout-catalog-nav: 240px; /** Ancho del sidebar catalog-nav en Productos y Colecciones (desde 1024 px). Hasta 1023 px se usa catalog-nav-mobile. */
   --arq-motion-duration-fast: 120ms; /** Hover, toggle, foco. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-base: 200ms; /** Desplegables (disclosure) y menús. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-slow: 320ms; /** Fundido de imágenes de product-card. En ms. Con prefers-reduced-motion: 0. */
@@ -263,6 +268,10 @@
   --arq-type-label-sm-leading: var(--arq-font-leading-14); /** Interlineado de role/label-sm. Caso extremo: la prioridad siempre la tiene role/label (12 px). Usar solo donde 12 px no entra, como las etiquetas de las celdas de filtro. */
   --arq-type-caption-size: var(--arq-font-size-12); /** Tamaño del estilo role/caption. Lo usa el estilo de texto: no aplicar directo. */
   --arq-type-caption-leading: var(--arq-font-leading-14); /** Interlineado del estilo role/caption. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-body-compact-size: var(--arq-font-size-14); /** Cuerpo compacto de 14 px (antes era el tamaño de type/body). */
+  --arq-type-body-compact-leading: var(--arq-font-leading-24); /** Interlineado de type/body-compact. */
+  --arq-type-display-lg-size: var(--arq-font-size-80); /** Título de hero compacto (páginas internas como Contacto). 80 px desktop, 48 px mobile. */
+  --arq-type-display-lg-leading: var(--arq-font-leading-100);
 }
 
 /* Dark: con data-arq-theme="dark" (Iluminar o Dark local), nunca por prefers-color-scheme */
@@ -392,6 +401,8 @@
     --arq-type-heading-3-leading: var(--arq-font-leading-28); /** Interlineado del estilo role/heading-3. Lo usa el estilo de texto: no aplicar directo. */
     --arq-type-body-xl-size: var(--arq-font-size-16); /** Tamaño de role/body-xl: 20 en Desktop, 16 en Mobile. */
     --arq-type-body-xl-leading: var(--arq-font-leading-24); /** Interlineado de role/body-xl: 28 en Desktop, 24 en Mobile. */
+    --arq-type-display-lg-size: var(--arq-font-size-48); /** Título de hero compacto (páginas internas como Contacto). 80 px desktop, 48 px mobile. */
+    --arq-type-display-lg-leading: var(--arq-font-leading-56);
   }
 }
 
