@@ -3,7 +3,8 @@
 // Código de producto con botón de copiar.
 //
 //   <arq-sku>KANU-J-500-12W-N-WW</arq-sku>                    Size=Default (configurador, con etiqueta SKU)
-//   <arq-sku size="compact">KANU-J-500-12W-N-WW</arq-sku>     Size=Compact (fila de la tabla de variantes)
+//   <arq-sku size="compact">KANU-J-500-12W-N-WW</arq-sku>     Size=Compact
+//   <arq-sku size="underline">KANU-J-500-12W-N-WW</arq-sku>   Size=Underline (tabla de variantes y variants-table-card)
 //
 // Toda la fila (código + ícono) es el botón: así el área táctil supera 24 × 24.
 // Al copiar, State=Copied: "Copiado" en lugar del ícono durante
@@ -11,6 +12,8 @@
 // el código queda seleccionado y se anuncia "Copialo con Ctrl+C" ("⌘C" en Mac) en lugar de
 // "Copiado" (descripción del set). El SKU es un identificador opaco
 // (AGENTS.md): se copia tal cual.
+// Size=Underline: código en role/caption-medium subrayado, sin ícono ni
+// etiqueta; al copiar, «Copiado» reemplaza al código en el mismo lugar.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { icon } from '../../base/icons.js';
@@ -37,7 +40,7 @@ class ArqSku extends ArqElement {
   static tag = 'arq-sku';
   static styles = css;
   static properties = {
-    size: { type: String, values: ['default', 'compact'], default: 'default' }, // Size
+    size: { type: String, values: ['default', 'compact', 'underline'], default: 'default' }, // Size
     copied: { type: Boolean }, // State=Copied
   };
   static template =
@@ -94,8 +97,11 @@ class ArqSku extends ArqElement {
   }
 
   update() {
-    this.shadowRoot.querySelector('.code').classList.toggle('role-body-lg', this.size !== 'compact');
-    this.shadowRoot.querySelector('.code').classList.toggle('role-body', this.size === 'compact');
+    // Default role/body-lg · Compact role/body · Underline role/caption-medium
+    const code = this.shadowRoot.querySelector('.code');
+    code.classList.toggle('role-body-lg', this.size === 'default');
+    code.classList.toggle('role-body', this.size === 'compact');
+    code.classList.toggle('role-caption-medium', this.size === 'underline');
     this.#announce();
   }
 

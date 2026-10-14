@@ -28,6 +28,7 @@ import './components/variants-table/variants-table.js';
 import './components/gallery-thumb/gallery-thumb.js';
 import './components/product-gallery/product-gallery.js';
 import './components/family-card/family-card.js';
+import './components/download-card/download-card.js';
 import './components/download-item/download-item.js';
 import './components/download-modal/download-modal.js';
 import './components/catalog-nav-item/catalog-nav-item.js';

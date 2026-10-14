@@ -120,3 +120,26 @@
 .row:focus:not(:focus-visible) {
   outline: none;
 }
+
+/* Size=Underline (tabla de variantes): código en role/caption-medium
+   subrayado (border/default), sin etiqueta ni ícono. Al copiar, «Copiado»
+   (o el aviso de error) reemplaza al código en el mismo lugar. */
+:host([size='underline']) .label,
+:host([size='underline']) .copy {
+  display: none;
+}
+
+:host([size='underline']) .code {
+  text-decoration: underline;
+  text-decoration-thickness: var(--arq-border-default);
+}
+
+:host([size='underline']) .copied,
+:host([size='underline']) .failed {
+  margin-block-start: 0;
+}
+
+:host([size='underline'][copied]) .code,
+:host([size='underline']:state(copy-failed)) .code {
+  display: none;
+}

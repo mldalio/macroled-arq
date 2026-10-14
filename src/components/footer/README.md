@@ -44,7 +44,7 @@ Las rutas son de ejemplo: las definitivas van en `docs/urls.md`.
 - **Cantidad de links libre** en cada columna. Si se suma una sección, va una columna nueva en el componente, no más links en otra.
 - **Redes:** `target="_blank"` (footer-link suma `rel="noopener"`) y `label` con el nombre completo ("Macroled Arq en Instagram").
 - **Accesibilidad:** `<footer>` con cada columna como `<nav>` nombrada con el texto de su `<h2>` (`aria-label`: un `aria-labelledby` no cruza del Shadow DOM al DOM de la página) y una lista (`role="list"`); cada footer-link es un `listitem`.
-- **Dark local** (DESIGN.md §2): el `<footer>` interno lleva `data-arq-theme="dark"`; quien arma la página no pone el atributo. Se ve igual con Iluminar apagado o encendido.
+- **Siempre en Light** (cambio de 2026-10-14, Figma 788:3104): el `<footer>` interno lleva `data-arq-theme="light"` (como filter-panel); quien arma la página no pone el atributo. Se ve blanco con Iluminar apagado o encendido. Antes era Dark local.
 - Aplica su propio `layout/gutter` (componente de borde a borde): la página no le suma margen lateral.
 
 ## Layout

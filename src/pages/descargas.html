@@ -1,11 +1,13 @@
 <!--
   Descargas · /arq/descargas · Code Embed de Webflow (docs/decisiones.md, 2026-10-01 · Páginas en Webflow y 2026-10-06 · Descargas)
-  Pantalla: Descargas (antes Glosario) (1801:19315 → Desktop 1808:20165 · Mobile 1808:20882). Antes se llamaba Glosario.
+  Pantalla: Descargas (1801:19315 → Desktop 2496:31316 · Mobile 2496:31862).
   Se edita acá y se pega en Webflow. dist/arq.js, dist/arq.css y Albert Sans se cargan a nivel sitio.
 
-  Todos los SKU del catálogo en una variants-table con buscador y orden (arq-descargas), desde Typesense.
-  TODO (contenido): la bajada es una propuesta; confirmar el texto.
-  TODO (datos): URL del catálogo general (PDF). Hasta tenerla, el botón apunta a "#".
+  Arriba, el título con su bajada y la download-card del catálogo general;
+  debajo, «Buscar producto»: todos los SKU del catálogo en una variants-table
+  con buscador (arq-descargas), desde Typesense.
+  TODO (datos): URL del catálogo general (PDF) y su portada. Hasta tenerlas,
+  la tarjeta apunta a "#" y se ve sin imagen (fondo color/surface/subtle).
 -->
 <arq-navbar>
   <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
@@ -14,14 +16,14 @@
 </arq-navbar>
 
 <main>
-  <arq-page-header type="detail" show-back back-href="/arq/productos" show-description show-action>
-    <span slot="back">Volver a productos</span>
-    <h1 slot="title">Descargas</h1>
-    <p slot="description">Todos los códigos de Arq con sus datos técnicos. Filtrá por característica y descargá los archivos de cada variante.</p>
-    <arq-button slot="action" show-icon icon="download" href="#">Descargar catálogo general</arq-button>
-  </arq-page-header>
-
   <arq-descargas>
+    <h1 slot="title">Descargas</h1>
+    <span slot="description">Catálogo general, fichas técnicas, planos CAD, fotometrías y manuales de cada variante de Macroled ARQ, listos para tu proyecto.</span>
+    <arq-download-card slot="catalog" href="#" show-description>
+      <span slot="title">Catálogo Macroled ARQ 2026</span>
+      <span slot="description">Un catálogo por familia de producto</span>
+    </arq-download-card>
+    <h2 slot="search-title">Buscar producto</h2>
     <h2 slot="modal-title">Descargas</h2>
   </arq-descargas>
 </main>

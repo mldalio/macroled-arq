@@ -8,8 +8,9 @@
 //     <arq-select type="filter" label="Altura" name="altura"></arq-select>
 //   </arq-filter-bar>
 //
-// - Componente de borde a borde: el fondo llega al borde de la página y el
-//   contenido lleva layout/gutter a los lados.
+// - Ficha v2: fondo color/surface/soft, sin líneas, filtros arriba y
+//   «Limpiar filtros» debajo. El fondo ocupa el ancho de su contenedor (en
+//   variants-table, el del contenido) y adentro lleva --page-gutter.
 // - State=Applied se pone solo (applied) cuando algún select tiene valor:
 //   aparece "Limpiar filtros" (button Underline), que vuelve todo a "Todos".
 // - Emite arq:filters { filters } ({ name: value }) cuando cambia un select o

@@ -666,6 +666,28 @@
         </div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-download-card">
+        <h2 id="demo-download-card" class="demo-heading role-label">download-card · &lt;arq-download-card&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 2496:8095. Toda la tarjeta descarga el archivo; Hover borde color/border/hover en la imagen, Focus anillo alrededor.</p>
+        <div class="demo-row">
+          <arq-download-card href="#demo-download-card" show-description style="width: 520px; max-width: 100%">
+            <img slot="image" src="/demo/fixtures/img/card-estudio.svg" alt="" loading="lazy">
+            <span slot="title">Catálogo Macroled ARQ 2026</span>
+            <span slot="description">Un catálogo por familia de producto</span>
+          </arq-download-card>
+          <arq-download-card href="#demo-download-card" style="width: 320px; max-width: 100%">
+            <span slot="title">Sin imagen ni bajada, con un título muy largo para ver cómo se parte</span>
+          </arq-download-card>
+        </div>
+        <div class="demo-dark" data-arq-theme="dark">
+          <arq-download-card href="#demo-download-card" show-description style="width: 320px; max-width: 100%">
+            <img slot="image" src="/demo/fixtures/img/card-estudio.svg" alt="" loading="lazy">
+            <span slot="title">Catálogo (Dark)</span>
+            <span slot="description">Un catálogo por familia de producto</span>
+          </arq-download-card>
+        </div>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-download-item">
         <h2 id="demo-download-item" class="demo-heading role-label">download-item · &lt;arq-download-item&gt;</h2>
         <p class="demo-note role-body-sm">Figma 1101:5542. Con href es un link de descarga; sin href es un botón que emite arq:download (la ficha técnica se genera al hacer clic). Default: Hover subraya el texto. Featured: caja; Hover color/surface/faint.</p>
@@ -1131,6 +1153,8 @@
           <arq-sku size="compact">KANU-J-500-12W-N-WW</arq-sku>
           <arq-sku copied>KANU-J-500-12W-N-WW</arq-sku>
           <arq-sku size="compact" copied>KANU-J-500-12W-N-WW</arq-sku>
+          <arq-sku size="underline">KANU-J-500-12W-N-WW</arq-sku>
+          <arq-sku size="underline" copied>KANU-J-500-12W-N-WW</arq-sku>
         </div>
         <div class="demo-row">
           <arq-button type="outline" data-demo-clipboard-fail>Simular falla del portapapeles</arq-button>

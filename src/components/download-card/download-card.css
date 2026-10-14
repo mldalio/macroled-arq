@@ -1,0 +1,65 @@
+/* download-card · Figma 2496:8095. Solo tokens semánticos.
+   Imagen ratio/landscape (5:4) + título con icon/download y bajada. Toma el
+   ancho de su columna; en Descargas, layout/measure-wide lo pone la página.
+   El link estirado está en src/base/card-link.css. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Imagen y textos a space/gap/md */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-md);
+}
+
+/* ratio/landscape con fondo color/surface/subtle: la portada va contenida
+   (se ve entera, como en el set) */
+.card-media {
+  aspect-ratio: 5 / 4;
+}
+
+.card-media ::slotted(*) {
+  object-fit: contain !important;
+}
+
+/* Título y bajada a space/gap/xs */
+.caption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xs);
+}
+
+/* Título role/heading-3 (color/text/primary) e icon/download (icon/lg) a la
+   derecha, a space/gap/sm-md */
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm-md);
+}
+
+.title {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--arq-color-text-primary);
+  overflow-wrap: break-word;
+}
+
+.icon-wrap {
+  display: inline-flex;
+  flex: none;
+  color: var(--arq-color-icon-primary);
+}
+
+.icon {
+  width: var(--arq-icon-lg);
+  height: var(--arq-icon-lg);
+}
+
+/* Bajada role/body en color/text/secondary */
+.description {
+  margin: 0;
+  color: var(--arq-color-text-secondary);
+}
