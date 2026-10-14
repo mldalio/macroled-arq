@@ -71,11 +71,34 @@
   display: none;
 }
 
-/* Open=False en Desktop: título y acciones en una sola línea */
+/* Desktop: el botón del título ocupa toda la línea y el chevron queda en la
+   punta derecha de la barra. */
+.toggle {
+  flex: 1 1 auto;
+}
+
+.toggle .icon-box {
+  margin-inline-start: auto;
+}
+
+/* Open=False en Desktop: una sola línea. Título y acciones comparten la
+   celda; las acciones quedan a la derecha, antes del chevron (icon-button
+   Default: icon/md + 2 × space/padding/xs, más space/gap/xl). */
 :host(:not([open])) .bar {
-  flex-direction: row;
+  display: grid;
   align-items: center;
-  justify-content: space-between;
+}
+
+:host(:not([open])) .head,
+:host(:not([open])) .row {
+  grid-area: 1 / 1;
+}
+
+:host(:not([open])) .row {
+  position: relative;
+  z-index: 1;
+  justify-self: end;
+  margin-inline-end: calc(var(--arq-icon-md) + 2 * var(--arq-space-padding-xs) + var(--arq-space-gap-xl));
 }
 
 /* Open: el título es el botón que pliega la lista. Ícono como
@@ -148,9 +171,23 @@
     display: none;
   }
 
+  /* Mobile: el chevron va junto al título y «Borrar todo» a la derecha */
+  .toggle {
+    flex: none;
+  }
+
+  .toggle .icon-box {
+    margin-inline-start: 0;
+  }
+
   :host(:not([open])) .bar {
-    flex-direction: column;
+    display: flex;
     align-items: stretch;
+  }
+
+  :host(:not([open])) .row {
+    justify-self: auto;
+    margin-inline-end: 0;
   }
 
   .row {
