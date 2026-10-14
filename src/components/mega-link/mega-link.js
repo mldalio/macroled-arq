@@ -10,32 +10,40 @@
 //   </arq-mega-link>
 //
 // - Type=Link: un <a> con el nombre (slot por defecto), la bajada (slot meta;
-//   sin contenido no se muestra) y la flecha (show-arrow). Size Default
-//   (role/body, mega-menu) o Large (role/body-lg, submenú mobile).
+//   sin contenido no se muestra), la miniatura (show-image) y la flecha
+//   (show-arrow). Size Default (role/body-xl, mega-menu; frames 2295:23636 y
+//   2295:23730) o Large (role/heading-3, submenús mobile; bajada
+//   role/caption). Las filas submenu también van en role/heading-3: todo el
+//   menú mobile navega con un solo estilo (decisión 2026-10-14 · Textos del
+//   menú mobile).
+// - La flecha (arrow-right) aparece solo en Hover y Focus (frames del
+//   mega-menu: el link en reposo no la lleva).
+// - submenu (solo de código): la fila abre un submenú del menú mobile (lista
+//   de Productos, frame 2295:23568). Es un <button> con chevron-right siempre
+//   visible; quien lo usa escucha el click.
 // - Type=Group: encabezado desplegable (<button aria-expanded>, Disclosure)
 //   con + / –. Abierto muestra los links del slot links (role/body-lg) y el
 //   "Ver todo" que pone la página.
 // - Show arrow viene en true en Figma; en código es un atributo de presencia.
 // - State no es prop: Hover (:hover) y Focus (:focus-visible).
-// - Nombre del Group en role/body-xl, como el set (la ficha dice role/body-lg:
-//   manda el set).
-// - Type se lee al conectarse (no cambia después).
-// TODO (show-image): Show image no se usa en ninguna pantalla y la miniatura
-// (60) no tiene token. No está implementada.
+// - Type y submenu se leen al conectarse (no cambian después).
 
 import { ArqElement } from '../../base/arq-element.js';
 import { Disclosure } from '../../base/disclosure.js';
 import { icon } from '../../base/icons.js';
 import css from './mega-link.css?inline';
 
-const LINK =
-  `<a class="link">` +
+const ROW = (tag, end) =>
+  `<${tag} class="link"${tag === 'button' ? ' type="button"' : ''}>` +
   `<span class="text">` +
-  `<span class="name role-body"><slot></slot></span>` +
-  `<span class="meta role-caption"><slot name="meta"></slot></span>` +
+  `<span class="name"><slot></slot></span>` +
+  `<span class="meta"><slot name="meta"></slot></span>` +
   `</span>` +
-  `<span class="arrow">${icon('arrow-right')}</span>` +
-  `</a>`;
+  `<span class="thumb" hidden><img alt="" loading="lazy" hidden></span>` +
+  end +
+  `</${tag}>`;
+const LINK = ROW('a', `<span class="arrow">${icon('arrow-right')}</span>`);
+const SUBMENU = ROW('button', `<span class="chevron">${icon('chevron-right')}</span>`);
 
 const GROUP =
   `<div class="group">` +
@@ -54,13 +62,16 @@ class ArqMegaLink extends ArqElement {
     size: { type: String, values: ['default', 'large'], default: 'default' }, // Size
     open: { type: Boolean }, // Open (solo Group)
     showArrow: { type: Boolean }, // Show arrow
+    showImage: { type: Boolean }, // Show image
+    image: { type: String }, // miniatura (Show image); sin imagen, fondo neutro
+    submenu: { type: Boolean }, // solo de código: abre un submenú mobile
     href: { type: String },
   };
 
   setup() {
     const root = this.shadowRoot;
     const template = document.createElement('template');
-    template.innerHTML = this.type === 'group' ? GROUP : LINK;
+    template.innerHTML = this.type === 'group' ? GROUP : this.submenu ? SUBMENU : LINK;
     root.append(template.content);
     if (this.type === 'group') {
       this.disclosure = new Disclosure(this, {
@@ -69,6 +80,9 @@ class ArqMegaLink extends ArqElement {
       });
     } else {
       root.querySelector('slot[name="meta"]').addEventListener('slotchange', () => this.#syncMeta());
+      const img = root.querySelector('img');
+      img.addEventListener('load', () => (img.hidden = false));
+      img.addEventListener('error', () => (img.hidden = true));
     }
   }
 
@@ -82,18 +96,37 @@ class ArqMegaLink extends ArqElement {
   update() {
     const link = this.shadowRoot.querySelector('.link');
     if (!link) return;
-    if (this.href) link.setAttribute('href', this.href);
-    else link.removeAttribute('href');
-    this.shadowRoot.querySelector('.arrow').hidden = !this.showArrow;
-    const name = link.querySelector('.name');
-    name.classList.toggle('role-body', this.size !== 'large');
-    name.classList.toggle('role-body-lg', this.size === 'large');
+    if (link.localName === 'a') {
+      if (this.href) link.setAttribute('href', this.href);
+      else link.removeAttribute('href');
+      this.shadowRoot.querySelector('.arrow').hidden = !this.showArrow;
+    }
+    // Menú mobile (Large y submenu): role/heading-3, como los nav-link del Menú
+    const large = this.size === 'large';
+    link.querySelector('.name').className = `name ${large || this.submenu ? 'role-heading-3' : 'role-body-xl'}`;
+    link.querySelector('.meta').className = `meta ${large ? 'role-caption' : 'role-body-compact-regular'}`;
     this.#syncMeta();
+    this.#syncImage();
   }
 
   #syncMeta() {
     const slot = this.shadowRoot.querySelector('slot[name="meta"]');
-    if (slot) slot.parentElement.hidden = !slot.assignedNodes({ flatten: true }).some((n) => n.textContent.trim());
+    if (!slot) return;
+    const hasMeta = slot.assignedNodes({ flatten: true }).some((n) => n.textContent.trim());
+    slot.parentElement.hidden = !hasMeta;
+    this.shadowRoot.querySelector('.link').classList.toggle('with-meta', hasMeta);
+  }
+
+  #syncImage() {
+    const thumb = this.shadowRoot.querySelector('.thumb');
+    const img = thumb.querySelector('img');
+    thumb.hidden = !this.showImage;
+    if (this.showImage && this.image) {
+      if (img.getAttribute('src') !== this.image) img.src = this.image;
+    } else {
+      img.removeAttribute('src');
+      img.hidden = true;
+    }
   }
 }
 

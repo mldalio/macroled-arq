@@ -20,7 +20,7 @@ Barra de navegación de Macroled Arq, primer elemento de todas las páginas: log
 | --- | --- | --- | --- |
 | — (links) | slot `links` | — | `arq-nav-link`. El que tiene `has-dropdown` abre Productos. La página pone `current` en la sección actual |
 | Theme | `theme` | `theme` | `default` · `transparent` (def. `default`) |
-| Mode | `mode` | `mode` | Lo pone el componente: `default` · `search` · `menu` · `products`. No se escribe en el HTML |
+| Mode | `mode` | `mode` | Lo pone el componente: `default` · `search` · `menu` · `products` · `interior` · `exterior` · `colecciones`. No se escribe en el HTML |
 | Breakpoint | — | — | Media query: hasta 767 px, logo Small, lupa y menú |
 | — | `label` | `label` | Nombre del `<nav>`. Por defecto "Principal" |
 | — (datos) | — | `navigation` | Árbol de `getNavigation()`. Si no se pasa, el navbar lo pide a `src/data/` al abrir Productos |
@@ -29,7 +29,7 @@ Barra de navegación de Macroled Arq, primer elemento de todas las páginas: log
 
 - **Productos (Desktop):** abre el `arq-mega-menu` debajo de la barra (`aria-expanded` en el nav-link). Esc o un clic afuera lo cierran; el foco vuelve a Productos.
 - **Búsqueda (Desktop):** la lupa se reemplaza por `arq-search-field` (ancho `layout/search-field`) con el foco adentro. Al escribir aparece `arq-search-dropdown` debajo, con hasta 5 resultados y "Ver todos los resultados". ↑ / ↓ marcan el resultado activo (el foco sigue en el campo), Enter lo abre (o va a `/arq/productos?q=` si no hay activo). Esc cierra el dropdown y después la búsqueda; la cruz cierra.
-- **Mobile:** el menú es un diálogo modal a pantalla completa (Mode=Menu) con los nav-link apilados; el foco arranca en cerrar. Productos entra al submenú (Mode=Products): volver, un `arq-mega-link` Type=Group por sección (Interior, Exterior, Lámparas, Artefactos) y "Ver colecciones". Esc vuelve un paso. La lupa abre `arq-search-screen`.
+- **Mobile:** el menú es un diálogo modal a pantalla completa (Mode=Menu) con los nav-link apilados; el foco arranca en cerrar. Productos entra al submenú (Mode=Products, frame 2295:23568): volver y una fila por nivel (Interior, Exterior, Colecciones; `arq-mega-link submenu`, chevron-right). Cada fila entra a su nivel (Mode Interior · Exterior · Colecciones): volver con el nombre del nivel, links en `arq-mega-link` Size=Large y "Ver todo…" al pie; Colecciones con miniatura, la lista se desplaza y "Ver todo" queda fijo abajo (frame 2295:23605). Lámparas y artefactos no está en la lista del frame. Esc vuelve un paso; al volver, el foco queda en la fila de la que se salió. La lupa abre `arq-search-screen`.
 - **Transparent:** fondo `color/overlay/translucent` con `blur/backdrop`; logo, nav-links (Theme=Inverse) e íconos en inverso. Sigue transparente mientras la barra está sobre el hero (el primer `<arq-hero>` de la página) y pasa a Default al dejarlo atrás; sin hero, al empezar a desplazar la página. Con la búsqueda abierta (Desktop) sigue sobre la foto, con `arq-search-field` en blanco (como en Default). La lupa y el menú van en Dark local (`data-arq-theme="dark"`) sobre la foto: ícono claro y hover y foco oscuros, sin el cuadrado claro de `color/surface/hover`. Pasa a Default con el menú mobile o el mega-menu abiertos.
 - **Posición:** sticky arriba en Default; fixed en Transparent, encima del hero.
 - **Datos:** navegación y búsqueda salen de `src/data/catalog.js` (decisión 2026-10-02 · navbar).
