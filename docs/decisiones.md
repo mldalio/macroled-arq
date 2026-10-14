@@ -706,3 +706,25 @@ El sheet se abre y se cierra con una transición suave (referencia: occhio.com),
 - **Tiempos:** se usan los tokens de movimiento (fast 120, slow 320 ms, easing standard) y `--sheet-slow` (slow × 1.25 = 400 ms, la del panel y los movimientos largos) en lugar de los valores de la referencia (400/200/375/500/250 ms). Tras probarla se alargó un poco y se unió el movimiento del contenido con el del panel, para que no quede un movimiento suelto al final. TODO: si hace falta clavar esos tiempos, proponer tokens de movimiento nuevos.
 - **Excepción a DESIGN.md §6:** la persiana anima `grid-template-rows` (alto), que §6 prohíbe; se hizo a pedido. Revisar si se adopta o se cambia a transform.
 - Cierre: `close()` espera la transición (`motion/duration/slow`; 0 con reduced motion) y recién ahí cierra el diálogo. Los resultados no se redibujan mientras cierra.
+
+## 2026-10-14 · Comparativa: select Filter Small y cambios de Figma
+
+- **select Size** (Figma 921:2544): Default (etiqueta `role/label-lg`, 14 px; filter-bar y Descargas) y Small (`role/label`, 12 px; compare-product). Solo cambia en Type=Filter; Field es siempre Default.
+- **Filter sin línea:** como las variantes del set, el trigger de Filter no lleva línea inferior (solo Disabled), con `space/gap/sm` entre etiqueta y campo. También en filter-bar y Descargas.
+- **compare-product:** selects Filter Small Filled, sin «Todos» (`hide-all`, solo de código: siempre hay una variante elegida) y con una línea `border/default` en `color/border/default` pegada abajo de cada select.
+- **select-option:** la opción resaltada con las flechas (State=Focus) lleva el fondo de Hover (`color/surface/faint`) y no el anillo: la elegida ya se distingue por `role/body-medium`.
+- **Comparativa:** «Descargar comparación» con `icon/download` (sigue abriendo el diálogo de impresión: el PDF no tiene diseño), bajada con la cantidad («3 luminarias seleccionadas.»), toggle al pie de la columna de controles y título de grupo en `role/body-xl`.
+
+## 2026-10-14 · Footer siempre en Light
+
+El footer deja de ser Dark local: todas las páginas lo muestran blanco, también con Iluminar. En código el `<footer>` interno lleva `data-arq-theme="light"` (como filter-panel); en Figma el set 788:3104 fija el modo Light.
+
+## 2026-10-14 · Descargas v2
+
+Pantalla nueva (Final › Descargas: Desktop 2496:31316 · Mobile 2496:31862; las anteriores quedan de respaldo en PRUEBA).
+
+- **Sin page-header:** arriba, título `role/display` y bajada `role/body-lg` a la izquierda y la **download-card** del catálogo general a la derecha (componente nuevo, 2496:8095). Debajo, «Buscar producto» (`role/display-sm`) con variants-table.
+- **variants-table en Descargas:** Filtros Filled a la izquierda (como la ficha) y el buscador a la derecha, de `layout/search-field`; sin la cantidad ni descargas en la barra. Reemplaza «buscador a todo el ancho con Filtros en Outline» (2026-10-06).
+- **Ficha v2 en código:** variants-table (encabezado `role/body-regular`, valores `role/body-lg-regular`, sku Underline, variants-table-card en Mobile), filter-bar (`color/surface/soft`, sin líneas, «Limpiar filtros» debajo) y sku Size=Underline. Se juntó con lo que había hecho la rama del search-sheet: queda su sku y el atributo `stacked` de filter-bar, que ya no hace falta porque la versión v2 es la de por defecto.
+- **A revisar con diseño:** entre tarjetas Mobile, la descripción de variants-table-card dice `space/gap/4xl` (se usa ese) y el frame 2180:11245 mide `space/gap/6xl`. El padding lateral de filter-bar sale de su descripción (`layout/gutter`); el frame del glosario 2302:47432 usa `space/padding/xl-2xl`. En la página, la columna del título mide 300 sin token (se usa `layout/measure`).
+- **Pendiente (datos):** URL del PDF del catálogo general y su portada.
