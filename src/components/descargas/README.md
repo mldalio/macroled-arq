@@ -38,7 +38,7 @@ El HTML del embed completo está en [src/pages/descargas.html](../../pages/desca
 - **Barra:** Filtros (Filled) a la izquierda y el buscador a la derecha, de `layout/search-field`; en Mobile el buscador ocupa lo que queda de la fila. Sin la cantidad ni «Ordenar por» (variants-table lo tiene con `show-sort`).
 - Los archivos llevan los nombres de siempre (CAD 2D/3D, Manual, IES, Fotometría): los formatos de la pantalla de Figma («DWG + STEP», «LDT») son de ejemplo.
 - **Filtros:** los selectores de variante de todos los grupos más los filtros de los listados, solo los que tienen al menos dos valores. Buscador y filtros se combinan; las opciones de filtro sin filas van deshabilitadas.
-- **Descargas:** la barra no lleva botones. El ícono de cada fila (icon-button Outline) abre el modal con el SKU debajo del título, «Ficha técnica» (emite `arq:datasheet { sku }`) y los archivos de ese SKU (`skuDownloads()`).
+- **Descargas:** la barra no lleva botones. El ícono de cada fila (icon-button Large sin borde, Background=None) abre el modal con el SKU debajo del título, «Ficha técnica» (emite `arq:datasheet { sku }`) y los archivos de ese SKU (`skuDownloads()`).
 - **Estados:** mientras carga (`aria-busy`), «Cargando descargas…»; sin SKU, «Todavía no hay productos para descargar.»; si falla la carga, «No se pudieron cargar las descargas. Probá de nuevo en unos minutos.». Sin filas que cumplan la búsqueda o los filtros, la tabla muestra «Ningún SKU coincide con la búsqueda o los filtros.».
 
 ## Tokens

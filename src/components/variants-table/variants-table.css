@@ -212,7 +212,7 @@ td.end {
     flex: 1 1 0;
   }
 
-  /* En lugar de la tabla, una tarjeta por variante, a space/gap/4xl */
+  /* En lugar de la tabla, una tarjeta por variante, a space/gap/6xl */
   .scroll {
     display: none;
   }
@@ -220,7 +220,7 @@ td.end {
   .cards:not([hidden]) {
     display: flex;
     flex-direction: column;
-    gap: var(--arq-space-gap-4xl);
+    gap: var(--arq-space-gap-6xl);
   }
 
   /* Imagen ratio/wide (16:10) en color/surface/subtle; sku con la descarga y

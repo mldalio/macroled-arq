@@ -27,8 +27,9 @@
 //   variantes», role/body en color/text/secondary). Muestra filter-bar con un
 //   select por cada filtro. Las opciones que no dan ninguna fila van deshabilitadas
 //   (src/data/variants.js) y la tabla muestra solo las filas que cumplen.
-// - Descarga de cada fila: icon-button Size=Large Background=Outline (columna
-//   «Descargas»); emite arq:downloads { sku } y, con downloads="<id>", abre ese
+// - Descarga de cada fila: icon-button Size=Large, Background=Outline (en
+//   Descargas, con show-search, None: sin borde) en la columna «Descargas»;
+//   emite arq:downloads { sku } y, con downloads="<id>", abre ese
 //   download-modal.
 // - Encabezado en role/body-regular (color/text/tertiary), valores en
 //   role/body-lg-regular y sku Size=Underline (variants-table-row, Ficha v2).
@@ -54,9 +55,10 @@ import css from './variants-table.css?inline';
 
 const esc = (text) => String(text ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
-// Descarga de una variante: icon-button Size=Large Background=Outline
-const download = (sku) =>
-  `<arq-icon-button icon="download" size="large" background="outline" data-sku="${esc(sku)}">Descargas de ${esc(sku)}</arq-icon-button>`;
+// Descarga de una variante: icon-button Size=Large, Background=Outline en la
+// ficha y None (sin borde) en la página Descargas (show-search, Figma 2496:31316)
+const download = (sku, background) =>
+  `<arq-icon-button icon="download" size="large" background="${background}" data-sku="${esc(sku)}">Descargas de ${esc(sku)}</arq-icon-button>`;
 
 const TEXT = {
   search: 'Buscar por SKU o nombre…',
@@ -223,6 +225,7 @@ class ArqVariantsTable extends ArqElement {
     });
     // Filas que cumplen los filtros
     const visible = filterVariants(rows, this.#values);
+    const background = this.showSearch ? 'none' : 'outline';
     root.querySelector('tbody').innerHTML = visible
       .map(
         (row) =>
@@ -230,7 +233,7 @@ class ArqVariantsTable extends ArqElement {
           `<td class="start"><span class="thumb">${row.thumb ? `<img src="${esc(row.thumb)}" alt="" loading="lazy">` : ''}</span></td>` +
           `<th scope="row" class="sku-col"><arq-sku size="underline">${esc(row.sku)}</arq-sku></th>` +
           columns.map((c) => `<td class="role-body-lg-regular">${esc(row.values?.[c.key] ?? '—')}</td>`).join('') +
-          `<td class="end">${download(row.sku)}</td>` +
+          `<td class="end">${download(row.sku, background)}</td>` +
           `</tr>`,
       )
       .join('');
@@ -240,7 +243,7 @@ class ArqVariantsTable extends ArqElement {
         (row) =>
           `<li class="card">` +
           `<span class="card-image">${row.thumb ? `<img src="${esc(row.thumb)}" alt="" loading="lazy">` : ''}</span>` +
-          `<span class="card-head"><arq-sku size="underline">${esc(row.sku)}</arq-sku>${download(row.sku)}</span>` +
+          `<span class="card-head"><arq-sku size="underline">${esc(row.sku)}</arq-sku>${download(row.sku, background)}</span>` +
           `<dl class="card-data">` +
           columns
             .map(
