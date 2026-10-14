@@ -737,11 +737,17 @@
           <arq-select type="filter" label="Acabado" disabled data-demo-options="finishes"></arq-select>
           <arq-select type="filter" label="Altura (show-swatch)" value="50 cm" show-swatch data-demo-options="heights"></arq-select>
         </div>
+        <div class="demo-row">
+          <arq-select type="filter" size="small" label="Acabado (Small)" data-demo-options="finishes"></arq-select>
+          <arq-select type="filter" size="small" label="Acabado (Small)" value="Negro" data-demo-options="finishes"></arq-select>
+          <arq-select type="filter" size="small" label="Altura (Small)" disabled data-demo-options="heights"></arq-select>
+        </div>
         <p class="demo-note role-body-sm" data-demo-select-log>arq:change → (todavía nada)</p>
         <div class="demo-dark" data-arq-theme="dark">
           <div class="demo-row">
             <div class="demo-option-groups"><arq-select label="Acabado (Dark)" value="Negro" data-demo-options="finishes"></arq-select></div>
             <arq-select type="filter" label="Acabado" value="Negro" data-demo-options="finishes"></arq-select>
+            <arq-select type="filter" size="small" label="Acabado (Small)" value="Negro" data-demo-options="finishes"></arq-select>
           </div>
         </div>
       </section>
@@ -1694,7 +1700,7 @@
             <span slot="back">Volver a productos</span>
             <h1 slot="title">Comparativa</h1>
             <span slot="description">Compará hasta tres productos: especificaciones lumínicas, eléctricas y de montaje lado a lado.</span>
-            <arq-button slot="action" data-arq-print>Imprimir comparación</arq-button>
+            <arq-button slot="action" show-icon icon="download" data-arq-print>Descargar comparación</arq-button>
           </arq-page-header>
         </div>
 
@@ -1730,7 +1736,7 @@
             <span slot="back">Volver a productos</span>
             <h1 slot="title">Comparativa</h1>
             <span slot="description">Compará hasta tres productos lado a lado.</span>
-            <arq-button slot="action" data-arq-print>Imprimir comparación</arq-button>
+            <arq-button slot="action" show-icon icon="download" data-arq-print>Descargar comparación</arq-button>
           </arq-page-header>
         </div>
       </section>

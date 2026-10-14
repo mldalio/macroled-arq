@@ -70,7 +70,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [search-screen](#search-screen) | `<arq-search-screen>` | En código ([README](../src/components/search-screen/README.md)) |
 | ✅ [search-see-all](#search-see-all) | `<arq-search-see-all>` | En código ([README](../src/components/search-see-all/README.md)) |
 | ✅ [section-header](#section-header) | `<arq-section-header>` | En código ([README](../src/components/section-header/README.md)) |
-| ✅ [select](#select) | `<arq-select>` | En código ([README](../src/components/select/README.md)) · Figma cambió, falta en código: etiqueta de Type=Filter en 14 px mayúsculas (sin estilo role/*) |
+| ✅ [select](#select) | `<arq-select>` | En código ([README](../src/components/select/README.md)) · Size (Default 14 · Small 12, solo Filter); Filter sin línea y con gap sm |
 | ✅ [select-menu](#select-menu) | `<arq-select-menu>` | En código ([README](../src/components/select-menu/README.md)) |
 | ✅ [select-option](#select-option) | `<arq-select-option>` | En código ([README](../src/components/select-option/README.md)) |
 | ✅ [sku](#sku) | `<arq-sku>` | En código ([README](../src/components/sku/README.md)) · Figma cambió, falta en código: Size=Underline |
@@ -255,7 +255,7 @@ Barra fija inferior para comparar productos (hasta 3). Título + count-badge con
 - Figma: [1263-4320](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1263-4320)
 - Propiedades: Label
 
-Título de grupo de la tabla comparativa (role/label en mayúsculas, borde inferior color/border/strong). Ancho FILL; en mobile queda fijo a la izquierda al hacer scroll horizontal.
+Título de grupo de la tabla comparativa (role/body-xl en caja normal, color/text/primary; borde inferior color/border/strong). Ancho FILL; en mobile queda fijo a la izquierda al hacer scroll horizontal.
 
 ## compare-header
 
@@ -594,7 +594,7 @@ Encabezado de bloque dentro de una página (no de la página: eso es page-header
 - Figma: [921-2544](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2544)
 - Propiedades: Name; Label; Value; Show swatch; Type: Field · Filter; State: Default · Hover · Focus · Disabled · Filled; Open: False · True
 
-Selector con menú desplegable (arq-select). Dos tipos con la misma construcción: etiqueta arriba (Type=Field: role/label de 12 px; Type=Filter: role/label-lg de 14 px; text/tertiary) y un trigger con línea inferior border/strong, padding vertical space/padding/sm-md (es la única separación con la etiqueta: gap 0 entre etiqueta y trigger), gap space/gap/sm-md entre swatch, texto y chevron, texto role/body-regular y chevron. Type=Field: campo del configurador y de compare-product; ancho del contenedor; swatch/md y chevron icon/md. Type=Filter: celda de la filter-bar y del glosario; mide al menos layout/select-filter; swatch/sm y chevron icon/sm; Filled = filtro elegido, valor en role/body-medium. Hover (los dos): fondo color/surface/faint en el trigger; el texto no cambia. Open: mismo fondo que Hover, chevron hacia arriba y select-menu debajo (Field: Finishes o Text; Filter: Filter). Focus: anillo border/focus de border/strong alrededor del trigger. Disabled: text/disabled y línea border/disabled. Props: Name (valor del Field), Label y Value (Filter; en Filled el valor elegido va como override) y Show swatch (muestra u oculta la muestra de acabado; en código, show-swatch).
+Selector con menú desplegable (arq-select). Dos tipos: etiqueta arriba (Type=Field: role/label de 12 px; Type=Filter: role/label-lg de 14 px con Size=Default o role/label de 12 px con Size=Small; text/tertiary) y un trigger con padding vertical space/padding/sm-md. Type=Field: línea inferior border/strong y gap 0 entre etiqueta y trigger. Type=Filter: gap space/gap/sm entre etiqueta y trigger y sin línea (solo Disabled muestra la línea border/disabled). En los dos, gap space/gap/sm-md entre swatch, texto y chevron, texto role/body-regular y chevron. Type=Field: campo del configurador; ancho del contenedor; swatch/md y chevron icon/md. Type=Filter: celda de la filter-bar y del glosario, y selects de compare-product (Size=Small, sin opción «Todos»); mide al menos layout/select-filter; swatch/sm y chevron icon/sm; Filled = filtro elegido, valor en role/body-medium. Hover (los dos): fondo color/surface/faint en el trigger; el texto no cambia. Open: mismo fondo que Hover, chevron hacia arriba y select-menu debajo (Field: Finishes o Text; Filter: Filter). Focus: anillo border/focus de border/strong alrededor del trigger. Disabled: text/disabled y línea border/disabled. Props: Name (valor del Field), Label y Value (Filter; en Filled el valor elegido va como override) y Show swatch (muestra u oculta la muestra de acabado; en código, show-swatch). Size (solo cambia en Type=Filter): Default = etiqueta role/label-lg de 14 px (filter-bar, Descargas); Small = etiqueta role/label de 12 px (compare-product). Type=Field es siempre Size=Default.
 
 ## select-menu
 
@@ -608,7 +608,7 @@ Lista desplegable de select (hasta 7 opciones). Fondo surface/default, borde bor
 - Figma: [921-2500](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2500)
 - Propiedades: Name; Show swatch; State: Default · Hover · Selected · Focus · Disabled
 
-Opción de select-menu. Muestra opcional (Show swatch; swatch/sm con border/default) + nombre role/body. Default sin fondo, Hover surface/faint, Selected nombre en role/body-medium, Focus anillo border/focus. Separador inferior border/subtle. Padding space/padding/md, gap space/gap/sm. Sirve para acabados y para "Todos" o valores sin muestra. Disabled: opción no disponible (texto color/text/disabled).
+Opción de select-menu. Muestra opcional (Show swatch; swatch/sm con border/default) + nombre role/body. Default sin fondo, Hover surface/faint, Selected nombre en role/body-medium, Focus (resaltada con las flechas): mismo fondo que Hover (surface/faint), sin anillo; la elegida se distingue por role/body-medium. Separador inferior border/subtle. Padding space/padding/md, gap space/gap/sm. Sirve para acabados y para "Todos" o valores sin muestra. Disabled: opción no disponible (texto color/text/disabled).
 
 ## sku
 
