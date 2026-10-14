@@ -21,13 +21,15 @@
 //   en el campo.
 // - Emite arq:change { value } al elegir. Filled (Filter con un valor) se pone
 //   solo como atributo.
-// - Field y Filter se construyen igual (etiqueta sin gap + trigger con línea
-//   inferior); Hover y Open en color/surface/faint en los dos, y el texto va
+// - Field: etiqueta sin gap + trigger con línea inferior. Filter: etiqueta a
+//   space/gap/sm y trigger sin línea (salvo Disabled). Con hide-all, Filter no
+//   suma "Todos" (compare-product). Hover y Open en color/surface/faint en los dos, y el texto va
 //   en role/body-regular, salvo el valor elegido de Filter (Filled), que va en
 //   role/body-medium.
-// - Etiqueta según el Type (Figma 921:2544): Field, role/label de 12 px
-//   (compare-product); Filter, de 14 px (filter-bar: glosario de la ficha y
-//   página Descargas). role/label-sm (10 px) ya no se usa acá.
+// - size (Figma: Size) solo cambia la etiqueta de Filter: Default en
+//   role/label-lg (14, filter-bar y Descargas), Small en role/label (12,
+//   compare-product). Field siempre va en role/label.
+//   role/label-sm (10 px) ya no se usa acá.
 // - show-swatch (Figma: Show swatch): muestra la muestra de color en todas las
 //   opciones. Sin el atributo, cada opción decide con swatch / showSwatch.
 //   En Figma la prop viene activada; en código va desactivada (atributo de
@@ -47,6 +49,7 @@ class ArqSelect extends ArqElement {
   static styles = css;
   static properties = {
     type: { type: String, values: ['field', 'filter'], default: 'field' }, // Type
+    size: { type: String, values: ['default', 'small'], default: 'default' }, // Size (solo cambia en Filter)
     label: { type: String }, // Label (Filter: visible; Field: nombre accesible)
     value: { type: String }, // valor elegido (Field: Name; Filter: Value)
     name: { type: String }, // campo al que corresponde (lo usa filter-bar)
@@ -54,6 +57,7 @@ class ArqSelect extends ArqElement {
     open: { type: Boolean }, // Open
     filled: { type: Boolean }, // State=Filled (lo pone el componente)
     allLabel: { type: String, default: 'Todos' }, // primera opción de Filter
+    hideAll: { type: Boolean }, // Filter sin "Todos" (compare-product: siempre hay un valor)
     showSwatch: { type: Boolean }, // Show swatch: muestra de color en las opciones
   };
   static template =
@@ -108,7 +112,8 @@ class ArqSelect extends ArqElement {
     // cualquier State (incluido Disabled).
     label.hidden = false;
     label.textContent = this.label ?? '';
-    label.className = `label ${filter ? 'role-label-lg' : 'role-label'}`;
+    // Field y Filter Size=Small: role/label (12) · Filter Size=Default: role/label-lg (14)
+    label.className = `label ${filter && this.size !== 'small' ? 'role-label-lg' : 'role-label'}`;
     this.trigger.setAttribute('aria-labelledby', `${label.id} ${this.trigger.id}`);
     this.trigger.removeAttribute('aria-label');
     this.trigger.disabled = this.disabled;
@@ -147,7 +152,7 @@ class ArqSelect extends ArqElement {
       showSwatch: o.showSwatch === false ? false : Boolean(o.swatch || o.showSwatch || this.showSwatch),
       disabled: Boolean(o.disabled),
     }));
-    if (this.type === 'filter') list.unshift({ value: '', label: this.allLabel ?? 'Todos', showSwatch: false, disabled: false });
+    if (this.type === 'filter' && !this.hideAll) list.unshift({ value: '', label: this.allLabel ?? 'Todos', showSwatch: false, disabled: false });
     return list;
   }
 

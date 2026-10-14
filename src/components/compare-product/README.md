@@ -42,7 +42,7 @@ product.addEventListener('arq:add', () => abrirModalDeProductos()); // TODO: el 
 
 - **No consulta Typesense**: la página arma `attributes` con `src/data/catalog.js` (`getCompare()`, que usa las mismas funciones de `src/data/variants.js` que la ficha) y vuelve a asignar `data` cuando cambian (AGENTS.md · Datos).
 - **Quitar** (icon-button `icon/close`, "Quitar {nombre}") emite `arq:remove { sku }`. Solo en Filled.
-- **Selects**: un `arq-select` Type=Field por atributo de variante, con la misma disponibilidad que la ficha (una opción que no forma un SKU va deshabilitada). Elegir emite `arq:change { field, value }`, donde `field` es el campo del atributo (`'altura'`, `'color_carcasa'`…); la página resuelve el nuevo SKU (`skuForAttribute()`) y vuelve a asignar `data`. La muestra de color solo aparece en los atributos de acabado (`showSwatch`, ver `select`).
+- **Selects**: un `arq-select` Type=Filter, Size=Small y `hide-all` (sin «Todos») por atributo de variante (Figma, Comparativa · cambios), con la misma disponibilidad que la ficha (una opción que no forma un SKU va deshabilitada). Elegir emite `arq:change { field, value }`, donde `field` es el campo del atributo (`'altura'`, `'color_carcasa'`…); la página resuelve el nuevo SKU (`skuForAttribute()`) y vuelve a asignar `data`. La muestra de color solo aparece en los atributos de acabado (`showSwatch`, ver `select`).
 - **Empty es un `<button>`** que ocupa toda la caja: emite `arq:add` al clickear. `TODO` (diseño + código): no abre nada todavía — la ficha dice que más adelante abre un modal para elegir producto; por ahora solo está resuelto el Hover (fondo `color/surface/faint`, borde `color/border/strong`).
 - El nombre es un link a la ficha (`icon/arrow-up-right`) con `aria-label` "Ver ficha de {nombre}".
 - La imagen mantiene proporción 1:1 (`aspect-ratio` bloqueado) con tope `layout/compare-media-max`: al cambiar el ancho de la columna, el alto de la media acompaña. **Empty no es 1:1**: ocupa el 100% del alto de la columna (como un Filled completo) — por eso `arq-compare-header` estira sus columnas a la misma altura (`align-items: stretch`).
@@ -63,11 +63,11 @@ product.addEventListener('arq:add', () => abrirModalDeProductos()); // TODO: el 
 | Fondo (Empty Hover) | `color/surface/faint` |
 | Ícono «+» (Empty) | `icon/xl` (24) con padding `space/padding/sm-md` (icon-button Large, Background=None: sin fondo) |
 | Ancho máximo de foto | `layout/compare-media-max` (2000) |
-| Gap general | `space/gap/lg`; selects `space/gap/sm-md` |
+| Gap general | `space/gap/lg`; cada select con una línea `border/default` en `color/border/default` pegada abajo del campo (también el último); el siguiente arranca a `space/gap/sm-md` |
 | Nombre | `role/heading-3` en `color/text/primary` |
 | SKU y labels de select | `role/label` en `color/text/tertiary` |
 | Texto «Agregar producto» | `role/body` en `color/text/secondary` |
-| Valores de select | `role/body-regular` (vía `arq-select`) |
+| Valores de select | `role/body-medium` (Filter Filled, vía `arq-select`) |
 | Compact: miniatura | `layout/compare-thumb` (48), fondo `color/surface/subtle` |
 | Compact: nombre · SKU | `role/label` en `color/text/primary` · `role/body-sm` en `color/text/secondary`; gap `space/gap/xs` |
 | Compact Empty | borde `color/border/default` punteado; Hover `color/surface/faint` + `color/border/strong`; padding `space/padding/md`; texto `role/body-sm` en `color/text/secondary` |

@@ -45,7 +45,7 @@ header.addEventListener('arq:differences', (e) => (tabla.onlyDifferences = e.det
 | Etiquetas | `layout/compare-label` (200, Desktop), `role/body` (Mobile `role/body-sm`) en `color/text/secondary`; separación `space/gap/lg` (Desktop) |
 | Valores | `role/body-lg-regular` en `color/text/primary`, `space/padding/md` a la izquierda con línea `border/default` en `color/border/subtle` (la primera columna no lleva línea). Mobile: columnas de `layout/compare-column` (160), gap `space/gap/md` entre ellas |
 | Filas | padding vertical `space/padding/md` (Mobile: `space/padding/xs` en la etiqueta, `space/padding/sm` en los valores), línea inferior `color/border/subtle`, fondo `color/surface/default` |
-| compare-group | `role/label` en `color/text/primary`; arriba `space/gap/2xl`, abajo `space/padding/sm-md`; línea inferior `border/default` en `color/border/strong` |
+| compare-group | `role/body-xl` en `color/text/primary` (Figma 1263:4320); arriba `space/gap/2xl`, abajo `space/padding/sm-md`; línea inferior `border/default` en `color/border/strong` |
 | compare-section-group (Mobile) | gap entre filas `space/gap/sm`; separación con el grupo `space/padding/md` |
 | Márgenes | `layout/gutter` a los lados, dentro del scroll (va a sangre en la página) |
 

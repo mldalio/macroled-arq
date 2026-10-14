@@ -1,4 +1,4 @@
-/* filter-bar · Figma 1068:5165. Solo tokens semánticos.
+/* filter-bar · Figma 1068:5165 (Ficha v2). Solo tokens semánticos.
    Desktop es la base; Mobile (max-width: 767px) apila las celdas. */
 
 :host {
@@ -6,17 +6,16 @@
   min-width: 0;
 }
 
-/* Fondo color/surface/faint, líneas color/border/subtle arriba y abajo,
-   padding space/padding/md y layout/gutter (borde a borde). Las líneas se
-   descuentan del padding: 74 (Applied 82), como el set. */
+/* Ficha v2: fondo color/surface/soft, sin líneas, padding space/padding/2xl
+   arriba y abajo y --page-gutter a los lados (dentro de variants-table, el
+   layout/gutter). Filtros arriba y «Limpiar filtros» debajo, a space/gap/xl. */
 .bar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--arq-space-gap-lg);
-  padding: calc(var(--arq-space-padding-md) - var(--arq-border-default)) var(--page-gutter);
-  border-block: var(--arq-border-default) solid var(--arq-color-border-subtle);
-  background: var(--arq-color-surface-faint);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-xl);
+  padding: var(--arq-space-padding-2xl) var(--page-gutter);
+  background: var(--arq-color-surface-soft);
 }
 
 /* Celdas en fila, gap space/gap/lg, con divisor border/default en
@@ -44,9 +43,7 @@
 
 @media (max-width: 767px) {
   .bar {
-    flex-direction: column;
     align-items: stretch;
-    gap: var(--arq-space-gap-md);
   }
 
   .filters {

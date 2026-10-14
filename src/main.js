@@ -28,6 +28,7 @@ import './components/variants-table/variants-table.js';
 import './components/gallery-thumb/gallery-thumb.js';
 import './components/product-gallery/product-gallery.js';
 import './components/family-card/family-card.js';
+import './components/download-card/download-card.js';
 import './components/download-item/download-item.js';
 import './components/download-modal/download-modal.js';
 import './components/catalog-nav-item/catalog-nav-item.js';
@@ -100,7 +101,7 @@ document.addEventListener('arq:datasheet', (event) => {
   pending.catch((error) => console.error('[arq] ficha técnica:', error));
 });
 
-// Imprimir la página (comparativa: "Imprimir comparación", como
+// Imprimir la página (comparativa: "Descargar comparación", como
 // macroled.com.ar/comparativa). Cada componente trae su @media print.
 document.addEventListener('click', (event) => {
   if (event.target.closest?.('[data-arq-print]')) window.print();

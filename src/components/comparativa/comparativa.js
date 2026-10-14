@@ -21,7 +21,9 @@
 //   tabla"); compare-table va con `embedded` para no tener scroll propio. El
 //   set no muestra el toggle "Solo diferencias" dentro de compare-header en
 //   Mobile: va en una fila aparte, fuera del scroll, como en Final.
-// - Imprimir (como macroled.com.ar/comparativa): el botón de la página con
+// - Bajada: completa [data-arq-compare-count] de la página con la cantidad
+//   ("3 luminarias seleccionadas."); sin productos queda vacío.
+// - Descargar comparación (como macroled.com.ar/comparativa): el botón de la página con
 //   data-arq-print llama a window.print() (main.js). Cada componente trae su
 //   @media print. Mientras se imprime, el título del documento pasa a
 //   «Comparativa · <productos> · Macroled Arq»: es el nombre que propone el
@@ -39,6 +41,7 @@ const MAX = 3;
 const MOBILE = matchMedia('(max-width: 767px)');
 
 const TEXT = {
+  count: (n) => (n === 1 ? '1 luminaria seleccionada.' : `${n} luminarias seleccionadas.`),
   printTitle: (names) => `Comparativa · ${names.join(' · ')} · Macroled Arq`,
   empty: 'Elegí hasta 3 productos para comparar desde el listado de Productos.',
   error: 'No se pudo cargar la comparación. Probá de nuevo en unos minutos.',
@@ -193,6 +196,7 @@ class ArqComparativa extends ArqElement {
       return;
     }
     this.#status('');
+    this.#count(this.#skus.length);
     scroll.hidden = false;
     mobileControls.hidden = false;
     header.products = data.products;
@@ -207,10 +211,16 @@ class ArqComparativa extends ArqElement {
     history.replaceState(history.state, '', url);
   }
 
+  // Bajada del page-header (DOM de la página): "3 luminarias seleccionadas."
+  #count(n) {
+    for (const el of document.querySelectorAll('[data-arq-compare-count]')) el.textContent = n ? TEXT.count(n) : '';
+  }
+
   #status(message) {
     const status = this.shadowRoot.querySelector('.status');
     status.textContent = message;
     status.hidden = !message;
+    if (message) this.#count(0);
   }
 }
 

@@ -21,7 +21,7 @@ Opción de select-menu: muestra de acabado opcional + nombre. Sirve para acabado
 | State=Disabled | `disabled` | `disabled` | booleano · opción sin stock o no combinable |
 | — | `value` | `value` | valor de la opción |
 
-- Hover es CSS. **Focus** es la prop `active`: la opción resaltada con las flechas. El foco real queda en el campo de select, que la marca con `aria-activedescendant` (decisión 2026-10-02 · select). Al tocarla (si no está deshabilitada) emite `arq:change` con `{ value, selected: true }`.
+- Hover es CSS. **Focus** es la prop `active`: la opción resaltada con las flechas, con el fondo de Hover (`color/surface/faint`) y sin anillo (cambio de 2026-10-14). El foco real queda en el campo de select, que la marca con `aria-activedescendant` (decisión 2026-10-02 · select). Al tocarla (si no está deshabilitada) emite `arq:change` con `{ value, selected: true }`.
 - **Accesibilidad:** el elemento es la opción (`role="option"`, `aria-selected`, `aria-disabled`). La muestra es decorativa.
 
 ## Tokens

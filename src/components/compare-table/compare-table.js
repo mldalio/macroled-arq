@@ -122,7 +122,7 @@ class ArqCompareTable extends ArqElement {
       const body = document.createElement('tbody');
       body.setAttribute('role', 'rowgroup');
       body.innerHTML =
-        `<tr class="group" role="row"><th scope="colgroup" colspan="${MAX + 1}" role="columnheader"><span class="group-label role-label">${esc(group.label)}</span></th></tr>` +
+        `<tr class="group" role="row"><th scope="colgroup" colspan="${MAX + 1}" role="columnheader"><span class="group-label role-body-xl">${esc(group.label)}</span></th></tr>` +
         (group.rows ?? [])
           .map((row) => {
             const real = products.map((_, i) => row.values?.[i] ?? '—');

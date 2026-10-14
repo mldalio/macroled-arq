@@ -62,7 +62,7 @@ thead th {
   padding-inline-end: var(--arq-space-gap-lg);
 }
 
-/* compare-group: role/label en color/text/primary, arriba space/gap/2xl,
+/* compare-group: role/body-xl en color/text/primary (Figma, Comparativa), arriba space/gap/2xl,
    abajo space/padding/sm-md, línea inferior border/default en color/border/strong */
 .group th {
   padding-block: var(--arq-space-gap-2xl) var(--arq-space-padding-sm-md);

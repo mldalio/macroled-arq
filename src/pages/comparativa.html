@@ -5,9 +5,12 @@
 
   Sin datos del CMS: arq-comparativa lee los SKU de ?sku= (hasta 3, los arma
   compare-bar en Productos/Colecciones) y pide todo a Typesense.
-  "Imprimir comparación" (data-arq-print) abre el diálogo de impresión del
-  navegador, como macroled.com.ar/comparativa: desde ahí se imprime o se
-  guarda como PDF. Cada componente trae su @media print.
+  "Descargar comparación" (data-arq-print) abre el diálogo de impresión del
+  navegador, como macroled.com.ar/comparativa: desde ahí se guarda como PDF o
+  se imprime. Cada componente trae su @media print. TODO (diseño): falta el
+  diseño del PDF de la comparación (DESIGN.md §12).
+  [data-arq-compare-count] lo completa arq-comparativa con la cantidad
+  ("3 luminarias seleccionadas.").
 -->
 <arq-navbar>
   <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
@@ -19,8 +22,8 @@
   <arq-page-header type="detail" show-back back-href="/arq/productos" show-description show-action>
     <span slot="back">Volver a productos</span>
     <h1 slot="title">Comparar luminarias</h1>
-    <span slot="description">Cambiá familia o variante desde cada columna.</span>
-    <arq-button slot="action" data-arq-print>Imprimir comparación</arq-button>
+    <span slot="description"><span data-arq-compare-count></span> Cambiá variantes desde cada columna.</span>
+    <arq-button slot="action" show-icon icon="download" data-arq-print>Descargar comparación</arq-button>
   </arq-page-header>
 
   <arq-comparativa></arq-comparativa>

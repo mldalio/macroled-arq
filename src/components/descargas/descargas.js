@@ -1,16 +1,25 @@
 // descargas · contenedor de página (Figma: Descargas (antes Glosario)
-// 1801:19315 → Desktop 1808:20165 · Mobile 1808:20882 · modal 1802:30817 /
+// 1801:19315 → Desktop 2496:31316 · Mobile 2496:31862 · modal 1802:30817 /
 // 1802:30903)
 //
 // Página Descargas (antes Glosario, decisiones.md 2026-10-06 · Descargas):
-// variants-table con todos los SKU del catálogo, buscador por SKU o nombre
-// y el modal de descargas de cada fila. El embed imprime el page-header
-// (Volver, <h1>, bajada y Descargar catálogo general); el componente pide las
-// filas a getDownloadsTable() (src/data/catalog.js), como coleccion.
+// arriba, el título con su bajada y la download-card del catálogo general;
+// debajo, «Buscar producto» con variants-table (todos los SKU del catálogo,
+// buscador por SKU o nombre) y el modal de descargas de cada fila. El embed
+// imprime los textos y la tarjeta por slot; el componente pide las filas a
+// getDownloadsTable() (src/data/catalog.js), como coleccion.
 //
 //   <arq-descargas>
+//     <h1 slot="title">Descargas</h1>
+//     <p slot="description">…</p>
+//     <arq-download-card slot="catalog" href="…" show-description>…</arq-download-card>
+//     <h2 slot="search-title">Buscar producto</h2>
 //     <h2 slot="modal-title">Descargas</h2>
 //   </arq-descargas>
+//
+// - Sin page-header: el bloque de arriba es propio de la página (título
+//   role/display y bajada role/body-lg a la izquierda, la tarjeta a la derecha;
+//   en Mobile, apilados).
 //
 // - Sin descargas en la barra de la tabla: en la ficha son las del grupo y acá
 //   no hay grupo.
@@ -40,8 +49,18 @@ class ArqDescargas extends ArqElement {
   static styles = css;
   static properties = {};
   static template =
+    `<div class="hero">` +
+    `<div class="heading">` +
+    `<div class="title role-display"><slot name="title"></slot></div>` +
+    `<div class="description role-body-lg"><slot name="description"></slot></div>` +
+    `</div>` +
+    `<div class="catalog"><slot name="catalog"></slot></div>` +
+    `</div>` +
+    `<div class="search-section">` +
+    `<div class="search-title role-display-sm"><slot name="search-title"></slot></div>` +
     `<p class="status role-body" role="status" hidden></p>` +
     `<arq-variants-table class="table" downloads="downloads-modal" show-search hidden></arq-variants-table>` +
+    `</div>` +
     `<arq-download-modal id="downloads-modal"><slot name="modal-title" slot="title"></slot></arq-download-modal>`;
 
   setup() {

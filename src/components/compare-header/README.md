@@ -1,6 +1,6 @@
 # compare-header · `<arq-compare-header>`
 
-Cabecera de la página Comparativa: toggle "Solo diferencias" + hasta 3 compare-product, estiradas a la misma altura. Cuando el bloque completo termina de pasar al desplazar, se muestra una versión mini fija arriba (compare-product Size=Compact por producto y el toggle debajo; compare-slot ya no se usa acá). El cambio Default ↔ Compact no es una prop: lo decide el propio componente con un `IntersectionObserver`.
+Cabecera de la página Comparativa: toggle "Solo diferencias" (al pie de la columna de controles, a la altura del último select) + hasta 3 compare-product, estiradas a la misma altura. Cuando el bloque completo termina de pasar al desplazar, se muestra una versión mini fija arriba (compare-product Size=Compact por producto y el toggle debajo; compare-slot ya no se usa acá). El cambio Default ↔ Compact no es una prop: lo decide el propio componente con un `IntersectionObserver`.
 
 - Figma: [1265-4330](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1265-4330) · ficha `doc/compare-header`
 

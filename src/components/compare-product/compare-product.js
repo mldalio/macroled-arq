@@ -162,8 +162,12 @@ class ArqCompareProduct extends ArqElement {
     const defs = (data?.attributes ?? []).map((a) => ({ field: a.field, label: a.label, value: a.value ?? '', options: a.options ?? [] }));
     while (selects.children.length > defs.length) selects.lastElementChild.remove();
     while (selects.children.length < defs.length) {
+      // select Type=Filter, Size=Small, Filled (Figma, Comparativa): etiqueta
+      // de 12, sin "Todos" (siempre hay una variante elegida)
       const select = document.createElement('arq-select');
-      select.type = 'field';
+      select.type = 'filter';
+      select.size = 'small';
+      select.hideAll = true;
       selects.append(select);
     }
     defs.forEach((def, i) => {

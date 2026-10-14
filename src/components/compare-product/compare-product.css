@@ -145,10 +145,20 @@
   color: var(--arq-color-text-tertiary);
 }
 
+/* Selects (select Filter Small): cada uno con una línea border/default en
+   color/border/default pegada abajo del campo (también el último); el
+   siguiente arranca a space/gap/sm-md (Figma, Comparativa). */
 .selects {
   display: flex;
   flex-direction: column;
-  gap: var(--arq-space-gap-sm-md);
+}
+
+.selects > * {
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-default);
+}
+
+.selects > * + * {
+  padding-top: var(--arq-space-gap-sm-md);
 }
 
 /* Variante elegida como texto: solo al imprimir (en pantalla están los
