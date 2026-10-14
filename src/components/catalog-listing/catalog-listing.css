@@ -55,7 +55,7 @@
     position: sticky;
     top: 0;
     z-index: 3;
-    background: var(--arq-color-surface-transparent);
+    background: var(--arq-color-surface-default); /* fija sobre la grilla: tapa las cards (con Iluminar, el fondo Dark) */
   }
 
   .nav {
