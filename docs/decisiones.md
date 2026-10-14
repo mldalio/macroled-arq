@@ -719,6 +719,10 @@ El sheet se abre y se cierra con una transición suave (referencia: occhio.com),
 
 El footer deja de ser Dark local: todas las páginas lo muestran blanco, también con Iluminar. En código el `<footer>` interno lleva `data-arq-theme="light"` (como filter-panel); en Figma el set 788:3104 fija el modo Light.
 
+## 2026-10-14 · Footer con Iluminar
+
+Reemplaza a «Footer siempre en Light» (mismo día): el footer sigue el modo de la página. Es blanco en todas las páginas y, con Iluminar en Productos y Colecciones, pasa a Dark junto con el resto, con la misma duración y curva que el fondo de la página. Se quita `data-arq-theme="light"` del `<footer>` interno; en Figma, el set 788:3104 deja de fijar el modo Light. filter-panel sigue siempre en Light.
+
 ## 2026-10-14 · Descargas v2
 
 Pantalla nueva (Final › Descargas: Desktop 2496:31316 · Mobile 2496:31862; las anteriores quedan de respaldo en PRUEBA).

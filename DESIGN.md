@@ -178,7 +178,8 @@ Hay dos usos del modo Dark. Los dos usan `data-arq-theme="dark"`; cambia quién 
 - **Regla:** un componente con Dark local lo aplica en un contenedor interno; el contenido por slot lo hereda. Quien arma la página no pone el atributo. Si el Dark es de una sección de la página, el atributo va en la sección y los componentes de adentro lo heredan; si la sección la arma un contenedor de página (explora-coleccion en `<arq-ficha-producto>`), lo pone el contenedor.
 - **Dónde funciona el atributo:** en un ancestro del DOM de la página, en el host del componente (`<arq-compare-bar data-arq-theme="dark">`) y en un contenedor dentro del Shadow DOM. Este último caso funciona porque `ArqElement` adopta en cada Shadow DOM la hoja `src/styles/dark.css` (el mismo bloque Dark de `tokens.css`): `tokens.css` solo alcanza el DOM de la página, no lo que está dentro de un componente (`docs/decisiones.md`, 2026-10-01 · Dark dentro del Shadow DOM).
 - El contenido por slot hereda el modo del contenedor donde se muestra, no el de su padre en el HTML.
-- **Light local**, dos excepciones: filter-panel y footer quedan siempre en Light, también con Iluminar. El `<dialog>` de filter-panel y el `<footer>` interno de footer llevan `data-arq-theme="light"` (el bloque `[data-arq-theme="light"]` que genera `npm run tokens`, adoptado en cada Shadow DOM como el Dark). En Figma, el set footer fija el modo Light. Fuera de esos casos, dentro de un bloque Dark no se vuelve a Light (`docs/decisiones.md`, 2026-10-05 · filter-panel siempre en Light y 2026-10-14 · Footer siempre en Light).
+- **Light local**, una excepción: filter-panel queda siempre en Light, también con Iluminar. Su `<dialog>` lleva `data-arq-theme="light"` (el bloque `[data-arq-theme="light"]` que genera `npm run tokens`, adoptado en cada Shadow DOM como el Dark). Fuera de ese caso, dentro de un bloque Dark no se vuelve a Light (`docs/decisiones.md`, 2026-10-05 · filter-panel siempre en Light).
+- **footer:** sigue el modo de la página. Blanco en todas las páginas; con Iluminar en Productos y Colecciones pasa a Dark junto con el resto (`docs/decisiones.md`, 2026-10-14 · Footer con Iluminar).
 
 Para los dos usos:
 
@@ -463,7 +464,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | mega-menu | Tab: Por espacio · Lámparas y artefactos · Colecciones | Un solo componente; categorías, links y "Ver todo…" salen de los datos. Usa tab y mega-link |
 | mega-link | Type: Link · Group. State: Default · Hover · Focus. Size: Default · Large. Open: False · True. Props: Name · Meta · Show meta · Show image · Show arrow | Link role/body (Large role/body-lg). Group role/body-xl con icon/plus / icon/minus |
 | logo | Size: Default · Small · Compact | 181 / 158 / 117 px |
-| footer · footer-link | Breakpoint: Desktop · Mobile / State: Default · Hover · Pressed · Focus | Siempre en Light (fondo color/surface/default, línea superior color/border/subtle), también con Iluminar |
+| footer · footer-link | Breakpoint: Desktop · Mobile / State: Default · Hover · Pressed · Focus | Sigue el modo de la página: fondo color/surface/default, línea superior color/border/subtle. Blanco; con Iluminar (Productos y Colecciones) pasa a Dark con el resto |
 | search-field | State: Empty · Focus · Filled. Prop: Show close | Campo con borde del navbar |
 | search-result · search-see-all | State: Default · Hover · Active (solo search-result) · Focus | Miniatura, nombre, SKU, flecha |
 | search-dropdown · search-screen | State: Results · No results (· Empty en search-screen) | Desktop / mobile |
