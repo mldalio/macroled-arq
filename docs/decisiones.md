@@ -541,6 +541,10 @@ Reemplaza a 2026-10-02 · Base de datos (estructura v5) en cómo se identifican 
 - **Cambiar o rotar la clave:** se edita en `.env`, se compila (`npm run build`) y se commitea `dist/`; hasta publicar el release, el sitio de Webflow sigue con la clave anterior. Revocar la vieja en Typesense recién después.
 - **Errores:** si falta una variable, la consola de `npm run dev` dice cuál (`missingConfig()` en `typesense.js`).
 
+## 2026-10-14 · Baja de tag
+
+- El componente tag (Figma `981:2305`) no se va a usar: se quitó de DESIGN.md, `docs/components.md` y `docs/setup.md`. No había código. product-card resuelve el tipo de producto con Meta.
+
 ## Pendientes
 
 Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe la decisión en su sección. El grupo entre paréntesis es el del `TODO` en el código.

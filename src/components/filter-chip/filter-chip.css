@@ -1,5 +1,5 @@
 /* filter-chip · Figma 1238:3693. Solo tokens semánticos.
-   Misma base que tag Outline: padding xs/sm, radius/control, role/body-sm. */
+   Padding xs/sm, radius/control, role/body-sm. */
 
 :host {
   display: inline-flex;

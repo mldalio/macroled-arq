@@ -5,7 +5,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 - Si este archivo no coincide con Figma, manda Figma y se actualiza este archivo.
 - Al crear o modificar un componente en código, actualizar su **Estado en código** y su marca.
 
-**73 de 74 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
+**73 de 73 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
 
 | Componente | Etiqueta | Estado en código |
 | --- | --- | --- |
@@ -77,7 +77,6 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [swatch](#swatch) | `<arq-swatch>` | En código ([README](../src/components/swatch/README.md)) |
 | ✅ [swatch-picker](#swatch-picker) | `<arq-swatch-picker>` | En código ([README](../src/components/swatch-picker/README.md)) |
 | ✅ [tab](#tab) | `<arq-tab>` | En código ([README](../src/components/tab/README.md)) |
-| ⏸️ [tag](#tag) | `<arq-tag>` | En espera de diseño |
 | ✅ [toggle](#toggle) | `<arq-toggle>` | En código ([README](../src/components/toggle/README.md)) |
 | ✅ [toggle-switch](#toggle-switch) | — | Dentro de toggle ([README](../src/components/toggle/README.md)) |
 | ✅ [variants-table](#variants-table) | `<arq-variants-table>` | En código ([README](../src/components/variants-table/README.md)) |
@@ -369,7 +368,7 @@ Barra de filtros de la tabla de variantes (visible con Filtros activos). Fondo s
 - Figma: [1238-3693](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1238-3693)
 - Propiedades: Label; State: Default · Hover · Focus
 
-Filtro aplicado que se puede quitar (todo el chip es el botón; en código: button con aria-label "Quitar filtro <Label>"). Misma base que tag Outline (padding xs/sm, radius/control, role/body-sm) y los estados de choice-chip (Hover: borde color/text/primary; Focus: anillo separado, DESIGN.md §7). Se usa en filter-panel.
+Filtro aplicado que se puede quitar (todo el chip es el botón; en código: button con aria-label "Quitar filtro <Label>"). Padding xs/sm, radius/control, role/body-sm y los estados de choice-chip (Hover: borde color/text/primary; Focus: anillo separado, DESIGN.md §7). Se usa en filter-panel.
 
 ## filter-panel
 
@@ -647,15 +646,6 @@ Selector de acabado por muestras (role=radiogroup): fila de swatch con gap space
 - Propiedades: Label; State: Default · Hover · Selected · Focus · Disabled
 
 Pestaña (role="tab"). Default, Hover, Selected (aria-selected="true", subrayado de 1 px border/default en color/border/strong), Focus y Disabled. Se agrupan en un contenedor role="tablist" con separación space/gap/xl y una línea color/border/subtle debajo. Lo usa el mega menú de Productos.
-
-## tag
-
-- Figma: [981-2305](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=981-2305)
-- Propiedades: Label; Type: Plain · Outline
-
-Etiqueta informativa (no interactiva). Type: Plain (tipo de producto en tarjetas: "Embutir", "Jardín · Pared") y Outline (especificaciones: "IP 65", "CE", "2700 K"). Prop: Label. Si tiene que ser clickeable, se usa button o checkbox, no tag.
-
-> **En espera de diseño:** hoy no hay instancias de tag en las pantallas (product-card resuelve el tipo con Meta). No se construye hasta que diseño defina si se usa en la ficha o se da de baja. Si se hace, Outline lleva fondo `color/surface/default`.
 
 ## toggle
 

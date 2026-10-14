@@ -482,7 +482,6 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | choice-chip | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | Formularios. Padding space/padding/sm-md × md. En Contacto, si entran en una fila se estiran a todo el ancho; si no, cada uno con su ancho. No confundir con option-tile |
 | option-group · option-tile | Type: Tiles · Select · Swatches / State: Default · Hover · Selected · Focus · Disabled | Configurador de la ficha. option-tile funciona como radio. Default en color/text/secondary; Disabled en color/text/disabled y tachado |
 | swatch · swatch-picker | Size: Small · Default · Large. State: Default · Hover · Selected · Focus · Disabled | Elegir acabado en la ficha. Cantidad variable en código. Disabled: acabado sin combinación con las otras opciones elegidas |
-| tag | Type: Plain · Outline. Prop: Label | No interactivo |
 | count-badge | Tone: Primary · Inverse. Prop: Count | Mín. 20, crece con el número |
 | divider | Orientation: Horizontal · Vertical. Emphasis: Subtle · Default | — |
 | sku | Size: Default · Compact. State: Default · Hover · Copied. Prop: Code | Botón de copiar. Código en role/body-lg (Default) o role/body (Compact) |
@@ -660,7 +659,6 @@ Link a cada set en Figma (`node-id`). Base: `https://www.figma.com/design/djAb2r
 | swatch | [1063-4880](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1063-4880) | Size: Small · Default · Large; State: Default · Hover · Selected · Focus · Disabled |
 | swatch-picker | [1063-4881](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1063-4881) | — |
 | tab | [929-2287](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=929-2287) | Label; State: Default · Hover · Selected · Focus · Disabled |
-| tag | [981-2305](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=981-2305) | Label; Type: Plain · Outline |
 | toggle | [926-3102](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=926-3102) | Label; Show label; Checked: False · True; State: Default · Hover · Focus · Disabled |
 | toggle-switch | [1131-6383](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1131-6383) | Checked: False · True; State: Default · Hover · Focus · Disabled |
 | variants-table | [1068-5582](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1068-5582) | Show search; Filters: Off · On; Breakpoint: Desktop · Mobile |
