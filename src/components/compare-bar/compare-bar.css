@@ -67,20 +67,22 @@
   gap: var(--arq-space-gap-xl);
 }
 
-.clear-mobile,
-.toggle {
+.clear-mobile {
   display: none;
 }
 
-/* En Desktop la lista siempre se ve (Open es solo de Mobile) */
-.slots[hidden] {
-  display: flex;
+/* Open=False en Desktop: título y acciones en una sola línea */
+:host(:not([open])) .bar {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
-/* Open (Mobile): el título es el botón que pliega la lista. Ícono como
+/* Open: el título es el botón que pliega la lista. Ícono como
    icon-button Size=Default, Background=None (24 = space/padding/xs + icon/md);
    chevron-down abierta, chevron-up plegada. */
 .toggle {
+  display: inline-flex;
   align-items: center;
   gap: var(--arq-space-gap-sm);
   margin: 0;
@@ -138,18 +140,17 @@
     border-top-color: var(--arq-color-border-subtle);
   }
 
-  .clear-mobile,
-  .toggle {
+  .clear-mobile {
     display: inline-flex;
   }
 
-  .clear-desktop,
-  .title-desktop {
+  .clear-desktop {
     display: none;
   }
 
-  .slots[hidden] {
-    display: none;
+  :host(:not([open])) .bar {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .row {

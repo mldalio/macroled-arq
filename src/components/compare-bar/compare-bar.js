@@ -15,10 +15,10 @@
 //   Default, con divisores); "Borrar todo" y "Comparar". En Mobile, como
 //   macroled.com.ar: solo los productos elegidos, uno arriba de otro, y
 //   "Comparar" debajo a todo el ancho.
-// - Open (solo Mobile): el título es un botón que pliega y despliega la lista
-//   de productos (disclosure base, chevron-down abierta · chevron-up plegada).
-//   Plegada quedan el título, "Borrar todo" y "Comparar". Arranca abierta y se
-//   vuelve a abrir al agregar un producto. En Desktop la lista siempre se ve.
+// - Open: el título es un botón que pliega y despliega la lista de productos
+//   (disclosure base, chevron-down abierta · chevron-up plegada). Plegada
+//   quedan el título, "Borrar todo" y "Comparar" (en Desktop, en una sola
+//   línea). Arranca abierta y se vuelve a abrir al agregar un producto.
 // - "Comparar" lleva a /arq/comparativa?sku=SKU1,SKU2,SKU3 (decisión 2026-10-02
 //   · Comparativa; href base en el atributo href).
 // - La selección se guarda en localStorage (arq:compare), así sigue al cambiar
@@ -58,12 +58,11 @@ class ArqCompareBar extends ArqElement {
   static styles = css;
   static properties = {
     href: { type: String, default: '/arq/comparativa' }, // página de la comparativa
-    open: { type: Boolean }, // Open (Mobile): lista de productos desplegada
+    open: { type: Boolean }, // Open: lista de productos desplegada
   };
   static template =
     `<section class="bar" data-arq-theme="dark" aria-label="Comparar productos" hidden>` +
     `<div class="head">` +
-    `<p class="title title-desktop role-body-lg"><span>Productos seleccionados</span><arq-count-badge class="count"></arq-count-badge></p>` +
     `<button class="title toggle role-body-lg"><span>Productos seleccionados</span><arq-count-badge class="count"></arq-count-badge>` +
     `<span class="icon-box">${icon('chevron-down')}${icon('chevron-up')}</span></button>` +
     `<arq-button type="underline" show-underline class="clear clear-mobile">Borrar todo</arq-button>` +
@@ -154,7 +153,7 @@ class ArqCompareBar extends ArqElement {
     if (!root.querySelector('.bar')) return;
     const items = this.#items;
     root.querySelector('.bar').hidden = items.length === 0;
-    for (const count of root.querySelectorAll('.count')) count.count = items.length;
+    root.querySelector('.count').count = items.length;
     const mobile = MOBILE.matches;
     const slots = root.querySelector('.slots');
     const nodes = [];

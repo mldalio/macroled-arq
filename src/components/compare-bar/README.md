@@ -25,7 +25,7 @@ bar.addEventListener('arq:compare-change', (e) => marcarCards(e.detail.items));
 | Title | — | — | "Productos seleccionados" + count-badge con la cantidad |
 | — (productos) | — | `items` | `[{ sku, name, meta, image }]`, hasta 3 |
 | — | `href` | `href` | Página de la comparativa. Por defecto `/arq/comparativa` |
-| Open (Mobile) | `open` | `open` | Booleano. Lista de productos desplegada. La pone el componente: arranca abierta, el título (botón con chevron-down / chevron-up) la pliega y despliega, y se vuelve a abrir al agregar un producto. Plegada quedan el título, «Borrar todo» y «Comparar». En Desktop la lista siempre se ve. Usa el disclosure base (`arq:toggle { open }`) |
+| Open | `open` | `open` | Booleano. Lista de productos desplegada. La pone el componente: arranca abierta, el título (botón con chevron-down / chevron-up) la pliega y despliega, y se vuelve a abrir al agregar un producto. Plegada quedan el título, «Borrar todo» y «Comparar» (en Desktop, en una sola línea). Usa el disclosure base (`arq:toggle { open }`) |
 | Breakpoint | — | — | Media query: hasta 767 px, como macroled.com.ar, solo los productos elegidos, uno arriba de otro (compare-slot Default, con divider Horizontal Subtle), y «Comparar» debajo a todo el ancho |
 
 - **Métodos:** `add(item)` (devuelve `false` si ya hay 3 o si ya estaba), `remove(sku)`, `clear()` ("Borrar todo"), `has(sku)`.
