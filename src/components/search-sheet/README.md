@@ -1,55 +1,69 @@
 # search-sheet · `<arq-search-sheet>` (prueba)
 
-Búsqueda de Desktop como **top sheet**: un panel que baja desde arriba, a todo el ancho, con scrim. Barra (logo + cerrar), search-field `type="line"` y el contenido según el estado.
+Búsqueda del sitio como **top sheet**: un panel que baja desde arriba, a todo el ancho, con scrim. Barra (logo + cerrar), search-field `type="line"` y el contenido según los datos. Es la búsqueda del navbar en **Desktop, Tablet y Mobile**.
 
-> **Componente de prueba: no existe en Figma.** Ni el sheet, ni el Type=Line de search-field, ni el `search="sheet"` del navbar. Si se adopta, diseñarlo primero en Figma (TODO).
-
-```html
-<arq-navbar search="sheet">…</arq-navbar>   <!-- el navbar lo arma y lo alimenta -->
-```
+> **Componente de prueba: no existe en Figma.** Ni el sheet, ni sus variantes (`search-field type="line"`, `search-result type="simple"`, `search-collection`), ni el `search` del navbar. Si se adopta, diseñarlo primero en Figma (TODO).
 
 ```html
-<arq-search-sheet state="recommended">
-  <arq-product-card slot="recommended" size="small" href="…">…</arq-product-card>
-  <arq-button slot="all" type="underline" show-underline show-icon icon="arrow-right" href="/arq/productos">Ver todos los productos</arq-button>
-  <div slot="results">…search-result, search-see-all…</div>
-</arq-search-sheet>
+<arq-navbar>…</arq-navbar>   <!-- search="sheet" es el valor por defecto: el navbar lo arma y lo alimenta -->
 ```
 
 ```js
-sheet.show(botonLupa); // el foco vuelve a botonLupa al cerrar
+sheet.recommended = [{ name, meta, href, image, imageHover, imageLit, imageHoverLit }];
+sheet.results = { query: 'kanu', total: 5, href: '/arq/productos?q=kanu', items: [{ kind: 'product' | 'collection', name, href, image }] };
+sheet.results = null;      // campo vacío: vuelven los recomendados
+sheet.show(botonLupa);     // el foco vuelve a botonLupa al cerrar
 ```
+
+## Estados (salen de los datos, no son props)
+
+| Estado | Cuándo | Contenido |
+| --- | --- | --- |
+| Recomendados | `results` es null | Título, product-card Small en una fila con scroll, button Underline «Ver todos los productos» |
+| Resultados | `results.items` con coincidencias | **Productos** ([search-result](../search-result/README.md) `type="simple"`: miniatura de 100, nombre en gris con lo que coincide en negro; 24 px entre filas) a la izquierda y, discretas, **Colecciones** ([search-collection](../search-collection/README.md): miniatura chica y nombre) a la derecha en Desktop; más search-see-all |
+| Sin resultados | `results.items` vacío | `search-dropdown state="no-results"` |
 
 ## Props
 
-| Atributo / slot | Valores |
+| Atributo | Valores |
 | --- | --- |
-| `state` | `recommended` (campo vacío), `results`, `no-results`. Lo pone quien lo usa |
 | `open` | booleano. Mejor `show(opener)` y `close()` |
+| `inline` | Solo demo: el panel queda en el flujo, abierto, sin scrim ni animación |
 | `label` | Nombre del diálogo. Por defecto "Buscar" |
-| `recommended-title` | Título de los recomendados. Por defecto "Productos recomendados" |
-| slot `recommended` | Tarjetas (product-card Size=Small) en una fila con scroll horizontal sin barra: 6 en Desktop, 4 en Tablet, 2 en Mobile, con la siguiente asomando |
-| slot `all` | El link a todos los productos (button Underline) |
-| slot `results` | Resultados. El navbar arma dos grupos: **Productos** (search-result `type="simple"`: miniatura y nombre, sin SKU) a la izquierda y **Colecciones** ([search-collection](../search-collection/README.md)) a la derecha en grilla; con un solo grupo, una columna; hasta 1023 px, apilados. Cierra con search-see-all, o `search-dropdown state="no-results"` |
+| `placeholder` | Por defecto "Buscar productos…" |
+| `recommended-title` | Por defecto "Productos recomendados" |
+| `all-href` · `all-label` | Link de los recomendados. Por defecto `/arq/productos` · "Ver todos los productos" |
 
 - **Diálogo modal nativo** (`<dialog>` + `showModal()`): foco en el campo, Esc / cruz / clic en el scrim cierran y emiten `arq:close`. La página de atrás no se desplaza (`scroll-lock`).
-- Baja con `@keyframes arq-search-sheet-in` (solo `transform`, `motion/duration/base`). No hay animación de cierre.
-- Los eventos del campo (`arq:input`, `arq:submit`, `arq:navigate`) salen del componente; `field` devuelve el search-field.
-- **Solo Desktop.** En Mobile el navbar sigue usando search-screen.
+- **Transición en capas** (menos de medio segundo, con `transition`; al cerrar, la misma al revés): la barra pasa de transparente a sólida, el panel se abre como una persiana (`grid-template-rows` 0fr → 1fr), el campo y el contenido bajan `space/gap/lg` a la par del panel, los productos llegan un instante después (fundido y `space/gap/sm` hacia abajo) y la página de atrás se aclara a medias con un velo `color/surface/faint` al 50 %. Detalle y tiempos en `search-sheet.css`. `close()` espera a que termine antes de cerrar el diálogo.
+- `over-photo` (lo pone el navbar): la barra estaba transparente sobre la foto del hero; el logo y la cruz arrancan en inverso y pasan a primary con la barra. Con la barra blanca, el sheet parte de ella sin saltos.
+- Los eventos del campo (`arq:input`, `arq:submit`, `arq:navigate`) salen del componente; `field` devuelve el search-field e `items` los resultados en orden (para ↑ / ↓).
+- **Responsive** por media query: Desktop desde 1024 px (6 tarjetas; Productos a la izquierda y Colecciones a la derecha), Tablet 768–1023 (4 tarjetas; grupos apilados) y Mobile hasta 767 (2 tarjetas, logo Small).
+
+## En el navbar
+
+`search="sheet"` (por defecto) o `search="inline"` (la versión anterior: campo en la barra con search-dropdown, y search-screen en Mobile). Los recomendados se piden a `getRecommendedProducts()` al acercarse a la lupa o al abrir (el catálogo tarda en cargar la primera vez); los resultados, a `searchProducts()` con debounce, como antes.
+
+## Demo
+
+`demo/index.html`, sección «search-sheet»: iframes de `demo/search-sheet.html` a 1440, 900 y 390 px (Recomendados, Resultados y Sin resultados), con datos de ejemplo. La búsqueda real se prueba con la lupa de los navbar de arriba.
 
 ## Tokens
 
 | Parte | Token |
 | --- | --- |
 | Panel | fondo `color/surface/default`, sin sombra |
-| Scrim | `color/overlay/scrim` |
-| Barra | alto `space/gap/md` × 2 + `icon/xl` (igual al navbar), margen `--page-gutter` |
+| Velo | `color/surface/faint` al 50 % (sin token de opacidad) |
+| Movimiento | `motion/duration/fast` (120) · `base` (200) · `slow` (320) con `motion/easing/standard`; con `prefers-reduced-motion` valen 0 |
+| Barra | alto `space/gap/md` × 2 + `icon/xl` (igual al navbar), margen `--page-gutter`; cruz: icon-button `size="large" background="none"` |
+| Campo | padding superior `space/gap/md` (1rem) |
 | Contenido | padding `space/gap/xl` arriba, `space/section/2xs` abajo, gap `space/gap/lg`; tarjetas con gap `space/gap/md` |
 | Título | `role/label`, `color/text/tertiary` |
-| Resultados | ancho máximo `layout/search-field` |
+| Resultados | gap entre filas de productos `space/gap/lg` (24); columna de colecciones `layout/search-field`; gap entre grupos `space/section/2xs` |
 
 ## TODO
 
-- Diseño en Figma (sheet, Mobile y Type=Line de search-field).
+- Diseño en Figma (sheet en los tres anchos, y las variantes de search-field, search-result y search-collection).
 - Criterio de «recomendados» (`getRecommendedProducts` en `src/data/catalog.js` toma hoy los primeros del catálogo con foto).
 - Animación de cierre, flechas del carrusel de recomendados.
+- Rendimiento: el catálogo tarda varios segundos en la primera carga; la búsqueda en vivo y los recomendados esperan ese tiempo.

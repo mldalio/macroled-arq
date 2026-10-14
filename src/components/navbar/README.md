@@ -53,6 +53,6 @@ Barra de navegación de Macroled Arq, primer elemento de todas las páginas: log
 - `TODO` (diseño) Confirmar la posición: sticky en Default y fixed en Transparent.
 - `TODO` (diseño) Foco sobre la foto (Transparent): `color/border/focus` se ve poco sobre una foto oscura.
 
-## Búsqueda como top sheet (prueba)
+## Búsqueda: top sheet (prueba)
 
-`search="sheet"` (valores: `inline` por defecto, `sheet`). En Desktop la lupa abre un [search-sheet](../search-sheet/README.md) en lugar de reemplazarse por el campo en la barra; en Mobile sigue la search-screen. No existe en Figma.
+`search` (valores: `sheet` por defecto, `inline`). Por defecto la lupa abre el [search-sheet](../search-sheet/README.md) en Desktop, Tablet y Mobile, en todas las páginas. `search="inline"` vuelve a la versión anterior: en Desktop el campo reemplaza a la lupa con search-dropdown, y en Mobile abre search-screen. No existe en Figma.

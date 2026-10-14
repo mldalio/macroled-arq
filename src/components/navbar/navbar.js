@@ -29,13 +29,19 @@
 // - Datos: la navegación (getNavigation) y la búsqueda (searchProducts) salen
 //   de src/data/catalog.js. Se piden al abrir Productos o al escribir, no al
 //   cargar la página. Decisión 2026-10-02 · navbar.
-// - search="sheet" (de prueba, no existe en Figma): en Desktop la lupa abre un
-//   top sheet (arq-search-sheet) en lugar del campo en la barra. Con el campo
-//   vacío muestra productos recomendados; al escribir, los productos y
-//   colecciones que coinciden. Mobile sigue con search-screen.
-// - Menú mobile y búsqueda mobile: diálogos modales nativos (foco adentro,
-//   Esc cierra, el foco vuelve al botón que los abrió). La página no tiene
-//   que bloquear el scroll (el diálogo ocupa la pantalla).
+// - Búsqueda (search, de código y de prueba: no existe en Figma): por defecto
+//   es el top sheet (arq-search-sheet) en Desktop, Tablet y Mobile. La lupa lo
+//   abre; con el campo vacío muestra productos recomendados y al escribir, los
+//   productos y colecciones que coinciden. search="inline" vuelve a la versión
+//   anterior (campo en la barra con search-dropdown, y search-screen en
+//   Mobile).
+// - Menú mobile y búsqueda: diálogos modales nativos (foco adentro, Esc
+//   cierra, el foco vuelve al botón que los abrió). La página no tiene que
+//   bloquear el scroll (el diálogo la contiene).
+// - El sheet se abre con una transición en capas (ver search-sheet.js). Si la
+//   barra estaba transparente sobre la foto, el sheet arranca igual
+//   (atributo over-photo) y se vuelve sólido; si ya era blanca, también
+//   parte de la misma barra.
 // - Mega-menu: Esc o un clic afuera lo cierran y el foco vuelve a Productos.
 
 import { ArqElement } from '../../base/arq-element.js';
@@ -53,8 +59,6 @@ import '../search-result/search-result.js';
 import '../search-see-all/search-see-all.js';
 import '../search-screen/search-screen.js';
 import '../search-sheet/search-sheet.js';
-import '../search-collection/search-collection.js';
-import '../product-card/product-card.js';
 import css from './navbar.css?inline';
 
 const MOBILE = matchMedia('(max-width: 767px)');
@@ -77,7 +81,7 @@ class ArqNavbar extends ArqElement {
     theme: { type: String, values: ['default', 'transparent'], default: 'default' }, // Theme
     mode: { type: String, values: ['default', 'search', 'menu', 'products', ...Object.keys(SUBMENUS)], default: 'default' }, // Mode (lo pone el componente)
     label: { type: String, default: 'Principal' }, // nombre del <nav>
-    search: { type: String, values: ['inline', 'sheet'], default: 'inline' }, // cómo se abre la búsqueda en Desktop (solo de código)
+    search: { type: String, values: ['inline', 'sheet'], default: 'sheet' }, // cómo se abre la búsqueda (solo de código)
   };
   static template =
     `<header class="navbar">` +
@@ -148,14 +152,15 @@ class ArqNavbar extends ArqElement {
       else this.#toggleMega(event.detail.open);
     });
 
-    // Búsqueda desktop
+    // Búsqueda desktop (o el sheet, en todos los anchos). Al acercarse a la lupa
+    // se piden los recomendados, para que el sheet ya los tenga al abrirse.
+    for (const button of root.querySelectorAll('.search-open, .search-open-mobile')) {
+      for (const type of ['pointerenter', 'focusin']) button.addEventListener(type, () => this.#loadRecommended(), { once: true });
+    }
     const sheet = root.querySelector('.search-sheet');
     root.querySelector('.search-open').addEventListener('click', (event) => {
       this.#setMode('search');
-      if (this.#sheetSearch) {
-        this.#ensureRecommended();
-        sheet.show(event.currentTarget);
-      }
+      if (this.#sheetSearch) this.#openSheet(event.currentTarget);
     });
     sheet.addEventListener('arq:close', (event) => {
       event.stopPropagation();
@@ -182,7 +187,8 @@ class ArqNavbar extends ArqElement {
     const screen = root.querySelector('.search-screen');
     root.querySelector('.search-open-mobile').addEventListener('click', (event) => {
       this.#setMode('search');
-      screen.show(event.currentTarget);
+      if (this.#sheetSearch) this.#openSheet(event.currentTarget);
+      else screen.show(event.currentTarget);
     });
     screen.addEventListener('arq:close', (event) => {
       event.stopPropagation();
@@ -280,7 +286,9 @@ class ArqNavbar extends ArqElement {
   // búsqueda desktop sigue sobre la foto; el menú mobile y
   // el mega-menu pasan a Default.
   #syncLinks() {
-    const overPhoto = this.mode === 'default' || (this.mode === 'search' && !MOBILE.matches);
+    // Con el sheet, la barra no cambia al abrir la búsqueda (en ningún ancho): queda
+    // debajo del sheet y se vuelve sólida con él, sin saltos de color.
+    const overPhoto = this.mode === 'default' || (this.mode === 'search' && (!MOBILE.matches || this.#sheetSearch));
     const inverse = this.theme === 'transparent' && overPhoto && !this.#scrolled && !this.#megaOpen;
     this.shadowRoot.querySelector('.navbar').classList.toggle('over-photo', inverse);
     for (const link of this.querySelectorAll('arq-nav-link')) link.theme = inverse ? 'inverse' : 'default';
@@ -348,9 +356,9 @@ class ArqNavbar extends ArqElement {
     return this.mode in SUBMENUS ? 'products' : 'menu';
   }
 
-  // Desktop con search="sheet": la búsqueda es el top sheet
+  // search="sheet" (por defecto): la búsqueda es el top sheet, en todos los anchos
   get #sheetSearch() {
-    return this.search === 'sheet' && !MOBILE.matches;
+    return this.search === 'sheet';
   }
 
   #menuOpener = null;
@@ -477,67 +485,31 @@ class ArqNavbar extends ArqElement {
     // Mobile: dentro de search-screen
     const screen = root.querySelector('.search-screen');
     screen.innerHTML = noResults ? `<arq-search-dropdown state="no-results" term="${esc(query)}"></arq-search-dropdown>` : rows;
-    this.#renderSheet(results, query, noResults);
+    // Sheet: arma sus grupos (productos y colecciones) con los resultados
+    root.querySelector('.search-sheet').results = { query, items: results, total, href: searchHref(query) };
     this.#announce();
   }
 
-  #renderSheet(results, query, noResults) {
+  // Productos recomendados del sheet: se piden una sola vez, al acercarse a la
+  // lupa o al abrirlo (el catálogo tarda en cargar la primera vez).
+  #loadRecommended() {
+    if (this.#recommended || this.search !== 'sheet') return;
     const sheet = this.shadowRoot.querySelector('.search-sheet');
-    const attrs = (r) => `href="${esc(r.href)}"${r.image ? ` image="${esc(r.image)}"` : ''}`;
-    // Productos: miniatura y nombre (search-result Type=Simple, sin SKU).
-    // Colecciones: search-collection, más grande y con imagen.
-    const product = (r) => `<arq-search-result type="simple" ${attrs(r)}>${esc(r.name)}</arq-search-result>`;
-    const collection = (r) => `<arq-search-collection ${attrs(r)}>${esc(r.name)}</arq-search-collection>`;
-    const products = results.filter((r) => r.kind !== 'collection');
-    const collections = results.filter((r) => r.kind === 'collection');
-    sheet.state = !query ? 'recommended' : noResults ? 'no-results' : 'results';
-    // Los hijos de slot="results" son el contenido del sheet; los recomendados (slot recommended / all) se dejan
-    for (const node of sheet.querySelectorAll(':scope > [slot="results"]')) node.remove();
-    if (!query) return;
-    const seeAll = `<arq-search-see-all href="${esc(searchHref(query))}" term="${esc(query)}" count="${results.length}"></arq-search-see-all>`;
-    const wrapper = document.createElement('div');
-    wrapper.slot = 'results';
-    wrapper.className = 'sheet-results';
-    wrapper.classList.toggle('has-both', products.length > 0 && collections.length > 0);
-    wrapper.innerHTML = noResults
-      ? `<arq-search-dropdown state="no-results" term="${esc(query)}"></arq-search-dropdown>`
-      : (products.length ? `<section class="result-group result-products"><h3 class="group-title role-label">Productos</h3>${products.map(product).join('')}${seeAll}</section>` : '') +
-        (collections.length
-          ? `<section class="result-group"><h3 class="group-title role-label">Colecciones</h3><div class="collections">${collections.map(collection).join('')}</div>${products.length ? '' : seeAll}</section>`
-          : '');
-    sheet.append(wrapper);
-  }
-
-  // Productos recomendados (campo vacío): se piden la primera vez que se abre el sheet
-  #ensureRecommended() {
-    if (this.#recommended) return;
     this.#recommended = getRecommendedProducts()
-      .then((cards) => {
-        const sheet = this.shadowRoot.querySelector('.search-sheet');
-        sheet.querySelectorAll(':scope > [slot="recommended"], :scope > [slot="all"]').forEach((node) => node.remove());
-        if (!cards.length) return;
-        sheet.append(
-          ...cards.map(({ name, meta, href, image, imageHover, imageLit, imageHoverLit }) => {
-            const card = document.createElement('arq-product-card');
-            Object.assign(card, { slot: 'recommended', size: 'small', href, image, imageHover, imageLit, imageHoverLit });
-            card.innerHTML = `<h3 slot="name">${esc(name)}</h3>${meta ? `<span slot="meta">${esc(meta)}</span>` : ''}`;
-            return card;
-          }),
-        );
-        const all = document.createElement('arq-button');
-        all.slot = 'all';
-        all.setAttribute('type', 'underline');
-        all.setAttribute('show-underline', '');
-        all.setAttribute('show-icon', '');
-        all.setAttribute('icon', 'arrow-right');
-        all.setAttribute('href', '/arq/productos');
-        all.textContent = 'Ver todos los productos';
-        sheet.append(all);
-      })
+      .then((cards) => (sheet.recommended = cards))
       .catch((error) => {
         this.#recommended = null;
         console.error('[arq] navbar: no se pudieron cargar los recomendados', error);
       });
+  }
+
+  // over-photo: la barra está transparente sobre la foto del hero; el sheet arranca
+  // igual (logo y cruz en inverso) y se vuelve sólido con la transición.
+  #openSheet(opener) {
+    this.#loadRecommended();
+    const sheet = this.shadowRoot.querySelector('.search-sheet');
+    sheet.toggleAttribute('over-photo', this.shadowRoot.querySelector('.navbar').classList.contains('over-photo'));
+    sheet.show(opener);
   }
 
   #showResults(show) {
@@ -556,8 +528,9 @@ class ArqNavbar extends ArqElement {
 
   #resultElements() {
     const root = this.shadowRoot;
-    const container = MOBILE.matches ? root.querySelector('.search-screen') : this.#sheetSearch ? root.querySelector('.search-sheet') : root.querySelector('.search-dropdown');
-    return [...container.querySelectorAll('arq-search-result, arq-search-collection')];
+    if (this.#sheetSearch) return root.querySelector('.search-sheet').items;
+    const container = MOBILE.matches ? root.querySelector('.search-screen') : root.querySelector('.search-dropdown');
+    return [...container.querySelectorAll('arq-search-result')];
   }
 
   #move(step) {
@@ -565,7 +538,7 @@ class ArqNavbar extends ArqElement {
     if (!items.length) return;
     this.#active = this.#active < 0 && step < 0 ? items.length - 1 : (this.#active + step + items.length) % items.length;
     items.forEach((item, i) => (item.active = i === this.#active));
-    if (!MOBILE.matches) this.#showResults(true);
+    if (!MOBILE.matches && !this.#sheetSearch) this.#showResults(true);
     this.#announce();
   }
 

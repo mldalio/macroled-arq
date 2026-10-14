@@ -238,47 +238,6 @@
   }
 }
 
-/* search-sheet (search="sheet"): resultados. Productos a la izquierda, con el
-   ancho de layout/search-field (el de search-dropdown), y Colecciones a la
-   derecha en una grilla de search-collection (mínimo layout/card-min). Con un
-   solo grupo, una columna. Entre grupos, space/section/2xs. Hasta 1023 px,
-   apilados. */
-.sheet-results {
-  display: grid;
-  gap: var(--arq-space-section-2xs);
-}
-
-.sheet-results.has-both {
-  grid-template-columns: minmax(0, var(--arq-layout-search-field)) minmax(0, 1fr);
-}
-
-@media (max-width: 1023px) {
-  .sheet-results.has-both {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-.result-group {
-  min-width: 0;
-}
-
-/* Productos solos: la lista no se estira a todo el ancho */
-.sheet-results:not(.has-both) .result-products {
-  max-width: var(--arq-layout-search-field);
-}
-
-/* Título de grupo: role/label en color/text/tertiary */
-.group-title {
-  margin: 0 0 var(--arq-space-gap-sm);
-  color: var(--arq-color-text-tertiary);
-}
-
-.collections {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(var(--arq-layout-card-min), 1fr));
-  gap: var(--arq-space-gap-lg);
-}
-
 /* Impresión (comparativa: "Imprimir comparación", window.print): solo el
    logo, en el flujo de la página y sin fondo translúcido ni línea. */
 @media print {

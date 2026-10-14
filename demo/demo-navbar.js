@@ -24,3 +24,12 @@ document.querySelector('[data-demo-search-screen]')?.addEventListener('click', (
   screen.field.value = 'kanu';
   screen.show(event.currentTarget);
 });
+
+// search-sheet: cada iframe se ajusta al alto de su panel (lo avisa
+// demo/demo-search-sheet.js con postMessage).
+window.addEventListener('message', (event) => {
+  if (event.origin !== location.origin || typeof event.data?.arqSheetHeight !== 'number') return;
+  for (const frame of document.querySelectorAll('[data-demo-sheet] iframe')) {
+    if (frame.contentWindow === event.source) frame.height = String(event.data.arqSheetHeight + 2);
+  }
+});

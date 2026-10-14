@@ -716,3 +716,43 @@
   display: grid;
   max-width: var(--arq-layout-measure);
 }
+
+/* search-sheet: versiones por ancho, en iframes de demo/search-sheet.html */
+.demo-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-md);
+}
+
+.demo-sheet-title {
+  margin: var(--arq-space-gap-lg) 0 0;
+  color: var(--arq-color-text-tertiary);
+}
+
+.demo-sheet-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-lg);
+  padding-bottom: var(--arq-space-gap-sm);
+  overflow-x: auto;
+}
+
+.demo-sheet-frame {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xs);
+  margin: 0;
+  color: var(--arq-color-text-tertiary);
+}
+
+.demo-sheet-frame iframe {
+  display: block;
+  border: var(--arq-border-default) solid var(--arq-color-border-default);
+  background: var(--arq-color-surface-default);
+}
+
+/* Desktop: un iframe de 1440 px por fila (se desplaza si la ventana es más angosta) */
+.demo-sheet-row--stack {
+  flex-direction: column;
+}

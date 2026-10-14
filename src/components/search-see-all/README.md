@@ -25,3 +25,7 @@
 | --- | --- |
 | Fila | padding `space/gap/sm` × `space/padding/md`, gap `space/gap/md` |
 | Íconos | `icon/md` en `color/icon/tertiary` |
+
+## Type (solo de código)
+
+`type="simple"` (lo usa el [search-sheet](../search-sheet/README.md)): sin la lupa y con la flecha pegada al texto, no al extremo derecho; hover sin fondo y con el texto en `color/text/primary`. Por defecto `default`. No está en Figma (TODO).

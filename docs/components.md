@@ -555,14 +555,14 @@ Desplegable de resultados en desktop. State: Results · No results. Aparece deba
 
 - Figma: **no existe** (componente de prueba)
 
-Resultado de búsqueda de una colección: imagen ratio/landscape, etiqueta «Colección», nombre en role/heading-3 y flecha. Más llamativo que search-result; va en el search-sheet.
+Resultado de búsqueda de una colección, discreto: miniatura chica (layout/search-thumb) y nombre, con lo que coincide con la búsqueda en color/text/primary y el resto en tertiary. Va a la derecha del search-sheet en Desktop.
 
 ## search-sheet
 
 - Figma: **no existe** (componente de prueba)
-- Código: `search` = `sheet` en navbar; `type` = `line` en search-field
+- Código: es la búsqueda del navbar (`search="sheet"`, por defecto); `type="line"` en search-field; demo en Desktop, Tablet y Mobile en demo/index.html
 
-Búsqueda de Desktop como top sheet que baja desde arriba con scrim: barra (logo + cerrar), search-field Type=Line y, con el campo vacío, productos recomendados (product-card Small en una fila con scroll) y un button Underline «Ver todos los productos»; al escribir, los productos y colecciones que coinciden. Los resultados van en dos grupos: Productos (search-result Type=Simple, sin SKU) y Colecciones (search-collection). Mobile sigue con search-screen. TODO: diseñarlo en Figma.
+Búsqueda del sitio como top sheet que baja desde arriba con scrim: barra (logo + cerrar), search-field Type=Line y, con el campo vacío, productos recomendados (product-card Small en una fila con scroll) y un button Underline «Ver todos los productos»; al escribir, los productos y colecciones que coinciden. Los resultados van en dos grupos: Productos (search-result Type=Simple: miniatura de 100 y nombre en gris con lo que coincide en negro; hover en negro) y, discretas, Colecciones (search-collection) a la derecha en Desktop. Desktop, Tablet y Mobile (el navbar con search="inline" conserva search-dropdown y search-screen). TODO: diseñarlo en Figma.
 
 ## search-field
 

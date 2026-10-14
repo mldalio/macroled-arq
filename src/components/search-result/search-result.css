@@ -75,10 +75,38 @@
   height: var(--arq-icon-md);
 }
 
-/* Type=Simple (solo de código): miniatura y nombre, sin SKU, flecha ni línea.
-   El nombre pasa a role/body-regular (el de los links de lista) */
+/* Type=Simple (solo de código): miniatura cuadrada grande y nombre, sin SKU,
+   flecha ni línea. La miniatura es layout/table-thumb (100) y en Mobile
+   layout/gallery-thumb (76). TODO (diseño): token propio para esta miniatura.
+   El nombre va en color/text/tertiary; lo que coincide con la búsqueda, en
+   color/text/primary con más peso (role/body-medium, que ya viene en la marca).
+   Hover, Focus y Active: todo el nombre en color/text/primary, sin fondo. */
 :host([type='simple']) .result {
+  gap: var(--arq-space-gap-lg);
+  padding-block: 0;
   border-bottom: 0;
+  background: none;
+}
+
+:host([type='simple']) .result[href]:hover,
+:host([type='simple']) .result.active {
+  background: none;
+}
+
+:host([type='simple']) .result:focus-visible {
+  outline-offset: 2px;
+}
+
+:host([type='simple']) .thumb {
+  width: var(--arq-layout-table-thumb);
+  height: var(--arq-layout-table-thumb);
+}
+
+@media (max-width: 767px) {
+  :host([type='simple']) .thumb {
+    width: var(--arq-layout-gallery-thumb);
+    height: var(--arq-layout-gallery-thumb);
+  }
 }
 
 :host([type='simple']) .meta,
@@ -87,5 +115,20 @@
 }
 
 :host([type='simple']) .name {
-  font-weight: var(--arq-font-weight-regular);
+  color: var(--arq-color-text-tertiary);
+  transition: color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);
+}
+
+.name.has-marks slot {
+  display: none;
+}
+
+.match {
+  color: var(--arq-color-text-primary);
+}
+
+:host([type='simple']) .result[href]:hover .name,
+:host([type='simple']) .result.active .name,
+:host([type='simple']) .result:focus-visible .name {
+  color: var(--arq-color-text-primary);
 }

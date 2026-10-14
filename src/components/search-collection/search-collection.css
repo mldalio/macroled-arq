@@ -5,11 +5,12 @@
   min-width: 0;
 }
 
+/* Miniatura y nombre, gap space/gap/md */
 .card {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: var(--arq-space-gap-md);
-  color: var(--arq-color-text-primary);
+  color: var(--arq-color-text-tertiary);
   text-decoration: none;
 }
 
@@ -19,68 +20,39 @@
   outline-offset: 2px;
 }
 
-/* Imagen ratio/landscape (5:4), fondo color/surface/subtle */
-.media {
-  display: block;
-  aspect-ratio: 5 / 4;
+/* Miniatura cuadrada layout/search-thumb, fondo color/surface/subtle */
+.thumb {
+  flex: none;
+  width: var(--arq-layout-search-thumb);
+  height: var(--arq-layout-search-thumb);
   background: var(--arq-color-surface-subtle);
 }
 
-.media img {
+.thumb img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.media img:not([src]) {
-  visibility: hidden;
-}
-
-/* Etiqueta y nombre a la izquierda, flecha a la derecha */
-.info {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--arq-space-gap-md);
-}
-
-.text {
-  display: flex;
-  flex-direction: column;
-  gap: var(--arq-space-gap-xs);
-  min-width: 0;
-}
-
-.eyebrow {
-  color: var(--arq-color-text-tertiary);
-}
-
+/* Nombre en color/text/tertiary; lo que coincide, en color/text/primary
+   (role/body-medium viene en la marca). Hover, Focus y Active: todo en primary */
 .name {
+  min-width: 0;
   overflow-wrap: break-word;
+  transition: color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);
 }
 
-.arrow {
-  display: inline-flex;
-  flex: none;
-  color: var(--arq-color-icon-primary);
-  transition: transform var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);
+.name.has-marks slot {
+  display: none;
 }
 
-.icon {
-  width: var(--arq-icon-xl);
-  height: var(--arq-icon-xl);
+.match {
+  color: var(--arq-color-text-primary);
 }
 
-/* Hover y Active: nombre subrayado (border/default) y flecha un paso a la derecha */
 .card[href]:hover .name,
+.card:focus-visible .name,
 .card.active .name {
-  text-decoration: underline;
-  text-decoration-thickness: var(--arq-border-default);
-  text-underline-offset: var(--arq-space-gap-xs);
-}
-
-.card[href]:hover .arrow,
-.card.active .arrow {
-  transform: translateX(var(--arq-space-gap-xs));
+  color: var(--arq-color-text-primary);
 }

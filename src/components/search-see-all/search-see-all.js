@@ -9,6 +9,8 @@
 //   color/text/primary (el set usa Medium; la descripción dice SemiBold:
 //   manda el set).
 // - Íconos (lupa y flecha) en color/icon/tertiary.
+// - Type: default o simple (solo de código, para el search-sheet): sin la lupa y
+//   con la flecha pegada al texto, no al extremo derecho. TODO (diseño).
 // - State: Hover (:hover, fondo color/surface/hover) y Focus (:focus-visible).
 
 import { ArqElement } from '../../base/arq-element.js';
@@ -19,6 +21,7 @@ class ArqSearchSeeAll extends ArqElement {
   static tag = 'arq-search-see-all';
   static styles = css;
   static properties = {
+    type: { type: String, values: ['default', 'simple'], default: 'default' }, // Type (solo de código)
     href: { type: String },
     term: { type: String, default: '' },
     count: { type: Number },

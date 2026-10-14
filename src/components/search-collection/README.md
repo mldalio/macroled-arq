@@ -1,23 +1,24 @@
 # search-collection · `<arq-search-collection>` (prueba)
 
-Resultado de búsqueda de una **colección**, más llamativo que search-result: imagen grande (`ratio/landscape`), etiqueta «Colección», nombre en `role/heading-3` y flecha. Va en el slot `results` del [search-sheet](../search-sheet/README.md).
+Resultado de búsqueda de una **colección**, discreto: miniatura muy chica y nombre. Va en el grupo «Colecciones» del [search-sheet](../search-sheet/README.md), a la derecha en Desktop; la jerarquía la llevan los productos.
 
 > **Componente de prueba: no existe en Figma** (TODO diseño).
 
 ```html
-<arq-search-collection href="/arq/coleccion/kanu" image="…">Kanu</arq-search-collection>
+<arq-search-collection href="/arq/coleccion/kanu" image="…" term="ka">Kanu</arq-search-collection>
 ```
 
 | Atributo / slot | Valores |
 | --- | --- |
 | slot por defecto | Nombre de la colección |
-| `href` | Destino. Toda la tarjeta es un link |
-| `image` | Foto. Sin imagen, fondo `color/surface/subtle` |
+| `href` | Destino. Todo es un link |
+| `image` | Miniatura. Sin imagen queda el recuadro gris (`color/surface/subtle`) |
+| `term` | Lo que escribió el usuario, para resaltar |
 | `active` | booleano · elegido con ↑ / ↓ (lo pone el navbar) |
 
-- Hover y Active: nombre subrayado y flecha un paso a la derecha (`transform`). Focus: anillo separado (`color/border/focus`, offset 2).
+- Nombre en `color/text/tertiary`; lo que coincide con `term`, en `color/text/primary` con más peso ([`src/base/highlight.js`](../../base/highlight.js)). Sin coincidencia, todo en tertiary. Hover, Focus y Active: todo el nombre en primary.
 - Mismo contrato que search-result para el navbar: `active` y `click()`.
 
 ## Tokens
 
-Imagen `ratio/landscape`, gap `space/gap/md`, etiqueta `role/label` en `color/text/tertiary`, nombre `role/heading-3`, flecha `icon/xl`, subrayado `border/default`.
+Miniatura `layout/search-thumb` (48), gap `space/gap/md`, texto `role/body-regular` (la marca, `role/body-medium`), foco con anillo separado (`color/border/focus`, offset 2).

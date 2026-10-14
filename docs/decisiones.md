@@ -644,3 +644,31 @@ El servidor de Typesense es lento (4–5 s al primer byte y ~5 KB/s, sin gzip) y
 - **Regla:** un campo nuevo que use una pantalla se agrega a `LIGHT_FIELDS` o `DETAIL_FIELDS`; si no, llega vacío sin error.
 - **Pendiente (servidor):** activar gzip en nginx (el JSON con claves repetidas baja ~90 %) y revisar por qué un documento tarda 4 s. Si hace falta más: pedir los campos técnicos que solo usan la Comparativa y el PDF por SKU, o generar un `catalogo.json` estático en la sincronización Sheets → Typesense.
 - **Siguiente paso (pendiente):** una consulta por pantalla, con el listado de Productos pidiendo solo los SKU predeterminados de Luminaria. Diseño en `docs/consultas-typesense.md`, a retomar cuando n8n sincronice el schema nuevo.
+
+## 2026-10-14 · El search-sheet pasa a ser la búsqueda del navbar
+
+El top sheet deja de ser opt-in: `<arq-navbar>` usa `search="sheet"` por defecto, en Desktop, Tablet y Mobile y en todas las páginas. `search="inline"` conserva la versión anterior (campo en la barra + search-dropdown, y search-screen en Mobile), que queda como respaldo mientras el sheet no esté en Figma.
+
+- **El sheet dibuja su contenido:** se alimenta con `sheet.recommended` y `sheet.results` (ya no por slots), así se muestra igual en el navbar y en la demo. `inline` es solo para la demo.
+- **Demo:** sección «search-sheet» de `demo/index.html` con iframes de `demo/search-sheet.html` a 1440, 900 y 390 px (datos de ejemplo).
+- **Rendimiento:** el catálogo tarda varios segundos en cargar la primera vez. El navbar pide los recomendados al acercarse a la lupa para que el sheet ya los tenga al abrirse.
+- **Pendiente:** diseño en Figma (sheet, Type=Line, Type=Simple, search-collection) y Mobile definitivo.
+
+## 2026-10-14 · search-sheet: jerarquía de resultados
+
+- **Productos primero:** miniatura de 100 (`layout/table-thumb`; en Mobile `layout/gallery-thumb`, 76), 24 px entre filas (`space/gap/lg`) y el nombre en gris (`color/text/tertiary`) con lo que coincide con la búsqueda en `color/text/primary` y más peso. Si nada coincide, todo en gris. Hover, Focus y Active: todo el nombre en primary, sin fondo ni cambio de peso. Resaltado en `src/base/highlight.js` (sin tildes ni mayúsculas).
+- **Colecciones discretas:** miniatura de 48 y nombre con el mismo tratamiento, a la derecha en Desktop; debajo de los productos en Tablet y Mobile. Se reemplaza la card grande anterior.
+- **Cruz** del sheet: icon-button `size="large" background="none"`. Campo con padding superior `space/gap/md`.
+- **Sin Dark:** el sheet deja de mostrarse en Dark en la demo. Pendiente de limpieza: revisar qué otros componentes tienen versión Dark sin necesitarla.
+- **Pendiente de Figma:** token propio para la miniatura de 100 (hoy se reusa `layout/table-thumb` y `layout/gallery-thumb`).
+
+## 2026-10-14 · search-sheet: transición en capas
+
+El sheet se abre y se cierra con una transición suave (referencia: occhio.com), menos de medio segundo en total y con `transition` (no keyframes), así el cierre es la misma animación al revés:
+
+- **Velo:** la página de atrás se aclara a medias (`color/surface/faint` al 50 %) en lugar del scrim oscuro.
+- **Barra:** de transparente a sólida. Con la barra transparente sobre el hero (Home al cargar) el sheet arranca igual (logo y cruz en inverso) y se vuelve sólido; con la barra blanca parte de ella. El navbar no cambia al abrir la búsqueda en ningún ancho, para que no haya saltos de color debajo.
+- **Panel:** persiana con `grid-template-rows` 0fr → 1fr. Campo y contenido bajan mientras se hacen visibles; productos y resultados llegan un instante después con fundido y un movimiento corto hacia abajo.
+- **Tiempos:** se usan los tokens de movimiento (fast 120, slow 320 ms, easing standard) y `--sheet-slow` (slow × 1.25 = 400 ms, la del panel y los movimientos largos) en lugar de los valores de la referencia (400/200/375/500/250 ms). Tras probarla se alargó un poco y se unió el movimiento del contenido con el del panel, para que no quede un movimiento suelto al final. TODO: si hace falta clavar esos tiempos, proponer tokens de movimiento nuevos.
+- **Excepción a DESIGN.md §6:** la persiana anima `grid-template-rows` (alto), que §6 prohíbe; se hizo a pedido. Revisar si se adopta o se cambia a transform.
+- Cierre: `close()` espera la transición (`motion/duration/slow`; 0 con reduced motion) y recién ahí cierra el diálogo. Los resultados no se redibujan mientras cierra.

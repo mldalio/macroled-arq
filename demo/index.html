@@ -1487,7 +1487,7 @@
 
       <section class="demo-section" aria-labelledby="demo-navbar">
         <h2 id="demo-navbar" class="demo-heading role-label">navbar · &lt;arq-navbar&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 753:2907. Productos abre el mega-menu (Desktop) o el submenú (Mobile, con «volver»): ahí cada fila (Interior, Exterior, Lámparas y artefactos, Colecciones) abre su propio submenú (Mode=Interior, Exterior, Lámparas y artefactos y Colecciones; probar con «Ver a 390»). «Volver» y Esc suben un nivel. La lupa abre la búsqueda: escribí «kanu», «jardín» o un SKU; ↑ ↓ eligen y Enter abre; Esc cierra. Datos del catálogo: Typesense. En la demo la barra no queda fija.</p>
+        <p class="demo-note role-body-sm">Figma 753:2907. Productos abre el mega-menu (Desktop) o el submenú (Mobile, con «volver»): ahí cada fila (Interior, Exterior, Lámparas y artefactos, Colecciones) abre su propio submenú (Mode=Interior, Exterior, Lámparas y artefactos y Colecciones; probar con «Ver a 390»). «Volver» y Esc suben un nivel. La lupa abre la búsqueda (search-sheet, más abajo; en todos los anchos): escribí «kanu», «jardín» o un SKU; ↑ ↓ eligen y Enter abre; Esc cierra. <code>search="inline"</code> vuelve a la versión anterior (campo en la barra con search-dropdown, y search-screen en Mobile). Datos del catálogo: Typesense. En la demo la barra no queda fija.</p>
         <div class="demo-navbar">
           <arq-navbar>
             <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
@@ -1517,14 +1517,28 @@
 
       <section class="demo-section" aria-labelledby="demo-search-sheet">
         <h2 id="demo-search-sheet" class="demo-heading role-label">search-sheet · &lt;arq-search-sheet&gt; (prueba)</h2>
-        <p class="demo-note role-body-sm">Componente de prueba, sin set en Figma. Con <code>search="sheet"</code> en el navbar, la lupa abre en Desktop un top sheet: campo Type=Line y, con el campo vacío, productos recomendados con «Ver todos los productos»; al escribir (kanu, jardín, un SKU), los productos y colecciones que coinciden. ↑ ↓ eligen, Enter abre, Esc, la cruz o un clic en el scrim cierran. En Mobile sigue la search-screen.</p>
-        <div class="demo-navbar">
-          <arq-navbar search="sheet" label="Principal (search-sheet)">
-            <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
-            <arq-nav-link slot="links" href="#demo-search-sheet">Descargas</arq-nav-link>
-            <arq-nav-link slot="links" href="#demo-search-sheet">Contacto</arq-nav-link>
-          </arq-navbar>
-          <div class="demo-placeholder role-body-sm">Contenido de la página</div>
+        <p class="demo-note role-body-sm">Sin set en Figma todavía. Es la búsqueda del navbar en todos los anchos: la lupa del navbar de arriba lo abre (↑ ↓ eligen, Enter abre, Esc, la cruz o un clic en el scrim cierran). Cada versión es un iframe de <a href="/demo/search-sheet.html">demo/search-sheet.html</a> al ancho real (1440, 900 y 390 px), para que usen sus media queries; el panel se muestra en el flujo (atributo <code>inline</code>). Los datos de los tres estados son de ejemplo (fixtures): así no dependen de Typesense y se ven siempre iguales. Para probar con datos reales (recomendados y búsqueda en vivo), usá el navbar de arriba.</p>
+
+        <div class="demo-sheet" data-demo-sheet>
+          <h3 class="demo-sheet-title role-label">Desktop · 1440 px</h3>
+          <div class="demo-sheet-row demo-sheet-row--stack">
+            <figure class="demo-sheet-frame"><figcaption class="role-body-sm">Recomendados</figcaption><iframe title="search-sheet Desktop, recomendados" src="/demo/search-sheet.html?state=recommended" width="1440" height="640" loading="lazy"></iframe></figure>
+            <figure class="demo-sheet-frame"><figcaption class="role-body-sm">Resultados (productos y colecciones)</figcaption><iframe title="search-sheet Desktop, resultados" src="/demo/search-sheet.html?state=results" width="1440" height="560" loading="lazy"></iframe></figure>
+            <figure class="demo-sheet-frame"><figcaption class="role-body-sm">Sin resultados</figcaption><iframe title="search-sheet Desktop, sin resultados" src="/demo/search-sheet.html?state=none" width="1440" height="360" loading="lazy"></iframe></figure>
+          </div>
+
+          <h3 class="demo-sheet-title role-label">Tablet · 900 px</h3>
+          <div class="demo-sheet-row">
+            <figure class="demo-sheet-frame"><figcaption class="role-body-sm">Recomendados</figcaption><iframe title="search-sheet Tablet, recomendados" src="/demo/search-sheet.html?state=recommended" width="900" height="640" loading="lazy"></iframe></figure>
+            <figure class="demo-sheet-frame"><figcaption class="role-body-sm">Resultados</figcaption><iframe title="search-sheet Tablet, resultados" src="/demo/search-sheet.html?state=results" width="900" height="800" loading="lazy"></iframe></figure>
+          </div>
+
+          <h3 class="demo-sheet-title role-label">Mobile · 390 px</h3>
+          <div class="demo-sheet-row">
+            <figure class="demo-sheet-frame"><figcaption class="role-body-sm">Recomendados</figcaption><iframe title="search-sheet Mobile, recomendados" src="/demo/search-sheet.html?state=recommended" width="390" height="640" loading="lazy"></iframe></figure>
+            <figure class="demo-sheet-frame"><figcaption class="role-body-sm">Resultados</figcaption><iframe title="search-sheet Mobile, resultados" src="/demo/search-sheet.html?state=results" width="390" height="800" loading="lazy"></iframe></figure>
+            <figure class="demo-sheet-frame"><figcaption class="role-body-sm">Sin resultados</figcaption><iframe title="search-sheet Mobile, sin resultados" src="/demo/search-sheet.html?state=none" width="390" height="360" loading="lazy"></iframe></figure>
+          </div>
         </div>
       </section>
 
@@ -1606,7 +1620,7 @@
 
       <section class="demo-section" aria-labelledby="demo-search-dropdown">
         <h2 id="demo-search-dropdown" class="demo-heading role-label">search-dropdown · search-screen</h2>
-        <p class="demo-note role-body-sm">Figma 796:2271 y 796:2351. Results y No results (ancho layout/search-field). search-screen es la búsqueda de Mobile a pantalla completa: «Abrir search-screen» la muestra con resultados de ejemplo; volver o Esc la cierran.</p>
+        <p class="demo-note role-body-sm">Figma 796:2271 y 796:2351. Results y No results (ancho layout/search-field). search-dropdown y search-screen son la búsqueda anterior del navbar (<code>search="inline"</code>); hoy el navbar usa el search-sheet. search-screen es la búsqueda de Mobile a pantalla completa: «Abrir search-screen» la muestra con resultados de ejemplo; volver o Esc la cierran.</p>
         <div class="demo-search">
           <arq-search-dropdown term="kanu">
             <arq-search-result href="#demo-search-dropdown" image="/demo/fixtures/img/card-estudio.svg">Kanu Jardín<span slot="meta">KANU-J-500-12W-N-WW</span></arq-search-result>

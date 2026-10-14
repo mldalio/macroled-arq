@@ -1,12 +1,12 @@
-/* search-sheet · componente de prueba. Solo tokens semánticos. */
+/* search-sheet · componente de prueba. Solo tokens semánticos. Desktop es la
+   base; Tablet hasta 1023 px y Mobile hasta 767 px (media query). */
 
 :host {
   display: contents;
 }
 
 /* <dialog> sin los estilos del navegador: pegado arriba, a todo el ancho y
-   hasta 100dvh (si el contenido no entra, scrollea adentro). Sin sombra:
-   se separa de la página por el scrim. */
+   hasta 100dvh (si el contenido no entra, scrollea adentro). Sin sombra. */
 .dialog {
   box-sizing: border-box;
   inset: 0 0 auto 0;
@@ -22,45 +22,144 @@
   overflow: hidden;
 }
 
+/* ── Transición en capas (menos de medio segundo) ─────────────────────────
+   Todas con motion/easing/standard (frena suave al final). Duraciones: fast
+   120 · slow 320 ms y --sheet-slow (slow × 1.25 = 400 ms, la del panel y
+   los movimientos largos); con prefers-reduced-motion valen 0. El
+   estado inicial es el de arriba y .is-open (lo pone el componente) es el
+   final; al sacarlo, todo vuelve al revés. Las demoras viven solo en
+   .is-open: al cerrar, todo arranca a la vez.
+
+   1. Velo: la página de atrás se aclara a medias (color/surface/faint al 50 %).
+   2. Barra: de transparente a sólida (color/surface/default).
+   3. Panel: se abre como una persiana, grid-template-rows 0fr → 1fr.
+   4. Campo y contenido: bajan space/gap/lg a la par del panel (mismo tiempo,
+      así no queda un movimiento suelto al final) mientras se hacen visibles.
+   5. Productos y resultados: un instante después (fast), con fundido y un
+      movimiento corto hacia abajo de space/gap/sm, los dos en --sheet-slow.
+   TODO (diseño/motion): DESIGN.md §6 dice que solo se anima opacity,
+   transform y colores; la persiana anima grid-template-rows, a pedido (como
+   occhio.com). Valores de la referencia: panel 400 ms, contenido 200/375 ms,
+   productos 500/250 ms, velo 400 ms, header 500 ms: se llevaron a los tokens
+   de movimiento más cercanos; --sheet-slow se deriva de ellos. */
 .dialog::backdrop {
-  background: var(--arq-color-overlay-scrim);
+  background: var(--arq-color-surface-faint);
+  opacity: 0; /* sin token de opacidad: 0 → 0.5 */
+  transition: opacity var(--sheet-slow) var(--arq-motion-easing-standard);
 }
 
-/* Baja desde arriba: solo transform (DESIGN.md §6 · Movimiento) */
-.dialog[open] .sheet {
-  animation: arq-search-sheet-in var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
+.dialog.is-open::backdrop {
+  opacity: 0.5;
 }
 
-@keyframes arq-search-sheet-in {
-  from {
-    transform: translateY(-100%);
-  }
+/* Mientras abre o cierra, nada recibe clics */
+.dialog:not(.is-open) {
+  pointer-events: none;
 }
 
+/* Persiana: la fila de abajo (el panel) pasa de 0fr a 1fr; la de arriba es la barra */
 .sheet {
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 0fr;
+  align-content: start; /* la fila de la barra no se estira mientras la persiana se abre */
   max-height: 100dvh;
-  background: var(--arq-color-surface-default);
+  transition: grid-template-rows var(--sheet-slow) var(--arq-motion-easing-standard);
+}
+
+.dialog.is-open .sheet {
+  grid-template-rows: auto 1fr;
 }
 
 /* Barra: mismo alto que la del navbar (space/gap/md × 2 + icon/xl) y mismo
-   margen lateral (--page-gutter), logo a la izquierda y cruz a la derecha */
+   margen lateral (--page-gutter), logo a la izquierda y cruz a la derecha.
+   Arranca transparente (debajo sigue la barra del navbar, igual de transparente
+   sobre la foto o blanca) y se vuelve sólida; el color pasa con ella. */
 .bar {
   box-sizing: border-box;
   display: flex;
-  flex: none;
   align-items: center;
   justify-content: space-between;
-  height: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
+  height: var(--bar-height);
   padding: 0 var(--page-gutter);
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-primary);
+  transition-property: background-color, color;
+  transition-duration: var(--sheet-slow);
+  transition-timing-function: var(--arq-motion-easing-standard);
 }
 
-/* Campo Type=Line, a todo el ancho de la página */
+.dialog.is-open .bar {
+  background: var(--arq-color-surface-default);
+}
+
+/* Barra transparente sobre la foto del hero (la pone el navbar): logo y cruz
+   arrancan en inverso */
+:host([over-photo]) .dialog:not(.is-open) .bar {
+  color: var(--arq-color-text-inverse);
+}
+
+/* El logo toma el color de la barra (por defecto trae el suyo) */
+.logo {
+  flex: none;
+  color: inherit;
+}
+
+/* Cruz: icon-button Large sin fondo (48). Toma el color de la barra (así pasa
+   de inverso a primary con ella) y se corre space/padding/sm-md hacia afuera
+   para que el ícono quede alineado con el margen de la página */
+.close {
+  color: inherit;
+  margin-inline-end: calc(var(--arq-space-padding-sm-md) * -1);
+}
+
+/* Panel: fondo sólido, recortado mientras la persiana se abre */
+.drawer {
+  min-height: 0;
+  overflow: hidden;
+  background: var(--arq-color-surface-default);
+}
+
+.drawer-inner {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100dvh - var(--bar-height));
+  opacity: 0;
+  transform: translateY(calc(var(--arq-space-gap-lg) * -1));
+  transition-property: opacity, transform;
+  transition-duration: var(--arq-motion-duration-slow), var(--sheet-slow);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+.dialog.is-open .drawer-inner {
+  opacity: 1;
+  transform: none;
+}
+
+/* inline (demo): el panel queda en el flujo, ya abierto */
+:host([inline]) {
+  display: block;
+}
+
+:host([inline]) .dialog {
+  position: static;
+  max-height: none;
+  overflow: visible;
+}
+
+:host([inline]) .sheet,
+:host([inline]) .drawer-inner {
+  max-height: none;
+}
+
+:host([inline]) .drawer {
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+/* Campo Type=Line, a todo el ancho de la página. Arriba space/gap/md (1rem) */
 .field-row {
   flex: none;
-  padding: var(--arq-space-gap-sm) var(--page-gutter) 0;
+  padding: var(--arq-space-gap-md) var(--page-gutter) 0;
 }
 
 /* Contenido con scroll propio. Arriba space/gap/xl, abajo space/section/2xs
@@ -75,11 +174,33 @@
   --search-inline: 0;
 }
 
+/* Sugerencias (recomendados y resultados): llegan después, con fundido y un
+   movimiento corto hacia abajo */
+.recommended,
+.results {
+  opacity: 0;
+  transform: translateY(calc(var(--arq-space-gap-sm) * -1));
+  transition-property: opacity, transform;
+  transition-duration: var(--sheet-slow), var(--sheet-slow);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+.dialog.is-open .recommended,
+.dialog.is-open .results {
+  opacity: 1;
+  transform: none;
+  transition-delay: var(--arq-motion-duration-fast);
+}
+
 /* ── Recomendados ── */
 .recommended {
   display: flex;
   flex-direction: column;
   gap: var(--arq-space-gap-lg);
+}
+
+.recommended[data-empty='true'] {
+  display: none;
 }
 
 .title {
@@ -106,28 +227,72 @@
   display: none;
 }
 
-.cards ::slotted(*) {
+.cards > * {
   scroll-snap-align: start;
-}
-
-@media (max-width: 1023px) {
-  .cards {
-    --cols: 4;
-  }
-}
-
-@media (max-width: 767px) {
-  .cards {
-    --cols: 2;
-  }
 }
 
 .all {
   display: flex;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .dialog[open] .sheet {
-    animation: none;
+/* ── Resultados ──
+   Los productos llevan la jerarquía: a la izquierda, uno debajo del otro con
+   space/gap/lg (24) entre filas. Las colecciones, discretas, a la derecha en
+   Desktop (columna de layout/search-field). Con un solo grupo, una columna.
+   Entre grupos, space/section/2xs. */
+.results {
+  display: grid;
+  gap: var(--arq-space-section-2xs);
+}
+
+.results.has-both {
+  grid-template-columns: minmax(0, 1fr) minmax(0, var(--arq-layout-search-field));
+}
+
+.group {
+  min-width: 0;
+}
+
+/* Título de grupo: role/label en color/text/tertiary */
+.group-title {
+  margin: 0 0 var(--arq-space-gap-lg);
+  color: var(--arq-color-text-tertiary);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-lg);
+  margin-bottom: var(--arq-space-gap-lg);
+}
+
+.collections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-md);
+}
+
+/* Tablet: 4 tarjetas; los dos grupos de resultados se apilan */
+@media (max-width: 1023px) {
+  .cards {
+    --cols: 4;
   }
+
+  .results.has-both {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Mobile: 2 tarjetas */
+@media (max-width: 767px) {
+  .cards {
+    --cols: 2;
+  }
+}
+
+/* Alto de la barra (como el del navbar): space/gap/md × 2 + icon/xl */
+:host {
+  --bar-height: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
+  /* motion/duration/slow × 1.25 (400 ms; 0 con reduced motion). TODO: token propio */
+  --sheet-slow: calc(var(--arq-motion-duration-slow) * 1.25);
 }

@@ -41,3 +41,32 @@
 .term {
   color: var(--arq-color-text-primary);
 }
+
+/* Type=Simple (solo de código): sin la lupa, la flecha pegada al texto
+   (a space/gap/md, el gap de la fila) y sin fondo en hover; el texto pasa
+   a color/text/primary */
+:host([type='simple']) .row > .icon:first-child {
+  display: none;
+}
+
+:host([type='simple']) .text {
+  flex: none;
+}
+
+:host([type='simple']) .row[href]:hover {
+  background: none;
+}
+
+:host([type='simple']) .row:focus-visible {
+  outline-offset: 2px;
+}
+
+:host([type='simple']) .row[href]:hover .text,
+:host([type='simple']) .row:focus-visible .text {
+  color: var(--arq-color-text-primary);
+}
+
+:host([type='simple']) .row {
+  justify-content: flex-start;
+  color: var(--arq-color-icon-primary);
+}
