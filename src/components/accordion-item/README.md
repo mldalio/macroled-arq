@@ -31,7 +31,6 @@ Bloque desplegable de especificaciones de la ficha (características lumínicas,
 - **Ícono +/–:** medidas de icon-button Size=Large (48 × 48, ícono 24) con borde `border/default` en `color/border/default`, sin fondo, cerrado y abierto; es parte del botón: no hay un botón dentro de otro.
 - **Ficha v2** (2085:26124 · 2118:33571): sin fondo al abrir; línea inferior `border/default` abierto y cerrado (la de arriba del primero la pone el acordeón de la ficha); contenido en una o dos columnas (`<arq-spec-list columns>`).
 - **Alto:** cerrado mide 128: la línea inferior se descuenta del padding.
-- `TODO` (Figma): el set 922:2645 y su descripción todavía tienen el diseño anterior (título `role/heading-2`, fondo `surface/faint` abierto, padding `space/padding/2xl`). Manda la Ficha v2.
 
 ## Tokens
 
