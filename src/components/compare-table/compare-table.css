@@ -282,3 +282,29 @@ thead th {
     border-left: var(--arq-border-default) solid var(--arq-color-border-subtle);
   }
 }
+
+/* embedded (arq-comparativa) en Mobile: un solo scroll horizontal, el del
+   contenedor de la página. Las filas no se desplazan solas: la tabla mide su
+   contenido y la etiqueta y el título de grupo quedan fijos con sticky
+   respecto de ese contenedor. */
+@media screen and (max-width: 767px) {
+  :host([embedded]) .table {
+    width: max-content;
+    min-width: 100%;
+  }
+
+  :host([embedded]) .row {
+    width: max-content;
+    overflow: visible;
+  }
+
+  :host([embedded]) .row .label-cell {
+    inset-inline-start: var(--page-gutter);
+  }
+
+  :host([embedded]) .group th {
+    position: sticky;
+    inset-inline-start: var(--page-gutter);
+    width: calc(100vw - var(--page-gutter));
+  }
+}

@@ -91,7 +91,8 @@
    Muestra swatch/md; chevron icon/md. La muestra se ve con show-swatch (o si
    la opción trae imagen / showSwatch): sin imagen cae al neutro de arq-swatch
    (DESIGN.md §8). */
-:host(:not([type='filter'])) .menu {
+:host(:not([type='filter'])) .menu,
+:host([size='small']) .menu {
   right: 0;
 }
 

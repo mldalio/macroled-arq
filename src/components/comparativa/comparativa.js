@@ -16,9 +16,10 @@
 // - TODO (diseño + código): un lugar vacío (compare-product State=Empty) emite
 //   arq:add { index } al clickear, pero todavía no hace nada acá — la ficha
 //   dice que más adelante abre un modal para elegir producto.
-// - Mobile: compare-header y compare-table comparten un solo scroll horizontal
-//   (ficha de compare-header: "el scroll horizontal se sincroniza con la
-//   tabla"); compare-table va con `embedded` para no tener scroll propio. El
+// - Mobile: compare-header y compare-table comparten un solo scroll horizontal,
+//   el de .scroll (como macroled.com.ar/comparativa): los dos van con
+//   `embedded` y no tienen scroll propio. La cabecera compacta (fija) sigue
+//   ese desplazamiento y, si se desliza ella, lo mueve. El
 //   set no muestra el toggle "Solo diferencias" dentro de compare-header en
 //   Mobile: va en una fila aparte, fuera del scroll, como en Final.
 // - Bajada: completa [data-arq-compare-count] de la página con la cantidad
@@ -75,7 +76,7 @@ class ArqComparativa extends ArqElement {
     `<p class="status role-body" role="status" hidden></p>` +
     `<div class="mobile-controls" hidden><arq-toggle show-label class="diff-mobile">Solo diferencias</arq-toggle></div>` +
     `<div class="scroll" aria-label="Comparación de productos" hidden>` +
-    `<arq-compare-header class="header"></arq-compare-header>` +
+    `<arq-compare-header class="header" embedded></arq-compare-header>` +
     `<arq-compare-table class="table" embedded></arq-compare-table>` +
     `</div>` +
     `</div>`;
@@ -101,13 +102,14 @@ class ArqComparativa extends ArqElement {
       this.#load();
     });
     header.addEventListener('arq:change', (event) => this.#onChange(event.detail));
-    // Mobile: solo las tiras de valores y de productos se desplazan. La tabla
-    // alinea todas sus filas; compare-header alinea Default y Compact.
-    header.addEventListener('arq:scroll', (event) => {
-      if (MOBILE.matches) table.setScrollLeft(event.detail.left);
+    // Mobile: un solo scroll (.scroll) para productos y tabla. La cabecera
+    // compacta lo sigue; si se desliza la compacta, mueve el contenedor.
+    const scroll = root.querySelector('.scroll');
+    scroll.addEventListener('scroll', () => {
+      if (MOBILE.matches) header.setScrollLeft(scroll.scrollLeft);
     });
-    table.addEventListener('arq:scroll', (event) => {
-      if (MOBILE.matches) header.setScrollLeft(event.detail.left);
+    header.addEventListener('arq:scroll', (event) => {
+      if (MOBILE.matches && scroll.scrollLeft !== event.detail.left) scroll.scrollLeft = event.detail.left;
     });
     // Solo hace falta ser foco-de-teclado cuando el scroll compartido existe (Mobile).
     MOBILE.addEventListener('change', () => this.#syncScrollA11y());

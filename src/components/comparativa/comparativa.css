@@ -33,10 +33,17 @@
     padding-block-end: var(--arq-space-gap-md);
   }
 
-  /* Un solo scroll horizontal para compare-header y compare-table (ficha de
-     compare-header: se desplazan juntos). */
+  /* Un solo scroll horizontal para compare-header y compare-table (como
+     macroled.com.ar/comparativa): un solo contenedor, así el gesto horizontal
+     y el vertical no se traban. Sin barra visible. */
   .scroll {
-    overflow-x: visible;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .scroll::-webkit-scrollbar {
+    display: none;
   }
 
   .scroll:focus-visible {
