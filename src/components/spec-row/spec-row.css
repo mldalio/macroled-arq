@@ -1,8 +1,6 @@
 /* spec-row · Figma 922:2497, con el cambio de la Ficha v2 (2165:43335).
    Solo tokens semánticos. Etiqueta en role/body-regular y valor en role/body
-   (Light), los dos en color/text/primary, uno al lado del otro.
-   TODO (Figma): el set 922:2497 todavía tiene el diseño anterior (padding
-   space/padding/md, etiqueta tertiary, valor a la derecha). */
+   (Light), los dos en color/text/primary, uno al lado del otro. */
 
 :host {
   display: block;

@@ -9,7 +9,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 
 | Componente | Etiqueta | Estado en código |
 | --- | --- | --- |
-| ✅ [accordion-item](#accordion-item) | `<arq-accordion-item>` | En código ([README](../src/components/accordion-item/README.md)) · Figma cambió, falta en código: Ficha v2: título role/body-xl ya en código; falta icon-button Large Outline, sin fondo abierto y paddings nuevos |
+| ✅ [accordion-item](#accordion-item) | `<arq-accordion-item>` | En código ([README](../src/components/accordion-item/README.md)) |
 | ✅ [breadcrumb](#breadcrumb) | `<arq-breadcrumb>` | En código ([README](../src/components/breadcrumb/README.md)) |
 | ✅ [breadcrumb-item](#breadcrumb-item) | `<arq-breadcrumb-item>` | En código ([README](../src/components/breadcrumb-item/README.md)) |
 | ✅ [button](#button) | `<arq-button>` | En código ([README](../src/components/button/README.md)) |
@@ -57,7 +57,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [link-list](#link-list) | `<arq-link-list>` | En código ([README](../src/components/link-list/README.md)) |
 | ✅ [logo](#logo) | `<arq-logo>` | En código ([README](../src/components/logo/README.md)) |
 | ✅ [mega-link](#mega-link) | `<arq-mega-link>` | En código ([README](../src/components/mega-link/README.md)) |
-| ✅ [mega-menu](#mega-menu) | `<arq-mega-menu>` | En código ([README](../src/components/mega-menu/README.md)) · Figma cambió, falta en código: pestaña «Por espacio» y títulos en role/heading-1 y role/heading-2 |
+| ✅ [mega-menu](#mega-menu) | `<arq-mega-menu>` | En código ([README](../src/components/mega-menu/README.md)) |
 | ✅ [nav-link](#nav-link) | `<arq-nav-link>` | En código ([README](../src/components/nav-link/README.md)) |
 | ✅ [navbar](#navbar) | `<arq-navbar>` | En código ([README](../src/components/navbar/README.md)) · Figma cambió, falta en código: Modes Interior · Exterior · Lámparas y artefactos · Colecciones (submenús mobile) |
 | ✅ [option-group](#option-group) | `<arq-option-group>` | En código ([README](../src/components/option-group/README.md)) |
@@ -78,7 +78,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [select-option](#select-option) | `<arq-select-option>` | En código ([README](../src/components/select-option/README.md)) |
 | ✅ [sku](#sku) | `<arq-sku>` | En código ([README](../src/components/sku/README.md)) · Size=Underline |
 | ✅ [spec-list](#spec-list) | `<arq-spec-list>` | En código ([README](../src/components/spec-list/README.md)) |
-| ✅ [spec-row](#spec-row) | `<arq-spec-row>` | En código ([README](../src/components/spec-row/README.md)) · Figma cambió, falta en código: Ficha v2: valor role/body, etiqueta hasta 300, padding space/padding/sm y gap space/gap/md |
+| ✅ [spec-row](#spec-row) | `<arq-spec-row>` | En código ([README](../src/components/spec-row/README.md)) |
 | ✅ [swatch](#swatch) | `<arq-swatch>` | En código ([README](../src/components/swatch/README.md)) |
 | ✅ [swatch-picker](#swatch-picker) | `<arq-swatch-picker>` | En código ([README](../src/components/swatch-picker/README.md)) |
 | ✅ [tab](#tab) | `<arq-tab>` | En código ([README](../src/components/tab/README.md)) |
