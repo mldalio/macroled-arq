@@ -10,7 +10,7 @@
   box-sizing: border-box;
   min-width: 0;
   padding: 0 var(--page-gutter) var(--arq-space-section-xl);
-  background: var(--arq-color-bg-default);
+  background: var(--arq-color-surface-default);
 }
 
 :host([padding-top]) {

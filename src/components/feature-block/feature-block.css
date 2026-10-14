@@ -44,7 +44,7 @@
 
 .media {
   overflow: hidden;
-  background: var(--arq-color-bg-subtle);
+  background: var(--arq-color-surface-subtle);
 }
 
 .image {

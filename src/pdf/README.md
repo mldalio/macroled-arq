@@ -38,7 +38,7 @@ pdfmake no lee variables CSS: los valores salen de `src/styles/print-tokens.js`,
 
 ## Requisitos y casos
 
-- **Imagen:** la principal (`images.main`, de `img_main`); si falta, la de estudio. El servidor de imágenes tiene que responder con CORS; si no, o si no hay imagen, la portada muestra solo el fondo `color/bg/subtle` y avisa en consola.
+- **Imagen:** la principal (`images.main`, de `img_main`); si falta, la de estudio. El servidor de imágenes tiene que responder con CORS; si no, o si no hay imagen, la portada muestra solo el fondo `color/surface/subtle` y avisa en consola.
 - **SKU inexistente:** la pestaña se cierra; error en consola.
 - **Pestaña nueva:** se abre vacía en el momento del clic (si se abriera después, el navegador la bloquearía como ventana emergente) y muestra el PDF cuando está listo. Si el navegador la bloquea igual, el PDF se descarga como `ficha-tecnica-<sku>.pdf`. Si hay un error, la pestaña se cierra.
 - Guardar desde el visor usa el nombre que pone el navegador, no el del producto.

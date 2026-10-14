@@ -38,9 +38,6 @@ export const PRINT_TOKENS = Object.freeze({
   "border/default": 1,
   "border/focus": 1,
   "border/strong": 2,
-  "color/bg/default": "#FFFFFF",
-  "color/bg/subtle": "#F0F0F0",
-  "color/bg/inverse": "#101010",
   "color/surface/default": "#FFFFFF",
   "color/surface/faint": "#FBFBFB",
   "color/surface/hover": "#F7F7F7",
@@ -133,7 +130,9 @@ export const PRINT_TOKENS = Object.freeze({
   "type/body-compact/size": 14,
   "type/body-compact/leading": 24,
   "type/display-lg/size": 48,
-  "type/display-lg/leading": 56
+  "type/display-lg/leading": 56,
+  "type/label-lg/size": 14,
+  "type/label-lg/leading": 16
 });
 
 export const PRINT_ROLES = Object.freeze({
@@ -283,6 +282,14 @@ export const PRINT_ROLES = Object.freeze({
     "fontSize": 12,
     "lineHeight": 16,
     "letterSpacing": 0
+  },
+  "label-lg": {
+    "fontFamily": "Albert Sans",
+    "fontWeight": 400,
+    "fontSize": 14,
+    "lineHeight": 16,
+    "letterSpacing": 1,
+    "textTransform": "uppercase"
   },
   "label": {
     "fontFamily": "Albert Sans",

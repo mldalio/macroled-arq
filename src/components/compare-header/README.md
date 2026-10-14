@@ -57,4 +57,4 @@ En Mobile, el Default desplaza solo la tira de productos (60 % del ancho de pant
 | Gap entre columnas | `space/gap/xl` (32 Desktop · 24 Mobile) |
 | Columna de controles (Desktop) | `layout/compare-label` (200, reusado) |
 | Ancho máximo de foto (vía compare-product) | `layout/compare-media-max` |
-| Fondo / borde del Compact | `color/bg/default` · `color/border/subtle` |
+| Fondo / borde del Compact | `color/surface/default` · `color/border/subtle` |

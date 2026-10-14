@@ -551,6 +551,9 @@ Reemplaza a 2026-10-02 · Base de datos (estructura v5) en cómo se identifican 
 - **catalog-nav:** grupo con label role/body-xl, chevron, línea inferior y lista con riel; ítem en role/body-compact. Nuevo `layout/catalog-nav` (240) para el ancho del sidebar; entre sidebar y contenido, `space/section/xs`, como la pantalla.
 - **carousel-button:** el chevron medía 14 sin token; se enlazó a `icon/md` (16), el de icon-button.
 - **Meta de product-card:** solo en Colecciones, no en Productos (aunque la pantalla v2 de Figma la muestre).
+- **color/bg/\*** se quitó de Figma: los fondos de sección usan color/surface/\* (mismo valor). Se reemplazó en código, en el PDF y en la documentación.
+- **role/label-lg** (Regular 14/16, mayúsculas, tracking 1 px): nuevo estilo para la etiqueta de select Type=Filter. Field sigue en role/label.
+- **nav-link Current (Desktop):** role/body-medium, como la pantalla de Figma (antes role/body-regular).
 - La página «Final-final» de Figma es de prueba: junta los frames con cambios hasta que se pasen a «Final». No es fuente de pantallas.
 
 ## Pendientes

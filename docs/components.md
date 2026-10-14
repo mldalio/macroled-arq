@@ -276,7 +276,7 @@ Columna de producto en compare-header. Size=Default: State=Filled (foto, nombre,
 - Figma: [1263-4317](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1263-4317)
 - Propiedades: Label; Value 1–3; Show value 1–3; Breakpoint: Desktop · Mobile
 
-Fila de la tabla comparativa: etiqueta + un valor por producto (hasta 3; Show value 1–3 oculta las columnas sin producto). Valores en role/body-lg-regular. Breakpoint=Mobile: etiqueta de 120 fija (sticky left, fondo color/bg/default) y columnas de 160 dentro de un scroll horizontal. "Solo diferencias" activo: las filas con valores iguales se ocultan (y el compare-group si queda vacío). No confundir con spec-row (ficha).
+Fila de la tabla comparativa: etiqueta + un valor por producto (hasta 3; Show value 1–3 oculta las columnas sin producto). Valores en role/body-lg-regular. Breakpoint=Mobile: etiqueta de 120 fija (sticky left, fondo color/surface/default) y columnas de 160 dentro de un scroll horizontal. "Solo diferencias" activo: las filas con valores iguales se ocultan (y el compare-group si queda vacío). No confundir con spec-row (ficha).
 
 ## compare-slot
 
@@ -304,7 +304,7 @@ Contador (productos seleccionados, filtros activos). Tone=Primary sobre superfic
 - Figma: [1265-4464](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1265-4464)
 - Propiedades: Title; Description; Type: Button · Newsletter; Breakpoint: Desktop · Mobile
 
-Bloque de cierre de página con fondo color/bg/subtle y space/section/md. Type=Button (p. ej. "¿Necesitás ayuda para elegir?" en Comparativa) o Newsletter (input + button, Home). Props: Title, Description; button e input expuestos.
+Bloque de cierre de página con fondo color/surface/subtle y space/section/md. Type=Button (p. ej. "¿Necesitás ayuda para elegir?" en Comparativa) o Newsletter (input + button, Home). Props: Title, Description; button e input expuestos.
 
 ## divider
 
@@ -497,7 +497,7 @@ Mega menú de Productos (desktop). Se abre desde nav-link "Productos" (Open=True
 
 Link del navbar. State: Default, Hover, Pressed, Current (página actual) y Focus. Open=True: desplegable abierto (aria-expanded="true"). Has dropdown muestra la flecha: hacia abajo en desktop (gira al abrir) y hacia la derecha en mobile (entra al submenú).
 
-State=Current: sección activa (indicador visible). En código: aria-current="page".
+State=Current: sección activa (indicador visible); en Desktop el label pasa a role/body-medium. En código: aria-current="page".
 
 Theme=Inverse: para navbar Theme=Transparent sobre foto (label color/text/inverse, indicador, subrayado y chevron en color/icon/inverse).
 
@@ -596,7 +596,7 @@ Encabezado de bloque dentro de una página (no de la página: eso es page-header
 - Figma: [921-2544](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2544)
 - Propiedades: Name; Label; Value; Show swatch; Type: Field · Filter; State: Default · Hover · Focus · Disabled · Filled; Open: False · True
 
-Selector con menú desplegable (arq-select). Dos tipos con la misma construcción: etiqueta arriba (Type=Field: role/label de 12 px; Type=Filter: 14 px en mayúsculas con tracking, tamaño type/body-compact/size; text/tertiary) y un trigger con línea inferior border/strong, padding vertical space/padding/sm-md (es la única separación con la etiqueta: gap 0 entre etiqueta y trigger), gap space/gap/sm-md entre swatch, texto y chevron, texto role/body-regular y chevron. Type=Field: campo del configurador y de compare-product; ancho del contenedor; swatch/md y chevron icon/md. Type=Filter: celda de la filter-bar y del glosario; mide al menos layout/select-filter; swatch/sm y chevron icon/sm; Filled = filtro elegido, valor en role/body-medium. Hover (los dos): fondo color/surface/faint en el trigger; el texto no cambia. Open: mismo fondo que Hover, chevron hacia arriba y select-menu debajo (Field: Finishes o Text; Filter: Filter). Focus: anillo border/focus de border/strong alrededor del trigger. Disabled: text/disabled y línea border/disabled. Props: Name (valor del Field), Label y Value (Filter; en Filled el valor elegido va como override) y Show swatch (muestra u oculta la muestra de acabado; en código, show-swatch).
+Selector con menú desplegable (arq-select). Dos tipos con la misma construcción: etiqueta arriba (Type=Field: role/label de 12 px; Type=Filter: role/label-lg de 14 px; text/tertiary) y un trigger con línea inferior border/strong, padding vertical space/padding/sm-md (es la única separación con la etiqueta: gap 0 entre etiqueta y trigger), gap space/gap/sm-md entre swatch, texto y chevron, texto role/body-regular y chevron. Type=Field: campo del configurador y de compare-product; ancho del contenedor; swatch/md y chevron icon/md. Type=Filter: celda de la filter-bar y del glosario; mide al menos layout/select-filter; swatch/sm y chevron icon/sm; Filled = filtro elegido, valor en role/body-medium. Hover (los dos): fondo color/surface/faint en el trigger; el texto no cambia. Open: mismo fondo que Hover, chevron hacia arriba y select-menu debajo (Field: Finishes o Text; Filter: Filter). Focus: anillo border/focus de border/strong alrededor del trigger. Disabled: text/disabled y línea border/disabled. Props: Name (valor del Field), Label y Value (Filter; en Filled el valor elegido va como override) y Show swatch (muestra u oculta la muestra de acabado; en código, show-swatch).
 
 ## select-menu
 
@@ -677,7 +677,7 @@ Switch del toggle (pista + círculo), compartido por todas las variantes de togg
 - Figma: [1068-5582](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1068-5582)
 - Propiedades: Show search; Filters: Off · On; Breakpoint: Desktop · Mobile
 
-Tabla de variantes: Glosario de la ficha (el título va aparte como título de sección) y página Descargas (todos los SKU del catálogo). Filters=Off: botón Filtros en button Filled con icon/filter. Filters=On: button Outline con icon/filter-off y debajo filter-bar. A la derecha, descargas con button Outline + icon/download. Filas: variants-table-row Header + una Row por SKU. Componente de borde a borde: ocupa todo el ancho de la página para que la filter-bar llegue al borde; toolbar y filas llevan padding lateral layout/gutter. En mobile el scroll de las columnas llega al borde de la pantalla. Scroll: en Figma cada fila tiene su propio frame scroll porque Figma no puede sincronizar el desplazamiento entre instancias; es solo una especificación de qué columnas se mueven. En código la tabla usa un único contenedor con overflow-x: auto que envuelve header y filas, así los títulos se desplazan junto con los datos; las celdas de inicio (miniatura + SKU; hasta 1023 px solo la miniatura) y de fin (descarga) van con position: sticky (left: 0 / right: 0) y fondo propio (bg/default, surface/faint en Hover) para tapar lo que pasa por debajo.
+Tabla de variantes: Glosario de la ficha (el título va aparte como título de sección) y página Descargas (todos los SKU del catálogo). Filters=Off: botón Filtros en button Filled con icon/filter. Filters=On: button Outline con icon/filter-off y debajo filter-bar. A la derecha, descargas con button Outline + icon/download. Filas: variants-table-row Header + una Row por SKU. Componente de borde a borde: ocupa todo el ancho de la página para que la filter-bar llegue al borde; toolbar y filas llevan padding lateral layout/gutter. En mobile el scroll de las columnas llega al borde de la pantalla. Scroll: en Figma cada fila tiene su propio frame scroll porque Figma no puede sincronizar el desplazamiento entre instancias; es solo una especificación de qué columnas se mueven. En código la tabla usa un único contenedor con overflow-x: auto que envuelve header y filas, así los títulos se desplazan junto con los datos; las celdas de inicio (miniatura + SKU; hasta 1023 px solo la miniatura) y de fin (descarga) van con position: sticky (left: 0 / right: 0) y fondo propio (surface/default, surface/faint en Hover) para tapar lo que pasa por debajo.
 
 Página Descargas: prop Show search (en código, show-search; apagada por defecto: la ficha no la usa): search-field «Buscar por SKU o nombre…» a todo el ancho y Filtros al lado, siempre en button Outline (Filled competiría con la acción del page-header) y del mismo alto que el buscador; busca en el SKU, el producto y la colección; sin descargas en la barra. Igual en Mobile. Sin filas que coincidan, un aviso. En código, las columnas fijas miden su contenido y el ancho que sobra se reparte entre las de datos.
 

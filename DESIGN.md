@@ -183,7 +183,7 @@ Hay dos usos del modo Dark. Los dos usan `data-arq-theme="dark"`; cambia quién 
 
 Para los dos usos:
 
-- El negro es `color/bg/default` en Dark (`neutral/800`, #1C1C1C).
+- El negro es `color/surface/default` en Dark (`neutral/800`, #1C1C1C).
 - **Cambio de fondo:** cuando una sección pasa a oscuro, su padding inferior baja un escalón (`space/section/xl` → `space/section/lg`) y la sección clara que sigue suma padding superior `space/section/md`. Desktop: 128 + 96 · Mobile: 96 + 56. Con el fondo igual, la sección siguiente no lleva padding superior. En código, el ajuste va atado a `data-arq-theme="dark"` en la sección.
 
 ---
@@ -231,7 +231,7 @@ Estos valores **no se usan en componentes**. Están acá para entender de dónde
 
 Cómo elegir un token:
 
-1. **¿Qué propiedad es?** Fondo de sección → `color/bg/*`. Fondo de elemento → `color/surface/*`. Texto → `color/text/*`. Ícono → `color/icon/*`. Borde → `color/border/*`. Acción principal → `color/action/*`. Marca → `color/accent/*`. Modal o barra translúcida → `color/overlay/*`.
+1. **¿Qué propiedad es?** Fondo de sección o de elemento → `color/surface/*`. Texto → `color/text/*`. Ícono → `color/icon/*`. Borde → `color/border/*`. Acción principal → `color/action/*`. Marca → `color/accent/*`. Modal o barra translúcida → `color/overlay/*`.
 2. **¿Qué jerarquía tiene?** primary para títulos, secondary para lectura, tertiary para lo secundario. Fondos: default, subtle, strong, inverse.
 3. **¿En qué estado está?** hover, pressed, selected, disabled, focus, error, success, warning.
 
@@ -250,7 +250,6 @@ Cómo elegir un token:
 | color/surface/inverse-hover | neutral/750 | neutral/150 | Hover sobre fondo inverso |
 | color/surface/inverse-pressed | neutral/600 | neutral/200 | Pressed sobre fondo inverso |
 | color/surface/transparent | alpha/transparent | alpha/transparent | Fondo transparente explícito |
-| color/bg/default · subtle · inverse | = surface | = surface | Fondo de las secciones de página. Para elementos (tarjetas, paneles, campos) se usa color/surface/* |
 
 ### Texto e íconos
 
@@ -380,6 +379,7 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 | role/body-compact-strong | SemiBold | 14/24 | 14/24 | Énfasis fuerte en 14 px |
 | role/body-sm | Regular | 12/16 | 12/16 | Metadatos, SKU en listados, legales, ayudas |
 | role/body-sm-medium | Medium | 12/16 | 12/16 | Énfasis sobre body-sm |
+| role/label-lg | Regular | 14/16 | 14/16 | MAYÚSCULAS, tracking 1 px: etiqueta de select Type=Filter |
 | role/label | Regular | 12/16 | 12/16 | MAYÚSCULAS, tracking 1 px: eyebrows, títulos de grupo, breadcrumb |
 | role/label-sm | Medium | 10/14 | 10/14 | MAYÚSCULAS, tracking 1 px. Solo donde 12 no entra (celdas de filtro) |
 | role/caption | Regular | 12/14 | 12/14 | Notas mínimas, "Copiado" |
@@ -453,11 +453,11 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | button | Type: Filled · Outline · Underline. State: Default · Hover · Pressed · Focus · Disabled · Loading (Filled y Outline). Props: Label · Show icon · Icon · Show underline · Show count · Show leading icon · Leading icon | Filled: color/action/*. Outline: color/border/strong (el borde no suma al alto: 40 como Filled, con role/body-regular de 16/24). Underline: subrayado border/default (1 px) en reposo y border/strong (2 px) en hover y pressed. Focus: anillo separado (ver Foco). Loading: fondo de Hover, sin íconos; label de carga ("Enviando…" en formularios, "Generando…" en la ficha técnica), aria-busy |
 | icon-button | Size: Default · Large. Background: None · Surface · Subtle · Outline. State: Default · Hover · Pressed · Focus · Disabled. Prop: Icon | Default 24 × 24 (icon/md). Large 48 × 48 (padding sm-md + icon/xl). Surface sobre otra superficie; Subtle para destacar entre mucha información; Outline (borde color/border/strong) para la descarga de cada fila de variants-table |
 | input | Type: Text · Select · Textarea. State: Empty · Filled · Focus · Error · Disabled. Open: False · True (solo Select). Props: Label · Show label · Helper · Show helper | Label role/body-regular en color/text/primary. Caja de 40 (como button): borde border/default en color/border/default y fondo color/surface/default. Hover color/border/hover · Focus anillo separado (§7) · Error color/border/error · Disabled color/border/disabled. Select abierto: border/strong, chevron-up y select-menu Type=Text flotante |
-| select | Type: Field · Filter. State: Default · Hover · Focus · Disabled · Filled. Open: False · True. Props: Name · Label · Value · Show swatch | Filled = Filter con opción elegida. Filter lleva la línea inferior border/strong en todos los estados («Todos» igual que un filtro elegido) y mide al menos layout/select-filter |
+| select | Type: Field · Filter. State: Default · Hover · Focus · Disabled · Filled. Open: False · True. Props: Name · Label · Value · Show swatch | Etiqueta role/label (Field) o role/label-lg (Filter). Filled = Filter con opción elegida. Filter lleva la línea inferior border/strong en todos los estados («Todos» igual que un filtro elegido) y mide al menos layout/select-filter |
 | select-menu | Type: Finishes · Filter · Text | Hasta 7 opciones. surface/default, border/default, sin sombra |
 | select-option | State: Default · Hover · Selected · Focus · Disabled. Props: Name · Show swatch | Hover surface/faint, Selected role/body-medium, Focus border/focus |
 | tab | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | role/body-regular en color/text/secondary; seleccionado en role/body-medium con línea border/strong. Un solo tab en todo el sitio |
-| nav-link | Breakpoint: Desktop · Mobile. State: Default · Hover · Pressed · Current · Focus. Open: False · True. Theme: Default · Inverse. Props: Label · Has dropdown | Hover subrayado; Current guion de space/gap/sm × border/strong (8 × 2) y role/body-regular en Desktop (un peso más, como catalog-nav-item Selected); Open: solo gira la flecha (sin subrayado) |
+| nav-link | Breakpoint: Desktop · Mobile. State: Default · Hover · Pressed · Current · Focus. Open: False · True. Theme: Default · Inverse. Props: Label · Has dropdown | Hover subrayado; Current guion de space/gap/sm × border/strong (8 × 2) y role/body-medium en Desktop; Open: solo gira la flecha (sin subrayado) |
 | navbar | Breakpoint: Desktop · Mobile. Mode: Default · Search · Menu · Products · Interior · Exterior · Lámparas y artefactos · Colecciones. Theme: Default · Transparent | 56 px de alto. Los cuatro Modes por sección son los submenús que abre Products en Mobile. Transparent sobre el hero: fondo translúcido (color/overlay/translucent) + blur (blur/backdrop); sigue así mientras la barra está sobre el hero y pasa a Default al dejarlo atrás (sin hero, al hacer scroll) |
 | mega-menu | Tab: Por espacio · Lámparas y artefactos · Colecciones | Un solo componente; categorías, links y "Ver todo…" salen de los datos. Usa tab y mega-link |
 | mega-link | Type: Link · Group. State: Default · Hover · Focus. Size: Default · Large. Open: False · True. Props: Name · Meta · Show meta · Show image · Show arrow | Link role/body (Large role/body-lg). Group role/body-xl con icon/plus / icon/minus |
@@ -470,7 +470,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | section-header | Breakpoint: Desktop · Mobile. Type: Link · Description · Title · Stacked. Props: Title · Description | role/heading-2 y role/body-lg. Sin separador. Gap título–bajada sm-md, textos–link lg. Bajada Description hasta layout/measure. En Mobile el link no se muestra: la página pone un button al final del bloque |
 | page-header | Breakpoint: Desktop · Mobile. Type: List · Detail. Props: Title · Description · Show breadcrumb · Show description · Show back · Show action | Título role/display-lg y bajada role/body en Desktop Type=List; role/display y role/body-lg en Mobile y en Detail. Sin desplegable |
 | breadcrumb · breadcrumb-item | Levels: 3 · 2 / State: Default · Hover · Current. Props: Label · Show separator | role/label. El ítem actual no lleva link ni separador |
-| cta-block | Type: Button · Newsletter. Breakpoint: Desktop · Mobile. Props: Title · Description | Fondo color/bg/subtle, padding space/section/md |
+| cta-block | Type: Button · Newsletter. Breakpoint: Desktop · Mobile. Props: Title · Description | Fondo color/surface/subtle, padding space/section/md |
 | feature-block | Layout: Image left · Image right. Breakpoint: Desktop · Mobile. Props: Label · Title · Description · Show secondary image | Breakpoint=Mobile apila |
 | faq-item | Open: False · True. State: Default · Hover · Focus. Props: Question · Answer | Home. Pregunta role/heading-3-light. No confundir con accordion-item |
 | accordion-item | Open: False · True. State: Default · Hover · Focus. Breakpoint: Desktop · Mobile. Prop: Title | Ficha: bloques de especificaciones con spec-list adentro. Título role/body-xl; ícono en icon-button Large Outline |
@@ -585,9 +585,7 @@ Aplica a product-card en los listados de Productos y Colecciones (las cards de c
 - **Ficha técnica en PDF:** falta el mensaje de error si no se puede generar. Al guardarla desde el visor de Chrome, el nombre es un código al azar (sale de la URL del blob): para que se llame `ficha-tecnica-<sku>.pdf` hace falta servirla desde una URL propia.
 - **Galerías** (product-gallery, ambiente, Inspiración, colección): cantidad de imágenes. Si hay más de las que entran, se desliza.
 - **Acabados:** sin definir (imágenes y tabla de códigos).
-- **color/bg/\*:** ya no existe en Figma (2 · Semantic · Color), pero el código lo usa como fondo de sección. Falta decidir si se reemplaza por color/surface/\* (mismo valor) o se vuelve a crear en Figma.
 - **form-section-header:** Contacto en Figma lo usa (número + label en role/label con línea border/strong); el código usa `<legend>` en role/heading-3 (§8, form-message). Falta definir cuál queda.
-- **select Type=Filter:** la etiqueta es de 14 px en mayúsculas con tracking y no tiene estilo role/\*.
 
 ---
 

@@ -452,6 +452,38 @@
           }
         }
       }
+    },
+    "label-lg": {
+      "size": {
+        "$type": "number",
+        "$value": "{font.size.14}",
+        "$description": "Tamaño del estilo role/label-lg. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-label-lg-size)"
+            }
+          }
+        }
+      },
+      "leading": {
+        "$type": "number",
+        "$value": "{font.leading.16}",
+        "$description": "Interlineado del estilo role/label-lg. Lo usa el estilo de texto: no aplicar directo.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-type-label-lg-leading)"
+            }
+          }
+        }
+      }
     }
   }
 }

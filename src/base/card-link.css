@@ -53,10 +53,10 @@
 
 /* Imagen por slot, a sangre en su caja con la proporción del componente.
    !important porque los estilos del sitio (Webflow) para img ganan sobre
-   ::slotted. Sin imagen se ve el fondo color/bg/subtle. */
+   ::slotted. Sin imagen se ve el fondo color/surface/subtle. */
 .card-media {
   overflow: hidden;
-  background: var(--arq-color-bg-subtle);
+  background: var(--arq-color-surface-subtle);
 }
 
 .card-media ::slotted(*) {

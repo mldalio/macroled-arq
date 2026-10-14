@@ -47,7 +47,7 @@ El tope hace que la sección entre en una pantalla aunque el viewport sea muy an
 
 | Parte | Token |
 | --- | --- |
-| Imágenes (sin imagen) | `color/bg/subtle` |
+| Imágenes (sin imagen) | `color/surface/subtle` |
 | Eyebrow | `color/text/tertiary` · `role/label` |
 | Título | `color/text/primary` · `role/display-sm` |
 | Bajada | `color/text/secondary` · `role/body-lg` |

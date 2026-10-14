@@ -51,7 +51,7 @@ tabla.addEventListener('arq:downloads', (e) => llenarModal(e.detail.sku));
 | --- | --- |
 | Barra | padding `space/padding/md` arriba y abajo, sin padding lateral; gap barra–tabla `space/gap/md` |
 | Encabezado | `role/label` en `color/text/tertiary`, padding vertical `space/padding/sm-md` |
-| Filas | valores `role/body` en `color/text/primary`; padding vertical `space/padding/sm` (en Figma, xs: el botón de descarga quedaba pegado a la línea); Hover `color/surface/faint`; fondo de las fijas `color/bg/default` |
+| Filas | valores `role/body` en `color/text/primary`; padding vertical `space/padding/sm` (en Figma, xs: el botón de descarga quedaba pegado a la línea); Hover `color/surface/faint`; fondo de las fijas `color/surface/default` |
 | Separadores | `border/default` en `color/border/subtle` |
 | Entre columnas | `space/gap/sm`; sin padding al inicio ni al final |
 | Ancho | El del contenido de la página en todos los breakpoints (margen `--page-gutter`, sin gutter adentro): las líneas van de la miniatura al ícono de descarga; la barra de filtros con `space/padding/md` adentro. Scroll horizontal sin barra visible cuando no entra |

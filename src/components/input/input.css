@@ -22,7 +22,7 @@
 
 /* Caja de 40 de alto, como button: padding space/padding/sm (el borde se
    descuenta) × space/padding/sm-md. Fondo color/surface/default, así se
-   recorta también sobre color/bg/subtle (newsletter del cta-block). */
+   recorta también sobre color/surface/subtle (newsletter del cta-block). */
 .field {
   box-sizing: border-box;
   display: flex;
