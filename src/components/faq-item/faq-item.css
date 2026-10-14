@@ -1,7 +1,6 @@
 /* faq-item · Figma 1036:2430. Solo tokens semánticos.
-   Línea arriba de cada ítem en color/border/default, como el set y el Home
-   de Figma (la descripción y la ficha dicen "borde inferior border/subtle":
-   decisión 2026-10-01 · faq-item). */
+   Línea arriba de cada ítem en color/border/default, como el set y su ficha
+   (decisión 2026-10-01 · faq-item). */
 
 :host {
   display: block;

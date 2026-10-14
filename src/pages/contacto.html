@@ -1,6 +1,6 @@
 <!--
   Contacto · /arq/contacto · Code Embed de Webflow (docs/decisiones.md, 2026-10-01 · Páginas en Webflow y 2026-10-05 · Contacto)
-  Pantalla: Contacto v3 · propuesta (2295:23055, solo Desktop; decisiones.md, 2026-10-14 · Contacto v3).
+  Pantalla: Final › Contacto v3 (2295:23055 Desktop · 2473:30918 Mobile · 2473:30758 / 2473:31283 enviado; decisiones.md, 2026-10-14 · Contacto v3).
   Antes: Final › Contacto (1278:27912 Desktop · 1311:17149 Mobile · 1311:17459 / 1311:17499 enviado)
   Se edita acá y se pega en Webflow. dist/arq.js, dist/arq.css y Albert Sans se cargan a nivel sitio.
 
@@ -24,7 +24,7 @@
     <span slot="description">Asesoramiento lumínico para arquitectura e interiorismo.</span>
   </arq-hero>
 
-  <arq-form-contacto>
+  <arq-form-contacto id="formulario">
     <h2 slot="title">Te acompañamos en cada etapa.</h2>
     <p slot="description">Desde la selección de luminarias hasta el cálculo lumínico, trabajamos junto a estudios, arquitectos e interioristas.</p>
     <span slot="channels-title">Contacto</span>
@@ -37,7 +37,7 @@
 
     <h2 slot="faq-title">Preguntas frecuentes</h2>
     <p slot="faq-description">¿No encontrás lo que buscás? Nuestro equipo técnico te acompaña en cada etapa del proyecto.</p>
-    <arq-button slot="faq-action" type="underline" show-underline show-icon icon="arrow-up-right" href="mailto:info@macroled.com.ar">Escribinos</arq-button>
+    <arq-button slot="faq-action" type="underline" show-underline show-icon icon="arrow-right" href="#formulario">Escribinos</arq-button>
     <arq-faq-item slot="faq" open>
       <span slot="question">¿Desarrollan luminarias a medida para proyectos?</span>
       Sí. Nuestro equipo técnico adapta medidas, acabados y temperatura de color según los requerimientos de cada proyecto.

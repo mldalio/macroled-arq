@@ -1,9 +1,9 @@
 # form-contacto · `<arq-form-contacto>`
 
-Bloque principal de Contacto: la información a la izquierda (por slot, desde el embed) y el formulario a la derecha, que envía por `fetch` al webhook de n8n. Debajo, opcional, las preguntas frecuentes. Contenedor de página, sin set en Figma: sale de la pantalla «Contacto v3 · propuesta» (`2295:23055`, solo Desktop; antes Final `1278:27919` · `1311:17151`). Decisiones: `docs/decisiones.md`, 2026-10-05 · Contacto y 2026-10-14 · Contacto v3.
+Bloque principal de Contacto: la información a la izquierda (por slot, desde el embed) y el formulario a la derecha, que envía por `fetch` al webhook de n8n. Debajo, opcional, las preguntas frecuentes. Contenedor de página, sin set en Figma: sale de Final › Contacto v3 (`2295:23055` Desktop · `2473:30918` Mobile; enviado `2473:30758` · `2473:31283`). Decisiones: `docs/decisiones.md`, 2026-10-05 · Contacto y 2026-10-14 · Contacto v3.
 
 ```html
-<arq-form-contacto>
+<arq-form-contacto id="formulario">
   <h2 slot="title">Te acompañamos en cada etapa.</h2>
   <p slot="description">Desde la selección de luminarias hasta el cálculo lumínico…</p>
   <span slot="channels-title">Contacto</span>
@@ -12,7 +12,7 @@ Bloque principal de Contacto: la información a la izquierda (por slot, desde el
   <arq-link-list slot="links">…</arq-link-list>
   <h2 slot="faq-title">Preguntas frecuentes</h2>
   <p slot="faq-description">¿No encontrás lo que buscás?…</p>
-  <arq-button slot="faq-action" type="underline" show-underline show-icon icon="arrow-up-right" href="mailto:…">Escribinos</arq-button>
+  <arq-button slot="faq-action" type="underline" show-underline show-icon icon="arrow-right" href="#formulario">Escribinos</arq-button>
   <arq-faq-item slot="faq" open>…</arq-faq-item>
 </arq-form-contacto>
 ```
@@ -30,7 +30,7 @@ El HTML del embed completo está en [src/pages/contacto.html](../../pages/contac
 | `links` | Un `arq-link-list` ("Recursos técnicos") |
 | `faq-title` | `<h2>` de las preguntas frecuentes (`role/display-sm`) |
 | `faq-description` | Bajada (`role/body`, hasta `layout/measure`) |
-| `faq-action` | Un `arq-button` Underline ("Escribinos") |
+| `faq-action` | Un `arq-button` Underline ("Escribinos", con `icon/arrow-right` y `href="#formulario"`: lleva al formulario de la misma página) |
 | `faq` | `arq-faq-item`. Sin preguntas, el bloque no se muestra |
 
 ## Formulario
@@ -59,7 +59,7 @@ El HTML del embed completo está en [src/pages/contacto.html](../../pages/contac
 
 - `TODO` (n8n): falta `VITE_N8N_WEBHOOK_URL` y confirmar el formato que espera el webhook.
 - `TODO` (diseño): textos de error por caso e indicador de campo obligatorio (README de input).
-- `TODO` (diseño): v3 no tiene Mobile ni estado enviado; Mobile apila las columnas.
+- `TODO` (diseño): revisar el Mobile de v3, que se armó en Figma desde el Desktop con las columnas apiladas, como el código.
 - `TODO` (diseño): distancia del sticky al navbar (falta `layout/navbar-height`).
 - `TODO` (diseño): el hover de faq-item (`color/surface/faint`) no se ve sobre el fondo faint del bloque.
 - `TODO` (n8n): confirmar que el webhook acepte adjuntos de 25 MB.

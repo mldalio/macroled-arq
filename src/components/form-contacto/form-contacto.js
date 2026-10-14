@@ -1,6 +1,5 @@
-// form-contacto · contenedor de página (Contacto v3 · propuesta, 2295:23055;
-// antes Final: Contacto 1278:27919 Desktop · 1311:17151 Mobile; enviado
-// 1311:17461 · 1311:17501)
+// form-contacto · contenedor de página (Final › Contacto v3: 2295:23055
+// Desktop · 2473:30918 Mobile; enviado 2473:30758 · 2473:31283)
 //
 // Bloque de Contacto: a la izquierda la información (por slot, desde el
 // embed: indexable; fija al desplazar en Desktop) y a la derecha el

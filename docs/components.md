@@ -341,11 +341,9 @@ Card de otra familia de la colección (link a su ficha): imagen recortada (en el
 - Figma: [1036-2430](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1036-2430)
 - Propiedades: Question; Answer; Open: False · True; State: Default · Hover · Focus
 
-Uso: preguntas frecuentes (Home): pregunta y respuesta en texto. No confundir con accordion-item, que agrupa especificaciones en la ficha.
+Uso: preguntas frecuentes (Home y Contacto): pregunta y respuesta en texto. No confundir con accordion-item, que agrupa especificaciones en la ficha.
 
 Pregunta frecuente desplegable. Open=False (icon/plus) / Open=True (icon/minus + respuesta). State: Default, Hover (surface/faint), Focus (anillo color/border/focus). Pregunta en role/heading-3-light, respuesta role/body color/text/secondary, línea superior border/default en color/border/default. Ícono icon/plus / icon/minus de icon/md. En código: <details>/<summary> o button con aria-expanded.
-
-> **No coincide con el set:** el set y el Home usan línea arriba en `color/border/default`, y en código se sigue el set (`docs/decisiones.md`, 2026-10-01 · faq-item). Falta corregir esta descripción y la ficha en Figma.
 
 ## feature-block
 
