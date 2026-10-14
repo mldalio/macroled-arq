@@ -92,11 +92,12 @@ thead th {
 }
 
 @media (max-width: 767px) {
-  /* Columnas de 60 % del ancho de pantalla, igual que compare-header. TODO
-     (token): sin variable en Figma. El gutter va dentro de cada fila y del
-     título de grupo, no en .scroll: así el scroll llega al borde derecho. */
+  /* Columnas de layout/compare-column (160), igual que compare-header
+     (como macroled.com.ar/comparativa: entran dos y asoma la tercera). El
+     gutter va dentro de cada fila y del título de grupo, no en .scroll: así
+     el scroll llega al borde derecho. */
   :host {
-    --column-width: 60vw;
+    --column-width: var(--arq-layout-compare-column);
   }
 
   .scroll {
@@ -104,8 +105,17 @@ thead th {
     padding-inline: 0;
   }
 
+  /* compare-group: el título queda quieto (no está dentro del scroll de las
+     filas) y su línea va del gutter al borde derecho de la pantalla, como en
+     Figma. Bloque y no celda: así la línea toma todo el ancho. */
+  .group,
   .group th {
-    padding-inline: var(--page-gutter);
+    display: block;
+  }
+
+  .group th {
+    margin-inline-start: var(--page-gutter);
+    padding-inline: 0;
   }
 
   .table {
@@ -114,10 +124,11 @@ thead th {
     table-layout: auto;
   }
 
-  /* compare-row Breakpoint=Mobile: la etiqueta ocupa toda la fila arriba y
-     los valores quedan debajo, dentro del mismo <tr>. El contenedor de la
-     comparativa desplaza horizontalmente solo estas columnas y lo sincroniza
-     con compare-header; no hay columna sticky. */
+  /* compare-row Breakpoint=Mobile: la etiqueta arriba y los valores debajo,
+     dentro del mismo <tr>. Cada fila se desplaza en horizontal y todas se
+     sincronizan con compare-header; la etiqueta queda fija (sticky left, como
+     la descripción del set y macroled.com.ar/comparativa): solo se mueven los
+     valores. */
   .row {
     display: grid;
     grid-template-columns: repeat(3, var(--column-width));
@@ -139,12 +150,17 @@ thead th {
     padding-block: 0;
   }
 
+  /* Mide su texto (no toda la fila) para que el sticky la mantenga a la
+     vista; como mucho, el ancho de la pantalla menos los gutters. */
   .row .label-cell {
     position: sticky;
     z-index: 1;
-    inset-inline-start: var(--page-gutter);
+    /* 0: el sticky ya respeta el padding (gutter) de la fila */
+    inset-inline-start: 0;
     grid-column: 1 / -1;
-    width: auto;
+    justify-self: start;
+    width: max-content;
+    max-width: calc(100vw - 2 * var(--page-gutter));
     padding: var(--arq-space-padding-xs) 0;
     background: var(--arq-color-surface-default);
   }
@@ -230,6 +246,7 @@ thead th {
   }
 
   .group th {
+    margin-inline-start: 0;
     padding-inline: 0;
   }
 

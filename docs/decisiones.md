@@ -728,3 +728,14 @@ Pantalla nueva (Final › Descargas: Desktop 2496:31316 · Mobile 2496:31862; la
 - **Ficha v2 en código:** variants-table (encabezado `role/body-regular`, valores `role/body-lg-regular`, sku Underline, variants-table-card en Mobile), filter-bar (`color/surface/soft`, sin líneas, «Limpiar filtros» debajo) y sku Size=Underline. Se juntó con lo que había hecho la rama del search-sheet: queda su sku y el atributo `stacked` de filter-bar, que ya no hace falta porque la versión v2 es la de por defecto.
 - **Resuelto con diseño:** entre tarjetas Mobile va `space/gap/6xl` (se corrigió la descripción de variants-table-card); el padding lateral de filter-bar queda en `layout/gutter`; en Descargas la descarga de cada fila va sin borde (icon-button Large, Background=None), como el borrador de PRUEBA; en la ficha sigue Outline. En la página, la columna del título mide 300 sin token (se usa `layout/measure`).
 - **Pendiente (datos):** URL del PDF del catálogo general y su portada.
+
+## 2026-10-14 · Comparativa Mobile como macroled.com.ar
+
+En Mobile la comparativa funciona como macroled.com.ar/comparativa: un solo desplazamiento horizontal para los productos y los valores, y lo que identifica cada fila queda quieto.
+
+- **Etiquetas fijas:** la etiqueta de cada fila (arriba de los valores) queda a la vista al deslizar (sticky left, como pide la descripción de compare-row); antes se iba con los valores.
+- **Títulos de grupo:** quedan quietos y su línea va del gutter al borde derecho de la pantalla (antes quedaba cortada).
+- **Columnas de `layout/compare-column` (160):** entran dos y asoma la tercera. Reemplaza el 60 % del ancho de pantalla, que no tenía token. compare-header (Default y Compact) usa el mismo ancho para que los productos queden alineados con sus valores.
+- **Sin cambios:** la cabecera compacta fija arriba (oculta el navbar) y sincronizada con el scroll horizontal, y el toggle «Solo diferencias» en su fila.
+- **No incluido (no está en Figma):** el aviso «Deslizá hacia la derecha para ver los demás productos» de macroled.
+
