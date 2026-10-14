@@ -23,6 +23,8 @@
 // - Comparar (solo Productos): "Comparar" de cada card suma o saca el producto
 //   de la compare-bar (hasta 3; la selección se guarda en arq:compare).
 // - Iluminar: lo resuelve catalog-toolbar (data-arq-theme en <html>).
+// - Al desplazarse, catalog-toolbar pasa a State=Scroll con el nombre de la
+//   página (el texto del <h1> del page-header).
 
 import { ArqElement } from '../../base/arq-element.js';
 import { listProducts, listCollections } from '../../data/catalog.js';
@@ -150,6 +152,7 @@ class ArqCatalogListing extends ArqElement {
     root.querySelector('arq-filter-panel').showCategories = this.unit === 'productos';
     root.querySelector('.compare').hidden = this.unit !== 'productos';
     if (this.#query && this.unit === 'productos') this.#titleFromQuery();
+    else this.#syncToolbarName();
     this.#load({ rows: true });
   }
 
@@ -308,6 +311,7 @@ class ArqCatalogListing extends ArqElement {
   #titleFromQuery() {
     const title = document.querySelector('arq-page-header > [slot="title"]');
     if (title) title.textContent = `Resultados para «${this.#query}»`;
+    this.#syncToolbarName();
   }
 
   // El <h1> del page-header pasa a ser el grupo del ítem actual (Interior,
@@ -324,6 +328,15 @@ class ArqCatalogListing extends ArqElement {
       : group?.querySelector('[slot="label"]')?.textContent.trim();
     const title = document.querySelector('arq-page-header > [slot="title"]');
     if (label && title) title.textContent = label;
+    this.#syncToolbarName();
+  }
+
+  // catalog-toolbar State=Scroll muestra el nombre de la página: el mismo
+  // texto que el <h1> del page-header.
+  #syncToolbarName() {
+    const title = document.querySelector('arq-page-header > [slot="title"]');
+    const toolbar = this.shadowRoot?.querySelector('.toolbar');
+    if (toolbar) toolbar.name = title?.textContent.trim() || null;
   }
 }
 
