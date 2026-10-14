@@ -361,7 +361,6 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 | --- | --- | --- | --- | --- |
 | role/display-lg | Light | 80/100 | 48/56 | Título del hero Compact y del page-header List en Desktop |
 | role/display | Light | 64/72 | 40/44 | Titulares principales |
-| role/display-lg | Light | 80/100 | 48/56 | Título del hero compacto (Contacto y páginas internas) |
 | role/display-sm | Light | 48/56 | 32/40 | Titulares secundarios |
 | role/heading-1 | Light | 40/48 | 32/40 | Título de página |
 | role/heading-2 | Light | 32/40 | 24/32 | Título de sección |
@@ -636,6 +635,7 @@ Link a cada set en Figma (`node-id`). Base: `https://www.figma.com/design/djAb2r
 | footer | [788-3104](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=788-3104) | Breakpoint: Desktop · Mobile |
 | footer-link | [788-2930](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=788-2930) | Label; Show icon; Icon; State: Default · Hover · Pressed · Focus |
 | form-message | [1311-4871](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1311-4871) | Message; Tone: Success · Error |
+| form-section-header | [1303-4382](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1303-4382) | Number; Show number; Label |
 | gallery-thumb | [920-2474](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=920-2474) | State: Default · Hover · Selected · Focus |
 | hero | [1311-4340](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1311-4340) | Eyebrow; Show eyebrow; Title; Description; Show description; Show button; Breakpoint: Desktop · Mobile; Size: Default · Compact |
 | icon-button | [752-2882](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=752-2882) | Icon; Size: Default · Large; Background: None · Surface · Subtle · Outline; State: Default · Hover · Pressed · Focus · Disabled |
