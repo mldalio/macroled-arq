@@ -35,7 +35,7 @@ class ArqAccordionItem extends ArqElement {
   static template =
     `<div class="item">` +
     `<button type="button" class="trigger">` +
-    `<span class="title role-heading-2"><slot name="title"></slot></span>` +
+    `<span class="title role-body-xl"><slot name="title"></slot></span>` +
     `<span class="icon-box">${icon('plus')}${icon('minus')}</span>` +
     `</button>` +
     `<div class="content" part="panel"><slot></slot></div>` +

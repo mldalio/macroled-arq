@@ -11,9 +11,9 @@
   gap: var(--arq-space-gap-sm);
 }
 
-/* Label: color/text/secondary */
+/* Label: color/text/primary */
 .label {
-  color: var(--arq-color-text-secondary);
+  color: var(--arq-color-text-primary);
 }
 
 /* Zona (Empty: borde punteado; Attached: borde lleno) */

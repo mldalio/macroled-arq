@@ -21,7 +21,7 @@ Bloque desplegable de especificaciones de la ficha (características lumínicas,
 
 | Figma | Atributo | Prop JS | Valores · por defecto |
 | --- | --- | --- | --- |
-| Title | slot `title` | — | Texto del encabezado (`role/heading-2`) |
+| Title | slot `title` | — | Texto del encabezado (`role/body-xl`) |
 | Open | `open` | `open` | booleano · cerrado por defecto |
 | — (contenido) | slot por defecto | — | En la ficha, una `arq-spec-list` |
 
@@ -38,7 +38,7 @@ Bloque desplegable de especificaciones de la ficha (características lumínicas,
 | --- | --- |
 | Padding | `space/padding/xl-2xl` arriba (y abajo cerrado) · `space/padding/2xl` a los lados (Mobile `space/padding/xl`) y abajo abierto (Mobile cerrado también `space/padding/2xl`) |
 | Gap título–ícono · encabezado–contenido | `space/gap/md` · `space/gap/xl` |
-| Título | `role/heading-2` en `color/text/primary` |
+| Título | `role/body-xl` en `color/text/primary` |
 | Cerrado | línea inferior `border/default` en `color/border/default`, sin fondo. Hover `color/surface/faint` |
 | Abierto | fondo `color/surface/faint`, sin línea; ícono sobre `color/surface/default` |
 | Ícono | `space/padding/sm-md` + `icon/xl`, `color/icon/primary` |

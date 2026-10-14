@@ -29,7 +29,7 @@ class ArqFaqItem extends ArqElement {
   static template =
     `<div class="item">` +
     `<button type="button" class="trigger">` +
-    `<span class="question role-body-lg-regular"><slot name="question"></slot></span>` +
+    `<span class="question role-heading-3-light"><slot name="question"></slot></span>` +
     `${icon('plus')}${icon('minus')}` +
     `</button>` +
     `<div class="answer role-body" part="panel"><slot></slot></div>` +

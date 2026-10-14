@@ -10,7 +10,7 @@
 //   { open: !open }; open y current los controla el navbar.
 //   El mega-menu incluye los "Ver todo…" (Productos deja de ser link).
 // Breakpoint es CSS (≤ 767 px: fila del menú mobile). El estilo de texto
-// (role/body → role/body-xl) lo cambia el JS con el mismo media query.
+// (role/body → role/heading-3) lo cambia el JS con el mismo media query.
 // Current en desktop sube a role/body-regular, como catalog-nav-item Selected
 // (decisiones.md, 2026-10-05 · Contacto: ajustes).
 // TODO (navbar): aria-controls hacia el mega-menu (los ids no cruzan el Shadow DOM).
@@ -51,13 +51,13 @@ class ArqNavLink extends ArqElement {
     this.#applyRole();
   }
 
-  // Desktop role/body (Current role/body-regular) · Mobile role/body-xl
+  // Desktop role/body (Current role/body-regular) · Mobile role/heading-3
   #applyRole() {
     const label = this.shadowRoot.querySelector('.label');
     const desktop = !mobile.matches;
     label.classList.toggle('role-body', desktop && !this.current);
     label.classList.toggle('role-body-regular', desktop && this.current);
-    label.classList.toggle('role-body-xl', !desktop);
+    label.classList.toggle('role-heading-3', !desktop);
   }
 
   /** El foco va al <a> o <button> interno. */

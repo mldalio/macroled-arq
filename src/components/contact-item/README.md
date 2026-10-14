@@ -13,7 +13,7 @@ Canal de contacto (Contacto): etiqueta y valor. El valor es un link.
 
 | Figma | Atributo / slot | Prop JS | Valores |
 | --- | --- | --- | --- |
-| Label | slot `label` | — | Tipo de canal, en caja normal (la mayúscula la pone `role/label`) |
+| Label | slot `label` | — | Tipo de canal (`role/body-sm`) |
 | Value | slot por defecto | — | El dato tal cual se usa (número con código de área) |
 | — | `href` | `href` | `mailto:`, `tel:` o `https:` (WhatsApp, mapa). Sin `href`, el valor es texto |
 
@@ -25,7 +25,7 @@ Canal de contacto (Contacto): etiqueta y valor. El valor es un link.
 | Parte | Token |
 | --- | --- |
 | Ítem | gap `space/gap/sm`, sin línea ni padding: la separación la pone la lista (decisiones.md, 2026-10-06). En el set, línea arriba y padding vertical `space/padding/lg` |
-| Textos | etiqueta `role/label` en `color/text/tertiary` · valor `role/body-lg-regular` en `color/text/primary` |
+| Textos | etiqueta `role/body-sm` en `color/text/tertiary` · valor `role/body-lg-regular` en `color/text/primary` |
 | Subrayado (Hover) | `border/default`, a `space/padding/2xs` del texto |
 
 ## Pendientes

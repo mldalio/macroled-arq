@@ -17,7 +17,7 @@
 }
 
 .label {
-  color: var(--arq-color-text-tertiary);
+  color: var(--arq-color-text-primary);
 }
 
 /* Caja de 40 de alto, como button: padding space/padding/sm (el borde se
