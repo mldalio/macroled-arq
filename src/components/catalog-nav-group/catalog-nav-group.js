@@ -13,8 +13,11 @@
 //   HTML aunque esté cerrada (indexable).
 // - Open: lo decide el HTML (el grupo de la categoría actual). Si ningún grupo
 //   viene abierto, catalog-nav abre el que tiene el ítem elegido.
-// - El ícono +/– tiene las medidas de icon-button Size=Default (24, ícono 16)
-//   pero es parte del botón, no otro botón.
+// - El chevron (abajo cerrado, arriba abierto) tiene las medidas de
+//   icon-button Size=Default (24, ícono 16) pero es parte del botón, no otro
+//   botón.
+// - Selected: el grupo de la categoría actual. Sin cambio visual; lo pone
+//   catalog-nav en el grupo que tiene el catalog-nav-item elegido.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { Disclosure } from '../../base/disclosure.js';
@@ -26,14 +29,15 @@ class ArqCatalogNavGroup extends ArqElement {
   static styles = css;
   static properties = {
     open: { type: Boolean }, // Open
+    selected: { type: Boolean }, // Selected
   };
   static template =
     `<div class="group">` +
     `<button type="button" class="header">` +
-    `<span class="label role-label"><slot name="label"></slot></span>` +
-    `<span class="icon-box">${icon('plus')}${icon('minus')}</span>` +
+    `<span class="label role-body-xl"><slot name="label"></slot></span>` +
+    `<span class="icon-box">${icon('chevron-down')}${icon('chevron-up')}</span>` +
     `</button>` +
-    `<div class="items" role="list" part="panel"><slot></slot></div>` +
+    `<div class="items" part="panel"><div class="rail" role="list"><slot></slot></div></div>` +
     `</div>`;
 
   setup() {
