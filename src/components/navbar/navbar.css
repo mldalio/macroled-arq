@@ -143,6 +143,17 @@
   overscroll-behavior: contain;
 }
 
+/* Columna: barra arriba y el nivel abierto debajo (un submenú largo se
+   desplaza dentro de su lista) */
+.menu[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-bar {
+  flex: none;
+}
+
 .menu-bar {
   box-sizing: border-box;
   display: flex;
@@ -195,17 +206,60 @@
   outline-offset: calc(var(--arq-border-strong) * -1);
 }
 
-/* Grupos (mega-link Type=Group): arriba space/gap/md, abajo
-   space/padding/md, a los lados layout/gutter */
-.groups {
+/* Lista de Productos (mega-link submenu) y links de un submenú (mega-link
+   Size=Large): arriba space/gap/md, abajo space/padding/md, a los lados
+   layout/gutter */
+.groups,
+.sub-list {
   display: flex;
   flex-direction: column;
   padding: var(--arq-space-gap-md) var(--page-gutter) var(--arq-space-padding-md);
 }
 
-/* "Ver colecciones" */
-.collections {
+/* Submenú (Mode Interior · Exterior · Colecciones): arriba space/gap/sm,
+   abajo space/gap/xl. Si la lista no entra, se desplaza y "Ver todo…" queda
+   fijo abajo. */
+.menu-sub {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  padding: var(--arq-space-gap-sm) 0 var(--arq-space-gap-xl);
+}
+
+.menu-sub[hidden] {
+  display: none;
+}
+
+.back-sub {
+  flex: none;
+}
+
+.sub-list {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* "Ver todo…": arriba space/gap/md, a los lados layout/gutter */
+.sub-cta {
+  flex: none;
   padding: var(--arq-space-gap-md) var(--page-gutter) 0;
+}
+
+.sub-cta:empty {
+  display: none;
+}
+
+/* Colecciones (frame 2295:23605): la lista arranca pegada a «volver» y
+   "Ver todo" cierra con space/padding/md abajo */
+.menu-sub--colecciones {
+  padding-bottom: var(--arq-space-padding-md);
+}
+
+.menu-sub--colecciones .sub-list {
+  padding-block: 0;
 }
 
 @media (max-width: 767px) {

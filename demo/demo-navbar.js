@@ -7,7 +7,6 @@ import { getNavigation } from '/src/data/catalog.js';
 const mega = document.querySelector('[data-demo-mega-menu]');
 if (mega) {
   getNavigation().then((navigation) => (mega.navigation = navigation));
-  mega.images = { aplicacion: '/demo/fixtures/img/producto-2.svg', colecciones: '/demo/fixtures/img/producto-1.svg' };
 }
 
 const log = document.querySelector('[data-demo-search-log]');

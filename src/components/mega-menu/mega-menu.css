@@ -1,5 +1,6 @@
-/* mega-menu · Figma 841:2282. Solo tokens semánticos. Solo desktop: en
-   Mobile el navbar usa su submenú de Productos. */
+/* mega-menu · Figma 841:2282 y frames 2295:23636 · 23691 · 23730. Solo
+   tokens semánticos, salvo el degradado del preview (abajo). Solo desktop:
+   en Mobile el navbar usa sus submenús de Productos. */
 
 :host {
   display: block;
@@ -19,7 +20,7 @@
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
 }
 
-/* Cuerpo: columnas a la izquierda e imagen a la derecha */
+/* Cuerpo: columnas a la izquierda y preview a la derecha */
 .body {
   display: flex;
   align-items: stretch;
@@ -31,37 +32,42 @@
   min-width: 0;
 }
 
-/* Contenido: padding space/gap/xl × layout/gutter, gap space/gap/md */
+/* Contenido: padding space/padding/2xl (a la izquierda layout/gutter) */
 .panel {
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: var(--arq-space-gap-md);
   min-width: 0;
-  padding: var(--arq-space-gap-xl) var(--page-gutter);
+  padding: var(--arq-space-padding-2xl) var(--arq-space-padding-2xl) var(--arq-space-padding-2xl) var(--page-gutter);
 }
 
+.panel[hidden] {
+  display: none;
+}
+
+/* Columnas de sección a space/gap/2xl */
 .columns {
   display: flex;
   flex: 1;
-  gap: var(--arq-space-gap-xl);
+  gap: var(--arq-space-gap-2xl);
 }
 
-/* Columna: título y links arriba, "Ver todo…" al pie */
+/* Columna: título, links a space/gap/xl-2xl del título y "Ver todo…" al pie
+   (al menos space/gap/xl debajo de los links; las dos columnas lo alinean) */
 .column {
   display: flex;
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  gap: var(--arq-space-gap-md);
+  gap: var(--arq-space-gap-xl);
   min-width: 0;
 }
 
 .top {
   display: flex;
   flex-direction: column;
-  gap: var(--arq-space-gap-md);
+  gap: var(--arq-space-gap-xl-2xl);
   align-self: stretch;
 }
 
@@ -76,30 +82,88 @@
   align-self: stretch;
 }
 
-/* Colecciones: cada columna es solo la lista de links */
-.panel--colecciones .column {
+/* Colecciones: título, grilla a space/gap/xl (columnas también a
+   space/gap/xl) y "Ver todas las colecciones" a space/gap/xl */
+.panel--colecciones {
+  gap: var(--arq-space-gap-xl);
+}
+
+.columns--collections {
+  flex: none;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-xl);
+}
+
+.columns--collections .column {
   justify-content: flex-start;
   align-items: stretch;
+  gap: 0;
 }
 
+/* "Ver todas las colecciones" al pie, a la altura de los "Ver todo…" de
+   las otras pestañas (space-between) */
 .panel--colecciones .all {
   align-self: flex-start;
+  margin-top: auto;
 }
 
-/* Imagen: layout/mega-menu-image de ancho, ratio/portrait-soft (4:5); si el
-   contenido es más alto, la imagen se estira. Fondo color/surface/subtle. */
-.image {
+/* Preview: layout/mega-menu-image de ancho y ratio/portrait-soft (4:5) como
+   mínimo; si el contenido es más alto, se estira. Fondo color/surface/subtle
+   sin foto. Texto abajo: padding space/padding/xl-2xl, gap space/gap/sm. */
+.preview {
   position: relative;
+  box-sizing: border-box;
+  display: flex;
   flex: none;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--arq-space-gap-sm);
   width: var(--arq-layout-mega-menu-image);
   aspect-ratio: 4 / 5;
+  padding: var(--arq-space-padding-xl-2xl);
+  overflow: hidden;
   background: var(--arq-color-surface-subtle);
 }
 
-.image img {
+.preview img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Degradado del frame (transparente al 45 % → negro al 70 %). Es un relleno
+   de Figma, no una variable: excepción como hero/scrim (decisión
+   2026-10-01 · hero). TODO (diseño): pasarlo a un estilo con nombre. */
+.preview::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(0 0 0 / 0%) 45%, rgb(0 0 0 / 70%) 100%);
+}
+
+/* Sin foto no hay degradado ni texto encima */
+.preview:has(img[hidden])::after {
+  display: none;
+}
+
+.caption {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-sm);
+  color: var(--arq-color-text-inverse);
+}
+
+.preview:has(img[hidden]) .caption,
+.caption[hidden],
+.eyebrow[hidden] {
+  display: none;
+}
+
+.eyebrow,
+.preview-title {
+  margin: 0;
 }

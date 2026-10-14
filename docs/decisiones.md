@@ -567,6 +567,14 @@ Reemplaza a 2026-10-02 · Base de datos (estructura v5) en cómo se identifican 
 - **Preguntas frecuentes en Contacto:** van dentro de `<arq-form-contacto>` por slots (`faq-title`, `faq-description`, `faq-action`, `faq`), en la misma grilla que la consulta, para que las preguntas queden alineadas con el formulario. Fondo `color/surface/faint`, `space/section/lg` arriba y abajo. «Escribinos» lleva al formulario de la misma página (`href="#formulario"`, el `id` de `<arq-form-contacto>`) con `icon/arrow-right`, como la instancia de v3 y la descripción de button (→ es navegación interna).
 - **Figma (14/10):** descripciones de choice-chip, form-section-header, link-list, hero y file-upload; fichas `doc/` de esos cinco (con la fila Size en `doc/hero`); anotación de form-section-header (es el estilo del `<legend>`, no un Web Component); copia de COMPONENTS.md del Plan.
 
+## 2026-10-14 · Navbar y mega-menu v2
+
+- **Fuente:** los frames de «Final-final» `2295:23636`, `2295:23691` y `2295:23730` (mega-menu) y `2295:23568` y `2295:23605` (menú mobile) son el diseño final y mandan sobre los sets mega-menu y navbar.
+- **mega-menu:** pestaña «Por espacio» (Interior · Exterior), títulos `role/heading-1`, Colecciones en cuatro columnas, «Ver todo…» con → al pie y «Ver todas las colecciones» con ↗ (como el frame), todos a la misma altura. Preview a la derecha: la foto del link con el mouse o el foco, con eyebrow y nombre sobre un degradado. `TODO` (datos): qué foto muestra una categoría (hoy, la del primer producto de la categoría con foto).
+- **Menú mobile:** Productos es una lista Interior · Exterior · Colecciones que entra a cada nivel (Mode Interior · Exterior · Colecciones del set navbar), con «volver» y «Ver todo…» al pie; Colecciones con miniatura y «Ver todo» fijo abajo. Lámparas y artefactos no está en la lista del frame (en Desktop sí, como pestaña).
+- **Textos del menú mobile:** todas las filas en `role/heading-3` (20/28), como los nav-link del Menú; bajada en `role/caption`. Se probaron en Figma tres opciones (actual, todo `role/body-xl`, todo `role/heading-3`) y se eligió la última: tres tamaños claros (20 navegar, 16 acciones, 12 bajada).
+- **mega-link (set `840:2070` actualizado):** Default en `role/body-xl` con padding `space/gap/sm-md` y gap `space/gap/md`, bajada `role/body-compact-regular`; Large en `role/heading-3`; la flecha solo en Hover y Focus. Show image (miniatura de 60) implementado; el 60 no tiene token. En código, `submenu` (fila con chevron-right que abre un nivel del menú mobile).
+
 ## Pendientes
 
 Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe la decisión en su sección. El grupo entre paréntesis es el del `TODO` en el código.
