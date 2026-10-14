@@ -1,5 +1,14 @@
 /* Generado por npm run tokens desde tokens/tokens.json. No editar a mano. */
 
+/* Título del hero compacto (Contacto y páginas internas) y del page-header de listados. */
+.role-display-lg {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-light);
+  font-size: var(--arq-type-display-lg-size);
+  line-height: var(--arq-type-display-lg-leading);
+  letter-spacing: var(--arq-font-tracking-tighter);
+}
+
 /* Titulares principales (nombre de producto en el hero). */
 .role-display {
   font-family: var(--arq-font-family-sans);
@@ -40,6 +49,15 @@
 .role-heading-3 {
   font-family: var(--arq-font-family-sans);
   font-weight: var(--arq-font-weight-regular);
+  font-size: var(--arq-type-heading-3-size);
+  line-height: var(--arq-type-heading-3-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Heading 3 en Light: preguntas del FAQ. */
+.role-heading-3-light {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-light);
   font-size: var(--arq-type-heading-3-size);
   line-height: var(--arq-type-heading-3-leading);
   letter-spacing: var(--arq-font-tracking-normal);
@@ -114,6 +132,42 @@
   font-weight: var(--arq-font-weight-semibold);
   font-size: var(--arq-type-body-size);
   line-height: var(--arq-type-body-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Cuerpo compacto de 14 px: ítems de catalog-nav. */
+.role-body-compact {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-light);
+  font-size: var(--arq-type-body-compact-size);
+  line-height: var(--arq-type-body-compact-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* 14 px en Regular: controles y listas densas (ítem seleccionado de catalog-nav). */
+.role-body-compact-regular {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-regular);
+  font-size: var(--arq-type-body-compact-size);
+  line-height: var(--arq-type-body-compact-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Énfasis sobre body-compact-regular. */
+.role-body-compact-medium {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-medium);
+  font-size: var(--arq-type-body-compact-size);
+  line-height: var(--arq-type-body-compact-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
+/* Énfasis fuerte en 14 px. */
+.role-body-compact-strong {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-semibold);
+  font-size: var(--arq-type-body-compact-size);
+  line-height: var(--arq-type-body-compact-leading);
   letter-spacing: var(--arq-font-tracking-normal);
 }
 
