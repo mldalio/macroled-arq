@@ -15,7 +15,7 @@
 //                         downloads: { ies, cad, manual, fotometria } }] }
 // specs vale para todas las variantes del grupo; attributes de la variante pisa o completa.
 
-import { loadSource } from './source.js';
+import { loadSource, loadGroupDetails } from './source.js';
 import { ATTRIBUTES, FILTER_FIELDS, GLOSSARY_COLUMNS, attributeInfo, specSections } from './attributes.js';
 import { variantOptions, findVariant, choose } from './variants.js';
 import { normalize, queryWords, matchesWords } from './text.js';
@@ -29,14 +29,35 @@ export function loadCatalog() {
   return pending;
 }
 
-function index({ collections, groups }) {
+function index({ collections, groups, withDetails }) {
   const collectionById = new Map(collections.map((c) => [c.id, c]));
-  for (const group of groups) {
-    group.collectionData = collectionById.get(group.collection) ?? null;
-    for (const variant of group.variants) variant.values = { ...group.specs, ...variant.attributes };
-    group.defaultVariant = group.variants.find((v) => v.isDefault) ?? group.variants[0];
+  for (const group of groups) link(group, collectionById);
+  return { collections, groups, collectionById, groupById: new Map(groups.map((g) => [g.id, g])), withDetails };
+}
+
+function link(group, collectionById) {
+  group.collectionData = collectionById.get(group.collection) ?? null;
+  for (const variant of group.variants) variant.values = { ...group.specs, ...variant.attributes };
+  group.defaultVariant = group.variants.find((v) => v.isDefault) ?? group.variants[0];
+}
+
+// Detalle de un grupo (descripción, descargas, fotos y textos de la ficha): una
+// consulta por grupo, filtrada por nombre. Se vuelca sobre el mismo objeto del
+// catálogo para que lo que ya lo referencia (cards, colección) siga igual.
+const detailed = new Map();
+
+function ensureDetails(group) {
+  if (!detailed.has(group.id)) {
+    const request = (async () => {
+      const catalog = await loadCatalog();
+      Object.assign(group, catalog.withDetails(group.id, await loadGroupDetails(group.name)));
+      link(group, catalog.collectionById);
+      return group;
+    })();
+    detailed.set(group.id, request);
+    request.catch(() => detailed.delete(group.id)); // un error permite reintentar
   }
-  return { collections, groups, collectionById, groupById: new Map(groups.map((g) => [g.id, g])) };
+  return detailed.get(group.id);
 }
 
 // ── URLs (docs/urls.md) ──────────────────────────────────────────────
@@ -198,6 +219,7 @@ export async function getProduct(groupId) {
   const { groups, groupById } = await loadCatalog();
   const group = groupById.get(groupId);
   if (!group) return null;
+  await ensureDetails(group);
   const family = group.collection
     ? groups.filter((g) => g.collection === group.collection && g !== group).map((g) => productCard(g))
     : [];
@@ -268,8 +290,10 @@ export async function getDownloadsTable() {
 /** Archivos de un SKU de cualquier grupo (modal de la página Descargas). [] si no existe. */
 export async function skuDownloads(sku) {
   const { groups } = await loadCatalog();
-  const variant = groups.flatMap((group) => group.variants).find((v) => v.sku === sku);
-  return variant ? downloads(variant) : [];
+  const group = groups.find((g) => g.variants.some((v) => v.sku === sku));
+  if (!group) return [];
+  await ensureDetails(group);
+  return downloads(group.variants.find((v) => v.sku === sku));
 }
 
 /**

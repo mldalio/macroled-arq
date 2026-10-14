@@ -96,6 +96,29 @@ const GALLERY = ['main', 'ambient1', 'front', 'back', 'left', 'right', 'pers1', 
 
 const DOWNLOADS = ['ies', 'cad', 'manual', 'fotometria'];
 
+// Qué campos se piden a Typesense (decisiones.md, 2026-10-14 · Campos por consulta).
+// Cada documento trae unos 100 campos y el servidor es lento: se pide solo lo
+// que usa cada pantalla.
+// - LIGHT_FIELDS: el catálogo completo (listados, buscador, navegación,
+//   Descargas, Comparativa y PDF): identificación, colecciones, fotos de la card
+//   y de ambiente, y los campos técnicos de attributes.js.
+// - DETAIL_FIELDS: lo que suma la ficha de UN grupo (consulta filtrada por
+//   product_name): descripción, descargas, resto de las fotos y textos.
+// Un campo nuevo que use una pantalla se agrega acá; si no, llega vacío.
+export const LIGHT_FIELDS = Object.freeze([
+  'sku', FIELDS.name, FIELDS.family, FIELDS.productType, FIELDS.environment, FIELDS.application,
+  FIELDS.isDefault, FIELDS.variantAttributes, FIELDS.compatibleWith,
+  FIELDS.collectionIntro, FIELDS.collectionDescription, FIELDS.collectionGallery, FIELDS.collectionInspiration,
+  'multimagen_producto', 'multimagen_ambiente', 'multimagen_coleccion',
+  ...Object.keys(ATTRIBUTES),
+]);
+
+export const DETAIL_FIELDS = Object.freeze([
+  'sku', FIELDS.name, FIELDS.isDefault, FIELDS.description, FIELDS.story, FIELDS.inspiration, FIELDS.video,
+  'multimagen_vistas', 'multimagen_perspectivas', 'multimagen_detalles',
+  ...DOWNLOADS,
+]);
+
 const text = (value) => (value === undefined || value === null ? '' : String(value).trim());
 const list = (value) => (Array.isArray(value) ? value.map(text).filter(Boolean) : text(value) ? text(value).split(',').map((v) => v.trim()).filter(Boolean) : []);
 
@@ -157,6 +180,10 @@ function collectionFromDoc(doc) {
   };
 }
 
+/**
+ * Documentos → { collections, groups, withDetails(id, documentosDeDetalle) }.
+ * withDetails devuelve el grupo reconstruido con los campos de DETAIL_FIELDS.
+ */
 export function fromDocuments(docs) {
   const collections = [];
   const byGroup = new Map();
@@ -175,7 +202,7 @@ export function fromDocuments(docs) {
   const collectionOf = (family) => collections.find((c) => c.families.includes(normalize(family)))?.id ?? null;
   const idByName = new Map([...byGroup].map(([id, rows]) => [normalize(rows[0][FIELDS.name]), id]));
 
-  const groups = [...byGroup].map(([id, rows]) => {
+  const groupFromRows = (id, rows) => {
     const first = rows.find((doc) => doc[FIELDS.isDefault] === true) ?? rows[0];
     const productType = text(first[FIELDS.productType]) || null;
     const compatible = list(first[FIELDS.compatibleWith]).map((name) => idByName.get(normalize(name))).filter(Boolean);
@@ -202,8 +229,17 @@ export function fromDocuments(docs) {
         downloads: Object.fromEntries(DOWNLOADS.map((field) => [field, text(doc[field])]).filter(([, v]) => v)),
       })),
     };
-  });
+  };
+
+  const groups = [...byGroup].map(([id, rows]) => groupFromRows(id, rows));
+
+  // Mismo grupo con los campos de DETAIL_FIELDS: cada documento de detalle se
+  // suma al de la lista que tiene su mismo SKU.
+  const withDetails = (id, details) => {
+    const bySku = new Map(details.map((doc) => [doc.sku, doc]));
+    return groupFromRows(id, byGroup.get(id).map((doc) => ({ ...doc, ...bySku.get(doc.sku) })));
+  };
 
   // Colecciones sin productos publicados no se muestran.
-  return { collections: collections.filter((c) => groups.some((g) => g.collection === c.id)), groups };
+  return { collections: collections.filter((c) => groups.some((g) => g.collection === c.id)), groups, withDetails };
 }

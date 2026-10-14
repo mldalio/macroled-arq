@@ -633,3 +633,14 @@ Prueba de una búsqueda de Desktop que baja desde arriba (referencia: occhio.com
 - **Pendiente si se adopta:** diseñar sheet y Type=Line en Figma, Mobile, animación de cierre, y decidir si reemplaza al campo en la barra y a search-dropdown.
 - **Resultados del sheet:** Productos como fila de miniatura + nombre (`search-result type="simple"`) y Colecciones como card propia (`arq-search-collection`). `searchProducts()` devuelve `kind: 'product' | 'collection'` en cada resultado. Nada de esto está en Figma.
 - **Dato a revisar:** con la base actual, buscar "kanu" no devuelve colecciones (la fila «Colección» entra como producto, sku `col-kanu`), así que el grupo Colecciones no aparece hasta que el adaptador las reconozca.
+
+## 2026-10-14 · Campos por consulta (Typesense)
+
+El servidor de Typesense es lento (4–5 s al primer byte y ~5 KB/s, sin gzip) y cada documento trae unos 100 campos, casi todos vacíos: la consulta única de todo el catálogo pesaba 306 KB y tardaba 52–66 s. Ahora se piden solo los campos que usa cada pantalla.
+
+- **Catálogo (todas las páginas):** una consulta con todos los documentos y `LIGHT_FIELDS` (`typesense-adapter.js`): identificación, colecciones, fotos de card y de ambiente, y los campos técnicos de `attributes.js`. Pasó a 131 KB y ~25 s.
+- **Ficha:** además, una consulta por grupo (`filter_by: product_name:=<nombre>`) con `DETAIL_FIELDS`: descripción, descargas, resto de las fotos y textos. Se pide al abrir la ficha, o el modal de descargas de la página Descargas, y se guarda en memoria. Lo que cambia con la variante (`?sku=`) sale de ese grupo, sin nuevas consultas.
+- **Sin cambios:** las URLs (`/arq/producto/<grupo>?sku=`), la forma del catálogo de `catalog.js` y los componentes. Verificado: la salida de listados, navegación, Descargas, Comparativa, PDF, Colección y las 17 fichas es idéntica a la de la consulta completa.
+- **Regla:** un campo nuevo que use una pantalla se agrega a `LIGHT_FIELDS` o `DETAIL_FIELDS`; si no, llega vacío sin error.
+- **Pendiente (servidor):** activar gzip en nginx (el JSON con claves repetidas baja ~90 %) y revisar por qué un documento tarda 4 s. Si hace falta más: pedir los campos técnicos que solo usan la Comparativa y el PDF por SKU, o generar un `catalogo.json` estático en la sincronización Sheets → Typesense.
+- **Siguiente paso (pendiente):** una consulta por pantalla, con el listado de Productos pidiendo solo los SKU predeterminados de Luminaria. Diseño en `docs/consultas-typesense.md`, a retomar cuando n8n sincronice el schema nuevo.
