@@ -117,7 +117,9 @@ class ArqSelect extends ArqElement {
     this.trigger.setAttribute('aria-labelledby', `${label.id} ${this.trigger.id}`);
     this.trigger.removeAttribute('aria-label');
     this.trigger.disabled = this.disabled;
-    this.menu.type = filter ? 'filter' : 'finishes';
+    // Size=Small (compare-product, columnas angostas): menú del ancho del
+    // campo, así no se sale de la columna ni de la pantalla.
+    this.menu.type = filter && this.size !== 'small' ? 'filter' : 'finishes';
     if (changed.has('open')) {
       this.menu.hidden = !this.open;
       this.trigger.setAttribute('aria-expanded', String(this.open));

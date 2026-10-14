@@ -211,3 +211,20 @@
     padding-inline: var(--arq-space-padding-md) var(--arq-space-gap-lg);
   }
 }
+
+/* embedded (arq-comparativa): en Mobile la tira de productos del Default no
+   tiene scroll propio; se desplaza con el contenedor de la página, junto con
+   compare-table (un solo scroll, como macroled.com.ar/comparativa). Mide su
+   contenido para que el contenedor sepa cuánto desplazar. */
+@media (max-width: 767px) {
+  :host([embedded]) .default {
+    width: max-content;
+    min-width: 100%;
+  }
+
+  :host([embedded]) .products {
+    flex: none;
+    width: max-content;
+    overflow: visible;
+  }
+}

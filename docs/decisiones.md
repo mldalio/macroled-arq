@@ -736,6 +736,7 @@ En Mobile la comparativa funciona como macroled.com.ar/comparativa: un solo desp
 - **Etiquetas fijas:** la etiqueta de cada fila (arriba de los valores) queda a la vista al deslizar (sticky left, como pide la descripción de compare-row); antes se iba con los valores.
 - **Títulos de grupo:** quedan quietos y su línea va del gutter al borde derecho de la pantalla (antes quedaba cortada).
 - **Columnas de `layout/compare-column` (160):** entran dos y asoma la tercera. Reemplaza el 60 % del ancho de pantalla, que no tenía token. compare-header (Default y Compact) usa el mismo ancho para que los productos queden alineados con sus valores.
-- **Sin cambios:** la cabecera compacta fija arriba (oculta el navbar) y sincronizada con el scroll horizontal, y el toggle «Solo diferencias» en su fila.
+- **Un solo scroll:** productos (compare-header) y valores (compare-table) se desplazan dentro de un único contenedor (`embedded` en los dos), en lugar de una tira por fila sincronizada por JS: así el desplazamiento horizontal y el vertical no se traban. Las etiquetas y los títulos de grupo quedan fijos con sticky respecto de ese contenedor. La cabecera compacta (fija arriba, oculta el navbar) lo sigue.
+- **Menú del select en la comparativa:** Size=Small abre el menú del ancho del campo; antes, en Mobile, se salía de la columna, lo recortaba la tira y desplazaba toda la página.
 - **No incluido (no está en Figma):** el aviso «Deslizá hacia la derecha para ver los demás productos» de macroled.
 

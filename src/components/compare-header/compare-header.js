@@ -37,6 +37,7 @@ class ArqCompareHeader extends ArqElement {
   static styles = css;
   static properties = {
     onlyDifferences: { type: Boolean }, // toggle "Solo diferencias" (Default y Compact comparten el valor)
+    embedded: { type: Boolean }, // Mobile: el scroll horizontal del Default lo maneja el contenedor (arq-comparativa)
     diffLabel: { type: String, default: 'Solo diferencias' },
   };
   static template =

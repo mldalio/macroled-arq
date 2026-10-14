@@ -36,6 +36,8 @@ select.addEventListener('arq:change', (e) => console.log(e.detail.value));
 | — | `all-label` | `allLabel` | Texto de la primera opción de Filter. Por defecto "Todos" |
 | — | `hide-all` | `hideAll` | booleano, solo de código. Filter sin la opción "Todos": para compare-product, donde siempre hay una variante elegida |
 
+- **Size=Small** abre el menú del ancho del campo (select-menu Finishes), no de `layout/select-menu-filter`: en las columnas angostas de la comparativa Mobile no se sale de la columna ni de la pantalla.
+
 - **No son props:** State=Hover y State=Focus (CSS).
 - **Las opciones las arma el componente** (decisión 2026-10-02 · glosario): el campo y la lista quedan en el mismo Shadow DOM y funciona el patrón de select de un valor (`role="combobox"` + `role="listbox"` con `aria-activedescendant`). El foco queda siempre en el campo.
 - **Teclado:** cerrado, flechas, Enter, Espacio, Inicio, Fin o una letra abren. Abierto: flechas, Inicio y Fin mueven la opción resaltada (saltean las deshabilitadas), una letra salta a la primera que empieza así, Enter o Espacio eligen, Esc cierra y Tab cierra sin elegir. Clic afuera cierra.
