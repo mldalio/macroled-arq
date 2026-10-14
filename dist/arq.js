@@ -3630,7 +3630,7 @@ var Ir = ":host{min-width:0;display:block}.slot{align-items:center;gap:var(--arq
 }).define();
 //#endregion
 //#region src/components/compare-bar/compare-bar.css?inline
-var Lr = ":host{display:contents}.bar{z-index:3;box-sizing:border-box;gap:var(--arq-space-gap-md);padding:var(--arq-space-padding-md) var(--page-gutter);border-top:var(--arq-border-default) solid var(--arq-color-border-default);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);flex-direction:column;display:flex;position:fixed;inset:auto 0 0}.head{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.title{align-items:center;gap:var(--arq-space-gap-sm);margin:0;display:inline-flex}.row{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-2xl);display:flex}.slots{align-items:stretch;gap:var(--arq-space-gap-lg);flex:auto;min-width:0;display:flex}.slots arq-compare-slot{flex:1 1 0;min-width:0}.actions{align-items:center;gap:var(--arq-space-gap-xl);flex:none;display:flex}.clear-mobile{display:none}@media (width<=767px){.bar{gap:var(--arq-space-gap-sm-md);padding-bottom:var(--arq-space-padding-lg);border-top-color:var(--arq-color-border-subtle)}.clear-mobile{display:inline-flex}.clear-desktop{display:none}.row{gap:var(--arq-space-gap-md)}.slots{gap:var(--arq-space-gap-sm);flex:none}.slots arq-compare-slot{flex:none}.actions,.go{flex:auto}}@media print{:host{display:none}}", Rr = "arq:compare", zr = 3, Br = matchMedia("(max-width: 767px)");
+var Lr = ":host{display:contents}.bar{z-index:3;box-sizing:border-box;gap:var(--arq-space-gap-md);padding:var(--arq-space-padding-md) var(--page-gutter);border-top:var(--arq-border-default) solid var(--arq-color-border-default);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);flex-direction:column;display:flex;position:fixed;inset:auto 0 0}.head{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.title{align-items:center;gap:var(--arq-space-gap-sm);margin:0;display:inline-flex}.row{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-2xl);display:flex}.slots{align-items:stretch;gap:var(--arq-space-gap-lg);flex:auto;min-width:0;display:flex}.slots arq-compare-slot{flex:1 1 0;min-width:0}.actions{align-items:center;gap:var(--arq-space-gap-xl);flex:none;display:flex}.clear-mobile{display:none}@media (width<=767px){.bar{gap:var(--arq-space-gap-sm-md);padding-bottom:var(--arq-space-padding-lg);border-top-color:var(--arq-color-border-subtle)}.clear-mobile{display:inline-flex}.clear-desktop{display:none}.row{align-items:stretch;gap:var(--arq-space-gap-md);flex-direction:column}.slots{gap:var(--arq-space-gap-sm);flex-direction:column;flex:none}.slots arq-compare-slot{flex:none}.actions,.go{flex:auto}}@media print{:host{display:none}}", Rr = "arq:compare", zr = 3, Br = matchMedia("(max-width: 767px)");
 function Vr() {
 	try {
 		let e = JSON.parse(localStorage.getItem(Rr) ?? "[]");
@@ -3697,14 +3697,14 @@ function Hr(e) {
 		if (!e.querySelector(".bar")) return;
 		let t = this.#e;
 		e.querySelector(".bar").hidden = t.length === 0, e.querySelector(".count").count = t.length;
-		let n = Br.matches, r = e.querySelector(".slots"), i = [];
-		for (let e = 0; e < zr; e++) {
-			if (e > 0 && !n) {
+		let n = Br.matches, r = e.querySelector(".slots"), i = [], a = n ? t.length : zr;
+		for (let e = 0; e < a; e++) {
+			if (e > 0) {
 				let e = document.createElement("arq-divider");
-				e.setAttribute("orientation", "vertical"), e.setAttribute("emphasis", "default"), i.push(e);
+				e.setAttribute("orientation", n ? "horizontal" : "vertical"), e.setAttribute("emphasis", n ? "subtle" : "default"), i.push(e);
 			}
 			let r = t[e], a = document.createElement("arq-compare-slot");
-			if (a.size = n ? "compact" : "default", r) {
+			if (r) {
 				a.sku = r.sku, r.image && (a.image = r.image);
 				let e = document.createElement("span");
 				e.slot = "name", e.textContent = r.name;
@@ -3714,8 +3714,8 @@ function Hr(e) {
 			i.push(a);
 		}
 		r.replaceChildren(...i);
-		let a = e.querySelector(".go"), o = t.map((e) => encodeURIComponent(e.sku)).join(",");
-		a.href = `${this.href ?? "/arq/comparativa"}?sku=${o}`;
+		let o = e.querySelector(".go"), s = t.map((e) => encodeURIComponent(e.sku)).join(",");
+		o.href = `${this.href ?? "/arq/comparativa"}?sku=${s}`;
 	}
 }).define();
 //#endregion

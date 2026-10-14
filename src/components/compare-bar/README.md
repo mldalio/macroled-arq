@@ -25,7 +25,7 @@ bar.addEventListener('arq:compare-change', (e) => marcarCards(e.detail.items));
 | Title | — | — | "Productos seleccionados" + count-badge con la cantidad |
 | — (productos) | — | `items` | `[{ sku, name, meta, image }]`, hasta 3 |
 | — | `href` | `href` | Página de la comparativa. Por defecto `/arq/comparativa` |
-| Breakpoint | — | — | Media query: hasta 767 px los lugares van en Compact |
+| Breakpoint | — | — | Media query: hasta 767 px, como macroled.com.ar, solo los productos elegidos, uno arriba de otro (compare-slot Default, con divider Horizontal Subtle), y «Comparar» debajo a todo el ancho |
 
 - **Métodos:** `add(item)` (devuelve `false` si ya hay 3 o si ya estaba), `remove(sku)`, `clear()` ("Borrar todo"), `has(sku)`.
 - **Evento:** `arq:compare-change { items }` cuando cambia la selección (también si cambia en otra pestaña).
@@ -40,9 +40,9 @@ bar.addEventListener('arq:compare-change', (e) => marcarCards(e.detail.items));
 | --- | --- |
 | Fondo · línea superior | `color/surface/default` (en Dark) · `border/default` en `color/border/default` (Mobile `color/border/subtle`, como el set) |
 | Padding | `space/padding/md` × `layout/gutter` (Mobile, abajo `space/padding/lg`) |
-| Gaps | título–lugares `space/gap/md` (Mobile `space/gap/sm-md`); lugares `space/gap/lg` con divider Vertical Default (Mobile `space/gap/sm`); lugares–acciones `space/gap/2xl` (Mobile `space/gap/md`); acciones `space/gap/xl` |
+| Gaps | título–lugares `space/gap/md` (Mobile `space/gap/sm-md`); lugares `space/gap/lg` con divider Vertical Default (Mobile, apilados: `space/gap/sm` con divider Horizontal Subtle); lugares–acciones `space/gap/2xl` (Mobile `space/gap/md`); acciones `space/gap/xl` |
 | Título | `role/body-lg` + count-badge, gap `space/gap/sm` |
-| Acciones | button Underline "Borrar todo" (en Mobile arriba, junto al título) y Filled "Comparar" (en Mobile ocupa el resto) |
+| Acciones | button Underline "Borrar todo" (en Mobile arriba, junto al título) y Filled "Comparar" (en Mobile, debajo de los productos a todo el ancho) |
 
 ## Pendientes
 

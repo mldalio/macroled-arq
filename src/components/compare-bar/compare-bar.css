@@ -1,6 +1,6 @@
 /* compare-bar · Figma 1233:3963. Solo tokens semánticos.
-   Barra fija inferior en Dark local. Desktop es la base; Mobile
-   (max-width: 767px) usa lugares Compact. */
+   Barra fija inferior en Dark local. Desktop es la base; en Mobile
+   (max-width: 767px) los productos van uno arriba de otro. */
 
 :host {
   display: contents;
@@ -71,7 +71,8 @@
   display: none;
 }
 
-/* ── Mobile: lugares Compact, "Borrar todo" arriba, "Comparar" al ancho ── */
+/* ── Mobile (como macroled.com.ar): productos uno arriba de otro, "Borrar
+   todo" arriba y "Comparar" debajo a todo el ancho ── */
 @media (max-width: 767px) {
   .bar {
     gap: var(--arq-space-gap-sm-md);
@@ -88,11 +89,14 @@
   }
 
   .row {
+    flex-direction: column;
+    align-items: stretch;
     gap: var(--arq-space-gap-md);
   }
 
   .slots {
     flex: none;
+    flex-direction: column;
     gap: var(--arq-space-gap-sm);
   }
 

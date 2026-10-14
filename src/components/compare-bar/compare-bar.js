@@ -11,8 +11,10 @@
 //
 // - Dark local (DESIGN.md §2): el contenedor interno lleva data-arq-theme="dark";
 //   quien arma la página no pone nada.
-// - Título "Productos seleccionados" + count-badge; 3 lugares (compare-slot:
-//   Default en Desktop, Compact en Mobile); "Borrar todo" y "Comparar".
+// - Título "Productos seleccionados" + count-badge; 3 lugares (compare-slot
+//   Default, con divisores); "Borrar todo" y "Comparar". En Mobile, como
+//   macroled.com.ar: solo los productos elegidos, uno arriba de otro, y
+//   "Comparar" debajo a todo el ancho.
 // - "Comparar" lleva a /arq/comparativa?sku=SKU1,SKU2,SKU3 (decisión 2026-10-02
 //   · Comparativa; href base en el atributo href).
 // - La selección se guarda en localStorage (arq:compare), así sigue al cambiar
@@ -138,19 +140,20 @@ class ArqCompareBar extends ArqElement {
     const items = this.#items;
     root.querySelector('.bar').hidden = items.length === 0;
     root.querySelector('.count').count = items.length;
-    const compact = MOBILE.matches;
+    const mobile = MOBILE.matches;
     const slots = root.querySelector('.slots');
     const nodes = [];
-    for (let i = 0; i < MAX; i++) {
-      if (i > 0 && !compact) {
+    // Mobile: solo los elegidos, apilados (sin lugares vacíos)
+    const count = mobile ? items.length : MAX;
+    for (let i = 0; i < count; i++) {
+      if (i > 0) {
         const divider = document.createElement('arq-divider');
-        divider.setAttribute('orientation', 'vertical');
-        divider.setAttribute('emphasis', 'default');
+        divider.setAttribute('orientation', mobile ? 'horizontal' : 'vertical');
+        divider.setAttribute('emphasis', mobile ? 'subtle' : 'default');
         nodes.push(divider);
       }
       const item = items[i];
       const slot = document.createElement('arq-compare-slot');
-      slot.size = compact ? 'compact' : 'default';
       if (item) {
         slot.sku = item.sku;
         if (item.image) slot.image = item.image;

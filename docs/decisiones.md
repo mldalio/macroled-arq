@@ -739,3 +739,11 @@ En Mobile la comparativa funciona como macroled.com.ar/comparativa: un solo desp
 - **Sin cambios:** la cabecera compacta fija arriba (oculta el navbar) y sincronizada con el scroll horizontal, y el toggle «Solo diferencias» en su fila.
 - **No incluido (no está en Figma):** el aviso «Deslizá hacia la derecha para ver los demás productos» de macroled.
 
+## 2026-10-14 · compare-bar Mobile apilada
+
+En Mobile, compare-bar muestra los productos elegidos uno arriba de otro, como la barra de macroled.com.ar: cada uno con foto, nombre, meta y quitar (compare-slot Default), separados por divider Horizontal Subtle, y «Comparar» debajo a todo el ancho. Reemplaza la fila de miniaturas Compact con «Comparar» al lado: con miniaturas no se leía qué producto era cada una.
+
+- Solo se muestran los elegidos (sin lugares vacíos), para que la barra no tape más pantalla de la necesaria.
+- «Borrar todo» sigue arriba, junto al título.
+- Figma (compare-bar Breakpoint=Mobile, 1233:3962) todavía muestra la versión anterior.
+
