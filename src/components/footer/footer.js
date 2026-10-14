@@ -21,8 +21,9 @@
 //
 // Breakpoint no es prop: en Mobile se apilan marca, columnas y legal.
 // Aplica su propio layout/gutter (componente de borde a borde).
-// Siempre en Light (Figma 788:3104, 2026-10-14): el <footer> interno lleva
-// data-arq-theme="light", así se ve blanco también con Iluminar.
+// Sigue el modo de la página (2026-10-14): blanco; con Iluminar (Productos y
+// Colecciones, data-arq-theme="dark" en <html>) pasa a Dark junto con el resto,
+// con la misma duración y curva que el fondo de la página.
 
 import { ArqElement } from '../../base/arq-element.js';
 import '../logo/logo.js';
@@ -35,7 +36,7 @@ class ArqFooter extends ArqElement {
   static tag = 'arq-footer';
   static styles = css;
   static template =
-    `<footer class="footer" data-arq-theme="light">` +
+    `<footer class="footer">` +
     `<div class="brand">` +
     `<arq-logo></arq-logo>` +
     `<p class="tagline role-body"><slot name="tagline"></slot></p>` +

@@ -23,6 +23,11 @@
   padding: var(--arq-space-section-sm) var(--page-gutter);
   border-top: var(--arq-border-default) solid var(--arq-color-border-subtle);
   background: var(--arq-color-surface-default);
+  /* Iluminar: el fondo funde a la par del de la página (.arq-page) */
+  transition-property: background-color;
+  transition-duration: var(--arq-illumination-bg-duration);
+  transition-delay: 0s;
+  transition-timing-function: var(--arq-illumination-bg-easing);
 }
 
 .brand {

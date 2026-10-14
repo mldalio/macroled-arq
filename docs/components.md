@@ -404,7 +404,7 @@ Fila desplegable del panel de filtros (filter-panel). Mismo patrón que catalog-
 - Figma: [788-3104](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=788-3104)
 - Propiedades: Breakpoint: Desktop · Mobile
 
-Footer de Macroled Arq, último bloque de todas las páginas. Siempre en Light (fondo color/surface/default, línea superior color/border/subtle), también con Iluminar: el componente fija el modo Light. Desktop: marca a la izquierda y tres columnas (Productos, Información, Redes). Mobile: marca, columnas y legal apilados. Los links son instancias de footer-link.
+Footer de Macroled Arq, último bloque de todas las páginas. Sigue el modo de la página (fondo color/surface/default, línea superior color/border/subtle): blanco; con Iluminar (Productos y Colecciones) pasa a Dark junto con el resto. Desktop: marca a la izquierda y tres columnas (Productos, Información, Redes). Mobile: marca, columnas y legal apilados. Los links son instancias de footer-link.
 
 ## footer-link
 
