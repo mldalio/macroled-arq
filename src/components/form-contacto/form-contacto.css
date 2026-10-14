@@ -1,5 +1,5 @@
-/* form-contacto · Contacto v3 · propuesta (2295:23055; decisiones.md,
-   2026-10-14 · Contacto v3). Solo tokens semánticos. Información y formulario
+/* form-contacto · Final › Contacto v3 (2295:23055 Desktop · 2473:30918
+   Mobile; decisiones.md, 2026-10-14 · Contacto v3). Solo tokens semánticos. Información y formulario
    en dos columnas 2:3 (en v3, 468 y el resto de 1312); en Mobile, apilados.
    Debajo, opcional, las preguntas frecuentes en la misma grilla. */
 
@@ -192,7 +192,8 @@
 }
 
 /* ── Mobile ─────────────────────────────────────────────────────── */
-/* TODO (diseño): v3 no tiene Mobile; se apilan las columnas. */
+/* Columnas apiladas (Contacto v3 · mobile, 2473:30918).
+   TODO (diseño): revisar ese Mobile, armado desde el Desktop. */
 @media (max-width: 767px) {
   .layout,
   .faq {

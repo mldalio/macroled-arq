@@ -341,7 +341,8 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 | ratio/square | 1:1 | `aspect-ratio: 1 / 1` | compare-product, family-card Default, galería doble, proyectos, line-card (Mobile) |
 | ratio/landscape | 5:4 | `aspect-ratio: 5 / 4` | product-gallery y thumbs, line-card (Desktop), texto + imagen |
 | ratio/wide | 16:10 | `aspect-ratio: 16 / 10` | Galería de ambiente |
-| hero | 70 % del alto | `height: 70svh` | Hero de Contacto, Desktop y Mobile (valor por defecto del componente) |
+| hero | 70 % del alto | `height: 70svh` | Hero Size=Default, Desktop y Mobile (valor por defecto del componente) |
+| hero Compact | mínimo 41 % (Desktop) · 47 % (Mobile) | `min-height: 41svh` · `47svh` | Hero Size=Compact (Contacto): la proporción del set (520 y 480 contra 880 y 720). Si el texto no entra, crece |
 | hero Home | 100 % del alto | `height: 100svh` | Hero de la Home, Desktop y Mobile: todo el ancho y el alto de la pantalla (atributo `full-height`, solo de código) |
 
 Los ratios no son variables (Figma no puede ligar una proporción). En código se aplican con `aspect-ratio`.
@@ -466,13 +467,13 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | search-field | State: Empty · Focus · Filled. Prop: Show close | Campo con borde del navbar |
 | search-result · search-see-all | State: Default · Hover · Active (solo search-result) · Focus | Miniatura, nombre, SKU, flecha |
 | search-dropdown · search-screen | State: Results · No results (· Empty en search-screen) | Desktop / mobile |
-| hero | Breakpoint: Desktop · Mobile. Size: Default · Compact. Props: Eyebrow · Show eyebrow · Title · Description · Show description · Show button | Media + hero/scrim. Eyebrow role/label, título role/display (Compact: role/display-lg, hero más bajo de Contacto y páginas internas), button Outline en Dark local (CTA por slot). Alto: 70svh en Desktop y Mobile. En la Home, pantalla completa (100svh) en los dos |
+| hero | Breakpoint: Desktop · Mobile. Size: Default · Compact. Props: Eyebrow · Show eyebrow · Title · Description · Show description · Show button | Media + hero/scrim. Eyebrow role/label, título role/display (Compact: role/display-lg, hero más bajo de Contacto y páginas internas), button Outline en Dark local (CTA por slot). Alto: 70svh en Desktop y Mobile; Compact, mínimo 41svh (Desktop) y 47svh (Mobile). En la Home, pantalla completa (100svh) en los dos |
 | section-header | Breakpoint: Desktop · Mobile. Type: Link · Description · Title · Stacked. Props: Title · Description | role/heading-2 y role/body-lg. Sin separador. Gap título–bajada sm-md, textos–link lg. Bajada Description hasta layout/measure. En Mobile el link no se muestra: la página pone un button al final del bloque |
 | page-header | Breakpoint: Desktop · Mobile. Type: List · Detail. Props: Title · Description · Show breadcrumb · Show description · Show back · Show action | Título role/display-lg y bajada role/body en Desktop Type=List; role/display y role/body-lg en Mobile y en Detail. Sin desplegable |
 | breadcrumb · breadcrumb-item | Levels: 3 · 2 / State: Default · Hover · Current. Props: Label · Show separator | role/label. El ítem actual no lleva link ni separador |
 | cta-block | Type: Button · Newsletter. Breakpoint: Desktop · Mobile. Props: Title · Description | Fondo color/surface/subtle, padding space/section/md |
 | feature-block | Layout: Image left · Image right. Breakpoint: Desktop · Mobile. Props: Label · Title · Description · Show secondary image | Breakpoint=Mobile apila |
-| faq-item | Open: False · True. State: Default · Hover · Focus. Props: Question · Answer | Home. Pregunta role/heading-3-light. No confundir con accordion-item |
+| faq-item | Open: False · True. State: Default · Hover · Focus. Props: Question · Answer | Home y Contacto. Pregunta role/heading-3-light, línea superior color/border/default. No confundir con accordion-item |
 | accordion-item | Open: False · True. State: Default · Hover · Focus. Breakpoint: Desktop · Mobile. Prop: Title | Ficha: bloques de especificaciones con spec-list adentro. Título role/body-xl; ícono en icon-button Large Outline |
 | spec-list · spec-row | Props: Title / Label · Value | Cantidad de filas libre en código |
 | category-card | Breakpoint: Desktop · Mobile. State: Default · Hover · Focus. Prop: Name | Home. Toda la tarjeta es link. ratio/portrait-soft |
@@ -488,7 +489,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | filter-panel · filter-row · filter-chip · filter-bar | Breakpoint / Open × State / State: Default · Hover · Focus / State: Default · Applied × Breakpoint | filter-panel desktop con scrim; mobile pantalla completa sin scrim |
 | checkbox | Size: Large · Default. Checked: False · True. State: Default · Hover · Focus · Disabled. Props: Label · Show label | Filtros y "Comparar" en tarjetas |
 | toggle · toggle-switch | Checked: False · True. State: Default · Hover · Focus · Disabled. Props: Label · Show label | Pista 38 × 18, radius/pill |
-| choice-chip | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | Formularios. Padding space/padding/sm-md × md. En Contacto, si entran en una fila se estiran a todo el ancho; si no, cada uno con su ancho. No confundir con option-tile |
+| choice-chip | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | Formularios. Padding space/padding/sm × md; Selected en color/surface/inverse con texto color/text/inverse. Cada chip con su ancho, a space/gap/sm-md. No confundir con option-tile |
 | option-group · option-tile | Type: Tiles · Select · Swatches / State: Default · Hover · Selected · Focus · Disabled | Configurador de la ficha. option-tile funciona como radio. Default en color/text/secondary; Disabled en color/text/disabled y tachado |
 | swatch · swatch-picker | Size: Small · Default · Large. State: Default · Hover · Selected · Focus · Disabled | Elegir acabado en la ficha. Cantidad variable en código. Disabled: acabado sin combinación con las otras opciones elegidas |
 | count-badge | Tone: Primary · Inverse. Prop: Count | Mín. 20, crece con el número |
@@ -496,9 +497,9 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | sku | Size: Default · Compact · Underline. State: Default · Hover · Copied. Prop: Code | Botón de copiar. Código en role/body-lg (Default), role/body (Compact) o role/caption-medium subrayado, sin ícono (Underline, tabla de variantes) |
 | variants-table · variants-table-row · variants-table-card | Filters: Off · On × Breakpoint / Type: Header · Row. State: Default · Hover. Breakpoint / — | Un solo contenedor con overflow-x; columnas fijas con position: sticky. Sin scroll por fila. Descarga de cada fila: icon-button Large Outline, columna «Descargas» centrada; filas con padding vertical space/padding/sm. En la página Descargas suma un buscador a todo el ancho con Filtros en Outline al lado (Show search) |
 | download-modal · download-item | Breakpoint: Desktop · Mobile / Emphasis: Default · Featured. State: Default · Hover · Focus | Desktop: esquina inferior derecha a layout/gutter. Mobile: abajo, a layout/gutter de los bordes. Siempre con scrim; la página de atrás no se desplaza. En Descargas, sku Compact debajo del título |
-| file-upload | State: Empty · Attached · Drag over · Error · Disabled. Props: Label · Helper | Label role/body-regular en color/text/primary |
-| form-message | Tone: Success · Error. Prop: Message | Sin ícono. Los títulos de bloque de un formulario son el `<legend>` de cada `<fieldset>` en role/heading-3, sin número ni línea |
-| contact-item · link-list | State: Default · Hover · Focus. Props: Label · Value / Props: Title · Show link 3 | Etiqueta role/body-sm en color/text/tertiary; valor como link mailto: / tel:. contact-item sin línea ni padding vertical: la lista los separa |
+| file-upload | State: Empty · Attached · Drag over · Error · Disabled. Props: Label · Helper | Label role/body-regular en color/text/primary. Tamaño máximo por formulario (`max-size`, 10 MB por defecto; Contacto: 25 MB) |
+| form-message | Tone: Success · Error. Prop: Message | Sin ícono. Los títulos de bloque de un formulario son el `<legend>` de cada `<fieldset>`, con el dibujo de form-section-header: role/heading-3 y línea inferior border/default en color/border/default |
+| contact-item · link-list | State: Default · Hover · Focus. Props: Label · Value / Props: Title · Show link 3 | Etiqueta role/body-sm en color/text/tertiary; valor como link mailto: / tel:. contact-item sin línea ni padding vertical: la lista los separa. link-list: título role/body-lg-regular en color/text/secondary, todo a space/gap/sm |
 | compare-header · compare-group · compare-row · compare-product | Type: Default · Compact × Breakpoint / Label / Breakpoint + Value 1–3 / State: Filled · Empty | Hasta 3 productos. Cada columna es un producto (grupo): selects de familia (elegir otro producto) y variante |
 | compare-bar · compare-slot | Breakpoint: Desktop · Mobile / Size: Default · Compact. State: Filled · Empty | Barra fija inferior, en Dark local |
 | pdf-page · pdf-header · pdf-cover-title · pdf-spec-group · pdf-spec-row · pdf-footer | Type: Portada · Especificaciones / Meta · Meta 2 · Show meta 2 / Eyebrow · Name · SKU / Title / Label · Value / Note · Page | Ficha técnica en PDF (A4), no son Web Components: los arma `src/pdf/` con pdfmake. Type en modo Mobile, Dimension en Desktop, Color en Light (`src/styles/print-tokens.js`). Se abre en una pestaña nueva; las especificaciones suman hojas y una sección no se parte |
@@ -585,7 +586,6 @@ Aplica a product-card en los listados de Productos y Colecciones (las cards de c
 - **Ficha técnica en PDF:** falta el mensaje de error si no se puede generar. Al guardarla desde el visor de Chrome, el nombre es un código al azar (sale de la URL del blob): para que se llame `ficha-tecnica-<sku>.pdf` hace falta servirla desde una URL propia.
 - **Galerías** (product-gallery, ambiente, Inspiración, colección): cantidad de imágenes. Si hay más de las que entran, se desliza.
 - **Acabados:** sin definir (imágenes y tabla de códigos).
-- **form-section-header:** Contacto en Figma lo usa (número + label en role/label con línea border/strong); el código usa `<legend>` en role/heading-3 (§8, form-message). Falta definir cuál queda.
 
 ---
 
