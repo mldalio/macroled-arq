@@ -98,14 +98,13 @@
 }
 
 @media (max-width: 767px) {
-  /* Mobile: columnas de 60 % del ancho de pantalla (igual que compare-table:
-     la siguiente columna asoma) con scroll horizontal. TODO (token): el 60 %
-     no tiene variable en Figma. El gutter va dentro de cada tira desplazable,
+  /* Mobile: columnas de layout/compare-column (160, igual que
+     compare-table: entran dos y asoma la tercera) con scroll horizontal. El gutter va dentro de cada tira desplazable,
      no en el contenedor: así el scroll llega al borde derecho de la pantalla. El scroll lo maneja arq-comparativa (junto con
      compare-table, para que los dos se desplacen igual); acá solo hace falta
      que el contenido pueda ser más ancho que la pantalla sin recortarse. */
   :host {
-    --column-width: 60vw;
+    --column-width: var(--arq-layout-compare-column);
   }
 
   .default {
