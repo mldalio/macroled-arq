@@ -240,7 +240,7 @@
   .over-photo .bar {
     padding-inline: var(--page-gutter);
     border-bottom: none;
-    background: var(--arq-color-bg-default);
+    background: var(--arq-color-surface-default);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }

@@ -20,7 +20,7 @@
    catalog-listing y el navbar; el fondo del lienzo (html) se actualiza uno o dos
    cuadros después y dejaba una franja. */
 .arq-page {
-  background: var(--arq-color-bg-default);
+  background: var(--arq-color-surface-default);
   transition-property: background-color;
   transition-duration: var(--arq-illumination-bg-duration);
   transition-timing-function: var(--arq-illumination-bg-easing);

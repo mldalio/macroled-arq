@@ -189,6 +189,16 @@
   letter-spacing: var(--arq-font-tracking-normal);
 }
 
+/* Etiqueta de 14 px en mayúsculas: etiqueta de select Type=Filter. */
+.role-label-lg {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-regular);
+  font-size: var(--arq-type-label-lg-size);
+  line-height: var(--arq-type-label-lg-leading);
+  letter-spacing: var(--arq-font-tracking-widest);
+  text-transform: uppercase;
+}
+
 /* Etiquetas de inputs, tabs, títulos de grupo, breadcrumb. */
 .role-label {
   font-family: var(--arq-font-family-sans);

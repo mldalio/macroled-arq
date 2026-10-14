@@ -1,5 +1,5 @@
 /* cta-block · Figma 1265:4464. Solo tokens semánticos.
-   Fondo color/bg/subtle a sangre, con su propio layout/gutter.
+   Fondo color/surface/subtle a sangre, con su propio layout/gutter.
    Desktop: texto a la izquierda, acción a la derecha. Mobile: apilado. */
 
 :host {
@@ -13,7 +13,7 @@
   justify-content: space-between;
   gap: var(--arq-space-gap-xl);
   padding: var(--arq-space-section-md) var(--page-gutter);
-  background: var(--arq-color-bg-subtle);
+  background: var(--arq-color-surface-subtle);
 }
 
 /* Título y bajada a space/gap/sm-md (como el set; la ficha dice sm) */

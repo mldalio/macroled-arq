@@ -53,8 +53,8 @@ export const FONT_WEIGHTS = Object.freeze([
 ]);
 
 // Colores con transparencia (color/border/subtle es tinta al 10 %): se
-// mezclan sobre el fondo de la hoja, color/bg/default.
-function solid(hex, background = T['color/bg/default']) {
+// mezclan sobre el fondo de la hoja, color/surface/default.
+function solid(hex, background = T['color/surface/default']) {
   const match = hex.match(/^#([0-9a-f]{6})([0-9a-f]{2})?$/i);
   if (!match?.[2]) return hex;
   const alpha = parseInt(match[2], 16) / 255;
@@ -232,9 +232,9 @@ export function buildDatasheet(data, { image = null, nameLines = 1, skuLines = 1
 
   const cover = [
     {
-      // Imagen de producto sobre color/bg/subtle (el fondo ya viene pintado en
+      // Imagen de producto sobre color/surface/subtle (el fondo ya viene pintado en
       // la imagen). Sin imagen, solo el fondo.
-      ...(image ? { image, ...box } : { canvas: [{ type: 'rect', x: 0, y: 0, w: box.width, h: box.height, color: color('bg/subtle') }] }),
+      ...(image ? { image, ...box } : { canvas: [{ type: 'rect', x: 0, y: 0, w: box.width, h: box.height, color: color('surface/subtle') }] }),
       // La hoja empieza con el padding de especificaciones (más alto): la portada lo achica.
       margin: [0, pt(coverBody - specBody), 0, pt(T['space/gap/xl-2xl'])],
     },

@@ -55,7 +55,7 @@ class ArqSelect extends ArqElement {
   };
   static template =
     `<div class="select">` +
-    `<span class="label role-label-sm" hidden></span>` +
+    `<span class="label role-label" hidden></span>` +
     `<button type="button" class="trigger" aria-expanded="false">` +
     `<arq-swatch class="swatch" aria-hidden="true" hidden></arq-swatch>` +
     `<span class="value"></span>` +
@@ -105,7 +105,7 @@ class ArqSelect extends ArqElement {
     // cualquier State (incluido Disabled).
     label.hidden = false;
     label.textContent = this.label ?? '';
-    label.className = `label role-label-sm`;
+    label.className = `label ${filter ? 'role-label-lg' : 'role-label'}`;
     this.trigger.setAttribute('aria-labelledby', `${label.id} ${this.trigger.id}`);
     this.trigger.removeAttribute('aria-label');
     this.trigger.disabled = this.disabled;

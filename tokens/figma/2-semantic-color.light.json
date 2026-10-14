@@ -489,56 +489,6 @@
         }
       }
     },
-    "bg": {
-      "default": {
-        "$type": "color",
-        "$value": "{neutral.0}",
-        "$description": "Fondo de página y de secciones completas (body, section).",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "FRAME_FILL",
-              "SHAPE_FILL"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-color-bg-default)"
-            }
-          }
-        }
-      },
-      "subtle": {
-        "$type": "color",
-        "$value": "{neutral.100}",
-        "$description": "Fondo alternativo para diferenciar una sección de página de la siguiente.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "FRAME_FILL",
-              "SHAPE_FILL"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-color-bg-subtle)"
-            }
-          }
-        }
-      },
-      "inverse": {
-        "$type": "color",
-        "$value": "{neutral.900}",
-        "$description": "Fondo de sección invertida, por ejemplo un footer oscuro en modo Light.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "FRAME_FILL",
-              "SHAPE_FILL"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-color-bg-inverse)"
-            }
-          }
-        }
-      }
-    },
     "icon": {
       "primary": {
         "$type": "color",

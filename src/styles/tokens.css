@@ -193,9 +193,6 @@
   --arq-border-focus: var(--arq-border-1); /** Grosor del anillo de foco. */
   --arq-border-strong: var(--arq-border-2); /** Grosor de borde marcado (2): hover y selección de muestras. */
   --arq-blur-backdrop: var(--arq-blur-12); /** Desenfoque del fondo detrás de una superficie translúcida (background blur / backdrop-filter). Va junto con color/overlay/translucent. */
-  --arq-color-bg-default: var(--arq-neutral-0); /** Fondo de página y de secciones completas (body, section). */
-  --arq-color-bg-subtle: var(--arq-neutral-100); /** Fondo alternativo para diferenciar una sección de página de la siguiente. */
-  --arq-color-bg-inverse: var(--arq-neutral-900); /** Fondo de sección invertida, por ejemplo un footer oscuro en modo Light. */
   --arq-color-surface-default: var(--arq-neutral-0); /** Fondo principal de página, tarjetas y paneles. */
   --arq-color-surface-faint: var(--arq-neutral-25); /** Fondo apenas despegado de surface/default: hover de opciones sin fondo (option-tile). */
   --arq-color-surface-hover: var(--arq-neutral-50); /** Fondo al pasar el cursor sobre un elemento interactivo que está sobre surface/default. */
@@ -272,13 +269,12 @@
   --arq-type-body-compact-leading: var(--arq-font-leading-24); /** Interlineado de type/body-compact. */
   --arq-type-display-lg-size: var(--arq-font-size-80); /** Título de hero compacto (páginas internas como Contacto). 80 px desktop, 48 px mobile. */
   --arq-type-display-lg-leading: var(--arq-font-leading-100);
+  --arq-type-label-lg-size: var(--arq-font-size-14); /** Tamaño del estilo role/label-lg. Lo usa el estilo de texto: no aplicar directo. */
+  --arq-type-label-lg-leading: var(--arq-font-leading-16); /** Interlineado del estilo role/label-lg. Lo usa el estilo de texto: no aplicar directo. */
 }
 
 /* Dark: con data-arq-theme="dark" (Iluminar o Dark local), nunca por prefers-color-scheme */
 [data-arq-theme="dark"] {
-  --arq-color-bg-default: var(--arq-neutral-800); /** Fondo de página y de secciones completas (body, section). */
-  --arq-color-bg-subtle: var(--arq-neutral-750); /** Fondo alternativo para diferenciar una sección de página de la siguiente. */
-  --arq-color-bg-inverse: var(--arq-neutral-0); /** Fondo de sección invertida, por ejemplo un footer oscuro en modo Light. */
   --arq-color-surface-default: var(--arq-neutral-800); /** Fondo principal de página, tarjetas y paneles. */
   --arq-color-surface-faint: var(--arq-neutral-775); /** Fondo apenas despegado de surface/default: hover de opciones sin fondo (option-tile). */
   --arq-color-surface-hover: var(--arq-neutral-775); /** Fondo al pasar el cursor sobre un elemento interactivo que está sobre surface/default. */
@@ -318,9 +314,6 @@
 
 /* Light local: con data-arq-theme="light", un bloque que queda en Light dentro de Dark (filter-panel) */
 [data-arq-theme="light"] {
-  --arq-color-bg-default: var(--arq-neutral-0); /** Fondo de página y de secciones completas (body, section). */
-  --arq-color-bg-subtle: var(--arq-neutral-100); /** Fondo alternativo para diferenciar una sección de página de la siguiente. */
-  --arq-color-bg-inverse: var(--arq-neutral-900); /** Fondo de sección invertida, por ejemplo un footer oscuro en modo Light. */
   --arq-color-surface-default: var(--arq-neutral-0); /** Fondo principal de página, tarjetas y paneles. */
   --arq-color-surface-faint: var(--arq-neutral-25); /** Fondo apenas despegado de surface/default: hover de opciones sin fondo (option-tile). */
   --arq-color-surface-hover: var(--arq-neutral-50); /** Fondo al pasar el cursor sobre un elemento interactivo que está sobre surface/default. */

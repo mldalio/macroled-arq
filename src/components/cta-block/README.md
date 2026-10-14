@@ -1,6 +1,6 @@
 # cta-block · `<arq-cta-block>`
 
-Bloque de cierre de página, con fondo `color/bg/subtle` a sangre. Último bloque antes del footer; uno por página. Type=Button deriva a una acción (Contacto, Comparativa); Type=Newsletter lleva un email + button (Home).
+Bloque de cierre de página, con fondo `color/surface/subtle` a sangre. Último bloque antes del footer; uno por página. Type=Button deriva a una acción (Contacto, Comparativa); Type=Newsletter lleva un email + button (Home).
 
 - Figma: [1265-4464](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1265-4464) · ficha `doc/cta-block` (`1455:7747`)
 
@@ -58,7 +58,7 @@ document.addEventListener('arq:submit', (event) => {
 
 | Parte | Token |
 | --- | --- |
-| Fondo | `color/bg/subtle` |
+| Fondo | `color/surface/subtle` |
 | Título | `color/text/primary` · `role/heading-2` |
 | Bajada | `color/text/secondary` · `role/body-lg` |
 | Gap título–bajada | `space/gap/sm-md` |

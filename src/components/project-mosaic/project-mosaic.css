@@ -26,7 +26,7 @@
   height: 100% !important;
   min-width: 0;
   object-fit: cover !important;
-  background: var(--arq-color-bg-subtle);
+  background: var(--arq-color-surface-subtle);
 }
 
 /* La 1.ª y la 2.ª toman el alto de las filas: contain: size hace que el tamaño
