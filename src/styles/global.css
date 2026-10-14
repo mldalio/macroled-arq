@@ -6,8 +6,8 @@
 /* ── Iluminar (prueba) ──────────────────────────────────────────── */
 /* Duración y curva del encendido/apagado: imágenes y fondos (más corta) con la misma curva. TODO: pasar a tokens del sistema si se aprueba. */
 :root {
-  --arq-illumination-image-duration: 1200ms;
-  --arq-illumination-bg-duration: 2100ms;
+  --arq-illumination-image-duration: 700ms;
+  --arq-illumination-bg-duration: 1200ms;
   /* Fondo: curva suave de entrada y salida. Imagen: sale rápido y se asienta,
      para que el cruce de fotos termine visualmente junto con el fondo. */
   --arq-illumination-bg-easing: cubic-bezier(0.45, 0, 0.2, 1);

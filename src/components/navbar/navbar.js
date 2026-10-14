@@ -63,6 +63,7 @@ import '../search-result/search-result.js';
 import '../search-see-all/search-see-all.js';
 import '../search-screen/search-screen.js';
 import '../search-sheet/search-sheet.js';
+import { containScroll } from '../../base/scroll-lock.js';
 import css from './navbar.css?inline';
 
 const MOBILE = matchMedia('(max-width: 767px)');
@@ -82,6 +83,7 @@ class ArqNavbar extends ArqElement {
   };
   static template =
     `<header class="navbar">` +
+    `<div class="scrim" aria-hidden="true"></div>` +
     `<nav class="bar">` +
     `<arq-logo class="logo"></arq-logo>` +
     `<div class="right">` +
@@ -90,7 +92,7 @@ class ArqNavbar extends ArqElement {
     `<arq-icon-button class="search-open" icon="search">Buscar</arq-icon-button>` +
     `<div class="search-box" hidden>` +
     `<arq-search-field class="search-field" show-close></arq-search-field>` +
-    `<arq-search-dropdown class="search-dropdown" hidden></arq-search-dropdown>` +
+    `<arq-search-dropdown class="search-dropdown" data-arq-theme="light" hidden></arq-search-dropdown>` +
     `</div>` +
     `</div>` +
     `<div class="actions">` +
@@ -99,7 +101,7 @@ class ArqNavbar extends ArqElement {
     `</div>` +
     `</div>` +
     `</nav>` +
-    `<arq-mega-menu class="mega" hidden></arq-mega-menu>` +
+    `<div class="mega-wrap" hidden><div class="mega-drawer"><arq-mega-menu class="mega" data-arq-theme="light"></arq-mega-menu></div></div>` +
     `</header>` +
     `<dialog class="menu">` +
     `<div class="menu-bar">` +
@@ -117,8 +119,8 @@ class ArqNavbar extends ArqElement {
     `<div class="sub-cta"></div>` +
     `</div>` +
     `</dialog>` +
-    `<arq-search-screen class="search-screen"></arq-search-screen>` +
-    `<arq-search-sheet class="search-sheet"></arq-search-sheet>`;
+    `<arq-search-screen class="search-screen" data-arq-theme="light"></arq-search-screen>` +
+    `<arq-search-sheet class="search-sheet" data-arq-theme="light"></arq-search-sheet>`;
 
   #navigation = null;
   #loadingNavigation = null;
@@ -228,6 +230,11 @@ class ArqNavbar extends ArqElement {
       const row = event.target.closest('arq-mega-link[data-sub]');
       if (row) this.#setMode(row.dataset.sub);
     });
+
+    // Con el mega-menú abierto la página de atrás no se desplaza (rueda, touch ni teclado)
+    containScroll(root.querySelector('.navbar'), { when: () => this.#megaOpen });
+    // Clic en el scrim del mega-menú: lo cierra
+    root.querySelector('.scrim').addEventListener('click', () => this.#toggleMega(false));
 
     // Mega-menu: Esc (con el foco en Productos o adentro) y clic afuera
     this.addEventListener('keydown', (event) => {
@@ -365,14 +372,37 @@ class ArqNavbar extends ArqElement {
     this.#toggleMega(false);
   }
 
+  #megaTimer = 0;
+
+  // Misma transición que el top sheet: la barra pasa a sólida y clara (Light
+  // local, también con Iluminar) y el panel se abre como una persiana.
   #toggleMega(open) {
-    const mega = this.shadowRoot.querySelector('.mega');
+    const root = this.shadowRoot;
+    const wrap = root.querySelector('.mega-wrap');
+    const navbar = root.querySelector('.navbar');
     const link = this.#productsLink();
     const next = Boolean(open) && !MOBILE.matches;
     if (next) this.#ensureNavigation();
     if (next && this.mode === 'search') this.#setMode('default');
-    mega.hidden = !next;
     if (link) link.open = next;
+    if (next !== this.#megaOpen) {
+      clearTimeout(this.#megaTimer);
+      if (next) {
+        wrap.hidden = false;
+        void wrap.offsetHeight; // fija el estado inicial antes de is-open
+      }
+      navbar.classList.add('mega-motion');
+      if (next) navbar.setAttribute('data-arq-theme', 'light');
+      else navbar.removeAttribute('data-arq-theme');
+      wrap.classList.toggle('is-open', next);
+      navbar.classList.toggle('mega-open', next);
+      const { transitionDuration } = getComputedStyle(wrap);
+      const ms = Math.max(0, ...transitionDuration.split(',').map((value) => (parseFloat(value) || 0) * (/mss*$/.test(value) ? 1 : 1000)));
+      this.#megaTimer = setTimeout(() => {
+        navbar.classList.remove('mega-motion');
+        if (!this.#megaOpen) wrap.hidden = true;
+      }, ms);
+    }
     this.#megaOpen = next;
     this.#syncLinks();
   }

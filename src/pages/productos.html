@@ -9,6 +9,8 @@
   TODO (datos): los links de catalog-nav siguen el árbol de getNavigation() del catálogo de ejemplo; revisarlos con la base real
   (las opciones sin productos no van).
 -->
+<!-- Iluminar guardado: se aplica antes de pintar la página (sin esto arranca en claro y salta a oscuro cuando carga dist/arq.js; arq:theme es la clave que guarda catalog-toolbar) -->
+<script>try{if(localStorage.getItem("arq:theme")==="dark")document.documentElement.setAttribute("data-arq-theme","dark")}catch(e){}</script>
 <arq-navbar>
   <!-- TODO (diseño): en Final, Productos aparece como Current sin flecha; se deja has-dropdown para el mega-menu -->
   <arq-nav-link slot="links" has-dropdown current>Productos</arq-nav-link>

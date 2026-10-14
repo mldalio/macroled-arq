@@ -83,10 +83,10 @@ class ArqSearchSheet extends ArqElement {
     `<div class="recommended">` +
     `<p class="title role-label"></p>` +
     `<div class="cards"></div>` +
-    `<div class="all"><arq-button class="all-button" type="underline" show-underline show-icon icon="arrow-right"></arq-button></div>` +
     `</div>` +
     `<div class="results"></div>` +
     `</div>` +
+    `<div class="all" hidden><arq-button class="all-button" type="underline" show-underline show-icon icon="arrow-right"></arq-button></div>` +
     `</div></div>` +
     `</div>` +
     `</dialog>`;
@@ -152,6 +152,7 @@ class ArqSearchSheet extends ArqElement {
     }
     this.#renderRecommended();
     this.#renderResults();
+    window.addEventListener('resize', () => this.#fit());
   }
 
   update(changed) {
@@ -179,7 +180,8 @@ class ArqSearchSheet extends ArqElement {
     if (!dialog.open) {
       dialog.showModal();
       void dialog.offsetHeight; // fija el estado inicial antes de is-open
-      requestAnimationFrame(() => this.field.focus());
+      this.#fit();
+      requestAnimationFrame(() => this.field.focus({ preventScroll: true }));
     }
     dialog.classList.add('is-open');
   }
@@ -230,6 +232,35 @@ class ArqSearchSheet extends ArqElement {
     );
     // Sin recomendados no se muestra el bloque (ni el título ni el link)
     root.querySelector('.recommended').dataset.empty = String(this.#recommended.length === 0);
+    this.#syncAll();
+    this.#fit();
+  }
+
+  // El panel nunca scrollea: si los recomendados no entran en el alto de la
+  // pantalla, la imagen de las cards se vuelve más ancha que alta (--card-ratio,
+  // que lee search-sheet.css). El ancho de las cards no cambia: cuántas se ven
+  // depende solo del ancho de la pantalla. Se mide con el panel abierto.
+  #fit() {
+    if (!this.#dialog?.open) return;
+    const root = this.shadowRoot;
+    const cards = root.querySelector('.cards');
+    cards.style.removeProperty('--card-ratio');
+    const content = root.querySelector('.content');
+    let ratio = 1; // las cards parten de 1:1
+    // Un par de pasadas: al cambiar la imagen, el texto y la fila se reacomodan
+    for (let pass = 0; pass < 3; pass++) {
+      const overflow = content.scrollHeight - content.clientHeight;
+      const width = cards.firstElementChild?.getBoundingClientRect().width;
+      if (overflow <= 0 || !width) break;
+      const height = Math.max(1, width / ratio - overflow);
+      ratio = width / height;
+      cards.style.setProperty('--card-ratio', String(ratio));
+    }
+  }
+
+  // "Ver todos los productos" va fuera del scroll, al pie: solo con recomendados
+  #syncAll() {
+    this.shadowRoot.querySelector('.all').hidden = Boolean(this.#results) || this.#recommended.length === 0;
   }
 
   #renderResults() {
@@ -237,6 +268,7 @@ class ArqSearchSheet extends ArqElement {
     const results = this.#results;
     const container = root.querySelector('.results');
     root.querySelector('.recommended').hidden = Boolean(results);
+    this.#syncAll();
     container.hidden = !results;
     if (!results) {
       container.replaceChildren();

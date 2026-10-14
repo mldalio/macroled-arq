@@ -19,7 +19,9 @@
   border-radius: var(--arq-radius-control);
   background: transparent;
   color: var(--arq-color-text-primary);
-  overflow: hidden;
+  /* clip y no hidden: con hidden el foco del campo desplaza el contenido
+     mientras la persiana está cerrada, y al abrir vuelve de golpe (rebote) */
+  overflow: clip;
 }
 
 /* ── Transición en capas (menos de medio segundo) ─────────────────────────
@@ -30,26 +32,26 @@
    final; al sacarlo, todo vuelve al revés. Las demoras viven solo en
    .is-open: al cerrar, todo arranca a la vez.
 
-   1. Velo: la página de atrás se aclara a medias (color/surface/faint al 50 %).
+   1. Scrim: la página de atrás se oscurece con color/overlay/scrim (el de filter-panel).
    2. Barra: de transparente a sólida (color/surface/default).
    3. Panel: se abre como una persiana, grid-template-rows 0fr → 1fr.
-   4. Campo y contenido: bajan space/gap/lg a la par del panel (mismo tiempo,
-      así no queda un movimiento suelto al final) mientras se hacen visibles.
-   5. Productos y resultados: un instante después (fast), con fundido y un
-      movimiento corto hacia abajo de space/gap/sm, los dos en --sheet-slow.
+   4. Campo y contenido: quedan quietos y se hacen visibles con un fundido mientras
+      la persiana los descubre (sin deslizamiento, que se sentía como rebote).
+   5. Productos y resultados: un instante después (fast), solo con fundido, y
+      terminan junto con la persiana (sin movimiento que siga después).
    TODO (diseño/motion): DESIGN.md §6 dice que solo se anima opacity,
    transform y colores; la persiana anima grid-template-rows, a pedido (como
    occhio.com). Valores de la referencia: panel 400 ms, contenido 200/375 ms,
    productos 500/250 ms, velo 400 ms, header 500 ms: se llevaron a los tokens
    de movimiento más cercanos; --sheet-slow se deriva de ellos. */
 .dialog::backdrop {
-  background: var(--arq-color-surface-faint);
-  opacity: 0; /* sin token de opacidad: 0 → 0.5 */
+  background: var(--arq-color-overlay-scrim); /* el mismo scrim que filter-panel */
+  opacity: 0;
   transition: opacity var(--sheet-slow) var(--arq-motion-easing-standard);
 }
 
 .dialog.is-open::backdrop {
-  opacity: 0.5;
+  opacity: 1;
 }
 
 /* Mientras abre o cierra, nada recibe clics */
@@ -116,7 +118,7 @@
 /* Panel: fondo sólido, recortado mientras la persiana se abre */
 .drawer {
   min-height: 0;
-  overflow: hidden;
+  overflow: clip;
   background: var(--arq-color-surface-default);
 }
 
@@ -125,15 +127,13 @@
   flex-direction: column;
   max-height: calc(100dvh - var(--bar-height));
   opacity: 0;
-  transform: translateY(calc(var(--arq-space-gap-lg) * -1));
-  transition-property: opacity, transform;
-  transition-duration: var(--arq-motion-duration-slow), var(--sheet-slow);
+  transition-property: opacity;
+  transition-duration: var(--arq-motion-duration-slow);
   transition-timing-function: var(--arq-motion-easing-standard);
 }
 
 .dialog.is-open .drawer-inner {
   opacity: 1;
-  transform: none;
 }
 
 /* inline (demo): el panel queda en el flujo, ya abierto */
@@ -162,12 +162,12 @@
   padding: var(--arq-space-gap-md) var(--page-gutter) 0;
 }
 
-/* Contenido con scroll propio. Arriba space/gap/xl, abajo space/section/2xs
-   (aire antes del borde inferior del sheet) */
+/* Contenido con scroll propio. Arriba y abajo el doble de space/gap/xl: el mismo
+   aire entre el campo y los recomendados que entre estos y el link del pie */
 .content {
   flex: 1;
   min-height: 0;
-  padding: var(--arq-space-gap-xl) var(--page-gutter) var(--arq-space-section-2xs);
+  padding: calc(var(--arq-space-gap-xl) * 2) var(--page-gutter);
   overflow-y: auto;
   overscroll-behavior: contain;
   /* Las filas de resultado no llevan padding lateral: se alinean con el campo */
@@ -179,16 +179,16 @@
 .recommended,
 .results {
   opacity: 0;
-  transform: translateY(calc(var(--arq-space-gap-sm) * -1));
-  transition-property: opacity, transform;
-  transition-duration: var(--sheet-slow), var(--sheet-slow);
+  transition-property: opacity;
+  /* Termina junto con la persiana (demora fast + esta duración = --sheet-slow):
+     sin movimiento ni fundido que sigan cuando el panel ya paró */
+  transition-duration: calc(var(--sheet-slow) - var(--arq-motion-duration-fast));
   transition-timing-function: var(--arq-motion-easing-standard);
 }
 
 .dialog.is-open .recommended,
 .dialog.is-open .results {
   opacity: 1;
-  transform: none;
   transition-delay: var(--arq-motion-duration-fast);
 }
 
@@ -210,9 +210,15 @@
 
 /* Fila de tarjetas en una sola línea, con scroll horizontal sin barra visible
    (como variants-table). --cols: cuántas entran enteras; la siguiente asoma
-   (peek) para que se vea que se desliza. Desktop 6, Tablet 4, Mobile 2. */
+   (peek) para que se vea que se desliza. Desde 1600 px 5 (como la grilla, que
+   pasa a card-min-wide en ese corte), de 1024 a 1599 px 4, Tablet 3 y Mobile 3
+   con un mínimo de layout/card-min por tarjeta (entran las que quepan). */
 .cards {
-  --cols: 6;
+  --cols: 4;
+  /* Recomendados más cuadrados (ratio/square, 1:1). Si el alto de la pantalla no
+     alcanza, search-sheet.js pone un --card-ratio más ancho que alto (inline) para
+     que el panel no scrollee; la cantidad de cards sigue dependiendo del ancho. */
+  --card-ratio: 1 / 1;
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: calc((100% - var(--arq-space-gap-md) * (var(--cols) - 1)) / (var(--cols) + 0.4));
@@ -231,8 +237,16 @@
   scroll-snap-align: start;
 }
 
+/* "Ver todos los productos": fuera del scroll, al pie y pegado al borde con el
+   margen lateral del logo (--page-gutter); abajo space/gap/md */
 .all {
+  flex: none;
   display: flex;
+  padding: 0 var(--page-gutter) var(--arq-space-gap-md);
+}
+
+.all[hidden] {
+  display: none;
 }
 
 /* ── Resultados ──
@@ -272,10 +286,16 @@
   gap: var(--arq-space-gap-md);
 }
 
-/* Tablet: 4 tarjetas; los dos grupos de resultados se apilan */
+@media (min-width: 1600px) {
+  .cards {
+    --cols: 5;
+  }
+}
+
+/* Tablet: 3 tarjetas; los dos grupos de resultados se apilan */
 @media (max-width: 1023px) {
   .cards {
-    --cols: 4;
+    --cols: 3;
   }
 
   .results.has-both {
@@ -286,7 +306,11 @@
 /* Mobile: 2 tarjetas */
 @media (max-width: 767px) {
   .cards {
-    --cols: 2;
+    /* Cuántas entran enteras según el ancho: nunca más angostas que
+       layout/card-min (160 en Mobile), así la imagen crece en pantallas chicas
+       y la siguiente asoma */
+    --cols: 3;
+    grid-auto-columns: max(var(--arq-layout-card-min), calc((100% - var(--arq-space-gap-md) * (var(--cols) - 1)) / (var(--cols) + 0.4)));
   }
 }
 
@@ -295,4 +319,23 @@
   --bar-height: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
   /* motion/duration/slow × 1.25 (400 ms; 0 con reduced motion). TODO: token propio */
   --sheet-slow: calc(var(--arq-motion-duration-slow) * 1.25);
+}
+
+/* Pantallas bajas (laptop, celular horizontal): menos aire arriba y abajo para
+   que los recomendados entren sin scroll y sigan cuadrados. Antes de achatar la
+   imagen (search-sheet.js) se saca primero el aire. */
+@media (max-height: 760px) {
+  .content {
+    padding-block: var(--arq-space-gap-xl);
+  }
+}
+
+@media (max-height: 600px) {
+  .content {
+    padding-block: var(--arq-space-gap-md);
+  }
+
+  .field-row {
+    padding-top: var(--arq-space-gap-sm);
+  }
 }

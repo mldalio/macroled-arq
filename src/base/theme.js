@@ -85,16 +85,32 @@ export function watchTheme(host, method) {
 // duración), para no quedar claro sobre claro y sin un corte duro. Las variables van en <html> (atraviesan
 // los Shadow DOM) y se quitan al terminar, así hover y foco no se retrasan.
 // Debe coincidir con --arq-illumination-bg-duration (global.css).
-const TEXT_VARS = ['--arq-theme-text-delay', '--arq-theme-text-duration', '--arq-theme-text-easing'];
+const TEXT_VARS = ['--arq-theme-text-delay', '--arq-theme-text-duration', '--arq-theme-text-easing', '--arq-theme-bg-duration', '--arq-theme-bg-easing'];
 let themeTimer = 0;
 
+// Aplicar el tema sin ninguna transición (al cargar la página con la preferencia
+// guardada): por esos cuadros todas las duraciones valen 0, así no se ve el salto
+// de claro a oscuro. Se quitan dos cuadros después, cuando el cambio ya se pintó.
+const INSTANT_VARS = ['--arq-illumination-bg-duration', '--arq-illumination-image-duration', '--arq-theme-bg-duration', '--arq-theme-text-duration', '--arq-theme-text-delay'];
+
+/** Ejecuta `apply` (que cambia data-arq-theme) sin transiciones. */
+export function withoutThemeTransition(apply) {
+  const style = document.documentElement.style;
+  for (const name of INSTANT_VARS) style.setProperty(name, '0s');
+  apply();
+  requestAnimationFrame(() => requestAnimationFrame(() => INSTANT_VARS.forEach((name) => style.removeProperty(name))));
+}
+
 /** Llamar justo antes de cambiar data-arq-theme por Iluminar. */
-export function animateThemeChange(bgMs = 2100) {
+export function animateThemeChange(bgMs = 1200) {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const style = document.documentElement.style;
   style.setProperty(TEXT_VARS[0], `${Math.round(bgMs * 0.25)}ms`);
   style.setProperty(TEXT_VARS[1], `${Math.round(bgMs * 0.5)}ms`);
   style.setProperty(TEXT_VARS[2], 'cubic-bezier(0.4, 0, 0.2, 1)');
+  // Fondo del navbar: solo funde lento al iluminar; el resto del tiempo (scroll, cambio de página) usa la duración rápida
+  style.setProperty(TEXT_VARS[3], `${bgMs}ms`);
+  style.setProperty(TEXT_VARS[4], 'cubic-bezier(0.45, 0, 0.2, 1)');
   clearTimeout(themeTimer);
   themeTimer = setTimeout(() => TEXT_VARS.forEach((name) => style.removeProperty(name)), bgMs + 100);
 }

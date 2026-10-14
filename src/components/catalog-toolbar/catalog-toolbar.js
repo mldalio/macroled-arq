@@ -17,7 +17,7 @@
 //   sigue a <html> si otro lo cambia. La ficha tiene su propio Iluminar.
 
 import { ArqElement } from '../../base/arq-element.js';
-import { animateThemeChange } from '../../base/theme.js';
+import { animateThemeChange, withoutThemeTransition } from '../../base/theme.js';
 import '../button/button.js';
 import '../divider/divider.js';
 import '../toggle/toggle.js';
@@ -38,6 +38,13 @@ function writeTheme(value) {
   try {
     localStorage.setItem(THEME_KEY, value);
   } catch {}
+}
+
+// Preferencia guardada: se aplica apenas carga el módulo (antes de que los
+// componentes se dibujen) y sin transición, para que la página no arranque en
+// claro y pase a oscuro con el fundido lento de Iluminar.
+if (typeof document !== 'undefined' && document.querySelector('arq-catalog-listing, arq-catalog-toolbar[show-iluminar]') && readTheme() === 'dark') {
+  withoutThemeTransition(() => document.documentElement.setAttribute('data-arq-theme', 'dark'));
 }
 
 class ArqCatalogToolbar extends ArqElement {
@@ -106,11 +113,15 @@ class ArqCatalogToolbar extends ArqElement {
   }
 
   #setDark(dark, save) {
-    if (save) animateThemeChange();
     const html = document.documentElement;
-    if (dark) html.setAttribute('data-arq-theme', 'dark');
-    else html.removeAttribute('data-arq-theme');
-    if (save) writeTheme(dark ? 'dark' : 'light');
+    const apply = () => (dark ? html.setAttribute('data-arq-theme', 'dark') : html.removeAttribute('data-arq-theme'));
+    if (save) {
+      animateThemeChange();
+      apply();
+      writeTheme(dark ? 'dark' : 'light');
+    } else if ((html.getAttribute('data-arq-theme') === 'dark') !== dark) {
+      withoutThemeTransition(apply); // restaurar la preferencia: sin fundido
+    }
   }
 
   #syncToggle() {
