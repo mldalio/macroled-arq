@@ -7,8 +7,8 @@
 //   </arq-contact-item>
 //   <arq-contact-item href="tel:+541100000000"><span slot="label">Teléfono</span>+54 11 0000-0000</arq-contact-item>
 //
-// - Label (slot label): role/label en color/text/tertiary; la mayúscula la
-//   pone el estilo. Value (slot por defecto): role/body-lg-regular en
+// - Label (slot label): role/body-sm en color/text/tertiary. Value (slot
+//   por defecto): role/body-lg-regular en
 //   color/text/primary, dentro de un <a> (mailto:, tel: o https: para
 //   WhatsApp y dirección). Sin href, el valor es texto.
 // - State no es prop: Hover subraya el valor; Focus pone el anillo alrededor
@@ -27,7 +27,7 @@ class ArqContactItem extends ArqElement {
   };
   static template =
     `<div class="item">` +
-    `<span class="label role-label"><slot name="label"></slot></span>` +
+    `<span class="label role-body-sm"><slot name="label"></slot></span>` +
     `<a class="value role-body-lg-regular"><slot></slot></a>` +
     `</div>`;
 

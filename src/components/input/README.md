@@ -62,7 +62,7 @@ provincia.options = [{ value: 'Buenos Aires' }, { value: 'Córdoba' }];
 
 | Parte | Token |
 | --- | --- |
-| Label | `color/text/tertiary` · `role/label` |
+| Label | `color/text/primary` · `role/body-regular` |
 | Valor · placeholder | `color/text/primary` · `color/text/tertiary` · `role/body` |
 | Línea | `border/default` en `color/border/default` (Focus `color/border/focus`, Error `color/border/error`, Disabled `color/border/disabled`) |
 | Helper · error | `color/text/tertiary` · `color/text/error` · `role/body-sm` |

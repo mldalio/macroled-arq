@@ -38,7 +38,7 @@ Encabezado de la página: breadcrumb, título (el único `<h1>`) y bajada. Type=
 | Breakpoint | — | — | media query: hasta 767 px es Mobile |
 
 - **Los Show… vienen en `true` en Figma; en código, sin el atributo la parte no se ve** (AGENTS.md). Una parte con su atributo pero sin contenido tampoco se ve.
-- **El `<h1>` va en el HTML de la página** (`<h1 slot="title">`), no dentro del Shadow DOM (AGENTS.md: los encabezados van en el HTML). El componente le da `role/display` y el color con `::slotted()`, sin margen y por encima de los estilos de Webflow. Es el único `<h1>` de la página.
+- **El `<h1>` va en el HTML de la página** (`<h1 slot="title">`), no dentro del Shadow DOM (AGENTS.md: los encabezados van en el HTML). El componente le da `role/display-lg` (Desktop, Type=List) o `role/display` (Mobile y Type=Detail) y el color con `::slotted()`, sin margen y por encima de los estilos de Webflow. Es el único `<h1>` de la página.
 - **Volver** es `<arq-button type="underline" show-leading-icon>` con `chevron-left` y sin subrayado en reposo. Es un link real a `back-href` (no `history.back()`): funciona si se entra directo a la página.
 - **Acción:** la página pasa su `<arq-button>`. En Mobile ocupa todo el ancho.
 - Es un `<div>`, no un `<header>`: dentro del Shadow DOM podría tomarse como el banner de la página.
@@ -62,5 +62,5 @@ Un título largo se parte en varias líneas.
 | Breadcrumb → título | `space/gap/lg` |
 | Título → bajada (Detail) | `space/gap/md` |
 | Volver → título → acción (Detail) | `space/gap/xl-2xl` |
-| Título | `color/text/primary` · `role/display` |
-| Bajada | `color/text/secondary` · `role/body-lg` · ancho máximo `layout/measure` (List) o `layout/measure-wide` (Detail), en Desktop |
+| Título | `color/text/primary` · `role/display-lg` en Desktop Type=List; `role/display` en Mobile y Type=Detail |
+| Bajada | `color/text/secondary` · `role/body` en Desktop Type=List, `role/body-lg` en el resto · ancho máximo `layout/measure` (List) o `layout/measure-wide` (Detail), en Desktop |

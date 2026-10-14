@@ -55,7 +55,7 @@ class ArqFileUpload extends ArqElement {
   };
   static template =
     `<div class="upload">` +
-    `<span class="label role-label" id="label"><slot>Adjuntar archivo</slot></span>` +
+    `<span class="label role-body-regular" id="label"><slot>Adjuntar archivo</slot></span>` +
     `<label class="zone" id="zone">` +
     `<input type="file" class="native visually-hidden" aria-labelledby="label" aria-describedby="helper error">` +
     `<span class="empty">${icon('plus')}<span class="prompt role-body"><slot name="prompt">Arrastrá o seleccioná planos, renders o fotos</slot></span>` +

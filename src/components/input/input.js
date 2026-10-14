@@ -54,7 +54,7 @@ class ArqInput extends ArqElement {
   };
   static template =
     `<div class="input">` +
-    `<label class="label role-label"><slot></slot></label>` +
+    `<label class="label role-body-regular"><slot></slot></label>` +
     `<div class="field"></div>` +
     `<p class="helper role-body-sm"><slot name="helper"></slot></p>` +
     `<p class="error role-body-sm" aria-live="polite"></p>` +
