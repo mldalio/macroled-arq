@@ -545,6 +545,14 @@ Reemplaza a 2026-10-02 · Base de datos (estructura v5) en cómo se identifican 
 
 - El componente tag (Figma `981:2305`) no se va a usar: se quitó de DESIGN.md, `docs/components.md` y `docs/setup.md`. No había código. product-card resuelve el tipo de producto con Meta.
 
+## 2026-10-14 · Tipografía y catalog-nav (Productos v2)
+
+- Figma sumó `role/display-lg`, `role/heading-3-light` y `role/body-compact` (con regular, medium y strong), y cambió el estilo de varios sets (page-header, accordion-item, faq-item, tab, input, file-upload, contact-item, nav-link Mobile). El código sigue a los sets.
+- **catalog-nav:** grupo con label role/body-xl, chevron, línea inferior y lista con riel; ítem en role/body-compact. Nuevo `layout/catalog-nav` (240) para el ancho del sidebar; entre sidebar y contenido, `space/section/xs`, como la pantalla.
+- **carousel-button:** el chevron medía 14 sin token; se enlazó a `icon/md` (16), el de icon-button.
+- **Meta de product-card:** solo en Colecciones, no en Productos (aunque la pantalla v2 de Figma la muestre).
+- La página «Final-final» de Figma es de prueba: junta los frames con cambios hasta que se pasen a «Final». No es fuente de pantallas.
+
 ## Pendientes
 
 Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe la decisión en su sección. El grupo entre paréntesis es el del `TODO` en el código.
