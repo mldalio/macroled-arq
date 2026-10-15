@@ -10,6 +10,7 @@
 //     isOpen: () => this.open,
 //     setOpen: (open) => (this.open = open),
 //     choose: (index) => …,               // elegir una opción habilitada
+//     multiple: () => false,              // selección múltiple (select multiple)
 //   });
 //
 // - Teclado: cerrado, flechas, Enter, Espacio, Inicio, Fin o una letra abren;
@@ -18,6 +19,8 @@
 // - Clic en el botón abre o cierra; clic en una opción la elige; Tab o clic
 //   afuera cierran sin elegir.
 // - El componente llama a combobox.closed() cuando su prop open pasa a false.
+// - multiple: Enter, Espacio o un clic marcan o desmarcan la opción y el menú
+//   queda abierto (listbox con aria-multiselectable); Esc o Tab cierran.
 
 export class Combobox {
   #config;
@@ -50,7 +53,9 @@ export class Combobox {
 
   /** Abre con la opción elegida resaltada (o la primera habilitada). */
   show() {
-    const { setOpen, selected, options } = this.#config;
+    const { setOpen, selected, options, menu } = this.#config;
+    if (this.#multiple) menu.setAttribute('aria-multiselectable', 'true');
+    else menu.removeAttribute('aria-multiselectable');
     setOpen(true);
     const index = selected();
     this.#setActive(index >= 0 && !options()[index]?.disabled ? index : this.#next(-1, 1));
@@ -65,6 +70,10 @@ export class Combobox {
   /** El componente avisa que se cerró (open = false): se quita el resaltado. */
   closed() {
     this.#setActive(-1);
+  }
+
+  get #multiple() {
+    return Boolean(this.#config.multiple?.());
   }
 
   #setActive(index) {
@@ -92,7 +101,8 @@ export class Combobox {
     const option = this.#config.options()[index];
     if (!option || option.disabled) return;
     this.#config.choose(index);
-    this.close();
+    if (this.#multiple) this.#setActive(index);
+    else this.close();
   }
 
   #typeahead(key) {

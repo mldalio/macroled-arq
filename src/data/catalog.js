@@ -285,8 +285,14 @@ export async function getDownloadsTable() {
   return {
     columns: GLOSSARY_COLUMNS.filter(({ field }) => variants.some(({ variant }) => hasValue(variant.values[field]))).map(({ field, label }) => ({ key: field, label })),
     filters: fields.map((key) => ({ key, label: attributeInfo(key).label, swatches: attributeInfo(key).control === 'swatches' })),
+    // name, href y meta: tabla de Descargas · propuesta (2575:22875): nombre
+    // del producto sobre el SKU, «Ver producto» en Mobile y el resumen de la
+    // variante en el modal («Negro, 6 W, luz cálida»).
     rows: variants.map(({ group, variant }) => ({
       sku: variant.sku,
+      name: group.name,
+      href: productHref(group.id, variant.sku),
+      meta: group.variantAttributes.map((field) => variant.values[field]).filter(hasValue).join(', '),
       thumb: variant.images?.studio ?? null,
       search: [group.name, group.collectionData?.name].filter(Boolean).join(' '),
       attributes: variant.values,

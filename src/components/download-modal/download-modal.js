@@ -23,6 +23,11 @@
 // - sku="<código>": sku Compact debajo del título (página Descargas, Figma
 //   1802:30817 · 1802:30903). «Descargar todo (.zip)» de Figma queda afuera
 //   por ahora (decisiones.md, 2026-10-06 · Descargas).
+// - show-product (solo de código; Descargas · propuesta 2575:22875, modal
+//   2554:20048 · 2554:20133): debajo del título, el producto (miniatura
+//   thumb, sku Compact y meta «Negro, 6 W, luz cálida») y los archivos como
+//   download-file-row, a space/gap/xl. En Mobile es una hoja pegada al borde
+//   inferior, a todo el ancho.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { containScroll } from '../../base/scroll-lock.js';
@@ -37,6 +42,9 @@ class ArqDownloadModal extends ArqElement {
   static properties = {
     open: { type: Boolean },
     sku: { type: String }, // SKU de las descargas (sku Compact debajo del título)
+    showProduct: { type: Boolean }, // solo de código: bloque de producto (Descargas · propuesta)
+    thumb: { type: String }, // miniatura del producto (show-product)
+    meta: { type: String }, // resumen de la variante (show-product)
   };
   static template =
     `<dialog class="dialog" data-arq-theme="light">` +
@@ -47,6 +55,10 @@ class ArqDownloadModal extends ArqElement {
     `<arq-sku class="sku" size="compact" hidden></arq-sku>` +
     `</div>` +
     `<arq-icon-button icon="close" size="large" class="close">Cerrar descargas</arq-icon-button>` +
+    `</div>` +
+    `<div class="product" hidden>` +
+    `<span class="thumb"><img alt="" hidden></span>` +
+    `<span class="product-info"><arq-sku class="product-sku" size="compact"></arq-sku><span class="meta role-body-compact-regular"></span></span>` +
     `</div>` +
     `<div class="content">` +
     `<div class="featured"><slot name="featured"></slot></div>` +
@@ -60,6 +72,10 @@ class ArqDownloadModal extends ArqElement {
 
   setup() {
     this.#dialog = this.shadowRoot.querySelector('dialog');
+    const img = this.shadowRoot.querySelector('.thumb img');
+    // Sin imagen (o si no carga): queda el fondo color/surface/subtle.
+    img.addEventListener('error', () => (img.hidden = true));
+    img.addEventListener('load', () => (img.hidden = false));
     containScroll(this.#dialog);
     this.shadowRoot.querySelector('.close').addEventListener('click', () => this.close());
     // Scrim: el clic en el ::backdrop llega al <dialog> (el contenido está en .sheet).
@@ -85,10 +101,25 @@ class ArqDownloadModal extends ArqElement {
   }
 
   update(changed) {
-    if (changed.has('sku')) {
+    if (changed.has('sku') || changed.has('showProduct')) {
       const sku = this.shadowRoot.querySelector('.sku');
       sku.textContent = this.sku ?? '';
-      sku.hidden = !this.sku;
+      sku.hidden = !this.sku || this.showProduct;
+      this.shadowRoot.querySelector('.product-sku').textContent = this.sku ?? '';
+      this.shadowRoot.querySelector('.product').hidden = !this.showProduct;
+    }
+    if (changed.has('meta')) {
+      const meta = this.shadowRoot.querySelector('.meta');
+      meta.textContent = this.meta ?? '';
+      meta.hidden = !this.meta;
+    }
+    if (changed.has('thumb')) {
+      const img = this.shadowRoot.querySelector('.thumb img');
+      if (this.thumb) img.src = this.thumb;
+      else {
+        img.removeAttribute('src');
+        img.hidden = true;
+      }
     }
     if (!changed.has('open')) return;
     if (this.open && !this.#dialog.open) this.#dialog.showModal();

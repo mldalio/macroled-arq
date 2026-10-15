@@ -34,6 +34,12 @@
 //   opciones. Sin el atributo, cada opción decide con swatch / showSwatch.
 //   En Figma la prop viene activada; en código va desactivada (atributo de
 //   presencia).
+// - multiple (solo Filter; página Descargas · propuesta 2575:22875, «select ·
+//   Potencia (abierto, múltiple)»): el menú lista las opciones con la caja de
+//   checkbox, sin «Todos», y queda abierto al marcar. El campo muestra los
+//   valores elegidos separados por coma («8 W, 12 W», Filled) o allLabel si no
+//   hay ninguno. Los valores van en values (array, solo JS) y arq:change
+//   emite { value, values } (value: el primero, o "").
 
 import { ArqElement } from '../../base/arq-element.js';
 import { icon } from '../../base/icons.js';
@@ -59,6 +65,7 @@ class ArqSelect extends ArqElement {
     allLabel: { type: String, default: 'Todos' }, // primera opción de Filter
     hideAll: { type: Boolean }, // Filter sin "Todos" (compare-product: siempre hay un valor)
     showSwatch: { type: Boolean }, // Show swatch: muestra de color en las opciones
+    multiple: { type: Boolean }, // solo de código: selección múltiple (Descargas)
   };
   static template =
     `<div class="select">` +
@@ -72,7 +79,18 @@ class ArqSelect extends ArqElement {
     `</div>`;
 
   #options = [];
+  #values = [];
   #combobox = null;
+
+  /** Valores elegidos con multiple (array). */
+  get values() {
+    return [...this.#values];
+  }
+
+  set values(list) {
+    this.#values = Array.isArray(list) ? list.map(String) : [];
+    if (this.isConnected) this.#render();
+  }
 
   get options() {
     return this.#options;
@@ -96,7 +114,8 @@ class ArqSelect extends ArqElement {
       trigger: this.trigger,
       menu: this.menu,
       options: () => this.#list(),
-      selected: () => this.#list().findIndex((o) => o.value === (this.value ?? '')),
+      selected: () => this.#list().findIndex((o) => this.#isSelected(o)),
+      multiple: () => this.multiple,
       isOpen: () => this.open,
       setOpen: (open) => (this.open = open),
       choose: (index) => this.#choose(index),
@@ -119,7 +138,8 @@ class ArqSelect extends ArqElement {
     this.trigger.disabled = this.disabled;
     // Size=Small (compare-product, columnas angostas): menú del ancho del
     // campo, así no se sale de la columna ni de la pantalla.
-    this.menu.type = filter && this.size !== 'small' ? 'filter' : 'finishes';
+    // multiple: el menú también toma el ancho del campo (propuesta Descargas).
+    this.menu.type = filter && this.size !== 'small' && !this.multiple ? 'filter' : 'finishes';
     if (changed.has('open')) {
       this.menu.hidden = !this.open;
       this.trigger.setAttribute('aria-expanded', String(this.open));
@@ -154,15 +174,18 @@ class ArqSelect extends ArqElement {
       showSwatch: o.showSwatch === false ? false : Boolean(o.swatch || o.showSwatch || this.showSwatch),
       disabled: Boolean(o.disabled),
     }));
-    if (this.type === 'filter' && !this.hideAll) list.unshift({ value: '', label: this.allLabel ?? 'Todos', showSwatch: false, disabled: false });
+    if (this.type === 'filter' && !this.hideAll && !this.multiple) list.unshift({ value: '', label: this.allLabel ?? 'Todos', showSwatch: false, disabled: false });
     return list;
   }
 
   #render() {
     if (!this.trigger) return;
     const list = this.#list();
-    const current = list.find((o) => o.value === (this.value ?? '')) ?? (this.type === 'filter' ? list[0] : null);
-    const filled = this.type === 'filter' && Boolean(this.value);
+    const chosen = this.multiple ? list.filter((o) => this.#values.includes(o.value)) : [];
+    const current = this.multiple
+      ? (chosen.length === 1 ? chosen[0] : { label: chosen.length ? chosen.map((o) => o.label).join(', ') : (this.allLabel ?? 'Todos') })
+      : (list.find((o) => o.value === (this.value ?? '')) ?? (this.type === 'filter' ? list[0] : null));
+    const filled = this.type === 'filter' && (this.multiple ? chosen.length > 0 : Boolean(this.value));
     if (this.filled !== filled) this.filled = filled;
     // Muestra (swatch): solo si la opción es un acabado/color (showSwatch),
     // en Field siempre que la haya y en Filter solo con un valor elegido.
@@ -194,13 +217,28 @@ class ArqSelect extends ArqElement {
       el.showSwatch = o.showSwatch;
       el.swatchSrc = o.swatch ?? null;
       el.disabled = o.disabled;
-      el.selected = o === current;
+      el.multiple = this.multiple;
+      el.selected = this.multiple ? this.#values.includes(o.value) : o === current;
     });
   }
 
-  // El combobox ya validó la opción y cierra el menú después.
+  #isSelected(option) {
+    return this.multiple ? this.#values.includes(option.value) : option.value === (this.value ?? '');
+  }
+
+  // El combobox ya validó la opción y cierra el menú después (con multiple,
+  // lo deja abierto).
   #choose(index) {
     const option = this.#list()[index];
+    if (this.multiple) {
+      const values = this.#values.includes(option.value) ? this.#values.filter((v) => v !== option.value) : [...this.#values, option.value];
+      // En el orden del menú, no en el de los clics
+      const order = this.#list().map((o) => o.value);
+      this.#values = values.sort((a, b) => order.indexOf(a) - order.indexOf(b));
+      this.#render();
+      this.emit('change', { value: this.#values[0] ?? '', values: this.values });
+      return;
+    }
     const changed = option.value !== (this.value ?? '');
     this.value = option.value;
     if (changed) this.emit('change', { value: option.value });

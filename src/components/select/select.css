@@ -92,7 +92,8 @@
    la opción trae imagen / showSwatch): sin imagen cae al neutro de arq-swatch
    (DESIGN.md §8). */
 :host(:not([type='filter'])) .menu,
-:host([size='small']) .menu {
+:host([size='small']) .menu,
+:host([multiple]) .menu {
   right: 0;
 }
 

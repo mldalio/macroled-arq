@@ -34,6 +34,8 @@ select.addEventListener('arq:change', (e) => console.log(e.detail.value));
 | State=Filled | `filled` | `filled` | Lo pone el componente: Filter con un valor elegido |
 | — | `name` | `name` | Campo al que corresponde (lo usa filter-bar para armar los filtros) |
 | — | `all-label` | `allLabel` | Texto de la primera opción de Filter. Por defecto "Todos" |
+| — (solo de código) | `multiple` | `multiple` | booleano. Selección múltiple (solo Filter; Descargas · propuesta 2575:22875): opciones con la caja de checkbox, sin «Todos»; el menú queda abierto al marcar (Enter, Espacio o clic) y toma el ancho del campo. El campo muestra los valores separados por coma («8 W, 12 W», Filled) o `all-label` |
+| — | — | `values` | Valores elegidos con `multiple` (array, solo JS). `arq:change` emite `{ value, values }` |
 | — | `hide-all` | `hideAll` | booleano, solo de código. Filter sin la opción "Todos": para compare-product, donde siempre hay una variante elegida |
 
 - **Size=Small** abre el menú del ancho del campo (select-menu Finishes), no de `layout/select-menu-filter`: en las columnas angostas de la comparativa Mobile no se sale de la columna ni de la pantalla.

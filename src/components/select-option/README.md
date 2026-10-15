@@ -20,6 +20,7 @@ Opción de select-menu: muestra de acabado opcional + nombre. Sirve para acabado
 | State=Selected | `selected` | `selected` | booleano · nombre en `role/body-medium` |
 | State=Disabled | `disabled` | `disabled` | booleano · opción sin stock o no combinable |
 | — | `value` | `value` | valor de la opción |
+| — (solo de código) | `multiple` | `multiple` | booleano. Opción de un select `multiple`: caja de checkbox (marcada = `selected`, en `color/action/primary`) en lugar de la muestra, nombre en `role/body` (`color/text/secondary`, primary en hover) sin cambiar de peso, padding `space/padding/sm` × `md` y sin línea |
 
 - Hover es CSS. **Focus** es la prop `active`: la opción resaltada con las flechas, con el fondo de Hover (`color/surface/faint`) y sin anillo (cambio de 2026-10-14). El foco real queda en el campo de select, que la marca con `aria-activedescendant` (decisión 2026-10-02 · select). Al tocarla (si no está deshabilitada) emite `arq:change` con `{ value, selected: true }`.
 - **Accesibilidad:** el elemento es la opción (`role="option"`, `aria-selected`, `aria-disabled`). La muestra es decorativa.

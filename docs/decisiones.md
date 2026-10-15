@@ -775,3 +775,16 @@ Con Iluminar (listados y ficha) solo se oscurecen la página, el navbar (barra) 
 - **search-see-all `type="simple"`:** sin lupa y con la flecha a `space/gap/sm` (antes `space/gap/md`).
 - **Orden de los resultados:** «Ver todos» va al final. Desktop: Productos y debajo «Ver todos» a la izquierda, Colecciones a la derecha. Tablet y Mobile: Productos, Colecciones y «Ver todos» al pie. Filas separadas por `space/gap/lg`.
 - **Figma:** documentado en la sección «Búsqueda · top sheet» (sets `search-sheet`, `search-field-line`, `search-result-simple`, `search-collection`, `search-card` y `search-see-all-simple`) y en la ficha `doc/search-sheet`. Los Type de código son sets aparte en Figma; falta decidir si pasan a ser Type de search-field, search-result y search-see-all.
+
+## 2026-10-15 · Descargas · propuesta final
+
+Pantalla «Descargas · propuesta final (desktop y mobile)» (`2575:22875`: Desktop `2564:20607` · Mobile `2558:20149`). Rama `feat/descargas-propuesta`, con dos propuestas de filtros para elegir una.
+
+- **Dos propuestas de filtros** (atributo `filters` de `<arq-descargas>` y `<arq-downloads-table>`, solo de código): `dropdown`, un bloque desplegable debajo de la barra con un select multiple por filtro (`2571:22259` · Mobile `2580:22444`), y `panel`, el filter-panel de Productos con «Ver N variantes» (`2571:22966` · Mobile `2572:22988`). Demos: `/demo/descargas-desplegable.html` y `/demo/descargas-lateral.html`. Cuando se elija una, se quita la otra.
+- **Selección múltiple:** dentro de un filtro, una fila cumple si tiene cualquiera de los valores elegidos; entre filtros, todos (`src/data/variants.js` acepta un array por filtro). Los filtros aplicados se ven como filter-chip con «Limpiar filtros», y el botón dice «Filtros (N)».
+- **`<arq-downloads-table>`** reemplaza a variants-table en Descargas: nombre del producto sobre el SKU, «N variantes» al lado de Filtros, tarjetas Mobile con «Descargas» y «Ver producto», filas de carga y vacío propio. variants-table queda para la ficha sin cambios.
+- **Catálogo general:** en lugar de download-card, tapa + nombre + bajada + «Descargar catálogo» (Outline en Desktop, Underline en Mobile).
+- **Modal:** download-modal `show-product` (producto + download-file-row, `2554:20047`); en Mobile, hoja abajo a todo el ancho.
+- **Desvíos de la propuesta:** sin sombra en el menú de selección múltiple (DESIGN.md: no hay sombras); sin manija en la hoja Mobile del modal; el encabezado de la tabla en `role/label-lg` va en mayúsculas.
+- **Pendiente (tokens):** miniaturas de 64 (fila y modal) y 72 (tarjeta), tapa de 168 × 210 (Mobile 104 × 130), buscador de 480, select de 224, ayuda del vacío de 560: sin variable, se usan las más cercanas.
+- **Pendiente (datos):** peso de los archivos, URL y portada del catálogo general.

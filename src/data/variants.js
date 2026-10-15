@@ -76,10 +76,14 @@ export function variantOptions(variants, attributes, selection) {
 }
 
 // ── Filtros del glosario (variants-table) ─────────────────────────
-// Selección parcial: un atributo sin valor ("Todos") no filtra.
+// Selección parcial: un atributo sin valor ("Todos") no filtra. Un atributo
+// puede tener varios valores (selección múltiple de la página Descargas): el
+// SKU cumple si tiene cualquiera de ellos.
+
+const accepts = (value, wanted) => (Array.isArray(wanted) ? !wanted.length || wanted.includes(value) : !hasValue(wanted) || value === wanted);
 
 const matches = (variant, filters, except) =>
-  Object.entries(filters).every(([key, value]) => key === except || !hasValue(value) || variant.attributes[key] === value);
+  Object.entries(filters).every(([key, value]) => key === except || accepts(variant.attributes[key], value));
 
 /** SKU que cumplen los filtros (selección parcial). */
 export function filterVariants(variants, filters) {
@@ -95,7 +99,7 @@ export function filterOptions(variants, attributes, filters) {
     attribute,
     options: variantValues(variants, attribute).map((value) => ({
       value,
-      selected: filters[attribute] === value,
+      selected: Array.isArray(filters[attribute]) ? filters[attribute].includes(value) : filters[attribute] === value,
       disabled: !variants.some((variant) => variant.attributes[attribute] === value && matches(variant, filters, attribute)),
     })),
   }));
