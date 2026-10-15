@@ -828,3 +828,9 @@ Pantalla «Descargas · propuesta final (desktop y mobile)» (`2575:22875`: Desk
 - La sección de descripción (`product_story_text`) pasa a ser la foto de ambiente 6 a todo el ancho con el texto encima: título (primera línea) a la izquierda; texto, lista y «Ver colección …» a la derecha, en `role/body-xl`. Es Dark local (texto y subrayado claros, sin depender de Iluminar). Se quita de esta sección el bloque «Otras familias» (en Figma está oculto): esas tarjetas siguen solo en «Explora la colección».
 - **Foto fija (parallax):** la foto queda quieta y la página pasa por encima. Se resuelve con la imagen en `position: fixed` dentro de un recuadro con `clip-path` (funciona también en iOS, donde `background-attachment: fixed` no). Con `prefers-reduced-motion: reduce` la foto se mueve con la página. Riesgo: si Webflow envuelve la ficha en un contenedor con `transform`, el efecto se pierde (la sección se ve igual, sin movimiento).
 - **TODO (diseño):** el alto de 971 y los márgenes de 150 / 113 de Final no tienen token; se usan 100svh y `space/section/lg`. Sin scrim sobre la foto, como en Figma: si la foto es clara, el texto puede no leerse.
+
+## 2026-10-15 · Filtros del glosario en panel lateral
+
+- Los filtros del glosario de variantes (variants-table de la ficha) dejan de desplegarse sobre la tabla (filter-bar con un select por filtro) y se abren en el panel lateral derecho, como en Descargas: filter-panel con una filter-row de checkbox por filtro, «Ver N variantes» para aplicar, botón «Filtros (N)», filter-chip de lo aplicado y «Limpiar filtros». Selección múltiple dentro de cada filtro.
+- Se quita la prop `filters` de variants-table. filter-bar queda como componente (demo) pero ya no lo usa ninguna tabla.
+- **TODO (diseño):** el set variants-table de Figma sigue con Filters=On y filter-bar; hay que actualizarlo (y la ficha doc/variants-table).

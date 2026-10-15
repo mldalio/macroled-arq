@@ -2,9 +2,9 @@
    Solo tokens semánticos. La tabla ocupa el ancho del contenido de la página:
    el host toma el margen de página (--page-gutter) y adentro no hay gutter, así
    en todos los breakpoints las líneas empiezan en la miniatura y terminan en el
-   ícono de descarga (con space/padding/sm adentro). La barra de filtros queda
-   del mismo ancho, con space/padding/md adentro (docs/decisiones.md, 2026-10-05 · variants-table
-   dentro del contenido). */
+   ícono de descarga (con space/padding/sm adentro). Los filtros se abren en un
+   panel lateral (filter-panel) (docs/decisiones.md, 2026-10-05 · variants-table
+   dentro del contenido; 2026-10-15 · Filtros del glosario en panel lateral). */
 
 :host {
   display: flex;
@@ -22,12 +22,6 @@
    al borde de la línea) y space/padding/xs arriba y abajo en Row (el set) */
 .scroll {
   --page-gutter: var(--arq-space-padding-sm);
-}
-
-/* filter-bar calcula su propio --page-gutter en su :host; esta regla gana:
-   dentro de la tabla (ancho del contenido) lleva layout/gutter (Ficha v2) */
-.filter-bar {
-  --page-gutter: var(--arq-layout-gutter);
 }
 
 /* Barra, centrada en alto. Padding space/padding/md arriba y abajo; a los
@@ -55,6 +49,22 @@
 /* Con buscador (Descargas) no va la cantidad */
 :host([show-search]) .total {
   display: none;
+}
+
+/* Filtros aplicados (chips y «Limpiar filtros»), debajo de la barra, como en
+   Descargas: chips a space/gap/sm y el link a space/gap/lg */
+.applied {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--arq-space-gap-lg);
+  padding-bottom: var(--arq-space-padding-md);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--arq-space-gap-sm);
 }
 
 .downloads,
