@@ -275,6 +275,23 @@ function glossary(group) {
  * search: nombre del producto y de la colección, para el buscador (además del
  * SKU), decisiones.md, 2026-10-06 · Descargas.
  */
+/**
+ * Nombre corto de un grupo en la tabla de Descargas: el de su colección
+ * («Nobu»). Si la colección tiene varios grupos, se suma la aplicación
+ * («Kanu Pared», «Kanu Jardín»); si la aplicación no alcanza para
+ * distinguirlos (Tori Jardín, Mini Tori Jardín y Tori Visera son los tres
+ * Jardín), queda el nombre del grupo. Sin colección, la primera palabra del
+ * nombre («Skyline»): el SKU de debajo identifica la variante.
+ */
+function shortName(group, groups) {
+  const collection = group.collectionData?.name;
+  if (!collection) return group.name.split(/\s+/)[0];
+  const siblings = groups.filter((g) => g.collection === group.collection);
+  if (siblings.length === 1) return collection;
+  const sameApplication = siblings.filter((g) => g.application === group.application);
+  return group.application && sameApplication.length === 1 ? `${collection} ${group.application}` : group.name;
+}
+
 export async function getDownloadsTable() {
   const { groups } = await loadCatalog();
   const variants = groups.flatMap((group) => group.variants.map((variant) => ({ group, variant })));
@@ -295,7 +312,7 @@ export async function getDownloadsTable() {
     // variante en el modal («Negro, 6 W, luz cálida»).
     rows: variants.map(({ group, variant }) => ({
       sku: variant.sku,
-      name: group.name,
+      name: shortName(group, groups),
       href: productHref(group.id, variant.sku),
       meta: group.variantAttributes.map((field) => variant.values[field]).filter(hasValue).join(', '),
       thumb: variant.images?.studio ?? null,

@@ -29,3 +29,60 @@ body {
     transition: none;
   }
 }
+
+/* Menú flotante de descargas-propuestas.html (solo demo): elige la propuesta
+   de filtros. Abajo a la izquierda, sobre todo lo de la página (la barra fija
+   de la tabla y el modal quedan a la derecha / centro). */
+.demo-switch {
+  position: fixed;
+  left: var(--arq-layout-gutter);
+  bottom: var(--arq-layout-gutter);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-xs);
+  padding: var(--arq-space-padding-xs);
+  border: var(--arq-border-default) solid var(--arq-color-border-default);
+  background: var(--arq-color-surface-default);
+  font-family: var(--arq-font-family-sans);
+  font-size: var(--arq-type-body-sm-size);
+  line-height: var(--arq-type-body-sm-leading);
+}
+
+.demo-switch-label {
+  padding-inline: var(--arq-space-padding-sm);
+  color: var(--arq-color-text-tertiary);
+  letter-spacing: var(--arq-font-tracking-widest);
+  text-transform: uppercase;
+}
+
+.demo-switch button {
+  padding: var(--arq-space-padding-sm) var(--arq-space-padding-md);
+  border: 0;
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.demo-switch button:hover {
+  background: var(--arq-color-surface-hover);
+}
+
+.demo-switch button[aria-pressed='true'] {
+  background: var(--arq-color-action-primary);
+  color: var(--arq-color-action-on-primary);
+}
+
+.demo-switch button:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+@media (max-width: 767px) {
+  .demo-switch {
+    left: 50%;
+    bottom: var(--arq-space-padding-md);
+    transform: translateX(-50%);
+  }
+}

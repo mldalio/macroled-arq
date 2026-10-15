@@ -14,7 +14,8 @@
 // catálogo de Typesense. El resto lo trae el componente.
 // Colección: lo mismo con ?collection=<id>.
 // Descargas: <body data-demo-filters="panel"> elige la propuesta de filtros
-// (descargas-desplegable.html · descargas-lateral.html) y la demo pone la
+// (descargas-desplegable.html · descargas-lateral.html; las dos en
+// descargas-propuestas.html con un menú flotante) y la demo pone la
 // portada de ejemplo del catálogo (en Webflow, TODO: la portada real).
 
 import '/src/main.js';
@@ -82,6 +83,41 @@ function demoDescargas(content) {
   }
 }
 
+// Menú flotante para comparar las dos propuestas de filtros de Descargas en
+// una sola pestaña (<body data-demo-filters-switch>, solo demo): cambia el
+// atributo filters de <arq-descargas> sin recargar y lo deja en la URL.
+function demoFiltersSwitch() {
+  const page = document.querySelector('arq-descargas');
+  if (!page || !document.body.hasAttribute('data-demo-filters-switch')) return;
+  const OPTIONS = [
+    { value: 'dropdown', label: 'Desplegable' },
+    { value: 'panel', label: 'Lateral' },
+  ];
+  const menu = document.createElement('div');
+  menu.className = 'demo-switch';
+  menu.setAttribute('role', 'group');
+  menu.setAttribute('aria-label', 'Propuesta de filtros');
+  menu.innerHTML = `<span class="demo-switch-label">Filtros</span>`;
+  const buttons = OPTIONS.map(({ value, label }) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = label;
+    button.dataset.value = value;
+    button.addEventListener('click', () => select(value));
+    menu.append(button);
+    return button;
+  });
+  const select = (value) => {
+    page.setAttribute('filters', value);
+    for (const button of buttons) button.setAttribute('aria-pressed', String(button.dataset.value === value));
+    const url = new URL(location.href);
+    url.searchParams.set('filters', value);
+    history.replaceState(null, '', url);
+  };
+  select(page.getAttribute('filters') ?? 'dropdown');
+  document.body.append(menu);
+}
+
 const name = document.body.dataset.demoPage;
 const load = pages[`/src/pages/${name}.html`];
 if (load) {
@@ -96,6 +132,7 @@ if (load) {
   demoDescargas(template.content);
   await cmsCollection(template.content);
   document.body.replaceChildren(template.content);
+  demoFiltersSwitch();
 } else document.body.textContent = `No existe src/pages/${name}.html`;
 
 document.addEventListener('click', (event) => {

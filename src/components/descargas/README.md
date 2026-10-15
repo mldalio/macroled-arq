@@ -15,7 +15,7 @@ Contenido de la página Descargas: arriba, el título con su bajada y el catálo
 </arq-descargas>
 ```
 
-El HTML del embed completo está en [src/pages/descargas.html](../../pages/descargas.html). Demos: `/demo/descargas-desplegable.html` y `/demo/descargas-lateral.html`.
+El HTML del embed completo está en [src/pages/descargas.html](../../pages/descargas.html). Demos: `/demo/descargas-propuestas.html` (las dos, con un menú flotante para cambiar de propuesta), `/demo/descargas-desplegable.html` y `/demo/descargas-lateral.html`.
 
 ## Atributos y slots
 
@@ -37,7 +37,7 @@ El HTML del embed completo está en [src/pages/descargas.html](../../pages/desca
 
 ## Comportamiento
 
-- **Filas:** todos los SKU (`getDownloadsTable()` de `src/data/catalog.js`), con el nombre del producto, el link a su ficha (`?sku=`) y la variante («Negro, 6 W, luz cálida») para el modal. Columnas: una por filtro (`DOWNLOAD_FILTERS`), en el mismo orden y con el nombre corto (Temp., Material, Tensión); solo las que tienen algún valor. Todo en una línea: si no entran, la tabla se desliza en horizontal (producto y descarga quedan fijos). Filtros: `DOWNLOAD_FILTERS` (`attributes.js`), en el orden de la propuesta: Montaje, Acabado, Potencia, Temperatura de color, IP, Regulación, CRI, Ángulo, Fuente, Material del cuerpo y Tensión de entrada; solo los que tienen al menos dos valores. Tamaño, Flujo luminoso y Eficiencia no son filtro (casi un valor por SKU) ni columna. `TODO` (diseño): Familia y Fotometría de la propuesta no tienen campo en la base.
+- **Filas:** todos los SKU (`getDownloadsTable()` de `src/data/catalog.js`), con el nombre corto del producto (la colección: «Nobu»; con la aplicación si la colección tiene varios productos: «Kanu Pared»; sin colección, la primera palabra: «Skyline»), el link a su ficha (`?sku=`) y la variante («Negro, 6 W, luz cálida») para el modal. Columnas: una por filtro (`DOWNLOAD_FILTERS`), en el mismo orden y con el nombre corto (Temp., Material, Tensión); solo las que tienen algún valor. Todo en una línea: si no entran, la tabla se desliza en horizontal (producto y descarga quedan fijos). Filtros: `DOWNLOAD_FILTERS` (`attributes.js`), en el orden de la propuesta: Montaje, Acabado, Potencia, Temperatura de color, IP, Regulación, CRI, Ángulo, Fuente, Material del cuerpo y Tensión de entrada; solo los que tienen al menos dos valores. Tamaño, Flujo luminoso y Eficiencia no son filtro (casi un valor por SKU) ni columna. `TODO` (diseño): Familia y Fotometría de la propuesta no tienen campo en la base.
 - **Modal** (download-modal `show-product`): miniatura, SKU y variante; debajo, download-file-row: «Ficha técnica» (PDF; emite `arq:datasheet { sku }`) y los archivos del SKU (`skuDownloads()`) con su formato, que sale de la extensión de la URL.
 - **Estados:** mientras carga, filas de carga y «Buscando…»; sin SKU, «Todavía no hay productos para descargar.»; si falla la carga, «No se pudieron cargar las descargas. Probá de nuevo en unos minutos.». Sin filas que cumplan, el vacío de downloads-table.
 

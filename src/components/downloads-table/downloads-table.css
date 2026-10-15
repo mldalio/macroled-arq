@@ -85,7 +85,10 @@
 }
 
 /* ── Tabla (Desktop) ─────────────────────────────────────────────
-   Un solo contenedor con scroll horizontal, sin barra visible. */
+   Un solo contenedor con scroll horizontal; su barra no se ve (quedaría al
+   final de cientos de filas). En su lugar, .scrollbar: barra fina pegada al
+   borde inferior de la pantalla mientras la tabla está a la vista (pedido
+   2026-10-15; DESIGN.md §2 pide sin barra visible: excepción a confirmar). */
 .scroll {
   --page-gutter: var(--arq-space-padding-sm);
   overflow-x: auto;
@@ -95,6 +98,42 @@
 
 .scroll::-webkit-scrollbar {
   display: none;
+}
+
+/* Pulgar color/border/default (color/border/hover al pasar) sobre pista
+   transparente, con fondo color/surface/default para que no se mezcle con
+   las filas que pasan por debajo. El track interno mide lo que la tabla
+   (lo pone el JS); su alto es border/default. */
+.scrollbar {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  overflow-x: auto;
+  margin-top: calc(-1 * var(--arq-space-gap-md));
+  background: var(--arq-color-surface-default);
+  scrollbar-width: thin;
+  scrollbar-color: var(--arq-color-border-default) var(--arq-color-surface-transparent);
+}
+
+.scrollbar:hover {
+  scrollbar-color: var(--arq-color-border-hover) var(--arq-color-surface-transparent);
+}
+
+.scrollbar-track {
+  height: var(--arq-border-default);
+}
+
+/* Safari (sin scrollbar-width): barra de space/gap/xs de alto */
+.scrollbar::-webkit-scrollbar {
+  height: var(--arq-space-gap-xs);
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: var(--arq-color-surface-transparent);
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: var(--arq-color-border-default);
 }
 
 .scroll:focus-visible {
@@ -337,7 +376,8 @@ td.end {
     padding: var(--arq-space-padding-xl) var(--page-gutter);
   }
 
-  .scroll {
+  .scroll,
+  .scrollbar {
     display: none;
   }
 

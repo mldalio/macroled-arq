@@ -122,6 +122,7 @@ class ArqDownloadsTable extends ArqElement {
     `<div class="scroll" tabindex="0" role="region" aria-label="Variantes">` +
     `<table class="table"><thead></thead><tbody></tbody></table>` +
     `</div>` +
+    `<div class="scrollbar" aria-hidden="true" hidden><div class="scrollbar-track"></div></div>` +
     `<ul class="cards" role="list" aria-label="Variantes"></ul>` +
     `<div class="skeleton" aria-hidden="true" hidden></div>` +
     `<div class="empty" hidden><p class="empty-title role-heading-2">${TEXT.emptyTitle}</p><p class="empty-text role-body-regular">${TEXT.emptyText}</p></div>` +
@@ -195,7 +196,36 @@ class ArqDownloadsTable extends ArqElement {
       const modal = this.downloads ? this.getRootNode().getElementById?.(this.downloads) : null;
       modal?.show?.(button);
     });
+    this.#scrollbar();
     this.#build();
+  }
+
+  // Barra de scroll horizontal fina, pegada al borde inferior de la pantalla
+  // mientras la tabla está a la vista (la del contenedor quedaría al final de
+  // cientos de filas). Es un espejo: se sincroniza con .scroll en los dos
+  // sentidos y solo aparece si la tabla no entra.
+  #scrollbar() {
+    const root = this.shadowRoot;
+    const scroll = root.querySelector('.scroll');
+    const bar = root.querySelector('.scrollbar');
+    const track = root.querySelector('.scrollbar-track');
+    let syncing = null;
+    const follow = (from, to) => {
+      if (syncing === to) return;
+      syncing = from;
+      to.scrollLeft = from.scrollLeft;
+      requestAnimationFrame(() => (syncing = null));
+    };
+    scroll.addEventListener('scroll', () => follow(scroll, bar), { passive: true });
+    bar.addEventListener('scroll', () => follow(bar, scroll), { passive: true });
+    const measure = () => {
+      track.style.width = `${scroll.scrollWidth}px`;
+      bar.hidden = scroll.hidden || scroll.scrollWidth <= scroll.clientWidth;
+      bar.scrollLeft = scroll.scrollLeft;
+    };
+    const observer = new ResizeObserver(measure);
+    observer.observe(scroll);
+    observer.observe(root.querySelector('.table'));
   }
 
   update(changed) {
