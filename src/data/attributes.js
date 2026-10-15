@@ -78,7 +78,8 @@ export const GLOSSARY_COLUMNS = Object.freeze([
   { field: 'cri', label: 'CRI' },
 ]);
 
-// Filtros de la página Descargas, en orden, con su nombre (decisiones.md,
+// Filtros y columnas de la página Descargas, en orden, con su nombre y el de
+// la columna (column, si es más corto) (decisiones.md,
 // 2026-10-15 · Descargas · propuesta final). El orden y «Acabado» siguen a la
 // propuesta (2571:22278). Fuera, por tener casi un valor por SKU: Tamaño,
 // Flujo luminoso y Eficiencia (siguen como columnas), Altura y Peso.
@@ -87,14 +88,14 @@ export const DOWNLOAD_FILTERS = Object.freeze([
   { field: 'tipo_montaje', label: 'Montaje' },
   { field: 'color_carcasa', label: 'Acabado' },
   { field: 'potencia', label: 'Potencia' },
-  { field: 'temperatura_color', label: 'Temperatura de color' },
+  { field: 'temperatura_color', label: 'Temperatura de color', column: 'Temp.' },
   { field: 'proteccion_ip', label: 'IP' },
   { field: 'dimeable', label: 'Regulación' },
   { field: 'cri', label: 'CRI' },
   { field: 'angulo_apertura', label: 'Ángulo' },
   { field: 'tipo_led', label: 'Fuente' },
-  { field: 'material_cuerpo', label: 'Material del cuerpo' },
-  { field: 'tension_proveedor', label: 'Tensión de entrada' },
+  { field: 'material_cuerpo', label: 'Material del cuerpo', column: 'Material' },
+  { field: 'tension_proveedor', label: 'Tensión de entrada', column: 'Tensión' },
 ]);
 
 /** Etiqueta y control de un campo. Un campo sin entrada usa su nombre y tiles. */

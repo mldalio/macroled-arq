@@ -138,6 +138,13 @@ tbody td {
   color: var(--arq-color-text-primary);
 }
 
+/* Valores de datos: un valor largo («1 Entrada / 1 Salida Flexible») baja de
+   línea para que entren las columnas; el encabezado no se parte y fija el
+   ancho mínimo de cada una. */
+tbody td:not(.start, .end) {
+  white-space: normal;
+}
+
 @media (hover: hover) {
   tbody tr:hover > * {
     background: var(--arq-color-surface-faint);
