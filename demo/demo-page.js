@@ -13,6 +13,8 @@
 // demo, ?group=<id> hace de ítem: cambia data-group y el nombre, que sale del
 // catálogo de Typesense. El resto lo trae el componente.
 // Colección: lo mismo con ?collection=<id>.
+// Descargas: la demo pone la portada de ejemplo del catálogo (en Webflow,
+// TODO: la portada real).
 
 import '/src/main.js';
 import '/demo/demo-inspect.js';
@@ -64,6 +66,19 @@ async function cmsItem(content) {
   document.title = `Macroled Arq · ${group?.name ?? id}`;
 }
 
+// Portada de ejemplo de Descargas (solo demo)
+function demoDescargas(content) {
+  const page = content.querySelector('arq-descargas');
+  if (!page) return;
+  if (!page.querySelector('[slot="catalog-cover"]')) {
+    const cover = document.createElement('img');
+    cover.slot = 'catalog-cover';
+    cover.src = '/demo/fixtures/img/catalogo-portada.png';
+    cover.alt = '';
+    page.prepend(cover);
+  }
+}
+
 const name = document.body.dataset.demoPage;
 const load = pages[`/src/pages/${name}.html`];
 if (load) {
@@ -75,6 +90,7 @@ if (load) {
     if (demo) link.setAttribute('href', demo);
   }
   await cmsItem(template.content);
+  demoDescargas(template.content);
   await cmsCollection(template.content);
   document.body.replaceChildren(template.content);
 } else document.body.textContent = `No existe src/pages/${name}.html`;

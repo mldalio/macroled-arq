@@ -728,6 +728,7 @@
           <arq-button type="outline" show-icon icon="download" data-demo-download-open="demo-descargas">Descargas (ficha)</arq-button>
           <arq-button type="outline" show-icon icon="download" data-demo-download-open="demo-descargas-pocas">Descargas (solo IES)</arq-button>
           <arq-button type="outline" show-icon icon="download" data-demo-download-open="demo-descargas-sku">Descargas (con SKU)</arq-button>
+          <arq-button type="outline" show-icon icon="download" data-demo-download-open="demo-descargas-producto">Descargas (show-product, propuesta)</arq-button>
         </div>
         <arq-download-modal id="demo-descargas">
           <h2 slot="title">Descargas</h2>
@@ -746,11 +747,32 @@
           <arq-download-item href="/demo/fixtures/img/producto-3.svg">Fotometría</arq-download-item>
           <arq-download-item href="/demo/fixtures/img/producto-1.svg">IES</arq-download-item>
         </arq-download-modal>
+        <!-- Descargas · propuesta (Figma 2554:20048 · 2554:20133): producto y download-file-row; Mobile, hoja abajo a todo el ancho -->
+        <arq-download-modal id="demo-descargas-producto" show-product sku="RMS-ATD302-B-6W-WW" meta="Negro, 6 W, luz cálida">
+          <h2 slot="title">Descargas</h2>
+          <arq-download-file-row>Ficha técnica<span slot="meta">PDF</span></arq-download-file-row>
+          <arq-download-file-row href="/demo/fixtures/img/producto-1.svg">Fotometría<span slot="meta">IES</span></arq-download-file-row>
+        </arq-download-modal>
         <arq-download-modal id="demo-descargas-pocas">
           <h2 slot="title">Descargas</h2>
           <arq-download-item emphasis="featured">Ficha técnica</arq-download-item>
           <arq-download-item href="/demo/fixtures/img/producto-1.svg">IES</arq-download-item>
         </arq-download-modal>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-download-file-row">
+        <h2 id="demo-download-file-row" class="demo-heading role-label">download-file-row · &lt;arq-download-file-row&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 2554:20047 (Descargas · propuesta). Nombre role/body-xl, formato role/body-compact-regular en color/text/tertiary e icon/download. Con href, link de descarga; sin href, botón que emite arq:download. Hover subraya el nombre.</p>
+        <div class="demo-downloads" role="list">
+          <arq-download-file-row>Ficha técnica<span slot="meta">PDF</span></arq-download-file-row>
+          <arq-download-file-row href="/demo/fixtures/img/producto-1.svg">Fotometría<span slot="meta">IES</span></arq-download-file-row>
+          <arq-download-file-row href="/demo/fixtures/img/producto-2.svg">Instrucciones de instalación con un nombre de archivo largo<span slot="meta">PDF</span></arq-download-file-row>
+        </div>
+        <div class="demo-dark" data-arq-theme="dark">
+          <div class="demo-downloads" role="list">
+            <arq-download-file-row href="/demo/fixtures/img/producto-1.svg">CAD 2D/3D<span slot="meta">DWG</span></arq-download-file-row>
+          </div>
+        </div>
       </section>
 
       <section class="demo-section" aria-labelledby="demo-select">
@@ -780,6 +802,12 @@
           <arq-select type="filter" size="small" label="Acabado (Small)" data-demo-options="finishes"></arq-select>
           <arq-select type="filter" size="small" label="Acabado (Small)" value="Negro" data-demo-options="finishes"></arq-select>
           <arq-select type="filter" size="small" label="Altura (Small)" disabled data-demo-options="heights"></arq-select>
+        </div>
+        <p class="demo-note role-body-sm">multiple (solo de código; Descargas · propuesta 2575:22875): opciones con caja de checkbox, sin «Todos»; el menú queda abierto al marcar y el campo muestra los valores separados por coma.</p>
+        <div class="demo-row">
+          <arq-select type="filter" multiple label="Altura" all-label="Todas" data-demo-options="heights"></arq-select>
+          <arq-select type="filter" multiple label="Altura (2 elegidas)" all-label="Todas" data-demo-options="heights" data-demo-values="50 cm,90 cm"></arq-select>
+          <arq-select type="filter" multiple label="Acabado" data-demo-options="finishes" data-demo-values="Negro"></arq-select>
         </div>
         <p class="demo-note role-body-sm" data-demo-select-log>arq:change → (todavía nada)</p>
         <div class="demo-dark" data-arq-theme="dark">
@@ -813,6 +841,17 @@
         <arq-variants-table data-demo-glosario show-search downloads="demo-descargas-sku" label="Variantes con buscador"></arq-variants-table>
         <div class="demo-dark" data-arq-theme="dark">
           <arq-variants-table data-demo-glosario filters show-search show-sort label="Variantes (Dark)"></arq-variants-table>
+        </div>
+      </section>
+
+      <section class="demo-section demo-section--bleed" aria-labelledby="demo-downloads-table">
+        <h2 id="demo-downloads-table" class="demo-heading role-label">downloads-table · &lt;arq-downloads-table&gt;</h2>
+        <p class="demo-note role-body-sm">Descargas · propuesta final (Figma 2575:22875). Tabla de la página Descargas: buscador, filtros de selección múltiple con chips y «Limpiar filtros», nombre + sku en cada fila y, en Mobile, tarjetas con «Descargas» y «Ver producto». Filtros abre filter-panel (panel lateral; Mobile, pantalla completa) y se aplica con «Ver N variantes». Página completa: <a href="/demo/descargas.html">descargas</a>.</p>
+        <arq-downloads-table data-demo-downloads downloads="demo-descargas-producto" label="Variantes"></arq-downloads-table>
+        <p class="demo-note role-body-sm">Cargando (loading) · sin filas que cumplan (vacío: escribí en el buscador algo que no exista) · Dark.</p>
+        <arq-downloads-table loading label="Variantes (cargando)"></arq-downloads-table>
+        <div class="demo-dark" data-arq-theme="dark">
+          <arq-downloads-table data-demo-downloads label="Variantes (Dark)"></arq-downloads-table>
         </div>
       </section>
 

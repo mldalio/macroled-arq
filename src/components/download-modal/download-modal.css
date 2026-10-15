@@ -95,3 +95,70 @@
     margin-inline-start: 0;
   }
 }
+
+/* ── show-product (Descargas · propuesta 2575:22875, modal 2554:20048) ──
+   Título → producto → archivos a space/gap/xl. Producto: miniatura en
+   color/surface/subtle y, a space/gap/md, sku Compact con la meta
+   (role/body-compact-regular en color/text/tertiary) a space/gap/xs.
+   Archivos: download-file-row a space/gap/md con una línea arriba
+   (border/default en color/border/subtle).
+   TODO (token): la miniatura mide 64 en Figma, sin variable; se usa
+   layout/search-thumb (48), la más cercana. */
+:host([show-product]) .sheet {
+  gap: var(--arq-space-gap-xl);
+}
+
+.product {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-md);
+  min-width: 0;
+}
+
+.thumb {
+  flex: none;
+  width: var(--arq-layout-search-thumb);
+  height: var(--arq-layout-search-thumb);
+  overflow: hidden;
+  background: var(--arq-color-surface-subtle);
+}
+
+.thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xs);
+  min-width: 0;
+}
+
+.meta {
+  color: var(--arq-color-text-tertiary);
+}
+
+:host([show-product]) .list {
+  gap: var(--arq-space-gap-md);
+  border-top: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+/* Mobile: hoja pegada al borde inferior, a todo el ancho (2554:20133).
+   TODO (diseño): la manija de arrastre de la propuesta no se dibuja: la hoja
+   no se arrastra (cierra con la X, el scrim o Esc). */
+@media (max-width: 767px) {
+  :host([show-product]) .dialog {
+    padding: var(--arq-space-0);
+  }
+
+  :host([show-product]) .sheet {
+    width: 100%;
+    margin: auto 0 0;
+    padding: var(--arq-space-padding-lg) var(--arq-layout-gutter) var(--arq-space-padding-xl);
+    border-inline: 0;
+    border-bottom: 0;
+  }
+}

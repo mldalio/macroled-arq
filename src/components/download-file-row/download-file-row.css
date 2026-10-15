@@ -1,0 +1,71 @@
+/* download-file-row · Figma 2554:20047. Solo tokens semánticos. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Fila: nombre y formato a la izquierda (a space/gap/xs), icon/download a la
+   derecha, gap space/gap/md; padding vertical space/padding/md y línea
+   inferior border/default en color/border/subtle (se descuenta del padding). */
+.row {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-md);
+  width: 100%;
+  margin: 0;
+  padding: var(--arq-space-padding-md) 0 calc(var(--arq-space-padding-md) - var(--arq-border-default));
+  border: 0;
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-primary);
+  font: inherit;
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+}
+
+.info {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xs);
+  min-width: 0;
+}
+
+.label {
+  color: var(--arq-color-text-primary);
+  overflow-wrap: break-word;
+}
+
+.meta {
+  color: var(--arq-color-text-tertiary);
+}
+
+/* icon/download en icon/md, color/icon/primary */
+.icon {
+  flex: none;
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+  color: var(--arq-color-icon-primary);
+}
+
+@media (hover: hover) {
+  .row:hover .label {
+    text-decoration: underline;
+    text-decoration-thickness: var(--arq-border-default);
+  }
+}
+
+/* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí) */
+.row:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.row:focus:not(:focus-visible) {
+  outline: none;
+}

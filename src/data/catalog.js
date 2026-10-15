@@ -16,7 +16,7 @@
 // specs vale para todas las variantes del grupo; attributes de la variante pisa o completa.
 
 import { loadSource, loadGroupDetails } from './source.js';
-import { ATTRIBUTES, FILTER_FIELDS, GLOSSARY_COLUMNS, attributeInfo, specSections } from './attributes.js';
+import { ATTRIBUTES, DOWNLOAD_FILTERS, FILTER_FIELDS, GLOSSARY_COLUMNS, attributeInfo, specSections } from './attributes.js';
 import { variantOptions, findVariant, choose } from './variants.js';
 import { normalize, queryWords, matchesWords } from './text.js';
 
@@ -269,24 +269,52 @@ function glossary(group) {
 
 /**
  * Página Descargas: variants-table con todos los SKU del catálogo, en el orden
- * de los grupos. Filtros: los selectores de variante de todos los grupos y los
- * filtros de los listados (attributes.js), con al menos dos valores. Sin
+ * de los grupos. Filtros: DOWNLOAD_FILTERS (attributes.js), solo los que
+ * tienen al menos dos valores en el catálogo. Sin
  * archivos en la barra: no hay un grupo (decisiones.md, 2026-10-05 · Glosario).
  * search: nombre del producto y de la colección, para el buscador (además del
  * SKU), decisiones.md, 2026-10-06 · Descargas.
  */
+/**
+ * Nombre corto de un grupo en la tabla de Descargas: el de su colección
+ * («Nobu»). Si la colección tiene varios grupos, se suma la aplicación
+ * («Kanu Pared», «Kanu Jardín»); si la aplicación no alcanza para
+ * distinguirlos (Tori Jardín, Mini Tori Jardín y Tori Visera son los tres
+ * Jardín), queda el nombre del grupo. Sin colección, la primera palabra del
+ * nombre («Skyline»): el SKU de debajo identifica la variante.
+ */
+function shortName(group, groups) {
+  const collection = group.collectionData?.name;
+  if (!collection) return group.name.split(/\s+/)[0];
+  const siblings = groups.filter((g) => g.collection === group.collection);
+  if (siblings.length === 1) return collection;
+  const sameApplication = siblings.filter((g) => g.application === group.application);
+  return group.application && sameApplication.length === 1 ? `${collection} ${group.application}` : group.name;
+}
+
 export async function getDownloadsTable() {
   const { groups } = await loadCatalog();
   const variants = groups.flatMap((group) => group.variants.map((variant) => ({ group, variant })));
-  const used = new Set([...groups.flatMap((g) => g.variantAttributes), ...FILTER_FIELDS]);
-  const fields = Object.keys(ATTRIBUTES).filter(
-    (field) => used.has(field) && new Set(variants.map(({ variant }) => variant.values[field]).filter(hasValue)).size > 1,
-  );
+  const varies = (field) => new Set(variants.map(({ variant }) => variant.values[field]).filter(hasValue)).size > 1;
   return {
-    columns: GLOSSARY_COLUMNS.filter(({ field }) => variants.some(({ variant }) => hasValue(variant.values[field]))).map(({ field, label }) => ({ key: field, label })),
-    filters: fields.map((key) => ({ key, label: attributeInfo(key).label, swatches: attributeInfo(key).control === 'swatches' })),
+    // Columnas: una por filtro, en el mismo orden (Montaje, Acabado,
+    // Potencia…), con el nombre corto; solo las que tienen algún valor.
+    columns: DOWNLOAD_FILTERS.filter(({ field }) => variants.some(({ variant }) => hasValue(variant.values[field]))).map(
+      ({ field, label, column }) => ({ key: field, label: column ?? label }),
+    ),
+    filters: DOWNLOAD_FILTERS.filter(({ field }) => varies(field)).map(({ field, label }) => ({
+      key: field,
+      label,
+      swatches: attributeInfo(field).control === 'swatches',
+    })),
+    // name, href y meta: tabla de Descargas · propuesta (2575:22875): nombre
+    // del producto sobre el SKU, «Ver producto» en Mobile y el resumen de la
+    // variante en el modal («Negro, 6 W, luz cálida»).
     rows: variants.map(({ group, variant }) => ({
       sku: variant.sku,
+      name: shortName(group, groups),
+      href: productHref(group.id, variant.sku),
+      meta: group.variantAttributes.map((field) => variant.values[field]).filter(hasValue).join(', '),
       thumb: variant.images?.studio ?? null,
       search: [group.name, group.collectionData?.name].filter(Boolean).join(' '),
       attributes: variant.values,

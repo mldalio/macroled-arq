@@ -33,6 +33,8 @@ modal.addEventListener('arq:download', () => generarFichaTecnica(sku)); // la fi
 | Title | slot `title` | — | `<h2>` con "Descargas" (también es el nombre del diálogo) |
 | — (opciones) | slot por defecto | — | `arq-download-item`. El Featured va arriba solo; los Default, en una lista |
 | — (solo de código) | `sku` | `sku` | SKU de las descargas: sku Compact debajo del título (página Descargas) |
+| — (solo de código) | `show-product` | `showProduct` | booleano. Descargas · propuesta (2554:20048 · 2554:20133): debajo del título, el producto (miniatura, sku Compact y `meta`) y los archivos como download-file-row, todo a `space/gap/xl`; en Mobile, hoja pegada abajo a todo el ancho |
+| — | `thumb` · `meta` | `thumb` · `meta` | Con `show-product`: miniatura y resumen de la variante («Negro, 6 W, luz cálida», `role/body-compact-regular` en `color/text/tertiary`) |
 | — | `open` | `open` | booleano. Mejor `show(opener)` y `close()` |
 | Breakpoint | — | — | Media query: hasta 767 px es Mobile |
 
@@ -40,6 +42,8 @@ modal.addEventListener('arq:download', () => generarFichaTecnica(sku)); // la fi
 - **Posición** (decisión 2026-10-02 · download-modal): Desktop en la esquina inferior derecha, a `layout/gutter` de los bordes y de ancho `layout/filter-panel`. Mobile abajo, a `layout/gutter` de los bordes y ocupando el ancho; el alto es el de su contenido.
 - Siempre con scrim (`color/overlay/scrim`).
 - **Scroll:** con el modal abierto, la página de atrás no se mueve (rueda, touch ni teclado; también sobre el scrim). Si el modal no entra en la pantalla, se desplaza él. `containScroll()` de `src/base/scroll-lock.js`, sin tocar `<html>` ni `<body>`.
+
+- **`show-product`:** la miniatura mide 64 en la propuesta, sin variable: se usa `layout/search-thumb` (48), `TODO` (token). La manija de arrastre de la hoja Mobile no se dibuja: la hoja no se arrastra.
 
 ## Tokens
 

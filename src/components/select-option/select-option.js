@@ -9,6 +9,10 @@
 // El elemento es la opción (role="option", aria-selected, aria-disabled). El
 // foco y el teclado los maneja select: el foco queda en el campo y la opción
 // resaltada se marca con aria-activedescendant + active (State=Focus).
+//
+// multiple (select multiple, página Descargas · propuesta 2575:22875): la
+// opción lleva la caja de checkbox (marcada = selected) en lugar de la muestra,
+// y el nombre no cambia de peso al elegirla.
 
 import { ArqElement } from '../../base/arq-element.js';
 import css from './select-option.css?inline';
@@ -22,9 +26,10 @@ class ArqSelectOption extends ArqElement {
     selected: { type: Boolean }, // State=Selected
     disabled: { type: Boolean }, // State=Disabled
     active: { type: Boolean }, // State=Focus: la opción resaltada con las flechas (aria-activedescendant)
+    multiple: { type: Boolean }, // opción de un select multiple: caja de checkbox
     value: { type: String },
   };
-  static template = `<span class="option"><span class="swatch" aria-hidden="true" hidden><img alt="" hidden></span><span class="name role-body"><slot></slot></span></span>`;
+  static template = `<span class="option"><span class="control" aria-hidden="true" hidden><span class="box"></span></span><span class="swatch" aria-hidden="true" hidden><img alt="" hidden></span><span class="name role-body"><slot></slot></span></span>`;
 
   setup() {
     if (!this.hasAttribute('role')) this.setAttribute('role', 'option');
@@ -42,10 +47,12 @@ class ArqSelectOption extends ArqElement {
     this.setAttribute('aria-selected', String(this.selected));
     if (this.disabled) this.setAttribute('aria-disabled', 'true');
     else this.removeAttribute('aria-disabled');
-    this.shadowRoot.querySelector('.swatch').hidden = !this.showSwatch;
+    this.shadowRoot.querySelector('.swatch').hidden = !this.showSwatch || this.multiple;
+    this.shadowRoot.querySelector('.control').hidden = !this.multiple;
     const name = this.shadowRoot.querySelector('.name');
-    name.classList.toggle('role-body', !this.selected);
-    name.classList.toggle('role-body-medium', this.selected);
+    const medium = this.selected && !this.multiple;
+    name.classList.toggle('role-body', !medium);
+    name.classList.toggle('role-body-medium', medium);
     if (changed.has('swatchSrc')) {
       const img = this.shadowRoot.querySelector('img');
       if (this.swatchSrc) img.src = this.swatchSrc;

@@ -127,8 +127,18 @@
   border: var(--arq-border-default) solid var(--arq-color-border-strong);
 }
 
+/* Size=Large (descarga de cada fila del glosario y de Descargas): el set
+   (752:2882, 1818:8044) pasó a borde color/border/default, más claro, y el
+   ícono de 24 lleva el trazo escalado del de 16 (1,5 en Figma, 1218:10705):
+   sin non-scaling-stroke, el trazo crece con el ícono. Default sigue en
+   color/border/strong. */
 :host([background='outline'][size='large']) .control {
   padding: calc(var(--arq-space-padding-sm-md) - var(--arq-border-default));
+  border-color: var(--arq-color-border-default);
+}
+
+:host([background='outline'][size='large']) .icon :is(path, line, circle, rect) {
+  vector-effect: none;
 }
 
 :host([background='outline']) .control:disabled {

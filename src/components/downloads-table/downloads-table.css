@@ -1,0 +1,463 @@
+/* downloads-table · Descargas · propuesta final 2575:22875. Solo tokens
+   semánticos. Ocupa el ancho del contenido de la página: el host toma el
+   margen de página (--page-gutter) y las líneas van de la miniatura a la
+   descarga, como variants-table. */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-md);
+  min-width: 0;
+  margin-inline: var(--page-gutter);
+  color: var(--arq-color-text-primary);
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Barra: Filtros + cantidad a la izquierda y el buscador a la derecha,
+   centrados en alto; padding vertical space/padding/md. */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-md);
+  padding-block: var(--arq-space-padding-md);
+}
+
+/* Filtros → cantidad: space/gap/lg */
+.filters-group {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-lg);
+}
+
+.total {
+  color: var(--arq-color-text-secondary);
+}
+
+/* TODO (token): en la propuesta el buscador mide 480, sin variable; se usa
+   layout/search-field (360). */
+.search {
+  flex: 0 1 var(--arq-layout-search-field);
+  min-width: 0;
+}
+
+/* Aplicados: chips a space/gap/sm y «Limpiar filtros» a space/gap/lg;
+   padding inferior space/padding/md. */
+.applied {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--arq-space-gap-lg);
+  padding-bottom: var(--arq-space-padding-md);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--arq-space-gap-sm);
+}
+
+/* ── Tabla (Desktop) ─────────────────────────────────────────────
+   Un solo contenedor con scroll horizontal; su barra no se ve (quedaría al
+   final de cientos de filas). En su lugar, .scrollbar: barra fina pegada al
+   borde inferior de la pantalla mientras la tabla está a la vista (pedido
+   2026-10-15; DESIGN.md §2 pide sin barra visible: excepción a confirmar). */
+.scroll {
+  --page-gutter: var(--arq-space-padding-sm);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Pulgar color/border/default (color/border/hover al pasar) sobre pista
+   transparente, con fondo color/surface/default para que no se mezcle con
+   las filas que pasan por debajo. El track interno mide lo que la tabla
+   (lo pone el JS); su alto es border/default. */
+.scrollbar {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  overflow-x: auto;
+  margin-top: calc(-1 * var(--arq-space-gap-md));
+  background: var(--arq-color-surface-default);
+  scrollbar-width: thin;
+  scrollbar-color: var(--arq-color-border-default) var(--arq-color-surface-transparent);
+}
+
+.scrollbar:hover {
+  scrollbar-color: var(--arq-color-border-hover) var(--arq-color-surface-transparent);
+}
+
+.scrollbar-track {
+  height: var(--arq-border-default);
+}
+
+/* Safari (sin scrollbar-width): barra de space/gap/xs de alto */
+.scrollbar::-webkit-scrollbar {
+  height: var(--arq-space-gap-xs);
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: var(--arq-color-surface-transparent);
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: var(--arq-color-border-default);
+}
+
+.scroll:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: calc(-1 * var(--arq-border-strong));
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Celdas: línea inferior border/default en color/border/subtle; entre
+   columnas de datos, al menos space/gap/lg (en la propuesta, columnas fijas de
+   96 a space/gap/sm: con valores largos quedaban pegadas). Las fijas miden su
+   contenido y el ancho que sobra se reparte entre las de datos. */
+th,
+td {
+  padding: 0 var(--arq-space-gap-lg) 0 0;
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  background: var(--arq-color-surface-default);
+  text-align: start;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* Encabezado: role/label-lg en color/text/tertiary, padding vertical
+   space/padding/sm-md */
+thead th {
+  padding-block: var(--arq-space-padding-sm-md);
+  color: var(--arq-color-text-tertiary);
+  font-weight: inherit;
+}
+
+/* Filas: valores role/body-lg-regular en color/text/primary, padding vertical
+   space/padding/sm; Hover color/surface/faint */
+tbody th,
+tbody td {
+  padding-block: var(--arq-space-padding-sm);
+  color: var(--arq-color-text-primary);
+}
+
+@media (hover: hover) {
+  tbody tr:hover > * {
+    background: var(--arq-color-surface-faint);
+  }
+}
+
+/* Fijas de inicio: miniatura y producto (nombre + sku) */
+.start {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  width: 1%;
+  padding-inline: var(--page-gutter) var(--arq-space-gap-sm);
+}
+
+/* TODO (token): la miniatura mide 64 en la propuesta, sin variable; se usa
+   layout/search-thumb (48), la más cercana. */
+.sku-col {
+  position: sticky;
+  left: calc(var(--page-gutter) + var(--arq-layout-search-thumb) + var(--arq-space-gap-sm));
+  z-index: 1;
+  width: 1%;
+  padding-inline-end: var(--arq-space-gap-xl);
+  font-weight: inherit;
+}
+
+.thumb {
+  display: block;
+  width: var(--arq-layout-search-thumb);
+  height: var(--arq-layout-search-thumb);
+  overflow: hidden;
+  background: var(--arq-color-surface-subtle);
+}
+
+.thumb img,
+.card-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Producto: nombre (role/body-compact-medium; en la tarjeta,
+   role/body-medium) sobre el sku Compact, a space/gap/xs */
+.product {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-xs);
+  min-width: 0;
+}
+
+.name {
+  color: var(--arq-color-text-primary);
+}
+
+/* Fija de fin: Descargas, centrada */
+th.end,
+td.end {
+  position: sticky;
+  right: 0;
+  z-index: 1;
+  width: 1%;
+  padding-inline: var(--arq-space-gap-sm) var(--page-gutter);
+  text-align: center;
+}
+
+/* Hasta 1023 px solo la miniatura queda fija (como variants-table) */
+@media (max-width: 1023px) {
+  .sku-col {
+    position: static;
+  }
+}
+
+/* ── Vacío (2564:21134) ──────────────────────────────────────────
+   Título role/heading-2 y ayuda role/body-regular (color/text/secondary) a
+   space/gap/sm-md; arriba space/section/sm y abajo space/section/md.
+   TODO (token): la ayuda mide 560 en la propuesta; se usa layout/measure-wide. */
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-sm-md);
+  padding: var(--arq-space-section-sm) 0 var(--arq-space-section-md);
+}
+
+.empty p {
+  margin: 0;
+}
+
+.empty-title {
+  color: var(--arq-color-text-primary);
+}
+
+.empty-text {
+  max-width: var(--arq-layout-measure-wide);
+  color: var(--arq-color-text-secondary);
+}
+
+/* ── Cargando (2564:21523 · Mobile 2565:22239) ────────────────────
+   Bloques en color/surface/subtle con la forma de las filas. TODO (token):
+   las barras de la propuesta miden 12 y 14 de alto, sin variable: se usan
+   icon/sm y space/gap/sm-md. */
+.skeleton {
+  display: flex;
+  flex-direction: column;
+}
+
+.sk-row {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  padding: var(--arq-space-padding-sm);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+.sk-thumb {
+  flex: none;
+  width: var(--arq-layout-search-thumb);
+  height: var(--arq-layout-search-thumb);
+  background: var(--arq-color-surface-subtle);
+}
+
+.sk-product {
+  display: flex;
+  flex: 0 0 25%;
+  flex-direction: column;
+  gap: var(--arq-space-gap-sm);
+  padding-inline-start: var(--arq-space-padding-sm);
+}
+
+.sk-bar {
+  display: block;
+  width: 70%;
+  height: var(--arq-space-gap-sm-md);
+  background: var(--arq-color-surface-subtle);
+}
+
+.sk-short {
+  width: 35%;
+  height: var(--arq-icon-sm);
+}
+
+.sk-cells {
+  display: flex;
+  flex: 1 1 auto;
+  gap: var(--arq-space-gap-sm);
+  min-width: 0;
+}
+
+.sk-cell {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.sk-cell .sk-bar {
+  width: 55%;
+}
+
+.sk-download {
+  flex: none;
+  width: var(--arq-icon-xl);
+  height: var(--arq-icon-xl);
+  margin-inline: var(--arq-space-padding-lg);
+  background: var(--arq-color-surface-subtle);
+}
+
+.sk-card {
+  display: none;
+}
+
+/* ── Tarjetas (Mobile) ───────────────────────────────────────────── */
+.cards {
+  display: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (max-width: 767px) {
+  /* Mobile: el buscador arriba, a todo el ancho; Filtros con la cantidad
+     debajo (2558:20156) */
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search {
+    flex: none;
+    order: -1;
+  }
+
+  .scroll,
+  .scrollbar {
+    display: none;
+  }
+
+  .cards:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Tarjeta: padding vertical space/padding/lg y línea inferior
+     border/default en color/border/subtle; cabecera, datos y acciones a
+     space/gap/md */
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--arq-space-gap-md);
+    padding-block: var(--arq-space-padding-lg);
+    border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  }
+
+  /* Miniatura y producto a space/gap/md. TODO (token): la miniatura mide 72
+     en la propuesta, sin variable; se usa layout/gallery-thumb (76 en
+     Mobile), la más cercana. */
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: var(--arq-space-gap-md);
+  }
+
+  .card-thumb {
+    flex: none;
+    width: var(--arq-layout-gallery-thumb);
+    height: var(--arq-layout-gallery-thumb);
+    overflow: hidden;
+    background: var(--arq-color-surface-subtle);
+  }
+
+  /* Datos en dos columnas: etiqueta role/body-compact-regular
+     (color/text/secondary) y valor role/body-medium, a space/gap/xs; padding
+     vertical space/padding/sm y línea inferior border/default en
+     color/border/subtle */
+  .card-data {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0;
+  }
+
+  .card-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--arq-space-gap-xs);
+    padding-block: var(--arq-space-padding-sm);
+    border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  }
+
+  .card-item dt {
+    color: var(--arq-color-text-secondary);
+  }
+
+  .card-item dd {
+    margin: 0;
+    color: var(--arq-color-text-primary);
+    overflow-wrap: break-word;
+  }
+
+  /* «Descargas» (Outline) a la izquierda y «Ver producto» (Underline) a la
+     derecha */
+  .card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--arq-space-gap-md);
+  }
+
+  /* Cargando: tarjetas en lugar de filas */
+  .sk-row {
+    display: none;
+  }
+
+  .sk-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--arq-space-gap-md);
+    padding-block: var(--arq-space-padding-lg);
+    border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  }
+
+  .sk-head {
+    display: flex;
+    align-items: center;
+    gap: var(--arq-space-gap-md);
+  }
+
+  .sk-card .sk-thumb {
+    width: var(--arq-layout-gallery-thumb);
+    height: var(--arq-layout-gallery-thumb);
+  }
+
+  .sk-card .sk-product {
+    flex: 1 1 auto;
+    padding: 0;
+  }
+
+  .sk-data {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--arq-space-gap-md);
+  }
+
+  .sk-data .sk-bar {
+    width: 50%;
+  }
+}

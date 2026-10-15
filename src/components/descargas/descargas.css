@@ -1,8 +1,8 @@
-/* descargas · Figma 2496:31316 Desktop · 2496:31862 Mobile.
-   Solo tokens semánticos. Arriba, el bloque de la página (título, bajada y
-   la download-card); debajo, «Buscar producto» y variants-table, que pone su
-   propio margen (--page-gutter). Al final space/section/xl, como los
-   listados. */
+/* descargas · Descargas · propuesta final 2575:22875 (Desktop 2564:20607 ·
+   Mobile 2558:20149). Solo tokens semánticos. Arriba, el bloque de la página
+   (título, bajada y catálogo general); debajo, «Buscar archivos por producto»
+   y downloads-table, que pone su propio margen (--page-gutter). Al final
+   space/section/xl. */
 
 :host {
   display: block;
@@ -11,19 +11,18 @@
   color: var(--arq-color-text-primary);
 }
 
-/* Título + bajada a la izquierda y la tarjeta a la derecha (arriba
-   alineados), space/section/sm arriba y abajo */
+/* Título + bajada a la izquierda y el catálogo a la derecha (arriba
+   alineados); space/section/sm arriba */
 .hero {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--arq-space-gap-lg);
-  padding: var(--arq-space-section-sm) var(--page-gutter);
+  padding: var(--arq-space-section-sm) var(--page-gutter) 0;
 }
 
-/* Título role/display y bajada role/body-lg (color/text/secondary) a
-   space/gap/lg; la bajada hasta layout/measure. TODO (token): en Figma la
-   columna mide 300, sin variable; se usa layout/measure (400). */
+/* Título role/display y bajada role/body-regular (color/text/secondary) a
+   space/gap/lg; la bajada hasta layout/measure */
 .heading {
   display: flex;
   flex-direction: column;
@@ -41,14 +40,57 @@
   color: var(--arq-color-text-secondary);
 }
 
-/* download-card de layout/measure-wide */
+/* Catálogo: tapa (ratio/portrait-soft, 4:5) y textos a space/gap/lg; nombre,
+   bajada y acción a space/gap/sm, la acción con space/padding/md arriba.
+   TODO (token): la tapa mide 168 × 210 en la propuesta, sin variable; se usa
+   layout/compare-column (160), la más cercana. Sin fondo, como la
+   propuesta (la portada es un PNG recortado). La bajada mide 300 (sin
+   variable): va hasta layout/measure. */
 .catalog {
-  flex: 0 1 var(--arq-layout-measure-wide);
+  display: flex;
+  flex: none;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-lg);
   min-width: 0;
 }
 
-/* «Buscar producto» role/display-sm y la tabla a space/gap/md; arriba
-   space/section/sm (la hero ya deja su padding inferior) */
+.cover {
+  flex: none;
+  width: var(--arq-layout-compare-column);
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+.cover ::slotted(img) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.catalog-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-sm);
+  min-width: 0;
+}
+
+.catalog-title {
+  color: var(--arq-color-text-primary);
+}
+
+.catalog-description {
+  max-width: var(--arq-layout-measure);
+  color: var(--arq-color-text-secondary);
+}
+
+.catalog-actions {
+  display: flex;
+  padding-top: var(--arq-space-padding-md);
+}
+
+/* «Buscar archivos por producto» role/heading-1 y la tabla a space/gap/md;
+   arriba space/section/sm */
 .search-section {
   display: flex;
   flex-direction: column;
@@ -67,13 +109,18 @@
   color: var(--arq-color-text-secondary);
 }
 
-/* Mobile: título, bajada y tarjeta apilados, a space/gap/xl; la bajada y la
-   tarjeta a todo el ancho */
+/* Mobile (2558:20151): título y bajada arriba; el catálogo debajo, a
+   space/gap/xl, con la tapa chica a la izquierda (space/gap/md), nombre
+   role/body-xl, bajada role/body-compact-regular (color/text/tertiary) a
+   space/gap/xs y «Descargar catálogo» Underline con space/padding/sm-md
+   arriba. space/section/sm arriba y abajo. TODO (token): la tapa mide
+   104 × 130, sin variable; se usa layout/table-thumb (100). */
 @media (max-width: 767px) {
   .hero {
     flex-direction: column;
     align-items: stretch;
     gap: var(--arq-space-gap-xl);
+    padding-bottom: var(--arq-space-section-sm);
   }
 
   .description {
@@ -81,6 +128,28 @@
   }
 
   .catalog {
-    flex: none;
+    gap: var(--arq-space-gap-md);
+  }
+
+  .cover {
+    width: var(--arq-layout-table-thumb);
+  }
+
+  .catalog-info {
+    flex: 1 1 auto;
+    gap: var(--arq-space-gap-xs);
+  }
+
+  .catalog-description {
+    max-width: none;
+    color: var(--arq-color-text-tertiary);
+  }
+
+  .catalog-actions {
+    padding-top: var(--arq-space-padding-sm-md);
+  }
+
+  .search-section {
+    padding-top: var(--arq-space-section-sm);
   }
 }

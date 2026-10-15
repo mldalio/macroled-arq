@@ -1,55 +1,48 @@
 # descargas · `<arq-descargas>`
 
-Contenido de la página Descargas: arriba, el título con su bajada y la download-card del catálogo general; debajo, «Buscar producto» con una variants-table (todos los SKU del catálogo, buscador por SKU o nombre) y el download-modal de cada fila. Contenedor de página, sin set en Figma: sale del frame «Descargas (antes Glosario)» (`1801:19315`: Desktop `2496:31316` · Mobile `2496:31862` · modal `1802:30817` / `1802:30903`). Decisión: `docs/decisiones.md`, 2026-10-06 · Descargas; diseño nuevo de 2026-10-14 (sin page-header).
+Contenido de la página Descargas: arriba, el título con su bajada y el catálogo general (tapa, nombre, bajada y «Descargar catálogo»); debajo, «Buscar archivos por producto» con [downloads-table](../downloads-table/README.md) (todos los SKU del catálogo, buscador y filtros de selección múltiple) y el download-modal de cada fila. Contenedor de página, sin set en Figma: sale de «Descargas · propuesta final (desktop y mobile)» (`2575:22875`: Desktop `2564:20607` · Mobile `2558:20149` · modal `2554:20132` / `2554:20214`). Decisión: `docs/decisiones.md`, 2026-10-15 · Descargas · propuesta final.
 
 ```html
-<arq-descargas>
+<arq-descargas catalog-href="…/catalogo.pdf">
   <h1 slot="title">Descargas</h1>
   <span slot="description">…</span>
-  <arq-download-card slot="catalog" href="…" show-description>
-    <span slot="title">Catálogo Macroled ARQ 2026</span>
-    <span slot="description">Un catálogo por familia de producto</span>
-  </arq-download-card>
-  <h2 slot="search-title">Buscar producto</h2>
+  <img slot="catalog-cover" src="…" alt="">
+  <span slot="catalog-title">Catálogo Macroled ARQ 2026</span>
+  <span slot="catalog-description">…</span>
+  <span slot="catalog-action">Descargar catálogo</span>
+  <h2 slot="search-title">Buscar archivos por producto</h2>
   <h2 slot="modal-title">Descargas</h2>
 </arq-descargas>
 ```
 
-El HTML del embed completo está en [src/pages/descargas.html](../../pages/descargas.html).
+El HTML del embed completo está en [src/pages/descargas.html](../../pages/descargas.html). Demo: `/demo/descargas.html`.
 
 ## Atributos y slots
 
 | Atributo / slot | Contenido |
 | --- | --- |
+| `catalog-href` | URL del PDF del catálogo general (se abre en otra pestaña) |
 | slot `title` | `<h1>` de la página (`role/display`) |
-| slot `description` | Bajada (`role/body-lg` en `color/text/secondary`, hasta `layout/measure`) |
-| slot `catalog` | `arq-download-card` del catálogo general (`layout/measure-wide`) |
-| slot `search-title` | `<h2>` «Buscar producto» (`role/display-sm`) |
+| slot `description` | Bajada (`role/body-regular` en `color/text/secondary`, hasta `layout/measure`) |
+| slot `catalog-cover` | `<img>` de la tapa del catálogo (4:5) |
+| slot `catalog-title` | Nombre del catálogo (`role/heading-3`; Mobile `role/body-xl`) |
+| slot `catalog-description` | Bajada del catálogo (`role/body` en `color/text/secondary`; Mobile `role/body-compact-regular` en `color/text/tertiary`) |
+| slot `catalog-action` | Texto del botón (Desktop button Outline, Mobile Underline, con `icon/download`) |
+| slot `search-title` | `<h2>` «Buscar archivos por producto» (`role/heading-1`) |
 | slot `modal-title` | Título del download-modal |
 
 - Los textos van por slot desde el embed, para que queden indexables.
-- Bloque de arriba: `space/section/sm` arriba y abajo; Desktop, textos a la izquierda y tarjeta a la derecha (arriba alineados); Mobile, apilados a `space/gap/xl`. «Buscar producto»: `space/section/sm` arriba y la tabla a `space/gap/md`.
-- `TODO` (token): en Figma la columna del título mide 300, sin variable: la bajada usa `layout/measure` (400).
+- Bloque de arriba: `space/section/sm` arriba; Desktop, textos a la izquierda y el catálogo a la derecha (tapa y textos a `space/gap/lg`); Mobile, apilados a `space/gap/xl`, con la tapa chica a `space/gap/md`. «Buscar archivos por producto»: `space/section/sm` arriba y la tabla a `space/gap/md`.
 
 ## Comportamiento
 
-- **Filas:** todos los SKU (`getDownloadsTable()` de `src/data/catalog.js`), en el orden de los grupos. Columnas: `GLOSSARY_COLUMNS` (`attributes.js`); las que están vacías en todos los SKU no se muestran.
-- **Buscador** (variants-table `show-search`): busca en el SKU, el nombre del producto y el de la colección, sin importar tildes ni mayúsculas, mientras se escribe.
-- **Barra:** Filtros (Filled) a la izquierda y el buscador a la derecha, de `layout/search-field`; en Mobile el buscador ocupa lo que queda de la fila. Sin la cantidad ni «Ordenar por» (variants-table lo tiene con `show-sort`).
-- Los archivos llevan los nombres de siempre (CAD 2D/3D, Manual, IES, Fotometría): los formatos de la pantalla de Figma («DWG + STEP», «LDT») son de ejemplo.
-- **Filtros:** los selectores de variante de todos los grupos más los filtros de los listados, solo los que tienen al menos dos valores. Buscador y filtros se combinan; las opciones de filtro sin filas van deshabilitadas.
-- **Descargas:** la barra no lleva botones. El ícono de cada fila (icon-button Large sin borde, Background=None) abre el modal con el SKU debajo del título, «Ficha técnica» (emite `arq:datasheet { sku }`) y los archivos de ese SKU (`skuDownloads()`).
-- **Estados:** mientras carga (`aria-busy`), «Cargando descargas…»; sin SKU, «Todavía no hay productos para descargar.»; si falla la carga, «No se pudieron cargar las descargas. Probá de nuevo en unos minutos.». Sin filas que cumplan la búsqueda o los filtros, la tabla muestra «Ningún SKU coincide con la búsqueda o los filtros.».
-
-## Tokens
-
-| Parte | Token |
-| --- | --- |
-| Bloque | padding inferior `space/section/xl`; la tabla pone su propio margen (`--page-gutter`) |
-| Estado | `role/body` en `color/text/secondary` |
+- **Filtros:** panel lateral (filter-panel de downloads-table). De las dos propuestas se eligió esta; la desplegable quedó en la historia de la rama `feat/descargas-propuesta`.
+- **Filas:** todos los SKU (`getDownloadsTable()` de `src/data/catalog.js`), con el nombre corto del producto (la colección: «Nobu»; con la aplicación si la colección tiene varios productos: «Kanu Pared»; sin colección, la primera palabra: «Skyline»), el link a su ficha (`?sku=`) y la variante («Negro, 6 W, luz cálida») para el modal. Columnas: una por filtro (`DOWNLOAD_FILTERS`), en el mismo orden y con el nombre corto (Temp., Material, Tensión); solo las que tienen algún valor. Todo en una línea: si no entran, la tabla se desliza en horizontal (producto y descarga quedan fijos). Filtros: `DOWNLOAD_FILTERS` (`attributes.js`), en el orden de la propuesta: Montaje, Acabado, Potencia, Temperatura de color, IP, Regulación, CRI, Ángulo, Fuente, Material del cuerpo y Tensión de entrada; solo los que tienen al menos dos valores. Tamaño, Flujo luminoso y Eficiencia no son filtro (casi un valor por SKU) ni columna. `TODO` (diseño): Familia y Fotometría de la propuesta no tienen campo en la base.
+- **Modal** (download-modal `show-product`): miniatura, SKU y variante; debajo, download-file-row: «Ficha técnica» (PDF; emite `arq:datasheet { sku }`) y los archivos del SKU (`skuDownloads()`) con su formato, que sale de la extensión de la URL.
+- **Estados:** mientras carga, filas de carga y «Buscando…»; sin SKU, «Todavía no hay productos para descargar.»; si falla la carga, «No se pudieron cargar las descargas. Probá de nuevo en unos minutos.». Sin filas que cumplan, el vacío de downloads-table.
 
 ## Pendientes
 
-- `TODO` (datos): URL del catálogo general (el embed apunta a `#`).
-- `TODO` (diseño): mensaje de error si no se puede generar la ficha técnica en PDF (la genera `src/pdf/` con `arq:datasheet`). La opción del modal (download-item) no tiene estado de carga: la pestaña nueva se abre en el clic.
-- Para decidir con diseño (`docs/decisiones.md` · Pendientes): cómo se muestran muchos SKU (paginación, «Ver más» o agrupado).
+- `TODO` (datos): URL del catálogo general y su portada (la demo usa la de Figma). El peso de cada archivo.
+- `TODO` (token): la tapa mide 168 × 210 (Mobile 104 × 130) en la propuesta, sin variable: se usan `layout/compare-column` (160) y `layout/table-thumb` (100).
+- La bajada del catálogo es distinta en Desktop («Todas las familias, con especificaciones…») y Mobile («Catálogo general en PDF, 24 MB») en la propuesta: va un solo texto.

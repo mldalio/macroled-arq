@@ -54,6 +54,61 @@
   color: var(--arq-color-text-disabled);
 }
 
+/* multiple (Descargas · propuesta 2575:22875): caja de checkbox como el set
+   checkbox (icon/sm dentro de icon/md; marcada en color/action/primary, sin
+   tilde), opción de 40 sin línea (padding space/padding/sm × md) y nombre en
+   color/text/secondary (primary en hover). */
+.control {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+}
+
+.box {
+  box-sizing: border-box;
+  width: var(--arq-icon-sm);
+  height: var(--arq-icon-sm);
+  border: var(--arq-border-default) solid var(--arq-color-icon-tertiary);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-default);
+}
+
+:host([multiple]) .option {
+  padding: var(--arq-space-padding-sm) var(--arq-space-padding-md);
+  border-bottom: 0;
+}
+
+:host([multiple]) .name {
+  color: var(--arq-color-text-secondary);
+}
+
+:host([multiple]:not([disabled]):hover) .name,
+:host([multiple][active]) .name {
+  color: var(--arq-color-text-primary);
+}
+
+:host([multiple]:not([disabled]):hover) .box {
+  border-width: var(--arq-border-strong);
+  border-color: var(--arq-color-border-strong);
+}
+
+:host([multiple][selected]) .box {
+  border-color: var(--arq-color-action-primary);
+  background: var(--arq-color-action-primary);
+}
+
+:host([multiple][disabled]) .box {
+  border-color: var(--arq-color-icon-disabled);
+  background: var(--arq-color-surface-default);
+}
+
+:host([multiple][disabled]) .name {
+  color: var(--arq-color-text-disabled);
+}
+
 /* State=Focus: la opción resaltada con las flechas (el foco real queda en el
    campo, aria-activedescendant). Sin anillo: el mismo fondo que Hover
    (color/surface/faint); la elegida ya se distingue por role/body-medium. */

@@ -35,8 +35,7 @@ Botón de solo ícono. Size Default (24 × 24) para navbar, tablas y controles c
 | Fondo None · hover · pressed | transparente · `color/surface/hover` · `color/surface/selected` |
 | Fondo Surface · hover · pressed | `color/surface/default` · `color/surface/subtle` · `color/surface/selected` |
 | Fondo Subtle · hover · pressed | `color/surface/subtle` · `color/surface/selected` · `color/surface/strong` |
-| Outline | borde `border/default` en `color/border/strong` (Disabled `color/border/disabled`), sin fondo; hover `color/surface/hover` · pressed `color/surface/selected`. El borde se descuenta del padding: mide 24 / 48 como el resto |
-| Outline | borde `border/default` en `color/border/strong` (Disabled `color/border/disabled`), sin fondo; hover `color/surface/hover` · pressed `color/surface/selected`. El borde se descuenta del padding: mide 24 / 48 como el resto |
+| Outline | borde `border/default` en `color/border/strong` (Size=Large: `color/border/default`, como el set 1818:8044; Disabled `color/border/disabled`), sin fondo; hover `color/surface/hover` · pressed `color/surface/selected`. El borde se descuenta del padding: mide 24 / 48 como el resto. En Large el ícono lleva el trazo escalado (1,5 a 24 px, como el glosario 1218:10705) |
 | Foco | `border/strong` en `color/border/focus`, separado 2 px (DESIGN.md §7) |
 | Radio | `radius/control` |
 

@@ -36,3 +36,10 @@
 :host(:focus) {
   outline: none;
 }
+
+/* Selección múltiple (select multiple, Descargas · propuesta 2575:22875):
+   space/padding/sm arriba y abajo; las opciones van sin línea. Sin sombra
+   (DESIGN.md §5: no hay sombras), aunque el menú de la propuesta la tiene. */
+:host([aria-multiselectable='true']) {
+  padding-block: var(--arq-space-padding-sm);
+}
