@@ -28,3 +28,5 @@ Sin tokens propios: padding y separador vienen de spec-row (`space/padding/md`, 
 ## Pendientes
 
 - `TODO` (datos) Qué columnas técnicas van en cada lista y con qué etiqueta: `src/data/attributes.js`, cuando estén las columnas en `docs/typesense-schema.md`. Una fila sin valor no se muestra.
+
+**Última fila por columna:** spec-list marca con `data-arq-last` la última fila de cada columna (con `columns` desde 1024 px, `ceil(n / 2)` filas por columna; si no, solo la última) y spec-row le quita la línea inferior.

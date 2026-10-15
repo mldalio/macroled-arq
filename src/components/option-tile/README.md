@@ -23,7 +23,7 @@ Opción de configuración de la ficha (altura, potencia, temperatura). Funciona 
 - Hover y Focus son CSS.
 - **Comportamiento:** el elemento es el radio (`role="radio"`, `aria-checked`, `aria-disabled`). Clic, Enter o Espacio lo eligen y emite `arq:change` con `{ value, selected: true }`. Elegido no se des-elige con clic.
 - **En grupo:** va dentro de `<arq-option-group>` (Type=Tiles), que es el `role="radiogroup"` y usa `SingleSelect` (`src/base/single-select.js`) para las flechas, Inicio / Fin y una sola opción elegida.
-- En un grupo va en Fill (`flex: 1 1 max-content`): parte del ancho de su texto y se estira para llenar la fila; si no entran todos, bajan a otra línea.
+- En un grupo va en Hug content (`flex: 0 1 auto`): mide lo que mide su texto y no se estira para llenar la fila; si no entran todos, bajan a otra línea.
 
 ## Tokens
 

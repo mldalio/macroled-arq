@@ -105,6 +105,14 @@ arq-gallery-thumb {
     min-height: 0;
   }
 
+  /* La foto no pone el alto: va absoluta sobre el recuadro. Si no, una foto
+     grande estira la galería y, con aspect-ratio en la columna, también su ancho
+     (la imagen se montaba sobre el configurador). */
+  :host([fill]) ::slotted(img) {
+    position: absolute !important;
+    inset: 0 !important;
+  }
+
   :host([fill]) .thumbs {
     left: var(--arq-space-padding-xl);
     bottom: var(--arq-space-padding-xl);

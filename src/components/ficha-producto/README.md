@@ -1,6 +1,6 @@
 # ficha-producto · `<arq-ficha-producto>`
 
-Ficha de un producto (grupo): hero con galería y configurador, descargas y especificaciones, galería de ambiente, descripción con otras familias, glosario, inspiración y "Explora la colección". Es un contenedor de página, sin set en Figma: sale de la pantalla Ficha de Final (`1218:10487` Desktop · `1220:11334` Mobile · `1218:11777` / `1220:12601` Iluminar). Decisión: `docs/decisiones.md`, 2026-10-05 · Ficha de producto. Los textos salen de los datos, no del CMS (2026-10-07 · Base de datos sin IDs).
+Ficha de un producto (grupo): hero con galería y configurador, descargas y especificaciones, galería de ambiente, descripción (foto a todo el ancho con el texto encima), glosario, inspiración y "Explora la colección". Es un contenedor de página, sin set en Figma: sale de la pantalla Ficha de Final (`1218:10487` Desktop · `1220:11334` Mobile · `1218:11777` / `1220:12601` Iluminar). Decisión: `docs/decisiones.md`, 2026-10-05 · Ficha de producto. Los textos salen de los datos, no del CMS (2026-10-07 · Base de datos sin IDs).
 
 ```html
 <arq-ficha-producto data-group="kanu-jardin">
@@ -31,7 +31,7 @@ El HTML del embed completo está en [src/pages/ficha.html](../../pages/ficha.htm
 
 ## Comportamiento
 
-- **Variante:** abre con `?sku=` si es del grupo; si no, con la predeterminada. Al elegir otra en el configurador se actualiza `?sku=` con `history.replaceState` (la predeterminada va sin parámetro). Cambian galería, sku, descripción, acordeón y descargas; el resto no (decisión 2026-10-02 · Ficha de producto por grupo).
+- **Variante:** abre con `?sku=` si es del grupo; si no, con la predeterminada. Al elegir otra en el configurador se actualiza `?sku=` con `history.replaceState` (la URL siempre lleva el SKU, también la de la predeterminada: al abrir sin `?sku=` se agrega con `replaceState`). Cambian galería, sku, descripción, acordeón y descargas; el resto no (decisión 2026-10-02 · Ficha de producto por grupo).
 - **Configurador:** un option-group por atributo de `variant_attributes`, en ese orden: Swatches para el acabado y Tiles para el resto (`src/data/attributes.js`). Las opciones que no forman un SKU van deshabilitadas (`src/data/variants.js`).
 - **Iluminar:** el toggle pone `data-arq-theme="dark"` en el hero (contenedor interno) y en el `<arq-navbar>` de la página. La galería pasa a las fotos encendidas. No se recuerda: recargar la ficha la deja apagada. Solo llega iluminada si se entró desde Productos o Colecciones iluminados (`takeThemeHandoff`, `src/base/theme.js`). Con Iluminar, el hero baja su padding inferior a `space/section/lg` y Descargas suma `space/section/md` arriba (DESIGN.md §2 · Cambio de fondo).
 - **Ver glosario:** desplaza hasta el glosario y le pasa el foco a su título.
@@ -39,8 +39,8 @@ El HTML del embed completo está en [src/pages/ficha.html](../../pages/ficha.htm
 - **Acordeón:** una sección por grupo de especificaciones. La primera abre abierta; al cambiar de variante quedan abiertas las mismas.
 - **Glosario:** variants-table con una fila por SKU (columnas en `GLOSSARY_COLUMNS` de `src/data/attributes.js`). En la barra, CAD 2D/3D y Manual. El ícono de cada fila abre el download-modal con los archivos de ese SKU.
 - **Textos solo de los datos:** descripción corta (`description` de la variante), story e inspiración. Si un dato falta, esa parte no se muestra, aunque el HTML traiga texto: así se ve qué falta en la base.
-- **Descripción (STORY):** el componente toma `product_story_text` del grupo y lo arma en el DOM de la página: la primera línea es el título (`<h2>` en `role/heading-2`, con o sin `## `), cada `## ` siguiente un `<h3>`, cada línea `- ` un ítem de la lista (con guion) y el resto un `<p>`, con `createElement` y `textContent` (nunca `innerHTML`). La lista va con la etiqueta "Características del producto": no se escribe en la hoja.
-- **Otras familias y Explora la colección:** family-card de los otros grupos de la colección (Default y Large), en un carrusel con scroll-snap si no entran. Sin colección no se muestran, el breadcrumb pasa a Productos / nombre y no está "Ver colección".
+- **Descripción (STORY):** el componente toma `product_story_text` del grupo y lo arma en el DOM de la página: la primera línea es el título (`<h2>` en `role/heading-2`, con o sin `## `), cada `## ` siguiente un `<h3>`, cada línea `- ` un ítem de la lista (con guion) y el resto un `<p>`, con `createElement` y `textContent` (nunca `innerHTML`). La sección es la foto de ambiente 6 a todo el ancho (`min-height: 100svh`) con el título (primera línea) a la izquierda y, a la derecha, el texto, la lista y el link «Ver colección …» (`role/body-xl`, Dark local: textos y subrayado claros). La foto queda quieta mientras la página pasa por encima (efecto parallax de imagen fija: `position: fixed` dentro de un recuadro con `clip-path`; con `prefers-reduced-motion` se mueve con la página). Sin foto, fondo `color/surface/default` en Dark; sin texto, la sección no se muestra. Mobile y Tablet: título arriba, texto abajo.
+- **Explora la colección:** family-card de los otros grupos de la colección (Default y Large), en un carrusel con scroll-snap si no entran. Sin colección no se muestran, el breadcrumb pasa a Productos / nombre y no está "Ver colección".
 - **Imágenes:** ambiente, descripción e inspiración muestran solo las que existen; un bloque sin imágenes ni texto no se muestra.
 - **Estados:** mientras carga (`aria-busy`) solo se ve lo que imprime el CMS y "Cargando producto…". Si el grupo no existe, "No encontramos este producto."; si falla la carga, "No se pudo cargar el producto. Probá de nuevo en unos minutos.".
 
@@ -56,7 +56,7 @@ Tablet (768–1023 px) usa la columna Desktop salvo en los bloques marcados: ah�
 | Columna del configurador | info (`space/gap/xl`: sku y descripción a `space/gap/lg`, opciones a `space/gap/xl-2xl`) y acciones abajo (`space/gap/md`) | acciones a todo el ancho, una debajo de la otra |
 | Descargas + acordeón | columna de `layout/measure` + acordeón, a `space/gap/3xl` | apilado a `space/gap/2xl`, acordeón a todo el ancho (también Tablet) |
 | Galería de ambiente | fila con scroll hasta el borde derecho, gap `space/gap/md`; snap `proximity` y `overscroll-behavior-x: contain` para no pelear con el scroll vertical | gap `space/gap/sm-md` |
-| Descripción | textos a `space/gap/lg`; otras familias e imagen (`ratio/wide`) en dos mitades, abajo, a `space/gap/sm` | imagen arriba, otras familias a `space/gap/6xl` |
+| Descripción | foto a todo el ancho; título a la izquierda y texto a la derecha, con `space/section/lg` alrededor; abajo `space/section/sm` | título arriba y texto abajo, con el margen de página |
 | Glosario | título a `space/gap/md` de la tabla | ídem |
 | Inspiración | texto (un tercio) e imágenes (dos tercios) en `ratio/portrait-soft` | apilado a `space/gap/xl` (también Tablet, con las fotos en fila y el texto hasta `layout/measure`) |
 | Explora la colección | Dark local, padding `space/padding/5xl`; introducción de `layout/measure` y cards a `space/gap/2xl` | apilado a `space/gap/4xl` (también Tablet) |

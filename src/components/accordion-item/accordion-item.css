@@ -1,7 +1,7 @@
 /* accordion-item · Figma 922:2645, con el cambio de la Ficha v2 (2085:26124 ·
-   2118:33571). Solo tokens semánticos.
-   Desktop es la base; Mobile (max-width: 767px) no cambia el padding lateral
-   (ya es space/padding/xl). */
+   2118:33571 · 2587:26558). Solo tokens semánticos.
+   Desktop es la base; Mobile (max-width: 767px) va sin padding lateral: el
+   ítem ocupa el ancho entre los márgenes de la página. */
 
 :host {
   display: block;
@@ -49,16 +49,12 @@
   overflow-wrap: break-word;
 }
 
-/* Ícono con las medidas de icon-button Size=Large (space/padding/sm-md +
-   icon/xl) y borde border/default en color/border/default, sin fondo, tanto
-   cerrado como abierto. */
+/* Ícono plus / minus con las medidas de icon-button Size=Large (space/padding/sm-md
+   + icon/xl), sin borde ni fondo (Ficha v2, 2587:26558), cerrado y abierto. */
 .icon-box {
   display: inline-flex;
   flex: none;
   padding: var(--arq-space-padding-sm-md);
-  border: var(--arq-border-default) solid var(--arq-color-border-default);
-  border-radius: var(--arq-radius-control);
-  background: var(--arq-color-surface-transparent);
   color: var(--arq-color-icon-primary);
 }
 
@@ -73,20 +69,25 @@
 }
 
 /* Contenido (en la ficha, spec-list en una o dos columnas): a los lados
-   space/padding/xl y abajo space/padding/lg */
+   space/padding/xl (0 en Mobile) y abajo space/padding/lg */
 .content {
   padding: 0 var(--arq-space-padding-xl) var(--arq-space-padding-lg);
 }
 
-/* State=Hover: solo cerrado. Fondo color/surface/faint y el ícono en
-   color/surface/hover. */
+@media (max-width: 767px) {
+  .trigger {
+    padding-inline: 0;
+  }
+
+  .content {
+    padding-inline: 0;
+  }
+}
+
+/* State=Hover: solo cerrado. Fondo color/surface/faint. */
 @media (hover: hover) {
   :host(:not([open])) .item:has(.trigger:hover) {
     background: var(--arq-color-surface-faint);
-  }
-
-  :host(:not([open])) .trigger:hover .icon-box {
-    background: var(--arq-color-surface-hover);
   }
 }
 

@@ -17,13 +17,13 @@
   color: var(--arq-color-text-secondary);
 }
 
-/* Type=Tiles: fila de option-tile en Fill, separados por space/gap/sm.
+/* Type=Tiles: fila de option-tile en Hug content, separados por space/gap/sm.
    Si no entran, bajan a otra línea (decisión 2026-10-02). */
 .options {
   display: flex;
   flex-wrap: wrap;
   gap: var(--arq-space-gap-sm);
-  align-self: stretch;
+  align-self: stretch; /* la fila ocupa el ancho para poder hacer wrap; los tiles no se estiran */
 }
 
 /* Type=Swatches y Select: el contenido mide lo suyo (swatch-picker hace Hug) */

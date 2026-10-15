@@ -20,6 +20,12 @@
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
 }
 
+/* Última fila de su columna (la marca spec-list): sin línea, para no duplicar
+   la del acordeón. Suelta, sin lista, conserva su línea. */
+:host([data-arq-last]) .row {
+  border-bottom-color: var(--arq-color-surface-transparent);
+}
+
 .label {
   flex: 0 1 var(--arq-layout-measure);
   min-width: 0;
