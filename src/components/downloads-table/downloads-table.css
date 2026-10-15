@@ -39,10 +39,9 @@
   color: var(--arq-color-text-secondary);
 }
 
-/* TODO (token): en la propuesta el buscador mide 480, sin variable; se usa
-   layout/search-field (360). */
+/* Buscador de layout/download-search (480) */
 .search {
-  flex: 0 1 var(--arq-layout-search-field);
+  flex: 0 1 var(--arq-layout-download-search);
   min-width: 0;
 }
 
@@ -170,11 +169,11 @@ tbody td {
   padding-inline: var(--page-gutter) var(--arq-space-gap-sm);
 }
 
-/* TODO (token): la miniatura mide 64 en la propuesta, sin variable; se usa
-   layout/search-thumb (48), la más cercana. */
+/* Miniatura de layout/download-thumb (72; la propuesta tenía 64, se agrandó
+   el 2026-10-15) */
 .sku-col {
   position: sticky;
-  left: calc(var(--page-gutter) + var(--arq-layout-search-thumb) + var(--arq-space-gap-sm));
+  left: calc(var(--page-gutter) + var(--arq-layout-download-thumb) + var(--arq-space-gap-sm));
   z-index: 1;
   width: 1%;
   padding-inline-end: var(--arq-space-gap-xl);
@@ -183,8 +182,8 @@ tbody td {
 
 .thumb {
   display: block;
-  width: var(--arq-layout-search-thumb);
-  height: var(--arq-layout-search-thumb);
+  width: var(--arq-layout-download-thumb);
+  height: var(--arq-layout-download-thumb);
   overflow: hidden;
   background: var(--arq-color-surface-subtle);
 }
@@ -232,7 +231,8 @@ td.end {
 /* ── Vacío (2564:21134) ──────────────────────────────────────────
    Título role/heading-2 y ayuda role/body-regular (color/text/secondary) a
    space/gap/sm-md; arriba space/section/sm y abajo space/section/md.
-   TODO (token): la ayuda mide 560 en la propuesta; se usa layout/measure-wide. */
+   La ayuda va hasta layout/measure-wide (520; la propuesta, 560: diferencia
+   menor, sin variable propia). */
 .empty {
   display: flex;
   flex-direction: column;
@@ -254,9 +254,8 @@ td.end {
 }
 
 /* ── Cargando (2564:21523 · Mobile 2565:22239) ────────────────────
-   Bloques en color/surface/subtle con la forma de las filas. TODO (token):
-   las barras de la propuesta miden 12 y 14 de alto, sin variable: se usan
-   icon/sm y space/gap/sm-md. */
+   Bloques en color/surface/subtle con la forma de las filas. Barras de
+   icon/sm y space/gap/sm-md de alto (las de la propuesta: 12 y 14). */
 .skeleton {
   display: flex;
   flex-direction: column;
@@ -272,8 +271,8 @@ td.end {
 
 .sk-thumb {
   flex: none;
-  width: var(--arq-layout-search-thumb);
-  height: var(--arq-layout-search-thumb);
+  width: var(--arq-layout-download-thumb);
+  height: var(--arq-layout-download-thumb);
   background: var(--arq-color-surface-subtle);
 }
 
@@ -367,9 +366,7 @@ td.end {
     border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
   }
 
-  /* Miniatura y producto a space/gap/md. TODO (token): la miniatura mide 72
-     en la propuesta, sin variable; se usa layout/gallery-thumb (76 en
-     Mobile), la más cercana. */
+  /* Miniatura (layout/download-thumb) y producto a space/gap/md */
   .card-head {
     display: flex;
     align-items: center;
@@ -378,8 +375,8 @@ td.end {
 
   .card-thumb {
     flex: none;
-    width: var(--arq-layout-gallery-thumb);
-    height: var(--arq-layout-gallery-thumb);
+    width: var(--arq-layout-download-thumb);
+    height: var(--arq-layout-download-thumb);
     overflow: hidden;
     background: var(--arq-color-surface-subtle);
   }
@@ -442,8 +439,8 @@ td.end {
   }
 
   .sk-card .sk-thumb {
-    width: var(--arq-layout-gallery-thumb);
-    height: var(--arq-layout-gallery-thumb);
+    width: var(--arq-layout-download-thumb);
+    height: var(--arq-layout-download-thumb);
   }
 
   .sk-card .sk-product {

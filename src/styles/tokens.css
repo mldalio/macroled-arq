@@ -151,6 +151,9 @@
   --arq-layout-pdf-spec-label: 260px; /** Ancho fijo de la etiqueta de pdf-spec-row en la ficha técnica PDF (A4). El valor ocupa el resto de la fila. */
   --arq-layout-carousel-button: 44px; /** Lado del botón anterior/siguiente de los carruseles (cuadrado). */
   --arq-layout-catalog-nav: 240px; /** Ancho del sidebar catalog-nav en Productos y Colecciones (desde 1024 px). Hasta 1023 px se usa catalog-nav-mobile. */
+  --arq-layout-download-thumb: 72px; /** Miniatura cuadrada de cada fila y tarjeta de la tabla de Descargas (downloads-table) y del producto en el modal de descargas (download-modal show-product). */
+  --arq-layout-catalog-cover: 168px; /** Ancho de la tapa del catálogo general en la página Descargas (168 Desktop · 104 Mobile). El alto sale de ratio/portrait-soft (4:5). */
+  --arq-layout-download-search: 480px; /** Ancho del buscador de la tabla de Descargas (downloads-table). En Mobile el campo ocupa el ancho disponible. */
   --arq-motion-duration-fast: 120ms; /** Hover, toggle, foco. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-base: 200ms; /** Desplegables (disclosure) y menús. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-slow: 320ms; /** Fundido de imágenes de product-card. En ms. Con prefers-reduced-motion: 0. */
@@ -358,6 +361,7 @@
     --arq-layout-gallery-thumb: 76px; /** Ancho de gallery-thumb en product-gallery (105 Desktop · 76 Mobile). El alto sale de ratio/landscape (5:4). */
     --arq-layout-compare-label: 120px; /** Columna de etiquetas de la comparativa (compare-row, compare-group y la columna de controles de compare-header). En Mobile queda fija al desplazar. */
     --arq-layout-featured-thumb: 120px;
+    --arq-layout-catalog-cover: 104px; /** Ancho de la tapa del catálogo general en la página Descargas (168 Desktop · 104 Mobile). El alto sale de ratio/portrait-soft (4:5). */
     --arq-space-section-2xs: var(--arq-space-24); /** Separación mínima entre bloques de página. */
     --arq-space-section-xs: var(--arq-space-32); /** Separación ajustada entre bloques de página. */
     --arq-space-section-sm: var(--arq-space-40); /** Separación reducida entre bloques de página. */

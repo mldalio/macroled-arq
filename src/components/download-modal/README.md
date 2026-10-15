@@ -43,7 +43,7 @@ modal.addEventListener('arq:download', () => generarFichaTecnica(sku)); // la fi
 - Siempre con scrim (`color/overlay/scrim`).
 - **Scroll:** con el modal abierto, la página de atrás no se mueve (rueda, touch ni teclado; también sobre el scrim). Si el modal no entra en la pantalla, se desplaza él. `containScroll()` de `src/base/scroll-lock.js`, sin tocar `<html>` ni `<body>`.
 
-- **`show-product`:** la miniatura mide 64 en la propuesta, sin variable: se usa `layout/search-thumb` (48), `TODO` (token). La manija de arrastre de la hoja Mobile no se dibuja: la hoja no se arrastra.
+- **`show-product`:** miniatura de `layout/download-thumb` (72), como la tabla de Descargas. La manija de arrastre de la hoja Mobile no se dibuja: la hoja no se arrastra.
 
 ## Tokens
 

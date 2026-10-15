@@ -12,10 +12,9 @@
 // - Availability=Unavailable (la variante no tiene ese archivo): la página no
 //   pone la fila, como download-item. TODO (diseño): si se quiere mostrar la
 //   fila deshabilitada, falta ver la variante Unavailable del set.
+// - Sin slot meta, la fila muestra solo el nombre (Descargas, 2026-10-15).
 // - Hover subraya el nombre (como download-item Default); Focus, anillo de
 //   DESIGN.md §7. No son props.
-// - TODO (datos): el peso del archivo («1,2 MB») no está en la base; la
-//   página muestra solo el formato.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { icon } from '../../base/icons.js';
@@ -42,6 +41,11 @@ class ArqDownloadFileRow extends ArqElement {
       control.innerHTML =
         `<span class="info"><span class="label role-body-xl"><slot></slot></span>` +
         `<span class="meta role-body-compact-regular"><slot name="meta"></slot></span></span>${icon('download')}`;
+      // Sin formato, la línea de meta no ocupa lugar
+      const metaSlot = control.querySelector('slot[name="meta"]');
+      const syncMeta = () => (metaSlot.parentElement.hidden = !metaSlot.assignedNodes().length);
+      metaSlot.addEventListener('slotchange', syncMeta);
+      syncMeta();
       if (tag === 'button') {
         control.type = 'button';
         control.addEventListener('click', () => this.emit('download', {}));

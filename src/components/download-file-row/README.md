@@ -17,7 +17,7 @@ Fila de archivo del modal de descargas de la página Descargas: nombre, formato 
 | Figma | Atributo / slot | Prop JS | Valores |
 | --- | --- | --- | --- |
 | Label | slot por defecto | — | Nombre del archivo («Ficha técnica», «IES») |
-| Meta | slot `meta` | — | Formato y peso («PDF, 1,2 MB»). Hoy solo el formato |
+| Meta | slot `meta` | — | Formato y peso («PDF, 1,2 MB»). Opcional: sin el slot, solo el nombre (así lo usa Descargas) |
 | — | `href` | `href` | URL del archivo. Sin `href` es un botón que emite `arq:download` (la ficha técnica se genera al hacer clic) |
 | Availability | — | — | Solo Available: si la variante no tiene el archivo, la página no pone la fila |
 
@@ -34,5 +34,4 @@ Fila de archivo del modal de descargas de la página Descargas: nombre, formato 
 
 ## Pendientes
 
-- `TODO` (datos): el peso del archivo no está en la base.
 - `TODO` (diseño): si se quiere mostrar un archivo que falta (Availability=Unavailable), falta su dibujo en el set.

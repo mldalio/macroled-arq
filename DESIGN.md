@@ -145,7 +145,7 @@ Medido en Productos (con `catalog-nav` desde 1024 px):
 ### Ancho máximo
 
 - El **contenido** de la página llega hasta `layout/max-width` (1792 = 1920 − 2 × 64). Hasta 1920 px manda `layout/gutter`; desde ahí el margen lateral crece y el contenido queda centrado.
-- **variants-table** no va de borde a borde: en todos los breakpoints ocupa el ancho del contenido, y sus líneas y su barra de filtros van de la miniatura al ícono de descarga. Si no entra, se desplaza dentro de los márgenes, sin barra de scroll visible.
+- **variants-table** no va de borde a borde: en todos los breakpoints ocupa el ancho del contenido, y sus líneas y su barra de filtros van de la miniatura al ícono de descarga. Si no entra, se desplaza dentro de los márgenes, sin barra de scroll visible. Excepción: la tabla de Descargas (downloads-table, cientos de filas) muestra una barra fina pegada al borde inferior de la pantalla mientras la tabla está a la vista, para que se note que hay más columnas.
 - Los **fondos**, fotos y barras siguen a todo el ancho (hero, navbar, footer, cta-block, la sección Dark de la ficha, compare-bar): el tope se aplica como padding, no como un contenedor con `max-width`.
 - En código, los componentes usan `--page-gutter` en lugar de `--arq-layout-gutter` para el margen de página. Es una variable local que `ArqElement` declara en cada `:host`:
 
@@ -314,6 +314,9 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 | layout/search-field | 360 | 360 | Ancho de search-field en el navbar Desktop; search-dropdown toma el mismo ancho. En Mobile el campo ocupa el ancho disponible |
 | layout/search-thumb | 48 | 48 | Miniatura cuadrada de search-result |
 | layout/catalog-nav | 240 | 240 | Ancho del sidebar catalog-nav en Productos y Colecciones (desde 1024 px) |
+| layout/download-thumb | 72 | 72 | Miniatura cuadrada de la tabla de Descargas (filas y tarjetas Mobile) y del producto en el modal de descargas |
+| layout/download-search | 480 | 480 | Ancho del buscador de la tabla de Descargas. En Mobile el campo ocupa el ancho disponible |
+| layout/catalog-cover | 168 | 104 | Ancho de la tapa del catálogo general en Descargas. El alto sale de ratio/portrait-soft (4:5) |
 | layout/carousel-button | 44 | 44 | Lado del botón anterior / siguiente de los carruseles (carousel-button) |
 | layout/select-filter | 160 | 160 | Ancho mínimo de select Type=Filter (celda de filter-bar): la flecha va al extremo derecho |
 | layout/select-menu-filter | 200 | 200 | Ancho mínimo de select-menu Type=Filter |
@@ -453,7 +456,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | Componente | Variantes / propiedades | Tokens y notas |
 | --- | --- | --- |
 | button | Type: Filled · Outline · Underline. State: Default · Hover · Pressed · Focus · Disabled · Loading (Filled y Outline). Props: Label · Show icon · Icon · Show underline · Show count · Show leading icon · Leading icon | Filled: color/action/*. Outline: color/border/strong (el borde no suma al alto: 40 como Filled, con role/body-regular de 16/24). Underline: subrayado border/default (1 px) en reposo y border/strong (2 px) en hover y pressed. Focus: anillo separado (ver Foco). Loading: fondo de Hover, sin íconos; label de carga ("Enviando…" en formularios, "Generando…" en la ficha técnica), aria-busy |
-| icon-button | Size: Default · Large. Background: None · Surface · Subtle · Outline. State: Default · Hover · Pressed · Focus · Disabled. Prop: Icon | Default 24 × 24 (icon/md). Large 48 × 48 (padding sm-md + icon/xl). Surface sobre otra superficie; Subtle para destacar entre mucha información; Outline (borde color/border/strong) para la descarga de cada fila de variants-table |
+| icon-button | Size: Default · Large. Background: None · Surface · Subtle · Outline. State: Default · Hover · Pressed · Focus · Disabled. Prop: Icon | Default 24 × 24 (icon/md). Large 48 × 48 (padding sm-md + icon/xl). Surface sobre otra superficie; Subtle para destacar entre mucha información; Outline (borde color/border/strong; en Large, color/border/default con el ícono de trazo escalado) para la descarga de cada fila de variants-table y downloads-table |
 | input | Type: Text · Select · Textarea. State: Empty · Filled · Focus · Error · Disabled. Open: False · True (solo Select). Props: Label · Show label · Helper · Show helper | Label role/body-regular en color/text/primary. Caja de 40 (como button): borde border/default en color/border/default y fondo color/surface/default. Hover color/border/hover · Focus anillo separado (§7) · Error color/border/error · Disabled color/border/disabled. Select abierto: border/strong, chevron-up y select-menu Type=Text flotante |
 | select | Type: Field · Filter. Size: Default · Small (solo Filter). State: Default · Hover · Focus · Disabled · Filled. Open: False · True. Props: Name · Label · Value · Show swatch | Field: etiqueta role/label, línea inferior border/strong y gap 0. Filter: etiqueta role/label-lg (Size=Default: filter-bar, Descargas) o role/label (Size=Small: compare-product, sin opción «Todos» y con el menú del ancho del campo), gap space/gap/sm y sin línea (solo Disabled la muestra); mide al menos layout/select-filter. Filled = Filter con opción elegida, valor en role/body-medium |
 | select-menu | Type: Finishes · Filter · Text | Hasta 7 opciones. surface/default, border/default, sin sombra |
@@ -511,7 +514,7 @@ El inventario completo con links a Figma está en el [Anexo A](#anexo-a-inventar
 ### Reutilización
 
 - **Botones:** un solo button. El botón blanco sobre fotos es Filled en un contenedor en modo Dark. El ícono siempre usa el color del texto (`currentColor`).
-- **Íconos:** 20 íconos de trazo de 1 px, `stroke="currentColor"`. Cada uno tiene `Theme=Default` (color/icon/primary) e `Inverse` (color/icon/inverse, solo sobre foto u oscuro en modo claro).
+- **Íconos:** 20 íconos de trazo de 1 px, `stroke="currentColor"`. Excepción: en icon-button Size=Large, Background=Outline (descarga de cada fila de las tablas) el ícono de 24 lleva el trazo escalado (1,5 px), como el set. Cada uno tiene `Theme=Default` (color/icon/primary) e `Inverse` (color/icon/inverse, solo sobre foto u oscuro en modo claro).
 - **Formularios:** input cubre contacto (texto, select, textarea), el email del Home (Show label = false) y la versión oscura.
 - **Desplegables:** accordion-item, faq-item, filter-row, catalog-nav-group y catalog-nav-trigger comparten patrón. En código, un solo disclosure base.
 - **Tarjetas:** toman el ancho de su columna (FILL); no se pisa el tamaño en la instancia.

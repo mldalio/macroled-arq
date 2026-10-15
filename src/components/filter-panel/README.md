@@ -32,7 +32,7 @@ En Productos Mobile, `show-categories` agrega las tabs `arq-tab` Característica
 | Show applied | — | — | Los filter-chip salen de los checkbox marcados. Sin filtros no se muestran |
 | — | `open` | `open` | booleano. Mejor `show()` y `close()` |
 | — (resultado) | `count` | `count` | Lo calcula la página: "Ver 4 productos". Sin valor: "Ver productos" |
-| — | `unit` | `unit` | `productos` · `colecciones` ("Ver 1 colección") · `variantes` (Descargas, «Ver 6 variantes»). Por defecto `productos` |
+| — | `unit` | `unit` | `productos` · `colecciones` ("Ver 1 colección"). Por defecto `productos` |
 | — (filas) | slot por defecto | — | `arq-filter-row` |
 | Breakpoint | — | — | Media query: hasta 767 px es Mobile |
 

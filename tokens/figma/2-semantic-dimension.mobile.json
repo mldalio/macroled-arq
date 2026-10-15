@@ -392,6 +392,51 @@
           }
         }
       }
+    },
+    "download-thumb": {
+      "$type": "number",
+      "$value": 72,
+      "$description": "Miniatura cuadrada de cada fila y tarjeta de la tabla de Descargas (downloads-table) y del producto en el modal de descargas (download-modal show-product).",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-download-thumb)"
+          }
+        }
+      }
+    },
+    "catalog-cover": {
+      "$type": "number",
+      "$value": 104,
+      "$description": "Ancho de la tapa del catálogo general en la página Descargas (168 Desktop · 104 Mobile). El alto sale de ratio/portrait-soft (4:5).",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-catalog-cover)"
+          }
+        }
+      }
+    },
+    "download-search": {
+      "$type": "number",
+      "$value": 480,
+      "$description": "Ancho del buscador de la tabla de Descargas (downloads-table). En Mobile el campo ocupa el ancho disponible.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-download-search)"
+          }
+        }
+      }
     }
   },
   "space": {
