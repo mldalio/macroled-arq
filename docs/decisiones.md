@@ -789,3 +789,4 @@ Pantalla «Descargas · propuesta final (desktop y mobile)» (`2575:22875`: Desk
 - **Desvíos de la propuesta:** sin sombra en el menú de selección múltiple (DESIGN.md: no hay sombras); sin manija en la hoja Mobile del modal; el encabezado de la tabla en `role/label-lg` va en mayúsculas.
 - **Pendiente (tokens):** miniaturas de 64 (fila y modal) y 72 (tarjeta), tapa de 168 × 210 (Mobile 104 × 130), buscador de 480, select de 224, ayuda del vacío de 560: sin variable, se usan las más cercanas.
 - **Pendiente (datos):** peso de los archivos, URL y portada del catálogo general.
+- **Descarga de cada fila:** icon-button Large Background=Outline (con borde), como el glosario de la ficha (Figma 1218:10705), en las dos propuestas. Reemplaza «sin borde» de Descargas v2 (2026-10-14).

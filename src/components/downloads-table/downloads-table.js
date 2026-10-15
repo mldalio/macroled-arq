@@ -32,7 +32,7 @@
 //   izquierda y el buscador a la derecha. Mobile: el buscador arriba, a todo
 //   el ancho, y Filtros con la cantidad debajo.
 // - Desktop: <table> real con miniatura, nombre + sku Compact, columnas de
-//   datos y la descarga (icon-button Large sin borde). Miniatura, producto y
+//   datos y la descarga (icon-button Large Outline, como la ficha). Miniatura, producto y
 //   descarga quedan fijas al desplazar en horizontal.
 // - Mobile (hasta 767 px): una tarjeta por variante (variants-table-card de la
 //   propuesta): miniatura, nombre y sku; cuatro datos en dos columnas;
@@ -86,9 +86,10 @@ const SKELETON_COLUMNS = 9;
 const FEMININE = /(a|ción|sión|dad|fuente)$/i;
 const allLabel = (label) => (FEMININE.test(String(label ?? '').trim().split(/\s+/)[0]) ? 'Todas' : 'Todos');
 
-// Descarga de una fila (tabla): icon-button Large sin borde
+// Descarga de una fila (tabla): icon-button Large Background=Outline, como el
+// glosario de la ficha (Figma 1218:10705)
 const download = (sku) =>
-  `<arq-icon-button icon="download" size="large" background="none" data-sku="${esc(sku)}">Descargas de ${esc(sku)}</arq-icon-button>`;
+  `<arq-icon-button icon="download" size="large" background="outline" data-sku="${esc(sku)}">Descargas de ${esc(sku)}</arq-icon-button>`;
 
 const thumb = (row, className) => `<span class="${className}">${row.thumb ? `<img src="${esc(row.thumb)}" alt="" loading="lazy">` : ''}</span>`;
 
