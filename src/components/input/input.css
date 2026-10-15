@@ -121,6 +121,21 @@ textarea.control {
   z-index: 2;
   width: calc(100% + 2 * var(--arq-border-default));
   max-width: none;
+  /* Al abrir, crece desde el campo (scale 0.97 → 1, motion/duration/base)
+     y funde (motion/duration/fade), con motion/easing/out. Al cerrar, sin
+     animación. Con reduced motion base vale 0: queda solo el fundido.
+     TODO: la escala 0.97 no tiene token (como la de search-card). */
+  transform-origin: top;
+  transition:
+    opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out),
+    transform var(--arq-motion-duration-base) var(--arq-motion-easing-out);
+}
+
+@starting-style {
+  .menu:not([hidden]) {
+    opacity: 0;
+    transform: scale(0.97);
+  }
 }
 
 :host([open]) .field,
@@ -144,6 +159,36 @@ textarea.control {
 .error {
   margin: 0;
   color: var(--arq-color-text-error);
+}
+
+/* Al aparecer, el mensaje de error crece (grid-template-rows 0fr → 1fr,
+   motion/duration/base) y funde (motion/duration/fade), con
+   motion/easing/out: los campos de abajo se deslizan en vez de saltar
+   (DESIGN.md §6 · Movimiento). El gap de .input va adentro del alto animado
+   (margen negativo + padding), si no saltaría solo. Al quitarse, sin
+   animación. Con reduced motion base vale 0: queda solo el fundido. */
+.error-wrap {
+  display: grid;
+  grid-template-rows: 1fr;
+  margin-top: calc(-1 * var(--arq-space-gap-sm));
+  transition: grid-template-rows var(--arq-motion-duration-base) var(--arq-motion-easing-out);
+}
+
+.error-wrap > .error {
+  min-height: 0;
+  overflow: hidden;
+  padding-top: var(--arq-space-gap-sm);
+  transition: opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out);
+}
+
+@starting-style {
+  .error-wrap:not([hidden]) {
+    grid-template-rows: 0fr;
+  }
+
+  .error-wrap:not([hidden]) > .error {
+    opacity: 0;
+  }
 }
 
 /* State=Focus: anillo de DESIGN.md §7 alrededor de la caja (2px: valor

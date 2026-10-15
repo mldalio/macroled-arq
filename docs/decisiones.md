@@ -73,7 +73,7 @@ ArqAccordionItem.define();
 - `new Disclosure(this, { trigger, panel })`. Encabezado `<button type="button">` con `aria-expanded` y `aria-controls`; panel con el atributo `hidden`, contenido por slot (queda en el HTML aunque esté cerrado). Siempre `<button>`, nunca `<details>`.
 - Independientes: pueden quedar varios abiertos. El estado es `open`; el abierto inicial lo decide el HTML o los datos, no el default de Figma.
 - Cambiar `open` por código no emite; la acción del usuario y `show()` / `hide()` / `toggle()` emiten `arq:toggle` con `{ open }`. `closeOnEscape` apagado por defecto.
-- Movimiento: al abrir, fundido de `opacity` en `motion/duration/base` (`@starting-style`); el alto cambia de golpe y al cerrar no hay fundido.
+- Movimiento: al abrir, fundido de `opacity` en `motion/duration/base` (`@starting-style`); el alto cambia de golpe y al cerrar no hay fundido. Excepción: con `animateHeight` (solo faq-item) el panel anima el alto al abrir y al cerrar (2026-10-15 · Contacto: animaciones).
 
 ### Finales de línea (LF)
 
@@ -828,3 +828,16 @@ Pantalla «Descargas · propuesta final (desktop y mobile)» (`2575:22875`: Desk
 - La sección de descripción (`product_story_text`) pasa a ser la foto de ambiente 6 a todo el ancho con el texto encima: título (primera línea) a la izquierda; texto, lista y «Ver colección …» a la derecha, en `role/body-xl`. Es Dark local (texto y subrayado claros, sin depender de Iluminar). Se quita de esta sección el bloque «Otras familias» (en Figma está oculto): esas tarjetas siguen solo en «Explora la colección».
 - **Foto fija (parallax):** la foto queda quieta y la página pasa por encima. Se resuelve con la imagen en `position: fixed` dentro de un recuadro con `clip-path` (funciona también en iOS, donde `background-attachment: fixed` no). Con `prefers-reduced-motion: reduce` la foto se mueve con la página. Riesgo: si Webflow envuelve la ficha en un contenedor con `transform`, el efecto se pierde (la sección se ve igual, sin movimiento).
 - **TODO (diseño):** el alto de 971 y los márgenes de 150 / 113 de Final no tienen token; se usan 100svh y `space/section/lg`. Sin scrim sobre la foto, como en Figma: si la foto es clara, el texto puede no leerse.
+
+## 2026-10-15 · Contacto: animaciones
+
+Búsqueda con el skill find-animation-opportunities (criterio de Emil Kowalski: animar poco y solo con un para qué). Se probaron cuatro en la rama `feat/contacto-animaciones` y se aprobaron:
+
+- **faq-item:** la respuesta anima el alto (`grid-template-rows: 0fr → 1fr`, `motion/duration/expand`) y la opacidad (`motion/duration/base`) al abrir y al cerrar; el padding inferior de la pregunta acompaña. Disclosure suma la opción `animateHeight`: el panel se oculta con `data-open` y `visibility` en vez de `hidden`, y su único hijo es el que se recorta (sin padding, si no el panel cerrado no mide 0). Solo faq-item la usa; accordion-item, filter-row y catalog-nav-group siguen igual.
+- **form-message:** al aparecer, el texto funde y sube `space/gap/sm` (`motion/duration/slow`). Va en el elemento interno: Chrome no aplica `@starting-style` al `:host`.
+- **input, error:** el mensaje crece (`motion/duration/base`) y funde (`motion/duration/fade`); los campos de abajo se deslizan en vez de saltar. El gap de `.input` va dentro del alto animado (margen negativo + padding).
+- **input, menú de Select:** crece desde el campo (escala 0.97 → 1, `motion/duration/base`) y funde (`motion/duration/fade`). Al cerrar, sin animación. TODO: la escala no tiene token.
+- **Tokens nuevos** (Figma, 2 · Semantic · Motion): `motion/easing/out` (`cubic-bezier(0.23, 1, 0.32, 1)`, para entradas), `motion/duration/expand` (250 ms, alto de desplegables; 0 con reduced motion) y `motion/duration/fade` (150 ms; no cambia con reduced motion). Los valores de la prueba se redondearon a los tokens que ya había: 180 y 200 → `base`, 300 → `slow`, los fundidos de reduced motion (120–200) → `fade`.
+- **Reduced motion:** cambia el criterio. Antes todo pasaba a 0; ahora se quitan desplazamientos, escalas y cambios de alto, pero quedan los fundidos (`fade`).
+- **DESIGN.md §6** (repo y copia en Figma): los tres tokens, el criterio de reduced motion y la excepción del alto (solo faq-item y el error de input). **Figma:** descripciones de faq-item, input y form-message con su movimiento.
+- **Descartadas:** escala al apretar botones y chips (ya tienen Pressed de color), scroll suave de «Escribinos» (más de 300 ms y pide estilar `html`), fundido del hero (demora la primera impresión), archivo adjunto de file-upload (la caja ya cambia de borde) y entrada escalonada del formulario.

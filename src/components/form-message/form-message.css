@@ -5,6 +5,30 @@
   display: block;
 }
 
+/* Al aparecer, el texto funde y sube space/gap/sm (motion/duration/slow,
+   motion/easing/out). Va en .message y no en :host: Chrome no aplica
+   @starting-style al :host. Al ocultarse, sin animación. Con reduced
+   motion, solo el fundido (motion/duration/fade). */
+.message {
+  transition:
+    opacity var(--arq-motion-duration-slow) var(--arq-motion-easing-out),
+    transform var(--arq-motion-duration-slow) var(--arq-motion-easing-out),
+    color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);
+}
+
+@starting-style {
+  .message {
+    opacity: 0;
+    transform: translateY(var(--arq-space-gap-sm));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .message {
+    transition: opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out);
+  }
+}
+
 /* En Figma el texto es nowrap; en código se parte en líneas (mensajes largos). */
 .message {
   margin: 0;

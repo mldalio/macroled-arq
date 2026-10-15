@@ -374,6 +374,8 @@ Uso: preguntas frecuentes (Home y Contacto): pregunta y respuesta en texto. No c
 
 Pregunta frecuente desplegable. Open=False (icon/plus) / Open=True (icon/minus + respuesta). State: Default, Hover (surface/faint), Focus (anillo color/border/focus). Pregunta en role/heading-3-light, respuesta role/body color/text/secondary, línea superior border/default en color/border/default. Ícono icon/plus / icon/minus de icon/md. En código: <details>/<summary> o button con aria-expanded.
 
+Movimiento: al abrir y al cerrar, la respuesta anima el alto (motion/duration/expand) y la opacidad (motion/duration/base) con motion/easing/out. Con reduced motion, el alto cambia de golpe y queda el fundido (motion/duration/fade).
+
 ## feature-block
 
 - Figma: [1036-2535](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1036-2535)
@@ -439,6 +441,8 @@ Link del footer. Estados: Default, Hover, Pressed y Focus. Propiedades: Label, S
 
 Mensaje de resultado debajo del botón de envío. Tone=Success (color/text/success) / Error (color/text/error) y role/body (sin ícono: no hay icon/check ni icon/alert en la librería). En código: role="status" (éxito) o role="alert" (error). Contacto: después de enviar solo se muestra el mensaje de confirmación.
 
+Movimiento: al aparecer, el mensaje funde y sube space/gap/sm (motion/duration/slow, motion/easing/out); al ocultarse, sin animación. Con reduced motion, solo el fundido (motion/duration/fade).
+
 ## form-section-header
 
 - Figma: [1303-4382](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1303-4382)
@@ -477,6 +481,8 @@ State=Disabled: ícono en color/icon/disabled, sin interacción (atributo disabl
 Campo de formulario: label role/body-regular en color/text/primary y caja de 40 con borde border/default en color/border/default y fondo color/surface/default. Type: Text, Select (flecha; en Focus la lista está abierta) y Textarea. State: Empty (placeholder), Filled, Focus (anillo separado de border/strong en color/border/focus), Error (borde color/border/error y mensaje) y Disabled. Props: Label, Show label (false para campos sin etiqueta, como el email del Home), Helper y Show helper. En Error el mensaje siempre se ve. Sobre fondos oscuros: modo Dark.
 
 Textarea: 4 filas visibles (campo de 97: 4 × 20 + padding 16 + línea 1); solo se agranda hacia abajo (resize: vertical).
+
+Movimiento (motion/easing/out): el menú de Type=Select crece desde el campo (escala 0.97 → 1, motion/duration/base) y funde (motion/duration/fade); al cerrar, sin animación. El mensaje de Error crece (alto en motion/duration/base) y funde (motion/duration/fade): los campos de abajo se deslizan. Con reduced motion, solo los fundidos.
 
 ## line-card
 

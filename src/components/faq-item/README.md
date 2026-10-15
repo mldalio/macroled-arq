@@ -61,6 +61,11 @@ Los ítems se apilan uno debajo del otro, a ancho completo de la columna. Cada u
 | Gap pregunta–respuesta | `space/gap/sm-md` |
 | Hover | `color/surface/faint` |
 | Foco | `border/strong` en `color/border/focus` |
+| Abrir y cerrar | alto `motion/duration/expand` · opacidad `motion/duration/base` · `motion/easing/out` (reduced motion: solo `motion/duration/fade`) |
+
+## Movimiento
+
+La respuesta anima el alto al abrir y al cerrar (Disclosure `animateHeight`, `grid-template-rows: 0fr → 1fr`), y el padding inferior de la pregunta acompaña. Cerrada queda con `visibility: hidden`: el link de la respuesta no recibe foco. Es el único desplegable con alto animado (DESIGN.md §6 · Movimiento).
 
 ## Pendientes
 

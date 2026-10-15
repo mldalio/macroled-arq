@@ -13,7 +13,10 @@
         "$description": "Hover, toggle, foco. En ms. Con prefers-reduced-motion: 0.",
         "$extensions": {
           "com.figma": {
-            "scopes": []
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-motion-duration-fast)"
+            }
           }
         }
       },
@@ -23,17 +26,23 @@
         "$description": "Desplegables (disclosure) y menús. En ms. Con prefers-reduced-motion: 0.",
         "$extensions": {
           "com.figma": {
-            "scopes": []
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-motion-duration-base)"
+            }
           }
         }
       },
       "slow": {
         "$type": "number",
         "$value": 320,
-        "$description": "Fundido de imágenes de product-card. En ms. Con prefers-reduced-motion: 0.",
+        "$description": "Fundido de imágenes de product-card y mensaje de form-message al aparecer. En ms. Con prefers-reduced-motion: 0.",
         "$extensions": {
           "com.figma": {
-            "scopes": []
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-motion-duration-slow)"
+            }
           }
         }
       },
@@ -43,7 +52,36 @@
         "$description": "Tiempo visible de una confirmación (Copiado del sku). En ms. No cambia con prefers-reduced-motion.",
         "$extensions": {
           "com.figma": {
-            "scopes": []
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-motion-duration-feedback)"
+            }
+          }
+        }
+      },
+      "expand": {
+        "$type": "number",
+        "$value": 250,
+        "$description": "Alto de un desplegable que se abre o se cierra (faq-item). En ms. Con prefers-reduced-motion: 0.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-motion-duration-expand)"
+            }
+          }
+        }
+      },
+      "fade": {
+        "$type": "number",
+        "$value": 150,
+        "$description": "Fundido corto de algo que aparece (menú de input Select, error de input). En ms. No cambia con prefers-reduced-motion: es el fundido que queda.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-motion-duration-fade)"
+            }
           }
         }
       }
@@ -52,10 +90,26 @@
       "standard": {
         "$type": "string",
         "$value": "cubic-bezier(0.2, 0, 0, 1)",
-        "$description": "Curva para todas las transiciones.",
+        "$description": "Cambios de estado: hover, foco, selección, paneles y fundidos de imagen. Para entradas, motion/easing/out.",
         "$extensions": {
           "com.figma": {
-            "scopes": []
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-motion-easing-standard)"
+            }
+          }
+        }
+      },
+      "out": {
+        "$type": "string",
+        "$value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "$description": "Entradas: algo que aparece o se despliega (arranca rápido y frena suave).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-motion-easing-out)"
+            }
           }
         }
       }
