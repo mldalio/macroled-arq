@@ -39,6 +39,47 @@
   background: var(--arq-color-overlay-scrim);
 }
 
+/* Entrada y salida (como filter-panel): el scrim funde y el panel funde y
+   sube un 2 % (Desktop) o sube desde el borde inferior (Mobile, más abajo).
+   Sale por el mismo camino. Con reduced motion las duraciones valen 0. */
+:host {
+  --panel-slow: calc(var(--arq-motion-duration-slow) * 1.25); /* TODO: token propio, igual que filter-panel y search-sheet */
+}
+
+.dialog::backdrop {
+  opacity: 0;
+  transition: opacity var(--panel-slow) var(--arq-motion-easing-standard);
+}
+
+.dialog.is-open::backdrop {
+  opacity: 1;
+}
+
+/* Mientras abre o cierra, nada recibe clics */
+.dialog:not(.is-open) {
+  pointer-events: none;
+}
+
+/* Mientras el panel entra o sale, el <dialog> no se desplaza: el foco de
+   showModal() lo desplazaba y se peleaba con la transición (el JS pone
+   is-settled al terminar la entrada). */
+.dialog:not(.is-settled) {
+  overflow: clip; /* en los dos ejes: con el otro en auto, clip pasa a hidden y deja desplazar al foco */
+}
+
+.sheet {
+  opacity: 0;
+  transform: translateY(2%);
+  transition-property: opacity, transform;
+  transition-duration: var(--panel-slow);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+.dialog.is-open .sheet {
+  opacity: 1;
+  transform: none;
+}
+
 /* Panel: abajo a la derecha (márgenes auto: si no entra, no se corta arriba).
    Encabezado → opciones: space/gap/2xl; padding space/padding/xl-2xl */
 .sheet {
@@ -159,5 +200,12 @@
     padding: var(--arq-space-padding-lg) var(--arq-layout-gutter) var(--arq-space-padding-xl);
     border-inline: 0;
     border-bottom: 0;
+    /* Hoja: entra y sale por el borde inferior, sin fundido */
+    opacity: 1;
+    transform: translateY(100%);
+  }
+
+  :host([show-product]) .dialog.is-open .sheet {
+    transform: none;
   }
 }
