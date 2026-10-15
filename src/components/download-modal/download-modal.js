@@ -28,6 +28,11 @@
 //   thumb, sku Compact y meta «Negro, 6 W, luz cálida») y los archivos como
 //   download-file-row, a space/gap/xl. En Mobile es una hoja pegada al borde
 //   inferior, a todo el ancho.
+// - Entrada y salida (prueba, rama feat/descargas-animaciones): el scrim funde
+//   y el panel sube desde abajo (Mobile, hoja: translateY(100%); Desktop:
+//   funde y sube un 2 %), y cierra por el mismo camino. Duración como
+//   filter-panel (motion/duration/slow × 1,25), curva motion/easing/standard.
+//   Con reduced motion las duraciones valen 0.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { containScroll } from '../../base/scroll-lock.js';
@@ -69,6 +74,7 @@ class ArqDownloadModal extends ArqElement {
 
   #dialog = null;
   #opener = null;
+  #closing = null;
 
   setup() {
     this.#dialog = this.shadowRoot.querySelector('dialog');
@@ -122,12 +128,50 @@ class ArqDownloadModal extends ArqElement {
       }
     }
     if (!changed.has('open')) return;
-    if (this.open && !this.#dialog.open) this.#dialog.showModal();
-    if (!this.open && this.#dialog.open) {
-      this.#dialog.close();
+    if (this.open) this.#showDialog();
+    else if (this.#dialog.open) this.#closeDialog();
+  }
+
+  // Entrada y salida como filter-panel: is-open dispara la transición (CSS) y
+  // el <dialog> se cierra recién cuando termina, así sale por donde entró.
+  // Mientras el panel entra, el <dialog> no se desplaza (overflow: clip hasta
+  // is-settled): showModal() enfoca el primer control, que todavía está fuera
+  // de la pantalla, y el navegador desplazaba el <dialog> para mostrarlo; el
+  // desplazamiento y la transición se peleaban (en Mobile la hoja subía y
+  // bajaba). Al terminar la entrada vuelve el scroll, por si el panel no entra.
+  #showDialog() {
+    const dialog = this.#dialog;
+    const sheet = this.shadowRoot.querySelector('.sheet');
+    clearTimeout(this.#closing);
+    this.#closing = null;
+    if (!dialog.open) {
+      dialog.classList.remove('is-settled');
+      dialog.showModal();
+      dialog.scrollTop = 0;
+      void dialog.offsetHeight; // fija el estado inicial antes de is-open
+    }
+    dialog.classList.add('is-open');
+    const settle = (event) => {
+      if (event && (event.target !== sheet || event.propertyName !== 'transform')) return;
+      sheet.removeEventListener('transitionend', settle);
+      if (dialog.classList.contains('is-open')) dialog.classList.add('is-settled');
+    };
+    if (!parseFloat(getComputedStyle(sheet).transitionDuration)) settle();
+    else sheet.addEventListener('transitionend', settle);
+  }
+
+  #closeDialog() {
+    const dialog = this.#dialog;
+    if (this.#closing) return;
+    dialog.classList.remove('is-open', 'is-settled');
+    const { transitionDuration } = getComputedStyle(this.shadowRoot.querySelector('.sheet'));
+    const ms = Math.max(0, ...transitionDuration.split(',').map((value) => (parseFloat(value) || 0) * (value.trim().endsWith('ms') ? 1 : 1000)));
+    this.#closing = setTimeout(() => {
+      this.#closing = null;
+      dialog.close();
       this.#opener?.focus?.();
       this.#opener = null;
-    }
+    }, ms);
   }
 
   /** Abre el modal. El foco vuelve a `opener` (o al elemento con foco) al cerrar. */

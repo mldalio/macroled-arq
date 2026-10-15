@@ -27,10 +27,12 @@
 //   cualquiera de los valores elegidos; entre filtros, todos
 //   (src/data/variants.js). Las opciones que no darían filas van
 //   deshabilitadas.
-// - Barra: Filtros con la cantidad («4 productos»: cada SKU cuenta como producto, como pidió diseño el
-//   2026-10-15; cargando, «Buscando…») a la
-//   izquierda y el buscador a la derecha. Mobile: el buscador arriba, a todo
-//   el ancho, y Filtros con la cantidad debajo.
+// - Barra: el buscador a la izquierda y Filtros a la derecha, del lado donde
+//   se abre filter-panel. Debajo del buscador, la cantidad («4 productos»:
+//   cada SKU cuenta como producto, como pidió diseño el 2026-10-15; cargando,
+//   «Buscando…») seguida de los chips y «Limpiar filtros». Mobile: el
+//   buscador arriba, a todo el ancho; Filtros con la cantidad debajo, y lo
+//   aplicado abajo de todo.
 // - Desktop: <table> real con miniatura, nombre + sku Compact, columnas de
 //   datos y la descarga (icon-button Large Outline, como la ficha). Miniatura, producto y
 //   descarga quedan fijas al desplazar en horizontal.
@@ -98,13 +100,9 @@ class ArqDownloadsTable extends ArqElement {
   };
   static template =
     `<div class="controls">` +
-    `<div class="toolbar">` +
-    `<div class="filters-group">` +
+    `<arq-search-field class="search" placeholder="${TEXT.search}" label="${TEXT.searchLabel}"></arq-search-field>` +
     `<arq-button class="toggle-filters" show-icon icon="filter">${TEXT.filters}</arq-button>` +
     `<span class="total role-body" aria-hidden="true"></span>` +
-    `</div>` +
-    `<arq-search-field class="search" placeholder="${TEXT.search}" label="${TEXT.searchLabel}"></arq-search-field>` +
-    `</div>` +
     `<div class="applied" hidden>` +
     `<div class="chips" role="list" aria-label="Filtros aplicados"></div>` +
     `<arq-button class="clear" type="underline" show-underline>${TEXT.clear}</arq-button>` +
@@ -123,6 +121,7 @@ class ArqDownloadsTable extends ArqElement {
   #data = { columns: [], filters: [], rows: [] };
   #values = {}; // filtro → [valores]
   #query = '';
+  #revealed = false; // ya se hizo el fundido de la primera carga
 
   get data() {
     return this.#data;
@@ -311,12 +310,43 @@ class ArqDownloadsTable extends ArqElement {
     // Cantidad · cargando · vacío
     root.querySelector('.total').textContent = this.loading ? TEXT.loading : TEXT.count(visible.length);
     const empty = !this.loading && !visible.length && this.#data.rows.length > 0;
+    // Primera carga: la tabla funde al reemplazar las filas de carga. Solo una
+    // vez: al buscar o filtrar las filas cambian sin fundido.
+    if (!this.loading && !this.#revealed && !root.querySelector('.skeleton').hidden) this.#reveal();
     root.querySelector('.skeleton').hidden = !this.loading;
     if (this.loading) this.#renderSkeleton();
     root.querySelector('.scroll').hidden = empty || this.loading;
     root.querySelector('.cards').hidden = empty || this.loading;
     root.querySelector('.empty').hidden = !empty;
     if (announce) root.querySelector('.count').textContent = TEXT.count(visible.length);
+  }
+
+  // Fundido de la primera carga (prueba, rama feat/descargas-animaciones): la
+  // clase reveal habilita el @starting-style del CSS y se quita al terminar el
+  // fundido, así no se repite cuando la tabla vuelve a aparecer (vacío →
+  // filas). Se espera el transitionend y no un temporizador: armar cientos de
+  // filas demora el primer cuadro y el temporizador cortaría el fundido. Con
+  // reduced motion (duración 0) no hay transición: se quita en el cuadro
+  // siguiente.
+  #reveal() {
+    this.#revealed = true;
+    const targets = [this.shadowRoot.querySelector('.scroll'), this.shadowRoot.querySelector('.cards')];
+    const done = () => {
+      for (const target of targets) {
+        target.classList.remove('reveal');
+        target.removeEventListener('transitionend', end);
+        target.removeEventListener('transitioncancel', end);
+      }
+    };
+    const end = (event) => {
+      if (event.target === event.currentTarget && event.propertyName === 'opacity') done();
+    };
+    for (const target of targets) {
+      target.classList.add('reveal');
+      target.addEventListener('transitionend', end);
+      target.addEventListener('transitioncancel', end);
+    }
+    if (!parseFloat(getComputedStyle(targets[0]).transitionDuration)) requestAnimationFrame(done);
   }
 
   // Chips de lo aplicado, en el orden de los filtros y de sus opciones. Se

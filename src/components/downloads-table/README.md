@@ -32,7 +32,7 @@ Los datos los arma `getDownloadsTable()` (`src/data/catalog.js`).
 
 ## Comportamiento
 
-- **Barra:** Filtros (button Filled, «Filtros (N)» con N = valores elegidos) con la cantidad al lado («4 productos», `role/body` en `color/text/secondary`) a la izquierda y el buscador a la derecha. En Mobile, el buscador arriba a todo el ancho y Filtros con la cantidad debajo.
+- **Barra:** el buscador a la izquierda y Filtros (button Filled, «Filtros (N)» con N = valores elegidos) a la derecha, del lado donde se abre filter-panel. Debajo del buscador, la cantidad («4 productos», `role/body` en `color/text/secondary`) seguida de los chips aplicados y «Limpiar filtros». En Mobile, el buscador arriba a todo el ancho, Filtros con la cantidad debajo y lo aplicado abajo de todo.
 - **Buscador:** filtra mientras se escribe por SKU, nombre del producto y de la colección, sin tildes ni mayúsculas (`searchVariants`).
 - **Filtros:** el botón abre filter-panel (`unit="productos"`): panel lateral derecho con scrim en Desktop, pantalla completa en Mobile. Una filter-row de checkbox por filtro; «Ver N productos» aplica y cierra, cerrar descarta.
 - **Selección múltiple:** dentro de un filtro, una fila cumple si tiene cualquiera de los valores; entre filtros, todos (`src/data/variants.js`). Las opciones son las de todo el catálogo; las que no darían filas con la búsqueda y los demás filtros van deshabilitadas.
@@ -46,7 +46,7 @@ Los datos los arma `getDownloadsTable()` (`src/data/catalog.js`).
 
 | Parte | Token |
 | --- | --- |
-| Barra | padding vertical `space/padding/md`; Filtros → cantidad `space/gap/lg` |
+| Barra | padding vertical `space/padding/md`; columnas `space/gap/lg` y filas `space/gap/md` |
 | Aplicados | chips a `space/gap/sm`, «Limpiar filtros» a `space/gap/lg`, padding inferior `space/padding/md` |
 | Filas | padding vertical `space/padding/sm`, línea `color/border/subtle`, Hover `color/surface/faint` |
 | Entre columnas | `space/gap/lg` entre columnas de datos (en la propuesta, `space/gap/sm`: quedaban pegadas) |
