@@ -706,3 +706,9 @@ El sheet se abre y se cierra con una transición suave (referencia: occhio.com),
 - **Tiempos:** se usan los tokens de movimiento (fast 120, slow 320 ms, easing standard) y `--sheet-slow` (slow × 1.25 = 400 ms, la del panel y los movimientos largos) en lugar de los valores de la referencia (400/200/375/500/250 ms). Tras probarla se alargó un poco y se unió el movimiento del contenido con el del panel, para que no quede un movimiento suelto al final. TODO: si hace falta clavar esos tiempos, proponer tokens de movimiento nuevos.
 - **Excepción a DESIGN.md §6:** la persiana anima `grid-template-rows` (alto), que §6 prohíbe; se hizo a pedido. Revisar si se adopta o se cambia a transform.
 - Cierre: `close()` espera la transición (`motion/duration/slow`; 0 con reduced motion) y recién ahí cierra el diálogo. Los resultados no se redibujan mientras cierra.
+
+## 2026-10-15 · Iluminar no se recuerda
+
+- **Antes:** el toggle de Productos y Colecciones guardaba la preferencia en `localStorage` (`arq:theme`) y la página arrancaba como se había dejado, aun después de visitar otras páginas.
+- **Ahora:** no se guarda nada entre cargas. Recargar Productos, Colecciones o la ficha, o volver a ellas desde otra página, las deja apagadas. Se elimina `arq:theme` y el script en línea del embed de Productos (ya no hace falta).
+- **Única excepción, Productos → ficha:** si el listado está iluminado y se hace clic en un producto, la ficha llega iluminada (navbar, hero y fotos), sin fundido. El traspaso vive en `sessionStorage` (`arq:iluminar-handoff`) 10 segundos y la ficha lo consume una sola vez; cualquier listado que se abre lo borra. Helpers en `src/base/theme.js` (`handOffTheme`, `takeThemeHandoff`).

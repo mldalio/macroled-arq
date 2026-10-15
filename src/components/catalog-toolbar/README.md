@@ -28,7 +28,7 @@ panel.addEventListener('arq:apply', (e) => (toolbar.count = aplicar(e.detail.fil
 
 - **Count** va en un `aria-live="polite"`: se anuncia cuando la página lo cambia al filtrar.
 - **Filtrar:** button Outline con `icon/filter`. Con filtros aplicados muestra la cantidad (Show count) y pasa a `icon/filter-off`; para lectores de pantalla dice "Filtrar, 3 filtros activos" y que abre un diálogo (`aria-haspopup="dialog"`, `aria-controls` al panel). Con `for` abre el panel y el foco vuelve al botón al cerrarlo. Sin `for`, emite `arq:filter-open`.
-- **Iluminar** (decisión 2026-10-02 · catalog-toolbar): pone `data-arq-theme="dark"` en `<html>` (toda la página pasa a Dark y las product-card a sus imágenes encendidas) y guarda la preferencia en `localStorage` (`arq:theme`), así Productos y Colecciones arrancan como se dejó. El toggle sigue a `<html>` si otro lo cambia. La ficha tiene su propio Iluminar (navbar, hero y foto) y no usa esta preferencia.
+- **Iluminar** (decisión 2026-10-02 · catalog-toolbar): pone `data-arq-theme="dark"` en `<html>` (toda la página pasa a Dark y las product-card a sus imágenes encendidas) y no se recuerda: al recargar o volver a la página arranca apagado. Si se entra a un producto con Iluminar encendido, la ficha llega iluminada (`handOffTheme` de `src/base/theme.js`, en `sessionStorage` por 10 s). El toggle sigue a `<html>` si otro lo cambia. La ficha tiene su propio Iluminar (navbar, hero y foto) y no usa esta preferencia.
 - El divider va en la misma fila que el toggle: mide 20 (el alto del toggle), como el set.
 
 ## Tokens

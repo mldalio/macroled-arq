@@ -26,7 +26,8 @@
 //   parámetro). Cambian galería, sku, descripción, acordeón y descargas.
 // - Iluminar: data-arq-theme="dark" en el hero (contenedor interno) y en el
 //   <arq-navbar> de la página; la galería pasa a las fotos encendidas. No se
-//   guarda (la preferencia arq:theme es de los listados).
+//   recuerda: recargar la ficha la deja apagada. Solo llega encendida si se
+//   entró desde un listado iluminado (theme.js, takeThemeHandoff).
 // - STORY (Markdown limitado): el componente arma con el texto, en el DOM de
 //   la página, un <h2> con la primera línea (el título, con o sin «## »), un
 //   <p> por línea y un <ul> con las líneas «-», con createElement y textContent
@@ -37,7 +38,7 @@
 //   TODO (diseño): el PDF no tiene diseño; se genera cuando exista.
 
 import { ArqElement } from '../../base/arq-element.js';
-import { animateThemeChange, refreshTheme } from '../../base/theme.js';
+import { animateThemeChange, refreshTheme, takeThemeHandoff, withoutThemeTransition } from '../../base/theme.js';
 import { getProduct, variantDetails, collectionHref } from '../../data/catalog.js';
 import { attributeInfo } from '../../data/attributes.js';
 import { variantOptions, initialSelection, findVariant, choose } from '../../data/variants.js';
@@ -166,6 +167,11 @@ class ArqFichaProducto extends ArqElement {
     this.#syncInspiration();
 
     root.querySelector('.iluminar').addEventListener('arq:change', (event) => this.#iluminar(event.detail.checked));
+    // Viene de Productos o Colecciones iluminado: la ficha arranca iluminada, sin fundido
+    if (takeThemeHandoff()) {
+      root.querySelector('.iluminar').checked = true;
+      withoutThemeTransition(() => this.#applyDark(true));
+    }
     root.querySelector('.options').addEventListener('arq:change', (event) => {
       const attribute = event.target.closest('[data-attribute]')?.dataset.attribute;
       if (!attribute || !event.detail?.selected) return;
@@ -277,6 +283,10 @@ class ArqFichaProducto extends ArqElement {
 
   #iluminar(dark) {
     animateThemeChange();
+    this.#applyDark(dark);
+  }
+
+  #applyDark(dark) {
     const hero = this.shadowRoot.querySelector('.hero');
     for (const element of [hero, ...document.querySelectorAll('arq-navbar')]) {
       if (dark) element.setAttribute('data-arq-theme', 'dark');

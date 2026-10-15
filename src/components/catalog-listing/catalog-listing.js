@@ -26,6 +26,7 @@
 
 import { ArqElement } from '../../base/arq-element.js';
 import { listProducts, listCollections } from '../../data/catalog.js';
+import { handOffTheme } from '../../base/theme.js';
 import '../catalog-toolbar/catalog-toolbar.js';
 import '../filter-panel/filter-panel.js';
 import '../filter-row/filter-row.js';
@@ -84,6 +85,12 @@ class ArqCatalogListing extends ArqElement {
     // Cambiar de categoría no recarga la página: se actualiza la URL y se
     // vuelve a pedir solo el listado (sin parpadeo, también con Iluminar).
     root.addEventListener('click', this.#onNavClick);
+    // Iluminar solo pasa a la ficha: un listado nuevo empieza sin traspaso, y al
+    // entrar a un producto se avisa si está iluminado (theme.js)
+    handOffTheme(false);
+    root.querySelector('.grid').addEventListener('click', (event) => {
+      if (event.composedPath().some((node) => node.localName === 'a' && node.hasAttribute('href'))) handOffTheme(document.documentElement.getAttribute('data-arq-theme') === 'dark');
+    });
     window.addEventListener('popstate', this.#onPopState);
 
     const panel = root.querySelector('arq-filter-panel');
