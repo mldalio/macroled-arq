@@ -53,6 +53,7 @@ Los datos los arma `getDownloadsTable()` (`src/data/catalog.js`).
 | Desplegable | `color/surface/faint`, línea arriba y abajo `border/default` en `color/border/subtle`, padding `space/padding/xl`, gap `space/gap/lg`; columnas de al menos `layout/select-menu-filter` |
 | Aplicados | chips a `space/gap/sm`, «Limpiar filtros» a `space/gap/lg`, padding inferior `space/padding/md` |
 | Filas | padding vertical `space/padding/sm`, línea `color/border/subtle`, Hover `color/surface/faint` |
+| Entre columnas | `space/gap/lg` entre columnas de datos (en la propuesta, `space/gap/sm`: quedaban pegadas); el nombre del producto se parte en líneas y su columna mide lo que el SKU |
 | Tarjeta | padding vertical `space/padding/lg`, gap `space/gap/md`, datos `role/body-compact-regular` + `role/body-medium` a `space/gap/xs` |
 | Vacío | `space/section/sm` arriba, `space/section/md` abajo, gap `space/gap/sm-md` |
 

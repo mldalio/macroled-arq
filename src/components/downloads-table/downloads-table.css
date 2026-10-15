@@ -109,11 +109,12 @@
 }
 
 /* Celdas: línea inferior border/default en color/border/subtle; entre
-   columnas space/gap/sm. Las fijas miden su contenido y el ancho que sobra se
-   reparte entre las de datos. */
+   columnas de datos, al menos space/gap/lg (en la propuesta, columnas fijas de
+   96 a space/gap/sm: con valores largos quedaban pegadas). Las fijas miden su
+   contenido y el ancho que sobra se reparte entre las de datos. */
 th,
 td {
-  padding: 0 var(--arq-space-gap-sm) 0 0;
+  padding: 0 var(--arq-space-gap-lg) 0 0;
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
   background: var(--arq-color-surface-default);
   text-align: start;
@@ -191,6 +192,17 @@ tbody td {
 
 .name {
   color: var(--arq-color-text-primary);
+}
+
+/* Tabla: el nombre se parte en líneas y la columna mide lo que el SKU, así
+   queda lugar para las columnas de datos */
+.sku-col .product {
+  width: min-content;
+}
+
+.sku-col .name {
+  min-width: 100%;
+  white-space: normal;
 }
 
 /* Fija de fin: Descargas, centrada */
