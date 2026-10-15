@@ -28,4 +28,4 @@
 
 ## Type (solo de código)
 
-`type="simple"` (lo usa el [search-sheet](../search-sheet/README.md)): sin la lupa y con la flecha pegada al texto, no al extremo derecho; hover sin fondo y con el texto en `color/text/primary`. Por defecto `default`. No está en Figma (TODO).
+`type="simple"` (lo usa el [search-sheet](../search-sheet/README.md)): sin la lupa y con la flecha pegada al texto (gap `space/gap/sm`), no al extremo derecho; hover sin fondo y con el texto en `color/text/primary`. Por defecto `default`. En Figma: set `search-see-all-simple`.

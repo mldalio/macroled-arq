@@ -2,14 +2,14 @@
 
 Búsqueda del sitio como **top sheet**: un panel que baja desde arriba, a todo el ancho, con scrim. Barra (logo + cerrar), search-field `type="line"` y el contenido según los datos. Es la búsqueda del navbar en **Desktop, Tablet y Mobile**.
 
-> **Componente de prueba: no existe en Figma.** Ni el sheet, ni sus variantes (`search-field type="line"`, `search-result type="simple"`, `search-collection`), ni el `search` del navbar. Si se adopta, diseñarlo primero en Figma (TODO).
+> **Componente de prueba, documentado en Figma desde el código (2026-10-15).** Set `search-sheet` (`2549:8722`) y ficha `doc/search-sheet`, en Componentes › 2 · Navegación › «Búsqueda · top sheet», con sus piezas como sets aparte: `search-field-line` (`type="line"`), `search-result-simple` (`type="simple"`) y `search-collection`. Falta la revisión de diseño (TODO).
 
 ```html
 <arq-navbar>…</arq-navbar>   <!-- search="sheet" es el valor por defecto: el navbar lo arma y lo alimenta -->
 ```
 
 ```js
-sheet.recommended = [{ name, meta, href, image, imageHover, imageLit, imageHoverLit }];
+sheet.recommended = [{ name, href, image }];
 sheet.results = { query: 'kanu', total: 5, href: '/arq/productos?q=kanu', items: [{ kind: 'product' | 'collection', name, href, image }] };
 sheet.results = null;      // campo vacío: vuelven los recomendados
 sheet.show(botonLupa);     // el foco vuelve a botonLupa al cerrar
@@ -19,8 +19,8 @@ sheet.show(botonLupa);     // el foco vuelve a botonLupa al cerrar
 
 | Estado | Cuándo | Contenido |
 | --- | --- | --- |
-| Recomendados | `results` es null | Título, product-card Small en una fila con scroll, button Underline «Ver todos los productos» |
-| Resultados | `results.items` con coincidencias | **Productos** ([search-result](../search-result/README.md) `type="simple"`: miniatura de 100, nombre en gris con lo que coincide en negro; 24 px entre filas) a la izquierda y, discretas, **Colecciones** ([search-collection](../search-collection/README.md): miniatura chica y nombre) a la derecha en Desktop; más search-see-all |
+| Recomendados | `results` es null | Título, [search-card](../search-card/README.md) (imagen cuadrada y nombre, sin tipo de producto) en una fila con scroll, button Underline «Ver todos los productos» |
+| Resultados | `results.items` con coincidencias | **Productos** ([search-result](../search-result/README.md) `type="simple"`: miniatura de 100, nombre en gris con lo que coincide en negro; 24 px entre filas) a la izquierda y, discretas, **Colecciones** ([search-collection](../search-collection/README.md): miniatura chica y nombre) a la derecha en Desktop; más search-see-all `type="simple"` al final: en Desktop debajo de Productos; en Tablet y Mobile al pie, después de Colecciones |
 | Sin resultados | `results.items` vacío | `search-dropdown state="no-results"` |
 
 ## Props
@@ -57,7 +57,7 @@ sheet.show(botonLupa);     // el foco vuelve a botonLupa al cerrar
 | Movimiento | `motion/duration/fast` (120) · `base` (200) · `slow` (320) con `motion/easing/standard`; con `prefers-reduced-motion` valen 0 |
 | Barra | alto `space/gap/md` × 2 + `icon/xl` (igual al navbar), margen `--page-gutter`; cruz: icon-button `size="large" background="none"` |
 | Campo | padding superior `space/gap/md` (1rem) |
-| Contenido | padding `space/gap/xl` arriba, `space/section/2xs` abajo, gap `space/gap/lg`; tarjetas con gap `space/gap/md` |
+| Contenido | padding `space/gap/xl` arriba, `space/section/2xs` abajo, gap `space/gap/lg`; tarjetas con gap `space/gap/md`; link del pie «Ver todos los productos» con padding inferior `space/gap/lg` |
 | Título | `role/label`, `color/text/tertiary` |
 | Resultados | gap entre filas de productos `space/gap/lg` (24); columna de colecciones `layout/search-field`; gap entre grupos `space/section/2xs` |
 

@@ -74,8 +74,9 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [search-dropdown](#search-dropdown) | `<arq-search-dropdown>` | En código ([README](../src/components/search-dropdown/README.md)) |
 | ✅ [search-field](#search-field) | `<arq-search-field>` | En código ([README](../src/components/search-field/README.md)) |
 | ✅ [search-result](#search-result) | `<arq-search-result>` | En código ([README](../src/components/search-result/README.md)) |
-| 🧪 [search-collection](#search-collection) | `<arq-search-collection>` | Prueba, sin set en Figma ([README](../src/components/search-collection/README.md)) |
-| 🧪 [search-sheet](#search-sheet) | `<arq-search-sheet>` | Prueba, sin set en Figma ([README](../src/components/search-sheet/README.md)) |
+| 🧪 [search-card](#search-card) | `<arq-search-card>` | Prueba, documentado en Figma desde el código ([README](../src/components/search-card/README.md)) |
+| 🧪 [search-collection](#search-collection) | `<arq-search-collection>` | Prueba, documentado en Figma desde el código ([README](../src/components/search-collection/README.md)) |
+| 🧪 [search-sheet](#search-sheet) | `<arq-search-sheet>` | Prueba, documentado en Figma desde el código ([README](../src/components/search-sheet/README.md)) |
 | ✅ [search-screen](#search-screen) | `<arq-search-screen>` | En código ([README](../src/components/search-screen/README.md)) |
 | ✅ [search-see-all](#search-see-all) | `<arq-search-see-all>` | En código ([README](../src/components/search-see-all/README.md)) |
 | ✅ [section-header](#section-header) | `<arq-section-header>` | En código ([README](../src/components/section-header/README.md)) |
@@ -612,18 +613,24 @@ Galería de la ficha: imagen principal + fila de gallery-thumb (la primera en Se
 
 Desplegable de resultados en desktop. State: Results · No results. Aparece debajo del campo cuando hay texto escrito, con el mismo ancho que el campo. Muestra hasta 4-5 productos y "Ver todos los resultados". Con el campo vacío no se muestra.
 
+## search-card
+
+- Figma: set `2555:8441` (documentado desde el código, sin revisión de diseño)
+
+Tarjeta de producto recomendado del search-sheet: solo la imagen en `ratio/square` y el nombre en `role/body-regular`. No lleva tipo de producto, acabados ni comparar: no es una product-card. Toda la tarjeta es un link; Hover y Focus: zoom mínimo de la imagen (escala 1.05, recortada por el recuadro); Focus suma el anillo separado.
+
 ## search-collection
 
-- Figma: **no existe** (componente de prueba)
+- Figma: set `2547:8168` (documentado desde el código, sin revisión de diseño)
 
 Resultado de búsqueda de una colección, discreto: miniatura chica (layout/search-thumb) y nombre, con lo que coincide con la búsqueda en color/text/primary y el resto en tertiary. Va a la derecha del search-sheet en Desktop.
 
 ## search-sheet
 
-- Figma: **no existe** (componente de prueba)
+- Figma: set `2549:8722` (página Componentes › 2 · Navegación › Búsqueda · top sheet) y ficha `doc/search-sheet` (`2551:32422`). Documentado a partir del código (2026-10-15): falta la revisión de diseño. Sus piezas están como sets aparte: `search-field-line` (`2547:8166`, = `type="line"`), `search-result-simple` (`2547:8167`, = `type="simple"`) `search-collection` (`2547:8168`), `search-card` (`2555:8441`) y `search-see-all-simple` (`2574:8361`)
 - Código: es la búsqueda del navbar (`search="sheet"`, por defecto); `type="line"` en search-field; demo en Desktop, Tablet y Mobile en demo/index.html
 
-Búsqueda del sitio como top sheet que baja desde arriba con scrim: barra (logo + cerrar), search-field Type=Line y, con el campo vacío, productos recomendados (product-card Small en una fila con scroll) y un button Underline «Ver todos los productos»; al escribir, los productos y colecciones que coinciden. Los resultados van en dos grupos: Productos (search-result Type=Simple: miniatura de 100 y nombre en gris con lo que coincide en negro; hover en negro) y, discretas, Colecciones (search-collection) a la derecha en Desktop. Desktop, Tablet y Mobile (el navbar con search="inline" conserva search-dropdown y search-screen). TODO: diseñarlo en Figma.
+Búsqueda del sitio como top sheet que baja desde arriba con scrim: barra (logo + cerrar), search-field Type=Line y, con el campo vacío, productos recomendados (search-card, imagen cuadrada y nombre, en una fila con scroll) y un button Underline «Ver todos los productos»; al escribir, los productos y colecciones que coinciden. Los resultados van en dos grupos: Productos (search-result Type=Simple: miniatura de 100 y nombre en gris con lo que coincide en negro; hover en negro) y, discretas, Colecciones (search-collection) a la derecha en Desktop. Desktop, Tablet y Mobile (el navbar con search="inline" conserva search-dropdown y search-screen). TODO: revisión de diseño; decidir si las variantes Line y Simple pasan a ser Type de search-field y search-result (hoy son sets aparte en Figma).
 
 ## search-field
 

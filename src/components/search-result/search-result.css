@@ -80,7 +80,7 @@
    layout/gallery-thumb (76). TODO (diseño): token propio para esta miniatura.
    El nombre va en color/text/tertiary; lo que coincide con la búsqueda, en
    color/text/primary con más peso (role/body-medium, que ya viene en la marca).
-   Hover, Focus y Active: todo el nombre en color/text/primary, sin fondo. */
+   Hover, Focus y Active: todo el nombre en color/text/primary y Medium, sin fondo. */
 :host([type='simple']) .result {
   gap: var(--arq-space-gap-lg);
   padding-block: 0;
@@ -127,8 +127,12 @@
   color: var(--arq-color-text-primary);
 }
 
+/* Hover, Active y Focus: todo el nombre en color/text/primary y en Medium
+   (el peso de role/body-medium, que ya trae la marca). Los roles no cambian con
+   el estado, por eso se pone el peso acá, como en mega-link. */
 :host([type='simple']) .result[href]:hover .name,
 :host([type='simple']) .result.active .name,
 :host([type='simple']) .result:focus-visible .name {
   color: var(--arq-color-text-primary);
+  font-weight: var(--arq-font-weight-medium);
 }

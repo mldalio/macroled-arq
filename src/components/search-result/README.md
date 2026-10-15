@@ -36,6 +36,6 @@ Fila de resultado de búsqueda: miniatura, nombre, SKU y flecha. Va dentro de se
 
 `type="simple"`: miniatura grande (`layout/table-thumb`, 100; en Mobile `layout/gallery-thumb`, 76) y nombre en `role/body-regular`, sin SKU, flecha, línea ni fondo en hover (fila de productos del [search-sheet](../search-sheet/README.md)). Sin imagen deja el recuadro gris (`color/surface/subtle`); `default` no muestra miniatura. Por defecto `default`.
 
-`term`: lo que escribió el usuario. El nombre va en `color/text/tertiary` y lo que coincide, en `color/text/primary` con más peso (`role/body-medium`, sin tildes ni mayúsculas; [`src/base/highlight.js`](../../base/highlight.js)). Si nada coincide (por ejemplo, entró por el SKU), todo en tertiary. Hover, Focus y Active ponen todo el nombre en primary, sin cambiar el peso.
+`term`: lo que escribió el usuario. El nombre va en `color/text/tertiary` y lo que coincide, en `color/text/primary` con más peso (`role/body-medium`, sin tildes ni mayúsculas; [`src/base/highlight.js`](../../base/highlight.js)). Si nada coincide (por ejemplo, entró por el SKU), todo en tertiary. Hover, Focus y Active ponen todo el nombre en primary y en Medium (`role/body-medium`).
 
 No están en Figma (TODO; falta además un token propio para la miniatura grande).

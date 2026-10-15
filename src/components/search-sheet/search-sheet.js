@@ -6,13 +6,13 @@
 // del navbar en Desktop, Tablet y Mobile.
 //
 //   <arq-search-sheet></arq-search-sheet>
-//   sheet.recommended = [{ name, meta, href, image, imageHover, imageLit, imageHoverLit }];
+//   sheet.recommended = [{ name, href, image }];
 //   sheet.results = { query, items: [{ kind, name, href, image }], total, href };
 //   sheet.show(opener) · sheet.close()
 //   <arq-search-sheet inline></arq-search-sheet>   <!-- sin modal, para la demo -->
 //
 // - State (no es prop: sale de los datos):
-//   · recommended: campo vacío (results en null). Tarjetas de productos en una
+//   · recommended: campo vacío (results en null). search-card (imagen cuadrada y nombre) en una
 //     fila con scroll + button Underline «Ver todos los productos» (all-href /
 //     all-label).
 //   · results: results.items con coincidencias. Dos grupos: Productos
@@ -51,7 +51,7 @@ import '../search-result/search-result.js';
 import '../search-collection/search-collection.js';
 import '../search-see-all/search-see-all.js';
 import '../search-dropdown/search-dropdown.js';
-import '../product-card/product-card.js';
+import '../search-card/search-card.js';
 import css from './search-sheet.css?inline';
 
 const MOBILE = matchMedia('(max-width: 767px)');
@@ -101,7 +101,7 @@ class ArqSearchSheet extends ArqElement {
     return this.shadowRoot.querySelector('arq-search-field');
   }
 
-  /** Productos recomendados (campo vacío): [{ name, meta, href, image, imageHover, imageLit, imageHoverLit }]. */
+  /** Productos recomendados (campo vacío): [{ name, href, image }]. */
   get recommended() {
     return this.#recommended;
   }
@@ -223,10 +223,10 @@ class ArqSearchSheet extends ArqElement {
     const root = this.shadowRoot;
     const cards = root.querySelector('.cards');
     cards.replaceChildren(
-      ...this.#recommended.map(({ name, meta, href, image, imageHover, imageLit, imageHoverLit }) => {
-        const card = document.createElement('arq-product-card');
-        Object.assign(card, { size: 'small', href, image, imageHover, imageLit, imageHoverLit });
-        card.innerHTML = `<h3 slot="name">${esc(name)}</h3>${meta ? `<span slot="meta">${esc(meta)}</span>` : ''}`;
+      ...this.#recommended.map(({ name, href, image }) => {
+        const card = document.createElement('arq-search-card');
+        Object.assign(card, { href, image });
+        card.textContent = name;
         return card;
       }),
     );
@@ -284,10 +284,12 @@ class ArqSearchSheet extends ArqElement {
     container.classList.toggle('has-both', products.length > 0 && collections.length > 0);
     container.innerHTML = !items.length
       ? `<arq-search-dropdown state="no-results" term="${esc(results.query)}"></arq-search-dropdown>`
-      : (products.length ? `<section class="group"><h3 class="group-title role-label">Productos</h3><div class="list">${products.map(product).join('')}</div>${seeAll}</section>` : '') +
+      : (products.length ? `<section class="group"><h3 class="group-title role-label">Productos</h3><div class="list">${products.map(product).join('')}</div></section>` : '') +
         (collections.length
-          ? `<section class="group"><h3 class="group-title role-label">Colecciones</h3><div class="collections">${collections.map(collection).join('')}</div>${products.length ? '' : seeAll}</section>`
-          : '');
+          ? `<section class="group group-collections"><h3 class="group-title role-label">Colecciones</h3><div class="collections">${collections.map(collection).join('')}</div></section>`
+          : '') +
+        // «Ver todos»: al final de los resultados (en Desktop, debajo de Productos)
+        `<div class="see-all">${seeAll}</div>`;
   }
 }
 
