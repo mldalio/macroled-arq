@@ -841,3 +841,9 @@ Búsqueda con el skill find-animation-opportunities (criterio de Emil Kowalski: 
 - **Reduced motion:** cambia el criterio. Antes todo pasaba a 0; ahora se quitan desplazamientos, escalas y cambios de alto, pero quedan los fundidos (`fade`).
 - **DESIGN.md §6** (repo y copia en Figma): los tres tokens, el criterio de reduced motion y la excepción del alto (solo faq-item y el error de input). **Figma:** descripciones de faq-item, input y form-message con su movimiento.
 - **Descartadas:** escala al apretar botones y chips (ya tienen Pressed de color), scroll suave de «Escribinos» (más de 300 ms y pide estilar `html`), fundido del hero (demora la primera impresión), archivo adjunto de file-upload (la caja ya cambia de borde) y entrada escalonada del formulario.
+
+## 2026-10-15 · Filtros del glosario en panel lateral
+
+- Los filtros del glosario de variantes (variants-table de la ficha) dejan de desplegarse sobre la tabla (filter-bar con un select por filtro) y se abren en el panel lateral derecho, como en Descargas: filter-panel con una filter-row de checkbox por filtro, «Ver N variantes» para aplicar, botón «Filtros (N)», filter-chip de lo aplicado y «Limpiar filtros». Selección múltiple dentro de cada filtro.
+- Se quita la prop `filters` de variants-table. filter-bar queda como componente (demo) pero ya no lo usa ninguna tabla.
+- **TODO (diseño):** el set variants-table de Figma sigue con Filters=On y filter-bar; hay que actualizarlo (y la ficha doc/variants-table).
