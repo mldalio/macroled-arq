@@ -8,7 +8,7 @@
 //
 // Forma del catálogo:
 //   collection: { id, name, intro, description, images: { studio, studioOn, context, contextOn, gallery[], description, inspiration[] } }
-//   group: { id, name, collection, productType, environment[], application, variantAttributes[],
+//   group: { id, name, collection, productType, hasDefault, environment[], application, variantAttributes[],
 //            story, inspiration, video, images: { ambient[], description, inspiration }, specs: { campo: valor },
 //            variants: [{ sku, isDefault, description, attributes: { campo: valor },
 //                         images: { main, studio, studioOn, context, contextOn, gallery[], galleryOn[] },
@@ -87,6 +87,13 @@ function matchingVariant(group, filters, first = group.defaultVariant) {
   const ordered = [first, group.defaultVariant, ...group.variants].filter((v, i, all) => all.indexOf(v) === i);
   return ordered.find((variant) => variantMatches(variant, filters)) ?? null;
 }
+
+// Qué productos se listan (Productos, categorías y navegación): los que tienen SKU
+// predeterminado marcado en la base (is_group_default), una card por grupo. Sin
+// product_type en la categoría, solo Luminarias: las colecciones no son productos
+// y accesorios, lámparas y artefactos se ven en su categoría. La búsqueda (?q=) y
+// las fichas no usan esta regla: encuentran todo.
+const isListed = (group, productType) => group.hasDefault && (productType ? true : group.productType === 'Luminaria');
 
 function inCategory(group, { environment, application, productType, collection } = {}) {
   if (environment && !group.environment.includes(environment)) return false;
@@ -176,6 +183,7 @@ export async function listProducts({ filters, query, ...category } = {}) {
   const found = new Map();
   for (const group of groups) {
     if (!inCategory(group, category)) continue;
+    if (!words.length && !isListed(group, category.productType)) continue;
     const match = words.length ? searchMatch(group, words) : { variant: group.defaultVariant, bySku: false };
     if (match) found.set(group, match);
   }
@@ -549,8 +557,9 @@ export const searchHref = (query) => `/arq/productos?q=${encodeURIComponent(quer
  * Jardín…). Por ahora, la del primer producto de la categoría que tenga foto.
  */
 export async function getNavigation() {
-  const { groups, collections } = await loadCatalog();
-  const count = (filter) => groups.filter((g) => inCategory(g, filter)).length;
+  const { groups: all, collections } = await loadCatalog();
+  const groups = all.filter((g) => g.hasDefault); // los que se listan (isListed)
+  const count = (filter) => groups.filter((g) => inCategory(g, filter) && isListed(g, filter.productType)).length;
   const groupImages = (g) => {
     const images = pick(g.defaultVariant.images);
     return { image: images.context ?? images.studio ?? null, thumb: images.studio ?? null };

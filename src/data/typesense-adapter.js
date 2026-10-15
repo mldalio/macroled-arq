@@ -211,6 +211,9 @@ export function fromDocuments(docs) {
       name: text(first[FIELDS.name]),
       collection: productType === ACCESSORY_TYPE ? null : collectionOf(first[FIELDS.family]),
       productType,
+      // ¿La base marca un SKU predeterminado (is_group_default)? Sin marca, el primero
+      // hace de predeterminado en la ficha, pero el grupo no se lista (catalog.js · isListed).
+      hasDefault: rows.some((doc) => doc[FIELDS.isDefault] === true),
       environment: list(first[FIELDS.environment]),
       application: text(first[FIELDS.application]) || null,
       variantAttributes: variantFields(first[FIELDS.variantAttributes]),

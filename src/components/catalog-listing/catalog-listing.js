@@ -28,6 +28,7 @@
 
 import { ArqElement } from '../../base/arq-element.js';
 import { listProducts, listCollections } from '../../data/catalog.js';
+import { handOffTheme } from '../../base/theme.js';
 import '../catalog-toolbar/catalog-toolbar.js';
 import '../filter-panel/filter-panel.js';
 import '../filter-row/filter-row.js';
@@ -83,6 +84,16 @@ class ArqCatalogListing extends ArqElement {
     this.#syncScrollState();
     window.addEventListener('scroll', this.#onScroll, { passive: true });
     root.querySelector('slot[name="nav"]').addEventListener('slotchange', () => this.#markNav());
+    // Cambiar de categoría no recarga la página: se actualiza la URL y se
+    // vuelve a pedir solo el listado (sin parpadeo, también con Iluminar).
+    root.addEventListener('click', this.#onNavClick);
+    // Iluminar solo pasa a la ficha: un listado nuevo empieza sin traspaso, y al
+    // entrar a un producto se avisa si está iluminado (theme.js)
+    handOffTheme(false);
+    root.querySelector('.grid').addEventListener('click', (event) => {
+      if (event.composedPath().some((node) => node.localName === 'a' && node.hasAttribute('href'))) handOffTheme(document.documentElement.getAttribute('data-arq-theme') === 'dark');
+    });
+    window.addEventListener('popstate', this.#onPopState);
 
     const panel = root.querySelector('arq-filter-panel');
     panel.addEventListener('arq:filters', (event) => this.#count(event.detail.filters));
@@ -117,6 +128,36 @@ class ArqCatalogListing extends ArqElement {
     // para que no tape las últimas cards ni el footer (README de compare-bar).
     new ResizeObserver(() => this.#syncSpace()).observe(bar);
     requestAnimationFrame(() => this.#syncSpace());
+  }
+
+  #onNavClick = (event) => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const item = event.target.closest?.('arq-catalog-nav-item');
+    const href = item?.getAttribute('href');
+    if (!href) return;
+    const url = new URL(href, location.href);
+    // Otra página u otro origen: navegación normal
+    if (url.origin !== location.origin || url.pathname.replace(/\/$/, '') !== location.pathname.replace(/\/$/, '')) return;
+    event.preventDefault();
+    if (url.pathname + url.search !== location.pathname + location.search) history.pushState(null, '', url.pathname + url.search);
+    this.shadowRoot.querySelector('arq-filter-panel').open = false;
+    this.#goTo();
+  };
+
+  #onPopState = () => this.#goTo();
+
+  // Relee la URL (categoría, búsqueda, vista) y recarga el listado.
+  #goTo() {
+    const params = new URLSearchParams(location.search);
+    const unit = params.get('view') === 'colecciones' ? 'colecciones' : 'productos';
+    this.#category = categoryFromUrl();
+    this.#query = params.get('q')?.trim() ?? '';
+    this.#filters = {};
+    this.shadowRoot.querySelector('arq-filter-panel').clear();
+    this.#markNav();
+    if (this.unit !== unit) this.unit = unit; // update() recarga
+    else this.#load();
+    window.scrollTo({ top: 0 });
   }
 
   #syncSpace() {

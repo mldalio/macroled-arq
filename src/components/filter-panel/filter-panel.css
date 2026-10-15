@@ -9,6 +9,13 @@
 
 /* <dialog> sin los estilos del navegador. El contenido va en .sheet: así un
    clic en el <dialog> mismo es un clic en el scrim. */
+/* Misma transición que el top sheet y el mega-menú, pero lateral: el panel se
+   abre desde el borde derecho como una persiana (clip-path) y el contenido
+   funde; el scrim funde con ellos. Con reduced motion las duraciones valen 0. */
+:host {
+  --panel-slow: calc(var(--arq-motion-duration-slow) * 1.25); /* TODO: token propio, igual que search-sheet */
+}
+
 .dialog {
   box-sizing: border-box;
   inset: 0 0 0 auto;
@@ -22,11 +29,37 @@
   border-radius: var(--arq-radius-control);
   background: var(--arq-color-surface-default);
   color: var(--arq-color-text-primary);
-  overflow: hidden;
+  overflow: clip;
+  clip-path: inset(0 0 0 100%);
+  transition: clip-path var(--panel-slow) var(--arq-motion-easing-standard);
+}
+
+.dialog.is-open {
+  clip-path: inset(0);
+}
+
+/* Mientras abre o cierra, nada recibe clics */
+.dialog:not(.is-open) {
+  pointer-events: none;
 }
 
 .dialog::backdrop {
   background: var(--arq-color-overlay-scrim);
+  opacity: 0;
+  transition: opacity var(--panel-slow) var(--arq-motion-easing-standard);
+}
+
+.dialog.is-open::backdrop {
+  opacity: 1;
+}
+
+.sheet {
+  opacity: 0;
+  transition: opacity var(--arq-motion-duration-slow) var(--arq-motion-easing-standard);
+}
+
+.dialog.is-open .sheet {
+  opacity: 1;
 }
 
 /* Header · applied · body (con scroll propio) · footer, gap space/gap/lg,

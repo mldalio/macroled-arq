@@ -2,6 +2,7 @@
 // Descargas).
 //
 //   containScroll(dialog);  // una vez, en setup()
+//   containScroll(header, { when: () => abierto });  // sin <dialog>: solo mientras when() dé true (mega-menu)
 //
 // Con el diálogo abierto, la rueda, el touch y las teclas de scroll no mueven
 // la página: solo lo que se pueda desplazar adentro del diálogo (por ejemplo,
@@ -28,12 +29,12 @@ function canScroll(event, container, dy) {
 const isEditable = (event) =>
   event.composedPath().some((el) => el instanceof Element && (el.matches('input, textarea, select, [contenteditable=""], [contenteditable="true"]') || el.getAttribute('role') === 'combobox'));
 
-/** Frena el scroll de la página mientras `dialog` (un <dialog> modal) está abierto. */
-export function containScroll(dialog) {
+/** Frena el scroll de la página mientras `dialog` (un <dialog> modal, o un contenedor con `when`) está abierto. */
+export function containScroll(dialog, { when = () => true } = {}) {
   dialog.addEventListener(
     'wheel',
     (event) => {
-      if (event.deltaY && !canScroll(event, dialog, event.deltaY)) event.preventDefault();
+      if (when() && event.deltaY && !canScroll(event, dialog, event.deltaY)) event.preventDefault();
     },
     { passive: false },
   );
@@ -43,13 +44,13 @@ export function containScroll(dialog) {
     'touchmove',
     (event) => {
       const dy = startY - event.touches[0].clientY;
-      if (dy && !canScroll(event, dialog, dy)) event.preventDefault();
+      if (when() && dy && !canScroll(event, dialog, dy)) event.preventDefault();
     },
     { passive: false },
   );
   dialog.addEventListener('keydown', (event) => {
     const dy = KEYS[event.key];
-    if (!dy || event.altKey || event.ctrlKey || event.metaKey || isEditable(event)) return;
+    if (!when() || !dy || event.altKey || event.ctrlKey || event.metaKey || isEditable(event)) return;
     // Espacio sobre un botón o un link lo activa: no se toca
     if (event.key === ' ' && event.composedPath().some((el) => el instanceof Element && el.matches('button, a[href], [role="button"]'))) return;
     if (!canScroll(event, dialog, dy)) event.preventDefault();

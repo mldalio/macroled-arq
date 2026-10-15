@@ -39,7 +39,7 @@ class ArqDownloadModal extends ArqElement {
     sku: { type: String }, // SKU de las descargas (sku Compact debajo del título)
   };
   static template =
-    `<dialog class="dialog">` +
+    `<dialog class="dialog" data-arq-theme="light">` +
     `<div class="sheet">` +
     `<div class="header">` +
     `<div class="title-wrap">` +

@@ -19,12 +19,19 @@
   gap: var(--arq-space-gap-sm);
 }
 
-/* Imagen: ratio/portrait (7:10), fallback color/surface/subtle, sin borde
+/* Imagen: ratio/portrait (7:10) o la que pida el contenedor con --card-ratio
+   (variable local; el search-sheet usa ratio/square), fallback color/surface/subtle, sin borde
    (como el set; la ficha dice color/border/subtle). */
 .card-media {
   position: relative;
-  aspect-ratio: 7 / 10;
+  aspect-ratio: var(--card-ratio, 7 / 10);
   background: var(--arq-color-surface-subtle);
+  /* Iluminar: el fondo detrás de la foto cambia con la misma duración que el de
+     la página; si no, pasaba a oscuro en un instante y se veía entre las dos
+     fotos mientras fundían */
+  transition-property: background-color;
+  transition-duration: var(--arq-illumination-bg-duration, var(--arq-motion-duration-fast));
+  transition-timing-function: var(--arq-illumination-bg-easing, var(--arq-motion-easing-standard));
 }
 
 /* El hover de product-card cambia la imagen: sin el borde del patrón común */

@@ -45,7 +45,7 @@ Tarjeta de producto (Productos) o de colección (Colecciones, página de colecci
 
 | Parte | Token |
 | --- | --- |
-| Imagen | `ratio/portrait` (7:10), fondo `color/surface/subtle`, sin borde (como el set; la ficha dice `color/border/subtle`) |
+| Imagen | `ratio/portrait` (7:10; un contenedor puede cambiarla con la variable local `--card-ratio`, como el search-sheet con `ratio/square`), fondo `color/surface/subtle`, sin borde (como el set; la ficha dice `color/border/subtle`) |
 | Gap imagen–info | `space/gap/md` (Small `space/gap/sm`) |
 | Info | padding `space/gap/xs` arriba y `space/gap/sm` abajo, gap `space/gap/xs` |
 | Nombre | `role/heading-3` (Small `role/body-regular`) en `color/text/primary` |

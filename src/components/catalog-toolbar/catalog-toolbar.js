@@ -16,10 +16,10 @@
 // - Filtrar: con for (id de un arq-filter-panel) abre el panel y, cuando el panel
 //   aplica, muestra la cantidad de filtros (Show count) y pasa a icon/filter-off.
 //   Sin for, emite arq:filter-open y la cantidad se pasa en filter-count.
-// - Iluminar (show-iluminar): pone data-arq-theme="dark" en <html> y recuerda la
-//   preferencia en localStorage (arq:theme), así Productos y Colecciones
-//   arrancan como se dejó (decisión 2026-10-02 · catalog-toolbar). El toggle
-//   sigue a <html> si otro lo cambia. La ficha tiene su propio Iluminar.
+// - Iluminar (show-iluminar): pone data-arq-theme="dark" en <html>. No se
+//   recuerda: al recargar o volver a la página arranca apagado. Solo se traspasa
+//   a la ficha (theme.js, handOffTheme). El toggle sigue a <html> si otro lo
+//   cambia. La ficha tiene su propio Iluminar.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { animateThemeChange } from '../../base/theme.js';
@@ -29,21 +29,6 @@ import '../toggle/toggle.js';
 import css from './catalog-toolbar.css?inline';
 
 const UNITS = { productos: ['producto', 'productos'], colecciones: ['colección', 'colecciones'] };
-const THEME_KEY = 'arq:theme';
-
-function readTheme() {
-  try {
-    return localStorage.getItem(THEME_KEY);
-  } catch {
-    return null;
-  }
-}
-
-function writeTheme(value) {
-  try {
-    localStorage.setItem(THEME_KEY, value);
-  } catch {}
-}
 
 class ArqCatalogToolbar extends ArqElement {
   static tag = 'arq-catalog-toolbar';
@@ -80,13 +65,8 @@ class ArqCatalogToolbar extends ArqElement {
     this.#button.addEventListener('click', () => this.#openFilters());
     this.#toggle.addEventListener('arq:change', (event) => {
       event.stopPropagation();
-      this.#setDark(event.detail.checked, true);
+      this.#setDark(event.detail.checked);
     });
-    // Preferencia guardada (solo si el toolbar muestra Iluminar).
-    if (this.showIluminar) {
-      const saved = readTheme();
-      if (saved === 'dark' || saved === 'light') this.#setDark(saved === 'dark', false);
-    }
     // El toggle sigue a <html> (por ejemplo, otro toolbar en la misma página).
     new MutationObserver(() => this.#syncToggle()).observe(document.documentElement, { attributes: true, attributeFilter: ['data-arq-theme'] });
     this.#syncToggle();
@@ -120,12 +100,11 @@ class ArqCatalogToolbar extends ArqElement {
     button.icon = n > 0 ? 'filter-off' : 'filter';
   }
 
-  #setDark(dark, save) {
-    if (save) animateThemeChange();
+  #setDark(dark) {
+    animateThemeChange();
     const html = document.documentElement;
     if (dark) html.setAttribute('data-arq-theme', 'dark');
     else html.removeAttribute('data-arq-theme');
-    if (save) writeTheme(dark ? 'dark' : 'light');
   }
 
   #syncToggle() {

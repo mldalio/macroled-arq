@@ -41,4 +41,4 @@ Interruptor con texto para opciones binarias que se aplican al instante: "Ilumin
 ## Pendientes
 
 - **Movimiento:** el círculo se corre con `transform` y la pista cambia de color en `motion/duration/fast` con `motion/easing/standard`. Con `prefers-reduced-motion: reduce` es instantáneo.
-- `TODO` (catalog-toolbar / ficha) Guardar Iluminar en `localStorage` (`arq:<clave>`) o no: no está definido.
+- Iluminar (catalog-toolbar / ficha) no se guarda: recargar lo apaga. Solo pasa de Productos o Colecciones a la ficha (`docs/decisiones.md`, 2026-10-15 · Iluminar no se recuerda).

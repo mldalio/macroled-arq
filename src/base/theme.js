@@ -85,16 +85,59 @@ export function watchTheme(host, method) {
 // duración), para no quedar claro sobre claro y sin un corte duro. Las variables van en <html> (atraviesan
 // los Shadow DOM) y se quitan al terminar, así hover y foco no se retrasan.
 // Debe coincidir con --arq-illumination-bg-duration (global.css).
-const TEXT_VARS = ['--arq-theme-text-delay', '--arq-theme-text-duration', '--arq-theme-text-easing'];
+const TEXT_VARS = ['--arq-theme-text-delay', '--arq-theme-text-duration', '--arq-theme-text-easing', '--arq-theme-bg-duration', '--arq-theme-bg-easing'];
 let themeTimer = 0;
 
+// Aplicar el tema sin ninguna transición (al llegar a la ficha ya iluminada): por
+// esos cuadros todas las duraciones valen 0, así no se ve el salto de claro a
+// oscuro. Se quitan dos cuadros después, cuando el cambio ya se pintó.
+const INSTANT_VARS = ['--arq-illumination-bg-duration', '--arq-illumination-image-duration', '--arq-theme-bg-duration', '--arq-theme-text-duration', '--arq-theme-text-delay'];
+
+/** Ejecuta `apply` (que cambia data-arq-theme) sin transiciones. */
+export function withoutThemeTransition(apply) {
+  const style = document.documentElement.style;
+  for (const name of INSTANT_VARS) style.setProperty(name, '0s');
+  apply();
+  requestAnimationFrame(() => requestAnimationFrame(() => INSTANT_VARS.forEach((name) => style.removeProperty(name))));
+}
+
+// Iluminar no se recuerda: recargar o volver a una página la deja en su estado
+// normal. La única excepción es Productos → ficha: si el listado está iluminado
+// y se entra a un producto, la ficha llega iluminada. El traspaso vive en
+// sessionStorage unos segundos y la ficha lo consume al cargar (una sola vez);
+// cualquier listado que se abre lo borra.
+const HANDOFF_KEY = 'arq:iluminar-handoff';
+const HANDOFF_MS = 10000;
+
+/** El listado avisa, al hacer clic en un producto, si está iluminado. */
+export function handOffTheme(dark) {
+  try {
+    if (dark) sessionStorage.setItem(HANDOFF_KEY, String(Date.now()));
+    else sessionStorage.removeItem(HANDOFF_KEY);
+  } catch {}
+}
+
+/** La ficha: ¿llegó desde un listado iluminado? Lo consume (queda borrado). */
+export function takeThemeHandoff() {
+  try {
+    const at = Number(sessionStorage.getItem(HANDOFF_KEY));
+    sessionStorage.removeItem(HANDOFF_KEY);
+    return Boolean(at) && Date.now() - at < HANDOFF_MS;
+  } catch {
+    return false;
+  }
+}
+
 /** Llamar justo antes de cambiar data-arq-theme por Iluminar. */
-export function animateThemeChange(bgMs = 2100) {
+export function animateThemeChange(bgMs = 1200) {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const style = document.documentElement.style;
   style.setProperty(TEXT_VARS[0], `${Math.round(bgMs * 0.25)}ms`);
   style.setProperty(TEXT_VARS[1], `${Math.round(bgMs * 0.5)}ms`);
   style.setProperty(TEXT_VARS[2], 'cubic-bezier(0.4, 0, 0.2, 1)');
+  // Fondo del navbar: solo funde lento al iluminar; el resto del tiempo (scroll, cambio de página) usa la duración rápida
+  style.setProperty(TEXT_VARS[3], `${bgMs}ms`);
+  style.setProperty(TEXT_VARS[4], 'cubic-bezier(0.45, 0, 0.2, 1)');
   clearTimeout(themeTimer);
   themeTimer = setTimeout(() => TEXT_VARS.forEach((name) => style.removeProperty(name)), bgMs + 100);
 }

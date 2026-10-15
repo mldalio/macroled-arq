@@ -38,6 +38,7 @@ import '../filter-chip/filter-chip.js';
 import '../filter-row/filter-row.js';
 import '../tab/tab.js';
 import { SingleSelect } from '../../base/single-select.js';
+import { containScroll } from '../../base/scroll-lock.js';
 import css from './filter-panel.css?inline';
 
 const UNITS = { productos: ['producto', 'productos'], colecciones: ['colección', 'colecciones'] };
@@ -78,10 +79,12 @@ class ArqFilterPanel extends ArqElement {
   #snapshot = null;
   #opener = null;
   #applying = false;
+  #closing = null; // timer del cierre animado
 
   setup() {
     const root = this.shadowRoot;
     this.#dialog = root.querySelector('dialog');
+    containScroll(this.#dialog); // la página de atrás no se desplaza con el panel abierto
     root.querySelector('.close').addEventListener('click', () => this.close());
     root.querySelector('.clear').addEventListener('click', () => this.clear());
     root.querySelector('.apply').addEventListener('click', () => this.apply());
@@ -120,7 +123,7 @@ class ArqFilterPanel extends ArqElement {
 
   update(changed) {
     if (changed.has('open')) {
-      if (this.open && !this.#dialog.open) this.#showDialog();
+      if (this.open && (!this.#dialog.open || this.#closing)) this.#showDialog();
       if (!this.open && this.#dialog.open) this.#closeDialog();
     }
     if (changed.has('count') || changed.has('unit')) this.#renderApply();
@@ -179,7 +182,13 @@ class ArqFilterPanel extends ArqElement {
     this.#snapshot = new Map(this.options.map((option) => [option, option.checked]));
     this.#activateTab('features');
     this.#render();
-    this.#dialog.showModal();
+    clearTimeout(this.#closing);
+    this.#closing = null;
+    if (!this.#dialog.open) {
+      this.#dialog.showModal();
+      void this.#dialog.offsetHeight; // fija el estado inicial antes de is-open
+    }
+    this.#dialog.classList.add('is-open');
   }
 
   #activateTab(value) {
@@ -196,9 +205,17 @@ class ArqFilterPanel extends ArqElement {
 
   #closeDialog() {
     if (this.#snapshot) this.close();
-    this.#dialog.close();
-    this.#opener?.focus?.();
-    this.#opener = null;
+    const dialog = this.#dialog;
+    if (this.#closing) return;
+    dialog.classList.remove('is-open');
+    const { transitionDuration } = getComputedStyle(dialog);
+    const ms = Math.max(0, ...transitionDuration.split(',').map((value) => (parseFloat(value) || 0) * (value.trim().endsWith('ms') ? 1 : 1000)));
+    this.#closing = setTimeout(() => {
+      this.#closing = null;
+      dialog.close();
+      this.#opener?.focus?.();
+      this.#opener = null;
+    }, ms);
   }
 
   #activeElement() {

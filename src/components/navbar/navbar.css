@@ -5,6 +5,8 @@
    del hero (TODO diseño: confirmar). z-index sin token: por encima del
    contenido de la página. */
 :host {
+  /* motion/duration/slow × 1.25, igual que search-sheet. TODO: token propio */
+  --mega-slow: calc(var(--arq-motion-duration-slow) * 1.25);
   display: block;
   position: sticky;
   top: 0;
@@ -38,6 +40,23 @@
   position: relative;
 }
 
+/* Scrim del mega-menú: color/overlay/scrim sobre la página, detrás de la barra
+   y del panel (el stacking context es el host). Mismo fundido que el panel. */
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--arq-color-overlay-scrim);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--mega-slow) var(--arq-motion-easing-standard);
+}
+
+.mega-open .scrim {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 /* Barra: alto 56 (no hay token de alto: space/gap/md × 2 + icon/xl, el
    icon-button de 24 con su aire), fondo color/surface/default, padding
    lateral layout/gutter, línea inferior color/border/subtle. El alto no
@@ -56,9 +75,9 @@
   /* color sin transición: lo heredan el logo, los links y los íconos, que
      funden cada uno por su cuenta (si no, la espera se suma y la barra tarda de más). */
   transition-property: background-color, border-color;
-  transition-duration: var(--arq-illumination-bg-duration), var(--arq-theme-text-duration, var(--arq-motion-duration-fast));
+  transition-duration: var(--arq-theme-bg-duration, var(--arq-motion-duration-fast)), var(--arq-theme-text-duration, var(--arq-motion-duration-fast));
   transition-delay: 0s, var(--arq-theme-text-delay, 0s);
-  transition-timing-function: var(--arq-illumination-bg-easing), var(--arq-theme-text-easing, var(--arq-motion-easing-standard));
+  transition-timing-function: var(--arq-theme-bg-easing, var(--arq-motion-easing-standard)), var(--arq-theme-text-easing, var(--arq-motion-easing-standard));
 }
 
 /* Theme=Transparent sobre la foto: color/overlay/translucent + blur/backdrop,
@@ -119,11 +138,49 @@
   display: none;
 }
 
-/* Mega-menu: debajo de la barra, a todo el ancho */
-.mega {
+/* Mega-menu: debajo de la barra, a todo el ancho. Misma transición que el
+   top sheet (search-sheet.css): persiana grid-template-rows 0fr → 1fr y el
+   contenido, quieto, se hace visible con un fundido; la barra pasa a
+   sólida con el mismo tiempo. Sin demoras ni movimientos que sigan después
+   de que la persiana termina. */
+.mega-wrap {
   position: absolute;
   top: 100%;
   inset-inline: 0;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--mega-slow) var(--arq-motion-easing-standard);
+}
+
+.mega-wrap[hidden] {
+  display: none;
+}
+
+.mega-wrap.is-open {
+  grid-template-rows: 1fr;
+}
+
+.mega-drawer {
+  min-height: 0;
+  overflow: clip;
+}
+
+.mega {
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: var(--arq-motion-duration-slow);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+.mega-wrap.is-open .mega {
+  opacity: 1;
+}
+
+/* La barra pasa a sólida con el mismo tiempo del sheet (al abrir y al cerrar) */
+.mega-motion .bar {
+  transition-duration: var(--mega-slow), var(--mega-slow);
+  transition-delay: 0s;
+  transition-timing-function: var(--arq-motion-easing-standard);
 }
 
 /* ── Menú mobile (Mode=Menu y Products): diálogo a pantalla completa ── */
@@ -332,7 +389,8 @@
 
   .right,
   .actions,
-  .mega,
+  .mega-wrap,
+  .scrim,
   .menu {
     display: none;
   }

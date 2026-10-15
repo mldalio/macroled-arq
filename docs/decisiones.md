@@ -529,7 +529,7 @@ Reemplaza a 2026-10-02 · Base de datos (estructura v5) en cómo se identifican 
 ## 2026-10-13 · Iluminar: fondo de página y transición
 
 - **Fondo:** Productos y Colecciones llevan `<main class="arq-page">` en su embed. `.arq-page` (`src/styles/global.css`, parte de `dist/arq.css`) pinta `color/bg/default` y funde con el tema. No se estila `html` ni `body`: el sitio de Webflow no necesita configuración extra. Por qué: lo que queda transparente (page-header) deja ver esa capa, que funde en el mismo cuadro que `catalog-listing` y el navbar; el fondo del lienzo se actualiza uno o dos cuadros después y dejaba una franja.
-- **Duraciones y curvas** (variables `--arq-illumination-*` en `global.css`, provisorias, sin token en Figma): fondo 2100 ms; imagen 1200 ms con curva que termina antes. Con `prefers-reduced-motion` valen 0.
+- **Duraciones y curvas** (variables `--arq-illumination-*` en `global.css`, provisorias, sin token en Figma): fondo 1200 ms e imagen 700 ms (2026-10-14: el fondo era 2100 ms y la imagen 1200 ms; se sentía lento y se bajaron en la misma proporción), con la imagen en una curva que termina antes. Con `prefers-reduced-motion` valen 0.
 - **Texto, íconos y bordes:** no funden a la par del fondo. `animateThemeChange()` (`src/base/theme.js`) pone en `<html>`, solo durante el cambio, la espera (25 %), la duración (50 %) y la curva del texto; hover y foco no se afectan. Si cambia la duración del fondo, se cambia también el valor por defecto de esa función.
 - **Herencia de color:** un elemento que hereda el color de otro no lleva transición propia (logo, íconos SVG, etiqueta del breadcrumb, icon-button); si no, la espera se suma y cambia tarde.
 - **Imágenes:** la card y la galería precargan la versión del otro modo para que el fundido arranque junto con el fondo. TODO (diseño): DESIGN.md §8 pide cargarla al activar Iluminar.
@@ -752,3 +752,18 @@ En Mobile, compare-bar muestra los productos elegidos uno arriba de otro, como l
 - «Borrar todo» sigue arriba, junto al título.
 - **Plegar (Open), en Desktop y Mobile:** como en macroled, el título es un botón con chevron que pliega la lista; plegada quedan el título, «Borrar todo» y «Comparar» (en Desktop, en una sola línea y con el chevron en la punta derecha). Arranca abierta y se vuelve a abrir al agregar un producto. Usa el disclosure base.
 
+## 2026-10-15 · Iluminar no se recuerda
+
+- **Antes:** el toggle de Productos y Colecciones guardaba la preferencia en `localStorage` (`arq:theme`) y la página arrancaba como se había dejado, aun después de visitar otras páginas.
+- **Ahora:** no se guarda nada entre cargas. Recargar Productos, Colecciones o la ficha, o volver a ellas desde otra página, las deja apagadas. Se elimina `arq:theme` y el script en línea del embed de Productos (ya no hace falta).
+- **Única excepción, Productos → ficha:** si el listado está iluminado y se hace clic en un producto, la ficha llega iluminada (navbar, hero y fotos), sin fundido. El traspaso vive en `sessionStorage` (`arq:iluminar-handoff`) 10 segundos y la ficha lo consume una sola vez; cualquier listado que se abre lo borra. Helpers en `src/base/theme.js` (`handOffTheme`, `takeThemeHandoff`).
+
+## 2026-10-15 · Paneles y menús siempre en Light
+
+Con Iluminar (listados y ficha) solo se oscurecen la página, el navbar (barra) y, en la ficha, el hero. Todo lo que se abre encima queda en **Light local**, como filter-panel (2026-10-05):
+
+- **Navbar:** mega-menu (Desktop), menú Mobile (`<dialog class="menu">`), search-sheet y search-screen. Mientras el mega-menú está abierto, la barra también pasa a Light (`data-arq-theme="light"` en el `.navbar` interno), con la misma transición del search-sheet, y detrás va el scrim de `color/overlay/scrim`.
+- **download-modal:** su `<dialog>` lleva `data-arq-theme="light"`.
+- **filter-panel:** sin cambios (ya era Light).
+- **Cómo:** `data-arq-theme="light"` en el `<dialog>` (o en el host del componente), el bloque que `ArqElement` adopta en cada Shadow DOM (`src/styles/light.css`).
+- **Pendiente (docs/):** DESIGN.md §2 · Modo Dark dice que filter-panel es la única excepción de Light local; hay que ampliarlo con esta lista (en una rama `docs/`, junto con su copia en Figma).
