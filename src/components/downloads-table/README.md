@@ -2,10 +2,10 @@
 
 Tabla de la página Descargas: todos los SKU del catálogo con buscador, filtros de selección múltiple, los filtros aplicados como filter-chip y la descarga de cada fila. Es propia de Descargas: la tabla de la ficha sigue siendo [variants-table](../variants-table/README.md).
 
-- Figma: «Descargas · propuesta final (desktop y mobile)» [2575-22875](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2575-22875) (frames «variants-table» de la pantalla; no es un set). Desplegable: Desktop 2571:22259 · Mobile 2580:22444. Panel lateral: 2571:22966 · Mobile 2572:22988. Vacío: 2564:20982 · 2565:21934. Cargando: 2564:21164 · 2565:22101.
+- Figma: «Descargas · propuesta final (desktop y mobile)» [2575-22875](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2575-22875) (frames «variants-table» de la pantalla; no es un set). Panel lateral: 2571:22966 · Mobile 2572:22988 (de las dos propuestas se eligió esta; la desplegable, 2571:22259, quedó en la historia de la rama `feat/descargas-propuesta`). Vacío: 2564:20982 · 2565:21934. Cargando: 2564:21164 · 2565:22101.
 
 ```html
-<arq-downloads-table filters="dropdown" downloads="descargas"></arq-downloads-table>
+<arq-downloads-table downloads="descargas"></arq-downloads-table>
 <arq-download-modal id="descargas" show-product>…</arq-download-modal>
 ```
 
@@ -24,8 +24,6 @@ Los datos los arma `getDownloadsTable()` (`src/data/catalog.js`).
 
 | Figma | Atributo | Prop JS | Valores · por defecto |
 | --- | --- | --- | --- |
-| — (solo de código) | `filters` | `filters` | `dropdown` · `panel`. Por defecto `dropdown`. Las dos propuestas de filtros, para comparar |
-| — | `open` | `open` | booleano. Con `dropdown`, el bloque de filtros desplegado (lo cambia el botón Filtros) |
 | — | `loading` | `loading` | booleano. Filas (Mobile: tarjetas) de carga y «Buscando…» en la cantidad |
 | — | `downloads` | `downloads` | `id` del `arq-download-modal` que abre la descarga de cada fila |
 | — | `label` | `label` | Nombre de la región con scroll. Por defecto «Variantes» |
@@ -36,8 +34,7 @@ Los datos los arma `getDownloadsTable()` (`src/data/catalog.js`).
 
 - **Barra:** Filtros (button Filled, «Filtros (N)» con N = valores elegidos) con la cantidad al lado («4 variantes», `role/body` en `color/text/secondary`) a la izquierda y el buscador a la derecha. En Mobile, el buscador arriba a todo el ancho y Filtros con la cantidad debajo.
 - **Buscador:** filtra mientras se escribe por SKU, nombre del producto y de la colección, sin tildes ni mayúsculas (`searchVariants`).
-- **`filters="dropdown"`:** el botón despliega debajo de la barra un bloque en `color/surface/faint` con un select Filter `multiple` por filtro (abierto, el botón lleva `icon/chevron-up`). El menú queda abierto al marcar; el campo muestra «8 W, 12 W» o «Todas» / «Todos» (según la primera palabra del filtro). En Mobile el bloque va de borde a borde, en dos columnas.
-- **`filters="panel"`:** el botón abre filter-panel (`unit="variantes"`): panel lateral derecho con scrim en Desktop, pantalla completa en Mobile. Una filter-row de checkbox por filtro; «Ver N variantes» aplica y cierra, cerrar descarta.
+- **Filtros:** el botón abre filter-panel (`unit="variantes"`): panel lateral derecho con scrim en Desktop, pantalla completa en Mobile. Una filter-row de checkbox por filtro; «Ver N variantes» aplica y cierra, cerrar descarta.
 - **Selección múltiple:** dentro de un filtro, una fila cumple si tiene cualquiera de los valores; entre filtros, todos (`src/data/variants.js`). Las opciones son las de todo el catálogo; las que no darían filas con la búsqueda y los demás filtros van deshabilitadas.
 - **Aplicados:** un filter-chip por valor y «Limpiar filtros» (button Underline). Quitar un chip pasa el foco al siguiente.
 - **Desktop:** `<table>` real. Miniatura, producto (nombre `role/body-compact-medium` sobre sku Compact) y Descargas quedan fijas al desplazar; hasta 1023 px solo la miniatura. Todo en una línea; si la tabla no entra, una barra de scroll fina (pulgar `color/border/default`) queda pegada al borde inferior de la pantalla mientras la tabla está a la vista, sincronizada con la tabla (la del contenedor quedaría al final de cientos de filas). `TODO` (diseño): DESIGN.md §2 pide la tabla sin barra visible; confirmar la excepción. Encabezado `role/label-lg` en `color/text/tertiary`, valores `role/body-lg-regular`. Descarga: icon-button Large Background=Outline, como el glosario de la ficha (Figma 1218:10705).
@@ -50,7 +47,6 @@ Los datos los arma `getDownloadsTable()` (`src/data/catalog.js`).
 | Parte | Token |
 | --- | --- |
 | Barra | padding vertical `space/padding/md`; Filtros → cantidad `space/gap/lg` |
-| Desplegable | `color/surface/faint`, línea arriba y abajo `border/default` en `color/border/subtle`, padding `space/padding/xl`, gap `space/gap/lg`; columnas de al menos `layout/select-menu-filter` |
 | Aplicados | chips a `space/gap/sm`, «Limpiar filtros» a `space/gap/lg`, padding inferior `space/padding/md` |
 | Filas | padding vertical `space/padding/sm`, línea `color/border/subtle`, Hover `color/surface/faint` |
 | Entre columnas | `space/gap/lg` entre columnas de datos (en la propuesta, `space/gap/sm`: quedaban pegadas) |
@@ -59,7 +55,6 @@ Los datos los arma `getDownloadsTable()` (`src/data/catalog.js`).
 
 ## Pendientes
 
-- `TODO` (token): miniatura de la fila 64 (se usa `layout/search-thumb`, 48) y de la tarjeta 72 (se usa `layout/gallery-thumb`, 76 en Mobile); buscador de 480 (se usa `layout/search-field`, 360); select del desplegable de 224; ayuda del vacío de 560 (se usa `layout/measure-wide`); barras de carga de 12 y 14.
+- `TODO` (token): miniatura de la fila 64 (se usa `layout/search-thumb`, 48) y de la tarjeta 72 (se usa `layout/gallery-thumb`, 76 en Mobile); buscador de 480 (se usa `layout/search-field`, 360); ayuda del vacío de 560 (se usa `layout/measure-wide`); barras de carga de 12 y 14.
 - `TODO` (diseño): qué datos van en la tarjeta Mobile (hoy Potencia, Temp., Ángulo e IP; la propuesta tiene Flujo lum., que ya no es columna).
-- El menú de selección múltiple de la propuesta tiene sombra: no se usa (DESIGN.md: no hay sombras).
 - El encabezado de la tabla usa `role/label-lg`, que va en mayúsculas; en la propuesta se ve en caja normal.

@@ -9,7 +9,7 @@
 // embed imprime los textos por slot; el componente pide las filas a
 // getDownloadsTable() (src/data/catalog.js).
 //
-//   <arq-descargas filters="dropdown" catalog-href="…/catalogo.pdf">
+//   <arq-descargas catalog-href="…/catalogo.pdf">
 //     <h1 slot="title">Descargas</h1>
 //     <p slot="description">…</p>
 //     <img slot="catalog-cover" src="…" alt="">
@@ -20,9 +20,9 @@
 //     <h2 slot="modal-title">Descargas</h2>
 //   </arq-descargas>
 //
-// - filters (solo de código, para comparar las dos propuestas): dropdown
-//   (filtros desplegables debajo de la barra) o panel (panel lateral). Pasa a
-//   downloads-table.
+// - Filtros: panel lateral (filter-panel) de downloads-table; de las dos
+//   propuestas se eligió esta (decisiones.md, 2026-10-15 · Descargas ·
+//   propuesta final).
 // - Catálogo: Desktop, tapa a la izquierda y textos con button Outline;
 //   Mobile, tapa chica, nombre role/body-xl, bajada role/body-compact-regular y
 //   button Underline (2561:20649). El button y los estilos de texto cambian con
@@ -62,7 +62,6 @@ class ArqDescargas extends ArqElement {
   static tag = 'arq-descargas';
   static styles = css;
   static properties = {
-    filters: { type: String, values: ['dropdown', 'panel'], default: 'dropdown' }, // solo de código: cómo se eligen los filtros
     catalogHref: { type: String }, // URL del PDF del catálogo general
   };
   static template =
@@ -109,7 +108,6 @@ class ArqDescargas extends ArqElement {
 
   update(changed) {
     const root = this.shadowRoot;
-    if (changed.has('filters')) root.querySelector('.table').filters = this.filters;
     if (changed.has('catalogHref')) {
       const action = root.querySelector('.catalog-action');
       action.href = this.catalogHref || null;

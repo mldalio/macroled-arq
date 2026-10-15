@@ -5,7 +5,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 - Si este archivo no coincide con Figma, manda Figma y se actualiza este archivo.
 - Al crear o modificar un componente en código, actualizar su **Estado en código** y su marca.
 
-**80 de 83 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
+**81 de 83 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
 
 | Componente | Etiqueta | Estado en código |
 | --- | --- | --- |
@@ -35,7 +35,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [cta-block](#cta-block) | `<arq-cta-block>` | En código ([README](../src/components/cta-block/README.md)) |
 | ✅ [divider](#divider) | `<arq-divider>` | En código ([README](../src/components/divider/README.md)) |
 | ✅ [download-card](#download-card) | `<arq-download-card>` | En código ([README](../src/components/download-card/README.md)) · nuevo (Descargas) |
-| ⬜ [download-file-row](#download-file-row) | `<arq-download-file-row>` | En la rama `feat/descargas-propuesta` ([README](../src/components/download-file-row/README.md)) · Descargas · propuesta final |
+| ✅ [download-file-row](#download-file-row) | `<arq-download-file-row>` | En código ([README](../src/components/download-file-row/README.md)) · Descargas · propuesta final |
 | ✅ [download-item](#download-item) | `<arq-download-item>` | En código ([README](../src/components/download-item/README.md)) |
 | ✅ [download-modal](#download-modal) | `<arq-download-modal>` | En código ([README](../src/components/download-modal/README.md)) |
 | ✅ [family-card](#family-card) | `<arq-family-card>` | En código ([README](../src/components/family-card/README.md)) |
@@ -92,7 +92,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [tab](#tab) | `<arq-tab>` | En código ([README](../src/components/tab/README.md)) |
 | ✅ [toggle](#toggle) | `<arq-toggle>` | En código ([README](../src/components/toggle/README.md)) |
 | ✅ [toggle-switch](#toggle-switch) | — | Dentro de toggle ([README](../src/components/toggle/README.md)) |
-| ✅ [variants-table](#variants-table) | `<arq-variants-table>` | En código ([README](../src/components/variants-table/README.md)) · Ficha v2 y Descargas (buscador a la derecha). En la rama `feat/descargas-propuesta`, Descargas pasa a `<arq-downloads-table>` ([README](../src/components/downloads-table/README.md)), sin set: frames «variants-table» de la propuesta 2575:22875 |
+| ✅ [variants-table](#variants-table) | `<arq-variants-table>` | En código ([README](../src/components/variants-table/README.md)) · Ficha v2 y Descargas (buscador a la derecha). Descargas usa `<arq-downloads-table>` ([README](../src/components/downloads-table/README.md)), sin set: frames «variants-table» de la propuesta 2575:22875 |
 | ✅ [variants-table-card](#variants-table-card) | dentro de `<arq-variants-table>` | En código, como parte de variants-table (Mobile) ([README](../src/components/variants-table/README.md)) |
 | ✅ [variants-table-row](#variants-table-row) | — | Dentro de variants-table ([README](../src/components/variants-table/README.md)) · Ficha v2 |
 
@@ -338,7 +338,7 @@ Tarjeta de descarga de un archivo general (Descargas: «Catálogo Macroled ARQ 2
 
 Fila de archivo del modal de descargas: nombre, formato y peso. "Unavailable" cuando la variante no tiene ese archivo (por ejemplo, sin IES).
 
-Código: download-modal `show-product` (rama `feat/descargas-propuesta`). En Descargas · propuesta los archivos del modal son download-file-row en lugar de download-item.
+Código: download-modal `show-product`. En Descargas · propuesta los archivos del modal son download-file-row en lugar de download-item.
 
 ## download-item
 
@@ -354,7 +354,7 @@ Opción del modal de descargas, con texto role/body-xl (más grande que un butto
 
 Modal de descargas con opciones download-item. Desktop: esquina inferior derecha, separado layout/gutter del borde, ancho layout/filter-panel (560). Mobile: abajo, a layout/gutter de los bordes y ocupando el ancho (alto según el contenido). Siempre con color/overlay/scrim detrás; mientras está abierto, la página de atrás no se desplaza. Página Descargas: sku Compact debajo del título (código: atributo sku), opciones Emphasis=Default.
 
-Descargas · propuesta final (2554:20048 · Mobile 2554:20133, rama `feat/descargas-propuesta`): título role/heading-1, el producto (miniatura, sku y variante en role/body-compact-regular) y los archivos como download-file-row, a space/gap/xl; en Mobile, hoja pegada abajo a todo el ancho. Código: atributo `show-product`.
+Descargas · propuesta final (2554:20048 · Mobile 2554:20133): título role/heading-1, el producto (miniatura, sku y variante en role/body-compact-regular) y los archivos como download-file-row, a space/gap/xl; en Mobile, hoja pegada abajo a todo el ancho. Código: atributo `show-product`.
 
 ## family-card
 

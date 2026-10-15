@@ -6,7 +6,7 @@
 // descarga de cada fila. Es propia de Descargas: la tabla de la ficha sigue
 // siendo variants-table.
 //
-//   <arq-downloads-table filters="dropdown" downloads="descargas"></arq-downloads-table>
+//   <arq-downloads-table downloads="descargas"></arq-downloads-table>
 //
 //   tabla.data = {
 //     columns: [{ key: 'potencia', label: 'Potencia' }, …],
@@ -15,15 +15,14 @@
 //   };
 //   tabla.addEventListener('arq:downloads', (e) => llenarModal(e.detail.sku));
 //
-// - filters (solo de código, para comparar las dos propuestas):
-//   · dropdown: el botón Filtros despliega debajo de la barra un bloque en
-//     color/surface/faint con un select Filter multiple por filtro
-//     (2571:22259 · Mobile 2580:22444). Abierto, el botón lleva chevron-up.
-//   · panel: el botón abre filter-panel (panel lateral derecho en Desktop,
-//     pantalla completa en Mobile, 2571:22966 · 2572:22988) con una
-//     filter-row de checkbox por filtro. Se aplica con «Ver N variantes».
-//   En los dos, el botón dice «Filtros (N)» con N = valores elegidos, y debajo
-//   de la barra van los chips de lo aplicado y «Limpiar filtros».
+// - Filtros: el botón abre filter-panel (panel lateral derecho en Desktop,
+//   pantalla completa en Mobile, 2571:22966 · 2572:22988) con una filter-row
+//   de checkbox por filtro. Se aplica con «Ver N variantes»; cerrar descarta.
+//   El botón dice «Filtros (N)» con N = valores elegidos, y debajo de la barra
+//   van los chips de lo aplicado y «Limpiar filtros». De las dos propuestas se
+//   eligió el panel lateral (decisiones.md, 2026-10-15 · Descargas · propuesta
+//   final); la desplegable quedó en la historia de la rama
+//   feat/descargas-propuesta.
 // - Selección múltiple: dentro de un filtro, una fila cumple si tiene
 //   cualquiera de los valores elegidos; entre filtros, todos
 //   (src/data/variants.js). Las opciones que no darían filas van
@@ -49,7 +48,6 @@ import '../button/button.js';
 import '../icon-button/icon-button.js';
 import '../sku/sku.js';
 import '../search-field/search-field.js';
-import '../select/select.js';
 import '../filter-chip/filter-chip.js';
 import '../filter-row/filter-row.js';
 import '../filter-panel/filter-panel.js';
@@ -82,11 +80,6 @@ const CARD_COLUMNS = ['potencia', 'temperatura_color', 'angulo_apertura', 'prote
 // propuesta muestra nueve)
 const SKELETON_COLUMNS = 9;
 
-// «Todas» o «Todos» según la primera palabra del filtro (Fotometría,
-// Temperatura de color → Todas; Montaje → Todos), como la propuesta.
-const FEMININE = /(a|ción|sión|dad|fuente)$/i;
-const allLabel = (label) => (FEMININE.test(String(label ?? '').trim().split(/\s+/)[0]) ? 'Todas' : 'Todos');
-
 // Descarga de una fila (tabla): icon-button Large Background=Outline, como el
 // glosario de la ficha (Figma 1218:10705)
 const download = (sku) =>
@@ -98,8 +91,6 @@ class ArqDownloadsTable extends ArqElement {
   static tag = 'arq-downloads-table';
   static styles = css;
   static properties = {
-    filters: { type: String, values: ['dropdown', 'panel'], default: 'dropdown' }, // solo de código: cómo se eligen los filtros
-    open: { type: Boolean }, // dropdown: bloque de filtros desplegado
     loading: { type: Boolean }, // filas de carga
     downloads: { type: String }, // id del arq-download-modal que abre la descarga de cada fila
     label: { type: String, default: 'Variantes' }, // nombre de la región con scroll
@@ -113,7 +104,6 @@ class ArqDownloadsTable extends ArqElement {
     `</div>` +
     `<arq-search-field class="search" placeholder="${TEXT.search}" label="${TEXT.searchLabel}"></arq-search-field>` +
     `</div>` +
-    `<div class="dropdown" id="filters-dropdown" role="group" aria-label="${TEXT.filters}" hidden></div>` +
     `<div class="applied" hidden>` +
     `<div class="chips" role="list" aria-label="Filtros aplicados"></div>` +
     `<arq-button class="clear" type="underline" show-underline>${TEXT.clear}</arq-button>` +
@@ -149,16 +139,10 @@ class ArqDownloadsTable extends ArqElement {
     root.addEventListener('error', (event) => {
       if (event.target.localName === 'img') event.target.hidden = true;
     }, true);
-    root.querySelector('.toggle-filters').addEventListener('click', (event) => {
-      if (this.filters === 'panel') this.#openPanel(event.currentTarget);
-      else this.open = !this.open;
-    });
-    root.querySelector('.dropdown').addEventListener('arq:change', (event) => {
-      event.stopPropagation();
-      const select = event.target.closest('arq-select');
-      if (!select) return;
-      this.#values = { ...this.#values, [select.name]: event.detail.values ?? [] };
-      this.#refresh(true);
+    root.querySelector('.toggle-filters').addEventListener('click', (event) => this.#openPanel(event.currentTarget));
+    // El botón abre un diálogo (filter-panel)
+    customElements.whenDefined('arq-button').then(() => {
+      root.querySelector('.toggle-filters').shadowRoot?.querySelector('.control')?.setAttribute('aria-haspopup', 'dialog');
     });
     root.querySelector('.search').addEventListener('arq:input', (event) => {
       event.stopPropagation();
@@ -231,50 +215,18 @@ class ArqDownloadsTable extends ArqElement {
   update(changed) {
     const root = this.shadowRoot;
     if (changed.has('label')) root.querySelector('.scroll').setAttribute('aria-label', this.label ?? 'Variantes');
-    if (changed.has('filters') && this.filters === 'panel' && this.open) this.open = false;
-    if (changed.has('open') || changed.has('filters')) {
-      const dropdown = this.filters !== 'panel';
-      root.querySelector('.dropdown').hidden = !(dropdown && this.open);
-      const button = root.querySelector('.toggle-filters');
-      // Desplegable abierto: chevron-up (2571:22259); cerrado y panel: icon/filter
-      button.icon = dropdown && this.open ? 'chevron-up' : 'filter';
-      customElements.whenDefined('arq-button').then(() => {
-        const control = button.shadowRoot?.querySelector('.control');
-        if (!control) return;
-        if (dropdown) {
-          control.setAttribute('aria-expanded', String(this.open));
-          if ('ariaControlsElements' in control) control.ariaControlsElements = [root.querySelector('.dropdown')];
-          control.removeAttribute('aria-haspopup');
-        } else {
-          control.removeAttribute('aria-expanded');
-          control.setAttribute('aria-haspopup', 'dialog');
-        }
-      });
-    }
     if (changed.has('loading')) this.#refresh();
   }
 
   #build() {
     const root = this.shadowRoot;
-    const { columns, filters } = this.#data;
+    const { columns } = this.#data;
     // Encabezado: imagen · SKU (producto) · columnas · descarga
     root.querySelector('thead').innerHTML =
       `<tr><th scope="col" class="start"><span class="visually-hidden">${TEXT.image}</span></th>` +
       `<th scope="col" class="sku-col role-label-lg">${TEXT.sku}</th>` +
       columns.map((c) => `<th scope="col" class="role-label-lg">${esc(c.label)}</th>`).join('') +
       `<th scope="col" class="end role-label-lg">${TEXT.downloads}</th></tr>`;
-    // Desplegable: un select Filter multiple por filtro
-    root.querySelector('.dropdown').replaceChildren(
-      ...filters.map((f) => {
-        const select = document.createElement('arq-select');
-        select.type = 'filter';
-        select.multiple = true;
-        select.label = f.label;
-        select.name = f.key;
-        select.allLabel = allLabel(f.label);
-        return select;
-      }),
-    );
     this.#refresh();
   }
 
@@ -305,13 +257,6 @@ class ArqDownloadsTable extends ArqElement {
     const root = this.shadowRoot;
     const { columns, filters } = this.#data;
     const rows = this.#searched();
-    const groups = this.#options();
-    // Desplegable: opciones (las que no dan filas, deshabilitadas) y elegidas
-    root.querySelectorAll('.dropdown arq-select').forEach((select, i) => {
-      const showSwatch = Boolean(filters[i].swatches);
-      select.options = groups[i].map((o) => ({ value: o.value, label: o.value, disabled: o.disabled, showSwatch }));
-      select.values = this.#values[select.name] ?? [];
-    });
     const visible = filterVariants(rows, this.#values);
     const active = this.#filterCount();
     // Botón: «Filtros (N)»; deshabilitado mientras carga o si no hay filtros

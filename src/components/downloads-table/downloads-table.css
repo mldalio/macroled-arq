@@ -46,36 +46,14 @@
   min-width: 0;
 }
 
-/* ── Desplegable (filters="dropdown", 2571:22278) ────────────────
-   Bloque en color/surface/faint con línea arriba y abajo (border/default en
-   color/border/subtle), padding space/padding/xl y los select en grilla a
-   space/gap/lg, alineados abajo (una etiqueta larga no corre el campo).
-   TODO (token): cada select mide 224 en la propuesta, sin
-   variable; las columnas miden al menos layout/select-menu-filter (200) y se
-   reparten el ancho (5 columnas a 1400 px, como la propuesta). */
-.dropdown {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(var(--arq-layout-select-menu-filter), 1fr));
-  align-items: end;
-  gap: var(--arq-space-gap-lg);
-  padding: var(--arq-space-padding-xl);
-  border-block: var(--arq-border-default) solid var(--arq-color-border-subtle);
-  background: var(--arq-color-surface-faint);
-}
-
 /* Aplicados: chips a space/gap/sm y «Limpiar filtros» a space/gap/lg;
-   padding inferior space/padding/md. Con el desplegable abierto, arriba
-   también (los chips van debajo del bloque). */
+   padding inferior space/padding/md. */
 .applied {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--arq-space-gap-lg);
   padding-bottom: var(--arq-space-padding-md);
-}
-
-.dropdown:not([hidden]) + .applied {
-  padding-top: var(--arq-space-padding-md);
 }
 
 .chips {
@@ -366,14 +344,6 @@ td.end {
   .search {
     flex: none;
     order: -1;
-  }
-
-  /* El desplegable va de borde a borde de la pantalla, con layout/gutter
-     adentro, en dos columnas a space/gap/lg (2580:22465) */
-  .dropdown {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin-inline: calc(-1 * var(--page-gutter));
-    padding: var(--arq-space-padding-xl) var(--page-gutter);
   }
 
   .scroll,

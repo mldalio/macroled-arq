@@ -3,7 +3,7 @@
 Contenido de la página Descargas: arriba, el título con su bajada y el catálogo general (tapa, nombre, bajada y «Descargar catálogo»); debajo, «Buscar archivos por producto» con [downloads-table](../downloads-table/README.md) (todos los SKU del catálogo, buscador y filtros de selección múltiple) y el download-modal de cada fila. Contenedor de página, sin set en Figma: sale de «Descargas · propuesta final (desktop y mobile)» (`2575:22875`: Desktop `2564:20607` · Mobile `2558:20149` · modal `2554:20132` / `2554:20214`). Decisión: `docs/decisiones.md`, 2026-10-15 · Descargas · propuesta final.
 
 ```html
-<arq-descargas filters="dropdown" catalog-href="…/catalogo.pdf">
+<arq-descargas catalog-href="…/catalogo.pdf">
   <h1 slot="title">Descargas</h1>
   <span slot="description">…</span>
   <img slot="catalog-cover" src="…" alt="">
@@ -15,13 +15,12 @@ Contenido de la página Descargas: arriba, el título con su bajada y el catálo
 </arq-descargas>
 ```
 
-El HTML del embed completo está en [src/pages/descargas.html](../../pages/descargas.html). Demos: `/demo/descargas-propuestas.html` (las dos, con un menú flotante para cambiar de propuesta), `/demo/descargas-desplegable.html` y `/demo/descargas-lateral.html`.
+El HTML del embed completo está en [src/pages/descargas.html](../../pages/descargas.html). Demo: `/demo/descargas.html`.
 
 ## Atributos y slots
 
 | Atributo / slot | Contenido |
 | --- | --- |
-| `filters` | `dropdown` (filtros desplegables) · `panel` (panel lateral). Por defecto `dropdown`. Solo de código: las dos propuestas, para elegir una |
 | `catalog-href` | URL del PDF del catálogo general (se abre en otra pestaña) |
 | slot `title` | `<h1>` de la página (`role/display`) |
 | slot `description` | Bajada (`role/body-regular` en `color/text/secondary`, hasta `layout/measure`) |
@@ -37,6 +36,7 @@ El HTML del embed completo está en [src/pages/descargas.html](../../pages/desca
 
 ## Comportamiento
 
+- **Filtros:** panel lateral (filter-panel de downloads-table). De las dos propuestas se eligió esta; la desplegable quedó en la historia de la rama `feat/descargas-propuesta`.
 - **Filas:** todos los SKU (`getDownloadsTable()` de `src/data/catalog.js`), con el nombre corto del producto (la colección: «Nobu»; con la aplicación si la colección tiene varios productos: «Kanu Pared»; sin colección, la primera palabra: «Skyline»), el link a su ficha (`?sku=`) y la variante («Negro, 6 W, luz cálida») para el modal. Columnas: una por filtro (`DOWNLOAD_FILTERS`), en el mismo orden y con el nombre corto (Temp., Material, Tensión); solo las que tienen algún valor. Todo en una línea: si no entran, la tabla se desliza en horizontal (producto y descarga quedan fijos). Filtros: `DOWNLOAD_FILTERS` (`attributes.js`), en el orden de la propuesta: Montaje, Acabado, Potencia, Temperatura de color, IP, Regulación, CRI, Ángulo, Fuente, Material del cuerpo y Tensión de entrada; solo los que tienen al menos dos valores. Tamaño, Flujo luminoso y Eficiencia no son filtro (casi un valor por SKU) ni columna. `TODO` (diseño): Familia y Fotometría de la propuesta no tienen campo en la base.
 - **Modal** (download-modal `show-product`): miniatura, SKU y variante; debajo, download-file-row: «Ficha técnica» (PDF; emite `arq:datasheet { sku }`) y los archivos del SKU (`skuDownloads()`) con su formato, que sale de la extensión de la URL.
 - **Estados:** mientras carga, filas de carga y «Buscando…»; sin SKU, «Todavía no hay productos para descargar.»; si falla la carga, «No se pudieron cargar las descargas. Probá de nuevo en unos minutos.». Sin filas que cumplan, el vacío de downloads-table.
@@ -46,4 +46,3 @@ El HTML del embed completo está en [src/pages/descargas.html](../../pages/desca
 - `TODO` (datos): URL del catálogo general y su portada (la demo usa la de Figma). El peso de cada archivo.
 - `TODO` (token): la tapa mide 168 × 210 (Mobile 104 × 130) en la propuesta, sin variable: se usan `layout/compare-column` (160) y `layout/table-thumb` (100).
 - La bajada del catálogo es distinta en Desktop («Todas las familias, con especificaciones…») y Mobile («Catálogo general en PDF, 24 MB») en la propuesta: va un solo texto.
-- Elegir una de las dos propuestas de filtros y quitar la otra (`filters`).

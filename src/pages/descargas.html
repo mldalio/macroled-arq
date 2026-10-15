@@ -6,8 +6,7 @@
   Arriba, el título con su bajada y el catálogo general (tapa, nombre, bajada
   y «Descargar catálogo»); debajo, «Buscar archivos por producto»: todos los
   SKU del catálogo en downloads-table, con buscador y filtros, desde Typesense.
-  filters: "dropdown" (filtros desplegables) o "panel" (panel lateral). Hay
-  dos propuestas: queda la que se elija.
+  Filtros en panel lateral (de las dos propuestas, se eligió esta).
   TODO (datos): URL del catálogo general (PDF) y su portada. Hasta tenerlas,
   el botón no tiene link y la tapa se ve vacía (fondo color/surface/subtle):
   la portada va como <img slot="catalog-cover" src="…" alt="">.
@@ -19,7 +18,7 @@
 </arq-navbar>
 
 <main>
-  <arq-descargas filters="dropdown">
+  <arq-descargas>
     <h1 slot="title">Descargas</h1>
     <span slot="description">Catálogo general, fichas técnicas, planos CAD, fotometrías y manuales de cada variante de Macroled ARQ, listos para tu proyecto.</span>
     <span slot="catalog-title">Catálogo Macroled ARQ 2026</span>
