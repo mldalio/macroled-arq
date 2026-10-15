@@ -78,6 +78,25 @@ export const GLOSSARY_COLUMNS = Object.freeze([
   { field: 'cri', label: 'CRI' },
 ]);
 
+// Filtros de la página Descargas, en orden, con su nombre (decisiones.md,
+// 2026-10-15 · Descargas · propuesta final). El orden y «Acabado» siguen a la
+// propuesta (2571:22278). Fuera, por tener casi un valor por SKU: Tamaño,
+// Flujo luminoso y Eficiencia (siguen como columnas), Altura y Peso.
+// TODO (diseño): Familia y Fotometría de la propuesta no tienen campo en la base.
+export const DOWNLOAD_FILTERS = Object.freeze([
+  { field: 'tipo_montaje', label: 'Montaje' },
+  { field: 'color_carcasa', label: 'Acabado' },
+  { field: 'potencia', label: 'Potencia' },
+  { field: 'temperatura_color', label: 'Temperatura de color' },
+  { field: 'proteccion_ip', label: 'IP' },
+  { field: 'dimeable', label: 'Regulación' },
+  { field: 'cri', label: 'CRI' },
+  { field: 'angulo_apertura', label: 'Ángulo' },
+  { field: 'tipo_led', label: 'Fuente' },
+  { field: 'material_cuerpo', label: 'Material del cuerpo' },
+  { field: 'tension_proveedor', label: 'Tensión de entrada' },
+]);
+
 /** Etiqueta y control de un campo. Un campo sin entrada usa su nombre y tiles. */
 export function attributeInfo(field) {
   return ATTRIBUTES[field] ?? { label: field, control: 'tiles' };
