@@ -1,0 +1,57 @@
+/* search-card · componente de prueba. Solo tokens semánticos.
+   Toma el ancho de su columna (FILL). */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Imagen → nombre: space/gap/sm */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-sm);
+  color: var(--arq-color-text-primary);
+  text-decoration: none;
+}
+
+/* Foco: anillo separado (DESIGN.md §7) */
+.card:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+/* Imagen: ratio/square (1:1) o la que pida el contenedor con --card-ratio
+   (variable local del search-sheet); fallback color/surface/subtle */
+.media {
+  display: block;
+  aspect-ratio: var(--card-ratio, 1 / 1);
+  background: var(--arq-color-surface-subtle);
+  overflow: hidden;
+}
+
+.img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--arq-motion-duration-slow) var(--arq-motion-easing-standard);
+}
+
+/* Hover y Focus: zoom mínimo de la imagen, recortada por el recuadro (solo
+   transform, sin mover el layout). Con prefers-reduced-motion la duración vale 0.
+   TODO (diseño): la escala (1.05) no tiene token. */
+@media (hover: hover) {
+  .card:hover .img {
+    transform: scale(1.05);
+  }
+}
+
+.card:focus-visible .img {
+  transform: scale(1.05);
+}
+
+.name {
+  min-width: 0;
+  overflow-wrap: break-word;
+}

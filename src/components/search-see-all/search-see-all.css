@@ -43,7 +43,7 @@
 }
 
 /* Type=Simple (solo de código): sin la lupa, la flecha pegada al texto
-   (a space/gap/md, el gap de la fila) y sin fondo en hover; el texto pasa
+   (a space/gap/sm) y sin fondo en hover; el texto pasa
    a color/text/primary */
 :host([type='simple']) .row > .icon:first-child {
   display: none;
@@ -66,7 +66,9 @@
   color: var(--arq-color-text-primary);
 }
 
+/* La flecha queda más cerca del texto: space/gap/sm */
 :host([type='simple']) .row {
+  gap: var(--arq-space-gap-sm);
   justify-content: flex-start;
   color: var(--arq-color-icon-primary);
 }

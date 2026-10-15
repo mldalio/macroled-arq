@@ -15,14 +15,10 @@ const href = (query) => `#${encodeURIComponent(query)}`;
 
 if (state === 'recommended') {
   const img = '/demo/fixtures/img/';
-  sheet.recommended = ['Sento', 'Yoru', 'Douli', 'Köen', 'Tori', 'Nobu', 'Kanu', 'Mito'].map((name, i) => ({
+  sheet.recommended = ['Sento', 'Yoru', 'Douli', 'Köen', 'Tori', 'Nobu', 'Kanu', 'Mito'].map((name) => ({
     name,
-    meta: ['Colgante', 'Pared', 'Techo', 'Jardín'][i % 4],
     href: '#',
     image: img + 'card-estudio.svg',
-    imageHover: img + 'card-contexto.svg',
-    imageLit: img + 'card-estudio-on.svg',
-    imageHoverLit: img + 'card-contexto-on.svg',
   }));
 } else if (state === 'results') {
   const query = 'kanu';

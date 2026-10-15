@@ -767,3 +767,11 @@ Con Iluminar (listados y ficha) solo se oscurecen la página, el navbar (barra) 
 - **filter-panel:** sin cambios (ya era Light).
 - **Cómo:** `data-arq-theme="light"` en el `<dialog>` (o en el host del componente), el bloque que `ArqElement` adopta en cada Shadow DOM (`src/styles/light.css`).
 - **DESIGN.md §2** · Modo Dark ampliado con esta lista (rama `docs/light-local-paneles`) y su copia en el frame DESIGN.md de la página Plan del proyecto de Figma.
+
+## 2026-10-15 · search-sheet: ajustes tras la revisión
+
+- **search-card** (nuevo, `<arq-search-card>`): la tarjeta de recomendados es solo la imagen cuadrada y el nombre; deja de usar product-card y ya no muestra el tipo de producto. Hover y Focus: zoom mínimo de la imagen (escala 1.05, `motion/duration/slow`). TODO: la escala no tiene token.
+- **Hover de search-result `type="simple"` y search-collection:** todo el nombre en `color/text/primary` y Medium (`role/body-medium`). Se acepta el cambio de peso en hover (DESIGN.md §6 lo desaconseja) por pedido de diseño.
+- **search-see-all `type="simple"`:** sin lupa y con la flecha a `space/gap/sm` (antes `space/gap/md`).
+- **Orden de los resultados:** «Ver todos» va al final. Desktop: Productos y debajo «Ver todos» a la izquierda, Colecciones a la derecha. Tablet y Mobile: Productos, Colecciones y «Ver todos» al pie. Filas separadas por `space/gap/lg`.
+- **Figma:** documentado en la sección «Búsqueda · top sheet» (sets `search-sheet`, `search-field-line`, `search-result-simple`, `search-collection`, `search-card` y `search-see-all-simple`) y en la ficha `doc/search-sheet`. Los Type de código son sets aparte en Figma; falta decidir si pasan a ser Type de search-field, search-result y search-see-all.
