@@ -50,6 +50,9 @@
   flex-direction: column;
   aspect-ratio: 4 / 3;
   min-width: 0;
+  /* con aspect-ratio, el ancho saldría del alto estirado: se fija a la columna */
+  justify-self: stretch;
+  overflow: hidden;
 }
 
 .gallery {
@@ -208,108 +211,113 @@
   background: var(--arq-color-surface-subtle);
 }
 
-/* ── Descripción ────────────────────────────────────────────────── */
+/* ── Descripción (STORY) ────────────────────────────────────────── */
+/* Ficha v2 (2587:26784): foto a todo el ancho con el texto encima, y abajo
+   space/section/sm. La foto queda quieta mientras la página pasa por encima
+   (efecto parallax de imagen fija): vive dentro de un recuadro con clip-path y
+   es position: fixed, que funciona también en iOS (background-attachment: fixed
+   no). Es Dark local: el texto y el CTA claros salen del modo Dark, sin Iluminar.
+   TODO (diseño): el alto (971 en Final) no tiene token; se usa 100svh. Los
+   márgenes de 150 y 113 de Final se normalizan a space/section/lg. */
 .story-block {
-  display: flex;
-  flex-direction: column;
-  gap: var(--arq-space-gap-2xl);
-  padding: 0 var(--page-gutter) var(--arq-space-section-xl) var(--arq-space-section-lg);
+  padding-bottom: var(--arq-space-section-sm);
 }
 
 .story {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, var(--arq-layout-measure-wide));
+  column-gap: var(--arq-space-gap-3xl);
+  align-items: start;
+  box-sizing: border-box;
+  min-height: 100svh;
+  padding: var(--arq-space-section-lg);
+  background: var(--arq-color-surface-default);
+  color: var(--arq-color-text-primary);
+}
+
+.story-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  clip-path: inset(0);
+  pointer-events: none;
+}
+
+.story-bg img {
+  position: fixed;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-bg img {
+    position: absolute;
+  }
+}
+
+.story-title,
+.story-body {
+  position: relative; /* sobre la foto */
+  min-width: 0;
+}
+
+/* El título a la izquierda, arriba; texto y CTA a la derecha, centrados en alto */
+.story-title {
+  grid-column: 1;
+  max-width: var(--arq-layout-measure);
+}
+
+.story-body {
+  grid-column: 2;
+  align-self: center;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: var(--arq-space-gap-lg);
-  color: var(--arq-color-text-primary);
 }
 
 .story-text {
   display: flex;
   flex-direction: column;
-  gap: var(--arq-space-gap-lg);
+  gap: var(--arq-space-gap-sm);
 }
 
-/* STORY: el título en role/heading-2 y los párrafos en role/body. Las reglas
-   repiten los roles porque el texto llega por slot (no toma la clase). */
-::slotted(h2[slot='story-text']),
-::slotted(h3[slot='story-text']) {
+/* El título en role/heading-2 y el texto en role/body-xl. Las reglas repiten
+   los roles porque el texto llega por slot (no toma la clase). */
+::slotted(h2[slot='story-title']) {
+  margin: 0 !important;
   font-family: var(--arq-font-family-sans) !important;
   font-weight: var(--arq-font-weight-light) !important;
   font-size: var(--arq-type-heading-2-size) !important;
   line-height: var(--arq-type-heading-2-leading) !important;
   letter-spacing: var(--arq-font-tracking-normal) !important;
+  color: inherit !important;
 }
 
-::slotted(p[slot='story-text']) {
+::slotted(h3[slot='story-text']),
+::slotted(p[slot='story-text']),
+::slotted(ul) {
   margin: 0 !important;
-  max-width: var(--arq-layout-measure-wide);
   font-family: var(--arq-font-family-sans) !important;
-  font-weight: var(--arq-font-weight-light) !important;
-  font-size: var(--arq-type-body-size) !important;
-  line-height: var(--arq-type-body-leading) !important;
+  font-weight: var(--arq-font-weight-regular) !important;
+  font-size: var(--arq-type-body-xl-size) !important;
+  line-height: var(--arq-type-body-xl-leading) !important;
   letter-spacing: var(--arq-font-tracking-normal) !important;
   color: inherit !important;
 }
 
-/* TODO (diseño): la lista mide 539 en Final, sin token; layout/measure-wide (520). */
-.features {
-  display: flex;
-  flex-direction: column;
-  gap: var(--arq-space-gap-sm);
-  max-width: var(--arq-layout-measure-wide);
-}
-
-.features-label {
-  margin: 0;
-}
-
 /* TODO (diseño): sangría de la lista de 21 sin token; space/padding/lg. */
 ::slotted(ul) {
-  margin: 0 !important;
   padding: 0 0 0 var(--arq-space-padding-lg) !important;
   list-style-type: '- ' !important;
-  font: inherit !important;
-  color: inherit !important;
 }
 
-/* Imagen de la descripción (izquierda) y otras familias (derecha, abajo):
-   Ficha v2 2145:39292 */
-.family-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--arq-space-gap-sm);
-  align-items: end;
-}
-
-.family {
-  grid-column: 2;
-  display: flex;
-  flex-direction: column;
-  gap: var(--arq-space-gap-md);
-  min-width: 0;
-}
-
-.family-label {
-  margin: 0;
-  color: var(--arq-color-text-secondary);
-}
-
-.family-link {
+.story-link {
   align-self: flex-start;
-}
-
-.description-image {
-  grid-column: 1;
-  grid-row: 1;
-  aspect-ratio: 16 / 10;
-  background: var(--arq-color-surface-subtle);
-}
-
-.description-image img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 /* Carrusel de family-card (patrón de la descripción del set): scroll-snap,
@@ -492,8 +500,22 @@
     padding: var(--arq-space-section-xs) var(--page-gutter);
   }
 
-  .story-block {
-    padding-inline: var(--page-gutter);
+  /* Título arriba y texto abajo, en una columna, con el margen de página */
+  .story {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    row-gap: var(--arq-space-gap-4xl);
+    padding: var(--arq-space-section-sm) var(--page-gutter);
+  }
+
+  .story-title,
+  .story-body {
+    grid-column: 1;
+    max-width: none;
+  }
+
+  .story-body {
+    align-self: end;
   }
 
   .inspiration {
@@ -528,22 +550,6 @@
 
   .ambient {
     gap: var(--arq-space-gap-sm-md);
-  }
-
-  ::slotted(p[slot='story-text']) {
-    max-width: none;
-  }
-
-  .features {
-    max-width: none;
-  }
-
-  /* Imagen arriba y otras familias debajo, a space/gap/6xl */
-  .family-row {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--arq-space-gap-6xl);
   }
 
   .inspiration-text {

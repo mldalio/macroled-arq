@@ -810,3 +810,21 @@ Pantalla «Descargas · propuesta final (desktop y mobile)» (`2575:22875`: Desk
 - **Resueltos sin token nuevo:** la ayuda del vacío va hasta `layout/measure-wide` (520; la propuesta, 560) y las barras de carga usan `icon/sm` y `space/gap/sm-md` (12 y 14 en la propuesta).
 - **DESIGN.md** (repo y copia del Plan del proyecto en Figma): excepción de la barra de scroll de Descargas (§2), los tres tokens (§5), el trazo escalado del ícono en icon-button Outline Large (§8) y su borde `color/border/default`. **Figma:** descripción de icon-button corregida (Outline: Default en `color/border/strong`, Large en `color/border/default` con trazo escalado).
 - **Modal sin formato:** las filas del modal (Ficha técnica, IES, CAD…) muestran solo el nombre, sin «PDF» ni «IES» debajo. download-file-row conserva el slot `meta` opcional.
+
+## 2026-10-15 · Ficha: acordeón, filas de especificación y opciones (Ficha v2, 2587:26558)
+
+- **accordion-item:** título en `role/heading-3` (antes `role/body-xl`); el ícono +/– va sin borde (solo `icon/xl` con `space/padding/sm-md`) y sin fondo en hover; en Mobile no lleva padding lateral.
+- **Última spec-row de cada columna sin línea inferior**, para no duplicar la del acordeón. spec-list reparte las filas en dos columnas con una grilla (`ceil(n / 2)` filas por columna, la izquierda primero; antes `column-count`) y marca la última de cada columna con `data-arq-last`. Una spec-row suelta conserva su línea.
+- **option-tile en Hug content:** mide su texto y no se estira para llenar la fila (antes Fill); si no entran, bajan a otra línea.
+- **Galería de la ficha (Desktop):** la foto va absoluta dentro del recuadro y la columna fija su ancho (`justify-self: stretch`): una foto grande ya no estira el alto ni, por el `aspect-ratio`, el ancho, que hacía que la imagen se montara sobre el configurador.
+
+## 2026-10-15 · La URL de la ficha siempre lleva el SKU
+
+- Todo link a una ficha lleva `?sku=`, también el del SKU predeterminado (cards de Productos y Colecciones, buscador, mega-menú, recomendados). Una ficha abierta sin parámetro se abre con el predeterminado y completa la URL con `history.replaceState`. Motivo: más adelante Webflow guardará solo los SKU, y la URL tiene que identificarlos.
+- El canonical sigue sin parámetro (Webflow). Abrir con un `?sku=` que no es del grupo cae en el predeterminado.
+
+## 2026-10-15 · Ficha: descripción con foto a todo el ancho (Ficha v2, 2587:26784)
+
+- La sección de descripción (`product_story_text`) pasa a ser la foto de ambiente 6 a todo el ancho con el texto encima: título (primera línea) a la izquierda; texto, lista y «Ver colección …» a la derecha, en `role/body-xl`. Es Dark local (texto y subrayado claros, sin depender de Iluminar). Se quita de esta sección el bloque «Otras familias» (en Figma está oculto): esas tarjetas siguen solo en «Explora la colección».
+- **Foto fija (parallax):** la foto queda quieta y la página pasa por encima. Se resuelve con la imagen en `position: fixed` dentro de un recuadro con `clip-path` (funciona también en iOS, donde `background-attachment: fixed` no). Con `prefers-reduced-motion: reduce` la foto se mueve con la página. Riesgo: si Webflow envuelve la ficha en un contenedor con `transform`, el efecto se pierde (la sección se ve igual, sin movimiento).
+- **TODO (diseño):** el alto de 971 y los márgenes de 150 / 113 de Final no tienen token; se usan 100svh y `space/section/lg`. Sin scrim sobre la foto, como en Figma: si la foto es clara, el texto puede no leerse.

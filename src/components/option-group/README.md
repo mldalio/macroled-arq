@@ -27,7 +27,7 @@ Grupo de configuración de la ficha con etiqueta: elige un atributo de la varian
 | Type | `type` | `type` | `tiles` · `swatches` · `select`. **Por defecto `tiles`** |
 | — (opciones) | slot por defecto | — | Tiles: `arq-option-tile`. Swatches: un `arq-swatch-picker` |
 
-- **Tiles:** el propio grupo es el `role="radiogroup"` (con `aria-label` = etiqueta) y usa `SingleSelect`: una sola elegida, flechas, Inicio / Fin, saltea las deshabilitadas. Los tiles van en **Fill** y, si no entran en una línea, bajan a la siguiente (decisión 2026-10-02). Una opción que queda sola en la última línea ocupa todo el ancho.
+- **Tiles:** el propio grupo es el `role="radiogroup"` (con `aria-label` = etiqueta) y usa `SingleSelect`: una sola elegida, flechas, Inicio / Fin, saltea las deshabilitadas. Los tiles van en **Hug content** (miden lo que su texto) y, si no entran en una línea, bajan a la siguiente (decisión 2026-10-02).
 - **Swatches:** el radiogroup es el `arq-swatch-picker` de adentro; el grupo le pasa su etiqueta como nombre. No hay dos radiogroups anidados.
 - **Select:** un `arq-select` (Field) por slot. Por la decisión del 2026-10-02 queda sin uso por ahora.
 - **Etiqueta:** visible en el Shadow DOM y repetida como `aria-label` (un `aria-labelledby` no cruza el Shadow DOM). La ficha `doc/option-group` pide `<fieldset>` + `<legend>`: un radiogroup con nombre da el mismo anuncio y deja las flechas de un grupo de radios.

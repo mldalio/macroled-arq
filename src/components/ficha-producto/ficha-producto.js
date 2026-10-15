@@ -29,9 +29,11 @@
 //   recuerda: recargar la ficha la deja apagada. Solo llega encendida si se
 //   entró desde un listado iluminado (theme.js, takeThemeHandoff).
 // - STORY (Markdown limitado): el componente arma con el texto, en el DOM de
-//   la página, un <h2> con la primera línea (el título, con o sin «## »), un
-//   <p> por línea y un <ul> con las líneas «-», con createElement y textContent
-//   (nunca innerHTML). Así el encabezado queda en el HTML de la página.
+//   la página, un <h2> con la primera línea (el título, con o sin «## », slot
+//   story-title), un <p> por línea y un <ul> con las líneas «-», con createElement
+//   y textContent (nunca innerHTML). Así el encabezado queda en el HTML de la página.
+//   Se muestran sobre la foto de ambiente 6 a todo el ancho, que queda fija al
+//   hacer scroll (parallax).
 // - "Ver descargas" lleva al glosario, donde está la descarga de cada SKU.
 // - Comparar: suma la variante elegida a la compare-bar de la ficha (hasta 3).
 // - "Generar ficha técnica" y "Ficha técnica" (modal del glosario) emiten arq:datasheet { sku }.
@@ -118,21 +120,14 @@ class ArqFichaProducto extends ArqElement {
     `<div class="accordion"></div>` +
     `</div>` +
     `<div class="ambient needs-data" role="region" aria-label="Galería de ambiente" tabindex="0" hidden></div>` +
-    // Descripción (STORY) + otras familias + imagen
-    `<div class="story-block">` +
-    `<div class="story" hidden>` +
-    `<div class="story-text"><slot name="story-text"></slot></div>` +
-    `<div class="features" hidden>` +
-    `<p class="features-label role-body-medium">Características del producto</p>` +
-    `<div class="features-list role-body"><slot name="story-list"></slot></div>` +
-    `</div>` +
-    `</div>` +
-    `<div class="family-row needs-data" hidden>` +
-    `<div class="description-image" hidden><img alt="" loading="lazy"></div>` +
-    `<div class="family" hidden>` +
-    `<p class="family-label role-label">Otras familias de la colección</p>` +
-    `<div class="cards family-cards"></div>` +
-    `<arq-button class="family-link" type="underline" show-underline show-icon icon="arrow-up-right" hidden></arq-button>` +
+    // Descripción (STORY): foto a todo el ancho con el texto encima (Dark local)
+    `<div class="story-block needs-data">` +
+    `<div class="story" data-arq-theme="dark" hidden>` +
+    `<div class="story-bg" hidden><img alt="" loading="lazy"></div>` +
+    `<div class="story-title"><slot name="story-title"></slot></div>` +
+    `<div class="story-body">` +
+    `<div class="story-text"><slot name="story-text"></slot><slot name="story-list"></slot></div>` +
+    `<arq-button class="story-link" type="underline" show-underline show-icon icon="arrow-up-right" hidden></arq-button>` +
     `</div>` +
     `</div>` +
     `</div>` +
@@ -158,6 +153,7 @@ class ArqFichaProducto extends ArqElement {
 
   #product = null;
   #selection = {};
+  #storyHasText = false;
   #sku = null;
 
   setup() {
@@ -231,9 +227,9 @@ class ArqFichaProducto extends ArqElement {
     this.#renderInspirationText(product.group.inspiration);
     this.#buildOptions();
     this.#refreshOptions();
-    this.#showVariant();
+    // El SKU de ?sku=, si es del grupo; si no, el is_group_default. La URL siempre queda con ?sku=
+    this.#showVariant({ updateUrl: true, sku: product.variants.find((v) => v.sku === sku)?.sku ?? product.variants.find((v) => v.isDefault)?.sku });
     this.#renderAmbient();
-    this.#renderFamily();
     this.#renderGlossary();
     this.#renderInspirationImages();
     this.#renderCollection();
@@ -336,9 +332,13 @@ class ArqFichaProducto extends ArqElement {
     }
   }
 
-  #showVariant({ updateUrl = false } = {}) {
+  // sku: el SKU pedido (apertura de la ficha). Sin él, el que coincide con los
+  // atributos elegidos. Un grupo sin variant_attributes no tiene selección: el
+  // SKU manda (con la selección vacía findVariant daría siempre el primero).
+  #showVariant({ updateUrl = false, sku = null } = {}) {
     const { group, variants } = this.#product;
-    const variant = findVariant(variants, this.#selection) ?? variants.find((v) => v.isDefault) ?? variants[0];
+    const chosen = Object.keys(this.#selection).length ? findVariant(variants, this.#selection) : null;
+    const variant = variants.find((v) => v.sku === sku) ?? chosen ?? variants.find((v) => v.isDefault) ?? variants[0];
     if (!variant || variant.sku === this.#sku) return;
     this.#sku = variant.sku;
     const details = variantDetails(group, variant.sku);
@@ -355,8 +355,7 @@ class ArqFichaProducto extends ArqElement {
 
     if (updateUrl) {
       const url = new URL(location.href);
-      if (variant.isDefault) url.searchParams.delete('sku');
-      else url.searchParams.set('sku', variant.sku);
+      url.searchParams.set('sku', variant.sku);
       history.replaceState(history.state, '', url);
     }
     this.emit('variant', { sku: variant.sku });
@@ -436,8 +435,7 @@ class ArqFichaProducto extends ArqElement {
   // es el título (<h2>, con o sin «## »), los demás «## » → <h3>,
   // «- » → <li> de un <ul>, el resto <p>.
   #renderStory(story) {
-    const root = this.shadowRoot;
-    this.querySelector(':scope > [slot="story"]')?.remove();
+    for (const old of this.querySelectorAll(':scope > [slot="story-title"], :scope > [slot="story-text"], :scope > [slot="story-list"]')) old.remove();
     const lines = String(story ?? '').split('\n').map((line) => line.trim()).filter(Boolean);
     const nodes = [];
     let list = null;
@@ -449,32 +447,32 @@ class ArqFichaProducto extends ArqElement {
         continue;
       }
       const heading = line.startsWith('## ');
-      const node = document.createElement(!nodes.length ? 'h2' : heading ? 'h3' : 'p');
-      node.slot = 'story-text';
+      const first = !nodes.length;
+      const node = document.createElement(first ? 'h2' : heading ? 'h3' : 'p');
+      node.slot = first ? 'story-title' : 'story-text';
       node.textContent = heading ? line.slice(3).trim() : line;
       nodes.push(node);
     }
     this.append(...nodes, ...(list ? [list] : []));
-    root.querySelector('.story-text').hidden = !nodes.length;
-    root.querySelector('.features').hidden = !list;
-    root.querySelector('.story').hidden = !nodes.length && !list;
+    this.#storyHasText = nodes.length > 0 || Boolean(list);
+    this.#syncStory();
   }
 
-  #renderFamily() {
-    const { family, images, collection } = this.#product;
+  // La sección se muestra si hay texto (y entonces la foto, si hay); sin texto no hay sección
+  #syncStory() {
     const root = this.shadowRoot;
-    root.querySelector('.family').hidden = !family.length;
-    const familyLink = root.querySelector('.family-link');
-    familyLink.hidden = !collection;
+    const { images, collection } = this.#product ?? {};
+    const story = root.querySelector('.story');
+    story.hidden = !this.#storyHasText;
+    const bg = root.querySelector('.story-bg');
+    bg.hidden = !images?.description;
+    if (images?.description) bg.querySelector('img').src = images.description;
+    const link = root.querySelector('.story-link');
+    link.hidden = !collection;
     if (collection) {
-      familyLink.href = collectionHref(collection.id);
-      familyLink.textContent = `Ver colección ${collection.name}`;
+      link.href = collectionHref(collection.id);
+      link.textContent = `Ver colección ${collection.name}`;
     }
-    root.querySelector('.family-cards').replaceChildren(...family.map((card) => familyCard(card)));
-    const picture = root.querySelector('.description-image');
-    picture.hidden = !images.description;
-    if (images.description) picture.querySelector('img').src = images.description;
-    root.querySelector('.family-row').hidden = !family.length && !images.description;
   }
 
   // ── Glosario ──────────────────────────────────────────────────────

@@ -135,7 +135,7 @@ const finishes = (group) => [...new Set(group.variants.flatMap((v) => FINISH_FIE
 
 // Las fotos son de la variante que muestra la card; sin fotos propias, la card
 // muestra el fondo neutro con el nombre (ver variantDetails).
-function productCard(group, variant = group.defaultVariant, withSku = false) {
+function productCard(group, variant = group.defaultVariant) {
   const images = pick(variant.images);
   return {
     id: group.id,
@@ -143,7 +143,7 @@ function productCard(group, variant = group.defaultVariant, withSku = false) {
     name: group.name,
     meta: meta(group),
     finishes: finishes(group),
-    href: productHref(group.id, withSku && variant !== group.defaultVariant ? variant.sku : null),
+    href: productHref(group.id, variant.sku), // la URL siempre lleva el SKU, también el predeterminado
     image: images.studio ?? null,
     imageHover: images.context ?? null,
     imageLit: images.studioOn ?? null,
@@ -193,7 +193,7 @@ export async function listProducts({ filters, query, ...category } = {}) {
   const cards = scope.flatMap((group) => {
     const match = found.get(group);
     const variant = matchingVariant(group, active, match.variant);
-    return variant ? [productCard(group, variant, withFilters || match.bySku)] : [];
+    return variant ? [productCard(group, variant)] : [];
   });
   return { cards, count: cards.length, filters: filterRows(scope) };
 }
@@ -373,7 +373,7 @@ export async function getProductCards(groupIds) {
  */
 export async function getRecommendedProducts() {
   const { groups } = await loadCatalog();
-  return groups.flatMap((group) => group.variants.filter((variant) => variant.isNew).map((variant) => ({ ...productCard(group, variant, true), meta: productKind(group) })));
+  return groups.flatMap((group) => group.variants.filter((variant) => variant.isNew).map((variant) => ({ ...productCard(group, variant), meta: productKind(group) })));
 }
 
 // Tipo de producto: la aplicación de una luminaria («Jardín», «Colgante») o
@@ -504,7 +504,7 @@ export async function getCompare(skus) {
     return group ? [{ group, variant: group.variants.find((v) => v.sku === sku) }] : [];
   });
   const products = found.map(({ group, variant }) => {
-    const card = productCard(group, variant, true);
+    const card = productCard(group, variant);
     return {
       sku: variant.sku,
       name: group.name,
@@ -556,7 +556,7 @@ export async function searchProducts(query, { limit = 5 } = {}) {
   const products = groups.flatMap((group) => {
     const match = searchMatch(group, words);
     if (!match) return [];
-    const card = productCard(group, match.variant, match.bySku);
+    const card = productCard(group, match.variant);
     return [{ kind: 'product', name: group.name, meta: match.variant.sku, href: card.href, image: card.image }];
   });
   const found = collections
@@ -608,7 +608,7 @@ export async function getNavigation() {
     return links.length ? { id: normalize(environment), label: environment, href: categoryHref({ environment }), all: { label: allLabel, href: categoryHref({ environment }) }, links } : null;
   };
   const typeSection = (productType, label, allLabel) => {
-    const links = groups.filter((g) => g.productType === productType).map((g) => ({ label: g.name, href: productHref(g.id), count: 1, ...groupImages(g) }));
+    const links = groups.filter((g) => g.productType === productType).map((g) => ({ label: g.name, href: productHref(g.id, g.defaultVariant.sku), count: 1, ...groupImages(g) }));
     return links.length ? { id: normalize(label), label, href: categoryHref({ productType }), all: { label: allLabel, href: categoryHref({ productType }) }, links } : null;
   };
   const collectionLink = (c) => {

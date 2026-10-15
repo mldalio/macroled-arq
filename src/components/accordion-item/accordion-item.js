@@ -14,8 +14,9 @@
 //   rol para los lectores de pantalla (mismo criterio que faq-item).
 // - El contenido (slot por defecto) queda en el HTML aunque esté cerrado.
 //   Pueden quedar varios abiertos a la vez.
-// - El ícono +/– tiene las medidas de icon-button Size=Large (48 × 48, ícono
-//   24) pero es parte del botón, no otro botón: no se anida un control en otro.
+// - Título en role/heading-3 (Ficha v2). El ícono +/– tiene las medidas de
+//   icon-button Size=Large (48 × 48, ícono 24), sin borde, pero es parte del
+//   botón, no otro botón: no se anida un control en otro.
 // - Open es la prop open. State no es prop: Hover (:hover, solo cerrado, como
 //   el set) y Focus (anillo alrededor de todo el ítem). Breakpoint es media query.
 // - Sin divisor bajo el título al abrir (decisión 2026-10-02 · accordion-item:
@@ -35,7 +36,7 @@ class ArqAccordionItem extends ArqElement {
   static template =
     `<div class="item">` +
     `<button type="button" class="trigger">` +
-    `<span class="title role-body-xl"><slot name="title"></slot></span>` +
+    `<span class="title role-heading-3"><slot name="title"></slot></span>` +
     `<span class="icon-box">${icon('plus')}${icon('minus')}</span>` +
     `</button>` +
     `<div class="content" part="panel"><slot></slot></div>` +

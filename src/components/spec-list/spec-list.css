@@ -1,8 +1,10 @@
 /* spec-list · Figma 922:2500. Solo tokens semánticos.
-   Una columna de spec-row sin gap: cada fila trae su padding y su separador.
+   Una columna de spec-row sin gap: cada fila trae su padding y su separador
+   (la última de cada columna no lleva línea: spec-row con data-arq-last).
    Con columns (solo de código), desde 1024 px las filas se reparten en dos
    columnas separadas space/gap/4xl (en Figma, una spec-list por columna con
-   80 de separación): primero se llena la izquierda. Debajo, una sola. */
+   80 de separación): primero se llena la izquierda, con ceil(n / 2) filas
+   (--rows, que calcula spec-list). Debajo, una sola. */
 
 :host {
   display: block;
@@ -16,13 +18,10 @@
 
 @media (min-width: 1024px) {
   :host([columns]) .list {
-    display: block;
-    column-count: 2;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(var(--rows, 1), auto);
     column-gap: var(--arq-space-gap-4xl);
-  }
-
-  /* una fila no se parte entre columnas */
-  :host([columns]) ::slotted(*) {
-    break-inside: avoid;
   }
 }

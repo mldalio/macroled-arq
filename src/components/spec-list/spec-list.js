@@ -12,6 +12,10 @@
 // columns (solo de código): reparte las filas en dos columnas desde 1024 px,
 // como la Ficha v2 (dos spec-list en Figma).
 //
+// La última fila de cada columna no lleva línea inferior (cierra la del
+// acordeón): la lista la marca con data-arq-last, porque con dos columnas la
+// última de la izquierda depende de cuántas filas haya.
+//
 // Sin prop Title (decisión 2026-10-02 · accordion-item): el set no tiene capa de
 // título; el nombre del bloque lo da el accordion-item que la contiene.
 // Cada spec-row arma su propio <dl> (los <dt>/<dd> no cruzan el Shadow DOM).
@@ -26,6 +30,25 @@ class ArqSpecList extends ArqElement {
     columns: { type: Boolean }, // solo de código: dos columnas desde 1024 px
   };
   static template = `<div class="list"><slot></slot></div>`;
+
+  setup() {
+    this.slotEl = this.shadowRoot.querySelector('slot');
+    this.wide = window.matchMedia('(min-width: 1024px)');
+    this.slotEl.addEventListener('slotchange', () => this.#mark());
+    this.wide.addEventListener('change', () => this.#mark());
+  }
+
+  update() {
+    this.#mark();
+  }
+
+  // Dos columnas: la izquierda se llena primero (ceil(n / 2) filas por columna)
+  #mark() {
+    const rows = this.slotEl.assignedElements();
+    const per = this.columns && this.wide.matches ? Math.ceil(rows.length / 2) : rows.length;
+    this.style.setProperty('--rows', per);
+    rows.forEach((row, i) => row.toggleAttribute('data-arq-last', (i + 1) % per === 0));
+  }
 }
 
 ArqSpecList.define();
