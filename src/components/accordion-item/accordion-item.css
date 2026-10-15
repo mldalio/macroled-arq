@@ -1,9 +1,7 @@
 /* accordion-item · Figma 922:2645, con el cambio de la Ficha v2 (2085:26124 ·
    2118:33571). Solo tokens semánticos.
    Desktop es la base; Mobile (max-width: 767px) no cambia el padding lateral
-   (ya es space/padding/xl).
-   TODO (Figma): el set 922:2645 todavía tiene el diseño anterior (título
-   role/heading-2, fondo faint abierto, padding 2xl); la Ficha v2 usa este. */
+   (ya es space/padding/xl). */
 
 :host {
   display: block;

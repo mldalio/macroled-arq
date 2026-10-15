@@ -11,8 +11,14 @@
 //
 // - Dark local (DESIGN.md §2): el contenedor interno lleva data-arq-theme="dark";
 //   quien arma la página no pone nada.
-// - Título "Productos seleccionados" + count-badge; 3 lugares (compare-slot:
-//   Default en Desktop, Compact en Mobile); "Borrar todo" y "Comparar".
+// - Título "Productos seleccionados" + count-badge; 3 lugares (compare-slot
+//   Default, con divisores); "Borrar todo" y "Comparar". En Mobile, como
+//   macroled.com.ar: solo los productos elegidos, uno arriba de otro, y
+//   "Comparar" debajo a todo el ancho.
+// - Open: el título es un botón que pliega y despliega la lista de productos
+//   (disclosure base, chevron-down abierta · chevron-up plegada). Plegada
+//   quedan el título, "Borrar todo" y "Comparar" (en Desktop, en una sola
+//   línea). Arranca abierta y se vuelve a abrir al agregar un producto.
 // - "Comparar" lleva a /arq/comparativa?sku=SKU1,SKU2,SKU3 (decisión 2026-10-02
 //   · Comparativa; href base en el atributo href).
 // - La selección se guarda en localStorage (arq:compare), así sigue al cambiar
@@ -20,6 +26,8 @@
 // - Emite arq:compare-change { items } cuando cambia la selección.
 
 import { ArqElement } from '../../base/arq-element.js';
+import { Disclosure } from '../../base/disclosure.js';
+import { icon } from '../../base/icons.js';
 import '../button/button.js';
 import '../count-badge/count-badge.js';
 import '../divider/divider.js';
@@ -50,18 +58,20 @@ class ArqCompareBar extends ArqElement {
   static styles = css;
   static properties = {
     href: { type: String, default: '/arq/comparativa' }, // página de la comparativa
+    open: { type: Boolean }, // Open: lista de productos desplegada
   };
   static template =
     `<section class="bar" data-arq-theme="dark" aria-label="Comparar productos" hidden>` +
     `<div class="head">` +
-    `<p class="title role-body-lg"><span>Productos seleccionados</span><arq-count-badge class="count"></arq-count-badge></p>` +
+    `<button class="title toggle role-body-lg"><span>Productos seleccionados</span><arq-count-badge class="count"></arq-count-badge>` +
+    `<span class="icon-box">${icon('chevron-down')}${icon('chevron-up')}</span></button>` +
     `<arq-button type="underline" show-underline class="clear clear-mobile">Borrar todo</arq-button>` +
     `</div>` +
     `<div class="row">` +
     `<div class="slots"></div>` +
     `<div class="actions">` +
     `<arq-button type="underline" show-underline class="clear clear-desktop">Borrar todo</arq-button>` +
-    `<arq-button class="go">Comparar</arq-button>` +
+    `<arq-button class="go" show-icon icon="arrow-right">Comparar</arq-button>` +
     `</div>` +
     `</div>` +
     `</section>`;
@@ -80,6 +90,11 @@ class ArqCompareBar extends ArqElement {
 
   setup() {
     const root = this.shadowRoot;
+    this.open = true;
+    this.disclosure = new Disclosure(this, {
+      trigger: root.querySelector('.toggle'),
+      panel: root.querySelector('.slots'),
+    });
     for (const button of root.querySelectorAll('.clear')) button.addEventListener('click', () => this.clear());
     root.querySelector('.slots').addEventListener('arq:remove', (event) => {
       event.stopPropagation();
@@ -104,6 +119,7 @@ class ArqCompareBar extends ArqElement {
   add(item) {
     if (!item?.sku || this.has(item.sku) || this.#items.length >= MAX) return false;
     this.#items.push({ sku: item.sku, name: item.name ?? '', meta: item.meta ?? '', image: item.image ?? '' });
+    this.open = true;
     this.#changed();
     return true;
   }
@@ -138,19 +154,20 @@ class ArqCompareBar extends ArqElement {
     const items = this.#items;
     root.querySelector('.bar').hidden = items.length === 0;
     root.querySelector('.count').count = items.length;
-    const compact = MOBILE.matches;
+    const mobile = MOBILE.matches;
     const slots = root.querySelector('.slots');
     const nodes = [];
-    for (let i = 0; i < MAX; i++) {
-      if (i > 0 && !compact) {
+    // Mobile: solo los elegidos, apilados (sin lugares vacíos)
+    const count = mobile ? items.length : MAX;
+    for (let i = 0; i < count; i++) {
+      if (i > 0) {
         const divider = document.createElement('arq-divider');
-        divider.setAttribute('orientation', 'vertical');
-        divider.setAttribute('emphasis', 'default');
+        divider.setAttribute('orientation', mobile ? 'horizontal' : 'vertical');
+        divider.setAttribute('emphasis', mobile ? 'subtle' : 'default');
         nodes.push(divider);
       }
       const item = items[i];
       const slot = document.createElement('arq-compare-slot');
-      slot.size = compact ? 'compact' : 'default';
       if (item) {
         slot.sku = item.sku;
         if (item.image) slot.image = item.image;

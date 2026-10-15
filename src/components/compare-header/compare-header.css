@@ -34,6 +34,15 @@
   width: var(--arq-layout-compare-label);
 }
 
+/* Default: el toggle va al pie de la columna, a la altura del último select
+   (Figma, Comparativa: controls alineado abajo). */
+.default .controls {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
 /* stretch: Empty estira su caja a la misma altura que las columnas Filled
    (compare-product.css: Empty ocupa 100% del alto que le toca). */
 .products {
@@ -89,14 +98,13 @@
 }
 
 @media (max-width: 767px) {
-  /* Mobile: columnas de 60 % del ancho de pantalla (igual que compare-table:
-     la siguiente columna asoma) con scroll horizontal. TODO (token): el 60 %
-     no tiene variable en Figma. El gutter va dentro de cada tira desplazable,
+  /* Mobile: columnas de layout/compare-column (160, igual que
+     compare-table: entran dos y asoma la tercera) con scroll horizontal. El gutter va dentro de cada tira desplazable,
      no en el contenedor: así el scroll llega al borde derecho de la pantalla. El scroll lo maneja arq-comparativa (junto con
      compare-table, para que los dos se desplacen igual); acá solo hace falta
      que el contenido pueda ser más ancho que la pantalla sin recortarse. */
   :host {
-    --column-width: 60vw;
+    --column-width: var(--arq-layout-compare-column);
   }
 
   .default {
@@ -201,5 +209,22 @@
     flex: 1 1 0;
     width: auto;
     padding-inline: var(--arq-space-padding-md) var(--arq-space-gap-lg);
+  }
+}
+
+/* embedded (arq-comparativa): en Mobile la tira de productos del Default no
+   tiene scroll propio; se desplaza con el contenedor de la página, junto con
+   compare-table (un solo scroll, como macroled.com.ar/comparativa). Mide su
+   contenido para que el contenedor sepa cuánto desplazar. */
+@media (max-width: 767px) {
+  :host([embedded]) .default {
+    width: max-content;
+    min-width: 100%;
+  }
+
+  :host([embedded]) .products {
+    flex: none;
+    width: max-content;
+    overflow: visible;
   }
 }

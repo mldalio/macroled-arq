@@ -12,15 +12,17 @@
 //   Productos: en Desktop el mega-menu debajo de la barra; en Mobile el submenú
 //   de Productos dentro del menú.
 // - Mode no es prop: es el estado de la barra (Default · Search · Menu ·
-//   Products · Interior · Exterior · Colecciones), que cambia con las
+//   Products · Interior · Exterior · Lámparas y artefactos · Colecciones),
+//   que cambia con las
 //   acciones del usuario. Se refleja en el atributo mode (solo lectura) para
 //   la demo y los estilos de la página.
-// - Products (Mobile, frame 2295:23568): lista de Interior, Exterior y
-//   Colecciones (mega-link submenu, chevron-right). Cada fila entra a su
-//   submenú con «volver» y el nombre del nivel: links en mega-link Size=Large
-//   y "Ver todo…" al pie (frame 2295:23605; Colecciones con miniatura, y la
-//   lista se desplaza con "Ver todo" fijo abajo). Lámparas y artefactos no
-//   está en la lista del frame (en Desktop sí, como pestaña).
+// - Products (Mobile, set 841:2325): lista de Interior, Exterior, Lámparas y
+//   artefactos y Colecciones (mega-link submenu, chevron-right). Cada fila
+//   entra a su submenú con «volver» y el nombre del nivel: links en mega-link
+//   Size=Large y "Ver todo…" al pie (frame 2295:23605; Colecciones con
+//   miniatura, y la lista se desplaza con "Ver todo" fijo abajo). Lámparas y
+//   artefactos (set 2312:8904) tiene dos grupos, Lámparas y Artefactos, cada
+//   uno con su eyebrow (role/label), filas con miniatura y su "Ver todo…".
 // - Theme: default · transparent. Transparent va sobre la foto del hero:
 //   fondo color/overlay/translucent con blur/backdrop, textos e íconos en
 //   inverso (nav-link Theme=Inverse). Sigue transparente mientras la barra
@@ -70,7 +72,7 @@ const MOBILE = matchMedia('(max-width: 767px)');
 const esc = (text) => String(text ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const SEARCH_LIMIT = 5; // search-dropdown: "hasta 4 o 5" resultados
 const DEBOUNCE = 150;
-const SUBMENUS = ['interior', 'exterior', 'colecciones']; // orden del frame 2295:23568
+const SUBMENUS = ['interior', 'exterior', 'lamparas-y-artefactos', 'colecciones']; // orden de Products Mobile (841:2325)
 
 class ArqNavbar extends ArqElement {
   static tag = 'arq-navbar';
@@ -432,7 +434,14 @@ class ArqNavbar extends ArqElement {
   #subLabel(id) {
     const nav = this.#navigation;
     if (id === 'colecciones') return nav?.collections?.length ? 'Colecciones' : '';
+    if (id === 'lamparas-y-artefactos') return this.#subSections(id).length ? 'Lámparas y artefactos' : '';
     return nav?.sections?.[id]?.label ?? '';
+  }
+
+  // Secciones de un submenú con grupos (Lámparas y artefactos)
+  #subSections(id) {
+    const s = this.#navigation?.sections ?? {};
+    return id === 'lamparas-y-artefactos' ? [s.lamparas, s.artefactos].filter(Boolean) : [];
   }
 
   // Submenú Mobile: «volver» con el nombre del nivel, links en mega-link
@@ -443,6 +452,7 @@ class ArqNavbar extends ArqElement {
     const nav = this.#navigation;
     const box = root.querySelector('.menu-sub');
     box.classList.toggle('menu-sub--colecciones', id === 'colecciones');
+    box.classList.toggle('menu-sub--grupos', id === 'lamparas-y-artefactos');
     root.querySelector('.sub-label').textContent = this.#subLabel(id);
     let links = '';
     let cta = '';
@@ -455,6 +465,21 @@ class ArqNavbar extends ArqElement {
         )
         .join('');
       if (nav?.allCollections) cta = `<arq-button type="underline" show-underline href="${esc(nav.allCollections.href)}">Ver todo</arq-button>`;
+    } else if (id === 'lamparas-y-artefactos') {
+      // Un grupo por sección: eyebrow, filas con miniatura y su "Ver todo…".
+      // Los dos "Ver todo…" van dentro de la lista (se desplazan con ella).
+      links = this.#subSections(id)
+        .map(
+          (section) =>
+            `<div class="sub-group" role="group" aria-label="${esc(section.label)}">` +
+            `<p class="sub-eyebrow role-label" aria-hidden="true">${esc(section.label)}</p>` +
+            section.links
+              .map((l) => `<arq-mega-link size="large" show-image href="${esc(l.href)}"${l.thumb ? ` image="${esc(l.thumb)}"` : ''}>${esc(l.label)}</arq-mega-link>`)
+              .join('') +
+            `<div class="sub-group-cta"><arq-button type="underline" show-underline show-icon icon="arrow-right" href="${esc(section.all.href)}">${esc(section.all.label)}</arq-button></div>` +
+            `</div>`,
+        )
+        .join('');
     } else {
       const section = nav?.sections?.[id];
       links = (section?.links ?? []).map((l) => `<arq-mega-link size="large" href="${esc(l.href)}">${esc(l.label)}</arq-mega-link>`).join('');

@@ -680,6 +680,28 @@
         </div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-download-card">
+        <h2 id="demo-download-card" class="demo-heading role-label">download-card · &lt;arq-download-card&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 2496:8095. Toda la tarjeta descarga el archivo; Hover borde color/border/hover en la imagen, Focus anillo alrededor.</p>
+        <div class="demo-row">
+          <arq-download-card href="#demo-download-card" show-description style="width: 520px; max-width: 100%">
+            <img slot="image" src="/demo/fixtures/img/card-estudio.svg" alt="" loading="lazy">
+            <span slot="title">Catálogo Macroled ARQ 2026</span>
+            <span slot="description">Un catálogo por familia de producto</span>
+          </arq-download-card>
+          <arq-download-card href="#demo-download-card" style="width: 320px; max-width: 100%">
+            <span slot="title">Sin imagen ni bajada, con un título muy largo para ver cómo se parte</span>
+          </arq-download-card>
+        </div>
+        <div class="demo-dark" data-arq-theme="dark">
+          <arq-download-card href="#demo-download-card" show-description style="width: 320px; max-width: 100%">
+            <img slot="image" src="/demo/fixtures/img/card-estudio.svg" alt="" loading="lazy">
+            <span slot="title">Catálogo (Dark)</span>
+            <span slot="description">Un catálogo por familia de producto</span>
+          </arq-download-card>
+        </div>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-download-item">
         <h2 id="demo-download-item" class="demo-heading role-label">download-item · &lt;arq-download-item&gt;</h2>
         <p class="demo-note role-body-sm">Figma 1101:5542. Con href es un link de descarga; sin href es un botón que emite arq:download (la ficha técnica se genera al hacer clic). Default: Hover subraya el texto. Featured: caja; Hover color/surface/faint.</p>
@@ -751,16 +773,20 @@
           <arq-select type="filter" label="Acabado" disabled data-demo-options="finishes"></arq-select>
           <arq-select type="filter" label="Altura (show-swatch)" value="50 cm" show-swatch data-demo-options="heights"></arq-select>
         </div>
-        <p class="demo-note role-body-sm">Etiqueta según el Type: Field, role/label de 12 px; Filter, de 14 px (glosario de variantes).</p>
+        <p class="demo-note role-body-sm">Etiqueta: Field y Filter Small, role/label de 12 px (compare-product); Filter Default, role/label-lg de 14 px (filter-bar).</p>
         <div class="demo-row">
           <arq-select label="Acabado (Field · 12 px)" data-demo-options="finishes"></arq-select>
           <arq-select type="filter" label="Acabado (Filter · 14 px)" data-demo-options="finishes"></arq-select>
+          <arq-select type="filter" size="small" label="Acabado (Small)" data-demo-options="finishes"></arq-select>
+          <arq-select type="filter" size="small" label="Acabado (Small)" value="Negro" data-demo-options="finishes"></arq-select>
+          <arq-select type="filter" size="small" label="Altura (Small)" disabled data-demo-options="heights"></arq-select>
         </div>
         <p class="demo-note role-body-sm" data-demo-select-log>arq:change → (todavía nada)</p>
         <div class="demo-dark" data-arq-theme="dark">
           <div class="demo-row">
             <div class="demo-option-groups"><arq-select label="Acabado (Dark)" value="Negro" data-demo-options="finishes"></arq-select></div>
             <arq-select type="filter" label="Acabado" value="Negro" data-demo-options="finishes"></arq-select>
+            <arq-select type="filter" size="small" label="Acabado (Small)" value="Negro" data-demo-options="finishes"></arq-select>
           </div>
         </div>
       </section>
@@ -873,6 +899,13 @@
         <arq-catalog-toolbar count="1" unit="productos" filter-count="3"></arq-catalog-toolbar>
         <div class="demo-dark" data-arq-theme="dark">
           <arq-catalog-toolbar count="11" unit="productos" filter-count="2"></arq-catalog-toolbar>
+        </div>
+        <h3 class="demo-subheading role-body-sm">State=Scroll (state="scroll" + name): nombre de la página y divider antes de la cantidad. En Mobile no se muestra el nombre</h3>
+        <arq-catalog-toolbar count="11" unit="productos" state="scroll" name="Interior" show-iluminar></arq-catalog-toolbar>
+        <arq-catalog-toolbar count="4" unit="productos" state="scroll" name="Lámparas y artefactos para exterior con un nombre muy largo que no entra" filter-count="1" show-iluminar></arq-catalog-toolbar>
+        <arq-catalog-toolbar count="10" unit="colecciones" state="scroll"></arq-catalog-toolbar>
+        <div class="demo-dark" data-arq-theme="dark">
+          <arq-catalog-toolbar count="11" unit="productos" state="scroll" name="Exterior" show-iluminar></arq-catalog-toolbar>
         </div>
       </section>
 
@@ -1487,7 +1520,7 @@
 
       <section class="demo-section" aria-labelledby="demo-navbar">
         <h2 id="demo-navbar" class="demo-heading role-label">navbar · &lt;arq-navbar&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 753:2907 y frames 2295:23568 · 2295:23605. Productos abre el mega-menu (Desktop) o, en Mobile, la lista Interior · Exterior · Colecciones: cada fila entra a su submenú (con «volver»; Colecciones con miniaturas y «Ver todo» fijo abajo). La lupa abre la búsqueda: escribí «kanu», «jardín» o un SKU; ↑ ↓ eligen y Enter abre; Esc cierra. Datos del catálogo: Typesense. En la demo la barra no queda fija.</p>
+        <p class="demo-note role-body-sm">Figma 753:2907 y frames 2295:23568 · 2295:23605. Productos abre el mega-menu (Desktop) o, en Mobile, la lista Interior · Exterior · Lámparas y artefactos · Colecciones (un nivel sin datos no aparece): cada fila entra a su submenú (con «volver»; Colecciones con miniaturas y «Ver todo» fijo abajo; Lámparas y artefactos con dos grupos, set 2312:8904). La lupa abre la búsqueda: escribí «kanu», «jardín» o un SKU; ↑ ↓ eligen y Enter abre; Esc cierra. Datos del catálogo: Typesense. En la demo la barra no queda fija.</p>
         <div class="demo-navbar">
           <arq-navbar>
             <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
@@ -1508,6 +1541,14 @@
         <p class="demo-note role-body-sm">Dark (Iluminar en la ficha: data-arq-theme="dark" en el navbar):</p>
         <div class="demo-navbar">
           <arq-navbar data-arq-theme="dark" label="Principal (Dark)">
+            <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-navbar">Descargas</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-navbar">Contacto</arq-nav-link>
+          </arq-navbar>
+        </div>
+        <p class="demo-note role-body-sm">Con Lámparas y artefactos de ejemplo (Typesense todavía no tiene lámparas ni artefactos). En Mobile («Ver a 390»): menú → Productos → Lámparas y artefactos; en Desktop, la pestaña del mega-menu:</p>
+        <div class="demo-navbar">
+          <arq-navbar data-demo-navbar-types label="Principal (Lámparas y artefactos de ejemplo)">
             <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
             <arq-nav-link slot="links" href="#demo-navbar">Descargas</arq-nav-link>
             <arq-nav-link slot="links" href="#demo-navbar">Contacto</arq-nav-link>
@@ -1745,7 +1786,7 @@
             <span slot="back">Volver a productos</span>
             <h1 slot="title">Comparativa</h1>
             <span slot="description">Compará hasta tres productos: especificaciones lumínicas, eléctricas y de montaje lado a lado.</span>
-            <arq-button slot="action" data-arq-print>Imprimir comparación</arq-button>
+            <arq-button slot="action" show-icon icon="download" data-arq-print>Descargar comparación</arq-button>
           </arq-page-header>
         </div>
 
@@ -1781,7 +1822,7 @@
             <span slot="back">Volver a productos</span>
             <h1 slot="title">Comparativa</h1>
             <span slot="description">Compará hasta tres productos lado a lado.</span>
-            <arq-button slot="action" data-arq-print>Imprimir comparación</arq-button>
+            <arq-button slot="action" show-icon icon="download" data-arq-print>Descargar comparación</arq-button>
           </arq-page-header>
         </div>
       </section>

@@ -319,6 +319,33 @@
   padding-block: 0;
 }
 
+/* Lámparas y artefactos (set 2312:8904): dos grupos en la misma lista, cada
+   uno con eyebrow role/label en color/text/tertiary, filas con miniatura y
+   su "Ver todo…" a space/padding/md + space/gap/md de la última fila. El
+   segundo grupo arranca a space/padding/lg. El aire de abajo lo da el menú. */
+.menu-sub--grupos .sub-list {
+  padding-bottom: 0;
+}
+
+.sub-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.sub-group + .sub-group {
+  padding-top: var(--arq-space-padding-lg);
+}
+
+.sub-eyebrow {
+  margin: 0;
+  color: var(--arq-color-text-tertiary);
+}
+
+.sub-group-cta {
+  margin-top: var(--arq-space-padding-md);
+  padding-top: var(--arq-space-gap-md);
+}
+
 @media (max-width: 767px) {
   .right {
     display: contents;

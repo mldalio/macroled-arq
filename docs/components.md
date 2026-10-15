@@ -5,11 +5,11 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 - Si este archivo no coincide con Figma, manda Figma y se actualiza este archivo.
 - Al crear o modificar un componente en código, actualizar su **Estado en código** y su marca.
 
-**72 de 75 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
+**80 de 82 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
 
 | Componente | Etiqueta | Estado en código |
 | --- | --- | --- |
-| ✅ [accordion-item](#accordion-item) | `<arq-accordion-item>` | En código ([README](../src/components/accordion-item/README.md)) · Figma cambió, falta en código: Ficha v2: título role/body-xl ya en código; falta icon-button Large Outline, sin fondo abierto y paddings nuevos |
+| ✅ [accordion-item](#accordion-item) | `<arq-accordion-item>` | En código ([README](../src/components/accordion-item/README.md)) |
 | ✅ [breadcrumb](#breadcrumb) | `<arq-breadcrumb>` | En código ([README](../src/components/breadcrumb/README.md)) |
 | ✅ [breadcrumb-item](#breadcrumb-item) | `<arq-breadcrumb-item>` | En código ([README](../src/components/breadcrumb-item/README.md)) |
 | ✅ [button](#button) | `<arq-button>` | En código ([README](../src/components/button/README.md)) |
@@ -20,7 +20,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [catalog-nav-item](#catalog-nav-item) | `<arq-catalog-nav-item>` | En código ([README](../src/components/catalog-nav-item/README.md)) |
 | ✅ [catalog-nav-mobile](#catalog-nav-mobile) | — | Dentro de catalog-nav ([README](../src/components/catalog-nav/README.md)) |
 | ✅ [catalog-nav-trigger](#catalog-nav-trigger) | — | Dentro de catalog-nav ([README](../src/components/catalog-nav/README.md)) |
-| ✅ [catalog-toolbar](#catalog-toolbar) | `<arq-catalog-toolbar>` | En código ([README](../src/components/catalog-toolbar/README.md)) · Figma cambió, falta en código: State=Scroll con el nombre de la página |
+| ✅ [catalog-toolbar](#catalog-toolbar) | `<arq-catalog-toolbar>` | En código ([README](../src/components/catalog-toolbar/README.md)); State=Scroll con el nombre de la página (en Mobile no se muestra: TODO de Figma) |
 | ✅ [category-card](#category-card) | `<arq-category-card>` | En código ([README](../src/components/category-card/README.md)) |
 | ✅ [checkbox](#checkbox) | `<arq-checkbox>` | En código ([README](../src/components/checkbox/README.md)) |
 | ✅ [choice-chip](#choice-chip) | `<arq-choice-chip>` | En código ([README](../src/components/choice-chip/README.md)) · Selected en `color/surface/inverse` |
@@ -34,13 +34,14 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [count-badge](#count-badge) | `<arq-count-badge>` | En código ([README](../src/components/count-badge/README.md)) |
 | ✅ [cta-block](#cta-block) | `<arq-cta-block>` | En código ([README](../src/components/cta-block/README.md)) |
 | ✅ [divider](#divider) | `<arq-divider>` | En código ([README](../src/components/divider/README.md)) |
+| ✅ [download-card](#download-card) | `<arq-download-card>` | En código ([README](../src/components/download-card/README.md)) · nuevo (Descargas) |
 | ✅ [download-item](#download-item) | `<arq-download-item>` | En código ([README](../src/components/download-item/README.md)) |
 | ✅ [download-modal](#download-modal) | `<arq-download-modal>` | En código ([README](../src/components/download-modal/README.md)) |
 | ✅ [family-card](#family-card) | `<arq-family-card>` | En código ([README](../src/components/family-card/README.md)) |
 | ✅ [faq-item](#faq-item) | `<arq-faq-item>` | En código ([README](../src/components/faq-item/README.md)) |
 | ✅ [feature-block](#feature-block) | `<arq-feature-block>` | En código ([README](../src/components/feature-block/README.md)) |
 | ✅ [file-upload](#file-upload) | `<arq-file-upload>` | En código ([README](../src/components/file-upload/README.md)) |
-| ✅ [filter-bar](#filter-bar) | `<arq-filter-bar>` | En código ([README](../src/components/filter-bar/README.md)) · Figma cambió, falta en código: Ficha v2: fondo color/surface/soft, sin líneas y «Limpiar filtros» debajo |
+| ✅ [filter-bar](#filter-bar) | `<arq-filter-bar>` | En código ([README](../src/components/filter-bar/README.md)) · Ficha v2 |
 | ✅ [filter-chip](#filter-chip) | `<arq-filter-chip>` | En código ([README](../src/components/filter-chip/README.md)) |
 | ✅ [filter-panel](#filter-panel) | `<arq-filter-panel>` | En código ([README](../src/components/filter-panel/README.md)) |
 | ✅ [filter-row](#filter-row) | `<arq-filter-row>` | En código ([README](../src/components/filter-row/README.md)) |
@@ -56,12 +57,18 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [link-list](#link-list) | `<arq-link-list>` | En código ([README](../src/components/link-list/README.md)) |
 | ✅ [logo](#logo) | `<arq-logo>` | En código ([README](../src/components/logo/README.md)) |
 | ✅ [mega-link](#mega-link) | `<arq-mega-link>` | En código ([README](../src/components/mega-link/README.md)) |
-| ✅ [mega-menu](#mega-menu) | `<arq-mega-menu>` | En código ([README](../src/components/mega-menu/README.md)) · Figma cambió, falta en código: pestaña «Por espacio» y títulos en role/heading-1 y role/heading-2 |
+| ✅ [mega-menu](#mega-menu) | `<arq-mega-menu>` | En código ([README](../src/components/mega-menu/README.md)) |
 | ✅ [nav-link](#nav-link) | `<arq-nav-link>` | En código ([README](../src/components/nav-link/README.md)) |
-| ✅ [navbar](#navbar) | `<arq-navbar>` | En código ([README](../src/components/navbar/README.md)) · Figma cambió, falta en código: Modes Interior · Exterior · Lámparas y artefactos · Colecciones (submenús mobile) |
+| ✅ [navbar](#navbar) | `<arq-navbar>` | En código ([README](../src/components/navbar/README.md)); submenús Mobile Interior · Exterior · Lámparas y artefactos · Colecciones |
 | ✅ [option-group](#option-group) | `<arq-option-group>` | En código ([README](../src/components/option-group/README.md)) |
 | ✅ [option-tile](#option-tile) | `<arq-option-tile>` | En código ([README](../src/components/option-tile/README.md)) |
 | ✅ [page-header](#page-header) | `<arq-page-header>` | En código ([README](../src/components/page-header/README.md)) |
+| ✅ [pdf-cover-title](#pdf-cover-title) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
+| ✅ [pdf-footer](#pdf-footer) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
+| ✅ [pdf-header](#pdf-header) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
+| ✅ [pdf-page](#pdf-page) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
+| ✅ [pdf-spec-group](#pdf-spec-group) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
+| ✅ [pdf-spec-row](#pdf-spec-row) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [product-card](#product-card) | `<arq-product-card>` | En código ([README](../src/components/product-card/README.md)); imágenes reales con TODO |
 | ✅ [product-gallery](#product-gallery) | `<arq-product-gallery>` | En código ([README](../src/components/product-gallery/README.md)) |
 | ✅ [search-dropdown](#search-dropdown) | `<arq-search-dropdown>` | En código ([README](../src/components/search-dropdown/README.md)) |
@@ -72,20 +79,20 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [search-screen](#search-screen) | `<arq-search-screen>` | En código ([README](../src/components/search-screen/README.md)) |
 | ✅ [search-see-all](#search-see-all) | `<arq-search-see-all>` | En código ([README](../src/components/search-see-all/README.md)) |
 | ✅ [section-header](#section-header) | `<arq-section-header>` | En código ([README](../src/components/section-header/README.md)) |
-| ✅ [select](#select) | `<arq-select>` | En código ([README](../src/components/select/README.md)) · Figma cambió, falta en código: etiqueta de Type=Filter en 14 px mayúsculas (sin estilo role/*) |
+| ✅ [select](#select) | `<arq-select>` | En código ([README](../src/components/select/README.md)) · Size (Default 14 · Small 12, solo Filter); Filter sin línea y con gap sm |
 | ✅ [select-menu](#select-menu) | `<arq-select-menu>` | En código ([README](../src/components/select-menu/README.md)) |
 | ✅ [select-option](#select-option) | `<arq-select-option>` | En código ([README](../src/components/select-option/README.md)) |
-| ✅ [sku](#sku) | `<arq-sku>` | En código ([README](../src/components/sku/README.md)) · Figma cambió, falta en código: Size=Underline |
+| ✅ [sku](#sku) | `<arq-sku>` | En código ([README](../src/components/sku/README.md)) · Size=Underline |
 | ✅ [spec-list](#spec-list) | `<arq-spec-list>` | En código ([README](../src/components/spec-list/README.md)) |
-| ✅ [spec-row](#spec-row) | `<arq-spec-row>` | En código ([README](../src/components/spec-row/README.md)) · Figma cambió, falta en código: Ficha v2: valor role/body, etiqueta hasta 300, padding space/padding/sm y gap space/gap/md |
+| ✅ [spec-row](#spec-row) | `<arq-spec-row>` | En código ([README](../src/components/spec-row/README.md)) |
 | ✅ [swatch](#swatch) | `<arq-swatch>` | En código ([README](../src/components/swatch/README.md)) |
 | ✅ [swatch-picker](#swatch-picker) | `<arq-swatch-picker>` | En código ([README](../src/components/swatch-picker/README.md)) |
 | ✅ [tab](#tab) | `<arq-tab>` | En código ([README](../src/components/tab/README.md)) |
 | ✅ [toggle](#toggle) | `<arq-toggle>` | En código ([README](../src/components/toggle/README.md)) |
 | ✅ [toggle-switch](#toggle-switch) | — | Dentro de toggle ([README](../src/components/toggle/README.md)) |
-| ✅ [variants-table](#variants-table) | `<arq-variants-table>` | En código ([README](../src/components/variants-table/README.md)) |
-| ✅ [variants-table-row](#variants-table-row) | — | Dentro de variants-table ([README](../src/components/variants-table/README.md)) |
-| ✅ variants-table-card | — | Mobile (hasta 767 px): una tarjeta por variante en lugar de la tabla (Figma 2399:31269, [README](../src/components/variants-table/README.md)) |
+| ✅ [variants-table](#variants-table) | `<arq-variants-table>` | En código ([README](../src/components/variants-table/README.md)) · Ficha v2 y Descargas (buscador a la derecha) |
+| ✅ [variants-table-card](#variants-table-card) | dentro de `<arq-variants-table>` | En código, como parte de variants-table (Mobile) ([README](../src/components/variants-table/README.md)) |
+| ✅ [variants-table-row](#variants-table-row) | — | Dentro de variants-table ([README](../src/components/variants-table/README.md)) · Ficha v2 |
 
 ### Componentes de layout de página (sin set en Figma)
 
@@ -101,7 +108,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ coleccion | `<arq-coleccion>` | Página de colección: cards de sus productos, galería, texto + imagen y mosaico con flechas ([README](../src/components/coleccion/README.md)) |
 | ✅ form-contacto | `<arq-form-contacto>` | Contacto (v3): información por slot (fija al desplazar en Desktop), formulario con validación, honeypot y envío a n8n, y preguntas frecuentes opcionales por slot ([README](../src/components/form-contacto/README.md)) |
 | ✅ ficha-producto | `<arq-ficha-producto>` | Ficha de producto: hero con galería y configurador, descargas, especificaciones, descripción, glosario, inspiración y colección ([README](../src/components/ficha-producto/README.md)) |
-| ✅ descargas | `<arq-descargas>` | Página Descargas (antes Glosario): variants-table con todos los SKU del catálogo, buscador y el modal de descargas de cada fila ([README](../src/components/descargas/README.md)) |
+| ✅ descargas | `<arq-descargas>` | Página Descargas: título, bajada y download-card del catálogo arriba; «Buscar producto» con variants-table (todos los SKU, buscador) y el modal de descargas de cada fila ([README](../src/components/descargas/README.md)) |
 | ✅ comparativa | `<arq-comparativa>` | Página Comparativa: combina compare-header y compare-table con los SKU de `?sku=`, con datos del catálogo ([README](../src/components/comparativa/README.md)) |
 
 ### Páginas
@@ -208,7 +215,7 @@ Encabezado desplegable de catalog-nav-mobile. Mismo patrón que accordion-item: 
 ## catalog-toolbar
 
 - Figma: [1244-4058](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1244-4058)
-- Propiedades: Count; Show iluminar; Breakpoint: Desktop · Mobile; State: Default · Scroll (en código, atributo `state="scroll"`: la barra compacta del catálogo al desplazarse, con padding vertical `space/padding/sm`)
+- Propiedades: Count; Show iluminar; Breakpoint: Desktop · Mobile; State: Default · Scroll (en código, atributo `state="scroll"` + `name`: la barra fija del catálogo al desplazarse, con padding vertical `space/padding/sm`, el nombre de la página y un divider antes de la cantidad. El set no tiene Scroll Mobile: en Mobile el nombre no se muestra, TODO)
 
 Barra sobre la grilla de Productos y Colecciones: cantidad (role/body, color/text/secondary), toggle Iluminar, divider vertical y botón Filtrar (button Outline expuesto: con filtros activos, Show count + icon/filter-off). Mismo contenido en Desktop y Mobile. State: Default · Scroll. Scroll (al desplazarse la página) suma a la izquierda el nombre de la página (role/body-lg, color/text/primary) y un divider vertical antes de la cantidad, con gap space/gap/lg.
 
@@ -248,16 +255,16 @@ Opción seleccionable en forma de chip para elegir entre pocas opciones visibles
 ## compare-bar
 
 - Figma: [1233-3963](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1233-3963)
-- Propiedades: Title; Breakpoint: Desktop · Mobile
+- Propiedades: Title; Breakpoint: Desktop · Mobile; Open: True · False
 
-Barra fija inferior para comparar productos (hasta 3). Título + count-badge con la cantidad seleccionada, compare-slot (Filled/Empty) y acciones: button Underline "Borrar todo" y Filled "Comparar". Usa el tema oscuro (modo Dark de Color) fijado en cada variante. Desktop: slots Size=Default separados por divider; Mobile: slots Size=Compact.
+Barra fija inferior para comparar productos (hasta 3). Título + count-badge con la cantidad seleccionada, compare-slot (Filled/Empty) y acciones: button Underline «Borrar todo» y Filled «Comparar». Usa el tema oscuro (modo Dark de Color) fijado en cada variante. Desktop: slots Size=Default separados por divider Vertical. Mobile (como macroled.com.ar): solo los productos elegidos, uno arriba de otro (compare-slot Default con divider Horizontal Subtle) y «Comparar» debajo a todo el ancho. Open (Desktop y Mobile): el título lleva un chevron que pliega la lista (chevron-down abierta, chevron-up plegada); plegada quedan el título, «Borrar todo» y «Comparar» (en Desktop, en una sola línea y con el chevron en la punta derecha). Arranca abierta y se vuelve a abrir al agregar un producto.
 
 ## compare-group
 
 - Figma: [1263-4320](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1263-4320)
 - Propiedades: Label
 
-Título de grupo de la tabla comparativa (role/label en mayúsculas, borde inferior color/border/strong). Ancho FILL; en mobile queda fijo a la izquierda al hacer scroll horizontal.
+Título de grupo de la tabla comparativa (role/body-xl en caja normal, color/text/primary; borde inferior color/border/strong). Ancho FILL; en mobile queda fijo a la izquierda al hacer scroll horizontal.
 
 ## compare-header
 
@@ -315,6 +322,13 @@ Bloque de cierre de página con fondo color/surface/subtle y space/section/md. T
 
 Línea divisoria. Horizontal: ancho FILL en el contenedor. Vertical: alto fijo 20 (toolbar) o FILL (compare-bar). Emphasis: Subtle = color/border/subtle, Default = color/border/default.
 
+## download-card
+
+- Figma: [2496-8095](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2496-8095)
+- Propiedades: Title; Description; Show description; State: Default · Hover · Focus
+
+Tarjeta de descarga de un archivo general (Descargas: «Catálogo Macroled ARQ 2026»). Toda la tarjeta es un link que descarga el archivo. Imagen ratio/landscape (5:4) con fondo color/surface/subtle (la portada va contenida, en el fill de la instancia) + título role/heading-3 (text/primary) con icon/download a la derecha (gap space/gap/sm-md) y bajada role/body (text/secondary) a space/gap/xs; imagen y textos a space/gap/md. Ancho layout/measure-wide (520); en Mobile toma el ancho de su columna. State: Default, Hover (border/default en color/border/hover sobre la imagen, como family-card) y Focus (anillo border/strong en color/border/focus, separado 2 px). Props: Title, Description y Show description. No confundir con download-item (fila del modal de descargas) ni con family-card (link a otra ficha).
+
 ## download-item
 
 - Figma: [1101-5542](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1101-5542)
@@ -368,7 +382,7 @@ Un solo archivo. State: Empty, Attached, Drag over (archivo arrastrado encima: b
 - Figma: [1068-5165](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1068-5165)
 - Propiedades: State: Default · Applied; Breakpoint: Desktop · Mobile
 
-Barra de filtros de la tabla de variantes (visible con Filtros activos). Ficha v2: fondo surface/soft, sin líneas, padding vertical space/padding/2xl y lateral layout/gutter, con «Limpiar filtros» debajo de los filtros (componente de borde a borde: el fondo llega al borde y el contenido se alinea con la grilla). Celdas select Type=Filter separadas por divisores border/subtle, gap space/gap/lg. State: Default (todos en "Todos") y Applied (al menos un filtro elegido: la celda en Filled y link "Limpiar filtros" con button Underline a la derecha).
+Barra de filtros de la tabla de variantes (visible con Filtros activos). Ficha v2: fondo surface/soft, sin líneas, padding vertical space/padding/2xl y lateral layout/gutter, con «Limpiar filtros» debajo de los filtros (el fondo ocupa el ancho de su contenedor: dentro de variants-table, el ancho del contenido; adentro lleva layout/gutter). Celdas select Type=Filter separadas por divisores border/subtle, gap space/gap/lg. State: Default (todos en "Todos") y Applied (al menos un filtro elegido: la celda en Filled y link "Limpiar filtros" con button Underline a la derecha).
 
 ## filter-chip
 
@@ -396,7 +410,7 @@ Fila desplegable del panel de filtros (filter-panel). Mismo patrón que catalog-
 - Figma: [788-3104](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=788-3104)
 - Propiedades: Breakpoint: Desktop · Mobile
 
-Footer de Macroled Arq. Desktop: marca a la izquierda y tres columnas (Productos, Información, Redes). Mobile: marca, columnas y legal apilados. Los links son instancias de footer-link.
+Footer de Macroled Arq, último bloque de todas las páginas. Sigue el modo de la página (fondo color/surface/default, línea superior color/border/subtle): blanco; con Iluminar (Productos y Colecciones) pasa a Dark junto con el resto. Desktop: marca a la izquierda y tres columnas (Productos, Información, Redes). Mobile: marca, columnas y legal apilados. Los links son instancias de footer-link.
 
 ## footer-link
 
@@ -533,6 +547,48 @@ Encabezado de páginas de listado (Productos, Colecciones, Descargas, Contacto).
 
 Anchos: bajada de List hasta layout/measure; columna de título y bajada de Detail hasta layout/measure-wide. El componente aplica su propio layout/gutter (como navbar y footer). El breadcrumb muestra los niveles que correspondan a la página.
 
+## pdf-cover-title
+
+- Figma: [1907-27095](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-27095)
+- Propiedades: Eyebrow; Name; SKU
+
+Bloque de título de la portada PDF: eyebrow role/label (color/text/tertiary), nombre role/display (color/text/primary) y SKU role/body-lg (color/text/secondary). Gap space/gap/sm-md, padding inferior space/padding/xl-2xl. Escala Type en modo Mobile (display = 40).
+
+## pdf-footer
+
+- Figma: [1907-27023](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-27023)
+- Propiedades: Note; Page
+
+Pie de página de la ficha PDF: nota (role/body-sm) a la izquierda y paginado (role/label) a la derecha, ambos color/text/tertiary. Borde superior border/default + color/border/subtle, padding superior space/padding/md.
+
+## pdf-header
+
+- Figma: [1907-27058](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-27058)
+- Propiedades: Meta; Meta 2; Show meta 2
+
+Encabezado de la ficha PDF: logo (Size=Small) y metadatos role/label en mayúsculas (color/text/tertiary), separados por space/gap/md. Portada: Meta="Ficha técnica" y Show meta 2 apagado. Páginas internas: nombre + SKU. Borde inferior border/default + color/border/subtle, padding inferior space/padding/md.
+
+## pdf-page
+
+- Figma: [1907-27212](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-27212)
+- Propiedades: Type: Portada · Especificaciones
+
+Página A4 (794×1123) de la ficha técnica PDF. Type=Portada: pdf-header (Meta="Ficha técnica"), imagen de producto (fill color/surface/subtle + imagen), pdf-cover-title y pdf-footer. Type=Especificaciones: pdf-header (nombre + SKU), tres pdf-spec-group y pdf-footer con aviso legal. Fondo color/surface/default; padding space/padding/xl-2xl arriba, space/padding/2xl a los lados, space/padding/xl abajo. Escala Type en modo Mobile. Todo el contenido sale de Typesense.
+
+## pdf-spec-group
+
+- Figma: [1907-27070](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-27070)
+- Propiedades: Title
+
+Grupo de especificaciones de la ficha PDF: título role/label en mayúsculas (color/text/primary) con borde inferior border/default + color/border/strong y padding inferior space/padding/sm-md, seguido de instancias de pdf-spec-row. Trae 6 filas: ocultá las que sobren en la instancia (las filas salen de los datos de Typesense).
+
+## pdf-spec-row
+
+- Figma: [1907-8279](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-8279)
+- Propiedades: Label; Value
+
+Fila de especificación de la ficha PDF. Etiqueta role/body (color/text/secondary, ancho fijo 260) y valor role/body-lg-regular (color/text/primary, FILL). Padding vertical space/padding/sm-md, gap space/gap/lg, borde inferior border/default + color/border/subtle. Escala Type en modo Mobile. Versión densa de spec-row para impresión.
+
 ## product-card
 
 - Figma: [990-2372](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=990-2372)
@@ -609,7 +665,7 @@ Encabezado de bloque dentro de una página (no de la página: eso es page-header
 - Figma: [921-2544](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2544)
 - Propiedades: Name; Label; Value; Show swatch; Type: Field · Filter; State: Default · Hover · Focus · Disabled · Filled; Open: False · True
 
-Selector con menú desplegable (arq-select). Dos tipos con la misma construcción: etiqueta arriba (Type=Field: role/label de 12 px; Type=Filter: role/label-lg de 14 px; text/tertiary) y un trigger con línea inferior border/strong, padding vertical space/padding/sm-md (es la única separación con la etiqueta: gap 0 entre etiqueta y trigger), gap space/gap/sm-md entre swatch, texto y chevron, texto role/body-regular y chevron. Type=Field: campo del configurador y de compare-product; ancho del contenedor; swatch/md y chevron icon/md. Type=Filter: celda de la filter-bar y del glosario; mide al menos layout/select-filter; swatch/sm y chevron icon/sm; Filled = filtro elegido, valor en role/body-medium. Hover (los dos): fondo color/surface/faint en el trigger; el texto no cambia. Open: mismo fondo que Hover, chevron hacia arriba y select-menu debajo (Field: Finishes o Text; Filter: Filter). Focus: anillo border/focus de border/strong alrededor del trigger. Disabled: text/disabled y línea border/disabled. Props: Name (valor del Field), Label y Value (Filter; en Filled el valor elegido va como override) y Show swatch (muestra u oculta la muestra de acabado; en código, show-swatch).
+Selector con menú desplegable (arq-select). Dos tipos: etiqueta arriba (Type=Field: role/label de 12 px; Type=Filter: role/label-lg de 14 px con Size=Default o role/label de 12 px con Size=Small; text/tertiary) y un trigger con padding vertical space/padding/sm-md. Type=Field: línea inferior border/strong y gap 0 entre etiqueta y trigger. Type=Filter: gap space/gap/sm entre etiqueta y trigger y sin línea (solo Disabled muestra la línea border/disabled). En los dos, gap space/gap/sm-md entre swatch, texto y chevron, texto role/body-regular y chevron. Type=Field: campo del configurador; ancho del contenedor; swatch/md y chevron icon/md. Type=Filter: celda de la filter-bar y del glosario, y selects de compare-product (Size=Small, sin opción «Todos»); mide al menos layout/select-filter; swatch/sm y chevron icon/sm; Filled = filtro elegido, valor en role/body-medium. Hover (los dos): fondo color/surface/faint en el trigger; el texto no cambia. Open: mismo fondo que Hover, chevron hacia arriba y select-menu debajo (Field: Finishes o Text; Filter: Filter). Focus: anillo border/focus de border/strong alrededor del trigger. Disabled: text/disabled y línea border/disabled. Props: Name (valor del Field), Label y Value (Filter; en Filled el valor elegido va como override) y Show swatch (muestra u oculta la muestra de acabado; en código, show-swatch). Size (solo cambia en Type=Filter): Default = etiqueta role/label-lg de 14 px (filter-bar, Descargas); Small = etiqueta role/label de 12 px (compare-product). Type=Field es siempre Size=Default. Size=Small (compare-product): sin la opción «Todos» y el menú abre del ancho del campo, para no salirse de las columnas angostas de la comparativa Mobile.
 
 ## select-menu
 
@@ -623,7 +679,7 @@ Lista desplegable de select (hasta 7 opciones). Fondo surface/default, borde bor
 - Figma: [921-2500](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2500)
 - Propiedades: Name; Show swatch; State: Default · Hover · Selected · Focus · Disabled
 
-Opción de select-menu. Muestra opcional (Show swatch; swatch/sm con border/default) + nombre role/body. Default sin fondo, Hover surface/faint, Selected nombre en role/body-medium, Focus anillo border/focus. Separador inferior border/subtle. Padding space/padding/md, gap space/gap/sm. Sirve para acabados y para "Todos" o valores sin muestra. Disabled: opción no disponible (texto color/text/disabled).
+Opción de select-menu. Muestra opcional (Show swatch; swatch/sm con border/default) + nombre role/body. Default sin fondo, Hover surface/faint, Selected nombre en role/body-medium, Focus (resaltada con las flechas): mismo fondo que Hover (surface/faint), sin anillo; la elegida se distingue por role/body-medium. Separador inferior border/subtle. Padding space/padding/md, gap space/gap/sm. Sirve para acabados y para "Todos" o valores sin muestra. Disabled: opción no disponible (texto color/text/disabled).
 
 ## sku
 
@@ -690,18 +746,18 @@ Switch del toggle (pista + círculo), compartido por todas las variantes de togg
 - Figma: [1068-5582](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1068-5582)
 - Propiedades: Show search; Filters: Off · On; Breakpoint: Desktop · Mobile
 
-Tabla de variantes: Glosario de la ficha (el título va aparte como título de sección) y página Descargas (todos los SKU del catálogo). Filters=Off: botón Filtros en button Filled con icon/filter. Filters=On: button Outline con icon/filter-off y debajo filter-bar. A la derecha, descargas con button Outline + icon/download. Filas: variants-table-row Header + una Row por SKU. Componente de borde a borde: ocupa todo el ancho de la página para que la filter-bar llegue al borde; toolbar y filas llevan padding lateral layout/gutter. En mobile el scroll de las columnas llega al borde de la pantalla. Scroll: en Figma cada fila tiene su propio frame scroll porque Figma no puede sincronizar el desplazamiento entre instancias; es solo una especificación de qué columnas se mueven. En código la tabla usa un único contenedor con overflow-x: auto que envuelve header y filas, así los títulos se desplazan junto con los datos; las celdas de inicio (miniatura + SKU; hasta 1023 px solo la miniatura) y de fin (descarga) van con position: sticky (left: 0 / right: 0) y fondo propio (surface/default, surface/faint en Hover) para tapar lo que pasa por debajo.
+Tabla de variantes: Glosario de la ficha (el título va aparte como título de sección) y página Descargas (todos los SKU del catálogo). Filters=Off: botón Filtros en button Filled con icon/filter. Filters=On: Filled con icon/close y debajo filter-bar. A la derecha, descargas con button Outline + icon/download. Filas: variants-table-row Header + una Row por SKU. Ocupa el ancho del contenido: controles (toolbar y filter-bar) y filas llevan padding lateral layout/gutter, así la filter-bar queda dentro de los márgenes, alineada con la tabla (decisión 2026-10-05 · variants-table dentro del contenido). En mobile el scroll de las columnas llega al borde de la pantalla. Scroll: en Figma cada fila tiene su propio frame scroll porque Figma no puede sincronizar el desplazamiento entre instancias; es solo una especificación de qué columnas se mueven. En código la tabla usa un único contenedor con overflow-x: auto que envuelve header y filas, así los títulos se desplazan junto con los datos; las celdas de inicio (miniatura + SKU; hasta 1023 px solo la miniatura) y de fin (descarga) van con position: sticky (left: 0 / right: 0) y fondo propio (surface/default, surface/faint en Hover) para tapar lo que pasa por debajo.
 
-Página Descargas: prop Show search (en código, show-search; apagada por defecto: la ficha no la usa): search-field «Buscar por SKU o nombre…» a todo el ancho y Filtros al lado, siempre en button Outline (Filled competiría con la acción del page-header) y del mismo alto que el buscador; busca en el SKU, el producto y la colección; sin descargas en la barra. Igual en Mobile. Sin filas que coincidan, un aviso. En código, las columnas fijas miden su contenido y el ancho que sobra se reparte entre las de datos.
+Página Descargas: prop Show search (en código, show-search; apagada por defecto: la ficha no la usa): search-field «Buscar por SKU o nombre…» a la derecha, de layout/search-field (360), y Filtros a la izquierda como en la ficha (Filled; abierto con icon/close). En Descargas la instancia oculta las descargas de la barra y la cantidad, y la descarga de cada fila va sin borde (icon-button Background=None). Busca en el SKU, el producto y la colección. Sin filas que coincidan, un aviso. En código, las columnas fijas miden su contenido y el ancho que sobra se reparte entre las de datos.
 
-Ficha v2: botón Filtros siempre Filled (abierto, con icon/close) y, al lado, la cantidad («4 variantes», role/body, text/secondary). La barra de filtros (filter-bar) va con fondo surface/soft. Encabezado en role/body-regular (text/tertiary); valores en role/body-lg-regular. Miniatura de 100 × 100 (layout/table-thumb = 100), filas de 116. Breakpoint=Mobile (hasta 767 px): en lugar de la tabla, una variants-table-card por variante (imagen, sku con descarga y datos en dos columnas), separadas space/gap/4xl.
+Ficha v2: botón Filtros siempre Filled (abierto, con icon/close) y, al lado, la cantidad («4 variantes», role/body, text/secondary). La barra de filtros (filter-bar) va con fondo surface/soft. Encabezado en role/body-regular (text/tertiary); valores en role/body-lg-regular. Miniatura de 100 × 100 (layout/table-thumb = 100), filas de 116. Breakpoint=Mobile (hasta 767 px): en lugar de la tabla, una variants-table-card por variante (imagen, sku con descarga y datos en dos columnas), separadas space/gap/6xl.
 
 ## variants-table-card
 
 - Figma: [2399-31269](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2399-31269)
 - Propiedades: —
 
-Tarjeta de variante de la tabla de variantes en Mobile (hasta 767 px), en lugar de la tabla. Imagen (16:10), sku subrayado con el botón de descarga (icon-button Size=Large, Background=Outline) y los datos en dos columnas: etiqueta role/body-sm (text/secondary) y valor role/body-sm-medium (text/primary), separador inferior border/subtle, padding vertical space/padding/sm. Entre tarjetas, space/gap/4xl. Cantidad de datos libre en código. No confundir con variants-table-row (Desktop).
+Tarjeta de variante de la tabla de variantes en Mobile (hasta 767 px), en lugar de la tabla. Imagen (16:10), sku subrayado con el botón de descarga (icon-button Size=Large, Background=Outline) y los datos en dos columnas: etiqueta role/body-sm (text/secondary) y valor role/body-sm-medium (text/primary), separador inferior border/subtle, padding vertical space/padding/sm. Entre tarjetas, space/gap/6xl. Cantidad de datos libre en código. No confundir con variants-table-row (Desktop).
 
 ## variants-table-row
 

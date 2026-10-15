@@ -1,6 +1,6 @@
 # compare-header · `<arq-compare-header>`
 
-Cabecera de la página Comparativa: toggle "Solo diferencias" + hasta 3 compare-product, estiradas a la misma altura. Cuando el bloque completo termina de pasar al desplazar, se muestra una versión mini fija arriba (compare-product Size=Compact por producto y el toggle debajo; compare-slot ya no se usa acá). El cambio Default ↔ Compact no es una prop: lo decide el propio componente con un `IntersectionObserver`.
+Cabecera de la página Comparativa: toggle "Solo diferencias" (al pie de la columna de controles, a la altura del último select) + hasta 3 compare-product, estiradas a la misma altura. Cuando el bloque completo termina de pasar al desplazar, se muestra una versión mini fija arriba (compare-product Size=Compact por producto y el toggle debajo; compare-slot ya no se usa acá). El cambio Default ↔ Compact no es una prop: lo decide el propio componente con un `IntersectionObserver`.
 
 - Figma: [1265-4330](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1265-4330) · ficha `doc/compare-header`
 
@@ -40,12 +40,12 @@ header.addEventListener('arq:add', (e) => abrirModalDeProductos(e.detail.index))
 
 ## Scroll horizontal en Mobile
 
-En Mobile, el Default desplaza solo la tira de productos (60 % del ancho de pantalla, igual que los valores de compare-table; el gutter va dentro de la tira y el scroll llega al borde derecho. TODO (token): el 60 % no tiene variable en Figma); el resto de la cabecera queda fijo. `arq-comparativa` sincroniza su `scrollLeft` con todas las filas de `arq-compare-table` y con la tira del Compact. Si se usa compare-header suelto en Mobile (como en esta demo, `demo/index.html`), su tira de productos conserva scroll propio.
+En Mobile, el Default desplaza solo la tira de productos (columnas de `layout/compare-column`, 160, igual que los valores de compare-table; el gutter va dentro de la tira y el scroll llega al borde derecho); el resto de la cabecera queda fijo. Dentro de `arq-comparativa` va con `embedded`: la tira no tiene scroll propio y se desplaza con el contenedor de la página, junto con compare-table (un solo scroll, como macroled.com.ar/comparativa); la tira del Compact sigue ese desplazamiento. Si se usa compare-header suelto en Mobile (como en `demo/index.html`), su tira de productos conserva scroll propio.
 
 ## Adaptaciones sobre el set de Figma
 
 - **Sin controles en el Default de Mobile:** el set no muestra ahí ni el toggle ni una columna de controles (a diferencia de Desktop, que sí tiene su columna de 200): las columnas de producto arrancan directo en el gutter.
-- **Compact/Mobile:** la tira de productos se sincroniza con el Default y las filas de compare-table; el toggle "Solo diferencias" queda debajo, fuera de la tira desplazable. Al aparecer Compact, oculta la navbar Mobile y ocupa el borde superior hasta que vuelve a mostrarse Default.
+- **Compact/Mobile:** la tira de productos sigue el scroll del contenedor de la comparativa (y, si se desliza ella, lo mueve); el toggle "Solo diferencias" queda debajo, fuera de la tira desplazable. Al aparecer Compact, oculta la navbar Mobile y ocupa el borde superior hasta que vuelve a mostrarse Default.
 - **Compact usa compare-product Size=Compact** (cambio de 2026-10-06): miniatura + nombre + quitar, y un lugar libre es la caja punteada «Agregar producto» (`arq:add { index }`). El SKU se muestra solo en Desktop (`show-sku`, que el componente enciende y apaga según el breakpoint); en Mobile queda solo el nombre.
 - **Ancho de la columna de controles (Desktop):** sin token propio para 200; se reusa `layout/compare-label` (mismo valor, usado también en compare-table) con un comentario `TODO` en el CSS.
 

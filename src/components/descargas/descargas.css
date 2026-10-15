@@ -1,6 +1,8 @@
-/* descargas · Figma 1808:20165 Desktop · 1808:20882 Mobile.
-   Solo tokens semánticos. variants-table pone su propio margen
-   (--page-gutter); el bloque lleva space/section/xl abajo, como los listados. */
+/* descargas · Figma 2496:31316 Desktop · 2496:31862 Mobile.
+   Solo tokens semánticos. Arriba, el bloque de la página (título, bajada y
+   la download-card); debajo, «Buscar producto» y variants-table, que pone su
+   propio margen (--page-gutter). Al final space/section/xl, como los
+   listados. */
 
 :host {
   display: block;
@@ -9,8 +11,76 @@
   color: var(--arq-color-text-primary);
 }
 
+/* Título + bajada a la izquierda y la tarjeta a la derecha (arriba
+   alineados), space/section/sm arriba y abajo */
+.hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-lg);
+  padding: var(--arq-space-section-sm) var(--page-gutter);
+}
+
+/* Título role/display y bajada role/body-lg (color/text/secondary) a
+   space/gap/lg; la bajada hasta layout/measure. TODO (token): en Figma la
+   columna mide 300, sin variable; se usa layout/measure (400). */
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-lg);
+  min-width: 0;
+}
+
+.title {
+  color: var(--arq-color-text-primary);
+  overflow-wrap: break-word;
+}
+
+.description {
+  max-width: var(--arq-layout-measure);
+  color: var(--arq-color-text-secondary);
+}
+
+/* download-card de layout/measure-wide */
+.catalog {
+  flex: 0 1 var(--arq-layout-measure-wide);
+  min-width: 0;
+}
+
+/* «Buscar producto» role/display-sm y la tabla a space/gap/md; arriba
+   space/section/sm (la hero ya deja su padding inferior) */
+.search-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-md);
+  padding-top: var(--arq-space-section-sm);
+}
+
+.search-title {
+  padding-inline: var(--page-gutter);
+  color: var(--arq-color-text-primary);
+}
+
 .status {
   margin: 0;
   padding: 0 var(--page-gutter);
   color: var(--arq-color-text-secondary);
+}
+
+/* Mobile: título, bajada y tarjeta apilados, a space/gap/xl; la bajada y la
+   tarjeta a todo el ancho */
+@media (max-width: 767px) {
+  .hero {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--arq-space-gap-xl);
+  }
+
+  .description {
+    max-width: none;
+  }
+
+  .catalog {
+    flex: none;
+  }
 }

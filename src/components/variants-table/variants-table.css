@@ -24,61 +24,48 @@
   --page-gutter: var(--arq-space-padding-sm);
 }
 
-/* filter-bar calcula su propio --page-gutter en su :host; esta regla gana */
+/* filter-bar calcula su propio --page-gutter en su :host; esta regla gana:
+   dentro de la tabla (ancho del contenido) lleva layout/gutter (Ficha v2) */
 .filter-bar {
-  --page-gutter: var(--arq-space-padding-xl-2xl);
+  --page-gutter: var(--arq-layout-gutter);
 }
 
-@media (max-width: 767px) {
-  .filter-bar {
-    --page-gutter: var(--arq-space-padding-md);
-  }
-}
-
-/* Barra, alineada abajo. Padding space/padding/md arriba y abajo; a los
-   lados, el borde del contenido. Ficha: Filtros a la izquierda y las
-   descargas a la derecha. Con buscador (página Descargas): el buscador a
-   todo el ancho y Filtros al lado, a space/gap/sm-md; con show-sort, Ordenar
-   por a la derecha (decisiones.md, 2026-10-06 · Descargas) */
+/* Barra, centrada en alto. Padding space/padding/md arriba y abajo; a los
+   lados, el borde del contenido. Filtros (siempre Filled) con la cantidad al
+   lado a la izquierda; a la derecha, las descargas (ficha) o el buscador de
+   layout/search-field (Show search, Descargas). Con show-sort, Ordenar por. */
 .toolbar {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: center;
   gap: var(--arq-space-gap-md);
   padding: var(--arq-space-padding-md) var(--page-gutter);
 }
 
-:host([show-search]) .toolbar {
-  column-gap: var(--arq-space-gap-sm-md);
+.filters-group {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-md);
 }
 
-.downloads,
-.sort {
-  margin-inline-start: auto;
-}
-
-/* Cantidad de variantes, al lado del botón Filtros (role/body en
-   color/text/secondary) */
-.count-text {
-  align-self: center;
-  margin: 0;
+.total {
   color: var(--arq-color-text-secondary);
 }
 
-:host([show-search]) .count-text {
+/* Con buscador (Descargas) no va la cantidad */
+:host([show-search]) .total {
   display: none;
 }
 
-/* Buscador: ocupa todo el ancho que deja Filtros */
+.downloads,
+.sort,
 .search {
-  flex: 1 1 0;
-  min-width: 0;
+  margin-inline-start: auto;
 }
 
-/* Filtros mide lo mismo que el buscador (42: search-field suma su borde; el
-   button Outline lo descuenta y mide 40): toma el alto de la fila */
-:host([show-search]) .toggle-filters {
-  align-self: stretch;
+.search {
+  flex: 0 1 var(--arq-layout-search-field);
+  min-width: 0;
 }
 
 .downloads {
@@ -131,15 +118,15 @@ td {
   vertical-align: middle;
 }
 
-/* Encabezado (Type=Header): role/label en color/text/tertiary, padding
-   vertical space/padding/sm-md */
+/* Encabezado (Type=Header): role/body-regular en color/text/tertiary,
+   padding vertical space/padding/sm-md */
 thead th {
   padding-block: var(--arq-space-padding-sm-md);
   color: var(--arq-color-text-tertiary);
   font-weight: inherit;
 }
 
-/* Filas (Type=Row): valores role/body en color/text/primary. Padding vertical
+/* Filas (Type=Row): valores role/body-lg-regular en color/text/primary. Padding vertical
    space/padding/sm (en Figma, xs): el botón de descarga no queda pegado a la
    línea. Hover color/surface/faint. */
 tbody th,
@@ -174,7 +161,6 @@ tbody td {
   font-weight: inherit;
 }
 
-/* Miniatura layout/table-thumb (100 en la Ficha v2: fila de 116) */
 .thumb {
   display: block;
   flex: none;
@@ -192,7 +178,7 @@ tbody td {
 }
 
 /* Columna fija de fin (Descargas), pegada al borde derecho. Encabezado
-   «Descargas» en role/label y el icon-button centrados en la columna */
+   «Descargas» en role/body-regular y el icon-button centrados en la columna */
 th.end,
 td.end {
   position: sticky;
@@ -211,37 +197,22 @@ td.end {
   }
 }
 
-@media (max-width: 767px) {
-  /* Mobile: el encabezado de la columna de descarga va sin título (variants-table-row) */
-  .th-downloads {
-    position: absolute;
-    width: var(--arq-border-default);
-    height: var(--arq-border-default);
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-}
-
-/* ── Mobile: tarjetas (Figma 2180:11245) ────────────────────────────
-   Una tarjeta por variante: imagen (alto fijo por proporción 16:10 → 350 × 219
-   en 390), fila con el sku subrayado y la descarga, y los datos en dos
-   columnas con separador border/subtle. Entre tarjetas space/gap/6xl.
-   La tabla se oculta; las tarjetas solo existen hasta 767 px. */
+/* variants-table-card (Mobile, Figma 2399:31269): solo hasta 767 px */
 .cards {
   display: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 @media (max-width: 767px) {
-  :host {
-    gap: var(--arq-space-gap-xl);
+  /* Mobile: Filtros y el buscador comparten la fila; el buscador ocupa lo
+     que queda (Show search). */
+  .search {
+    flex: 1 1 0;
   }
 
-  /* La barra queda en el margen de página: sin padding lateral propio */
-  .toolbar {
-    padding-inline: 0;
-  }
-
+  /* En lugar de la tabla, una tarjeta por variante, a space/gap/6xl */
   .scroll {
     display: none;
   }
@@ -250,9 +221,10 @@ td.end {
     display: flex;
     flex-direction: column;
     gap: var(--arq-space-gap-6xl);
-    padding-bottom: var(--arq-space-section-xs);
   }
 
+  /* Imagen ratio/wide (16:10) en color/surface/subtle; sku con la descarga y
+     los datos en dos columnas, todo a space/gap/md */
   .card {
     display: flex;
     flex-direction: column;
@@ -260,6 +232,7 @@ td.end {
   }
 
   .card-image {
+    display: block;
     aspect-ratio: 16 / 10;
     overflow: hidden;
     background: var(--arq-color-surface-subtle);
@@ -276,16 +249,20 @@ td.end {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--arq-space-gap-md);
+    gap: var(--arq-space-gap-sm);
   }
 
+  /* Datos: etiqueta role/body-sm (color/text/secondary) y valor
+     role/body-sm-medium (color/text/primary), a space/gap/sm; separador
+     inferior border/default en color/border/subtle y padding vertical
+     space/padding/sm. Cantidad libre. */
   .card-data {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     margin: 0;
   }
 
-  .datum {
+  .card-item {
     display: flex;
     flex-direction: column;
     gap: var(--arq-space-gap-sm);
@@ -293,13 +270,13 @@ td.end {
     border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
   }
 
-  .datum dt {
+  .card-item dt {
     color: var(--arq-color-text-secondary);
   }
 
-  .datum dd {
+  .card-item dd {
     margin: 0;
     color: var(--arq-color-text-primary);
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
   }
 }

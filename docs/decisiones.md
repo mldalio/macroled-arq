@@ -707,6 +707,51 @@ El sheet se abre y se cierra con una transición suave (referencia: occhio.com),
 - **Excepción a DESIGN.md §6:** la persiana anima `grid-template-rows` (alto), que §6 prohíbe; se hizo a pedido. Revisar si se adopta o se cambia a transform.
 - Cierre: `close()` espera la transición (`motion/duration/slow`; 0 con reduced motion) y recién ahí cierra el diálogo. Los resultados no se redibujan mientras cierra.
 
+## 2026-10-14 · Comparativa: select Filter Small y cambios de Figma
+
+- **select Size** (Figma 921:2544): Default (etiqueta `role/label-lg`, 14 px; filter-bar y Descargas) y Small (`role/label`, 12 px; compare-product). Solo cambia en Type=Filter; Field es siempre Default.
+- **Filter sin línea:** como las variantes del set, el trigger de Filter no lleva línea inferior (solo Disabled), con `space/gap/sm` entre etiqueta y campo. También en filter-bar y Descargas.
+- **compare-product:** selects Filter Small Filled, sin «Todos» (`hide-all`, solo de código: siempre hay una variante elegida) y con una línea `border/default` en `color/border/default` pegada abajo de cada select.
+- **select-option:** la opción resaltada con las flechas (State=Focus) lleva el fondo de Hover (`color/surface/faint`) y no el anillo: la elegida ya se distingue por `role/body-medium`.
+- **Comparativa:** «Descargar comparación» con `icon/download` (sigue abriendo el diálogo de impresión: el PDF no tiene diseño), bajada con la cantidad («3 luminarias seleccionadas.»), toggle al pie de la columna de controles y título de grupo en `role/body-xl`.
+
+## 2026-10-14 · Footer siempre en Light
+
+El footer deja de ser Dark local: todas las páginas lo muestran blanco, también con Iluminar. En código el `<footer>` interno lleva `data-arq-theme="light"` (como filter-panel); en Figma el set 788:3104 fija el modo Light.
+
+## 2026-10-14 · Footer con Iluminar
+
+Reemplaza a «Footer siempre en Light» (mismo día): el footer sigue el modo de la página. Es blanco en todas las páginas y, con Iluminar en Productos y Colecciones, pasa a Dark junto con el resto, con la misma duración y curva que el fondo de la página. Se quita `data-arq-theme="light"` del `<footer>` interno; en Figma, el set 788:3104 deja de fijar el modo Light. filter-panel sigue siempre en Light.
+
+## 2026-10-14 · Descargas v2
+
+Pantalla nueva (Final › Descargas: Desktop 2496:31316 · Mobile 2496:31862; las anteriores quedan de respaldo en PRUEBA).
+
+- **Sin page-header:** arriba, título `role/display` y bajada `role/body-lg` a la izquierda y la **download-card** del catálogo general a la derecha (componente nuevo, 2496:8095). Debajo, «Buscar producto» (`role/display-sm`) con variants-table.
+- **variants-table en Descargas:** Filtros Filled a la izquierda (como la ficha) y el buscador a la derecha, de `layout/search-field`; sin la cantidad ni descargas en la barra. Reemplaza «buscador a todo el ancho con Filtros en Outline» (2026-10-06).
+- **Ficha v2 en código:** variants-table (encabezado `role/body-regular`, valores `role/body-lg-regular`, sku Underline, variants-table-card en Mobile), filter-bar (`color/surface/soft`, sin líneas, «Limpiar filtros» debajo) y sku Size=Underline. Se juntó con lo que había hecho la rama del search-sheet: queda su sku y el atributo `stacked` de filter-bar, que ya no hace falta porque la versión v2 es la de por defecto.
+- **Resuelto con diseño:** entre tarjetas Mobile va `space/gap/6xl` (se corrigió la descripción de variants-table-card); el padding lateral de filter-bar queda en `layout/gutter`; en Descargas la descarga de cada fila va sin borde (icon-button Large, Background=None), como el borrador de PRUEBA; en la ficha sigue Outline. En la página, la columna del título mide 300 sin token (se usa `layout/measure`).
+- **Pendiente (datos):** URL del PDF del catálogo general y su portada.
+
+## 2026-10-14 · Comparativa Mobile como macroled.com.ar
+
+En Mobile la comparativa funciona como macroled.com.ar/comparativa: un solo desplazamiento horizontal para los productos y los valores, y lo que identifica cada fila queda quieto.
+
+- **Etiquetas fijas:** la etiqueta de cada fila (arriba de los valores) queda a la vista al deslizar (sticky left, como pide la descripción de compare-row); antes se iba con los valores.
+- **Títulos de grupo:** quedan quietos y su línea va del gutter al borde derecho de la pantalla (antes quedaba cortada).
+- **Columnas de `layout/compare-column` (160):** entran dos y asoma la tercera. Reemplaza el 60 % del ancho de pantalla, que no tenía token. compare-header (Default y Compact) usa el mismo ancho para que los productos queden alineados con sus valores.
+- **Un solo scroll:** productos (compare-header) y valores (compare-table) se desplazan dentro de un único contenedor (`embedded` en los dos), en lugar de una tira por fila sincronizada por JS: así el desplazamiento horizontal y el vertical no se traban. Las etiquetas y los títulos de grupo quedan fijos con sticky respecto de ese contenedor. La cabecera compacta (fija arriba, oculta el navbar) lo sigue.
+- **Menú del select en la comparativa:** Size=Small abre el menú del ancho del campo; antes, en Mobile, se salía de la columna, lo recortaba la tira y desplazaba toda la página.
+- **No incluido (no está en Figma):** el aviso «Deslizá hacia la derecha para ver los demás productos» de macroled.
+
+## 2026-10-14 · compare-bar Mobile apilada
+
+En Mobile, compare-bar muestra los productos elegidos uno arriba de otro, como la barra de macroled.com.ar: cada uno con foto, nombre, meta y quitar (compare-slot Default), separados por divider Horizontal Subtle, y «Comparar» debajo a todo el ancho. Reemplaza la fila de miniaturas Compact con «Comparar» al lado: con miniaturas no se leía qué producto era cada una.
+
+- Solo se muestran los elegidos (sin lugares vacíos), para que la barra no tape más pantalla de la necesaria.
+- «Borrar todo» sigue arriba, junto al título.
+- **Plegar (Open), en Desktop y Mobile:** como en macroled, el título es un botón con chevron que pliega la lista; plegada quedan el título, «Borrar todo» y «Comparar» (en Desktop, en una sola línea y con el chevron en la punta derecha). Arranca abierta y se vuelve a abrir al agregar un producto. Usa el disclosure base.
+
 ## 2026-10-15 · Iluminar no se recuerda
 
 - **Antes:** el toggle de Productos y Colecciones guardaba la preferencia en `localStorage` (`arq:theme`) y la página arrancaba como se había dejado, aun después de visitar otras páginas.

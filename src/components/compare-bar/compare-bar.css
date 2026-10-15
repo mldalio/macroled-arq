@@ -1,6 +1,6 @@
 /* compare-bar · Figma 1233:3963. Solo tokens semánticos.
-   Barra fija inferior en Dark local. Desktop es la base; Mobile
-   (max-width: 767px) usa lugares Compact. */
+   Barra fija inferior en Dark local. Desktop es la base; en Mobile
+   (max-width: 767px) los productos van uno arriba de otro. */
 
 :host {
   display: contents;
@@ -71,7 +71,91 @@
   display: none;
 }
 
-/* ── Mobile: lugares Compact, "Borrar todo" arriba, "Comparar" al ancho ── */
+/* Desktop: el botón del título ocupa toda la línea y el chevron queda en la
+   punta derecha de la barra. */
+.toggle {
+  flex: 1 1 auto;
+}
+
+.toggle .icon-box {
+  margin-inline-start: auto;
+}
+
+/* Open=False en Desktop: una sola línea. Título y acciones comparten la
+   celda; las acciones quedan a la derecha, antes del chevron (icon-button
+   Default: icon/md + 2 × space/padding/xs, más space/gap/xl). */
+:host(:not([open])) .bar {
+  display: grid;
+  align-items: center;
+}
+
+:host(:not([open])) .head,
+:host(:not([open])) .row {
+  grid-area: 1 / 1;
+}
+
+:host(:not([open])) .row {
+  position: relative;
+  z-index: 1;
+  justify-self: end;
+  margin-inline-end: calc(var(--arq-icon-md) + 2 * var(--arq-space-padding-xs) + var(--arq-space-gap-xl));
+}
+
+/* Open: el título es el botón que pliega la lista. Ícono como
+   icon-button Size=Default, Background=None (24 = space/padding/xs + icon/md);
+   chevron-down abierta, chevron-up plegada. */
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--arq-color-surface-transparent);
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+}
+
+.icon-box {
+  display: inline-flex;
+  flex: none;
+  padding: var(--arq-space-padding-xs);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-icon-primary);
+}
+
+.icon-box svg {
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+}
+
+:host(:not([open])) [data-icon='chevron-down'],
+:host([open]) [data-icon='chevron-up'] {
+  display: none;
+}
+
+@media (hover: hover) {
+  .toggle:hover .icon-box {
+    background: var(--arq-color-surface-hover);
+  }
+}
+
+/* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí) */
+.toggle:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.toggle:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── Mobile (como macroled.com.ar): productos uno arriba de otro, "Borrar
+   todo" arriba y "Comparar" debajo a todo el ancho ── */
 @media (max-width: 767px) {
   .bar {
     gap: var(--arq-space-gap-sm-md);
@@ -87,12 +171,34 @@
     display: none;
   }
 
+  /* Mobile: el chevron va junto al título y «Borrar todo» a la derecha */
+  .toggle {
+    flex: none;
+  }
+
+  .toggle .icon-box {
+    margin-inline-start: 0;
+  }
+
+  :host(:not([open])) .bar {
+    display: flex;
+    align-items: stretch;
+  }
+
+  :host(:not([open])) .row {
+    justify-self: auto;
+    margin-inline-end: 0;
+  }
+
   .row {
+    flex-direction: column;
+    align-items: stretch;
     gap: var(--arq-space-gap-md);
   }
 
   .slots {
     flex: none;
+    flex-direction: column;
     gap: var(--arq-space-gap-sm);
   }
 

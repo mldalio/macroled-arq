@@ -55,7 +55,13 @@
     position: sticky;
     top: 0;
     z-index: 3;
-    background: var(--arq-color-surface-transparent);
+    /* Fija sobre la grilla: tapa las cards. Funde con Iluminar a la par del
+       fondo de la página (misma duración y curva que :host y .arq-page). */
+    background: var(--arq-color-surface-default);
+    transition-property: background-color;
+    transition-duration: var(--arq-illumination-bg-duration);
+    transition-delay: 0s;
+    transition-timing-function: var(--arq-illumination-bg-easing);
   }
 
   .nav {

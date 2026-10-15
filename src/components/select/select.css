@@ -1,9 +1,8 @@
 /* select · Figma 921:2544. Solo tokens semánticos.
-   Field y Filter se construyen igual: etiqueta arriba (sin gap) y un trigger
-   con la línea inferior. Lo único que cambia entre los dos Type es el ancho
-   (Filter mide al menos layout/select-filter), el tamaño de la muestra y del
-   chevron, y el valor Filled en role/body-medium. El menú (select-menu)
-   flota debajo del campo. */
+   Field: etiqueta arriba (sin gap) y un trigger con la línea inferior.
+   Filter: etiqueta a space/gap/sm y trigger sin línea (salvo Disabled); mide
+   al menos layout/select-filter, muestra y chevron chicos y el valor Filled
+   en role/body-medium. El menú (select-menu) flota debajo del campo. */
 
 :host {
   display: block;
@@ -92,7 +91,8 @@
    Muestra swatch/md; chevron icon/md. La muestra se ve con show-swatch (o si
    la opción trae imagen / showSwatch): sin imagen cae al neutro de arq-swatch
    (DESIGN.md §8). */
-:host(:not([type='filter'])) .menu {
+:host(:not([type='filter'])) .menu,
+:host([size='small']) .menu {
   right: 0;
 }
 
@@ -104,8 +104,16 @@
   min-width: var(--arq-layout-select-filter);
 }
 
+/* Filter: gap space/gap/sm entre la etiqueta y el campo, y sin línea inferior
+   en Default, Hover, Filled y Open (Figma 921:2544; Descargas). La línea solo
+   se ve en Disabled. Se deja transparente para que el campo siga midiendo 48. */
+:host([type='filter']) .select {
+  gap: var(--arq-space-gap-sm);
+}
+
 :host([type='filter']) .trigger {
   justify-content: space-between;
+  border-bottom-color: var(--arq-color-surface-transparent);
 }
 
 :host([type='filter']) .icon {
@@ -114,7 +122,8 @@
 }
 
 /* ── Disabled ───────────────────────────────────────────────────── */
-:host([disabled]) .trigger {
+:host([disabled]) .trigger,
+:host([type='filter'][disabled]) .trigger {
   cursor: default;
   border-bottom-color: var(--arq-color-border-disabled);
   background: var(--arq-color-surface-transparent);

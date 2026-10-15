@@ -16,12 +16,15 @@
 // - TODO (diseño + código): un lugar vacío (compare-product State=Empty) emite
 //   arq:add { index } al clickear, pero todavía no hace nada acá — la ficha
 //   dice que más adelante abre un modal para elegir producto.
-// - Mobile: compare-header y compare-table comparten un solo scroll horizontal
-//   (ficha de compare-header: "el scroll horizontal se sincroniza con la
-//   tabla"); compare-table va con `embedded` para no tener scroll propio. El
+// - Mobile: compare-header y compare-table comparten un solo scroll horizontal,
+//   el de .scroll (como macroled.com.ar/comparativa): los dos van con
+//   `embedded` y no tienen scroll propio. La cabecera compacta (fija) sigue
+//   ese desplazamiento y, si se desliza ella, lo mueve. El
 //   set no muestra el toggle "Solo diferencias" dentro de compare-header en
 //   Mobile: va en una fila aparte, fuera del scroll, como en Final.
-// - Imprimir (como macroled.com.ar/comparativa): el botón de la página con
+// - Bajada: completa [data-arq-compare-count] de la página con la cantidad
+//   ("3 luminarias seleccionadas."); sin productos queda vacío.
+// - Descargar comparación (como macroled.com.ar/comparativa): el botón de la página con
 //   data-arq-print llama a window.print() (main.js). Cada componente trae su
 //   @media print. Mientras se imprime, el título del documento pasa a
 //   «Comparativa · <productos> · Macroled Arq»: es el nombre que propone el
@@ -39,6 +42,7 @@ const MAX = 3;
 const MOBILE = matchMedia('(max-width: 767px)');
 
 const TEXT = {
+  count: (n) => (n === 1 ? '1 luminaria seleccionada.' : `${n} luminarias seleccionadas.`),
   printTitle: (names) => `Comparativa · ${names.join(' · ')} · Macroled Arq`,
   empty: 'Elegí hasta 3 productos para comparar desde el listado de Productos.',
   error: 'No se pudo cargar la comparación. Probá de nuevo en unos minutos.',
@@ -72,7 +76,7 @@ class ArqComparativa extends ArqElement {
     `<p class="status role-body" role="status" hidden></p>` +
     `<div class="mobile-controls" hidden><arq-toggle show-label class="diff-mobile">Solo diferencias</arq-toggle></div>` +
     `<div class="scroll" aria-label="Comparación de productos" hidden>` +
-    `<arq-compare-header class="header"></arq-compare-header>` +
+    `<arq-compare-header class="header" embedded></arq-compare-header>` +
     `<arq-compare-table class="table" embedded></arq-compare-table>` +
     `</div>` +
     `</div>`;
@@ -98,13 +102,14 @@ class ArqComparativa extends ArqElement {
       this.#load();
     });
     header.addEventListener('arq:change', (event) => this.#onChange(event.detail));
-    // Mobile: solo las tiras de valores y de productos se desplazan. La tabla
-    // alinea todas sus filas; compare-header alinea Default y Compact.
-    header.addEventListener('arq:scroll', (event) => {
-      if (MOBILE.matches) table.setScrollLeft(event.detail.left);
+    // Mobile: un solo scroll (.scroll) para productos y tabla. La cabecera
+    // compacta lo sigue; si se desliza la compacta, mueve el contenedor.
+    const scroll = root.querySelector('.scroll');
+    scroll.addEventListener('scroll', () => {
+      if (MOBILE.matches) header.setScrollLeft(scroll.scrollLeft);
     });
-    table.addEventListener('arq:scroll', (event) => {
-      if (MOBILE.matches) header.setScrollLeft(event.detail.left);
+    header.addEventListener('arq:scroll', (event) => {
+      if (MOBILE.matches && scroll.scrollLeft !== event.detail.left) scroll.scrollLeft = event.detail.left;
     });
     // Solo hace falta ser foco-de-teclado cuando el scroll compartido existe (Mobile).
     MOBILE.addEventListener('change', () => this.#syncScrollA11y());
@@ -193,6 +198,7 @@ class ArqComparativa extends ArqElement {
       return;
     }
     this.#status('');
+    this.#count(this.#skus.length);
     scroll.hidden = false;
     mobileControls.hidden = false;
     header.products = data.products;
@@ -207,10 +213,16 @@ class ArqComparativa extends ArqElement {
     history.replaceState(history.state, '', url);
   }
 
+  // Bajada del page-header (DOM de la página): "3 luminarias seleccionadas."
+  #count(n) {
+    for (const el of document.querySelectorAll('[data-arq-compare-count]')) el.textContent = n ? TEXT.count(n) : '';
+  }
+
   #status(message) {
     const status = this.shadowRoot.querySelector('.status');
     status.textContent = message;
     status.hidden = !message;
+    if (message) this.#count(0);
   }
 }
 
