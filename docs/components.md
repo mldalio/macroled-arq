@@ -469,6 +469,8 @@ Botón de ícono. Size: Default (24 × 24, ícono icon/md; navbar, tablas y cont
 
 State=Disabled: ícono en color/icon/disabled, sin interacción (atributo disabled nativo). Outline (borde color/border/strong de border/default, sin fondo; Hover surface/hover, Pressed surface/selected, Disabled border/disabled): acción con ícono solo que acompaña a un button Outline, como la descarga de cada fila de variants-table (Size=Large, Desktop y Mobile).
 
+Nota (2026-10-15): en el set, Outline Size=Large usa borde color/border/default (más claro) y el glosario (1218:10705) muestra el ícono con el trazo escalado; la descripción todavía dice color/border/strong. El código sigue al set.
+
 ## input
 
 - Figma: [930-2364](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=930-2364)
