@@ -775,3 +775,10 @@ Con Iluminar (listados y ficha) solo se oscurecen la página, el navbar (barra) 
 - **search-see-all `type="simple"`:** sin lupa y con la flecha a `space/gap/sm` (antes `space/gap/md`).
 - **Orden de los resultados:** «Ver todos» va al final. Desktop: Productos y debajo «Ver todos» a la izquierda, Colecciones a la derecha. Tablet y Mobile: Productos, Colecciones y «Ver todos» al pie. Filas separadas por `space/gap/lg`.
 - **Figma:** documentado en la sección «Búsqueda · top sheet» (sets `search-sheet`, `search-field-line`, `search-result-simple`, `search-collection`, `search-card` y `search-see-all-simple`) y en la ficha `doc/search-sheet`. Los Type de código son sets aparte en Figma; falta decidir si pasan a ser Type de search-field, search-result y search-see-all.
+
+## 2026-10-15 · Recomendados del buscador
+
+- **Criterio:** los productos recomendados del search-sheet (campo vacío) son los grupos que tienen marcada la columna `new` de Sheets (campo `new`, bool, de Typesense). Cada SKU marcado es un recomendado, con **sus** fotos (no las del predeterminado del grupo, así se ven las diferencias de color) y enlazando a él (`?sku=`). Reemplaza el criterio provisorio (los primeros grupos con foto, en el orden de la base).
+- **Sin novedades marcadas** el bloque de recomendados no se muestra (ni el título ni «Ver todos los productos»). Hoy ningún documento tiene `new: true`.
+- **Sin límite:** salen todas las novedades; la fila de tarjetas se desliza.
+- En código: `isNew` en cada variante (`typesense-adapter.js`, `new` entra en `LIGHT_FIELDS`) y `getRecommendedProducts()` (`catalog.js`).
