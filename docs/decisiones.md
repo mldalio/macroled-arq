@@ -757,3 +757,13 @@ En Mobile, compare-bar muestra los productos elegidos uno arriba de otro, como l
 - **Antes:** el toggle de Productos y Colecciones guardaba la preferencia en `localStorage` (`arq:theme`) y la página arrancaba como se había dejado, aun después de visitar otras páginas.
 - **Ahora:** no se guarda nada entre cargas. Recargar Productos, Colecciones o la ficha, o volver a ellas desde otra página, las deja apagadas. Se elimina `arq:theme` y el script en línea del embed de Productos (ya no hace falta).
 - **Única excepción, Productos → ficha:** si el listado está iluminado y se hace clic en un producto, la ficha llega iluminada (navbar, hero y fotos), sin fundido. El traspaso vive en `sessionStorage` (`arq:iluminar-handoff`) 10 segundos y la ficha lo consume una sola vez; cualquier listado que se abre lo borra. Helpers en `src/base/theme.js` (`handOffTheme`, `takeThemeHandoff`).
+
+## 2026-10-15 · Paneles y menús siempre en Light
+
+Con Iluminar (listados y ficha) solo se oscurecen la página, el navbar (barra) y, en la ficha, el hero. Todo lo que se abre encima queda en **Light local**, como filter-panel (2026-10-05):
+
+- **Navbar:** mega-menu (Desktop), menú Mobile (`<dialog class="menu">`), search-sheet y search-screen. Mientras el mega-menú está abierto, la barra también pasa a Light (`data-arq-theme="light"` en el `.navbar` interno), con la misma transición del search-sheet, y detrás va el scrim de `color/overlay/scrim`.
+- **download-modal:** su `<dialog>` lleva `data-arq-theme="light"`.
+- **filter-panel:** sin cambios (ya era Light).
+- **Cómo:** `data-arq-theme="light"` en el `<dialog>` (o en el host del componente), el bloque que `ArqElement` adopta en cada Shadow DOM (`src/styles/light.css`).
+- **Pendiente (docs/):** DESIGN.md §2 · Modo Dark dice que filter-panel es la única excepción de Light local; hay que ampliarlo con esta lista (en una rama `docs/`, junto con su copia en Figma).

@@ -31,7 +31,7 @@ class ArqSearchScreen extends ArqElement {
     label: { type: String, default: 'Buscar' }, // nombre del diálogo
   };
   static template =
-    `<dialog class="dialog">` +
+    `<dialog class="dialog" data-arq-theme="light">` +
     `<div class="screen">` +
     `<div class="header">` +
     `<arq-icon-button class="back" icon="chevron-left">Volver</arq-icon-button>` +

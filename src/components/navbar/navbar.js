@@ -105,7 +105,7 @@ class ArqNavbar extends ArqElement {
     `</nav>` +
     `<div class="mega-wrap" hidden><div class="mega-drawer"><arq-mega-menu class="mega" data-arq-theme="light"></arq-mega-menu></div></div>` +
     `</header>` +
-    `<dialog class="menu">` +
+    `<dialog class="menu" data-arq-theme="light">` +
     `<div class="menu-bar">` +
     `<arq-logo class="menu-logo" size="small"></arq-logo>` +
     `<arq-icon-button class="menu-close" icon="close" background="subtle">Cerrar menú</arq-icon-button>` +
