@@ -194,17 +194,6 @@ tbody td {
   color: var(--arq-color-text-primary);
 }
 
-/* Tabla: el nombre se parte en líneas y la columna mide lo que el SKU, así
-   queda lugar para las columnas de datos */
-.sku-col .product {
-  width: min-content;
-}
-
-.sku-col .name {
-  min-width: 100%;
-  white-space: normal;
-}
-
 /* Fija de fin: Descargas, centrada */
 th.end,
 td.end {

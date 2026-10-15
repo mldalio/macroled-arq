@@ -280,7 +280,11 @@ export async function getDownloadsTable() {
   const variants = groups.flatMap((group) => group.variants.map((variant) => ({ group, variant })));
   const varies = (field) => new Set(variants.map(({ variant }) => variant.values[field]).filter(hasValue)).size > 1;
   return {
-    columns: GLOSSARY_COLUMNS.filter(({ field }) => variants.some(({ variant }) => hasValue(variant.values[field]))).map(({ field, label }) => ({ key: field, label })),
+    // Columnas: las del glosario que también son filtro (sin Tamaño, Flujo lum.
+    // ni Eficiencia, así entran en el ancho de la página).
+    columns: GLOSSARY_COLUMNS.filter(
+      ({ field }) => DOWNLOAD_FILTERS.some((f) => f.field === field) && variants.some(({ variant }) => hasValue(variant.values[field])),
+    ).map(({ field, label }) => ({ key: field, label })),
     filters: DOWNLOAD_FILTERS.filter(({ field }) => varies(field)).map(({ field, label }) => ({
       key: field,
       label,

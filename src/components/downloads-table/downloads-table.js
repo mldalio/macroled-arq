@@ -73,9 +73,10 @@ const TEXT = {
   count: (n) => (n === 1 ? '1 variante' : `${n} variantes`),
 };
 
-// Datos de la tarjeta Mobile (la propuesta muestra cuatro).
+// Datos de la tarjeta Mobile (la propuesta muestra cuatro: Potencia, Temp.,
+// Flujo lum. e IP; Flujo lum. ya no es columna en Descargas, va Ángulo).
 // TODO (diseño): confirmar qué datos van en la tarjeta.
-const CARD_COLUMNS = ['potencia', 'temperatura_color', 'flujo_luminoso', 'proteccion_ip'];
+const CARD_COLUMNS = ['potencia', 'temperatura_color', 'angulo_apertura', 'proteccion_ip'];
 
 // Columnas de datos de las filas de carga, antes de tener los datos (la
 // propuesta muestra nueve)

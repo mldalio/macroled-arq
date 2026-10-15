@@ -41,7 +41,7 @@ Los datos los arma `getDownloadsTable()` (`src/data/catalog.js`).
 - **Selección múltiple:** dentro de un filtro, una fila cumple si tiene cualquiera de los valores; entre filtros, todos (`src/data/variants.js`). Las opciones son las de todo el catálogo; las que no darían filas con la búsqueda y los demás filtros van deshabilitadas.
 - **Aplicados:** un filter-chip por valor y «Limpiar filtros» (button Underline). Quitar un chip pasa el foco al siguiente.
 - **Desktop:** `<table>` real. Miniatura, producto (nombre `role/body-compact-medium` sobre sku Compact) y Descargas quedan fijas al desplazar; hasta 1023 px solo la miniatura. Encabezado `role/label-lg` en `color/text/tertiary`, valores `role/body-lg-regular`. Descarga: icon-button Large Background=Outline, como el glosario de la ficha (Figma 1218:10705).
-- **Mobile:** una tarjeta por variante: miniatura, nombre (`role/body-medium`) y sku; Potencia, Temp., Flujo lum. e IP en dos columnas; «Descargas» (Outline) abre el modal y «Ver producto» (Underline, ↗) va a la ficha con `?sku=`.
+- **Mobile:** una tarjeta por variante: miniatura, nombre (`role/body-medium`) y sku; Potencia, Temp., Ángulo e IP en dos columnas; «Descargas» (Outline) abre el modal y «Ver producto» (Underline, ↗) va a la ficha con `?sku=`.
 - **Vacío:** «No hay variantes con estos filtros» (`role/heading-2`) y su ayuda (`role/body-regular`).
 - Emite `arq:downloads { sku }` y, con `downloads`, abre ese modal. La cantidad de filas se anuncia en una región `role="status"`.
 
@@ -53,13 +53,13 @@ Los datos los arma `getDownloadsTable()` (`src/data/catalog.js`).
 | Desplegable | `color/surface/faint`, línea arriba y abajo `border/default` en `color/border/subtle`, padding `space/padding/xl`, gap `space/gap/lg`; columnas de al menos `layout/select-menu-filter` |
 | Aplicados | chips a `space/gap/sm`, «Limpiar filtros» a `space/gap/lg`, padding inferior `space/padding/md` |
 | Filas | padding vertical `space/padding/sm`, línea `color/border/subtle`, Hover `color/surface/faint` |
-| Entre columnas | `space/gap/lg` entre columnas de datos (en la propuesta, `space/gap/sm`: quedaban pegadas); el nombre del producto se parte en líneas y su columna mide lo que el SKU |
+| Entre columnas | `space/gap/lg` entre columnas de datos (en la propuesta, `space/gap/sm`: quedaban pegadas) |
 | Tarjeta | padding vertical `space/padding/lg`, gap `space/gap/md`, datos `role/body-compact-regular` + `role/body-medium` a `space/gap/xs` |
 | Vacío | `space/section/sm` arriba, `space/section/md` abajo, gap `space/gap/sm-md` |
 
 ## Pendientes
 
 - `TODO` (token): miniatura de la fila 64 (se usa `layout/search-thumb`, 48) y de la tarjeta 72 (se usa `layout/gallery-thumb`, 76 en Mobile); buscador de 480 (se usa `layout/search-field`, 360); select del desplegable de 224; ayuda del vacío de 560 (se usa `layout/measure-wide`); barras de carga de 12 y 14.
-- `TODO` (diseño): qué datos van en la tarjeta Mobile (hoy Potencia, Temp., Flujo lum. e IP, como la propuesta).
+- `TODO` (diseño): qué datos van en la tarjeta Mobile (hoy Potencia, Temp., Ángulo e IP; la propuesta tiene Flujo lum., que ya no es columna).
 - El menú de selección múltiple de la propuesta tiene sombra: no se usa (DESIGN.md: no hay sombras).
 - El encabezado de la tabla usa `role/label-lg`, que va en mayúsculas; en la propuesta se ve en caja normal.
