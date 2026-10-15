@@ -32,13 +32,17 @@ class ArqFaqItem extends ArqElement {
     `<span class="question role-heading-3-light"><slot name="question"></slot></span>` +
     `${icon('plus')}${icon('minus')}` +
     `</button>` +
-    `<div class="answer role-body" part="panel"><slot></slot></div>` +
+    // .answer-clip es el que se recorta: sin padding, así cerrado mide 0
+    `<div class="answer-wrap" part="panel"><div class="answer-clip"><div class="answer role-body"><slot></slot></div></div></div>` +
     `</div>`;
 
+  // La respuesta anima el alto al abrir y al cerrar (Disclosure
+  // animateHeight; DESIGN.md §6 · Movimiento); .answer-wrap es el panel.
   setup() {
     this.disclosure = new Disclosure(this, {
       trigger: this.shadowRoot.querySelector('.trigger'),
-      panel: this.shadowRoot.querySelector('.answer'),
+      panel: this.shadowRoot.querySelector('.answer-wrap'),
+      animateHeight: true,
     });
   }
 }

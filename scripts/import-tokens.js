@@ -7,7 +7,7 @@
 //     Large y Wide van en $extensions["arq.modes"] solo si cambian.
 //   - Tipos del repo: color (hex en mayúsculas), dimension (px), fontWeight,
 //     fontFamily, duration (ms) y cubicBezier.
-//   - motion/duration/fast, base y slow suman el modo reducedMotion = 0ms.
+//   - motion/duration/fast, base, slow y expand suman el modo reducedMotion = 0ms.
 //   - No se importan las paletas de marca sin uso (bronze, cacao, olive,
 //     terracotta, offwhite).
 //   - role/* no son variables (son estilos de texto): se conservan del
@@ -24,7 +24,8 @@ const TARGET = new URL('../tokens/tokens.json', import.meta.url);
 // Modo de Figma → modo del repo (null = valor base).
 const MODE_MAP = { Value: null, Light: null, Desktop: null, Dark: 'dark', Mobile: 'mobile', Tablet: 'tablet', Large: 'large', Wide: 'wide' };
 const EXCLUDED_GROUPS = ['bronze', 'cacao', 'olive', 'terracotta', 'offwhite'];
-const REDUCED_MOTION = ['motion.duration.fast', 'motion.duration.base', 'motion.duration.slow'];
+// motion/duration/fade y feedback no cambian: un fundido y un tiempo de lectura no marean.
+const REDUCED_MOTION = ['motion.duration.fast', 'motion.duration.base', 'motion.duration.slow', 'motion.duration.expand'];
 // Orden de los grupos de primer nivel en tokens.json (los nuevos van al final).
 const GROUP_ORDER = ['space', 'font', 'radius', 'border', 'blur', 'neutral', 'red', 'green', 'amber', 'alpha', 'color', 'layout', 'icon', 'swatch', 'type', 'motion', 'role'];
 

@@ -26,6 +26,7 @@ Mensaje de resultado debajo del botón de envío (Contacto, envío a n8n). Sin �
 | --- | --- |
 | Texto Success · Error | `color/text/success` · `color/text/error` |
 | Texto | `role/body` |
+| Al aparecer | funde y sube `space/gap/sm` en `motion/duration/slow` · `motion/easing/out` (reduced motion: solo fundido `motion/duration/fade`) |
 
 ## Pendientes
 

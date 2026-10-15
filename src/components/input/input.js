@@ -57,7 +57,7 @@ class ArqInput extends ArqElement {
     `<label class="label role-body-regular"><slot></slot></label>` +
     `<div class="field"></div>` +
     `<p class="helper role-body-sm"><slot name="helper"></slot></p>` +
-    `<p class="error role-body-sm" aria-live="polite"></p>` +
+    `<div class="error-wrap" hidden><p class="error role-body-sm" aria-live="polite"></p></div>` +
     `</div>`;
 
   #internals = this.attachInternals();
@@ -151,7 +151,7 @@ class ArqInput extends ArqElement {
     const helper = root.querySelector('.helper');
     const error = root.querySelector('.error');
     error.textContent = this.error ?? '';
-    error.hidden = !hasError;
+    root.querySelector('.error-wrap').hidden = !hasError;
     helper.hidden = hasError || !this.showHelper;
     control.setAttribute('aria-invalid', String(hasError));
     const describedBy = [hasError ? this.#ids.error : null, !helper.hidden ? this.#ids.helper : null].filter(Boolean);

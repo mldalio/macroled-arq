@@ -35,6 +35,17 @@
   padding-bottom: var(--arq-space-gap-sm-md);
 }
 
+/* El padding inferior acompaña al alto de la respuesta (Disclosure
+   animateHeight): motion/duration/expand con motion/easing/out. Repite los
+   colores de la hoja base (transition no se suma). Con reduced motion,
+   expand vale 0. */
+.trigger {
+  transition:
+    padding-bottom var(--arq-motion-duration-expand) var(--arq-motion-easing-out),
+    background-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard),
+    color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);
+}
+
 .question {
   flex: 1 1 0;
   min-width: 0;

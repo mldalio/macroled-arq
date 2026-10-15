@@ -68,6 +68,10 @@ provincia.options = [{ value: 'Buenos Aires' }, { value: 'Córdoba' }];
 | Helper · error | `color/text/tertiary` · `color/text/error` · `role/body-sm` |
 | Disabled | `color/text/disabled` en label, valor, placeholder y helper |
 | Gap · padding vertical | `space/gap/sm` · `space/gap/sm` (como en Figma) |
+| Menú de Select al abrir | escala 0.97 → 1 en `motion/duration/base` · fundido `motion/duration/fade` · `motion/easing/out` |
+| Mensaje de error al aparecer | alto `motion/duration/base` · fundido `motion/duration/fade` · `motion/easing/out` |
+
+Con reduced motion quedan solo los fundidos. Al cerrar el menú o quitar el error, sin animación (DESIGN.md §6 · Movimiento). TODO: la escala 0.97 no tiene token.
 
 ## Pendientes
 

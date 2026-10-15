@@ -400,12 +400,17 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 | --- | --- | --- |
 | motion/duration/fast | 120 ms | Hover, toggle, foco |
 | motion/duration/base | 200 ms | Desplegables (disclosure) y menús |
-| motion/duration/slow | 320 ms | Fundido de imágenes de product-card |
+| motion/duration/slow | 320 ms | Fundido de imágenes de product-card; mensaje de form-message al aparecer |
+| motion/duration/expand | 250 ms | Alto de un desplegable que se abre o se cierra (faq-item) |
+| motion/duration/fade | 150 ms | Fundido corto de algo que aparece (menú de input Select, error de input). Es también el fundido que queda con reduced motion |
 | motion/duration/feedback | 2000 ms | Tiempo visible de una confirmación ("Copiado" del sku) |
-| motion/easing/standard | cubic-bezier(0.2, 0, 0, 1) | Todas las transiciones |
+| motion/easing/standard | cubic-bezier(0.2, 0, 0, 1) | Cambios de estado: hover, foco, selección, paneles y fundidos de imagen |
+| motion/easing/out | cubic-bezier(0.23, 1, 0.32, 1) | Entradas: algo que aparece o se despliega (arranca rápido y frena suave) |
 
-- Con `prefers-reduced-motion: reduce`, las duraciones fast, base y slow pasan a 0. feedback no cambia: es un tiempo de lectura, no una animación.
-- Se anima solo `opacity`, `transform` y colores. Nunca alto, ancho ni posición de layout.
+- Con `prefers-reduced-motion: reduce`, las duraciones fast, base, slow y expand pasan a 0. fade no cambia: con reduced motion se quitan los desplazamientos, los cambios de escala y de alto, pero quedan los fundidos (no marean y evitan los cambios bruscos). feedback tampoco cambia: es un tiempo de lectura, no una animación.
+- Se anima solo `opacity`, `transform` y colores. Nunca ancho ni posición de layout.
+- **Alto: solo en dos casos**, con `grid-template-rows: 0fr → 1fr` (nunca `height`): el panel de faq-item (Disclosure `animateHeight`, `motion/duration/expand`) y el mensaje de error de input (`motion/duration/base`). Así lo que está abajo se desliza en vez de saltar. Los demás desplegables (accordion-item, filter-row, catalog-nav-group) siguen con el alto de golpe y fundido al abrir (`docs/decisiones.md`, 2026-10-15 · Contacto: animaciones).
+- Lo que aparece usa `@starting-style` y sale sin animación, salvo los paneles que se cierran por el mismo camino por el que entraron (filter-panel, download-modal, search-sheet, faq-item).
 
 ---
 
