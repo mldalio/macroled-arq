@@ -521,10 +521,10 @@ function ke(e, t, n) {
 	}));
 }
 var Ae = (e, t) => Array.isArray(t) ? !t.length || t.includes(e) : !Te(t) || e === t, je = (e, t, n) => Object.entries(t).every(([t, r]) => t === n || Ae(e.attributes[t], r));
-function Me(e, t) {
+function y(e, t) {
 	return e.filter((e) => je(e, t));
 }
-function Ne(e, t, n) {
+function Me(e, t, n) {
 	return t.map((t) => ({
 		attribute: t,
 		options: Ee(e, t).map((r) => ({
@@ -534,36 +534,36 @@ function Ne(e, t, n) {
 		}))
 	}));
 }
-function Pe(e, t, n) {
+function Ne(e, t, n) {
 	return {
 		...e,
 		[t]: n
 	};
 }
-function Fe(e, t) {
+function Pe(e, t) {
 	let n = ce(t ?? "");
 	return n.length ? e.filter((e) => le(`${e.sku} ${e.search ?? ""}`, n)) : e;
 }
-var Ie = Object.freeze([{
+var Fe = Object.freeze([{
 	value: "sku-asc",
 	label: "SKU (A–Z)"
 }, {
 	value: "sku-desc",
 	label: "SKU (Z–A)"
-}]), Le = new Intl.Collator("es", {
+}]), Ie = new Intl.Collator("es", {
 	numeric: !0,
 	sensitivity: "base"
 });
-function Re(e, t) {
+function Le(e, t) {
 	if (t !== "sku-asc" && t !== "sku-desc") return e;
 	let n = t === "sku-desc" ? -1 : 1;
-	return [...e].sort((e, t) => n * Le.compare(e.sku, t.sku));
+	return [...e].sort((e, t) => n * Ie.compare(e.sku, t.sku));
 }
 //#endregion
 //#region src/data/catalog.js
-var y = null;
+var Re = null;
 function b() {
-	return y ??= Ce().then(ze), y.catch(() => y = null), y;
+	return Re ??= Ce().then(ze), Re.catch(() => Re = null), Re;
 }
 function ze({ collections: e, groups: t, withDetails: n }) {
 	let r = new Map(e.map((e) => [e.id, e]));
@@ -889,7 +889,7 @@ function yt(e, t) {
 async function bt(e, t, n) {
 	let { groups: r } = await b(), i = r.find((t) => t.variants.some((t) => t.sku === e)), a = i?.variants.find((t) => t.sku === e);
 	if (!i || !a) return null;
-	let o = Pe(vt(i, a), t, n);
+	let o = Ne(vt(i, a), t, n);
 	return De(_t(i), o)?.sku ?? null;
 }
 async function xt(e) {
@@ -2107,7 +2107,7 @@ var Nn = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{a
 }).define();
 //#endregion
 //#region src/components/form-message/form-message.css?inline
-var Pn = ":host{display:block}.message{color:var(--arq-color-text-success);margin:0}:host([tone=error]) .message{color:var(--arq-color-text-error)}";
+var Pn = ":host{display:block}.message{transition:opacity var(--arq-motion-duration-slow) var(--arq-motion-easing-out), transform var(--arq-motion-duration-slow) var(--arq-motion-easing-out), color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard)}@starting-style{.message{opacity:0;transform:translateY(var(--arq-space-gap-sm))}}@media (prefers-reduced-motion:reduce){.message{transition:opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out)}}.message{color:var(--arq-color-text-success);margin:0}:host([tone=error]) .message{color:var(--arq-color-text-error)}";
 (class extends P {
 	static tag = "arq-form-message";
 	static styles = Pn;
@@ -2150,7 +2150,7 @@ var In = ":host{min-width:0;display:block}.list{flex-direction:column;display:fl
 }).define();
 //#endregion
 //#region src/base/disclosure.js
-var Ln = 0, Rn = "\n[data-disclosure-panel] {\n  transition-property: opacity, color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;\n  transition-duration: var(--arq-motion-duration-base);\n  transition-timing-function: var(--arq-motion-easing-standard);\n}\n\n@starting-style {\n  [data-disclosure-panel]:not([hidden]) {\n    opacity: 0;\n  }\n}\n", I;
+var Ln = 0, Rn = "\n[data-disclosure-panel=''] {\n  transition-property: opacity, color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;\n  transition-duration: var(--arq-motion-duration-base);\n  transition-timing-function: var(--arq-motion-easing-standard);\n}\n\n@starting-style {\n  [data-disclosure-panel='']:not([hidden]) {\n    opacity: 0;\n  }\n}\n\n/* animateHeight. visibility pasa a hidden recién al terminar de cerrar. */\n[data-disclosure-panel='height'] {\n  display: grid;\n  grid-template-rows: 0fr;\n  opacity: 0;\n  visibility: hidden;\n  transition:\n    grid-template-rows var(--arq-motion-duration-expand) var(--arq-motion-easing-out),\n    opacity var(--arq-motion-duration-base) var(--arq-motion-easing-out),\n    visibility 0s linear var(--arq-motion-duration-expand);\n}\n\n[data-disclosure-panel='height'][data-open] {\n  grid-template-rows: 1fr;\n  opacity: 1;\n  visibility: visible;\n  transition-delay: 0s;\n}\n\n[data-disclosure-panel='height'] > * {\n  min-height: 0;\n  overflow: hidden;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  [data-disclosure-panel='height'] {\n    transition:\n      opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out),\n      visibility 0s linear var(--arq-motion-duration-fade);\n  }\n\n  [data-disclosure-panel='height'][data-open] {\n    transition-delay: 0s;\n  }\n}\n", I;
 function zn(e) {
 	I || (I = new CSSStyleSheet(), I.replaceSync(Rn)), e.adoptedStyleSheets.includes(I) || (e.adoptedStyleSheets = [...e.adoptedStyleSheets, I]);
 }
@@ -2158,8 +2158,9 @@ var L = class {
 	#e;
 	#t;
 	#n;
-	constructor(e, { trigger: t, panel: n, closeOnEscape: r = !1 }) {
-		this.#e = e, this.#t = t, this.#n = n, n.id ||= `arq-disclosure-${++Ln}`, n.setAttribute("data-disclosure-panel", ""), zn(e.shadowRoot), t.type = "button", t.setAttribute("aria-controls", n.id), t.addEventListener("click", () => this.toggle()), r && e.addEventListener("keydown", (e) => {
+	#r;
+	constructor(e, { trigger: t, panel: n, closeOnEscape: r = !1, animateHeight: i = !1 }) {
+		this.#e = e, this.#t = t, this.#n = n, this.#r = i, n.id ||= `arq-disclosure-${++Ln}`, n.setAttribute("data-disclosure-panel", i ? "height" : ""), zn(e.shadowRoot), t.type = "button", t.setAttribute("aria-controls", n.id), t.addEventListener("click", () => this.toggle()), r && e.addEventListener("keydown", (e) => {
 			e.key === "Escape" && this.open && (e.stopPropagation(), this.hide(), this.#t.focus());
 		}), e.addController(this);
 	}
@@ -2174,14 +2175,14 @@ var L = class {
 	}
 	toggle(e) {
 		let t = e ?? !this.open;
-		t !== this.open && (this.#e.open = t, this.#r(), this.#e.emit("toggle", { open: t }));
+		t !== this.open && (this.#e.open = t, this.#i(), this.#e.emit("toggle", { open: t }));
 	}
 	hostUpdate(e) {
-		e.has("open") && this.#r();
+		e.has("open") && this.#i();
 	}
-	#r() {
+	#i() {
 		let e = this.open;
-		this.#t.setAttribute("aria-expanded", String(e)), this.#n.hidden = !e;
+		this.#t.setAttribute("aria-expanded", String(e)), this.#r ? this.#n.toggleAttribute("data-open", e) : this.#n.hidden = !e;
 	}
 }, Bn = ":host{min-width:0;display:block}.item{border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);background:var(--arq-color-surface-transparent)}.trigger{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-xl-2xl) var(--arq-space-padding-xl);padding-bottom:calc(var(--arq-space-padding-xl-2xl) - var(--arq-border-default));background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .trigger{padding-block:var(--arq-space-padding-lg) var(--arq-space-gap-xs)}.title{overflow-wrap:break-word;flex:1 1 0;min-width:0}.icon-box{padding:var(--arq-space-padding-sm-md);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.content{padding:0 var(--arq-space-padding-xl) var(--arq-space-padding-lg)}@media (width<=767px){.trigger,.content{padding-inline:0}}@media (hover:hover){:host(:not([open])) .item:has(.trigger:hover){background:var(--arq-color-surface-faint)}}.item:has(.trigger:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus{outline:none}";
 (class extends P {
@@ -2627,165 +2628,11 @@ function er(e) {
 	}
 }).define();
 //#endregion
-//#region src/components/search-field/search-field.css?inline
-var tr = ":host{min-width:0;display:block}.field{align-items:center;gap:var(--arq-space-gap-md);padding:var(--arq-space-gap-sm) var(--arq-space-padding-xs) var(--arq-space-gap-sm) var(--arq-space-padding-md);border:var(--arq-border-default) solid var(--arq-color-border-default);background:var(--arq-color-surface-default);display:flex}:host(:not([show-close])) .field{padding-inline-end:var(--arq-space-padding-md)}.field:focus-within{border-color:var(--arq-color-border-focus)}.input{min-width:0;color:var(--arq-color-text-primary);caret-color:var(--arq-color-text-primary);appearance:none;background:0 0;border:0;flex:1;margin:0;padding:0}.input::placeholder{color:var(--arq-color-text-tertiary);opacity:1}.input:focus{outline:none}.input::-webkit-search-cancel-button{appearance:none}.input::-webkit-search-decoration{appearance:none}.close{flex:none}.lead{display:none}:host([type=line]) .lead{color:var(--arq-color-icon-tertiary);flex:none;display:inline-flex}:host([type=line]) .field{gap:var(--arq-space-gap-sm-md);padding:var(--arq-space-gap-md) 0;border-width:0 0 var(--arq-border-default);border-color:var(--arq-color-border-default);background:0 0}:host([type=line]) .field:focus-within{border-color:var(--arq-color-border-focus)}.lead .icon{width:var(--arq-icon-lg);height:var(--arq-icon-lg)}";
-(class extends P {
-	static tag = "arq-search-field";
-	static styles = tr;
-	static properties = {
-		type: {
-			type: String,
-			values: ["box", "line"],
-			default: "box"
-		},
-		showClose: { type: Boolean },
-		value: {
-			type: String,
-			default: ""
-		},
-		placeholder: {
-			type: String,
-			default: "Buscar productos…"
-		},
-		label: {
-			type: String,
-			default: "Buscar productos"
-		},
-		activeLabel: {
-			type: String,
-			default: ""
-		}
-	};
-	static template = `<div class="field"><span class="lead">${F("search")}</span><input class="input role-body" type="search" autocomplete="off" spellcheck="false" enterkeyhint="search"><arq-icon-button class="close" icon="close">Cerrar búsqueda</arq-icon-button></div><span class="visually-hidden" aria-live="polite"></span>`;
-	#e = null;
-	setup() {
-		let e = this.shadowRoot;
-		this.#e = e.querySelector("input"), this.#e.addEventListener("input", () => {
-			this.value = this.#e.value, this.emit("input", { value: this.value });
-		}), this.#e.addEventListener("keydown", (e) => {
-			e.key === "ArrowDown" || e.key === "ArrowUp" ? (e.preventDefault(), this.emit("navigate", { step: e.key === "ArrowDown" ? 1 : -1 })) : e.key === "Enter" && (e.preventDefault(), this.emit("submit", { value: this.value }));
-		}), e.querySelector(".close").addEventListener("click", () => this.emit("close"));
-	}
-	focus(e) {
-		this.#e?.focus(e);
-	}
-	update(e) {
-		let t = this.shadowRoot;
-		this.#e.value !== this.value && (this.#e.value = this.value ?? ""), this.#e.placeholder = this.placeholder ?? "", this.#e.setAttribute("aria-label", this.label ?? ""), t.querySelector(".close").hidden = !this.showClose, e.has("activeLabel") && (t.querySelector("[aria-live]").textContent = this.activeLabel ?? "");
-	}
-}).define();
-//#endregion
-//#region src/components/variants-table/variants-table.css?inline
-var nr = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page-gutter);flex-direction:column;display:flex}.toolbar{--page-gutter:var(--arq-space-0)}.scroll{--page-gutter:var(--arq-space-padding-sm)}.filter-bar{--page-gutter:var(--arq-layout-gutter)}.toolbar{align-items:center;gap:var(--arq-space-gap-md);padding:var(--arq-space-padding-md) var(--page-gutter);flex-wrap:wrap;display:flex}.filters-group{align-items:center;gap:var(--arq-space-gap-md);display:flex}.total{color:var(--arq-color-text-secondary)}:host([show-search]) .total{display:none}.downloads,.sort,.search{margin-inline-start:auto}.search{flex:0 1 var(--arq-layout-search-field);min-width:0}.downloads{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.empty{padding-block:var(--arq-space-padding-md);color:var(--arq-color-text-secondary);margin:0}.scroll{overscroll-behavior-x:contain;scrollbar-width:none;overflow-x:auto}.scroll::-webkit-scrollbar{display:none}.scroll:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(-1 * var(--arq-border-strong))}.table{border-collapse:collapse;border-spacing:0;width:100%}th,td{padding:0 var(--arq-space-gap-sm) 0 0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-default);text-align:start;white-space:nowrap;vertical-align:middle}thead th{padding-block:var(--arq-space-padding-sm-md);color:var(--arq-color-text-tertiary);font-weight:inherit}tbody th,tbody td{padding-block:var(--arq-space-padding-sm);color:var(--arq-color-text-primary)}@media (hover:hover){tbody tr:hover>*{background:var(--arq-color-surface-faint)}}.start{z-index:1;width:1%;padding-inline:var(--page-gutter) var(--arq-space-gap-sm);position:sticky;left:0}.sku-col{left:calc(var(--page-gutter) + var(--arq-layout-table-thumb) + var(--arq-space-gap-sm));z-index:1;width:1%;font-weight:inherit;padding-inline-end:var(--arq-space-gap-sm-md);position:sticky}.thumb{width:var(--arq-layout-table-thumb);height:var(--arq-layout-table-thumb);background:var(--arq-color-surface-subtle);flex:none;display:block;overflow:hidden}.thumb img{object-fit:cover;width:100%;height:100%;display:block}th.end,td.end{z-index:1;width:1%;padding-inline:var(--arq-space-gap-sm) var(--page-gutter);text-align:center;position:sticky;right:0}@media (width<=1023px){.sku-col{position:static}}.cards{margin:0;padding:0;list-style:none;display:none}@media (width<=767px){.search{flex:1 1 0}.scroll{display:none}.cards:not([hidden]){gap:var(--arq-space-gap-6xl);flex-direction:column;display:flex}.card{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.card-image{aspect-ratio:16/10;background:var(--arq-color-surface-subtle);display:block;overflow:hidden}.card-image img{object-fit:cover;width:100%;height:100%;display:block}.card-head{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-sm);display:flex}.card-data{grid-template-columns:repeat(2,minmax(0,1fr));margin:0;display:grid}.card-item{gap:var(--arq-space-gap-sm);padding-block:var(--arq-space-padding-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);flex-direction:column;display:flex}.card-item dt{color:var(--arq-color-text-secondary)}.card-item dd{color:var(--arq-color-text-primary);overflow-wrap:break-word;margin:0}}", R = (e) => String(e ?? "").replace(/[&<>"]/g, (e) => ({
-	"&": "&amp;",
-	"<": "&lt;",
-	">": "&gt;",
-	"\"": "&quot;"
-})[e]), rr = (e, t) => `<arq-icon-button icon="download" size="large" background="${t}" data-sku="${R(e)}">Descargas de ${R(e)}</arq-icon-button>`, z = {
-	search: "Buscar por SKU o nombre…",
-	searchLabel: "Buscar por SKU o nombre",
-	sort: "Ordenar por",
-	downloads: "Descargas",
-	image: "Imagen",
-	empty: "Ningún SKU coincide con la búsqueda o los filtros.",
-	count: (e) => e === 1 ? "1 variante" : `${e} variantes`
-};
-(class extends P {
-	static tag = "arq-variants-table";
-	static styles = nr;
-	static properties = {
-		filters: { type: Boolean },
-		downloads: { type: String },
-		label: {
-			type: String,
-			default: "Variantes"
-		},
-		showSearch: { type: Boolean },
-		showSort: { type: Boolean }
-	};
-	static template = `<div class="controls"><div class="toolbar"><div class="filters-group"><arq-button class="toggle-filters" show-icon icon="filter">Filtros</arq-button><span class="total role-body" aria-hidden="true"></span></div><div class="downloads"><slot name="downloads"></slot></div><arq-select class="sort" type="filter" label="${z.sort}" hidden></arq-select><arq-search-field class="search" placeholder="${z.search}" label="${z.searchLabel}" hidden></arq-search-field></div><arq-filter-bar class="filter-bar" hidden></arq-filter-bar></div><div class="scroll" tabindex="0" role="region" aria-label="Variantes"><table class="table"><thead></thead><tbody></tbody></table></div><ul class="cards" role="list" aria-label="Variantes"></ul><p class="empty role-body" hidden>${z.empty}</p><span class="visually-hidden count" role="status"></span>`;
-	#e = {
-		columns: [],
-		filters: [],
-		rows: []
-	};
-	#t = {};
-	#n = "";
-	#r = Ie[0].value;
-	get data() {
-		return this.#e;
-	}
-	set data(e) {
-		this.#e = {
-			columns: e?.columns ?? [],
-			filters: e?.filters ?? [],
-			rows: e?.rows ?? []
-		}, this.#t = {}, this.isConnected && this.#i();
-	}
-	setup() {
-		let e = this.shadowRoot;
-		e.querySelector(".toggle-filters").addEventListener("click", () => this.filters = !this.filters), e.querySelector(".filter-bar").addEventListener("arq:filters", (e) => {
-			e.stopPropagation(), this.#t = e.detail.filters, this.#a(!0);
-		}), e.querySelector(".search").addEventListener("arq:input", (e) => {
-			e.stopPropagation(), this.#n = e.detail.value, this.#a(!0);
-		}), e.querySelector(".search").addEventListener("arq:submit", (e) => e.stopPropagation());
-		let t = e.querySelector("slot[name=\"downloads\"]"), n = () => t.parentElement.hidden = !t.assignedElements().length;
-		t.addEventListener("slotchange", n), n();
-		let r = e.querySelector(".sort");
-		r.allLabel = Ie[0].label, r.options = Ie.slice(1), r.addEventListener("arq:change", (e) => {
-			e.stopPropagation(), this.#r = e.detail.value || Ie[0].value, this.#a(!0);
-		}), e.addEventListener("click", (e) => {
-			let t = e.target.closest("arq-icon-button[data-sku]");
-			if (!t) return;
-			let n = t.dataset.sku;
-			this.emit("downloads", { sku: n }), (this.downloads ? this.getRootNode().getElementById?.(this.downloads) : null)?.show?.(t);
-		}), this.#i();
-	}
-	update(e) {
-		let t = this.shadowRoot;
-		e.has("label") && t.querySelector(".scroll").setAttribute("aria-label", this.label ?? "Variantes"), e.has("showSearch") && (t.querySelector(".search").hidden = !this.showSearch), e.has("showSort") && (t.querySelector(".sort").hidden = !this.showSort), (e.has("showSearch") || e.has("showSort")) && this.#a();
-		let n = t.querySelector(".toggle-filters");
-		if (e.has("filters") && (n.icon = this.filters ? "close" : "filter", customElements.whenDefined("arq-button").then(() => {
-			let e = n.shadowRoot?.querySelector(".control");
-			e && (e.setAttribute("aria-expanded", String(this.filters)), "ariaControlsElements" in e && (e.ariaControlsElements = [t.querySelector(".filter-bar")]));
-		}), t.querySelector(".filter-bar").hidden = !this.filters, !this.filters && Object.keys(this.#t).length)) {
-			this.#t = {};
-			for (let e of t.querySelectorAll(".filter-bar arq-select")) e.value = "";
-			t.querySelector(".filter-bar").applied = !1, this.#a(!0);
-		}
-	}
-	#i() {
-		let e = this.shadowRoot, { columns: t, filters: n } = this.#e;
-		e.querySelector("thead").innerHTML = `<tr><th scope="col" class="start"><span class="visually-hidden">${z.image}</span></th><th scope="col" class="sku-col role-body-regular">SKU</th>` + t.map((e) => `<th scope="col" class="role-body-regular">${R(e.label)}</th>`).join("") + `<th scope="col" class="end role-body-regular"><span class="th-downloads">${z.downloads}</span></th></tr>`, e.querySelector(".filter-bar").replaceChildren(...n.map((e) => {
-			let t = document.createElement("arq-select");
-			return t.type = "filter", t.label = e.label, t.name = e.key, t;
-		})), this.#a();
-	}
-	#a(e = !1) {
-		let t = this.shadowRoot, { columns: n, filters: r } = this.#e, i = this.showSearch ? Fe(this.#e.rows, this.#n) : this.#e.rows;
-		this.showSort && (i = Re(i, this.#r));
-		let a = r.map((e) => e.key), o = Ne(i, a, this.#t);
-		t.querySelectorAll(".filter-bar arq-select").forEach((e, t) => {
-			let n = !!r[t].swatches;
-			e.options = o[t].options.map((e) => ({
-				value: e.value,
-				label: e.value,
-				disabled: e.disabled,
-				showSwatch: n
-			})), e.value = this.#t[e.name] ?? "";
-		});
-		let s = Me(i, this.#t), c = this.showSearch ? "none" : "outline";
-		t.querySelector("tbody").innerHTML = s.map((e) => `<tr><td class="start"><span class="thumb">${e.thumb ? `<img src="${R(e.thumb)}" alt="" loading="lazy">` : ""}</span></td><th scope="row" class="sku-col"><arq-sku size="underline">${R(e.sku)}</arq-sku></th>` + n.map((t) => `<td class="role-body-lg-regular">${R(e.values?.[t.key] ?? "—")}</td>`).join("") + `<td class="end">${rr(e.sku, c)}</td></tr>`).join(""), t.querySelector(".cards").innerHTML = s.map((e) => `<li class="card"><span class="card-image">${e.thumb ? `<img src="${R(e.thumb)}" alt="" loading="lazy">` : ""}</span><span class="card-head"><arq-sku size="underline">${R(e.sku)}</arq-sku>${rr(e.sku, c)}</span><dl class="card-data">` + n.map((t) => `<div class="card-item"><dt class="role-body-sm">${R(t.label)}</dt><dd class="role-body-sm-medium">${R(e.values?.[t.key] ?? "—")}</dd></div>`).join("") + "</dl></li>").join(""), t.querySelector(".total").textContent = z.count(s.length);
-		let l = !s.length && this.#e.rows.length > 0;
-		t.querySelector(".scroll").hidden = l, t.querySelector(".cards").hidden = l, t.querySelector(".empty").hidden = !l, e && (t.querySelector(".count").textContent = z.count(s.length));
-	}
-}).define();
-//#endregion
 //#region src/components/checkbox/checkbox.css?inline
-var ir = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.row{align-items:center;gap:var(--arq-space-gap-sm);max-width:100%;padding-block:var(--arq-space-gap-xs);cursor:pointer;display:inline-flex;position:relative}.control{width:var(--arq-icon-md);height:var(--arq-icon-md);flex:none;justify-content:center;align-items:center;display:inline-flex}.box{box-sizing:border-box;width:var(--arq-icon-sm);height:var(--arq-icon-sm);border:var(--arq-border-default) solid var(--arq-color-icon-tertiary);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default)}.label{min-width:0;color:var(--arq-color-text-secondary)}.row:hover .box{border-width:var(--arq-border-strong);border-color:var(--arq-color-border-strong)}.row:hover .label{color:var(--arq-color-text-primary)}.native:checked+.control .box{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}.row:hover .native:checked+.control .box{border-color:var(--arq-color-action-primary-hover);background:var(--arq-color-action-primary-hover)}:host([disabled]) .row{cursor:default}:host([disabled]) .box,:host([disabled]) .row:hover .box{border-width:var(--arq-border-default);border-color:var(--arq-color-icon-disabled)}:host([disabled]) .native:checked+.control .box{border-color:var(--arq-color-icon-disabled);background:var(--arq-color-icon-disabled)}:host([disabled]) .label,:host([disabled]) .row:hover .label{color:var(--arq-color-text-disabled)}.native:focus-visible+.control .box{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}";
+var tr = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.row{align-items:center;gap:var(--arq-space-gap-sm);max-width:100%;padding-block:var(--arq-space-gap-xs);cursor:pointer;display:inline-flex;position:relative}.control{width:var(--arq-icon-md);height:var(--arq-icon-md);flex:none;justify-content:center;align-items:center;display:inline-flex}.box{box-sizing:border-box;width:var(--arq-icon-sm);height:var(--arq-icon-sm);border:var(--arq-border-default) solid var(--arq-color-icon-tertiary);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default)}.label{min-width:0;color:var(--arq-color-text-secondary)}.row:hover .box{border-width:var(--arq-border-strong);border-color:var(--arq-color-border-strong)}.row:hover .label{color:var(--arq-color-text-primary)}.native:checked+.control .box{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}.row:hover .native:checked+.control .box{border-color:var(--arq-color-action-primary-hover);background:var(--arq-color-action-primary-hover)}:host([disabled]) .row{cursor:default}:host([disabled]) .box,:host([disabled]) .row:hover .box{border-width:var(--arq-border-default);border-color:var(--arq-color-icon-disabled)}:host([disabled]) .native:checked+.control .box{border-color:var(--arq-color-icon-disabled);background:var(--arq-color-icon-disabled)}:host([disabled]) .label,:host([disabled]) .row:hover .label{color:var(--arq-color-text-disabled)}.native:focus-visible+.control .box{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}";
 (class extends P {
 	static tag = "arq-checkbox";
-	static styles = ir;
+	static styles = tr;
 	static formAssociated = !0;
 	static properties = {
 		size: {
@@ -2830,10 +2677,10 @@ var ir = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.row{al
 }).define();
 //#endregion
 //#region src/components/filter-row/filter-row.css?inline
-var ar = ":host{min-width:0;display:block}.row{border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.header{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .header{padding-bottom:var(--arq-space-gap-md)}.label{overflow-wrap:break-word;min-width:0}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.options{align-items:flex-start;gap:var(--arq-space-gap-sm-md);padding-bottom:calc(var(--arq-space-padding-sm) + var(--arq-space-padding-md));flex-direction:column;display:flex}@media (hover:hover){.row:has(.header:hover){border-bottom-color:var(--arq-color-border-default)}.header:hover .icon-box{background:var(--arq-color-surface-hover)}}.row:has(.header:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.header:focus{outline:none}";
+var nr = ":host{min-width:0;display:block}.row{border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.header{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .header{padding-bottom:var(--arq-space-gap-md)}.label{overflow-wrap:break-word;min-width:0}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.options{align-items:flex-start;gap:var(--arq-space-gap-sm-md);padding-bottom:calc(var(--arq-space-padding-sm) + var(--arq-space-padding-md));flex-direction:column;display:flex}@media (hover:hover){.row:has(.header:hover){border-bottom-color:var(--arq-color-border-default)}.header:hover .icon-box{background:var(--arq-color-surface-hover)}}.row:has(.header:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.header:focus{outline:none}";
 (class extends P {
 	static tag = "arq-filter-row";
-	static styles = ar;
+	static styles = nr;
 	static properties = { open: { type: Boolean } };
 	static template = `<div class="row"><button type="button" class="header"><span class="label role-body-xl"><slot name="label"></slot></span><span class="icon-box">${F("plus")}${F("minus")}</span></button><div class="options" role="group" part="panel"><slot></slot></div></div>`;
 	setup() {
@@ -2850,10 +2697,10 @@ var ar = ":host{min-width:0;display:block}.row{border-bottom:var(--arq-border-de
 }).define();
 //#endregion
 //#region src/components/tab/tab.css?inline
-var or = ":host{cursor:pointer;flex:none;display:inline-flex}.tab{padding-bottom:var(--arq-space-padding-sm-md);border-bottom:var(--arq-border-default) solid var(--arq-color-surface-transparent);color:var(--arq-color-text-secondary);white-space:nowrap;display:inline-flex}:host(:not([disabled]):hover) .tab{color:var(--arq-color-text-primary)}:host([selected]) .tab{border-bottom-color:var(--arq-color-border-strong);color:var(--arq-color-text-primary)}:host([disabled]){cursor:default}:host([disabled]) .tab{color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+var rr = ":host{cursor:pointer;flex:none;display:inline-flex}.tab{padding-bottom:var(--arq-space-padding-sm-md);border-bottom:var(--arq-border-default) solid var(--arq-color-surface-transparent);color:var(--arq-color-text-secondary);white-space:nowrap;display:inline-flex}:host(:not([disabled]):hover) .tab{color:var(--arq-color-text-primary)}:host([selected]) .tab{border-bottom-color:var(--arq-color-border-strong);color:var(--arq-color-text-primary)}:host([disabled]){cursor:default}:host([disabled]) .tab{color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
 (class extends P {
 	static tag = "arq-tab";
-	static styles = or;
+	static styles = rr;
 	static properties = {
 		selected: { type: Boolean },
 		disabled: { type: Boolean },
@@ -2873,7 +2720,7 @@ var or = ":host{cursor:pointer;flex:none;display:inline-flex}.tab{padding-bottom
 }).define();
 //#endregion
 //#region src/base/single-select.js
-var sr = ["ArrowRight", "ArrowDown"], cr = ["ArrowLeft", "ArrowUp"], B = class {
+var ir = ["ArrowRight", "ArrowDown"], ar = ["ArrowLeft", "ArrowUp"], R = class {
 	constructor(e, { items: t }) {
 		this.host = e, this.selector = t, e.addEventListener("keydown", (e) => this.#t(e)), e.addEventListener("arq:change", (e) => this.#e(e)), new MutationObserver(() => this.refresh()).observe(e, {
 			childList: !0,
@@ -2906,9 +2753,9 @@ var sr = ["ArrowRight", "ArrowDown"], cr = ["ArrowLeft", "ArrowUp"], B = class {
 		let t = this.enabledItems, n = t.indexOf(e.target);
 		if (n === -1) return;
 		let r = null;
-		sr.includes(e.key) ? r = t[(n + 1) % t.length] : cr.includes(e.key) ? r = t[(n - 1 + t.length) % t.length] : e.key === "Home" ? r = t[0] : e.key === "End" && (r = t[t.length - 1]), r && (e.preventDefault(), r.focus(), r.choose?.());
+		ir.includes(e.key) ? r = t[(n + 1) % t.length] : ar.includes(e.key) ? r = t[(n - 1 + t.length) % t.length] : e.key === "Home" ? r = t[0] : e.key === "End" && (r = t[t.length - 1]), r && (e.preventDefault(), r.focus(), r.choose?.());
 	}
-}, lr = {
+}, or = {
 	ArrowDown: 1,
 	ArrowUp: -1,
 	PageDown: 1,
@@ -2917,7 +2764,7 @@ var sr = ["ArrowRight", "ArrowDown"], cr = ["ArrowLeft", "ArrowUp"], B = class {
 	Home: -1,
 	" ": 1
 };
-function ur(e, t, n) {
+function sr(e, t, n) {
 	for (let r of e.composedPath()) {
 		if (!(r instanceof Element)) continue;
 		let { overflowY: e } = getComputedStyle(r);
@@ -2926,35 +2773,40 @@ function ur(e, t, n) {
 	}
 	return !1;
 }
-var dr = (e) => e.composedPath().some((e) => e instanceof Element && (e.matches("input, textarea, select, [contenteditable=\"\"], [contenteditable=\"true\"]") || e.getAttribute("role") === "combobox"));
-function fr(e, { when: t = () => !0 } = {}) {
+var cr = (e) => e.composedPath().some((e) => e instanceof Element && (e.matches("input, textarea, select, [contenteditable=\"\"], [contenteditable=\"true\"]") || e.getAttribute("role") === "combobox"));
+function lr(e, { when: t = () => !0 } = {}) {
 	e.addEventListener("wheel", (n) => {
-		t() && n.deltaY && !ur(n, e, n.deltaY) && n.preventDefault();
+		t() && n.deltaY && !sr(n, e, n.deltaY) && n.preventDefault();
 	}, { passive: !1 });
 	let n = 0;
 	e.addEventListener("touchstart", (e) => n = e.touches[0].clientY, { passive: !0 }), e.addEventListener("touchmove", (r) => {
 		let i = n - r.touches[0].clientY;
-		t() && i && !ur(r, e, i) && r.preventDefault();
+		t() && i && !sr(r, e, i) && r.preventDefault();
 	}, { passive: !1 }), e.addEventListener("keydown", (n) => {
-		let r = lr[n.key];
-		!t() || !r || n.altKey || n.ctrlKey || n.metaKey || dr(n) || n.key === " " && n.composedPath().some((e) => e instanceof Element && e.matches("button, a[href], [role=\"button\"]")) || ur(n, e, r) || n.preventDefault();
+		let r = or[n.key];
+		!t() || !r || n.altKey || n.ctrlKey || n.metaKey || cr(n) || n.key === " " && n.composedPath().some((e) => e instanceof Element && e.matches("button, a[href], [role=\"button\"]")) || sr(n, e, r) || n.preventDefault();
 	});
 }
 //#endregion
 //#region src/components/filter-panel/filter-panel.css?inline
-var pr = ":host{--panel-slow:calc(var(--arq-motion-duration-slow) * 1.25);display:contents}.dialog{box-sizing:border-box;width:var(--arq-layout-filter-panel);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);max-width:100%;height:100dvh;max-height:none;color:var(--arq-color-text-primary);clip-path:inset(0 0 0 100%);transition:clip-path var(--panel-slow) var(--arq-motion-easing-standard);margin:0;padding:0;inset:0 0 0 auto;overflow:clip}.dialog.is-open{clip-path:inset(0)}.dialog:not(.is-open){pointer-events:none}.dialog::backdrop{background:var(--arq-color-overlay-scrim);opacity:0;transition:opacity var(--panel-slow) var(--arq-motion-easing-standard)}.dialog.is-open::backdrop{opacity:1}.sheet{opacity:0;transition:opacity var(--arq-motion-duration-slow) var(--arq-motion-easing-standard)}.dialog.is-open .sheet{opacity:1}.sheet{box-sizing:border-box;gap:var(--arq-space-gap-lg);height:100%;padding:var(--arq-space-padding-xl-2xl);flex-direction:column;display:flex}.header{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.titles{gap:var(--arq-space-gap-xs);flex-direction:column;min-width:0;display:flex}.title{color:var(--arq-color-text-primary)}.summary{color:var(--arq-color-text-secondary);margin:0}.applied{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.tabs{display:none}.body{min-height:0;margin:calc(-1 * var(--arq-space-padding-xs));padding:var(--arq-space-padding-xs);overscroll-behavior:contain;flex:auto;overflow-y:auto}.footer{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-lg);display:flex}@media (width<=767px){.dialog{border:0;width:100%;inset:0}.dialog::backdrop{background:var(--arq-color-surface-transparent)}.sheet{gap:var(--arq-space-gap-xl);padding:var(--arq-space-padding-lg) var(--arq-layout-gutter)}:host([show-categories]) .tabs{gap:var(--arq-space-gap-xl);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);flex:none;display:flex;overflow-x:auto}.categories-panel{min-width:0}.footer{justify-content:flex-start}.apply{flex:auto}}", mr = {
+var ur = ":host{--panel-slow:calc(var(--arq-motion-duration-slow) * 1.25);display:contents}.dialog{box-sizing:border-box;width:var(--arq-layout-filter-panel);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);max-width:100%;height:100dvh;max-height:none;color:var(--arq-color-text-primary);clip-path:inset(0 0 0 100%);transition:clip-path var(--panel-slow) var(--arq-motion-easing-standard);margin:0;padding:0;inset:0 0 0 auto;overflow:clip}.dialog.is-open{clip-path:inset(0)}.dialog:not(.is-open){pointer-events:none}.dialog::backdrop{background:var(--arq-color-overlay-scrim);opacity:0;transition:opacity var(--panel-slow) var(--arq-motion-easing-standard)}.dialog.is-open::backdrop{opacity:1}.sheet{opacity:0;transition:opacity var(--arq-motion-duration-slow) var(--arq-motion-easing-standard)}.dialog.is-open .sheet{opacity:1}.sheet{box-sizing:border-box;gap:var(--arq-space-gap-lg);height:100%;padding:var(--arq-space-padding-xl-2xl);flex-direction:column;display:flex}.header{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.titles{gap:var(--arq-space-gap-xs);flex-direction:column;min-width:0;display:flex}.title{color:var(--arq-color-text-primary)}.summary{color:var(--arq-color-text-secondary);margin:0}.applied{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.tabs{display:none}.body{min-height:0;margin:calc(-1 * var(--arq-space-padding-xs));padding:var(--arq-space-padding-xs);overscroll-behavior:contain;flex:auto;overflow-y:auto}.footer{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-lg);display:flex}@media (width<=767px){.dialog{border:0;width:100%;inset:0}.dialog::backdrop{background:var(--arq-color-surface-transparent)}.sheet{gap:var(--arq-space-gap-xl);padding:var(--arq-space-padding-lg) var(--arq-layout-gutter)}:host([show-categories]) .tabs{gap:var(--arq-space-gap-xl);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);flex:none;display:flex;overflow-x:auto}.categories-panel{min-width:0}.footer{justify-content:flex-start}.apply{flex:auto}}", dr = {
 	productos: ["producto", "productos"],
-	colecciones: ["colección", "colecciones"]
+	colecciones: ["colección", "colecciones"],
+	variantes: ["variante", "variantes"]
 };
 (class extends P {
 	static tag = "arq-filter-panel";
-	static styles = pr;
+	static styles = ur;
 	static properties = {
 		open: { type: Boolean },
 		count: { type: Number },
 		unit: {
 			type: String,
-			values: ["productos", "colecciones"],
+			values: [
+				"productos",
+				"colecciones",
+				"variantes"
+			],
 			default: "productos"
 		},
 		showCategories: { type: Boolean }
@@ -2966,7 +2818,7 @@ var pr = ":host{--panel-slow:calc(var(--arq-motion-duration-slow) * 1.25);displa
 	#r = null;
 	setup() {
 		let e = this.shadowRoot;
-		this.#e = e.querySelector("dialog"), fr(this.#e), e.querySelector(".close").addEventListener("click", () => this.close()), e.querySelector(".clear").addEventListener("click", () => this.clear()), e.querySelector(".apply").addEventListener("click", () => this.apply()), new B(e.querySelector(".tabs"), { items: "arq-tab" }), e.querySelector(".tabs").addEventListener("arq:change", (e) => {
+		this.#e = e.querySelector("dialog"), lr(this.#e), e.querySelector(".close").addEventListener("click", () => this.close()), e.querySelector(".clear").addEventListener("click", () => this.clear()), e.querySelector(".apply").addEventListener("click", () => this.apply()), new R(e.querySelector(".tabs"), { items: "arq-tab" }), e.querySelector(".tabs").addEventListener("arq:change", (e) => {
 			this.#a(e.detail.value);
 		}), this.addEventListener("arq:toggle", (e) => {
 			let t = e.target;
@@ -3062,7 +2914,7 @@ var pr = ":host{--panel-slow:calc(var(--arq-motion-duration-slow) * 1.25);displa
 	#f() {
 		let e = this.shadowRoot.querySelector(".apply");
 		if (!e) return;
-		let [t, n] = mr[this.unit] ?? mr.productos;
+		let [t, n] = dr[this.unit] ?? dr.productos;
 		e.textContent = Number.isFinite(this.count) ? `Ver ${this.count} ${this.count === 1 ? t : n}` : `Ver ${n}`;
 	}
 	#p(e) {
@@ -3070,6 +2922,215 @@ var pr = ":host{--panel-slow:calc(var(--arq-motion-duration-slow) * 1.25);displa
 		e.option.checked = !1, this.#l();
 		let n = [...this.shadowRoot.querySelectorAll(".applied arq-filter-chip")];
 		(n[t] ?? n[t - 1] ?? this.shadowRoot.querySelector(".close")).focus();
+	}
+}).define();
+//#endregion
+//#region src/components/search-field/search-field.css?inline
+var fr = ":host{min-width:0;display:block}.field{align-items:center;gap:var(--arq-space-gap-md);padding:var(--arq-space-gap-sm) var(--arq-space-padding-xs) var(--arq-space-gap-sm) var(--arq-space-padding-md);border:var(--arq-border-default) solid var(--arq-color-border-default);background:var(--arq-color-surface-default);display:flex}:host(:not([show-close])) .field{padding-inline-end:var(--arq-space-padding-md)}.field:focus-within{border-color:var(--arq-color-border-focus)}.input{min-width:0;color:var(--arq-color-text-primary);caret-color:var(--arq-color-text-primary);appearance:none;background:0 0;border:0;flex:1;margin:0;padding:0}.input::placeholder{color:var(--arq-color-text-tertiary);opacity:1}.input:focus{outline:none}.input::-webkit-search-cancel-button{appearance:none}.input::-webkit-search-decoration{appearance:none}.close{flex:none}.lead{display:none}:host([type=line]) .lead{color:var(--arq-color-icon-tertiary);flex:none;display:inline-flex}:host([type=line]) .field{gap:var(--arq-space-gap-sm-md);padding:var(--arq-space-gap-md) 0;border-width:0 0 var(--arq-border-default);border-color:var(--arq-color-border-default);background:0 0}:host([type=line]) .field:focus-within{border-color:var(--arq-color-border-focus)}.lead .icon{width:var(--arq-icon-lg);height:var(--arq-icon-lg)}";
+(class extends P {
+	static tag = "arq-search-field";
+	static styles = fr;
+	static properties = {
+		type: {
+			type: String,
+			values: ["box", "line"],
+			default: "box"
+		},
+		showClose: { type: Boolean },
+		value: {
+			type: String,
+			default: ""
+		},
+		placeholder: {
+			type: String,
+			default: "Buscar productos…"
+		},
+		label: {
+			type: String,
+			default: "Buscar productos"
+		},
+		activeLabel: {
+			type: String,
+			default: ""
+		}
+	};
+	static template = `<div class="field"><span class="lead">${F("search")}</span><input class="input role-body" type="search" autocomplete="off" spellcheck="false" enterkeyhint="search"><arq-icon-button class="close" icon="close">Cerrar búsqueda</arq-icon-button></div><span class="visually-hidden" aria-live="polite"></span>`;
+	#e = null;
+	setup() {
+		let e = this.shadowRoot;
+		this.#e = e.querySelector("input"), this.#e.addEventListener("input", () => {
+			this.value = this.#e.value, this.emit("input", { value: this.value });
+		}), this.#e.addEventListener("keydown", (e) => {
+			e.key === "ArrowDown" || e.key === "ArrowUp" ? (e.preventDefault(), this.emit("navigate", { step: e.key === "ArrowDown" ? 1 : -1 })) : e.key === "Enter" && (e.preventDefault(), this.emit("submit", { value: this.value }));
+		}), e.querySelector(".close").addEventListener("click", () => this.emit("close"));
+	}
+	focus(e) {
+		this.#e?.focus(e);
+	}
+	update(e) {
+		let t = this.shadowRoot;
+		this.#e.value !== this.value && (this.#e.value = this.value ?? ""), this.#e.placeholder = this.placeholder ?? "", this.#e.setAttribute("aria-label", this.label ?? ""), t.querySelector(".close").hidden = !this.showClose, e.has("activeLabel") && (t.querySelector("[aria-live]").textContent = this.activeLabel ?? "");
+	}
+}).define();
+//#endregion
+//#region src/components/variants-table/variants-table.css?inline
+var pr = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page-gutter);flex-direction:column;display:flex}.toolbar{--page-gutter:var(--arq-space-0)}.scroll{--page-gutter:var(--arq-space-padding-sm)}.toolbar{align-items:center;gap:var(--arq-space-gap-md);padding:var(--arq-space-padding-md) var(--page-gutter);flex-wrap:wrap;display:flex}.filters-group{align-items:center;gap:var(--arq-space-gap-md);display:flex}.total{color:var(--arq-color-text-secondary)}:host([show-search]) .total{display:none}.applied{align-items:center;gap:var(--arq-space-gap-lg);padding-bottom:var(--arq-space-padding-md);flex-wrap:wrap;display:flex}.chips{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.downloads,.sort,.search{margin-inline-start:auto}.search{flex:0 1 var(--arq-layout-search-field);min-width:0}.downloads{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.empty{padding-block:var(--arq-space-padding-md);color:var(--arq-color-text-secondary);margin:0}.scroll{overscroll-behavior-x:contain;scrollbar-width:none;overflow-x:auto}.scroll::-webkit-scrollbar{display:none}.scroll:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(-1 * var(--arq-border-strong))}.table{border-collapse:collapse;border-spacing:0;width:100%}th,td{padding:0 var(--arq-space-gap-sm) 0 0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-default);text-align:start;white-space:nowrap;vertical-align:middle}thead th{padding-block:var(--arq-space-padding-sm-md);color:var(--arq-color-text-tertiary);font-weight:inherit}tbody th,tbody td{padding-block:var(--arq-space-padding-sm);color:var(--arq-color-text-primary)}@media (hover:hover){tbody tr:hover>*{background:var(--arq-color-surface-faint)}}.start{z-index:1;width:1%;padding-inline:var(--page-gutter) var(--arq-space-gap-sm);position:sticky;left:0}.sku-col{left:calc(var(--page-gutter) + var(--arq-layout-table-thumb) + var(--arq-space-gap-sm));z-index:1;width:1%;font-weight:inherit;padding-inline-end:var(--arq-space-gap-sm-md);position:sticky}.thumb{width:var(--arq-layout-table-thumb);height:var(--arq-layout-table-thumb);background:var(--arq-color-surface-subtle);flex:none;display:block;overflow:hidden}.thumb img{object-fit:cover;width:100%;height:100%;display:block}th.end,td.end{z-index:1;width:1%;padding-inline:var(--arq-space-gap-sm) var(--page-gutter);text-align:center;position:sticky;right:0}@media (width<=1023px){.sku-col{position:static}}.cards{margin:0;padding:0;list-style:none;display:none}@media (width<=767px){.search{flex:1 1 0}.scroll{display:none}.cards:not([hidden]){gap:var(--arq-space-gap-6xl);flex-direction:column;display:flex}.card{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.card-image{aspect-ratio:16/10;background:var(--arq-color-surface-subtle);display:block;overflow:hidden}.card-image img{object-fit:cover;width:100%;height:100%;display:block}.card-head{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-sm);display:flex}.card-data{grid-template-columns:repeat(2,minmax(0,1fr));margin:0;display:grid}.card-item{gap:var(--arq-space-gap-sm);padding-block:var(--arq-space-padding-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);flex-direction:column;display:flex}.card-item dt{color:var(--arq-color-text-secondary)}.card-item dd{color:var(--arq-color-text-primary);overflow-wrap:break-word;margin:0}}", z = (e) => String(e ?? "").replace(/[&<>"]/g, (e) => ({
+	"&": "&amp;",
+	"<": "&lt;",
+	">": "&gt;",
+	"\"": "&quot;"
+})[e]), mr = (e, t) => `<arq-icon-button icon="download" size="large" background="${t}" data-sku="${z(e)}">Descargas de ${z(e)}</arq-icon-button>`, B = {
+	search: "Buscar por SKU o nombre…",
+	searchLabel: "Buscar por SKU o nombre",
+	filters: "Filtros",
+	clear: "Limpiar filtros",
+	sort: "Ordenar por",
+	downloads: "Descargas",
+	image: "Imagen",
+	empty: "Ningún SKU coincide con la búsqueda o los filtros.",
+	count: (e) => e === 1 ? "1 variante" : `${e} variantes`
+};
+(class extends P {
+	static tag = "arq-variants-table";
+	static styles = pr;
+	static properties = {
+		downloads: { type: String },
+		label: {
+			type: String,
+			default: "Variantes"
+		},
+		showSearch: { type: Boolean },
+		showSort: { type: Boolean }
+	};
+	static template = `<div class="controls"><div class="toolbar"><div class="filters-group"><arq-button class="toggle-filters" show-icon icon="filter">${B.filters}</arq-button><span class="total role-body" aria-hidden="true"></span></div><div class="downloads"><slot name="downloads"></slot></div><arq-select class="sort" type="filter" label="${B.sort}" hidden></arq-select><arq-search-field class="search" placeholder="${B.search}" label="${B.searchLabel}" hidden></arq-search-field></div><div class="applied" hidden><div class="chips" role="list" aria-label="Filtros aplicados"></div><arq-button class="clear" type="underline" show-underline>${B.clear}</arq-button></div></div><div class="scroll" tabindex="0" role="region" aria-label="Variantes"><table class="table"><thead></thead><tbody></tbody></table></div><ul class="cards" role="list" aria-label="Variantes"></ul><p class="empty role-body" hidden>${B.empty}</p><span class="visually-hidden count" role="status"></span><arq-filter-panel class="panel" unit="variantes"><span slot="title">${B.filters}</span></arq-filter-panel>`;
+	#e = {
+		columns: [],
+		filters: [],
+		rows: []
+	};
+	#t = {};
+	#n = "";
+	#r = Fe[0].value;
+	get data() {
+		return this.#e;
+	}
+	set data(e) {
+		this.#e = {
+			columns: e?.columns ?? [],
+			filters: e?.filters ?? [],
+			rows: e?.rows ?? []
+		}, this.#t = {}, this.isConnected && this.#i();
+	}
+	setup() {
+		let e = this.shadowRoot;
+		e.querySelector(".toggle-filters").addEventListener("click", (e) => this.#d(e.currentTarget)), customElements.whenDefined("arq-button").then(() => {
+			e.querySelector(".toggle-filters").shadowRoot?.querySelector(".control")?.setAttribute("aria-haspopup", "dialog");
+		}), e.querySelector(".chips").addEventListener("click", (e) => {
+			let t = e.target.closest("arq-filter-chip");
+			t && this.#u(t);
+		}), e.querySelector(".clear").addEventListener("click", () => {
+			this.#t = {}, this.#a(!0), e.querySelector(".toggle-filters").focus();
+		});
+		let t = e.querySelector(".panel");
+		t.addEventListener("arq:filters", (e) => {
+			e.stopPropagation(), this.#f(e.detail.filters);
+		}), t.addEventListener("arq:apply", (e) => {
+			e.stopPropagation(), this.#t = { ...e.detail.filters }, this.#a(!0);
+		}), e.querySelector(".search").addEventListener("arq:input", (e) => {
+			e.stopPropagation(), this.#n = e.detail.value, this.#a(!0);
+		}), e.querySelector(".search").addEventListener("arq:submit", (e) => e.stopPropagation());
+		let n = e.querySelector("slot[name=\"downloads\"]"), r = () => n.parentElement.hidden = !n.assignedElements().length;
+		n.addEventListener("slotchange", r), r();
+		let i = e.querySelector(".sort");
+		i.allLabel = Fe[0].label, i.options = Fe.slice(1), i.addEventListener("arq:change", (e) => {
+			e.stopPropagation(), this.#r = e.detail.value || Fe[0].value, this.#a(!0);
+		}), e.addEventListener("click", (e) => {
+			let t = e.target.closest("arq-icon-button[data-sku]");
+			if (!t) return;
+			let n = t.dataset.sku;
+			this.emit("downloads", { sku: n }), (this.downloads ? this.getRootNode().getElementById?.(this.downloads) : null)?.show?.(t);
+		}), this.#i();
+	}
+	update(e) {
+		let t = this.shadowRoot;
+		e.has("label") && t.querySelector(".scroll").setAttribute("aria-label", this.label ?? "Variantes"), e.has("showSearch") && (t.querySelector(".search").hidden = !this.showSearch), e.has("showSort") && (t.querySelector(".sort").hidden = !this.showSort), (e.has("showSearch") || e.has("showSort")) && this.#a();
+	}
+	#i() {
+		let e = this.shadowRoot, { columns: t } = this.#e;
+		e.querySelector("thead").innerHTML = `<tr><th scope="col" class="start"><span class="visually-hidden">${B.image}</span></th><th scope="col" class="sku-col role-body-regular">SKU</th>` + t.map((e) => `<th scope="col" class="role-body-regular">${z(e.label)}</th>`).join("") + `<th scope="col" class="end role-body-regular"><span class="th-downloads">${B.downloads}</span></th></tr>`, this.#a();
+	}
+	#a(e = !1) {
+		let t = this.shadowRoot, { columns: n } = this.#e, r = this.showSearch ? Pe(this.#e.rows, this.#n) : this.#e.rows;
+		this.showSort && (r = Le(r, this.#r));
+		let i = y(r, this.#t), a = this.showSearch ? "none" : "outline";
+		t.querySelector("tbody").innerHTML = i.map((e) => `<tr><td class="start"><span class="thumb">${e.thumb ? `<img src="${z(e.thumb)}" alt="" loading="lazy">` : ""}</span></td><th scope="row" class="sku-col"><arq-sku size="underline">${z(e.sku)}</arq-sku></th>` + n.map((t) => `<td class="role-body-lg-regular">${z(e.values?.[t.key] ?? "—")}</td>`).join("") + `<td class="end">${mr(e.sku, a)}</td></tr>`).join(""), t.querySelector(".cards").innerHTML = i.map((e) => `<li class="card"><span class="card-image">${e.thumb ? `<img src="${z(e.thumb)}" alt="" loading="lazy">` : ""}</span><span class="card-head"><arq-sku size="underline">${z(e.sku)}</arq-sku>${mr(e.sku, a)}</span><dl class="card-data">` + n.map((t) => `<div class="card-item"><dt class="role-body-sm">${z(t.label)}</dt><dd class="role-body-sm-medium">${z(e.values?.[t.key] ?? "—")}</dd></div>`).join("") + "</dl></li>").join(""), t.querySelector(".total").textContent = B.count(i.length);
+		let o = this.#c();
+		t.querySelector(".toggle-filters").textContent = o ? `${B.filters} (${o})` : B.filters, this.#l();
+		let s = !i.length && this.#e.rows.length > 0;
+		t.querySelector(".scroll").hidden = s, t.querySelector(".cards").hidden = s, t.querySelector(".empty").hidden = !s, e && (t.querySelector(".count").textContent = B.count(i.length));
+	}
+	#o() {
+		let e = this.showSearch ? Pe(this.#e.rows, this.#n) : this.#e.rows;
+		return this.showSort ? Le(e, this.#r) : e;
+	}
+	#s(e = this.#t) {
+		let t = this.#e.filters.map((e) => e.key), n = Me(this.#e.rows, t, e), r = Me(this.#o(), t, e);
+		return n.map((e, t) => {
+			let n = new Set(r[t].options.filter((e) => !e.disabled).map((e) => e.value));
+			return e.options.map((e) => ({
+				value: e.value,
+				selected: e.selected,
+				disabled: !n.has(e.value) && !e.selected
+			}));
+		});
+	}
+	#c(e = this.#t) {
+		return Object.values(e).reduce((e, t) => e + (t?.length ?? 0), 0);
+	}
+	#l() {
+		let e = this.shadowRoot, t = this.#e.filters.flatMap((e) => (this.#t[e.key] ?? []).map((t) => ({
+			key: e.key,
+			value: t
+		}))), n = e.querySelector(".chips");
+		for (; n.children.length > t.length;) n.lastElementChild.remove();
+		for (; n.children.length < t.length;) {
+			let e = document.createElement("arq-filter-chip");
+			e.setAttribute("role", "listitem"), n.append(e);
+		}
+		t.forEach(({ key: e, value: t }, r) => {
+			let i = n.children[r];
+			i.dataset.key = e, i.dataset.value = t, i.textContent !== t && (i.textContent = t);
+		}), e.querySelector(".applied").hidden = !t.length;
+	}
+	#u(e) {
+		let t = [...this.shadowRoot.querySelectorAll(".chips arq-filter-chip")].indexOf(e), { key: n, value: r } = e.dataset;
+		this.#t = {
+			...this.#t,
+			[n]: (this.#t[n] ?? []).filter((e) => e !== r)
+		}, this.#a(!0);
+		let i = [...this.shadowRoot.querySelectorAll(".chips arq-filter-chip")];
+		(i[t] ?? i[t - 1] ?? this.shadowRoot.querySelector(".toggle-filters")).focus();
+	}
+	#d(e) {
+		let t = this.shadowRoot.querySelector(".panel"), { filters: n } = this.#e, r = this.#s();
+		t.replaceChildren(t.querySelector("[slot=\"title\"]"), ...n.map((e, t) => {
+			let n = document.createElement("arq-filter-row"), i = document.createElement("span");
+			i.slot = "label", i.textContent = e.label, n.append(i);
+			for (let i of r[t]) {
+				let t = document.createElement("arq-checkbox");
+				t.size = "large", t.showLabel = !0, t.setAttribute("name", e.key), t.value = i.value, t.textContent = i.value, t.checked = i.selected, t.disabled = i.disabled, n.append(t);
+			}
+			return n.open = r[t].some((e) => e.selected), n;
+		})), t.count = y(this.#o(), this.#t).length, t.show(e);
+	}
+	#f(e) {
+		let t = this.shadowRoot.querySelector(".panel"), n = this.#s(e);
+		t.querySelectorAll("arq-filter-row").forEach((e, t) => {
+			let r = n[t] ?? [];
+			e.querySelectorAll("arq-checkbox").forEach((e, t) => {
+				e.disabled = !!r[t]?.disabled && !e.checked;
+			});
+		}), t.count = y(this.#o(), e).length;
 	}
 }).define();
 //#endregion
@@ -3173,10 +3234,10 @@ var hr = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 		e.querySelector("thead").innerHTML = `<tr><th scope="col" class="start"><span class="visually-hidden">${H.image}</span></th><th scope="col" class="sku-col role-label-lg">${H.sku}</th>` + t.map((e) => `<th scope="col" class="role-label-lg">${V(e.label)}</th>`).join("") + `<th scope="col" class="end role-label-lg">${H.downloads}</th></tr>`, this.#l();
 	}
 	#o() {
-		return Fe(this.#e.rows, this.#n);
+		return Pe(this.#e.rows, this.#n);
 	}
 	#s(e = this.#t) {
-		let t = this.#e.filters.map((e) => e.key), n = Ne(this.#e.rows, t, e), r = Ne(this.#o(), t, e);
+		let t = this.#e.filters.map((e) => e.key), n = Me(this.#e.rows, t, e), r = Me(this.#o(), t, e);
 		return n.map((e, t) => {
 			let n = new Set(r[t].options.filter((e) => !e.disabled).map((e) => e.value));
 			return e.options.map((e) => ({
@@ -3190,7 +3251,7 @@ var hr = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 		return Object.values(e).reduce((e, t) => e + (t?.length ?? 0), 0);
 	}
 	#l(e = !1) {
-		let t = this.shadowRoot, { columns: n, filters: r } = this.#e, i = Me(this.#o(), this.#t), a = this.#c(), o = t.querySelector(".toggle-filters");
+		let t = this.shadowRoot, { columns: n, filters: r } = this.#e, i = y(this.#o(), this.#t), a = this.#c(), o = t.querySelector(".toggle-filters");
 		o.textContent = a ? `${H.filters} (${a})` : H.filters, o.disabled = this.loading || !r.length, this.#d(), t.querySelector("tbody").innerHTML = i.map((e) => `<tr><td class="start">${yr(e, "thumb")}</td><th scope="row" class="sku-col"><span class="product">` + (e.name ? `<span class="name role-body-compact-medium">${V(e.name)}</span>` : "") + `<arq-sku size="compact">${V(e.sku)}</arq-sku></span></th>` + n.map((t) => `<td class="role-body-lg-regular">${V(e.values?.[t.key] ?? "—")}</td>`).join("") + `<td class="end">${vr(e.sku)}</td></tr>`).join("");
 		let s = gr.map((e) => n.find((t) => t.key === e)).filter(Boolean);
 		t.querySelector(".cards").innerHTML = i.map((e) => `<li class="card"><span class="card-head">${yr(e, "card-thumb")}<span class="product">` + (e.name ? `<span class="name role-body-medium">${V(e.name)}</span>` : "") + `<arq-sku size="compact">${V(e.sku)}</arq-sku></span></span>` + (s.length ? "<dl class=\"card-data\">" + s.map((t) => `<div class="card-item"><dt class="role-body-compact-regular">${V(t.label)}</dt><dd class="role-body-medium">${V(e.values?.[t.key] ?? "—")}</dd></div>`).join("") + "</dl>" : "") + `<span class="card-actions"><arq-button type="outline" show-icon icon="download" data-sku="${V(e.sku)}">${H.downloads}<span class="visually-hidden"> de ${V(e.sku)}</span></arq-button>` + (e.href ? `<arq-button type="underline" show-underline show-icon icon="arrow-up-right" href="${V(e.href)}">${H.product}<span class="visually-hidden"> ${V(e.name ?? e.sku)}</span></arq-button>` : "") + "</span></li>").join(""), t.querySelector(".total").textContent = this.loading ? H.loading : H.count(i.length);
@@ -3241,7 +3302,7 @@ var hr = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 				t.size = "large", t.showLabel = !0, t.setAttribute("name", e.key), t.value = r.value, t.textContent = r.value, t.checked = r.selected, t.disabled = r.disabled, n.append(t);
 			}
 			return n.open = i[t].some((e) => e.selected), n;
-		})), t.count = Me(n, this.#t).length, t.show(e);
+		})), t.count = y(n, this.#t).length, t.show(e);
 	}
 	#m(e) {
 		let t = this.shadowRoot.querySelector(".panel"), n = this.#o(), r = this.#s(e);
@@ -3250,7 +3311,7 @@ var hr = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 			e.querySelectorAll("arq-checkbox").forEach((e, t) => {
 				e.disabled = !!n[t]?.disabled && !e.checked;
 			});
-		}), t.count = Me(n, e).length;
+		}), t.count = y(n, e).length;
 	}
 	#h() {
 		let e = this.shadowRoot.querySelector(".skeleton");
@@ -3552,7 +3613,7 @@ var Vr = ":host{display:contents}.dialog{box-sizing:border-box;width:100%;max-wi
 	setup() {
 		this.#e = this.shadowRoot.querySelector("dialog");
 		let e = this.shadowRoot.querySelector(".thumb img");
-		e.addEventListener("error", () => e.hidden = !0), e.addEventListener("load", () => e.hidden = !1), fr(this.#e), this.shadowRoot.querySelector(".close").addEventListener("click", () => this.close()), this.#e.addEventListener("click", (e) => {
+		e.addEventListener("error", () => e.hidden = !0), e.addEventListener("load", () => e.hidden = !1), lr(this.#e), this.shadowRoot.querySelector(".close").addEventListener("click", () => this.close()), this.#e.addEventListener("click", (e) => {
 			e.target === this.#e && this.close();
 		}), this.#e.addEventListener("cancel", (e) => {
 			e.preventDefault(), this.close();
@@ -4572,7 +4633,7 @@ var bi = ":host{display:block}.menu{background:var(--arq-color-surface-default);
 	}
 	setup() {
 		let e = this.shadowRoot, t = e.querySelector(".tabs");
-		this.select = new B(t, { items: "arq-tab" }), t.addEventListener("arq:change", (e) => {
+		this.select = new R(t, { items: "arq-tab" }), t.addEventListener("arq:change", (e) => {
 			e.stopPropagation(), this.tab = e.detail.value;
 		});
 		let n = e.querySelector(".preview img");
@@ -4921,7 +4982,7 @@ var Ni = ":host{display:contents}.dialog{box-sizing:border-box;border-radius:var
 		let e = this.shadowRoot;
 		this.#e = e.querySelector("dialog"), e.querySelector(".close").addEventListener("click", () => this.close());
 		let t = () => e.querySelector(".logo").size = Pi.matches ? "small" : "default";
-		Pi.addEventListener("change", t), t(), this.inline ? (this.#e.show(), this.#e.classList.add("is-open")) : (fr(this.#e), this.#e.addEventListener("cancel", (e) => {
+		Pi.addEventListener("change", t), t(), this.inline ? (this.#e.show(), this.#e.classList.add("is-open")) : (lr(this.#e), this.#e.addEventListener("cancel", (e) => {
 			e.preventDefault(), this.close();
 		}), this.#e.addEventListener("click", (e) => {
 			e.target === this.#e && this.close();
@@ -5131,7 +5192,7 @@ var Ri = ":host{--mega-slow:calc(var(--arq-motion-duration-slow) * 1.25);z-index
 		}), e.querySelector(".back").addEventListener("click", () => this.#u("menu")), e.querySelector(".back-sub").addEventListener("click", () => this.#u("products")), e.querySelector(".groups").addEventListener("click", (e) => {
 			let t = e.target.closest("arq-mega-link[data-sub]");
 			t && this.#u(t.dataset.sub);
-		}), fr(e.querySelector(".navbar"), { when: () => this.#m }), e.querySelector(".scrim").addEventListener("click", () => this.#_(!1)), this.addEventListener("keydown", (e) => {
+		}), lr(e.querySelector(".navbar"), { when: () => this.#m }), e.querySelector(".scrim").addEventListener("click", () => this.#_(!1)), this.addEventListener("keydown", (e) => {
 			e.key === "Escape" && this.#m && (e.stopPropagation(), this.#_(!1), this.#s()?.focus());
 		}), document.addEventListener("click", (e) => {
 			e.composedPath().includes(this) || (this.#_(!1), this.mode === "search" && !X.matches && this.#D(!1));
@@ -5349,7 +5410,7 @@ var Gi = ":host{align-items:center;gap:var(--arq-space-gap-sm-md);flex-wrap:wrap
 	static properties = { label: { type: String } };
 	static template = "<slot></slot>";
 	setup() {
-		this.setAttribute("role", "radiogroup"), this.select = new B(this, { items: "arq-swatch" });
+		this.setAttribute("role", "radiogroup"), this.select = new R(this, { items: "arq-swatch" });
 		let e = () => {
 			for (let e of this.select.items) {
 				let t = e.hasAttribute("selected") ? "large" : "default";
@@ -5387,7 +5448,7 @@ var Ki = ":host{display:block}.group{align-items:flex-start;gap:var(--arq-space-
 	};
 	static template = "<div class=\"group\"><span class=\"label role-label\"></span><div class=\"options\"><slot></slot></div></div>";
 	setup() {
-		this.select = new B(this, { items: "arq-option-tile" }), this.shadowRoot.querySelector("slot").addEventListener("slotchange", () => this.#e());
+		this.select = new R(this, { items: "arq-option-tile" }), this.shadowRoot.querySelector("slot").addEventListener("slotchange", () => this.#e());
 	}
 	update(e) {
 		e.has("label") && (this.shadowRoot.querySelector(".label").textContent = this.label ?? ""), this.type === "tiles" ? (this.setAttribute("role", "radiogroup"), this.label ? this.setAttribute("aria-label", this.label) : this.removeAttribute("aria-label")) : (this.removeAttribute("role"), this.removeAttribute("aria-label")), this.#e();
@@ -5429,7 +5490,7 @@ var qi = ":host{vertical-align:middle;cursor:pointer;max-width:100%;display:inli
 }).define();
 //#endregion
 //#region src/components/input/input.css?inline
-var Ji = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.label{color:var(--arq-color-text-primary)}.field{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-sm);padding:calc(var(--arq-space-padding-sm) - var(--arq-border-default)) var(--arq-space-padding-sm-md);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);display:flex}@media (hover:hover){:host(:not([disabled]):not([error]):not([open])) .field:hover{border-color:var(--arq-color-border-hover)}}.control{box-sizing:border-box;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);width:100%;min-width:0;color:var(--arq-color-text-primary);border:0;flex:1;margin:0;padding:0}.control::placeholder{color:var(--arq-color-text-tertiary);opacity:1}:host([type=textarea]) .field{align-items:stretch}textarea.control{resize:vertical}:host([type=select]) .field{position:relative}.trigger{align-items:center;gap:var(--arq-space-gap-sm);text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);display:flex}.select-value{overflow-wrap:break-word;flex:auto;min-width:0}.select-value.placeholder{color:var(--arq-color-text-tertiary)}.chevron{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary)}:host(:not([open])) [data-icon=chevron-up],:host([open]) [data-icon=chevron-down]{display:none}.menu{top:calc(100% + var(--arq-border-default));left:calc(-1 * var(--arq-border-default));z-index:2;width:calc(100% + 2 * var(--arq-border-default));max-width:none;position:absolute}:host([open]) .field,:host([open]) .field:focus-within{border-color:var(--arq-color-border-strong)}:host([disabled]) .trigger{cursor:default}:host([disabled]) .icon{color:var(--arq-color-icon-disabled)}.helper{color:var(--arq-color-text-tertiary);margin:0}.error{color:var(--arq-color-text-error);margin:0}.control:focus,.control:focus-visible{outline:none}.field:has(.control:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host([error]) .field,:host([error]) .field:focus-within{border-color:var(--arq-color-border-error)}:host([disabled]) .label,:host([disabled]) .helper,:host([disabled]) .control,:host([disabled]) .control::placeholder{color:var(--arq-color-text-disabled)}:host([disabled]) .field{border-color:var(--arq-color-border-disabled)}", Yi = (() => {
+var Ji = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.label{color:var(--arq-color-text-primary)}.field{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-sm);padding:calc(var(--arq-space-padding-sm) - var(--arq-border-default)) var(--arq-space-padding-sm-md);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);display:flex}@media (hover:hover){:host(:not([disabled]):not([error]):not([open])) .field:hover{border-color:var(--arq-color-border-hover)}}.control{box-sizing:border-box;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);width:100%;min-width:0;color:var(--arq-color-text-primary);border:0;flex:1;margin:0;padding:0}.control::placeholder{color:var(--arq-color-text-tertiary);opacity:1}:host([type=textarea]) .field{align-items:stretch}textarea.control{resize:vertical}:host([type=select]) .field{position:relative}.trigger{align-items:center;gap:var(--arq-space-gap-sm);text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);display:flex}.select-value{overflow-wrap:break-word;flex:auto;min-width:0}.select-value.placeholder{color:var(--arq-color-text-tertiary)}.chevron{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary)}:host(:not([open])) [data-icon=chevron-up],:host([open]) [data-icon=chevron-down]{display:none}.menu{top:calc(100% + var(--arq-border-default));left:calc(-1 * var(--arq-border-default));z-index:2;width:calc(100% + 2 * var(--arq-border-default));transform-origin:top;max-width:none;transition:opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out), transform var(--arq-motion-duration-base) var(--arq-motion-easing-out);position:absolute}@starting-style{.menu:not([hidden]){opacity:0;transform:scale(.97)}}:host([open]) .field,:host([open]) .field:focus-within{border-color:var(--arq-color-border-strong)}:host([disabled]) .trigger{cursor:default}:host([disabled]) .icon{color:var(--arq-color-icon-disabled)}.helper{color:var(--arq-color-text-tertiary);margin:0}.error{color:var(--arq-color-text-error);margin:0}.error-wrap{margin-top:calc(-1 * var(--arq-space-gap-sm));transition:grid-template-rows var(--arq-motion-duration-base) var(--arq-motion-easing-out);grid-template-rows:1fr;display:grid}.error-wrap>.error{min-height:0;padding-top:var(--arq-space-gap-sm);transition:opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out);overflow:hidden}@starting-style{.error-wrap:not([hidden]){grid-template-rows:0fr}.error-wrap:not([hidden])>.error{opacity:0}}.control:focus,.control:focus-visible{outline:none}.field:has(.control:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host([error]) .field,:host([error]) .field:focus-within{border-color:var(--arq-color-border-error)}:host([disabled]) .label,:host([disabled]) .helper,:host([disabled]) .control,:host([disabled]) .control::placeholder{color:var(--arq-color-text-disabled)}:host([disabled]) .field{border-color:var(--arq-color-border-disabled)}", Yi = (() => {
 	let e = 0;
 	return () => `arq-input-${++e}`;
 })(), Xi = 4, Zi = [
@@ -5478,7 +5539,7 @@ var Ji = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex
 		required: { type: Boolean },
 		open: { type: Boolean }
 	};
-	static template = "<div class=\"input\"><label class=\"label role-body-regular\"><slot></slot></label><div class=\"field\"></div><p class=\"helper role-body-sm\"><slot name=\"helper\"></slot></p><p class=\"error role-body-sm\" aria-live=\"polite\"></p></div>";
+	static template = "<div class=\"input\"><label class=\"label role-body-regular\"><slot></slot></label><div class=\"field\"></div><p class=\"helper role-body-sm\"><slot name=\"helper\"></slot></p><div class=\"error-wrap\" hidden><p class=\"error role-body-sm\" aria-live=\"polite\"></p></div></div>";
 	#e = this.attachInternals();
 	#t = null;
 	#n = {
@@ -5532,7 +5593,7 @@ var Ji = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex
 		for (let e of r ? [] : Zi) this.hasAttribute(e) ? t.setAttribute(e, this.getAttribute(e)) : t.removeAttribute(e);
 		t.localName === "textarea" && !this.hasAttribute("rows") && (t.rows = Xi), t.disabled = this.disabled, n.querySelector(".label").classList.toggle("visually-hidden", !this.showLabel);
 		let i = !!this.error, a = n.querySelector(".helper"), o = n.querySelector(".error");
-		o.textContent = this.error ?? "", o.hidden = !i, a.hidden = i || !this.showHelper, t.setAttribute("aria-invalid", String(i));
+		o.textContent = this.error ?? "", n.querySelector(".error-wrap").hidden = !i, a.hidden = i || !this.showHelper, t.setAttribute("aria-invalid", String(i));
 		let s = [i ? this.#n.error : null, a.hidden ? null : this.#n.helper].filter(Boolean);
 		s.length ? t.setAttribute("aria-describedby", s.join(" ")) : t.removeAttribute("aria-describedby"), r && (e.has("open") && (n.querySelector(".menu").hidden = !this.open, t.setAttribute("aria-expanded", String(this.open)), this.open || this.#o.closed()), this.#l()), this.#u();
 	}
@@ -5757,16 +5818,17 @@ var oa = ":host{min-width:0;display:block}.header{align-items:flex-start;gap:var
 }).define();
 //#endregion
 //#region src/components/faq-item/faq-item.css?inline
-var ca = ":host{min-width:0;display:block}.item{border-top:var(--arq-border-default) solid var(--arq-color-border-default)}.trigger{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-lg);width:100%;padding:var(--arq-space-padding-lg) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .trigger{padding-bottom:var(--arq-space-gap-sm-md)}.question{overflow-wrap:break-word;flex:1 1 0;min-width:0}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.answer{max-width:var(--arq-layout-measure-wide);padding-bottom:var(--arq-space-padding-lg);color:var(--arq-color-text-secondary);overflow-wrap:break-word}::slotted(a){color:var(--arq-color-text-primary);text-decoration:underline}@media (hover:hover){:host(:not([open])) .trigger:hover{background:var(--arq-color-surface-faint)}}.item:has(.trigger:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus{outline:none}@media (width<=767px){.answer{max-width:none}}";
+var ca = ":host{min-width:0;display:block}.item{border-top:var(--arq-border-default) solid var(--arq-color-border-default)}.trigger{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-lg);width:100%;padding:var(--arq-space-padding-lg) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .trigger{padding-bottom:var(--arq-space-gap-sm-md)}.trigger{transition:padding-bottom var(--arq-motion-duration-expand) var(--arq-motion-easing-out), background-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard), color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard)}.question{overflow-wrap:break-word;flex:1 1 0;min-width:0}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.answer{max-width:var(--arq-layout-measure-wide);padding-bottom:var(--arq-space-padding-lg);color:var(--arq-color-text-secondary);overflow-wrap:break-word}::slotted(a){color:var(--arq-color-text-primary);text-decoration:underline}@media (hover:hover){:host(:not([open])) .trigger:hover{background:var(--arq-color-surface-faint)}}.item:has(.trigger:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus{outline:none}@media (width<=767px){.answer{max-width:none}}";
 (class extends P {
 	static tag = "arq-faq-item";
 	static styles = ca;
 	static properties = { open: { type: Boolean } };
-	static template = `<div class="item"><button type="button" class="trigger"><span class="question role-heading-3-light"><slot name="question"></slot></span>${F("plus")}${F("minus")}</button><div class="answer role-body" part="panel"><slot></slot></div></div>`;
+	static template = `<div class="item"><button type="button" class="trigger"><span class="question role-heading-3-light"><slot name="question"></slot></span>${F("plus")}${F("minus")}</button><div class="answer-wrap" part="panel"><div class="answer-clip"><div class="answer role-body"><slot></slot></div></div></div></div>`;
 	setup() {
 		this.disclosure = new L(this, {
 			trigger: this.shadowRoot.querySelector(".trigger"),
-			panel: this.shadowRoot.querySelector(".answer")
+			panel: this.shadowRoot.querySelector(".answer-wrap"),
+			animateHeight: !0
 		});
 	}
 }).define();
@@ -6346,7 +6408,7 @@ var Pa = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		let e = this.shadowRoot;
 		this.#o(), e.querySelector("slot[name=\"inspiration\"]").addEventListener("slotchange", () => this.#C()), this.#C(), e.querySelector(".iluminar").addEventListener("arq:change", (e) => this.#c(e.detail.checked)), Pr() && (e.querySelector(".iluminar").checked = !0, Ar(() => this.#l(!0))), e.querySelector(".options").addEventListener("arq:change", (e) => {
 			let t = e.target.closest("[data-attribute]")?.dataset.attribute;
-			t && e.detail?.selected && (this.#t = Pe(this.#t, t, e.detail.value), this.#d(), this.#f({ updateUrl: !0 }));
+			t && e.detail?.selected && (this.#t = Ne(this.#t, t, e.detail.value), this.#d(), this.#f({ updateUrl: !0 }));
 		}), e.querySelector(".datasheet").addEventListener("click", (e) => this.#h(this.#r, e.currentTarget)), e.querySelector(".to-glossary").addEventListener("click", () => this.#g());
 		let t = e.querySelector(".compare"), n = e.querySelector(".compare-bar");
 		t.addEventListener("arq:change", (e) => {
@@ -6769,7 +6831,7 @@ var qa = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.l
 	#e = !1;
 	setup() {
 		let e = this.shadowRoot;
-		new B(e.querySelector(".choices"), { items: "arq-choice-chip" });
+		new R(e.querySelector(".choices"), { items: "arq-choice-chip" });
 		for (let [t, n] of Object.entries(Qa)) {
 			let r = e.querySelector(`slot[name="${t}"]`), i = () => {
 				e.querySelector(n).hidden = !r.assignedNodes().length;
