@@ -37,7 +37,7 @@ El HTML del embed completo está en [src/pages/descargas.html](../../pages/desca
 
 ## Comportamiento
 
-- **Filas:** todos los SKU (`getDownloadsTable()` de `src/data/catalog.js`), con el nombre del producto, el link a su ficha (`?sku=`) y la variante («Negro, 6 W, luz cálida») para el modal. Columnas: `GLOSSARY_COLUMNS` (`attributes.js`), solo las que tienen algún valor. Filtros: los selectores de variante de todos los grupos y los filtros de los listados, con al menos dos valores.
+- **Filas:** todos los SKU (`getDownloadsTable()` de `src/data/catalog.js`), con el nombre del producto, el link a su ficha (`?sku=`) y la variante («Negro, 6 W, luz cálida») para el modal. Columnas: `GLOSSARY_COLUMNS` (`attributes.js`), solo las que tienen algún valor. Filtros: primero una por cada columna de la tabla, en su orden y con su nombre (Tamaño, Potencia, Temperatura de color, Flujo luminoso, Ángulo, Eficiencia, Regulación, IP, Fuente, CRI; las abreviadas con el nombre completo); después los selectores de variante y los filtros de los listados que no son columna. Solo los que tienen al menos dos valores.
 - **Modal** (download-modal `show-product`): miniatura, SKU y variante; debajo, download-file-row: «Ficha técnica» (PDF; emite `arq:datasheet { sku }`) y los archivos del SKU (`skuDownloads()`) con su formato, que sale de la extensión de la URL.
 - **Estados:** mientras carga, filas de carga y «Buscando…»; sin SKU, «Todavía no hay productos para descargar.»; si falla la carga, «No se pudieron cargar las descargas. Probá de nuevo en unos minutos.». Sin filas que cumplan, el vacío de downloads-table.
 

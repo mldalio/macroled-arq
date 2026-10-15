@@ -282,8 +282,10 @@ class ArqDownloadsTable extends ArqElement {
     });
     const visible = filterVariants(rows, this.#values);
     const active = this.#filterCount();
-    // Botón: «Filtros (N)»
-    root.querySelector('.toggle-filters').textContent = active ? `${TEXT.filters} (${active})` : TEXT.filters;
+    // Botón: «Filtros (N)»; deshabilitado mientras carga o si no hay filtros
+    const toggle = root.querySelector('.toggle-filters');
+    toggle.textContent = active ? `${TEXT.filters} (${active})` : TEXT.filters;
+    toggle.disabled = this.loading || !filters.length;
     this.#renderChips();
     // Tabla
     root.querySelector('tbody').innerHTML = visible

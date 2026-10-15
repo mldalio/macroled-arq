@@ -269,8 +269,9 @@ function glossary(group) {
 
 /**
  * Página Descargas: variants-table con todos los SKU del catálogo, en el orden
- * de los grupos. Filtros: los selectores de variante de todos los grupos y los
- * filtros de los listados (attributes.js), con al menos dos valores. Sin
+ * de los grupos. Filtros: las columnas de la tabla (GLOSSARY_COLUMNS) y además
+ * los selectores de variante de todos los grupos y los filtros de los
+ * listados (attributes.js), con al menos dos valores. Sin
  * archivos en la barra: no hay un grupo (decisiones.md, 2026-10-05 · Glosario).
  * search: nombre del producto y de la colección, para el buscador (además del
  * SKU), decisiones.md, 2026-10-06 · Descargas.
@@ -278,13 +279,23 @@ function glossary(group) {
 export async function getDownloadsTable() {
   const { groups } = await loadCatalog();
   const variants = groups.flatMap((group) => group.variants.map((variant) => ({ group, variant })));
+  // Filtros: primero cada columna de la tabla, en su orden (Tamaño, Potencia,
+  // Temp.…), y después los selectores de variante y los filtros de los
+  // listados que no son columna. Solo los que tienen al menos dos valores.
   const used = new Set([...groups.flatMap((g) => g.variantAttributes), ...FILTER_FIELDS]);
-  const fields = Object.keys(ATTRIBUTES).filter(
-    (field) => used.has(field) && new Set(variants.map(({ variant }) => variant.values[field]).filter(hasValue)).size > 1,
-  );
+  const varies = (field) => new Set(variants.map(({ variant }) => variant.values[field]).filter(hasValue)).size > 1;
+  const columnFields = GLOSSARY_COLUMNS.map(({ field }) => field);
+  const fields = [...columnFields, ...Object.keys(ATTRIBUTES).filter((field) => used.has(field) && !columnFields.includes(field))].filter(varies);
   return {
     columns: GLOSSARY_COLUMNS.filter(({ field }) => variants.some(({ variant }) => hasValue(variant.values[field]))).map(({ field, label }) => ({ key: field, label })),
-    filters: fields.map((key) => ({ key, label: attributeInfo(key).label, swatches: attributeInfo(key).control === 'swatches' })),
+    // Un filtro que es columna lleva el nombre de la columna (Tamaño,
+    // Regulación, IP), salvo las abreviadas («Temp.», «Flujo lum.»), que
+    // llevan el nombre completo del campo.
+    filters: fields.map((key) => {
+      const column = GLOSSARY_COLUMNS.find(({ field }) => field === key)?.label;
+      const label = column && !column.endsWith('.') ? column : attributeInfo(key).label;
+      return { key, label, swatches: attributeInfo(key).control === 'swatches' };
+    }),
     // name, href y meta: tabla de Descargas · propuesta (2575:22875): nombre
     // del producto sobre el SKU, «Ver producto» en Mobile y el resumen de la
     // variante en el modal («Negro, 6 W, luz cálida»).
