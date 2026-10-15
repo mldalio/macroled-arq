@@ -102,8 +102,7 @@
    (role/body-compact-regular en color/text/tertiary) a space/gap/xs.
    Archivos: download-file-row a space/gap/md con una línea arriba
    (border/default en color/border/subtle).
-   TODO (token): la miniatura mide 64 en Figma, sin variable; se usa
-   layout/search-thumb (48), la más cercana. */
+   Miniatura de layout/download-thumb, como la tabla de Descargas. */
 :host([show-product]) .sheet {
   gap: var(--arq-space-gap-xl);
 }
@@ -117,8 +116,8 @@
 
 .thumb {
   flex: none;
-  width: var(--arq-layout-search-thumb);
-  height: var(--arq-layout-search-thumb);
+  width: var(--arq-layout-download-thumb);
+  height: var(--arq-layout-download-thumb);
   overflow: hidden;
   background: var(--arq-color-surface-subtle);
 }

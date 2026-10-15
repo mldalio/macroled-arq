@@ -42,8 +42,7 @@
 
 /* Catálogo: tapa (ratio/portrait-soft, 4:5) y textos a space/gap/lg; nombre,
    bajada y acción a space/gap/sm, la acción con space/padding/md arriba.
-   TODO (token): la tapa mide 168 × 210 en la propuesta, sin variable; se usa
-   layout/compare-column (160), la más cercana. Sin fondo, como la
+   Tapa de layout/catalog-cover (168 Desktop · 104 Mobile). Sin fondo, como la
    propuesta (la portada es un PNG recortado). La bajada mide 300 (sin
    variable): va hasta layout/measure. */
 .catalog {
@@ -56,7 +55,7 @@
 
 .cover {
   flex: none;
-  width: var(--arq-layout-compare-column);
+  width: var(--arq-layout-catalog-cover);
   aspect-ratio: 4 / 5;
   overflow: hidden;
 }
@@ -113,8 +112,8 @@
    space/gap/xl, con la tapa chica a la izquierda (space/gap/md), nombre
    role/body-xl, bajada role/body-compact-regular (color/text/tertiary) a
    space/gap/xs y «Descargar catálogo» Underline con space/padding/sm-md
-   arriba. space/section/sm arriba y abajo. TODO (token): la tapa mide
-   104 × 130, sin variable; se usa layout/table-thumb (100). */
+   arriba. space/section/sm arriba y abajo.
+   La tapa toma layout/catalog-cover (104 en Mobile). */
 @media (max-width: 767px) {
   .hero {
     flex-direction: column;
@@ -131,9 +130,6 @@
     gap: var(--arq-space-gap-md);
   }
 
-  .cover {
-    width: var(--arq-layout-table-thumb);
-  }
 
   .catalog-info {
     flex: 1 1 auto;

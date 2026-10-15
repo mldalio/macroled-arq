@@ -17,7 +17,7 @@
 //
 // - Filtros: el botón abre filter-panel (panel lateral derecho en Desktop,
 //   pantalla completa en Mobile, 2571:22966 · 2572:22988) con una filter-row
-//   de checkbox por filtro. Se aplica con «Ver N variantes»; cerrar descarta.
+//   de checkbox por filtro. Se aplica con «Ver N productos»; cerrar descarta.
 //   El botón dice «Filtros (N)» con N = valores elegidos, y debajo de la barra
 //   van los chips de lo aplicado y «Limpiar filtros». De las dos propuestas se
 //   eligió el panel lateral (decisiones.md, 2026-10-15 · Descargas · propuesta
@@ -27,7 +27,8 @@
 //   cualquiera de los valores elegidos; entre filtros, todos
 //   (src/data/variants.js). Las opciones que no darían filas van
 //   deshabilitadas.
-// - Barra: Filtros con la cantidad («4 variantes»; cargando, «Buscando…») a la
+// - Barra: Filtros con la cantidad («4 productos»: cada SKU cuenta como producto, como pidió diseño el
+//   2026-10-15; cargando, «Buscando…») a la
 //   izquierda y el buscador a la derecha. Mobile: el buscador arriba, a todo
 //   el ancho, y Filtros con la cantidad debajo.
 // - Desktop: <table> real con miniatura, nombre + sku Compact, columnas de
@@ -37,7 +38,7 @@
 //   propuesta): miniatura, nombre y sku; cuatro datos en dos columnas;
 //   «Descargas» (button Outline) y «Ver producto» (button Underline, ↗).
 // - loading: filas (o tarjetas) de carga en color/surface/subtle.
-// - Sin filas que cumplan: «No hay variantes con estos filtros» (role/heading-2)
+// - Sin filas que cumplan: «No hay productos con estos filtros» (role/heading-2)
 //   con su ayuda (role/body-regular).
 // - Descargas de cada fila: emite arq:downloads { sku } y, con
 //   downloads="<id>", abre ese download-modal (como variants-table).
@@ -66,9 +67,9 @@ const TEXT = {
   image: 'Imagen',
   sku: 'SKU',
   loading: 'Buscando…',
-  emptyTitle: 'No hay variantes con estos filtros',
+  emptyTitle: 'No hay productos con estos filtros',
   emptyText: 'Probá quitar alguno de los filtros aplicados o buscar por otro nombre o SKU.',
-  count: (n) => (n === 1 ? '1 variante' : `${n} variantes`),
+  count: (n) => (n === 1 ? '1 producto' : `${n} productos`),
 };
 
 // Datos de la tarjeta Mobile (la propuesta muestra cuatro: Potencia, Temp.,
@@ -93,7 +94,7 @@ class ArqDownloadsTable extends ArqElement {
   static properties = {
     loading: { type: Boolean }, // filas de carga
     downloads: { type: String }, // id del arq-download-modal que abre la descarga de cada fila
-    label: { type: String, default: 'Variantes' }, // nombre de la región con scroll
+    label: { type: String, default: 'Productos' }, // nombre de la región con scroll
   };
   static template =
     `<div class="controls">` +
@@ -109,15 +110,15 @@ class ArqDownloadsTable extends ArqElement {
     `<arq-button class="clear" type="underline" show-underline>${TEXT.clear}</arq-button>` +
     `</div>` +
     `</div>` +
-    `<div class="scroll" tabindex="0" role="region" aria-label="Variantes">` +
+    `<div class="scroll" tabindex="0" role="region" aria-label="Productos">` +
     `<table class="table"><thead></thead><tbody></tbody></table>` +
     `</div>` +
     `<div class="scrollbar" aria-hidden="true" hidden><div class="scrollbar-track"></div></div>` +
-    `<ul class="cards" role="list" aria-label="Variantes"></ul>` +
+    `<ul class="cards" role="list" aria-label="Productos"></ul>` +
     `<div class="skeleton" aria-hidden="true" hidden></div>` +
     `<div class="empty" hidden><p class="empty-title role-heading-2">${TEXT.emptyTitle}</p><p class="empty-text role-body-regular">${TEXT.emptyText}</p></div>` +
     `<span class="visually-hidden count" role="status"></span>` +
-    `<arq-filter-panel class="panel" unit="variantes"><span slot="title">${TEXT.filters}</span></arq-filter-panel>`;
+    `<arq-filter-panel class="panel" unit="productos"><span slot="title">${TEXT.filters}</span></arq-filter-panel>`;
 
   #data = { columns: [], filters: [], rows: [] };
   #values = {}; // filtro → [valores]
@@ -160,7 +161,7 @@ class ArqDownloadsTable extends ArqElement {
       this.#refresh(true);
       root.querySelector('.toggle-filters').focus();
     });
-    // Panel lateral: «Ver N variantes» se calcula con lo marcado; se aplica al
+    // Panel lateral: «Ver N productos» se calcula con lo marcado; se aplica al
     // confirmar (cerrar descarta).
     const panel = root.querySelector('.panel');
     panel.addEventListener('arq:filters', (event) => {
@@ -214,7 +215,7 @@ class ArqDownloadsTable extends ArqElement {
 
   update(changed) {
     const root = this.shadowRoot;
-    if (changed.has('label')) root.querySelector('.scroll').setAttribute('aria-label', this.label ?? 'Variantes');
+    if (changed.has('label')) root.querySelector('.scroll').setAttribute('aria-label', this.label ?? 'Productos');
     if (changed.has('loading')) this.#refresh();
   }
 
@@ -352,7 +353,7 @@ class ArqDownloadsTable extends ArqElement {
 
   // ── Panel lateral ────────────────────────────────────────────────
   // Las filas se arman al abrir, con lo aplicado marcado; mientras está
-  // abierto solo cambian el estado deshabilitado y «Ver N variantes».
+  // abierto solo cambian el estado deshabilitado y «Ver N productos».
   #openPanel(opener) {
     const panel = this.shadowRoot.querySelector('.panel');
     const rows = this.#searched();

@@ -29,9 +29,8 @@
 //   el breakpoint (matchMedia).
 // - El modal (download-modal show-product) muestra la miniatura, el SKU y la
 //   variante («Negro, 6 W, luz cálida») y los archivos como download-file-row:
-//   «Ficha técnica» (PDF; emite arq:datasheet { sku }, como la ficha) y los de
-//   ese SKU con su formato. TODO (datos): el peso de cada archivo no está en la
-//   base.
+//   «Ficha técnica» (emite arq:datasheet { sku }, como la ficha) y los de ese
+//   SKU, solo con el nombre: sin formato ni peso (pedido 2026-10-15).
 
 import { ArqElement } from '../../base/arq-element.js';
 import { getDownloadsTable, skuDownloads } from '../../data/catalog.js';
@@ -46,17 +45,9 @@ const TEXT = {
   error: 'No se pudieron cargar las descargas. Probá de nuevo en unos minutos.',
   label: 'Descargas por SKU',
   datasheet: 'Ficha técnica',
-  datasheetFormat: 'PDF',
 };
 
 const MOBILE = '(max-width: 767px)';
-
-// Formato de un archivo por la extensión de su URL («IES», «PDF», «DWG»).
-function fileFormat(href) {
-  const path = String(href ?? '').split(/[?#]/)[0];
-  const ext = path.includes('.') ? path.slice(path.lastIndexOf('.') + 1) : '';
-  return /^[a-z0-9]{1,5}$/i.test(ext) ? ext.toUpperCase() : '';
-}
 
 class ArqDescargas extends ArqElement {
   static tag = 'arq-descargas';
@@ -166,22 +157,16 @@ class ArqDescargas extends ArqElement {
     modal.meta = row?.meta ?? '';
     modal.thumb = row?.thumb ?? null;
     for (const item of modal.querySelectorAll(':scope > arq-download-file-row')) item.remove();
-    modal.append(this.#fileRow(TEXT.datasheet, TEXT.datasheetFormat));
+    modal.append(this.#fileRow(TEXT.datasheet));
     const files = await skuDownloads(sku);
     if (modal.sku !== sku) return;
-    modal.append(...files.map((file) => this.#fileRow(file.label, fileFormat(file.href), file.href)));
+    modal.append(...files.map((file) => this.#fileRow(file.label, file.href)));
   }
 
-  #fileRow(label, format, href) {
+  #fileRow(label, href) {
     const item = document.createElement('arq-download-file-row');
     if (href) item.href = href;
     item.append(label);
-    if (format) {
-      const meta = document.createElement('span');
-      meta.slot = 'meta';
-      meta.textContent = format;
-      item.append(meta);
-    }
     return item;
   }
 }

@@ -467,9 +467,7 @@ Hero de página compartido por Home y Contacto: media (imagen o video; reemplaz�
 
 Botón de ícono. Size: Default (24 × 24, ícono icon/md; navbar, tablas y controles chicos) o Large (48 × 48 = padding space/padding/sm-md + ícono icon/xl de 24; acciones de bloques, como el acordeón). Background: None (sin fondo, sobre surface/default), Surface (fondo surface/default, para cuando va sobre otro surface: faint, subtle…) y Subtle (fondo surface/subtle; para que la acción se note entre mucha información, como la descarga de cada fila de la tabla de variantes). State: Default, Hover (None: surface/hover; Surface: surface/subtle; Subtle: surface/selected), Pressed (Subtle: surface/strong; el resto surface/selected), Focus (anillo border/focus). Prototipo: Default pasa a Hover al pasar el mouse y Hover a Pressed al presionar. Cambiar el ícono con la propiedad Icon.
 
-State=Disabled: ícono en color/icon/disabled, sin interacción (atributo disabled nativo). Outline (borde color/border/strong de border/default, sin fondo; Hover surface/hover, Pressed surface/selected, Disabled border/disabled): acción con ícono solo que acompaña a un button Outline, como la descarga de cada fila de variants-table (Size=Large, Desktop y Mobile).
-
-Nota (2026-10-15): en el set, Outline Size=Large usa borde color/border/default (más claro) y el glosario (1218:10705) muestra el ícono con el trazo escalado; la descripción todavía dice color/border/strong. El código sigue al set.
+State=Disabled: ícono en color/icon/disabled, sin interacción (atributo disabled nativo). Outline (borde de border/default, sin fondo; Size=Default en color/border/strong, Size=Large en color/border/default; Hover surface/hover, Pressed surface/selected, Disabled border/disabled): acción con ícono solo que acompaña a un button Outline, como la descarga de cada fila de variants-table y de la tabla de Descargas (Size=Large, Desktop y Mobile). En Size=Large el ícono de 24 lleva el trazo escalado (1,5 px).
 
 ## input
 
