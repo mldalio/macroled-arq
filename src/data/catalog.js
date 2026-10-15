@@ -336,15 +336,16 @@ export async function getProductCards(groupIds) {
 }
 
 /**
- * Productos recomendados del buscador (search-sheet con el campo vacío): las
- * primeras cards del catálogo que tienen foto de estudio, en el orden de la
- * base. TODO (negocio): el criterio de "recomendado" no está definido (más
- * vistos, destacados a mano, novedades…); hasta entonces es este.
+ * Productos recomendados del buscador (search-sheet con el campo vacío): una
+ * card por cada SKU marcado como novedad en la base (columna «new» de Sheets),
+ * en el orden de la base. La card toma las fotos de ese SKU (no las del
+ * predeterminado del grupo, así se ven las diferencias de color) y enlaza a él
+ * (?sku=). Sin ninguno marcado no hay recomendados y el bloque no se muestra
+ * (decisiones.md, 2026-10-15 · Recomendados del buscador).
  */
-export async function getRecommendedProducts({ limit = 8 } = {}) {
+export async function getRecommendedProducts() {
   const { groups } = await loadCatalog();
-  const cards = groups.map((group) => ({ ...productCard(group), meta: productKind(group) }));
-  return [...cards.filter((card) => card.image), ...cards.filter((card) => !card.image)].slice(0, limit);
+  return groups.flatMap((group) => group.variants.filter((variant) => variant.isNew).map((variant) => ({ ...productCard(group, variant, true), meta: productKind(group) })));
 }
 
 // Tipo de producto: la aplicación de una luminaria («Jardín», «Colgante») o

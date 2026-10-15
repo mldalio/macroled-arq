@@ -65,6 +65,7 @@ const FIELDS = {
   environment: 'macrofamilia',
   application: 'subfamilia',
   isDefault: 'is_group_default',
+  isNew: 'new',
   variantAttributes: 'variant_attributes',
   compatibleWith: 'compatible_with',
   description: 'description',
@@ -107,7 +108,7 @@ const DOWNLOADS = ['ies', 'cad', 'manual', 'fotometria'];
 // Un campo nuevo que use una pantalla se agrega acá; si no, llega vacío.
 export const LIGHT_FIELDS = Object.freeze([
   'sku', FIELDS.name, FIELDS.family, FIELDS.productType, FIELDS.environment, FIELDS.application,
-  FIELDS.isDefault, FIELDS.variantAttributes, FIELDS.compatibleWith,
+  FIELDS.isDefault, FIELDS.isNew, FIELDS.variantAttributes, FIELDS.compatibleWith,
   FIELDS.collectionIntro, FIELDS.collectionDescription, FIELDS.collectionGallery, FIELDS.collectionInspiration,
   'multimagen_producto', 'multimagen_ambiente', 'multimagen_coleccion',
   ...Object.keys(ATTRIBUTES),
@@ -226,6 +227,9 @@ export function fromDocuments(docs) {
       variants: rows.map((doc) => ({
         sku: doc.sku,
         isDefault: doc === first,
+        // Novedad: la columna «new» de Sheets (bool), por SKU. Cada SKU marcado es un producto
+        // recomendado del buscador, con sus propias fotos (catalog.js · getRecommendedProducts).
+        isNew: doc[FIELDS.isNew] === true,
         description: text(doc[FIELDS.description]),
         attributes: Object.fromEntries(Object.keys(ATTRIBUTES).map((field) => [field, text(doc[field])]).filter(([, v]) => v && v !== '-')),
         images: variantImages(doc),
