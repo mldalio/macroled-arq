@@ -766,4 +766,4 @@ Con Iluminar (listados y ficha) solo se oscurecen la página, el navbar (barra) 
 - **download-modal:** su `<dialog>` lleva `data-arq-theme="light"`.
 - **filter-panel:** sin cambios (ya era Light).
 - **Cómo:** `data-arq-theme="light"` en el `<dialog>` (o en el host del componente), el bloque que `ArqElement` adopta en cada Shadow DOM (`src/styles/light.css`).
-- **Pendiente (docs/):** DESIGN.md §2 · Modo Dark dice que filter-panel es la única excepción de Light local; hay que ampliarlo con esta lista (en una rama `docs/`, junto con su copia en Figma).
+- **DESIGN.md §2** · Modo Dark ampliado con esta lista (rama `docs/light-local-paneles`) y su copia en el frame DESIGN.md de la página Plan del proyecto de Figma.
