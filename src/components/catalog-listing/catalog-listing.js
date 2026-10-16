@@ -11,7 +11,8 @@
 //     <h2 slot="filter-title">Filtrar</h2>
 //   </arq-catalog-listing>
 //
-// - Categoría: sale de la URL (?environment=, ?application=, ?product_type=;
+// - Categoría: sale de la URL (?environment=, ?application=, ?product_type=,
+//   ?collection= para la card unificada de una colección;
 //   las URLs de categoría están PENDIENTES, docs/urls.md). Se marca sola el
 //   catalog-nav-item cuyo href coincide con la página, y el <h1> del
 //   page-header pasa a ser el nombre de su grupo (Interior, Exterior…).
@@ -39,7 +40,7 @@ import '../product-card/product-card.js';
 import '../swatch/swatch.js';
 import css from './catalog-listing.css?inline';
 
-const CATEGORY_PARAMS = { environment: 'environment', application: 'application', product_type: 'productType' };
+const CATEGORY_PARAMS = { environment: 'environment', application: 'application', product_type: 'productType', collection: 'collection' };
 const LISTING_DESKTOP = matchMedia('(min-width: 1024px)');
 const LISTING_WIDE = matchMedia('(min-width: 1920px)');
 
@@ -73,11 +74,13 @@ class ArqCatalogListing extends ArqElement {
   #cards = new Map(); // product-card → datos de la card
   #request = 0;
   #lastScrollY = 0;
+  #htmlCrumbs = null; // niveles del breadcrumb del HTML después de Inicio
+  #htmlTitle = null; // <h1> del HTML (Productos), para volver a él sin categoría
 
   setup() {
     // Productos y Colecciones comparten el mismo embed. "Todas las
     // colecciones" cambia solamente la vista del listado.
-    if (new URLSearchParams(location.search).get('view') === 'colecciones') this.unit = 'colecciones';
+    if (collectionView(new URLSearchParams(location.search))) this.unit = 'colecciones';
     const root = this.shadowRoot;
     this.#category = categoryFromUrl();
     this.#query = new URLSearchParams(location.search).get('q')?.trim() ?? '';
@@ -87,6 +90,9 @@ class ArqCatalogListing extends ArqElement {
     // Cambiar de categoría no recarga la página: se actualiza la URL y se
     // vuelve a pedir solo el listado (sin parpadeo, también con Iluminar).
     root.addEventListener('click', this.#onNavClick);
+    // Lo mismo con los niveles del breadcrumb que vuelven a este listado
+    // (Productos, Exterior…)
+    document.querySelector('arq-page-header')?.addEventListener('click', this.#onNavClick);
     // Iluminar solo pasa a la ficha: un listado nuevo empieza sin traspaso, y al
     // entrar a un producto se avisa si está iluminado (theme.js)
     handOffTheme(false);
@@ -132,24 +138,26 @@ class ArqCatalogListing extends ArqElement {
 
   #onNavClick = (event) => {
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    const item = event.target.closest?.('arq-catalog-nav-item');
-    const href = item?.getAttribute('href');
+    const item = event.target.closest?.('arq-catalog-nav-item, arq-breadcrumb-item:not([current])');
+    const href = item?.getAttribute('href') ?? item?.href;
     if (!href) return;
     const url = new URL(href, location.href);
     // Otra página u otro origen: navegación normal
     if (url.origin !== location.origin || url.pathname.replace(/\/$/, '') !== location.pathname.replace(/\/$/, '')) return;
     event.preventDefault();
-    if (url.pathname + url.search !== location.pathname + location.search) history.pushState(null, '', url.pathname + url.search);
+    if (url.pathname + url.search === location.pathname + location.search) return;
+    history.pushState(null, '', url.pathname + url.search);
     this.shadowRoot.querySelector('arq-filter-panel').open = false;
     this.#goTo();
   };
 
   #onPopState = () => this.#goTo();
 
-  // Relee la URL (categoría, búsqueda, vista) y recarga el listado.
+  // Relee la URL (categoría, búsqueda, vista) y recarga solo el listado. El
+  // scroll queda donde está la persona.
   #goTo() {
     const params = new URLSearchParams(location.search);
-    const unit = params.get('view') === 'colecciones' ? 'colecciones' : 'productos';
+    const unit = collectionView(params) ? 'colecciones' : 'productos';
     this.#category = categoryFromUrl();
     this.#query = params.get('q')?.trim() ?? '';
     this.#filters = {};
@@ -157,7 +165,6 @@ class ArqCatalogListing extends ArqElement {
     this.#markNav();
     if (this.unit !== unit) this.unit = unit; // update() recarga
     else this.#load();
-    window.scrollTo({ top: 0 });
   }
 
   #syncSpace() {
@@ -225,7 +232,7 @@ class ArqCatalogListing extends ArqElement {
   }
 
   #list(filters) {
-    return this.unit === 'colecciones' ? listCollections({ filters }) : listProducts({ ...this.#category, query: this.#query, filters });
+    return this.unit === 'colecciones' ? listCollections({ filters, collection: this.#category.collection }) : listProducts({ ...this.#category, query: this.#query, filters });
   }
 
   // "Ver N productos" mientras se marcan filtros (el listado no cambia)
@@ -351,7 +358,9 @@ class ArqCatalogListing extends ArqElement {
   // vacío elegidos en código.
   #titleFromQuery() {
     const title = document.querySelector('arq-page-header > [slot="title"]');
+    if (title) this.#htmlTitle ??= title.textContent;
     if (title) title.textContent = `Resultados para «${this.#query}»`;
+    this.#syncBreadcrumb([{ label: 'Productos', href: location.pathname }, { label: title?.textContent ?? this.#query }]);
     this.#syncToolbarName();
   }
 
@@ -364,12 +373,44 @@ class ArqCatalogListing extends ArqElement {
     // El primer link de cada grupo es su vista completa (Todo interior,
     // Todo exterior, Lámparas y artefactos o Todas las colecciones). Las
     // subcategorías sí pasan a ser el título de la página.
-    const label = item && item !== firstItem
-      ? item.textContent.trim()
-      : group?.querySelector('[slot="label"]')?.textContent.trim();
+    const groupLabel = group?.querySelector('[slot="label"]')?.textContent.trim();
+    const sub = item && item !== firstItem;
+    const label = sub ? item.textContent.trim() : groupLabel;
     const title = document.querySelector('arq-page-header > [slot="title"]');
-    if (label && title) title.textContent = label;
+    if (!label && this.#query && this.unit === 'productos') return this.#titleFromQuery();
+    if (title) {
+      this.#htmlTitle ??= title.textContent;
+      title.textContent = label || this.#htmlTitle;
+    }
+    // Breadcrumb (Levels 3 · 2): Inicio / Productos sin categoría; Inicio /
+    // Productos / grupo en su vista completa; Inicio / grupo / subcategoría.
+    if (!label) this.#syncBreadcrumb([]);
+    else if (sub) this.#syncBreadcrumb([{ label: groupLabel, href: firstItem.getAttribute('href') }, { label }]);
+    else this.#syncBreadcrumb([{ label: 'Productos', href: location.pathname }, { label }]);
     this.#syncToolbarName();
+  }
+
+  // Reemplaza los niveles del breadcrumb del page-header que siguen al
+  // primero (Inicio, del HTML). Sin niveles, vuelve al del HTML (Productos).
+  #syncBreadcrumb(crumbs) {
+    const breadcrumb = document.querySelector('arq-page-header > arq-breadcrumb');
+    if (!breadcrumb) return;
+    this.#htmlCrumbs ??= [...breadcrumb.children].slice(1);
+    const [home] = breadcrumb.children;
+    const items = crumbs.length
+      ? crumbs.map(({ label, href }, index) => {
+        const item = document.createElement('arq-breadcrumb-item');
+        const last = index === crumbs.length - 1;
+        if (last) item.current = true;
+        else {
+          item.href = href;
+          item.showSeparator = true;
+        }
+        item.textContent = label;
+        return item;
+      })
+      : this.#htmlCrumbs;
+    breadcrumb.replaceChildren(...[home, ...items].filter(Boolean));
   }
 
   // catalog-toolbar State=Scroll muestra el nombre de la página: el mismo
@@ -380,6 +421,10 @@ class ArqCatalogListing extends ArqElement {
     if (toolbar) toolbar.name = title?.textContent.trim() || null;
   }
 }
+
+// Vista de colecciones: todas (?view=colecciones) o una sola (?collection=, la
+// card unificada de esa colección).
+const collectionView = (params) => params.get('view') === 'colecciones' || params.has('collection');
 
 function categoryFromUrl() {
   const params = new URLSearchParams(location.search);

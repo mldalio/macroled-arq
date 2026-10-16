@@ -65,11 +65,12 @@ export const productHref = (groupId, sku) => `/arq/producto/${encodeURIComponent
 export const collectionHref = (id) => `/arq/coleccion/${encodeURIComponent(id)}`;
 export const compareHref = (skus) => `/arq/comparativa?sku=${skus.map(encodeURIComponent).join(',')}`;
 // TODO (urls): las URLs de categoría están PENDIENTES (docs/urls.md). Por ahora, parámetros del listado.
-export function categoryHref({ environment, application, productType } = {}) {
+export function categoryHref({ environment, application, productType, collection } = {}) {
   const params = new URLSearchParams();
   if (environment) params.set('environment', environment);
   if (application) params.set('application', application);
   if (productType) params.set('product_type', productType);
+  if (collection) params.set('collection', collection);
   const query = params.toString();
   return `/arq/productos${query ? `?${query}` : ''}`;
 }
@@ -203,9 +204,14 @@ export async function countProducts(options) {
   return (await listProducts(options)).count;
 }
 
-/** Listado de Colecciones: una card por colección con algún grupo que cumple. */
-export async function listCollections({ filters } = {}) {
-  const { collections, groups } = await loadCatalog();
+/**
+ * Listado de Colecciones: una card por colección con algún grupo que cumple.
+ * collection: solo esa colección (su card unificada, desde el catalog-nav).
+ */
+export async function listCollections({ filters, collection: only } = {}) {
+  const { collections: all, groups: allGroups } = await loadCatalog();
+  const collections = only ? all.filter((c) => c.id === only) : all;
+  const groups = only ? allGroups.filter((g) => g.collection === only) : allGroups;
   const active = activeFilters(filters);
   const cards = collections.flatMap((collection) => {
     const own = groups.filter((g) => g.collection === collection.id);

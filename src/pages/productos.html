@@ -4,7 +4,7 @@
   Se edita acá y se pega en Webflow. dist/arq.js, dist/arq.css y Albert Sans se cargan a nivel sitio.
 
   Las cards, los filtros y la compare-bar salen de Typesense (arq-catalog-listing).
-  La categoría va en la URL: ?environment=, ?application=, ?product_type= (las URLs de categoría están PENDIENTES, docs/urls.md).
+  La categoría va en la URL: ?environment=, ?application=, ?product_type= y ?collection= (la card unificada de una colección, en este mismo listado; las URLs de categoría están PENDIENTES, docs/urls.md).
   La búsqueda también: ?q= ("Ver todos los resultados" del buscador; decisiones.md, 2026-10-05 · Búsqueda en Productos).
   TODO (datos): los links de catalog-nav siguen el árbol de getNavigation() del catálogo de ejemplo; revisarlos con la base real
   (las opciones sin productos no van).
@@ -49,10 +49,10 @@
       <arq-catalog-nav-group>
         <span slot="label">Colecciones</span>
         <arq-catalog-nav-item href="/arq/productos?view=colecciones">Todas las colecciones</arq-catalog-nav-item>
-        <arq-catalog-nav-item href="/arq/coleccion/kanu">Kanu</arq-catalog-nav-item>
-        <arq-catalog-nav-item href="/arq/coleccion/tori">Tori</arq-catalog-nav-item>
-        <arq-catalog-nav-item href="/arq/coleccion/douli">Douli</arq-catalog-nav-item>
-        <arq-catalog-nav-item href="/arq/coleccion/yoru">Yoru</arq-catalog-nav-item>
+        <arq-catalog-nav-item href="/arq/productos?collection=kanu">Kanu</arq-catalog-nav-item>
+        <arq-catalog-nav-item href="/arq/productos?collection=tori">Tori</arq-catalog-nav-item>
+        <arq-catalog-nav-item href="/arq/productos?collection=douli">Douli</arq-catalog-nav-item>
+        <arq-catalog-nav-item href="/arq/productos?collection=yoru">Yoru</arq-catalog-nav-item>
       </arq-catalog-nav-group>
     </arq-catalog-nav>
     <h2 slot="filter-title">Filtrar</h2>
