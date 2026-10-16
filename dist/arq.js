@@ -380,7 +380,7 @@ function ve(e) {
 			r && (t[e] = r);
 		});
 	}
-	return t;
+	return t.ambient1 && !t.ambient1On && /_on\.\w+$/i.test(t.ambient1.split(/[?#]/)[0]) && (t.ambient1On = t.ambient1), t;
 }
 function ye(e) {
 	let t = ve(e), n = pe.filter((e) => t[e]), r = {
