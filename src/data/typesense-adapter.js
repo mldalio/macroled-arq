@@ -136,6 +136,10 @@ function slots(doc) {
       if (url) out[name] = url;
     });
   }
+  // La base trae el ambiente 1 encendido en la posición 0 (`…_AMBIENT_1_ON.webp`) y deja la 1
+  // vacía: si el archivo de la posición 0 es «_ON» y falta la posición 1, es el encendido.
+  // TODO (datos): cuando la base respete 0 = apagado y 1 = encendido, esto no hace falta.
+  if (out.ambient1 && !out.ambient1On && /_on\.\w+$/i.test(out.ambient1.split(/[?#]/)[0])) out.ambient1On = out.ambient1;
   return out;
 }
 

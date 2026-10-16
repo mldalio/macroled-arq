@@ -936,3 +936,7 @@ Se probaron tres variantes del hover (prueba en la rama `feat/prueba-hover-produ
 - **Dónde está:** `productCard()` de `src/data/catalog.js` (`imageHover = img_main_on`, con `img_ambient_1` de respaldo si falta; `imageHoverLit = img_ambient_1_on`). `product-card` no cambia de lógica, solo cambia qué imagen recibe en cada prop. Lo usan por igual los listados, la ficha (explora la colección) y la Home.
 - **Cards de colección:** no cambian (solo tienen `img_collection` y `img_collection_on`); `TODO` (datos) para su hover.
 - **Actualizados:** DESIGN.md §8 · Imágenes de product-card (**falta copiarlo en el frame DESIGN.md de Figma, página Plan del proyecto**), `docs/typesense-schema.md` y el README de product-card.
+
+## 2026-10-16 · Ambiente 1 encendido: la base lo trae en la posición 0
+
+El hover de las cards con Iluminar no se veía: `multimagen_ambiente` trae `…_AMBIENT_1_ON.webp` en la posición 0 y deja la 1 (la del encendido) vacía, así que `imageHoverLit` llegaba vacío en las 250 filas. `src/data/typesense-adapter.js` toma el archivo de la posición 0 como encendido si su nombre termina en `_ON` y la posición 1 falta. `TODO` (datos): que la sincronización respete 0 = `img_ambient_1` y 1 = `img_ambient_1_on`; entonces el parche sobra.
