@@ -12,7 +12,7 @@
 //   </arq-catalog-listing>
 //
 // - Categoría: sale de la URL (?environment=, ?application=, ?product_type=,
-//   ?collection= para la card unificada de una colección;
+//   ?collection= para las cards de producto de una colección;
 //   las URLs de categoría están PENDIENTES, docs/urls.md). Se marca sola el
 //   catalog-nav-item cuyo href coincide con la página, y el <h1> del
 //   page-header pasa a ser el nombre de su grupo (Interior, Exterior…).
@@ -80,7 +80,7 @@ class ArqCatalogListing extends ArqElement {
   setup() {
     // Productos y Colecciones comparten el mismo embed. "Todas las
     // colecciones" cambia solamente la vista del listado.
-    if (collectionView(new URLSearchParams(location.search))) this.unit = 'colecciones';
+    if (new URLSearchParams(location.search).get('view') === 'colecciones') this.unit = 'colecciones';
     const root = this.shadowRoot;
     this.#category = categoryFromUrl();
     this.#query = new URLSearchParams(location.search).get('q')?.trim() ?? '';
@@ -157,7 +157,7 @@ class ArqCatalogListing extends ArqElement {
   // scroll queda donde está la persona.
   #goTo() {
     const params = new URLSearchParams(location.search);
-    const unit = collectionView(params) ? 'colecciones' : 'productos';
+    const unit = params.get('view') === 'colecciones' ? 'colecciones' : 'productos';
     this.#category = categoryFromUrl();
     this.#query = params.get('q')?.trim() ?? '';
     this.#filters = {};
@@ -232,7 +232,7 @@ class ArqCatalogListing extends ArqElement {
   }
 
   #list(filters) {
-    return this.unit === 'colecciones' ? listCollections({ filters, collection: this.#category.collection }) : listProducts({ ...this.#category, query: this.#query, filters });
+    return this.unit === 'colecciones' ? listCollections({ filters }) : listProducts({ ...this.#category, query: this.#query, filters });
   }
 
   // "Ver N productos" mientras se marcan filtros (el listado no cambia)
@@ -421,10 +421,6 @@ class ArqCatalogListing extends ArqElement {
     if (toolbar) toolbar.name = title?.textContent.trim() || null;
   }
 }
-
-// Vista de colecciones: todas (?view=colecciones) o una sola (?collection=, la
-// card unificada de esa colección).
-const collectionView = (params) => params.get('view') === 'colecciones' || params.has('collection');
 
 function categoryFromUrl() {
   const params = new URLSearchParams(location.search);

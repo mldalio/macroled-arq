@@ -31,14 +31,15 @@
   height: var(--arq-icon-md);
 }
 
-/* Checked: cuadrado lleno en color/action/primary, sin tilde. */
+/* Sin marcar: solo el borde, sin fondo (color/surface/transparent), así no
+   cambia con Iluminar. Checked: cuadrado lleno en color/action/primary, sin tilde. */
 .box {
   box-sizing: border-box;
   width: var(--arq-icon-sm);
   height: var(--arq-icon-sm);
   border: var(--arq-border-default) solid var(--arq-color-icon-tertiary);
   border-radius: var(--arq-radius-control);
-  background: var(--arq-color-surface-default);
+  background: var(--arq-color-surface-transparent);
 }
 
 /* Label: color/text/secondary (primary en hover) */

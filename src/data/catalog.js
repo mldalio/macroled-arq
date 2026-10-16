@@ -204,14 +204,9 @@ export async function countProducts(options) {
   return (await listProducts(options)).count;
 }
 
-/**
- * Listado de Colecciones: una card por colección con algún grupo que cumple.
- * collection: solo esa colección (su card unificada, desde el catalog-nav).
- */
-export async function listCollections({ filters, collection: only } = {}) {
-  const { collections: all, groups: allGroups } = await loadCatalog();
-  const collections = only ? all.filter((c) => c.id === only) : all;
-  const groups = only ? allGroups.filter((g) => g.collection === only) : allGroups;
+/** Listado de Colecciones: una card por colección con algún grupo que cumple. */
+export async function listCollections({ filters } = {}) {
+  const { collections, groups } = await loadCatalog();
   const active = activeFilters(filters);
   const cards = collections.flatMap((collection) => {
     const own = groups.filter((g) => g.collection === collection.id);
