@@ -33,7 +33,7 @@ class ArqProductGallery extends ArqElement {
   static tag = 'arq-product-gallery';
   static styles = css;
   static properties = {};
-  static template = `<div class="gallery"><div class="image"><slot name="image"></slot></div><div class="thumbs" hidden></div></div>`;
+  static template = `<div class="gallery"><div class="image"><slot name="image"></slot><slot name="overlay"></slot></div><div class="thumbs" hidden></div></div>`;
 
   #images = [];
   #index = 0;

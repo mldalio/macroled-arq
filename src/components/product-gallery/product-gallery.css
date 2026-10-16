@@ -85,7 +85,7 @@ arq-gallery-thumb {
 
 /* fill (solo de código; Ficha v2, 2085:27574): desde 1024 px la imagen llena el
    alto que le da el contenedor (sin ratio/landscape, sin radio) y las
-   miniaturas van en columna, abajo a la izquierda, a space/padding/xl del
+   miniaturas van en columna, abajo a la izquierda, a space/padding/xl-2xl (izquierda) y xl (abajo) del
    borde. TODO (tokens): las miniaturas miden 66 × 53 en Figma; se usa
    layout/gallery-thumb. Debajo de 1024 px se ve como siempre. */
 @media (min-width: 1024px) {
@@ -114,7 +114,7 @@ arq-gallery-thumb {
   }
 
   :host([fill]) .thumbs {
-    left: var(--arq-space-padding-xl);
+    left: var(--arq-space-padding-xl-2xl);
     bottom: var(--arq-space-padding-xl);
     flex-direction: column;
     max-width: none;

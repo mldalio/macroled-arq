@@ -34,7 +34,7 @@ Cada lista guarda siempre sus fotos en la misma posición; una foto que falta qu
 | `multimagen_vistas` | 0 `img_front` · 1 `img_front_on` · 2 `img_back` · 3 `img_back_on` · 4 `img_left` · 5 `img_left_on` · 6 `img_right` · 7 `img_right_on` |
 | `multimagen_perspectivas` | 0 `img_pers_1` · 1 `img_pers_1_on` · 2 `img_pers_2` · 3 `img_pers_2_on` |
 | `multimagen_detalles` | 0 `img_detail_1` · 1 `img_detail_1_on` · 2 `img_detail_2` · 3 `img_detail_2_on` |
-| `multimagen_ambiente` | 0 `img_ambient_1` · 1 `img_ambient_1_on` · 2–5 `img_ambient_2` a `img_ambient_5` · 6 `img_ambient_6` · 7 `img_ambient_7` |
+| `multimagen_ambiente` | 0 `img_ambient_1` · 1 `img_ambient_1_on` · 2–5 `img_ambient_2` a `img_ambient_5` · 6 `img_ambient_6` · 7 `img_ambient_7`. En la ficha: la 6 es el parallax de la descripción; la galería usa 2, 3, 4, 5 y 7 |
 | `multimagen_coleccion` | 0 `img_collection` · 1 `img_collection_on` · 2 `collection_description_image` |
 | `collection_gallery_images`, `collection_inspiration_images` | Largo variable, en el orden de la celda (URLs separadas por salto de línea o coma) |
 

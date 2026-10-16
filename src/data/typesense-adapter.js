@@ -157,7 +157,8 @@ function variantImages(doc) {
 function groupImages(doc) {
   const s = slots(doc);
   return {
-    ambient: ['ambient2', 'ambient3', 'ambient4', 'ambient5'].map((name) => s[name]).filter(Boolean),
+    // ambient_6 es la foto del parallax (description): no va en la galería
+    ambient: ['ambient2', 'ambient3', 'ambient4', 'ambient5', 'ambient7'].map((name) => s[name]).filter(Boolean),
     description: s.ambient6 ?? null,
     inspiration: [s.ambient7].filter(Boolean),
   };

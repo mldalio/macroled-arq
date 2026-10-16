@@ -61,6 +61,8 @@ import '../spec-list/spec-list.js';
 import '../spec-row/spec-row.js';
 import '../variants-table/variants-table.js';
 import '../family-card/family-card.js';
+import '../icon-button/icon-button.js';
+import { icon } from '../../base/icons.js';
 import '../download-modal/download-modal.js';
 import '../download-item/download-item.js';
 import css from './ficha-producto.css?inline';
@@ -71,6 +73,8 @@ const TEXT = {
   error: 'No se pudo cargar el producto. Probá de nuevo en unos minutos.',
   datasheet: 'Ficha técnica',
   generating: 'Generando…',
+  previous: 'Anterior',
+  next: 'Siguiente',
 };
 
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -78,7 +82,10 @@ const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').match
 class ArqFichaProducto extends ArqElement {
   static tag = 'arq-ficha-producto';
   static styles = css;
-  static properties = {};
+  static properties = {
+    // Destino del botón del bloque «¿Te interesa este producto?»
+    ctaHref: { type: String, default: '/arq/contacto' },
+  };
   static template =
     `<div class="page">` +
     // Hero (Ficha v2, 2085:27570): galería a sangre a la izquierda y configurador
@@ -87,8 +94,9 @@ class ArqFichaProducto extends ArqElement {
     `<div class="hero">` +
     `<div class="configurator">` +
     `<div class="gallery-column">` +
-    `<arq-product-gallery class="gallery" fill></arq-product-gallery>` +
-    `<arq-toggle class="iluminar needs-data" show-label>Iluminar</arq-toggle>` +
+    `<arq-product-gallery class="gallery" fill>` +
+    `<arq-toggle class="iluminar needs-data" slot="overlay" show-label>Iluminar</arq-toggle>` +
+    `</arq-product-gallery>` +
     `</div>` +
     `<div class="configurator-column">` +
     `<div class="header">` +
@@ -119,7 +127,21 @@ class ArqFichaProducto extends ArqElement {
     `<div class="details needs-data">` +
     `<div class="accordion"></div>` +
     `</div>` +
-    `<div class="ambient needs-data" role="region" aria-label="Galería de ambiente" tabindex="0" hidden></div>` +
+    // Galería de ambiente
+    `<div class="ambient-block needs-data" hidden>` +
+    `<div class="ambient" role="region" aria-label="Galería de ambiente" tabindex="0"></div>` +
+    // Flechas debajo de las fotos en pantallas sin cursor (táctiles); con cursor, la flecha sigue al mouse
+    `<div class="ambient-controls">` +
+    `<arq-icon-button class="ambient-prev" icon="arrow-left" size="large" background="outline" disabled>${TEXT.previous}</arq-icon-button>` +
+    `<arq-icon-button class="ambient-next" icon="arrow-right" size="large" background="outline">${TEXT.next}</arq-icon-button>` +
+    `</div>` +
+    `<span class="ambient-cursor" aria-hidden="true" hidden>${icon('arrow-right')}${icon('arrow-left')}</span>` +
+    `</div>` +
+    // Glosario de variantes
+    `<div class="glossary needs-data">` +
+    `<div class="glossary-title role-display-sm"><slot name="glossary-title"></slot></div>` +
+    `<arq-variants-table class="table" downloads="downloads-modal"></arq-variants-table>` +
+    `</div>` +
     // Descripción (STORY): foto a todo el ancho con el texto encima (Dark local)
     `<div class="story-block needs-data">` +
     `<div class="story" data-arq-theme="dark" hidden>` +
@@ -131,16 +153,25 @@ class ArqFichaProducto extends ArqElement {
     `</div>` +
     `</div>` +
     `</div>` +
-    `<div class="glossary needs-data">` +
-    `<div class="glossary-title role-display-sm"><slot name="glossary-title"></slot></div>` +
-    `<arq-variants-table class="table" downloads="downloads-modal"></arq-variants-table>` +
+    // «¿Te interesa este producto?» (los textos llegan por slot desde la página)
+    `<div class="cta" hidden>` +
+    `<div class="cta-block">` +
+    `<div class="cta-text">` +
+    `<div class="cta-title role-heading-1"><slot name="cta-title"></slot></div>` +
+    `<p class="cta-description role-body-lg"><slot name="cta-description"></slot></p>` +
     `</div>` +
+    `<arq-button class="cta-action" show-icon icon="arrow-right"><slot name="cta-action"></slot></arq-button>` +
+    `</div>` +
+    `</div>` +
+    // Inspiración: foto ancha o video + foto vertical, y el texto a la derecha
     `<div class="inspiration" hidden>` +
-    `<div class="inspiration-text role-body-xl"><slot name="inspiration"></slot></div>` +
+    `<div class="inspiration-copy">` +
+    `<div class="inspiration-text role-body-lg"><slot name="inspiration"></slot></div>` +
+    `</div>` +
     `<div class="inspiration-images needs-data"></div>` +
     `</div>` +
-    // Explora la colección: Dark local, fijo (DESIGN.md §2)
-    `<div class="collection needs-data" data-arq-theme="dark" hidden>` +
+    // Explora la colección (Light, sobre color/surface/subtle: Figma V1 y V2)
+    `<div class="collection needs-data" hidden>` +
     `<div class="collection-intro">` +
     `<div class="collection-title role-heading-2"><slot name="collection-title"></slot></div>` +
     `<arq-button class="collection-link" type="underline" show-underline show-icon icon="arrow-up-right"></arq-button>` +
@@ -152,6 +183,11 @@ class ArqFichaProducto extends ArqElement {
     `<arq-download-modal id="downloads-modal"><slot name="modal-title" slot="title"></slot></arq-download-modal>`;
 
   #product = null;
+
+  update(changed) {
+    if (changed.has('ctaHref')) this.shadowRoot.querySelector('.cta-action').href = this.ctaHref;
+  }
+
   #selection = {};
   #storyHasText = false;
   #sku = null;
@@ -161,6 +197,17 @@ class ArqFichaProducto extends ArqElement {
     this.#moveMainImage();
     root.querySelector('slot[name="inspiration"]').addEventListener('slotchange', () => this.#syncInspiration());
     this.#syncInspiration();
+    root.querySelector('slot[name="cta-title"]').addEventListener('slotchange', () => this.#syncCta());
+    this.#syncCta();
+
+    this.#setupAmbient();
+
+    // Hasta 1023 px (Tablet y Mobile) Iluminar es solo el interruptor; la palabra queda
+    // oculta para lectores de pantalla (show-label apagado)
+    const compact = matchMedia('(max-width: 1023px)');
+    const syncLabel = () => (root.querySelector('.iluminar').showLabel = !compact.matches);
+    compact.addEventListener('change', syncLabel);
+    syncLabel();
 
     root.querySelector('.iluminar').addEventListener('arq:change', (event) => this.#iluminar(event.detail.checked));
     // Viene de Productos o Colecciones iluminado: la ficha arranca iluminada, sin fundido
@@ -425,9 +472,93 @@ class ArqFichaProducto extends ArqElement {
   // ── Galería de ambiente ───────────────────────────────────────────
   #renderAmbient() {
     const { group, images } = this.#product;
-    const ambient = this.shadowRoot.querySelector('.ambient');
-    ambient.hidden = !images.ambient.length;
+    const root = this.shadowRoot;
+    const ambient = root.querySelector('.ambient');
+    root.querySelector('.ambient-block').hidden = !images.ambient.length;
     ambient.replaceChildren(...images.ambient.map((src, i) => image(src, `${group.name}, ambiente ${i + 1}`)));
+    ambient.dispatchEvent(new Event('scroll'));
+  }
+
+  // Galería de ambiente: con mouse, el cursor pasa a ser la flecha (icon/arrow-right o arrow-left)
+  // y el clic desplaza la fila; sin cursor (táctil), dos botones debajo de las fotos.
+  // Mitad derecha: siguiente; mitad izquierda: anterior. Al inicio solo hay «siguiente» y,
+  // al final, solo «anterior».
+  #setupAmbient() {
+    const root = this.shadowRoot;
+    const scroller = root.querySelector('.ambient');
+    const cursor = root.querySelector('.ambient-cursor');
+    const prev = root.querySelector('.ambient-prev');
+    const next = root.querySelector('.ambient-next');
+    const canPrev = () => scroller.scrollLeft > 1;
+    const canNext = () => scroller.scrollLeft + scroller.clientWidth < scroller.scrollWidth - 1;
+    let pointer = null;
+
+    const direction = (x) => {
+      const box = scroller.getBoundingClientRect();
+      let dir = x < box.left + box.width / 2 ? -1 : 1;
+      if (dir === -1 && !canPrev()) dir = 1;
+      if (dir === 1 && !canNext()) dir = -1;
+      return dir;
+    };
+    const place = () => {
+      const scrollable = canPrev() || canNext();
+      scroller.classList.toggle('is-scrollable', scrollable);
+      cursor.hidden = !pointer || !scrollable;
+      if (cursor.hidden) return;
+      cursor.dataset.direction = direction(pointer.x) === 1 ? 'next' : 'prev';
+      cursor.style.transform = `translate(${pointer.x}px, ${pointer.y}px)`;
+    };
+    // De a una foto. Adelante: la próxima foto que no entra completa (con el margen de la derecha)
+    // y que todavía no está alineada a la izquierda; se la lleva hasta que entre completa, o
+    // alineada a la izquierda si es más ancha que la pantalla. Atrás: la última foto cortada a
+    // la izquierda, alineada a la izquierda. La última queda con el margen derecho.
+    const go = (dir) => {
+      const box = scroller.getBoundingClientRect();
+      const inset = parseFloat(getComputedStyle(scroller).paddingLeft) || 0;
+      const here = scroller.scrollLeft;
+      const items = [...scroller.children].map((img) => {
+        const rect = img.getBoundingClientRect();
+        return { left: rect.left - box.left + here, right: rect.right - box.left + here };
+      });
+      const max = scroller.scrollWidth - scroller.clientWidth;
+      let target;
+      if (dir === 1) {
+        const item = items.find((i) => i.right > here + scroller.clientWidth - inset + 2 && i.left > here + inset + 2);
+        target = item ? Math.min(item.right + inset - scroller.clientWidth, item.left - inset) : max;
+      } else {
+        const item = [...items].reverse().find((i) => i.left < here + inset - 2);
+        target = item ? item.left - inset : 0;
+      }
+      scroller.scrollTo({ left: Math.min(Math.max(target, 0), max), behavior: reducedMotion() ? 'auto' : 'smooth' });
+    };
+
+    const sync = () => {
+      prev.disabled = !canPrev();
+      next.disabled = !canNext();
+      place();
+    };
+    scroller.addEventListener('scroll', sync, { passive: true });
+    // las fotos cambian el ancho total al cargar
+    scroller.addEventListener('load', sync, true);
+    new ResizeObserver(sync).observe(scroller);
+
+    scroller.addEventListener('pointermove', (event) => {
+      if (event.pointerType !== 'mouse') return;
+      pointer = { x: event.clientX, y: event.clientY };
+      place();
+    });
+    scroller.addEventListener('pointerleave', () => {
+      pointer = null;
+      place();
+    });
+    scroller.addEventListener('click', (event) => {
+      if (event.pointerType === 'mouse' || event.detail > 0) {
+        if (!(canPrev() || canNext())) return;
+        go(direction(event.clientX));
+      }
+    });
+    prev.addEventListener('click', () => go(-1));
+    next.addEventListener('click', () => go(1));
   }
 
   // ── Descripción ───────────────────────────────────────────────────
@@ -534,12 +665,37 @@ class ArqFichaProducto extends ArqElement {
     root.querySelector('.inspiration').hidden = !text && !images;
   }
 
+  // Fotos de ambiente del grupo, sin la del parallax (ambient_6): ambient_2_on, 3_on, 4, 5 y 7.
+  // La galería toma todas; la inspiración, las dos últimas. TODO (datos): cuando haya más fotos o un
+  // video (video_inspiration), se reparten distinto.
+  #pool() {
+    return this.#product.images.ambient;
+  }
+
+  // Video de inspiración (video_inspiration). Sin video, una foto ocupa su lugar.
+  #video(src, alt) {
+    const url = this.#product.group.video;
+    if (!url) return image(src, alt, 'media-wide');
+    const video = document.createElement('video');
+    video.src = url;
+    video.controls = true;
+    video.playsInline = true;
+    video.preload = 'metadata';
+    video.className = 'media-wide';
+    video.setAttribute('aria-label', alt);
+    return video;
+  }
+
   #renderInspirationImages() {
-    const { group, images } = this.#product;
-    this.shadowRoot
-      .querySelector('.inspiration-images')
-      .replaceChildren(...images.inspiration.map((src, i) => image(src, `${group.name}, inspiración ${i + 1}`)));
+    const { group } = this.#product;
+    const [, , , d, e] = this.#pool();
+    const nodes = [d && this.#video(d, `${group.name}, video`), e && image(e, `${group.name}, inspiración`, 'media-portrait')];
+    this.shadowRoot.querySelector('.inspiration-images').replaceChildren(...nodes.filter(Boolean));
     this.#syncInspiration();
+  }
+
+  #syncCta() {
+    this.shadowRoot.querySelector('.cta').hidden = !this.shadowRoot.querySelector('slot[name="cta-title"]').assignedElements().length;
   }
 
   // ── Explora la colección ──────────────────────────────────────────
@@ -551,9 +707,10 @@ class ArqFichaProducto extends ArqElement {
   }
 }
 
-function image(src, alt) {
+function image(src, alt, className = '') {
   const img = document.createElement('img');
   img.src = src;
+  if (className) img.className = className;
   img.alt = alt;
   img.loading = 'lazy';
   return img;
