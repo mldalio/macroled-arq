@@ -360,7 +360,9 @@ class ArqCatalogListing extends ArqElement {
     const title = document.querySelector('arq-page-header > [slot="title"]');
     if (title) this.#htmlTitle ??= title.textContent;
     if (title) title.textContent = `Resultados para «${this.#query}»`;
-    this.#syncBreadcrumb([{ label: 'Productos', href: location.pathname }, { label: title?.textContent ?? this.#query }]);
+    // El título de búsqueda va en role/display (no display-lg).
+    title?.parentElement.setAttribute('search-title', '');
+    this.#syncBreadcrumb([{ label: 'Productos', href: location.pathname }], true);
     this.#syncToolbarName();
   }
 
@@ -381,6 +383,7 @@ class ArqCatalogListing extends ArqElement {
     if (title) {
       this.#htmlTitle ??= title.textContent;
       title.textContent = label || this.#htmlTitle;
+      title.parentElement.removeAttribute('search-title');
     }
     // Breadcrumb (Levels 3 · 2): Inicio / Productos sin categoría; Inicio /
     // Productos / grupo en su vista completa; Inicio / grupo / subcategoría.
@@ -392,7 +395,9 @@ class ArqCatalogListing extends ArqElement {
 
   // Reemplaza los niveles del breadcrumb del page-header que siguen al
   // primero (Inicio, del HTML). Sin niveles, vuelve al del HTML (Productos).
-  #syncBreadcrumb(crumbs) {
+  // trail: el último nivel sigue siendo link y lleva separador (búsqueda:
+  // «Inicio / Productos /», sin nivel actual).
+  #syncBreadcrumb(crumbs, trail = false) {
     const breadcrumb = document.querySelector('arq-page-header > arq-breadcrumb');
     if (!breadcrumb) return;
     this.#htmlCrumbs ??= [...breadcrumb.children].slice(1);
@@ -400,7 +405,7 @@ class ArqCatalogListing extends ArqElement {
     const items = crumbs.length
       ? crumbs.map(({ label, href }, index) => {
         const item = document.createElement('arq-breadcrumb-item');
-        const last = index === crumbs.length - 1;
+        const last = index === crumbs.length - 1 && !trail;
         if (last) item.current = true;
         else {
           item.href = href;

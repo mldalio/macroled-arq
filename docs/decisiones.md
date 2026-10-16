@@ -948,3 +948,10 @@ El hover de las cards con Iluminar no se veía: `multimagen_ambiente` trae `…_
 - **Pantallas Mobile de Productos (Final):** sin catalog-nav-mobile, porque hasta 767 px las categorías van en Filtrar (como en el código). Los paneles de filtro de Productos llevan las tabs y hay una pantalla nueva, «filter-panel · mobile · categorías». Las dos pantallas «catálogo abierto» quedan como registro («anterior · reemplazada por…»). Colecciones Mobile sigue con catalog-nav-mobile.
 - **page-header (Figma):** el breadcrumb anidado decía Levels=3 pero tenía las capas de Levels=2, y en una instancia no se podía pasar a 3 niveles. Se reemplazó por Levels=2 en las variantes List; ahora las instancias pasan a 3 niveles con la prop. El arreglo borró los 3 niveles del frame Wide y de las pantallas nuevas: se volvieron a cargar.
 - Fichas `doc/filter-panel` y descripción del set actualizadas.
+
+## 2026-10-16 · Buscador: variante predeterminada y conteo de productos
+
+- «Ver todos los resultados (N)» cuenta solo productos (luminarias), no colecciones: lleva al listado de Productos, que no las incluye.
+- La búsqueda (navbar y listado con `?q=`) usa la variante predeterminada del grupo (`is_group_default`) cuando coincide el nombre, la colección o la aplicación. Solo si coincide únicamente por SKU se usa esa variante.
+- Con `?q=` el título del page-header («Resultados para «…»») va en `role/display` (atributo de código `search-title`) y el breadcrumb queda «Inicio / Productos /», sin nivel actual.
+- toggle **sin Hover** (ni Off ni On). `TODO` (Figma): quitar la variante State=Hover del set toggle; el texto de DESIGN.md §8 sigue listando Hover en toggle · toggle-switch.

@@ -19,7 +19,7 @@ Interruptor con texto para opciones binarias que se aplican al instante: "Ilumin
 | State=Disabled | `disabled` | `disabled` | booleano |
 | — | `name` · `value` | `name` · `value` | para formularios (`value` def. `on`) |
 
-- Hover y Focus son CSS.
+- Sin Hover (decisión del equipo, 2026-10-16); Focus es CSS.
 - **toggle-switch** (pista + círculo) va siempre adentro de toggle: no es un elemento propio ("no se usa suelto").
 - **Es un `<input type="checkbox" role="switch">` real:** todo el componente es clickeable, incluido el texto; Espacio lo cambia. `el.focus()` enfoca el input.
 - Emite `arq:change` con `{ checked, value }`. Encendido, manda `name=value` si está en un `<form>`.
@@ -30,8 +30,8 @@ Interruptor con texto para opciones binarias que se aplican al instante: "Ilumin
 | Parte | Token |
 | --- | --- |
 | Pista | 38 × 18 = `space/padding/2xs`, `icon/sm` y `space/gap/sm` (sin token propio) · `radius/pill` · borde `border/default` |
-| Off | borde `color/border/strong`, círculo `color/icon/primary`, Hover fondo `color/surface/hover` |
-| On | fondo y borde `color/action/primary` (Hover `color/action/primary-hover`), círculo `color/action/on-primary` |
+| Off | borde `color/border/strong`, círculo `color/icon/primary` |
+| On | fondo y borde `color/action/primary`, círculo `color/action/on-primary` |
 | Disabled | borde `color/border/disabled`, círculo `color/icon/disabled`; On + Disabled: pista `color/surface/strong` |
 | Círculo | `icon/sm`, corre `icon/sm` + `space/gap/sm` |
 | Label | `color/text/primary` (Disabled `color/text/disabled`) · `role/body-regular` |
