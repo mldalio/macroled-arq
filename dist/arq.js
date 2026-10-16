@@ -945,13 +945,14 @@ var wt = (e) => [
 	...e.environment
 ].join(" ");
 function Tt(e, t) {
+	if (le(wt(e), t)) return {
+		variant: e.defaultVariant,
+		bySku: !1
+	};
 	let n = e.variants.find((e) => le(e.sku, t));
 	return n ? {
 		variant: n,
 		bySku: !0
-	} : le(wt(e), t) ? {
-		variant: e.defaultVariant,
-		bySku: !1
 	} : null;
 }
 async function Et(e, { limit: t = 5 } = {}) {
@@ -977,10 +978,10 @@ async function Et(e, { limit: t = 5 } = {}) {
 		meta: "Colección",
 		href: x(e.id),
 		image: e.images?.studio ?? null
-	})), s = [...a, ...o];
+	}));
 	return {
-		results: s.slice(0, t),
-		total: s.length
+		results: [...a, ...o].slice(0, t),
+		total: a.length
 	};
 }
 var Dt = (e) => `/arq/productos?q=${encodeURIComponent(e)}`;
@@ -3872,7 +3873,7 @@ var Xr = ":host{min-width:0;display:block}.nav{background:var(--arq-color-surfac
 }).define();
 //#endregion
 //#region src/components/toggle/toggle.css?inline
-var Zr = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.toggle{align-items:center;gap:var(--arq-space-gap-sm);cursor:pointer;max-width:100%;display:inline-flex;position:relative}.track{box-sizing:border-box;width:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm) * 2 + var(--arq-space-gap-sm));height:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm));padding:calc(var(--arq-space-padding-2xs) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong);border-radius:var(--arq-radius-pill);background:var(--arq-color-surface-transparent);flex:none;align-items:center;display:inline-flex}.thumb{width:var(--arq-icon-sm);height:var(--arq-icon-sm);border-radius:var(--arq-radius-pill);background:var(--arq-color-icon-primary);transition-property:transform,color,background-color,border-color,outline-color,text-decoration-color,fill,stroke}.label{min-width:0;color:var(--arq-color-text-primary)}.toggle:hover .track{background:var(--arq-color-surface-hover)}.native:checked+.track{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}.native:checked+.track .thumb{background:var(--arq-color-action-on-primary);transform:translateX(calc(var(--arq-icon-sm) + var(--arq-space-gap-sm)))}.toggle:hover .native:checked+.track{border-color:var(--arq-color-action-primary-hover);background:var(--arq-color-action-primary-hover)}:host([disabled]) .toggle{cursor:default}:host([disabled]) .track,:host([disabled]) .toggle:hover .track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-transparent)}:host([disabled]) .native:checked+.track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-strong)}:host([disabled]) .thumb,:host([disabled]) .native:checked+.track .thumb{background:var(--arq-color-icon-disabled)}:host([disabled]) .label{color:var(--arq-color-text-disabled)}.native:focus-visible+.track{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}";
+var Zr = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.toggle{align-items:center;gap:var(--arq-space-gap-sm);cursor:pointer;max-width:100%;display:inline-flex;position:relative}.track{box-sizing:border-box;width:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm) * 2 + var(--arq-space-gap-sm));height:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm));padding:calc(var(--arq-space-padding-2xs) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong);border-radius:var(--arq-radius-pill);background:var(--arq-color-surface-transparent);flex:none;align-items:center;display:inline-flex}.thumb{width:var(--arq-icon-sm);height:var(--arq-icon-sm);border-radius:var(--arq-radius-pill);background:var(--arq-color-icon-primary);transition-property:transform,color,background-color,border-color,outline-color,text-decoration-color,fill,stroke}.label{min-width:0;color:var(--arq-color-text-primary)}.native:checked+.track{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}.native:checked+.track .thumb{background:var(--arq-color-action-on-primary);transform:translateX(calc(var(--arq-icon-sm) + var(--arq-space-gap-sm)))}:host([disabled]) .toggle{cursor:default}:host([disabled]) .track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-transparent)}:host([disabled]) .native:checked+.track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-strong)}:host([disabled]) .thumb,:host([disabled]) .native:checked+.track .thumb{background:var(--arq-color-icon-disabled)}:host([disabled]) .label{color:var(--arq-color-text-disabled)}.native:focus-visible+.track{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}";
 (class extends P {
 	static tag = "arq-toggle";
 	static styles = Zr;
@@ -5876,7 +5877,8 @@ var ma = ":host{min-width:0;display:block}.header{align-items:flex-start;gap:var
 		showDescription: { type: Boolean },
 		showBack: { type: Boolean },
 		showAction: { type: Boolean },
-		backHref: { type: String }
+		backHref: { type: String },
+		searchTitle: { type: Boolean }
 	};
 	static template = "<div class=\"header\"><arq-button class=\"back\" type=\"underline\" show-leading-icon leading-icon=\"chevron-left\" hidden><slot name=\"back\"></slot></arq-button><div class=\"row\"><div class=\"main\"><div class=\"heading\"><div class=\"breadcrumb\" hidden><slot name=\"breadcrumb\"></slot></div><div class=\"title role-display\"><slot name=\"title\"></slot></div></div><p class=\"description role-body-lg\" hidden><slot name=\"description\"></slot></p></div><div class=\"action\" hidden><slot name=\"action\"></slot></div></div></div>";
 	setup() {
@@ -5888,7 +5890,7 @@ var ma = ":host{min-width:0;display:block}.header{align-items:flex-start;gap:var
 		e.querySelector(".breadcrumb").hidden = !this.showBreadcrumb || !t("breadcrumb"), e.querySelector(".description").hidden = !this.showDescription || !t("description"), e.querySelector(".action").hidden = !n || !this.showAction || !t("action");
 		let r = e.querySelector(".back"), i = n && this.showBack && !!this.backHref && t("back");
 		r.hidden = !i, i ? r.setAttribute("href", this.backHref) : r.removeAttribute("href");
-		let a = !n && !ha.matches, o = e.querySelector(".title");
+		let a = !n && !ha.matches && !this.searchTitle, o = e.querySelector(".title");
 		o.classList.toggle("role-display-lg", a), o.classList.toggle("role-display", !a);
 		let s = e.querySelector(".description");
 		s.classList.toggle("role-body", a), s.classList.toggle("role-body-lg", !a);
@@ -6449,15 +6451,15 @@ var Pa = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 	}
 	#w() {
 		let e = document.querySelector("arq-page-header > [slot=\"title\"]");
-		e && (this.#s ??= e.textContent), e && (e.textContent = `Resultados para «${this.#t}»`), this.#E([{
+		e && (this.#s ??= e.textContent), e && (e.textContent = `Resultados para «${this.#t}»`), e?.parentElement.setAttribute("search-title", ""), this.#E([{
 			label: "Productos",
 			href: location.pathname
-		}, { label: e?.textContent ?? this.#t }]), this.#D();
+		}], !0), this.#D();
 	}
 	#T(e) {
 		let t = e?.closest("arq-catalog-nav-group"), n = t?.querySelector(":scope > arq-catalog-nav-item"), r = t?.querySelector("[slot=\"label\"]")?.textContent.trim(), i = e && e !== n, a = i ? e.textContent.trim() : r, o = document.querySelector("arq-page-header > [slot=\"title\"]");
 		if (!a && this.#t && this.unit === "productos") return this.#w();
-		o && (this.#s ??= o.textContent, o.textContent = a || this.#s), a ? i ? this.#E([{
+		o && (this.#s ??= o.textContent, o.textContent = a || this.#s, o.parentElement.removeAttribute("search-title")), a ? i ? this.#E([{
 			label: r,
 			href: n.getAttribute("href")
 		}, { label: a }]) : this.#E([{
@@ -6465,15 +6467,15 @@ var Pa = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 			href: location.pathname
 		}, { label: a }]) : this.#E([]), this.#D();
 	}
-	#E(e) {
-		let t = document.querySelector("arq-page-header > arq-breadcrumb");
-		if (!t) return;
-		this.#o ??= [...t.children].slice(1);
-		let [n] = t.children, r = e.length ? e.map(({ label: t, href: n }, r) => {
-			let i = document.createElement("arq-breadcrumb-item");
-			return r === e.length - 1 ? i.current = !0 : (i.href = n, i.showSeparator = !0), i.textContent = t, i;
+	#E(e, t = !1) {
+		let n = document.querySelector("arq-page-header > arq-breadcrumb");
+		if (!n) return;
+		this.#o ??= [...n.children].slice(1);
+		let [r] = n.children, i = e.length ? e.map(({ label: n, href: r }, i) => {
+			let a = document.createElement("arq-breadcrumb-item");
+			return i === e.length - 1 && !t ? a.current = !0 : (a.href = r, a.showSeparator = !0), a.textContent = n, a;
 		}) : this.#o;
-		t.replaceChildren(...[n, ...r].filter(Boolean));
+		n.replaceChildren(...[r, ...i].filter(Boolean));
 	}
 	#D() {
 		let e = document.querySelector("arq-page-header > [slot=\"title\"]"), t = this.shadowRoot?.querySelector(".toolbar");
