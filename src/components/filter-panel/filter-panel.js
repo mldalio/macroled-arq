@@ -41,7 +41,7 @@ import { SingleSelect } from '../../base/single-select.js';
 import { containScroll } from '../../base/scroll-lock.js';
 import css from './filter-panel.css?inline';
 
-const UNITS = { productos: ['producto', 'productos'], colecciones: ['colección', 'colecciones'] };
+const UNITS = { productos: ['producto', 'productos'], colecciones: ['colección', 'colecciones'], variantes: ['variante', 'variantes'] };
 const NUMBER = new Intl.NumberFormat('es-AR');
 
 class ArqFilterPanel extends ArqElement {
@@ -50,7 +50,7 @@ class ArqFilterPanel extends ArqElement {
   static properties = {
     open: { type: Boolean },
     count: { type: Number }, // resultado para "Ver N productos" (lo calcula la página)
-    unit: { type: String, values: ['productos', 'colecciones'], default: 'productos' },
+    unit: { type: String, values: ['productos', 'colecciones', 'variantes'], default: 'productos' },
     showCategories: { type: Boolean }, // Productos Mobile: tabs de características y categorías
   };
   static template =

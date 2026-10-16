@@ -25,7 +25,6 @@ tabla.addEventListener('arq:downloads', (e) => llenarModal(e.detail.sku));
 
 | Figma | Atributo / slot | Prop JS | Valores · por defecto |
 | --- | --- | --- | --- |
-| Filters | `filters` | `filters` | booleano: Off · On. Lo cambia el botón Filtros |
 | — (datos) | — | `data` | `{ columns, filters, rows }` (solo JS) |
 | — (descargas de la barra) | slot `downloads` | — | `arq-button` Outline con `icon/download` (los archivos del grupo) |
 | — | `downloads` | `downloads` | `id` del `arq-download-modal` que abre el ícono de cada fila |
@@ -37,7 +36,7 @@ tabla.addEventListener('arq:downloads', (e) => llenarModal(e.detail.sku));
 
 - **Tabla real** (`<table>`, decisión 2026-10-02 · glosario): un lector de pantalla anuncia la columna de cada valor. El SKU es el encabezado de cada fila.
 - **Un solo contenedor con scroll** para encabezado y filas (se puede desplazar con el teclado). La columna de inicio (miniatura + sku Compact) y la de descarga quedan fijas (`position: sticky`) con fondo propio. En mobile el scroll llega al borde de la pantalla.
-- **Filtros (Ficha v2):** siempre Filled; Off con `icon/filter`, On con `icon/close` y debajo filter-bar con un select por filtro. Al lado, la cantidad («4 variantes», `role/body` en `color/text/secondary`). Las opciones que no dan ninguna fila van deshabilitadas y la tabla muestra solo las filas que cumplen (`src/data/variants.js`: `filterOptions`, `filterVariants`). Al apagar Filtros se limpian.
+- **Filtros:** el botón va siempre Filled con `icon/filter` y abre filter-panel (panel lateral derecho en Desktop, pantalla completa en Mobile), como en Descargas: una filter-row de checkbox por filtro, «Ver N variantes» para aplicar (cerrar descarta). Selección múltiple: dentro de un filtro, cualquiera de los valores; entre filtros, todos. Las opciones que no dan ninguna fila van deshabilitadas (`src/data/variants.js`: `filterOptions`, `filterVariants`). El botón dice «Filtros (N)»; al lado, la cantidad («4 variantes», `role/body` en `color/text/secondary`) y debajo los filtros aplicados como filter-chip con «Limpiar filtros». Ya no hay prop `filters` ni filter-bar en la tabla (decisiones.md, 2026-10-15 · Filtros del glosario en panel lateral).
 - **Descarga de cada fila:** columna «Descargas» (`role/body-regular`; en Mobile sin título visible) con icon-button Size=Large, Background=Outline en la ficha y None (sin borde) en Descargas (`show-search`) ("Descargas de <SKU>"); emite `arq:downloads { sku }` y, con `downloads`, abre ese download-modal.
 - **Buscador y orden** (Show search en Figma; el orden es solo de código. decisiones.md 2026-10-06 · Descargas): el buscador filtra mientras se escribe por SKU y por `row.search` (nombre del producto y de la colección), sin tildes ni mayúsculas (`searchVariants`); el orden usa `sortVariants` (`src/data/variants.js`). Se combinan con los filtros. Sin filas, la tabla se oculta y aparece «Ningún SKU coincide con la búsqueda o los filtros.»; la cantidad de filas se anuncia en una región `role="status"`.
 - **Barra** (centrada en alto, gap `space/gap/md`): Filtros con la cantidad a la izquierda; a la derecha, las descargas (ficha) o el buscador de `layout/search-field` (Descargas; en Mobile ocupa lo que queda de la fila). Con `show-sort`, Ordenar por va a la derecha. Sin botones de descarga, su lugar no ocupa espacio.
