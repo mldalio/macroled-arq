@@ -145,8 +145,11 @@ function productCard(group, variant = group.defaultVariant) {
     meta: meta(group),
     finishes: finishes(group),
     href: productHref(group.id, variant.sku), // la URL siempre lleva el SKU, también el predeterminado
+    // Reposo: hero (img_main). Hover sin Iluminar: hero encendido (img_main_on); con Iluminar:
+    // ambiente 1 encendido (img_ambient_1_on). Vale donde se use la card (docs/decisiones.md,
+    // 2026-10-16 · Hover de product-card). Sin hero encendido, el hover cae al ambiente 1.
     image: images.studio ?? null,
-    imageHover: images.context ?? null,
+    imageHover: images.studioOn ?? images.context ?? null,
     imageLit: images.studioOn ?? null,
     imageHoverLit: images.contextOn ?? null,
   };

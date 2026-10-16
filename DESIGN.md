@@ -534,21 +534,23 @@ El inventario completo con links a Figma está en el [Anexo A](#anexo-a-inventar
 
 ### Imágenes de product-card (hover e Iluminar)
 
-Aplica a product-card en los listados de Productos y Colecciones (las cards de colección siguen el mismo criterio; de dónde salen sus cuatro imágenes: `TODO` en la base). Cada producto trae **cuatro imágenes**, todas en `ratio/portrait` (7:10) y con el mismo encuadre:
+Aplica a product-card en los listados de Productos y Colecciones (las cards de colección siguen el mismo criterio; de dónde salen sus cuatro imágenes: `TODO` en la base). Cada producto trae **tres imágenes** que se usan acá, todas en `ratio/portrait` (7:10) y con el mismo encuadre: la principal apagada (`img_main`), la principal encendida (`img_main_on`) y el ambiente 1 encendido (`img_ambient_1_on`):
 
 | | Reposo | Hover / Focus |
 | --- | --- | --- |
-| **Light** (Iluminar apagado) | Estudio, luz apagada | Contexto, luz apagada |
-| **Dark** (Iluminar encendido) | Estudio, luz encendida | Contexto, luz encendida |
+| **Light** (Iluminar apagado) | `img_main` (hero apagado) | `img_main_on` (hero encendido) |
+| **Dark** (Iluminar encendido) | `img_main_on` (hero encendido) | `img_ambient_1_on` (ambiente 1 encendido) |
+
+La regla vale **donde se use la card**, no solo en los listados: en la sección de productos destacados de la Home las cards aparecen apagadas (Iluminar no existe ahí), así que su hover es el hero encendido (`docs/decisiones.md`, 2026-10-16 · Hover de product-card).
 
 - El hover **no** usa borde: cambia la imagen. El foco de teclado muestra la misma imagen que el hover, además del anillo `color/border/focus`.
 - El cambio es un fundido entre dos `<img>` apiladas (sin mover el layout). Usa `motion/duration/slow` con `motion/easing/standard`. Con `prefers-reduced-motion: reduce`, el cambio es instantáneo.
-- La imagen que se muestra depende de `data-arq-theme` del ancestro: al activar Iluminar en `catalog-toolbar`, todas las tarjetas pasan a las versiones encendidas.
-- En pantallas táctiles no hay hover: se ve solo la imagen de estudio.
+- La imagen que se muestra depende de `data-arq-theme` del ancestro: al activar Iluminar en `catalog-toolbar`, todas las tarjetas pasan a su reposo y su hover encendidos (tabla de arriba).
+- En pantallas táctiles no hay hover: se ve solo la imagen de reposo.
 - Aplica también a `Size=Small`. Una tarjeta Large pasa sola al aspecto Small hasta 767 px (grilla mobile).
-- Si falta la imagen de contexto, no hay cambio en hover. Si falta la versión encendida, se usa la apagada. Si falta la de estudio, se muestra un fondo `color/surface/subtle` con el nombre: nunca se rompe la tarjeta.
+- Si falta la imagen de hover, no hay cambio en hover. Si falta la versión encendida del reposo, se usa la apagada. Si falta la principal, se muestra un fondo `color/surface/subtle` con el nombre: nunca se rompe la tarjeta.
 - Solo se carga de entrada la imagen visible; las de hover y las encendidas se cargan en diferido (`loading="lazy"` o al primer hover / al activar Iluminar).
-- Las imágenes vienen de los datos (Sheets → Typesense). Los nombres de los campos van en `docs/typesense-schema.md`; diseño todavía no definió qué columna es la de estudio y cuál la de contexto: hasta entonces, `TODO`.
+- Las imágenes vienen de los datos (Sheets → Typesense). Los nombres de los campos van en `docs/typesense-schema.md`; las columnas son `img_main`, `img_main_on` e `img_ambient_1_on`.
 - En Figma, la variante `State=Hover` de product-card es una referencia estática: muestra el estado, no el cambio de imagen. Para este comportamiento manda esta sección.
 
 ### Acabados de producto
@@ -594,7 +596,7 @@ Aplica a product-card en los listados de Productos y Colecciones (las cards de c
 - **Códigos de acabado** (N, V, R, B, BN, P): falta la tabla de equivalencias para mostrar el nombre.
 - **project-mosaic y carousel:** se resuelven en código (grid + aspect-ratio; snap y peek), no como componentes de Figma.
 - **button Loading:** no hay ícono de carga en la librería.
-- **product-card:** qué columnas de la base son la foto de estudio y la de contexto, y de dónde salen las cuatro imágenes de una card de colección.
+- **product-card:** de dónde salen las imágenes de hover de una card de colección (hoy solo tiene `img_collection` y `img_collection_on`).
 - **Descargar comparación:** falta el diseño del PDF.
 - **Ficha técnica en PDF:** falta el mensaje de error si no se puede generar. Al guardarla desde el visor de Chrome, el nombre es un código al azar (sale de la URL del blob): para que se llame `ficha-tecnica-<sku>.pdf` hace falta servirla desde una URL propia.
 - **Galerías** (product-gallery, ambiente, Inspiración, colección): cantidad de imágenes. Si hay más de las que entran, se desliza.

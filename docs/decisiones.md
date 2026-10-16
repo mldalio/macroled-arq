@@ -923,3 +923,16 @@ Se probaron dos versiones del diseño (Figma «Ficha - 1920-V1», `2612:12168`, 
 - **checkbox:** la caja sin marcar no tiene fondo (`color/surface/transparent`), solo el borde. Antes usaba `color/surface/default`, que con Iluminar pasaba a `neutral/800` y se veía un cuadrado oscuro sobre las cards. **Figma:** relleno de la caja de las variantes Checked=False cambiado a `color/surface/transparent` y descripción del set actualizada.
 - **Figma (pantallas y fichas):** en Final › Productos, fila nueva con subcategoría (Exterior / Jardín) y colección (Kanu), Desktop y Mobile, más una nota con estas reglas. Fichas `doc/catalog-nav`, `doc/catalog-nav-group`, `doc/catalog-nav-mobile` y `doc/breadcrumb` y descripciones de catalog-nav, catalog-nav-mobile y breadcrumb actualizadas con la navegación sin recarga y el breadcrumb por categoría.
 - **Figma (pendiente):** el breadcrumb anidado del componente page-header dice Levels=3 pero conserva las capas de Levels=2; en una instancia nueva no se puede pasar a 3 niveles (las pantallas nuevas usan una copia del page-header del frame Wide). Conviene rehacer ese breadcrumb en el componente.
+## 2026-10-16 · Hover de product-card: hero encendido (y ambiente 1 encendido con Iluminar)
+
+Se probaron tres variantes del hover (prueba en la rama `feat/prueba-hover-productos`, ya borrada) y se decide:
+
+| | Reposo | Hover / Focus |
+| --- | --- | --- |
+| Sin Iluminar | `img_main` (hero apagado) | `img_main_on` (hero encendido) |
+| Con Iluminar | `img_main_on` (hero encendido) | `img_ambient_1_on` (ambiente 1 encendido) |
+
+- **Vale donde se use la card**, no solo en Productos: en la sección de productos destacados de la Home las cards se ven apagadas (con el hero normal) y su hover es el hero encendido, igual que el de un listado sin iluminar.
+- **Dónde está:** `productCard()` de `src/data/catalog.js` (`imageHover = img_main_on`, con `img_ambient_1` de respaldo si falta; `imageHoverLit = img_ambient_1_on`). `product-card` no cambia de lógica, solo cambia qué imagen recibe en cada prop. Lo usan por igual los listados, la ficha (explora la colección) y la Home.
+- **Cards de colección:** no cambian (solo tienen `img_collection` y `img_collection_on`); `TODO` (datos) para su hover.
+- **Actualizados:** DESIGN.md §8 · Imágenes de product-card (**falta copiarlo en el frame DESIGN.md de Figma, página Plan del proyecto**), `docs/typesense-schema.md` y el README de product-card.
