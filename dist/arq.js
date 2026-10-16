@@ -648,7 +648,7 @@ function w(e, t = e.defaultVariant) {
 		finishes: Qe(e),
 		href: Ue(e.id, t.sku),
 		image: n.studio ?? null,
-		imageHover: n.context ?? null,
+		imageHover: n.studioOn ?? n.context ?? null,
 		imageLit: n.studioOn ?? null,
 		imageHoverLit: n.contextOn ?? null
 	};
