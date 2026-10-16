@@ -883,3 +883,7 @@ Pasada con los skills emil-design-eng, improve-animations, apple-design, mobile-
   - navbar Transparent: con `prefers-reduced-transparency: reduce` o `prefers-contrast: more` se ve Default también sobre la foto.
   - input y file-upload: con `prefers-contrast: more`, borde `color/border/strong`. `TODO` (diseño): `color/border/default` da 1,6:1 sobre blanco (WCAG pide 3:1 para el borde de un control).
 - **DESIGN.md** (repo y copia en Figma): `motion/duration/panel` en §6, hover solo con mouse en §7, avisos `aria-live` y `prefers-contrast` / `prefers-reduced-transparency` en §9. **Figma:** descripciones de faq-item, input, file-upload, sku, navbar y download-file-row.
+
+## 2026-10-16 · Demo sin selector de datos
+
+- Las páginas Descargas y Contacto de la demo dejan de mostrar el selector de datos abajo al centro. Los modos de peor caso siguen andando escritos en la URL (`demo/demo-data-toggle.js`): Descargas `?data=worst|empty|one|huge|error`, Contacto `?data=worst|errors|sent`.

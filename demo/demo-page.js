@@ -15,15 +15,15 @@
 // Colección: lo mismo con ?collection=<id>.
 // Descargas: la demo pone la portada de ejemplo del catálogo (en Webflow,
 // TODO: la portada real).
-// Datos de peor caso (break-ui): en Descargas y Contacto, un selector abajo al
-// centro cambia ?data= (demo/demo-data-toggle.js). Descargas los toma de
+// Datos de peor caso (break-ui): ?data= en Descargas y Contacto, escrito a mano
+// en la URL (demo/demo-data-toggle.js). Descargas los toma de
 // demo/fixtures/peor-caso.js por src/data/catalog.js; Contacto, del embed
 // demo/fixtures/contacto-peor-caso.html y del formulario completado.
 
 import '/src/main.js';
 import '/demo/demo-inspect.js';
 import { getProduct, getCollection } from '/src/data/catalog.js';
-import { dataMode, mountDataToggle, fillContacto } from '/demo/demo-data-toggle.js';
+import { dataMode, fillContacto } from '/demo/demo-data-toggle.js';
 
 const pages = import.meta.glob('/src/pages/*.html', { query: '?raw', import: 'default' });
 // Peor caso del embed (break-ui, ?data=worst): demo/fixtures/<página>-peor-caso.html
@@ -101,7 +101,6 @@ if (load) {
   demoDescargas(template.content);
   await cmsCollection(template.content);
   document.body.replaceChildren(template.content);
-  mountDataToggle(name);
   fillContacto(name === 'contacto' ? dataMode() : null);
 } else document.body.textContent = `No existe src/pages/${name}.html`;
 
