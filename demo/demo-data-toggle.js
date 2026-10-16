@@ -1,71 +1,15 @@
-// Selector de datos de la demo (break-ui): «Demo / Peor caso / …» abajo al
-// centro, para ver la página con los datos de siempre o con el peor caso
-// creíble. Solo demo: no está en src/ ni llega al build.
-//
-// El modo va en la URL (?data=<modo>), así una recarga lo conserva y se puede
-// compartir. Cambiar de modo recarga la página: los datos entran por el mismo
+// Datos de la demo (break-ui): el modo va en la URL (?data=<modo>) y se escribe
+// a mano; ninguna página muestra un selector. Los datos entran por el mismo
 // lugar que los reales (src/data/catalog.js en Descargas, el HTML del embed y
-// lo que escribe la persona en Contacto), no tocando el componente.
+// lo que escribe la persona en Contacto), no tocando el componente. Solo demo:
+// no está en src/ ni llega al build.
 //
-//   Descargas  Demo · Peor caso · Vacío · Uno · 1.500 filas · Error
-//   Contacto   Demo · Peor caso · Errores · Enviado
-
-const MODES = {
-  descargas: [
-    ['demo', 'Demo'],
-    ['worst', 'Peor caso'],
-    ['empty', 'Vacío'],
-    ['one', 'Uno'],
-    ['huge', '1.500 filas'],
-    ['error', 'Error'],
-  ],
-  contacto: [
-    ['demo', 'Demo'],
-    ['worst', 'Peor caso'],
-    ['errors', 'Errores'],
-    ['sent', 'Enviado'],
-  ],
-};
+//   Descargas  ?data=worst · empty · one · huge · error
+//   Contacto   ?data=worst · errors · sent
 
 /** Modo pedido en la URL ('demo' si no hay). */
 export function dataMode() {
   return new URLSearchParams(location.search).get('data') ?? 'demo';
-}
-
-/** Monta el selector si la página tiene modos. */
-export function mountDataToggle(page) {
-  const modes = MODES[page];
-  if (!modes) return;
-  const current = dataMode();
-  const style = document.createElement('style');
-  style.textContent = `
-    .demo-data-toggle { position: fixed; z-index: 2147483000; left: 50%; bottom: 16px; transform: translateX(-50%);
-      display: flex; gap: 2px; max-width: calc(100vw - 32px); overflow-x: auto; padding: 3px; border-radius: 999px;
-      background: #e5e5e5; font: 500 12px/1 system-ui, sans-serif; box-shadow: 0 1px 4px rgb(0 0 0 / 0.15); scrollbar-width: none; }
-    .demo-data-toggle button { flex: none; padding: 7px 12px; border: 0; border-radius: 999px; background: transparent;
-      color: #444; font: inherit; cursor: pointer; white-space: nowrap; }
-    .demo-data-toggle button[aria-pressed="true"] { background: #fff; color: #111; box-shadow: 0 1px 2px rgb(0 0 0 / 0.15); }
-    .demo-data-toggle button:focus-visible { outline: 2px solid #111; outline-offset: 1px; }
-  `;
-  const bar = document.createElement('div');
-  bar.className = 'demo-data-toggle';
-  bar.setAttribute('role', 'group');
-  bar.setAttribute('aria-label', 'Datos de la demo');
-  for (const [mode, label] of modes) {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.textContent = label;
-    button.setAttribute('aria-pressed', String(mode === current));
-    button.addEventListener('click', () => {
-      const url = new URL(location.href);
-      if (mode === 'demo') url.searchParams.delete('data');
-      else url.searchParams.set('data', mode);
-      location.href = url.href;
-    });
-    bar.append(button);
-  }
-  document.head.append(style);
-  document.body.append(bar);
 }
 
 // ── Contacto: lo que escribe la persona ─────────────────────────────

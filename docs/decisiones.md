@@ -884,6 +884,10 @@ Pasada con los skills emil-design-eng, improve-animations, apple-design, mobile-
   - input y file-upload: con `prefers-contrast: more`, borde `color/border/strong`. `TODO` (diseño): `color/border/default` da 1,6:1 sobre blanco (WCAG pide 3:1 para el borde de un control).
 - **DESIGN.md** (repo y copia en Figma): `motion/duration/panel` en §6, hover solo con mouse en §7, avisos `aria-live` y `prefers-contrast` / `prefers-reduced-transparency` en §9. **Figma:** descripciones de faq-item, input, file-upload, sku, navbar y download-file-row.
 
+## 2026-10-16 · Demo sin selector de datos
+
+- Las páginas Descargas y Contacto de la demo dejan de mostrar el selector de datos abajo al centro. Los modos de peor caso siguen andando escritos en la URL (`demo/demo-data-toggle.js`): Descargas `?data=worst|empty|one|huge|error`, Contacto `?data=worst|errors|sent`.
+
 ## 2026-10-16 · Navegación de Productos y Colecciones sin recarga
 
 - **catalog-nav:** abrir un grupo ya no lleva a su primer link («Todo interior»…) ni cierra los demás: la navegación queda abierta como la dejó la persona. El listado se actualiza recién al elegir una subcategoría. Al cargar la página se sigue abriendo solo el grupo de la categoría actual. Hasta 1023 px, el panel de catalog-nav-mobile queda abierto al elegir un ítem.
