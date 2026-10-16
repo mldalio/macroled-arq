@@ -141,6 +141,8 @@ Levels=3: Inicio / Sección / Página. Levels=2: Inicio / Página. El separador 
 
 Textos largos: los ítems intermedios se cortan con "…" (el texto completo queda en el link); el ítem actual se parte en varias líneas.
 
+En Productos: Levels=2 sin categoría; con categoría, Levels=3 siguiendo al título (Inicio / Productos / Interior, Inicio / Exterior / Jardín, Inicio / Colecciones / Kanu).
+
 ## breadcrumb-item
 
 - Figma: [1053-4430](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1053-4430)
@@ -184,7 +186,7 @@ Flechas anterior / siguiente para carruseles con scroll horizontal (mosaico de C
 - Figma: [1035-2411](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1035-2411)
 - Propiedades: —
 
-Sidebar de filtros del catálogo (Interior abierto, resto cerrado). Compuesto por instancias de catalog-nav-group.
+Sidebar de filtros del catálogo (Interior abierto, resto cerrado). Compuesto por instancias de catalog-nav-group. Al cargar se abre solo el grupo de la categoría actual; abrir otro grupo no cierra los demás ni cambia el listado. El listado cambia al elegir una subcategoría, sin recargar la página ni volver arriba. Cada colección del grupo Colecciones muestra sus cards de producto en el mismo listado.
 
 ## catalog-nav-group
 
@@ -205,7 +207,7 @@ Grupo desplegable del sidebar de catálogo (catalog-nav). Encabezado: label role
 - Figma: [1207-3314](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1207-3314)
 - Propiedades: Open: False · True
 
-Navegación de categorías para Productos y Colecciones en mobile (equivalente de catalog-nav en desktop). Encabezado = catalog-nav-trigger (expuesto: editar Label con la selección actual). Tocar el encabezado alterna Open. Va como primer elemento de main.
+Navegación de categorías para Productos y Colecciones en mobile (equivalente de catalog-nav en desktop). Encabezado = catalog-nav-trigger (expuesto: editar Label con la selección actual). Tocar el encabezado alterna Open. Va como primer elemento de main. Al elegir un ítem, el panel queda abierto y se actualizan el Label y el listado.
 
 ## catalog-nav-trigger
 
@@ -243,7 +245,7 @@ Size: Default (role/body, 14) o Large (role/body-lg, 16) — en lugar de sobresc
 
 Marcado: caja llena en color/action/primary, sin tilde. Label en color/text/secondary (primary en hover).
 
-Hover sin marcar: borde de la caja border/strong (2 px) en color/border/strong; el tamaño no cambia.
+Hover sin marcar: borde de la caja border/strong (2 px) en color/border/strong; el tamaño no cambia. La caja sin marcar no tiene fondo (color/surface/transparent): solo el borde.
 
 ## choice-chip
 
