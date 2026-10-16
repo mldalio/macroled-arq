@@ -917,3 +917,17 @@ Se probaron dos versiones del diseño (Figma «Ficha - 1920-V1», `2612:12168`, 
 
 - **Hero:** sin padding inferior (con Iluminar quedaba una franja oscura bajo la foto). El aire de abajo (`space/padding/xl`, 32 en Figma `2612:12210`) pasa a `configurator-column` y, hasta 1023 px, a `.buy`.
 - **Iluminar:** va dentro de la imagen de `product-gallery` (slot nuevo `overlay`), abajo a la derecha, en todos los tamaños. En Desktop su borde inferior coincide con el de las miniaturas (`space/padding/xl`); hasta 1023 px, a `space/padding/md` de las esquinas (`TODO`: sin Figma de Tablet y Mobile).
+
+## 2026-10-16 · Hover de product-card: hero encendido (y ambiente 1 encendido con Iluminar)
+
+Se probaron tres variantes del hover (prueba en la rama `feat/prueba-hover-productos`, ya borrada) y se decide:
+
+| | Reposo | Hover / Focus |
+| --- | --- | --- |
+| Sin Iluminar | `img_main` (hero apagado) | `img_main_on` (hero encendido) |
+| Con Iluminar | `img_main_on` (hero encendido) | `img_ambient_1_on` (ambiente 1 encendido) |
+
+- **Vale donde se use la card**, no solo en Productos: en la sección de productos destacados de la Home las cards se ven apagadas (con el hero normal) y su hover es el hero encendido, igual que el de un listado sin iluminar.
+- **Dónde está:** `productCard()` de `src/data/catalog.js` (`imageHover = img_main_on`, con `img_ambient_1` de respaldo si falta; `imageHoverLit = img_ambient_1_on`). `product-card` no cambia de lógica, solo cambia qué imagen recibe en cada prop. Lo usan por igual los listados, la ficha (explora la colección) y la Home.
+- **Cards de colección:** no cambian (solo tienen `img_collection` y `img_collection_on`); `TODO` (datos) para su hover.
+- **Actualizados:** DESIGN.md §8 · Imágenes de product-card (**falta copiarlo en el frame DESIGN.md de Figma, página Plan del proyecto**), `docs/typesense-schema.md` y el README de product-card.

@@ -7,8 +7,8 @@ Tarjeta de producto (Productos) o de colección (Colecciones, página de colecci
 ```html
 <!-- Productos: con Comparar -->
 <arq-product-card href="/arq/producto/kanu-jardin" show-compare
-  image="…/estudio.jpg" image-hover="…/contexto.jpg"
-  image-lit="…/estudio-on.jpg" image-hover-lit="…/contexto-on.jpg">
+  image="…/principal.jpg" image-hover="…/principal-on.jpg"
+  image-lit="…/principal-on.jpg" image-hover-lit="…/ambiente-1-on.jpg">
   <h3 slot="name">Kanu Jardín</h3>
   <arq-swatch slot="finishes" src="…/negro.jpg">Negro</arq-swatch>
 </arq-product-card>
@@ -31,12 +31,12 @@ Tarjeta de producto (Productos) o de colección (Colecciones, página de colecci
 | — | `compared` | `compared` | booleano: "Comparar" marcado |
 | Size | `size` | `size` | `large` · `small`. Por defecto `large`. Large pasa sola al aspecto Small hasta 767 px |
 | — | `href` | `href` | Destino (la ficha con `?sku=` si hay filtros, decisión 2026-10-02 · Listados) |
-| — (imagen) | `image` · `image-hover` · `image-lit` · `image-hover-lit` | `image` · `imageHover` · `imageLit` · `imageHoverLit` | Estudio y contexto, con la luz apagada y encendida (DESIGN.md §8) |
+| — (imagen) | `image` · `image-hover` · `image-lit` · `image-hover-lit` | `image` · `imageHover` · `imageLit` · `imageHoverLit` | Principal apagada; hover sin Iluminar (principal encendida); principal encendida; hover con Iluminar (ambiente 1 encendido) (DESIGN.md §8) |
 
 - **No son props:** State=Hover y State=Focus (CSS).
 - **Link estirado** (`src/base/card-link.css`): el `<a>` envuelve solo el nombre; su `::after` cubre la tarjeta. El foco rodea la tarjeta. "Comparar" va por encima del link.
-- **Imágenes** (DESIGN.md §8): en reposo, estudio; con hover sobre la imagen o foco, contexto (sobre el nombre o «Comparar» la imagen no cambia), con un fundido entre dos `<img>` (`motion/duration/slow`, instantáneo con movimiento reducido). Dentro de un bloque con `data-arq-theme="dark"` (Iluminar) pasa a las encendidas (`src/base/theme.js`). En táctiles no hay hover. Aplica también a Size=Small (decisión 2026-10-02 · product-card).
-- **Faltantes:** sin contexto no hay cambio; sin encendida queda la apagada; sin estudio, fondo `color/surface/subtle` con el nombre.
+- **Imágenes** (DESIGN.md §8): en reposo, la principal apagada; con hover sobre la imagen o foco, la principal encendida (con Iluminar: reposo la principal encendida y hover el ambiente 1 encendido; sobre el nombre o «Comparar» la imagen no cambia), con un fundido entre dos `<img>` (`motion/duration/slow`, instantáneo con movimiento reducido). Dentro de un bloque con `data-arq-theme="dark"` (Iluminar) pasa a las encendidas (`src/base/theme.js`). En táctiles no hay hover. Aplica también a Size=Small (decisión 2026-10-02 · product-card).
+- **Faltantes:** sin imagen de hover no hay cambio; sin encendida queda la apagada; sin principal, fondo `color/surface/subtle` con el nombre.
 - **Carga:** solo la imagen visible de entrada (`loading="lazy"`); la de hover al primer hover o foco; las encendidas al activar Iluminar. Las imágenes son decorativas (`alt=""`): el nombre lo da el link.
 - **Evento:** `arq:compare { checked }` al marcar o desmarcar "Comparar" (la página arma la compare-bar).
 - **Grilla:** la tarjeta toma el ancho de su columna. En el listado: `repeat(auto-fill, minmax(var(--arq-layout-card-min), 1fr))` y `layout/card-min-wide` desde 1600 px (DESIGN.md §2).
@@ -57,5 +57,5 @@ Tarjeta de producto (Productos) o de colección (Colecciones, página de colecci
 
 ## Pendientes
 
-- `TODO` (diseño) Qué columnas de la base son la foto de estudio y la de contexto (`docs/typesense-schema.md`, Imágenes de product-card), y de dónde salen las cuatro de una card de colección.
+- `TODO` (datos) De dónde salen las imágenes de hover de una card de colección (hoy solo `img_collection` y `img_collection_on`).
 - `TODO` (datos) El texto de Meta: valores de `VARIANT_ATTRIBUTES` + una o dos características fijas (decisión 2026-10-02 · Cards).

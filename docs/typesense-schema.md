@@ -42,7 +42,7 @@ Dónde se usa cada foto:
 
 | Lugar | Fotos | Con Iluminar |
 | --- | --- | --- |
-| product-card | Reposo `img_main` · hover `img_ambient_1` | `_on` de cada una; sin `_on`, la apagada |
+| product-card | Sin Iluminar: reposo `img_main` · hover `img_main_on` | Con Iluminar: reposo `img_main_on` · hover `img_ambient_1_on`. Sin `_on`, la apagada (decisión 2026-10-16) |
 | Galería de la ficha | `img_main`, `img_ambient_1`, front, back, left, right, pers_1, pers_2, detail_1, detail_2 (las que existen) | Cada una a su `_on` |
 | Ficha: ambiente · descripción · inspiración | `img_ambient_2` a `5` · `img_ambient_6` · `img_ambient_7` (del SKU predeterminado) | No cambian |
 | Card de colección | `img_collection` | `img_collection_on` |

@@ -5,19 +5,20 @@
 // "Comparar" queda fuera del link.
 //
 //   <arq-product-card href="/arq/producto/kanu-jardin" show-compare
-//     image="…/estudio.jpg" image-hover="…/contexto.jpg"
-//     image-lit="…/estudio-on.jpg" image-hover-lit="…/contexto-on.jpg">
+//     image="…/principal.jpg" image-hover="…/principal-on.jpg"
+//     image-lit="…/principal-on.jpg" image-hover-lit="…/ambiente-1-on.jpg">
 //     <h3 slot="name">Kanu Jardín</h3>
 //     <span slot="meta">35 cm – 50 cm · 12 W</span>
 //     <arq-swatch slot="finishes" src="…">Negro</arq-swatch>
 //   </arq-product-card>
 //
 // - Link estirado (src/base/card-link.css): el <a> envuelve solo el nombre.
-// - Imágenes (DESIGN.md §8): reposo = estudio; hover sobre la imagen y foco =
-//   contexto, con un
+// - Imágenes (DESIGN.md §8): reposo = principal apagada; hover sobre la imagen
+//   y foco = principal encendida (Iluminar: reposo = principal encendida, hover =
+//   ambiente 1 encendido), con un
 //   fundido entre dos <img> (motion/duration/slow). Iluminar (data-arq-theme=
 //   "dark" en un ancestro, src/base/theme.js) pasa a las versiones encendidas.
-//   Sin contexto no hay cambio; sin encendida queda la apagada; sin estudio, un
+//   Sin imagen de hover no hay cambio; sin encendida queda la apagada; sin principal, un
 //   fondo color/surface/subtle con el nombre. En táctiles no hay hover.
 // - Carga: solo la imagen visible de entrada; la de hover al primer hover o
 //   foco; las encendidas cuando se activa Iluminar.
@@ -42,10 +43,10 @@ class ArqProductCard extends ArqElement {
     showCompare: { type: Boolean }, // Show compare
     compared: { type: Boolean }, // checkbox "Comparar" marcado
     href: { type: String },
-    image: { type: String }, // estudio, luz apagada
-    imageHover: { type: String }, // contexto, luz apagada
-    imageLit: { type: String }, // estudio, luz encendida
-    imageHoverLit: { type: String }, // contexto, luz encendida
+    image: { type: String }, // principal (hero), luz apagada
+    imageHover: { type: String }, // hover sin Iluminar: principal encendida
+    imageLit: { type: String }, // principal (hero), luz encendida
+    imageHoverLit: { type: String }, // hover con Iluminar: ambiente 1 encendido
   };
   static template =
     `<div class="card">` +
