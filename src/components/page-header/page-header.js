@@ -43,6 +43,7 @@ class ArqPageHeader extends ArqElement {
     showBack: { type: Boolean }, // Show back (solo Detail)
     showAction: { type: Boolean }, // Show action (solo Detail)
     backHref: { type: String }, // destino de Volver: la página padre
+    searchTitle: { type: Boolean }, // solo de código: título de búsqueda en role/display
   };
   static template =
     `<div class="header">` +
@@ -88,7 +89,8 @@ class ArqPageHeader extends ArqElement {
 
     // Desktop Type=List: título role/display-lg y bajada role/body. Mobile y
     // Type=Detail: role/display y role/body-lg.
-    const large = !detail && !mobile.matches;
+    // search-title (solo de código): "Resultados para «…»" va en role/display.
+    const large = !detail && !mobile.matches && !this.searchTitle;
     const title = root.querySelector('.title');
     title.classList.toggle('role-display-lg', large);
     title.classList.toggle('role-display', !large);

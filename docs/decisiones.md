@@ -940,3 +940,10 @@ Se probaron tres variantes del hover (prueba en la rama `feat/prueba-hover-produ
 ## 2026-10-16 · Ambiente 1 encendido: la base lo trae en la posición 0
 
 El hover de las cards con Iluminar no se veía: `multimagen_ambiente` trae `…_AMBIENT_1_ON.webp` en la posición 0 y deja la 1 (la del encendido) vacía, así que `imageHoverLit` llegaba vacío en las 250 filas. `src/data/typesense-adapter.js` toma el archivo de la posición 0 como encendido si su nombre termina en `_ON` y la posición 1 falta. `TODO` (datos): que la sincronización respete 0 = `img_ambient_1` y 1 = `img_ambient_1_on`; entonces el parche sobra.
+
+## 2026-10-16 · Buscador: variante predeterminada y conteo de productos
+
+- «Ver todos los resultados (N)» cuenta solo productos (luminarias), no colecciones: lleva al listado de Productos, que no las incluye.
+- La búsqueda (navbar y listado con `?q=`) usa la variante predeterminada del grupo (`is_group_default`) cuando coincide el nombre, la colección o la aplicación. Solo si coincide únicamente por SKU se usa esa variante.
+- Con `?q=` el título del page-header («Resultados para «…»») va en `role/display` (atributo de código `search-title`) y el breadcrumb queda «Inicio / Productos /», sin nivel actual.
+- toggle **sin Hover** (ni Off ni On). `TODO` (Figma): quitar la variante State=Hover del set toggle; el texto de DESIGN.md §8 sigue listando Hover en toggle · toggle-switch.

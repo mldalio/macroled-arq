@@ -564,9 +564,12 @@ const groupText = (group) => [group.name, group.collectionData?.name, group.appl
  * un SKU, esa variante (bySku); si no, la predeterminada.
  */
 function searchMatch(group, words) {
+  // Si el texto del grupo coincide (nombre, colección…), manda la variante
+  // predeterminada (is_group_default), la misma del listado. Solo si coincide
+  // únicamente por SKU se usa esa variante.
+  if (matchesWords(groupText(group), words)) return { variant: group.defaultVariant, bySku: false };
   const variant = group.variants.find((v) => matchesWords(v.sku, words));
-  if (variant) return { variant, bySku: true };
-  return matchesWords(groupText(group), words) ? { variant: group.defaultVariant, bySku: false } : null;
+  return variant ? { variant, bySku: true } : null;
 }
 
 /**
@@ -588,7 +591,9 @@ export async function searchProducts(query, { limit = 5 } = {}) {
     .filter((c) => matchesWords(c.name, words))
     .map((c) => ({ kind: 'collection', name: c.name, meta: 'Colección', href: collectionHref(c.id), image: c.images?.studio ?? null }));
   const results = [...products, ...found];
-  return { results: results.slice(0, limit), total: results.length };
+  // total: solo productos (luminarias). «Ver todos los resultados (N)» lleva al
+  // listado de Productos, que no incluye colecciones.
+  return { results: results.slice(0, limit), total: products.length };
 }
 
 /** URL con todos los resultados: el listado de Productos con ?q= (docs/urls.md). */
