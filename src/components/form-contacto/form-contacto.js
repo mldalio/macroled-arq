@@ -26,7 +26,9 @@
 //   Contacto v3).
 // - Validación al enviar: cada campo inválido muestra su mensaje (prop error
 //   de arq-input) y el foco va al primero. Después, se revalida al salir del
-//   campo. Sin validación nativa del navegador (novalidate).
+//   campo, y un campo con error también mientras se escribe (el error se va
+//   apenas el valor es válido). Sin validación nativa del navegador
+//   (novalidate).
 // - Honeypot: un campo oculto (website) que una persona no completa. Si llega
 //   con texto, se muestra la confirmación y no se envía nada.
 // - Estados: enviando (button loading), enviado (form-message Success; el
@@ -102,12 +104,12 @@ class ArqFormContacto extends ArqElement {
     `<fieldset class="section">` +
     `<legend class="role-heading-3">Tus datos</legend>` +
     `<div class="fields">` +
-    `<arq-input name="nombre" placeholder="Tu nombre y apellido" autocomplete="name" required show-label>Nombre completo</arq-input>` +
-    `<arq-input name="empresa" placeholder="Nombre del estudio" autocomplete="organization" show-label>Estudio o empresa (opcional)</arq-input>` +
-    `<arq-input name="email" input-type="email" placeholder="nombre@estudio.com" autocomplete="email" required show-label>Email</arq-input>` +
-    `<arq-input name="telefono" input-type="tel" placeholder="+54 11 0000-0000" autocomplete="tel" show-label>Teléfono (opcional)</arq-input>` +
+    `<arq-input name="nombre" placeholder="Tu nombre y apellido" autocomplete="name" autocapitalize="words" enterkeyhint="next" required show-label>Nombre completo</arq-input>` +
+    `<arq-input name="empresa" placeholder="Nombre del estudio" autocomplete="organization" autocapitalize="words" enterkeyhint="next" show-label>Estudio o empresa (opcional)</arq-input>` +
+    `<arq-input name="email" input-type="email" placeholder="nombre@estudio.com" autocomplete="email" enterkeyhint="next" required show-label>Email</arq-input>` +
+    `<arq-input name="telefono" input-type="tel" placeholder="+54 11 0000-0000" autocomplete="tel" enterkeyhint="next" show-label>Teléfono (opcional)</arq-input>` +
     `<arq-input name="provincia" type="select" placeholder="Seleccioná una provincia" show-label>Provincia (opcional)</arq-input>` +
-    `<arq-input name="ciudad" placeholder="Tu ciudad" autocomplete="address-level2" show-label>Ciudad (opcional)</arq-input>` +
+    `<arq-input name="ciudad" placeholder="Tu ciudad" autocomplete="address-level2" autocapitalize="words" enterkeyhint="next" show-label>Ciudad (opcional)</arq-input>` +
     `</div>` +
     `</fieldset>` +
     `<fieldset class="section">` +
@@ -161,6 +163,11 @@ class ArqFormContacto extends ArqElement {
     // Después del primer intento, cada campo se revalida al salir de él
     form.addEventListener('arq:change', (event) => {
       if (this.#validated && event.target.localName === 'arq-input') this.#validate(event.target);
+    });
+    // Un campo con error se revalida mientras se escribe: el error se va
+    // apenas el valor es válido (los errores nuevos siguen apareciendo al salir).
+    form.addEventListener('arq:input', (event) => {
+      if (event.target.localName === 'arq-input' && event.target.hasAttribute('error')) this.#validate(event.target);
     });
   }
 

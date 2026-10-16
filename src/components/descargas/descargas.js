@@ -43,6 +43,8 @@ import css from './descargas.css?inline';
 const TEXT = {
   empty: 'Todavía no hay productos para descargar.',
   error: 'No se pudieron cargar las descargas. Probá de nuevo en unos minutos.',
+  // TODO (diseño): «Reintentar» no está en la propuesta; button Underline.
+  retry: 'Reintentar',
   label: 'Descargas por SKU',
   datasheet: 'Ficha técnica',
 };
@@ -73,6 +75,7 @@ class ArqDescargas extends ArqElement {
     `<div class="search-section">` +
     `<div class="search-title role-heading-1"><slot name="search-title"></slot></div>` +
     `<p class="status role-body" role="status" hidden></p>` +
+    `<arq-button class="retry" type="underline" show-underline hidden>${TEXT.retry}</arq-button>` +
     `<arq-downloads-table class="table" downloads="downloads-modal"></arq-downloads-table>` +
     `</div>` +
     `<arq-download-modal id="downloads-modal" show-product><slot name="modal-title" slot="title"></slot></arq-download-modal>`;
@@ -86,11 +89,21 @@ class ArqDescargas extends ArqElement {
     table.label = TEXT.label;
     table.addEventListener('arq:downloads', (event) => this.#fillModal(event.detail.sku));
     root.querySelector('arq-download-modal').addEventListener('arq:download', (event) => {
-      // Solo la ficha técnica (sin href) emite arq:download: se genera.
+      // Solo la ficha técnica (sin href) emite arq:download: se genera. El PDF
+      // lo arma src/pdf/ (main.js), que deja la promesa en detail.pending:
+      // mientras tanto la fila dice «Generando…», como el botón de la ficha.
       event.stopPropagation();
       const { sku } = event.currentTarget;
-      if (sku) this.emit('datasheet', { sku });
+      if (!sku) return;
+      const detail = { sku };
+      this.emit('datasheet', detail);
+      const row = event.target.closest?.('arq-download-file-row');
+      if (!row || !detail.pending) return;
+      row.loading = true;
+      const done = () => (row.loading = false);
+      detail.pending.then(done, done);
     });
+    root.querySelector('.retry').addEventListener('click', () => this.#load());
     this.#media = matchMedia(MOBILE);
     this.#media.addEventListener('change', () => this.#breakpoint());
     this.#breakpoint();
@@ -100,9 +113,12 @@ class ArqDescargas extends ArqElement {
   update(changed) {
     const root = this.shadowRoot;
     if (changed.has('catalogHref')) {
+      // Sin la URL del catálogo el botón no se muestra: un botón que no hace
+      // nada parece roto (AGENTS.md: si falta un dato, esa parte no se muestra).
       const action = root.querySelector('.catalog-action');
       action.href = this.catalogHref || null;
       action.target = this.catalogHref ? '_blank' : null;
+      action.hidden = !this.catalogHref;
     }
   }
 
@@ -120,6 +136,10 @@ class ArqDescargas extends ArqElement {
 
   async #load() {
     const table = this.shadowRoot.querySelector('.table');
+    const retry = this.shadowRoot.querySelector('.retry');
+    const retried = !retry.hidden;
+    retry.hidden = true;
+    table.hidden = false;
     this.setAttribute('aria-busy', 'true');
     table.loading = true;
     this.#status('');
@@ -134,8 +154,11 @@ class ArqDescargas extends ArqElement {
     if (!data) {
       table.hidden = true;
       this.#status(TEXT.error);
+      retry.hidden = false;
       return;
     }
+    // Después de reintentar, el foco va al buscador (el botón desapareció)
+    if (retried) requestAnimationFrame(() => table.shadowRoot?.querySelector('.search')?.focus());
     this.#rows = new Map(data.rows.map((row) => [row.sku, row]));
     this.#status(data.rows.length ? '' : TEXT.empty);
     table.data = data;

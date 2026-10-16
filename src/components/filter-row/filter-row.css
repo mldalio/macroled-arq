@@ -72,7 +72,7 @@
 }
 
 /* State=Hover: línea color/border/default e ícono en Hover (sin fondo, como el set) */
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .row:has(.header:hover) {
     border-bottom-color: var(--arq-color-border-default);
   }

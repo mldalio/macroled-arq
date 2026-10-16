@@ -40,9 +40,12 @@ button.link {
   padding-block: var(--arq-space-gap-md);
 }
 
-.link[href]:hover,
-button.link:hover {
-  background: var(--arq-color-surface-hover);
+/* Hover solo con mouse: en táctil quedaría pegado después del toque */
+@media (hover: hover) and (pointer: fine) {
+  .link[href]:hover,
+  button.link:hover {
+    background: var(--arq-color-surface-hover);
+  }
 }
 
 button.link {
@@ -114,8 +117,16 @@ button.link {
   display: none;
 }
 
-.link:not(:hover, :focus-visible) .arrow {
+/* La flecha aparece con el foco y, con mouse, en hover (en táctil el hover
+   quedaría pegado después del toque) */
+.link:not(:focus-visible) .arrow {
   visibility: hidden;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .link:hover .arrow {
+    visibility: visible;
+  }
 }
 
 .icon {
@@ -144,8 +155,10 @@ button.link {
   cursor: pointer;
 }
 
-.trigger:hover {
-  background: var(--arq-color-surface-hover);
+@media (hover: hover) and (pointer: fine) {
+  .trigger:hover {
+    background: var(--arq-color-surface-hover);
+  }
 }
 
 .trigger .name {

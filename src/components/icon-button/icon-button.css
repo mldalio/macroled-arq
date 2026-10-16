@@ -75,8 +75,11 @@
 
 /* ── Background=None ──────────────────────────────────────────── */
 
-.control:enabled:hover {
-  background: var(--arq-color-surface-hover);
+/* Hover solo con mouse: en táctil quedaría pegado después del toque */
+@media (hover: hover) and (pointer: fine) {
+  .control:enabled:hover {
+    background: var(--arq-color-surface-hover);
+  }
 }
 
 .control:enabled:active {
@@ -89,8 +92,10 @@
   background: var(--arq-color-surface-default);
 }
 
-:host([background='surface']) .control:enabled:hover {
-  background: var(--arq-color-surface-subtle);
+@media (hover: hover) and (pointer: fine) {
+  :host([background='surface']) .control:enabled:hover {
+    background: var(--arq-color-surface-subtle);
+  }
 }
 
 :host([background='surface']) .control:enabled:active {
@@ -103,8 +108,10 @@
   background: var(--arq-color-surface-subtle);
 }
 
-:host([background='subtle']) .control:enabled:hover {
-  background: var(--arq-color-surface-selected);
+@media (hover: hover) and (pointer: fine) {
+  :host([background='subtle']) .control:enabled:hover {
+    background: var(--arq-color-surface-selected);
+  }
 }
 
 :host([background='subtle']) .control:enabled:active {

@@ -33,7 +33,9 @@ const uid = (() => {
 
 // Atributos que pasan tal cual al control nativo.
 const TEXTAREA_ROWS = 4;
-const FORWARDED = ['placeholder', 'autocomplete', 'required', 'minlength', 'maxlength', 'pattern', 'inputmode', 'rows'];
+// autocapitalize y enterkeyhint: el teclado del teléfono (mayúscula inicial en
+// nombres, «Siguiente» en el Enter).
+const FORWARDED = ['placeholder', 'autocomplete', 'required', 'minlength', 'maxlength', 'pattern', 'inputmode', 'rows', 'autocapitalize', 'enterkeyhint'];
 
 class ArqInput extends ArqElement {
   static tag = 'arq-input';
@@ -57,7 +59,10 @@ class ArqInput extends ArqElement {
     `<label class="label role-body-regular"><slot></slot></label>` +
     `<div class="field"></div>` +
     `<p class="helper role-body-sm"><slot name="helper"></slot></p>` +
-    `<div class="error-wrap" hidden><p class="error role-body-sm" aria-live="polite"></p></div>` +
+    `<div class="error-wrap" hidden><p class="error role-body-sm"></p></div>` +
+    // Aviso para lectores de pantalla: siempre presente y vacío, solo cambia el
+    // texto (una región que aparece ya con el texto muchas veces no se anuncia)
+    `<span class="live visually-hidden" aria-live="polite"></span>` +
     `</div>`;
 
   #internals = this.attachInternals();
@@ -152,6 +157,8 @@ class ArqInput extends ArqElement {
     const error = root.querySelector('.error');
     error.textContent = this.error ?? '';
     root.querySelector('.error-wrap').hidden = !hasError;
+    const live = root.querySelector('.live');
+    if (live.textContent !== (this.error ?? '')) live.textContent = this.error ?? '';
     helper.hidden = hasError || !this.showHelper;
     control.setAttribute('aria-invalid', String(hasError));
     const describedBy = [hasError ? this.#ids.error : null, !helper.hidden ? this.#ids.helper : null].filter(Boolean);

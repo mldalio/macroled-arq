@@ -67,9 +67,12 @@
   height: var(--arq-icon-md);
 }
 
-/* State=Hover: el ícono pasa a color/icon/primary */
-.row:hover .copy {
-  color: var(--arq-color-icon-primary);
+/* State=Hover: el ícono pasa a color/icon/primary. Solo con mouse: en táctil
+   quedaría pegado después del toque. */
+@media (hover: hover) and (pointer: fine) {
+  .row:hover .copy {
+    color: var(--arq-color-icon-primary);
+  }
 }
 
 /* State=Copied: "Copiado" en el lugar del ícono */
@@ -94,6 +97,22 @@
 :host([copied]) .copied,
 :host(:state(copy-failed)) .failed {
   display: inline;
+}
+
+/* Entra con un fundido (motion/duration/fade, que se queda con reduced
+   motion); vuelve al ícono sin animación */
+.copied,
+.failed {
+  transition-property: opacity, color;
+  transition-duration: var(--arq-motion-duration-fade), var(--arq-motion-duration-fast);
+  transition-timing-function: var(--arq-motion-easing-out);
+}
+
+@starting-style {
+  :host([copied]) .copied,
+  :host(:state(copy-failed)) .failed {
+    opacity: 0;
+  }
 }
 
 /* Portapapeles falló: "Copialo con Ctrl+C" ("⌘C" en Mac) en el lugar de

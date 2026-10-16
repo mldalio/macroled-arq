@@ -28,7 +28,7 @@
 //   thumb, sku Compact y meta «Negro, 6 W, luz cálida») y los archivos como
 //   download-file-row, a space/gap/xl. En Mobile es una hoja pegada al borde
 //   inferior, a todo el ancho.
-// - Entrada y salida (prueba, rama feat/descargas-animaciones): el scrim funde
+// - Entrada y salida (decisiones.md, 2026-10-15 · Descargas): el scrim funde
 //   y el panel sube desde abajo (Mobile, hoja: translateY(100%); Desktop:
 //   funde y sube un 2 %), y cierra por el mismo camino. Duración como
 //   filter-panel (motion/duration/slow × 1,25), curva motion/easing/standard.
@@ -152,7 +152,8 @@ class ArqDownloadModal extends ArqElement {
     }
     dialog.classList.add('is-open');
     const settle = (event) => {
-      if (event && (event.target !== sheet || event.propertyName !== 'transform')) return;
+      // transform; con reduced motion solo funde: opacity
+      if (event && (event.target !== sheet || !['transform', 'opacity'].includes(event.propertyName))) return;
       sheet.removeEventListener('transitionend', settle);
       if (dialog.classList.contains('is-open')) dialog.classList.add('is-settled');
     };

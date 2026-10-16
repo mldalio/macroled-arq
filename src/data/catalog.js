@@ -292,7 +292,25 @@ function shortName(group, groups) {
   return group.application && sameApplication.length === 1 ? `${collection} ${group.application}` : group.name;
 }
 
+// Solo `npm run dev` (demo): ?data=worst|empty|one|huge|error cambia los datos
+// de Descargas por los de demo/fixtures/peor-caso.js, para ver la página con el
+// peor caso (break-ui). En el build import.meta.env.DEV es false y el bloque no
+// llega a dist/.
+async function demoData() {
+  if (import.meta.env.DEV) {
+    const mode = new URLSearchParams(location.search).get('data');
+    if (mode && mode !== 'demo') return { mode, fixtures: await import('../../demo/fixtures/peor-caso.js') };
+  }
+  return null;
+}
+
 export async function getDownloadsTable() {
+  const table = await downloadsTable();
+  const demo = await demoData();
+  return demo ? demo.fixtures.downloadsTable(demo.mode, table) : table;
+}
+
+async function downloadsTable() {
   const { groups } = await loadCatalog();
   const variants = groups.flatMap((group) => group.variants.map((variant) => ({ group, variant })));
   const varies = (field) => new Set(variants.map(({ variant }) => variant.values[field]).filter(hasValue)).size > 1;
@@ -325,6 +343,9 @@ export async function getDownloadsTable() {
 
 /** Archivos de un SKU de cualquier grupo (modal de la página Descargas). [] si no existe. */
 export async function skuDownloads(sku) {
+  const demo = await demoData();
+  const files = demo?.fixtures.skuFiles(demo.mode, sku);
+  if (files) return files;
   const { groups } = await loadCatalog();
   const group = groups.find((g) => g.variants.some((v) => v.sku === sku));
   if (!group) return [];

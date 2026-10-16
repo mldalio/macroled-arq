@@ -85,7 +85,7 @@
 }
 
 /* State=Hover: solo cerrado. Fondo color/surface/faint. */
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   :host(:not([open])) .item:has(.trigger:hover) {
     background: var(--arq-color-surface-faint);
   }

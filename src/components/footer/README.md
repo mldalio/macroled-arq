@@ -52,7 +52,7 @@ Las rutas son de ejemplo: las definitivas van en `docs/urls.md`.
 | | Desktop | Mobile |
 | --- | --- | --- |
 | Armado | marca a la izquierda (logo, bajada, legal) y columnas a la derecha | marca, columnas y legal apilados, a `space/gap/xl` |
-| Columnas | `layout/footer-column` cada una (en Tablet se angostan si no entran), separadas `space/gap/xl` | tres de igual ancho; un link largo se parte en líneas |
+| Columnas | `layout/footer-column` cada una (en Tablet se angostan si no entran), separadas `space/gap/xl` | tres de igual ancho; un link largo se parte en líneas, pero nunca a mitad de palabra: si no entran (320 px), la última pasa abajo |
 | Padding | `space/section/sm` arriba y abajo, `layout/gutter` a los lados | ídem (valores Mobile) |
 
 ## Tokens

@@ -15,8 +15,8 @@
 //   métodos show / hide / toggle) emite arq:toggle con { open }.
 // - Al abrir, el panel aparece con un fundido de opacity en motion/duration/base
 //   (DESIGN.md §6). El alto cambia de golpe: no se anima layout. Al cerrar se
-//   oculta sin fundido (hidden es display: none). Con prefers-reduced-motion la
-//   duración vale 0. La hoja la adopta Disclosure en el Shadow DOM del host:
+//   oculta sin fundido (hidden es display: none). Con prefers-reduced-motion
+//   queda el fundido de motion/duration/fade. La hoja la adopta Disclosure en el Shadow DOM del host:
 //   los componentes no la repiten.
 // - animateHeight (hoy solo faq-item; DESIGN.md §6 · Movimiento): el panel no
 //   se oculta con hidden sino con data-open, y anima el alto
@@ -49,6 +49,15 @@ const disclosureCss = `
 @starting-style {
   [data-disclosure-panel='']:not([hidden]) {
     opacity: 0;
+  }
+}
+
+/* Reduced motion: el fundido se queda (motion/duration/fade); los colores, en
+   motion/duration/fast, que vale 0. Ocho valores, uno por propiedad. */
+@media (prefers-reduced-motion: reduce) {
+  [data-disclosure-panel=''] {
+    transition-duration: var(--arq-motion-duration-fade), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast);
+    transition-timing-function: var(--arq-motion-easing-out);
   }
 }
 

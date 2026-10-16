@@ -41,7 +41,7 @@
 /* Hover y Focus: zoom mínimo de la imagen, recortada por el recuadro (solo
    transform, sin mover el layout). Con prefers-reduced-motion la duración vale 0.
    TODO (diseño): la escala (1.05) no tiene token. */
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .card:hover .img {
     transform: scale(1.05);
   }

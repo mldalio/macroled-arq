@@ -31,6 +31,9 @@
 
 .zone {
   cursor: pointer;
+  /* Es un control: al dejar el dedo apretado no selecciona el texto */
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .attached {
@@ -129,4 +132,14 @@
 .zone:has(.native:focus-visible) {
   outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
   outline-offset: 2px;
+}
+
+/* Más contraste (prefers-contrast: more): borde color/border/strong, como
+   input (color/border/default no llega al 3:1 de WCAG 1.4.11). Error y
+   Disabled la pisan. */
+@media (prefers-contrast: more) {
+  .zone,
+  .attached {
+    border-color: var(--arq-color-border-strong);
+  }
 }

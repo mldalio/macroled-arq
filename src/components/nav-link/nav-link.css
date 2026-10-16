@@ -85,9 +85,12 @@
   visibility: hidden;
 }
 
-/* Sin subrayado en Current ni Open (Open solo gira la flecha) */
-.link:not(.current):not([aria-expanded='true']):hover::after {
-  visibility: visible;
+/* Sin subrayado en Current ni Open (Open solo gira la flecha). Solo con
+   mouse: en táctil quedaría pegado después del toque. */
+@media (hover: hover) and (pointer: fine) {
+  .link:not(.current):not([aria-expanded='true']):hover::after {
+    visibility: visible;
+  }
 }
 
 /* State=Pressed: texto color/text/tertiary, sin subrayado */
@@ -183,7 +186,7 @@
   }
 
   /* Hover solo con mouse: color/surface/hover */
-  @media (hover: hover) {
+  @media (hover: hover) and (pointer: fine) {
     .link:not(:active):hover {
       background: var(--arq-color-surface-hover);
     }

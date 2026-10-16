@@ -340,6 +340,8 @@ Fila de archivo del modal de descargas: nombre, formato y peso. "Unavailable" cu
 
 Código: download-modal `show-product`. En Descargas · propuesta los archivos del modal son download-file-row en lugar de download-item.
 
+Loading (solo en código, la ficha técnica que se genera): el nombre pasa a «Generando…» con aria-busy mientras se arma el PDF. TODO (diseño): State=Loading.
+
 ## download-item
 
 - Figma: [1101-5542](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1101-5542)
@@ -376,6 +378,8 @@ Pregunta frecuente desplegable. Open=False (icon/plus) / Open=True (icon/minus +
 
 Movimiento: al abrir y al cerrar, la respuesta anima el alto (motion/duration/expand) y la opacidad (motion/duration/base) con motion/easing/out. Con reduced motion, el alto cambia de golpe y queda el fundido (motion/duration/fade).
 
+Sin respuesta, la pregunta no se muestra (en código: si falta un dato, esa parte no se muestra).
+
 ## feature-block
 
 - Figma: [1036-2535](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1036-2535)
@@ -391,6 +395,8 @@ Bloque editorial destacado: imagen grande (y secundaria opcional) + eyebrow, tí
 Zona para adjuntar un archivo al formulario (planos, planillas). Empty: zona con icon/plus y ayuda; Attached: nombre del archivo + quitar. Props: Label y Helper (formatos y tamaño máximo). En código: <input type="file"> real con drag & drop.
 
 Un solo archivo. State: Empty, Attached, Drag over (archivo arrastrado encima: borde color/border/strong y fondo color/surface/hover), Error (borde color/border/error; el mensaje reemplaza a la ayuda, en color/text/error: "El archivo supera los 25 MB. Formatos: …" o "El formato no está admitido. Formatos: …") y Disabled. Formatos: PDF, DWG, JPG o PNG. Tamaño máximo según el formulario: en Contacto, 25 MB (en código, max-size; 10 por defecto).
+
+Con prefers-contrast: more, el borde pasa a color/border/strong, como input.
 
 ## filter-bar
 
@@ -484,6 +490,8 @@ Textarea: 4 filas visibles (campo de 97: 4 × 20 + padding 16 + línea 1); solo 
 
 Movimiento (motion/easing/out): el menú de Type=Select crece desde el campo (escala 0.97 → 1, motion/duration/base) y funde (motion/duration/fade); al cerrar, sin animación. El mensaje de Error crece (alto en motion/duration/base) y funde (motion/duration/fade): los campos de abajo se deslizan. Con reduced motion, solo los fundidos.
 
+Con prefers-contrast: more, la caja pasa a color/border/strong (color/border/default no llega al 3:1 de WCAG para el borde de un control).
+
 ## line-card
 
 - Figma: [1036-2490](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1036-2490)
@@ -540,6 +548,8 @@ Theme=Inverse: para navbar Theme=Transparent sobre foto (label color/text/invers
 - Propiedades: Breakpoint: Desktop · Mobile; Mode: Default · Menu · Search · Products · Colecciones · Interior · Exterior · Lámparas y artefactos; Theme: Default · Transparent
 
 Barra de navegación de Macroled Arq. Breakpoint: Desktop · Mobile. Mode: Default, Search (buscador abierto), Menu (menú mobile abierto), Products (submenú de Productos en mobile, con "volver") y los cuatro submenús que abre Products en mobile: Interior, Exterior, Lámparas y artefactos y Colecciones (volver con el nombre del nivel, links en mega-link Size=Large y "Ver todo…" al pie; Lámparas y artefactos y Colecciones llevan miniatura). En desktop, Productos abierto = nav-link Open=True con mega-menu debajo. Theme: Default · Transparent (sobre la foto del hero; pasa a Default al hacer scroll). Theme=Transparent: fondo translúcido color/overlay/translucent + background blur blur/backdrop. El link de la página actual va en State=Current; el que despliega un menú usa Has dropdown. Theme=Transparent con Mode=Search (desktop): la barra sigue translúcida y search-field queda igual que en Default (fondo color/surface/default, texto y cruz en color/text/primary). Sobre la foto, la lupa y el menú (icon-button) van en modo Dark local (en código, data-arq-theme="dark"): ícono claro, hover y foco del modo Dark. Con Mode=Menu y Products (mobile) la barra pasa a Default: las variantes Transparent son iguales a las Default.
+
+Con prefers-reduced-transparency: reduce o prefers-contrast: more, Theme=Transparent se ve como Default también sobre la foto.
 
 ## option-group
 
@@ -716,6 +726,8 @@ Código de producto con botón de copiar. Size: Default (bloque del configurador
 Textos largos: el código se parte en varias líneas, nunca se corta. Si falla el portapapeles: el código queda seleccionado y se anuncia "Copialo con Ctrl+C" ("⌘C" en Mac) en lugar de "Copiado", en color/text/secondary.
 
 Size=Underline: para columnas angostas y SKUs largos (glosario de la ficha). El código va en role/caption-medium subrayado, sin ícono ni etiqueta. Al hacer clic, State=Copied: «Copiado» (text/success) reemplaza al código en el mismo lugar, no al lado.
+
+Movimiento: «Copiado» entra con un fundido (motion/duration/fade, motion/easing/out); vuelve al ícono sin animación.
 
 ## spec-list
 

@@ -38,7 +38,7 @@ Campo de formulario en caja con borde leve (`color/border/default`, 40 de alto c
 | — | `name` · `value` · `placeholder` · `autocomplete` · `required` · `minlength` · `maxlength` · `pattern` · `inputmode` · `rows` | | pasan al control nativo |
 
 - State Empty / Filled salen del valor. Hover: borde `color/border/hover`. Focus: anillo de DESIGN.md §7 alrededor de la caja.
-- **Es un `<input>` / `<textarea>` real** con su `<label for>`. El helper y el error van en `aria-describedby`; con error, `aria-invalid="true"` y el mensaje se anuncia (`aria-live`).
+- **Es un `<input>` / `<textarea>` real** con su `<label for>`. El helper y el error van en `aria-describedby`; con error, `aria-invalid="true"` y el mensaje se anuncia por una región `aria-live` oculta que está siempre en la página (solo cambia su texto). Con `prefers-contrast: more`, la caja usa `color/border/strong`. Pasa al campo interno `autocapitalize` y `enterkeyhint` (teclado del teléfono).
 - **Formulario:** manda `name=value` con el `<form>` (ElementInternals) y le pasa la validación nativa (`required`, `input-type="email"`…): `form.reportValidity()` la muestra. `form.reset()` vuelve al valor inicial.
 - **Validación:** se valida al salir del campo o al enviar, no mientras se escribe. El texto del error lo pone el formulario con `error`.
 - Eventos: `arq:input` (cada tecla) y `arq:change` (al salir del campo), con `{ value }`.

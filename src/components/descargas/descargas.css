@@ -108,6 +108,12 @@
   color: var(--arq-color-text-secondary);
 }
 
+/* «Reintentar» debajo del error, alineado con el texto */
+.retry {
+  align-self: flex-start;
+  margin-inline-start: var(--page-gutter);
+}
+
 /* Mobile (2558:20151): título y bajada arriba; el catálogo debajo, a
    space/gap/xl, con la tapa chica a la izquierda (space/gap/md), nombre
    role/body-xl, bajada role/body-compact-regular (color/text/tertiary) a

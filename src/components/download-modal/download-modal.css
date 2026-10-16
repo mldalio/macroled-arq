@@ -41,9 +41,10 @@
 
 /* Entrada y salida (como filter-panel): el scrim funde y el panel funde y
    sube un 2 % (Desktop) o sube desde el borde inferior (Mobile, más abajo).
-   Sale por el mismo camino. Con reduced motion las duraciones valen 0. */
+   Sale por el mismo camino. Con reduced motion queda solo el fundido
+   (motion/duration/fade, bloque al final). */
 :host {
-  --panel-slow: calc(var(--arq-motion-duration-slow) * 1.25); /* TODO: token propio, igual que filter-panel y search-sheet */
+  --panel-slow: var(--arq-motion-duration-panel); /* motion/duration/panel, como filter-panel */
 }
 
 .dialog::backdrop {
@@ -197,7 +198,10 @@
   :host([show-product]) .sheet {
     width: 100%;
     margin: auto 0 0;
-    padding: var(--arq-space-padding-lg) var(--arq-layout-gutter) var(--arq-space-padding-xl);
+    /* Abajo suma el área segura del teléfono (indicador de inicio del iPhone);
+       vale 0 si el sitio no usa viewport-fit=cover. */
+    padding: var(--arq-space-padding-lg) var(--arq-layout-gutter)
+      calc(var(--arq-space-padding-xl) + env(safe-area-inset-bottom, var(--arq-space-0)));
     border-inline: 0;
     border-bottom: 0;
     /* Hoja: entra y sale por el borde inferior, sin fundido */
@@ -207,5 +211,28 @@
 
   :host([show-product]) .dialog.is-open .sheet {
     transform: none;
+  }
+}
+
+/* Reduced motion (DESIGN.md §6): sin desplazamiento, queda el fundido
+   (motion/duration/fade). transform sigue en la lista, en 0, y el JS acepta
+   el transitionend de opacity para habilitar el scroll (is-settled). */
+@media (prefers-reduced-motion: reduce) {
+  .sheet,
+  :host([show-product]) .sheet {
+    opacity: 0;
+    transform: none;
+    transition-property: opacity, transform;
+    transition-duration: var(--arq-motion-duration-fade), 0s;
+    transition-timing-function: var(--arq-motion-easing-out);
+  }
+
+  .dialog.is-open .sheet,
+  :host([show-product]) .dialog.is-open .sheet {
+    opacity: 1;
+  }
+
+  .dialog::backdrop {
+    transition: opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out);
   }
 }

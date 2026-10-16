@@ -28,11 +28,14 @@
   overflow-wrap: anywhere;
 }
 
-/* State=Hover: subrayado del valor (border/default) */
-.value[href]:hover {
-  text-decoration: underline;
-  text-decoration-thickness: var(--arq-border-default);
-  text-underline-offset: var(--arq-space-padding-2xs);
+/* State=Hover: subrayado del valor (border/default). Solo con mouse: en
+   táctil quedaría pegado después del toque. */
+@media (hover: hover) and (pointer: fine) {
+  .value[href]:hover {
+    text-decoration: underline;
+    text-decoration-thickness: var(--arq-border-default);
+    text-underline-offset: var(--arq-space-padding-2xs);
+  }
 }
 
 /* State=Focus: anillo alrededor de todo el ítem (DESIGN.md §7) */

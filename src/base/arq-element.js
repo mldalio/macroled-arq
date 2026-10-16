@@ -66,6 +66,27 @@ const baseCss = `
   display: none !important;
 }
 
+/* Táctil (mobile-native): sin el destello gris del navegador al tocar (cada
+   control tiene su propio Pressed o Hover), sin la espera del doble toque
+   (manipulation deja el desplazamiento y el zoom con dos dedos; touch-action
+   se suma con el de los ancestros, así que alcanza con el host) y sin
+   seleccionar el texto de un control al dejar el dedo apretado. El texto que
+   es contenido (mails, teléfonos, respuestas) se sigue pudiendo seleccionar. */
+:host {
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+  touch-action: manipulation;
+}
+
+button,
+[role='button'],
+:host([role='button']),
+:host([role='radio']),
+:host([role='checkbox']) {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
 *,
 *::before,
 *::after {

@@ -62,7 +62,7 @@ El navbar **no** va dentro del hero (`docs/decisiones.md`, 2026-10-01 · hero y 
 | | Desktop | Mobile |
 | --- | --- | --- |
 | Alto | `70svh` (Final: `ratio/wide`; `TODO` diseño) | `70svh` |
-| Contenido | abajo: texto a la izquierda, CTA abajo a la derecha (separados `space/gap/xl`) | abajo, todo apilado a `space/gap/lg` |
+| Contenido | abajo: texto a la izquierda, CTA abajo a la derecha (separados `space/gap/xl`) | abajo, todo apilado a `space/gap/lg`; los textos ocupan todo el ancho, así una palabra larga en el título se parte en lugar de salirse del borde |
 | Padding | `layout/gutter` a los lados, `space/section/sm` abajo | ídem (valores Mobile) |
 
 ## Tokens

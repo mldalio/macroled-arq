@@ -29,7 +29,8 @@
 //   está sobre el hero y pasa a Default al dejarlo atrás (sin hero, al hacer
 //   scroll); también con el menú mobile o el mega-menu abiertos. La búsqueda
 //   desktop queda sobre la foto, con el campo en blanco (Default). La lupa y
-//   el menú van en Dark local sobre la foto.
+//   el menú van en Dark local sobre la foto. Con prefers-reduced-transparency
+//   o prefers-contrast: more, la barra queda Default también sobre la foto.
 // - Posición: sticky arriba en Default; fixed en Transparent (se superpone al
 //   hero). TODO (diseño): confirmar.
 // - Datos: la navegación (getNavigation) y la búsqueda (searchProducts) salen
@@ -69,6 +70,10 @@ import { containScroll } from '../../base/scroll-lock.js';
 import css from './navbar.css?inline';
 
 const MOBILE = matchMedia('(max-width: 767px)');
+// Quien pidió menos transparencia o más contraste ve la barra Default también
+// sobre la foto: el texto claro sobre una foto que cambia, con un fondo al
+// 10 % y blur, puede no leerse.
+const SOLID = matchMedia('(prefers-reduced-transparency: reduce), (prefers-contrast: more)');
 const esc = (text) => String(text ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const SEARCH_LIMIT = 5; // search-dropdown: "hasta 4 o 5" resultados
 const DEBOUNCE = 150;
@@ -149,6 +154,7 @@ class ArqNavbar extends ArqElement {
       this.#closeAll();
       this.#placeLinks();
     });
+    SOLID.addEventListener('change', () => this.#syncLinks());
 
     // Productos (nav-link con has-dropdown)
     this.addEventListener('arq:toggle', (event) => {
@@ -301,7 +307,7 @@ class ArqNavbar extends ArqElement {
     // Con el sheet, la barra no cambia al abrir la búsqueda (en ningún ancho): queda
     // debajo del sheet y se vuelve sólida con él, sin saltos de color.
     const overPhoto = this.mode === 'default' || (this.mode === 'search' && (!MOBILE.matches || this.#sheetSearch));
-    const inverse = this.theme === 'transparent' && overPhoto && !this.#scrolled && !this.#megaOpen;
+    const inverse = this.theme === 'transparent' && overPhoto && !this.#scrolled && !this.#megaOpen && !SOLID.matches;
     this.shadowRoot.querySelector('.navbar').classList.toggle('over-photo', inverse);
     for (const link of this.querySelectorAll('arq-nav-link')) link.theme = inverse ? 'inverse' : 'default';
     // Lupa y menú: Dark local sobre la foto

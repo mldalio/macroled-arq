@@ -26,7 +26,8 @@ Pregunta frecuente desplegable, para el bloque de preguntas frecuentes del Home.
 | State | — | — | Hover y Focus por CSS (`:hover`, `:focus-visible`) |
 
 - **Texto, no bloques:** la pregunta y la respuesta van como texto (la respuesta puede tener un `<a>`). El componente las pone en su propio botón y en su panel, con `role/heading-3-light` y `role/body`. Si llegan dentro de un `<p>` o un `<h3>`, toman los estilos de Webflow.
-- **La respuesta queda en el HTML** aunque el ítem esté cerrado (indexable). El panel se oculta con `hidden`.
+- **La respuesta queda en el HTML** aunque el ítem esté cerrado (indexable). Cerrado, el panel queda con alto 0 y `visibility: hidden` (Disclosure `animateHeight`).
+- **Sin respuesta no se muestra:** si el slot de la respuesta está vacío, el ítem lleva `data-arq-empty` y no se ve (AGENTS.md: si falta un dato, esa parte no se muestra).
 - **Varios abiertos:** cada ítem abre y cierra por su cuenta.
 - **Evento:** al abrir o cerrar con clic o teclado se emite `arq:toggle` con `{ open }`. Cambiar `open` por código no emite eventos.
 - **Teclado:** el encabezado es un `<button>` con `aria-expanded` y `aria-controls`: Tab llega a la pregunta y Enter o Espacio abren y cierran.

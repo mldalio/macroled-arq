@@ -402,12 +402,13 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 | motion/duration/base | 200 ms | Desplegables (disclosure) y menús |
 | motion/duration/slow | 320 ms | Fundido de imágenes de product-card; mensaje de form-message al aparecer |
 | motion/duration/expand | 250 ms | Alto de un desplegable que se abre o se cierra (faq-item) |
+| motion/duration/panel | 400 ms | Entrada y salida de paneles y menús que se abren por encima (filter-panel, download-modal, search-sheet, mega-menú) |
 | motion/duration/fade | 150 ms | Fundido corto de algo que aparece (menú de input Select, error de input). Es también el fundido que queda con reduced motion |
 | motion/duration/feedback | 2000 ms | Tiempo visible de una confirmación ("Copiado" del sku) |
 | motion/easing/standard | cubic-bezier(0.2, 0, 0, 1) | Cambios de estado: hover, foco, selección, paneles y fundidos de imagen |
 | motion/easing/out | cubic-bezier(0.23, 1, 0.32, 1) | Entradas: algo que aparece o se despliega (arranca rápido y frena suave) |
 
-- Con `prefers-reduced-motion: reduce`, las duraciones fast, base, slow y expand pasan a 0. fade no cambia: con reduced motion se quitan los desplazamientos, los cambios de escala y de alto, pero quedan los fundidos (no marean y evitan los cambios bruscos). feedback tampoco cambia: es un tiempo de lectura, no una animación.
+- Con `prefers-reduced-motion: reduce`, las duraciones fast, base, slow, expand y panel pasan a 0. fade no cambia: con reduced motion se quitan los desplazamientos, los cambios de escala y de alto, pero quedan los fundidos (no marean y evitan los cambios bruscos). feedback tampoco cambia: es un tiempo de lectura, no una animación.
 - Se anima solo `opacity`, `transform` y colores. Nunca ancho ni posición de layout.
 - **Alto: solo en dos casos**, con `grid-template-rows: 0fr → 1fr` (nunca `height`): el panel de faq-item (Disclosure `animateHeight`, `motion/duration/expand`) y el mensaje de error de input (`motion/duration/base`). Así lo que está abajo se desliza en vez de saltar. Los demás desplegables (accordion-item, filter-row, catalog-nav-group) siguen con el alto de golpe y fundido al abrir (`docs/decisiones.md`, 2026-10-15 · Contacto: animaciones).
 - Lo que aparece usa `@starting-style` y sale sin animación, salvo los paneles que se cierran por el mismo camino por el que entraron (filter-panel, download-modal, search-sheet, faq-item).
@@ -419,7 +420,7 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 | Estado | Qué es | CSS / ARIA |
 | --- | --- | --- |
 | Default / Empty | Reposo (inputs: vacío con placeholder) | — |
-| Hover | Cursor encima | `:hover` |
+| Hover | Cursor encima | `:hover`, siempre dentro de `@media (hover: hover) and (pointer: fine)` (en táctil quedaría pegado después del toque) |
 | Pressed | Mientras se hace clic | `:active` |
 | Current | Página actual | `[aria-current="page"]` |
 | Open (propiedad) | Desplegable abierto: `Open=True` (nav-link, select, input Select, accordion-item, faq-item, filtros) | `[aria-expanded="true"]` |
@@ -566,6 +567,8 @@ Aplica a product-card en los listados de Productos y Colecciones (las cards de c
 - Inputs con `<label>` siempre (con `aria-label` si Show label = false); error con `aria-invalid` y mensaje.
 - Tabs con `role="tablist"`, `role="tab"` y `aria-selected`; flechas ←→ para moverse.
 - Desplegables con `aria-expanded`; option-tile con `role="radio"` dentro de `role="radiogroup"`.
+- Avisos para lectores de pantalla (`aria-live`): la región está siempre en la página y vacía, y solo cambia su texto. Una región que aparece ya con el texto muchas veces no se anuncia.
+- `prefers-contrast: more`: la caja de input y de file-upload pasa a `color/border/strong` (`color/border/default` no llega al 3:1 que pide WCAG para el borde de un control). Con `prefers-contrast: more` o `prefers-reduced-transparency: reduce`, la navbar Transparent se ve Default también sobre la foto.
 
 ---
 

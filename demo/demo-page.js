@@ -15,12 +15,19 @@
 // Colección: lo mismo con ?collection=<id>.
 // Descargas: la demo pone la portada de ejemplo del catálogo (en Webflow,
 // TODO: la portada real).
+// Datos de peor caso (break-ui): en Descargas y Contacto, un selector abajo al
+// centro cambia ?data= (demo/demo-data-toggle.js). Descargas los toma de
+// demo/fixtures/peor-caso.js por src/data/catalog.js; Contacto, del embed
+// demo/fixtures/contacto-peor-caso.html y del formulario completado.
 
 import '/src/main.js';
 import '/demo/demo-inspect.js';
 import { getProduct, getCollection } from '/src/data/catalog.js';
+import { dataMode, mountDataToggle, fillContacto } from '/demo/demo-data-toggle.js';
 
 const pages = import.meta.glob('/src/pages/*.html', { query: '?raw', import: 'default' });
+// Peor caso del embed (break-ui, ?data=worst): demo/fixtures/<página>-peor-caso.html
+const worstPages = import.meta.glob('/demo/fixtures/*-peor-caso.html', { query: '?raw', import: 'default' });
 const DEMOS = { '/arq': 'home', '/arq/productos': 'productos', '/arq/contacto': 'contacto', '/arq/comparativa': 'comparativa', '/arq/descargas': 'descargas' };
 
 /** URL de la demo para un link de Arq, o null si esa página no tiene demo. */
@@ -80,7 +87,8 @@ function demoDescargas(content) {
 }
 
 const name = document.body.dataset.demoPage;
-const load = pages[`/src/pages/${name}.html`];
+const worst = ['worst', 'sent'].includes(dataMode()) && worstPages[`/demo/fixtures/${name}-peor-caso.html`];
+const load = worst || pages[`/src/pages/${name}.html`];
 if (load) {
   // Antes de insertar: así los componentes leen ya el href de la demo.
   const template = document.createElement('template');
@@ -93,6 +101,8 @@ if (load) {
   demoDescargas(template.content);
   await cmsCollection(template.content);
   document.body.replaceChildren(template.content);
+  mountDataToggle(name);
+  fillContacto(name === 'contacto' ? dataMode() : null);
 } else document.body.textContent = `No existe src/pages/${name}.html`;
 
 document.addEventListener('click', (event) => {

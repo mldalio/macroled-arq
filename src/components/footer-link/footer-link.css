@@ -45,13 +45,16 @@
   visibility: hidden;
 }
 
-/* State=Hover: texto color/text/primary + subrayado */
-.link[href]:hover {
-  color: var(--arq-color-text-primary);
-}
+/* State=Hover: texto color/text/primary + subrayado. Solo con mouse: en
+   táctil quedaría pegado después del toque. */
+@media (hover: hover) and (pointer: fine) {
+  .link[href]:hover {
+    color: var(--arq-color-text-primary);
+  }
 
-.link[href]:hover::after {
-  visibility: visible;
+  .link[href]:hover::after {
+    visibility: visible;
+  }
 }
 
 /* State=Pressed: texto color/text/tertiary, sin subrayado */

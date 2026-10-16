@@ -26,7 +26,7 @@
 
 /* ── Transición en capas (menos de medio segundo) ─────────────────────────
    Todas con motion/easing/standard (frena suave al final). Duraciones: fast
-   120 · slow 320 ms y --sheet-slow (slow × 1.25 = 400 ms, la del panel y
+   120 · slow 320 ms y --sheet-slow (motion/duration/panel, 400 ms, la del panel y
    los movimientos largos); con prefers-reduced-motion valen 0. El
    estado inicial es el de arriba y .is-open (lo pone el componente) es el
    final; al sacarlo, todo vuelve al revés. Las demoras viven solo en
@@ -340,8 +340,8 @@
 /* Alto de la barra (como el del navbar): space/gap/md × 2 + icon/xl */
 :host {
   --bar-height: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
-  /* motion/duration/slow × 1.25 (400 ms; 0 con reduced motion). TODO: token propio */
-  --sheet-slow: calc(var(--arq-motion-duration-slow) * 1.25);
+  /* motion/duration/panel (400 ms; 0 con reduced motion) */
+  --sheet-slow: var(--arq-motion-duration-panel);
 }
 
 /* Pantallas bajas (laptop, celular horizontal): menos aire arriba y abajo para

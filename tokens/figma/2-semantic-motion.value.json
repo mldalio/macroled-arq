@@ -84,6 +84,19 @@
             }
           }
         }
+      },
+      "panel": {
+        "$type": "number",
+        "$value": 400,
+        "$description": "Entrada y salida de paneles y menús que se abren por encima (filter-panel, download-modal, search-sheet, mega-menú). En ms. Con prefers-reduced-motion: 0 (queda el fundido de motion/duration/fade).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-motion-duration-panel)"
+            }
+          }
+        }
       }
     },
     "easing": {

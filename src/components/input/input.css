@@ -35,7 +35,7 @@
 }
 
 /* State=Hover: borde color/border/hover */
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   :host(:not([disabled]):not([error]):not([open])) .field:hover {
     border-color: var(--arq-color-border-hover);
   }
@@ -219,4 +219,14 @@ textarea.control {
 
 :host([disabled]) .field {
   border-color: var(--arq-color-border-disabled);
+}
+
+/* Más contraste (prefers-contrast: more): la caja con color/border/strong.
+   color/border/default (ink al 22 %) da 1,6:1 sobre blanco y WCAG 1.4.11 pide
+   3:1 para el borde de un control. Error, Disabled, Open y Hover pisan esta
+   regla (son más específicas). TODO (diseño): revisar el borde por defecto. */
+@media (prefers-contrast: more) {
+  .field {
+    border-color: var(--arq-color-border-strong);
+  }
 }

@@ -41,7 +41,15 @@
 //   «Descargas» (button Outline) y «Ver producto» (button Underline, ↗).
 // - loading: filas (o tarjetas) de carga en color/surface/subtle.
 // - Sin filas que cumplan: «No hay productos con estos filtros» (role/heading-2)
-//   con su ayuda (role/body-regular).
+//   con su ayuda (role/body-regular); si el vacío viene de la búsqueda, el
+//   texto nombra lo buscado.
+// - De a 100 filas: «Ver más productos» (button Outline) suma otras 100. Buscar
+//   o filtrar vuelve a la primera tanda. La cantidad («243 productos») cuenta
+//   todas.
+// - Búsqueda y filtros en la URL (?q=…&tipo_montaje=Pared…, con
+//   history.replaceState): al volver de «Ver producto» la tabla está igual.
+// - La cantidad se anuncia a los lectores de pantalla al dejar de escribir
+//   (500 ms), no con cada tecla.
 // - Descargas de cada fila: emite arq:downloads { sku } y, con
 //   downloads="<id>", abre ese download-modal (como variants-table).
 
@@ -57,6 +65,8 @@ import '../filter-panel/filter-panel.js';
 import '../checkbox/checkbox.js';
 import css from './downloads-table.css?inline';
 
+const NUMBER = new Intl.NumberFormat('es-AR');
+
 const esc = (text) => String(text ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
 const TEXT = {
@@ -69,10 +79,27 @@ const TEXT = {
   image: 'Imagen',
   sku: 'SKU',
   loading: 'Buscando…',
+  // Vacío según la causa: filtros, búsqueda o las dos.
+  // TODO (diseño): textos del vacío por búsqueda (la propuesta solo tiene el de filtros).
   emptyTitle: 'No hay productos con estos filtros',
   emptyText: 'Probá quitar alguno de los filtros aplicados o buscar por otro nombre o SKU.',
-  count: (n) => (n === 1 ? '1 producto' : `${n} productos`),
+  emptySearchTitle: (q) => `No hay productos para «${q}»`,
+  emptySearchText: 'Probá con otro nombre o SKU, o con una parte del código.',
+  emptyBothTitle: (q) => `No hay productos para «${q}» con estos filtros`,
+  // TODO (diseño): «Ver más» no está en la propuesta (2575:22875).
+  more: 'Ver más productos',
+  shown: (n, total) => `Se muestran ${NUMBER.format(n)} de ${NUMBER.format(total)} productos`,
+  count: (n) => (n === 1 ? '1 producto' : `${NUMBER.format(n)} productos`),
 };
+
+// Filas que se muestran de entrada y por cada «Ver más»: con todo el catálogo
+// (cientos de SKU) rearmar todas las filas en cada tecla tardaba más de un
+// segundo; con tandas de 100 la búsqueda sigue al ritmo del teclado.
+const PAGE = 100;
+
+// La cantidad se anuncia al lector de pantalla cuando se deja de escribir,
+// no con cada tecla.
+const ANNOUNCE_DELAY = 500;
 
 // Datos de la tarjeta Mobile (la propuesta muestra cuatro: Potencia, Temp.,
 // Flujo lum. e IP; Flujo lum. ya no es columna en Descargas, va Ángulo).
@@ -113,6 +140,7 @@ class ArqDownloadsTable extends ArqElement {
     `</div>` +
     `<div class="scrollbar" aria-hidden="true" hidden><div class="scrollbar-track"></div></div>` +
     `<ul class="cards" role="list" aria-label="Productos"></ul>` +
+    `<div class="more" hidden><arq-button class="more-button" type="outline">${TEXT.more}</arq-button></div>` +
     `<div class="skeleton" aria-hidden="true" hidden></div>` +
     `<div class="empty" hidden><p class="empty-title role-heading-2">${TEXT.emptyTitle}</p><p class="empty-text role-body-regular">${TEXT.emptyText}</p></div>` +
     `<span class="visually-hidden count" role="status"></span>` +
@@ -122,6 +150,8 @@ class ArqDownloadsTable extends ArqElement {
   #values = {}; // filtro → [valores]
   #query = '';
   #revealed = false; // ya se hizo el fundido de la primera carga
+  #shown = PAGE; // filas a la vista (Ver más suma PAGE)
+  #announceTimer = null;
 
   get data() {
     return this.#data;
@@ -129,8 +159,49 @@ class ArqDownloadsTable extends ArqElement {
 
   set data(value) {
     this.#data = { columns: value?.columns ?? [], filters: value?.filters ?? [], rows: value?.rows ?? [] };
-    this.#values = {};
+    this.#restoreUrl();
     if (this.isConnected) this.#build();
+  }
+
+  // Búsqueda y filtros viven en la URL (?q=…&tipo_montaje=Pared…): al volver
+  // de «Ver producto», la tabla está como se dejó. Solo cuentan los filtros
+  // que existen en los datos.
+  #restoreUrl() {
+    const params = new URLSearchParams(location.search);
+    this.#query = params.get('q') ?? '';
+    const values = {};
+    for (const { key } of this.#data.filters) {
+      const list = params.getAll(key);
+      if (list.length) values[key] = list;
+    }
+    this.#values = values;
+    const search = this.shadowRoot?.querySelector('.search');
+    if (search) search.value = this.#query;
+  }
+
+  #syncUrl() {
+    const url = new URL(location.href);
+    url.searchParams.delete('q');
+    for (const { key } of this.#data.filters) url.searchParams.delete(key);
+    if (this.#query.trim()) url.searchParams.set('q', this.#query.trim());
+    for (const { key } of this.#data.filters) for (const value of this.#values[key] ?? []) url.searchParams.append(key, value);
+    if (url.href !== location.href) history.replaceState(history.state, '', url);
+  }
+
+  // Cambio de la persona (búsqueda, filtros, chips): vuelve a la primera tanda,
+  // actualiza la URL y anuncia la cantidad (al dejar de escribir, si busca).
+  #changed(delay = 0) {
+    this.#shown = PAGE;
+    this.#refresh();
+    this.#syncUrl();
+    this.#announce(TEXT.count(this.#visible().length), delay);
+  }
+
+  #announce(text, delay = 0) {
+    clearTimeout(this.#announceTimer);
+    this.#announceTimer = setTimeout(() => {
+      this.shadowRoot.querySelector('.count').textContent = text;
+    }, delay);
   }
 
   setup() {
@@ -147,19 +218,21 @@ class ArqDownloadsTable extends ArqElement {
     root.querySelector('.search').addEventListener('arq:input', (event) => {
       event.stopPropagation();
       this.#query = event.detail.value;
-      this.#refresh(true);
+      this.#changed(ANNOUNCE_DELAY);
     });
     // Enter no envía a otra página: la tabla ya se filtró al escribir.
     root.querySelector('.search').addEventListener('arq:submit', (event) => event.stopPropagation());
+    root.querySelector('.search').value = this.#query; // la búsqueda que venía en la URL
     root.querySelector('.chips').addEventListener('click', (event) => {
       const chip = event.target.closest('arq-filter-chip');
       if (chip) this.#removeChip(chip);
     });
     root.querySelector('.clear').addEventListener('click', () => {
       this.#values = {};
-      this.#refresh(true);
+      this.#changed();
       root.querySelector('.toggle-filters').focus();
     });
+    root.querySelector('.more-button').addEventListener('click', () => this.#showMore());
     // Panel lateral: «Ver N productos» se calcula con lo marcado; se aplica al
     // confirmar (cerrar descarta).
     const panel = root.querySelector('.panel');
@@ -170,7 +243,7 @@ class ArqDownloadsTable extends ArqElement {
     panel.addEventListener('arq:apply', (event) => {
       event.stopPropagation();
       this.#values = { ...event.detail.filters };
-      this.#refresh(true);
+      this.#changed();
     });
     root.addEventListener('click', (event) => {
       const button = event.target.closest('[data-sku]');
@@ -252,12 +325,31 @@ class ArqDownloadsTable extends ArqElement {
     return Object.values(values).reduce((n, list) => n + (list?.length ?? 0), 0);
   }
 
-  // announce: después de buscar o filtrar se anuncia la cantidad de filas.
-  #refresh(announce = false) {
+  // Filas que cumplen la búsqueda y los filtros
+  #visible() {
+    return filterVariants(this.#searched(), this.#values);
+  }
+
+  // Ver más: suma una tanda. El foco queda en el botón; si ya no quedan más,
+  // pasa a la primera fila nueva (el botón desaparece).
+  #showMore() {
+    const root = this.shadowRoot;
+    const before = this.#shown;
+    this.#shown += PAGE;
+    this.#refresh();
+    const total = this.#visible().length;
+    this.#announce(TEXT.shown(Math.min(this.#shown, total), total));
+    if (root.querySelector('.more').hidden) {
+      const mobile = getComputedStyle(root.querySelector('.cards')).display !== 'none';
+      root.querySelectorAll(mobile ? '.cards [data-sku]' : 'tbody [data-sku]')[before]?.focus();
+    }
+  }
+
+  #refresh() {
     const root = this.shadowRoot;
     const { columns, filters } = this.#data;
-    const rows = this.#searched();
-    const visible = filterVariants(rows, this.#values);
+    const visible = this.#visible();
+    const page = visible.slice(0, this.#shown);
     const active = this.#filterCount();
     // Botón: «Filtros (N)»; deshabilitado mientras carga o si no hay filtros
     const toggle = root.querySelector('.toggle-filters');
@@ -265,7 +357,7 @@ class ArqDownloadsTable extends ArqElement {
     toggle.disabled = this.loading || !filters.length;
     this.#renderChips();
     // Tabla
-    root.querySelector('tbody').innerHTML = visible
+    root.querySelector('tbody').innerHTML = page
       .map(
         (row) =>
           `<tr>` +
@@ -280,7 +372,7 @@ class ArqDownloadsTable extends ArqElement {
       .join('');
     // Mobile: una tarjeta por variante
     const cardColumns = CARD_COLUMNS.map((key) => columns.find((c) => c.key === key)).filter(Boolean);
-    root.querySelector('.cards').innerHTML = visible
+    root.querySelector('.cards').innerHTML = page
       .map(
         (row) =>
           `<li class="card">` +
@@ -317,11 +409,21 @@ class ArqDownloadsTable extends ArqElement {
     if (this.loading) this.#renderSkeleton();
     root.querySelector('.scroll').hidden = empty || this.loading;
     root.querySelector('.cards').hidden = empty || this.loading;
+    root.querySelector('.more').hidden = this.loading || visible.length <= this.#shown;
     root.querySelector('.empty').hidden = !empty;
-    if (announce) root.querySelector('.count').textContent = TEXT.count(visible.length);
+    if (empty) this.#renderEmpty(active);
   }
 
-  // Fundido de la primera carga (prueba, rama feat/descargas-animaciones): la
+  // Vacío según la causa: búsqueda, filtros o las dos
+  #renderEmpty(active) {
+    const root = this.shadowRoot;
+    const query = this.#query.trim();
+    const title = query && active ? TEXT.emptyBothTitle(query) : query ? TEXT.emptySearchTitle(query) : TEXT.emptyTitle;
+    root.querySelector('.empty-title').textContent = title;
+    root.querySelector('.empty-text').textContent = query && !active ? TEXT.emptySearchText : TEXT.emptyText;
+  }
+
+  // Fundido de la primera carga (decisiones.md, 2026-10-15 · Descargas): la
   // clase reveal habilita el @starting-style del CSS y se quita al terminar el
   // fundido, así no se repite cuando la tabla vuelve a aparecer (vacío →
   // filas). Se espera el transitionend y no un temporizador: armar cientos de
@@ -375,7 +477,7 @@ class ArqDownloadsTable extends ArqElement {
     const index = chips.indexOf(chip);
     const { key, value } = chip.dataset;
     this.#values = { ...this.#values, [key]: (this.#values[key] ?? []).filter((v) => v !== value) };
-    this.#refresh(true);
+    this.#changed();
     const left = [...this.shadowRoot.querySelectorAll('.chips arq-filter-chip')];
     const next = left[index] ?? left[index - 1];
     (next ?? this.shadowRoot.querySelector('.toggle-filters')).focus();

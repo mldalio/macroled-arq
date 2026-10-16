@@ -65,15 +65,23 @@
   gap: var(--arq-space-gap-sm);
 }
 
-/* Primera carga (prueba, rama feat/descargas-animaciones): al reemplazar las
+/* Primera carga (decisiones.md, 2026-10-15 · Descargas): al reemplazar las
    filas de carga, la tabla (o las tarjetas) funde con motion/duration/base.
    La clase reveal la pone y la quita el JS: al buscar o filtrar no funde.
    La lista de colores repite la de la hoja base (transition-property no se
-   suma, se reemplaza). Con reduced motion la duración vale 0. */
+   suma, se reemplaza). Con reduced motion queda el fundido
+   (motion/duration/fade); los colores, en fast, que vale 0. */
 .reveal {
   transition-property: opacity, color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
   transition-duration: var(--arq-motion-duration-base);
   transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    transition-duration: var(--arq-motion-duration-fade), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast);
+    transition-timing-function: var(--arq-motion-easing-out);
+  }
 }
 
 @starting-style {
@@ -111,10 +119,14 @@
   background: var(--arq-color-surface-default);
   scrollbar-width: thin;
   scrollbar-color: var(--arq-color-border-default) var(--arq-color-surface-transparent);
+  /* Al llegar al borde no dispara el gesto de «atrás» del navegador */
+  overscroll-behavior-x: contain;
 }
 
-.scrollbar:hover {
-  scrollbar-color: var(--arq-color-border-hover) var(--arq-color-surface-transparent);
+@media (hover: hover) and (pointer: fine) {
+  .scrollbar:hover {
+    scrollbar-color: var(--arq-color-border-hover) var(--arq-color-surface-transparent);
+  }
 }
 
 .scrollbar-track {
@@ -175,7 +187,7 @@ tbody td {
   color: var(--arq-color-text-primary);
 }
 
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   tbody tr:hover > * {
     background: var(--arq-color-surface-faint);
   }
@@ -247,6 +259,15 @@ td.end {
   .sku-col {
     position: static;
   }
+}
+
+/* ── Ver más ─────────────────────────────────────────────────────
+   button Outline centrado debajo de las filas, a space/gap/xl.
+   TODO (diseño): no está en la propuesta; se usa el button de siempre. */
+.more {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--arq-space-gap-xl);
 }
 
 /* ── Vacío (2564:21134) ──────────────────────────────────────────
