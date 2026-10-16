@@ -1,6 +1,6 @@
 # catalog-nav · `<arq-catalog-nav>`
 
-En Desktop el panel no lleva padding lateral. Cuando la URL selecciona una categoría, abre únicamente su grupo; las demás secciones quedan cerradas.
+En Desktop el panel no lleva padding lateral. Al cargar, si la URL selecciona una categoría, abre únicamente su grupo; las demás secciones quedan cerradas. Después, abrir o cerrar un grupo no cambia el listado ni cierra los demás: el listado se actualiza recién al elegir una subcategoría, y la navegación queda como la dejó la persona.
 
 Navegación de categorías de Productos y Colecciones. Un solo componente para Desktop y Mobile: incluye catalog-nav-mobile y catalog-nav-trigger, así cada link está una sola vez en el HTML (decisión 2026-10-02 · catalog-nav).
 
@@ -31,7 +31,7 @@ Navegación de categorías de Productos y Colecciones. Un solo componente para D
 | — | `label` | `label` | Nombre del `<nav>` para lectores de pantalla. Por defecto «Categorías» (también es el texto del encabezado si no hay ítem elegido) |
 
 - **Desde 1024 px** (corte de los listados, AGENTS.md): sidebar con los grupos.
-- **Hasta 1023 px:** encabezado con la selección actual (`<button>` con `aria-expanded`). Al tocarlo se abren los mismos grupos; todos visibles y el de la categoría actual abierto, como Figma. Al elegir un ítem, el panel se cierra.
+- **Hasta 1023 px:** encabezado con la selección actual (`<button>` con `aria-expanded`). Al tocarlo se abren los mismos grupos; todos visibles y el de la categoría actual abierto, como Figma. Al elegir un ítem, el panel queda abierto (se cierra con el encabezado).
 - **Grupo abierto:** lo decide el HTML (`open` en el grupo de la categoría actual). Si ninguno viene abierto, se abre el grupo `selected` (el que guarda la categoría actual; se marca solo si contiene un ítem `selected`).
 - **Links en el HTML del embed:** los arma la página con el árbol de navegación de `src/data/` (decisión 2026-10-02 · Navegación); así quedan indexables.
 - **Ancho:** el de su columna; en los listados, `layout/catalog-nav` (240).

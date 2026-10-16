@@ -21,8 +21,9 @@
 //   abren los mismos grupos. Open es la prop open (solo cuenta en Mobile).
 // - La categoría actual la guarda el grupo (catalog-nav-group selected); el
 //   texto del encabezado es el del catalog-nav-item selected de ese grupo.
-// - Si ningún grupo viene abierto, se abre el grupo selected.
-// - Al elegir un ítem en Mobile, el panel se cierra.
+// - Al cargar se abre solo el grupo selected. Abrir otro grupo no cierra los
+//   demás ni cambia el listado: el listado cambia al elegir una subcategoría.
+// - Al elegir un ítem, los grupos y el panel Mobile quedan como estaban.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { Disclosure } from '../../base/disclosure.js';
@@ -59,22 +60,13 @@ class ArqCatalogNav extends ArqElement {
     };
     this.shadowRoot.querySelector('slot').addEventListener('slotchange', sync);
     new MutationObserver(sync).observe(this, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['selected'] });
-    // Mobile: al elegir una subcategoría se cierra el panel.
-    this.addEventListener('click', (event) => {
-      if (event.target.closest?.('arq-catalog-nav-item')) this.disclosure.hide();
-    });
-    // El sidebar funciona como índice: abrir un grupo lleva a su primer link
-    // ("Todo interior", "Todo exterior", etc.), no deja un acordeón sin
-    // cambiar el listado. Se activa el <a> real para que Webflow y la demo
-    // conserven su navegación normal.
+    // Abrir o cerrar un grupo no cambia el listado ni cierra los demás: el
+    // listado cambia recién al elegir una subcategoría, y la navegación queda
+    // como la dejó la persona (también el panel en Mobile).
     this.addEventListener('arq:toggle', (event) => {
-      const group = event.target;
-      if (group.localName !== 'arq-catalog-nav-group' || !event.detail.open) return;
-      for (const candidate of this.querySelectorAll('arq-catalog-nav-group')) candidate.open = candidate === group;
-      group.querySelector(':scope > arq-catalog-nav-item')?.shadowRoot?.querySelector('a')?.click();
+      if (event.target.localName === 'arq-catalog-nav-group') this.#openedCurrent = true;
     });
     sync();
-    this.#openCurrentGroup();
   }
 
   update(changed) {
@@ -106,9 +98,18 @@ class ArqCatalogNav extends ArqElement {
     }
   }
 
+  // Al cargar, abre solo el grupo de la categoría actual. Después, si cambia la
+  // categoría, abre su grupo sin cerrar los que abrió la persona.
+  #openedCurrent = false;
+
   #openCurrentGroup() {
     const group = this.#selectedGroup();
     if (!group) return;
+    if (this.#openedCurrent) {
+      if (!group.open) group.open = true;
+      return;
+    }
+    this.#openedCurrent = true;
     for (const candidate of this.querySelectorAll('arq-catalog-nav-group')) candidate.open = candidate === group;
   }
 }

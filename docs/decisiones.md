@@ -883,3 +883,11 @@ Pasada con los skills emil-design-eng, improve-animations, apple-design, mobile-
   - navbar Transparent: con `prefers-reduced-transparency: reduce` o `prefers-contrast: more` se ve Default también sobre la foto.
   - input y file-upload: con `prefers-contrast: more`, borde `color/border/strong`. `TODO` (diseño): `color/border/default` da 1,6:1 sobre blanco (WCAG pide 3:1 para el borde de un control).
 - **DESIGN.md** (repo y copia en Figma): `motion/duration/panel` en §6, hover solo con mouse en §7, avisos `aria-live` y `prefers-contrast` / `prefers-reduced-transparency` en §9. **Figma:** descripciones de faq-item, input, file-upload, sku, navbar y download-file-row.
+
+## 2026-10-16 · Navegación de Productos y Colecciones sin recarga
+
+- **catalog-nav:** abrir un grupo ya no lleva a su primer link («Todo interior»…) ni cierra los demás: la navegación queda abierta como la dejó la persona. El listado se actualiza recién al elegir una subcategoría. Al cargar la página se sigue abriendo solo el grupo de la categoría actual. Hasta 1023 px, el panel de catalog-nav-mobile queda abierto al elegir un ítem.
+- **Scroll:** elegir una subcategoría (o Atrás / Adelante) no sube al inicio: el listado cambia y la persona sigue donde estaba.
+- **Colecciones en el catalog-nav:** Kanu, Tori, Douli, Yoru… ya no llevan a la página de la colección (`/arq/coleccion/<id>`): muestran su card unificada en el mismo listado (`/arq/productos?collection=<id>`): una sola card de colección, como en «Todas las colecciones» (Kanu, con la meta Jardín · Pared), no las cards de sus productos con Comparar. La card enlaza a la página de la colección. El mega-menu, la búsqueda y la ficha siguen enlazando a la página de la colección.
+- **Breadcrumb de los listados:** ya no queda fijo en Inicio / Productos. Sigue al `<h1>` con hasta 3 niveles: Inicio / Productos / Interior (vista completa de un grupo), Inicio / Exterior / Jardín (subcategoría), Inicio / Colecciones / Kanu (colección, como en la ficha) e Inicio / Productos / Resultados para «…» (búsqueda). Sus links al mismo listado no recargan. Al volver a Productos sin categoría también vuelve el `<h1>` «Productos» (antes quedaba el de la categoría anterior).
+- Excepción: en Productos hasta 767 px las categorías están dentro de filter-panel (pantalla completa); al elegir una, el panel se cierra para mostrar el listado.
