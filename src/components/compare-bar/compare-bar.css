@@ -138,7 +138,7 @@
   display: none;
 }
 
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .toggle:hover .icon-box {
     background: var(--arq-color-surface-hover);
   }

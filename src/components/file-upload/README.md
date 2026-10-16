@@ -45,6 +45,9 @@ Zona para adjuntar un archivo al formulario de Contacto (planos, renders, fotos)
 | Drag over | borde `color/border/strong` · fondo `color/surface/hover` |
 | Disabled | borde `color/border/disabled` · textos `color/text/disabled` · ícono `color/icon/disabled` |
 | Foco | `border/strong` en `color/border/focus`, separado 2 px (DESIGN.md §7) |
+| Más contraste | con `prefers-contrast: more`, borde `color/border/strong` |
+
+El error del archivo (formato o tamaño) se anuncia por una región `aria-live` oculta que está siempre en la página: solo cambia su texto.
 
 ## Pendientes
 

@@ -75,8 +75,11 @@
 
 /* ── Filled ───────────────────────────────────────────────────── */
 
-.control:not(.inactive):hover {
-  background: var(--arq-color-action-primary-hover);
+/* Hover solo con mouse: en táctil quedaría pegado después del toque */
+@media (hover: hover) and (pointer: fine) {
+  .control:not(.inactive):hover {
+    background: var(--arq-color-action-primary-hover);
+  }
 }
 
 .control:not(.inactive):active {
@@ -117,8 +120,10 @@
   color: var(--arq-color-action-primary);
 }
 
-:host([type='outline']) .control:not(.inactive):hover {
-  background: var(--arq-color-surface-hover);
+@media (hover: hover) and (pointer: fine) {
+  :host([type='outline']) .control:not(.inactive):hover {
+    background: var(--arq-color-surface-hover);
+  }
 }
 
 :host([type='outline']) .control:not(.inactive):active {
@@ -163,14 +168,19 @@
 /* Show underline=true: siempre. Show underline=false: solo en hover y pressed.
    border/default (1 px) en reposo; border/strong (2 px) en hover y pressed. */
 :host([type='underline'][show-underline]) .text::after,
-:host([type='underline']) .control:not(.inactive):hover .text::after,
 :host([type='underline']) .control:not(.inactive):active .text::after {
   visibility: visible;
 }
 
-:host([type='underline']) .control:not(.inactive):hover .text::after,
 :host([type='underline']) .control:not(.inactive):active .text::after {
   height: var(--arq-border-strong);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :host([type='underline']) .control:not(.inactive):hover .text::after {
+    visibility: visible;
+    height: var(--arq-border-strong);
+  }
 }
 
 :host([type='underline']) .control:not(.inactive):active {

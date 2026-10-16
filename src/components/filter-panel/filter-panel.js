@@ -42,6 +42,7 @@ import { containScroll } from '../../base/scroll-lock.js';
 import css from './filter-panel.css?inline';
 
 const UNITS = { productos: ['producto', 'productos'], colecciones: ['colección', 'colecciones'], variantes: ['variante', 'variantes'] };
+const NUMBER = new Intl.NumberFormat('es-AR');
 
 class ArqFilterPanel extends ArqElement {
   static tag = 'arq-filter-panel';
@@ -263,7 +264,8 @@ class ArqFilterPanel extends ArqElement {
     const button = this.shadowRoot.querySelector('.apply');
     if (!button) return;
     const [one, many] = UNITS[this.unit] ?? UNITS.productos;
-    button.textContent = Number.isFinite(this.count) ? `Ver ${this.count} ${this.count === 1 ? one : many}` : `Ver ${many}`;
+    // Con separador de miles («Ver 1.500 productos»)
+    button.textContent = Number.isFinite(this.count) ? `Ver ${NUMBER.format(this.count)} ${this.count === 1 ? one : many}` : `Ver ${many}`;
   }
 
   #removeChip(chip) {

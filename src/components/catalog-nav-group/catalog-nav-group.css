@@ -63,7 +63,7 @@
   display: none;
 }
 
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .header:hover .icon-box {
     background: var(--arq-color-surface-hover);
   }

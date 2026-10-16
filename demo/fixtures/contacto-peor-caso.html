@@ -1,0 +1,67 @@
+<!--
+  Contacto · peor caso (break-ui, solo demo: /demo/contacto.html?data=worst).
+  Mismo HTML que src/pages/contacto.html con los textos que alguien podría
+  cargar en Webflow: título y bajadas largas, email y teléfono largos, un tercer
+  canal, un link largo, preguntas largas, una respuesta con una URL sin espacios
+  y una pregunta sin respuesta. Lo que escribe la persona en el formulario lo
+  completa demo/demo-data-toggle.js.
+-->
+<arq-navbar theme="transparent">
+  <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
+  <arq-nav-link slot="links" href="/arq/descargas">Descargas</arq-nav-link>
+  <arq-nav-link slot="links" href="/arq/contacto" current>Contacto</arq-nav-link>
+</arq-navbar>
+
+<main>
+  <arq-hero size="compact">
+    <img slot="media" src="/demo/fixtures/img/contacto/hero.jpg" alt="" fetchpriority="high">
+    <span slot="eyebrow">Contacto y asesoramiento técnico</span>
+    <h1 slot="title">Hablemos de tu próximo proyecto de iluminación arquitectónica.</h1>
+    <span slot="description">Asesoramiento lumínico para arquitectura, interiorismo, paisajismo y espacios comerciales en todo el país, desde la idea hasta la obra terminada.</span>
+  </arq-hero>
+  <arq-form-contacto id="formulario">
+    <h2 slot="title">Te acompañamos en cada etapa, desde el anteproyecto hasta la puesta en marcha.</h2>
+    <p slot="description">Desde la selección de luminarias hasta el cálculo lumínico, la documentación técnica y el seguimiento en obra, trabajamos junto a estudios, arquitectos, interioristas, paisajistas y desarrolladores inmobiliarios.</p>
+    <span slot="channels-title">Contacto directo con el equipo técnico</span>
+    <arq-contact-item slot="channels" href="mailto:consultas.proyectos.arquitectura@macroled.com.ar"><span slot="label">Email de proyectos</span>consultas.proyectos.arquitectura@macroled.com.ar</arq-contact-item>
+    <arq-contact-item slot="channels" href="tel:+5491140000000"><span slot="label">Teléfono y WhatsApp</span>+54 9 11 4000-0000 int. 1234</arq-contact-item>
+    <arq-contact-item slot="channels" href="https://wa.me/5491140000000"><span slot="label">WhatsApp</span>wa.me/5491140000000</arq-contact-item>
+    <arq-link-list slot="links">
+      <span slot="title">Recursos técnicos para especificadores</span>
+      <arq-button type="underline" show-underline show-icon icon="arrow-up-right" href="/arq/descargas">Centro de descargas: fichas técnicas, IES y CAD</arq-button>
+    </arq-link-list>
+    <h2 slot="faq-title">Preguntas frecuentes sobre proyectos y productos</h2>
+    <p slot="faq-description">¿No encontrás lo que buscás? Nuestro equipo técnico te acompaña en cada etapa del proyecto, desde la especificación hasta la instalación.</p>
+    <arq-button slot="faq-action" type="underline" show-underline show-icon icon="arrow-right" href="#formulario">Escribinos y te respondemos</arq-button>
+    <arq-faq-item slot="faq" open>
+      <span slot="question">¿Desarrollan luminarias a medida para proyectos con requerimientos especiales de medidas, acabados, temperatura de color u óptica?</span>
+      Sí. Nuestro equipo técnico adapta medidas, acabados y temperatura de color según los requerimientos de cada proyecto. Para cotizar, envianos planos o un listado con cantidades y te respondemos con una propuesta y los plazos de fabricación.
+    </arq-faq-item>
+    <arq-faq-item slot="faq">
+      <span slot="question">¿Dónde descargo los archivos IES?</span>
+      En la ficha de cada producto o en <a href="/arq/descargas">https://www.macroled.com.ar/arq/descargas?environment=Exterior&amp;product_type=L%C3%A1mpara</a>.
+    </arq-faq-item>
+    <arq-faq-item slot="faq">
+      <span slot="question">¿Qué garantía tienen los productos?</span>
+    </arq-faq-item>
+    <arq-faq-item slot="faq">
+      <span slot="question">¿Cómo accedo a condiciones comerciales para estudios de arquitectura, distribuidores e instaladores matriculados?</span>
+      Respuesta pendiente.
+    </arq-faq-item>
+  </arq-form-contacto>
+</main>
+
+<arq-footer>
+  <span slot="tagline">Diseño lumínico para la arquitectura contemporánea.</span>
+  <h2 slot="productos-title">Productos</h2>
+  <arq-footer-link slot="productos" href="/arq/productos?environment=Interior">Interior</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?environment=Exterior">Exterior</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?product_type=L%C3%A1mpara">Lámparas y Artefactos</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?view=colecciones">Colecciones</arq-footer-link>
+  <h2 slot="informacion-title">Información</h2>
+  <arq-footer-link slot="informacion" href="/arq/contacto">Contacto</arq-footer-link>
+  <arq-footer-link slot="informacion" href="/arq/descargas">Descargas</arq-footer-link>
+  <h2 slot="redes-title">Redes</h2>
+  <arq-footer-link slot="redes" href="https://www.instagram.com/" target="_blank" show-icon icon="instagram" label="Macroled Arq en Instagram">Instagram</arq-footer-link>
+  <arq-footer-link slot="redes" href="https://www.youtube.com/" target="_blank" show-icon icon="youtube" label="Macroled Arq en YouTube">YouTube</arq-footer-link>
+</arq-footer>

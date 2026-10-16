@@ -104,8 +104,17 @@
     row-gap: var(--arq-space-gap-xl);
   }
 
+  /* Cada columna no baja del ancho de su palabra más larga (min-content: la
+     regla overflow-wrap: break-word no lo achica). Si las tres no entran (320
+     px), la última pasa abajo en vez de partir palabras («Instagr am»). */
+  .columns {
+    flex-wrap: wrap;
+    row-gap: var(--arq-space-gap-xl);
+  }
+
   .column {
     flex: 1 1 0;
+    min-width: min-content;
   }
 }
 

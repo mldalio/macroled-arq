@@ -15,6 +15,10 @@
 // - Sin slot meta, la fila muestra solo el nombre (Descargas, 2026-10-15).
 // - Hover subraya el nombre (como download-item Default); Focus, anillo de
 //   DESIGN.md §7. No son props.
+// - loading (sin href): mientras se genera la ficha técnica el nombre pasa a
+//   «Generando…» (como button Loading en la ficha), con aria-busy, y otro clic
+//   no hace nada. TODO (diseño): download-file-row no tiene State=Loading en
+//   Figma.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { icon } from '../../base/icons.js';
@@ -25,6 +29,7 @@ class ArqDownloadFileRow extends ArqElement {
   static styles = css;
   static properties = {
     href: { type: String }, // URL del archivo
+    loading: { type: Boolean }, // generando la ficha técnica (sin href)
   };
   static template = `<div class="slot-host"></div>`;
 
@@ -32,14 +37,21 @@ class ArqDownloadFileRow extends ArqElement {
 
   update(changed) {
     this.setAttribute('role', 'listitem');
-    if (!changed.has('href') && this.#control) return;
+    if (changed.has('href') || !this.#control) this.#build();
+    const busy = Boolean(this.loading && !this.href);
+    this.#control.toggleAttribute('aria-busy', busy);
+    this.#control.querySelector('.name').hidden = busy;
+    this.#control.querySelector('.busy').hidden = !busy;
+  }
+
+  #build() {
     // <a download> con href; <button> sin href. Se rehace solo si cambia el tipo.
     const tag = this.href ? 'a' : 'button';
     if (this.#control?.localName !== tag) {
       const control = document.createElement(tag);
       control.className = 'row';
       control.innerHTML =
-        `<span class="info"><span class="label role-body-xl"><slot></slot></span>` +
+        `<span class="info"><span class="label role-body-xl"><span class="name"><slot></slot></span><span class="busy" hidden>Generando…</span></span>` +
         `<span class="meta role-body-compact-regular"><slot name="meta"></slot></span></span>${icon('download')}`;
       // Sin formato, la línea de meta no ocupa lugar
       const metaSlot = control.querySelector('slot[name="meta"]');
@@ -48,7 +60,9 @@ class ArqDownloadFileRow extends ArqElement {
       syncMeta();
       if (tag === 'button') {
         control.type = 'button';
-        control.addEventListener('click', () => this.emit('download', {}));
+        control.addEventListener('click', () => {
+          if (!this.loading) this.emit('download', {});
+        });
       }
       this.shadowRoot.querySelector('.slot-host').replaceChildren(control);
       this.#control = control;

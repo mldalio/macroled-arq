@@ -67,7 +67,7 @@
     background: var(--arq-color-surface-faint);
   }
 
-  @media (hover: hover) {
+  @media (hover: hover) and (pointer: fine) {
     .trigger:hover {
       background: var(--arq-color-surface-faint);
     }

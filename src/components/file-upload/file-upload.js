@@ -66,7 +66,10 @@ class ArqFileUpload extends ArqElement {
     `<arq-button type="underline" show-underline class="remove">Quitar<span class="visually-hidden"></span></arq-button>` +
     `</div>` +
     `<p class="helper role-body-sm" id="helper"><slot name="helper"></slot></p>` +
-    `<p class="error role-body-sm" id="error" aria-live="polite" hidden></p>` +
+    `<p class="error role-body-sm" id="error" hidden></p>` +
+    // Aviso para lectores de pantalla: siempre presente y vacío, solo cambia el
+    // texto (una región que aparece ya con el texto muchas veces no se anuncia)
+    `<span class="live visually-hidden" aria-live="polite"></span>` +
     `</div>`;
 
   #internals = this.attachInternals();
@@ -193,6 +196,8 @@ class ArqFileUpload extends ArqElement {
     const error = root.querySelector('.error');
     error.textContent = this.#error;
     error.hidden = !this.#error;
+    const live = root.querySelector('.live');
+    if (live.textContent !== this.#error) live.textContent = this.#error;
     root.querySelector('.helper').hidden = Boolean(this.#error);
     // Estado error con CustomStateSet (:host(:state(error))): no toca atributos del elemento.
     if (this.#error) this.#internals.states.add('error');

@@ -5,8 +5,8 @@
    del hero (TODO diseño: confirmar). z-index sin token: por encima del
    contenido de la página. */
 :host {
-  /* motion/duration/slow × 1.25, igual que search-sheet. TODO: token propio */
-  --mega-slow: calc(var(--arq-motion-duration-slow) * 1.25);
+  /* motion/duration/panel (400 ms), igual que search-sheet */
+  --mega-slow: var(--arq-motion-duration-panel);
   display: block;
   position: sticky;
   top: 0;

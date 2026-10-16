@@ -39,8 +39,11 @@ Los datos los arma `getDownloadsTable()` (`src/data/catalog.js`).
 - **Aplicados:** un filter-chip por valor y «Limpiar filtros» (button Underline). Quitar un chip pasa el foco al siguiente.
 - **Desktop:** `<table>` real. Miniatura, producto (nombre `role/body-compact-medium` sobre sku Compact) y Descargas quedan fijas al desplazar; hasta 1023 px solo la miniatura. Todo en una línea; si la tabla no entra, una barra de scroll fina (pulgar `color/border/default`) queda pegada al borde inferior de la pantalla mientras la tabla está a la vista, sincronizada con la tabla (la del contenedor quedaría al final de cientos de filas). `TODO` (diseño): DESIGN.md §2 pide la tabla sin barra visible; confirmar la excepción. Encabezado `role/label-lg` en `color/text/tertiary`, valores `role/body-lg-regular`. Descarga: icon-button Large Background=Outline, como el glosario de la ficha (Figma 1218:10705).
 - **Mobile:** una tarjeta por variante: miniatura, nombre (`role/body-medium`) y sku; Potencia, Temp., Ángulo e IP en dos columnas; «Descargas» (Outline) abre el modal y «Ver producto» (Underline, ↗) va a la ficha con `?sku=`.
-- **Vacío:** «No hay productos con estos filtros» (`role/heading-2`) y su ayuda (`role/body-regular`).
-- Emite `arq:downloads { sku }` y, con `downloads`, abre ese modal. La cantidad de filas se anuncia en una región `role="status"`.
+- **Vacío:** «No hay productos con estos filtros» (`role/heading-2`) y su ayuda (`role/body-regular`). Si el vacío viene de la búsqueda, nombra lo buscado: «No hay productos para «…»» (o «… con estos filtros» si hay las dos cosas). `TODO` (diseño): el texto del vacío por búsqueda no está en la propuesta.
+- **De a 100 filas:** «Ver más productos» (button Outline, centrado) suma otras 100; buscar o filtrar vuelve a la primera tanda. La cantidad cuenta todas. Con todo el catálogo, rearmar cientos de filas con cada tecla tardaba más de un segundo. Si se ven todas, el foco pasa a la primera fila nueva. `TODO` (diseño): «Ver más» no está en la propuesta.
+- **URL:** la búsqueda y los filtros quedan en la URL (`?q=…&tipo_montaje=Pared…`, con `history.replaceState`): al volver de «Ver producto», la tabla está como se dejó.
+- **Cantidades** con separador de miles («1.500 productos»).
+- Emite `arq:downloads { sku }` y, con `downloads`, abre ese modal. La cantidad de filas se anuncia en una región `role="status"` cuando se deja de escribir (500 ms), no con cada tecla.
 
 ## Tokens
 

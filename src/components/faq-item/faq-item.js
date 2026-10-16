@@ -10,7 +10,8 @@
 //
 // La pregunta (slot question) es el encabezado: un <button> con aria-expanded
 // (Disclosure). La respuesta (slot por defecto) queda en el HTML aunque esté
-// cerrada (indexable). Pueden quedar varios abiertos a la vez.
+// cerrada (indexable). Pueden quedar varios abiertos a la vez. Una pregunta sin
+// respuesta no se muestra.
 //
 // Open es la prop open. State no es prop: Hover (:hover, solo cerrado, como
 // en el set) y Focus (:focus-visible, anillo alrededor de todo el ítem).
@@ -44,6 +45,15 @@ class ArqFaqItem extends ArqElement {
       panel: this.shadowRoot.querySelector('.answer-wrap'),
       animateHeight: true,
     });
+    // Sin respuesta, la pregunta no se muestra (AGENTS.md: si falta un dato,
+    // esa parte no se muestra): se abría a un panel vacío.
+    const answer = this.shadowRoot.querySelector('.answer slot');
+    const sync = () => {
+      const empty = !answer.assignedNodes().some((node) => node.nodeType === Node.ELEMENT_NODE || node.textContent.trim());
+      this.toggleAttribute('data-arq-empty', empty);
+    };
+    answer.addEventListener('slotchange', sync);
+    sync();
   }
 }
 

@@ -7,6 +7,11 @@
   min-width: 0;
 }
 
+/* Sin respuesta no se muestra (lo marca el JS) */
+:host([data-arq-empty]) {
+  display: none;
+}
+
 .item {
   border-top: var(--arq-border-default) solid var(--arq-color-border-default);
 }
@@ -81,7 +86,7 @@
 }
 
 /* State=Hover: solo cerrado (el set no tiene Open=True + Hover) */
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   :host(:not([open])) .trigger:hover {
     background: var(--arq-color-surface-faint);
   }

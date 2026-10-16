@@ -68,7 +68,7 @@
 }
 
 /* Hover y Open (los dos Type): fondo color/surface/faint, el texto no cambia. */
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   :host(:not([open])) .trigger:enabled:hover {
     background: var(--arq-color-surface-faint);
   }

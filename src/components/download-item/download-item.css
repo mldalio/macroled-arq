@@ -52,7 +52,7 @@
 
 /* Hover: Default subraya el texto (descripción del set); Featured pinta
    color/surface/faint */
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   :host(:not([emphasis='featured'])) .row:hover .label {
     text-decoration: underline;
     text-decoration-thickness: var(--arq-border-default);

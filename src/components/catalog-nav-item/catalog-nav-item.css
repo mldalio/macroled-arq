@@ -45,7 +45,7 @@
 }
 
 /* State=Hover */
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .link:hover {
     color: var(--arq-color-text-primary);
   }

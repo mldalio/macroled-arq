@@ -17,6 +17,9 @@
   max-width: 100%;
   padding-block: var(--arq-space-gap-xs);
   cursor: pointer;
+  /* Es un control: al dejar el dedo apretado no selecciona el texto */
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .control {
@@ -44,14 +47,17 @@
   color: var(--arq-color-text-secondary);
 }
 
-/* State=Hover: borde border/strong; la caja es border-box, no cambia de tamaño */
-.row:hover .box {
-  border-width: var(--arq-border-strong);
-  border-color: var(--arq-color-border-strong);
-}
+/* State=Hover: borde border/strong; la caja es border-box, no cambia de tamaño.
+   Solo con mouse: en táctil quedaría pegado después del toque. */
+@media (hover: hover) and (pointer: fine) {
+  .row:hover .box {
+    border-width: var(--arq-border-strong);
+    border-color: var(--arq-color-border-strong);
+  }
 
-.row:hover .label {
-  color: var(--arq-color-text-primary);
+  .row:hover .label {
+    color: var(--arq-color-text-primary);
+  }
 }
 
 /* Checked=True */
@@ -60,9 +66,11 @@
   background: var(--arq-color-action-primary);
 }
 
-.row:hover .native:checked + .control .box {
-  border-color: var(--arq-color-action-primary-hover);
-  background: var(--arq-color-action-primary-hover);
+@media (hover: hover) and (pointer: fine) {
+  .row:hover .native:checked + .control .box {
+    border-color: var(--arq-color-action-primary-hover);
+    background: var(--arq-color-action-primary-hover);
+  }
 }
 
 /* State=Disabled */

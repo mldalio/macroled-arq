@@ -40,7 +40,7 @@
 
 /* State=Hover: color/text/primary, como dice la ficha (diseño corrige Figma).
    Solo con mouse: "Hover solo aplica en desktop". */
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   a.label:hover {
     color: var(--arq-color-text-primary);
   }

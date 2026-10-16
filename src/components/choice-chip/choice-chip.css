@@ -24,9 +24,12 @@
   white-space: nowrap;
 }
 
-/* State=Hover: borde color/border/strong */
-:host(:not([disabled]):hover) .chip {
-  border-color: var(--arq-color-border-strong);
+/* State=Hover: borde color/border/strong. Solo con mouse: en táctil quedaría
+   pegado después del toque. */
+@media (hover: hover) and (pointer: fine) {
+  :host(:not([disabled]):hover) .chip {
+    border-color: var(--arq-color-border-strong);
+  }
 }
 
 /* State=Selected: fondo inverso, texto inverso */

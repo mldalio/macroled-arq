@@ -145,7 +145,7 @@ tbody td {
   color: var(--arq-color-text-primary);
 }
 
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   tbody tr:hover > * {
     background: var(--arq-color-surface-faint);
   }

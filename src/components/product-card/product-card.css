@@ -35,7 +35,7 @@
 }
 
 /* El hover de product-card cambia la imagen: sin el borde del patrón común */
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .card:has(.card-link:hover) .card-media {
     outline: none;
   }
@@ -88,7 +88,7 @@
 
 /* Hover solo sobre la imagen (.is-media-hover lo pone el JS): sobre el
    nombre o "Comparar" la imagen no cambia */
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .card.has-hover.is-media-hover .hover {
     opacity: 1;
   }

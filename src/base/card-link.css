@@ -44,7 +44,7 @@
   outline-offset: 2px;
 }
 
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .card:has(.card-link:hover) .card-media {
     outline: var(--arq-border-default) solid var(--arq-color-border-hover);
     outline-offset: calc(var(--arq-border-default) * -1);

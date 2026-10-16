@@ -71,9 +71,12 @@
   min-width: 0;
 }
 
+/* max-width: 100%: sin él, cada texto toma el ancho de su palabra más larga
+   (.text alinea a la izquierda) y overflow-wrap no llega a partirla. */
 .eyebrow,
 .title,
 .description {
+  max-width: 100%;
   margin: 0;
   overflow-wrap: break-word;
 }
@@ -93,6 +96,14 @@
     align-items: flex-start;
     justify-content: flex-start;
     gap: var(--arq-space-gap-lg);
+  }
+
+  /* Los textos ocupan el ancho de la columna: con align-items: flex-start
+     tomaban el ancho de su palabra más larga, y una palabra larga en el título
+     («arquitectónica» a 320 px) empujaba título y bajada fuera del borde. Así
+     overflow-wrap la parte. */
+  .text {
+    align-self: stretch;
   }
 }
 

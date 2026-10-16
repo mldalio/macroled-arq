@@ -847,3 +847,39 @@ Búsqueda con el skill find-animation-opportunities (criterio de Emil Kowalski: 
 - Los filtros del glosario de variantes (variants-table de la ficha) dejan de desplegarse sobre la tabla (filter-bar con un select por filtro) y se abren en el panel lateral derecho, como en Descargas: filter-panel con una filter-row de checkbox por filtro, «Ver N variantes» para aplicar, botón «Filtros (N)», filter-chip de lo aplicado y «Limpiar filtros». Selección múltiple dentro de cada filtro.
 - Se quita la prop `filters` de variants-table. filter-bar queda como componente (demo) pero ya no lo usa ninguna tabla.
 - **TODO (diseño):** el set variants-table de Figma sigue con Filters=On y filter-bar; hay que actualizarlo (y la ficha doc/variants-table).
+
+## 2026-10-15 · Descargas: animaciones (registro)
+
+Aprobadas y mergeadas con `feat/descargas-animaciones`; faltaba anotarlas acá.
+
+- **download-modal:** entra y sale como filter-panel. El scrim funde. En Desktop el panel funde y sube un 2 %; en Mobile (`show-product`) la hoja sube desde el borde inferior (`translateY(100%)`). Cierra por el mismo camino y el `<dialog>` se cierra recién al terminar la transición. Mientras entra, el `<dialog>` no se desplaza (`overflow: clip` hasta `is-settled`): `showModal()` enfoca un control que todavía está fuera de la pantalla y el desplazamiento se peleaba con la transición, y en Mobile la hoja subía y bajaba.
+- **downloads-table:** al reemplazar las filas de carga, la tabla (o las tarjetas) funde una sola vez (`motion/duration/base`). La clase `reveal` se quita con el `transitionend`, no con un temporizador: con cientos de filas el primer cuadro tarda y el temporizador cortaba el fundido.
+
+## 2026-10-15 · Contacto y Descargas: táctil, peor caso y auditorías
+
+Pasada con los skills emil-design-eng, improve-animations, apple-design, mobile-native y break-ui sobre las dos páginas.
+
+- **Hover solo con mouse:** todo `:hover` va dentro de `@media (hover: hover) and (pointer: fine)` (en táctil quedaba pegado después del toque). En los componentes de Contacto y Descargas (button, icon-button, checkbox, choice-chip, filter-chip, footer-link, contact-item, sku, nav-link, mega-link, select-option, downloads-table, input, faq-item, filter-row, download-file-row, select y `src/base/card-link.css`). En mega-link la flecha queda oculta salvo con foco o con hover de mouse. Después se sumaron los componentes de otras páginas que tenían solo `(hover: hover)` (accordion-item, breadcrumb-item, catalog-nav, catalog-nav-group, catalog-nav-item, compare-bar, compare-product, download-item, product-card, search-card, variants-table).
+- **Hoja base (`src/base/arq-element.js`):** `:host` con `-webkit-tap-highlight-color` transparente y `touch-action: manipulation` (sin el destello gris ni la espera del doble toque; `touch-action` se suma con el de los ancestros, así que alcanza con el host). Los controles (`button`, `[role=button]` y los host con `role` button, radio o checkbox) no seleccionan su texto al dejar el dedo apretado; checkbox y la zona de file-upload, lo mismo en su CSS. El texto que es contenido (mails, teléfonos, respuestas) se sigue pudiendo seleccionar.
+- **Área segura:** la hoja de download-modal en Mobile y el panel de filtros en Mobile suman `env(safe-area-inset-bottom)` abajo. Vale 0 mientras Webflow no ponga `viewport-fit=cover` en el meta viewport (pendiente del sitio).
+- **Teclado del teléfono:** input pasa `autocapitalize` y `enterkeyhint` al campo interno; el formulario de Contacto los usa (mayúscula inicial en nombre, empresa y ciudad; «Siguiente» en los de una línea). La barra de scroll de Descargas lleva `overscroll-behavior-x: contain` (no dispara el «atrás» del navegador).
+- **Peor caso en la demo (break-ui):** un selector abajo al centro (`demo/demo-data-toggle.js`) cambia `?data=`. Descargas: Demo · Peor caso · Vacío · Uno · 1.500 filas · Error, desde `demo/fixtures/peor-caso.js` por `src/data/catalog.js` (bloque `import.meta.env.DEV`, no llega a `dist/`). Contacto: Demo · Peor caso · Errores · Enviado, con el embed `demo/fixtures/contacto-peor-caso.html` y el formulario completado como lo haría una persona. Los valores salen de la base real (SKU con espacios y paréntesis, columnas vacías, valores más largos) o tienen su forma.
+- **Animación** (planes de improve-animations en `plans/`, ejecutados): con reduced motion, filter-panel, download-modal, los desplegables y la primera carga de Descargas funden con `motion/duration/fade` en vez de aparecer de golpe (DESIGN.md §6); token nuevo **`motion/duration/panel`** (400 ms, 0 con reduced motion; Figma, 2 · Semantic · Motion) en lugar de `slow × 1,25`, en filter-panel, download-modal, search-sheet y el mega-menú; «Copiado» del sku entra con un fundido (`fade`).
+- **Hover con mouse en todo el repo:** también se pasaron a `(hover: hover) and (pointer: fine)` los componentes de otras páginas.
+- **Roturas del peor caso (break-ui), arregladas:**
+  - **hero:** a 320 px una palabra larga del título («arquitectónica») empujaba título y bajada fuera del borde: en Mobile `.text` ocupa el ancho de la columna y los textos llevan `max-width: 100%`, así `overflow-wrap` parte la palabra.
+  - **link-list:** la lista ocupa el ancho de la columna; un label largo se corta con «…», como button. Se recomendaba pasarlo a dos líneas, pero button no tiene esa opción en Figma y no se inventa una prop.
+  - **footer:** en Mobile las columnas no bajan del ancho de su palabra más larga y, si no entran (320 px), la última pasa abajo (antes partía palabras: «Instagr am»).
+  - **downloads-table:** de a 100 filas con «Ver más productos» (button Outline); con 1.500 filas, borrar la búsqueda pasó de 1,2 s a 80 ms. Cantidades con separador de miles («1.500 productos»), también en «Ver N productos» de filter-panel. `TODO` (diseño): «Ver más» no está en la propuesta.
+  - **faq-item:** sin respuesta, la pregunta no se muestra (`data-arq-empty`; antes se abría a un panel vacío).
+  - **descargas:** si falla la carga, «Reintentar» (button Underline); al volver a cargar, el foco va al buscador. Sin `catalog-href`, «Descargar catálogo» no se muestra (antes, un botón que no hacía nada; a 320 px queda con «…», como button). `TODO` (diseño): «Reintentar» no está en la propuesta.
+- **Revisión apple-design, aplicada:**
+  - «Ficha técnica» en el modal de Descargas dice «Generando…» mientras se arma el PDF (`detail.pending`, como la ficha): download-file-row suma la prop `loading`. `TODO` (diseño): State=Loading en el set.
+  - Formulario: un campo con error se revalida mientras se escribe; el error se va apenas el valor es válido.
+  - Vacío de Descargas según la causa: «No hay productos para «…»» si viene de la búsqueda.
+  - Búsqueda y filtros de Descargas en la URL (`?q=…&tipo_montaje=…`, `history.replaceState`): al volver de un producto, la tabla está igual.
+  - Avisos `aria-live` de input y file-upload: región oculta siempre presente; solo cambia el texto.
+  - La cantidad de Descargas se anuncia al dejar de escribir (500 ms), no con cada tecla.
+  - navbar Transparent: con `prefers-reduced-transparency: reduce` o `prefers-contrast: more` se ve Default también sobre la foto.
+  - input y file-upload: con `prefers-contrast: more`, borde `color/border/strong`. `TODO` (diseño): `color/border/default` da 1,6:1 sobre blanco (WCAG pide 3:1 para el borde de un control).
+- **DESIGN.md** (repo y copia en Figma): `motion/duration/panel` en §6, hover solo con mouse en §7, avisos `aria-live` y `prefers-contrast` / `prefers-reduced-transparency` en §9. **Figma:** descripciones de faq-item, input, file-upload, sku, navbar y download-file-row.

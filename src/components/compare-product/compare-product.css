@@ -99,7 +99,7 @@
 /* State=empty-hover: el fondo color/surface/faint va en toda la columna y el
    borde punteado pasa a color/border/strong. El «+» es un icon-button Large
    sin fondo (Background=None) en reposo y en hover. */
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   :host([empty]) .product:hover {
     background: var(--arq-color-surface-faint);
   }
@@ -311,7 +311,7 @@
 }
 
 /* empty-hover: fondo color/surface/faint y borde color/border/strong */
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .compact-add:hover {
     background: var(--arq-color-surface-faint);
     border-color: var(--arq-color-border-strong);

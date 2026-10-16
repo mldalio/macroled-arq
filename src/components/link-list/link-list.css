@@ -18,10 +18,13 @@
   color: var(--arq-color-text-secondary);
 }
 
-/* Links: button Underline con ícono */
+/* Links: button Underline con ícono. La lista ocupa el ancho de la columna
+   (align-self: stretch): si tomaba el ancho de su link más largo, un label
+   largo se salía del borde en vez de cortarse con «…» como hace button. */
 .links {
   display: flex;
   flex-direction: column;
+  align-self: stretch;
   align-items: flex-start;
   gap: var(--arq-space-gap-sm);
 }

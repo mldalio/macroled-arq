@@ -160,6 +160,7 @@
   --arq-motion-duration-feedback: 2000ms; /** Tiempo visible de una confirmación (Copiado del sku). En ms. No cambia con prefers-reduced-motion. */
   --arq-motion-duration-expand: 250ms; /** Alto de un desplegable que se abre o se cierra (faq-item). En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-fade: 150ms; /** Fundido corto de algo que aparece (menú de input Select, error de input). En ms. No cambia con prefers-reduced-motion: es el fundido que queda. */
+  --arq-motion-duration-panel: 400ms; /** Entrada y salida de paneles y menús que se abren por encima (filter-panel, download-modal, search-sheet, mega-menú). En ms. Con prefers-reduced-motion: 0 (queda el fundido de motion/duration/fade). */
   --arq-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1); /** Cambios de estado: hover, foco, selección, paneles y fundidos de imagen. Para entradas, motion/easing/out. */
   --arq-motion-easing-out: cubic-bezier(0.23, 1, 0.32, 1); /** Entradas: algo que aparece o se despliega (arranca rápido y frena suave). */
   --arq-space-section-2xs: var(--arq-space-32); /** Separación mínima entre bloques de página. */
@@ -437,5 +438,6 @@
     --arq-motion-duration-base: 0ms; /** Desplegables (disclosure) y menús. En ms. Con prefers-reduced-motion: 0. */
     --arq-motion-duration-slow: 0ms; /** Fundido de imágenes de product-card y mensaje de form-message al aparecer. En ms. Con prefers-reduced-motion: 0. */
     --arq-motion-duration-expand: 0ms; /** Alto de un desplegable que se abre o se cierra (faq-item). En ms. Con prefers-reduced-motion: 0. */
+    --arq-motion-duration-panel: 0ms; /** Entrada y salida de paneles y menús que se abren por encima (filter-panel, download-modal, search-sheet, mega-menú). En ms. Con prefers-reduced-motion: 0 (queda el fundido de motion/duration/fade). */
   }
 }

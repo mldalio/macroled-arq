@@ -11,9 +11,10 @@
    clic en el <dialog> mismo es un clic en el scrim. */
 /* Misma transición que el top sheet y el mega-menú, pero lateral: el panel se
    abre desde el borde derecho como una persiana (clip-path) y el contenido
-   funde; el scrim funde con ellos. Con reduced motion las duraciones valen 0. */
+   funde; el scrim funde con ellos. Con reduced motion queda solo el fundido
+   (motion/duration/fade, bloque al final). */
 :host {
-  --panel-slow: calc(var(--arq-motion-duration-slow) * 1.25); /* TODO: token propio, igual que search-sheet */
+  --panel-slow: var(--arq-motion-duration-panel); /* motion/duration/panel, como search-sheet y el mega-menú */
 }
 
 .dialog {
@@ -139,10 +140,14 @@
     background: var(--arq-color-surface-transparent);
   }
 
-  /* padding space/padding/lg arriba y abajo, layout/gutter a los lados; gap space/gap/xl */
+  /* padding space/padding/lg arriba y abajo, layout/gutter a los lados; gap space/gap/xl.
+     Abajo suma el área segura del teléfono (indicador de inicio del iPhone), así
+     «Ver N productos» no queda debajo; vale 0 si el sitio no usa
+     viewport-fit=cover. */
   .sheet {
     gap: var(--arq-space-gap-xl);
-    padding: var(--arq-space-padding-lg) var(--arq-layout-gutter);
+    padding: var(--arq-space-padding-lg) var(--arq-layout-gutter)
+      calc(var(--arq-space-padding-lg) + env(safe-area-inset-bottom, var(--arq-space-0)));
   }
 
   :host([show-categories]) .tabs {
@@ -163,5 +168,25 @@
 
   .apply {
     flex: 1 1 auto;
+  }
+}
+
+/* Reduced motion (DESIGN.md §6): sin persiana, queda el fundido
+   (motion/duration/fade). La duración va en .dialog porque el JS la lee de
+   ahí para cerrar (filter-panel.js #closeDialog). */
+@media (prefers-reduced-motion: reduce) {
+  .dialog {
+    clip-path: none;
+    opacity: 0;
+    transition: opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out);
+  }
+
+  .dialog.is-open {
+    opacity: 1;
+  }
+
+  .dialog::backdrop,
+  .sheet {
+    transition: opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out);
   }
 }
