@@ -401,7 +401,8 @@ function be(e) {
 			"ambient2",
 			"ambient3",
 			"ambient4",
-			"ambient5"
+			"ambient5",
+			"ambient7"
 		].map((e) => t[e]).filter(Boolean),
 		description: t.ambient6 ?? null,
 		inspiration: [t.ambient7].filter(Boolean)
@@ -3489,12 +3490,12 @@ function Vr(e = 1200) {
 }
 //#endregion
 //#region src/components/product-gallery/product-gallery.css?inline
-var Hr = ":host{min-width:0;display:block}.gallery{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex;position:relative}.image{aspect-ratio:5/4;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);position:relative;overflow:hidden}.theme-transition{z-index:1;object-fit:cover;opacity:1;pointer-events:none;width:100%;height:100%;transition-property:opacity;transition-duration:var(--arq-illumination-image-duration,var(--arq-motion-duration-slow));transition-timing-function:var(--arq-illumination-image-easing,var(--arq-motion-easing-standard));position:absolute;inset:0}.theme-transition.fade-out{opacity:0}::slotted(img){object-fit:cover!important;width:100%!important;height:100%!important;display:block!important}.thumbs{gap:var(--arq-space-gap-sm);margin:calc(-1 * var(--arq-space-padding-xs));padding:var(--arq-space-padding-xs);scroll-snap-type:x mandatory;scrollbar-width:none;display:flex;overflow-x:auto}.thumbs::-webkit-scrollbar{display:none}arq-gallery-thumb{width:var(--arq-layout-gallery-thumb);scroll-snap-align:start;flex:none}@media (width>=768px){.thumbs{left:var(--arq-space-padding-lg);bottom:var(--arq-space-padding-lg);max-width:calc(100% - 2 * var(--arq-space-padding-lg));position:absolute}}@media (width>=1024px){:host([fill]){flex-direction:column;display:flex}:host([fill]) .gallery{flex:auto;min-height:0}:host([fill]) .image{aspect-ratio:auto;flex:auto;min-height:0}:host([fill]) ::slotted(img){position:absolute!important;inset:0!important}:host([fill]) .thumbs{left:var(--arq-space-padding-xl);bottom:var(--arq-space-padding-xl);max-width:none;max-height:calc(100% - 2 * var(--arq-space-padding-xl));scroll-snap-type:y mandatory;flex-direction:column;overflow:hidden auto}}";
+var Hr = ":host{min-width:0;display:block}.gallery{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex;position:relative}.image{aspect-ratio:5/4;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);position:relative;overflow:hidden}.theme-transition{z-index:1;object-fit:cover;opacity:1;pointer-events:none;width:100%;height:100%;transition-property:opacity;transition-duration:var(--arq-illumination-image-duration,var(--arq-motion-duration-slow));transition-timing-function:var(--arq-illumination-image-easing,var(--arq-motion-easing-standard));position:absolute;inset:0}.theme-transition.fade-out{opacity:0}::slotted(img){object-fit:cover!important;width:100%!important;height:100%!important;display:block!important}.thumbs{gap:var(--arq-space-gap-sm);margin:calc(-1 * var(--arq-space-padding-xs));padding:var(--arq-space-padding-xs);scroll-snap-type:x mandatory;scrollbar-width:none;display:flex;overflow-x:auto}.thumbs::-webkit-scrollbar{display:none}arq-gallery-thumb{width:var(--arq-layout-gallery-thumb);scroll-snap-align:start;flex:none}@media (width>=768px){.thumbs{left:var(--arq-space-padding-lg);bottom:var(--arq-space-padding-lg);max-width:calc(100% - 2 * var(--arq-space-padding-lg));position:absolute}}@media (width>=1024px){:host([fill]){flex-direction:column;display:flex}:host([fill]) .gallery{flex:auto;min-height:0}:host([fill]) .image{aspect-ratio:auto;flex:auto;min-height:0}:host([fill]) ::slotted(img){position:absolute!important;inset:0!important}:host([fill]) .thumbs{left:var(--arq-space-padding-xl-2xl);bottom:var(--arq-space-padding-xl);max-width:none;max-height:calc(100% - 2 * var(--arq-space-padding-xl));scroll-snap-type:y mandatory;flex-direction:column;overflow:hidden auto}}";
 (class extends P {
 	static tag = "arq-product-gallery";
 	static styles = Hr;
 	static properties = {};
-	static template = "<div class=\"gallery\"><div class=\"image\"><slot name=\"image\"></slot></div><div class=\"thumbs\" hidden></div></div>";
+	static template = "<div class=\"gallery\"><div class=\"image\"><slot name=\"image\"></slot><slot name=\"overlay\"></slot></div><div class=\"thumbs\" hidden></div></div>";
 	#e = [];
 	#t = 0;
 	#n = !1;
@@ -4493,17 +4494,17 @@ var fi = ":host{min-width:0;display:block}.scroll{overscroll-behavior-x:contain;
 }).define();
 //#endregion
 //#region src/components/comparativa/comparativa.css?inline
-var hi = ":host{display:block}.page{flex-direction:column;max-width:100%;display:flex;overflow-x:clip}.status{padding-inline:var(--page-gutter);padding-block:var(--arq-space-section-xs);color:var(--arq-color-text-secondary);margin:0}.mobile-controls{display:none}@media (width<=767px){.mobile-controls:not([hidden]){padding-inline:var(--page-gutter);align-items:center;padding-block-end:var(--arq-space-gap-md);display:flex}.scroll{overscroll-behavior-x:contain;scrollbar-width:none;overflow-x:auto}.scroll::-webkit-scrollbar{display:none}.scroll:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(-1 * var(--arq-border-strong))}}@media print{.mobile-controls,.mobile-controls:not([hidden]){display:none}.scroll{overflow:visible}}", gi = "arq:compare", _i = 3, vi = matchMedia("(max-width: 767px)"), q = {
+var hi = ":host{display:block}.page{flex-direction:column;max-width:100%;display:flex;overflow-x:clip}.status{padding-inline:var(--page-gutter);padding-block:var(--arq-space-section-xs);color:var(--arq-color-text-secondary);margin:0}.mobile-controls{display:none}@media (width<=767px){.mobile-controls:not([hidden]){padding-inline:var(--page-gutter);align-items:center;padding-block-end:var(--arq-space-gap-md);display:flex}.scroll{overscroll-behavior-x:contain;scrollbar-width:none;overflow-x:auto}.scroll::-webkit-scrollbar{display:none}.scroll:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(-1 * var(--arq-border-strong))}}@media print{.mobile-controls,.mobile-controls:not([hidden]){display:none}.scroll{overflow:visible}}", gi = "arq:compare", _i = 3, vi = matchMedia("(max-width: 767px)"), yi = {
 	count: (e) => e === 1 ? "1 luminaria seleccionada." : `${e} luminarias seleccionadas.`,
 	printTitle: (e) => `Comparativa · ${e.join(" · ")} · Macroled Arq`,
 	empty: "Elegí hasta 3 productos para comparar desde el listado de Productos.",
 	error: "No se pudo cargar la comparación. Probá de nuevo en unos minutos."
 };
-function yi() {
+function bi() {
 	let e = new URLSearchParams(location.search).get("sku");
 	return e ? e.split(",").map((e) => decodeURIComponent(e.trim())).filter(Boolean).slice(0, _i) : [];
 }
-function bi(e) {
+function xi(e) {
 	try {
 		localStorage.setItem(gi, JSON.stringify(e.map((e) => ({
 			sku: e.sku,
@@ -4534,7 +4535,7 @@ function bi(e) {
 			vi.matches && t.setScrollLeft(i.scrollLeft);
 		}), t.addEventListener("arq:scroll", (e) => {
 			vi.matches && i.scrollLeft !== e.detail.left && (i.scrollLeft = e.detail.left);
-		}), vi.addEventListener("change", () => this.#o()), this.#o(), this.#e = yi(), this.#c();
+		}), vi.addEventListener("change", () => this.#o()), this.#o(), this.#e = bi(), this.#c();
 	}
 	connectedCallback() {
 		super.connectedCallback?.(), addEventListener("beforeprint", this.#i), addEventListener("afterprint", this.#a);
@@ -4543,7 +4544,7 @@ function bi(e) {
 		super.disconnectedCallback?.(), removeEventListener("beforeprint", this.#i), removeEventListener("afterprint", this.#a);
 	}
 	#i = () => {
-		this.#t.length && (this.#r ??= document.title, document.title = q.printTitle(this.#t));
+		this.#t.length && (this.#r ??= document.title, document.title = yi.printTitle(this.#t));
 	};
 	#a = () => {
 		this.#r !== null && (document.title = this.#r, this.#r = null);
@@ -4571,22 +4572,22 @@ function bi(e) {
 			o = !0, console.error("[arq] comparativa: no se pudo cargar el catálogo", e);
 		}
 		if (this.removeAttribute("aria-busy"), !a || o && !a.products.length) {
-			this.#u(o ? q.error : q.empty), r.hidden = !0, i.hidden = !0;
+			this.#u(o ? yi.error : yi.empty), r.hidden = !0, i.hidden = !0;
 			return;
 		}
 		if (this.#e = a.products.map((e) => e.sku), this.#t = a.products.map((e) => e.name).filter(Boolean), !this.#e.length) {
-			this.#u(q.empty), r.hidden = !0, i.hidden = !0;
+			this.#u(yi.empty), r.hidden = !0, i.hidden = !0;
 			return;
 		}
 		this.#u(""), this.#l(this.#e.length), r.hidden = !1, i.hidden = !1, t.products = a.products, t.onlyDifferences = this.#n, n.data = {
 			products: a.products,
 			groups: a.groups
-		}, n.onlyDifferences = this.#n, e.querySelector(".diff-mobile").checked = this.#n, requestAnimationFrame(() => t.refreshCompact()), bi(a.products);
+		}, n.onlyDifferences = this.#n, e.querySelector(".diff-mobile").checked = this.#n, requestAnimationFrame(() => t.refreshCompact()), xi(a.products);
 		let s = new URL(location.href);
 		s.searchParams.set("sku", this.#e.map(encodeURIComponent).join(",")), history.replaceState(history.state, "", s);
 	}
 	#l(e) {
-		for (let t of document.querySelectorAll("[data-arq-compare-count]")) t.textContent = e ? q.count(e) : "";
+		for (let t of document.querySelectorAll("[data-arq-compare-count]")) t.textContent = e ? yi.count(e) : "";
 	}
 	#u(e) {
 		let t = this.shadowRoot.querySelector(".status");
@@ -4595,10 +4596,10 @@ function bi(e) {
 }).define();
 //#endregion
 //#region src/components/mega-link/mega-link.css?inline
-var xi = ":host{min-width:0;display:block}.link{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-gap-sm-md) 0;border:0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);color:var(--arq-color-text-primary);font:inherit;text-align:start;background:0 0;margin:0;text-decoration:none;display:flex}.link.with-meta{padding-block:var(--arq-space-gap-sm)}:host([size=large]) .link,button.link{gap:var(--arq-space-gap-sm);padding-block:var(--arq-space-gap-md)}@media (hover:hover) and (pointer:fine){.link[href]:hover,button.link:hover{background:var(--arq-color-surface-hover)}}button.link{cursor:pointer}.link:focus-visible,.trigger:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.text{flex-direction:column;flex:1;min-width:0;display:flex}:host([size=large]) .text{gap:var(--arq-space-gap-xs)}.name{overflow-wrap:break-word}.meta{color:var(--arq-color-text-tertiary)}.thumb{width:calc(var(--arq-layout-search-thumb) + var(--arq-space-gap-sm-md));aspect-ratio:1;background:var(--arq-color-surface-subtle);flex:none;position:relative}.thumb[hidden]{display:none}.thumb img{object-fit:cover;width:100%;height:100%;position:absolute;inset:0}.arrow,.chevron{color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.arrow[hidden]{display:none}.link:not(:focus-visible) .arrow{visibility:hidden}@media (hover:hover) and (pointer:fine){.link:hover .arrow{visibility:visible}}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.group{border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.trigger{align-items:center;gap:var(--arq-space-gap-sm);width:100%;padding:var(--arq-space-gap-md) 0;color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;background:0 0;border:0;display:flex}@media (hover:hover) and (pointer:fine){.trigger:hover{background:var(--arq-color-surface-hover)}}.trigger .name{flex:1;min-width:0}.toggle{color:var(--arq-color-icon-primary);flex:none;display:inline-flex}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.links{padding-bottom:var(--arq-space-gap-md);flex-direction:column;align-items:flex-start;display:flex}::slotted(a){width:100%;padding-block:var(--arq-space-gap-sm);color:var(--arq-color-text-primary);font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-body-lg-size);line-height:var(--arq-type-body-lg-leading);letter-spacing:var(--arq-font-tracking-normal);text-decoration:none;display:block}::slotted(a:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}::slotted(arq-button){margin-block:var(--arq-space-gap-sm)}", Si = (e, t) => `<${e} class="link"${e === "button" ? " type=\"button\"" : ""}><span class="text"><span class="name"><slot></slot></span><span class="meta"><slot name="meta"></slot></span></span><span class="thumb" hidden><img alt="" loading="lazy" hidden></span>` + t + `</${e}>`, Ci = Si("a", `<span class="arrow">${F("arrow-right")}</span>`), wi = Si("button", `<span class="chevron">${F("chevron-right")}</span>`), Ti = `<div class="group"><button type="button" class="trigger"><span class="name role-body-xl"><slot></slot></span><span class="toggle">${F("plus")}${F("minus")}</span></button><div class="links"><slot name="links"></slot></div></div>`;
+var Si = ":host{min-width:0;display:block}.link{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-gap-sm-md) 0;border:0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);color:var(--arq-color-text-primary);font:inherit;text-align:start;background:0 0;margin:0;text-decoration:none;display:flex}.link.with-meta{padding-block:var(--arq-space-gap-sm)}:host([size=large]) .link,button.link{gap:var(--arq-space-gap-sm);padding-block:var(--arq-space-gap-md)}@media (hover:hover) and (pointer:fine){.link[href]:hover,button.link:hover{background:var(--arq-color-surface-hover)}}button.link{cursor:pointer}.link:focus-visible,.trigger:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.text{flex-direction:column;flex:1;min-width:0;display:flex}:host([size=large]) .text{gap:var(--arq-space-gap-xs)}.name{overflow-wrap:break-word}.meta{color:var(--arq-color-text-tertiary)}.thumb{width:calc(var(--arq-layout-search-thumb) + var(--arq-space-gap-sm-md));aspect-ratio:1;background:var(--arq-color-surface-subtle);flex:none;position:relative}.thumb[hidden]{display:none}.thumb img{object-fit:cover;width:100%;height:100%;position:absolute;inset:0}.arrow,.chevron{color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.arrow[hidden]{display:none}.link:not(:focus-visible) .arrow{visibility:hidden}@media (hover:hover) and (pointer:fine){.link:hover .arrow{visibility:visible}}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.group{border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.trigger{align-items:center;gap:var(--arq-space-gap-sm);width:100%;padding:var(--arq-space-gap-md) 0;color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;background:0 0;border:0;display:flex}@media (hover:hover) and (pointer:fine){.trigger:hover{background:var(--arq-color-surface-hover)}}.trigger .name{flex:1;min-width:0}.toggle{color:var(--arq-color-icon-primary);flex:none;display:inline-flex}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.links{padding-bottom:var(--arq-space-gap-md);flex-direction:column;align-items:flex-start;display:flex}::slotted(a){width:100%;padding-block:var(--arq-space-gap-sm);color:var(--arq-color-text-primary);font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-body-lg-size);line-height:var(--arq-type-body-lg-leading);letter-spacing:var(--arq-font-tracking-normal);text-decoration:none;display:block}::slotted(a:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}::slotted(arq-button){margin-block:var(--arq-space-gap-sm)}", Ci = (e, t) => `<${e} class="link"${e === "button" ? " type=\"button\"" : ""}><span class="text"><span class="name"><slot></slot></span><span class="meta"><slot name="meta"></slot></span></span><span class="thumb" hidden><img alt="" loading="lazy" hidden></span>` + t + `</${e}>`, wi = Ci("a", `<span class="arrow">${F("arrow-right")}</span>`), Ti = Ci("button", `<span class="chevron">${F("chevron-right")}</span>`), Ei = `<div class="group"><button type="button" class="trigger"><span class="name role-body-xl"><slot></slot></span><span class="toggle">${F("plus")}${F("minus")}</span></button><div class="links"><slot name="links"></slot></div></div>`;
 (class extends P {
 	static tag = "arq-mega-link";
-	static styles = xi;
+	static styles = Si;
 	static properties = {
 		type: {
 			type: String,
@@ -4619,7 +4620,7 @@ var xi = ":host{min-width:0;display:block}.link{box-sizing:border-box;align-item
 	};
 	setup() {
 		let e = this.shadowRoot, t = document.createElement("template");
-		if (t.innerHTML = this.type === "group" ? Ti : this.submenu ? wi : Ci, e.append(t.content), this.type === "group") this.disclosure = new L(this, {
+		if (t.innerHTML = this.type === "group" ? Ei : this.submenu ? Ti : wi, e.append(t.content), this.type === "group") this.disclosure = new L(this, {
 			trigger: e.querySelector(".trigger"),
 			panel: e.querySelector(".links")
 		});
@@ -4653,12 +4654,12 @@ var xi = ":host{min-width:0;display:block}.link{box-sizing:border-box;align-item
 }).define();
 //#endregion
 //#region src/components/mega-menu/mega-menu.css?inline
-var Ei = ":host{display:block}.menu{background:var(--arq-color-surface-default);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.tabs{gap:var(--arq-space-gap-xl);padding:var(--arq-space-gap-md) var(--page-gutter) 0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex}.body{align-items:stretch;display:flex}.panels{flex:1;min-width:0;display:flex}.panel{min-width:0;padding:var(--arq-space-padding-2xl) var(--arq-space-padding-2xl) var(--arq-space-padding-2xl) var(--page-gutter);flex-direction:column;flex:1;display:flex}.panel[hidden]{display:none}.columns{gap:var(--arq-space-gap-2xl);flex:1;display:flex}.column{justify-content:space-between;align-items:flex-start;gap:var(--arq-space-gap-xl);flex-direction:column;flex:1;min-width:0;display:flex}.top{gap:var(--arq-space-gap-xl-2xl);flex-direction:column;align-self:stretch;display:flex}.title{color:var(--arq-color-text-primary);margin:0}.links{flex-direction:column;align-self:stretch;display:flex}.panel--colecciones{gap:var(--arq-space-gap-xl)}.columns--collections{align-items:flex-start;gap:var(--arq-space-gap-xl);flex:none}.columns--collections .column{justify-content:flex-start;align-items:stretch;gap:0}.panel--colecciones .all{align-self:flex-start;margin-top:auto}.preview{box-sizing:border-box;justify-content:flex-end;gap:var(--arq-space-gap-sm);width:var(--arq-layout-mega-menu-image);aspect-ratio:4/5;padding:var(--arq-space-padding-xl-2xl);background:var(--arq-color-surface-subtle);flex-direction:column;flex:none;display:flex;position:relative;overflow:hidden}.preview img{object-fit:cover;width:100%;height:100%;position:absolute;inset:0}.preview:after{content:\"\";background:linear-gradient(#0000 45%,#000000b3 100%);position:absolute;inset:0}.preview:has(img[hidden]):after{display:none}.caption{z-index:1;gap:var(--arq-space-gap-sm);color:var(--arq-color-text-inverse);flex-direction:column;display:flex;position:relative}:is(.preview:has(img[hidden]) .caption,.caption[hidden],.eyebrow[hidden]){display:none}.eyebrow,.preview-title{margin:0}", J = (e) => String(e ?? "").replace(/[&<>"]/g, (e) => ({
+var Di = ":host{display:block}.menu{background:var(--arq-color-surface-default);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.tabs{gap:var(--arq-space-gap-xl);padding:var(--arq-space-gap-md) var(--page-gutter) 0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex}.body{align-items:stretch;display:flex}.panels{flex:1;min-width:0;display:flex}.panel{min-width:0;padding:var(--arq-space-padding-2xl) var(--arq-space-padding-2xl) var(--arq-space-padding-2xl) var(--page-gutter);flex-direction:column;flex:1;display:flex}.panel[hidden]{display:none}.columns{gap:var(--arq-space-gap-2xl);flex:1;display:flex}.column{justify-content:space-between;align-items:flex-start;gap:var(--arq-space-gap-xl);flex-direction:column;flex:1;min-width:0;display:flex}.top{gap:var(--arq-space-gap-xl-2xl);flex-direction:column;align-self:stretch;display:flex}.title{color:var(--arq-color-text-primary);margin:0}.links{flex-direction:column;align-self:stretch;display:flex}.panel--colecciones{gap:var(--arq-space-gap-xl)}.columns--collections{align-items:flex-start;gap:var(--arq-space-gap-xl);flex:none}.columns--collections .column{justify-content:flex-start;align-items:stretch;gap:0}.panel--colecciones .all{align-self:flex-start;margin-top:auto}.preview{box-sizing:border-box;justify-content:flex-end;gap:var(--arq-space-gap-sm);width:var(--arq-layout-mega-menu-image);aspect-ratio:4/5;padding:var(--arq-space-padding-xl-2xl);background:var(--arq-color-surface-subtle);flex-direction:column;flex:none;display:flex;position:relative;overflow:hidden}.preview img{object-fit:cover;width:100%;height:100%;position:absolute;inset:0}.preview:after{content:\"\";background:linear-gradient(#0000 45%,#000000b3 100%);position:absolute;inset:0}.preview:has(img[hidden]):after{display:none}.caption{z-index:1;gap:var(--arq-space-gap-sm);color:var(--arq-color-text-inverse);flex-direction:column;display:flex;position:relative}:is(.preview:has(img[hidden]) .caption,.caption[hidden],.eyebrow[hidden]){display:none}.eyebrow,.preview-title{margin:0}", q = (e) => String(e ?? "").replace(/[&<>"]/g, (e) => ({
 	"&": "&amp;",
 	"<": "&lt;",
 	">": "&gt;",
 	"\"": "&quot;"
-})[e]), Di = [
+})[e]), Oi = [
 	{
 		id: "por-espacio",
 		label: "Por espacio"
@@ -4671,14 +4672,14 @@ var Ei = ":host{display:block}.menu{background:var(--arq-color-surface-default);
 		id: "colecciones",
 		label: "Colecciones"
 	}
-], Oi = 4, ki = 0;
+], ki = 4, Ai = 0;
 (class extends P {
 	static tag = "arq-mega-menu";
-	static styles = Ei;
+	static styles = Di;
 	static properties = {
 		tab: {
 			type: String,
-			values: Di.map((e) => e.id),
+			values: Oi.map((e) => e.id),
 			default: "por-espacio"
 		},
 		label: {
@@ -4689,7 +4690,7 @@ var Ei = ":host{display:block}.menu{background:var(--arq-color-surface-default);
 	static template = "<div class=\"menu\"><div class=\"tabs\" role=\"tablist\"></div><div class=\"body\"><div class=\"panels\"></div><div class=\"preview\" aria-hidden=\"true\"><img alt=\"\" hidden><div class=\"caption\"><p class=\"eyebrow role-label\"></p><p class=\"preview-title role-heading-2\"></p></div></div></div></div>";
 	#e = null;
 	#t = {};
-	#n = ++ki;
+	#n = ++Ai;
 	get navigation() {
 		return this.#e;
 	}
@@ -4728,29 +4729,29 @@ var Ei = ":host{display:block}.menu{background:var(--arq-color-surface-default);
 		return e === "por-espacio" ? [t.interior, t.exterior].filter(Boolean) : e === "lamparas-y-artefactos" ? [t.lamparas, t.artefactos].filter(Boolean) : [];
 	}
 	#i() {
-		let e = this.shadowRoot, t = this.#e, n = Di.filter((e) => e.id === "colecciones" ? t?.collections?.length : this.#r(e.id).length);
+		let e = this.shadowRoot, t = this.#e, n = Oi.filter((e) => e.id === "colecciones" ? t?.collections?.length : this.#r(e.id).length);
 		n.length && !n.some((e) => e.id === this.tab) && (this.tab = n[0].id);
 		let r = (e) => ({
 			tab: `mega-tab-${this.#n}-${e.id}`,
 			panel: `mega-panel-${this.#n}-${e.id}`
 		});
-		e.querySelector(".tabs").innerHTML = n.map((e) => `<arq-tab id="${r(e).tab}" value="${e.id}" aria-controls="${r(e).panel}"${e.id === this.tab ? " selected" : ""}>${J(e.label)}</arq-tab>`).join(""), e.querySelector(".panels").innerHTML = n.map((e) => {
+		e.querySelector(".tabs").innerHTML = n.map((e) => `<arq-tab id="${r(e).tab}" value="${e.id}" aria-controls="${r(e).panel}"${e.id === this.tab ? " selected" : ""}>${q(e.label)}</arq-tab>`).join(""), e.querySelector(".panels").innerHTML = n.map((e) => {
 			let n = e.id === "colecciones" ? this.#s(t) : this.#o(this.#r(e.id));
 			return `<div class="panel panel--${e.id}" role="tabpanel" id="${r(e).panel}" aria-labelledby="${r(e).tab}" data-tab="${e.id}"${e.id === this.tab ? "" : " hidden"}>${n}</div>`;
 		}).join(""), this.select.refresh(), this.#c();
 	}
 	#a(e, t, n = "") {
-		return `<arq-mega-link href="${J(e.href)}" show-arrow data-image="${J(e.image ?? "")}" data-eyebrow="${J(t)}" data-title="${J(e.label)}">${J(e.label)}${n ? `<span slot="meta">${J(n)}</span>` : ""}</arq-mega-link>`;
+		return `<arq-mega-link href="${q(e.href)}" show-arrow data-image="${q(e.image ?? "")}" data-eyebrow="${q(t)}" data-title="${q(e.label)}">${q(e.label)}${n ? `<span slot="meta">${q(n)}</span>` : ""}</arq-mega-link>`;
 	}
 	#o(e) {
-		return "<div class=\"columns\">" + e.map((e) => `<div class="column"><div class="top"><p class="title role-heading-1">${J(e.label)}</p><div class="links">${e.links.map((t) => this.#a(t, `${e.label} · ${t.label}`)).join("")}</div></div><arq-button class="all" type="underline" show-underline show-icon icon="arrow-right" href="${J(e.all.href)}">${J(e.all.label)}</arq-button></div>`).join("") + "</div>";
+		return "<div class=\"columns\">" + e.map((e) => `<div class="column"><div class="top"><p class="title role-heading-1">${q(e.label)}</p><div class="links">${e.links.map((t) => this.#a(t, `${e.label} · ${t.label}`)).join("")}</div></div><arq-button class="all" type="underline" show-underline show-icon icon="arrow-right" href="${q(e.all.href)}">${q(e.all.label)}</arq-button></div>`).join("") + "</div>";
 	}
 	#s(e) {
-		let t = e?.collections ?? [], n = Math.floor(t.length / Oi), r = t.length % Oi, i = 0;
-		return "<p class=\"title role-heading-1\">Colecciones</p><div class=\"columns columns--collections\">" + Array.from({ length: Oi }, (e, a) => {
+		let t = e?.collections ?? [], n = Math.floor(t.length / ki), r = t.length % ki, i = 0;
+		return "<p class=\"title role-heading-1\">Colecciones</p><div class=\"columns columns--collections\">" + Array.from({ length: ki }, (e, a) => {
 			let o = n + +(a < r), s = t.slice(i, i + o);
 			return i += o, s;
-		}).map((e) => `<div class="links column">${e.map((e) => this.#a(e, e.eyebrow, e.meta)).join("")}</div>`).join("") + `</div><arq-button class="all" type="underline" show-underline show-icon icon="arrow-up-right" href="${J(e?.allCollections?.href)}">${J(e?.allCollections?.label)}</arq-button>`;
+		}).map((e) => `<div class="links column">${e.map((e) => this.#a(e, e.eyebrow, e.meta)).join("")}</div>`).join("") + `</div><arq-button class="all" type="underline" show-underline show-icon icon="arrow-up-right" href="${q(e?.allCollections?.href)}">${q(e?.allCollections?.label)}</arq-button>`;
 	}
 	#c() {
 		let e = this.shadowRoot.querySelector(`[role="tabpanel"][data-tab="${this.tab}"] arq-mega-link`);
@@ -4766,32 +4767,32 @@ var Ei = ":host{display:block}.menu{background:var(--arq-color-surface-default);
 }).define();
 //#endregion
 //#region src/base/highlight.js
-var Ai = (e) => e.replace(/[&<>"]/g, (e) => ({
+var ji = (e) => e.replace(/[&<>"]/g, (e) => ({
 	"&": "&amp;",
 	"<": "&lt;",
 	">": "&gt;",
 	"\"": "&quot;"
-})[e]), ji = (e) => e.normalize("NFD")[0].toLowerCase()[0];
-function Mi(e, t) {
-	let n = [...String(e ?? "")], r = [...new Set([...String(t ?? "").trim()].map(ji).join("").split(/\s+/).filter(Boolean))];
-	if (!r.length) return Ai(n.join(""));
-	let i = n.map(ji).join(""), a = Array(n.length).fill(!1);
+})[e]), Mi = (e) => e.normalize("NFD")[0].toLowerCase()[0];
+function Ni(e, t) {
+	let n = [...String(e ?? "")], r = [...new Set([...String(t ?? "").trim()].map(Mi).join("").split(/\s+/).filter(Boolean))];
+	if (!r.length) return ji(n.join(""));
+	let i = n.map(Mi).join(""), a = Array(n.length).fill(!1);
 	for (let e of r) for (let t = i.indexOf(e); t !== -1; t = i.indexOf(e, t + 1)) for (let n = t; n < t + e.length; n++) a[n] = !0;
 	let o = "";
 	for (let e = 0; e < n.length;) {
 		let t = e;
 		for (; t < n.length && a[t] === a[e];) t++;
-		let r = Ai(n.slice(e, t).join(""));
+		let r = ji(n.slice(e, t).join(""));
 		o += a[e] ? `<span class="match role-body-medium">${r}</span>` : r, e = t;
 	}
 	return o;
 }
 //#endregion
 //#region src/components/search-result/search-result.css?inline
-var Ni = ":host{min-width:0;display:block}.result{align-items:center;gap:var(--arq-space-gap-md);padding:var(--arq-space-gap-sm) var(--search-inline,var(--arq-space-padding-md));border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);text-decoration:none;display:flex}.result[href]:hover,.result.active{background:var(--arq-color-surface-hover)}.result:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(var(--arq-border-strong) * -1)}.thumb{width:var(--arq-layout-search-thumb);height:var(--arq-layout-search-thumb);background:var(--arq-color-surface-subtle);flex:none}.thumb img{object-fit:cover;width:100%;height:100%;display:block}.text{gap:var(--arq-space-gap-xs);flex-direction:column;flex:1;min-width:0;display:flex}.name,.meta{overflow-wrap:break-word}.meta{color:var(--arq-color-text-tertiary)}.arrow{color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host([type=simple]) .result{gap:var(--arq-space-gap-lg);background:0 0;border-bottom:0;padding-block:0}:host([type=simple]) .result[href]:hover,:host([type=simple]) .result.active{background:0 0}:host([type=simple]) .result:focus-visible{outline-offset:2px}:host([type=simple]) .thumb{width:var(--arq-layout-table-thumb);height:var(--arq-layout-table-thumb)}@media (width<=767px){:host([type=simple]) .thumb{width:var(--arq-layout-gallery-thumb);height:var(--arq-layout-gallery-thumb)}}:host([type=simple]) .meta,:host([type=simple]) .arrow{display:none}:host([type=simple]) .name{color:var(--arq-color-text-tertiary);transition:color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard)}.name.has-marks slot{display:none}.match{color:var(--arq-color-text-primary)}:host([type=simple]) .result[href]:hover .name,:host([type=simple]) .result.active .name,:host([type=simple]) .result:focus-visible .name{color:var(--arq-color-text-primary);font-weight:var(--arq-font-weight-medium)}";
+var Pi = ":host{min-width:0;display:block}.result{align-items:center;gap:var(--arq-space-gap-md);padding:var(--arq-space-gap-sm) var(--search-inline,var(--arq-space-padding-md));border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);text-decoration:none;display:flex}.result[href]:hover,.result.active{background:var(--arq-color-surface-hover)}.result:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(var(--arq-border-strong) * -1)}.thumb{width:var(--arq-layout-search-thumb);height:var(--arq-layout-search-thumb);background:var(--arq-color-surface-subtle);flex:none}.thumb img{object-fit:cover;width:100%;height:100%;display:block}.text{gap:var(--arq-space-gap-xs);flex-direction:column;flex:1;min-width:0;display:flex}.name,.meta{overflow-wrap:break-word}.meta{color:var(--arq-color-text-tertiary)}.arrow{color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host([type=simple]) .result{gap:var(--arq-space-gap-lg);background:0 0;border-bottom:0;padding-block:0}:host([type=simple]) .result[href]:hover,:host([type=simple]) .result.active{background:0 0}:host([type=simple]) .result:focus-visible{outline-offset:2px}:host([type=simple]) .thumb{width:var(--arq-layout-table-thumb);height:var(--arq-layout-table-thumb)}@media (width<=767px){:host([type=simple]) .thumb{width:var(--arq-layout-gallery-thumb);height:var(--arq-layout-gallery-thumb)}}:host([type=simple]) .meta,:host([type=simple]) .arrow{display:none}:host([type=simple]) .name{color:var(--arq-color-text-tertiary);transition:color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard)}.name.has-marks slot{display:none}.match{color:var(--arq-color-text-primary)}:host([type=simple]) .result[href]:hover .name,:host([type=simple]) .result.active .name,:host([type=simple]) .result:focus-visible .name{color:var(--arq-color-text-primary);font-weight:var(--arq-font-weight-medium)}";
 (class extends P {
 	static tag = "arq-search-result";
-	static styles = Ni;
+	static styles = Pi;
 	static properties = {
 		type: {
 			type: String,
@@ -4816,7 +4817,7 @@ var Ni = ":host{min-width:0;display:block}.result{align-items:center;gap:var(--a
 	}
 	#t() {
 		let e = this.shadowRoot, t = e.querySelector(".marked"), n = [...this.childNodes].filter((e) => e.nodeType !== 1 || e.slot !== "meta").map((e) => e.textContent).join("").trim(), r = this.type === "simple" && !!this.term?.trim() && !!n;
-		t.hidden = !r, e.querySelector(".name").classList.toggle("has-marks", r), t.innerHTML = r ? Mi(n, this.term) : "";
+		t.hidden = !r, e.querySelector(".name").classList.toggle("has-marks", r), t.innerHTML = r ? Ni(n, this.term) : "";
 	}
 	focus(e) {
 		this.shadowRoot.querySelector("a").focus(e);
@@ -4835,10 +4836,10 @@ var Ni = ":host{min-width:0;display:block}.result{align-items:center;gap:var(--a
 }).define();
 //#endregion
 //#region src/components/search-see-all/search-see-all.css?inline
-var Pi = ":host{min-width:0;display:block}.row{align-items:center;gap:var(--arq-space-gap-md);padding:var(--arq-space-gap-sm) var(--search-inline,var(--arq-space-padding-md));color:var(--arq-color-icon-tertiary);text-decoration:none;display:flex}.row[href]:hover{background:var(--arq-color-surface-hover)}.row:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(var(--arq-border-strong) * -1)}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);flex:none}.text{min-width:0;color:var(--arq-color-text-tertiary);overflow-wrap:break-word;flex:1}.term{color:var(--arq-color-text-primary)}:host([type=simple]) .row>.icon:first-child{display:none}:host([type=simple]) .text{flex:none}:host([type=simple]) .row[href]:hover{background:0 0}:host([type=simple]) .row:focus-visible{outline-offset:2px}:host([type=simple]) .row[href]:hover .text,:host([type=simple]) .row:focus-visible .text{color:var(--arq-color-text-primary)}:host([type=simple]) .row{gap:var(--arq-space-gap-sm);color:var(--arq-color-icon-primary);justify-content:flex-start}";
+var Fi = ":host{min-width:0;display:block}.row{align-items:center;gap:var(--arq-space-gap-md);padding:var(--arq-space-gap-sm) var(--search-inline,var(--arq-space-padding-md));color:var(--arq-color-icon-tertiary);text-decoration:none;display:flex}.row[href]:hover{background:var(--arq-color-surface-hover)}.row:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(var(--arq-border-strong) * -1)}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);flex:none}.text{min-width:0;color:var(--arq-color-text-tertiary);overflow-wrap:break-word;flex:1}.term{color:var(--arq-color-text-primary)}:host([type=simple]) .row>.icon:first-child{display:none}:host([type=simple]) .text{flex:none}:host([type=simple]) .row[href]:hover{background:0 0}:host([type=simple]) .row:focus-visible{outline-offset:2px}:host([type=simple]) .row[href]:hover .text,:host([type=simple]) .row:focus-visible .text{color:var(--arq-color-text-primary)}:host([type=simple]) .row{gap:var(--arq-space-gap-sm);color:var(--arq-color-icon-primary);justify-content:flex-start}";
 (class extends P {
 	static tag = "arq-search-see-all";
-	static styles = Pi;
+	static styles = Fi;
 	static properties = {
 		type: {
 			type: String,
@@ -4868,10 +4869,10 @@ var Pi = ":host{min-width:0;display:block}.row{align-items:center;gap:var(--arq-
 }).define();
 //#endregion
 //#region src/components/search-dropdown/search-dropdown.css?inline
-var Fi = ":host{min-width:0;display:block}.dropdown{background:var(--arq-color-surface-default);border:var(--arq-border-default) solid var(--arq-color-border-subtle)}.results{flex-direction:column;display:flex}.message{gap:var(--arq-space-gap-sm);padding:var(--arq-space-padding-md) var(--arq-space-padding-md);flex-direction:column;display:flex}.message p{margin:0}.title{color:var(--arq-color-text-primary)}.help{color:var(--arq-color-text-tertiary)}.explore{align-items:center;gap:var(--arq-space-gap-sm);padding:var(--arq-space-padding-sm) var(--arq-space-padding-md);border-top:var(--arq-border-default) solid var(--arq-color-border-subtle);color:var(--arq-color-text-tertiary);text-decoration:none;display:flex}.explore:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(var(--arq-border-strong) * -1)}.explore .icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}";
+var Ii = ":host{min-width:0;display:block}.dropdown{background:var(--arq-color-surface-default);border:var(--arq-border-default) solid var(--arq-color-border-subtle)}.results{flex-direction:column;display:flex}.message{gap:var(--arq-space-gap-sm);padding:var(--arq-space-padding-md) var(--arq-space-padding-md);flex-direction:column;display:flex}.message p{margin:0}.title{color:var(--arq-color-text-primary)}.help{color:var(--arq-color-text-tertiary)}.explore{align-items:center;gap:var(--arq-space-gap-sm);padding:var(--arq-space-padding-sm) var(--arq-space-padding-md);border-top:var(--arq-border-default) solid var(--arq-color-border-subtle);color:var(--arq-color-text-tertiary);text-decoration:none;display:flex}.explore:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(var(--arq-border-strong) * -1)}.explore .icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}";
 (class extends P {
 	static tag = "arq-search-dropdown";
-	static styles = Fi;
+	static styles = Ii;
 	static properties = {
 		state: {
 			type: String,
@@ -4895,10 +4896,10 @@ var Fi = ":host{min-width:0;display:block}.dropdown{background:var(--arq-color-s
 }).define();
 //#endregion
 //#region src/components/search-screen/search-screen.css?inline
-var Ii = ":host{display:contents}.dialog{box-sizing:border-box;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);width:100%;max-width:none;height:100dvh;max-height:none;color:var(--arq-color-text-primary);border:0;margin:0;padding:0;inset:0}.screen{flex-direction:column;height:100%;display:flex}.header{align-items:center;gap:var(--arq-space-gap-sm);padding:var(--arq-space-gap-md) var(--arq-layout-gutter);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);flex:none;display:flex}.field{flex:1}.content{overscroll-behavior:contain;--search-inline:var(--arq-layout-gutter);flex:1;overflow-y:auto}";
+var Li = ":host{display:contents}.dialog{box-sizing:border-box;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);width:100%;max-width:none;height:100dvh;max-height:none;color:var(--arq-color-text-primary);border:0;margin:0;padding:0;inset:0}.screen{flex-direction:column;height:100%;display:flex}.header{align-items:center;gap:var(--arq-space-gap-sm);padding:var(--arq-space-gap-md) var(--arq-layout-gutter);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);flex:none;display:flex}.field{flex:1}.content{overscroll-behavior:contain;--search-inline:var(--arq-layout-gutter);flex:1;overflow-y:auto}";
 (class extends P {
 	static tag = "arq-search-screen";
-	static styles = Ii;
+	static styles = Li;
 	static properties = {
 		open: { type: Boolean },
 		label: {
@@ -4930,10 +4931,10 @@ var Ii = ":host{display:contents}.dialog{box-sizing:border-box;border-radius:var
 }).define();
 //#endregion
 //#region src/components/search-card/search-card.css?inline
-var Li = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-sm);color:var(--arq-color-text-primary);flex-direction:column;text-decoration:none;display:flex}.card:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.media{aspect-ratio:var(--card-ratio,1 / 1);background:var(--arq-color-surface-subtle);display:block;overflow:hidden}.img{object-fit:cover;width:100%;height:100%;transition:transform var(--arq-motion-duration-slow) var(--arq-motion-easing-standard);display:block}@media (hover:hover) and (pointer:fine){.card:hover .img{transform:scale(1.05)}}.card:focus-visible .img{transform:scale(1.05)}.name{overflow-wrap:break-word;min-width:0}";
+var Ri = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-sm);color:var(--arq-color-text-primary);flex-direction:column;text-decoration:none;display:flex}.card:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.media{aspect-ratio:var(--card-ratio,1 / 1);background:var(--arq-color-surface-subtle);display:block;overflow:hidden}.img{object-fit:cover;width:100%;height:100%;transition:transform var(--arq-motion-duration-slow) var(--arq-motion-easing-standard);display:block}@media (hover:hover) and (pointer:fine){.card:hover .img{transform:scale(1.05)}}.card:focus-visible .img{transform:scale(1.05)}.name{overflow-wrap:break-word;min-width:0}";
 (class extends P {
 	static tag = "arq-search-card";
-	static styles = Li;
+	static styles = Ri;
 	static properties = {
 		href: { type: String },
 		image: { type: String }
@@ -4955,10 +4956,10 @@ var Li = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-sm);colo
 }).define();
 //#endregion
 //#region src/components/search-collection/search-collection.css?inline
-var Ri = ":host{min-width:0;display:block}.card{align-items:center;gap:var(--arq-space-gap-md);color:var(--arq-color-text-tertiary);text-decoration:none;display:flex}.card:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.thumb{width:var(--arq-layout-search-thumb);height:var(--arq-layout-search-thumb);background:var(--arq-color-surface-subtle);flex:none}.thumb img{object-fit:cover;width:100%;height:100%;display:block}.name{overflow-wrap:break-word;min-width:0;transition:color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard)}.name.has-marks slot{display:none}.match{color:var(--arq-color-text-primary)}.card[href]:hover .name,.card:focus-visible .name,.card.active .name{color:var(--arq-color-text-primary);font-weight:var(--arq-font-weight-medium)}";
+var zi = ":host{min-width:0;display:block}.card{align-items:center;gap:var(--arq-space-gap-md);color:var(--arq-color-text-tertiary);text-decoration:none;display:flex}.card:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.thumb{width:var(--arq-layout-search-thumb);height:var(--arq-layout-search-thumb);background:var(--arq-color-surface-subtle);flex:none}.thumb img{object-fit:cover;width:100%;height:100%;display:block}.name{overflow-wrap:break-word;min-width:0;transition:color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard)}.name.has-marks slot{display:none}.match{color:var(--arq-color-text-primary)}.card[href]:hover .name,.card:focus-visible .name,.card.active .name{color:var(--arq-color-text-primary);font-weight:var(--arq-font-weight-medium)}";
 (class extends P {
 	static tag = "arq-search-collection";
-	static styles = Ri;
+	static styles = zi;
 	static properties = {
 		href: { type: String },
 		image: { type: String },
@@ -4975,7 +4976,7 @@ var Ri = ":host{min-width:0;display:block}.card{align-items:center;gap:var(--arq
 	}
 	#e() {
 		let e = this.shadowRoot, t = e.querySelector(".marked"), n = this.textContent.trim(), r = !!this.term?.trim() && !!n;
-		t.hidden = !r, e.querySelector(".name").classList.toggle("has-marks", r), t.innerHTML = r ? Mi(n, this.term) : "";
+		t.hidden = !r, e.querySelector(".name").classList.toggle("has-marks", r), t.innerHTML = r ? Ni(n, this.term) : "";
 	}
 	focus(e) {
 		this.shadowRoot.querySelector("a").focus(e);
@@ -4992,15 +4993,15 @@ var Ri = ":host{min-width:0;display:block}.card{align-items:center;gap:var(--arq
 }).define();
 //#endregion
 //#region src/components/search-sheet/search-sheet.css?inline
-var zi = ":host{display:contents}.dialog{box-sizing:border-box;border-radius:var(--arq-radius-control);width:100%;max-width:none;max-height:100dvh;color:var(--arq-color-text-primary);background:0 0;border:0;margin:0;padding:0;inset:0 0 auto;overflow:clip}.dialog::backdrop{background:var(--arq-color-overlay-scrim);opacity:0;transition:opacity var(--sheet-slow) var(--arq-motion-easing-standard)}.dialog.is-open::backdrop{opacity:1}.dialog:not(.is-open){pointer-events:none}.sheet{box-sizing:border-box;max-height:100dvh;transition:grid-template-rows var(--sheet-slow) var(--arq-motion-easing-standard);grid-template-rows:auto 0fr;align-content:start;display:grid}.dialog.is-open .sheet{grid-template-rows:auto 1fr}.bar{box-sizing:border-box;height:var(--bar-height);padding:0 var(--page-gutter);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);transition-property:background-color,color;transition-duration:var(--sheet-slow);transition-timing-function:var(--arq-motion-easing-standard);justify-content:space-between;align-items:center;display:flex}.dialog.is-open .bar{background:var(--arq-color-surface-default)}:host([over-photo]) .dialog:not(.is-open) .bar{color:var(--arq-color-text-inverse)}.logo{color:inherit;flex:none}.close{color:inherit;margin-inline-end:calc(var(--arq-space-padding-sm-md) * -1)}.drawer{background:var(--arq-color-surface-default);min-height:0;overflow:clip}.drawer-inner{max-height:calc(100dvh - var(--bar-height));opacity:0;transition-property:opacity;transition-duration:var(--arq-motion-duration-slow);transition-timing-function:var(--arq-motion-easing-standard);flex-direction:column;display:flex}.dialog.is-open .drawer-inner{opacity:1}:host([inline]){display:block}:host([inline]) .dialog{max-height:none;position:static;overflow:visible}:host([inline]) .sheet,:host([inline]) .drawer-inner{max-height:none}:host([inline]) .drawer{border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.field-row{padding:var(--arq-space-gap-md) var(--page-gutter) 0;flex:none}.content{min-height:0;padding:calc(var(--arq-space-gap-xl) * 2) var(--page-gutter);overscroll-behavior:contain;--search-inline:0;flex:1;overflow-y:auto}.recommended,.results{opacity:0;transition-property:opacity;transition-duration:calc(var(--sheet-slow) - var(--arq-motion-duration-fast));transition-timing-function:var(--arq-motion-easing-standard)}.dialog.is-open .recommended,.dialog.is-open .results{opacity:1;transition-delay:var(--arq-motion-duration-fast)}.recommended{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.recommended[data-empty=true]{display:none}.title{color:var(--arq-color-text-tertiary);margin:0}.cards{--cols:4;--card-ratio:1 / 1;grid-auto-flow:column;grid-auto-columns:calc((100% - var(--arq-space-gap-md) * (var(--cols) - 1)) / (var(--cols) + .4));gap:var(--arq-space-gap-md);overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none;display:grid;overflow-x:auto}.cards::-webkit-scrollbar{display:none}.cards>*{scroll-snap-align:start}.all{padding:0 var(--page-gutter) var(--arq-space-gap-lg);flex:none;display:flex}.all[hidden]{display:none}.results{column-gap:var(--arq-space-section-2xs);row-gap:var(--arq-space-gap-lg);display:grid}.results.has-both{grid-template-columns:minmax(0, 1fr) minmax(0, var(--arq-layout-search-field))}.results.has-both .group-collections{grid-area:1/2/span 2}.results.has-both .see-all{grid-area:2/1}.see-all,.group{min-width:0}.group-title{margin:0 0 var(--arq-space-gap-lg);color:var(--arq-color-text-tertiary)}.list{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.collections{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}@media (width>=1600px){.cards{--cols:5}}@media (width<=1023px){.cards{--cols:3}.results.has-both{grid-template-columns:minmax(0,1fr)}.results.has-both .group-collections,.results.has-both .see-all{grid-area:auto}}@media (width<=767px){.cards{--cols:3;grid-auto-columns:max(var(--arq-layout-card-min), calc((100% - var(--arq-space-gap-md) * (var(--cols) - 1)) / (var(--cols) + .4)))}}:host{--bar-height:calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));--sheet-slow:var(--arq-motion-duration-panel)}@media (height<=760px){.content{padding-block:var(--arq-space-gap-xl)}}@media (height<=600px){.content{padding-block:var(--arq-space-gap-md)}.field-row{padding-top:var(--arq-space-gap-sm)}}", Bi = matchMedia("(max-width: 767px)"), Y = (e) => String(e ?? "").replace(/[&<>"]/g, (e) => ({
+var Bi = ":host{display:contents}.dialog{box-sizing:border-box;border-radius:var(--arq-radius-control);width:100%;max-width:none;max-height:100dvh;color:var(--arq-color-text-primary);background:0 0;border:0;margin:0;padding:0;inset:0 0 auto;overflow:clip}.dialog::backdrop{background:var(--arq-color-overlay-scrim);opacity:0;transition:opacity var(--sheet-slow) var(--arq-motion-easing-standard)}.dialog.is-open::backdrop{opacity:1}.dialog:not(.is-open){pointer-events:none}.sheet{box-sizing:border-box;max-height:100dvh;transition:grid-template-rows var(--sheet-slow) var(--arq-motion-easing-standard);grid-template-rows:auto 0fr;align-content:start;display:grid}.dialog.is-open .sheet{grid-template-rows:auto 1fr}.bar{box-sizing:border-box;height:var(--bar-height);padding:0 var(--page-gutter);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);transition-property:background-color,color;transition-duration:var(--sheet-slow);transition-timing-function:var(--arq-motion-easing-standard);justify-content:space-between;align-items:center;display:flex}.dialog.is-open .bar{background:var(--arq-color-surface-default)}:host([over-photo]) .dialog:not(.is-open) .bar{color:var(--arq-color-text-inverse)}.logo{color:inherit;flex:none}.close{color:inherit;margin-inline-end:calc(var(--arq-space-padding-sm-md) * -1)}.drawer{background:var(--arq-color-surface-default);min-height:0;overflow:clip}.drawer-inner{max-height:calc(100dvh - var(--bar-height));opacity:0;transition-property:opacity;transition-duration:var(--arq-motion-duration-slow);transition-timing-function:var(--arq-motion-easing-standard);flex-direction:column;display:flex}.dialog.is-open .drawer-inner{opacity:1}:host([inline]){display:block}:host([inline]) .dialog{max-height:none;position:static;overflow:visible}:host([inline]) .sheet,:host([inline]) .drawer-inner{max-height:none}:host([inline]) .drawer{border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.field-row{padding:var(--arq-space-gap-md) var(--page-gutter) 0;flex:none}.content{min-height:0;padding:calc(var(--arq-space-gap-xl) * 2) var(--page-gutter);overscroll-behavior:contain;--search-inline:0;flex:1;overflow-y:auto}.recommended,.results{opacity:0;transition-property:opacity;transition-duration:calc(var(--sheet-slow) - var(--arq-motion-duration-fast));transition-timing-function:var(--arq-motion-easing-standard)}.dialog.is-open .recommended,.dialog.is-open .results{opacity:1;transition-delay:var(--arq-motion-duration-fast)}.recommended{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.recommended[data-empty=true]{display:none}.title{color:var(--arq-color-text-tertiary);margin:0}.cards{--cols:4;--card-ratio:1 / 1;grid-auto-flow:column;grid-auto-columns:calc((100% - var(--arq-space-gap-md) * (var(--cols) - 1)) / (var(--cols) + .4));gap:var(--arq-space-gap-md);overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none;display:grid;overflow-x:auto}.cards::-webkit-scrollbar{display:none}.cards>*{scroll-snap-align:start}.all{padding:0 var(--page-gutter) var(--arq-space-gap-lg);flex:none;display:flex}.all[hidden]{display:none}.results{column-gap:var(--arq-space-section-2xs);row-gap:var(--arq-space-gap-lg);display:grid}.results.has-both{grid-template-columns:minmax(0, 1fr) minmax(0, var(--arq-layout-search-field))}.results.has-both .group-collections{grid-area:1/2/span 2}.results.has-both .see-all{grid-area:2/1}.see-all,.group{min-width:0}.group-title{margin:0 0 var(--arq-space-gap-lg);color:var(--arq-color-text-tertiary)}.list{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.collections{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}@media (width>=1600px){.cards{--cols:5}}@media (width<=1023px){.cards{--cols:3}.results.has-both{grid-template-columns:minmax(0,1fr)}.results.has-both .group-collections,.results.has-both .see-all{grid-area:auto}}@media (width<=767px){.cards{--cols:3;grid-auto-columns:max(var(--arq-layout-card-min), calc((100% - var(--arq-space-gap-md) * (var(--cols) - 1)) / (var(--cols) + .4)))}}:host{--bar-height:calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));--sheet-slow:var(--arq-motion-duration-panel)}@media (height<=760px){.content{padding-block:var(--arq-space-gap-xl)}}@media (height<=600px){.content{padding-block:var(--arq-space-gap-md)}.field-row{padding-top:var(--arq-space-gap-sm)}}", Vi = matchMedia("(max-width: 767px)"), J = (e) => String(e ?? "").replace(/[&<>"]/g, (e) => ({
 	"&": "&amp;",
 	"<": "&lt;",
 	">": "&gt;",
 	"\"": "&quot;"
-})[e]), Vi = (e) => e.image ? ` image="${Y(e.image)}"` : "";
+})[e]), Hi = (e) => e.image ? ` image="${J(e.image)}"` : "";
 (class extends P {
 	static tag = "arq-search-sheet";
-	static styles = zi;
+	static styles = Bi;
 	static properties = {
 		open: { type: Boolean },
 		inline: { type: Boolean },
@@ -5052,8 +5053,8 @@ var zi = ":host{display:contents}.dialog{box-sizing:border-box;border-radius:var
 	setup() {
 		let e = this.shadowRoot;
 		this.#e = e.querySelector("dialog"), e.querySelector(".close").addEventListener("click", () => this.close());
-		let t = () => e.querySelector(".logo").size = Bi.matches ? "small" : "default";
-		Bi.addEventListener("change", t), t(), this.inline ? (this.#e.show(), this.#e.classList.add("is-open")) : (dr(this.#e), this.#e.addEventListener("cancel", (e) => {
+		let t = () => e.querySelector(".logo").size = Vi.matches ? "small" : "default";
+		Vi.addEventListener("change", t), t(), this.inline ? (this.#e.show(), this.#e.classList.add("is-open")) : (dr(this.#e), this.#e.addEventListener("cancel", (e) => {
 			e.preventDefault(), this.close();
 		}), this.#e.addEventListener("click", (e) => {
 			e.target === this.#e && this.close();
@@ -5118,16 +5119,16 @@ var zi = ":host{display:contents}.dialog{box-sizing:border-box;border-radius:var
 			n.replaceChildren();
 			return;
 		}
-		let r = t.items ?? [], i = r.filter((e) => e.kind !== "collection"), a = r.filter((e) => e.kind === "collection"), o = `<arq-search-see-all type="simple" href="${Y(t.href)}" term="${Y(t.query)}" count="${t.total ?? r.length}"></arq-search-see-all>`, s = Y(t.query);
-		n.classList.toggle("has-both", i.length > 0 && a.length > 0), n.innerHTML = r.length ? (i.length ? `<section class="group"><h3 class="group-title role-label">Productos</h3><div class="list">${i.map((e) => `<arq-search-result type="simple" term="${s}" href="${Y(e.href)}"${Vi(e)}>${Y(e.name)}</arq-search-result>`).join("")}</div></section>` : "") + (a.length ? `<section class="group group-collections"><h3 class="group-title role-label">Colecciones</h3><div class="collections">${a.map((e) => `<arq-search-collection term="${s}" href="${Y(e.href)}"${Vi(e)}>${Y(e.name)}</arq-search-collection>`).join("")}</div></section>` : "") + `<div class="see-all">${o}</div>` : `<arq-search-dropdown state="no-results" term="${Y(t.query)}"></arq-search-dropdown>`;
+		let r = t.items ?? [], i = r.filter((e) => e.kind !== "collection"), a = r.filter((e) => e.kind === "collection"), o = `<arq-search-see-all type="simple" href="${J(t.href)}" term="${J(t.query)}" count="${t.total ?? r.length}"></arq-search-see-all>`, s = J(t.query);
+		n.classList.toggle("has-both", i.length > 0 && a.length > 0), n.innerHTML = r.length ? (i.length ? `<section class="group"><h3 class="group-title role-label">Productos</h3><div class="list">${i.map((e) => `<arq-search-result type="simple" term="${s}" href="${J(e.href)}"${Hi(e)}>${J(e.name)}</arq-search-result>`).join("")}</div></section>` : "") + (a.length ? `<section class="group group-collections"><h3 class="group-title role-label">Colecciones</h3><div class="collections">${a.map((e) => `<arq-search-collection term="${s}" href="${J(e.href)}"${Hi(e)}>${J(e.name)}</arq-search-collection>`).join("")}</div></section>` : "") + `<div class="see-all">${o}</div>` : `<arq-search-dropdown state="no-results" term="${J(t.query)}"></arq-search-dropdown>`;
 	}
 }).define();
 //#endregion
 //#region src/components/nav-link/nav-link.css?inline
-var Hi = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-sm);background:var(--arq-color-surface-transparent);max-width:100%;color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;padding:0;text-decoration:none;display:inline-flex;position:relative}.label{white-space:nowrap;min-width:0}.indicator{width:var(--arq-space-gap-sm);height:var(--arq-border-strong);background:var(--arq-color-border-strong);transition-property:background-color;transition-duration:var(--arq-theme-text-duration,var(--arq-motion-duration-fast));transition-delay:var(--arq-theme-text-delay,0s);flex:none;display:none}.current .indicator{display:block}.chevron{flex:none;display:none}:host([has-dropdown]) .chevron{display:inline-flex}.chevron .icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm)}[aria-expanded=true] .chevron .icon{transform:rotate(180deg)}.trailing{display:none}.link:after{content:\"\";inset-inline:0;top:calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));height:var(--arq-border-default);background:var(--arq-color-border-strong);visibility:hidden;position:absolute}@media (hover:hover) and (pointer:fine){.link:not(.current):not([aria-expanded=true]):hover:after{visibility:visible}}.link:active{color:var(--arq-color-text-tertiary)}.link:active:after{visibility:hidden}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}@media (width>=768px){:host([theme=inverse]) .link,:host([theme=inverse]) .link:active{color:var(--arq-color-text-inverse)}:host([theme=inverse]) .indicator,:host([theme=inverse]) .link:after{background:var(--arq-color-icon-inverse)}:host([theme=inverse]) .chevron{color:var(--arq-color-icon-inverse)}}@media (width<=767px){:host{width:100%;display:flex}.link{width:100%;padding:var(--arq-space-gap-md) var(--arq-layout-gutter)}.label{white-space:normal;flex:1}:host([has-dropdown]) .chevron{display:none}.trailing{flex:none;display:inline-flex}.trailing .icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.trailing [data-icon=arrow-right],.current .trailing [data-icon=chevron-right]{display:none}.current .trailing [data-icon=arrow-right]{display:block}.link:after{display:none}.link:active{background:var(--arq-color-surface-selected);color:var(--arq-color-text-primary)}@media (hover:hover) and (pointer:fine){.link:not(:active):hover{background:var(--arq-color-surface-hover)}}.link:focus-visible{outline-offset:calc(var(--arq-border-strong) * -1)}}", Ui = matchMedia("(max-width: 767px)");
+var Ui = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-sm);background:var(--arq-color-surface-transparent);max-width:100%;color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;padding:0;text-decoration:none;display:inline-flex;position:relative}.label{white-space:nowrap;min-width:0}.indicator{width:var(--arq-space-gap-sm);height:var(--arq-border-strong);background:var(--arq-color-border-strong);transition-property:background-color;transition-duration:var(--arq-theme-text-duration,var(--arq-motion-duration-fast));transition-delay:var(--arq-theme-text-delay,0s);flex:none;display:none}.current .indicator{display:block}.chevron{flex:none;display:none}:host([has-dropdown]) .chevron{display:inline-flex}.chevron .icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm)}[aria-expanded=true] .chevron .icon{transform:rotate(180deg)}.trailing{display:none}.link:after{content:\"\";inset-inline:0;top:calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));height:var(--arq-border-default);background:var(--arq-color-border-strong);visibility:hidden;position:absolute}@media (hover:hover) and (pointer:fine){.link:not(.current):not([aria-expanded=true]):hover:after{visibility:visible}}.link:active{color:var(--arq-color-text-tertiary)}.link:active:after{visibility:hidden}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}@media (width>=768px){:host([theme=inverse]) .link,:host([theme=inverse]) .link:active{color:var(--arq-color-text-inverse)}:host([theme=inverse]) .indicator,:host([theme=inverse]) .link:after{background:var(--arq-color-icon-inverse)}:host([theme=inverse]) .chevron{color:var(--arq-color-icon-inverse)}}@media (width<=767px){:host{width:100%;display:flex}.link{width:100%;padding:var(--arq-space-gap-md) var(--arq-layout-gutter)}.label{white-space:normal;flex:1}:host([has-dropdown]) .chevron{display:none}.trailing{flex:none;display:inline-flex}.trailing .icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.trailing [data-icon=arrow-right],.current .trailing [data-icon=chevron-right]{display:none}.current .trailing [data-icon=arrow-right]{display:block}.link:after{display:none}.link:active{background:var(--arq-color-surface-selected);color:var(--arq-color-text-primary)}@media (hover:hover) and (pointer:fine){.link:not(:active):hover{background:var(--arq-color-surface-hover)}}.link:focus-visible{outline-offset:calc(var(--arq-border-strong) * -1)}}", Wi = matchMedia("(max-width: 767px)");
 (class extends P {
 	static tag = "arq-nav-link";
-	static styles = Hi;
+	static styles = Ui;
 	static properties = {
 		hasDropdown: { type: Boolean },
 		open: { type: Boolean },
@@ -5142,10 +5143,10 @@ var Hi = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{b
 	static template = `<a class="link"><span class="indicator" aria-hidden="true"></span><span class="label role-body"><slot></slot></span><span class="chevron">${F("chevron-down")}</span><span class="trailing">${F("chevron-right")}${F("arrow-right")}</span></a>`;
 	#e = null;
 	setup() {
-		this.#e = this.shadowRoot.querySelector(".link"), Ui.addEventListener("change", () => this.#t()), this.#t();
+		this.#e = this.shadowRoot.querySelector(".link"), Wi.addEventListener("change", () => this.#t()), this.#t();
 	}
 	#t() {
-		let e = this.shadowRoot.querySelector(".label"), t = !Ui.matches;
+		let e = this.shadowRoot.querySelector(".label"), t = !Wi.matches;
 		e.classList.toggle("role-body", t && !this.current), e.classList.toggle("role-body-medium", t && this.current), e.classList.toggle("role-heading-3", !t);
 	}
 	focus(e) {
@@ -5165,12 +5166,12 @@ var Hi = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{b
 }).define();
 //#endregion
 //#region src/components/navbar/navbar.css?inline
-var Wi = ":host{--mega-slow:var(--arq-motion-duration-panel);z-index:4;transition:transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);display:block;position:sticky;top:0}@media (width>=1024px){:host([data-arq-catalog-hidden]){transform:translateY(-100%)}}@media (width<=767px){:host([data-arq-compare-hidden]){transform:translateY(-100%)}}:host([theme=transparent]){position:fixed;inset-inline:0}.navbar{position:relative}.scrim{z-index:-1;background:var(--arq-color-overlay-scrim);opacity:0;pointer-events:none;transition:opacity var(--mega-slow) var(--arq-motion-easing-standard);position:fixed;inset:0}.mega-open .scrim{opacity:1;pointer-events:auto}.bar{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-xl);height:calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));padding:0 var(--page-gutter);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);transition-property:background-color,border-color;transition-duration:var(--arq-theme-bg-duration,var(--arq-motion-duration-fast)), var(--arq-theme-text-duration,var(--arq-motion-duration-fast));transition-delay:0s, var(--arq-theme-text-delay,0s);transition-timing-function:var(--arq-theme-bg-easing,var(--arq-motion-easing-standard)), var(--arq-theme-text-easing,var(--arq-motion-easing-standard));display:flex}.over-photo .bar{background:var(--arq-color-overlay-translucent);-webkit-backdrop-filter:blur(var(--arq-blur-backdrop))}.over-photo .logo{color:var(--arq-color-text-inverse)}.logo{flex:none}.right{align-items:center;gap:var(--arq-space-gap-xl);min-width:0;display:flex}.links{align-items:center;gap:var(--arq-space-gap-xl);display:flex}.search{align-items:center;display:flex;position:relative}.search-box{width:var(--arq-layout-search-field);position:relative}.search-dropdown{top:100%;position:absolute;inset-inline:0}.actions{display:none}.mega-wrap{top:100%;transition:grid-template-rows var(--mega-slow) var(--arq-motion-easing-standard);grid-template-rows:0fr;display:grid;position:absolute;inset-inline:0}.mega-wrap[hidden]{display:none}.mega-wrap.is-open{grid-template-rows:1fr}.mega-drawer{min-height:0;overflow:clip}.mega{opacity:0;transition-property:opacity;transition-duration:var(--arq-motion-duration-slow);transition-timing-function:var(--arq-motion-easing-standard)}.mega-wrap.is-open .mega{opacity:1}.mega-motion .bar{transition-duration:var(--mega-slow), var(--mega-slow);transition-delay:0s;transition-timing-function:var(--arq-motion-easing-standard)}.menu{box-sizing:border-box;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);width:100%;max-width:none;height:100dvh;max-height:none;color:var(--arq-color-text-primary);overscroll-behavior:contain;border:0;margin:0;padding:0;inset:0}.menu[open]{flex-direction:column;display:flex}.menu-bar{box-sizing:border-box;height:calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));padding:0 var(--page-gutter);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);flex:none;justify-content:space-between;align-items:center;display:flex}.menu-main{padding-block:var(--arq-space-gap-sm);flex-direction:column;display:flex}.menu-products{padding:var(--arq-space-gap-sm) 0 var(--arq-space-gap-xl);flex-direction:column;display:flex}.back{align-items:center;gap:var(--arq-space-gap-xs);padding:var(--arq-space-gap-sm) var(--page-gutter);color:var(--arq-color-text-secondary);text-align:start;cursor:pointer;background:0 0;border:0;display:flex}.back .icon{box-sizing:content-box;width:var(--arq-icon-md);height:var(--arq-icon-md);padding:var(--arq-space-padding-xs);color:var(--arq-color-icon-primary)}.back:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(var(--arq-border-strong) * -1)}.groups,.sub-list{padding:var(--arq-space-gap-md) var(--page-gutter) var(--arq-space-padding-md);flex-direction:column;display:flex}.menu-sub{min-height:0;padding:var(--arq-space-gap-sm) 0 var(--arq-space-gap-xl);flex-direction:column;flex:1;display:flex}.menu-sub[hidden]{display:none}.back-sub{flex:none}.sub-list{overscroll-behavior:contain;flex:0 auto;min-height:0;overflow-y:auto}.sub-cta{padding:var(--arq-space-gap-md) var(--page-gutter) 0;flex:none}.sub-cta:empty{display:none}.menu-sub--colecciones{padding-bottom:var(--arq-space-padding-md)}.menu-sub--colecciones .sub-list{padding-block:0}.menu-sub--grupos .sub-list{padding-bottom:0}.sub-group{flex-direction:column;display:flex}.sub-group+.sub-group{padding-top:var(--arq-space-padding-lg)}.sub-eyebrow{color:var(--arq-color-text-tertiary);margin:0}.sub-group-cta{margin-top:var(--arq-space-padding-md);padding-top:var(--arq-space-gap-md)}@media (width<=767px){.right{display:contents}.links,.search{display:none}.actions{align-items:center;gap:var(--arq-space-gap-sm);display:flex}}@media print{:host,:host([theme=transparent]),:host([data-arq-compare-hidden]){position:static;transform:none}.bar,.over-photo .bar{padding-inline:var(--page-gutter);background:var(--arq-color-surface-default);-webkit-backdrop-filter:none;border-bottom:none}.over-photo .logo{color:var(--arq-color-text-primary)}.right,.actions,.mega-wrap,.scrim,.menu{display:none}}", X = matchMedia("(max-width: 767px)"), Gi = matchMedia("(prefers-reduced-transparency: reduce), (prefers-contrast: more)"), Z = (e) => String(e ?? "").replace(/[&<>"]/g, (e) => ({
+var Gi = ":host{--mega-slow:var(--arq-motion-duration-panel);z-index:4;transition:transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);display:block;position:sticky;top:0}@media (width>=1024px){:host([data-arq-catalog-hidden]){transform:translateY(-100%)}}@media (width<=767px){:host([data-arq-compare-hidden]){transform:translateY(-100%)}}:host([theme=transparent]){position:fixed;inset-inline:0}.navbar{position:relative}.scrim{z-index:-1;background:var(--arq-color-overlay-scrim);opacity:0;pointer-events:none;transition:opacity var(--mega-slow) var(--arq-motion-easing-standard);position:fixed;inset:0}.mega-open .scrim{opacity:1;pointer-events:auto}.bar{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-xl);height:calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));padding:0 var(--page-gutter);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);transition-property:background-color,border-color;transition-duration:var(--arq-theme-bg-duration,var(--arq-motion-duration-fast)), var(--arq-theme-text-duration,var(--arq-motion-duration-fast));transition-delay:0s, var(--arq-theme-text-delay,0s);transition-timing-function:var(--arq-theme-bg-easing,var(--arq-motion-easing-standard)), var(--arq-theme-text-easing,var(--arq-motion-easing-standard));display:flex}.over-photo .bar{background:var(--arq-color-overlay-translucent);-webkit-backdrop-filter:blur(var(--arq-blur-backdrop))}.over-photo .logo{color:var(--arq-color-text-inverse)}.logo{flex:none}.right{align-items:center;gap:var(--arq-space-gap-xl);min-width:0;display:flex}.links{align-items:center;gap:var(--arq-space-gap-xl);display:flex}.search{align-items:center;display:flex;position:relative}.search-box{width:var(--arq-layout-search-field);position:relative}.search-dropdown{top:100%;position:absolute;inset-inline:0}.actions{display:none}.mega-wrap{top:100%;transition:grid-template-rows var(--mega-slow) var(--arq-motion-easing-standard);grid-template-rows:0fr;display:grid;position:absolute;inset-inline:0}.mega-wrap[hidden]{display:none}.mega-wrap.is-open{grid-template-rows:1fr}.mega-drawer{min-height:0;overflow:clip}.mega{opacity:0;transition-property:opacity;transition-duration:var(--arq-motion-duration-slow);transition-timing-function:var(--arq-motion-easing-standard)}.mega-wrap.is-open .mega{opacity:1}.mega-motion .bar{transition-duration:var(--mega-slow), var(--mega-slow);transition-delay:0s;transition-timing-function:var(--arq-motion-easing-standard)}.menu{box-sizing:border-box;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);width:100%;max-width:none;height:100dvh;max-height:none;color:var(--arq-color-text-primary);overscroll-behavior:contain;border:0;margin:0;padding:0;inset:0}.menu[open]{flex-direction:column;display:flex}.menu-bar{box-sizing:border-box;height:calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));padding:0 var(--page-gutter);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);flex:none;justify-content:space-between;align-items:center;display:flex}.menu-main{padding-block:var(--arq-space-gap-sm);flex-direction:column;display:flex}.menu-products{padding:var(--arq-space-gap-sm) 0 var(--arq-space-gap-xl);flex-direction:column;display:flex}.back{align-items:center;gap:var(--arq-space-gap-xs);padding:var(--arq-space-gap-sm) var(--page-gutter);color:var(--arq-color-text-secondary);text-align:start;cursor:pointer;background:0 0;border:0;display:flex}.back .icon{box-sizing:content-box;width:var(--arq-icon-md);height:var(--arq-icon-md);padding:var(--arq-space-padding-xs);color:var(--arq-color-icon-primary)}.back:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(var(--arq-border-strong) * -1)}.groups,.sub-list{padding:var(--arq-space-gap-md) var(--page-gutter) var(--arq-space-padding-md);flex-direction:column;display:flex}.menu-sub{min-height:0;padding:var(--arq-space-gap-sm) 0 var(--arq-space-gap-xl);flex-direction:column;flex:1;display:flex}.menu-sub[hidden]{display:none}.back-sub{flex:none}.sub-list{overscroll-behavior:contain;flex:0 auto;min-height:0;overflow-y:auto}.sub-cta{padding:var(--arq-space-gap-md) var(--page-gutter) 0;flex:none}.sub-cta:empty{display:none}.menu-sub--colecciones{padding-bottom:var(--arq-space-padding-md)}.menu-sub--colecciones .sub-list{padding-block:0}.menu-sub--grupos .sub-list{padding-bottom:0}.sub-group{flex-direction:column;display:flex}.sub-group+.sub-group{padding-top:var(--arq-space-padding-lg)}.sub-eyebrow{color:var(--arq-color-text-tertiary);margin:0}.sub-group-cta{margin-top:var(--arq-space-padding-md);padding-top:var(--arq-space-gap-md)}@media (width<=767px){.right{display:contents}.links,.search{display:none}.actions{align-items:center;gap:var(--arq-space-gap-sm);display:flex}}@media print{:host,:host([theme=transparent]),:host([data-arq-compare-hidden]){position:static;transform:none}.bar,.over-photo .bar{padding-inline:var(--page-gutter);background:var(--arq-color-surface-default);-webkit-backdrop-filter:none;border-bottom:none}.over-photo .logo{color:var(--arq-color-text-primary)}.right,.actions,.mega-wrap,.scrim,.menu{display:none}}", Y = matchMedia("(max-width: 767px)"), Ki = matchMedia("(prefers-reduced-transparency: reduce), (prefers-contrast: more)"), X = (e) => String(e ?? "").replace(/[&<>"]/g, (e) => ({
 	"&": "&amp;",
 	"<": "&lt;",
 	">": "&gt;",
 	"\"": "&quot;"
-})[e]), Ki = 5, qi = 150, Q = [
+})[e]), qi = 5, Ji = 150, Z = [
 	"interior",
 	"exterior",
 	"lamparas-y-artefactos",
@@ -5178,7 +5179,7 @@ var Wi = ":host{--mega-slow:var(--arq-motion-duration-panel);z-index:4;transitio
 ];
 (class extends P {
 	static tag = "arq-navbar";
-	static styles = Wi;
+	static styles = Gi;
 	static properties = {
 		theme: {
 			type: String,
@@ -5192,7 +5193,7 @@ var Wi = ":host{--mega-slow:var(--arq-motion-duration-panel);z-index:4;transitio
 				"search",
 				"menu",
 				"products",
-				...Q
+				...Z
 			],
 			default: "default"
 		},
@@ -5222,10 +5223,10 @@ var Wi = ":host{--mega-slow:var(--arq-motion-duration-panel);z-index:4;transitio
 	}
 	setup() {
 		let e = this.shadowRoot;
-		this.#c(), X.addEventListener("change", () => {
+		this.#c(), Y.addEventListener("change", () => {
 			this.#h(), this.#c();
-		}), Gi.addEventListener("change", () => this.#l()), this.addEventListener("arq:toggle", (e) => {
-			e.target.localName === "arq-nav-link" && (e.stopPropagation(), X.matches ? this.#u("products") : this.#_(e.detail.open));
+		}), Ki.addEventListener("change", () => this.#l()), this.addEventListener("arq:toggle", (e) => {
+			e.target.localName === "arq-nav-link" && (e.stopPropagation(), Y.matches ? this.#u("products") : this.#_(e.detail.open));
 		});
 		for (let t of e.querySelectorAll(".search-open, .search-open-mobile")) for (let e of ["pointerenter", "focusin"]) t.addEventListener(e, () => this.#T(), { once: !0 });
 		let t = e.querySelector(".search-sheet");
@@ -5259,14 +5260,14 @@ var Wi = ":host{--mega-slow:var(--arq-motion-duration-panel);z-index:4;transitio
 		});
 		let i = e.querySelector(".menu");
 		e.querySelector(".menu-open").addEventListener("click", () => this.#u("menu")), e.querySelector(".menu-close").addEventListener("click", () => this.#u("default")), i.addEventListener("cancel", (e) => {
-			e.preventDefault(), this.#u(Q.includes(this.mode) ? "products" : this.mode === "products" ? "menu" : "default");
+			e.preventDefault(), this.#u(Z.includes(this.mode) ? "products" : this.mode === "products" ? "menu" : "default");
 		}), e.querySelector(".back").addEventListener("click", () => this.#u("menu")), e.querySelector(".back-sub").addEventListener("click", () => this.#u("products")), e.querySelector(".groups").addEventListener("click", (e) => {
 			let t = e.target.closest("arq-mega-link[data-sub]");
 			t && this.#u(t.dataset.sub);
 		}), dr(e.querySelector(".navbar"), { when: () => this.#m }), e.querySelector(".scrim").addEventListener("click", () => this.#_(!1)), this.addEventListener("keydown", (e) => {
 			e.key === "Escape" && this.#m && (e.stopPropagation(), this.#_(!1), this.#s()?.focus());
 		}), document.addEventListener("click", (e) => {
-			e.composedPath().includes(this) || (this.#_(!1), this.mode === "search" && !X.matches && this.#D(!1));
+			e.composedPath().includes(this) || (this.#_(!1), this.mode === "search" && !Y.matches && this.#D(!1));
 		});
 		let a = () => {
 			let e = document.querySelector("arq-hero"), t = e ? e.getBoundingClientRect().bottom <= this.shadowRoot.querySelector(".bar").getBoundingClientRect().bottom : window.scrollY > 0;
@@ -5284,10 +5285,10 @@ var Wi = ":host{--mega-slow:var(--arq-motion-duration-panel);z-index:4;transitio
 	}
 	#c() {
 		let e = this.shadowRoot, t = e.querySelector("slot[name=\"links\"]");
-		e.querySelector(X.matches ? ".menu-main" : ".links").append(t), e.querySelector(".logo").size = X.matches ? "small" : "default";
+		e.querySelector(Y.matches ? ".menu-main" : ".links").append(t), e.querySelector(".logo").size = Y.matches ? "small" : "default";
 	}
 	#l() {
-		let e = this.mode === "default" || this.mode === "search" && (!X.matches || this.#d), t = this.theme === "transparent" && e && !this.#p && !this.#m && !Gi.matches;
+		let e = this.mode === "default" || this.mode === "search" && (!Y.matches || this.#d), t = this.theme === "transparent" && e && !this.#p && !this.#m && !Ki.matches;
 		this.shadowRoot.querySelector(".navbar").classList.toggle("over-photo", t);
 		for (let e of this.querySelectorAll("arq-nav-link")) e.theme = t ? "inverse" : "default";
 		for (let e of this.shadowRoot.querySelectorAll(".search-open, .actions arq-icon-button")) t ? e.setAttribute("data-arq-theme", "dark") : e.removeAttribute("data-arq-theme");
@@ -5295,12 +5296,12 @@ var Wi = ":host{--mega-slow:var(--arq-motion-duration-panel);z-index:4;transitio
 	#u(e) {
 		let t = this.shadowRoot, n = this.mode;
 		this.mode = e, this.#_(!1);
-		let r = t.querySelector(".menu"), i = X.matches, a = e === "search" && !i && !this.#d;
+		let r = t.querySelector(".menu"), i = Y.matches, a = e === "search" && !i && !this.#d;
 		t.querySelector(".search-open").hidden = a, t.querySelector(".search-box").hidden = !a, a && requestAnimationFrame(() => t.querySelector(".search-field").focus()), e !== "search" && this.#O();
-		let o = Q.includes(e), s = e === "menu" || e === "products" || o;
+		let o = Z.includes(e), s = e === "menu" || e === "products" || o;
 		if (s && !r.open ? (this.#f = t.querySelector(".menu-open"), r.showModal(), e === "menu" && t.querySelector(".menu-close").focus()) : !s && r.open && (r.close(), this.#f?.focus()), t.querySelector(".menu-main").hidden = e !== "menu", t.querySelector(".menu-products").hidden = e !== "products", t.querySelector(".menu-sub").hidden = !o, o && this.#S(e), e === "products") {
 			this.#v();
-			let e = Q.includes(n) && t.querySelector(`.groups [data-sub="${n}"]`);
+			let e = Z.includes(n) && t.querySelector(`.groups [data-sub="${n}"]`);
 			requestAnimationFrame(() => (e || t.querySelector(".back")).focus());
 		} else o ? requestAnimationFrame(() => t.querySelector(".back-sub").focus()) : e === "menu" && n === "products" && requestAnimationFrame(() => this.#s()?.focus());
 		e !== "search" && (t.querySelector(".search-screen").open = !1, t.querySelector(".search-sheet").open = !1), this.#l();
@@ -5316,7 +5317,7 @@ var Wi = ":host{--mega-slow:var(--arq-motion-duration-panel);z-index:4;transitio
 	}
 	#g = 0;
 	#_(e) {
-		let t = this.shadowRoot, n = t.querySelector(".mega-wrap"), r = t.querySelector(".navbar"), i = this.#s(), a = !!e && !X.matches;
+		let t = this.shadowRoot, n = t.querySelector(".mega-wrap"), r = t.querySelector(".navbar"), i = this.#s(), a = !!e && !Y.matches;
 		if (a && this.#v(), a && this.mode === "search" && this.#u("default"), i && (i.open = a), a !== this.#m) {
 			clearTimeout(this.#g), a && (n.hidden = !1, n.offsetHeight), r.classList.add("mega-motion"), a ? r.setAttribute("data-arq-theme", "light") : r.removeAttribute("data-arq-theme"), n.classList.toggle("is-open", a), r.classList.toggle("mega-open", a);
 			let { transitionDuration: e } = getComputedStyle(n), t = Math.max(0, ...e.split(",").map((e) => (parseFloat(e) || 0) * (/mss*$/.test(e) ? 1 : 1e3)));
@@ -5331,10 +5332,10 @@ var Wi = ":host{--mega-slow:var(--arq-motion-duration-panel);z-index:4;transitio
 	}
 	#y() {
 		let e = this.shadowRoot, t = this.#e;
-		e.querySelector(".mega").navigation = t, e.querySelector(".groups").innerHTML = Q.map((e) => ({
+		e.querySelector(".mega").navigation = t, e.querySelector(".groups").innerHTML = Z.map((e) => ({
 			id: e,
 			label: this.#b(e)
-		})).filter((e) => e.label).map((e) => `<arq-mega-link submenu data-sub="${e.id}">${Z(e.label)}</arq-mega-link>`).join(""), Q.includes(this.mode) && this.#S(this.mode);
+		})).filter((e) => e.label).map((e) => `<arq-mega-link submenu data-sub="${e.id}">${X(e.label)}</arq-mega-link>`).join(""), Z.includes(this.mode) && this.#S(this.mode);
 	}
 	#b(e) {
 		let t = this.#e;
@@ -5348,11 +5349,11 @@ var Wi = ":host{--mega-slow:var(--arq-motion-duration-panel);z-index:4;transitio
 		let t = this.shadowRoot, n = this.#e, r = t.querySelector(".menu-sub");
 		r.classList.toggle("menu-sub--colecciones", e === "colecciones"), r.classList.toggle("menu-sub--grupos", e === "lamparas-y-artefactos"), t.querySelector(".sub-label").textContent = this.#b(e);
 		let i = "", a = "";
-		if (e === "colecciones") i = (n?.collections ?? []).map((e) => `<arq-mega-link size="large" show-image href="${Z(e.href)}"${e.thumb ? ` image="${Z(e.thumb)}"` : ""}>${Z(e.label)}<span slot="meta">${Z(e.meta)}</span></arq-mega-link>`).join(""), n?.allCollections && (a = `<arq-button type="underline" show-underline href="${Z(n.allCollections.href)}">Ver todo</arq-button>`);
-		else if (e === "lamparas-y-artefactos") i = this.#x(e).map((e) => `<div class="sub-group" role="group" aria-label="${Z(e.label)}"><p class="sub-eyebrow role-label" aria-hidden="true">${Z(e.label)}</p>` + e.links.map((e) => `<arq-mega-link size="large" show-image href="${Z(e.href)}"${e.thumb ? ` image="${Z(e.thumb)}"` : ""}>${Z(e.label)}</arq-mega-link>`).join("") + `<div class="sub-group-cta"><arq-button type="underline" show-underline show-icon icon="arrow-right" href="${Z(e.all.href)}">${Z(e.all.label)}</arq-button></div></div>`).join("");
+		if (e === "colecciones") i = (n?.collections ?? []).map((e) => `<arq-mega-link size="large" show-image href="${X(e.href)}"${e.thumb ? ` image="${X(e.thumb)}"` : ""}>${X(e.label)}<span slot="meta">${X(e.meta)}</span></arq-mega-link>`).join(""), n?.allCollections && (a = `<arq-button type="underline" show-underline href="${X(n.allCollections.href)}">Ver todo</arq-button>`);
+		else if (e === "lamparas-y-artefactos") i = this.#x(e).map((e) => `<div class="sub-group" role="group" aria-label="${X(e.label)}"><p class="sub-eyebrow role-label" aria-hidden="true">${X(e.label)}</p>` + e.links.map((e) => `<arq-mega-link size="large" show-image href="${X(e.href)}"${e.thumb ? ` image="${X(e.thumb)}"` : ""}>${X(e.label)}</arq-mega-link>`).join("") + `<div class="sub-group-cta"><arq-button type="underline" show-underline show-icon icon="arrow-right" href="${X(e.all.href)}">${X(e.all.label)}</arq-button></div></div>`).join("");
 		else {
 			let t = n?.sections?.[e];
-			i = (t?.links ?? []).map((e) => `<arq-mega-link size="large" href="${Z(e.href)}">${Z(e.label)}</arq-mega-link>`).join(""), t && (a = `<arq-button type="underline" show-underline show-icon icon="arrow-right" href="${Z(t.all.href)}">${Z(t.all.label)}</arq-button>`);
+			i = (t?.links ?? []).map((e) => `<arq-mega-link size="large" href="${X(e.href)}">${X(e.label)}</arq-mega-link>`).join(""), t && (a = `<arq-button type="underline" show-underline show-icon icon="arrow-right" href="${X(t.all.href)}">${X(t.all.label)}</arq-button>`);
 		}
 		t.querySelector(".sub-list").innerHTML = i, t.querySelector(".sub-cta").innerHTML = a, t.querySelector(".sub-list").scrollTop = 0;
 	}
@@ -5364,20 +5365,20 @@ var Wi = ":host{--mega-slow:var(--arq-motion-duration-panel);z-index:4;transitio
 		this.#a = setTimeout(async () => {
 			let e = this.#o;
 			try {
-				let { results: t, total: n } = await Et(e, { limit: Ki });
+				let { results: t, total: n } = await Et(e, { limit: qi });
 				e === this.#o && this.#w(t, n);
 			} catch (e) {
 				console.error("[arq] navbar: no se pudo buscar", e);
 			}
-		}, qi);
+		}, Ji);
 	}
 	#w(e, t) {
 		let n = this.shadowRoot;
 		this.#r = e, this.#i = -1;
-		let r = this.#o, i = e.map((e) => `<arq-search-result href="${Z(e.href)}"${e.image ? ` image="${Z(e.image)}"` : ""}>${Z(e.name)}<span slot="meta">${Z(e.meta)}</span></arq-search-result>`).join("") + (e.length ? `<arq-search-see-all href="${Z(Dt(r))}" term="${Z(r)}" count="${t}"></arq-search-see-all>` : ""), a = r && !e.length, o = n.querySelector(".search-dropdown");
+		let r = this.#o, i = e.map((e) => `<arq-search-result href="${X(e.href)}"${e.image ? ` image="${X(e.image)}"` : ""}>${X(e.name)}<span slot="meta">${X(e.meta)}</span></arq-search-result>`).join("") + (e.length ? `<arq-search-see-all href="${X(Dt(r))}" term="${X(r)}" count="${t}"></arq-search-see-all>` : ""), a = r && !e.length, o = n.querySelector(".search-dropdown");
 		o.state = a ? "no-results" : "results", o.term = r, o.innerHTML = i, this.#D(!!r);
 		let s = n.querySelector(".search-screen");
-		s.innerHTML = a ? `<arq-search-dropdown state="no-results" term="${Z(r)}"></arq-search-dropdown>` : i, n.querySelector(".search-sheet").results = {
+		s.innerHTML = a ? `<arq-search-dropdown state="no-results" term="${X(r)}"></arq-search-dropdown>` : i, n.querySelector(".search-sheet").results = {
 			query: r,
 			items: e,
 			total: t,
@@ -5406,11 +5407,11 @@ var Wi = ":host{--mega-slow:var(--arq-motion-duration-panel);z-index:4;transitio
 	}
 	#k() {
 		let e = this.shadowRoot;
-		return this.#d ? e.querySelector(".search-sheet").items : [...(X.matches ? e.querySelector(".search-screen") : e.querySelector(".search-dropdown")).querySelectorAll("arq-search-result")];
+		return this.#d ? e.querySelector(".search-sheet").items : [...(Y.matches ? e.querySelector(".search-screen") : e.querySelector(".search-dropdown")).querySelectorAll("arq-search-result")];
 	}
 	#A(e) {
 		let t = this.#k();
-		t.length && (this.#i = this.#i < 0 && e < 0 ? t.length - 1 : (this.#i + e + t.length) % t.length, t.forEach((e, t) => e.active = t === this.#i), !X.matches && !this.#d && this.#D(!0), this.#j());
+		t.length && (this.#i = this.#i < 0 && e < 0 ? t.length - 1 : (this.#i + e + t.length) % t.length, t.forEach((e, t) => e.active = t === this.#i), !Y.matches && !this.#d && this.#D(!0), this.#j());
 	}
 	#j() {
 		let e = this.#r[this.#i], t = e ? `${e.name}, ${e.meta}, ${this.#i + 1} de ${this.#r.length}` : "";
@@ -5423,10 +5424,10 @@ var Wi = ":host{--mega-slow:var(--arq-motion-duration-panel);z-index:4;transitio
 }).define();
 //#endregion
 //#region src/components/contact-item/contact-item.css?inline
-var Ji = ":host{min-width:0;display:block}.item{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;display:flex;position:relative}.label{color:var(--arq-color-text-tertiary)}.value{max-width:100%;color:var(--arq-color-text-primary);overflow-wrap:anywhere;text-decoration:none}@media (hover:hover) and (pointer:fine){.value[href]:hover{text-decoration:underline;text-decoration-thickness:var(--arq-border-default);text-underline-offset:var(--arq-space-padding-2xs)}}.value:focus-visible{outline:none}.item:has(.value:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}";
+var Yi = ":host{min-width:0;display:block}.item{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;display:flex;position:relative}.label{color:var(--arq-color-text-tertiary)}.value{max-width:100%;color:var(--arq-color-text-primary);overflow-wrap:anywhere;text-decoration:none}@media (hover:hover) and (pointer:fine){.value[href]:hover{text-decoration:underline;text-decoration-thickness:var(--arq-border-default);text-underline-offset:var(--arq-space-padding-2xs)}}.value:focus-visible{outline:none}.item:has(.value:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}";
 (class extends P {
 	static tag = "arq-contact-item";
-	static styles = Ji;
+	static styles = Yi;
 	static properties = { href: { type: String } };
 	static template = "<div class=\"item\"><span class=\"label role-body-sm\"><slot name=\"label\"></slot></span><a class=\"value role-body-lg-regular\"><slot></slot></a></div>";
 	focus(e) {
@@ -5439,14 +5440,14 @@ var Ji = ":host{min-width:0;display:block}.item{align-items:flex-start;gap:var(-
 }).define();
 //#endregion
 //#region src/components/link-list/link-list.css?inline
-var Yi = ":host{min-width:0;display:block}.list{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.title{color:var(--arq-color-text-secondary)}.links{align-self:stretch;align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}", Xi = 0;
+var Xi = ":host{min-width:0;display:block}.list{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.title{color:var(--arq-color-text-secondary)}.links{align-self:stretch;align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}", Zi = 0;
 (class extends P {
 	static tag = "arq-link-list";
-	static styles = Yi;
+	static styles = Xi;
 	static template = "<nav class=\"list\"><span class=\"title role-body-lg-regular\"><slot name=\"title\"></slot></span><div class=\"links\" role=\"list\"><slot></slot></div></nav>";
 	setup() {
 		let e = this.shadowRoot, t = e.querySelector(".title");
-		t.id = `arq-link-list-${++Xi}`, e.querySelector("nav").setAttribute("aria-labelledby", t.id);
+		t.id = `arq-link-list-${++Zi}`, e.querySelector("nav").setAttribute("aria-labelledby", t.id);
 		let n = e.querySelector("slot:not([name])"), r = () => {
 			for (let e of n.assignedElements()) e.setAttribute("role", "listitem");
 		};
@@ -5455,10 +5456,10 @@ var Yi = ":host{min-width:0;display:block}.list{align-items:flex-start;gap:var(-
 }).define();
 //#endregion
 //#region src/components/option-tile/option-tile.css?inline
-var Zi = ":host{cursor:pointer;flex:0 auto;min-width:0;display:flex}.tile{box-sizing:border-box;min-width:0;padding:var(--arq-space-padding-sm-md) var(--arq-space-padding-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);color:var(--arq-color-text-secondary);text-align:center;flex:1;justify-content:center;align-items:center;display:flex}:host(:not([disabled]):not([selected]):hover) .tile{border-bottom-color:var(--arq-color-border-hover);background:var(--arq-color-surface-faint);color:var(--arq-color-text-primary)}:host([selected]) .tile{border-bottom-color:var(--arq-color-border-strong);background:var(--arq-color-surface-soft);color:var(--arq-color-text-primary)}:host([disabled]){cursor:default}:host([disabled]) .tile{border-bottom-color:var(--arq-color-border-disabled);color:var(--arq-color-text-disabled);text-decoration:line-through}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+var Qi = ":host{cursor:pointer;flex:0 auto;min-width:0;display:flex}.tile{box-sizing:border-box;min-width:0;padding:var(--arq-space-padding-sm-md) var(--arq-space-padding-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);color:var(--arq-color-text-secondary);text-align:center;flex:1;justify-content:center;align-items:center;display:flex}:host(:not([disabled]):not([selected]):hover) .tile{border-bottom-color:var(--arq-color-border-hover);background:var(--arq-color-surface-faint);color:var(--arq-color-text-primary)}:host([selected]) .tile{border-bottom-color:var(--arq-color-border-strong);background:var(--arq-color-surface-soft);color:var(--arq-color-text-primary)}:host([disabled]){cursor:default}:host([disabled]) .tile{border-bottom-color:var(--arq-color-border-disabled);color:var(--arq-color-text-disabled);text-decoration:line-through}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
 (class extends P {
 	static tag = "arq-option-tile";
-	static styles = Zi;
+	static styles = Qi;
 	static properties = {
 		selected: { type: Boolean },
 		disabled: { type: Boolean },
@@ -5474,10 +5475,10 @@ var Zi = ":host{cursor:pointer;flex:0 auto;min-width:0;display:flex}.tile{box-si
 }).define();
 //#endregion
 //#region src/components/swatch-picker/swatch-picker.css?inline
-var Qi = ":host{align-items:center;gap:var(--arq-space-gap-sm-md);flex-wrap:wrap;display:flex}";
+var $i = ":host{align-items:center;gap:var(--arq-space-gap-sm-md);flex-wrap:wrap;display:flex}";
 (class extends P {
 	static tag = "arq-swatch-picker";
-	static styles = Qi;
+	static styles = $i;
 	static properties = { label: { type: String } };
 	static template = "<slot></slot>";
 	setup() {
@@ -5501,10 +5502,10 @@ var Qi = ":host{align-items:center;gap:var(--arq-space-gap-sm-md);flex-wrap:wrap
 }).define();
 //#endregion
 //#region src/components/option-group/option-group.css?inline
-var $i = ":host{display:block}.group{align-items:flex-start;gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.label{color:var(--arq-color-text-secondary)}.options{gap:var(--arq-space-gap-sm);flex-wrap:wrap;align-self:stretch;display:flex}:host([type=swatches]) .options,:host([type=select]) .options{display:block}";
+var ea = ":host{display:block}.group{align-items:flex-start;gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.label{color:var(--arq-color-text-secondary)}.options{gap:var(--arq-space-gap-sm);flex-wrap:wrap;align-self:stretch;display:flex}:host([type=swatches]) .options,:host([type=select]) .options{display:block}";
 (class extends P {
 	static tag = "arq-option-group";
-	static styles = $i;
+	static styles = ea;
 	static properties = {
 		label: { type: String },
 		type: {
@@ -5532,10 +5533,10 @@ var $i = ":host{display:block}.group{align-items:flex-start;gap:var(--arq-space-
 }).define();
 //#endregion
 //#region src/components/choice-chip/choice-chip.css?inline
-var ea = ":host{vertical-align:middle;cursor:pointer;max-width:100%;display:inline-flex}.chip{box-sizing:border-box;max-width:100%;padding:var(--arq-space-padding-sm) var(--arq-space-padding-md);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);color:var(--arq-color-text-primary);white-space:nowrap;flex:1;justify-content:center;align-items:center;display:inline-flex}@media (hover:hover) and (pointer:fine){:host(:not([disabled]):hover) .chip{border-color:var(--arq-color-border-strong)}}:host([selected]) .chip{border-color:var(--arq-color-border-strong);background:var(--arq-color-surface-inverse);color:var(--arq-color-text-inverse)}:host([disabled]){cursor:default}:host([disabled]) .chip{border-color:var(--arq-color-border-disabled);color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+var ta = ":host{vertical-align:middle;cursor:pointer;max-width:100%;display:inline-flex}.chip{box-sizing:border-box;max-width:100%;padding:var(--arq-space-padding-sm) var(--arq-space-padding-md);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);color:var(--arq-color-text-primary);white-space:nowrap;flex:1;justify-content:center;align-items:center;display:inline-flex}@media (hover:hover) and (pointer:fine){:host(:not([disabled]):hover) .chip{border-color:var(--arq-color-border-strong)}}:host([selected]) .chip{border-color:var(--arq-color-border-strong);background:var(--arq-color-surface-inverse);color:var(--arq-color-text-inverse)}:host([disabled]){cursor:default}:host([disabled]) .chip{border-color:var(--arq-color-border-disabled);color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
 (class extends P {
 	static tag = "arq-choice-chip";
-	static styles = ea;
+	static styles = ta;
 	static formAssociated = !0;
 	static properties = {
 		selected: { type: Boolean },
@@ -5561,10 +5562,10 @@ var ea = ":host{vertical-align:middle;cursor:pointer;max-width:100%;display:inli
 }).define();
 //#endregion
 //#region src/components/input/input.css?inline
-var ta = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.label{color:var(--arq-color-text-primary)}.field{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-sm);padding:calc(var(--arq-space-padding-sm) - var(--arq-border-default)) var(--arq-space-padding-sm-md);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);display:flex}@media (hover:hover) and (pointer:fine){:host(:not([disabled]):not([error]):not([open])) .field:hover{border-color:var(--arq-color-border-hover)}}.control{box-sizing:border-box;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);width:100%;min-width:0;color:var(--arq-color-text-primary);border:0;flex:1;margin:0;padding:0}.control::placeholder{color:var(--arq-color-text-tertiary);opacity:1}:host([type=textarea]) .field{align-items:stretch}textarea.control{resize:vertical}:host([type=select]) .field{position:relative}.trigger{align-items:center;gap:var(--arq-space-gap-sm);text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);display:flex}.select-value{overflow-wrap:break-word;flex:auto;min-width:0}.select-value.placeholder{color:var(--arq-color-text-tertiary)}.chevron{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary)}:host(:not([open])) [data-icon=chevron-up],:host([open]) [data-icon=chevron-down]{display:none}.menu{top:calc(100% + var(--arq-border-default));left:calc(-1 * var(--arq-border-default));z-index:2;width:calc(100% + 2 * var(--arq-border-default));transform-origin:top;max-width:none;transition:opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out), transform var(--arq-motion-duration-base) var(--arq-motion-easing-out);position:absolute}@starting-style{.menu:not([hidden]){opacity:0;transform:scale(.97)}}:host([open]) .field,:host([open]) .field:focus-within{border-color:var(--arq-color-border-strong)}:host([disabled]) .trigger{cursor:default}:host([disabled]) .icon{color:var(--arq-color-icon-disabled)}.helper{color:var(--arq-color-text-tertiary);margin:0}.error{color:var(--arq-color-text-error);margin:0}.error-wrap{margin-top:calc(-1 * var(--arq-space-gap-sm));transition:grid-template-rows var(--arq-motion-duration-base) var(--arq-motion-easing-out);grid-template-rows:1fr;display:grid}.error-wrap>.error{min-height:0;padding-top:var(--arq-space-gap-sm);transition:opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out);overflow:hidden}@starting-style{.error-wrap:not([hidden]){grid-template-rows:0fr}.error-wrap:not([hidden])>.error{opacity:0}}.control:focus,.control:focus-visible{outline:none}.field:has(.control:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host([error]) .field,:host([error]) .field:focus-within{border-color:var(--arq-color-border-error)}:host([disabled]) .label,:host([disabled]) .helper,:host([disabled]) .control,:host([disabled]) .control::placeholder{color:var(--arq-color-text-disabled)}:host([disabled]) .field{border-color:var(--arq-color-border-disabled)}@media (prefers-contrast:more){.field{border-color:var(--arq-color-border-strong)}}", na = (() => {
+var na = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.label{color:var(--arq-color-text-primary)}.field{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-sm);padding:calc(var(--arq-space-padding-sm) - var(--arq-border-default)) var(--arq-space-padding-sm-md);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);display:flex}@media (hover:hover) and (pointer:fine){:host(:not([disabled]):not([error]):not([open])) .field:hover{border-color:var(--arq-color-border-hover)}}.control{box-sizing:border-box;border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);width:100%;min-width:0;color:var(--arq-color-text-primary);border:0;flex:1;margin:0;padding:0}.control::placeholder{color:var(--arq-color-text-tertiary);opacity:1}:host([type=textarea]) .field{align-items:stretch}textarea.control{resize:vertical}:host([type=select]) .field{position:relative}.trigger{align-items:center;gap:var(--arq-space-gap-sm);text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);display:flex}.select-value{overflow-wrap:break-word;flex:auto;min-width:0}.select-value.placeholder{color:var(--arq-color-text-tertiary)}.chevron{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary)}:host(:not([open])) [data-icon=chevron-up],:host([open]) [data-icon=chevron-down]{display:none}.menu{top:calc(100% + var(--arq-border-default));left:calc(-1 * var(--arq-border-default));z-index:2;width:calc(100% + 2 * var(--arq-border-default));transform-origin:top;max-width:none;transition:opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out), transform var(--arq-motion-duration-base) var(--arq-motion-easing-out);position:absolute}@starting-style{.menu:not([hidden]){opacity:0;transform:scale(.97)}}:host([open]) .field,:host([open]) .field:focus-within{border-color:var(--arq-color-border-strong)}:host([disabled]) .trigger{cursor:default}:host([disabled]) .icon{color:var(--arq-color-icon-disabled)}.helper{color:var(--arq-color-text-tertiary);margin:0}.error{color:var(--arq-color-text-error);margin:0}.error-wrap{margin-top:calc(-1 * var(--arq-space-gap-sm));transition:grid-template-rows var(--arq-motion-duration-base) var(--arq-motion-easing-out);grid-template-rows:1fr;display:grid}.error-wrap>.error{min-height:0;padding-top:var(--arq-space-gap-sm);transition:opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out);overflow:hidden}@starting-style{.error-wrap:not([hidden]){grid-template-rows:0fr}.error-wrap:not([hidden])>.error{opacity:0}}.control:focus,.control:focus-visible{outline:none}.field:has(.control:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host([error]) .field,:host([error]) .field:focus-within{border-color:var(--arq-color-border-error)}:host([disabled]) .label,:host([disabled]) .helper,:host([disabled]) .control,:host([disabled]) .control::placeholder{color:var(--arq-color-text-disabled)}:host([disabled]) .field{border-color:var(--arq-color-border-disabled)}@media (prefers-contrast:more){.field{border-color:var(--arq-color-border-strong)}}", ra = (() => {
 	let e = 0;
 	return () => `arq-input-${++e}`;
-})(), ra = 4, ia = [
+})(), ia = 4, aa = [
 	"placeholder",
 	"autocomplete",
 	"required",
@@ -5578,7 +5579,7 @@ var ta = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex
 ];
 (class extends P {
 	static tag = "arq-input";
-	static styles = ta;
+	static styles = na;
 	static formAssociated = !0;
 	static properties = {
 		type: {
@@ -5616,9 +5617,9 @@ var ta = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex
 	#e = this.attachInternals();
 	#t = null;
 	#n = {
-		control: na(),
-		helper: na(),
-		error: na()
+		control: ra(),
+		helper: ra(),
+		error: ra()
 	};
 	#r = "";
 	#i = [];
@@ -5663,8 +5664,8 @@ var ta = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex
 		let t = this.#t, n = this.shadowRoot;
 		t.localName === "input" && (t.type = this.inputType);
 		let r = !!this.#o;
-		for (let e of r ? [] : ia) this.hasAttribute(e) ? t.setAttribute(e, this.getAttribute(e)) : t.removeAttribute(e);
-		t.localName === "textarea" && !this.hasAttribute("rows") && (t.rows = ra), t.disabled = this.disabled, n.querySelector(".label").classList.toggle("visually-hidden", !this.showLabel);
+		for (let e of r ? [] : aa) this.hasAttribute(e) ? t.setAttribute(e, this.getAttribute(e)) : t.removeAttribute(e);
+		t.localName === "textarea" && !this.hasAttribute("rows") && (t.rows = ia), t.disabled = this.disabled, n.querySelector(".label").classList.toggle("visually-hidden", !this.showLabel);
 		let i = !!this.error, a = n.querySelector(".helper"), o = n.querySelector(".error");
 		o.textContent = this.error ?? "", n.querySelector(".error-wrap").hidden = !i;
 		let s = n.querySelector(".live");
@@ -5734,26 +5735,26 @@ var ta = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex
 }).define();
 //#endregion
 //#region src/components/file-upload/file-upload.css?inline
-var aa = ":host{width:100%;display:block}.upload{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.label{color:var(--arq-color-text-primary)}.zone,.attached{box-sizing:border-box;padding:var(--arq-space-padding-lg);border:var(--arq-border-default) dashed var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);align-items:center;display:flex;position:relative}.zone{cursor:pointer;-webkit-user-select:none;user-select:none}.attached{justify-content:space-between;gap:var(--arq-space-gap-sm-md);border-style:solid}.empty{align-items:center;gap:var(--arq-space-gap-sm-md);min-width:0;display:flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}.prompt,.file{min-width:0;color:var(--arq-color-text-primary)}.file{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.remove{flex:none}.helper{color:var(--arq-color-text-tertiary);margin:0}.error{color:var(--arq-color-text-error);margin:0}.drop{min-width:0;color:var(--arq-color-text-primary);display:none}:host(:state(drag-over)) .zone{border-color:var(--arq-color-border-strong);background:var(--arq-color-surface-hover)}:host(:state(drag-over)) .prompt{display:none}:host(:state(drag-over)) .drop{display:inline}:host(:state(error)) .zone{border-color:var(--arq-color-border-error)}:host([disabled]) .zone{border-color:var(--arq-color-border-disabled);cursor:default}:host([disabled]) .label,:host([disabled]) .prompt,:host([disabled]) .file,:host([disabled]) .helper{color:var(--arq-color-text-disabled)}:host([disabled]) .icon{color:var(--arq-color-icon-disabled)}.zone:has(.native:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}@media (prefers-contrast:more){.zone,.attached{border-color:var(--arq-color-border-strong)}}", oa = ".pdf,.dwg,.jpg,.jpeg,.png", sa = 10, ca = {
+var oa = ":host{width:100%;display:block}.upload{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}.label{color:var(--arq-color-text-primary)}.zone,.attached{box-sizing:border-box;padding:var(--arq-space-padding-lg);border:var(--arq-border-default) dashed var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);align-items:center;display:flex;position:relative}.zone{cursor:pointer;-webkit-user-select:none;user-select:none}.attached{justify-content:space-between;gap:var(--arq-space-gap-sm-md);border-style:solid}.empty{align-items:center;gap:var(--arq-space-gap-sm-md);min-width:0;display:flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}.prompt,.file{min-width:0;color:var(--arq-color-text-primary)}.file{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.remove{flex:none}.helper{color:var(--arq-color-text-tertiary);margin:0}.error{color:var(--arq-color-text-error);margin:0}.drop{min-width:0;color:var(--arq-color-text-primary);display:none}:host(:state(drag-over)) .zone{border-color:var(--arq-color-border-strong);background:var(--arq-color-surface-hover)}:host(:state(drag-over)) .prompt{display:none}:host(:state(drag-over)) .drop{display:inline}:host(:state(error)) .zone{border-color:var(--arq-color-border-error)}:host([disabled]) .zone{border-color:var(--arq-color-border-disabled);cursor:default}:host([disabled]) .label,:host([disabled]) .prompt,:host([disabled]) .file,:host([disabled]) .helper{color:var(--arq-color-text-disabled)}:host([disabled]) .icon{color:var(--arq-color-icon-disabled)}.zone:has(.native:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}@media (prefers-contrast:more){.zone,.attached{border-color:var(--arq-color-border-strong)}}", sa = ".pdf,.dwg,.jpg,.jpeg,.png", ca = 10, la = {
 	type: "El formato no está admitido.",
 	size: (e) => `El archivo supera los ${e} MB.`
 };
-function la(e) {
+function ua(e) {
 	let t = [...new Set(e.split(",").map((e) => e.trim().replace(/^\./, "").toUpperCase()).filter(Boolean).map((e) => e === "JPEG" ? "JPG" : e))];
 	return t.length > 1 ? `${t.slice(0, -1).join(", ")} o ${t.at(-1)}` : t.join("");
 }
 (class extends P {
 	static tag = "arq-file-upload";
-	static styles = aa;
+	static styles = oa;
 	static formAssociated = !0;
 	static properties = {
 		accept: {
 			type: String,
-			default: oa
+			default: sa
 		},
 		maxSize: {
 			type: Number,
-			default: sa
+			default: ca
 		},
 		name: { type: String },
 		required: { type: Boolean },
@@ -5811,8 +5812,8 @@ function la(e) {
 		this.#s(e, ""), this.emit("change", { file: e });
 	}
 	#o(e) {
-		let t = this.accept.split(",").map((e) => e.trim().toLowerCase()).filter(Boolean), n = `.${e.name.split(".").pop()?.toLowerCase()}`, r = t.length ? ` Formatos: ${la(this.accept)}.` : "";
-		return t.length && !t.includes(n) ? ca.type + r : this.maxSize && e.size > this.maxSize * 1024 * 1024 ? ca.size(this.maxSize) + r : "";
+		let t = this.accept.split(",").map((e) => e.trim().toLowerCase()).filter(Boolean), n = `.${e.name.split(".").pop()?.toLowerCase()}`, r = t.length ? ` Formatos: ${ua(this.accept)}.` : "";
+		return t.length && !t.includes(n) ? la.type + r : this.maxSize && e.size > this.maxSize * 1024 * 1024 ? la.size(this.maxSize) + r : "";
 	}
 	#s(e, t) {
 		this.#n = e, this.#r = t, this.#e.setFormValue(e), this.required && !e ? this.#e.setValidity({ valueMissing: !0 }, "Adjuntá un archivo.", this.#t) : this.#e.setValidity({}), this.#l();
@@ -5831,10 +5832,10 @@ function la(e) {
 }).define();
 //#endregion
 //#region src/components/section-header/section-header.css?inline
-var ua = ":host{min-width:0;display:block}.header{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-lg);min-width:0;display:flex}.text{gap:var(--arq-space-gap-sm-md);flex-direction:column;min-width:0;display:flex}.title,.description{overflow-wrap:break-word;margin:0}.title{color:var(--arq-color-text-primary)}.description{color:var(--arq-color-text-secondary)}.link{flex:none}:host([type=description]) .text{display:contents}:host([type=description]) .description{flex:0 1 var(--arq-layout-measure);max-width:var(--arq-layout-measure)}:host([type=stacked]) .header{flex-direction:column;justify-content:flex-start;align-items:flex-start}:host([type=stacked]) .text{align-self:stretch}@media (width<=767px){.header{flex-direction:column;justify-content:flex-start;align-items:flex-start}.text{width:100%}:host([type=description]) .text{display:flex}:host([type=description]) .description{flex:none;max-width:none}:host([type=link]) .link,:host(:not([type])) .link{display:none}}", da = ["description", "stacked"], fa = ["link", "stacked"];
+var da = ":host{min-width:0;display:block}.header{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-lg);min-width:0;display:flex}.text{gap:var(--arq-space-gap-sm-md);flex-direction:column;min-width:0;display:flex}.title,.description{overflow-wrap:break-word;margin:0}.title{color:var(--arq-color-text-primary)}.description{color:var(--arq-color-text-secondary)}.link{flex:none}:host([type=description]) .text{display:contents}:host([type=description]) .description{flex:0 1 var(--arq-layout-measure);max-width:var(--arq-layout-measure)}:host([type=stacked]) .header{flex-direction:column;justify-content:flex-start;align-items:flex-start}:host([type=stacked]) .text{align-self:stretch}@media (width<=767px){.header{flex-direction:column;justify-content:flex-start;align-items:flex-start}.text{width:100%}:host([type=description]) .text{display:flex}:host([type=description]) .description{flex:none;max-width:none}:host([type=link]) .link,:host(:not([type])) .link{display:none}}", fa = ["description", "stacked"], pa = ["link", "stacked"];
 (class extends P {
 	static tag = "arq-section-header";
-	static styles = ua;
+	static styles = da;
 	static properties = {
 		type: {
 			type: String,
@@ -5854,17 +5855,17 @@ var ua = ":host{min-width:0;display:block}.header{justify-content:space-between;
 	}
 	update() {
 		let e = this.shadowRoot, t = e.querySelector("slot[name=\"description\"]").assignedNodes({ flatten: !0 }).some((e) => e.textContent.trim());
-		e.querySelector(".description").hidden = !da.includes(this.type) || !t;
-		let n = e.querySelector(".link"), r = fa.includes(this.type) && !!this.href;
+		e.querySelector(".description").hidden = !fa.includes(this.type) || !t;
+		let n = e.querySelector(".link"), r = pa.includes(this.type) && !!this.href;
 		n.hidden = !r, r ? n.setAttribute("href", this.href) : n.removeAttribute("href");
 	}
 }).define();
 //#endregion
 //#region src/components/page-header/page-header.css?inline
-var pa = ":host{min-width:0;display:block}.header{align-items:flex-start;gap:var(--arq-space-gap-xl-2xl);padding:var(--arq-space-section-sm) var(--page-gutter) var(--arq-space-section-xs);flex-direction:column;display:flex}.row{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-lg);align-self:stretch;min-width:0;display:flex}.main,.heading{flex-direction:column;min-width:0;display:flex}.heading{gap:var(--arq-space-gap-lg)}.title,.description{overflow-wrap:break-word;margin:0}.title{color:var(--arq-color-text-primary)}.description{color:var(--arq-color-text-secondary)}.action{flex:none}:host(:not([type=detail])) .main{display:contents}:host(:not([type=detail])) .description{flex:0 1 var(--arq-layout-measure);max-width:var(--arq-layout-measure)}:host([type=detail]) .header{padding-block:var(--arq-space-section-xs) var(--arq-space-section-sm)}:host([type=detail]) .main{gap:var(--arq-space-gap-md)}:host([type=detail]) .description{max-width:var(--arq-layout-measure-wide)}@media (width<=767px){.row{align-items:stretch;gap:var(--arq-space-gap-lg);flex-direction:column}:host(:not([type=detail])) .main{gap:var(--arq-space-gap-lg);display:flex}:host(:not([type=detail])) .description,:host([type=detail]) .main{flex:none;max-width:none}:host([type=detail]) .row{gap:var(--arq-space-gap-xl-2xl)}.action ::slotted(*){width:100%}}@media print{.back,.breadcrumb,.description,.action{display:none}}", ma = matchMedia("(max-width: 767px)");
+var ma = ":host{min-width:0;display:block}.header{align-items:flex-start;gap:var(--arq-space-gap-xl-2xl);padding:var(--arq-space-section-sm) var(--page-gutter) var(--arq-space-section-xs);flex-direction:column;display:flex}.row{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-lg);align-self:stretch;min-width:0;display:flex}.main,.heading{flex-direction:column;min-width:0;display:flex}.heading{gap:var(--arq-space-gap-lg)}.title,.description{overflow-wrap:break-word;margin:0}.title{color:var(--arq-color-text-primary)}.description{color:var(--arq-color-text-secondary)}.action{flex:none}:host(:not([type=detail])) .main{display:contents}:host(:not([type=detail])) .description{flex:0 1 var(--arq-layout-measure);max-width:var(--arq-layout-measure)}:host([type=detail]) .header{padding-block:var(--arq-space-section-xs) var(--arq-space-section-sm)}:host([type=detail]) .main{gap:var(--arq-space-gap-md)}:host([type=detail]) .description{max-width:var(--arq-layout-measure-wide)}@media (width<=767px){.row{align-items:stretch;gap:var(--arq-space-gap-lg);flex-direction:column}:host(:not([type=detail])) .main{gap:var(--arq-space-gap-lg);display:flex}:host(:not([type=detail])) .description,:host([type=detail]) .main{flex:none;max-width:none}:host([type=detail]) .row{gap:var(--arq-space-gap-xl-2xl)}.action ::slotted(*){width:100%}}@media print{.back,.breadcrumb,.description,.action{display:none}}", ha = matchMedia("(max-width: 767px)");
 (class extends P {
 	static tag = "arq-page-header";
-	static styles = pa;
+	static styles = ma;
 	static properties = {
 		type: {
 			type: String,
@@ -5880,14 +5881,14 @@ var pa = ":host{min-width:0;display:block}.header{align-items:flex-start;gap:var
 	static template = "<div class=\"header\"><arq-button class=\"back\" type=\"underline\" show-leading-icon leading-icon=\"chevron-left\" hidden><slot name=\"back\"></slot></arq-button><div class=\"row\"><div class=\"main\"><div class=\"heading\"><div class=\"breadcrumb\" hidden><slot name=\"breadcrumb\"></slot></div><div class=\"title role-display\"><slot name=\"title\"></slot></div></div><p class=\"description role-body-lg\" hidden><slot name=\"description\"></slot></p></div><div class=\"action\" hidden><slot name=\"action\"></slot></div></div></div>";
 	setup() {
 		for (let e of this.shadowRoot.querySelectorAll("slot[name]")) e.addEventListener("slotchange", () => this.update());
-		ma.addEventListener("change", () => this.update());
+		ha.addEventListener("change", () => this.update());
 	}
 	update() {
 		let e = this.shadowRoot, t = (t) => e.querySelector(`slot[name="${t}"]`).assignedNodes({ flatten: !0 }).some((e) => e.nodeType === Node.ELEMENT_NODE || e.textContent.trim()), n = this.type === "detail";
 		e.querySelector(".breadcrumb").hidden = !this.showBreadcrumb || !t("breadcrumb"), e.querySelector(".description").hidden = !this.showDescription || !t("description"), e.querySelector(".action").hidden = !n || !this.showAction || !t("action");
 		let r = e.querySelector(".back"), i = n && this.showBack && !!this.backHref && t("back");
 		r.hidden = !i, i ? r.setAttribute("href", this.backHref) : r.removeAttribute("href");
-		let a = !n && !ma.matches, o = e.querySelector(".title");
+		let a = !n && !ha.matches, o = e.querySelector(".title");
 		o.classList.toggle("role-display-lg", a), o.classList.toggle("role-display", !a);
 		let s = e.querySelector(".description");
 		s.classList.toggle("role-body", a), s.classList.toggle("role-body-lg", !a);
@@ -5895,10 +5896,10 @@ var pa = ":host{min-width:0;display:block}.header{align-items:flex-start;gap:var
 }).define();
 //#endregion
 //#region src/components/faq-item/faq-item.css?inline
-var ha = ":host{min-width:0;display:block}:host([data-arq-empty]){display:none}.item{border-top:var(--arq-border-default) solid var(--arq-color-border-default)}.trigger{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-lg);width:100%;padding:var(--arq-space-padding-lg) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .trigger{padding-bottom:var(--arq-space-gap-sm-md)}.trigger{transition:padding-bottom var(--arq-motion-duration-expand) var(--arq-motion-easing-out), background-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard), color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard)}.question{overflow-wrap:break-word;flex:1 1 0;min-width:0}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.answer{max-width:var(--arq-layout-measure-wide);padding-bottom:var(--arq-space-padding-lg);color:var(--arq-color-text-secondary);overflow-wrap:break-word}::slotted(a){color:var(--arq-color-text-primary);text-decoration:underline}@media (hover:hover) and (pointer:fine){:host(:not([open])) .trigger:hover{background:var(--arq-color-surface-faint)}}.item:has(.trigger:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus{outline:none}@media (width<=767px){.answer{max-width:none}}";
+var ga = ":host{min-width:0;display:block}:host([data-arq-empty]){display:none}.item{border-top:var(--arq-border-default) solid var(--arq-color-border-default)}.trigger{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-lg);width:100%;padding:var(--arq-space-padding-lg) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .trigger{padding-bottom:var(--arq-space-gap-sm-md)}.trigger{transition:padding-bottom var(--arq-motion-duration-expand) var(--arq-motion-easing-out), background-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard), color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard)}.question{overflow-wrap:break-word;flex:1 1 0;min-width:0}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.answer{max-width:var(--arq-layout-measure-wide);padding-bottom:var(--arq-space-padding-lg);color:var(--arq-color-text-secondary);overflow-wrap:break-word}::slotted(a){color:var(--arq-color-text-primary);text-decoration:underline}@media (hover:hover) and (pointer:fine){:host(:not([open])) .trigger:hover{background:var(--arq-color-surface-faint)}}.item:has(.trigger:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus{outline:none}@media (width<=767px){.answer{max-width:none}}";
 (class extends P {
 	static tag = "arq-faq-item";
-	static styles = ha;
+	static styles = ga;
 	static properties = { open: { type: Boolean } };
 	static template = `<div class="item"><button type="button" class="trigger"><span class="question role-heading-3-light"><slot name="question"></slot></span>${F("plus")}${F("minus")}</button><div class="answer-wrap" part="panel"><div class="answer-clip"><div class="answer role-body"><slot></slot></div></div></div></div>`;
 	setup() {
@@ -5916,15 +5917,15 @@ var ha = ":host{min-width:0;display:block}:host([data-arq-empty]){display:none}.
 }).define();
 //#endregion
 //#region src/components/footer/footer.css?inline
-var ga = ":host{display:block}.footer{grid-template-columns:minmax(var(--arq-layout-footer-tagline), 1fr) minmax(0, auto);column-gap:var(--arq-space-gap-xl);row-gap:var(--arq-space-gap-md);padding:var(--arq-space-section-sm) var(--page-gutter);border-top:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-default);transition-property:background-color;transition-duration:var(--arq-illumination-bg-duration);transition-delay:0s;transition-timing-function:var(--arq-illumination-bg-easing);grid-template-rows:auto 1fr;grid-template-areas:\"brand columns\"\"legal columns\";display:grid}.brand{align-items:flex-start;gap:var(--arq-space-gap-md);flex-direction:column;grid-area:brand;min-width:0;display:flex}.tagline{max-width:var(--arq-layout-footer-tagline);color:var(--arq-color-text-secondary);overflow-wrap:break-word;margin:0}.legal{color:var(--arq-color-text-tertiary);text-transform:uppercase;grid-area:legal;align-self:start;margin:0}.columns{align-items:flex-start;gap:var(--arq-space-gap-xl);grid-area:columns;display:flex}.column{width:var(--arq-layout-footer-column);align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;flex:0 auto;min-width:0;display:flex}.title{padding-bottom:var(--arq-space-gap-sm);color:var(--arq-color-text-primary);margin:0}.list{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;max-width:100%;display:flex}@media (width<=767px){.footer{row-gap:var(--arq-space-gap-xl);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"brand\"\"columns\"\"legal\"}.columns{row-gap:var(--arq-space-gap-xl);flex-wrap:wrap}.column{flex:1 1 0;min-width:min-content}}@media print{:host{display:none}}", _a = [
+var _a = ":host{display:block}.footer{grid-template-columns:minmax(var(--arq-layout-footer-tagline), 1fr) minmax(0, auto);column-gap:var(--arq-space-gap-xl);row-gap:var(--arq-space-gap-md);padding:var(--arq-space-section-sm) var(--page-gutter);border-top:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-default);transition-property:background-color;transition-duration:var(--arq-illumination-bg-duration);transition-delay:0s;transition-timing-function:var(--arq-illumination-bg-easing);grid-template-rows:auto 1fr;grid-template-areas:\"brand columns\"\"legal columns\";display:grid}.brand{align-items:flex-start;gap:var(--arq-space-gap-md);flex-direction:column;grid-area:brand;min-width:0;display:flex}.tagline{max-width:var(--arq-layout-footer-tagline);color:var(--arq-color-text-secondary);overflow-wrap:break-word;margin:0}.legal{color:var(--arq-color-text-tertiary);text-transform:uppercase;grid-area:legal;align-self:start;margin:0}.columns{align-items:flex-start;gap:var(--arq-space-gap-xl);grid-area:columns;display:flex}.column{width:var(--arq-layout-footer-column);align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;flex:0 auto;min-width:0;display:flex}.title{padding-bottom:var(--arq-space-gap-sm);color:var(--arq-color-text-primary);margin:0}.list{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;max-width:100%;display:flex}@media (width<=767px){.footer{row-gap:var(--arq-space-gap-xl);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"brand\"\"columns\"\"legal\"}.columns{row-gap:var(--arq-space-gap-xl);flex-wrap:wrap}.column{flex:1 1 0;min-width:min-content}}@media print{:host{display:none}}", va = [
 	"productos",
 	"informacion",
 	"redes"
 ];
 (class extends P {
 	static tag = "arq-footer";
-	static styles = ga;
-	static template = "<footer class=\"footer\"><div class=\"brand\"><arq-logo></arq-logo><p class=\"tagline role-body\"><slot name=\"tagline\"></slot></p></div><div class=\"columns\">" + _a.map((e) => `<nav class="column" data-column="${e}"><div class="title role-body-strong"><slot name="${e}-title"></slot></div><div class="list" role="list"><slot name="${e}"></slot></div></nav>`).join("") + "</div><p class=\"legal role-body-sm\">© <span class=\"year\"></span> Macroled Arq.</p></footer>";
+	static styles = _a;
+	static template = "<footer class=\"footer\"><div class=\"brand\"><arq-logo></arq-logo><p class=\"tagline role-body\"><slot name=\"tagline\"></slot></p></div><div class=\"columns\">" + va.map((e) => `<nav class="column" data-column="${e}"><div class="title role-body-strong"><slot name="${e}-title"></slot></div><div class="list" role="list"><slot name="${e}"></slot></div></nav>`).join("") + "</div><p class=\"legal role-body-sm\">© <span class=\"year\"></span> Macroled Arq.</p></footer>";
 	setup() {
 		let e = this.shadowRoot;
 		e.querySelector(".year").textContent = String((/* @__PURE__ */ new Date()).getFullYear());
@@ -5932,7 +5933,7 @@ var ga = ":host{display:block}.footer{grid-template-columns:minmax(var(--arq-lay
 			e.querySelector(".tagline").hidden = !t.assignedNodes({ flatten: !0 }).some((e) => e.textContent.trim());
 		};
 		t.addEventListener("slotchange", n), n();
-		for (let t of _a) {
+		for (let t of va) {
 			let n = e.querySelector(`[data-column="${t}"]`), r = e.querySelector(`slot[name="${t}-title"]`), i = () => {
 				let e = r.assignedNodes({ flatten: !0 }).map((e) => e.textContent).join(" ").trim();
 				e ? n.setAttribute("aria-label", e) : n.removeAttribute("aria-label");
@@ -5943,14 +5944,14 @@ var ga = ":host{display:block}.footer{grid-template-columns:minmax(var(--arq-lay
 }).define();
 //#endregion
 //#region src/components/hero/hero.css?inline
-var va = ":host{display:block}.hero{background:var(--arq-color-surface-inverse);flex-direction:column;justify-content:flex-end;height:70svh;display:flex;position:relative;overflow:hidden}.media{position:absolute;inset:0}::slotted([slot=media]){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}.scrim{background:linear-gradient(#00000085 0%,#0003 18% 45%,#000000ad 100%);position:absolute;inset:0}.content{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-xl);padding:0 var(--page-gutter) var(--arq-space-section-sm);color:var(--arq-color-text-inverse);display:flex;position:relative}.text{align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column;min-width:0;display:flex}.eyebrow,.title,.description{overflow-wrap:break-word;max-width:100%;margin:0}.action{flex:none}@media (width<=767px){.content{justify-content:flex-start;align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column}.text{align-self:stretch}}:host([full-height]) .hero{height:100svh}:host([size=compact]) .hero{height:auto;min-height:41svh;padding-top:var(--arq-space-section-md)}@media (width<=767px){:host([size=compact]) .hero{min-height:47svh}}", ya = [
+var ya = ":host{display:block}.hero{background:var(--arq-color-surface-inverse);flex-direction:column;justify-content:flex-end;height:70svh;display:flex;position:relative;overflow:hidden}.media{position:absolute;inset:0}::slotted([slot=media]){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}.scrim{background:linear-gradient(#00000085 0%,#0003 18% 45%,#000000ad 100%);position:absolute;inset:0}.content{justify-content:space-between;align-items:flex-end;gap:var(--arq-space-gap-xl);padding:0 var(--page-gutter) var(--arq-space-section-sm);color:var(--arq-color-text-inverse);display:flex;position:relative}.text{align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column;min-width:0;display:flex}.eyebrow,.title,.description{overflow-wrap:break-word;max-width:100%;margin:0}.action{flex:none}@media (width<=767px){.content{justify-content:flex-start;align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column}.text{align-self:stretch}}:host([full-height]) .hero{height:100svh}:host([size=compact]) .hero{height:auto;min-height:41svh;padding-top:var(--arq-space-section-md)}@media (width<=767px){:host([size=compact]) .hero{min-height:47svh}}", ba = [
 	"eyebrow",
 	"description",
 	"action"
 ];
 (class extends P {
 	static tag = "arq-hero";
-	static styles = va;
+	static styles = ya;
 	static properties = {
 		fullHeight: { type: Boolean },
 		size: {
@@ -5967,7 +5968,7 @@ var va = ":host{display:block}.hero{background:var(--arq-color-surface-inverse);
 	}
 	update() {
 		let e = this.shadowRoot, t = (t) => e.querySelector(`slot[name="${t}"]`).assignedNodes({ flatten: !0 }).some((e) => e.nodeType === Node.ELEMENT_NODE || e.textContent.trim());
-		for (let n of ya) e.querySelector(`.${n}`).hidden = !t(n);
+		for (let n of ba) e.querySelector(`.${n}`).hidden = !t(n);
 		let n = e.querySelector(".title");
 		n.classList.toggle("role-display", this.size !== "compact"), n.classList.toggle("role-display-lg", this.size === "compact"), this.#n();
 	}
@@ -5984,10 +5985,10 @@ var va = ":host{display:block}.hero{background:var(--arq-color-surface-inverse);
 }).define();
 //#endregion
 //#region src/components/cta-block/cta-block.css?inline
-var ba = ":host{min-width:0;display:block}.block{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-xl);padding:var(--arq-space-section-md) var(--page-gutter);background:var(--arq-color-surface-subtle);display:flex}.text{gap:var(--arq-space-gap-sm-md);flex-direction:column;min-width:0;display:flex}.title{color:var(--arq-color-text-primary);overflow-wrap:break-word}.description{max-width:var(--arq-layout-measure-wide);color:var(--arq-color-text-secondary);overflow-wrap:break-word;margin:0}.action{align-items:center;gap:var(--arq-space-gap-md);flex:none;display:flex}.email{width:var(--arq-layout-measure)}::slotted(arq-input){width:100%;display:block}@media (width<=767px){.block{flex-direction:column;align-items:stretch}.description{max-width:none}.action{align-items:stretch;gap:var(--arq-space-gap-xl);flex-direction:column}.email{width:auto}::slotted(arq-button){width:100%}}@media print{:host{display:none}}";
+var xa = ":host{min-width:0;display:block}.block{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-xl);padding:var(--arq-space-section-md) var(--page-gutter);background:var(--arq-color-surface-subtle);display:flex}.text{gap:var(--arq-space-gap-sm-md);flex-direction:column;min-width:0;display:flex}.title{color:var(--arq-color-text-primary);overflow-wrap:break-word}.description{max-width:var(--arq-layout-measure-wide);color:var(--arq-color-text-secondary);overflow-wrap:break-word;margin:0}.action{align-items:center;gap:var(--arq-space-gap-md);flex:none;display:flex}.email{width:var(--arq-layout-measure)}::slotted(arq-input){width:100%;display:block}@media (width<=767px){.block{flex-direction:column;align-items:stretch}.description{max-width:none}.action{align-items:stretch;gap:var(--arq-space-gap-xl);flex-direction:column}.email{width:auto}::slotted(arq-button){width:100%}}@media print{:host{display:none}}";
 (class extends P {
 	static tag = "arq-cta-block";
-	static styles = ba;
+	static styles = xa;
 	static properties = { type: {
 		type: String,
 		values: ["button", "newsletter"],
@@ -6013,18 +6014,18 @@ var ba = ":host{min-width:0;display:block}.block{justify-content:space-between;a
 }).define();
 //#endregion
 //#region src/components/carousel-controls/carousel-controls.css?inline
-var xa = ":host{display:inline-flex}.controls{align-items:center;gap:var(--arq-space-gap-sm);display:flex}@media (width<=767px){:host{display:none}}", Sa = [
+var Sa = ":host{display:inline-flex}.controls{align-items:center;gap:var(--arq-space-gap-sm);display:flex}@media (width<=767px){:host{display:none}}", Ca = [
 	"start",
 	"middle",
 	"end"
 ];
 (class extends P {
 	static tag = "arq-carousel-controls";
-	static styles = xa;
+	static styles = Sa;
 	static properties = {
 		position: {
 			type: String,
-			values: Sa,
+			values: Ca,
 			default: "start"
 		},
 		for: { type: String },
@@ -6101,10 +6102,10 @@ var xa = ":host{display:inline-flex}.controls{align-items:center;gap:var(--arq-s
 }).define();
 //#endregion
 //#region src/components/category-card/category-card.css?inline
-var Ca = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.card-media{aspect-ratio:4/5}.caption{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.name{min-width:0;color:var(--arq-color-text-primary);overflow-wrap:break-word}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}@media (width>=768px){.card-media{max-height:max(50svh, 100svh - var(--arq-space-section-xl) * 2)}}@media (width<=767px){.card{gap:var(--arq-space-gap-md)}}";
+var wa = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.card-media{aspect-ratio:4/5}.caption{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.name{min-width:0;color:var(--arq-color-text-primary);overflow-wrap:break-word}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}@media (width>=768px){.card-media{max-height:max(50svh, 100svh - var(--arq-space-section-xl) * 2)}}@media (width<=767px){.card{gap:var(--arq-space-gap-md)}}";
 (class extends P {
 	static tag = "arq-category-card";
-	static styles = W + Ca;
+	static styles = W + wa;
 	static properties = { href: { type: String } };
 	static template = `<div class="card"><div class="card-media"><slot name="image"></slot></div><div class="caption"><a class="card-link name role-heading-3"><slot name="name"></slot></a>${F("arrow-right")}</div></div>`;
 	update(e) {
@@ -6115,18 +6116,18 @@ var Ca = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex
 }).define();
 //#endregion
 //#region src/components/line-card/line-card.css?inline
-var wa = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.card-media{aspect-ratio:5/4}.content{align-items:flex-start;gap:var(--arq-space-gap-md);padding-top:var(--arq-space-padding-sm);flex-direction:column;display:flex}.label,.description{margin:0}.label{color:var(--arq-color-text-tertiary)}.name{max-width:100%;color:var(--arq-color-text-primary);overflow-wrap:break-word}.description{max-width:var(--arq-layout-measure);color:var(--arq-color-text-secondary);overflow-wrap:break-word}.cta{margin-top:calc(var(--arq-space-gap-sm) + var(--arq-space-gap-md))}@media (width>=768px){.card-media{max-height:max(50svh, 100svh - var(--arq-space-section-xl) * 2 - var(--arq-space-gap-6xl))}}@media (width<=767px){.card-media{aspect-ratio:1}.content{gap:var(--arq-space-gap-sm-md);padding-top:0}.description{max-width:none}.cta{margin-top:calc(var(--arq-space-gap-xs) + var(--arq-space-gap-sm-md))}}", Ta = ["label", "description"];
+var Ta = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.card-media{aspect-ratio:5/4}.content{align-items:flex-start;gap:var(--arq-space-gap-md);padding-top:var(--arq-space-padding-sm);flex-direction:column;display:flex}.label,.description{margin:0}.label{color:var(--arq-color-text-tertiary)}.name{max-width:100%;color:var(--arq-color-text-primary);overflow-wrap:break-word}.description{max-width:var(--arq-layout-measure);color:var(--arq-color-text-secondary);overflow-wrap:break-word}.cta{margin-top:calc(var(--arq-space-gap-sm) + var(--arq-space-gap-md))}@media (width>=768px){.card-media{max-height:max(50svh, 100svh - var(--arq-space-section-xl) * 2 - var(--arq-space-gap-6xl))}}@media (width<=767px){.card-media{aspect-ratio:1}.content{gap:var(--arq-space-gap-sm-md);padding-top:0}.description{max-width:none}.cta{margin-top:calc(var(--arq-space-gap-xs) + var(--arq-space-gap-sm-md))}}", Ea = ["label", "description"];
 (class extends P {
 	static tag = "arq-line-card";
-	static styles = W + wa;
+	static styles = W + Ta;
 	static properties = { href: { type: String } };
 	static template = "<div class=\"card\"><div class=\"card-media\"><slot name=\"image\"></slot></div><div class=\"content\"><p class=\"label role-label\" hidden><slot name=\"label\"></slot></p><div class=\"name role-heading-1\"><slot name=\"name\"></slot></div><p class=\"description role-body-lg\" hidden><slot name=\"description\"></slot></p><arq-button class=\"cta\" type=\"underline\" show-underline show-icon icon=\"arrow-right\"><slot name=\"action\">Ver colección</slot></arq-button></div></div>";
 	setup() {
-		for (let e of Ta) this.shadowRoot.querySelector(`slot[name="${e}"]`).addEventListener("slotchange", () => this.update(/* @__PURE__ */ new Set()));
+		for (let e of Ea) this.shadowRoot.querySelector(`slot[name="${e}"]`).addEventListener("slotchange", () => this.update(/* @__PURE__ */ new Set()));
 	}
 	update(e) {
 		let t = this.shadowRoot;
-		for (let e of Ta) t.querySelector(`.${e}`).hidden = !t.querySelector(`slot[name="${e}"]`).assignedNodes({ flatten: !0 }).some((e) => e.nodeType === Node.ELEMENT_NODE || e.textContent.trim());
+		for (let e of Ea) t.querySelector(`.${e}`).hidden = !t.querySelector(`slot[name="${e}"]`).assignedNodes({ flatten: !0 }).some((e) => e.nodeType === Node.ELEMENT_NODE || e.textContent.trim());
 		if (e.has("href")) {
 			let e = t.querySelector(".cta");
 			this.href ? e.setAttribute("href", this.href) : e.removeAttribute("href");
@@ -6135,7 +6136,7 @@ var wa = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex
 }).define();
 //#endregion
 //#region src/components/feature-block/feature-block.css?inline
-var Ea = ":host{min-width:0;display:block}.block{column-gap:var(--arq-space-gap-6xl);grid-template:\"image content\"\"image secondary\"1fr/50% minmax(0,1fr);align-items:start;display:grid}:host([layout=image-right]) .block{grid-template-columns:minmax(0,1fr) 50%;grid-template-areas:\"content image\"\"secondary image\"}.block:has(.secondary[hidden]){grid-template-areas:\"image content\"\"image content\"}:host([layout=image-right]) .block:has(.secondary[hidden]){grid-template-areas:\"content image\"\"content image\"}.media{background:var(--arq-color-surface-subtle);overflow:hidden}.image{aspect-ratio:4/5;grid-area:image}.secondary{aspect-ratio:16/10;margin-top:calc(var(--arq-space-gap-xl) * 2 + var(--arq-space-gap-lg));grid-area:secondary}.media ::slotted(*){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}.content{align-items:flex-start;gap:var(--arq-space-gap-xl);padding-top:var(--arq-space-padding-xl-2xl);flex-direction:column;grid-area:content;display:flex}:host([layout=image-right]) .content{padding-top:var(--arq-space-padding-6xl)}.label,.description{margin:0}.label{color:var(--arq-color-text-tertiary)}.title{max-width:100%;color:var(--arq-color-text-primary);overflow-wrap:break-word}.description{max-width:var(--arq-layout-measure);color:var(--arq-color-text-secondary);overflow-wrap:break-word}@media (width>=768px){.image{width:100%;max-height:max(50svh, 100svh - var(--arq-space-section-xl))}}@media (width<=767px){.block,:host([layout=image-right]) .block{row-gap:var(--arq-space-gap-lg);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"image\"\"content\"\"secondary\"}.block:has(.secondary[hidden]){row-gap:var(--arq-space-gap-lg);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"image\"\"content\"\"secondary\"}:host([layout=image-right]) .block:has(.secondary[hidden]){row-gap:var(--arq-space-gap-lg);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"image\"\"content\"\"secondary\"}.content,:host([layout=image-right]) .content{gap:var(--arq-space-gap-md);padding-top:var(--arq-space-padding-sm)}.secondary{margin-top:0}.description{max-width:none}}", Da = [
+var Da = ":host{min-width:0;display:block}.block{column-gap:var(--arq-space-gap-6xl);grid-template:\"image content\"\"image secondary\"1fr/50% minmax(0,1fr);align-items:start;display:grid}:host([layout=image-right]) .block{grid-template-columns:minmax(0,1fr) 50%;grid-template-areas:\"content image\"\"secondary image\"}.block:has(.secondary[hidden]){grid-template-areas:\"image content\"\"image content\"}:host([layout=image-right]) .block:has(.secondary[hidden]){grid-template-areas:\"content image\"\"content image\"}.media{background:var(--arq-color-surface-subtle);overflow:hidden}.image{aspect-ratio:4/5;grid-area:image}.secondary{aspect-ratio:16/10;margin-top:calc(var(--arq-space-gap-xl) * 2 + var(--arq-space-gap-lg));grid-area:secondary}.media ::slotted(*){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}.content{align-items:flex-start;gap:var(--arq-space-gap-xl);padding-top:var(--arq-space-padding-xl-2xl);flex-direction:column;grid-area:content;display:flex}:host([layout=image-right]) .content{padding-top:var(--arq-space-padding-6xl)}.label,.description{margin:0}.label{color:var(--arq-color-text-tertiary)}.title{max-width:100%;color:var(--arq-color-text-primary);overflow-wrap:break-word}.description{max-width:var(--arq-layout-measure);color:var(--arq-color-text-secondary);overflow-wrap:break-word}@media (width>=768px){.image{width:100%;max-height:max(50svh, 100svh - var(--arq-space-section-xl))}}@media (width<=767px){.block,:host([layout=image-right]) .block{row-gap:var(--arq-space-gap-lg);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"image\"\"content\"\"secondary\"}.block:has(.secondary[hidden]){row-gap:var(--arq-space-gap-lg);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"image\"\"content\"\"secondary\"}:host([layout=image-right]) .block:has(.secondary[hidden]){row-gap:var(--arq-space-gap-lg);grid-template-rows:none;grid-template-columns:minmax(0,1fr);grid-template-areas:\"image\"\"content\"\"secondary\"}.content,:host([layout=image-right]) .content{gap:var(--arq-space-gap-md);padding-top:var(--arq-space-padding-sm)}.secondary{margin-top:0}.description{max-width:none}}", Oa = [
 	"label",
 	"description",
 	"action",
@@ -6143,7 +6144,7 @@ var Ea = ":host{min-width:0;display:block}.block{column-gap:var(--arq-space-gap-
 ];
 (class extends P {
 	static tag = "arq-feature-block";
-	static styles = Ea;
+	static styles = Da;
 	static properties = { layout: {
 		type: String,
 		values: ["image-left", "image-right"],
@@ -6151,23 +6152,23 @@ var Ea = ":host{min-width:0;display:block}.block{column-gap:var(--arq-space-gap-
 	} };
 	static template = "<div class=\"block\"><div class=\"media image\"><slot name=\"image\"></slot></div><div class=\"content\"><p class=\"label role-label\" hidden><slot name=\"label\"></slot></p><div class=\"title role-display-sm\"><slot name=\"title\"></slot></div><p class=\"description role-body-lg\" hidden><slot name=\"description\"></slot></p><div class=\"action\" hidden><slot name=\"action\"></slot></div></div><div class=\"media secondary\" hidden><slot name=\"secondary\"></slot></div></div>";
 	setup() {
-		for (let e of Da) this.shadowRoot.querySelector(`slot[name="${e}"]`).addEventListener("slotchange", () => this.update());
+		for (let e of Oa) this.shadowRoot.querySelector(`slot[name="${e}"]`).addEventListener("slotchange", () => this.update());
 	}
 	update() {
 		let e = this.shadowRoot;
-		for (let t of Da) e.querySelector(`.${t}`).hidden = !e.querySelector(`slot[name="${t}"]`).assignedNodes({ flatten: !0 }).some((e) => e.nodeType === Node.ELEMENT_NODE || e.textContent.trim());
+		for (let t of Oa) e.querySelector(`.${t}`).hidden = !e.querySelector(`slot[name="${t}"]`).assignedNodes({ flatten: !0 }).some((e) => e.nodeType === Node.ELEMENT_NODE || e.textContent.trim());
 	}
 }).define();
 //#endregion
 //#region src/components/section/section.css?inline
-var Oa = ":host{--section-gap:var(--arq-space-gap-2xl);box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) var(--arq-space-section-xl);background:var(--arq-color-surface-default);display:block}:host([padding-top]){padding-top:var(--arq-space-section-xl)}.section{gap:var(--section-gap);flex-direction:column;min-width:0;display:flex}.head,.body{min-width:0}.action,.mobile-action{align-self:flex-start}@media (width>=768px){.mobile-action{display:none}:host([layout=split]) .section{grid-template-columns:var(--arq-layout-measure) minmax(0, 1fr);column-gap:var(--arq-space-section-md);row-gap:var(--arq-space-gap-lg);grid-template-rows:auto 1fr;grid-template-areas:\"head body\"\"action body\";align-items:start;display:grid}:host([layout=split]) .head{grid-area:head}:host([layout=split]) .body{grid-area:body}:host([layout=split]) .action{grid-area:action}}@media (width<=767px){:host{--section-gap:var(--arq-space-gap-xl)}}", ka = [
+var ka = ":host{--section-gap:var(--arq-space-gap-2xl);box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) var(--arq-space-section-xl);background:var(--arq-color-surface-default);display:block}:host([padding-top]){padding-top:var(--arq-space-section-xl)}.section{gap:var(--section-gap);flex-direction:column;min-width:0;display:flex}.head,.body{min-width:0}.action,.mobile-action{align-self:flex-start}@media (width>=768px){.mobile-action{display:none}:host([layout=split]) .section{grid-template-columns:var(--arq-layout-measure) minmax(0, 1fr);column-gap:var(--arq-space-section-md);row-gap:var(--arq-space-gap-lg);grid-template-rows:auto 1fr;grid-template-areas:\"head body\"\"action body\";align-items:start;display:grid}:host([layout=split]) .head{grid-area:head}:host([layout=split]) .body{grid-area:body}:host([layout=split]) .action{grid-area:action}}@media (width<=767px){:host{--section-gap:var(--arq-space-gap-xl)}}", Aa = [
 	"header",
 	"action",
 	"mobile-action"
 ];
 (class extends P {
 	static tag = "arq-section";
-	static styles = Oa;
+	static styles = ka;
 	static properties = {
 		layout: {
 			type: String,
@@ -6178,7 +6179,7 @@ var Oa = ":host{--section-gap:var(--arq-space-gap-2xl);box-sizing:border-box;min
 	};
 	static template = "<div class=\"section\"><div class=\"head\" hidden><slot name=\"header\"></slot></div><div class=\"body\"><slot></slot></div><div class=\"action\" hidden><slot name=\"action\"></slot></div><div class=\"mobile-action\" hidden><slot name=\"mobile-action\"></slot></div></div>";
 	setup() {
-		for (let e of ka) {
+		for (let e of Aa) {
 			let t = this.shadowRoot.querySelector(`slot[name="${e}"]`), n = () => t.parentElement.hidden = t.assignedElements({ flatten: !0 }).length === 0;
 			t.addEventListener("slotchange", n), n();
 		}
@@ -6186,10 +6187,10 @@ var Oa = ":host{--section-gap:var(--arq-space-gap-2xl);box-sizing:border-box;min
 }).define();
 //#endregion
 //#region src/components/grid/grid.css?inline
-var Aa = ":host{min-width:0;display:block}.grid{--card-min:var(--arq-layout-card-min);grid-template-columns:repeat(var(--columns,1), minmax(0, 1fr));gap:var(--arq-space-gap-lg);align-items:start;display:grid}.grid.auto{grid-template-columns:repeat(auto-fill, minmax(var(--card-min), 1fr));gap:var(--arq-space-gap-2xl) var(--arq-space-gap-lg)}@media (width>=1600px){.grid.auto{--card-min:var(--arq-layout-card-min-wide)}}::slotted(*){min-width:0}@media (width<=767px){.grid.auto{gap:var(--arq-space-gap-xl) var(--arq-space-gap-md)}.grid:not(.auto){gap:var(--arq-space-section-md);grid-template-columns:minmax(0,1fr)}:host([mobile=two-columns]) .grid{gap:var(--arq-space-gap-sm-md);grid-template-columns:repeat(2,minmax(0,1fr))}:host([mobile=carousel]){overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;margin-block:calc(var(--arq-space-gap-xs) * -1);margin-inline:calc(var(--arq-space-gap-xs) * -1) calc(var(--arq-layout-gutter) * -1);padding-block:var(--arq-space-gap-xs);padding-inline-start:var(--arq-space-gap-xs);scroll-padding-inline-start:var(--arq-space-gap-xs);overflow-x:auto;container-type:inline-size}:host([mobile=carousel])::-webkit-scrollbar{display:none}:host([mobile=carousel]) .grid{gap:var(--arq-space-gap-sm-md);width:max-content;padding-inline-end:var(--arq-layout-gutter);display:flex}:host([mobile=carousel]) ::slotted(*){width:calc((100cqi - var(--arq-layout-gutter)) * .8);scroll-snap-align:start;flex:none}}";
+var ja = ":host{min-width:0;display:block}.grid{--card-min:var(--arq-layout-card-min);grid-template-columns:repeat(var(--columns,1), minmax(0, 1fr));gap:var(--arq-space-gap-lg);align-items:start;display:grid}.grid.auto{grid-template-columns:repeat(auto-fill, minmax(var(--card-min), 1fr));gap:var(--arq-space-gap-2xl) var(--arq-space-gap-lg)}@media (width>=1600px){.grid.auto{--card-min:var(--arq-layout-card-min-wide)}}::slotted(*){min-width:0}@media (width<=767px){.grid.auto{gap:var(--arq-space-gap-xl) var(--arq-space-gap-md)}.grid:not(.auto){gap:var(--arq-space-section-md);grid-template-columns:minmax(0,1fr)}:host([mobile=two-columns]) .grid{gap:var(--arq-space-gap-sm-md);grid-template-columns:repeat(2,minmax(0,1fr))}:host([mobile=carousel]){overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;margin-block:calc(var(--arq-space-gap-xs) * -1);margin-inline:calc(var(--arq-space-gap-xs) * -1) calc(var(--arq-layout-gutter) * -1);padding-block:var(--arq-space-gap-xs);padding-inline-start:var(--arq-space-gap-xs);scroll-padding-inline-start:var(--arq-space-gap-xs);overflow-x:auto;container-type:inline-size}:host([mobile=carousel])::-webkit-scrollbar{display:none}:host([mobile=carousel]) .grid{gap:var(--arq-space-gap-sm-md);width:max-content;padding-inline-end:var(--arq-layout-gutter);display:flex}:host([mobile=carousel]) ::slotted(*){width:calc((100cqi - var(--arq-layout-gutter)) * .8);scroll-snap-align:start;flex:none}}";
 (class extends P {
 	static tag = "arq-grid";
-	static styles = Aa;
+	static styles = ja;
 	static properties = {
 		columns: { type: Number },
 		mobile: {
@@ -6210,18 +6211,18 @@ var Aa = ":host{min-width:0;display:block}.grid{--card-min:var(--arq-layout-card
 }).define();
 //#endregion
 //#region src/components/project-mosaic/project-mosaic.css?inline
-var ja = ":host{min-width:0;display:block}.mosaic{gap:var(--arq-space-gap-lg);grid-template-rows:1fr 1fr;grid-template-columns:repeat(4,minmax(0,1fr));display:grid}::slotted(img){background:var(--arq-color-surface-subtle);min-width:0;box-sizing:border-box!important;object-fit:cover!important;width:100%!important;max-width:none!important;height:100%!important;display:block!important}::slotted(img:first-child){contain:size;grid-area:1/1/span 2/span 2}::slotted(img:nth-child(2)){contain:size;grid-area:1/3/auto/span 2}::slotted(img:nth-child(3)),::slotted(img:nth-child(4)){aspect-ratio:1;grid-row:2;height:auto!important;max-height:calc((max(50svh, 100svh - var(--arq-space-section-xl) * 2) - var(--arq-space-gap-lg)) / 2)!important}::slotted(img:nth-child(n+5)){display:none!important}@media (width<=767px){.mosaic{gap:var(--arq-space-gap-sm-md);grid-template-rows:none;grid-template-columns:repeat(2,minmax(0,1fr))}::slotted(img){aspect-ratio:4/5;contain:none;height:auto!important}::slotted(img:first-child){contain:none;grid-area:auto/1/auto/-1}::slotted(img:nth-child(2)),::slotted(img:nth-child(3)){aspect-ratio:4/5;contain:none;grid-area:auto;max-height:none!important}::slotted(img:nth-child(4)){display:none!important}}";
+var Ma = ":host{min-width:0;display:block}.mosaic{gap:var(--arq-space-gap-lg);grid-template-rows:1fr 1fr;grid-template-columns:repeat(4,minmax(0,1fr));display:grid}::slotted(img){background:var(--arq-color-surface-subtle);min-width:0;box-sizing:border-box!important;object-fit:cover!important;width:100%!important;max-width:none!important;height:100%!important;display:block!important}::slotted(img:first-child){contain:size;grid-area:1/1/span 2/span 2}::slotted(img:nth-child(2)){contain:size;grid-area:1/3/auto/span 2}::slotted(img:nth-child(3)),::slotted(img:nth-child(4)){aspect-ratio:1;grid-row:2;height:auto!important;max-height:calc((max(50svh, 100svh - var(--arq-space-section-xl) * 2) - var(--arq-space-gap-lg)) / 2)!important}::slotted(img:nth-child(n+5)){display:none!important}@media (width<=767px){.mosaic{gap:var(--arq-space-gap-sm-md);grid-template-rows:none;grid-template-columns:repeat(2,minmax(0,1fr))}::slotted(img){aspect-ratio:4/5;contain:none;height:auto!important}::slotted(img:first-child){contain:none;grid-area:auto/1/auto/-1}::slotted(img:nth-child(2)),::slotted(img:nth-child(3)){aspect-ratio:4/5;contain:none;grid-area:auto;max-height:none!important}::slotted(img:nth-child(4)){display:none!important}}";
 (class extends P {
 	static tag = "arq-project-mosaic";
-	static styles = ja;
+	static styles = Ma;
 	static template = "<div class=\"mosaic\"><slot></slot></div>";
 }).define();
 //#endregion
 //#region src/components/featured-products/featured-products.css?inline
-var Ma = ":host{min-width:0;display:block}.fallback{align-items:flex-start;gap:var(--arq-space-gap-sm);color:var(--arq-color-text-primary);flex-direction:column;display:flex}";
+var Na = ":host{min-width:0;display:block}.fallback{align-items:flex-start;gap:var(--arq-space-gap-sm);color:var(--arq-color-text-primary);flex-direction:column;display:flex}";
 (class extends P {
 	static tag = "arq-featured-products";
-	static styles = Ma;
+	static styles = Na;
 	static template = "<arq-grid class=\"grid\" columns=\"4\" mobile=\"two-columns\"></arq-grid><div class=\"fallback role-body\" hidden><slot></slot></div>";
 	#e = "";
 	#t = 0;
@@ -6259,12 +6260,12 @@ var Ma = ":host{min-width:0;display:block}.fallback{align-items:flex-start;gap:v
 }).define();
 //#endregion
 //#region src/components/catalog-listing/catalog-listing.css?inline
-var Na = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) var(--arq-space-section-xl);background:var(--arq-color-surface-default);transition-property:background-color;transition-duration:var(--arq-illumination-bg-duration);transition-delay:0s;transition-timing-function:var(--arq-illumination-bg-easing);display:block}.layout{gap:var(--arq-space-gap-xl);flex-direction:column;min-width:0;display:flex}.nav{min-width:0}.content{gap:var(--arq-space-gap-xl-2xl);flex-direction:column;min-width:0;display:flex}.status{color:var(--arq-color-text-secondary);margin:0}.status:empty{display:none}@media (width>=1024px){.layout{grid-template-columns:var(--arq-layout-catalog-nav) minmax(0, 1fr);column-gap:var(--arq-space-section-xs);display:grid}.toolbar{z-index:3;background:var(--arq-color-surface-default);transition-property:background-color;transition-duration:var(--arq-illumination-bg-duration);transition-delay:0s;transition-timing-function:var(--arq-illumination-bg-easing);position:sticky;top:0}.nav{align-self:start;position:sticky;top:0}.toolbar.nav-visible,.nav.nav-visible{top:calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl))}}@media (width<=767px){:host(:not([unit=colecciones])) .nav{display:none}.content{gap:var(--arq-space-gap-xl)}}", Pa = {
+var Pa = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) var(--arq-space-section-xl);background:var(--arq-color-surface-default);transition-property:background-color;transition-duration:var(--arq-illumination-bg-duration);transition-delay:0s;transition-timing-function:var(--arq-illumination-bg-easing);display:block}.layout{gap:var(--arq-space-gap-xl);flex-direction:column;min-width:0;display:flex}.nav{min-width:0}.content{gap:var(--arq-space-gap-xl-2xl);flex-direction:column;min-width:0;display:flex}.status{color:var(--arq-color-text-secondary);margin:0}.status:empty{display:none}@media (width>=1024px){.layout{grid-template-columns:var(--arq-layout-catalog-nav) minmax(0, 1fr);column-gap:var(--arq-space-section-xs);display:grid}.toolbar{z-index:3;background:var(--arq-color-surface-default);transition-property:background-color;transition-duration:var(--arq-illumination-bg-duration);transition-delay:0s;transition-timing-function:var(--arq-illumination-bg-easing);position:sticky;top:0}.nav{align-self:start;position:sticky;top:0}.toolbar.nav-visible,.nav.nav-visible{top:calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl))}}@media (width<=767px){:host(:not([unit=colecciones])) .nav{display:none}.content{gap:var(--arq-space-gap-xl)}}", Fa = {
 	environment: "environment",
 	application: "application",
 	product_type: "productType",
 	collection: "collection"
-}, Fa = matchMedia("(min-width: 1024px)"), Ia = matchMedia("(min-width: 1920px)"), La = {
+}, Ia = matchMedia("(min-width: 1024px)"), La = matchMedia("(min-width: 1920px)"), Ra = {
 	productos: {
 		loading: "Cargando productos…",
 		empty: "No hay productos con estos filtros.",
@@ -6275,9 +6276,9 @@ var Na = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 		empty: "No hay colecciones con estos filtros.",
 		error: "No se pudieron cargar las colecciones. Probá de nuevo en unos minutos."
 	}
-}, Ra = class extends P {
+}, za = class extends P {
 	static tag = "arq-catalog-listing";
-	static styles = Na;
+	static styles = Pa;
 	static properties = { unit: {
 		type: String,
 		values: ["productos", "colecciones"],
@@ -6293,9 +6294,9 @@ var Na = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 	#o = null;
 	#s = null;
 	setup() {
-		za(new URLSearchParams(location.search)) && (this.unit = "colecciones");
+		Ba(new URLSearchParams(location.search)) && (this.unit = "colecciones");
 		let e = this.shadowRoot;
-		this.#e = Ba(), this.#t = new URLSearchParams(location.search).get("q")?.trim() ?? "", this.#p(), window.addEventListener("scroll", this.#f, { passive: !0 }), e.querySelector("slot[name=\"nav\"]").addEventListener("slotchange", () => this.#S()), e.addEventListener("click", this.#c), document.querySelector("arq-page-header")?.addEventListener("click", this.#c), zr(!1), e.querySelector(".grid").addEventListener("click", (e) => {
+		this.#e = Va(), this.#t = new URLSearchParams(location.search).get("q")?.trim() ?? "", this.#p(), window.addEventListener("scroll", this.#f, { passive: !0 }), e.querySelector("slot[name=\"nav\"]").addEventListener("slotchange", () => this.#S()), e.addEventListener("click", this.#c), document.querySelector("arq-page-header")?.addEventListener("click", this.#c), zr(!1), e.querySelector(".grid").addEventListener("click", (e) => {
 			e.composedPath().some((e) => e.localName === "a" && e.hasAttribute("href")) && zr(document.documentElement.getAttribute("data-arq-theme") === "dark");
 		}), window.addEventListener("popstate", this.#l);
 		let t = e.querySelector("arq-filter-panel");
@@ -6303,9 +6304,9 @@ var Na = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 			this.#n = e.detail.filters, this.#m();
 		});
 		let n = e.querySelector(".grid"), r = () => {
-			n.columns = Fa.matches ? Ia.matches ? 4 : 3 : null;
+			n.columns = Ia.matches ? La.matches ? 4 : 3 : null;
 		};
-		Fa.addEventListener("change", r), Ia.addEventListener("change", r), r();
+		Ia.addEventListener("change", r), La.addEventListener("change", r), r();
 		let i = e.querySelector(".compare");
 		n.addEventListener("arq:compare", (e) => {
 			let t = e.target, n = this.#r.get(t);
@@ -6328,8 +6329,8 @@ var Na = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 	};
 	#l = () => this.#u();
 	#u() {
-		let e = new URLSearchParams(location.search), t = za(e) ? "colecciones" : "productos";
-		this.#e = Ba(), this.#t = e.get("q")?.trim() ?? "", this.#n = {}, this.shadowRoot.querySelector("arq-filter-panel").clear(), this.#S(), this.unit === t ? this.#m() : this.unit = t;
+		let e = new URLSearchParams(location.search), t = Ba(e) ? "colecciones" : "productos";
+		this.#e = Va(), this.#t = e.get("q")?.trim() ?? "", this.#n = {}, this.shadowRoot.querySelector("arq-filter-panel").clear(), this.#S(), this.unit === t ? this.#m() : this.unit = t;
 	}
 	#d() {
 		let e = this.shadowRoot.querySelector(".compare"), t = e.shadowRoot?.querySelector(".bar"), n = !e.hidden && t && !t.hidden ? t.getBoundingClientRect().height : 0;
@@ -6350,7 +6351,7 @@ var Na = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 		t.querySelector(".toolbar").unit = this.unit, t.querySelector("arq-filter-panel").unit = this.unit, t.querySelector("arq-filter-panel").showCategories = this.unit === "productos", t.querySelector(".compare").hidden = this.unit !== "productos", this.#t && this.unit === "productos" ? this.#w() : this.#D(), this.#m({ rows: !0 });
 	}
 	async #m({ rows: e = !1 } = {}) {
-		let t = ++this.#i, n = La[this.unit] ?? La.productos;
+		let t = ++this.#i, n = Ra[this.unit] ?? Ra.productos;
 		this.setAttribute("aria-busy", "true"), e && this.#_(n.loading);
 		let r = null;
 		try {
@@ -6432,7 +6433,7 @@ var Na = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 		let t = location.pathname + location.search, n = null;
 		for (let r of e.querySelectorAll("arq-catalog-nav-item")) {
 			let e = r.getAttribute("href");
-			r.selected = !!e && Va(e, t), r.selected && (n ??= r);
+			r.selected = !!e && Ha(e, t), r.selected && (n ??= r);
 		}
 		let r = n?.closest("arq-catalog-nav-group");
 		for (let t of e.querySelectorAll(":scope > arq-catalog-nav-group")) t.selected = t === r;
@@ -6481,55 +6482,65 @@ var Na = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 		let e = document.querySelector("arq-page-header > [slot=\"title\"]"), t = this.shadowRoot?.querySelector(".toolbar");
 		t && (t.name = e?.textContent.trim() || null);
 	}
-}, za = (e) => e.get("view") === "colecciones" || e.has("collection");
-function Ba() {
+}, Ba = (e) => e.get("view") === "colecciones" || e.has("collection");
+function Va() {
 	let e = new URLSearchParams(location.search), t = {};
-	for (let [n, r] of Object.entries(Pa)) {
+	for (let [n, r] of Object.entries(Fa)) {
 		let i = e.get(n);
 		i && (t[r] = i);
 	}
 	return t;
 }
-function Va(e, t) {
+function Ha(e, t) {
 	let n = new URL(e, location.href), r = (e) => [...new URLSearchParams(e)].sort().join("&"), i = new URL(t, location.href);
 	return n.pathname.replace(/\/$/, "") === i.pathname.replace(/\/$/, "") && r(n.search) === r(i.search);
 }
-Ra.define();
+za.define();
 //#endregion
 //#region src/components/ficha-producto/ficha-producto.css?inline
-var Ha = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.page:not([data-ready]) .needs-data{display:none}.hero{padding:0 0 var(--arq-space-section-sm);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);transition-property:background-color,color;transition-duration:var(--arq-illumination-bg-duration), var(--arq-theme-text-duration,var(--arq-motion-duration-fast));transition-delay:0s, var(--arq-theme-text-delay,0s);transition-timing-function:var(--arq-illumination-bg-easing), var(--arq-theme-text-easing,var(--arq-motion-easing-standard))}.hero[data-arq-theme=dark]+.details{padding-top:var(--arq-space-section-md)}.configurator{column-gap:var(--arq-space-gap-3xl);grid-template-columns:minmax(0,14fr) minmax(0,9fr);align-items:stretch;display:grid}.gallery-column{aspect-ratio:4/3;flex-direction:column;justify-self:stretch;min-width:0;display:flex;position:relative;overflow:hidden}.gallery{flex:auto;min-height:0}.iluminar{z-index:2;right:var(--arq-space-padding-xl-2xl);bottom:var(--arq-space-padding-xl);position:absolute}.configurator-column{justify-content:space-between;gap:var(--arq-space-gap-4xl);min-width:0;padding-right:var(--page-gutter);flex-direction:column;display:flex}.header{align-items:flex-start;gap:var(--arq-space-gap-xl);padding-top:var(--arq-space-padding-xl);flex-direction:column;min-width:0;display:flex}.title-row{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;min-width:0;display:flex}.title{overflow-wrap:break-word;min-width:0}.info{gap:var(--arq-space-gap-lg);flex-direction:column;flex:auto;min-width:0;display:flex}.status{color:var(--arq-color-text-secondary);margin:0}.product{align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column;min-width:0;display:flex}.description{max-width:100%;color:var(--arq-color-text-tertiary);overflow-wrap:break-word}::slotted([slot=description]){font:inherit!important;color:inherit!important;margin:0!important}.options{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.buy{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.actions{gap:var(--arq-space-gap-md);display:flex}.actions arq-button{flex:1 1 0}.details{padding:var(--arq-space-gap-4xl) var(--page-gutter) var(--arq-space-gap-4xl) var(--arq-space-section-lg)}.accordion{border-top:var(--arq-border-default) solid var(--arq-color-border-default);flex-direction:column;min-width:0;display:flex}.ambient{gap:var(--arq-space-gap-md);margin-bottom:var(--arq-space-section-xl);padding-left:var(--page-gutter);overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none;scroll-padding-inline-start:var(--page-gutter);display:flex;overflow-x:auto}.ambient::-webkit-scrollbar{display:none}.ambient img{aspect-ratio:auto 4/5;object-fit:cover;scroll-snap-align:start;background:var(--arq-color-surface-subtle);flex:none;width:auto;max-width:none;height:70svh;display:block}.story-block{padding-bottom:var(--arq-space-section-sm)}.story{grid-template-columns:minmax(0, 1fr) minmax(0, var(--arq-layout-measure-wide));column-gap:var(--arq-space-gap-3xl);box-sizing:border-box;min-height:100svh;padding:var(--arq-space-section-lg);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);align-items:start;display:grid;position:relative}.story-bg{clip-path:inset(0);pointer-events:none;position:absolute;inset:0;overflow:hidden}.story-bg img{object-fit:cover;width:100%;height:100%;display:block;position:fixed;inset:0}@media (prefers-reduced-motion:reduce){.story-bg img{position:absolute}}.story-title,.story-body{min-width:0;position:relative}.story-title{max-width:var(--arq-layout-measure);grid-column:1}.story-body{align-self:center;align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column;grid-column:2;display:flex}.story-text{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}::slotted(h2[slot=story-title]){font-family:var(--arq-font-family-sans)!important;font-weight:var(--arq-font-weight-light)!important;font-size:var(--arq-type-heading-2-size)!important;line-height:var(--arq-type-heading-2-leading)!important;letter-spacing:var(--arq-font-tracking-normal)!important;color:inherit!important;margin:0!important}::slotted(h3[slot=story-text]),::slotted(p[slot=story-text]),::slotted(ul){font-family:var(--arq-font-family-sans)!important;font-weight:var(--arq-font-weight-regular)!important;font-size:var(--arq-type-body-xl-size)!important;line-height:var(--arq-type-body-xl-leading)!important;letter-spacing:var(--arq-font-tracking-normal)!important;color:inherit!important;margin:0!important}::slotted(ul){padding:0 0 0 var(--arq-space-padding-lg)!important;list-style-type:\"- \"!important}.story-link{align-self:flex-start}.cards{gap:var(--arq-space-gap-sm);margin:calc(-1 * var(--arq-space-gap-xs));padding:var(--arq-space-gap-xs);scroll-snap-type:x mandatory;scrollbar-width:none;display:flex;overflow-x:auto}.cards::-webkit-scrollbar{display:none}.cards arq-family-card{width:var(--arq-layout-card-min);scroll-snap-align:start;flex:none}.cards arq-family-card[size=large]{width:var(--arq-layout-card-min-wide)}.glossary{gap:var(--arq-space-gap-md);padding-top:var(--arq-space-section-sm);padding-bottom:var(--arq-space-section-xl);scroll-margin-top:var(--arq-space-gap-4xl);flex-direction:column;display:flex}.glossary-title{padding:0 var(--page-gutter)}::slotted([slot=glossary-title]:focus){outline:none}.inspiration{grid-template-columns:minmax(0, var(--arq-layout-measure)) minmax(0, 1fr);column-gap:var(--arq-space-gap-4xl);padding:0 var(--page-gutter) var(--arq-space-section-xl) var(--arq-space-section-lg);align-items:center;display:grid}.inspiration-text{max-width:var(--arq-layout-measure);color:var(--arq-color-text-primary)}::slotted([slot=inspiration]){font:inherit!important;color:inherit!important;margin:0!important}.inspiration-images{align-items:flex-start;gap:var(--arq-space-gap-sm-md);min-width:0;display:flex}.inspiration-images:empty{display:none}.inspiration-images img{object-fit:cover;background:var(--arq-color-surface-subtle);min-width:0;display:block}.inspiration-images img:first-child{aspect-ratio:16/10;flex:984 1 0}.inspiration-images img:not(:first-child){aspect-ratio:4/5;flex:346 1 0}.collection{padding:var(--arq-space-padding-5xl) var(--page-gutter);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:start;display:grid}.collection-intro{align-items:flex-start;gap:var(--arq-space-gap-md);max-width:var(--arq-layout-measure);flex-direction:column;display:flex}.collection-cards{flex:auto;min-width:0}@media (width<=1023px){.hero{padding-top:0}.configurator{gap:var(--arq-space-gap-2xl);flex-direction:column;display:flex}.configurator-column{display:contents}.header{padding:var(--arq-space-padding-xl) var(--page-gutter) 0;order:-1}.gallery-column{aspect-ratio:auto;margin-inline:var(--page-gutter)}.iluminar{margin-bottom:var(--arq-space-gap-sm-md);order:-1;align-self:flex-start;position:static}.info,.buy{padding-inline:var(--page-gutter)}.details{padding:var(--arq-space-section-xs) var(--page-gutter)}.story{row-gap:var(--arq-space-gap-4xl);padding:var(--arq-space-section-sm) var(--page-gutter);grid-template-rows:auto 1fr;grid-template-columns:minmax(0,1fr)}.story-title,.story-body{grid-column:1;max-width:none}.story-body{align-self:end}.inspiration{align-items:stretch;gap:var(--arq-space-gap-xl);padding-inline:var(--page-gutter);flex-direction:column;display:flex}.collection{gap:var(--arq-space-gap-4xl);flex-direction:column;display:flex}}@media (width<=767px){.header{gap:var(--arq-space-gap-2xl)}.actions{flex-direction:column}.actions arq-button{flex:none;width:100%}.ambient{gap:var(--arq-space-gap-sm-md)}.inspiration-text{max-width:none}.inspiration-images{flex-direction:column}.inspiration-images img:first-child,.inspiration-images img:not(:first-child){flex:none;width:100%}.glossary{padding-top:var(--arq-space-section-xs)}}", Ua = {
+var Ua = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.page:not([data-ready]) .needs-data{display:none}.hero{background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);transition-property:background-color,color;transition-duration:var(--arq-illumination-bg-duration), var(--arq-theme-text-duration,var(--arq-motion-duration-fast));transition-delay:0s, var(--arq-theme-text-delay,0s);transition-timing-function:var(--arq-illumination-bg-easing), var(--arq-theme-text-easing,var(--arq-motion-easing-standard));padding:0}.hero[data-arq-theme=dark]+.details{padding-top:var(--arq-space-section-md)}.configurator{column-gap:var(--arq-space-gap-3xl);grid-template-columns:minmax(0,14fr) minmax(0,9fr);align-items:stretch;display:grid}.gallery-column{aspect-ratio:4/3;flex-direction:column;justify-self:stretch;min-width:0;display:flex;position:relative;overflow:hidden}.gallery{flex:auto;min-height:0}.iluminar{z-index:2;right:var(--arq-space-padding-xl-2xl);bottom:var(--arq-space-padding-xl);position:absolute}.configurator-column{justify-content:space-between;gap:var(--arq-space-gap-4xl);min-width:0;padding-right:var(--page-gutter);padding-bottom:var(--arq-space-padding-xl);flex-direction:column;display:flex}.header{align-items:flex-start;gap:var(--arq-space-gap-xl);padding-top:var(--arq-space-padding-xl);flex-direction:column;min-width:0;display:flex}.title-row{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;min-width:0;display:flex}.title{overflow-wrap:break-word;min-width:0}.info{gap:var(--arq-space-gap-lg);flex-direction:column;flex:auto;min-width:0;display:flex}.status{color:var(--arq-color-text-secondary);margin:0}.product{align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column;min-width:0;display:flex}.description{max-width:100%;color:var(--arq-color-text-tertiary);overflow-wrap:break-word}::slotted([slot=description]){font:inherit!important;color:inherit!important;margin:0!important}.options{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.buy{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.actions{gap:var(--arq-space-gap-md);display:flex}.actions arq-button{flex:1 1 0}.details{padding:var(--arq-space-gap-4xl) var(--page-gutter) var(--arq-space-gap-4xl) var(--arq-space-section-lg)}.accordion{border-top:var(--arq-border-default) solid var(--arq-color-border-default);flex-direction:column;min-width:0;display:flex}.ambient-block{margin-bottom:var(--arq-space-section-md);position:relative}.ambient{--ambient-height:40rem;--ambient-gap:var(--arq-space-gap-md);gap:var(--ambient-gap);padding-left:var(--page-gutter);overscroll-behavior-x:contain;scrollbar-width:none;display:flex;overflow-x:auto}@media (width<=1023px){.ambient{--ambient-height:30rem}}@media (width<=767px){.ambient{--ambient-height:20rem}}.ambient::-webkit-scrollbar{display:none}.ambient:after{content:\"\";width:calc(var(--page-gutter) - var(--ambient-gap));flex:none}.ambient-cursor{z-index:3;--cursor-size:calc(var(--arq-icon-2xl) * 2);width:var(--cursor-size);height:var(--cursor-size);margin:calc(var(--cursor-size) / -2) 0 0 calc(var(--cursor-size) / -2);color:var(--arq-color-icon-inverse);pointer-events:none;display:block;position:fixed;top:0;left:0}.ambient-cursor[hidden]{display:none}.ambient-cursor .icon{width:100%;height:100%;stroke-width:var(--arq-border-strong)}.ambient-cursor[data-direction=next] [data-icon=arrow-left],.ambient-cursor[data-direction=prev] [data-icon=arrow-right],.ambient-controls{display:none}@media (hover:hover) and (pointer:fine){.ambient.is-scrollable{cursor:none}}@media (hover:none),(pointer:coarse){.ambient-cursor{display:none}.ambient-controls{justify-content:flex-end;gap:var(--arq-space-gap-sm);padding:var(--arq-space-gap-md) var(--page-gutter) 0;display:flex}}.ambient img{width:auto;height:var(--ambient-height);aspect-ratio:auto 4/5;object-fit:cover;background:var(--arq-color-surface-subtle);flex:none;max-width:none;display:block}.story-block{padding-bottom:var(--arq-space-section-sm)}.story{grid-template-columns:minmax(0, 1fr) minmax(0, var(--arq-layout-measure-wide));column-gap:var(--arq-space-gap-3xl);box-sizing:border-box;min-height:100svh;padding:var(--arq-space-section-lg);background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);align-items:start;display:grid;position:relative}.story-bg{clip-path:inset(0);pointer-events:none;position:absolute;inset:0;overflow:hidden}.story-bg img{object-fit:cover;width:100%;height:100%;display:block;position:fixed;inset:0}@media (prefers-reduced-motion:reduce){.story-bg img{position:absolute}}.story-title,.story-body{min-width:0;position:relative}.story-title{max-width:var(--arq-layout-measure);grid-column:1}.story-body{align-self:center;align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column;grid-column:2;display:flex}.story-text{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex}::slotted(h2[slot=story-title]){font-family:var(--arq-font-family-sans)!important;font-weight:var(--arq-font-weight-light)!important;font-size:var(--arq-type-heading-2-size)!important;line-height:var(--arq-type-heading-2-leading)!important;letter-spacing:var(--arq-font-tracking-normal)!important;color:inherit!important;margin:0!important}::slotted(h3[slot=story-text]),::slotted(p[slot=story-text]),::slotted(ul){font-family:var(--arq-font-family-sans)!important;font-weight:var(--arq-font-weight-regular)!important;font-size:var(--arq-type-body-xl-size)!important;line-height:var(--arq-type-body-xl-leading)!important;letter-spacing:var(--arq-font-tracking-normal)!important;color:inherit!important;margin:0!important}::slotted(ul){padding:0 0 0 var(--arq-space-padding-lg)!important;list-style-type:\"- \"!important}.story-link{align-self:flex-start}.cards{gap:var(--arq-space-gap-sm);margin:calc(-1 * var(--arq-space-gap-xs));padding:var(--arq-space-gap-xs);scroll-snap-type:x mandatory;scrollbar-width:none;display:flex;overflow-x:auto}.cards::-webkit-scrollbar{display:none}.cards arq-family-card{width:var(--arq-layout-card-min);scroll-snap-align:start;flex:none}.cards arq-family-card[size=large]{width:var(--arq-layout-card-min-wide)}.glossary{gap:var(--arq-space-gap-md);padding-top:var(--arq-space-section-sm);padding-bottom:var(--arq-space-section-xl);scroll-margin-top:var(--arq-space-gap-4xl);flex-direction:column;display:flex}.glossary-title{padding:0 var(--page-gutter)}::slotted([slot=glossary-title]:focus){outline:none}.cta{padding:var(--arq-layout-gutter)}.cta-block{justify-content:center;align-items:center;gap:var(--arq-space-gap-2xl);padding:var(--arq-space-section-md) var(--arq-layout-gutter);background:var(--arq-color-surface-subtle);color:var(--arq-color-text-primary);text-align:center;flex-direction:column;display:flex}.cta-text{align-items:center;gap:var(--arq-space-gap-sm-md);flex-direction:column;display:flex}.cta-description{max-width:var(--arq-layout-measure-wide);color:var(--arq-color-text-secondary);margin:0}::slotted([slot=cta-title]){font:inherit!important;color:inherit!important;margin:0!important}.media-portrait,.media-wide{object-fit:cover;background:var(--arq-color-surface-subtle);width:100%;min-width:0;display:block}.inspiration{align-items:flex-start;gap:var(--arq-space-gap-lg);padding:var(--arq-space-section-md) var(--arq-space-section-lg) var(--arq-space-section-xl);display:flex}.inspiration-copy{flex:0 1 var(--arq-layout-measure);gap:var(--arq-space-gap-lg);flex-direction:column;order:2;min-width:0;display:flex}.inspiration-text{color:var(--arq-color-text-primary)}::slotted([slot=inspiration]){font:inherit!important;color:inherit!important;margin:0!important}.inspiration-images{align-items:flex-start;gap:var(--arq-space-gap-md);flex:1 1 0;order:1;min-width:0;display:flex}.inspiration-images:empty{display:none}.inspiration-images .media-wide{aspect-ratio:940/568;object-position:50% 80%;flex:940 1 0}.inspiration-images .media-portrait{aspect-ratio:346/447;flex:346 1 0}.collection{padding:var(--arq-space-padding-5xl) var(--arq-space-section-lg);background:var(--arq-color-surface-subtle);color:var(--arq-color-text-primary);align-items:flex-start;display:flex}.collection-intro{align-items:flex-start;gap:var(--arq-space-gap-md);width:calc(var(--arq-layout-measure) + var(--arq-space-gap-xl-2xl));flex-direction:column;flex:none;max-width:100%;display:flex}.collection-cards{flex:auto;min-width:0}@media (width<=1023px){.hero{padding-top:0}.configurator{gap:var(--arq-space-gap-2xl);flex-direction:column;display:flex}.configurator-column{display:contents}.header{padding:var(--arq-space-padding-xl) var(--page-gutter) 0;order:-1}.gallery-column{aspect-ratio:auto;margin-inline:var(--page-gutter)}.iluminar{right:var(--arq-space-padding-md);bottom:var(--arq-space-padding-md)}.info,.buy{padding-inline:var(--page-gutter)}.buy{padding-bottom:var(--arq-space-padding-xl)}.details{padding:var(--arq-space-section-xs) var(--page-gutter)}.story{row-gap:var(--arq-space-gap-4xl);padding:var(--arq-space-section-sm) var(--page-gutter);grid-template-rows:auto 1fr;grid-template-columns:minmax(0,1fr)}.story-title,.story-body{grid-column:1;max-width:none}.story-body{align-self:end}.inspiration{align-items:stretch;gap:var(--arq-space-gap-xl);padding-inline:var(--page-gutter);flex-direction:column}.inspiration-images{flex:none;order:0}.inspiration-copy{flex:none;order:1}.cta{padding:var(--arq-space-section-xs) var(--page-gutter)}.cta-block{padding-inline:var(--arq-layout-gutter)}.collection{gap:var(--arq-space-gap-4xl);padding-inline:var(--page-gutter);flex-direction:column}.collection-intro{width:auto}}@media (width<=767px){.header{gap:var(--arq-space-gap-2xl)}.actions{flex-direction:column}.actions arq-button{flex:none;width:100%}.ambient{--ambient-gap:var(--arq-space-gap-sm-md)}.inspiration-images{flex-direction:column}.inspiration-images>*{flex:none;width:100%}.glossary{padding-top:var(--arq-space-section-xs)}}", Q = {
 	loading: "Cargando producto…",
 	notFound: "No encontramos este producto.",
 	error: "No se pudo cargar el producto. Probá de nuevo en unos minutos.",
 	datasheet: "Ficha técnica",
-	generating: "Generando…"
+	generating: "Generando…",
+	previous: "Anterior",
+	next: "Siguiente"
 }, Wa = () => matchMedia("(prefers-reduced-motion: reduce)").matches, Ga = class extends P {
 	static tag = "arq-ficha-producto";
-	static styles = Ha;
-	static properties = {};
-	static template = "<div class=\"page\"><div class=\"hero\"><div class=\"configurator\"><div class=\"gallery-column\"><arq-product-gallery class=\"gallery\" fill></arq-product-gallery><arq-toggle class=\"iluminar needs-data\" show-label>Iluminar</arq-toggle></div><div class=\"configurator-column\"><div class=\"header\"><arq-breadcrumb class=\"breadcrumb needs-data\"></arq-breadcrumb><div class=\"title-row\"><div class=\"title role-display\"><slot name=\"title\"></slot></div><arq-sku class=\"sku needs-data\" size=\"compact\"></arq-sku></div></div><div class=\"info\"><p class=\"status role-body\" role=\"status\" hidden></p><div class=\"product\"><div class=\"description role-body-regular\"><span class=\"variant-description\" hidden></span></div></div><div class=\"options needs-data\"></div></div><div class=\"buy needs-data\"><arq-checkbox class=\"compare\" show-label>Comparar</arq-checkbox><div class=\"actions\"><arq-button class=\"datasheet\">Generar ficha técnica</arq-button><arq-button class=\"to-glossary\" type=\"outline\">Ver descargas</arq-button></div></div></div></div></div><div class=\"details needs-data\"><div class=\"accordion\"></div></div><div class=\"ambient needs-data\" role=\"region\" aria-label=\"Galería de ambiente\" tabindex=\"0\" hidden></div><div class=\"story-block needs-data\"><div class=\"story\" data-arq-theme=\"dark\" hidden><div class=\"story-bg\" hidden><img alt=\"\" loading=\"lazy\"></div><div class=\"story-title\"><slot name=\"story-title\"></slot></div><div class=\"story-body\"><div class=\"story-text\"><slot name=\"story-text\"></slot><slot name=\"story-list\"></slot></div><arq-button class=\"story-link\" type=\"underline\" show-underline show-icon icon=\"arrow-up-right\" hidden></arq-button></div></div></div><div class=\"glossary needs-data\"><div class=\"glossary-title role-display-sm\"><slot name=\"glossary-title\"></slot></div><arq-variants-table class=\"table\" downloads=\"downloads-modal\"></arq-variants-table></div><div class=\"inspiration\" hidden><div class=\"inspiration-text role-body-xl\"><slot name=\"inspiration\"></slot></div><div class=\"inspiration-images needs-data\"></div></div><div class=\"collection needs-data\" data-arq-theme=\"dark\" hidden><div class=\"collection-intro\"><div class=\"collection-title role-heading-2\"><slot name=\"collection-title\"></slot></div><arq-button class=\"collection-link\" type=\"underline\" show-underline show-icon icon=\"arrow-up-right\"></arq-button></div><div class=\"cards collection-cards\"></div></div></div><arq-compare-bar class=\"compare-bar\"></arq-compare-bar><arq-download-modal id=\"downloads-modal\"><slot name=\"modal-title\" slot=\"title\"></slot></arq-download-modal>";
+	static styles = Ua;
+	static properties = { ctaHref: {
+		type: String,
+		default: "/arq/contacto"
+	} };
+	static template = `<div class="page"><div class="hero"><div class="configurator"><div class="gallery-column"><arq-product-gallery class="gallery" fill><arq-toggle class="iluminar needs-data" slot="overlay" show-label>Iluminar</arq-toggle></arq-product-gallery></div><div class="configurator-column"><div class="header"><arq-breadcrumb class="breadcrumb needs-data"></arq-breadcrumb><div class="title-row"><div class="title role-display"><slot name="title"></slot></div><arq-sku class="sku needs-data" size="compact"></arq-sku></div></div><div class="info"><p class="status role-body" role="status" hidden></p><div class="product"><div class="description role-body-regular"><span class="variant-description" hidden></span></div></div><div class="options needs-data"></div></div><div class="buy needs-data"><arq-checkbox class="compare" show-label>Comparar</arq-checkbox><div class="actions"><arq-button class="datasheet">Generar ficha técnica</arq-button><arq-button class="to-glossary" type="outline">Ver descargas</arq-button></div></div></div></div></div><div class="details needs-data"><div class="accordion"></div></div><div class="ambient-block needs-data" hidden><div class="ambient" role="region" aria-label="Galería de ambiente" tabindex="0"></div><div class="ambient-controls"><arq-icon-button class="ambient-prev" icon="arrow-left" size="large" background="outline" disabled>${Q.previous}</arq-icon-button><arq-icon-button class="ambient-next" icon="arrow-right" size="large" background="outline">${Q.next}</arq-icon-button></div><span class="ambient-cursor" aria-hidden="true" hidden>${F("arrow-right")}${F("arrow-left")}</span></div><div class="glossary needs-data"><div class="glossary-title role-display-sm"><slot name="glossary-title"></slot></div><arq-variants-table class="table" downloads="downloads-modal"></arq-variants-table></div><div class="story-block needs-data"><div class="story" data-arq-theme="dark" hidden><div class="story-bg" hidden><img alt="" loading="lazy"></div><div class="story-title"><slot name="story-title"></slot></div><div class="story-body"><div class="story-text"><slot name="story-text"></slot><slot name="story-list"></slot></div><arq-button class="story-link" type="underline" show-underline show-icon icon="arrow-up-right" hidden></arq-button></div></div></div><div class="cta" hidden><div class="cta-block"><div class="cta-text"><div class="cta-title role-heading-1"><slot name="cta-title"></slot></div><p class="cta-description role-body-lg"><slot name="cta-description"></slot></p></div><arq-button class="cta-action" show-icon icon="arrow-right"><slot name="cta-action"></slot></arq-button></div></div><div class="inspiration" hidden><div class="inspiration-copy"><div class="inspiration-text role-body-lg"><slot name="inspiration"></slot></div></div><div class="inspiration-images needs-data"></div></div><div class="collection needs-data" hidden><div class="collection-intro"><div class="collection-title role-heading-2"><slot name="collection-title"></slot></div><arq-button class="collection-link" type="underline" show-underline show-icon icon="arrow-up-right"></arq-button></div><div class="cards collection-cards"></div></div></div><arq-compare-bar class="compare-bar"></arq-compare-bar><arq-download-modal id="downloads-modal"><slot name="modal-title" slot="title"></slot></arq-download-modal>`;
 	#e = null;
+	update(e) {
+		e.has("ctaHref") && (this.shadowRoot.querySelector(".cta-action").href = this.ctaHref);
+	}
 	#t = {};
 	#n = !1;
 	#r = null;
 	setup() {
 		let e = this.shadowRoot;
-		this.#o(), e.querySelector("slot[name=\"inspiration\"]").addEventListener("slotchange", () => this.#C()), this.#C(), e.querySelector(".iluminar").addEventListener("arq:change", (e) => this.#c(e.detail.checked)), Br() && (e.querySelector(".iluminar").checked = !0, Ir(() => this.#l(!0))), e.querySelector(".options").addEventListener("arq:change", (e) => {
+		this.#o(), e.querySelector("slot[name=\"inspiration\"]").addEventListener("slotchange", () => this.#w()), this.#w(), e.querySelector("slot[name=\"cta-title\"]").addEventListener("slotchange", () => this.#O()), this.#O(), this.#v();
+		let t = matchMedia("(max-width: 1023px)"), n = () => e.querySelector(".iluminar").showLabel = !t.matches;
+		t.addEventListener("change", n), n(), e.querySelector(".iluminar").addEventListener("arq:change", (e) => this.#c(e.detail.checked)), Br() && (e.querySelector(".iluminar").checked = !0, Ir(() => this.#l(!0))), e.querySelector(".options").addEventListener("arq:change", (e) => {
 			let t = e.target.closest("[data-attribute]")?.dataset.attribute;
 			t && e.detail?.selected && (this.#t = Ne(this.#t, t, e.detail.value), this.#d(), this.#f({ updateUrl: !0 }));
 		}), e.querySelector(".datasheet").addEventListener("click", (e) => this.#h(this.#r, e.currentTarget)), e.querySelector(".to-glossary").addEventListener("click", () => this.#g());
-		let t = e.querySelector(".compare"), n = e.querySelector(".compare-bar");
-		t.addEventListener("arq:change", (e) => {
-			e.stopPropagation(), this.#r && (e.detail.checked ? n.add(this.#m()) || (t.checked = !1) : n.remove(this.#r));
-		}), n.addEventListener("arq:compare-change", () => {
-			t.checked = n.has(this.#r);
-		}), e.querySelector(".table").addEventListener("arq:downloads", (e) => this.#x(e.detail.sku)), e.querySelector("arq-download-modal").addEventListener("arq:download", (e) => {
+		let r = e.querySelector(".compare"), i = e.querySelector(".compare-bar");
+		r.addEventListener("arq:change", (e) => {
+			e.stopPropagation(), this.#r && (e.detail.checked ? i.add(this.#m()) || (r.checked = !1) : i.remove(this.#r));
+		}), i.addEventListener("arq:compare-change", () => {
+			r.checked = i.has(this.#r);
+		}), e.querySelector(".table").addEventListener("arq:downloads", (e) => this.#S(e.detail.sku)), e.querySelector("arq-download-modal").addEventListener("arq:download", (e) => {
 			e.stopPropagation(), this.#h(e.currentTarget.dataset.sku);
 		}), this.#i();
 	}
 	async #i() {
 		let e = this.getAttribute("data-group");
-		this.setAttribute("aria-busy", "true"), this.#a(Ua.loading);
+		this.setAttribute("aria-busy", "true"), this.#a(Q.loading);
 		let t = null, n = !1;
 		try {
 			t = e ? await nt(e) : null;
@@ -6537,15 +6548,15 @@ var Ha = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 			n = !0, console.error("[arq] ficha-producto: no se pudo cargar el catálogo", e);
 		}
 		if (this.removeAttribute("aria-busy"), !t) {
-			this.#a(n ? Ua.error : Ua.notFound);
+			this.#a(n ? Q.error : Q.notFound);
 			return;
 		}
 		this.#e = t, this.#a("");
 		let r = new URLSearchParams(location.search).get("sku");
-		this.#t = Oe(t.variants, t.variantAttributes, r), this.#s(), this.#v(t.group.story), this.#S(t.group.inspiration), this.#u(), this.#d(), this.#f({
+		this.#t = Oe(t.variants, t.variantAttributes, r), this.#s(), this.#y(t.group.story), this.#C(t.group.inspiration), this.#u(), this.#d(), this.#f({
 			updateUrl: !0,
 			sku: t.variants.find((e) => e.sku === r)?.sku ?? t.variants.find((e) => e.isDefault)?.sku
-		}), this.#_(), this.#b(), this.#w(), this.#T(), this.shadowRoot.querySelector(".page").toggleAttribute("data-ready", !0);
+		}), this.#_(), this.#x(), this.#D(), this.#k(), this.shadowRoot.querySelector(".page").toggleAttribute("data-ready", !0);
 	}
 	#a(e) {
 		let t = this.shadowRoot.querySelector(".status");
@@ -6647,7 +6658,7 @@ var Ha = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		if (!e) return;
 		let n = { sku: e };
 		if (this.emit("datasheet", n), !t || !n.pending) return;
-		t.loadingLabel = Ua.generating, t.loading = !0;
+		t.loadingLabel = Q.generating, t.loading = !0;
 		let r = () => t.loading = !1;
 		n.pending.then(r, r);
 	}
@@ -6660,10 +6671,53 @@ var Ha = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		e && (e.tabIndex = -1, e.focus({ preventScroll: !0 }));
 	}
 	#_() {
-		let { group: e, images: t } = this.#e, n = this.shadowRoot.querySelector(".ambient");
-		n.hidden = !t.ambient.length, n.replaceChildren(...t.ambient.map((t, n) => Ka(t, `${e.name}, ambiente ${n + 1}`)));
+		let { group: e, images: t } = this.#e, n = this.shadowRoot, r = n.querySelector(".ambient");
+		n.querySelector(".ambient-block").hidden = !t.ambient.length, r.replaceChildren(...t.ambient.map((t, n) => Ka(t, `${e.name}, ambiente ${n + 1}`))), r.dispatchEvent(new Event("scroll"));
 	}
-	#v(e) {
+	#v() {
+		let e = this.shadowRoot, t = e.querySelector(".ambient"), n = e.querySelector(".ambient-cursor"), r = e.querySelector(".ambient-prev"), i = e.querySelector(".ambient-next"), a = () => t.scrollLeft > 1, o = () => t.scrollLeft + t.clientWidth < t.scrollWidth - 1, s = null, c = (e) => {
+			let n = t.getBoundingClientRect(), r = e < n.left + n.width / 2 ? -1 : 1;
+			return r === -1 && !a() && (r = 1), r === 1 && !o() && (r = -1), r;
+		}, l = () => {
+			let e = a() || o();
+			t.classList.toggle("is-scrollable", e), n.hidden = !s || !e, !n.hidden && (n.dataset.direction = c(s.x) === 1 ? "next" : "prev", n.style.transform = `translate(${s.x}px, ${s.y}px)`);
+		}, u = (e) => {
+			let n = t.getBoundingClientRect(), r = parseFloat(getComputedStyle(t).paddingLeft) || 0, i = t.scrollLeft, a = [...t.children].map((e) => {
+				let t = e.getBoundingClientRect();
+				return {
+					left: t.left - n.left + i,
+					right: t.right - n.left + i
+				};
+			}), o = t.scrollWidth - t.clientWidth, s;
+			if (e === 1) {
+				let e = a.find((e) => e.right > i + t.clientWidth - r + 2 && e.left > i + r + 2);
+				s = e ? Math.min(e.right + r - t.clientWidth, e.left - r) : o;
+			} else {
+				let e = [...a].reverse().find((e) => e.left < i + r - 2);
+				s = e ? e.left - r : 0;
+			}
+			t.scrollTo({
+				left: Math.min(Math.max(s, 0), o),
+				behavior: Wa() ? "auto" : "smooth"
+			});
+		}, d = () => {
+			r.disabled = !a(), i.disabled = !o(), l();
+		};
+		t.addEventListener("scroll", d, { passive: !0 }), t.addEventListener("load", d, !0), new ResizeObserver(d).observe(t), t.addEventListener("pointermove", (e) => {
+			e.pointerType === "mouse" && (s = {
+				x: e.clientX,
+				y: e.clientY
+			}, l());
+		}), t.addEventListener("pointerleave", () => {
+			s = null, l();
+		}), t.addEventListener("click", (e) => {
+			if (e.pointerType === "mouse" || e.detail > 0) {
+				if (!(a() || o())) return;
+				u(c(e.clientX));
+			}
+		}), r.addEventListener("click", () => u(-1)), i.addEventListener("click", () => u(1));
+	}
+	#y(e) {
 		for (let e of this.querySelectorAll(":scope > [slot=\"story-title\"], :scope > [slot=\"story-text\"], :scope > [slot=\"story-list\"]")) e.remove();
 		let t = String(e ?? "").split("\n").map((e) => e.trim()).filter(Boolean), n = [], r = null;
 		for (let e of t) {
@@ -6675,9 +6729,9 @@ var Ha = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 			let i = e.startsWith("## "), a = !n.length, o = document.createElement(a ? "h2" : i ? "h3" : "p");
 			o.slot = a ? "story-title" : "story-text", o.textContent = i ? e.slice(3).trim() : e, n.push(o);
 		}
-		this.append(...n, ...r ? [r] : []), this.#n = n.length > 0 || !!r, this.#y();
+		this.append(...n, ...r ? [r] : []), this.#n = n.length > 0 || !!r, this.#b();
 	}
-	#y() {
+	#b() {
 		let e = this.shadowRoot, { images: t, collection: n } = this.#e ?? {}, r = e.querySelector(".story");
 		r.hidden = !this.#n;
 		let i = e.querySelector(".story-bg");
@@ -6685,18 +6739,18 @@ var Ha = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		let a = e.querySelector(".story-link");
 		a.hidden = !n, n && (a.href = x(n.id), a.textContent = `Ver colección ${n.name}`);
 	}
-	#b() {
+	#x() {
 		let { group: e, glossary: t, files: n } = this.#e, r = this.shadowRoot.querySelector(".table");
 		r.label = `Variantes de ${e.name}`, r.data = t, r.replaceChildren(...n.map((e) => {
 			let t = document.createElement("arq-button");
 			return t.slot = "downloads", t.type = "outline", t.showIcon = !0, t.icon = "download", t.href = e.href, t.textContent = e.label, t;
 		}));
 	}
-	#x(e) {
+	#S(e) {
 		let t = this.shadowRoot.querySelector("arq-download-modal");
 		t.dataset.sku = e;
 		let n = document.createElement("arq-download-item");
-		n.emphasis = "featured", n.textContent = Ua.datasheet;
+		n.emphasis = "featured", n.textContent = Q.datasheet;
 		let r = gt(this.#e.group, e).downloads.map((e) => {
 			let t = document.createElement("arq-download-item");
 			return t.href = e.href, t.textContent = e.label, t;
@@ -6704,7 +6758,7 @@ var Ha = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		for (let e of t.querySelectorAll(":scope > arq-download-item")) e.remove();
 		t.append(n, ...r);
 	}
-	#S(e) {
+	#C(e) {
 		let t = this.querySelector(":scope > [slot=\"inspiration\"]");
 		if (!e) {
 			t?.remove();
@@ -6712,22 +6766,34 @@ var Ha = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		}
 		t || (t = document.createElement("p"), t.slot = "inspiration", this.append(t)), t.textContent = e;
 	}
-	#C() {
+	#w() {
 		let e = this.shadowRoot, t = e.querySelector("slot[name=\"inspiration\"]").assignedElements().length > 0, n = e.querySelector(".inspiration-images").children.length > 0;
 		e.querySelector(".inspiration").hidden = !t && !n;
 	}
-	#w() {
-		let { group: e, images: t } = this.#e;
-		this.shadowRoot.querySelector(".inspiration-images").replaceChildren(...t.inspiration.map((t, n) => Ka(t, `${e.name}, inspiración ${n + 1}`))), this.#C();
-	}
 	#T() {
+		return this.#e.images.ambient;
+	}
+	#E(e, t) {
+		let n = this.#e.group.video;
+		if (!n) return Ka(e, t, "media-wide");
+		let r = document.createElement("video");
+		return r.src = n, r.controls = !0, r.playsInline = !0, r.preload = "metadata", r.className = "media-wide", r.setAttribute("aria-label", t), r;
+	}
+	#D() {
+		let { group: e } = this.#e, [, , , t, n] = this.#T(), r = [t && this.#E(t, `${e.name}, video`), n && Ka(n, `${e.name}, inspiración`, "media-portrait")];
+		this.shadowRoot.querySelector(".inspiration-images").replaceChildren(...r.filter(Boolean)), this.#w();
+	}
+	#O() {
+		this.shadowRoot.querySelector(".cta").hidden = !this.shadowRoot.querySelector("slot[name=\"cta-title\"]").assignedElements().length;
+	}
+	#k() {
 		let { collection: e, family: t } = this.#e, n = this.shadowRoot.querySelector(".collection");
 		n.hidden = !e || !t.length, n.querySelector(".collection-cards").replaceChildren(...t.map((e) => qa(e, "large")));
 	}
 };
-function Ka(e, t) {
-	let n = document.createElement("img");
-	return n.src = e, n.alt = t, n.loading = "lazy", n;
+function Ka(e, t, n = "") {
+	let r = document.createElement("img");
+	return r.src = e, n && (r.className = n), r.alt = t, r.loading = "lazy", r;
 }
 function qa(e, t) {
 	let n = document.createElement("arq-family-card");
