@@ -847,3 +847,25 @@ Búsqueda con el skill find-animation-opportunities (criterio de Emil Kowalski: 
 - Los filtros del glosario de variantes (variants-table de la ficha) dejan de desplegarse sobre la tabla (filter-bar con un select por filtro) y se abren en el panel lateral derecho, como en Descargas: filter-panel con una filter-row de checkbox por filtro, «Ver N variantes» para aplicar, botón «Filtros (N)», filter-chip de lo aplicado y «Limpiar filtros». Selección múltiple dentro de cada filtro.
 - Se quita la prop `filters` de variants-table. filter-bar queda como componente (demo) pero ya no lo usa ninguna tabla.
 - **TODO (diseño):** el set variants-table de Figma sigue con Filters=On y filter-bar; hay que actualizarlo (y la ficha doc/variants-table).
+
+## 2026-10-15 · Ficha: versión 1 elegida (galería de ambiente)
+
+Se probaron dos versiones del diseño (Figma «Ficha - 1920-V1», `2612:12168`, y «V2», `2587:26558`) y **se elige la V1**, la de la galería de ambiente. La V2 (sin galería, con dos bloques de fotos y texto con línea y la colección con la card debajo) se quitó del código (atributo `version`, selector de la demo); queda en el frame de Figma.
+
+- **Orden:** el glosario va antes del parallax (antes iba después); después del parallax, el bloque «¿Te interesa este producto?» (fondo `color/surface/subtle`, título `role/heading-1`, bajada `role/body-lg`, button Filled con `icon/arrow-right` a `/arq/contacto`; los textos llegan por slot `cta-title` · `cta-description` · `cta-action`); y «Explora la colección» en Light sobre `color/surface/subtle` (en Figma ya no es Dark local; DESIGN.md §2 sigue diciendo Dark local: hay que actualizarlo en una rama `docs/`).
+- **Galería:** las fotos miden 640 de alto (`40rem`) en todos los dispositivos (antes 70svh); lo que cambia es el ancho de cada una, que sale de su proporción. TODO (diseño): 640 no tiene token.
+- **Inspiración:** foto ancha o video, una foto vertical y el texto a la derecha; Explora la colección con la introducción a la izquierda y la card a su derecha.
+- **Fotos:** las de `multimagen_ambiente` posiciones 2, 3, 4, 5 y 7 (las posiciones 2 y 3 llegan como `ambient_2_on` y `ambient_3_on`), sin la 6, que es la del parallax. La galería toma todas y la inspiración las dos últimas.
+- **Video:** `video_inspiration` todavía no tiene dato; mientras tanto, una foto ocupa el lugar del video. Con URL, es un `<video controls>`.
+- **TODO (diseño):** el alto del CTA (474), las medidas de las fotos y de los textos de Final no tienen token. El hero de Final (miniaturas en fila abajo, columnas 1076 / 620) todavía no está aplicado.
+
+## 2026-10-15 · Flechas en la galería de ambiente
+
+- Con mouse, el cursor sobre la galería de ambiente pasa a ser la flecha del sistema (`icon/arrow-right` o `arrow-left`, al doble de `icon/2xl`: 64, con trazo `border/strong`; TODO diseño: no hay un ícono más grande): mitad derecha, siguiente; mitad izquierda, anterior; al inicio solo hay «siguiente» y al final solo «anterior». El clic pasa de a una foto, igual que los botones: adelante, la próxima foto que no entra completa se lleva hasta que entre con el margen de página a la derecha (alineada a la izquierda si es más ancha que la pantalla); atrás, la última cortada a la izquierda se alinea a la izquierda. La última foto queda con el margen derecho (un espaciador al final de la fila). Se quitó el scroll-snap de la galería: devolvía el scroll a la foto anterior. La flecha es blanca (`color/icon/inverse`).
+- En pantallas sin cursor (`hover: none` o `pointer: coarse`) van dos botones (icon-button Large Outline, flechas izquierda y derecha) debajo de las fotos, abajo a la derecha; se deshabilitan al llegar al inicio o al final. No se reutilizó carousel-button (solo existe en Figma, todavía no en código).
+- TODO (diseño): el cursor y las flechas de la galería no están en Figma.
+
+## 2026-10-16 · Ficha: hero sin padding inferior e Iluminar dentro de la foto
+
+- **Hero:** sin padding inferior (con Iluminar quedaba una franja oscura bajo la foto). El aire de abajo (`space/padding/xl`, 32 en Figma `2612:12210`) pasa a `configurator-column` y, hasta 1023 px, a `.buy`.
+- **Iluminar:** va dentro de la imagen de `product-gallery` (slot nuevo `overlay`), abajo a la derecha, en todos los tamaños. En Desktop su borde inferior coincide con el de las miniaturas (`space/padding/xl`); hasta 1023 px, a `space/padding/md` de las esquinas (`TODO`: sin Figma de Tablet y Mobile).

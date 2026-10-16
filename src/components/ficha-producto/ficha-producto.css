@@ -17,10 +17,10 @@
 
 /* ── Hero ───────────────────────────────────────────────────────── */
 /* Ficha v2 (2085:27570): sin padding lateral; la galería llega al borde
-   izquierdo y el configurador deja el margen de página a la derecha. Abajo,
-   space/section/sm. */
+   izquierdo y el configurador deja el margen de página a la derecha. Sin
+   padding inferior: con Iluminar quedaría una franja oscura bajo la foto. */
 .hero {
-  padding: 0 0 var(--arq-space-section-sm);
+  padding: 0;
   background: var(--arq-color-surface-default);
   color: var(--arq-color-text-primary);
   transition-property: background-color, color;
@@ -60,7 +60,8 @@
   min-height: 0;
 }
 
-/* Iluminar: sobre la foto, abajo a la derecha */
+/* Iluminar: dentro de la foto (slot overlay de product-gallery), abajo a la
+   derecha, a la altura donde terminan las miniaturas (space/padding/xl) */
 .iluminar {
   position: absolute;
   z-index: 2;
@@ -76,6 +77,8 @@
   gap: var(--arq-space-gap-4xl);
   min-width: 0;
   padding-right: var(--page-gutter);
+  /* el hero ya no lleva padding inferior: el aire de los botones va acá (Figma 2612:12210) */
+  padding-bottom: var(--arq-space-padding-xl);
 }
 
 .header {
@@ -175,39 +178,122 @@
 /* ── Galería de ambiente ────────────────────────────────────────── */
 /* Fila con scroll que llega al borde derecho de la pantalla (decisión
    2026-10-02 · Galerías). Cada foto mantiene su proporción.
-   TODO (diseño): las fotos miden 684 de alto en Desktop y 440 en Mobile, sin
-   token; se usa 70svh (el alto del hero mobile, DESIGN.md §5).
+   TODO (diseño): las fotos miden 684 de alto en Desktop y 440 en Mobile en Figma; por pedido, 640 en todos
+   los dispositivos (ver --ambient-height).
    Convivencia con el scroll de la página (docs/decisiones.md, 2026-10-05 · Ficha 60/40, scroll de la galería de ambiente y datos mixtos):
-   snap proximity (mandatory re-alineaba la
-   fila en medio de un gesto del trackpad y al cargar cada foto),
-   overscroll-behavior-x para que al llegar al final no siga el historial del
+   sin scroll-snap (los pasos de una foto los hace el JS: el snap los devolvía a la foto
+   anterior), overscroll-behavior-x para que al llegar al final no siga el historial del
    navegador, y aspect-ratio auto 4 / 5 para que cada foto ocupe lugar antes de
    cargar (con su proporción real una vez cargada). */
+/* Alto de las fotos: 640 en todos los dispositivos; el ancho de cada foto sale de su
+   proporción (se adapta a ese alto). TODO (diseño): sin token; 40rem = 640 con la base de 16 px. */
+.ambient-block {
+  position: relative;
+  margin-bottom: var(--arq-space-section-md);
+}
+
 .ambient {
+  --ambient-height: 40rem;
+  --ambient-gap: var(--arq-space-gap-md);
   display: flex;
-  gap: var(--arq-space-gap-md);
-  margin-bottom: var(--arq-space-section-xl);
+  gap: var(--ambient-gap);
   padding-left: var(--page-gutter);
   overflow-x: auto;
   overscroll-behavior-x: contain;
-  scroll-snap-type: x proximity;
-  scroll-padding-inline-start: var(--page-gutter);
   scrollbar-width: none;
+}
+
+/* El alto baja con la pantalla para que las fotos se vean completas: Mobile la mitad
+   (320) y Tablet a medio camino (480). TODO (diseño): sin token. */
+@media (max-width: 1023px) {
+  .ambient {
+    --ambient-height: 30rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .ambient {
+    --ambient-height: 20rem;
+  }
 }
 
 .ambient::-webkit-scrollbar {
   display: none;
 }
 
+/* Al final, la última foto deja el margen de página a la derecha (el padding derecho de un
+   contenedor con scroll no se respeta): un espaciador de layout/gutter menos el gap */
+.ambient::after {
+  content: '';
+  flex: none;
+  width: calc(var(--page-gutter) - var(--ambient-gap));
+}
+
+/* Con mouse: el cursor es la flecha de la galería (icon/arrow-right o arrow-left, según la
+   mitad donde está y si ya se desplazó), en blanco (color/icon/inverse). */
+.ambient-cursor {
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  display: block;
+  --cursor-size: calc(var(--arq-icon-2xl) * 2);
+  width: var(--cursor-size);
+  height: var(--cursor-size);
+  margin: calc(var(--cursor-size) / -2) 0 0 calc(var(--cursor-size) / -2);
+  color: var(--arq-color-icon-inverse);
+  pointer-events: none;
+}
+
+.ambient-cursor[hidden] {
+  display: none;
+}
+
+/* TODO (diseño): no hay ícono más grande que icon/2xl; el cursor es el doble (64) y el trazo
+   pasa a border/strong para que se note */
+.ambient-cursor .icon {
+  width: 100%;
+  height: 100%;
+  stroke-width: var(--arq-border-strong);
+}
+
+.ambient-cursor[data-direction='next'] [data-icon='arrow-left'],
+.ambient-cursor[data-direction='prev'] [data-icon='arrow-right'] {
+  display: none;
+}
+
+.ambient-controls {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ambient.is-scrollable {
+    cursor: none;
+  }
+}
+
+/* Sin cursor (táctil): las dos flechas, abajo a la derecha de las fotos */
+@media (hover: none), (pointer: coarse) {
+  .ambient-cursor {
+    display: none;
+  }
+
+  .ambient-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--arq-space-gap-sm);
+    padding: var(--arq-space-gap-md) var(--page-gutter) 0;
+  }
+}
+
 .ambient img {
   flex: none;
   display: block;
   width: auto;
-  height: 70svh;
+  height: var(--ambient-height);
   max-width: none;
   aspect-ratio: auto 4 / 5;
   object-fit: cover;
-  scroll-snap-align: start;
   background: var(--arq-color-surface-subtle);
 }
 
@@ -369,21 +455,78 @@
   outline: none;
 }
 
-/* ── Inspiración ────────────────────────────────────────────────── */
-/* Texto a la izquierda (un tercio) e imágenes a la derecha (dos tercios),
-   como Final (440 + 880).
-   TODO (diseño): el texto mide 330 y las fotos 440 × 568, sin token; el texto
-   va hasta layout/measure y las fotos en ratio/portrait-soft (4:5). */
-.inspiration {
-  display: grid;
-  grid-template-columns: minmax(0, var(--arq-layout-measure)) minmax(0, 1fr);
-  column-gap: var(--arq-space-gap-4xl);
+/* ── ¿Te interesa este producto? (Figma 2612:12413) ────────────────── */
+/* Marco de layout/gutter alrededor; adentro, fondo color/surface/subtle, título
+   role/heading-1 y bajada role/body-lg centrados, y button Filled.
+   TODO (diseño): el bloque mide 474 de alto en Final, sin token; crece con
+   su contenido (space/section/md arriba y abajo). */
+.cta {
+  padding: var(--arq-layout-gutter);
+}
+
+.cta-block {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 0 var(--page-gutter) var(--arq-space-section-xl) var(--arq-space-section-lg);
+  justify-content: center;
+  gap: var(--arq-space-gap-2xl);
+  padding: var(--arq-space-section-md) var(--arq-layout-gutter);
+  background: var(--arq-color-surface-subtle);
+  color: var(--arq-color-text-primary);
+  text-align: center;
+}
+
+.cta-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--arq-space-gap-sm-md);
+}
+
+.cta-description {
+  max-width: var(--arq-layout-measure-wide);
+  margin: 0;
+  color: var(--arq-color-text-secondary);
+}
+
+::slotted([slot='cta-title']) {
+  margin: 0 !important;
+  font: inherit !important;
+  color: inherit !important;
+}
+
+.media-portrait,
+.media-wide {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  object-fit: cover;
+  background: var(--arq-color-surface-subtle);
+}
+
+/* ── Inspiración ────────────────────────────────────────────────── */
+/* Figma 2612:12419: foto ancha o video (940 × 568) y una vertical (346 × 447)
+   con space/gap/md, y el texto a la derecha (role/body-lg), a space/gap/lg;
+   space/section/lg a los lados.
+   TODO (diseño): medidas de las fotos y del texto (330) sin token; fotos con su
+   proporción y texto hasta layout/measure. */
+.inspiration {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-lg);
+  padding: var(--arq-space-section-md) var(--arq-space-section-lg) var(--arq-space-section-xl);
+}
+
+.inspiration-copy {
+  display: flex;
+  flex: 0 1 var(--arq-layout-measure);
+  flex-direction: column;
+  gap: var(--arq-space-gap-lg);
+  min-width: 0;
+  order: 2;
 }
 
 .inspiration-text {
-  max-width: var(--arq-layout-measure);
   color: var(--arq-color-text-primary);
 }
 
@@ -393,56 +536,53 @@
   color: inherit !important;
 }
 
-/* Ficha v2 (2118:33229): una foto ancha (984 × 568) y una vertical (346 × 447)
-   alineadas arriba, space/gap/sm-md entre las dos. Con una sola, ocupa todo el
-   ancho. */
 .inspiration-images {
   display: flex;
+  flex: 1 1 0;
   align-items: flex-start;
-  gap: var(--arq-space-gap-sm-md);
+  gap: var(--arq-space-gap-md);
   min-width: 0;
+  order: 1;
 }
 
 .inspiration-images:empty {
   display: none;
 }
 
-.inspiration-images img {
-  display: block;
-  min-width: 0;
-  object-fit: cover;
-  background: var(--arq-color-surface-subtle);
+/* TODO (datos): hoy todas las fotos de ambiente son verticales y el lugar del video es
+   apaisado: la foto se recorta. Se ancla hacia abajo, donde suele estar el producto, para que no
+   se corte. Con video_inspiration (16:10) no hace falta. */
+.inspiration-images .media-wide {
+  flex: 940 1 0;
+  aspect-ratio: 940 / 568;
+  object-position: 50% 80%;
 }
 
-.inspiration-images img:first-child {
-  flex: 984 1 0;
-  aspect-ratio: 16 / 10;
-}
-
-.inspiration-images img:not(:first-child) {
+.inspiration-images .media-portrait {
   flex: 346 1 0;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 346 / 447;
 }
 
-/* ── Explora la colección (Dark local) ──────────────────────────── */
-/* La introducción ocupa el primer tercio (440 en Final), con el texto hasta layout/measure. */
+/* ── Explora la colección (Light, Figma 2612:12431) ─────────────────── */
+/* Sobre color/surface/subtle, con space/section/lg a los lados y space/padding/5xl
+   arriba y abajo. La introducción (role/heading-2) a la izquierda y la card a su derecha.
+   TODO (diseño): la introducción mide 440 en Final; layout/measure + space/gap/xl-2xl. */
 .collection {
-  /* Misma grilla que Inspiración (un tercio + dos tercios, como Final: 440 +
-     880): las cards empiezan en la misma línea que las fotos de Inspiración */
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  align-items: start;
-  padding: var(--arq-space-padding-5xl) var(--page-gutter);
-  background: var(--arq-color-surface-default);
+  display: flex;
+  align-items: flex-start;
+  padding: var(--arq-space-padding-5xl) var(--arq-space-section-lg);
+  background: var(--arq-color-surface-subtle);
   color: var(--arq-color-text-primary);
 }
 
 .collection-intro {
   display: flex;
+  flex: none;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--arq-space-gap-md);
-  max-width: var(--arq-layout-measure);
+  width: calc(var(--arq-layout-measure) + var(--arq-space-gap-xl-2xl));
+  max-width: 100%;
 }
 
 .collection-cards {
@@ -484,16 +624,20 @@
     margin-inline: var(--page-gutter);
   }
 
+  /* Iluminar sigue dentro de la foto, abajo a la derecha */
   .iluminar {
-    position: static;
-    align-self: flex-start;
-    margin-bottom: var(--arq-space-gap-sm-md);
-    order: -1;
+    right: var(--arq-space-padding-md);
+    bottom: var(--arq-space-padding-md);
   }
 
   .info,
   .buy {
     padding-inline: var(--page-gutter);
+  }
+
+  /* el configurador es display: contents: el aire inferior del hero va en las acciones */
+  .buy {
+    padding-bottom: var(--arq-space-padding-xl);
   }
 
   .details {
@@ -518,18 +662,40 @@
     align-self: end;
   }
 
+  /* Los bloques de dos columnas se apilan (TODO: la Ficha solo tiene Desktop en Figma) */
   .inspiration {
-    display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: var(--arq-space-gap-xl);
     padding-inline: var(--page-gutter);
   }
 
+  .inspiration-images {
+    flex: none;
+    order: 0;
+  }
+
+  .inspiration-copy {
+    flex: none;
+    order: 1;
+  }
+
+  .cta {
+    padding: var(--arq-space-section-xs) var(--page-gutter);
+  }
+
+  .cta-block {
+    padding-inline: var(--arq-layout-gutter);
+  }
+
   .collection {
-    display: flex;
     flex-direction: column;
     gap: var(--arq-space-gap-4xl);
+    padding-inline: var(--page-gutter);
+  }
+
+  .collection-intro {
+    width: auto;
   }
 }
 
@@ -549,19 +715,14 @@
   }
 
   .ambient {
-    gap: var(--arq-space-gap-sm-md);
-  }
-
-  .inspiration-text {
-    max-width: none;
+    --ambient-gap: var(--arq-space-gap-sm-md);
   }
 
   .inspiration-images {
     flex-direction: column;
   }
 
-  .inspiration-images img:first-child,
-  .inspiration-images img:not(:first-child) {
+  .inspiration-images > * {
     flex: none;
     width: 100%;
   }
