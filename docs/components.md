@@ -417,9 +417,11 @@ Filtro aplicado que se puede quitar (todo el chip es el botón; en código: butt
 ## filter-panel
 
 - Figma: [1225-13576](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1225-13576)
-- Propiedades: Title; Summary; Show summary; Show applied; Breakpoint: Desktop · Mobile
+- Propiedades: Title; Summary; Show summary; Show applied; Show categories; Show category list; Breakpoint: Desktop · Mobile
 
 Panel de filtros que se abre desde el botón Filtrar del catalog-toolbar. Desktop: panel lateral de 560 sobre scrim (color/overlay/scrim). Mobile: pantalla completa (modos Mobile de Dimension y Type). Contenido: filter-row (checkbox) + footer con button Underline "Borrar todo" y Filled "Ver N productos". Filtros aplicados: fila "applied" con filter-chip (8 lugares, 3 visibles) que se quitan uno por uno; Show applied la oculta cuando no hay filtros. "Borrar todo" los quita todos.
+
+Show categories (solo Mobile, en Productos; en código el atributo show-categories): tabs Características · Categorías debajo del encabezado, gap space/gap/xl y línea inferior border/default en color/border/subtle. Categorías muestra los grupos de catalog-nav (el de la categoría actual abierto) y oculta filtros, resumen, chips y footer; sus links cambian el listado y cierran el panel. Show category list representa la tab Categorías activa: en código no es una prop, es el estado de la tab.
 
 ## filter-row
 

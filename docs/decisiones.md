@@ -922,7 +922,8 @@ Se probaron dos versiones del diseño (Figma «Ficha - 1920-V1», `2612:12168`, 
 
 - **checkbox:** la caja sin marcar no tiene fondo (`color/surface/transparent`), solo el borde. Antes usaba `color/surface/default`, que con Iluminar pasaba a `neutral/800` y se veía un cuadrado oscuro sobre las cards. **Figma:** relleno de la caja de las variantes Checked=False cambiado a `color/surface/transparent` y descripción del set actualizada.
 - **Figma (pantallas y fichas):** en Final › Productos, fila nueva con subcategoría (Exterior / Jardín) y colección (Kanu), Desktop y Mobile, más una nota con estas reglas. Fichas `doc/catalog-nav`, `doc/catalog-nav-group`, `doc/catalog-nav-mobile` y `doc/breadcrumb` y descripciones de catalog-nav, catalog-nav-mobile y breadcrumb actualizadas con la navegación sin recarga y el breadcrumb por categoría.
-- **Figma (pendiente):** el breadcrumb anidado del componente page-header dice Levels=3 pero conserva las capas de Levels=2; en una instancia nueva no se puede pasar a 3 niveles (las pantallas nuevas usan una copia del page-header del frame Wide). Conviene rehacer ese breadcrumb en el componente.
+- **Figma:** el breadcrumb anidado del componente page-header decía Levels=3 pero conservaba las capas de Levels=2 (las pantallas nuevas usaron una copia del page-header del frame Wide). Resuelto: ver «Figma según el código: Productos Mobile y breadcrumb».
+
 ## 2026-10-16 · Hover de product-card: hero encendido (y ambiente 1 encendido con Iluminar)
 
 Se probaron tres variantes del hover (prueba en la rama `feat/prueba-hover-productos`, ya borrada) y se decide:
@@ -940,3 +941,10 @@ Se probaron tres variantes del hover (prueba en la rama `feat/prueba-hover-produ
 ## 2026-10-16 · Ambiente 1 encendido: la base lo trae en la posición 0
 
 El hover de las cards con Iluminar no se veía: `multimagen_ambiente` trae `…_AMBIENT_1_ON.webp` en la posición 0 y deja la 1 (la del encendido) vacía, así que `imageHoverLit` llegaba vacío en las 250 filas. `src/data/typesense-adapter.js` toma el archivo de la posición 0 como encendido si su nombre termina en `_ON` y la posición 1 falta. `TODO` (datos): que la sincronización respete 0 = `img_ambient_1` y 1 = `img_ambient_1_on`; entonces el parche sobra.
+
+## 2026-10-16 · Figma según el código: Productos Mobile y breadcrumb
+
+- **filter-panel (Figma):** la variante Mobile suma las tabs Características · Categorías, con la prop **Show categories** (el atributo `show-categories` del código, apagada por defecto) y **Show category list** para dibujar la tab Categorías activa (en código es el estado de la tab, no una prop). Las categorías son una instancia de catalog-nav.
+- **Pantallas Mobile de Productos (Final):** sin catalog-nav-mobile, porque hasta 767 px las categorías van en Filtrar (como en el código). Los paneles de filtro de Productos llevan las tabs y hay una pantalla nueva, «filter-panel · mobile · categorías». Las dos pantallas «catálogo abierto» quedan como registro («anterior · reemplazada por…»). Colecciones Mobile sigue con catalog-nav-mobile.
+- **page-header (Figma):** el breadcrumb anidado decía Levels=3 pero tenía las capas de Levels=2, y en una instancia no se podía pasar a 3 niveles. Se reemplazó por Levels=2 en las variantes List; ahora las instancias pasan a 3 niveles con la prop. El arreglo borró los 3 niveles del frame Wide y de las pantallas nuevas: se volvieron a cargar.
+- Fichas `doc/filter-panel` y descripción del set actualizadas.

@@ -644,7 +644,7 @@ Link a cada set en Figma (`node-id`). Base: `https://www.figma.com/design/djAb2r
 | file-upload | [1113-2499](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1113-2499) | Label; Helper; State: Empty · Attached · Drag over · Error · Disabled |
 | filter-bar | [1068-5165](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1068-5165) | State: Default · Applied; Breakpoint: Desktop · Mobile |
 | filter-chip | [1238-3693](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1238-3693) | Label; State: Default · Hover · Focus |
-| filter-panel | [1225-13576](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1225-13576) | Title; Summary; Show summary; Show applied; Breakpoint: Desktop · Mobile |
+| filter-panel | [1225-13576](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1225-13576) | Title; Summary; Show summary; Show applied; Show categories; Show category list; Breakpoint: Desktop · Mobile |
 | filter-row | [1225-3405](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1225-3405) | Label; Open: True · False; State: Default · Hover · Focus |
 | footer | [788-3104](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=788-3104) | Breakpoint: Desktop · Mobile |
 | footer-link | [788-2930](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=788-2930) | Label; Show icon; Icon; State: Default · Hover · Pressed · Focus |
