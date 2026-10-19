@@ -1090,7 +1090,7 @@ Salió de revisar los valores de `color_carcasa` de toda la base (326 documentos
 - **Un acabado sin fotos** muestra el fondo con el nombre (regla de §8), no la foto de otro color.
 - **Solo en cards de producto** (Productos y página de colección). Las cards de colección no lo tienen: sus imágenes son de la colección.
 - **Mobile (Size=Small):** nombre y acabados en columna a `space/gap/sm`; nombre a 20/28 (`role/body-xl`; en Mobile `role/heading-3`); info a `space/gap/md`; acabados a `space/gap/sm`. Sale del set de Figma (990:2327).
-- **TODO (diseño):** los swatches de 16 px miden menos que el área táctil mínima de 24 × 24 (DESIGN.md §9). Queda así por diseño; confirmar si se amplía el área de clic.
+- **Área de clic de los swatches: queda en 16 × 16.** Aunque es menos que el mínimo de 24 × 24 de DESIGN.md §9, se decidió no ampliarla (2026-10-19). Es una excepción de las muestras de la card.
 
 ## 2026-10-19 · catalog-toolbar sin State=Scroll
 
