@@ -15,15 +15,17 @@ familia       = «Yoru»
 3. **La imagen se pide al servidor de la empresa.** `https://s3.coresagroup.com/MACROLED/ARQ/imagenes/acabados/acabado-<slug>.png`. La dirección base está en `src/config.js` (`config.images.finishesBase`).
 4. **Si no hay imagen, no se rompe nada.** Un acabado que no está en el mapeo (o cuya imagen no carga) se ve como el neutro `color/surface/subtle`, con el nombre como texto accesible. Sirve para detectar qué falta.
 
-## Los 12 archivos
+## Los archivos
 
-PNG de 128 × 128 px, cuadrados y sin forma dibujada (el recorte lo hace el código). Se exportan de Figma, frame `Acabados · gradients (128×128)` (`2720:5498`) dentro de la sección ACABADOS (`2713:9370`) de la página PRUEBA: un frame por acabado, con el mismo nombre que el archivo.
+13 PNG de 128 × 128 px, cuadrados y sin forma dibujada (el recorte lo hace el código). Se exportan de Figma, frame `Acabados · gradients (128×128)` (`2720:5498`) dentro de la sección ACABADOS (`2713:9370`) de la página PRUEBA: un frame por acabado, con el mismo nombre que el archivo.
 
 | Acabado en la base | Archivo | Tipo | Cuándo |
 | --- | --- | --- | --- |
 | Negro | `acabado-negro.png` | metálico (DAO) | siempre, salvo en las familias de abajo |
 | Negro | `acabado-negro-mate.png` | mate | familias Kanu, Nobu, Tori, Koen, Douli, Yoru y Sento |
+| Negro satinado | `acabado-negro-mate.png` | mate | siempre (es lo mismo que el negro mate: conectores de riel Skyline) |
 | Blanco | `acabado-blanco.png` | metálico | siempre |
+| — | `acabado-blanco-mate.png` | mate | **sin regla todavía** (ver Pendientes) |
 | Cobre | `acabado-cobre.png` | metálico | siempre |
 | Bronce | `acabado-bronce.png` | metálico | siempre |
 | Celeste | `acabado-celeste.png` | metálico | siempre |
@@ -42,7 +44,7 @@ PNG de 128 × 128 px, cuadrados y sin forma dibujada (el recorte lo hace el cód
 
 | Pantalla | Qué muestra |
 | --- | --- |
-| Ficha de producto | `swatch-picker`: una muestra por acabado del grupo. La elegida va a 24 px, las demás a 20 px (16 px en mobile) |
+| Ficha de producto | `swatch-picker`: una muestra por acabado del grupo. La elegida va a 24 px y las demás a 20 px, también en mobile (el código no los baja a 16 px) |
 | Cards de Productos y Colecciones | `product-card` con Show finishes, siempre a 16 px. En una colección se juntan los acabados de todos sus productos; si dos productos tienen «Negro» con imágenes distintas, salen las dos muestras |
 | Comparativa | La muestra de cada opción del select de acabado |
 
@@ -73,7 +75,8 @@ Después de tocar `src/data/finishes.js`: `npm run build` y commit de `dist/`.
 
 ## Pendientes
 
-- **«Negro satinado» y «Blanco y negro»** aparecen en los datos de ejemplo y no tienen imagen. Falta confirmar si son acabados reales; si lo son, hay que diseñarlos.
+- **Blanco mate (productos Skyline):** la imagen `acabado-blanco-mate.png` ya está diseñada, pero no tiene regla: los productos Skyline (conectores y accesorios de riel) la van a usar cuando se organice su estructura en la base. Hasta entonces, el nombre «Blanco» sigue dando `acabado-blanco.png` (el blanco metálico de DAO). La regla probable es por familia, como la del negro mate (`BY_FAMILY` en `src/data/finishes.js`). Subir el archivo al servidor antes de conectarla.
+- **Acero** (`RMS-S-S`, Skyline Kit Colgante, familia Riel Magnético): sin imagen a propósito. Es un producto con un solo color, que la ficha no ofrece como opción de variante. Se resuelve junto con la regla de los productos Skyline.
+- **«Blanco y negro»** no es un acabado real: solo aparece en `demo/fixtures/peor-caso.js`, datos de prueba para romper la interfaz. No hay SKU con ese valor.
 - **Códigos de acabado** (N, V, R, B, BN, P): falta la tabla de equivalencias con el nombre. Hoy no se usan: el mapeo parte del nombre completo.
 - **Filtros de acabado** del glosario (`variants-table`) y de Descargas (`downloads-table`): hoy la muestra va neutra. Cuando se quiera la imagen, hay que pasarle el acabado de cada opción como se hace en la comparativa.
-- **DESIGN.md §8 y §12** todavía dicen «sin definir» para las imágenes de acabados. Actualizarlos en una rama `docs/` y después la copia de la página Plan del proyecto de Figma.
