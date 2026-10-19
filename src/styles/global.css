@@ -3,15 +3,20 @@
    Albert Sans se carga a nivel página, no acá (ver docs/decisiones.md). */
 @import './tokens.css';
 
-/* ── Iluminar (prueba) ──────────────────────────────────────────── */
-/* Duración y curva del encendido/apagado: imágenes y fondos (más corta) con la misma curva. TODO: pasar a tokens del sistema si se aprueba. */
+/* ── Iluminar ───────────────────────────────────────────────────── */
+/* Los valores son tokens de Motion (motion/duration/illumination*,
+   motion/easing/illumination*; docs/decisiones.md, 2026-10-19). Estas variables
+   los reúnen en un solo lugar para los componentes y pasan a
+   motion/duration/fade con movimiento reducido (abajo). El adelanto de las
+   fotos lo lee src/base/theme.js directo del token. */
 :root {
-  --arq-illumination-image-duration: 700ms;
-  --arq-illumination-bg-duration: 1200ms;
-  /* Fondo: curva suave de entrada y salida. Imagen: sale rápido y se asienta,
-     para que el cruce de fotos termine visualmente junto con el fondo. */
-  --arq-illumination-bg-easing: cubic-bezier(0.45, 0, 0.2, 1);
-  --arq-illumination-image-easing: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --arq-illumination-image-duration: var(--arq-motion-duration-illumination-image);
+  --arq-illumination-bg-duration: var(--arq-motion-duration-illumination); /* total, contando el adelanto de la foto */
+  --arq-illumination-bg-easing: var(--arq-motion-easing-illumination);
+  --arq-illumination-image-easing: var(--arq-motion-easing-illumination-image);
+  /* fade: la página funde entera · spread (experimental, sin usar): el modo
+     nuevo se abre desde el interruptor con un borde difuso (src/base/theme.js) */
+  --arq-illumination-style: fade;
 }
 
 /* Fondo de la página en las pantallas con Iluminar (Productos, Colecciones): va
@@ -26,18 +31,11 @@
   transition-timing-function: var(--arq-illumination-bg-easing);
 }
 
-/* ── Hover de la card (prueba) ──────────────────────────────────── */
-/* Fundido más lento y parejo entre las dos fotos que el motion/duration/slow
-   del sistema. TODO: pasar a tokens si se aprueba. */
-:root {
-  --arq-hover-image-duration: 500ms;
-  --arq-hover-image-easing: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
+/* Reduced motion (DESIGN.md §6): Iluminar no cambia de golpe toda la página de
+   claro a oscuro; queda el fundido corto del sistema (motion/duration/fade). */
 @media (prefers-reduced-motion: reduce) {
   :root {
-    --arq-hover-image-duration: 0ms;
-    --arq-illumination-image-duration: 0ms;
-    --arq-illumination-bg-duration: 0ms;
+    --arq-illumination-image-duration: var(--arq-motion-duration-fade);
+    --arq-illumination-bg-duration: var(--arq-motion-duration-fade);
   }
 }

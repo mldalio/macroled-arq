@@ -965,3 +965,57 @@ El hover de las cards con Iluminar no se veía: `multimagen_ambiente` trae `…_
 - Recargar la página (F5) también ignora lo guardado y pide al servidor: quien edita Sheets recarga y ve el cambio al instante (la sincronización Sheets → Typesense tiene su propia demora, fuera de este repo).
 - Navegando por links (sin recargar), un cambio en Sheets puede tardar hasta 1 minuto en verse.
 - Sigue pendiente la compresión en el servidor (`docs/consultas-typesense.md`): sin gzip el catálogo pesa ~470 KB.
+
+## 2026-10-16 · Productos: movimiento y scroll
+
+Revisión de la página de Productos con las skills de movimiento, mobile y peor caso. Rama `feat/arq-productos-pulido`.
+
+- **Cards nuevas:** al armar la grilla (categoría, filtros, búsqueda) entran con fundido y suben `space/gap/sm` (`motion/duration/base`, `motion/easing/out`), escalonadas de a `motion/duration/fast` ÷ 4 (≈30 ms), solo las 8 primeras. Antes la grilla vieja quedaba igual hasta que llegaban los datos y se reemplazaba de golpe.
+- **Cargando:** si la respuesta tarda más que `motion/duration/fast`, la grilla se atenúa. `TODO` (token): no hay opacidad semántica para «cargando»; se usa 0,5 local.
+- **compare-bar:** entra y sale por el borde de abajo (entrada `base` + `easing/out`, salida `fast`: al quitar el último producto la persona ya terminó). Suma el área segura del teléfono abajo.
+- **Scroll:** el navbar cambia de dirección recién después de `space/gap/sm` (el temblor del trackpad lo hacía aparecer y desaparecer). La barra de herramientas y el sidebar acompañan al navbar con `transform` en vez de saltar de `top`. Se quitó `data-arq-catalog-scroll` de `<html>`: no lo usaba nadie y se escribía en cada evento de scroll.
+- **Hover de product-card:** vuelve a `motion/duration/slow` (320 ms). Se quitaron las variables de prueba de 500 ms de `global.css`.
+- **Iluminar con movimiento reducido:** en vez de pasar de claro a oscuro de golpe, funde con `motion/duration/fade` (DESIGN.md §6: los fundidos se quedan).
+- **Límite de Comparar:** al marcar un cuarto producto se avisa a lectores de pantalla. `TODO` (diseño): aviso visible.
+- **Cantidad:** «1.500 productos» con separador de miles, como «Ver N» del filter-panel.
+- Quedan para decidir: escalado al presionar los botones, tope de acabados con «+N» en la card, cierre más rápido del filter-panel (contradice `motion/duration/panel` de DESIGN.md §6) y `theme-color` de Webflow con Iluminar.
+
+## 2026-10-16 · Iluminar sin saltos (View Transitions)
+
+En Productos y Colecciones, Iluminar parpadeaba: durante el cambio corrían más de 450 transiciones a la vez (379 de `color`, una por elemento de cada componente, por la hoja base de `ArqElement`). Recalcular estilos se llevaba 1 de los 1,5 s, los cuadros duraban 50–83 ms y la pantalla avanzaba a saltos. Ya pasaba en `main`.
+
+- **catalog-toolbar** usa `switchTheme` (`src/base/theme.js`): `document.startViewTransition` fotografía la página, aplica `data-arq-theme` de una vez (sin transiciones, como `withoutThemeTransition`) y funde la foto vieja sobre la página nueva en la GPU. Medido: cuadros parejos de 17 ms y recálculo de estilos de 1,0 s a 0,07 s.
+- Duración y curva: `--arq-illumination-bg-duration` y `--arq-illumination-bg-easing` (con movimiento reducido, `motion/duration/fade`). Se ponen en las animaciones del navegador con `updateTiming`: no hace falta CSS global (`::view-transition-*`).
+- La foto nueva se toma cuando cargaron las imágenes encendidas visibles de las product-card (`trackThemeImage`), con un tope de 400 ms.
+- **Las fotos se adelantan al fondo** (referencia: toggle Light de incommonwith.com/collections/lido). Al tocar Iluminar, las product-card pasan ya a su foto encendida (o apagada) con su propio fundido: `--arq-illumination-image-duration` 600 ms, `cubic-bezier(0.4, 0, 0.2, 1)`. El fondo arranca cuando la foto hizo el 40 % (`--arq-illumination-image-lead`, 240 ms) y termina a 1 s del clic, con `cubic-bezier(0.42, 0, 0.58, 1)`, la de la referencia. Se probó `motion/easing/standard` (sin arranque lento) y se volvió a esta. Así se ve que la luz se prende antes de que oscurezca la página. Con movimiento reducido, todo funde junto. A diferencia de la referencia, acá el texto también cambia de color (Dark), y funde con el fondo.
+- Una foto que no cargó (falta en el servidor) no se funde: antes se veía el ícono de imagen rota durante el cambio.
+- Se pierde el escalonado de antes (el texto después del fondo): ahora todo funde junto. El texto pasa un instante por poco contraste a mitad del fundido; antes quedaba casi invisible bastante más tiempo.
+- Sin View Transitions (navegadores viejos), sigue `animateThemeChange`. La ficha mantiene su Iluminar como estaba.
+- Mientras dura el fundido (1,2 s), un clic o un scroll actúan sobre la página nueva, pero se ve la mezcla.
+- **Más fluido, en prueba (2026-10-19):** el blanco caía a negro de golpe en el centro de la curva. Fundido más largo (fondo hasta 1,6 s, foto 700 ms, adelanto 35 %) con curva de seno `cubic-bezier(0.37, 0, 0.63, 1)`, de centro menos empinado. Se suma un estilo experimental, `--arq-illumination-style: spread`: el modo nuevo se abre desde el interruptor en un círculo de borde muy difuso (máscara radial sobre `::view-transition-new(root)`, animada con WAAPI, sin CSS global). Con movimiento reducido, siempre fundido.
+- **Valores elegidos por Lau en el panel (2026-10-19):** foto 900 ms con `cubic-bezier(0.42, 0, 0.58, 1)`, adelanto 30 %, fondo hasta 1,2 s, estilo fade. El fondo todavía se sentía raro. Medido (luminosidad L* de un punto del fondo, cuadro a cuadro): el fundido de la página oscurece mucho al principio de la mezcla, así que casi todo el cambio visible pasaba en ~350 ms en el centro; con curva lineal, la mitad del cambio caía en el primer 30 %. Se calculó una curva para que el brillo siga una forma de dimmer de punta a punta: `cubic-bezier(0.1, 0.1, 0.95, 0.4)`. Medido después: del 10 % al 90 % del cambio de brillo pasan ~700 ms, repartidos parejo, en los dos sentidos. Además, Iluminar espera como mucho 150 ms a las fotos que no cargaron (antes 400 ms dos veces): el arranque del fondo variaba entre 0,4 y 0,75 s según la caché y ahora entre 0,49 y 0,6 s.
+- **Valores finales (Lau, 2026-10-19):** foto 900 ms con `cubic-bezier(0.42, 0, 0.58, 1)`, adelanto 180 ms, fondo hasta 800 ms con `cubic-bezier(0.1, 0.1, 0.95, 0.4)`, estilo fade. Pasaron a tokens de 2 · Semantic · Motion en Figma: `motion/duration/illumination`, `illumination-image`, `illumination-lead` y `motion/easing/illumination`, `illumination-image` (DESIGN.md §6). `global.css` reúne los `--arq-illumination-*` como alias de esos tokens y los pasa a `motion/duration/fade` con movimiento reducido; `illumination-lead` va a 0 (modo reducedMotion). El adelanto es ahora un tiempo (ms), no una parte del fundido de la foto. El estilo spread queda en el código pero no se usa. Se quitó el panel de afinado de la demo.
+
+## 2026-10-19 · Botones: se achican al presionarlos
+
+button (Filled y Outline) e icon-button se achican un poco mientras se presionan: `motion/scale/pressed` (0,97, token nuevo de 2 · Semantic · Motion), con `motion/duration/fast` y `motion/easing/out`. Da respuesta física al clic sin mover nada: va en el host con la propiedad `scale`, que no cambia el lugar que ocupa en el layout ni pisa las transiciones de color de la hoja base. Underline no se achica (es un link de texto), tampoco `disabled` ni `loading`, y con movimiento reducido no cambia de tamaño. En Figma la variante State=Pressed no muestra la escala; está en la descripción de los sets y en las fichas `doc/button` y `doc/icon-button`.
+
+- `motion/scale/*` es un tipo nuevo para el import (número sin unidad): `scripts/import-tokens.js` y `scripts/lib/validate-tokens.js`.
+
+## 2026-10-19 · Sidebar de catálogo y compare-bar
+
+Lau no veía bien las animaciones del sidebar ni de la compare-bar: abrir un grupo mostraba la lista de golpe (solo un fundido corto) y la barra entraba en 200 ms.
+
+- **catalog-nav-group:** la lista se despliega y se pliega animando el alto, como faq-item (Disclosure `animateHeight`, `motion/duration/expand`, `motion/easing/out`), y el chevron es uno solo que gira media vuelta con el mismo tiempo. Cambia la regla de DESIGN.md §6: el alto se anima en tres casos (faq-item, catalog-nav-group y el error de input).
+- **compare-bar:** entra y sale por abajo como un panel, con `motion/duration/panel` (400 ms) y `motion/easing/standard`, como filter-panel y download-modal. Se probó `motion/easing/out` al entrar: hacía el 85–90 % del recorrido en los primeros 150 ms y se seguía viendo como un salto (revisión con improve-animations). Con standard, a los 50 ms se ve el 26 % de la barra y a los 100 ms el 68 %.
+- **Espacio reservado:** el listado deja abajo un espacio del alto de la barra para que no tape las últimas cards. Al sacar el último producto se quitaba en el acto y, con la página al final, el contenido saltaba mientras la barra todavía bajaba. Ahora se quita cuando la barra terminó de salir (`#syncSpace` en catalog-listing, con la duración de la transición de la barra). Queda un ajuste del scroll en ese momento, ya con la barra afuera.
+- **Chevron (Open):** plegar y desplegar se desliza como la entrada (pedido de Lau). La barra es fija abajo y cambia de alto de golpe; el JS (`#slide`) anima la diferencia con `transform`, desde donde estaba el borde de arriba hasta su lugar nuevo, con `motion/duration/panel` y `motion/easing/standard`. Al plegar, la barra arranca más arriba de su lugar: un fondo debajo de ella (`.bar::after`, fuera de la pantalla en reposo) tapa lo que quedaría a la vista. Si se aprieta otra vez a mitad de camino, sigue desde donde está. Con movimiento reducido cambia de golpe (panel vale 0). La descripción de `motion/duration/panel` suma compare-bar (Figma y `tokens.css`).
+- Con movimiento reducido, los dos quedan como estaban (alto de golpe con fundido; la barra, solo fundido).
+
+## 2026-10-19 · Barra del navegador con Iluminar
+
+En el teléfono, la barra de la dirección y la zona de arriba toman el color de `<meta name="theme-color">`, que pone Webflow en el `<head>` y comparte con el e-commerce de Macroled. Con Iluminar la página pasaba a oscuro y esa barra quedaba clara.
+
+- Solo mientras Iluminar está prendido (Productos, Colecciones y ficha), y solo en Arq: la etiqueta toma `color/surface/default` del bloque en Dark (`<html>` en los listados, el navbar en la ficha). Al apagarlo vuelve exactamente a lo que tenía; el valor original queda guardado en `data-arq-theme-color` mientras tanto. Si la página no tenía etiqueta, se agrega una y se quita al apagar.
+- `setBrowserBar` en `src/base/theme.js`; la llaman catalog-toolbar y ficha-producto (también cuando la ficha llega iluminada desde un listado).
+- No toca nada de Macroled fuera de ese momento: es una excepción acotada a la regla de no tocar lo global (AGENTS.md · Integración con Webflow), decidida por Lau.

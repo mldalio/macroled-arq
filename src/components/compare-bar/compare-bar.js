@@ -95,6 +95,14 @@ class ArqCompareBar extends ArqElement {
       trigger: root.querySelector('.toggle'),
       panel: root.querySelector('.slots'),
     });
+    // Plegar y desplegar con el chevron: la barra se desliza (#slide). Dónde
+    // está el borde de arriba se toma en captura, antes de que Disclosure
+    // cambie open (con el desplazamiento en curso, si se vuelve a apretar).
+    let before = null;
+    root.querySelector('.toggle').addEventListener('click', () => {
+      before = root.querySelector('.bar').getBoundingClientRect().top;
+    }, { capture: true });
+    this.addEventListener('arq:toggle', () => this.#slide(before));
     for (const button of root.querySelectorAll('.clear')) button.addEventListener('click', () => this.clear());
     root.querySelector('.slots').addEventListener('arq:remove', (event) => {
       event.stopPropagation();
@@ -109,6 +117,9 @@ class ArqCompareBar extends ArqElement {
       this.emit('compare-change', { items: this.items });
     });
     this.#render();
+    // Entrada y salida animadas solo después del primer render: si la página
+    // carga con productos ya elegidos, la barra aparece sin animar.
+    requestAnimationFrame(() => requestAnimationFrame(() => root.querySelector('.bar').classList.add('animate')));
   }
 
   update(changed) {
@@ -140,6 +151,26 @@ class ArqCompareBar extends ArqElement {
 
   has(sku) {
     return this.#items.some((item) => item.sku === sku);
+  }
+
+  // Al plegar o desplegar, la barra cambia de alto de golpe. Como está fija
+  // abajo, se anima la diferencia con transform: arranca con el borde de
+  // arriba donde estaba y lo lleva a su lugar nuevo, con el mismo tiempo y la
+  // misma curva que la entrada (motion/duration/panel + motion/easing/standard).
+  // Con movimiento reducido, panel vale 0 y cambia de golpe.
+  #slide(before) {
+    const bar = this.shadowRoot.querySelector('.bar');
+    if (before === null || bar.hidden || !bar.classList.contains('animate')) return;
+    const styles = getComputedStyle(bar);
+    const duration = Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-panel')) || 0;
+    if (!duration) return;
+    bar.getAnimations().forEach((animation) => animation.cancel());
+    const delta = before - bar.getBoundingClientRect().top;
+    if (!delta) return;
+    bar.animate([{ transform: `translateY(${delta}px)` }, { transform: 'none' }], {
+      duration,
+      easing: styles.getPropertyValue('--arq-motion-easing-standard').trim() || 'ease-out',
+    });
   }
 
   #changed() {

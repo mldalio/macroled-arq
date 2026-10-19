@@ -43,6 +43,7 @@ import css from './catalog-listing.css?inline';
 const CATEGORY_PARAMS = { environment: 'environment', application: 'application', product_type: 'productType', collection: 'collection' };
 const LISTING_DESKTOP = matchMedia('(min-width: 1024px)');
 const LISTING_WIDE = matchMedia('(min-width: 1920px)');
+const ENTER_STAGGERED = 8; // cards con escalón en la entrada; el resto entra con la octava
 
 const TEXT = {
   productos: { loading: 'Cargando productos…', empty: 'No hay productos con estos filtros.', error: 'No se pudieron cargar los productos. Probá de nuevo en unos minutos.' },
@@ -66,14 +67,20 @@ class ArqCatalogListing extends ArqElement {
     `</div>` +
     `<arq-filter-panel id="filters"><slot name="filter-title" slot="title"></slot></arq-filter-panel>` +
     `<arq-compare-bar class="compare"></arq-compare-bar>` +
-    `<div class="compare-space" aria-hidden="true"></div>`;
+    `<div class="compare-space" aria-hidden="true"></div>` +
+    // Aviso para lectores de pantalla (límite de Comparar). Está siempre en la
+    // página y vacío; solo cambia su texto (DESIGN.md §9).
+    `<p class="notice visually-hidden" aria-live="polite"></p>`;
 
   #category = {};
   #query = '';
   #filters = {};
   #cards = new Map(); // product-card → datos de la card
   #request = 0;
-  #lastScrollY = 0;
+  #anchorY = 0; // scroll donde empezó la dirección actual
+  #direction = 'down';
+  #scrollState = null; // 'top' · 'down' · 'up'
+  #threshold = 0;
   #htmlCrumbs = null; // niveles del breadcrumb del HTML después de Inicio
   #htmlTitle = null; // <h1> del HTML (Productos), para volver a él sin categoría
 
@@ -123,7 +130,12 @@ class ArqCatalogListing extends ArqElement {
       const data = this.#cards.get(card);
       if (!data) return;
       if (!event.detail.checked) bar.remove(data.sku);
-      else if (!bar.add({ sku: data.sku, name: data.name, meta: data.meta, image: data.image })) card.compared = false; // ya hay 3
+      else if (!bar.add({ sku: data.sku, name: data.name, meta: data.meta, image: data.image })) {
+        card.compared = false; // ya hay 3
+        // TODO (diseño): no hay aviso visible del límite en Figma; por ahora
+        // solo se anuncia a lectores de pantalla.
+        this.#notify(`Podés comparar hasta ${bar.items.length} productos. Sacá uno de la barra para sumar otro.`);
+      }
     });
     bar.addEventListener('arq:compare-change', () => {
       this.#syncCompared();
@@ -167,29 +179,83 @@ class ArqCatalogListing extends ArqElement {
     else this.#load();
   }
 
+  #spaceTimer = 0;
+
+  // El espacio se va recién cuando la barra terminó de bajar: si se quitaba al
+  // marcarla hidden, con la página al final el contenido saltaba para arriba
+  // mientras la barra todavía salía (motion/duration/panel).
   #syncSpace() {
     const bar = this.shadowRoot.querySelector('.compare');
     const box = bar.shadowRoot?.querySelector('.bar');
+    const space = this.shadowRoot.querySelector('.compare-space');
     const height = !bar.hidden && box && !box.hidden ? box.getBoundingClientRect().height : 0;
-    this.shadowRoot.querySelector('.compare-space').style.height = height ? `${height}px` : '';
+    clearTimeout(this.#spaceTimer);
+    if (height || !space.style.height || !box) {
+      space.style.height = height ? `${height}px` : '';
+      return;
+    }
+    const leaving = Number.parseFloat(getComputedStyle(box).transitionDuration) * 1000 || 0;
+    this.#spaceTimer = setTimeout(() => {
+      space.style.height = '';
+    }, leaving);
   }
 
   #onScroll = () => this.#syncScrollState();
 
+  // Dirección del scroll con umbral: cambia recién después de recorrer
+  // space/gap/sm en sentido contrario, así el temblor del trackpad no hace
+  // aparecer y desaparecer el navbar. Solo se toca el DOM cuando cambia algo.
   #syncScrollState() {
-    const y = window.scrollY;
+    const y = Math.max(0, window.scrollY);
+    const delta = y - this.#anchorY;
+    if (this.#direction === 'down' ? delta >= 0 : delta <= 0) this.#anchorY = y;
+    else if (Math.abs(delta) >= this.#scrollThreshold()) {
+      this.#direction = delta > 0 ? 'down' : 'up';
+      this.#anchorY = y;
+    }
     const scrolling = y > 0;
-    const direction = y > this.#lastScrollY ? 'down' : 'up';
-    this.#lastScrollY = y;
-    const html = document.documentElement;
-    if (scrolling) html.setAttribute('data-arq-catalog-scroll', direction);
-    else html.removeAttribute('data-arq-catalog-scroll');
-    const toolbar = this.shadowRoot?.querySelector('.toolbar');
+    const state = scrolling ? this.#direction : 'top';
+    if (state === this.#scrollState) return;
+    this.#scrollState = state;
+    const root = this.shadowRoot;
+    const toolbar = root?.querySelector('.toolbar');
     if (toolbar) toolbar.state = scrolling ? 'scroll' : 'default';
-    const navbar = document.querySelector('arq-navbar');
-    navbar?.toggleAttribute('data-arq-catalog-hidden', scrolling && direction === 'down');
-    this.shadowRoot?.querySelector('.toolbar')?.classList.toggle('nav-visible', scrolling && direction === 'up');
-    this.shadowRoot?.querySelector('.nav')?.classList.toggle('nav-visible', scrolling && direction === 'up');
+    document.querySelector('arq-navbar')?.toggleAttribute('data-arq-catalog-hidden', state === 'down');
+    const navVisible = state === 'up';
+    for (const element of [toolbar, root?.querySelector('.nav')]) {
+      if (element) this.#followNavbar(element, navVisible);
+    }
+  }
+
+  // space/gap/sm en px (el token está en rem)
+  #scrollThreshold() {
+    if (this.#threshold) return this.#threshold;
+    const value = getComputedStyle(this).getPropertyValue('--arq-space-gap-sm').trim();
+    const rem = Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    const amount = Number.parseFloat(value) || 0.5;
+    this.#threshold = value.endsWith('px') ? amount : amount * rem;
+    return this.#threshold;
+  }
+
+  // La barra de herramientas y el sidebar quedan pegados debajo del navbar
+  // (.nav-visible cambia su top). El top cambia de golpe; para que acompañen
+  // al navbar, que entra y sale con transform, se anima la diferencia con
+  // transform (misma duración y curva que el navbar: motion/duration/base +
+  // motion/easing/standard). Si no están pegados, la diferencia es 0 y no hay
+  // animación. Una animación en curso se reemplaza desde donde está.
+  #followNavbar(element, navVisible) {
+    if (element.classList.contains('nav-visible') === navVisible) return;
+    const before = element.getBoundingClientRect().top;
+    element.getAnimations().forEach((animation) => animation.cancel());
+    element.classList.toggle('nav-visible', navVisible);
+    const offset = before - element.getBoundingClientRect().top;
+    const styles = getComputedStyle(this);
+    const duration = Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-base')) || 0;
+    if (!offset || !duration || !LISTING_DESKTOP.matches) return;
+    element.animate(
+      [{ transform: `translateY(${offset}px)` }, { transform: 'none' }],
+      { duration, easing: styles.getPropertyValue('--arq-motion-easing-standard').trim() || 'ease-out' },
+    );
   }
 
   update(changed) {
@@ -251,9 +317,23 @@ class ArqCatalogListing extends ArqElement {
     status.hidden = !message;
   }
 
+  // Vacía y vuelve a escribir el aviso, así se anuncia aunque se repita.
+  #notify(message) {
+    const notice = this.shadowRoot.querySelector('.notice');
+    notice.textContent = '';
+    requestAnimationFrame(() => {
+      notice.textContent = message;
+    });
+  }
+
   #render(cards) {
     const compare = this.unit === 'productos';
-    this.#cards = new Map(cards.map((data) => [this.#card(data, compare), data]));
+    this.#cards = new Map(cards.map((data, index) => {
+      const card = this.#card(data, compare);
+      // Escalón de la entrada (catalog-listing.css): solo las 8 primeras
+      card.style.setProperty('--enter-index', String(Math.min(index, ENTER_STAGGERED)));
+      return [card, data];
+    }));
     this.shadowRoot.querySelector('.grid').replaceChildren(...this.#cards.keys());
     if (compare) this.#syncCompared();
   }
