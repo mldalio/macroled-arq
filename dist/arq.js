@@ -4090,7 +4090,7 @@ var Ei = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.toggle
 }).define();
 //#endregion
 //#region src/components/catalog-toolbar/catalog-toolbar.css?inline
-var Di = ":host{min-width:0;display:block}.bar{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);padding-block:var(--arq-space-padding-md);border-block:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-transparent);display:flex}:host([state=scroll]) .bar{padding-block:var(--arq-space-padding-sm)}.info{align-items:stretch;gap:var(--arq-space-gap-lg);min-width:0;display:flex}.name,.name-divider{display:none}:host([state=scroll]) .has-name .name{display:block}:host([state=scroll]) .has-name.has-count .name-divider{display:inline-block}.name{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--arq-color-text-primary);margin:0;overflow:hidden}.count{min-width:0;color:var(--arq-color-text-secondary);white-space:nowrap;margin:0}.actions{align-items:center;gap:var(--arq-space-gap-xl);flex:none;display:flex}.lead{align-items:stretch;gap:var(--arq-space-gap-xl);display:flex}@media (width<=767px){:host([state=scroll]) .has-name .name,:host([state=scroll]) .has-name .name-divider{display:none}.actions,.lead{gap:var(--arq-space-gap-lg)}}", Oi = {
+var Di = ":host{min-width:0;display:block}.bar{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);padding-block:var(--arq-space-padding-md);border-block:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-transparent);display:flex}:host([state=scroll]) .bar{padding-block:var(--arq-space-padding-sm)}.count{min-width:0;color:var(--arq-color-text-secondary);white-space:nowrap;margin:0}.actions{align-items:center;gap:var(--arq-space-gap-xl);flex:none;display:flex}.lead{align-items:stretch;gap:var(--arq-space-gap-xl);display:flex}@media (width<=767px){.actions,.lead{gap:var(--arq-space-gap-lg)}}", Oi = {
 	productos: ["producto", "productos"],
 	colecciones: ["colección", "colecciones"]
 }, ki = new Intl.NumberFormat("es-AR");
@@ -4109,12 +4109,11 @@ var Di = ":host{min-width:0;display:block}.bar{justify-content:space-between;ali
 			values: ["default", "scroll"],
 			default: "default"
 		},
-		name: { type: String },
 		showIluminar: { type: Boolean },
 		for: { type: String },
 		filterCount: { type: Number }
 	};
-	static template = "<div class=\"bar\"><div class=\"info\"><p class=\"name role-body-lg\"></p><arq-divider class=\"name-divider\" orientation=\"vertical\"></arq-divider><p class=\"count role-body\" aria-live=\"polite\"></p></div><div class=\"actions\"><div class=\"lead\"><arq-toggle show-label class=\"iluminar\">Iluminar</arq-toggle><arq-divider orientation=\"vertical\"></arq-divider></div><arq-button type=\"outline\" show-icon icon=\"filter\" count-label=\"filtros activos\" class=\"filter\">Filtrar</arq-button></div></div>";
+	static template = "<div class=\"bar\"><p class=\"count role-body\" aria-live=\"polite\"></p><div class=\"actions\"><div class=\"lead\"><arq-toggle show-label class=\"iluminar\">Iluminar</arq-toggle><arq-divider orientation=\"vertical\"></arq-divider></div><arq-button type=\"outline\" show-icon icon=\"filter\" count-label=\"filtros activos\" class=\"filter\">Filtrar</arq-button></div></div>";
 	#e = null;
 	#t = null;
 	#n = null;
@@ -4128,15 +4127,11 @@ var Di = ":host{min-width:0;display:block}.bar{justify-content:space-between;ali
 		}), this.#o(), customElements.whenDefined("arq-button").then(() => this.#d());
 	}
 	update(e) {
-		if ((e.has("count") || e.has("unit")) && this.#r(), e.has("name")) {
-			let e = this.shadowRoot.querySelector(".name");
-			e.textContent = this.name ?? "", this.shadowRoot.querySelector(".info").classList.toggle("has-name", !!this.name);
-		}
-		e.has("showIluminar") && (this.shadowRoot.querySelector(".lead").hidden = !this.showIluminar), e.has("for") && this.#s(), e.has("filterCount") && this.#i();
+		(e.has("count") || e.has("unit")) && this.#r(), e.has("showIluminar") && (this.shadowRoot.querySelector(".lead").hidden = !this.showIluminar), e.has("for") && this.#s(), e.has("filterCount") && this.#i();
 	}
 	#r() {
 		let [e, t] = Oi[this.unit] ?? Oi.productos, n = this.shadowRoot.querySelector(".count");
-		n.textContent = Number.isFinite(this.count) ? `${ki.format(this.count)} ${this.count === 1 ? e : t}` : "", this.shadowRoot.querySelector(".info").classList.toggle("has-count", !!n.textContent);
+		n.textContent = Number.isFinite(this.count) ? `${ki.format(this.count)} ${this.count === 1 ? e : t}` : "";
 	}
 	#i() {
 		let e = Number.isFinite(this.filterCount) ? this.filterCount : 0, t = this.#n;
@@ -6790,7 +6785,7 @@ var go = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 	update(e) {
 		if (!e.has("unit")) return;
 		let t = this.shadowRoot;
-		t.querySelector(".toolbar").unit = this.unit, t.querySelector("arq-filter-panel").unit = this.unit, t.querySelector("arq-filter-panel").showCategories = this.unit === "productos", this.#t && this.unit === "productos" ? this.#N() : this.#I(), this.#S({ rows: !0 });
+		t.querySelector(".toolbar").unit = this.unit, t.querySelector("arq-filter-panel").unit = this.unit, t.querySelector("arq-filter-panel").showCategories = this.unit === "productos", this.#t && this.unit === "productos" && this.#N(), this.#S({ rows: !0 });
 	}
 	async #S({ rows: e = !1 } = {}) {
 		let t = ++this.#i, n = xo[this.unit] ?? xo.productos;
@@ -6903,7 +6898,7 @@ var go = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 		e && (this.#u ??= e.textContent), e && (e.textContent = `Resultados para «${this.#t}»`), e?.parentElement.setAttribute("search-title", ""), this.#F([{
 			label: "Productos",
 			href: location.pathname
-		}], !0), this.#I();
+		}], !0);
 	}
 	#P(e) {
 		let t = e?.closest("arq-catalog-nav-group"), n = t?.querySelector(":scope > arq-catalog-nav-item"), r = t?.querySelector("[slot=\"label\"]")?.textContent.trim(), i = e && e !== n, a = i ? e.textContent.trim() : r, o = document.querySelector("arq-page-header > [slot=\"title\"]");
@@ -6914,7 +6909,7 @@ var go = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 		}, { label: a }]) : this.#F([{
 			label: "Productos",
 			href: location.pathname
-		}, { label: a }]) : this.#F([]), this.#I();
+		}, { label: a }]) : this.#F([]);
 	}
 	#F(e, t = !1) {
 		let n = document.querySelector("arq-page-header > arq-breadcrumb");
@@ -6925,10 +6920,6 @@ var go = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 			return i === e.length - 1 && !t ? a.current = !0 : (a.href = r, a.showSeparator = !0), a.textContent = n, a;
 		}) : this.#l;
 		n.replaceChildren(...[r, ...i].filter(Boolean));
-	}
-	#I() {
-		let e = document.querySelector("arq-page-header > [slot=\"title\"]"), t = this.shadowRoot?.querySelector(".toolbar");
-		t && (t.name = e?.textContent.trim() || null);
 	}
 };
 function Co() {

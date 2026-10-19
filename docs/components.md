@@ -20,7 +20,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [catalog-nav-item](#catalog-nav-item) | `<arq-catalog-nav-item>` | En código ([README](../src/components/catalog-nav-item/README.md)) |
 | ✅ [catalog-nav-mobile](#catalog-nav-mobile) | — | Dentro de catalog-nav ([README](../src/components/catalog-nav/README.md)) |
 | ✅ [catalog-nav-trigger](#catalog-nav-trigger) | — | Dentro de catalog-nav ([README](../src/components/catalog-nav/README.md)) |
-| ✅ [catalog-toolbar](#catalog-toolbar) | `<arq-catalog-toolbar>` | En código ([README](../src/components/catalog-toolbar/README.md)); State=Scroll con el nombre de la página (en Mobile no se muestra: TODO de Figma) |
+| ✅ [catalog-toolbar](#catalog-toolbar) | `<arq-catalog-toolbar>` | En código ([README](../src/components/catalog-toolbar/README.md)) · State=Scroll sin nombre de la página |
 | ✅ [category-card](#category-card) | `<arq-category-card>` | En código ([README](../src/components/category-card/README.md)) |
 | ✅ [checkbox](#checkbox) | `<arq-checkbox>` | En código ([README](../src/components/checkbox/README.md)) |
 | ✅ [choice-chip](#choice-chip) | `<arq-choice-chip>` | En código ([README](../src/components/choice-chip/README.md)) · Selected en `color/surface/inverse` |
@@ -225,9 +225,9 @@ Encabezado desplegable de catalog-nav-mobile. Mismo patrón que accordion-item: 
 ## catalog-toolbar
 
 - Figma: [1244-4058](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1244-4058)
-- Propiedades: Count; Show iluminar; Breakpoint: Desktop · Mobile; State: Default · Scroll (en código, atributo `state="scroll"` + `name`: la barra fija del catálogo al desplazarse, con padding vertical `space/padding/sm`, el nombre de la página y un divider antes de la cantidad. El set no tiene Scroll Mobile: en Mobile el nombre no se muestra, TODO)
+- Propiedades: Count; Show iluminar; Breakpoint: Desktop · Mobile; State: Default · Scroll (en código, atributo `state="scroll"`: la barra fija del catálogo al desplazarse, con padding vertical `space/padding/sm`. Sin nombre de la página: `docs/decisiones.md`, 2026-10-19 · catalog-toolbar sin nombre de la página)
 
-Barra sobre la grilla de Productos y Colecciones: cantidad (role/body, color/text/secondary), toggle Iluminar, divider vertical y botón Filtrar (button Outline expuesto: con filtros activos, Show count + icon/filter-off). Mismo contenido en Desktop y Mobile. State: Default · Scroll. Scroll (al desplazarse la página) suma a la izquierda el nombre de la página (role/body-lg, color/text/primary) y un divider vertical antes de la cantidad, con gap space/gap/lg.
+Barra sobre la grilla de Productos y Colecciones: cantidad (role/body, color/text/secondary), toggle Iluminar, divider vertical y botón Filtrar (button Outline expuesto: con filtros activos, Show count + icon/filter-off). Mismo contenido en Desktop y Mobile. State: Default · Scroll. Scroll (al desplazarse la página) solo achica el padding vertical (space/padding/sm); no muestra el nombre de la página, que ya está en el h1 del page-header.
 
 ## category-card
 

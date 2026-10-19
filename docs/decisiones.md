@@ -1061,3 +1061,9 @@ Cierra los pendientes de diseño de compare-picker.
 - La lupa del buscador del modal no era una diferencia: el set usa search-field-line, que la dibuja en `color/icon/tertiary`, como el código.
 - Export: `tokens/figma/2-semantic-dimension.*` y `2-semantic-opacity.value.json`. Antes de regenerar Dimension se comparó por hash el resto de la colección en Figma con el último export del repo (iguales), así el diff solo suma la variable nueva.
 - **compare-slot sin Size=Compact:** la barra en Mobile usa el tamaño Default (lista apilada) y la cabecera compacta de Comparativa usa compare-product, así que Compact ya no se usaba. Se quitó del set (las variantes quedan State=Filled · Empty · empty-hover, sin la propiedad Size), de la ficha `doc/compare-slot` y del código (atributo `size`). Se borró `layout/compare-thumb-sm` (solo lo usaba Compact): Figma, export de Dimension, `tokens.json` y `tokens.css`.
+
+## 2026-10-19 · catalog-toolbar sin nombre de la página
+
+- catalog-toolbar State=Scroll ya no muestra el nombre de la página («Exterior») ni el divider antes de la cantidad: el nombre ya está en el `<h1>` del page-header. Scroll solo pasa a padding vertical `space/padding/sm`.
+- Se quitó del código (atributo `name` de `<arq-catalog-toolbar>` y la copia del `<h1>` en `arq-catalog-listing`), de la demo, del README, de `docs/components.md` y de DESIGN.md.
+- Figma: se sacaron el texto del nombre y el divider de la variante State=Scroll (1810:19453), se actualizó la descripción del set (1244:4058) y la copia de DESIGN.md en Plan del proyecto. La ficha `doc/catalog-toolbar` no lo mencionaba.
