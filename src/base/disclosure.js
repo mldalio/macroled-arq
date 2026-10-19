@@ -18,7 +18,7 @@
 //   oculta sin fundido (hidden es display: none). Con prefers-reduced-motion
 //   queda el fundido de motion/duration/fade. La hoja la adopta Disclosure en el Shadow DOM del host:
 //   los componentes no la repiten.
-// - animateHeight (faq-item y catalog-nav-group; DESIGN.md §6 · Movimiento): el panel no
+// - animateHeight (faq-item; DESIGN.md §6 · Movimiento): el panel no
 //   se oculta con hidden sino con data-open, y anima el alto
 //   (grid-template-rows 0fr → 1fr, motion/duration/expand) y la opacidad
 //   (motion/duration/base) al abrir y al cerrar, con motion/easing/out.

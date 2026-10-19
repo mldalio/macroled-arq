@@ -6,8 +6,6 @@
 //   <arq-catalog-toolbar count="11" unit="productos" for="filtros" show-iluminar></arq-catalog-toolbar>
 //   <arq-filter-panel id="filtros">…</arq-filter-panel>
 //
-// - State=Scroll (state="scroll", lo pone el listado al desplazarse): la barra
-//   fija pasa a padding vertical space/padding/sm. Sin nombre de la página.
 // - Count: número + sustantivo ("1 producto", "10 colecciones"), en un aria-live
 //   para que se anuncie al filtrar. Lo actualiza la página.
 // - Filtrar: con for (id de un arq-filter-panel) abre el panel y, cuando el panel
@@ -34,8 +32,8 @@ class ArqCatalogToolbar extends ArqElement {
   static properties = {
     count: { type: Number }, // Count (número)
     unit: { type: String, values: ['productos', 'colecciones'], default: 'productos' },
-    state: { type: String, values: ['default', 'scroll'], default: 'default' }, // State
     showIluminar: { type: Boolean }, // Show iluminar
+    stuck: { type: Boolean }, // solo de código: pegada debajo del navbar (sin línea superior)
     for: { type: String }, // id del arq-filter-panel
     filterCount: { type: Number }, // filtros aplicados (Show count del botón Filtrar)
   };

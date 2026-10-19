@@ -22,9 +22,11 @@
 // - El chevron (abajo cerrado, arriba abierto) tiene las medidas de
 //   icon-button Size=Default (24, ícono 16) pero es parte del botón, no otro
 //   botón. Es un solo chevron-down que gira al abrir.
-// - La lista se despliega y se pliega animando el alto (Disclosure
-//   animateHeight, como faq-item; decisión 2026-10-19 · Sidebar de catálogo:
-//   desplegar suave). .items es el panel; .items-clip, lo que se recorta.
+// - Abrir y cerrar se desliza como compare-bar (decisión 2026-10-19 · Sidebar
+//   de catálogo como compare-bar): la lista cambia de golpe y la línea del
+//   grupo y los grupos de abajo vuelven con transform desde donde estaban
+//   (motion/duration/expand + motion/easing/standard). Al abrir, la lista se
+//   descubre con clip-path al mismo ritmo. No se anima el alto.
 // - Selected: el grupo de la categoría actual. Sin cambio visual; lo pone
 //   catalog-nav en el grupo que tiene el catalog-nav-item elegido.
 
@@ -52,15 +54,47 @@ class ArqCatalogNavGroup extends ArqElement {
   #auto = false; // selected lo puso el grupo al ver un ítem selected (no el HTML)
 
   setup() {
+    const header = this.shadowRoot.querySelector('.header');
+    // Alto antes del cambio. Se registra antes que Disclosure, así se mide
+    // antes de que cambie open.
+    let before = null;
+    header.addEventListener('click', () => {
+      before = this.getBoundingClientRect().height;
+    });
     this.disclosure = new Disclosure(this, {
-      trigger: this.shadowRoot.querySelector('.header'),
+      trigger: header,
       panel: this.shadowRoot.querySelector('.items'),
-      animateHeight: true,
+    });
+    this.addEventListener('arq:toggle', (event) => {
+      if (event.target !== this) return;
+      this.#slide(before);
+      before = null;
     });
     const sync = () => this.#syncSelected();
     this.shadowRoot.querySelector('slot:not([name])').addEventListener('slotchange', sync);
     new MutationObserver(sync).observe(this, { subtree: true, attributes: true, attributeFilter: ['selected'] });
     sync();
+  }
+
+  // Como #slide de compare-bar: lo de abajo arranca donde estaba y llega a su
+  // lugar nuevo con transform. Con reduced motion expand vale 0: cambia de
+  // golpe y queda el fundido de Disclosure.
+  #slide(before) {
+    if (before === null) return;
+    const styles = getComputedStyle(this);
+    const duration = Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-expand')) || 0;
+    const delta = before - this.getBoundingClientRect().height;
+    if (!duration || !delta) return;
+    const options = { duration, easing: styles.getPropertyValue('--arq-motion-easing-standard').trim() || 'ease-out' };
+    const from = [{ transform: `translateY(${delta}px)` }, { transform: 'none' }];
+    const group = this.shadowRoot.querySelector('.group');
+    const items = this.shadowRoot.querySelector('.items');
+    const below = [];
+    for (let next = this.nextElementSibling; next; next = next.nextElementSibling) below.push(next);
+    for (const element of [group, items, ...below]) element.getAnimations().forEach((animation) => animation.cancel());
+    group.animate(from, { ...options, pseudoElement: '::after' });
+    for (const element of below) element.animate(from, options);
+    if (this.open) items.animate([{ clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0)' }], options);
   }
 
   #syncSelected() {
