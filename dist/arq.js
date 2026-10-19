@@ -595,6 +595,7 @@ function He(e, t) {
 var Ue = (e) => g(e).replace(/\s+/g, " ").trim(), We = Object.freeze({
 	negro: "negro",
 	"negro satinado": "negro-mate",
+	"blanco y negro": "blanco-y-negro",
 	blanco: "blanco",
 	cobre: "cobre",
 	bronce: "bronce",
