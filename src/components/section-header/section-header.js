@@ -28,20 +28,23 @@ import { ArqElement } from '../../base/arq-element.js';
 import '../button/button.js';
 import css from './section-header.css?inline';
 
-const SHOWS_DESCRIPTION = ['description', 'stacked'];
+const SHOWS_DESCRIPTION = ['description', 'stacked', 'editorial'];
 const SHOWS_LINK = ['link', 'stacked'];
 
 class ArqSectionHeader extends ArqElement {
   static tag = 'arq-section-header';
   static styles = css;
   static properties = {
-    type: { type: String, values: ['link', 'description', 'title', 'stacked'], default: 'link' }, // Type
+    type: { type: String, values: ['link', 'description', 'title', 'stacked', 'editorial'], default: 'link' }, // Type
     href: { type: String }, // destino del link ("Ver todo")
   };
   static template =
     `<div class="header">` +
     `<div class="text">` +
+    `<div class="title-block">` +
+    `<p class="kicker role-label" hidden><slot name="kicker"></slot></p>` +
     `<div class="title role-heading-2"><slot name="title"></slot></div>` +
+    `</div>` +
     `<p class="description role-body-lg" hidden><slot name="description"></slot></p>` +
     `</div>` +
     `<arq-button class="link" type="underline" show-underline show-icon icon="arrow-right" hidden>` +
@@ -49,16 +52,25 @@ class ArqSectionHeader extends ArqElement {
     `</div>`;
 
   setup() {
-    this.shadowRoot.querySelector('slot[name="description"]').addEventListener('slotchange', () => this.update());
+    for (const name of ['description', 'kicker']) {
+      this.shadowRoot.querySelector(`slot[name="${name}"]`).addEventListener('slotchange', () => this.update());
+    }
   }
 
   update() {
     const root = this.shadowRoot;
-    const hasDescription = root
-      .querySelector('slot[name="description"]')
-      .assignedNodes({ flatten: true })
-      .some((node) => node.textContent.trim());
-    root.querySelector('.description').hidden = !SHOWS_DESCRIPTION.includes(this.type) || !hasDescription;
+    const filled = (name) =>
+      root
+        .querySelector(`slot[name="${name}"]`)
+        .assignedNodes({ flatten: true })
+        .some((node) => node.textContent.trim());
+    const editorial = this.type === 'editorial';
+    root.querySelector('.description').hidden = !SHOWS_DESCRIPTION.includes(this.type) || !filled('description');
+    root.querySelector('.kicker').hidden = !editorial || !filled('kicker');
+    root.querySelector('.title').classList.toggle('role-display-sm', editorial);
+    root.querySelector('.title').classList.toggle('role-heading-2', !editorial);
+    root.querySelector('.description').classList.toggle('role-body', editorial);
+    root.querySelector('.description').classList.toggle('role-body-lg', !editorial);
 
     const link = root.querySelector('.link');
     const hasLink = SHOWS_LINK.includes(this.type) && Boolean(this.href);

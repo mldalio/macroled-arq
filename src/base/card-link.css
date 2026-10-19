@@ -29,6 +29,15 @@
   -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
 }
 
+.card-link[href],
+.card-link[href]::after {
+  cursor: pointer;
+}
+
+.card:has(.card-link[href]) .card-media ::slotted(*) {
+  cursor: pointer !important;
+}
+
 .card-link::after {
   content: '';
   position: absolute;

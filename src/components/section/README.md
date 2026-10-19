@@ -24,7 +24,9 @@ Bloque de página: margen lateral, padding inferior y el armado encabezado → c
 | Atributo / slot | Prop JS | Valores · por defecto |
 | --- | --- | --- |
 | `layout` | `layout` | `stack` · `split` (def. `stack`) |
-| `padding-top` | `paddingTop` | booleano: suma `space/section/xl` arriba (primer bloque después del hero) |
+| `padding-top` | `paddingTop` | booleano: suma `space/section/md` arriba (primer bloque después del hero o el que sigue a una banda `subtle`) |
+| `background` | `background` | `default` · `subtle` · `bone` · `sand` (def. `default`). `subtle`: banda `color/surface/subtle`. `bone`: `color/surface/bone` (offwhite/bone; en Dark igual que subtle). `sand`: banda de Casa FOA (`#f7f1ec`, sin token) |
+| `reveal` | `reveal` | presencia: el bloque entero aparece una vez al entrar en pantalla (fade y subida, `src/base/reveal.js`). Con `prefers-reduced-motion` se ve quieto |
 | slot `header` | — | un `arq-section-header` |
 | slot por defecto | — | el contenido (grilla, mosaico, feature-block, lista) |
 | slot `action` | — | un `arq-button` al final del bloque, en Desktop y Mobile |
@@ -37,12 +39,14 @@ Bloque de página: margen lateral, padding inferior y el armado encabezado → c
 
 | | Desktop | Mobile |
 | --- | --- | --- |
-| Padding | `--page-gutter` a los lados (`layout/gutter`, con tope en `layout/max-width`), `space/section/xl` abajo | ídem (valores Mobile) |
+| Padding | `--page-gutter` a los lados (`layout/gutter`, con tope en `layout/max-width`), `space/section/xl` abajo. `padding="wide"` usa `space/padding/4xl`. Ese margen es de títulos y textos: Explorar, el mosaico de colecciones y el carrusel de proyectos lo cancelan y llegan al borde | ídem (valores Mobile) |
 | Gap encabezado → contenido → acción | `space/gap/2xl` | `space/gap/xl` |
 | `layout="split"` | encabezado y acción en una columna de `layout/measure` (acción a `space/gap/lg`), contenido a la derecha a `space/section/md` | apilado: encabezado, contenido, acción |
-| Fondo | `color/surface/default` | ídem |
+| Fondo | `color/surface/default`; `subtle` usa `color/surface/subtle`; `bone` usa `color/surface/bone`; `sand` usa `#f7f1ec` (Casa FOA, sin token) | ídem |
 
 ## Pendientes
+
+- `TODO` (diseño): en el Home de Final las bandas usan `#f7f7f7` sin variable (`neutral/50`); en código va `color/surface/subtle` (`#f0f0f0`) hasta que se enlace. Final Mobile todavía no tiene las bandas. El padding de la banda es 100 en Final, sin token: se usa `space/section/md`. El de la sección que sigue a una banda clara no está en DESIGN.md §2 · Cambio de fondo (solo cubre Dark): se usa `padding-top` (`space/section/md`, igual que la banda).
 
 - `TODO` (diseño): en `layout="split"` el Home separa las columnas con `space/section/md`, un token de separación entre bloques usado dentro de un bloque (DESIGN.md §5).
 - El ajuste de padding al cambiar de fondo (DESIGN.md §2 · Cambio de fondo) no está: el Home no tiene secciones Dark. Se suma cuando una página lo necesite.

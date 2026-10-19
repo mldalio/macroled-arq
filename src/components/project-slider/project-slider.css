@@ -1,0 +1,160 @@
+/* project-slider · scene/proyectos Home v2 (Final 2153:20657).
+   El Activo queda al centro; los laterales asoman. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.slider {
+  display: flex;
+  flex-direction: column;
+  /* TODO (diseño): Figma usa 56 entre carrusel y pie; el más cercano es
+     space/gap/3xl (64). */
+  gap: var(--arq-space-gap-3xl);
+  min-width: 0;
+}
+
+.rail {
+  overflow: hidden;
+  /* Alto del Activo (500). TODO (diseño): no hay token; sale de
+     layout/measure × ratio/portrait-soft (4:5). */
+  height: calc(var(--arq-layout-measure) * 5 / 4);
+  margin-inline: calc(var(--section-inline, var(--arq-space-padding-4xl)) * -1);
+  width: calc(100% + var(--section-inline, var(--arq-space-padding-4xl)) * 2);
+  cursor: grab;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+.rail[data-dragging] {
+  cursor: grabbing;
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: max-content;
+  /* TODO (diseño): Figma usa 10 entre slides; el más cercano es
+     space/gap/sm (8). */
+  gap: var(--arq-space-gap-sm);
+  transition: transform var(--arq-motion-duration-slow) var(--arq-motion-easing-standard);
+}
+
+.before,
+.after,
+.track > slot {
+  display: contents;
+}
+
+::slotted(arq-project-slide) {
+  flex: none;
+}
+
+.caption {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-lg);
+  min-width: 0;
+}
+
+.info {
+  margin: 0;
+  flex: 0 1 var(--arq-layout-measure);
+  max-width: var(--arq-layout-measure);
+  color: var(--arq-color-text-primary);
+  overflow-wrap: break-word;
+}
+
+.controls {
+  flex: none;
+}
+
+@media (max-width: 767px) {
+  .caption {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .info {
+    flex-basis: auto;
+    max-width: none;
+  }
+
+  .controls {
+    display: none;
+  }
+}
+
+.lightbox {
+  box-sizing: border-box;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: var(--arq-layout-gutter);
+  border: 0;
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-primary);
+  overflow: hidden;
+}
+
+.lightbox[open] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: var(--arq-space-gap-md);
+}
+
+.lightbox::backdrop {
+  background: var(--arq-color-overlay-scrim);
+}
+
+.lightbox-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-md);
+  min-width: 0;
+}
+
+.lightbox-count {
+  margin: 0;
+  min-width: 0;
+  color: var(--arq-color-text-primary);
+}
+
+.lightbox-stage {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  justify-items: center;
+  gap: var(--arq-space-gap-md);
+  min-width: 0;
+  min-height: 0;
+}
+
+.lightbox-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  object-fit: contain;
+}
+
+.lightbox-prev,
+.lightbox-next,
+.lightbox-close {
+  flex: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    transition: none;
+  }
+}

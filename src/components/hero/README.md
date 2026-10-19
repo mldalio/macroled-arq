@@ -25,7 +25,7 @@ Hero de página de Home y Contacto: media a sangre (imagen o video), scrim, eyeb
 
 | Figma | Slot | Contenido |
 | --- | --- | --- |
-| (media) | `media` | un `<img>` o un `<video>`. Se ubica a sangre con `object-fit: cover` |
+| (media) | `media` | un `<img>` o un `<video>`. Se ubica a sangre con `object-fit: cover`. Video con `autoplay loop` (la Home): en loop (con movimiento reducido, el poster). Video sin `autoplay` ni `loop` (`muted playsinline preload="auto"`): se reproduce una vez y queda en el último frame (`src/base/play-once.js`) |
 | Eyebrow · Show eyebrow | `eyebrow` | texto. Sin contenido, no se muestra |
 | Title | `title` | un `<h1>` con el título |
 | Description · Show description | `description` | texto. Sin contenido, no se muestra |

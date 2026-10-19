@@ -49,6 +49,7 @@ export const PRINT_TOKENS = Object.freeze({
   "color/surface/inverse-hover": "#2E2E2E",
   "color/surface/inverse-pressed": "#666666",
   "color/surface/transparent": "#00000000",
+  "color/surface/bone": "#F3F0E9",
   "color/text/primary": "#101010",
   "color/text/secondary": "#2E2E2E",
   "color/text/tertiary": "#666666",

@@ -13,18 +13,22 @@ Productos elegidos a mano para el Home ("Productos destacados"). El embed lista 
 
 | Atributo / slot | Contenido |
 | --- | --- |
+| `layout` | `side` (def.) texto al lado de las tarjetas · `stacked` título arriba, controles a la derecha y tarjetas debajo |
 | slot por defecto | un `<a href data-group>` por grupo: `data-group` es el `PRODUCT_GROUP_ID`, `href` su ficha y el texto su nombre |
 
 - **Orden:** el de los links. Un grupo que no está en el catálogo se saltea.
 - **Datos:** nombre, meta e imágenes salen de `getProductCards()` (`src/data/catalog.js`). Es un contenedor que consulta, como el navbar; las `product-card` reciben datos.
 - **Reserva:** los links quedan en el HTML de la página (indexables). Si el catálogo no carga o ningún grupo existe, se muestran como lista.
 - Mientras carga, el host lleva `aria-busy="true"` y no muestra nada.
+- **Entrada al hacer scroll:** cada tarjeta sube y aparece al entrar en pantalla, una vez y escalonada (`src/base/reveal.js`). Con `prefers-reduced-motion` no se anima.
 - **Iluminar:** dentro de un bloque con `data-arq-theme="dark"`, las tarjetas pasan a las imágenes encendidas (product-card).
+- **Cursor de hover:** cada `product-card` lleva `show-cursor` con el texto "Ver producto".
 
 ## Layout
 
-`arq-grid` de 4 columnas en Desktop y 2 en Mobile (`mobile="two-columns"`). Las tarjetas son `product-card` Size=Large, que pasa sola al aspecto Small hasta 767 px.
+Home v2: texto a la izquierda (`slot="intro"`) y fila con scroll a la derecha (slider: `arq-carousel-controls` con `step="item"`, una tarjeta por clic). Autoplay: avanza solo; se pausa al hacer hover o foco en una `product-card` (no en el texto ni en las flechas), al deslizar, fuera de pantalla o `prefers-reduced-motion`. Al final vuelve al inicio. `TODO` (diseño): no hay token de intervalo; se usa `motion/duration/feedback` × 2. En Mobile las flechas no se muestran. La fila se desliza con el dedo o arrastrando con el mouse; un toque abre la ficha y un deslizamiento no.
 
 | Parte | Token |
 | --- | --- |
+| Entre tarjetas | `space/gap/sm` en Desktop y Mobile (`gap="sm"` de `arq-grid`) |
 | Reserva | links a `space/gap/sm`, `role/body` en `color/text/primary` |

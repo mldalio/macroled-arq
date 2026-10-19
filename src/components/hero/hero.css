@@ -107,10 +107,28 @@
   }
 }
 
-/* full-height (Home): todo el alto del viewport en Desktop y Mobile
-   (decisiones.md, 2026-10-05 · Home: alturas y meta) */
+/* full-height (Home v2): una pantalla. El artboard mide 960 px y no hay
+   token (decisiones.md, 2026-10-08 · Home v2). El scrim es solo el tercio
+   inferior, de transparente a negro 70 %. */
 :host([full-height]) .hero {
   height: 100svh;
+}
+
+:host([full-height]) .scrim {
+  inset: auto 0 0 0;
+  height: 66.666%;
+  background: linear-gradient(180deg, rgb(0 0 0 / 0%) 0%, rgb(0 0 0 / 70%) 100%);
+}
+
+:host([full-height]) .content {
+  padding: 0 var(--arq-space-padding-4xl) var(--arq-space-padding-4xl);
+}
+
+@media (max-width: 767px) {
+  :host([full-height]) .content {
+    padding-inline: var(--page-gutter);
+    padding-bottom: var(--arq-space-section-sm);
+  }
 }
 
 /* Size=Compact (Contacto): el set mide 520 en Desktop y 480 en Mobile, contra

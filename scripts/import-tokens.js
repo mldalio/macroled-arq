@@ -13,7 +13,7 @@
 //   - motion/duration/fast, base, slow, expand, panel e illumination-lead suman
 //     el modo reducedMotion = 0ms.
 //   - No se importan las paletas de marca sin uso (bronze, cacao, olive,
-//     terracotta, offwhite).
+//     terracotta, offwhite), salvo offwhite/bone: lo usa color/surface/bone.
 //   - role/* no son variables (son estilos de texto): se conservan del
 //     tokens.json actual.
 // Valida el resultado con las mismas reglas que npm run tokens. Si hay
@@ -100,7 +100,7 @@ for (const file of files) {
   if (!(mode in MODE_MAP)) throw new Error(`${file}: modo "${mode}" desconocido (${Object.keys(MODE_MAP).join(', ')})`);
   const repoMode = MODE_MAP[mode];
   for (const [path, token] of flatten(data)) {
-    if (EXCLUDED_GROUPS.includes(path.split('.')[0])) continue;
+    if (EXCLUDED_GROUPS.includes(path.split('.')[0]) && path !== 'offwhite.bone') continue;
     const type = repoType(path, token.$type);
     const value = convert(path, type, token.$value);
     const entry = tokens.get(path) ?? { type, modes: {}, order: order++, collection };

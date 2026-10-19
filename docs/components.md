@@ -13,7 +13,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [breadcrumb](#breadcrumb) | `<arq-breadcrumb>` | En código ([README](../src/components/breadcrumb/README.md)) |
 | ✅ [breadcrumb-item](#breadcrumb-item) | `<arq-breadcrumb-item>` | En código ([README](../src/components/breadcrumb-item/README.md)) |
 | ✅ [button](#button) | `<arq-button>` | En código ([README](../src/components/button/README.md)) |
-| ⬜ [carousel-button](#carousel-button) | — | Pendiente. Hoy los carruseles usan `<arq-carousel-controls>` |
+| ✅ [carousel-button](#carousel-button) | `<arq-carousel-button>` | En código ([README](../src/components/carousel-button/README.md)). Lo usan los sliders de la Home (`buttons="carousel"`) |
 | ✅ [carousel-controls](#carousel-controls) | `<arq-carousel-controls>` | En código ([README](../src/components/carousel-controls/README.md)) |
 | ✅ [catalog-nav](#catalog-nav) | `<arq-catalog-nav>` | En código ([README](../src/components/catalog-nav/README.md)) |
 | ✅ [catalog-nav-group](#catalog-nav-group) | `<arq-catalog-nav-group>` | En código ([README](../src/components/catalog-nav-group/README.md)) |
@@ -104,10 +104,16 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 
 | Componente | Etiqueta | Para qué |
 | --- | --- | --- |
-| ✅ section | `<arq-section>` | Bloque de página: gutter, padding de sección y encabezado → contenido → acción ([README](../src/components/section/README.md)) |
+| ✅ section | `<arq-section>` | Bloque de página: gutter, padding de sección y encabezado → contenido → acción. Con `reveal`, el bloque entero aparece al entrar en pantalla. El margen lateral es de títulos y textos; Explorar, el mosaico y el carrusel de proyectos llegan al borde ([README](../src/components/section/README.md)) |
 | ✅ grid | `<arq-grid>` | Grilla de tarjetas; en Mobile apila, dos columnas o carrusel ([README](../src/components/grid/README.md)) |
 | ✅ project-mosaic | `<arq-project-mosaic>` | Mosaico de fotos de proyectos del Home (DESIGN.md §12) ([README](../src/components/project-mosaic/README.md)) |
-| ✅ featured-products | `<arq-featured-products>` | Productos destacados del Home, por grupo, con datos del catálogo ([README](../src/components/featured-products/README.md)) |
+| ✅ featured-products | `<arq-featured-products>` | Productos destacados del Home, por grupo, con datos del catálogo. La fila se desliza con el dedo o el mouse ([README](../src/components/featured-products/README.md)) |
+| ✅ text-block | `<arq-text-block>` | Kicker, título y bajada de una escena del Home ([README](../src/components/text-block/README.md)) |
+| ✅ collection-tile | `<arq-collection-tile>` | Tarjeta del mosaico de colecciones del Home ([README](../src/components/collection-tile/README.md)) |
+| ✅ collection-mosaic | `<arq-collection-mosaic>` | Mosaico de colecciones del Home ([README](../src/components/collection-mosaic/README.md)) |
+| ✅ tool-card | `<arq-tool-card>` | Recurso de «Herramientas para proyectar» ([README](../src/components/tool-card/README.md)) |
+| ✅ project-slide | `<arq-project-slide>` | Slide del carrusel de proyectos del Home ([README](../src/components/project-slide/README.md)) |
+| ✅ project-slider | `<arq-project-slider>` | Carrusel de proyectos del Home, en bucle. Con `autoplay` avanza solo; se arrastra con el mouse y el clic abre la foto en un lightbox ([README](../src/components/project-slider/README.md)) |
 | ✅ catalog-listing | `<arq-catalog-listing>` | Listado de Productos (y Colecciones): nav, toolbar, grilla, filtros y comparar ([README](../src/components/catalog-listing/README.md)) |
 | ✅ coleccion | `<arq-coleccion>` | Página de colección: cards de sus productos, galería, texto + imagen y mosaico con flechas ([README](../src/components/coleccion/README.md)) |
 | ✅ form-contacto | `<arq-form-contacto>` | Contacto (v3): información por slot (fija al desplazar en Desktop), formulario con validación, honeypot y envío a n8n, y preguntas frecuentes opcionales por slot ([README](../src/components/form-contacto/README.md)) |
