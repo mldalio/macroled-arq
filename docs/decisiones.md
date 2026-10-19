@@ -618,7 +618,7 @@ Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe
 
 - Confirmar nombres de campo con quien arma la base; faltan `product_group_id` y `collection_id` (`typesense-adapter.js`).
 - Qué foto es cada una: las cuatro de product-card (estudio y contexto, apagada y encendida), las de una card de colección y las del mega-menu.
-- Acabados: tabla de códigos (N, V, R, B, BN, P) y si «Negro satinado» y «Blanco y negro» son acabados reales (`docs/acabados.md`, Pendientes).
+- Acabados: tabla de códigos (N, V, R, B, BN, P); regla del blanco mate y del acero para los productos Skyline, cuando se organice su estructura en la base (`docs/acabados.md`, Pendientes).
 - Orden de las cards (hoy, el de la hoja).
 - Archivos de descarga por grupo (hoy CAD y Manual del SKU predeterminado).
 - Regla de Artefactos: ¿también dentro de Interior y Exterior, como Lámparas?
@@ -1024,7 +1024,7 @@ En el teléfono, la barra de la dirección y la zona de arriba toman el color de
 
 Cada acabado es una imagen (DESIGN.md §8 · Acabados de producto). Cómo funciona y cómo se agrega uno: `docs/acabados.md`.
 
-- **Imágenes:** 12 PNG de 128 × 128 (gradients diseñados en Figma, sección ACABADOS), uno por acabado, en `https://s3.coresagroup.com/MACROLED/ARQ/imagenes/acabados/acabado-<slug>.png`. La dirección base es `config.images.finishesBase` (`src/config.js`).
+- **Imágenes:** PNG de 128 × 128 (gradients diseñados en Figma, sección ACABADOS), uno por acabado, en `https://s3.coresagroup.com/MACROLED/ARQ/imagenes/acabados/acabado-<slug>.png`. La dirección base es `config.images.finishesBase` (`src/config.js`).
 - **La base no cambia.** El nombre del acabado sigue siendo el de Sheets («Negro»): es lo que muestran la ficha, las características y los filtros. Solo cambia qué imagen se pide.
 - **Un único archivo de mapeo:** `src/data/finishes.js`. Nombre del acabado (sin tildes ni mayúsculas) → slug. Un nombre que no está mapeado no tiene imagen: el swatch muestra el neutro con el nombre.
 - **La familia decide el negro.** Hay dos negros: metálico (DAO, `acabado-negro`) y mate (`acabado-negro-mate`). La base los llama igual y no se renombra, así que el código mira el campo `familia` del grupo: mate en Kanu, Nobu, Tori, Koen, Douli, Yoru y Sento; metálico en el resto. Se descartó `material_cuerpo` (casi todo es «Aluminio») y el SKU (formato pendiente, es un identificador opaco). La familia se compara exacta (sin tildes ni mayúsculas). En la base, «Mini Tori Jardín» tiene familia «Tori», así que entra.
@@ -1036,7 +1036,7 @@ Cada acabado es una imagen (DESIGN.md §8 · Acabados de producto). Cómo funcio
 
 Con las imágenes reales, la muestra de 20 px en la product-card Large se veía grande al lado del nombre.
 
-- **product-card:** los acabados van siempre en `arq-swatch` Size=Small (`swatch/sm`, 16 × 16), en Large y en Small (antes Large usaba Default, 20). Vale en Productos, Colecciones y la ficha (otras familias): colección usa la misma tarjeta. El swatch-picker de la ficha no cambia (24 elegida, 20 las demás, 16 en mobile).
+- **product-card:** los acabados van siempre en `arq-swatch` Size=Small (`swatch/sm`, 16 × 16), en Large y en Small (antes Large usaba Default, 20). Vale en Productos, Colecciones y la ficha (otras familias): colección usa la misma tarjeta. El swatch-picker de la ficha no cambia: 24 la elegida y 20 las demás, también en mobile.
 - **Figma:** set `product-card` (`990:2372`): los swatches de las tres variantes `Size=Large` pasaron de Size=Default a Size=Small; la descripción del set lo aclara.
 
 ## 2026-10-19 · compare-picker («Agregar producto»)
@@ -1061,3 +1061,12 @@ Cierra los pendientes de diseño de compare-picker.
 - La lupa del buscador del modal no era una diferencia: el set usa search-field-line, que la dibuja en `color/icon/tertiary`, como el código.
 - Export: `tokens/figma/2-semantic-dimension.*` y `2-semantic-opacity.value.json`. Antes de regenerar Dimension se comparó por hash el resto de la colección en Figma con el último export del repo (iguales), así el diff solo suma la variable nueva.
 - **compare-slot sin Size=Compact:** la barra en Mobile usa el tamaño Default (lista apilada) y la cabecera compacta de Comparativa usa compare-product, así que Compact ya no se usaba. Se quitó del set (las variantes quedan State=Filled · Empty · empty-hover, sin la propiedad Size), de la ficha `doc/compare-slot` y del código (atributo `size`). Se borró `layout/compare-thumb-sm` (solo lo usaba Compact): Figma, export de Dimension, `tokens.json` y `tokens.css`.
+
+## 2026-10-19 · Negro satinado, blanco mate y acero
+
+Salió de revisar los valores de `color_carcasa` de toda la base (326 documentos) contra las imágenes de acabados.
+
+- **«Negro satinado» = negro mate.** Lo traen dos SKU de la línea Skyline (`RMS-AR-E` y `RMS-AR-S`, conectores de riel, familia Acoplador). Se mapea por nombre a `acabado-negro-mate` (`SLUGS` de `src/data/finishes.js`), sin regla por familia.
+- **Blanco mate: imagen lista, sin regla.** `acabado-blanco-mate.png` (mismo estilo mate que el resto) es para los productos Skyline. No se conecta todavía: falta organizar su estructura en la base. Mientras tanto, «Blanco» sigue siendo el blanco metálico de DAO.
+- **Acero (`RMS-S-S`): sin imagen.** Producto de un solo color que la ficha no ofrece como variante; se resuelve junto con la regla de los productos Skyline.
+- **«Blanco y negro» no existe en la base:** solo está en `demo/fixtures/peor-caso.js` (datos de prueba).

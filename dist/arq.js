@@ -594,6 +594,7 @@ function He(e, t) {
 //#region src/data/finishes.js
 var Ue = (e) => g(e).replace(/\s+/g, " ").trim(), We = Object.freeze({
 	negro: "negro",
+	"negro satinado": "negro-mate",
 	blanco: "blanco",
 	cobre: "cobre",
 	bronce: "bronce",
