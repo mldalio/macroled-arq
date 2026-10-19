@@ -5,7 +5,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 - Si este archivo no coincide con Figma, manda Figma y se actualiza este archivo.
 - Al crear o modificar un componente en código, actualizar su **Estado en código** y su marca.
 
-**81 de 83 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
+**83 de 85 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
 
 | Componente | Etiqueta | Estado en código |
 | --- | --- | --- |
@@ -27,6 +27,8 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [compare-bar](#compare-bar) | `<arq-compare-bar>` | En código ([README](../src/components/compare-bar/README.md)) |
 | ✅ [compare-group](#compare-group) | dentro de `<arq-compare-table>` | En código, como parte de compare-table ([README](../src/components/compare-table/README.md)) |
 | ✅ [compare-header](#compare-header) | `<arq-compare-header>` | En código ([README](../src/components/compare-header/README.md)) |
+| ✅ [compare-picker](#compare-picker) | `<arq-compare-picker>` | En código ([README](../src/components/compare-picker/README.md)) · Productos (compare-bar, también Mobile) y Comparativa · sin los chips de categoría del set y con «Ver todos los productos» (Underline) en lugar de «Comparar» |
+| ✅ [compare-picker-item](#compare-picker-item) | `<arq-compare-picker-item>` | En código ([README](../src/components/compare-picker-item/README.md)) |
 | ✅ [compare-product](#compare-product) | `<arq-compare-product>` | En código ([README](../src/components/compare-product/README.md)) |
 | ✅ [compare-row](#compare-row) | dentro de `<arq-compare-table>` | En código, como parte de compare-table ([README](../src/components/compare-table/README.md)) |
 | ✅ [compare-slot](#compare-slot) | `<arq-compare-slot>` | En código ([README](../src/components/compare-slot/README.md)) |
@@ -282,6 +284,20 @@ Título de grupo de la tabla comparativa (role/body-xl en caja normal, color/tex
 - Propiedades: Type: Default · Compact; Breakpoint: Desktop · Mobile
 
 Cabecera de la comparativa. Type=Default: columna de controles (toggle "Solo diferencias") + compare-product por columna; es estática. Type=Compact: versión mini que aparece fija arriba (position: fixed/sticky bajo el navbar) cuando la cabecera Default sale de pantalla; usa compare-product Size=Compact (miniatura + nombre + quitar; el SKU solo en Desktop; un lugar libre es la caja «Agregar producto»). compare-slot queda solo para compare-bar. En mobile las columnas (144 + gap 16) se alinean con compare-row Mobile y el scroll horizontal se sincroniza con la tabla; la columna de controles (120) queda fija.
+
+## compare-picker
+
+- Figma: [2724-8761](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2724-8761)
+- Propiedades: Breakpoint: Desktop · Mobile; State: Results · No results
+
+Modal «Agregar producto» de la comparativa. Se abre desde el slot vacío (+) del compare-bar en Productos y desde el compare-product vacío / «+ Agregar producto» en Comparativa. Desktop: modal centrado sobre scrim. Mobile: pantalla completa. Sin resultados: solo mensaje, sin CTA; se sigue buscando en el mismo modal.
+
+## compare-picker-item
+
+- Figma: [2723-8420](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2723-8420)
+- Propiedades: State: Default · Hover · Added · Disabled
+
+Fila del modal «Agregar producto» de la comparativa. Default/Hover: botón Agregar. Added: el producto ya está en la comparativa. Disabled: se alcanzó el máximo de 3 productos.
 
 ## compare-product
 

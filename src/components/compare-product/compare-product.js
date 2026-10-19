@@ -23,9 +23,8 @@
 //   página resuelve el nuevo SKU con src/data/catalog.js y vuelve a asignar
 //   data (el componente no consulta Typesense). Para cambiar de producto se
 //   quita y se agrega otro, no hay select de familia.
-// - Empty es un <button>: emite arq:add al clickear. TODO (diseño + código):
-//   todavía no abre nada — la ficha dice que más adelante abre un modal para
-//   elegir producto; por ahora solo el Hover (State=empty-hover) está listo.
+// - Empty es un <button>: emite arq:add al clickear (en Comparativa abre
+//   compare-picker, «Agregar producto»).
 // - Imagen 1:1 (aspect-ratio bloqueado), tope layout/compare-media-max.
 // - Al imprimir, los selects se reemplazan por la variante elegida como texto
 //   (.variant: etiqueta y valor de cada atributo).

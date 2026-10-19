@@ -42,6 +42,8 @@ import './components/catalog-toolbar/catalog-toolbar.js';
 import './components/product-card/product-card.js';
 import './components/compare-slot/compare-slot.js';
 import './components/compare-bar/compare-bar.js';
+import './components/compare-picker-item/compare-picker-item.js';
+import './components/compare-picker/compare-picker.js';
 import './components/compare-product/compare-product.js';
 import './components/compare-header/compare-header.js';
 import './components/compare-table/compare-table.js';

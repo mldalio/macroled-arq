@@ -1038,3 +1038,15 @@ Con las imágenes reales, la muestra de 20 px en la product-card Large se veía 
 
 - **product-card:** los acabados van siempre en `arq-swatch` Size=Small (`swatch/sm`, 16 × 16), en Large y en Small (antes Large usaba Default, 20). Vale en Productos, Colecciones y la ficha (otras familias): colección usa la misma tarjeta. El swatch-picker de la ficha no cambia (24 elegida, 20 las demás, 16 en mobile).
 - **Figma:** set `product-card` (`990:2372`): los swatches de las tres variantes `Size=Large` pasaron de Size=Default a Size=Small; la descripción del set lo aclara.
+
+## 2026-10-19 · compare-picker («Agregar producto»)
+
+Modal para sumar productos a la comparativa (Figma 2724:8761, con compare-picker-item 2723:8420). Lo abren el lugar vacío (+) de compare-bar (Productos y Colecciones) y el compare-product vacío en Comparativa. Pedidos de Lau que se apartan del set:
+
+- **Sin chips de categoría:** el set trae choice-chip Todos · Interior · Exterior · Lámparas y artefactos. Se probó sumar «Colecciones» (una fila por colección que abría sus productos) y al final se sacaron todos: se busca solo con el buscador (nombre, SKU o familia, el criterio del buscador del navbar).
+- **Al pie, «Ver todos los productos»** (button Underline con subrayado y arrow-right) en lugar de «Comparar» (Filled). Lleva al listado de Productos sin categoría.
+- **compare-bar también en «Todas las colecciones»:** antes se ocultaba porque las cards de colección no tienen Comparar. La selección sigue y se puede agregar con el +.
+- **Lugar vacío de compare-slot:** el dibujo del set (foto en `color/surface/subtle` con el «+» resaltado y «Agregar producto») dentro de una caja punteada, como el lugar vacío de compare-product Compact en Comparativa; cursor pointer y Hover con `color/surface/faint` y borde `color/border/strong`.
+- **Mobile:** la compare-bar suma un solo lugar vacío debajo de los productos elegidos mientras haya menos de 3. El modal es pantalla completa.
+- Datos: `listCompareCandidates` filtra en memoria el catálogo que ya trae Typesense (una consulta por visita); no consulta por cada letra. En la barra, lo agregado guarda la misma meta que las cards.
+- Pendiente en Figma: ficha `doc/compare-picker`, sacar los chips y cambiar el botón del pie en el set, la caja punteada del lugar vacío de compare-slot y el lugar vacío en compare-bar Mobile.

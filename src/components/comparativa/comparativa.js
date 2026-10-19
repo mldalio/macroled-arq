@@ -13,9 +13,9 @@
 //   (la misma clave que lee/escribe compare-bar en Productos y Colecciones),
 //   para que la selección siga igual al volver a esas páginas.
 // - Sin productos (?sku= vacío o ningún SKU existe): mensaje con link a Productos.
-// - TODO (diseño + código): un lugar vacío (compare-product State=Empty) emite
-//   arq:add { index } al clickear, pero todavía no hace nada acá — la ficha
-//   dice que más adelante abre un modal para elegir producto.
+// - Un lugar vacío (compare-product State=Empty, o «Agregar producto» de la
+//   cabecera compacta) abre compare-picker. Lo que se agrega se suma a ?sku=
+//   y la comparación se vuelve a armar detrás del modal.
 // - Mobile: compare-header y compare-table comparten un solo scroll horizontal,
 //   el de .scroll (como macroled.com.ar/comparativa): los dos van con
 //   `embedded` y no tienen scroll propio. La cabecera compacta (fija) sigue
@@ -31,10 +31,11 @@
 //   navegador al guardar como PDF.
 
 import { ArqElement } from '../../base/arq-element.js';
-import { getCompare, skuForAttribute } from '../../data/catalog.js';
+import { getCompare, skuForAttribute, listCompareCandidates } from '../../data/catalog.js';
 import '../toggle/toggle.js';
 import '../compare-header/compare-header.js';
 import '../compare-table/compare-table.js';
+import '../compare-picker/compare-picker.js';
 import css from './comparativa.css?inline';
 
 const KEY = 'arq:compare';
@@ -79,9 +80,11 @@ class ArqComparativa extends ArqElement {
     `<arq-compare-header class="header" embedded></arq-compare-header>` +
     `<arq-compare-table class="table" embedded></arq-compare-table>` +
     `</div>` +
-    `</div>`;
+    `</div>` +
+    `<arq-compare-picker class="picker"></arq-compare-picker>`;
 
   #skus = [];
+  #pickerRequest = 0;
   #names = [];
   #onlyDifferences = false;
   #pageTitle = null;
@@ -102,6 +105,28 @@ class ArqComparativa extends ArqElement {
       this.#load();
     });
     header.addEventListener('arq:change', (event) => this.#onChange(event.detail));
+    // «Agregar producto»: compare-picker (la comparación se actualiza detrás).
+    const picker = root.querySelector('.picker');
+    header.addEventListener('arq:add', (event) => {
+      event.stopPropagation();
+      picker.show(); // emite arq:search: carga la lista
+    });
+    picker.addEventListener('arq:search', () => this.#loadPicker());
+    // El lugar vacío que lo abrió ya tiene producto: el foco va al próximo
+    // lugar vacío o, si no hay, al nombre del último producto.
+    picker.addEventListener('arq:close', (event) => {
+      if (event.detail.restored) return;
+      const products = [...header.shadowRoot.querySelectorAll('.products arq-compare-product')];
+      const empty = products.find((product) => product.hasAttribute('empty'));
+      const target = empty ? empty.shadowRoot.querySelector('.add') : products.at(-1)?.shadowRoot.querySelector('.title');
+      target?.focus();
+    });
+    picker.addEventListener('arq:add', (event) => {
+      const { sku } = event.detail.item;
+      if (this.#skus.length >= MAX || this.#skus.includes(sku)) return;
+      this.#skus = [...this.#skus, sku];
+      this.#load();
+    });
     // Mobile: un solo scroll (.scroll) para productos y tabla. La cabecera
     // compacta lo sigue; si se desliza la compacta, mueve el contenedor.
     const scroll = root.querySelector('.scroll');
@@ -150,6 +175,21 @@ class ArqComparativa extends ArqElement {
     } else {
       scroll.removeAttribute('tabindex');
       scroll.removeAttribute('role');
+    }
+  }
+
+  // Productos del compare-picker con la búsqueda y el filtro del modal; los
+  // que ya están en la comparación salen como Agregado (con 3, el resto Disabled).
+  async #loadPicker() {
+    const picker = this.shadowRoot.querySelector('.picker');
+    const selected = [...this.#skus];
+    const request = ++this.#pickerRequest;
+    picker.count = selected.length;
+    try {
+      const { items } = await listCompareCandidates({ ...picker.search, selected });
+      if (request === this.#pickerRequest) picker.items = items;
+    } catch (error) {
+      console.error('[arq] compare-picker: no se pudo cargar el catálogo', error);
     }
   }
 
@@ -208,6 +248,7 @@ class ArqComparativa extends ArqElement {
     root.querySelector('.diff-mobile').checked = this.#onlyDifferences;
     requestAnimationFrame(() => header.refreshCompact());
     writeStorage(data.products);
+    if (root.querySelector('.picker').open) this.#loadPicker();
     const url = new URL(location.href);
     url.searchParams.set('sku', this.#skus.map(encodeURIComponent).join(','));
     history.replaceState(history.state, '', url);

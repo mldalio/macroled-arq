@@ -615,6 +615,48 @@ export async function searchProducts(query, { limit = 5 } = {}) {
 /** URL con todos los resultados: el listado de Productos con ?q= (docs/urls.md). */
 export const searchHref = (query) => `/arq/productos?q=${encodeURIComponent(query)}`;
 
+// ── Agregar producto a la comparativa (compare-picker) ───────────────
+// La meta de las filas sigue el set (Figma 2724:8761): «Exterior · Jardín» o,
+// si no es luminaria, «Lámparas y artefactos · Colgante».
+const PICKER_LAMPS = 'Lámparas y artefactos';
+const isLuminaire = (group) => !group.productType || group.productType === 'Luminaria';
+
+function pickerMeta(group) {
+  if (isLuminaire(group)) return meta(group);
+  return [PICKER_LAMPS, group.application ?? group.productType].filter(Boolean).join(' · ');
+}
+
+/**
+ * Productos del modal «Agregar producto» de la comparativa: uno por grupo
+ * (los que se listan), con su SKU predeterminado; si la búsqueda coincide por
+ * SKU, ese SKU. query: nombre, SKU o familia, con el criterio de la búsqueda.
+ * selected: SKU que ya están en la comparativa; el grupo de cualquiera de
+ * ellos sale con added (State=Added).
+ * Devuelve { items: [{ id, sku, name, meta, cardMeta, image, added }] }.
+ */
+export async function listCompareCandidates({ query = '', selected = [] } = {}) {
+  const { groups } = await loadCatalog();
+  const words = queryWords(query);
+  const chosen = new Set(selected);
+  const items = groups.flatMap((group) => {
+    if (!group.hasDefault) return [];
+    const found = words.length ? searchMatch(group, words) : { variant: group.defaultVariant };
+    if (!found) return [];
+    return [
+      {
+        id: group.id,
+        sku: found.variant.sku,
+        name: group.name,
+        meta: pickerMeta(group),
+        cardMeta: meta(group), // la de la product-card: la que guarda la compare-bar
+        image: productCard(group, found.variant).image,
+        added: group.variants.some((v) => chosen.has(v.sku)),
+      },
+    ];
+  });
+  return { items };
+}
+
 // ── Navegación ───────────────────────────────────────────────────────
 /**
  * Árbol único para mega-menu, menú mobile y catalog-nav (decisiones.md,

@@ -13,8 +13,8 @@
 //   quien arma la página no pone nada.
 // - Título "Productos seleccionados" + count-badge; 3 lugares (compare-slot
 //   Default, con divisores); "Borrar todo" y "Comparar". En Mobile, como
-//   macroled.com.ar: solo los productos elegidos, uno arriba de otro, y
-//   "Comparar" debajo a todo el ancho.
+//   macroled.com.ar: los productos elegidos, uno arriba de otro (más un lugar
+//   vacío para agregar si hay menos de 3), y "Comparar" debajo a todo el ancho.
 // - Open: el título es un botón que pliega y despliega la lista de productos
 //   (disclosure base, chevron-down abierta · chevron-up plegada). Plegada
 //   quedan el título, "Borrar todo" y "Comparar" (en Desktop, en una sola
@@ -24,6 +24,9 @@
 // - La selección se guarda en localStorage (arq:compare), así sigue al cambiar
 //   de página o de filtros. add() con 3 elegidos no agrega y devuelve false.
 // - Emite arq:compare-change { items } cuando cambia la selección.
+// - Un lugar vacío (+, compare-slot Empty) emite arq:add: la página abre
+//   compare-picker («Agregar producto»). En Mobile, un solo lugar vacío
+//   debajo de los elegidos, mientras haya menos de 3.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { Disclosure } from '../../base/disclosure.js';
@@ -153,6 +156,20 @@ class ArqCompareBar extends ArqElement {
     return this.#items.some((item) => item.sku === sku);
   }
 
+  /** Foco en el primer lugar vacío (+) o, si no hay, en «Comparar». */
+  focusAdd() {
+    const root = this.shadowRoot;
+    const empty = [...root.querySelectorAll('arq-compare-slot')].find((slot) => !slot.filled);
+    const target = empty?.shadowRoot.querySelector('.add') ?? root.querySelector('.go');
+    target?.focus();
+  }
+
+  /** URL de «Comparar»: la comparativa con los SKU elegidos. */
+  get compareUrl() {
+    const query = this.#items.map((item) => encodeURIComponent(item.sku)).join(',');
+    return `${this.href ?? '/arq/comparativa'}?sku=${query}`;
+  }
+
   // Al plegar o desplegar, la barra cambia de alto de golpe. Como está fija
   // abajo, se anima la diferencia con transform: arranca con el borde de
   // arriba donde estaba y lo lleva a su lugar nuevo, con el mismo tiempo y la
@@ -188,8 +205,9 @@ class ArqCompareBar extends ArqElement {
     const mobile = MOBILE.matches;
     const slots = root.querySelector('.slots');
     const nodes = [];
-    // Mobile: solo los elegidos, apilados (sin lugares vacíos)
-    const count = mobile ? items.length : MAX;
+    // Mobile: los elegidos, apilados, y debajo un solo lugar vacío para
+    // agregar (abre compare-picker) mientras haya menos de 3
+    const count = mobile ? Math.min(items.length + 1, MAX) : MAX;
     for (let i = 0; i < count; i++) {
       if (i > 0) {
         const divider = document.createElement('arq-divider');
@@ -213,9 +231,7 @@ class ArqCompareBar extends ArqElement {
       nodes.push(slot);
     }
     slots.replaceChildren(...nodes);
-    const go = root.querySelector('.go');
-    const query = items.map((item) => encodeURIComponent(item.sku)).join(',');
-    go.href = `${this.href ?? '/arq/comparativa'}?sku=${query}`;
+    root.querySelector('.go').href = this.compareUrl;
   }
 }
 
