@@ -39,7 +39,7 @@ valores crudos      roles con modos     usa SOLO Semantic
 | Nivel | Colecciones en Figma | Qué contiene | ¿Se usa en componentes? |
 | --- | --- | --- | --- |
 | 1 · Primitive | 1 · Primitive · Color, Space, Type, Radius, Border | Valores crudos (`neutral/900` = #101010, `space/16` = 16) | Nunca directo |
-| 2 · Semantic | 2 · Semantic · Color (Light/Dark), Dimension (Desktop/Mobile/Tablet/Large) y Type (Desktop/Mobile/Wide) | Roles de uso general (`color/text/primary`, `space/gap/md`) | Sí: es lo único que usan los componentes |
+| 2 · Semantic | 2 · Semantic · Color (Light/Dark), Dimension (Desktop/Mobile/Tablet/Large), Type (Desktop/Mobile/Wide), Motion y Opacity (Value) | Roles de uso general (`color/text/primary`, `space/gap/md`) | Sí: es lo único que usan los componentes |
 
 No hay nivel de componente (Mapped). Se descartó por escalabilidad: cada componente se enlaza directamente a los semánticos. Si un componente necesita un valor que no existe, se agrega un semántico nuevo que sirva para todos (por ejemplo, `color/surface/inverse-hover`).
 
@@ -305,9 +305,10 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 | layout/measure | 400 | 400 | Ancho máximo de un texto de lectura junto a otro elemento (bajada de section-header y de page-header List). En Mobile el texto ocupa todo el ancho |
 | layout/measure-wide | 520 | 520 | Ancho máximo de un texto de lectura en una columna principal (page-header Detail). En Mobile el texto ocupa todo el ancho |
 | layout/gallery-thumb | 105 | 76 | Ancho de gallery-thumb en product-gallery. El alto sale de ratio/landscape (5:4) |
-| layout/filter-panel | 560 | 560 | Ancho de los paneles en Desktop: filter-panel y download-modal. En Mobile no se usa |
+| layout/filter-panel | 560 | 560 | Ancho de los paneles en Desktop: filter-panel, download-modal y compare-picker. En Mobile no se usa |
+| layout/compare-picker-list | 400 | 400 | Alto de la lista de compare-picker en Desktop (5 filas de compare-picker-item); las demás se desplazan adentro. En Mobile no se usa |
 | layout/table-thumb | 100 | 100 | Miniatura cuadrada de cada fila de la tabla de variantes (Glosario de la ficha y página Descargas) |
-| layout/compare-thumb · compare-thumb-sm | 48 · 28 | 48 · 28 | Foto de compare-slot Default (cuadrada) y Compact (ancho; alto por ratio/portrait) |
+| layout/compare-thumb | 48 | 48 | Foto cuadrada de compare-slot |
 | layout/compare-slot | 400 | 400 | Ancho máximo de compare-slot Default |
 | layout/compare-label | 200 | 120 | Columna de etiquetas de la comparativa (fija en Mobile) |
 | layout/compare-column | 160 | 160 | Columna de producto de la comparativa en Mobile (en Desktop se reparten el ancho) |
@@ -336,6 +337,14 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 
 - **gap** es la distancia *entre* elementos; **padding**, el aire *dentro* de un bloque; **section**, la distancia *entre* bloques de página. `section` no se usa adentro de un bloque aunque coincida en valor.
 - **No hay sombras.**
+
+### Opacidad (2 · Semantic · Opacity)
+
+| Token | Valor | Uso |
+| --- | --- | --- |
+| opacity/disabled | 50 (Figma) · 0.5 (código) | Imagen o parte gráfica deshabilitada (miniatura de compare-picker-item Disabled). El texto deshabilitado no usa opacidad: va en `color/text/disabled` |
+
+- En Figma las variables de opacidad van de 0 a 100 (el campo de opacidad); `npm run tokens:import` las pasa a 0–1.
 
 ### Proporciones de imagen
 
@@ -519,8 +528,8 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | form-message | Tone: Success · Error. Prop: Message | Sin ícono. Los títulos de bloque de un formulario son el `<legend>` de cada `<fieldset>`, con el dibujo de form-section-header: role/heading-3 y línea inferior border/default en color/border/default |
 | contact-item · link-list | State: Default · Hover · Focus. Props: Label · Value / Props: Title · Show link 3 | Etiqueta role/body-sm en color/text/tertiary; valor como link mailto: / tel:. contact-item sin línea ni padding vertical: la lista los separa. link-list: título role/body-lg-regular en color/text/secondary, todo a space/gap/sm |
 | compare-header · compare-group · compare-row · compare-product | Type: Default · Compact × Breakpoint / Label / Breakpoint + Value 1–3 / State: Filled · Empty | Hasta 3 productos. Cada columna es un producto (grupo) con un select Filter Size=Small por atributo de variante, cada uno con su línea inferior border/default en color/border/default. Toggle «Solo diferencias» al pie de la columna de controles. Título de grupo en role/body-xl |
-| compare-bar · compare-slot | Breakpoint: Desktop · Mobile. Open: True · False / Size: Default · Compact. State: Filled · Empty | Barra fija inferior, en Dark local; se ve en Productos y en «Todas las colecciones». Mobile: los productos elegidos uno arriba de otro (compare-slot Default con divider Horizontal Subtle), un solo lugar vacío debajo mientras haya menos de 3, y «Comparar» debajo a todo el ancho; el título lleva un chevron que pliega la lista (Open). compare-slot Empty: miniatura con el «+» resaltado y «Agregar producto» en una caja punteada (border/default dashed en color/border/default), Hover color/surface/faint y borde color/border/strong; abre compare-picker |
-| compare-picker · compare-picker-item | Breakpoint: Desktop · Mobile. State: Results · No results / State: Default · Hover · Added · Disabled. Props: Name · Meta | Modal «Agregar producto»: buscador (search-field Type=Line) por nombre, SKU o familia, sin chips de categoría; lista de compare-picker-item (miniatura layout/search-thumb, nombre role/body-compact-regular, meta role/caption, button Outline «+ Agregar»; Added «Agregado»; Disabled con 3 elegidos) y «Ver todos los productos» (button Underline) al pie. Desktop centrado sobre el scrim, ancho layout/filter-panel; Mobile pantalla completa. Siempre en Light |
+| compare-bar · compare-slot | Breakpoint: Desktop · Mobile. Open: True · False / State: Filled · Empty · empty-hover | Barra fija inferior, en Dark local; se ve en Productos y en «Todas las colecciones». Mobile: los productos elegidos uno arriba de otro (compare-slot Default con divider Horizontal Subtle), un solo lugar vacío debajo mientras haya menos de 3, y «Comparar» debajo a todo el ancho; el título lleva un chevron que pliega la lista (Open). compare-slot Empty: miniatura con el «+» resaltado y «Agregar producto» en una caja punteada (border/default dashed en color/border/default), Hover (State=empty-hover) color/surface/faint y borde color/border/strong; abre compare-picker |
+| compare-picker · compare-picker-item | Breakpoint: Desktop · Mobile. State: Results · No results / State: Default · Hover · Added · Disabled. Props: Name · Meta | Modal «Agregar producto»: buscador (search-field Type=Line) por nombre, SKU o familia, sin chips de categoría; lista de compare-picker-item (miniatura layout/search-thumb, nombre role/body-compact-regular, meta role/caption, button Outline «+ Agregar»; Added «Agregado»; Disabled con 3 elegidos, miniatura en opacity/disabled) y «Ver todos los productos» (button Underline) al pie. Desktop centrado sobre el scrim, ancho layout/filter-panel y lista de layout/compare-picker-list; Mobile pantalla completa. Siempre en Light |
 | pdf-page · pdf-header · pdf-cover-title · pdf-spec-group · pdf-spec-row · pdf-footer | Type: Portada · Especificaciones / Meta · Meta 2 · Show meta 2 / Eyebrow · Name · SKU / Title / Label · Value / Note · Page | Ficha técnica en PDF (A4), no son Web Components: los arma `src/pdf/` con pdfmake. Type en modo Mobile, Dimension en Desktop, Color en Light (`src/styles/print-tokens.js`). Se abre en una pestaña nueva; las especificaciones suman hojas y una sección no se parte |
 
 El inventario completo con links a Figma está en el [Anexo A](#anexo-a-inventario-de-componentes).
@@ -641,7 +650,7 @@ Link a cada set en Figma (`node-id`). Base: `https://www.figma.com/design/djAb2r
 | compare-picker-item | [2723-8420](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2723-8420) | Name; Meta; State: Default · Hover · Added · Disabled |
 | compare-product | [1057-2522](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1057-2522) | Name; SKU; Show SKU; Size: Default · Compact; State: Filled · Empty · empty-hover |
 | compare-row | [1263-4317](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1263-4317) | Label; Value 1–3; Show value 1–3; Breakpoint: Desktop · Mobile |
-| compare-slot | [1233-3656](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1233-3656) | Name; Meta; Size: Default · Compact; State: Filled · Empty |
+| compare-slot | [1233-3656](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1233-3656) | Name; Meta; State: Filled · Empty · empty-hover |
 | contact-item | [1303-4340](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1303-4340) | Label; Value; State: Default · Hover · Focus |
 | count-badge | [1231-3557](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1231-3557) | Count; Tone: Primary · Inverse |
 | cta-block | [1265-4464](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1265-4464) | Title; Description; Type: Button · Newsletter; Breakpoint: Desktop · Mobile |
