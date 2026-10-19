@@ -505,7 +505,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | category-card | Breakpoint: Desktop · Mobile. State: Default · Hover · Focus. Prop: Name | Home. Toda la tarjeta es link. ratio/portrait-soft |
 | line-card | Breakpoint: Desktop · Mobile. State: Default · Hover · Focus. Props: Label · Name · Description | Home, editorial. El único link es el botón (button Underline): la imagen y el nombre no son clickeables. Hover y Focus en el botón. ratio/landscape (Desktop) · ratio/square (Mobile) |
 | family-card | Size: Default · Large. State: Default · Hover · Focus. Prop: Name | Ficha: otras familias de la colección. Misma imagen que la product-card del grupo (estudio, luz apagada) |
-| product-card | Size: Large · Small. State: Default · Hover · Focus. Props: Name · Meta · Show meta · Show finishes · Show compare | Toma el ancho de su columna (FILL). ratio/portrait. Hover y Iluminar cambian la imagen (ver Imágenes de product-card) |
+| product-card | Size: Large · Small. State: Default · Hover · Focus. Props: Name · Meta · Show meta · Show finishes · Show compare | Toma el ancho de su columna (FILL). ratio/portrait. Acabados siempre swatch Small (16). Hover y Iluminar cambian la imagen (ver Imágenes de product-card) |
 | product-gallery · gallery-thumb | Breakpoint: Desktop · Mobile / State: Default · Hover · Selected · Focus | ratio/landscape |
 | carousel-controls | Position: Start · Middle · End | icon-button Large con flechas |
 | carousel-button | Direction: Previous · Next. State: Default · Disabled | Cuadrado de layout/carousel-button, borde color/border/disabled, chevron icon/md. Carruseles de Destacados y Proyectos |
@@ -574,9 +574,12 @@ La regla vale **donde se use la card**, no solo en los listados: en la sección 
 ### Acabados de producto
 
 - Los acabados no son tokens: son contenido. Cada acabado es una imagen.
-- Sheets trae el nombre como texto ("blanco", "Gris Grafito"). El código lo normaliza a un slug en inglés con un único archivo de mapeo.
-- La imagen se sirve desde el servidor de imágenes de la empresa (Amazon). Si falta, se muestra un neutro con el nombre en texto: nunca rompe la ficha.
-- En la ficha, el acabado se elige con swatch-picker (option-group Type=Swatches).
+- Sheets trae el nombre como texto («Negro», «Gris Grafito») y **no se modifica**: es lo que muestran la ficha y las características. Un único archivo de mapeo (`src/data/finishes.js`) lo convierte en la imagen; no hay que renombrar nada en la base.
+- La imagen es un PNG cuadrado de 128 × 128 px (un gradient diseñado en Figma, sección ACABADOS), servido desde el servidor de imágenes de la empresa: `https://s3.coresagroup.com/MACROLED/ARQ/imagenes/acabados/acabado-<slug>.png`. Si falta o no carga, se muestra un neutro con el nombre en texto: nunca rompe la ficha.
+- Hay dos terminaciones: **metálica** (franja de brillo en diagonal: los acabados de DAO) y **mate** (degradé suave, luz arriba a la izquierda y bordes laterales apenas más oscuros: verde, terracota, beige, pardo, negro mate, blanco mate).
+- **El negro tiene dos imágenes con el mismo nombre en la base.** Negro mate (`acabado-negro-mate`) en las familias Kanu, Nobu, Tori, Koen, Douli, Yoru y Sento; negro metálico (`acabado-negro`) en el resto. Lo decide el código por la familia del producto. «Negro satinado» es lo mismo que el negro mate.
+- En la ficha, el acabado se elige con swatch-picker (option-group Type=Swatches): la muestra elegida a 24 px y las demás a 20 px. En las cards de producto y de colección, las muestras son siempre swatch Small (16 × 16).
+- Cómo funciona y cómo agregar un acabado, una familia o una regla: `docs/acabados.md`.
 
 ---
 
@@ -618,7 +621,7 @@ La regla vale **donde se use la card**, no solo en los listados: en la sección 
 - **Descargar comparación:** falta el diseño del PDF.
 - **Ficha técnica en PDF:** falta el mensaje de error si no se puede generar. Al guardarla desde el visor de Chrome, el nombre es un código al azar (sale de la URL del blob): para que se llame `ficha-tecnica-<sku>.pdf` hace falta servirla desde una URL propia.
 - **Galerías** (product-gallery, ambiente, Inspiración, colección): cantidad de imágenes. Si hay más de las que entran, se desliza.
-- **Acabados:** sin definir (imágenes y tabla de códigos).
+- **Acabados:** las imágenes están definidas (§8). Falta la regla del blanco mate (imagen lista) y del acero para los productos Skyline, cuando se organice su estructura en la base.
 
 ---
 
