@@ -505,7 +505,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | category-card | Breakpoint: Desktop · Mobile. State: Default · Hover · Focus. Prop: Name | Home. Toda la tarjeta es link. ratio/portrait-soft |
 | line-card | Breakpoint: Desktop · Mobile. State: Default · Hover · Focus. Props: Label · Name · Description | Home, editorial. El único link es el botón (button Underline): la imagen y el nombre no son clickeables. Hover y Focus en el botón. ratio/landscape (Desktop) · ratio/square (Mobile) |
 | family-card | Size: Default · Large. State: Default · Hover · Focus. Prop: Name | Ficha: otras familias de la colección. Misma imagen que la product-card del grupo (estudio, luz apagada) |
-| product-card | Size: Large · Small. State: Default · Hover · Focus. Props: Name · Meta · Show meta · Show finishes · Show compare | Toma el ancho de su columna (FILL). ratio/portrait. Acabados siempre swatch Small (16). Hover y Iluminar cambian la imagen (ver Imágenes de product-card) |
+| product-card | Size: Large · Small. State: Default · Hover · Focus. Props: Name · Meta · Show meta · Show finishes · Show compare | Toma el ancho de su columna (FILL). ratio/portrait. Acabados siempre swatch Small (16), elegibles si hay más de uno: el elegido (por defecto el negro) con el Selected del swatch y todos con su Hover, sin crecer; al elegir otro, la imagen y el link pasan a los de ese acabado. Small (y Large hasta 767 px): nombre (20/28: role/body-xl, en Mobile role/heading-3) y acabados en columna a space/gap/sm, info a space/gap/md. Hover y Iluminar cambian la imagen (ver Imágenes de product-card) |
 | product-gallery · gallery-thumb | Breakpoint: Desktop · Mobile / State: Default · Hover · Selected · Focus | ratio/landscape |
 | carousel-controls | Position: Start · Middle · End | icon-button Large con flechas |
 | carousel-button | Direction: Previous · Next. State: Default · Disabled | Cuadrado de layout/carousel-button, borde color/border/disabled, chevron icon/md. Carruseles de Destacados y Proyectos |
@@ -561,6 +561,7 @@ Aplica a product-card en los listados de Productos y Colecciones (las cards de c
 
 La regla vale **donde se use la card**, no solo en los listados: en la sección de productos destacados de la Home las cards aparecen apagadas (Iluminar no existe ahí), así que su hover es el hero encendido (`docs/decisiones.md`, 2026-10-16 · Hover de product-card).
 
+- **Las cuatro imágenes son las del acabado elegido** en la card (por defecto el negro): al elegir otro acabado, la card pasa a las imágenes de ese SKU (`docs/decisiones.md`, 2026-10-19 · Elegir acabado en la card).
 - El hover **no** usa borde: cambia la imagen. El foco de teclado muestra la misma imagen que el hover, además del anillo `color/border/focus`.
 - El cambio es un fundido entre dos `<img>` apiladas (sin mover el layout). Usa `motion/duration/slow` con `motion/easing/standard`. Con `prefers-reduced-motion: reduce`, el cambio es instantáneo.
 - La imagen que se muestra depende de `data-arq-theme` del ancestro: al activar Iluminar en `catalog-toolbar`, todas las tarjetas pasan a su reposo y su hover encendidos (tabla de arriba).
@@ -578,7 +579,7 @@ La regla vale **donde se use la card**, no solo en los listados: en la sección 
 - La imagen es un PNG cuadrado de 128 × 128 px (un gradient diseñado en Figma, sección ACABADOS), servido desde el servidor de imágenes de la empresa: `https://s3.coresagroup.com/MACROLED/ARQ/imagenes/acabados/acabado-<slug>.png`. Si falta o no carga, se muestra un neutro con el nombre en texto: nunca rompe la ficha.
 - Hay dos terminaciones: **metálica** (franja de brillo en diagonal: los acabados de DAO) y **mate** (degradé suave, luz arriba a la izquierda y bordes laterales apenas más oscuros: verde, terracota, beige, pardo, negro mate, blanco mate). «Blanco y negro» (código BN del SKU) es mitad blanco mate y mitad negro mate, cortados en diagonal.
 - **El negro tiene dos imágenes con el mismo nombre en la base.** Negro mate (`acabado-negro-mate`) en las familias Kanu, Nobu, Tori, Koen, Douli, Yoru y Sento; negro metálico (`acabado-negro`) en el resto. Lo decide el código por la familia del producto. «Negro satinado» es lo mismo que el negro mate.
-- En la ficha, el acabado se elige con swatch-picker (option-group Type=Swatches): la muestra elegida a 24 px y las demás a 20 px. En las cards de producto y de colección, las muestras son siempre swatch Small (16 × 16).
+- En la ficha, el acabado se elige con swatch-picker (option-group Type=Swatches): la muestra elegida a 24 px y las demás a 20 px. En las cards de producto y de colección, las muestras son siempre swatch Small (16 × 16). En la card de producto, con más de un acabado, se elige: el elegido (por defecto el negro) lleva el Selected del swatch sin crecer, y al elegir otro cambian las imágenes y el link a los de ese SKU; con un solo acabado no se ve elegido.
 - Cómo funciona y cómo agregar un acabado, una familia o una regla: `docs/acabados.md`.
 
 ---
