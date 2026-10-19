@@ -1122,3 +1122,14 @@ Salió de revisar los valores de `color_carcasa` de toda la base (326 documentos
 - Lau pidió que la barra vaya solo en la Home. Reemplaza «en todas las páginas» de 2026-10-19 · announcement-bar (propuesta): se sacó de los embeds de Productos, Colección, Ficha, Comparativa, Descargas y Contacto.
 - El navbar sigue siendo sticky en Default y en Transparent: sin la barra se ve igual que antes. El hero `full-height` solo descuenta la barra si está en la página.
 - Figma: descripción del set, ficha `doc/announcement-bar` y copias de DESIGN.md y COMPONENTS.md de Plan del proyecto.
+
+## 2026-10-19 · Tablet
+
+- Final no tiene pantallas Tablet (768–1023 px) y varias pantallas usaban el layout Desktop, que no entra: nombres de una letra por línea en compare-bar, el título de Descargas partido en sílabas, campos angostos en Contacto y columnas apretadas en el mega-menu. Criterio: donde el Desktop no entra, se apila como Mobile y conserva los tamaños de Desktop.
+- **Productos:** hasta 1023 px (antes, hasta 767) las categorías van en la pestaña Categorías de filter-panel y no se muestra catalog-nav-mobile arriba de la grilla. En Tablet el panel sigue lateral, con scrim. Colecciones no cambia.
+- **compare-bar:** en Tablet los tres lugares van en una línea y «Borrar todo» y «Comparar» debajo, a la derecha, a `space/gap/md`. Plegada, una sola línea como en Desktop.
+- **Descargas:** en Tablet el catálogo va debajo del título, a `space/gap/xl`, con la bajada hasta `layout/measure-wide`.
+- **Tabla de Descargas:** pedido de Lau, un indicador de que hay más fila por ver. Un difuminado de `space/gap/3xl`, del transparente al fondo de la celda (también en Hover), junto a la columna fija de cada lado mientras queda contenido de ese lado (a la derecha, junto a Descargas; a la izquierda, junto al producto desde 1024 px o a la miniatura hasta 1023 px). Entra y sale con `motion/duration/fast`. Se ve en cualquier ancho en que la tabla no entra (no en Mobile, que usa tarjetas). Se eligió difuminado y no blur (el blur sobre texto se ve sucio y cuesta en el teléfono).
+- **Contacto:** en Tablet la información va arriba y el formulario debajo (como Mobile), con los campos de a dos; la bajada hasta `layout/measure-wide` y la información sin sticky.
+- **mega-menu:** en Tablet no se muestra el preview (`layout/mega-menu-image`, 420): las columnas toman todo el ancho, con `layout/gutter` a los dos lados. Se probó la miniatura de mega-link (Show image) en las colecciones y no entra en 4 columnas a 800–900 px: queda sin miniatura.
+- Figma: descripciones de los sets filter-panel (1225:13576), compare-bar (1233:3963) y mega-menu (841:2282); fichas `doc/filter-panel`, `doc/compare-bar` y `doc/mega-menu`; copias de DESIGN.md y COMPONENTS.md en Plan del proyecto (la de compare-bar en COMPONENTS.md venía atrasada: se copió la del repo, y en `docs/components.md` se sacó el párrafo de movimiento que estaba repetido).

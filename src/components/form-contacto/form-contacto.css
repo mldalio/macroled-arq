@@ -184,17 +184,20 @@
 /* TODO (diseño): v3 la marca «sticky» sin decir a qué distancia del navbar.
    space/section/md deja libre los 56 del navbar; con layout/navbar-height
    saldría de ahí. */
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .info {
     position: sticky;
     top: var(--arq-space-section-md);
   }
 }
 
-/* ── Mobile ─────────────────────────────────────────────────────── */
-/* Columnas apiladas (Contacto v3 · mobile, 2473:30918).
-   TODO (diseño): revisar ese Mobile, armado desde el Desktop. */
-@media (max-width: 767px) {
+/* ── Mobile y Tablet ────────────────────────────────────────────── */
+/* Columnas apiladas (Contacto v3 · mobile, 2473:30918). En Tablet (768–1023)
+   las dos columnas no entraban: los campos quedaban angostos. Se apilan como
+   en Mobile y los campos siguen de a dos.
+   TODO (diseño): revisar ese Mobile, armado desde el Desktop; Tablet no
+   tiene pantalla en Final. */
+@media (max-width: 1023px) {
   .layout,
   .faq {
     grid-template-columns: minmax(0, 1fr);
@@ -207,7 +210,16 @@
   .faq {
     row-gap: var(--arq-space-gap-2xl);
   }
+}
 
+/* Tablet: la bajada, sola en la columna, hasta layout/measure-wide */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .description {
+    max-width: var(--arq-layout-measure-wide);
+  }
+}
+
+@media (max-width: 767px) {
   .fields {
     grid-template-columns: minmax(0, 1fr);
   }
