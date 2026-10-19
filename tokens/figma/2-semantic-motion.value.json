@@ -88,12 +88,51 @@
       "panel": {
         "$type": "number",
         "$value": 400,
-        "$description": "Entrada y salida de paneles y menús que se abren por encima (filter-panel, download-modal, search-sheet, mega-menú). En ms. Con prefers-reduced-motion: 0 (queda el fundido de motion/duration/fade).",
+        "$description": "Entrada y salida de paneles y menús que se abren por encima (filter-panel, download-modal, search-sheet, mega-menú, compare-bar). En ms. Con prefers-reduced-motion: 0 (queda el fundido de motion/duration/fade).",
         "$extensions": {
           "com.figma": {
             "scopes": [],
             "codeSyntax": {
               "WEB": "var(--arq-motion-duration-panel)"
+            }
+          }
+        }
+      },
+      "illumination": {
+        "$type": "number",
+        "$value": 800,
+        "$description": "Iluminar: cambio de fondo y textos de la página entre claro y oscuro (Productos, Colecciones y ficha). Tiempo total desde el clic, contando el adelanto de las fotos. En ms. Con prefers-reduced-motion se usa motion/duration/fade.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-motion-duration-illumination)"
+            }
+          }
+        }
+      },
+      "illumination-image": {
+        "$type": "number",
+        "$value": 900,
+        "$description": "Iluminar: fundido de las fotos de product-card y product-gallery entre apagada y encendida. En ms. Con prefers-reduced-motion se usa motion/duration/fade.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-motion-duration-illumination-image)"
+            }
+          }
+        }
+      },
+      "illumination-lead": {
+        "$type": "number",
+        "$value": 180,
+        "$description": "Iluminar: cuánto se adelantan las fotos al fondo, para que se vea que la luz se prende antes de que cambie la página. En ms. Con prefers-reduced-motion: 0 (todo funde junto).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-motion-duration-illumination-lead)"
             }
           }
         }
@@ -122,6 +161,47 @@
             "scopes": [],
             "codeSyntax": {
               "WEB": "var(--arq-motion-easing-out)"
+            }
+          }
+        }
+      },
+      "illumination": {
+        "$type": "string",
+        "$value": "cubic-bezier(0.1, 0.1, 0.95, 0.4)",
+        "$description": "Iluminar: curva del fondo. Calculada para que el brillo de la página cambie parejo, como un dimmer: el fundido entre claro y oscuro oscurece mucho al principio de la mezcla y esta curva lo compensa.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-motion-easing-illumination)"
+            }
+          }
+        }
+      },
+      "illumination-image": {
+        "$type": "string",
+        "$value": "cubic-bezier(0.42, 0, 0.58, 1)",
+        "$description": "Iluminar: curva del fundido de las fotos (entrada y salida suaves).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-motion-easing-illumination-image)"
+            }
+          }
+        }
+      }
+    },
+    "scale": {
+      "pressed": {
+        "$type": "number",
+        "$value": 0.9700000286102295,
+        "$description": "Escala de button e icon-button mientras se presionan (State=Pressed, :active en código). Se anima con motion/duration/fast y motion/easing/out. Con prefers-reduced-motion no cambia de tamaño. Sin unidad.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-motion-scale-pressed)"
             }
           }
         }

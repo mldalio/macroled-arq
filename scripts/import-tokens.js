@@ -7,7 +7,9 @@
 //     Large y Wide van en $extensions["arq.modes"] solo si cambian.
 //   - Tipos del repo: color (hex en mayúsculas), dimension (px), fontWeight,
 //     fontFamily, duration (ms) y cubicBezier.
-//   - motion/duration/fast, base, slow, expand y panel suman el modo reducedMotion = 0ms.
+//   - motion/scale/* es un número sin unidad (number).
+//   - motion/duration/fast, base, slow, expand, panel e illumination-lead suman
+//     el modo reducedMotion = 0ms.
 //   - No se importan las paletas de marca sin uso (bronze, cacao, olive,
 //     terracotta, offwhite).
 //   - role/* no son variables (son estilos de texto): se conservan del
@@ -25,7 +27,9 @@ const TARGET = new URL('../tokens/tokens.json', import.meta.url);
 const MODE_MAP = { Value: null, Light: null, Desktop: null, Dark: 'dark', Mobile: 'mobile', Tablet: 'tablet', Large: 'large', Wide: 'wide' };
 const EXCLUDED_GROUPS = ['bronze', 'cacao', 'olive', 'terracotta', 'offwhite'];
 // motion/duration/fade y feedback no cambian: un fundido y un tiempo de lectura no marean.
-const REDUCED_MOTION = ['motion.duration.fast', 'motion.duration.base', 'motion.duration.slow', 'motion.duration.expand', 'motion.duration.panel'];
+// illumination e illumination-image tampoco: con movimiento reducido pasan a
+// motion/duration/fade en src/styles/global.css (siguen siendo fundidos).
+const REDUCED_MOTION = ['motion.duration.fast', 'motion.duration.base', 'motion.duration.slow', 'motion.duration.expand', 'motion.duration.panel', 'motion.duration.illumination-lead'];
 // Orden de los grupos de primer nivel en tokens.json (los nuevos van al final).
 const GROUP_ORDER = ['space', 'font', 'radius', 'border', 'blur', 'neutral', 'red', 'green', 'amber', 'alpha', 'color', 'layout', 'icon', 'swatch', 'type', 'motion', 'role'];
 
@@ -40,6 +44,7 @@ function repoType(path, figmaType) {
   if (path.startsWith('font.family.')) return 'fontFamily';
   if (path.startsWith('motion.duration.')) return 'duration';
   if (path.startsWith('motion.easing.')) return 'cubicBezier';
+  if (path.startsWith('motion.scale.')) return 'number';
   if (figmaType === 'number') return 'dimension';
   throw new Error(`${path}: no se sabe convertir una variable ${figmaType}`);
 }
@@ -53,6 +58,8 @@ function convert(path, type, value) {
       return `${round(value)}px`;
     case 'duration':
       return `${round(value)}ms`;
+    case 'number':
+      return round(value);
     case 'fontWeight':
       return value;
     case 'fontFamily':
