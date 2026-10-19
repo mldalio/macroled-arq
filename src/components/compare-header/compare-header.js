@@ -21,8 +21,9 @@
 // - No consulta Typesense: recibe los datos ya armados (AGENTS.md · Datos).
 // - TODO (navbar): falta el token layout/navbar-height (docs/decisiones.md,
 //   2026-10-01 · hero). Mientras tanto se mide el alto real de <arq-navbar>.
-// - Compact: miniatura + nombre + quitar. El SKU se ve solo en Desktop
-//   (show-sku): en Mobile el Compact muestra solo el nombre, como el set.
+// - Compact: miniatura + nombre + SKU + quitar. En Mobile cada producto ocupa
+//   una columna de compare-table, apilado y centrado (como
+//   macroled.com.ar/comparativa); TODO (Figma): el set Mobile sigue en fila.
 
 import { ArqElement } from '../../base/arq-element.js';
 import '../toggle/toggle.js';
@@ -155,9 +156,9 @@ class ArqCompareHeader extends ArqElement {
   }
 
   #syncBreakpoint() {
-    const mobile = MOBILE.matches;
-    // El SKU del Compact solo en Desktop (Show SKU)
-    for (const compact of this.shadowRoot.querySelectorAll('.slots arq-compare-product')) compact.showSku = !mobile;
+    // El SKU del Compact se ve en Desktop y en Mobile (Show SKU): en Mobile
+    // va apilado debajo del nombre, como macroled.com.ar/comparativa.
+    for (const compact of this.shadowRoot.querySelectorAll('.slots arq-compare-product')) compact.showSku = true;
     document.querySelector('arq-navbar')?.removeAttribute('data-arq-compare-hidden');
   }
 
