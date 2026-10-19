@@ -273,12 +273,23 @@ class ArqDownloadsTable extends ArqElement {
       to.scrollLeft = from.scrollLeft;
       requestAnimationFrame(() => (syncing = null));
     };
-    scroll.addEventListener('scroll', () => follow(scroll, bar), { passive: true });
+    // Difuminado en los bordes de las columnas fijas mientras queda fila por
+    // ver de ese lado (downloads-table.css, .more-start / .more-end)
+    const edges = () => {
+      const rest = scroll.scrollWidth - scroll.clientWidth - scroll.scrollLeft;
+      scroll.classList.toggle('more-start', scroll.scrollLeft > 1);
+      scroll.classList.toggle('more-end', rest > 1);
+    };
+    scroll.addEventListener('scroll', () => {
+      follow(scroll, bar);
+      edges();
+    }, { passive: true });
     bar.addEventListener('scroll', () => follow(bar, scroll), { passive: true });
     const measure = () => {
       track.style.width = `${scroll.scrollWidth}px`;
       bar.hidden = scroll.hidden || scroll.scrollWidth <= scroll.clientWidth;
       bar.scrollLeft = scroll.scrollLeft;
+      edges();
     };
     const observer = new ResizeObserver(measure);
     observer.observe(scroll);

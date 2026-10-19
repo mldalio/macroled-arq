@@ -32,7 +32,7 @@ El HTML del embed completo está en [src/pages/descargas.html](../../pages/desca
 | slot `modal-title` | Título del download-modal |
 
 - Los textos van por slot desde el embed, para que queden indexables.
-- Bloque de arriba: `space/section/sm` arriba; Desktop, textos a la izquierda y el catálogo a la derecha (tapa y textos a `space/gap/lg`); Mobile, apilados a `space/gap/xl`, con la tapa chica a `space/gap/md`. «Buscar archivos por producto»: `space/section/sm` arriba y la tabla a `space/gap/md`.
+- Bloque de arriba: `space/section/sm` arriba; Desktop, textos a la izquierda y el catálogo a la derecha (tapa y textos a `space/gap/lg`); Mobile, apilados a `space/gap/xl`, con la tapa chica a `space/gap/md`. Tablet (768–1023 px) también apilado a `space/gap/xl`, con los tamaños de Desktop y la bajada hasta `layout/measure-wide` (lado a lado, el título se partía). «Buscar archivos por producto»: `space/section/sm` arriba y la tabla a `space/gap/md`.
 
 ## Comportamiento
 

@@ -114,6 +114,22 @@
   margin-inline-start: var(--page-gutter);
 }
 
+/* Tablet (768–1023): el catálogo no se achica y apretaba el título (se
+   partía en sílabas). Como en Mobile, el catálogo va debajo, a
+   space/gap/xl, con los tamaños de Desktop. TODO (diseño): Tablet no tiene
+   pantalla en Final. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--arq-space-gap-xl);
+  }
+
+  .description {
+    max-width: var(--arq-layout-measure-wide);
+  }
+}
+
 /* Mobile (2558:20151): título y bajada arriba; el catálogo debajo, a
    space/gap/xl, con la tapa chica a la izquierda (space/gap/md), nombre
    role/body-xl, bajada role/body-compact-regular (color/text/tertiary) a

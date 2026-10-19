@@ -217,6 +217,21 @@
   outline: none;
 }
 
+/* ── Tablet (768–1023): los tres lugares no entran junto a las acciones
+   (los nombres quedaban de una letra por línea). Lugares en una línea y
+   las acciones debajo, a la derecha, a space/gap/md ── */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--arq-space-gap-md);
+  }
+
+  .actions {
+    justify-content: flex-end;
+  }
+}
+
 /* ── Mobile (como macroled.com.ar): productos uno arriba de otro, "Borrar
    todo" arriba y "Comparar" debajo a todo el ancho ── */
 @media (max-width: 767px) {

@@ -415,8 +415,8 @@ class ArqCatalogListing extends ArqElement {
     if (header) header.showDescription = this.unit !== 'colecciones';
   }
 
-  // El panel Mobile reutiliza los grupos y enlaces del HTML del sidebar.
-  // El original sigue en su slot para Desktop y Tablet.
+  // El panel en Mobile y Tablet reutiliza los grupos y enlaces del HTML del
+  // sidebar. El original sigue en su slot para Desktop.
   #syncPanelCategories(nav) {
     const panel = this.shadowRoot.querySelector('arq-filter-panel');
     const categories = panel.querySelector('[slot="categories"]') ?? document.createElement('nav');
