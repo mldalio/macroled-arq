@@ -356,6 +356,13 @@
   gap: var(--arq-space-gap-md);
 }
 
+/* compare-picker-item: el ancho de la lista del modal (sin padding) */
+.demo-picker-items {
+  display: flex;
+  flex-direction: column;
+  max-width: calc(var(--arq-layout-filter-panel) - 2 * var(--arq-space-padding-xl-2xl));
+}
+
 /* Columna del configurador (como la de la ficha) */
 .demo-option-groups {
   display: flex;

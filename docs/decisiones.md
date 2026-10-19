@@ -1019,3 +1019,15 @@ En el teléfono, la barra de la dirección y la zona de arriba toman el color de
 - Solo mientras Iluminar está prendido (Productos, Colecciones y ficha), y solo en Arq: la etiqueta toma `color/surface/default` del bloque en Dark (`<html>` en los listados, el navbar en la ficha). Al apagarlo vuelve exactamente a lo que tenía; el valor original queda guardado en `data-arq-theme-color` mientras tanto. Si la página no tenía etiqueta, se agrega una y se quita al apagar.
 - `setBrowserBar` en `src/base/theme.js`; la llaman catalog-toolbar y ficha-producto (también cuando la ficha llega iluminada desde un listado).
 - No toca nada de Macroled fuera de ese momento: es una excepción acotada a la regla de no tocar lo global (AGENTS.md · Integración con Webflow), decidida por Lau.
+
+## 2026-10-19 · compare-picker («Agregar producto»)
+
+Modal para sumar productos a la comparativa (Figma 2724:8761, con compare-picker-item 2723:8420). Lo abren el lugar vacío (+) de compare-bar (Productos y Colecciones) y el compare-product vacío en Comparativa. Pedidos de Lau que se apartan del set:
+
+- **Sin chips de categoría:** el set trae choice-chip Todos · Interior · Exterior · Lámparas y artefactos. Se probó sumar «Colecciones» (una fila por colección que abría sus productos) y al final se sacaron todos: se busca solo con el buscador (nombre, SKU o familia, el criterio del buscador del navbar).
+- **Al pie, «Ver todos los productos»** (button Underline con subrayado y arrow-right) en lugar de «Comparar» (Filled). Lleva al listado de Productos sin categoría.
+- **compare-bar también en «Todas las colecciones»:** antes se ocultaba porque las cards de colección no tienen Comparar. La selección sigue y se puede agregar con el +.
+- **Lugar vacío de compare-slot:** el dibujo del set (foto en `color/surface/subtle` con el «+» resaltado y «Agregar producto») dentro de una caja punteada, como el lugar vacío de compare-product Compact en Comparativa; cursor pointer y Hover con `color/surface/faint` y borde `color/border/strong`.
+- **Mobile:** la compare-bar suma un solo lugar vacío debajo de los productos elegidos mientras haya menos de 3. El modal es pantalla completa.
+- Datos: `listCompareCandidates` filtra en memoria el catálogo que ya trae Typesense (una consulta por visita); no consulta por cada letra. En la barra, lo agregado guarda la misma meta que las cards.
+- Pendiente en Figma: ficha `doc/compare-picker`, sacar los chips y cambiar el botón del pie en el set, la caja punteada del lugar vacío de compare-slot y el lugar vacío en compare-bar Mobile.

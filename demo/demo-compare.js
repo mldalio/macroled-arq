@@ -3,6 +3,7 @@
 // pide estos datos a src/data/catalog.js con los SKU de ?sku=.
 
 import data from './fixtures/comparativa.json';
+import { listCompareCandidates } from '/src/data/catalog.js';
 
 for (const table of document.querySelectorAll('[data-demo-compare-table]')) {
   const count = Number(table.dataset.demoCompareTable);
@@ -90,4 +91,40 @@ for (const header of document.querySelectorAll('[data-demo-compare-header]')) {
   header.addEventListener('arq:add', (event) => {
     if (headerLog) headerLog.textContent = `arq:add → columna ${event.detail.index} (abriría el modal para elegir producto)`;
   });
+}
+
+// ── compare-picker-item y compare-picker ──────────────────────────────────
+// El modal con los datos del catálogo, como lo arman catalog-listing y
+// comparativa: la demo hace de página (guarda los elegidos y responde a
+// arq:search con listCompareCandidates).
+const itemLog = document.querySelector('[data-demo-picker-item-log]');
+document.querySelector('[data-demo-picker-items]')?.addEventListener('arq:add', (event) => {
+  if (itemLog) itemLog.textContent = `arq:add → «${event.detail.sku}»`;
+});
+
+const picker = document.querySelector('[data-demo-picker]');
+const pickerLog = document.querySelector('[data-demo-picker-log]');
+let chosen = [];
+
+async function loadPicker() {
+  picker.count = chosen.length;
+  if (pickerLog) pickerLog.textContent = `Elegidos: ${chosen.map((item) => item.name).join(' · ') || '—'}`;
+  const { items } = await listCompareCandidates({ ...picker.search, selected: chosen.map((item) => item.sku) });
+  picker.items = items;
+}
+
+if (picker) {
+  picker.addEventListener('arq:search', loadPicker);
+  picker.addEventListener('arq:add', (event) => {
+    chosen = [...chosen, event.detail.item].slice(0, 3);
+    loadPicker();
+  });
+  for (const button of document.querySelectorAll('[data-demo-picker-open]')) {
+    button.addEventListener('click', async () => {
+      const count = Number(button.dataset.demoPickerOpen);
+      const { items } = await listCompareCandidates();
+      chosen = items.slice(0, count);
+      picker.show(button); // emite arq:search → loadPicker
+    });
+  }
 }

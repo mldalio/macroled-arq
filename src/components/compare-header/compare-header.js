@@ -16,7 +16,7 @@
 //   header.addEventListener('arq:differences', (e) => (table.onlyDifferences = e.detail.value));
 //   header.addEventListener('arq:remove', (e) => quitar(e.detail.sku));
 //   header.addEventListener('arq:change', (e) => elegir(e.detail.index, e.detail.field, e.detail.value));
-//   header.addEventListener('arq:add', () => abrirModalDeProductos()); // TODO: el modal no existe todavía
+//   header.addEventListener('arq:add', () => picker.show()); // compare-picker
 //
 // - No consulta Typesense: recibe los datos ya armados (AGENTS.md · Datos).
 // - TODO (navbar): falta el token layout/navbar-height (docs/decisiones.md,

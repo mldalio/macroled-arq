@@ -26,9 +26,10 @@ bar.addEventListener('arq:compare-change', (e) => marcarCards(e.detail.items));
 | — (productos) | — | `items` | `[{ sku, name, meta, image }]`, hasta 3 |
 | — | `href` | `href` | Página de la comparativa. Por defecto `/arq/comparativa` |
 | Open | `open` | `open` | Booleano. Lista de productos desplegada. La pone el componente: arranca abierta, el título (botón con chevron-down / chevron-up) la pliega y despliega, y se vuelve a abrir al agregar un producto. Plegada quedan el título, «Borrar todo» y «Comparar» (en Desktop, en una sola línea; el chevron va en la punta derecha de la barra). Usa el disclosure base (`arq:toggle { open }`) |
-| Breakpoint | — | — | Media query: hasta 767 px, como macroled.com.ar, solo los productos elegidos, uno arriba de otro (compare-slot Default, con divider Horizontal Subtle), y «Comparar» debajo a todo el ancho |
+| Breakpoint | — | — | Media query: hasta 767 px, como macroled.com.ar, los productos elegidos, uno arriba de otro (compare-slot Default, con divider Horizontal Subtle), más un lugar vacío «+ Agregar producto» mientras haya menos de 3, y «Comparar» debajo a todo el ancho |
 
-- **Métodos:** `add(item)` (devuelve `false` si ya hay 3 o si ya estaba), `remove(sku)`, `clear()` ("Borrar todo"), `has(sku)`.
+- **Métodos:** `add(item)` (devuelve `false` si ya hay 3 o si ya estaba), `remove(sku)`, `clear()` ("Borrar todo"), `has(sku)`, `focusAdd()` (foco en el primer lugar vacío o en «Comparar») y `compareUrl` (solo lectura: la URL de «Comparar»).
+- **Lugar vacío (+):** emite `arq:add` (de compare-slot). En Productos, `catalog-listing` abre `compare-picker` («Agregar producto») y lo elegido se suma a la barra. Caja punteada con la foto resaltada y «+ Agregar producto» (ver compare-slot). En Mobile hay un solo lugar vacío, debajo de los elegidos. `TODO` (diseño): el set de compare-bar Mobile no lo muestra; pasarlo a Figma.
 - **Evento:** `arq:compare-change { items }` cuando cambia la selección (también si cambia en otra pestaña).
 - **"Comparar"** lleva a `/arq/comparativa?sku=SKU1,SKU2,SKU3` (decisión 2026-10-02 · Comparativa); cada SKU va con `encodeURIComponent`.
 - **La selección se recuerda** en `localStorage` (`arq:compare`): sigue al cambiar de filtros o de página.

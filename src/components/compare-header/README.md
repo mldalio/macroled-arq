@@ -22,7 +22,7 @@ header.onlyDifferences = false;
 header.addEventListener('arq:differences', (e) => (table.onlyDifferences = e.detail.value));
 header.addEventListener('arq:remove', (e) => quitarDeLaComparativa(e.detail.sku));
 header.addEventListener('arq:change', (e) => elegir(e.detail.index, e.detail.field, e.detail.value)); // field: el campo del atributo
-header.addEventListener('arq:add', (e) => abrirModalDeProductos(e.detail.index)); // TODO: el modal no existe todavía
+header.addEventListener('arq:add', (e) => picker.show()); // compare-picker
 ```
 
 ## Props
