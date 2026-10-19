@@ -576,7 +576,7 @@ La regla vale **donde se use la card**, no solo en los listados: en la sección 
 - Los acabados no son tokens: son contenido. Cada acabado es una imagen.
 - Sheets trae el nombre como texto («Negro», «Gris Grafito») y **no se modifica**: es lo que muestran la ficha y las características. Un único archivo de mapeo (`src/data/finishes.js`) lo convierte en la imagen; no hay que renombrar nada en la base.
 - La imagen es un PNG cuadrado de 128 × 128 px (un gradient diseñado en Figma, sección ACABADOS), servido desde el servidor de imágenes de la empresa: `https://s3.coresagroup.com/MACROLED/ARQ/imagenes/acabados/acabado-<slug>.png`. Si falta o no carga, se muestra un neutro con el nombre en texto: nunca rompe la ficha.
-- Hay dos terminaciones: **metálica** (franja de brillo en diagonal: los acabados de DAO) y **mate** (degradé suave, luz arriba a la izquierda y bordes laterales apenas más oscuros: verde, terracota, beige, pardo, negro mate, blanco mate).
+- Hay dos terminaciones: **metálica** (franja de brillo en diagonal: los acabados de DAO) y **mate** (degradé suave, luz arriba a la izquierda y bordes laterales apenas más oscuros: verde, terracota, beige, pardo, negro mate, blanco mate). «Blanco y negro» (código BN del SKU) es mitad blanco mate y mitad negro mate, cortados en diagonal.
 - **El negro tiene dos imágenes con el mismo nombre en la base.** Negro mate (`acabado-negro-mate`) en las familias Kanu, Nobu, Tori, Koen, Douli, Yoru y Sento; negro metálico (`acabado-negro`) en el resto. Lo decide el código por la familia del producto. «Negro satinado» es lo mismo que el negro mate.
 - En la ficha, el acabado se elige con swatch-picker (option-group Type=Swatches): la muestra elegida a 24 px y las demás a 20 px. En las cards de producto y de colección, las muestras son siempre swatch Small (16 × 16).
 - Cómo funciona y cómo agregar un acabado, una familia o una regla: `docs/acabados.md`.
@@ -614,7 +614,6 @@ La regla vale **donde se use la card**, no solo en los listados: en la sección 
 ## 12. Pendientes conocidos
 
 - **SKU:** el criterio de formato está pendiente (no hay información final). Hasta entonces, el SKU se trata como un identificador opaco, tal como viene de Sheets; el slug se deriva aparte.
-- **Códigos de acabado** (N, V, R, B, BN, P): falta la tabla de equivalencias para mostrar el nombre.
 - **project-mosaic y carousel:** se resuelven en código (grid + aspect-ratio; snap y peek), no como componentes de Figma.
 - **button Loading:** no hay ícono de carga en la librería.
 - **product-card:** de dónde salen las imágenes de hover de una card de colección (hoy solo tiene `img_collection` y `img_collection_on`).
