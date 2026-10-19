@@ -34,7 +34,7 @@ Hero de página de Home y Contacto: media a sangre (imagen o video), scrim, eyeb
 
 | Atributo | Tipo | Qué hace |
 | --- | --- | --- |
-| `full-height` | booleano (solo código) | Todo el alto del viewport (`100svh`) en Desktop y Mobile, en lugar de `70svh`. Lo usa la Home |
+| `full-height` | booleano (solo código) | Todo el alto del viewport (`100svh`) en Desktop y Mobile, en lugar de `70svh`. Lo usa la Home. Si la página tiene `<arq-announcement-bar>`, descuenta su alto (lo mide con un `ResizeObserver`): barra + hero ocupan la pantalla |
 | `size` (Size) | `default` · `compact` | `compact`: título en `role/display-lg` y hero más bajo, con un alto mínimo de `41svh` (Desktop) o `47svh` (Mobile), la proporción del set (520 y 480 contra 880 y 720 del Default). Si el texto no entra, crece. Lo usa Contacto. `TODO` (diseño): alto de Compact sin regla ni token |
 
 - **Show eyebrow, Show description y Show button no son atributos:** cada parte aparece si su slot tiene contenido. En Figma Show eyebrow y Show button vienen en `true` y Show description en `false`; en código lo decide el HTML.

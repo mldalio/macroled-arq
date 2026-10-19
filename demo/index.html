@@ -1570,6 +1570,27 @@
         </div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-announcement-bar">
+        <h2 id="demo-announcement-bar" class="demo-heading role-label">announcement-bar · &lt;arq-announcement-bar&gt;</h2>
+        <p class="demo-note role-body-sm">Sin set en Figma (propuesta de código). Línea arriba del navbar en todas las páginas, siempre en Dark local (no cambia con el switch de tema). Link: button Underline compact (14/24), sin subrayado en reposo y con arrow-up-right. En las páginas se va con el scroll y el navbar queda pegado arriba: probalo en demo/home.html (Transparent) o demo/productos.html (Default).</p>
+        <div class="demo-navbar">
+          <arq-announcement-bar label="Novedades">
+            <arq-button type="underline" compact show-icon icon="arrow-up-right" href="#demo-announcement-bar">Suscribite al newsletter</arq-button>
+          </arq-announcement-bar>
+          <arq-navbar label="Principal (con announcement-bar)">
+            <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-announcement-bar">Descargas</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-announcement-bar">Contacto</arq-nav-link>
+          </arq-navbar>
+        </div>
+        <p class="demo-note role-body-sm">Texto largo (en 390 px baja de línea):</p>
+        <div class="demo-navbar">
+          <arq-announcement-bar>
+            <arq-button type="underline" compact show-icon icon="arrow-up-right" href="#demo-announcement-bar">Suscribite al newsletter y recibí lanzamientos, catálogos y recursos para proyectar antes que nadie</arq-button>
+          </arq-announcement-bar>
+        </div>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-navbar">
         <h2 id="demo-navbar" class="demo-heading role-label">navbar · &lt;arq-navbar&gt;</h2>
         <p class="demo-note role-body-sm">Figma 753:2907 y frames 2295:23568 · 2295:23605. Productos abre el mega-menu (Desktop) o, en Mobile, la lista Interior · Exterior · Lámparas y artefactos · Colecciones (un nivel sin datos no aparece): cada fila entra a su submenú (con «volver»; Colecciones con miniaturas y «Ver todo» fijo abajo; Lámparas y artefactos con dos grupos, set 2312:8904). La lupa abre la búsqueda: escribí «kanu», «jardín» o un SKU; ↑ ↓ eligen y Enter abre; Esc cierra. Datos del catálogo: Typesense. En la demo la barra no queda fija.</p>

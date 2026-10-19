@@ -109,9 +109,11 @@
 
 /* full-height (Home v2): una pantalla. El artboard mide 960 px y no hay
    token (decisiones.md, 2026-10-08 · Home v2). El scrim es solo el tercio
-   inferior, de transparente a negro 70 %. */
+   inferior, de transparente a negro 70 %. Con announcement-bar arriba, se
+   descuenta su alto (--announcement-height, lo mide hero.js): barra + hero
+   ocupan la pantalla. */
 :host([full-height]) .hero {
-  height: 100svh;
+  height: calc(100svh - var(--announcement-height, var(--arq-space-0)));
 }
 
 :host([full-height]) .scrim {
