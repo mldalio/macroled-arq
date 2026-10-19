@@ -1070,3 +1070,9 @@ Salió de revisar los valores de `color_carcasa` de toda la base (326 documentos
 - **Blanco mate: imagen lista, sin regla.** `acabado-blanco-mate.png` (mismo estilo mate que el resto) es para los productos Skyline. No se conecta todavía: falta organizar su estructura en la base. Mientras tanto, «Blanco» sigue siendo el blanco metálico de DAO.
 - **Acero (`RMS-S-S`): sin imagen.** Producto de un solo color que la ficha no ofrece como variante; se resuelve junto con la regla de los productos Skyline.
 - **«Blanco y negro» no existe en la base:** solo está en `demo/fixtures/peor-caso.js` (datos de prueba).
+
+## 2026-10-19 · catalog-toolbar sin nombre de la página
+
+- catalog-toolbar State=Scroll ya no muestra el nombre de la página («Exterior») ni el divider antes de la cantidad: el nombre ya está en el `<h1>` del page-header. Scroll solo pasa a padding vertical `space/padding/sm`.
+- Se quitó del código (atributo `name` de `<arq-catalog-toolbar>` y la copia del `<h1>` en `arq-catalog-listing`), de la demo, del README, de `docs/components.md` y de DESIGN.md.
+- Figma: se sacaron el texto del nombre y el divider de la variante State=Scroll (1810:19453), se actualizó la descripción del set (1244:4058) y la copia de DESIGN.md en Plan del proyecto. La ficha `doc/catalog-toolbar` no lo mencionaba.

@@ -6,11 +6,8 @@
 //   <arq-catalog-toolbar count="11" unit="productos" for="filtros" show-iluminar></arq-catalog-toolbar>
 //   <arq-filter-panel id="filtros">…</arq-filter-panel>
 //
-// - State=Scroll (state="scroll", lo pone el listado al desplazarse): suma a la
-//   izquierda el nombre de la página (name, role/body-lg) y un divider vertical
-//   antes de la cantidad. El nombre repite el <h1> del page-header, que sigue
-//   siendo el título indexable; lo pasa la página. En Mobile no se muestra
-//   (TODO: el set no tiene Scroll Mobile y no entra en 350).
+// - State=Scroll (state="scroll", lo pone el listado al desplazarse): la barra
+//   fija pasa a padding vertical space/padding/sm. Sin nombre de la página.
 // - Count: número + sustantivo ("1 producto", "10 colecciones"), en un aria-live
 //   para que se anuncie al filtrar. Lo actualiza la página.
 // - Filtrar: con for (id de un arq-filter-panel) abre el panel y, cuando el panel
@@ -38,17 +35,13 @@ class ArqCatalogToolbar extends ArqElement {
     count: { type: Number }, // Count (número)
     unit: { type: String, values: ['productos', 'colecciones'], default: 'productos' },
     state: { type: String, values: ['default', 'scroll'], default: 'default' }, // State
-    name: { type: String }, // nombre de la página (solo State=Scroll)
     showIluminar: { type: Boolean }, // Show iluminar
     for: { type: String }, // id del arq-filter-panel
     filterCount: { type: Number }, // filtros aplicados (Show count del botón Filtrar)
   };
   static template =
     `<div class="bar">` +
-    `<div class="info">` +
-    `<p class="name role-body-lg"></p><arq-divider class="name-divider" orientation="vertical"></arq-divider>` +
     `<p class="count role-body" aria-live="polite"></p>` +
-    `</div>` +
     `<div class="actions">` +
     `<div class="lead"><arq-toggle show-label class="iluminar">Iluminar</arq-toggle><arq-divider orientation="vertical"></arq-divider></div>` +
     `<arq-button type="outline" show-icon icon="filter" count-label="filtros activos" class="filter">Filtrar</arq-button>` +
@@ -76,11 +69,6 @@ class ArqCatalogToolbar extends ArqElement {
 
   update(changed) {
     if (changed.has('count') || changed.has('unit')) this.#renderCount();
-    if (changed.has('name')) {
-      const name = this.shadowRoot.querySelector('.name');
-      name.textContent = this.name ?? '';
-      this.shadowRoot.querySelector('.info').classList.toggle('has-name', Boolean(this.name));
-    }
     if (changed.has('showIluminar')) this.shadowRoot.querySelector('.lead').hidden = !this.showIluminar;
     if (changed.has('for')) this.#connectPanel();
     if (changed.has('filterCount')) this.#renderFilterButton();
@@ -89,9 +77,7 @@ class ArqCatalogToolbar extends ArqElement {
   #renderCount() {
     const [one, many] = UNITS[this.unit] ?? UNITS.productos;
     const p = this.shadowRoot.querySelector('.count');
-    p.textContent = Number.isFinite(this.count) ? `${NUMBER.format(this.count)} ${this.count === 1 ? one : many}` : '';
-    this.shadowRoot.querySelector('.info').classList.toggle('has-count', Boolean(p.textContent));
-  }
+    p.textContent = Number.isFinite(this.count) ? `${NUMBER.format(this.count)} ${this.count === 1 ? one : many}` : '';  }
 
   #renderFilterButton() {
     const n = Number.isFinite(this.filterCount) ? this.filterCount : 0;
