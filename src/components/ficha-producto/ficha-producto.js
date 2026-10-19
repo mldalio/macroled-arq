@@ -359,8 +359,9 @@ class ArqFichaProducto extends ArqElement {
         const item = document.createElement(swatches ? 'arq-swatch' : 'arq-option-tile');
         item.value = option.value;
         item.textContent = option.value;
-        // TODO (acabados): imagen del acabado (DESIGN.md §8 · Acabados); sin
-        // imagen el swatch muestra el neutro.
+        // Imagen del acabado (data/finishes.js); sin imagen, el swatch muestra el neutro.
+        const src = swatches ? this.#product.finishImages?.[option.value] : null;
+        if (src) item.src = src;
         parent.append(item);
       }
       return group;

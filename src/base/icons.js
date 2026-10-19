@@ -30,7 +30,7 @@ const paths = {
   // 751:4289
   'close': '<path vector-effect="non-scaling-stroke" d="M2.5 2.5L13.5 13.5M13.5 2.5L2.5 13.5" stroke-linejoin="round"/>',
   // 918:2462
-  'copy': '<path vector-effect="non-scaling-stroke" d="M11 5V2H2V11H5M5 5H14V14H5V5Z"/>',
+  'copy': '<path vector-effect="non-scaling-stroke" shape-rendering="crispEdges" d="M11 5V2H2V11H5M5 5H14V14H5V5Z"/>',
   // 898:2286
   'download': '<path vector-effect="non-scaling-stroke" d="M8 1.79545V10.0682M4.4 7.70455L8 11.25L11.6 7.70455M2 14.2045H14"/>',
   // 854:2420

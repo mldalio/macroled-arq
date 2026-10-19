@@ -157,8 +157,9 @@ class ArqProductCard extends ArqElement {
     root.querySelector('.card').classList.toggle('is-small', small);
     root.querySelector('.name').className = `card-link name ${small ? 'role-body-regular' : 'role-heading-3'}`;
     root.querySelector('.meta').className = `meta ${small ? 'role-body-sm' : 'role-body'}`;
+    // Los acabados van siempre en Size=Small (16 × 16), en Large y en Small: a 20 se veían grandes.
     for (const swatch of this.querySelectorAll(':scope > arq-swatch[slot="finishes"]')) {
-      swatch.setAttribute('size', small ? 'small' : 'default');
+      swatch.setAttribute('size', 'small');
     }
   }
 

@@ -13,6 +13,12 @@ export const config = Object.freeze({
   n8n: Object.freeze({
     webhookUrl: env.VITE_N8N_WEBHOOK_URL ?? '',
   }),
+  // Imágenes de los acabados (docs/acabados.md): PNG de 128 × 128 en el servidor
+  // de imágenes de la empresa, un archivo por acabado (`acabado-<slug>.png`).
+  // Termina en «/». VITE_FINISHES_BASE_URL la pisa (pruebas con otro servidor).
+  images: Object.freeze({
+    finishesBase: env.VITE_FINISHES_BASE_URL ?? 'https://s3.coresagroup.com/MACROLED/ARQ/imagenes/acabados/',
+  }),
   // Ficha técnica en PDF: se cargan de jsDelivr con versión fija al primer clic
   // y no entran en dist/arq.js (decisiones.md, 2026-10-02 · Ficha técnica en PDF).
   // pdfmake por /+esm: módulo ES, sin globales. La fuente, de @fontsource;

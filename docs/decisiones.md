@@ -269,7 +269,7 @@ ArqAccordionItem.define();
 - **catalog-nav:** un solo componente; catalog-nav-mobile y catalog-nav-trigger viven adentro. Sidebar desde 1024; hasta 1023, encabezado con la selección que abre los mismos grupos (cada link una sola vez en el HTML). Panel mobile `color/surface/default`, gap `space/gap/sm-md`.
 - **filter-panel:** `<dialog>` modal. Con el panel abierto el listado no cambia; solo "Ver N productos" (la página lo calcula con `arq:filters`). "Ver N" emite `arq:apply` y cierra; X, scrim o Esc descartan. Summary y chips se arman solos.
 - **catalog-toolbar:** Iluminar pone `data-arq-theme="dark"` en `<html>` y lo guarda en `localStorage` (`arq:theme`) para Productos y Colecciones (la ficha no lo usa). Filtrar se conecta al panel con `for`.
-- **product-card:** Large pasa sola a Small hasta 767 px; `size="small"` fija Small. Imágenes en `image`, `image-hover`, `image-lit`, `image-hover-lit`. Acabados Default (20) en Large, sin borde en la imagen. El cambio de imagen en hover es solo con el mouse sobre la imagen (toda la tarjeta sigue siendo link): sobre el nombre o «Comparar» no cambia. El foco de teclado sí la cambia.
+- **product-card:** Large pasa sola a Small hasta 767 px; `size="small"` fija Small. Imágenes en `image`, `image-hover`, `image-lit`, `image-hover-lit`. Acabados siempre Small (16), sin borde en la imagen. El cambio de imagen en hover es solo con el mouse sobre la imagen (toda la tarjeta sigue siendo link): sobre el nombre o «Comparar» no cambia. El foco de teclado sí la cambia.
 - **family-card:** `ratio/square` (Default) y `ratio/portrait` (Large); toma el ancho de su columna.
 - **download-modal · download-item:** modal de ancho `layout/filter-panel`; en Mobile abajo, a `layout/gutter` de los bordes. Hover de Default subraya el texto. Sin `href` emite `arq:download`.
 - **glosario (variants-table):** `<table>` real con variants-table-row adentro; columnas a su contenido, miniatura `layout/table-thumb`. Filtros con un select por atributo y opciones sin filas deshabilitadas (`filterOptions`, `filterVariants`).
@@ -292,7 +292,7 @@ ArqAccordionItem.define();
 
 ### Acabados
 
-- Sin imágenes: el swatch muestra el neutro con el nombre (DESIGN.md §8).
+- Las imágenes salen de `src/data/finishes.js` (2026-10-19 · Imágenes de acabados). Un acabado sin imagen muestra el neutro con el nombre (DESIGN.md §8).
 
 ## 2026-10-02 · Datos de ejemplo mientras se completa la base
 
@@ -618,7 +618,7 @@ Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe
 
 - Confirmar nombres de campo con quien arma la base; faltan `product_group_id` y `collection_id` (`typesense-adapter.js`).
 - Qué foto es cada una: las cuatro de product-card (estudio y contexto, apagada y encendida), las de una card de colección y las del mega-menu.
-- Acabados: imágenes y tabla de códigos (N, V, R, B, BN, P).
+- Acabados: tabla de códigos (N, V, R, B, BN, P) y si «Negro satinado» y «Blanco y negro» son acabados reales (`docs/acabados.md`, Pendientes).
 - Orden de las cards (hoy, el de la hoja).
 - Archivos de descarga por grupo (hoy CAD y Manual del SKU predeterminado).
 - Regla de Artefactos: ¿también dentro de Interior y Exterior, como Lámparas?
@@ -1019,6 +1019,25 @@ En el teléfono, la barra de la dirección y la zona de arriba toman el color de
 - Solo mientras Iluminar está prendido (Productos, Colecciones y ficha), y solo en Arq: la etiqueta toma `color/surface/default` del bloque en Dark (`<html>` en los listados, el navbar en la ficha). Al apagarlo vuelve exactamente a lo que tenía; el valor original queda guardado en `data-arq-theme-color` mientras tanto. Si la página no tenía etiqueta, se agrega una y se quita al apagar.
 - `setBrowserBar` en `src/base/theme.js`; la llaman catalog-toolbar y ficha-producto (también cuando la ficha llega iluminada desde un listado).
 - No toca nada de Macroled fuera de ese momento: es una excepción acotada a la regla de no tocar lo global (AGENTS.md · Integración con Webflow), decidida por Lau.
+
+## 2026-10-19 · Imágenes de acabados
+
+Cada acabado es una imagen (DESIGN.md §8 · Acabados de producto). Cómo funciona y cómo se agrega uno: `docs/acabados.md`.
+
+- **Imágenes:** 12 PNG de 128 × 128 (gradients diseñados en Figma, sección ACABADOS), uno por acabado, en `https://s3.coresagroup.com/MACROLED/ARQ/imagenes/acabados/acabado-<slug>.png`. La dirección base es `config.images.finishesBase` (`src/config.js`).
+- **La base no cambia.** El nombre del acabado sigue siendo el de Sheets («Negro»): es lo que muestran la ficha, las características y los filtros. Solo cambia qué imagen se pide.
+- **Un único archivo de mapeo:** `src/data/finishes.js`. Nombre del acabado (sin tildes ni mayúsculas) → slug. Un nombre que no está mapeado no tiene imagen: el swatch muestra el neutro con el nombre.
+- **La familia decide el negro.** Hay dos negros: metálico (DAO, `acabado-negro`) y mate (`acabado-negro-mate`). La base los llama igual y no se renombra, así que el código mira el campo `familia` del grupo: mate en Kanu, Nobu, Tori, Koen, Douli, Yoru y Sento; metálico en el resto. Se descartó `material_cuerpo` (casi todo es «Aluminio») y el SKU (formato pendiente, es un identificador opaco). La familia se compara exacta (sin tildes ni mayúsculas). En la base, «Mini Tori Jardín» tiene familia «Tori», así que entra.
+- **Datos:** `group.family` (la familia del SKU predeterminado) sale del adaptador; las cards traen `finishes: [{ name, src }]`; `getProduct` suma `finishImages: { nombre: url }` y la comparativa, `swatch` en cada opción. Las cards de colección juntan los acabados de sus grupos y repiten solo el que tiene igual nombre e igual imagen.
+- **Carga:** sin `loading="lazy"`. El `<img>` del swatch arranca oculto hasta cargar y una imagen diferida y oculta nunca se pide.
+- **Fuera de este cambio:** los filtros de acabado del glosario y de Descargas siguen con la muestra neutra.
+
+## 2026-10-19 · Acabados de la card a 16 px
+
+Con las imágenes reales, la muestra de 20 px en la product-card Large se veía grande al lado del nombre.
+
+- **product-card:** los acabados van siempre en `arq-swatch` Size=Small (`swatch/sm`, 16 × 16), en Large y en Small (antes Large usaba Default, 20). Vale en Productos, Colecciones y la ficha (otras familias): colección usa la misma tarjeta. El swatch-picker de la ficha no cambia (24 elegida, 20 las demás, 16 en mobile).
+- **Figma:** set `product-card` (`990:2372`): los swatches de las tres variantes `Size=Large` pasaron de Size=Default a Size=Small; la descripción del set lo aclara.
 
 ## 2026-10-19 · compare-picker («Agregar producto»)
 

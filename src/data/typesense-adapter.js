@@ -215,6 +215,9 @@ export function fromDocuments(docs) {
     return {
       id,
       name: text(first[FIELDS.name]),
+      // Familia de la base («Kanu», «Tori»…): decide la imagen de algunos
+      // acabados (finishes.js). Un grupo, una familia: la de su SKU predeterminado.
+      family: list(first[FIELDS.family])[0] ?? '',
       collection: productType === ACCESSORY_TYPE ? null : collectionOf(first[FIELDS.family]),
       productType,
       // ¿La base marca un SKU predeterminado (is_group_default)? Sin marca, el primero

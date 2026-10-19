@@ -10,6 +10,7 @@
 | `typesense-adapter.js` | Documentos de Typesense → catálogo: grupos por nombre, colecciones, accesorios e imágenes por posición (`docs/typesense-schema.md`) |
 | `attributes.js` | Etiquetas, secciones y filtros de los campos técnicos |
 | `variants.js` | Selectores de variante (funciones puras) |
+| `finishes.js` | Imagen de cada acabado: nombre del acabado + familia del producto → URL del PNG (`docs/acabados.md`) |
 
 - Configuración: `.env` (host, colección y search-only key). Si falta algo, el error de la consola dice qué variable.
 - Decisiones: `docs/decisiones.md`, 2026-10-13 · Datos solo desde Typesense y 2026-10-14 · Campos por consulta. Un campo nuevo que use una pantalla se agrega a `LIGHT_FIELDS` o `DETAIL_FIELDS` (`typesense-adapter.js`); si no, llega vacío.

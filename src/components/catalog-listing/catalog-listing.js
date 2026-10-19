@@ -397,10 +397,11 @@ class ArqCatalogListing extends ArqElement {
     card.append(title);
     // Acabados en los dos listados (Figma 1153:5679 y 1160:6116); la meta,
     // solo en Colecciones (aplicaciones de la colección).
-    for (const name of data.finishes ?? []) {
+    for (const { name, src } of data.finishes ?? []) {
       const swatch = document.createElement('arq-swatch');
       swatch.slot = 'finishes';
       swatch.textContent = name;
+      if (src) swatch.src = src;
       card.append(swatch);
     }
     if (!compare && data.meta) {
