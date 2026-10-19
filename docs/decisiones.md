@@ -955,3 +955,13 @@ El hover de las cards con Iluminar no se veía: `multimagen_ambiente` trae `…_
 - La búsqueda (navbar y listado con `?q=`) usa la variante predeterminada del grupo (`is_group_default`) cuando coincide el nombre, la colección o la aplicación. Solo si coincide únicamente por SKU se usa esa variante.
 - Con `?q=` el título del page-header («Resultados para «…»») va en `role/display` (atributo de código `search-title`) y el breadcrumb queda «Inicio / Productos /», sin nivel actual.
 - toggle **sin Hover** (ni Off ni On). `TODO` (Figma): quitar la variante State=Hover del set toggle; el texto de DESIGN.md §8 sigue listando Hover en toggle · toggle-switch.
+
+## 2026-10-19 · Caché del catálogo entre páginas
+
+- `src/data/source.js` guarda los documentos del catálogo liviano en `sessionStorage` (`arq:catalog`, ~444 KB). La primera página de la visita pide a Typesense; las siguientes lo leen sin llamada (4 ms contra ~3 s medidos con 2 pedidos de 250 documentos).
+- Vence al minuto: pasado ese tiempo se usa igual lo guardado y se actualiza por detrás, para la próxima página. Si cambian el host, la colección o `LIGHT_FIELDS`, lo guardado se descarta.
+- Sin `sessionStorage` (modo privado, lleno) o con el JSON roto, se pide al servidor como antes. Con `?arq-nocache` en la URL se pide siempre al servidor (para ver un cambio de Sheets antes de los 10 minutos).
+- No se guarda el detalle de la ficha (`loadGroupDetails`): es chico (~1 KB por grupo) y solo lo usa la ficha.
+- Recargar la página (F5) también ignora lo guardado y pide al servidor: quien edita Sheets recarga y ve el cambio al instante (la sincronización Sheets → Typesense tiene su propia demora, fuera de este repo).
+- Navegando por links (sin recargar), un cambio en Sheets puede tardar hasta 1 minuto en verse.
+- Sigue pendiente la compresión en el servidor (`docs/consultas-typesense.md`): sin gzip el catálogo pesa ~470 KB.
