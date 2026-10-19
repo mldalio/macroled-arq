@@ -135,21 +135,73 @@ function meta(group) {
 // y es null si el acabado no tiene imagen (docs/acabados.md).
 const FINISH_FIELDS = Object.keys(ATTRIBUTES).filter((field) => ATTRIBUTES[field].control === 'swatches');
 const finishNames = (group) => [...new Set(group.variants.flatMap((v) => FINISH_FIELDS.map((field) => v.values[field])).filter(hasValue))];
-const finishes = (group) => finishNames(group).map((name) => ({ name, src: finishImage(name, group.family) }));
+// Orden en la card: negro, blanco, terracota, verde y después el resto (en el
+// orden en que vienen). «Negro satinado» cuenta como negro.
+const FINISH_ORDER = ['negro', 'blanco', 'terracota', 'verde'];
+const finishRank = (name) => {
+  const base = String(name).normalize('NFD').replace(/[̀-ͯ]/g, '').trim().toLowerCase().split(/\s+/)[0];
+  const rank = FINISH_ORDER.indexOf(base);
+  return rank === -1 ? FINISH_ORDER.length : rank;
+};
+const byFinishOrder = (list) => list.map((finish, i) => [finish, i]).sort((a, b) => finishRank(a[0].name) - finishRank(b[0].name) || a[1] - b[1]).map(([finish]) => finish);
+const finishes = (group) => byFinishOrder(finishNames(group).map((name) => ({ name, src: finishImage(name, group.family) })));
 // Las cards de colección juntan los acabados de varios grupos: se repite solo
 // el que tiene el mismo nombre y la misma imagen.
-const uniqueFinishes = (list) => [...new Map(list.map((finish) => [`${finish.name}|${finish.src}`, finish])).values()];
+const uniqueFinishes = (list) => byFinishOrder([...new Map(list.map((finish) => [`${finish.name}|${finish.src}`, finish])).values()]);
+
+// Acabado de una variante (el primer campo de acabado con valor)
+const finishOf = (variant) => FINISH_FIELDS.map((field) => variant.values[field]).find(hasValue);
+
+// Variante que muestra la card sin que nadie haya elegido una (sin filtros ni
+// SKU buscado): la del primer acabado en el orden de la card (negro primero),
+// con la predeterminada del grupo antes que las demás de ese acabado. Con
+// filtros, la primera que los cumple en ese mismo orden. null si ninguna.
+function firstFinishVariant(group, active = {}) {
+  const rank = (variant) => finishRank(finishOf(variant) ?? '');
+  const ordered = [group.defaultVariant, ...group.variants]
+    .filter((v, i, all) => all.indexOf(v) === i)
+    .map((v, i) => [v, i])
+    .sort((a, b) => rank(a[0]) - rank(b[0]) || a[1] - b[1])
+    .map(([v]) => v);
+  return ordered.find((variant) => variantMatches(variant, active)) ?? null;
+}
+
+// Acabados elegibles de la card de producto: cada acabado con lo que cambia al
+// elegirlo (SKU, link y las cuatro fotos de la variante de ese acabado) y cuál
+// es el que se ve (selected). La variante de cada acabado es la que se ve si ya
+// tiene ese acabado, si no la predeterminada o la primera que lo tiene,
+// prefiriendo las que cumplen los filtros activos. Con un solo acabado no hay
+// nada que elegir: queda la lista simple.
+function finishOptions(group, shown, active = {}) {
+  const list = finishes(group);
+  if (list.length < 2) return list;
+  return list.map((finish) => {
+    const own = [shown, group.defaultVariant, ...group.variants].filter((v, i, all) => all.indexOf(v) === i && finishOf(v) === finish.name);
+    const variant = own.find((v) => variantMatches(v, active)) ?? own[0];
+    const images = pick(variant.images);
+    return {
+      ...finish,
+      selected: finishOf(shown) === finish.name,
+      sku: variant.sku,
+      href: productHref(group.id, variant.sku),
+      image: images.studio ?? null,
+      imageHover: images.studioOn ?? images.context ?? null,
+      imageLit: images.studioOn ?? null,
+      imageHoverLit: images.contextOn ?? null,
+    };
+  });
+}
 
 // Las fotos son de la variante que muestra la card; sin fotos propias, la card
 // muestra el fondo neutro con el nombre (ver variantDetails).
-function productCard(group, variant = group.defaultVariant) {
+function productCard(group, variant = firstFinishVariant(group) ?? group.defaultVariant, active = {}) {
   const images = pick(variant.images);
   return {
     id: group.id,
     sku: variant.sku,
     name: group.name,
     meta: meta(group),
-    finishes: finishes(group),
+    finishes: finishOptions(group, variant, active),
     href: productHref(group.id, variant.sku), // la URL siempre lleva el SKU, también el predeterminado
     // Reposo: hero (img_main). Hover sin Iluminar: hero encendido (img_main_on); con Iluminar:
     // ambiente 1 encendido (img_ambient_1_on). Vale donde se use la card (docs/decisiones.md,
@@ -202,8 +254,9 @@ export async function listProducts({ filters, query, ...category } = {}) {
   const withFilters = Object.keys(active).length > 0;
   const cards = scope.flatMap((group) => {
     const match = found.get(group);
-    const variant = matchingVariant(group, active, match.variant);
-    return variant ? [productCard(group, variant)] : [];
+    // Sin SKU buscado, la card arranca en el primer acabado (negro)
+    const variant = match.bySku ? matchingVariant(group, active, match.variant) : firstFinishVariant(group, active);
+    return variant ? [productCard(group, variant, active)] : [];
   });
   return { cards, count: cards.length, filters: filterRows(scope) };
 }

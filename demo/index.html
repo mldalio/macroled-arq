@@ -943,7 +943,7 @@
 
       <section class="demo-section" aria-labelledby="demo-product-card">
         <h2 id="demo-product-card" class="demo-heading role-label">product-card · &lt;arq-product-card&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 990:2372. Grilla de listado (auto-fill, layout/card-min; desde 1600 px card-min-wide). Hover y foco: fundido estudio → contexto. Iluminar: versiones encendidas. Large pasa a Small hasta 767 px (probar «Ver 390»). Imágenes de ejemplo (las columnas reales están en TODO).</p>
+        <p class="demo-note role-body-sm">Figma 990:2372. Grilla de listado (auto-fill, layout/card-min; desde 1600 px card-min-wide). Hover y foco: fundido estudio → contexto. Iluminar: versiones encendidas. Large pasa a Small hasta 767 px (probar «Ver 390»). Acabados: con más de uno, la muestra elegida lleva el borde de Selected y al elegir otra cambian las imágenes y el link (Kanu Jardín); con uno solo no hay elegido. Imágenes de ejemplo (las columnas reales están en TODO).</p>
         <div data-demo-iluminar class="demo-card-block">
           <arq-toggle show-label>Iluminar</arq-toggle>
           <div class="demo-card-grid">
@@ -951,9 +951,14 @@
               image="/demo/fixtures/img/card-estudio.svg" image-hover="/demo/fixtures/img/card-contexto.svg"
               image-lit="/demo/fixtures/img/card-estudio-on.svg" image-hover-lit="/demo/fixtures/img/card-contexto-on.svg">
               <h3 slot="name">Kanu Jardín</h3>
-              <arq-swatch slot="finishes" src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
-              <arq-swatch slot="finishes">Verde</arq-swatch>
-              <arq-swatch slot="finishes">Terracota</arq-swatch>
+              <!-- Acabados elegibles: el elegido (selected) y lo que cambia al elegir, en data-* -->
+              <arq-swatch slot="finishes" selected src="/demo/fixtures/img/acabado-negro.svg" data-sku="KANU-N" data-href="#kanu-negro"
+                data-image="/demo/fixtures/img/card-estudio.svg" data-image-hover="/demo/fixtures/img/card-contexto.svg"
+                data-image-lit="/demo/fixtures/img/card-estudio-on.svg" data-image-hover-lit="/demo/fixtures/img/card-contexto-on.svg">Negro</arq-swatch>
+              <arq-swatch slot="finishes" data-sku="KANU-T" data-href="#kanu-terracota"
+                data-image="/demo/fixtures/img/producto-2.svg" data-image-hover="/demo/fixtures/img/producto-2-on.svg"
+                data-image-lit="/demo/fixtures/img/producto-2-on.svg" data-image-hover-lit="/demo/fixtures/img/producto-2-on.svg">Terracota</arq-swatch>
+              <arq-swatch slot="finishes" data-sku="KANU-V" data-href="#kanu-verde">Verde (sin imágenes: muestra el nombre)</arq-swatch>
             </arq-product-card>
             <arq-product-card href="#demo-product-card" show-compare compared
               image="/demo/fixtures/img/card-estudio.svg" image-lit="/demo/fixtures/img/card-estudio-on.svg">

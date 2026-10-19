@@ -1082,6 +1082,16 @@ Salió de revisar los valores de `color_carcasa` de toda la base (326 documentos
 - Se quitó del código (atributo `name` de `<arq-catalog-toolbar>` y la copia del `<h1>` en `arq-catalog-listing`), de la demo, del README, de `docs/components.md` y de DESIGN.md.
 - Figma: se sacaron el texto del nombre y el divider de la variante State=Scroll (1810:19453), se actualizó la descripción del set (1244:4058) y la copia de DESIGN.md en Plan del proyecto. La ficha `doc/catalog-toolbar` no lo mencionaba.
 
+## 2026-10-19 · Elegir acabado en la card
+
+- **La card de producto deja elegir el acabado.** Con más de un acabado, los swatches son un radiogroup: el elegido (por defecto el primero, negro) lleva State=Selected del swatch y todos el Hover, sin crecer (siempre Small, 16). Al elegir uno cambian las cuatro imágenes y el link a los de ese acabado. Con un solo acabado no se ve elegido ni se puede elegir.
+- **Cada acabado es un SKU.** `src/data/catalog.js` (`finishOptions`) arma, por acabado, la variante que lo tiene: la que ya se ve, o la predeterminada, o la primera, prefiriendo las que cumplen los filtros activos. De ella salen el SKU, el link (`?sku=`) y las fotos. La card avisa con `arq:finish` y el listado actualiza el SKU y la foto de «Comparar» y de la compare-bar.
+- **Arranca en negro.** Sin SKU buscado, la card muestra la variante del primer acabado en el orden de la card (negro, blanco, terracota, verde, el resto), con la predeterminada del grupo primero entre las de ese acabado (`firstFinishVariant`). Antes arrancaba en la predeterminada del grupo, aunque no fuera negra. Con filtros, la primera que los cumple en ese orden; con un SKU buscado, ese SKU.
+- **Un acabado sin fotos** muestra el fondo con el nombre (regla de §8), no la foto de otro color.
+- **Solo en cards de producto** (Productos y página de colección). Las cards de colección no lo tienen: sus imágenes son de la colección.
+- **Mobile (Size=Small):** nombre y acabados en columna a `space/gap/sm`; nombre a 20/28 (`role/body-xl`; en Mobile `role/heading-3`); info a `space/gap/md`; acabados a `space/gap/sm`. Sale del set de Figma (990:2327).
+- **TODO (diseño):** los swatches de 16 px miden menos que el área táctil mínima de 24 × 24 (DESIGN.md §9). Queda así por diseño; confirmar si se amplía el área de clic.
+
 ## 2026-10-19 · catalog-toolbar sin State=Scroll
 
 - Lau no quiere que la barra se achique al desplazarse la página: se sacó State=Scroll. Queda siempre con padding vertical `space/padding/md`; el listado la sigue dejando fija debajo del navbar.
