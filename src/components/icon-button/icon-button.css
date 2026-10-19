@@ -8,6 +8,15 @@
   /* color/icon/primary. Un contenedor lo puede pisar en el host (navbar
      Transparent: color/icon/inverse, como el ícono Theme=Inverse) */
   color: var(--arq-color-icon-primary);
+  /* State=Pressed: se achica un poco (motion/scale/pressed), como button */
+  transition: scale var(--arq-motion-duration-fast) var(--arq-motion-easing-out);
+}
+
+/* Con movimiento reducido no cambia de tamaño (DESIGN.md §6) */
+@media (prefers-reduced-motion: no-preference) {
+  :host(:not([disabled]):active) {
+    scale: var(--arq-motion-scale-pressed);
+  }
 }
 
 /* Size=Default: 24 × 24 = ícono icon/md (16) + space/padding/xs (4) por lado.

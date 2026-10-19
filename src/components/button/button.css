@@ -8,6 +8,18 @@
   /* En una fila flex o una columna angosta puede achicarse: el label se corta */
   min-width: 0;
   vertical-align: middle;
+  /* State=Pressed: se achica un poco (motion/scale/pressed). En el host, con
+     scale (no transform): no pisa la lista de transiciones de color de la hoja
+     base y no cambia el lugar que ocupa en el layout. */
+  transition: scale var(--arq-motion-duration-fast) var(--arq-motion-easing-out);
+}
+
+/* Solo Filled y Outline: Underline es un link de texto y no se achica.
+   Con movimiento reducido no cambia de tamaño (DESIGN.md §6). */
+@media (prefers-reduced-motion: no-preference) {
+  :host(:not([type='underline']):not([disabled]):not([loading]):active) {
+    scale: var(--arq-motion-scale-pressed);
+  }
 }
 
 /* flex 1: si el host es más ancho que su contenido (p. ej. width: 100% en la
