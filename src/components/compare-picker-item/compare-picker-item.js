@@ -11,7 +11,8 @@
 // - State: Default y Hover (:hover de la fila) con «+ Agregar»; Added (atributo
 //   added: el producto ya está en la comparativa, «Agregado» deshabilitado,
 //   sin ícono); Disabled (atributo disabled: ya hay 3 productos; «+ Agregar»
-//   deshabilitado, texto en color/text/disabled y la miniatura atenuada).
+//   deshabilitado, texto en color/text/disabled y la miniatura con
+//   opacity/disabled).
 // - «Agregar» emite arq:add { sku }. El nombre accesible del botón suma el
 //   nombre del producto («Agregar Kanu Jardín»).
 // - Sin imagen (o si no carga): queda el fondo color/surface/subtle.

@@ -1,5 +1,4 @@
-/* compare-slot · Figma 1233:3656. Solo tokens semánticos.
-   Size=Default es la base. */
+/* compare-slot · Figma 1233:3656. Solo tokens semánticos. */
 
 :host {
   display: block;
@@ -99,46 +98,26 @@
   outline: none;
 }
 
-/* Empty (Size=Default): el dibujo del set (la foto en color/surface/subtle
+/* Empty: el dibujo del set (la foto en color/surface/subtle
    con el «+» en color/icon/primary, y «Agregar producto») dentro de una caja
    punteada (border/default dashed en color/border/default), como el lugar
    vacío de compare-product Compact en Comparativa. La foto va contra el borde
    izquierdo; a la derecha, padding space/padding/md. Hover: fondo
    color/surface/faint y borde color/border/strong. El botón cubre toda la
    caja (cursor pointer). */
-:host(:not([filled]):not([size='compact'])) .slot {
+:host(:not([filled])) .slot {
   padding-inline-end: var(--arq-space-padding-md);
   border: var(--arq-border-default) dashed var(--arq-color-border-default);
 }
 
-:host(:not([filled]):not([size='compact'])) .add:focus-visible {
+:host(:not([filled])) .add:focus-visible {
   outline-offset: calc(-1 * var(--arq-border-strong));
 }
 
 @media (hover: hover) and (pointer: fine) {
-  :host(:not([filled]):not([size='compact'])) .slot:hover {
+  :host(:not([filled])) .slot:hover {
     background: var(--arq-color-surface-faint);
     border-color: var(--arq-color-border-strong);
   }
 }
 
-/* Size=Compact: solo la miniatura, layout/compare-thumb-sm de ancho y
-   ratio/portrait (7:10); el nombre queda para lectores de pantalla */
-:host([size='compact']) .slot {
-  max-width: none;
-}
-
-:host([size='compact']) .thumb {
-  width: var(--arq-layout-compare-thumb-sm);
-  height: auto;
-  aspect-ratio: 7 / 10;
-}
-
-:host([size='compact']) .info {
-  position: absolute;
-  width: var(--arq-border-default);
-  height: var(--arq-border-default);
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}

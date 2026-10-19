@@ -1050,3 +1050,14 @@ Modal para sumar productos a la comparativa (Figma 2724:8761, con compare-picker
 - **Mobile:** la compare-bar suma un solo lugar vacío debajo de los productos elegidos mientras haya menos de 3. El modal es pantalla completa.
 - Datos: `listCompareCandidates` filtra en memoria el catálogo que ya trae Typesense (una consulta por visita); no consulta por cada letra. En la barra, lo agregado guarda la misma meta que las cards.
 - Pendiente en Figma: ficha `doc/compare-picker`, sacar los chips y cambiar el botón del pie en el set, la caja punteada del lugar vacío de compare-slot y el lugar vacío en compare-bar Mobile.
+
+## 2026-10-19 · Tokens opacity/disabled y layout/compare-picker-list; compare-slot empty-hover
+
+Cierra los pendientes de diseño de compare-picker.
+
+- **`opacity/disabled`** (colección nueva 2 · Semantic · Opacity, modo Value): 50 en Figma, `--arq-opacity-disabled: 0.5` en código. Para imágenes o partes gráficas deshabilitadas (la miniatura de compare-picker-item Disabled); el texto deshabilitado sigue con `color/text/disabled`. En Figma las variables de opacidad van de 0 a 100 (el campo de opacidad): `scripts/import-tokens.js` convierte `opacity/*` a 0–1.
+- **`layout/compare-picker-list`** (2 · Semantic · Dimension, 400 en todos los modos): alto de la lista de compare-picker en Desktop, 5 filas de compare-picker-item. En Figma la lista tiene ese alto fijo y el panel abraza el contenido (690); en código, `block-size` de la lista. La fila mide 80 como el set: la línea inferior se descuenta del padding de abajo.
+- **compare-slot State=empty-hover** (Size=Default): el Hover del lugar vacío pasa al set, con el mismo nombre de valor que compare-product (`empty-hover`): fondo `color/surface/faint` y borde punteado `color/border/strong`. En código sigue siendo `:hover`.
+- La lupa del buscador del modal no era una diferencia: el set usa search-field-line, que la dibuja en `color/icon/tertiary`, como el código.
+- Export: `tokens/figma/2-semantic-dimension.*` y `2-semantic-opacity.value.json`. Antes de regenerar Dimension se comparó por hash el resto de la colección en Figma con el último export del repo (iguales), así el diff solo suma la variable nueva.
+- **compare-slot sin Size=Compact:** la barra en Mobile usa el tamaño Default (lista apilada) y la cabecera compacta de Comparativa usa compare-product, así que Compact ya no se usaba. Se quitó del set (las variantes quedan State=Filled · Empty · empty-hover, sin la propiedad Size), de la ficha `doc/compare-slot` y del código (atributo `size`). Se borró `layout/compare-thumb-sm` (solo lo usaba Compact): Figma, export de Dimension, `tokens.json` y `tokens.css`.

@@ -6,12 +6,15 @@
 }
 
 /* Miniatura + info + botón, gap space/gap/md; padding space/padding/md ×
-   space/padding/sm-md; línea inferior border/default en color/border/subtle */
+   space/padding/sm-md; línea inferior border/default en color/border/subtle.
+   La línea va dentro del alto, como en el set (fila de 80): se descuenta del
+   padding de abajo. */
 .item {
   display: flex;
   align-items: center;
   gap: var(--arq-space-gap-md);
-  padding: var(--arq-space-padding-md) var(--arq-space-padding-sm-md);
+  padding: var(--arq-space-padding-md) var(--arq-space-padding-sm-md)
+    calc(var(--arq-space-padding-md) - var(--arq-border-default));
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
 }
 
@@ -70,13 +73,12 @@
 }
 
 /* State=Disabled (ya hay 3): textos en color/text/disabled y la miniatura
-   al 50 %, como el set. TODO (token): no hay token de opacidad; 0.5 como
-   --busy-opacity de catalog-listing. */
+   con opacity/disabled, como el set. */
 :host([disabled]) .name,
 :host([disabled]) .meta {
   color: var(--arq-color-text-disabled);
 }
 
 :host([disabled]) .thumb {
-  opacity: 0.5;
+  opacity: var(--arq-opacity-disabled);
 }
