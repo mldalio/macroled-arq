@@ -26,7 +26,7 @@ Tarjeta de producto (Productos) o de colección (Colecciones, página de colecci
 | --- | --- | --- | --- |
 | Name | slot `name` | — | `<h3>` con el nombre: es lo que lleva el link |
 | Meta · Show meta | slot `meta` | — | Tipo o datos técnicos, hasta 2 líneas. Sin contenido no se muestra |
-| Show finishes | slot `finishes` | — | `arq-swatch`; el tamaño lo pone la tarjeta (Default en Large, Small en Small). Sin contenido no se muestra |
+| Show finishes | slot `finishes` | — | `arq-swatch`; el tamaño lo pone la tarjeta: siempre Small (16 × 16), en Large y en Small. Sin contenido no se muestra |
 | Show compare | `show-compare` | `showCompare` | booleano: checkbox "Comparar" |
 | — | `compared` | `compared` | booleano: "Comparar" marcado |
 | Size | `size` | `size` | `large` · `small`. Por defecto `large`. Large pasa sola al aspecto Small hasta 767 px |
@@ -50,7 +50,7 @@ Tarjeta de producto (Productos) o de colección (Colecciones, página de colecci
 | Info | padding `space/gap/xs` arriba y `space/gap/sm` abajo, gap `space/gap/xs` |
 | Nombre | `role/heading-3` (Small `role/body-regular`) en `color/text/primary` |
 | Meta | `role/body` (Small `role/body-sm`) en `color/text/secondary`, hasta 2 líneas |
-| Acabados | gap `space/gap/xs`; swatch Default (20) en Large, Small (16) en Small (el set; la ficha dice Small en los dos) |
+| Acabados | gap `space/gap/xs`; swatch Small (16) en Large y en Small (decisiones.md, 2026-10-19 · Acabados de la card a 16 px) |
 | Sin imagen | nombre en `role/body-sm`, `color/text/secondary` (con `text/tertiary` no llega a 4.5 en Dark) |
 | Fundido | `motion/duration/slow` + `motion/easing/standard` |
 | Foco | `border/strong` en `color/border/focus`, separado 2 px |

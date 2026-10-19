@@ -21,7 +21,7 @@ Muestra de acabado (único swatch del sistema). Siempre cuadrada. El relleno es 
 | Size | `size` | `size` | `small` (16) · `default` (20) · `large` (24). **Por defecto `small`**, como en Figma (Size=Default no es el valor por defecto) |
 | State=Selected | `selected` | `selected` | booleano |
 | State=Disabled | `disabled` | `disabled` | booleano. Acabado sin combinación con las otras opciones elegidas: no se puede elegir (`aria-disabled="true"`) y las flechas del grupo la saltean |
-| — (imagen del fill) | `src` | `src` | URL de la imagen del acabado (de los datos) |
+| — (imagen del fill) | `src` | `src` | URL de la imagen del acabado. Sale de `src/data/finishes.js` (nombre + familia del producto, `docs/acabados.md`); sin `src` o si no carga, el neutro |
 | — | `value` | `value` | valor del acabado (slug en inglés) |
 
 - **Solo visual** por defecto: `role="img"` con el nombre del acabado. Así va en product-card y en los filtros (State=Default).

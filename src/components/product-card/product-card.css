@@ -134,7 +134,7 @@
   overflow-wrap: break-word;
 }
 
-/* Acabados: gap space/gap/xs; swatch Default (20) en Large y Small (16) en Small */
+/* Acabados: gap space/gap/xs; swatch Small (16) en Large y en Small */
 .finishes {
   display: flex;
   flex: none;

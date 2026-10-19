@@ -108,10 +108,11 @@ class ArqColeccion extends ArqElement {
         title.slot = 'name';
         title.textContent = data.name;
         card.append(title);
-        for (const name of data.finishes ?? []) {
+        for (const { name, src } of data.finishes ?? []) {
           const swatch = document.createElement('arq-swatch');
           swatch.slot = 'finishes';
           swatch.textContent = name;
+          if (src) swatch.src = src;
           card.append(swatch);
         }
         if (data.meta) {

@@ -8,7 +8,7 @@
 //
 // Forma del catálogo:
 //   collection: { id, name, intro, description, images: { studio, studioOn, context, contextOn, gallery[], description, inspiration[] } }
-//   group: { id, name, collection, productType, hasDefault, environment[], application, variantAttributes[],
+//   group: { id, name, family, collection, productType, hasDefault, environment[], application, variantAttributes[],
 //            story, inspiration, video, images: { ambient[], description, inspiration }, specs: { campo: valor },
 //            variants: [{ sku, isDefault, description, attributes: { campo: valor },
 //                         images: { main, studio, studioOn, context, contextOn, gallery[], galleryOn[] },
@@ -19,6 +19,7 @@ import { loadSource, loadGroupDetails } from './source.js';
 import { ATTRIBUTES, DOWNLOAD_FILTERS, FILTER_FIELDS, GLOSSARY_COLUMNS, attributeInfo, specSections } from './attributes.js';
 import { variantOptions, findVariant, choose } from './variants.js';
 import { normalize, queryWords, matchesWords } from './text.js';
+import { finishImage } from './finishes.js';
 
 let pending = null;
 
@@ -129,10 +130,15 @@ function meta(group) {
 }
 
 // Acabados de la card (Show finishes): valores únicos de los campos con
-// control 'swatches' (attributes.js) entre las variantes del grupo.
-// TODO (acabados): imagen de cada acabado (mapeo nombre → slug, DESIGN.md §8).
+// control 'swatches' (attributes.js) entre las variantes del grupo, cada uno con
+// su imagen: { name, src }. src sale de finishes.js (nombre + familia del grupo)
+// y es null si el acabado no tiene imagen (docs/acabados.md).
 const FINISH_FIELDS = Object.keys(ATTRIBUTES).filter((field) => ATTRIBUTES[field].control === 'swatches');
-const finishes = (group) => [...new Set(group.variants.flatMap((v) => FINISH_FIELDS.map((field) => v.values[field])).filter(hasValue))];
+const finishNames = (group) => [...new Set(group.variants.flatMap((v) => FINISH_FIELDS.map((field) => v.values[field])).filter(hasValue))];
+const finishes = (group) => finishNames(group).map((name) => ({ name, src: finishImage(name, group.family) }));
+// Las cards de colección juntan los acabados de varios grupos: se repite solo
+// el que tiene el mismo nombre y la misma imagen.
+const uniqueFinishes = (list) => [...new Map(list.map((finish) => [`${finish.name}|${finish.src}`, finish])).values()];
 
 // Las fotos son de la variante que muestra la card; sin fotos propias, la card
 // muestra el fondo neutro con el nombre (ver variantDetails).
@@ -164,7 +170,7 @@ function collectionCard(collection, groups) {
     id: collection.id,
     name: collection.name,
     meta: applications.join(' · '),
-    finishes: [...new Set(groups.flatMap(finishes))],
+    finishes: uniqueFinishes(groups.flatMap(finishes)),
     href: collectionHref(collection.id),
     image: images.studio ?? null,
     imageHover: images.context ?? null,
@@ -241,6 +247,9 @@ export async function getProduct(groupId) {
     collection: group.collectionData,
     variants: group.variants.map((v) => ({ sku: v.sku, isDefault: v === group.defaultVariant, attributes: v.values })),
     variantAttributes: group.variantAttributes,
+    // Imagen de cada acabado del grupo por su nombre, para las muestras del
+    // configurador: { Negro: 'https://…/acabado-negro-mate.png' }. Sin imagen, no está.
+    finishImages: Object.fromEntries(finishes(group).filter((finish) => finish.src).map((finish) => [finish.name, finish.src])),
     family,
     // Solo las imágenes que existen, sin repetidas (decisión 2026-10-02 · Galerías)
     images: {
@@ -491,7 +500,8 @@ const selectionOf = (group, variant) => Object.fromEntries(group.variantAttribut
  * Selectores de variante de una columna de la comparativa: uno por campo de
  * VARIANT_ATTRIBUTES (Color, Altura…), con la misma disponibilidad que el
  * configurador de la ficha (una opción que no forma un SKU va deshabilitada).
- *   [{ field, label, value, options: [{ value, label, disabled, showSwatch }] }]
+ *   [{ field, label, value, options: [{ value, label, disabled, showSwatch, swatch }] }]
+ * swatch: imagen del acabado (finishes.js); sin imagen, el select muestra el neutro.
  */
 function compareAttributes(group, variant) {
   const selection = selectionOf(group, variant);
@@ -502,7 +512,13 @@ function compareAttributes(group, variant) {
       label: info.label,
       value: selection[attribute] ?? '',
       // La muestra solo en los campos de acabado/color (select: swatch solo si es acabado)
-      options: options.map((o) => ({ value: o.value, label: o.value, disabled: o.disabled, showSwatch: info.control === 'swatches' })),
+      options: options.map((o) => ({
+        value: o.value,
+        label: o.value,
+        disabled: o.disabled,
+        showSwatch: info.control === 'swatches',
+        swatch: info.control === 'swatches' ? finishImage(o.value, group.family) ?? undefined : undefined,
+      })),
     };
   });
 }
