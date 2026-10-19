@@ -24,40 +24,6 @@
   padding-block: var(--arq-space-padding-sm);
 }
 
-/* Nombre de la página + divider + cantidad. El nombre solo se ve en
-   State=Scroll y con name; el divider, además, con la cantidad (mientras
-   carga no queda colgando). Gap space/gap/lg, como el set. */
-.info {
-  display: flex;
-  align-items: stretch;
-  gap: var(--arq-space-gap-lg);
-  min-width: 0;
-}
-
-.name,
-.name-divider {
-  display: none;
-}
-
-:host([state='scroll']) .has-name .name {
-  display: block;
-}
-
-:host([state='scroll']) .has-name.has-count .name-divider {
-  display: inline-block;
-}
-
-/* Nombre: role/body-lg en color/text/primary. Si no entra, se corta con "…"
-   (el nombre completo sigue en el <h1> de la página). */
-.name {
-  margin: 0;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--arq-color-text-primary);
-}
-
 /* Count: role/body en color/text/secondary */
 .count {
   margin: 0;
@@ -83,13 +49,6 @@
 }
 
 @media (max-width: 767px) {
-  /* TODO (Figma): el set no tiene State=Scroll en Mobile y el nombre no entra
-     junto a las acciones en 350: en Mobile no se muestra. */
-  :host([state='scroll']) .has-name .name,
-  :host([state='scroll']) .has-name .name-divider {
-    display: none;
-  }
-
   .actions,
   .lead {
     gap: var(--arq-space-gap-lg);

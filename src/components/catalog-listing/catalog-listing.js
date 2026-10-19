@@ -27,8 +27,6 @@
 //   La barra se ve también en «Todas las colecciones» (las cards de colección
 //   no tienen Comparar, pero la selección sigue y se puede agregar con el +).
 // - Iluminar: lo resuelve catalog-toolbar (data-arq-theme en <html>).
-// - Al desplazarse, catalog-toolbar pasa a State=Scroll con el nombre de la
-//   página (el texto del <h1> del page-header).
 
 import { ArqElement } from '../../base/arq-element.js';
 import { listProducts, listCollections, listCompareCandidates } from '../../data/catalog.js';
@@ -309,7 +307,6 @@ class ArqCatalogListing extends ArqElement {
     root.querySelector('arq-filter-panel').unit = this.unit;
     root.querySelector('arq-filter-panel').showCategories = this.unit === 'productos';
     if (this.#query && this.unit === 'productos') this.#titleFromQuery();
-    else this.#syncToolbarName();
     this.#load({ rows: true });
   }
 
@@ -487,7 +484,6 @@ class ArqCatalogListing extends ArqElement {
     // El título de búsqueda va en role/display (no display-lg).
     title?.parentElement.setAttribute('search-title', '');
     this.#syncBreadcrumb([{ label: 'Productos', href: location.pathname }], true);
-    this.#syncToolbarName();
   }
 
   // El <h1> del page-header pasa a ser el grupo del ítem actual (Interior,
@@ -514,7 +510,6 @@ class ArqCatalogListing extends ArqElement {
     if (!label) this.#syncBreadcrumb([]);
     else if (sub) this.#syncBreadcrumb([{ label: groupLabel, href: firstItem.getAttribute('href') }, { label }]);
     else this.#syncBreadcrumb([{ label: 'Productos', href: location.pathname }, { label }]);
-    this.#syncToolbarName();
   }
 
   // Reemplaza los niveles del breadcrumb del page-header que siguen al
@@ -540,14 +535,6 @@ class ArqCatalogListing extends ArqElement {
       })
       : this.#htmlCrumbs;
     breadcrumb.replaceChildren(...[home, ...items].filter(Boolean));
-  }
-
-  // catalog-toolbar State=Scroll muestra el nombre de la página: el mismo
-  // texto que el <h1> del page-header.
-  #syncToolbarName() {
-    const title = document.querySelector('arq-page-header > [slot="title"]');
-    const toolbar = this.shadowRoot?.querySelector('.toolbar');
-    if (toolbar) toolbar.name = title?.textContent.trim() || null;
   }
 }
 
