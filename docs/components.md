@@ -10,7 +10,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | Componente | Etiqueta | Estado en código |
 | --- | --- | --- |
 | ✅ [accordion-item](#accordion-item) | `<arq-accordion-item>` | En código ([README](../src/components/accordion-item/README.md)) |
-| ✅ [announcement-bar](#announcement-bar) | `<arq-announcement-bar>` | En código ([README](../src/components/announcement-bar/README.md)). En todas las páginas, antes del navbar |
+| ✅ [announcement-bar](#announcement-bar) | `<arq-announcement-bar>` | En código ([README](../src/components/announcement-bar/README.md)). Solo en la Home, antes del navbar |
 | ✅ [breadcrumb](#breadcrumb) | `<arq-breadcrumb>` | En código ([README](../src/components/breadcrumb/README.md)) |
 | ✅ [breadcrumb-item](#breadcrumb-item) | `<arq-breadcrumb-item>` | En código ([README](../src/components/breadcrumb-item/README.md)) |
 | ✅ [button](#button) | `<arq-button>` | En código ([README](../src/components/button/README.md)) |
@@ -146,7 +146,7 @@ Uso: bloques de especificaciones de la ficha (características lumínicas, eléc
 - Figma: [2780-8595](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2780-8595) · ficha `doc/announcement-bar` (`2781:13825`)
 - Propiedades: Breakpoint: Desktop · Mobile
 
-Línea fina arriba del navbar, en todas las páginas, con un aviso y su link (hoy «Suscribite al newsletter», a la sección Newsletter de la Home). Siempre en modo Dark (fijado en cada variante): fondo color/surface/default y no cambia con Iluminar. Padding space/padding/xs × layout/gutter; el link va centrado: button Type=Underline, Show underline=false (el subrayado aparece en hover), Show icon con icon/arrow-up-right y el label en role/body-compact-regular (14/24). En hover el subrayado es de 1 px (border/default) y va más pegado al texto que en el resto de los button. Alto 40. Breakpoint: Desktop · Mobile (en Mobile, si el texto no entra, baja de línea). Al hacer scroll se va con la página y el navbar queda pegado arriba. En código: <arq-announcement-bar> con el button por slot (atributo compact del button para el texto de 14).
+Línea fina arriba del navbar, solo en la Home, con un aviso y su link (hoy «Suscribite al newsletter», a la sección Newsletter de la Home). Siempre en modo Dark (fijado en cada variante): fondo color/surface/default y no cambia con Iluminar. Padding space/padding/xs × layout/gutter; el link va centrado: button Type=Underline, Show underline=false (el subrayado aparece en hover), Show icon con icon/arrow-up-right y el label en role/body-compact-regular (14/24). En hover el subrayado es de 1 px (border/default) y va más pegado al texto que en el resto de los button. Alto 40. Breakpoint: Desktop · Mobile (en Mobile, si el texto no entra, baja de línea). Al hacer scroll se va con la página y el navbar queda pegado arriba. En código: <arq-announcement-bar> con el button por slot (atributo compact del button para el texto de 14).
 
 ## breadcrumb
 
