@@ -22,19 +22,23 @@
 // - Filtros técnicos: las filas del filter-panel salen de los datos de la
 //   categoría. "Ver N" aplica (arq:apply) y la grilla se vuelve a armar.
 // - Comparar (solo Productos): "Comparar" de cada card suma o saca el producto
-//   de la compare-bar (hasta 3; la selección se guarda en arq:compare).
+//   de la compare-bar (hasta 3; la selección se guarda en arq:compare). El
+//   lugar vacío (+) de la barra abre compare-picker para agregar desde ahí.
+//   La barra se ve también en «Todas las colecciones» (las cards de colección
+//   no tienen Comparar, pero la selección sigue y se puede agregar con el +).
 // - Iluminar: lo resuelve catalog-toolbar (data-arq-theme en <html>).
 // - Al desplazarse, catalog-toolbar pasa a State=Scroll con el nombre de la
 //   página (el texto del <h1> del page-header).
 
 import { ArqElement } from '../../base/arq-element.js';
-import { listProducts, listCollections } from '../../data/catalog.js';
+import { listProducts, listCollections, listCompareCandidates } from '../../data/catalog.js';
 import { handOffTheme } from '../../base/theme.js';
 import '../catalog-toolbar/catalog-toolbar.js';
 import '../filter-panel/filter-panel.js';
 import '../filter-row/filter-row.js';
 import '../checkbox/checkbox.js';
 import '../compare-bar/compare-bar.js';
+import '../compare-picker/compare-picker.js';
 import '../grid/grid.js';
 import '../product-card/product-card.js';
 import '../swatch/swatch.js';
@@ -67,6 +71,7 @@ class ArqCatalogListing extends ArqElement {
     `</div>` +
     `<arq-filter-panel id="filters"><slot name="filter-title" slot="title"></slot></arq-filter-panel>` +
     `<arq-compare-bar class="compare"></arq-compare-bar>` +
+    `<arq-compare-picker class="picker"></arq-compare-picker>` +
     `<div class="compare-space" aria-hidden="true"></div>` +
     // Aviso para lectores de pantalla (límite de Comparar). Está siempre en la
     // página y vacío; solo cambia su texto (DESIGN.md §9).
@@ -140,6 +145,25 @@ class ArqCatalogListing extends ArqElement {
     bar.addEventListener('arq:compare-change', () => {
       this.#syncCompared();
       requestAnimationFrame(() => this.#syncSpace());
+      if (picker.open) this.#loadPicker();
+    });
+
+    // «Agregar producto» (compare-picker): lo abre el lugar vacío (+) de la
+    // compare-bar; lo que se agrega va a la barra.
+    const picker = root.querySelector('.picker');
+    bar.addEventListener('arq:add', (event) => {
+      event.stopPropagation();
+      picker.show(); // emite arq:search: carga la lista
+    });
+    picker.addEventListener('arq:search', () => this.#loadPicker());
+    // El lugar vacío que lo abrió ya tiene producto: el foco vuelve a la barra
+    picker.addEventListener('arq:close', (event) => {
+      if (!event.detail.restored) bar.focusAdd();
+    });
+    picker.addEventListener('arq:add', (event) => {
+      // En la barra, la misma meta que las cards (no la del modal)
+      const { sku, name, cardMeta, meta, image } = event.detail.item;
+      bar.add({ sku, name, meta: cardMeta ?? meta, image });
     });
 
     // La compare-bar es fija abajo: un espacio de su alto al final del listado
@@ -164,6 +188,26 @@ class ArqCatalogListing extends ArqElement {
   };
 
   #onPopState = () => this.#goTo();
+
+  #pickerRequest = 0;
+
+  // Productos del compare-picker con la búsqueda y el filtro del modal; los
+  // de la barra salen como Agregado (y con 3, el resto Disabled).
+  async #loadPicker() {
+    const root = this.shadowRoot;
+    const bar = root.querySelector('.compare');
+    const picker = root.querySelector('.picker');
+    const selected = bar.items.map((item) => item.sku);
+    const request = ++this.#pickerRequest;
+    picker.count = selected.length;
+    picker.href = location.pathname; // «Ver todos los productos»: este listado, sin categoría
+    try {
+      const { items } = await listCompareCandidates({ ...picker.search, selected });
+      if (request === this.#pickerRequest) picker.items = items;
+    } catch (error) {
+      console.error('[arq] compare-picker: no se pudo cargar el catálogo', error);
+    }
+  }
 
   // Relee la URL (categoría, búsqueda, vista) y recarga solo el listado. El
   // scroll queda donde está la persona.
@@ -264,7 +308,6 @@ class ArqCatalogListing extends ArqElement {
     root.querySelector('.toolbar').unit = this.unit;
     root.querySelector('arq-filter-panel').unit = this.unit;
     root.querySelector('arq-filter-panel').showCategories = this.unit === 'productos';
-    root.querySelector('.compare').hidden = this.unit !== 'productos';
     if (this.#query && this.unit === 'productos') this.#titleFromQuery();
     else this.#syncToolbarName();
     this.#load({ rows: true });

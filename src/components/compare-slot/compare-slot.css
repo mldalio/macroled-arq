@@ -8,6 +8,7 @@
 
 /* Foto + info + quitar, gap space/gap/sm-md; ancho máximo layout/compare-slot */
 .slot {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--arq-space-gap-sm-md);
@@ -74,6 +75,51 @@
 
 .remove {
   flex: none;
+}
+
+/* Empty: todo el lugar es el botón «Agregar producto» (arq:add). Cubre la
+   miniatura y el texto; foco con el anillo separado (DESIGN.md §7). */
+.add {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-transparent);
+  cursor: pointer;
+}
+
+.add:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.add:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Empty (Size=Default): el dibujo del set (la foto en color/surface/subtle
+   con el «+» en color/icon/primary, y «Agregar producto») dentro de una caja
+   punteada (border/default dashed en color/border/default), como el lugar
+   vacío de compare-product Compact en Comparativa. La foto va contra el borde
+   izquierdo; a la derecha, padding space/padding/md. Hover: fondo
+   color/surface/faint y borde color/border/strong. El botón cubre toda la
+   caja (cursor pointer). */
+:host(:not([filled]):not([size='compact'])) .slot {
+  padding-inline-end: var(--arq-space-padding-md);
+  border: var(--arq-border-default) dashed var(--arq-color-border-default);
+}
+
+:host(:not([filled]):not([size='compact'])) .add:focus-visible {
+  outline-offset: calc(-1 * var(--arq-border-strong));
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :host(:not([filled]):not([size='compact'])) .slot:hover {
+    background: var(--arq-color-surface-faint);
+    border-color: var(--arq-color-border-strong);
+  }
 }
 
 /* Size=Compact: solo la miniatura, layout/compare-thumb-sm de ancho y

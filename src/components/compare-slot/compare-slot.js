@@ -16,6 +16,12 @@
 //   la miniatura (layout/compare-thumb-sm, ratio/portrait); el nombre queda
 //   para lectores de pantalla.
 // - Quitar emite arq:remove { sku }.
+// - Empty es clickeable: todo el lugar es un botón «Agregar producto» que
+//   emite arq:add (en Productos abre compare-picker). Mantiene el dibujo del
+//   set (foto en color/surface/subtle con el «+» resaltado y el texto) dentro
+//   de una caja punteada, como el lugar vacío de compare-product Compact
+//   (Comparativa); Hover con fondo color/surface/faint y borde
+//   color/border/strong. TODO (diseño): pasar la caja y el Hover al set.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { icon } from '../../base/icons.js';
@@ -41,6 +47,7 @@ class ArqCompareSlot extends ArqElement {
     `<span class="empty role-body-sm"></span>` +
     `</span>` +
     `<arq-icon-button icon="close" class="remove"></arq-icon-button>` +
+    `<button type="button" class="add" hidden></button>` +
     `</div>`;
 
   setup() {
@@ -49,6 +56,7 @@ class ArqCompareSlot extends ArqElement {
     img.addEventListener('load', () => (img.hidden = false));
     img.addEventListener('error', () => (img.hidden = true));
     root.querySelector('.remove').addEventListener('click', () => this.emit('remove', { sku: this.sku ?? null }));
+    root.querySelector('.add').addEventListener('click', () => this.emit('add'));
     for (const slot of root.querySelectorAll('slot')) slot.addEventListener('slotchange', () => this.#sync());
   }
 
@@ -73,6 +81,9 @@ class ArqCompareSlot extends ArqElement {
     const remove = root.querySelector('.remove');
     remove.textContent = `Quitar ${name}`;
     remove.hidden = !filled || this.size === 'compact';
+    const add = root.querySelector('.add');
+    add.hidden = filled;
+    add.setAttribute('aria-label', this.emptyLabel ?? '');
   }
 }
 

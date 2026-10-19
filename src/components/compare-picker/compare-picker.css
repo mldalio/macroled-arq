@@ -1,0 +1,189 @@
+/* compare-picker · Figma 2724:8761. Solo tokens semánticos.
+   Desktop es la base: centrado sobre el scrim, ancho layout/filter-panel.
+   Mobile (max-width: 767px): pantalla completa, sin scrim a la vista. */
+
+:host {
+  display: contents;
+  --panel-slow: var(--arq-motion-duration-panel); /* motion/duration/panel, como download-modal */
+}
+
+/* <dialog> sin los estilos del navegador, transparente y a pantalla completa:
+   el scrim es su ::backdrop y el panel (.sheet) va adentro. Un clic fuera del
+   panel es un clic en el <dialog> (cierra), y la rueda o el touch sobre el
+   scrim llegan al <dialog>, donde se frenan (src/base/scroll-lock.js). */
+.dialog {
+  box-sizing: border-box;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: var(--arq-layout-gutter);
+  border: 0;
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-primary);
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+.dialog[open] {
+  display: flex;
+}
+
+/* Scrim color/overlay/scrim, funde al abrir y al cerrar */
+.dialog::backdrop {
+  background: var(--arq-color-overlay-scrim);
+  opacity: 0;
+  transition: opacity var(--panel-slow) var(--arq-motion-easing-standard);
+}
+
+.dialog.is-open::backdrop {
+  opacity: 1;
+}
+
+.dialog:not(.is-open) {
+  pointer-events: none;
+}
+
+/* Panel: fondo color/surface/default, borde border/default en
+   color/border/default, padding space/padding/xl-2xl y, entre bloques,
+   space/gap/lg. Centrado; si la pantalla es baja, se achica la lista. */
+.sheet {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-lg);
+  width: var(--arq-layout-filter-panel);
+  max-width: 100%;
+  max-height: 100%;
+  margin: auto;
+  padding: var(--arq-space-padding-xl-2xl);
+  border: var(--arq-border-default) solid var(--arq-color-border-default);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-default);
+  /* Entrada y salida: funde y sube un 2 % (como download-modal en Desktop) */
+  opacity: 0;
+  transform: translateY(2%);
+  transition-property: opacity, transform;
+  transition-duration: var(--panel-slow);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+.dialog.is-open .sheet {
+  opacity: 1;
+  transform: none;
+}
+
+/* Título role/heading-2 + cerrar (icon-button Large) */
+.header {
+  display: flex;
+  flex: none;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-md);
+}
+
+.title {
+  min-width: 0;
+  color: var(--arq-color-text-primary);
+}
+
+.search {
+  flex: none;
+}
+
+/* Lista: en Desktop, el alto de 5 filas (como el set); las demás se
+   desplazan adentro. Si la pantalla no alcanza, se achica. */
+.list,
+.empty {
+  flex: 0 1 auto;
+  min-height: 0;
+  block-size: calc(5 * (var(--arq-layout-search-thumb) + 2 * var(--arq-space-padding-md) + var(--arq-border-default)));
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.list > * {
+  flex: none;
+}
+
+/* State=No results: mensaje centrado, role/body-regular en
+   color/text/primary + ayuda role/body-compact en color/text/tertiary,
+   a space/gap/md. Sin CTA. */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--arq-space-gap-md);
+  text-align: center;
+}
+
+.empty[hidden] {
+  display: none;
+}
+
+.empty p {
+  margin: 0;
+}
+
+.empty-title {
+  color: var(--arq-color-text-primary);
+}
+
+.empty-hint {
+  color: var(--arq-color-text-tertiary);
+}
+
+/* «Comparar» a la derecha */
+.footer {
+  display: flex;
+  flex: none;
+  justify-content: flex-end;
+}
+
+/* Mobile: pantalla completa (sin márgenes ni borde); la lista ocupa el alto
+   que queda. Padding y gaps salen de los modos Mobile (32 y 20). Abajo suma
+   el área segura del teléfono (vale 0 sin viewport-fit=cover). */
+@media (max-width: 767px) {
+  .dialog {
+    padding: var(--arq-space-0);
+  }
+
+  .sheet {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    padding-bottom: calc(var(--arq-space-padding-xl-2xl) + env(safe-area-inset-bottom, var(--arq-space-0)));
+    border: 0;
+  }
+
+  .list,
+  .empty {
+    flex: 1 1 auto;
+    block-size: auto;
+  }
+}
+
+/* Reduced motion (DESIGN.md §6): sin desplazamiento, queda el fundido
+   (motion/duration/fade). */
+@media (prefers-reduced-motion: reduce) {
+  .sheet {
+    transform: none;
+    transition-property: opacity;
+    transition-duration: var(--arq-motion-duration-fade);
+    transition-timing-function: var(--arq-motion-easing-out);
+  }
+
+  .dialog::backdrop {
+    transition: opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out);
+  }
+}

@@ -27,7 +27,7 @@ product.data = null;
 // Size=Compact: mismos datos, sin selects ni link
 compact.size = 'compact';   // o <arq-compare-product size="compact" show-sku>
 compact.showSku = true;
-product.addEventListener('arq:add', () => abrirModalDeProductos()); // TODO: el modal no existe todavía
+product.addEventListener('arq:add', () => picker.show()); // compare-picker
 ```
 
 ## Props
@@ -43,7 +43,7 @@ product.addEventListener('arq:add', () => abrirModalDeProductos()); // TODO: el 
 - **No consulta Typesense**: la página arma `attributes` con `src/data/catalog.js` (`getCompare()`, que usa las mismas funciones de `src/data/variants.js` que la ficha) y vuelve a asignar `data` cuando cambian (AGENTS.md · Datos).
 - **Quitar** (icon-button `icon/close`, "Quitar {nombre}") emite `arq:remove { sku }`. Solo en Filled.
 - **Selects**: un `arq-select` Type=Filter, Size=Small y `hide-all` (sin «Todos») por atributo de variante (Figma, Comparativa · cambios), con la misma disponibilidad que la ficha (una opción que no forma un SKU va deshabilitada). Elegir emite `arq:change { field, value }`, donde `field` es el campo del atributo (`'altura'`, `'color_carcasa'`…); la página resuelve el nuevo SKU (`skuForAttribute()`) y vuelve a asignar `data`. La muestra de color solo aparece en los atributos de acabado (`showSwatch`, ver `select`).
-- **Empty es un `<button>`** que ocupa toda la caja: emite `arq:add` al clickear. `TODO` (diseño + código): no abre nada todavía — la ficha dice que más adelante abre un modal para elegir producto; por ahora solo está resuelto el Hover (fondo `color/surface/faint`, borde `color/border/strong`).
+- **Empty es un `<button>`** que ocupa toda la caja: emite `arq:add` al clickear. En Comparativa abre `compare-picker` («Agregar producto»). Hover (fondo `color/surface/faint`, borde `color/border/strong`).
 - El nombre es un link a la ficha (`icon/arrow-up-right`) con `aria-label` "Ver ficha de {nombre}".
 - La imagen mantiene proporción 1:1 (`aspect-ratio` bloqueado) con tope `layout/compare-media-max`: al cambiar el ancho de la columna, el alto de la media acompaña. **Empty no es 1:1**: ocupa el 100% del alto de la columna (como un Filled completo) — por eso `arq-compare-header` estira sus columnas a la misma altura (`align-items: stretch`).
 
