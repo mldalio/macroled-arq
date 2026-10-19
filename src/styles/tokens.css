@@ -135,7 +135,6 @@
   --arq-layout-filter-panel: 560px; /** Ancho de los paneles en Desktop: filter-panel (lateral sobre el scrim) y download-modal. En Mobile el CSS no usa este valor. */
   --arq-layout-table-thumb: 100px; /** Miniatura cuadrada de cada fila de la tabla de variantes (glosario de la ficha). */
   --arq-layout-compare-thumb: 48px; /** Foto cuadrada de compare-slot Size=Default (compare-bar y compare-header Compact en Desktop). */
-  --arq-layout-compare-thumb-sm: 28px; /** Ancho de compare-slot Size=Compact (miniatura en Mobile). El alto sale de ratio/portrait (7:10). */
   --arq-layout-compare-slot: 400px; /** Ancho máximo de compare-slot Size=Default, para que no se estire en pantallas anchas. */
   --arq-layout-compare-label: 200px; /** Columna de etiquetas de la comparativa (compare-row, compare-group y la columna de controles de compare-header). En Mobile queda fija al desplazar. */
   --arq-layout-compare-column: 160px; /** Ancho de cada columna de producto de la comparativa en Mobile (con scroll horizontal). En Desktop las columnas se reparten el ancho. */
@@ -154,6 +153,7 @@
   --arq-layout-download-thumb: 72px; /** Miniatura cuadrada de cada fila y tarjeta de la tabla de Descargas (downloads-table) y del producto en el modal de descargas (download-modal show-product). */
   --arq-layout-catalog-cover: 168px; /** Ancho de la tapa del catálogo general en la página Descargas (168 Desktop · 104 Mobile). El alto sale de ratio/portrait-soft (4:5). */
   --arq-layout-download-search: 480px; /** Ancho del buscador de la tabla de Descargas (downloads-table). En Mobile el campo ocupa el ancho disponible. */
+  --arq-layout-compare-picker-list: 400px; /** Alto de la lista de compare-picker en Desktop: 5 filas de compare-picker-item (80 cada una); las demás se desplazan adentro. En Mobile el CSS no usa este valor (la lista ocupa el alto que queda en la pantalla completa). */
   --arq-motion-duration-fast: 120ms; /** Hover, toggle, foco. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-base: 200ms; /** Desplegables (disclosure) y menús. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-slow: 320ms; /** Fundido de imágenes de product-card y mensaje de form-message al aparecer. En ms. Con prefers-reduced-motion: 0. */
@@ -169,6 +169,7 @@
   --arq-motion-easing-illumination: cubic-bezier(0.1, 0.1, 0.95, 0.4); /** Iluminar: curva del fondo. Calculada para que el brillo de la página cambie parejo, como un dimmer: el fundido entre claro y oscuro oscurece mucho al principio de la mezcla y esta curva lo compensa. */
   --arq-motion-easing-illumination-image: cubic-bezier(0.42, 0, 0.58, 1); /** Iluminar: curva del fundido de las fotos (entrada y salida suaves). */
   --arq-motion-scale-pressed: 0.97; /** Escala de button e icon-button mientras se presionan (State=Pressed, :active en código). Se anima con motion/duration/fast y motion/easing/out. Con prefers-reduced-motion no cambia de tamaño. Sin unidad. */
+  --arq-opacity-disabled: 0.5; /** Opacidad de una imagen o parte gráfica deshabilitada (la miniatura de compare-picker-item Disabled). En Figma 0–100 (50 = 50 %); en código 0–1 (0.5). El texto deshabilitado no usa opacidad: va en color/text/disabled. */
   --arq-space-section-2xs: var(--arq-space-32); /** Separación mínima entre bloques de página. */
   --arq-space-section-xs: var(--arq-space-48); /** Separación ajustada entre bloques de página. */
   --arq-space-section-sm: var(--arq-space-64); /** Separación reducida entre bloques de página. */

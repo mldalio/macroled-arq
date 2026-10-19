@@ -157,21 +157,6 @@
         }
       }
     },
-    "compare-thumb-sm": {
-      "$type": "number",
-      "$value": 28,
-      "$description": "Ancho de compare-slot Size=Compact (miniatura en Mobile). El alto sale de ratio/portrait (7:10).",
-      "$extensions": {
-        "com.figma": {
-          "scopes": [
-            "WIDTH_HEIGHT"
-          ],
-          "codeSyntax": {
-            "WEB": "var(--arq-layout-compare-thumb-sm)"
-          }
-        }
-      }
-    },
     "compare-slot": {
       "$type": "number",
       "$value": 400,
@@ -434,6 +419,21 @@
           ],
           "codeSyntax": {
             "WEB": "var(--arq-layout-download-search)"
+          }
+        }
+      }
+    },
+    "compare-picker-list": {
+      "$type": "number",
+      "$value": 400,
+      "$description": "Alto de la lista de compare-picker en Desktop: 5 filas de compare-picker-item (80 cada una); las demás se desplazan adentro. En Mobile el CSS no usa este valor (la lista ocupa el alto que queda en la pantalla completa).",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-compare-picker-list)"
           }
         }
       }
