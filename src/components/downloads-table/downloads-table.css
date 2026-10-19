@@ -164,8 +164,9 @@
 th,
 td {
   padding: 0 var(--arq-space-gap-lg) 0 0;
+  --cell-bg: var(--arq-color-surface-default);
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
-  background: var(--arq-color-surface-default);
+  background: var(--cell-bg);
   text-align: start;
   white-space: nowrap;
   vertical-align: middle;
@@ -189,7 +190,7 @@ tbody td {
 
 @media (hover: hover) and (pointer: fine) {
   tbody tr:hover > * {
-    background: var(--arq-color-surface-faint);
+    --cell-bg: var(--arq-color-surface-faint);
   }
 }
 
@@ -258,6 +259,57 @@ td.end {
 @media (max-width: 1023px) {
   .sku-col {
     position: static;
+  }
+}
+
+/* Más fila por ver: un difuminado de space/gap/3xl junto a las columnas fijas,
+   del transparente al fondo de la celda (también en Hover), del lado donde
+   queda contenido. Lo marca el JS (.more-start / .more-end). Aparece y se va
+   con motion/duration/fast. TODO (diseño): no está en la propuesta; pedido
+   2026-10-19. */
+.end::before,
+.sku-col::after,
+.start::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--arq-space-gap-3xl);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);
+}
+
+.end::before {
+  right: 100%;
+  background: linear-gradient(to right, var(--arq-color-surface-transparent), var(--cell-bg));
+}
+
+.sku-col::after,
+.start::after {
+  left: 100%;
+  background: linear-gradient(to left, var(--arq-color-surface-transparent), var(--cell-bg));
+}
+
+/* Del lado de inicio, junto a la última columna fija: producto desde
+   1024 px, miniatura hasta 1023 px. Cada difuminado existe solo donde su
+   columna es fija: sin sticky, se ubicaría respecto de la página y
+   agrandaría su ancho (scroll horizontal de toda la página). */
+.more-end .end::before,
+.more-start .sku-col::after,
+.more-start .start::after {
+  opacity: 1;
+}
+
+@media (min-width: 1024px) {
+  .start::after {
+    content: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .sku-col::after {
+    content: none;
   }
 }
 

@@ -150,6 +150,19 @@
       calc(var(--arq-space-padding-lg) + env(safe-area-inset-bottom, var(--arq-space-0)));
   }
 
+  .footer {
+    justify-content: flex-start;
+  }
+
+  .apply {
+    flex: 1 1 auto;
+  }
+}
+
+/* Hasta 1023 px (Mobile y Tablet) los listados no muestran el sidebar
+   (AGENTS.md: catalog-nav-mobile hasta 1023 px): las categorías van en una
+   pestaña del panel. */
+@media (max-width: 1023px) {
   :host([show-categories]) .tabs {
     display: flex;
     flex: none;
@@ -160,14 +173,6 @@
 
   .categories-panel {
     min-width: 0;
-  }
-
-  .footer {
-    justify-content: flex-start;
-  }
-
-  .apply {
-    flex: 1 1 auto;
   }
 }
 

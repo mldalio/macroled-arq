@@ -45,9 +45,9 @@ El HTML del embed completo está en [src/pages/contacto.html](../../pages/contac
 
 ## Layout
 
-| Parte | Desktop | Mobile |
+| Parte | Desktop (desde 1024 px) | Mobile (y Tablet, 768–1023 px) |
 | --- | --- | --- |
-| Bloque | dos columnas 2:3 a `space/gap/6xl`; `space/section/md` arriba, `space/section/xl` abajo, `layout/gutter` a los lados | apiladas a `space/gap/6xl` |
+| Bloque | dos columnas 2:3 a `space/gap/6xl`; `space/section/md` arriba, `space/section/xl` abajo, `layout/gutter` a los lados | apiladas a `space/gap/6xl`. En Tablet los campos siguen de a dos, la bajada llega hasta `layout/measure-wide` y el envío no ocupa todo el ancho |
 | Información | fija al desplazar (`position: sticky`, a `space/section/md` del borde). Intro (título y bajada a `space/gap/lg`, con línea inferior `color/border/default` y `space/padding/lg`), canales y links a `space/gap/2xl` | sin sticky |
 | Formulario | secciones a `space/gap/3xl`, sin fondo; dentro, `space/gap/lg`. Título de cada sección: `<legend>` con el dibujo de form-section-header (`role/heading-3`, línea `color/border/default`, padding inferior `space/padding/sm`) | ídem |
 | Tipo de consulta | chips con su ancho a `space/gap/sm-md`, en varias líneas si no entran | ídem |

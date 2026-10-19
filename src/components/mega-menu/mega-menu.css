@@ -167,3 +167,17 @@
 .preview-title {
   margin: 0;
 }
+
+/* Tablet (768–1023): el preview de layout/mega-menu-image dejaba a las
+   columnas sin lugar (nombres partidos, «Ver todo…» cortado). Se oculta y el
+   contenido toma todo el ancho, con layout/gutter también a la derecha.
+   TODO (diseño): el set no tiene Tablet. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .preview {
+    display: none;
+  }
+
+  .panel {
+    padding-inline-end: var(--page-gutter);
+  }
+}

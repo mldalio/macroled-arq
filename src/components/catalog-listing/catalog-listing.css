@@ -124,11 +124,15 @@
   }
 }
 
-@media (max-width: 767px) {
+/* Mobile y Tablet: en Productos las categorías van en una pestaña de
+   filter-panel, no arriba de la grilla */
+@media (max-width: 1023px) {
   :host(:not([unit='colecciones'])) .nav {
     display: none;
   }
+}
 
+@media (max-width: 767px) {
   .content {
     gap: var(--arq-space-gap-xl);
   }
