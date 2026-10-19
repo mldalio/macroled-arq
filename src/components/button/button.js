@@ -49,6 +49,7 @@ class ArqButton extends ArqElement {
     href: { type: String },
     target: { type: String },
     submit: { type: Boolean }, // envía el <form> (no es prop de Figma)
+    compact: { type: Boolean }, // texto en role/body-compact-regular (14/24); solo de código (announcement-bar)
   };
   // Sin espacios entre etiquetas, para no sumar espacios al nombre accesible.
   // El texto de count-label va junto al slot, dentro del label.

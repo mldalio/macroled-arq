@@ -155,6 +155,31 @@
   color: var(--arq-color-action-primary);
 }
 
+/* compact (solo de código; en Figma, override del label en announcement-bar):
+   texto en role/body-compact-regular
+   (14/24) en lugar de role/body-regular. Mismo peso; cambian tamaño e
+   interlineado. Lo usa announcement-bar. */
+:host([compact]) .control {
+  font-size: var(--arq-type-body-compact-size);
+  line-height: var(--arq-type-body-compact-leading);
+}
+
+/* compact + Underline: con 14 px en una línea de 24 sobra aire debajo del
+   texto, así que el subrayado sube: arranca space/padding/2xs antes del borde
+   inferior de la caja del texto (en lugar de 3 px debajo). Más fino: queda
+   en border/default (1 px) también en hover y pressed. */
+:host([compact][type='underline']) .text::after,
+:host([compact][type='underline']) .control:not(.inactive):active .text::after {
+  top: calc(100% - var(--arq-space-padding-2xs));
+  height: var(--arq-border-default);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :host([compact][type='underline']) .control:not(.inactive):hover .text::after {
+    height: var(--arq-border-default);
+  }
+}
+
 /* ── Underline ────────────────────────────────────────────────── */
 
 :host([type='underline']) .control {

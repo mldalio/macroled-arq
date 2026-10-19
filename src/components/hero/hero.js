@@ -26,7 +26,8 @@
 //   se muestra si su slot tiene contenido.
 // - Es un <div> y no un <header>: el banner de la página es el navbar.
 // - full-height (solo código, la usa la Home): ocupa todo el alto del viewport
-//   (100svh) en Desktop y Mobile, en lugar de 70svh.
+//   (100svh) en Desktop y Mobile, en lugar de 70svh. Si hay announcement-bar,
+//   descuenta su alto: barra + hero ocupan la pantalla.
 // - size="compact" (Size=Compact, Contacto): título en role/display-lg y hero
 //   más bajo (decisiones.md, 2026-10-14 · Contacto v3).
 
@@ -64,6 +65,13 @@ class ArqHero extends ArqElement {
       slot.addEventListener('slotchange', () => this.update());
     }
     this.#reducedMotion.addEventListener('change', () => this.#syncVideo());
+    // full-height: con announcement-bar arriba del navbar, la barra y el hero
+    // juntos ocupan la pantalla. Se mide la barra (si el texto baja de línea,
+    // cambia de alto) y se descuenta en el CSS con --announcement-height.
+    const bar = document.querySelector('arq-announcement-bar');
+    if (bar) {
+      new ResizeObserver(() => this.style.setProperty('--announcement-height', `${bar.offsetHeight}px`)).observe(bar);
+    }
   }
 
   update() {

@@ -59,6 +59,7 @@ import './components/search-card/search-card.js';
 import './components/search-collection/search-collection.js';
 import './components/search-sheet/search-sheet.js';
 import './components/navbar/navbar.js';
+import './components/announcement-bar/announcement-bar.js';
 import './components/contact-item/contact-item.js';
 import './components/link-list/link-list.js';
 import './components/sku/sku.js';

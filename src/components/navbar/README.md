@@ -31,7 +31,7 @@ Barra de navegación de Macroled Arq, primer elemento de todas las páginas: log
 - **Búsqueda (Desktop):** la lupa se reemplaza por `arq-search-field` (ancho `layout/search-field`) con el foco adentro. Al escribir aparece `arq-search-dropdown` debajo, con hasta 5 resultados y "Ver todos los resultados". ↑ / ↓ marcan el resultado activo (el foco sigue en el campo), Enter lo abre (o va a `/arq/productos?q=` si no hay activo). Esc cierra el dropdown y después la búsqueda; la cruz cierra.
 - **Mobile:** el menú es un diálogo modal a pantalla completa (Mode=Menu) con los nav-link apilados; el foco arranca en cerrar. Productos entra al submenú (Mode=Products, set 841:2325): volver y una fila por nivel (Interior, Exterior, Lámparas y artefactos, Colecciones; `arq-mega-link submenu`, chevron-right). Un nivel sin datos no aparece. Cada fila entra a su nivel (Mode Interior · Exterior · Lámparas y artefactos · Colecciones): volver con el nombre del nivel, links en `arq-mega-link` Size=Large y "Ver todo…" al pie; Colecciones con miniatura, la lista se desplaza y "Ver todo" queda fijo abajo (frame 2295:23605). Lámparas y artefactos (set 2312:8904) tiene dos grupos, Lámparas y Artefactos: cada uno con su eyebrow (role/label en `color/text/tertiary`), un link por producto con miniatura (la foto de estudio) y su "Ver todo…" (→); la lista entera se desplaza, con los dos "Ver todo…" adentro. Esc vuelve un paso; al volver, el foco queda en la fila de la que se salió. La lupa abre `arq-search-screen`.
 - **Transparent:** fondo `color/overlay/translucent` con `blur/backdrop`; logo, nav-links (Theme=Inverse) e íconos en inverso. Sigue transparente mientras la barra está sobre el hero (el primer `<arq-hero>` de la página) y pasa a Default al dejarlo atrás; sin hero, al empezar a desplazar la página. Con la búsqueda abierta (Desktop) sigue sobre la foto, con `arq-search-field` en blanco (como en Default). La lupa y el menú van en Dark local (`data-arq-theme="dark"`) sobre la foto: ícono claro y hover y foco oscuros, sin el cuadrado claro de `color/surface/hover`. Pasa a Default con el menú mobile o el mega-menu abiertos, y siempre con `prefers-reduced-transparency: reduce` o `prefers-contrast: more` (el texto claro sobre la foto puede no leerse).
-- **Posición:** sticky arriba en Default; fixed en Transparent, encima del hero.
+- **Posición:** sticky arriba en los dos Theme. Transparent queda encima del hero con un margen inferior negativo (su alto, 56). Si arriba hay un `<arq-announcement-bar>`, el navbar arranca debajo y se pega arriba cuando la barra se va con el scroll.
 - **Datos:** navegación y búsqueda salen de `src/data/catalog.js` (decisión 2026-10-02 · navbar).
 - **Dark (Iluminar en la ficha):** `data-arq-theme="dark"` en el `<arq-navbar>` (DESIGN.md §2).
 
@@ -48,7 +48,7 @@ Barra de navegación de Macroled Arq, primer elemento de todas las páginas: log
 ## Pendientes
 
 - icon-button no tiene Theme=Inverse: sobre la foto se usa Dark local (hover `color/surface/hover` en Dark), como dice la descripción del set.
-- `TODO` (diseño) Confirmar la posición: sticky en Default y fixed en Transparent.
+- `TODO` (diseño) Confirmar la posición: sticky en Default y en Transparent (encima del hero).
 - `TODO` (diseño) Foco sobre la foto (Transparent): `color/border/focus` se ve poco sobre una foto oscura.
 
 
