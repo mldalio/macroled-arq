@@ -267,7 +267,8 @@ Opción seleccionable en forma de chip para elegir entre pocas opciones visibles
 - Figma: [1233-3963](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1233-3963)
 - Propiedades: Title; Breakpoint: Desktop · Mobile; Open: True · False
 
-Barra fija inferior para comparar productos (hasta 3). Título + count-badge con la cantidad seleccionada, compare-slot (Filled/Empty) y acciones: button Underline «Borrar todo» y Filled «Comparar». Usa el tema oscuro (modo Dark de Color) fijado en cada variante. Desktop: slots Size=Default separados por divider Vertical. Mobile (como macroled.com.ar): solo los productos elegidos, uno arriba de otro (compare-slot Default con divider Horizontal Subtle) y «Comparar» debajo a todo el ancho. Open (Desktop y Mobile): el título lleva un chevron que pliega la lista (chevron-down abierta, chevron-up plegada); plegada quedan el título, «Borrar todo» y «Comparar» (en Desktop, en una sola línea y con el chevron en la punta derecha). Arranca abierta y se vuelve a abrir al agregar un producto.
+Barra fija inferior para comparar productos (hasta 3). Título + count-badge con la cantidad seleccionada, compare-slot (Filled/Empty) y acciones: button Underline «Borrar todo» y Filled «Comparar». Usa el tema oscuro (modo Dark de Color) fijado en cada variante. Desktop: slots Size=Default separados por divider Vertical. Mobile (como macroled.com.ar): los productos elegidos, uno arriba de otro (compare-slot Default con divider Horizontal Subtle), más un solo lugar vacío (compare-slot Empty) para agregar mientras haya menos de 3, y «Comparar» debajo a todo el ancho. El lugar vacío abre compare-picker. Se ve también en «Todas las colecciones». Open (Desktop y Mobile): el título lleva un chevron que pliega la lista (chevron-down abierta, chevron-up plegada); plegada quedan el título, «Borrar todo» y «Comparar» (en Desktop, en una sola línea y con el chevron en la punta derecha). Arranca abierta y se vuelve a abrir al agregar un producto.
+Movimiento (código): entra desde el borde de abajo al elegir el primer producto y sale por el mismo borde, como un panel: motion/duration/panel con motion/easing/standard, como filter-panel. El espacio que el listado reserva abajo se quita recién cuando la barra terminó de salir. Al plegar y desplegar con el chevron (Open), la barra se desliza igual: el borde de arriba baja o sube a su lugar nuevo con motion/duration/panel y motion/easing/standard. Con reduced motion, solo el fundido (motion/duration/fade).
 
 Movimiento (código): entra desde el borde de abajo al elegir el primer producto y sale por el mismo borde, como un panel: motion/duration/panel con motion/easing/standard, como filter-panel. El espacio que el listado reserva abajo se quita recién cuando la barra terminó de salir. Al plegar y desplegar con el chevron (Open), la barra se desliza igual: el borde de arriba baja o sube a su lugar nuevo con motion/duration/panel y motion/easing/standard. Con reduced motion, solo el fundido (motion/duration/fade).
 
@@ -290,14 +291,14 @@ Cabecera de la comparativa. Type=Default: columna de controles (toggle "Solo dif
 - Figma: [2724-8761](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2724-8761)
 - Propiedades: Breakpoint: Desktop · Mobile; State: Results · No results
 
-Modal «Agregar producto» de la comparativa. Se abre desde el slot vacío (+) del compare-bar en Productos y desde el compare-product vacío / «+ Agregar producto» en Comparativa. Desktop: modal centrado sobre scrim. Mobile: pantalla completa. Sin resultados: solo mensaje, sin CTA; se sigue buscando en el mismo modal.
+Modal «Agregar producto» de la comparativa. Se abre desde el lugar vacío (+) del compare-bar en Productos y Colecciones (en Mobile, el lugar vacío debajo de los elegidos) y desde el compare-product vacío / «+ Agregar producto» en Comparativa. Buscador (search-field Type=Line) por nombre, SKU o familia; sin chips de categoría (se sacaron: se busca solo con el buscador). Lista de compare-picker-item (Added si ya está; Disabled con 3 elegidos). Al pie, «Ver todos los productos»: button Underline con subrayado e icon/arrow-right, lleva al listado de Productos. Desktop: modal centrado sobre scrim, ancho layout/filter-panel, la lista mide layout/compare-picker-list (400: 5 filas; las demás se desplazan adentro) y el panel abraza el contenido. Mobile: pantalla completa. Sin resultados: solo mensaje, sin CTA; se sigue buscando en el mismo modal. Siempre en Light. En código: <arq-compare-picker>.
 
 ## compare-picker-item
 
 - Figma: [2723-8420](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2723-8420)
 - Propiedades: State: Default · Hover · Added · Disabled
 
-Fila del modal «Agregar producto» de la comparativa. Default/Hover: botón Agregar. Added: el producto ya está en la comparativa. Disabled: se alcanzó el máximo de 3 productos.
+Fila del modal «Agregar producto» de la comparativa. Default/Hover: botón Agregar (Hover: fondo color/surface/hover). Added: el producto ya está en la comparativa («Agregado»). Disabled: se alcanzó el máximo de 3 productos; textos en color/text/disabled y la miniatura con opacity/disabled (50 %). Miniatura layout/search-thumb. En código: <arq-compare-picker-item>.
 
 ## compare-product
 
@@ -316,9 +317,9 @@ Fila de la tabla comparativa: etiqueta + un valor por producto (hasta 3; Show va
 ## compare-slot
 
 - Figma: [1233-3656](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1233-3656)
-- Propiedades: Name; Meta; Size: Default · Compact; State: Filled · Empty
+- Propiedades: Name; Meta; State: Filled · Empty · empty-hover
 
-Lugar de producto en compare-bar (compare-header Compact usa compare-product Size=Compact). State=Filled (foto en "thumb": reemplazá el relleno por la imagen del producto, nombre, meta e icon-button para quitar) / Empty (agregar producto). Size=Default para desktop, Compact (solo miniatura) para mobile. Size=Default tiene ancho máximo 400 para que no se estire en pantallas anchas.
+Lugar de producto en compare-bar (compare-header Compact usa compare-product Size=Compact). State=Filled (foto en "thumb": reemplazá el relleno por la imagen del producto, nombre, meta e icon-button para quitar) / Empty (agregar producto): la foto en color/surface/subtle con el «+» resaltado y «Agregar producto», dentro de una caja punteada (border/default dashed en color/border/default, padding derecho space/padding/md), como el lugar vacío de compare-product Compact. Todo el lugar es un botón (cursor pointer) que abre compare-picker. State=empty-hover (como empty-hover de compare-product): fondo color/surface/faint y borde punteado color/border/strong; en código es :hover. Un solo tamaño, en Desktop y en la lista apilada de Mobile (Size=Compact se quitó: ya no se usaba). Ancho máximo 400 para que no se estire en pantallas anchas.
 
 ## contact-item
 

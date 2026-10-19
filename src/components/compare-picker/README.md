@@ -57,14 +57,10 @@ Lo usan `catalog-listing` (Productos: agrega a la compare-bar) y `comparativa` (
 | Scrim | `color/overlay/scrim` |
 | Título | `role/heading-2` en `color/text/primary`; cerrar: icon-button Large |
 | Buscador | search-field `type="line"` |
-| Lista | compare-picker-item; en Desktop, el alto de 5 filas (las demás se desplazan adentro) |
+| Lista | compare-picker-item; en Desktop, alto `layout/compare-picker-list` (400: 5 filas; las demás se desplazan adentro) |
 | Sin resultados | `role/body-regular` en `color/text/primary` + `role/body-compact` en `color/text/tertiary`, a `space/gap/md`, centrado |
 | Ver todos los productos | button Underline con subrayado (`show-underline`) e `icon/arrow-right`, a la derecha |
 
 ## Pendientes
 
-- `TODO` (Figma): no hay ficha `doc/compare-picker` ni `doc/compare-picker-item` en la página Documentación.
-- `TODO` (diseño): el alto del panel en Desktop no tiene token: se arma con 5 filas de lista, como el set (sin los chips queda más bajo que los 760 del set). Si la pantalla es más baja, la lista se achica.
-- `TODO` (diseño): la lupa del buscador sale de search-field `type="line"` (`color/icon/tertiary`); el set del modal la dibuja con `color/icon/primary`.
-- `TODO` (Figma): sacar del set los choice-chip de categoría y cambiar «Comparar» (Filled) por «Ver todos los productos» (Underline), como en código.
-- `TODO` (Figma): en Mobile, la compare-bar suma un lugar vacío debajo de los elegidos para abrir el modal; el set de compare-bar Mobile no lo muestra.
+- `TODO` (datos): sin texto de diseño para cuando la búsqueda vacía no trae productos (hoy «No encontramos productos.»; no pasa con el catálogo actual).

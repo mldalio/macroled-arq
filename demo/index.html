@@ -1021,17 +1021,12 @@
 
       <section class="demo-section" aria-labelledby="demo-compare-slot">
         <h2 id="demo-compare-slot" class="demo-heading role-label">compare-slot · &lt;arq-compare-slot&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 1233:3656. Default (foto layout/compare-thumb, ancho máximo layout/compare-slot) y Compact (miniatura 7:10). Filled si tiene nombre; Empty «Agregar producto»: todo el lugar es un botón que emite arq:add (en Productos abre compare-picker). Quitar emite arq:remove. Solo se usa en compare-bar: el compare-header Compact usa compare-product Size=Compact.</p>
+        <p class="demo-note role-body-sm">Figma 1233:3656. Foto layout/compare-thumb, ancho máximo layout/compare-slot; un solo tamaño (Compact se quitó). Filled si tiene nombre; Empty «Agregar producto»: todo el lugar es un botón que emite arq:add (en Productos abre compare-picker); pasale el mouse para ver empty-hover. Quitar emite arq:remove. Solo se usa en compare-bar: el compare-header Compact usa compare-product Size=Compact.</p>
         <div class="demo-dark" data-arq-theme="dark">
           <div class="demo-compare-slots">
             <arq-compare-slot sku="KANU-J-500-12W-N-WW" image="/demo/fixtures/img/card-estudio.svg"><span slot="name">Kanu Jardín</span><span slot="meta">Exterior · Jardín</span></arq-compare-slot>
             <arq-compare-slot sku="LARGO"><span slot="name">Producto con un nombre largo que ocupa dos líneas</span><span slot="meta">Interior · Embutir · Colgante</span></arq-compare-slot>
             <arq-compare-slot></arq-compare-slot>
-          </div>
-          <div class="demo-row">
-            <arq-compare-slot size="compact" image="/demo/fixtures/img/card-estudio.svg"><span slot="name">Kanu Jardín</span></arq-compare-slot>
-            <arq-compare-slot size="compact"><span slot="name">Sin imagen</span></arq-compare-slot>
-            <arq-compare-slot size="compact"></arq-compare-slot>
           </div>
         </div>
       </section>

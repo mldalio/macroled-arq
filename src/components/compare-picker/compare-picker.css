@@ -94,13 +94,14 @@
   flex: none;
 }
 
-/* Lista: en Desktop, el alto de 5 filas (como el set); las demás se
-   desplazan adentro. Si la pantalla no alcanza, se achica. */
+/* Lista: en Desktop, layout/compare-picker-list (5 filas, como el set); las
+   demás se desplazan adentro y el panel abraza el contenido. Si la pantalla
+   no alcanza, se achica. */
 .list,
 .empty {
   flex: 0 1 auto;
   min-height: 0;
-  block-size: calc(5 * (var(--arq-layout-search-thumb) + 2 * var(--arq-space-padding-md) + var(--arq-border-default)));
+  block-size: var(--arq-layout-compare-picker-list);
 }
 
 .list {

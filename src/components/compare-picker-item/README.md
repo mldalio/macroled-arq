@@ -34,11 +34,7 @@ Fila del modal «Agregar producto» de la comparativa (`compare-picker`): miniat
 
 | Parte | Token |
 | --- | --- |
-| Fila | padding `space/padding/md` × `space/padding/sm-md`, gap `space/gap/md`, línea inferior `border/default` en `color/border/subtle`; Hover `color/surface/hover` |
-| Miniatura | `layout/search-thumb` (48 × 48), fondo `color/surface/subtle` |
+| Fila | 80 de alto como el set (la línea va dentro: se descuenta del padding de abajo); padding `space/padding/md` × `space/padding/sm-md`, gap `space/gap/md`, línea inferior `border/default` en `color/border/subtle`; Hover `color/surface/hover` |
+| Miniatura | `layout/search-thumb` (48 × 48), fondo `color/surface/subtle`; Disabled con `opacity/disabled` (0,5) |
 | Textos | nombre `role/body-compact-regular` en `color/text/primary`; meta `role/caption` en `color/text/tertiary`; gap `space/gap/xs` |
 | Botón | button Outline (Disabled: `color/border/disabled` y `color/text/disabled`) |
-
-## Pendientes
-
-- `TODO` (token): no hay token de opacidad; la miniatura Disabled va al 50 % (`0.5`, como `--busy-opacity` de catalog-listing).

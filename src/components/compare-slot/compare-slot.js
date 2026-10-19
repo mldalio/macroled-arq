@@ -1,27 +1,25 @@
 // compare-slot · Figma 1233:3656 · ficha doc/compare-slot
 //
-// Lugar de producto en compare-bar (y en compare-header Compact).
+// Lugar de producto en compare-bar (Desktop y la lista apilada de Mobile).
 //
 //   <arq-compare-slot image="…/kanu.jpg" sku="KANU-J-500-12W-N-WW">
 //     <span slot="name">Kanu Jardín</span>
 //     <span slot="meta">Exterior · Jardín</span>
 //   </arq-compare-slot>
 //   <arq-compare-slot></arq-compare-slot>                       Empty
-//   <arq-compare-slot size="compact" image="…">…</arq-compare-slot>
 //
 // - State: Filled si tiene nombre; Empty ("Agregar producto") si no. Lo pone el
 //   componente (atributo filled).
-// - Size=Default: foto (layout/compare-thumb) + nombre (role/label) + meta y
-//   quitar (icon-button); ancho máximo layout/compare-slot. Size=Compact: solo
-//   la miniatura (layout/compare-thumb-sm, ratio/portrait); el nombre queda
-//   para lectores de pantalla.
+// - Foto (layout/compare-thumb) + nombre (role/label) + meta y quitar
+//   (icon-button); ancho máximo layout/compare-slot. Un solo tamaño: Size=Compact
+//   se quitó del set y del código (decisiones.md, 2026-10-19).
 // - Quitar emite arq:remove { sku }.
 // - Empty es clickeable: todo el lugar es un botón «Agregar producto» que
 //   emite arq:add (en Productos abre compare-picker). Mantiene el dibujo del
 //   set (foto en color/surface/subtle con el «+» resaltado y el texto) dentro
 //   de una caja punteada, como el lugar vacío de compare-product Compact
 //   (Comparativa); Hover con fondo color/surface/faint y borde
-//   color/border/strong. TODO (diseño): pasar la caja y el Hover al set.
+//   color/border/strong (en el set, State=empty-hover; en código, :hover).
 
 import { ArqElement } from '../../base/arq-element.js';
 import { icon } from '../../base/icons.js';
@@ -32,7 +30,6 @@ class ArqCompareSlot extends ArqElement {
   static tag = 'arq-compare-slot';
   static styles = css;
   static properties = {
-    size: { type: String, values: ['default', 'compact'], default: 'default' }, // Size
     filled: { type: Boolean }, // State=Filled (lo pone el componente)
     image: { type: String }, // foto del producto
     sku: { type: String }, // identifica el producto en arq:remove
@@ -80,7 +77,7 @@ class ArqCompareSlot extends ArqElement {
     root.querySelector('.empty').textContent = filled ? '' : this.emptyLabel ?? '';
     const remove = root.querySelector('.remove');
     remove.textContent = `Quitar ${name}`;
-    remove.hidden = !filled || this.size === 'compact';
+    remove.hidden = !filled;
     const add = root.querySelector('.add');
     add.hidden = filled;
     add.setAttribute('aria-label', this.emptyLabel ?? '');
