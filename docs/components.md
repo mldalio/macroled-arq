@@ -286,6 +286,8 @@ Título de grupo de la tabla comparativa (role/body-xl en caja normal, color/tex
 
 Cabecera de la comparativa. Type=Default: columna de controles (toggle "Solo diferencias") + compare-product por columna; es estática. Type=Compact: versión mini que aparece fija arriba (position: fixed/sticky bajo el navbar) cuando la cabecera Default sale de pantalla; usa compare-product Size=Compact (miniatura + nombre + quitar; el SKU solo en Desktop; un lugar libre es la caja «Agregar producto»). compare-slot queda solo para compare-bar. En mobile las columnas (144 + gap 16) se alinean con compare-row Mobile y el scroll horizontal se sincroniza con la tabla; la columna de controles (120) queda fija.
 
+> **En código (2026-10-19):** en Mobile, el Compact funciona como macroled.com.ar/comparativa: cada producto ocupa una columna de compare-table (layout/compare-column, mismas líneas verticales color/border/subtle) con la miniatura, el nombre y el SKU apilados y centrados, sin recortar; quitar en la esquina y «Agregar producto» del alto de la columna. Se desplaza junto con la tabla. Desktop no cambia. `TODO` (Figma): el set Compact/Mobile (1265:4329) sigue en una fila con el nombre solo.
+
 ## compare-picker
 
 - Figma: [2724-8761](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2724-8761)
