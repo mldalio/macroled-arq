@@ -30,6 +30,7 @@
      la página; si no, pasaba a oscuro en un instante y se veía entre las dos
      fotos mientras fundían */
   transition-property: background-color;
+  transition-delay: 0s; /* sin el retraso del texto de la hoja base: el fondo de la foto funde a la par del de la página */
   transition-duration: var(--arq-illumination-bg-duration, var(--arq-motion-duration-fast));
   transition-timing-function: var(--arq-illumination-bg-easing, var(--arq-motion-easing-standard));
 }
@@ -78,8 +79,8 @@
 .hover {
   opacity: 0;
   transition-property: opacity, color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
-  transition-duration: var(--arq-hover-image-duration, var(--arq-motion-duration-slow));
-  transition-timing-function: var(--arq-hover-image-easing, var(--arq-motion-easing-standard));
+  transition-duration: var(--arq-motion-duration-slow);
+  transition-timing-function: var(--arq-motion-easing-standard);
 }
 
 .card.has-hover:has(.card-link:focus-visible) .hover {

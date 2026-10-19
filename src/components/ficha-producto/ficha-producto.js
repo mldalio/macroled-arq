@@ -40,7 +40,7 @@
 //   TODO (diseño): el PDF no tiene diseño; se genera cuando exista.
 
 import { ArqElement } from '../../base/arq-element.js';
-import { animateThemeChange, refreshTheme, takeThemeHandoff, withoutThemeTransition } from '../../base/theme.js';
+import { animateThemeChange, refreshTheme, setBrowserBar, takeThemeHandoff, withoutThemeTransition } from '../../base/theme.js';
 import { getProduct, variantDetails, collectionHref } from '../../data/catalog.js';
 import { attributeInfo } from '../../data/attributes.js';
 import { variantOptions, initialSelection, findVariant, choose } from '../../data/variants.js';
@@ -336,6 +336,7 @@ class ArqFichaProducto extends ArqElement {
       else element.removeAttribute('data-arq-theme');
     }
     refreshTheme(); // el observer de theme.js no ve el cambio dentro del Shadow DOM
+    setBrowserBar(dark, document.querySelector('arq-navbar') ?? hero); // la barra del navegador sigue al navbar
   }
 
   // ── Configurador ──────────────────────────────────────────────────

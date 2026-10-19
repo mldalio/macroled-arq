@@ -17,10 +17,73 @@
   display: flex;
   flex-direction: column;
   gap: var(--arq-space-gap-md);
-  padding: var(--arq-space-padding-md) var(--page-gutter);
+  /* Abajo suma el área segura del teléfono (indicador de inicio del iPhone),
+     como filter-panel; vale 0 si el sitio no usa viewport-fit=cover. */
+  padding: var(--arq-space-padding-md) var(--page-gutter)
+    calc(var(--arq-space-padding-md) + env(safe-area-inset-bottom, var(--arq-space-0)));
   border-top: var(--arq-border-default) solid var(--arq-color-border-default);
   background: var(--arq-color-surface-default);
   color: var(--arq-color-text-primary);
+}
+
+/* Entrada y salida por el borde de abajo (el mismo camino), como un panel:
+   motion/duration/panel con motion/easing/standard, como filter-panel y
+   download-modal (decisión 2026-10-19 · Sidebar de catálogo y compare-bar).
+   Con motion/easing/out hacía casi todo el recorrido en los primeros 150 ms y
+   la entrada se seguía viendo como un salto. .animate lo pone el JS después
+   del primer render: si la página carga con productos ya elegidos, la barra
+   está sin animar. display con allow-discrete deja ver la salida antes del
+   display: none de [hidden] (sin soporte, se oculta de golpe). */
+.bar.animate {
+  transition-property: transform, display;
+  transition-duration: var(--arq-motion-duration-panel);
+  transition-timing-function: var(--arq-motion-easing-standard);
+  transition-behavior: allow-discrete;
+}
+
+.bar.animate[hidden] {
+  transform: translateY(100%);
+}
+
+@starting-style {
+  .bar.animate {
+    transform: translateY(100%);
+  }
+}
+
+/* Plegar y desplegar con el chevron (Open): la barra se desliza como al
+   entrar (lo hace el JS, #slide). Al plegar arranca más arriba de su lugar y
+   baja: este fondo debajo de la barra (fuera de la pantalla en reposo) tapa lo
+   que quedaría a la vista entre la barra y el borde de la pantalla. */
+.bar::after {
+  content: '';
+  position: absolute;
+  inset: 100% 0 auto;
+  height: 100svh;
+  background: inherit;
+  pointer-events: none;
+}
+
+/* Reduced motion (DESIGN.md §6): sin desplazamiento, queda el fundido
+   (motion/duration/fade) */
+@media (prefers-reduced-motion: reduce) {
+  .bar.animate {
+    transition-property: opacity, display;
+    transition-duration: var(--arq-motion-duration-fade);
+  }
+
+  .bar.animate[hidden] {
+    transform: none;
+    opacity: 0;
+    transition-duration: var(--arq-motion-duration-fade);
+  }
+
+  @starting-style {
+    .bar.animate {
+      transform: none;
+      opacity: 0;
+    }
+  }
 }
 
 .head {
@@ -159,7 +222,7 @@
 @media (max-width: 767px) {
   .bar {
     gap: var(--arq-space-gap-sm-md);
-    padding-bottom: var(--arq-space-padding-lg);
+    padding-bottom: calc(var(--arq-space-padding-lg) + env(safe-area-inset-bottom, var(--arq-space-0)));
     border-top-color: var(--arq-color-border-subtle);
   }
 

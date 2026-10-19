@@ -42,6 +42,57 @@
   display: none;
 }
 
+/* Cargando otra categoría o filtros: la grilla que sigue a la vista se
+   atenúa para que se note que el clic llegó. Solo si la respuesta tarda más
+   que motion/duration/fast (una respuesta rápida no parpadea); vuelve al
+   instante. TODO (token): no hay opacidad semántica para «cargando». */
+.grid {
+  --busy-opacity: 0.5;
+  transition-property: opacity;
+  transition-duration: var(--arq-motion-duration-fast);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+:host([aria-busy='true']) .grid {
+  opacity: var(--busy-opacity);
+  transition-delay: var(--arq-motion-duration-fast);
+}
+
+/* Cards nuevas (otra categoría, filtros, búsqueda): entran con un fundido y
+   un desplazamiento de space/gap/sm hacia arriba, con motion/duration/base +
+   motion/easing/out, escalonadas de a motion/duration/fast ÷ 4 (≈30 ms). Solo
+   las 8 primeras llevan escalón (--enter-index, lo pone el JS); el resto entra
+   con la octava. */
+.grid > arq-product-card {
+  transition-property: opacity, transform;
+  transition-duration: var(--arq-motion-duration-base);
+  transition-timing-function: var(--arq-motion-easing-out);
+  transition-delay: calc(var(--enter-index, 0) * var(--arq-motion-duration-fast) / 4);
+}
+
+@starting-style {
+  .grid > arq-product-card {
+    opacity: 0;
+    transform: translateY(var(--arq-space-gap-sm));
+  }
+}
+
+/* Reduced motion (DESIGN.md §6): sin desplazamiento ni escalón, queda el
+   fundido (motion/duration/fade) */
+@media (prefers-reduced-motion: reduce) {
+  .grid > arq-product-card {
+    transition-property: opacity;
+    transition-duration: var(--arq-motion-duration-fade);
+    transition-delay: 0s;
+  }
+
+  @starting-style {
+    .grid > arq-product-card {
+      transform: none;
+    }
+  }
+}
+
 /* Sidebar + contenido: columna layout/catalog-nav y, entre columnas,
    space/section/xs (el que usa la pantalla de Figma). */
 @media (min-width: 1024px) {

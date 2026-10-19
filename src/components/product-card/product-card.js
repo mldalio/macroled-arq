@@ -28,7 +28,7 @@
 // - Show compare: checkbox "Comparar"; emite arq:compare { checked }.
 
 import { ArqElement } from '../../base/arq-element.js';
-import { watchTheme } from '../../base/theme.js';
+import { trackThemeImage, watchTheme, whenImageReady } from '../../base/theme.js';
 import '../checkbox/checkbox.js';
 import cardLinkCss from '../../base/card-link.css?inline';
 import css from './product-card.css?inline';
@@ -114,7 +114,8 @@ class ArqProductCard extends ArqElement {
     const hover = root.querySelector('.hover');
     const hoverActive = Number.parseFloat(getComputedStyle(hover).opacity) > 0.5 && hover.classList.contains('loaded');
     const visible = hoverActive ? hover : base;
-    const previousSrc = visible.currentSrc || visible.getAttribute('src');
+    // Solo funde una foto que se ve: si no cargó (falta en el servidor), encima quedaría el ícono de imagen rota
+    const previousSrc = visible.naturalWidth ? visible.currentSrc || visible.getAttribute('src') : null;
     const nextSrc = hoverActive
       ? (dark ? this.imageHoverLit || this.imageHover : this.imageHover)
       : (dark ? this.imageLit || this.image : this.image);
@@ -123,10 +124,11 @@ class ArqProductCard extends ArqElement {
       : null;
     this.#dark = dark;
     this.#renderImages();
-    if (overlay) {
-      const nextImage = hoverActive ? hover : base;
-      this.#fadeThemeOverlay(overlay);
-    }
+    // Iluminar con View Transitions espera a que la foto nueva esté lista
+    trackThemeImage(visible);
+    // La foto vieja queda encima hasta que la nueva se puede pintar: si no,
+    // se vería el fondo de la tarjeta mientras carga
+    if (overlay) whenImageReady(visible).then(() => this.#fadeThemeOverlay(overlay));
   }
 
   update(changed) {
@@ -205,8 +207,9 @@ class ArqProductCard extends ArqElement {
     return overlay;
   }
 
-  // El fundido arranca en el mismo instante que el cambio de fondo: el reflow
-  // fija opacity 1 como punto de partida y la transición empieza de inmediato.
+  // El fundido arranca antes que el del fondo de la página (switchTheme,
+  // src/base/theme.js): el reflow fija opacity 1 como punto de partida y la
+  // transición empieza de inmediato.
   #fadeThemeOverlay(overlay) {
     if (!overlay.isConnected) return;
     overlay.addEventListener('transitionend', (event) => {

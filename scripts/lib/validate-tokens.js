@@ -33,6 +33,7 @@ const LITERAL = {
   fontWeight: (v) => typeof v === 'number' && v >= 100 && v <= 900,
   fontFamily: (v) => typeof v === 'string' && v.trim() !== '',
   duration: (v) => typeof v === 'string' && /^\d+(\.\d+)?ms$/.test(v),
+  number: (v) => typeof v === 'number' && Number.isFinite(v),
   cubicBezier: (v) =>
     Array.isArray(v) && v.length === 4 && v.every((n) => typeof n === 'number') && v[0] >= 0 && v[0] <= 1 && v[2] >= 0 && v[2] <= 1,
 };

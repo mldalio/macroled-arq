@@ -23,6 +23,7 @@ Botón de solo ícono. Size Default (24 × 24) para navbar, tablas y controles c
 
 - **Background=None** sobre `color/surface/default` (lo más común: navbar, cerrar paneles, + / – de acordeones). **Surface** cuando va sobre otra superficie (faint, subtle…). **Subtle** para que la acción se note entre mucha información. **Outline** acompaña a un button Outline: la descarga de cada fila de variants-table (Size=Large).
 - Hover, Pressed y Focus no son props: `:hover`, `:active`, `:focus-visible`.
+- Pressed: el host se achica a `--arq-motion-scale-pressed` (0,97) con `motion/duration/fast` y `motion/easing/out`, como button. `disabled` no se achica; con movimiento reducido tampoco.
 - `el.focus()` enfoca el `<button>` interno. Deshabilitado, el clic no se propaga.
 - Si un ícono es clickeable, va siempre dentro de icon-button.
 

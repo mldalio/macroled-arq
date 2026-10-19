@@ -22,13 +22,14 @@
 //   cambia. La ficha tiene su propio Iluminar.
 
 import { ArqElement } from '../../base/arq-element.js';
-import { animateThemeChange } from '../../base/theme.js';
+import { setBrowserBar, switchTheme } from '../../base/theme.js';
 import '../button/button.js';
 import '../divider/divider.js';
 import '../toggle/toggle.js';
 import css from './catalog-toolbar.css?inline';
 
 const UNITS = { productos: ['producto', 'productos'], colecciones: ['colección', 'colecciones'] };
+const NUMBER = new Intl.NumberFormat('es-AR'); // «1.500 productos», como «Ver N» del filter-panel
 
 class ArqCatalogToolbar extends ArqElement {
   static tag = 'arq-catalog-toolbar';
@@ -88,7 +89,7 @@ class ArqCatalogToolbar extends ArqElement {
   #renderCount() {
     const [one, many] = UNITS[this.unit] ?? UNITS.productos;
     const p = this.shadowRoot.querySelector('.count');
-    p.textContent = Number.isFinite(this.count) ? `${this.count} ${this.count === 1 ? one : many}` : '';
+    p.textContent = Number.isFinite(this.count) ? `${NUMBER.format(this.count)} ${this.count === 1 ? one : many}` : '';
     this.shadowRoot.querySelector('.info').classList.toggle('has-count', Boolean(p.textContent));
   }
 
@@ -101,10 +102,14 @@ class ArqCatalogToolbar extends ArqElement {
   }
 
   #setDark(dark) {
-    animateThemeChange();
     const html = document.documentElement;
-    if (dark) html.setAttribute('data-arq-theme', 'dark');
-    else html.removeAttribute('data-arq-theme');
+    const box = this.#toggle.getBoundingClientRect();
+    const origin = { x: box.left + box.width / 2, y: box.top + box.height / 2 };
+    switchTheme(dark, () => {
+      if (dark) html.setAttribute('data-arq-theme', 'dark');
+      else html.removeAttribute('data-arq-theme');
+      setBrowserBar(dark);
+    }, origin);
   }
 
   #syncToggle() {

@@ -21,7 +21,10 @@
 //   viene abierto, catalog-nav abre el que tiene el ítem elegido.
 // - El chevron (abajo cerrado, arriba abierto) tiene las medidas de
 //   icon-button Size=Default (24, ícono 16) pero es parte del botón, no otro
-//   botón.
+//   botón. Es un solo chevron-down que gira al abrir.
+// - La lista se despliega y se pliega animando el alto (Disclosure
+//   animateHeight, como faq-item; decisión 2026-10-19 · Sidebar de catálogo:
+//   desplegar suave). .items es el panel; .items-clip, lo que se recorta.
 // - Selected: el grupo de la categoría actual. Sin cambio visual; lo pone
 //   catalog-nav en el grupo que tiene el catalog-nav-item elegido.
 
@@ -41,9 +44,9 @@ class ArqCatalogNavGroup extends ArqElement {
     `<div class="group">` +
     `<button type="button" class="header">` +
     `<span class="label role-body-xl"><slot name="label"></slot></span>` +
-    `<span class="icon-box">${icon('chevron-down')}${icon('chevron-up')}</span>` +
+    `<span class="icon-box">${icon('chevron-down')}</span>` +
     `</button>` +
-    `<div class="items" part="panel"><div class="rail" role="list"><slot></slot></div></div>` +
+    `<div class="items" part="panel"><div class="items-clip"><div class="items-inner"><div class="rail" role="list"><slot></slot></div></div></div></div>` +
     `</div>`;
 
   #auto = false; // selected lo puso el grupo al ver un ítem selected (no el HTML)
@@ -52,6 +55,7 @@ class ArqCatalogNavGroup extends ArqElement {
     this.disclosure = new Disclosure(this, {
       trigger: this.shadowRoot.querySelector('.header'),
       panel: this.shadowRoot.querySelector('.items'),
+      animateHeight: true,
     });
     const sync = () => this.#syncSelected();
     this.shadowRoot.querySelector('slot:not([name])').addEventListener('slotchange', sync);

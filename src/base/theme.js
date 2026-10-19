@@ -30,12 +30,17 @@ function nextUp(node) {
   return root instanceof ShadowRoot ? root.host : null;
 }
 
-/** true si el elemento está dentro de un bloque en modo Dark. */
-export function isDark(element) {
+/**
+ * true si el elemento está dentro de un bloque en modo Dark.
+ * `pageDark` (opcional) reemplaza el modo de <html>: el que va a tener la
+ * página cuando switchTheme aplique el cambio.
+ */
+export function isDark(element, pageDark) {
   for (let node = element; node; node = nextUp(node)) {
+    if (pageDark !== undefined && node === document.documentElement) return pageDark;
     if (node.hasAttribute?.('data-arq-theme')) return node.getAttribute('data-arq-theme') === 'dark';
   }
-  return false;
+  return pageDark ?? false;
 }
 
 /**
@@ -48,7 +53,8 @@ export function refreshTheme() {
   checkAll();
 }
 
-function checkAll() {
+function checkAll(pageDark) {
+  if (typeof pageDark !== 'boolean') pageDark = undefined; // el MutationObserver pasa sus registros
   for (const watch of watchers) {
     const host = watch.ref.deref();
     if (!host) {
@@ -56,7 +62,7 @@ function checkAll() {
       continue;
     }
     if (!host.isConnected) continue;
-    const dark = isDark(host);
+    const dark = isDark(host, pageDark);
     if (dark !== watch.dark) {
       watch.dark = dark;
       host[watch.method](dark);
@@ -101,6 +107,44 @@ export function withoutThemeTransition(apply) {
   requestAnimationFrame(() => requestAnimationFrame(() => INSTANT_VARS.forEach((name) => style.removeProperty(name))));
 }
 
+// Barra del navegador con Iluminar (meta theme-color): en el teléfono, la barra
+// de la dirección y la zona de arriba toman el color de la etiqueta que pone
+// Webflow en el <head>, compartida con el e-commerce de Macroled. Con Iluminar
+// la página pasa a oscuro y la barra quedaba clara. Mientras Iluminar está
+// prendido, la etiqueta toma color/surface/default del bloque en Dark; al
+// apagarlo vuelve exactamente a lo que tenía (o se quita, si no había). Solo lo
+// llama Iluminar, que existe solo en las páginas de Arq (decisión 2026-10-19).
+const BAR_ORIGINAL = 'data-arq-theme-color';
+const BAR_ADDED = 'data-arq-theme-color-added';
+
+/** Iluminar: pasa la barra del navegador a oscuro (o la devuelve a Webflow). */
+export function setBrowserBar(dark, source = document.documentElement) {
+  const metas = [...document.head.querySelectorAll('meta[name="theme-color"]')];
+  if (!dark) {
+    for (const meta of metas) {
+      if (meta.hasAttribute(BAR_ADDED)) meta.remove();
+      else if (meta.hasAttribute(BAR_ORIGINAL)) {
+        meta.content = meta.getAttribute(BAR_ORIGINAL);
+        meta.removeAttribute(BAR_ORIGINAL);
+      }
+    }
+    return;
+  }
+  const color = getComputedStyle(source).getPropertyValue('--arq-color-surface-default').trim();
+  if (!color) return;
+  if (!metas.length) {
+    const meta = document.createElement('meta');
+    meta.name = 'theme-color';
+    meta.setAttribute(BAR_ADDED, '');
+    document.head.append(meta);
+    metas.push(meta);
+  }
+  for (const meta of metas) {
+    if (!meta.hasAttribute(BAR_ADDED) && !meta.hasAttribute(BAR_ORIGINAL)) meta.setAttribute(BAR_ORIGINAL, meta.content);
+    meta.content = color;
+  }
+}
+
 // Iluminar no se recuerda: recargar o volver a una página la deja en su estado
 // normal. La única excepción es Productos → ficha: si el listado está iluminado
 // y se entra a un producto, la ficha llega iluminada. El traspaso vive en
@@ -130,8 +174,20 @@ export function takeThemeHandoff() {
 
 /** Llamar justo antes de cambiar data-arq-theme por Iluminar. */
 export function animateThemeChange(bgMs = 1200) {
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const style = document.documentElement.style;
+  // Reduced motion (DESIGN.md §6): todo funde junto y corto, con
+  // motion/duration/fade, como el fondo (global.css). Sin retraso.
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const fade = 'var(--arq-motion-duration-fade)';
+    style.setProperty(TEXT_VARS[0], '0s');
+    style.setProperty(TEXT_VARS[1], fade);
+    style.setProperty(TEXT_VARS[2], 'var(--arq-motion-easing-standard)');
+    style.setProperty(TEXT_VARS[3], fade);
+    style.setProperty(TEXT_VARS[4], 'var(--arq-motion-easing-standard)');
+    clearTimeout(themeTimer);
+    themeTimer = setTimeout(() => TEXT_VARS.forEach((name) => style.removeProperty(name)), 1000);
+    return;
+  }
   style.setProperty(TEXT_VARS[0], `${Math.round(bgMs * 0.25)}ms`);
   style.setProperty(TEXT_VARS[1], `${Math.round(bgMs * 0.5)}ms`);
   style.setProperty(TEXT_VARS[2], 'cubic-bezier(0.4, 0, 0.2, 1)');
@@ -140,4 +196,134 @@ export function animateThemeChange(bgMs = 1200) {
   style.setProperty(TEXT_VARS[4], 'cubic-bezier(0.45, 0, 0.2, 1)');
   clearTimeout(themeTimer);
   themeTimer = setTimeout(() => TEXT_VARS.forEach((name) => style.removeProperty(name)), bgMs + 100);
+}
+
+// Iluminar de toda la página (Productos y Colecciones) con View Transitions:
+// el navegador fotografía la página, aplica el cambio de una vez (sin
+// transiciones) y funde la foto vieja sobre la página nueva en la GPU. Con
+// animateThemeChange cada elemento de cada componente animaba su propio color
+// (más de 400 transiciones a la vez): recalcular estilos se llevaba casi todo
+// el cuadro y la pantalla avanzaba a saltos (decisión 2026-10-16 · Iluminar
+// sin saltos). No necesita CSS global: la duración y la curva se ponen en las
+// animaciones del navegador. Sin View Transitions, queda animateThemeChange.
+//
+// Duración y curva: --arq-illumination-bg-duration y -easing (global.css; con
+// reduced motion, motion/duration/fade). La página nueva es «en vivo»: lo que
+// termina de cargar durante el fundido aparece ahí.
+
+// Imágenes que cambian por Iluminar (product-card): la foto nueva se toma
+// cuando ya cargaron, con un tope de IMAGE_WAIT_MS.
+const IMAGE_WAIT_MS = 400;
+// Iluminar espera menos a las fotos que no cargaron: con 400 ms (dos veces) el
+// fondo arrancaba entre 0,4 y 0,75 s después del clic según la caché, y la
+// velocidad se sentía distinta cada vez. La página nueva es «en vivo»: la foto
+// que llega tarde aparece igual, con su fundido.
+const THEME_WAIT_MS = 150;
+// Las fotos se adelantan al fondo: las product-card empiezan su fundido
+// (--arq-illumination-image-duration) y el fondo arranca
+// motion/duration/illumination-lead después, para que se vea que la luz se
+// prende. Desde ahí los dos funden a la vez: la foto vieja de la View
+// Transition la toma a mitad de camino y la página nueva la termina.
+const pendingImages = new Set();
+let themeSwitch = 0;
+
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/** Se resuelve cuando la <img> está lista para pintarse, o a los IMAGE_WAIT_MS. */
+export function whenImageReady(img) {
+  if (!img.getAttribute('src') || img.complete) return Promise.resolve();
+  return Promise.race([img.decode().catch(() => {}), wait(IMAGE_WAIT_MS)]);
+}
+
+/** product-card: avisa que una <img> visible cambió de src por Iluminar. */
+export function trackThemeImage(img) {
+  if (!img.getAttribute('src') || img.complete) return;
+  // Una lazy fuera de la pantalla no carga: no se espera
+  const box = img.getBoundingClientRect();
+  if (box.bottom < 0 || box.top > innerHeight) return;
+  const done = whenImageReady(img).finally(() => pendingImages.delete(done));
+  pendingImages.add(done);
+}
+
+// Cómo pasa el fondo de un modo al otro (--arq-illumination-style, en prueba):
+//   fade    la página entera funde de un modo al otro.
+//   spread  el modo nuevo se abre desde el interruptor en un círculo de borde
+//           muy difuso, como una luz que se prende en ese lugar. La foto vieja
+//           queda quieta debajo (sin fundido) y la nueva se descubre con una
+//           máscara radial que crece hasta cubrir la pantalla.
+// Feather: parte del radio de la máscara que es borde difuso (0 a 1).
+const SPREAD_FEATHER = 0.6;
+
+function spreadFrom(origin, duration, easing) {
+  const html = document.documentElement;
+  for (const animation of document.getAnimations()) {
+    if (animation.effect?.pseudoElement?.startsWith('::view-transition')) animation.cancel();
+  }
+  // Distancia a la esquina más lejana: el centro sólido de la máscara tiene que llegar ahí
+  const far = Math.hypot(Math.max(origin.x, innerWidth - origin.x), Math.max(origin.y, innerHeight - origin.y));
+  const size = (2 * far) / (1 - SPREAD_FEATHER);
+  const at = (s) => `${origin.x - s / 2}px ${origin.y - s / 2}px`;
+  const mask = `radial-gradient(closest-side, #000 ${(1 - SPREAD_FEATHER) * 100}%, transparent 100%)`;
+  const timing = { duration, easing, fill: 'both' };
+  html.animate(
+    {
+      maskImage: [mask, mask],
+      maskRepeat: ['no-repeat', 'no-repeat'],
+      maskSize: ['0px 0px', `${size}px ${size}px`],
+      maskPosition: [at(0), at(size)],
+      mixBlendMode: ['normal', 'normal'],
+    },
+    { ...timing, pseudoElement: '::view-transition-new(root)' },
+  );
+  html.animate({ mixBlendMode: ['normal', 'normal'] }, { ...timing, pseudoElement: '::view-transition-old(root)' });
+}
+
+/**
+ * Cambia el tema de la página con un fundido de toda la pantalla. `dark` es el
+ * modo que deja `apply`: las product-card pasan antes a sus fotos encendidas
+ * (o apagadas) y el fondo las sigue. `origin` ({ x, y } en la pantalla) es el
+ * interruptor, para --arq-illumination-style: spread.
+ */
+export async function switchTheme(dark, apply, origin) {
+  const html = document.documentElement;
+  const styles = getComputedStyle(html);
+  const duration = Number.parseFloat(styles.getPropertyValue('--arq-illumination-bg-duration')) || 0;
+  if (!document.startViewTransition || !duration) {
+    animateThemeChange();
+    apply();
+    return;
+  }
+  const easing = styles.getPropertyValue('--arq-illumination-bg-easing').trim() || 'ease';
+  const style = html.style;
+  const id = ++themeSwitch;
+  let fadeMs = duration;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Reduced motion: siempre fundido, sin el círculo que crece
+  const spread = !reduced && origin && styles.getPropertyValue('--arq-illumination-style').trim() === 'spread';
+  // Reduced motion: todo funde junto (DESIGN.md §6), sin adelantar las fotos
+  if (!reduced) {
+    const lead = Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-illumination-lead')) || 0;
+    checkAll(dark); // las cards cambian de foto ya, con su propio fundido
+    await Promise.race([Promise.all(pendingImages), wait(THEME_WAIT_MS)]);
+    await wait(lead);
+    if (id !== themeSwitch) return; // otro clic en Iluminar mientras tanto
+    fadeMs = Math.max(duration - lead, 0); // el fondo termina en el mismo momento que sin el adelanto
+  }
+  const transition = document.startViewTransition(async () => {
+    for (const name of INSTANT_VARS) style.setProperty(name, '0s');
+    apply();
+    await Promise.resolve(); // los componentes reciben el aviso (watchTheme)
+    await Promise.race([Promise.all(pendingImages), wait(THEME_WAIT_MS)]);
+  });
+  transition.ready
+    .then(() => {
+      if (spread) return spreadFrom(origin, fadeMs, easing);
+      for (const animation of document.getAnimations()) {
+        if (animation.effect?.pseudoElement?.startsWith('::view-transition')) animation.effect.updateTiming({ duration: fadeMs, easing });
+      }
+    })
+    .catch(() => {});
+  transition.finished.finally(() => {
+    if (id === themeSwitch) INSTANT_VARS.forEach((name) => style.removeProperty(name));
+  });
 }

@@ -166,6 +166,7 @@ Hay dos usos del modo Dark. Los dos usan `data-arq-theme="dark"`; cambia quién 
 - **Ficha de producto:** el switch pone el modo Dark en `navbar` y `hero` (desktop y mobile) y cambia la foto; el resto de la página no cambia. `explora-coleccion` ya es Dark siempre (Dark local, abajo). En código: `<arq-ficha-producto>` pone `data-arq-theme="dark"` en `<arq-navbar>` (DOM de la página) y en el contenedor interno del hero (Shadow DOM), y avisa a la galería con `refreshTheme()` de `src/base/theme.js` (`docs/decisiones.md`, 2026-10-05 · Ficha de producto).
 - **Productos y Colecciones:** el toggle Iluminar de `catalog-toolbar` pasa toda la página a Dark y las product-card muestran sus imágenes con la luz encendida (ver §8, Imágenes de product-card). En código: `data-arq-theme="dark"` en `<html>`.
 - **Iluminar no se recuerda:** recargar la página, o volver a ella desde otra, la deja apagada. La única excepción es Productos o Colecciones → ficha: si el listado está iluminado y se entra a un producto, la ficha llega iluminada (`sessionStorage`, unos segundos, se usa una sola vez; `src/base/theme.js`). `docs/decisiones.md`, 2026-10-15 · Iluminar no se recuerda.
+- **Barra del navegador:** mientras Iluminar está prendido, la etiqueta `theme-color` de la página (la que pone Webflow) toma `color/surface/default` en Dark, así la barra del teléfono no queda clara sobre la página oscura. Al apagarlo vuelve a lo que tenía. Solo lo hace Iluminar (`setBrowserBar`, `src/base/theme.js`; `docs/decisiones.md`, 2026-10-19 · Barra del navegador con Iluminar).
 - **Home y Contacto** no tienen Iluminar.
 
 **Dark local:** fijo por diseño, para tener colores claros sobre fotos o fondos oscuros. No depende de Iluminar ni lo activa: se ve igual con Iluminar apagado o encendido.
@@ -402,16 +403,22 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 | motion/duration/base | 200 ms | Desplegables (disclosure) y menús |
 | motion/duration/slow | 320 ms | Fundido de imágenes de product-card; mensaje de form-message al aparecer |
 | motion/duration/expand | 250 ms | Alto de un desplegable que se abre o se cierra (faq-item) |
-| motion/duration/panel | 400 ms | Entrada y salida de paneles y menús que se abren por encima (filter-panel, download-modal, search-sheet, mega-menú) |
+| motion/duration/panel | 400 ms | Entrada y salida de paneles y menús que se abren por encima (filter-panel, download-modal, search-sheet, mega-menú, compare-bar) |
 | motion/duration/fade | 150 ms | Fundido corto de algo que aparece (menú de input Select, error de input). Es también el fundido que queda con reduced motion |
 | motion/duration/feedback | 2000 ms | Tiempo visible de una confirmación ("Copiado" del sku) |
 | motion/easing/standard | cubic-bezier(0.2, 0, 0, 1) | Cambios de estado: hover, foco, selección, paneles y fundidos de imagen |
 | motion/easing/out | cubic-bezier(0.23, 1, 0.32, 1) | Entradas: algo que aparece o se despliega (arranca rápido y frena suave) |
+| motion/duration/illumination | 800 ms | Iluminar: fondo y textos de la página entre claro y oscuro. Total desde el clic, contando el adelanto de las fotos |
+| motion/duration/illumination-image | 900 ms | Iluminar: fundido de las fotos de product-card y product-gallery entre apagada y encendida |
+| motion/duration/illumination-lead | 180 ms | Iluminar: cuánto se adelantan las fotos al fondo (se ve que la luz se prende antes de que cambie la página) |
+| motion/easing/illumination | cubic-bezier(0.1, 0.1, 0.95, 0.4) | Iluminar: curva del fondo. Calculada para que el brillo cambie parejo, como un dimmer |
+| motion/easing/illumination-image | cubic-bezier(0.42, 0, 0.58, 1) | Iluminar: curva del fundido de las fotos |
+| motion/scale/pressed | 0,97 | Escala de button (Filled y Outline) e icon-button mientras se presionan, con fast y easing/out |
 
-- Con `prefers-reduced-motion: reduce`, las duraciones fast, base, slow, expand y panel pasan a 0. fade no cambia: con reduced motion se quitan los desplazamientos, los cambios de escala y de alto, pero quedan los fundidos (no marean y evitan los cambios bruscos). feedback tampoco cambia: es un tiempo de lectura, no una animación.
+- Con `prefers-reduced-motion: reduce`, las duraciones fast, base, slow, expand, panel e illumination-lead pasan a 0; illumination e illumination-image pasan a fade (Iluminar sigue siendo un fundido, todo junto); los botones no se achican al presionarlos. fade no cambia: con reduced motion se quitan los desplazamientos, los cambios de escala y de alto, pero quedan los fundidos (no marean y evitan los cambios bruscos). feedback tampoco cambia: es un tiempo de lectura, no una animación.
 - Se anima solo `opacity`, `transform` y colores. Nunca ancho ni posición de layout.
-- **Alto: solo en dos casos**, con `grid-template-rows: 0fr → 1fr` (nunca `height`): el panel de faq-item (Disclosure `animateHeight`, `motion/duration/expand`) y el mensaje de error de input (`motion/duration/base`). Así lo que está abajo se desliza en vez de saltar. Los demás desplegables (accordion-item, filter-row, catalog-nav-group) siguen con el alto de golpe y fundido al abrir (`docs/decisiones.md`, 2026-10-15 · Contacto: animaciones).
-- Lo que aparece usa `@starting-style` y sale sin animación, salvo los paneles que se cierran por el mismo camino por el que entraron (filter-panel, download-modal, search-sheet, faq-item).
+- **Alto: solo en tres casos**, con `grid-template-rows: 0fr → 1fr` (nunca `height`): el panel de faq-item y la lista de catalog-nav-group (Disclosure `animateHeight`, `motion/duration/expand`) y el mensaje de error de input (`motion/duration/base`). Así lo que está abajo se desliza en vez de saltar. Los demás desplegables (accordion-item, filter-row) siguen con el alto de golpe y fundido al abrir (`docs/decisiones.md`, 2026-10-15 · Contacto: animaciones; 2026-10-19 · Sidebar de catálogo y compare-bar).
+- Lo que aparece usa `@starting-style` y sale sin animación, salvo los paneles que se cierran por el mismo camino por el que entraron (filter-panel, download-modal, search-sheet, compare-bar, faq-item, catalog-nav-group).
 
 ---
 
@@ -421,7 +428,7 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 | --- | --- | --- |
 | Default / Empty | Reposo (inputs: vacío con placeholder) | — |
 | Hover | Cursor encima | `:hover`, siempre dentro de `@media (hover: hover) and (pointer: fine)` (en táctil quedaría pegado después del toque) |
-| Pressed | Mientras se hace clic | `:active` |
+| Pressed | Mientras se hace clic | `:active`. button (Filled y Outline) e icon-button además se achican a `motion/scale/pressed` |
 | Current | Página actual | `[aria-current="page"]` |
 | Open (propiedad) | Desplegable abierto: `Open=True` (nav-link, select, input Select, accordion-item, faq-item, filtros) | `[aria-expanded="true"]` |
 | Selected | Opción o pestaña elegida | `[aria-selected="true"]` |
@@ -461,8 +468,8 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 
 | Componente | Variantes / propiedades | Tokens y notas |
 | --- | --- | --- |
-| button | Type: Filled · Outline · Underline. State: Default · Hover · Pressed · Focus · Disabled · Loading (Filled y Outline). Props: Label · Show icon · Icon · Show underline · Show count · Show leading icon · Leading icon | Filled: color/action/*. Outline: color/border/strong (el borde no suma al alto: 40 como Filled, con role/body-regular de 16/24). Underline: subrayado border/default (1 px) en reposo y border/strong (2 px) en hover y pressed. Focus: anillo separado (ver Foco). Loading: fondo de Hover, sin íconos; label de carga ("Enviando…" en formularios, "Generando…" en la ficha técnica), aria-busy |
-| icon-button | Size: Default · Large. Background: None · Surface · Subtle · Outline. State: Default · Hover · Pressed · Focus · Disabled. Prop: Icon | Default 24 × 24 (icon/md). Large 48 × 48 (padding sm-md + icon/xl). Surface sobre otra superficie; Subtle para destacar entre mucha información; Outline (borde color/border/strong; en Large, color/border/default con el ícono de trazo escalado) para la descarga de cada fila de variants-table y downloads-table |
+| button | Type: Filled · Outline · Underline. State: Default · Hover · Pressed · Focus · Disabled · Loading (Filled y Outline). Props: Label · Show icon · Icon · Show underline · Show count · Show leading icon · Leading icon | Filled: color/action/*. Outline: color/border/strong (el borde no suma al alto: 40 como Filled, con role/body-regular de 16/24). Underline: subrayado border/default (1 px) en reposo y border/strong (2 px) en hover y pressed. Focus: anillo separado (ver Foco). Pressed: Filled y Outline se achican a motion/scale/pressed (Underline no). Loading: fondo de Hover, sin íconos; label de carga ("Enviando…" en formularios, "Generando…" en la ficha técnica), aria-busy |
+| icon-button | Size: Default · Large. Background: None · Surface · Subtle · Outline. State: Default · Hover · Pressed · Focus · Disabled. Prop: Icon | Default 24 × 24 (icon/md). Large 48 × 48 (padding sm-md + icon/xl). Pressed: se achica a motion/scale/pressed, como button. Surface sobre otra superficie; Subtle para destacar entre mucha información; Outline (borde color/border/strong; en Large, color/border/default con el ícono de trazo escalado) para la descarga de cada fila de variants-table y downloads-table |
 | input | Type: Text · Select · Textarea. State: Empty · Filled · Focus · Error · Disabled. Open: False · True (solo Select). Props: Label · Show label · Helper · Show helper | Label role/body-regular en color/text/primary. Caja de 40 (como button): borde border/default en color/border/default y fondo color/surface/default. Hover color/border/hover · Focus anillo separado (§7) · Error color/border/error · Disabled color/border/disabled. Select abierto: border/strong, chevron-up y select-menu Type=Text flotante |
 | select | Type: Field · Filter. Size: Default · Small (solo Filter). State: Default · Hover · Focus · Disabled · Filled. Open: False · True. Props: Name · Label · Value · Show swatch | Field: etiqueta role/label, línea inferior border/strong y gap 0. Filter: etiqueta role/label-lg (Size=Default: filter-bar, Descargas) o role/label (Size=Small: compare-product, sin opción «Todos» y con el menú del ancho del campo), gap space/gap/sm y sin línea (solo Disabled la muestra); mide al menos layout/select-filter. Filled = Filter con opción elegida, valor en role/body-medium |
 | select-menu | Type: Finishes · Filter · Text | Hasta 7 opciones. surface/default, border/default, sin sombra |

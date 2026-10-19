@@ -33,7 +33,8 @@ bar.addEventListener('arq:compare-change', (e) => marcarCards(e.detail.items));
 - **"Comparar"** lleva a `/arq/comparativa?sku=SKU1,SKU2,SKU3` (decisión 2026-10-02 · Comparativa); cada SKU va con `encodeURIComponent`.
 - **La selección se recuerda** en `localStorage` (`arq:compare`): sigue al cambiar de filtros o de página.
 - **Dark local** (DESIGN.md §2): el contenedor interno lleva `data-arq-theme="dark"`; quien arma la página no pone nada.
-- **Fija abajo:** la página tiene que dejar lugar al final del contenido para que la barra no tape lo último (el componente no toca `body`, AGENTS.md).
+- **Fija abajo:** la página tiene que dejar lugar al final del contenido para que la barra no tape lo último (el componente no toca `body`, AGENTS.md). Abajo suma el área segura del teléfono (`env(safe-area-inset-bottom)`), como filter-panel; vale 0 si el sitio no usa `viewport-fit=cover`.
+- **Movimiento:** entra desde el borde de abajo al elegir el primer producto (`motion/duration/base`, `motion/easing/out`) y sale por el mismo borde, más rápido (`motion/duration/fast`), al quitar el último. Si la página carga con productos ya elegidos, aparece sin animar. Con movimiento reducido, solo un fundido (`motion/duration/fade`).
 
 ## Tokens
 

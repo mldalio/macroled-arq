@@ -167,6 +167,8 @@ Show leading icon + Leading icon: ícono a la izquierda del label (p. ej. "Volve
 
 Flechas: → (icon/arrow-right) para navegación interna dentro del sitio y acciones (Enviar consulta, Ver todo…). ↗ (icon/arrow-up-right) para recursos externos o que abren en otra pestaña o descargan (Centro de descargas, Escribinos por mail, PDF, redes).
 
+Pressed (Filled y Outline): además del fondo, el botón se achica a motion/scale/pressed (0,97) con motion/duration/fast y motion/easing/out. La variante State=Pressed no muestra la escala (es movimiento); manda este texto. Underline no se achica. Con movimiento reducido no cambia de tamaño.
+
 ## carousel-button
 
 - Figma: [2387-8532](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2387-8532)
@@ -194,6 +196,8 @@ Sidebar de filtros del catálogo (Interior abierto, resto cerrado). Compuesto po
 - Propiedades: Label; Open: True · False; Selected: False · True
 
 Grupo desplegable del sidebar de catálogo (catalog-nav). Encabezado: label role/body-xl (color/text/primary abierto, color/text/secondary cerrado) e icon-button Size=Default, Background=None con icon/chevron-up (Open=True) o icon/chevron-down (Open=False). Open=True muestra la lista de catalog-nav-item con sangría space/padding/lg y un riel (línea izquierda border/default en color/border/subtle); los ítems van pegados, sin gap, y la lista lleva space/padding/xs abajo. Padding vertical space/padding/md, gap encabezado–lista space/gap/md y línea inferior border/default en color/border/subtle. Selected marca el grupo de la categoría actual (sin diferencia visual); en código lo maneja el grupo, no el ítem.
+
+Movimiento (código): la lista se despliega y se pliega animando el alto (motion/duration/expand, motion/easing/out), como faq-item, y el chevron gira media vuelta con el mismo tiempo. Con reduced motion, el alto cambia de golpe y queda el fundido (motion/duration/fade).
 
 ## catalog-nav-item
 
@@ -262,6 +266,8 @@ Opción seleccionable en forma de chip para elegir entre pocas opciones visibles
 - Propiedades: Title; Breakpoint: Desktop · Mobile; Open: True · False
 
 Barra fija inferior para comparar productos (hasta 3). Título + count-badge con la cantidad seleccionada, compare-slot (Filled/Empty) y acciones: button Underline «Borrar todo» y Filled «Comparar». Usa el tema oscuro (modo Dark de Color) fijado en cada variante. Desktop: slots Size=Default separados por divider Vertical. Mobile (como macroled.com.ar): solo los productos elegidos, uno arriba de otro (compare-slot Default con divider Horizontal Subtle) y «Comparar» debajo a todo el ancho. Open (Desktop y Mobile): el título lleva un chevron que pliega la lista (chevron-down abierta, chevron-up plegada); plegada quedan el título, «Borrar todo» y «Comparar» (en Desktop, en una sola línea y con el chevron en la punta derecha). Arranca abierta y se vuelve a abrir al agregar un producto.
+
+Movimiento (código): entra desde el borde de abajo al elegir el primer producto y sale por el mismo borde, como un panel: motion/duration/panel con motion/easing/standard, como filter-panel. El espacio que el listado reserva abajo se quita recién cuando la barra terminó de salir. Al plegar y desplegar con el chevron (Open), la barra se desliza igual: el borde de arriba baja o sube a su lugar nuevo con motion/duration/panel y motion/easing/standard. Con reduced motion, solo el fundido (motion/duration/fade).
 
 ## compare-group
 
@@ -482,6 +488,8 @@ Hero de página compartido por Home y Contacto: media (imagen o video; reemplaz�
 Botón de ícono. Size: Default (24 × 24, ícono icon/md; navbar, tablas y controles chicos) o Large (48 × 48 = padding space/padding/sm-md + ícono icon/xl de 24; acciones de bloques, como el acordeón). Background: None (sin fondo, sobre surface/default), Surface (fondo surface/default, para cuando va sobre otro surface: faint, subtle…) y Subtle (fondo surface/subtle; para que la acción se note entre mucha información, como la descarga de cada fila de la tabla de variantes). State: Default, Hover (None: surface/hover; Surface: surface/subtle; Subtle: surface/selected), Pressed (Subtle: surface/strong; el resto surface/selected), Focus (anillo border/focus). Prototipo: Default pasa a Hover al pasar el mouse y Hover a Pressed al presionar. Cambiar el ícono con la propiedad Icon.
 
 State=Disabled: ícono en color/icon/disabled, sin interacción (atributo disabled nativo). Outline (borde de border/default, sin fondo; Size=Default en color/border/strong, Size=Large en color/border/default; Hover surface/hover, Pressed surface/selected, Disabled border/disabled): acción con ícono solo que acompaña a un button Outline, como la descarga de cada fila de variants-table y de la tabla de Descargas (Size=Large, Desktop y Mobile). En Size=Large el ícono de 24 lleva el trazo escalado (1,5 px).
+
+Pressed: además del fondo, se achica a motion/scale/pressed (0,97) con motion/duration/fast y motion/easing/out, como button. La variante State=Pressed no muestra la escala (es movimiento); manda este texto. Con movimiento reducido no cambia de tamaño.
 
 ## input
 

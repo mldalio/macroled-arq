@@ -57,10 +57,16 @@
   height: var(--arq-icon-md);
 }
 
-/* Open=True: chevron-up · Open=False: chevron-down */
-:host(:not([open])) [data-icon='chevron-up'],
-:host([open]) [data-icon='chevron-down'] {
-  display: none;
+/* Open=True: chevron-up · Open=False: chevron-down. Es un solo chevron que
+   gira media vuelta, con el mismo tiempo y la misma curva que el alto de la
+   lista (motion/duration/expand + motion/easing/out). Con reduced motion,
+   expand vale 0 y cambia de golpe. */
+.icon {
+  transition: rotate var(--arq-motion-duration-expand) var(--arq-motion-easing-out);
+}
+
+:host([open]) .icon {
+  rotate: 180deg;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -70,8 +76,10 @@
 }
 
 /* Lista: sangría space/padding/lg y abajo space/padding/md + space/padding/xs
-   (el padding del grupo más el de la lista). */
-.items {
+   (el padding del grupo más el de la lista). El padding va adentro de lo que
+   se recorta (.items-clip): el panel (.items) no lleva padding, así cerrado
+   mide 0 (Disclosure animateHeight). */
+.items-inner {
   padding-inline-start: var(--arq-space-padding-lg);
   padding-bottom: calc(var(--arq-space-padding-md) + var(--arq-space-padding-xs));
 }

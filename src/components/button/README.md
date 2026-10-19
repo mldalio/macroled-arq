@@ -35,6 +35,7 @@ Botón del sistema en tres jerarquías: Filled (acción principal), Outline (sec
 
 - Los booleanos son atributos de presencia (AGENTS.md): Show icon y Show underline, que en Figma valen `true` por defecto, en código están desactivados hasta que se escribe el atributo.
 - Hover, Pressed y Focus no son props: `:hover`, `:active`, `:focus-visible`.
+- Pressed (Filled y Outline): el host se achica a `--arq-motion-scale-pressed` (0,97) con `motion/duration/fast` y `motion/easing/out`, usando la propiedad `scale` (no ocupa otro lugar en el layout). Underline, `disabled` y `loading` no se achican; con movimiento reducido tampoco.
 - `el.focus()` enfoca el `<button>` o `<a>` interno.
 - Deshabilitado o cargando, el clic no se propaga. Un link deshabilitado pierde el `href` y lleva `aria-disabled="true"`.
 
