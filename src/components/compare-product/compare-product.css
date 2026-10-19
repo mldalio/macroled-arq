@@ -322,3 +322,47 @@
   outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
   outline-offset: calc(-1 * var(--arq-border-strong));
 }
+
+/* Size=Compact en Mobile (como macroled.com.ar/comparativa): la columna mide
+   lo mismo que una columna de compare-table (layout/compare-column), así que
+   la miniatura, el nombre y el SKU van apilados y centrados, sin recortar el
+   nombre; quitar queda en la esquina superior derecha. Empty: la caja
+   punteada toma el alto de la columna, con el «+» arriba del texto.
+   TODO (Figma): el set Compact/Mobile (1265:4329) sigue en una fila. */
+@media (max-width: 767px) {
+  :host([size='compact']) .compact {
+    position: relative;
+    flex-direction: column;
+    gap: var(--arq-space-gap-sm);
+    height: 100%;
+    text-align: center;
+  }
+
+  .compact-info {
+    flex: none;
+    align-self: stretch;
+    align-items: center;
+  }
+
+  .compact-name,
+  .compact-sku {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .compact-remove {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .compact-add {
+    flex-direction: column;
+    align-self: stretch;
+    gap: var(--arq-space-gap-xs);
+    height: auto;
+    min-height: var(--arq-layout-compare-thumb);
+    padding: var(--arq-space-padding-sm);
+    text-align: center;
+  }
+}

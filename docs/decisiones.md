@@ -1075,3 +1075,9 @@ Salió de revisar los valores de `color_carcasa` de toda la base (326 documentos
 
 - **«Blanco y negro» (código BN del SKU)** tiene imagen propia: `acabado-blanco-y-negro.png`, mitad blanco mate arriba a la izquierda y mitad negro mate abajo a la derecha, con corte nítido en diagonal (Figma, sección ACABADOS). Se mapea por nombre en `SLUGS` (`src/data/finishes.js`). Hoy no hay SKU con ese valor en la base: el mapeo queda listo para cuando se carguen.
 - **La tabla de códigos de acabado (N, V, R, B, BN, P) se descarta.** El acabado sale siempre del nombre completo de `color_carcasa` y el SKU es un identificador opaco, así que no hace falta traducir letras. Se sacó de los pendientes de DESIGN.md §12, de `docs/acabados.md`, del README de `swatch` y de `docs/setup.md`.
+
+## 2026-10-19 · catalog-toolbar sin nombre de la página
+
+- catalog-toolbar State=Scroll ya no muestra el nombre de la página («Exterior») ni el divider antes de la cantidad: el nombre ya está en el `<h1>` del page-header. Scroll solo pasa a padding vertical `space/padding/sm`.
+- Se quitó del código (atributo `name` de `<arq-catalog-toolbar>` y la copia del `<h1>` en `arq-catalog-listing`), de la demo, del README, de `docs/components.md` y de DESIGN.md.
+- Figma: se sacaron el texto del nombre y el divider de la variante State=Scroll (1810:19453), se actualizó la descripción del set (1244:4058) y la copia de DESIGN.md en Plan del proyecto. La ficha `doc/catalog-toolbar` no lo mencionaba.

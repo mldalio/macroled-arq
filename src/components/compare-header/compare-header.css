@@ -153,6 +153,10 @@
   .slots {
     order: 1;
     flex: 1 1 auto;
+    /* border-box: el gutter queda dentro del 100 %; si no, la tira mide más
+       que la pantalla, su scroll máximo es menor que el de compare-table y,
+       al sincronizarse, la tabla tampoco llega al final. */
+    box-sizing: border-box;
     width: 100%;
     gap: var(--arq-space-gap-md);
     padding-inline: var(--page-gutter);
@@ -167,9 +171,23 @@
     padding-inline: var(--page-gutter);
   }
 
+  /* Cada producto ocupa una columna de compare-table, con las mismas líneas
+     verticales (color/border/subtle) y el mismo padding que un valor, así
+     la cabecera y las filas quedan alineadas mientras se desplazan juntas
+     (como macroled.com.ar/comparativa). stretch: todas al mismo alto. */
+  .slots {
+    align-items: stretch;
+  }
+
   .slots > * {
     flex: none;
+    box-sizing: border-box;
     width: var(--column-width);
+  }
+
+  .slots > * + * {
+    padding-inline-start: var(--arq-space-padding-md);
+    border-left: var(--arq-border-default) solid var(--arq-color-border-subtle);
   }
 }
 
