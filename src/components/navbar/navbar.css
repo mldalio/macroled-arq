@@ -14,14 +14,6 @@
   transition: transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
 }
 
-/* Solo el listado de catálogo solicita esta barra compacta. Al bajar deja el
-   toolbar fijo a la vista; al subir vuelve para que la navegación esté cerca. */
-@media (min-width: 1024px) {
-  :host([data-arq-catalog-hidden]) {
-    transform: translateY(-100%);
-  }
-}
-
 /* La comparativa Mobile reemplaza temporalmente la navegación por su
    compare-header Compact. El atributo lo controla compare-header al cruzar
    su centinela; al volver al Default se restaura la barra. */

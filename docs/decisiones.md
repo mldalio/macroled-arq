@@ -1081,3 +1081,17 @@ Salió de revisar los valores de `color_carcasa` de toda la base (326 documentos
 - catalog-toolbar State=Scroll ya no muestra el nombre de la página («Exterior») ni el divider antes de la cantidad: el nombre ya está en el `<h1>` del page-header. Scroll solo pasa a padding vertical `space/padding/sm`.
 - Se quitó del código (atributo `name` de `<arq-catalog-toolbar>` y la copia del `<h1>` en `arq-catalog-listing`), de la demo, del README, de `docs/components.md` y de DESIGN.md.
 - Figma: se sacaron el texto del nombre y el divider de la variante State=Scroll (1810:19453), se actualizó la descripción del set (1244:4058) y la copia de DESIGN.md en Plan del proyecto. La ficha `doc/catalog-toolbar` no lo mencionaba.
+
+## 2026-10-19 · catalog-toolbar sin State=Scroll
+
+- Lau no quiere que la barra se achique al desplazarse la página: se sacó State=Scroll. Queda siempre con padding vertical `space/padding/md`; el listado la sigue dejando fija debajo del navbar.
+- Código: atributo `state` de `<arq-catalog-toolbar>`, su regla CSS y la línea de `arq-catalog-listing` que lo ponía; demo, README, `docs/components.md` y DESIGN.md (§8 y Anexo A).
+- Figma: se borró la variante State=Scroll (1810:19453, sin instancias) y la propiedad State del set (1244:4058); las variantes quedan `Breakpoint=Desktop` y `Breakpoint=Mobile`. Se actualizó la descripción del set y las copias de DESIGN.md y COMPONENTS.md en Plan del proyecto.
+
+## 2026-10-19 · Navbar fijo en los listados
+
+- Lau quiere el navbar siempre a la vista en Productos y Colecciones: ya no se esconde al bajar (desde 1024 px) ni vuelve al subir. Reemplaza lo de 2026-10-16 · Productos: movimiento y scroll (umbral de dirección y toolbar y sidebar que acompañaban al navbar con `transform`).
+- La barra de herramientas y el sidebar quedan pegados siempre debajo del navbar (`top` del alto de la barra: `space/gap/md` × 2 + `icon/xl`).
+- **Sin doble línea:** pegada debajo del navbar, la línea superior de catalog-toolbar se juntaba con la inferior del navbar. Mientras está pegada, el listado le pone el atributo `stuck` (solo de código, sin variante en Figma) y la línea pasa a `color/surface/transparent` con `motion/duration/fast`; el borde mantiene su ancho para que la barra no cambie de alto. Se detecta con un `IntersectionObserver` (margen superior del `top` sticky + 1 px), sin escuchar el scroll.
+- **Sidebar de catálogo como compare-bar:** a Lau el despliegue de catalog-nav-group le resultaba lento (alto animado con `grid-template-rows` y `motion/easing/out`, que hace casi todo al principio y se arrastra al final). Ahora funciona como el pliegue de compare-bar (`#slide`): la lista cambia de golpe y la línea del grupo (en `::after`) y los grupos de abajo vuelven con `transform` desde donde estaban, con `motion/duration/expand` (250 ms) y `motion/easing/standard`; al abrir, la lista se descubre con `clip-path` al mismo ritmo. El chevron gira con el mismo tiempo y curva. Ya no usa Disclosure `animateHeight` (queda solo en faq-item); DESIGN.md §6 pasa a dos casos de alto animado. Con reduced motion, de golpe con el fundido de Disclosure.
+- Se quitó de `arq-catalog-listing` el seguimiento de la dirección del scroll y `#followNavbar`, y de navbar el atributo `data-arq-catalog-hidden`. Sigue `data-arq-compare-hidden` (la comparativa Mobile, que reemplaza el navbar por compare-header Compact).
