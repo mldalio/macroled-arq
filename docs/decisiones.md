@@ -618,7 +618,7 @@ Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe
 
 - Confirmar nombres de campo con quien arma la base; faltan `product_group_id` y `collection_id` (`typesense-adapter.js`).
 - Qué foto es cada una: las cuatro de product-card (estudio y contexto, apagada y encendida), las de una card de colección y las del mega-menu.
-- Acabados: tabla de códigos (N, V, R, B, BN, P); regla del blanco mate y del acero para los productos Skyline, cuando se organice su estructura en la base (`docs/acabados.md`, Pendientes).
+- Acabados: regla del blanco mate y del acero para los productos Skyline, cuando se organice su estructura en la base (`docs/acabados.md`, Pendientes).
 - Orden de las cards (hoy, el de la hoja).
 - Archivos de descarga por grupo (hoy CAD y Manual del SKU predeterminado).
 - Regla de Artefactos: ¿también dentro de Interior y Exterior, como Lámparas?
@@ -1070,6 +1070,11 @@ Salió de revisar los valores de `color_carcasa` de toda la base (326 documentos
 - **Blanco mate: imagen lista, sin regla.** `acabado-blanco-mate.png` (mismo estilo mate que el resto) es para los productos Skyline. No se conecta todavía: falta organizar su estructura en la base. Mientras tanto, «Blanco» sigue siendo el blanco metálico de DAO.
 - **Acero (`RMS-S-S`): sin imagen.** Producto de un solo color que la ficha no ofrece como variante; se resuelve junto con la regla de los productos Skyline.
 - **«Blanco y negro» no existe en la base:** solo está en `demo/fixtures/peor-caso.js` (datos de prueba).
+
+## 2026-10-19 · Blanco y negro y códigos de acabado
+
+- **«Blanco y negro» (código BN del SKU)** tiene imagen propia: `acabado-blanco-y-negro.png`, mitad blanco mate arriba a la izquierda y mitad negro mate abajo a la derecha, con corte nítido en diagonal (Figma, sección ACABADOS). Se mapea por nombre en `SLUGS` (`src/data/finishes.js`). Hoy no hay SKU con ese valor en la base: el mapeo queda listo para cuando se carguen.
+- **La tabla de códigos de acabado (N, V, R, B, BN, P) se descarta.** El acabado sale siempre del nombre completo de `color_carcasa` y el SKU es un identificador opaco, así que no hace falta traducir letras. Se sacó de los pendientes de DESIGN.md §12, de `docs/acabados.md`, del README de `swatch` y de `docs/setup.md`.
 
 ## 2026-10-19 · catalog-toolbar sin nombre de la página
 
