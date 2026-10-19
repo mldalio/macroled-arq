@@ -22,12 +22,14 @@ const clean = (text) => normalize(text).replace(/\s+/g, ' ').trim();
 // Nombre normalizado (minúsculas, sin tildes) → slug del archivo `acabado-<slug>.png`.
 // Un nombre que no está acá no tiene imagen (se ve el neutro con el nombre).
 // «Negro satinado» (conectores de riel Skyline) es lo mismo que el negro mate.
+// «Blanco y negro» (código BN del SKU) es la mitad blanco mate, mitad negro mate, en diagonal.
 // TODO (acabados): «Acero» (RMS-S-S) no tiene imagen: no cambia por variante. Y
 // acabado-blanco-mate.png ya está diseñado pero sin regla: lo usarán los productos
 // Skyline cuando se organice su estructura en la base (docs/acabados.md).
 const SLUGS = Object.freeze({
   negro: 'negro',
   'negro satinado': 'negro-mate',
+  'blanco y negro': 'blanco-y-negro',
   blanco: 'blanco',
   cobre: 'cobre',
   bronce: 'bronce',

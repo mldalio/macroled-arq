@@ -227,7 +227,7 @@ Usa nav-link, logo, icon-button, search-field, search-dropdown, search-screen, m
 
 Las páginas necesitan datos reales. Antes de armar las páginas hay que completar:
 
-- `docs/typesense-schema.md`: campos de la colección de Arq, incluidas las 4 imágenes de product-card y los códigos de acabado.
+- `docs/typesense-schema.md`: campos de la colección de Arq, incluidas las 4 imágenes de product-card.
 - `docs/urls.md`: rutas de cada página dentro de `/arq`.
 - `demo/fixtures/`: un producto de ejemplo en JSON con esos campos, para probar componentes sin Typesense.
 

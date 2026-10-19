@@ -21,7 +21,7 @@ Muestra de acabado (único swatch del sistema). Siempre cuadrada. El relleno es 
 | Size | `size` | `size` | `small` (16) · `default` (20) · `large` (24). **Por defecto `small`**, como en Figma (Size=Default no es el valor por defecto) |
 | State=Selected | `selected` | `selected` | booleano |
 | State=Disabled | `disabled` | `disabled` | booleano. Acabado sin combinación con las otras opciones elegidas: no se puede elegir (`aria-disabled="true"`) y las flechas del grupo la saltean |
-| — (imagen del fill) | `src` | `src` | URL de la imagen del acabado. Sale de `src/data/finishes.js` (nombre + familia del producto, `docs/acabados.md`); sin `src` o si no carga, el neutro |
+| — (imagen del fill) | `src` | `src` | URL de la imagen del acabado (PNG de 128 × 128 del servidor de imágenes de la empresa). Sale de `src/data/finishes.js` (nombre + familia del producto, `docs/acabados.md`); sin `src` o si no carga, el neutro |
 | — | `value` | `value` | valor del acabado (slug en inglés) |
 
 - **Solo visual** por defecto: `role="img"` con el nombre del acabado. Así va en product-card y en los filtros (State=Default).
@@ -42,6 +42,5 @@ Muestra de acabado (único swatch del sistema). Siempre cuadrada. El relleno es 
 
 ## Pendientes
 
-- `TODO` (datos) URL de la imagen: falta el campo en Typesense, la URL base del servidor de imágenes y el archivo de mapeo de acabados (nombre de Sheets → slug en inglés). Faltan también los códigos N, V, R, B, BN, P (DESIGN.md §12).
 - `TODO` "Neutro con el nombre" cuando falta la imagen: en 16–24 px no entra texto; hoy queda el fondo `color/surface/subtle` y el nombre solo para lectores de pantalla.
 - El tratamiento de Disabled (línea diagonal) se sumó en Figma el 2026-10-02 como propuesta: falta que diseño lo confirme.

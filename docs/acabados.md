@@ -15,15 +15,18 @@ familia       = «Yoru»
 3. **La imagen se pide al servidor de la empresa.** `https://s3.coresagroup.com/MACROLED/ARQ/imagenes/acabados/acabado-<slug>.png`. La dirección base está en `src/config.js` (`config.images.finishesBase`).
 4. **Si no hay imagen, no se rompe nada.** Un acabado que no está en el mapeo (o cuya imagen no carga) se ve como el neutro `color/surface/subtle`, con el nombre como texto accesible. Sirve para detectar qué falta.
 
+Los **códigos de acabado del SKU** (N, V, R, B, BN, P) no se usan: el acabado sale siempre del nombre completo que trae la base, y el SKU se trata como identificador opaco. Para tener a mano: `BN` es «Blanco y negro».
+
 ## Los archivos
 
-13 PNG de 128 × 128 px, cuadrados y sin forma dibujada (el recorte lo hace el código). Se exportan de Figma, frame `Acabados · gradients (128×128)` (`2720:5498`) dentro de la sección ACABADOS (`2713:9370`) de la página PRUEBA: un frame por acabado, con el mismo nombre que el archivo.
+14 PNG de 128 × 128 px, cuadrados y sin forma dibujada (el recorte lo hace el código). Se exportan de Figma, frame `Acabados · gradients (128×128)` (`2720:5498`) dentro de la sección ACABADOS (`2713:9370`) de la página PRUEBA: un frame por acabado, con el mismo nombre que el archivo.
 
 | Acabado en la base | Archivo | Tipo | Cuándo |
 | --- | --- | --- | --- |
 | Negro | `acabado-negro.png` | metálico (DAO) | siempre, salvo en las familias de abajo |
 | Negro | `acabado-negro-mate.png` | mate | familias Kanu, Nobu, Tori, Koen, Douli, Yoru y Sento |
 | Negro satinado | `acabado-negro-mate.png` | mate | siempre (es lo mismo que el negro mate: conectores de riel Skyline) |
+| Blanco y negro | `acabado-blanco-y-negro.png` | mate | siempre (código `BN` del SKU): mitad blanco y mitad negro mate, en diagonal |
 | Blanco | `acabado-blanco.png` | metálico | siempre |
 | — | `acabado-blanco-mate.png` | mate | **sin regla todavía** (ver Pendientes) |
 | Cobre | `acabado-cobre.png` | metálico | siempre |
@@ -77,6 +80,5 @@ Después de tocar `src/data/finishes.js`: `npm run build` y commit de `dist/`.
 
 - **Blanco mate (productos Skyline):** la imagen `acabado-blanco-mate.png` ya está diseñada, pero no tiene regla: los productos Skyline (conectores y accesorios de riel) la van a usar cuando se organice su estructura en la base. Hasta entonces, el nombre «Blanco» sigue dando `acabado-blanco.png` (el blanco metálico de DAO). La regla probable es por familia, como la del negro mate (`BY_FAMILY` en `src/data/finishes.js`). Subir el archivo al servidor antes de conectarla.
 - **Acero** (`RMS-S-S`, Skyline Kit Colgante, familia Riel Magnético): sin imagen a propósito. Es un producto con un solo color, que la ficha no ofrece como opción de variante. Se resuelve junto con la regla de los productos Skyline.
-- **«Blanco y negro»** no es un acabado real: solo aparece en `demo/fixtures/peor-caso.js`, datos de prueba para romper la interfaz. No hay SKU con ese valor.
-- **Códigos de acabado** (N, V, R, B, BN, P): falta la tabla de equivalencias con el nombre. Hoy no se usan: el mapeo parte del nombre completo.
+- **Blanco y negro** (código `BN` del SKU): la imagen está lista y el nombre está mapeado, pero hoy no hay ningún SKU con ese valor en la base. Subir `acabado-blanco-y-negro.png` al servidor. Si la base lo escribe distinto (por ejemplo «Blanco/Negro»), agregar ese nombre a `SLUGS` en `src/data/finishes.js`.
 - **Filtros de acabado** del glosario (`variants-table`) y de Descargas (`downloads-table`): hoy la muestra va neutra. Cuando se quiera la imagen, hay que pasarle el acabado de cada opción como se hace en la comparativa.
