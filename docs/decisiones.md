@@ -1123,3 +1123,11 @@ Salió de revisar los valores de `color_carcasa` de toda la base (326 documentos
 - **Contacto:** en Tablet la información va arriba y el formulario debajo (como Mobile), con los campos de a dos; la bajada hasta `layout/measure-wide` y la información sin sticky.
 - **mega-menu:** en Tablet no se muestra el preview (`layout/mega-menu-image`, 420): las columnas toman todo el ancho, con `layout/gutter` a los dos lados. Se probó la miniatura de mega-link (Show image) en las colecciones y no entra en 4 columnas a 800–900 px: queda sin miniatura.
 - Figma: descripciones de los sets filter-panel (1225:13576), compare-bar (1233:3963) y mega-menu (841:2282); fichas `doc/filter-panel`, `doc/compare-bar` y `doc/mega-menu`; copias de DESIGN.md y COMPONENTS.md en Plan del proyecto (la de compare-bar en COMPONENTS.md venía atrasada: se copió la del repo, y en `docs/components.md` se sacó el párrafo de movimiento que estaba repetido).
+
+## 2026-10-19 · Tablet: registro en Figma
+
+- Lau pidió las pantallas Tablet en Figma como registro. Sección «Tablet · registro (2026-10-19)» (2791:24150) en Final, a la derecha de todo: Productos, Productos · filtros (Características y Categorías), compare-bar, Descargas, Contacto y Mega menu (Por espacio y Colecciones), a 834 px (iPad vertical) con el modo Tablet de Dimension. Se armaron clonando las Desktop y apilando lo que el código apila, más una nota con el criterio.
+- Desacoplados porque los sets no tienen variante Tablet: compare-bar (fila vertical) y filter-panel (Desktop con las tabs y la lista de categorías copiadas de su variante Mobile). Los sets no se tocaron.
+- En la tabla de Descargas, el difuminado es un rectángulo con degradado: la parada final está atada a `color/surface/default`; la inicial es blanco al 0 % sin variable, porque Figma mezcla sin premultiplicar y con `color/surface/transparent` (negro al 0 %) el medio se ve gris. En código no pasa.
+- En la cabecera de Productos, la bajada del page-header se desató de `layout/measure-wide` y llena el lugar libre (≈ 400, como `layout/measure` en código): la variable no se puede cambiar en la instancia.
+- Pendiente: el footer de Figma no entra en 834 («Redes» se corta); en código sí entra.
