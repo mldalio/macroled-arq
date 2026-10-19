@@ -1,0 +1,72 @@
+/* collection-mosaic · Home v2, frame 2306:23088.
+   Kanu 543 × 770 a la izquierda. A la derecha, Douli (890 × 384, un poco
+   más alta que los 356 del frame) empieza 175 px más abajo; debajo, la
+   otra foto 470 × 404 y Sento 412 × 550, que sigue más abajo. Hueco:
+   space/5. No hay tokens de esas medidas. */
+
+:host {
+  display: block;
+  min-width: 0;
+  /* Las fotos no siguen el padding de la sección: llegan al borde.
+     El título de la sección se queda con ese margen. */
+  margin-inline: calc(var(--section-inline, 0px) * -1);
+  width: calc(100% + var(--section-inline, 0px) * 2);
+}
+
+.mosaic {
+  display: grid;
+  grid-template-columns: 543fr var(--arq-space-5) 470fr var(--arq-space-5) 412fr;
+  /* 175 solo Kanu · 384 Douli · hueco · 206 los tres · 198 sin Kanu · 146 solo Sento */
+  grid-template-rows: 175fr 384fr var(--arq-space-5) 206fr 198fr 146fr;
+  aspect-ratio: 1440 / 1114;
+}
+
+slot {
+  display: contents;
+}
+
+::slotted(*) {
+  display: block;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+}
+
+::slotted([slot='primary']) {
+  grid-column: 1;
+  grid-row: 1 / 5;
+}
+
+::slotted([slot='wide']) {
+  grid-column: 3 / 6;
+  grid-row: 2;
+}
+
+::slotted([slot='stack']:nth-child(3)) {
+  grid-column: 3;
+  grid-row: 4 / 6;
+}
+
+::slotted([slot='stack']:nth-child(4)) {
+  grid-column: 5;
+  grid-row: 4 / 7;
+}
+
+@media (max-width: 767px) {
+  .mosaic {
+    display: flex;
+    flex-direction: column;
+    gap: var(--arq-space-5);
+    aspect-ratio: auto;
+  }
+
+  ::slotted([slot='primary']),
+  ::slotted([slot='wide']),
+  ::slotted([slot='stack']:nth-child(3)),
+  ::slotted([slot='stack']:nth-child(4)) {
+    grid-column: auto;
+    grid-row: auto;
+    height: auto;
+    aspect-ratio: 4 / 5;
+  }
+}

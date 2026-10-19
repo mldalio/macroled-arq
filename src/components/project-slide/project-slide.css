@@ -1,0 +1,66 @@
+/* project-slide · Figma 2153:20656. Solo tokens semánticos.
+   Activo: slide central, sin velo. Inactivo: laterales, velo color/surface/default. */
+
+:host {
+  display: block;
+  flex: none;
+  overflow: hidden;
+  background: var(--arq-color-surface-subtle);
+  /* TODO (diseño): Inactivo mide 300 × 400. Se usa 3/4 de layout/measure
+     (400) y ratio 3:4. No hay token de 300 ni de 3:4. */
+  width: calc(var(--arq-layout-measure) * 3 / 4);
+  aspect-ratio: 3 / 4;
+  cursor: grab;
+}
+
+:host([active]) {
+  /* Activo: 400 × 500. Ancho layout/measure; alto con ratio/portrait-soft (4:5). */
+  width: var(--arq-layout-measure);
+  aspect-ratio: 4 / 5;
+}
+
+.slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.slide ::slotted(*) {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Velo Inactivo. TODO (diseño): opacity 50 % no tiene token. */
+.veil {
+  position: absolute;
+  inset: 0;
+  background: var(--arq-color-surface-default);
+  opacity: 0.5;
+  pointer-events: none;
+  transition-property: opacity, color, background-color, border-color, outline-color;
+  transition-duration: var(--arq-motion-duration-slow);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+:host([active]) .veil {
+  opacity: 0;
+}
+
+/* El bucle salta de copia sin animar el velo: si no, la foto central destella. */
+:host([data-instant]) .veil {
+  transition: none;
+}
+
+:host([data-dragging]) {
+  cursor: grabbing;
+}
+
+:host(:focus-visible) {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}

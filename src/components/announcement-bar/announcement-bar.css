@@ -1,0 +1,29 @@
+/* announcement-bar · Figma 2780:8595. Solo tokens semánticos.
+   Va en el flujo de la página, antes del navbar: al hacer scroll se va con el
+   contenido y el navbar queda pegado arriba. */
+
+:host {
+  display: block;
+}
+
+/* Siempre en Dark local: fondo color/surface/default (neutral/800). Padding
+   space/padding/xs × --page-gutter (más los 4 del button Underline arriba y
+   abajo). El link va centrado; si no entra, el texto baja de línea dentro
+   del button.
+   Alto 40, como el set. */
+.bar {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--arq-space-padding-xs) var(--page-gutter);
+  background: var(--arq-color-surface-default);
+  color: var(--arq-color-text-primary);
+  text-align: center;
+}
+
+@media print {
+  :host {
+    display: none;
+  }
+}

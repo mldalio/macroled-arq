@@ -14,15 +14,33 @@
   gap: var(--arq-space-gap-lg);
 }
 
+/* 3:4 en Desktop, ratio/portrait-soft (4:5) en Mobile.
+   PRUEBA (2026-10-06): 3:4 no es un token; está entre ratio/portrait (7:10)
+   y ratio/portrait-soft (4:5). Si se descarta, volver a 7 / 10.
+   TODO (diseño): en el set la imagen Desktop mide 411 × 600 (sin token) y
+   Hover / Focus siguen en 4:5. */
 .card-media {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 3 / 4;
 }
 
+/* Nombre y flecha en una fila. La bajada (Home v2) va debajo. */
 .caption {
   display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--arq-space-gap-sm-md);
+}
+
+.title-row {
+  display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--arq-space-gap-md);
+  gap: var(--arq-space-gap-sm);
+}
+
+.description {
+  margin: 0;
+  color: var(--arq-color-text-secondary);
+  overflow-wrap: break-word;
 }
 
 .name {
@@ -42,14 +60,173 @@
    imagen no pasa del alto del viewport menos dos space/section/xl (padding
    de la sección y lugar para encabezado y nombre); al tope se recorta.
    Piso de 50svh (decisiones.md, 2026-10-05 · Home: alturas y meta). */
+/* PRUEBA (2026-10-06): sin el tope, para ver las imágenes más altas.
+   Si se descarta, volver a: max-height: max(50svh, 100svh - var(--arq-space-section-xl) * 2); */
 @media (min-width: 768px) {
   .card-media {
-    max-height: max(50svh, 100svh - var(--arq-space-section-xl) * 2);
+    max-height: none;
   }
 }
 
 @media (max-width: 767px) {
   .card {
     gap: var(--arq-space-gap-md);
+  }
+
+  .card-media {
+    aspect-ratio: 4 / 5;
+  }
+}
+
+/* Hover: zoom de la imagen dentro del recorte. La tarjeta no cambia de
+   tamaño. Solo con mouse, igual que el borde de card-link.css.
+   motion/duration/slow: es un cambio de imagen, como el fundido de
+   product-card. TODO (diseño): no hay token de escala; 1.05 no está en
+   Figma (el set solo define el borde de hover). */
+.card-media ::slotted(*) {
+  transition: transform var(--arq-motion-duration-slow) var(--arq-motion-easing-standard) !important;
+}
+
+@media (hover: hover) {
+  .card:has(.card-link:hover) .card-media ::slotted(*) {
+    transform: scale(1.05) !important;
+  }
+}
+
+.card-media {
+  position: relative;
+}
+
+/* Entrada al hacer scroll (category-card.js): sube space/gap/2xl y aparece.
+   Escalonada con motion/duration/fast por tarjeta. Redeclara la lista de
+   transiciones de la hoja base para sumar transform y opacity.
+   TODO (diseño): no está en Figma ni hay token de desplazamiento. */
+.card.reveal {
+  opacity: 0;
+  transform: translateY(var(--arq-space-gap-2xl));
+  transition-property: color, background-color, border-color, outline-color, opacity, transform;
+  transition-duration: var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), calc(var(--arq-motion-duration-slow) * 2), calc(var(--arq-motion-duration-slow) * 2);
+  transition-delay: 0s, 0s, 0s, 0s, calc(var(--arq-motion-duration-fast) * var(--reveal-index, 0)), calc(var(--arq-motion-duration-fast) * var(--reveal-index, 0));
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+.card.reveal.revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* overlay · Home v2: nombre y flecha sobre la foto. Cerrada: solo el título.
+   En hover (y foco) aparece la bajada. El agrande de ancho lo hace arq-grid. */
+:host([overlay]) {
+  height: 100%;
+}
+
+:host([overlay]) .card {
+  height: 100%;
+  gap: 0;
+}
+
+:host([overlay]) .card-media {
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+}
+
+:host([overlay]) .card-media::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  height: 50%;
+  background: linear-gradient(to top, rgb(0 0 0 / 72%), rgb(0 0 0 / 0%));
+  pointer-events: none;
+}
+
+:host([overlay]) .caption {
+  position: absolute;
+  right: var(--arq-space-padding-xl);
+  bottom: var(--arq-space-padding-xl);
+  left: var(--arq-space-padding-xl);
+  z-index: var(--card-above);
+  pointer-events: none;
+}
+
+:host([overlay]) .title-row {
+  justify-content: space-between;
+  gap: var(--arq-space-gap-md);
+}
+
+:host([overlay]) .name {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--arq-color-text-inverse);
+}
+
+:host([overlay]) .icon {
+  width: var(--arq-icon-xl);
+  height: var(--arq-icon-xl);
+  color: var(--arq-color-icon-inverse);
+}
+
+:host([overlay]) .description {
+  display: grid;
+  grid-template-rows: 0fr;
+  color: var(--arq-color-text-inverse);
+  opacity: 0;
+  transition-property: grid-template-rows, opacity, color, background-color, border-color, outline-color;
+  transition-duration: calc(var(--arq-motion-duration-slow) * 4);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+:host([overlay]) .description-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (hover: hover) {
+  :host([overlay]:hover) .description,
+  :host([overlay]:focus-within) .description {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  :host([overlay]) .card:has(.card-link:hover) .card-media {
+    outline: none;
+  }
+
+  /* Zoom leve de la foto, dentro del recorte. Misma duración que la bajada.
+     TODO (diseño): no hay token de escala; 1.05 no está en Figma. */
+  :host([overlay]) .card-media ::slotted(*) {
+    transition: transform calc(var(--arq-motion-duration-slow) * 4)
+      var(--arq-motion-easing-standard) !important;
+  }
+
+  :host([overlay]:hover) .card-media ::slotted(*),
+  :host([overlay]:focus-within) .card-media ::slotted(*) {
+    transform: scale(1.05) !important;
+  }
+}
+
+@media (max-width: 767px) {
+  :host([overlay]) {
+    height: auto;
+  }
+
+  :host([overlay]) .card {
+    height: auto;
+  }
+
+  :host([overlay]) .card-media {
+    flex: none;
+    height: auto;
+    aspect-ratio: 3 / 4;
+  }
+
+  :host([overlay]) .description {
+    grid-template-rows: 1fr;
+    opacity: 1;
   }
 }

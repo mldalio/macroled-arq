@@ -12,6 +12,60 @@
   gap: var(--arq-space-gap-sm);
 }
 
+.arrows {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+}
+
+/* Home (buttons=carousel): contador, línea y flechas.
+   TODO (diseño): Figma separa esas partes con 20; el más cercano es space/gap-lg (24). */
+:host([buttons='carousel']) .controls {
+  gap: var(--arq-space-gap-lg);
+}
+
+.count {
+  margin: 0;
+  color: var(--arq-color-text-secondary);
+}
+
+/* Pista de 96 (space/gap-5xl) y trazo de 2 (border/strong).
+   TODO (diseño): la pista va al 35 % y no hay token de opacidad. */
+.progress {
+  position: relative;
+  flex: none;
+  width: var(--arq-space-gap-5xl);
+  height: var(--arq-border-strong);
+}
+
+.track {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: var(--arq-border-default);
+  background: var(--arq-color-text-secondary);
+  opacity: 0.35;
+  transform: translateY(-50%);
+}
+
+.indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: calc(100% / var(--progress-count, 1));
+  background: var(--arq-color-text-primary);
+  transform: translateX(calc(var(--progress-index, 0) * 100%));
+  transition: transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicator {
+    transition: none;
+  }
+}
+
 /* Mobile: no se muestran (el carrusel se desliza y la imagen siguiente asoma) */
 @media (max-width: 767px) {
   :host {

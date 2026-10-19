@@ -1,25 +1,21 @@
 /* navbar · Figma 753:2907. Solo tokens semánticos. Desktop es la base;
    Mobile (max-width: 767px): logo Small, lupa y menú. */
 
-/* Default: queda arriba al desplazar (sticky). Transparent: fixed, encima
-   del hero (TODO diseño: confirmar). z-index sin token: por encima del
-   contenido de la página. */
+/* Default: queda arriba al desplazar (sticky). Transparent: también sticky,
+   encima del hero gracias al margen inferior negativo (TODO diseño:
+   confirmar). Así, con announcement-bar arriba, arranca debajo de la barra y
+   se pega arriba cuando la barra se va con el scroll. z-index sin token: por
+   encima del contenido de la página. */
 :host {
   /* motion/duration/panel (400 ms), igual que search-sheet */
   --mega-slow: var(--arq-motion-duration-panel);
+  /* Alto de la barra: 56 (ver .bar) */
+  --bar-height: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
   display: block;
   position: sticky;
   top: 0;
   z-index: 4;
   transition: transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
-}
-
-/* Solo el listado de catálogo solicita esta barra compacta. Al bajar deja el
-   toolbar fijo a la vista; al subir vuelve para que la navegación esté cerca. */
-@media (min-width: 1024px) {
-  :host([data-arq-catalog-hidden]) {
-    transform: translateY(-100%);
-  }
 }
 
 /* La comparativa Mobile reemplaza temporalmente la navegación por su
@@ -32,8 +28,7 @@
 }
 
 :host([theme='transparent']) {
-  position: fixed;
-  inset-inline: 0;
+  margin-bottom: calc(-1 * var(--bar-height));
 }
 
 .navbar {
@@ -67,7 +62,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--arq-space-gap-xl);
-  height: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
+  height: var(--bar-height);
   padding: 0 var(--page-gutter);
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
   background: var(--arq-color-surface-default);
@@ -216,7 +211,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
+  height: var(--bar-height);
   padding: 0 var(--page-gutter);
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
 }
@@ -371,6 +366,7 @@
   :host([theme='transparent']),
   :host([data-arq-compare-hidden]) {
     position: static;
+    margin-bottom: 0;
     transform: none;
   }
 

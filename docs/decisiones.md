@@ -1091,3 +1091,34 @@ Salió de revisar los valores de `color_carcasa` de toda la base (326 documentos
 - **Solo en cards de producto** (Productos y página de colección). Las cards de colección no lo tienen: sus imágenes son de la colección.
 - **Mobile (Size=Small):** nombre y acabados en columna a `space/gap/sm`; nombre a 20/28 (`role/body-xl`; en Mobile `role/heading-3`); info a `space/gap/md`; acabados a `space/gap/sm`. Sale del set de Figma (990:2327).
 - **TODO (diseño):** los swatches de 16 px miden menos que el área táctil mínima de 24 × 24 (DESIGN.md §9). Queda así por diseño; confirmar si se amplía el área de clic.
+
+## 2026-10-19 · catalog-toolbar sin State=Scroll
+
+- Lau no quiere que la barra se achique al desplazarse la página: se sacó State=Scroll. Queda siempre con padding vertical `space/padding/md`; el listado la sigue dejando fija debajo del navbar.
+- Código: atributo `state` de `<arq-catalog-toolbar>`, su regla CSS y la línea de `arq-catalog-listing` que lo ponía; demo, README, `docs/components.md` y DESIGN.md (§8 y Anexo A).
+- Figma: se borró la variante State=Scroll (1810:19453, sin instancias) y la propiedad State del set (1244:4058); las variantes quedan `Breakpoint=Desktop` y `Breakpoint=Mobile`. Se actualizó la descripción del set y las copias de DESIGN.md y COMPONENTS.md en Plan del proyecto.
+
+## 2026-10-19 · Navbar fijo en los listados
+
+- Lau quiere el navbar siempre a la vista en Productos y Colecciones: ya no se esconde al bajar (desde 1024 px) ni vuelve al subir. Reemplaza lo de 2026-10-16 · Productos: movimiento y scroll (umbral de dirección y toolbar y sidebar que acompañaban al navbar con `transform`).
+- La barra de herramientas y el sidebar quedan pegados siempre debajo del navbar (`top` del alto de la barra: `space/gap/md` × 2 + `icon/xl`).
+- **Sin doble línea:** pegada debajo del navbar, la línea superior de catalog-toolbar se juntaba con la inferior del navbar. Mientras está pegada, el listado le pone el atributo `stuck` (solo de código, sin variante en Figma) y la línea pasa a `color/surface/transparent` con `motion/duration/fast`; el borde mantiene su ancho para que la barra no cambie de alto. Se detecta con un `IntersectionObserver` (margen superior del `top` sticky + 1 px), sin escuchar el scroll.
+- **Sidebar de catálogo como compare-bar:** a Lau el despliegue de catalog-nav-group le resultaba lento (alto animado con `grid-template-rows` y `motion/easing/out`, que hace casi todo al principio y se arrastra al final). Ahora funciona como el pliegue de compare-bar (`#slide`): la lista cambia de golpe y la línea del grupo (en `::after`) y los grupos de abajo vuelven con `transform` desde donde estaban, con `motion/duration/expand` (250 ms) y `motion/easing/standard`; al abrir, la lista se descubre con `clip-path` al mismo ritmo. El chevron gira con el mismo tiempo y curva. Ya no usa Disclosure `animateHeight` (queda solo en faq-item); DESIGN.md §6 pasa a dos casos de alto animado. Con reduced motion, de golpe con el fundido de Disclosure.
+- Se quitó de `arq-catalog-listing` el seguimiento de la dirección del scroll y `#followNavbar`, y de navbar el atributo `data-arq-catalog-hidden`. Sigue `data-arq-compare-hidden` (la comparativa Mobile, que reemplaza el navbar por compare-header Compact).
+
+## 2026-10-19 · announcement-bar (propuesta)
+
+- Lau pidió una línea fina arriba del navbar, en todas las páginas, con fondo oscuro y «Suscribite al newsletter». No hay set en Figma: se arma primero en código como propuesta y, si queda bien, se diseña en Figma (set + ficha `doc/announcement-bar`).
+- `<arq-announcement-bar>` con un button Underline por slot, sin subrayado en reposo (sin `show-underline`: aparece en hover), con el ícono `arrow-up-right` y texto de 14 px (`role/body-compact-regular`) con el atributo `compact` del button, solo de código. Pedido de Lau. Siempre en Dark local (`data-arq-theme="dark"` en el `<aside>` interno, como compare-bar): no cambia con Iluminar.
+- **Al hacer scroll se oculta:** va en el flujo de la página, antes del navbar, y se va con el contenido; no escucha el scroll.
+- **navbar Transparent pasa de fixed a sticky** con margen inferior negativo (su alto, 56): sigue encima del hero, pero arranca debajo de la barra y se pega arriba cuando la barra se va. Sin la barra se ve igual que antes. El alto de la barra del navbar queda en una variable local (`--bar-height`).
+- El link va a la sección Newsletter de la Home: `/arq#newsletter` (el cta-block lleva `id="newsletter"`). Confirmado por Lau.
+- **Figma (19/10):** set `announcement-bar` (2780:8595) en Componentes › 2 · Navegación › Announcement bar: Breakpoint Desktop · Mobile, modo Dark fijado en cada variante, padding `space/padding/xs` × `layout/gutter`, button Underline (Show underline=false, icon/arrow-up-right) como instancia expuesta y el label con el estilo `role/body-compact-regular` como override (el set de button no tiene `compact`). Ficha `doc/announcement-bar` (2781:13825) en Documentación › 2 · Navegación. Link confirmado: sección Newsletter de la Home.
+- **Ajustes (19/10):** con `compact`, el subrayado del button Underline sube (arranca `space/padding/2xs` antes del borde inferior de la línea de 24, en lugar de 3 px debajo): con texto de 14 sobraba aire. También es más fino: queda en `border/default` (1 px) en hover y pressed, en lugar de `border/strong` (2 px). Solo afecta a compact; el resto de los button sigue como Figma. El hero `full-height` de la Home descuenta el alto de announcement-bar (lo mide con un `ResizeObserver`): barra + hero ocupan el 100 % del alto de la pantalla.
+- **Figma (19/10, cierre):** descripción del set y ficha `doc/announcement-bar` con el subrayado de 1 px y más pegado en hover; anotación de Dev Mode «✅ En código: arq-announcement-bar (src/components/announcement-bar)»; copias de DESIGN.md y COMPONENTS.md de Plan del proyecto actualizadas (la de COMPONENTS.md ya venía atrasada respecto del repo).
+
+## 2026-10-19 · announcement-bar solo en la Home
+
+- Lau pidió que la barra vaya solo en la Home. Reemplaza «en todas las páginas» de 2026-10-19 · announcement-bar (propuesta): se sacó de los embeds de Productos, Colección, Ficha, Comparativa, Descargas y Contacto.
+- El navbar sigue siendo sticky en Default y en Transparent: sin la barra se ve igual que antes. El hero `full-height` solo descuenta la barra si está en la página.
+- Figma: descripción del set, ficha `doc/announcement-bar` y copias de DESIGN.md y COMPONENTS.md de Plan del proyecto.

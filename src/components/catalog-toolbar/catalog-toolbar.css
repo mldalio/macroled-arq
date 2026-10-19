@@ -16,12 +16,13 @@
   padding-block: var(--arq-space-padding-md);
   border-block: var(--arq-border-default) solid var(--arq-color-border-subtle);
   background: var(--arq-color-surface-transparent);
+  transition: border-top-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);
 }
 
-/* State=Scroll: la barra fija gana espacio vertical sin modificar sus
-   controles ni su altura mínima de foco. */
-:host([state='scroll']) .bar {
-  padding-block: var(--arq-space-padding-sm);
+/* stuck (lo pone el listado): pegada debajo del navbar, la línea de arriba se
+   juntaba con la del navbar. Se vuelve transparente sin cambiar el alto. */
+:host([stuck]) .bar {
+  border-top-color: var(--arq-color-surface-transparent);
 }
 
 /* Count: role/body en color/text/secondary */

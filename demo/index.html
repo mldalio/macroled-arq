@@ -939,11 +939,6 @@
         <div class="demo-dark" data-arq-theme="dark">
           <arq-catalog-toolbar count="11" unit="productos" filter-count="2"></arq-catalog-toolbar>
         </div>
-        <h3 class="demo-subheading role-body-sm">State=Scroll (state="scroll"): padding vertical space/padding/sm</h3>
-        <arq-catalog-toolbar count="11" unit="productos" state="scroll" show-iluminar></arq-catalog-toolbar>
-        <div class="demo-dark" data-arq-theme="dark">
-          <arq-catalog-toolbar count="11" unit="productos" state="scroll" show-iluminar></arq-catalog-toolbar>
-        </div>
       </section>
 
       <section class="demo-section" aria-labelledby="demo-product-card">
@@ -1580,6 +1575,27 @@
         </div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-announcement-bar">
+        <h2 id="demo-announcement-bar" class="demo-heading role-label">announcement-bar · &lt;arq-announcement-bar&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 2780:8595. Línea arriba del navbar, solo en la Home, siempre en Dark local (no cambia con el switch de tema). Link: button Underline compact (14/24), sin subrayado en reposo y con arrow-up-right. En la Home se va con el scroll y el navbar queda pegado arriba: probalo en demo/home.html.</p>
+        <div class="demo-navbar">
+          <arq-announcement-bar label="Novedades">
+            <arq-button type="underline" compact show-icon icon="arrow-up-right" href="#demo-announcement-bar">Suscribite al newsletter</arq-button>
+          </arq-announcement-bar>
+          <arq-navbar label="Principal (con announcement-bar)">
+            <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-announcement-bar">Descargas</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-announcement-bar">Contacto</arq-nav-link>
+          </arq-navbar>
+        </div>
+        <p class="demo-note role-body-sm">Texto largo (en 390 px baja de línea):</p>
+        <div class="demo-navbar">
+          <arq-announcement-bar>
+            <arq-button type="underline" compact show-icon icon="arrow-up-right" href="#demo-announcement-bar">Suscribite al newsletter y recibí lanzamientos, catálogos y recursos para proyectar antes que nadie</arq-button>
+          </arq-announcement-bar>
+        </div>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-navbar">
         <h2 id="demo-navbar" class="demo-heading role-label">navbar · &lt;arq-navbar&gt;</h2>
         <p class="demo-note role-body-sm">Figma 753:2907 y frames 2295:23568 · 2295:23605. Productos abre el mega-menu (Desktop) o, en Mobile, la lista Interior · Exterior · Lámparas y artefactos · Colecciones (un nivel sin datos no aparece): cada fila entra a su submenú (con «volver»; Colecciones con miniaturas y «Ver todo» fijo abajo; Lámparas y artefactos con dos grupos, set 2312:8904). La lupa abre la búsqueda: escribí «kanu», «jardín» o un SKU; ↑ ↓ eligen y Enter abre; Esc cierra. Datos del catálogo: Typesense. En la demo la barra no queda fija.</p>
@@ -2138,6 +2154,25 @@
             <arq-input slot="email" name="email-dark" input-type="email" placeholder="Tu email profesional" required>Email</arq-input>
             <arq-button slot="action">Suscribirme</arq-button>
           </arq-cta-block>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-carousel-button">
+        <h2 id="demo-carousel-button" class="demo-heading role-label">carousel-button · &lt;arq-carousel-button&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 2387:8532. Cuadrado de los sliders de Destacados y Proyectos. Direction Previous · Next. State=Disabled: fondo surface/subtle.</p>
+        <p class="demo-subheading role-body-sm">Previous y Next, Default y Disabled</p>
+        <div class="demo-row">
+          <arq-carousel-button direction="previous">Anterior</arq-carousel-button>
+          <arq-carousel-button direction="previous" disabled>Anterior</arq-carousel-button>
+          <arq-carousel-button direction="next">Siguiente</arq-carousel-button>
+          <arq-carousel-button direction="next" disabled>Siguiente</arq-carousel-button>
+        </div>
+        <p class="demo-subheading role-body-sm">Contenedor en modo Dark</p>
+        <div class="demo-row demo-dark" data-arq-theme="dark">
+          <arq-carousel-button direction="previous">Anterior</arq-carousel-button>
+          <arq-carousel-button direction="previous" disabled>Anterior</arq-carousel-button>
+          <arq-carousel-button direction="next">Siguiente</arq-carousel-button>
+          <arq-carousel-button direction="next" disabled>Siguiente</arq-carousel-button>
         </div>
       </section>
 

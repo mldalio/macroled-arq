@@ -35,7 +35,9 @@ class ArqCtaBlock extends ArqElement {
   };
   static template =
     `<div class="block">` +
+    `<div class="media" hidden><slot name="media"></slot></div>` +
     `<div class="text">` +
+    `<p class="kicker role-label" hidden><slot name="kicker"></slot></p>` +
     `<div class="title role-heading-2"><slot name="title"></slot></div>` +
     `<p class="description role-body-lg" hidden><slot name="description"></slot></p>` +
     `</div>` +
@@ -47,7 +49,9 @@ class ArqCtaBlock extends ArqElement {
 
   setup() {
     const root = this.shadowRoot;
-    root.querySelector('slot[name="description"]').addEventListener('slotchange', () => this.update());
+    for (const name of ['description', 'kicker', 'media']) {
+      root.querySelector(`slot[name="${name}"]`).addEventListener('slotchange', () => this.update());
+    }
 
     // Newsletter: clic en el button del slot action o Enter en el email
     root.querySelector('slot[name="action"]').addEventListener('click', () => {
@@ -63,10 +67,20 @@ class ArqCtaBlock extends ArqElement {
 
   update() {
     const root = this.shadowRoot;
-    root.querySelector('.description').hidden = !root
-      .querySelector('slot[name="description"]')
-      .assignedNodes({ flatten: true })
-      .some((node) => node.nodeType === Node.ELEMENT_NODE || node.textContent.trim());
+    const filled = (name) =>
+      root
+        .querySelector(`slot[name="${name}"]`)
+        .assignedNodes({ flatten: true })
+        .some((node) => node.nodeType === Node.ELEMENT_NODE || node.textContent.trim());
+    root.querySelector('.description').hidden = !filled('description');
+    root.querySelector('.kicker').hidden = !filled('kicker');
+    const hasMedia = root.querySelector('slot[name="media"]').assignedElements({ flatten: true }).length > 0;
+    root.querySelector('.media').hidden = !hasMedia;
+    this.classList.toggle('has-media', hasMedia);
+    root.querySelector('.title').classList.toggle('role-display-sm', hasMedia);
+    root.querySelector('.title').classList.toggle('role-heading-2', !hasMedia);
+    root.querySelector('.description').classList.toggle('role-body', hasMedia);
+    root.querySelector('.description').classList.toggle('role-body-lg', !hasMedia);
     root.querySelector('.email').hidden = this.type !== 'newsletter';
   }
 

@@ -18,29 +18,40 @@
 //   767 px: el link de un section-header Type=Link, que en Mobile no se ve).
 // - layout="split": en Desktop el encabezado y la acción van en una columna de
 //   layout/measure y el contenido a la derecha (FAQ del Home). En Mobile apila.
-// - padding-top: suma space/section/xl arriba (primer bloque después del hero).
+// - padding-top: suma space/section/md arriba (primer bloque después del hero,
+//   o el que sigue a una banda con background="subtle").
+// - background="subtle": banda color/bg/subtle con space/section/md arriba y
+//   abajo (Home: Explorar por espacio y Diseño que inspira).
 // - Es un <section> de la página solo si la página lo pone: el componente no
 //   agrega landmarks (el <h2> del encabezado alcanza para navegar).
 
 import { ArqElement } from '../../base/arq-element.js';
+import { revealCss } from '../../base/reveal.js';
 import css from './section.css?inline';
 
-const SLOTS = ['header', 'action', 'mobile-action'];
+const SLOTS = ['header', 'lead', 'action', 'mobile-action'];
 
 class ArqSection extends ArqElement {
   static tag = 'arq-section';
-  static styles = css;
+  static styles = revealCss + css;
   static properties = {
-    layout: { type: String, values: ['stack', 'split'], default: 'stack' },
-    paddingTop: { type: Boolean }, // space/section/xl arriba
+    layout: { type: String, values: ['stack', 'split', 'tools'], default: 'stack' },
+    paddingTop: { type: Boolean }, // space/section/md arriba
+    padding: { type: String, values: ['default', 'section', 'wide'], default: 'default' },
+    bleed: { type: String, values: ['none', 'end'], default: 'none' },
+    background: { type: String, values: ['default', 'subtle', 'bone', 'sand'], default: 'default' },
+    reveal: { type: Boolean }, // entrada al hacer scroll: el bloque entero aparece una vez
   };
   static template =
     `<div class="section">` +
     `<div class="head" hidden><slot name="header"></slot></div>` +
+    `<div class="lead" hidden><slot name="lead"></slot></div>` +
     `<div class="body"><slot></slot></div>` +
     `<div class="action" hidden><slot name="action"></slot></div>` +
     `<div class="mobile-action" hidden><slot name="mobile-action"></slot></div>` +
     `</div>`;
+
+  #observer = null;
 
   setup() {
     // Un contenedor sin contenido se oculta: así no suma el gap.
@@ -50,6 +61,36 @@ class ArqSection extends ArqElement {
       slot.addEventListener('slotchange', sync);
       sync();
     }
+  }
+
+  disconnectedCallback() {
+    this.#observer?.disconnect();
+  }
+
+  update(changed) {
+    if (changed.has('reveal')) this.#armReveal();
+  }
+
+  // El bloque entero (título, contenido y pie) aparece una sola vez al entrar
+  // en pantalla. Misma entrada que el resto del Home (src/base/reveal.js).
+  // Con prefers-reduced-motion se ve quieto.
+  #armReveal() {
+    this.#observer?.disconnect();
+    this.#observer = null;
+    const section = this.shadowRoot.querySelector('.section');
+    section.classList.remove('reveal', 'revealed');
+    if (!this.reveal || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    section.classList.add('reveal');
+    this.#observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        section.classList.add('revealed');
+        this.#observer.disconnect();
+        this.#observer = null;
+      },
+      { threshold: 0.15 },
+    );
+    this.#observer.observe(this);
   }
 }
 

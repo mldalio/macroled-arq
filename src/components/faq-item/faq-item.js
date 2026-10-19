@@ -26,10 +26,12 @@ class ArqFaqItem extends ArqElement {
   static styles = css;
   static properties = {
     open: { type: Boolean }, // Open
+    number: { type: String }, // "01" en Home v2; sin valor, el ítem del set
   };
   static template =
     `<div class="item">` +
     `<button type="button" class="trigger">` +
+    `<span class="number role-caption" hidden></span>` +
     `<span class="question role-heading-3-light"><slot name="question"></slot></span>` +
     `${icon('plus')}${icon('minus')}` +
     `</button>` +
@@ -54,6 +56,16 @@ class ArqFaqItem extends ArqElement {
     };
     answer.addEventListener('slotchange', sync);
     sync();
+  }
+
+  update() {
+    const number = (this.number || '').trim();
+    const label = this.shadowRoot.querySelector('.number');
+    label.textContent = number;
+    label.hidden = !number;
+    const question = this.shadowRoot.querySelector('.question');
+    question.classList.toggle('role-heading-3', Boolean(number));
+    question.classList.toggle('role-heading-3-light', !number);
   }
 }
 

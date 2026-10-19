@@ -146,7 +146,7 @@ Medido en Productos (con `catalog-nav` desde 1024 px):
 
 - El **contenido** de la página llega hasta `layout/max-width` (1792 = 1920 − 2 × 64). Hasta 1920 px manda `layout/gutter`; desde ahí el margen lateral crece y el contenido queda centrado.
 - **variants-table** no va de borde a borde: en todos los breakpoints ocupa el ancho del contenido, y sus líneas y su barra de filtros van de la miniatura al ícono de descarga. Si no entra, se desplaza dentro de los márgenes, sin barra de scroll visible. Excepción: la tabla de Descargas (downloads-table, cientos de filas) muestra una barra fina pegada al borde inferior de la pantalla mientras la tabla está a la vista, para que se note que hay más columnas.
-- Los **fondos**, fotos y barras siguen a todo el ancho (hero, navbar, footer, cta-block, la sección Dark de la ficha, compare-bar): el tope se aplica como padding, no como un contenedor con `max-width`.
+- Los **fondos**, fotos y barras siguen a todo el ancho (announcement-bar, hero, navbar, footer, cta-block, la sección Dark de la ficha, compare-bar): el tope se aplica como padding, no como un contenedor con `max-width`.
 - En código, los componentes usan `--page-gutter` en lugar de `--arq-layout-gutter` para el margen de página. Es una variable local que `ArqElement` declara en cada `:host`:
 
 ```css
@@ -175,6 +175,7 @@ Hay dos usos del modo Dark. Los dos usan `data-arq-theme="dark"`; cambia quién 
 | --- | --- | --- |
 | hero (Home, Contacto) | Solo el CTA (button Outline claro). Los textos usan `color/text/inverse` | Contenedor interno del Shadow DOM que envuelve el slot del CTA |
 | compare-bar | Toda la barra | Contenedor interno del Shadow DOM (el que envuelve todo el componente) |
+| announcement-bar | Toda la barra (también con Iluminar) | Contenedor interno del Shadow DOM (el `<aside>` que envuelve el link) |
 | explora-coleccion (ficha), con family-card Large | Toda la sección | El contenedor de la sección, dentro del Shadow DOM de `<arq-ficha-producto>` |
 
 - **Regla:** un componente con Dark local lo aplica en un contenedor interno; el contenido por slot lo hereda. Quien arma la página no pone el atributo. Si el Dark es de una sección de la página, el atributo va en la sección y los componentes de adentro lo heredan; si la sección la arma un contenedor de página (explora-coleccion en `<arq-ficha-producto>`), lo pone el contenedor.
@@ -426,7 +427,7 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 
 - Con `prefers-reduced-motion: reduce`, las duraciones fast, base, slow, expand, panel e illumination-lead pasan a 0; illumination e illumination-image pasan a fade (Iluminar sigue siendo un fundido, todo junto); los botones no se achican al presionarlos. fade no cambia: con reduced motion se quitan los desplazamientos, los cambios de escala y de alto, pero quedan los fundidos (no marean y evitan los cambios bruscos). feedback tampoco cambia: es un tiempo de lectura, no una animación.
 - Se anima solo `opacity`, `transform` y colores. Nunca ancho ni posición de layout.
-- **Alto: solo en tres casos**, con `grid-template-rows: 0fr → 1fr` (nunca `height`): el panel de faq-item y la lista de catalog-nav-group (Disclosure `animateHeight`, `motion/duration/expand`) y el mensaje de error de input (`motion/duration/base`). Así lo que está abajo se desliza en vez de saltar. Los demás desplegables (accordion-item, filter-row) siguen con el alto de golpe y fundido al abrir (`docs/decisiones.md`, 2026-10-15 · Contacto: animaciones; 2026-10-19 · Sidebar de catálogo y compare-bar).
+- **Alto: solo en dos casos**, con `grid-template-rows: 0fr → 1fr` (nunca `height`): el panel de faq-item (Disclosure `animateHeight`, `motion/duration/expand`) y el mensaje de error de input (`motion/duration/base`). Así lo que está abajo se desliza en vez de saltar. catalog-nav-group no anima el alto: la lista cambia de golpe y lo de abajo se desliza con `transform` desde donde estaba, como el pliegue de compare-bar (`motion/duration/expand`, `motion/easing/standard`). Los demás desplegables (accordion-item, filter-row) siguen con el alto de golpe y fundido al abrir (`docs/decisiones.md`, 2026-10-15 · Contacto: animaciones; 2026-10-19 · Sidebar de catálogo como compare-bar).
 - Lo que aparece usa `@starting-style` y sale sin animación, salvo los paneles que se cierran por el mismo camino por el que entraron (filter-panel, download-modal, search-sheet, compare-bar, faq-item, catalog-nav-group).
 
 ---
@@ -485,6 +486,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | select-option | State: Default · Hover · Selected · Focus · Disabled. Props: Name · Show swatch | Hover surface/faint, Selected role/body-medium, Focus border/focus |
 | tab | State: Default · Hover · Selected · Focus · Disabled. Prop: Label | role/body-regular en color/text/secondary; seleccionado en role/body-medium con línea border/strong. Un solo tab en todo el sitio |
 | nav-link | Breakpoint: Desktop · Mobile. State: Default · Hover · Pressed · Current · Focus. Open: False · True. Theme: Default · Inverse. Props: Label · Has dropdown | Hover subrayado; Current guion de space/gap/sm × border/strong (8 × 2) y role/body-medium en Desktop; Open: solo gira la flecha (sin subrayado) |
+| announcement-bar | Breakpoint: Desktop · Mobile | Línea arriba del navbar, solo en la Home, siempre en Dark (Dark local). Fondo color/surface/default, padding space/padding/xs × layout/gutter, alto 40. Link centrado: button Underline sin subrayado (Show underline=false), icon/arrow-up-right y label en role/body-compact-regular (en código, atributo `compact` del button). Va en el flujo de la página: al hacer scroll se va y el navbar (sticky, también Transparent) queda pegado arriba |
 | navbar | Breakpoint: Desktop · Mobile. Mode: Default · Search · Menu · Products · Interior · Exterior · Lámparas y artefactos · Colecciones. Theme: Default · Transparent | 56 px de alto. Los cuatro Modes por sección son los submenús que abre Products en Mobile. Transparent sobre el hero: fondo translúcido (color/overlay/translucent) + blur (blur/backdrop); sigue así mientras la barra está sobre el hero y pasa a Default al dejarlo atrás (sin hero, al hacer scroll) |
 | mega-menu | Tab: Por espacio · Lámparas y artefactos · Colecciones | Un solo componente; categorías, links y "Ver todo…" salen de los datos. Usa tab y mega-link |
 | mega-link | Type: Link · Group. State: Default · Hover · Focus. Size: Default · Large. Open: False · True. Props: Name · Meta · Show meta · Show image · Show arrow | Link role/body (Large role/body-lg). Group role/body-xl con icon/plus / icon/minus |
@@ -509,7 +511,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | product-gallery · gallery-thumb | Breakpoint: Desktop · Mobile / State: Default · Hover · Selected · Focus | ratio/landscape |
 | carousel-controls | Position: Start · Middle · End | icon-button Large con flechas |
 | carousel-button | Direction: Previous · Next. State: Default · Disabled | Cuadrado de layout/carousel-button, borde color/border/disabled, chevron icon/md. Carruseles de Destacados y Proyectos |
-| catalog-toolbar | Breakpoint: Desktop · Mobile. State: Default · Scroll. Props: Count · Show iluminar | Cantidad ("11 productos" / "10 colecciones"), toggle Iluminar y botón Filtrar. Scroll solo achica el padding vertical (space/padding/sm), sin el nombre de la página |
+| catalog-toolbar | Breakpoint: Desktop · Mobile. Props: Count · Show iluminar | Cantidad ("11 productos" / "10 colecciones"), toggle Iluminar y botón Filtrar. No cambia al desplazarse la página |
 | catalog-nav · catalog-nav-group · catalog-nav-item | — / Open: True · False. Selected: False · True / Size: Large · Default. State: Default · Hover · Selected · Focus | Sidebar desde 1024 px, de layout/catalog-nav. Grupo: label role/body-xl, chevron, línea inferior y lista con riel. Ítem: role/body-compact (Default) o role/body-lg (Large) |
 | catalog-nav-mobile · catalog-nav-trigger | Open: False · True / Open × State: Default · Hover · Focus | Hasta 1023 px. Abierto: la sección actual abierta con su opción marcada; las demás visibles y cerradas |
 | filter-panel · filter-row · filter-chip · filter-bar | Breakpoint / Open × State / State: Default · Hover · Focus / State: Default · Applied × Breakpoint | filter-panel desktop con scrim; mobile pantalla completa sin scrim. filter-bar (Ficha v2): fondo color/surface/soft, sin líneas, padding space/padding/2xl × layout/gutter, «Limpiar filtros» debajo; ocupa el ancho del contenido |
@@ -632,6 +634,7 @@ Link a cada set en Figma (`node-id`). Base: `https://www.figma.com/design/djAb2r
 | Componente | Nodo | Propiedades |
 | --- | --- | --- |
 | accordion-item | [922-2645](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=922-2645) | Title; Open: False · True; State: Default · Hover · Focus; Breakpoint: Desktop · Mobile |
+| announcement-bar | [2780-8595](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2780-8595) | Breakpoint: Desktop · Mobile |
 | breadcrumb | [1244-12667](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1244-12667) | Levels: 3 · 2 |
 | breadcrumb-item | [1053-4430](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1053-4430) | Label; Show separator; State: Default · Hover · Current |
 | button | [907-2375](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=907-2375) | Label; Show icon; Icon; Show underline; Show count; Show leading icon; Leading icon; Type: Filled · Outline · Underline; State: Default · Hover · Pressed · Focus · Disabled · Loading |
@@ -642,7 +645,7 @@ Link a cada set en Figma (`node-id`). Base: `https://www.figma.com/design/djAb2r
 | catalog-nav-item | [1035-2382](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1035-2382) | Label; Size: Large · Default; State: Default · Hover · Selected · Focus |
 | catalog-nav-mobile | [1207-3314](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1207-3314) | Open: False · True |
 | catalog-nav-trigger | [1215-3337](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1215-3337) | Label; Open: False · True; State: Default · Hover · Focus |
-| catalog-toolbar | [1244-4058](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1244-4058) | Count; Show iluminar; Breakpoint: Desktop · Mobile; State: Default · Scroll |
+| catalog-toolbar | [1244-4058](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1244-4058) | Count; Show iluminar; Breakpoint: Desktop · Mobile |
 | category-card | [1036-2461](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1036-2461) | Name; Breakpoint: Desktop · Mobile; State: Default · Hover · Focus |
 | checkbox | [975-2322](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=975-2322) | Label; Show label; Size: Large · Default; Checked: False · True; State: Default · Hover · Focus · Disabled |
 | choice-chip | [1113-2485](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1113-2485) | Label; State: Default · Hover · Selected · Focus · Disabled |

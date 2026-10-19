@@ -11,6 +11,7 @@
   --arq-color-surface-inverse: var(--arq-neutral-900); /** Fondo de máximo contraste: botón primario, footer, bandas oscuras. Siempre con color/text/inverse encima. */
   --arq-color-surface-inverse-hover: var(--arq-neutral-750); /** Hover de un fondo color/surface/inverse (botón primario). */
   --arq-color-surface-inverse-pressed: var(--arq-neutral-600); /** Pressed de un fondo color/surface/inverse (botón primario). */
+  --arq-color-surface-bone: var(--arq-offwhite-bone); /** Fondo cálido de las bandas del Home (Productos destacados y Herramientas). En Dark coincide con surface/subtle. */
   --arq-color-text-primary: var(--arq-neutral-900); /** Títulos, nombres de producto y texto de máxima jerarquía. */
   --arq-color-text-secondary: var(--arq-neutral-750); /** Texto de lectura: párrafos, descripciones, valores de especificaciones. */
   --arq-color-text-tertiary: var(--arq-neutral-600); /** Texto secundario: metadatos, etiquetas, ayudas, captions, SKU. */

@@ -1,0 +1,64 @@
+/* text-block · Home v2 (Final 2072:20657). Solo tokens semánticos. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-lg);
+  min-width: 0;
+}
+
+.kicker,
+.title,
+.description {
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
+.kicker,
+.description {
+  color: var(--arq-color-text-secondary);
+}
+
+/* TODO (diseño): Home v2 mide 340 y no hay token; el más cercano es
+   layout/measure (400). */
+.description {
+  max-width: var(--arq-layout-measure);
+}
+
+.title {
+  color: var(--arq-color-text-primary);
+  /* TODO (diseño): Home v2 es Regular 50/64; role/display-sm es Light 48/56.
+     El peso es Regular. No hay role/* Regular de ese tamaño. */
+  font-weight: var(--arq-font-weight-regular);
+}
+
+/* Flecha de 32 (space/32) con icon/xl. El nombre va en el slot link. */
+.arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--arq-space-32);
+  height: var(--arq-space-32);
+  color: var(--arq-color-icon-primary);
+  text-decoration: none;
+}
+
+.arrow .icon {
+  width: var(--arq-icon-xl);
+  height: var(--arq-icon-xl);
+}
+
+.arrow:focus {
+  outline: none;
+}
+
+.arrow:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}

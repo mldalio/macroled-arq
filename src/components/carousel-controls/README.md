@@ -17,8 +17,11 @@ Flechas anterior / siguiente para un carrusel con scroll horizontal (mosaico de 
 | Figma | Atributo | Prop JS | Valores · por defecto |
 | --- | --- | --- | --- |
 | Position | `position` | `position` | `start` · `middle` · `end` (def. `start`). Con `for`, se calcula sola |
-| — | `for` | `for` | id del contenedor con scroll, en el DOM de la página |
+| — | `for` | `for` | id del contenedor con scroll, en el DOM de la página (o del Shadow Root que contiene al control) |
+| — | `step` | `step` | `page` (un ancho visible, def.) · `item` (una tarjeta; Productos destacados) |
 | — | `label-prev` · `label-next` | `labelPrev` · `labelNext` | nombres accesibles (def. "Anterior" · "Siguiente") |
+| — | `buttons` | `buttons` | `icon` (def., icon-button Large: Colección) · `carousel` (carousel-button: Destacados y Proyectos) |
+| — | `index` · `count` | `index` · `count` | slide actual desde 0 y cantidad. Con `buttons="carousel"` arman el contador (`01 / 06`) y la línea de progreso. Con `for`, se calculan solas |
 
 ## Comportamiento
 
@@ -27,7 +30,7 @@ Flechas anterior / siguiente para un carrusel con scroll horizontal (mosaico de 
 - **Foco:** si la flecha que tiene el foco se deshabilita (al llegar a una punta), el foco pasa a la otra.
 - **`aria-controls`:** se pone con `ariaControlsElements` (un id del DOM de la página no se puede referenciar desde el Shadow DOM). En navegadores que no lo soportan, no se pone.
 - **Movimiento reducido:** con `prefers-reduced-motion: reduce` el salto es instantáneo.
-- Las flechas son dos `<arq-icon-button size="large">` (`icon/arrow-left`, `icon/arrow-right`); deshabilitada = `disabled` nativo.
+- Con `buttons="icon"` (defecto) las flechas son dos `<arq-icon-button size="large">` (`icon/arrow-left`, `icon/arrow-right`). Con `buttons="carousel"` son `<arq-carousel-button>` (chevron, cuadrado de `layout/carousel-button`): Destacados y Proyectos de la Home. Deshabilitada = `disabled` nativo.
 - Van a la derecha del section-header del carrusel.
 
 ## Tokens

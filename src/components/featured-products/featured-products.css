@@ -6,6 +6,92 @@
   min-width: 0;
 }
 
+/* Home v2: texto a la izquierda (layout/measure) y carrusel que se corta
+   en el borde. Cada tarjeta mide layout/card-min-wide (340, el ancho de
+   featured-card en Figma). */
+.layout {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-4xl);
+  min-width: 0;
+}
+
+.intro {
+  display: flex;
+  flex: 0 0 var(--arq-layout-measure);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-lg);
+  min-width: 0;
+}
+
+.rail {
+  display: flex;
+  gap: var(--arq-space-gap-sm);
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  cursor: grab;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+.rail[data-dragging] {
+  scroll-snap-type: none;
+  cursor: grabbing;
+}
+
+.rail::-webkit-scrollbar {
+  display: none;
+}
+
+.rail > * {
+  flex: 0 0 var(--arq-layout-card-min-wide);
+  scroll-snap-align: start;
+}
+
+/* Título arriba, controles a la derecha y tarjetas debajo. El carrusel
+   llega al borde derecho; el título conserva el margen de la sección. */
+:host([layout='stacked']) .layout {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--arq-space-gap-2xl);
+}
+
+:host([layout='stacked']) .intro {
+  flex: none;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+}
+
+:host([layout='stacked']) .rail {
+  width: auto;
+  margin-inline-end: calc(var(--section-inline, 0px) * -1);
+  padding-inline-end: var(--section-inline, 0px);
+}
+
+@media (max-width: 767px) {
+  .layout {
+    flex-direction: column;
+    gap: var(--arq-space-gap-xl);
+  }
+
+  .intro {
+    flex-basis: auto;
+    width: 100%;
+  }
+
+  :host([layout='stacked']) .intro {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
 /* Reserva: los links del HTML, uno debajo del otro */
 .fallback {
   display: flex;

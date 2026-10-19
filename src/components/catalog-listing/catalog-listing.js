@@ -80,10 +80,6 @@ class ArqCatalogListing extends ArqElement {
   #filters = {};
   #cards = new Map(); // product-card → datos de la card
   #request = 0;
-  #anchorY = 0; // scroll donde empezó la dirección actual
-  #direction = 'down';
-  #scrollState = null; // 'top' · 'down' · 'up'
-  #threshold = 0;
   #htmlCrumbs = null; // niveles del breadcrumb del HTML después de Inicio
   #htmlTitle = null; // <h1> del HTML (Productos), para volver a él sin categoría
 
@@ -94,8 +90,6 @@ class ArqCatalogListing extends ArqElement {
     const root = this.shadowRoot;
     this.#category = categoryFromUrl();
     this.#query = new URLSearchParams(location.search).get('q')?.trim() ?? '';
-    this.#syncScrollState();
-    window.addEventListener('scroll', this.#onScroll, { passive: true });
     root.querySelector('slot[name="nav"]').addEventListener('slotchange', () => this.#markNav());
     // Cambiar de categoría no recarga la página: se actualiza la URL y se
     // vuelve a pedir solo el listado (sin parpadeo, también con Iluminar).
@@ -127,6 +121,27 @@ class ArqCatalogListing extends ArqElement {
     LISTING_DESKTOP.addEventListener('change', syncGridColumns);
     LISTING_WIDE.addEventListener('change', syncGridColumns);
     syncGridColumns();
+
+    // Desde 1024 px el toolbar queda pegado debajo del navbar: mientras está
+    // pegado no lleva línea superior (se juntaba con la del navbar). Se observa
+    // con el margen de su top sticky: pegado, asoma por encima de ese borde.
+    const toolbar = root.querySelector('.toolbar');
+    let stuckObserver = null;
+    const observeStuck = () => {
+      stuckObserver?.disconnect();
+      toolbar.stuck = false;
+      if (!LISTING_DESKTOP.matches) return;
+      const top = Number.parseFloat(getComputedStyle(toolbar).top) || 0;
+      stuckObserver = new IntersectionObserver(
+        ([entry]) => {
+          toolbar.stuck = entry.intersectionRatio < 1 && entry.boundingClientRect.top <= top + 1;
+        },
+        { rootMargin: `-${top + 1}px 0px 0px 0px`, threshold: 1 },
+      );
+      stuckObserver.observe(toolbar);
+    };
+    LISTING_DESKTOP.addEventListener('change', observeStuck);
+    observeStuck();
     const bar = root.querySelector('.compare');
     grid.addEventListener('arq:compare', (event) => {
       const card = event.target;
@@ -249,64 +264,6 @@ class ArqCatalogListing extends ArqElement {
     this.#spaceTimer = setTimeout(() => {
       space.style.height = '';
     }, leaving);
-  }
-
-  #onScroll = () => this.#syncScrollState();
-
-  // Dirección del scroll con umbral: cambia recién después de recorrer
-  // space/gap/sm en sentido contrario, así el temblor del trackpad no hace
-  // aparecer y desaparecer el navbar. Solo se toca el DOM cuando cambia algo.
-  #syncScrollState() {
-    const y = Math.max(0, window.scrollY);
-    const delta = y - this.#anchorY;
-    if (this.#direction === 'down' ? delta >= 0 : delta <= 0) this.#anchorY = y;
-    else if (Math.abs(delta) >= this.#scrollThreshold()) {
-      this.#direction = delta > 0 ? 'down' : 'up';
-      this.#anchorY = y;
-    }
-    const scrolling = y > 0;
-    const state = scrolling ? this.#direction : 'top';
-    if (state === this.#scrollState) return;
-    this.#scrollState = state;
-    const root = this.shadowRoot;
-    const toolbar = root?.querySelector('.toolbar');
-    if (toolbar) toolbar.state = scrolling ? 'scroll' : 'default';
-    document.querySelector('arq-navbar')?.toggleAttribute('data-arq-catalog-hidden', state === 'down');
-    const navVisible = state === 'up';
-    for (const element of [toolbar, root?.querySelector('.nav')]) {
-      if (element) this.#followNavbar(element, navVisible);
-    }
-  }
-
-  // space/gap/sm en px (el token está en rem)
-  #scrollThreshold() {
-    if (this.#threshold) return this.#threshold;
-    const value = getComputedStyle(this).getPropertyValue('--arq-space-gap-sm').trim();
-    const rem = Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-    const amount = Number.parseFloat(value) || 0.5;
-    this.#threshold = value.endsWith('px') ? amount : amount * rem;
-    return this.#threshold;
-  }
-
-  // La barra de herramientas y el sidebar quedan pegados debajo del navbar
-  // (.nav-visible cambia su top). El top cambia de golpe; para que acompañen
-  // al navbar, que entra y sale con transform, se anima la diferencia con
-  // transform (misma duración y curva que el navbar: motion/duration/base +
-  // motion/easing/standard). Si no están pegados, la diferencia es 0 y no hay
-  // animación. Una animación en curso se reemplaza desde donde está.
-  #followNavbar(element, navVisible) {
-    if (element.classList.contains('nav-visible') === navVisible) return;
-    const before = element.getBoundingClientRect().top;
-    element.getAnimations().forEach((animation) => animation.cancel());
-    element.classList.toggle('nav-visible', navVisible);
-    const offset = before - element.getBoundingClientRect().top;
-    const styles = getComputedStyle(this);
-    const duration = Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-base')) || 0;
-    if (!offset || !duration || !LISTING_DESKTOP.matches) return;
-    element.animate(
-      [{ transform: `translateY(${offset}px)` }, { transform: 'none' }],
-      { duration, easing: styles.getPropertyValue('--arq-motion-easing-standard').trim() || 'ease-out' },
-    );
   }
 
   update(changed) {
