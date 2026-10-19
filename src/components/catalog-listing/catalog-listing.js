@@ -38,7 +38,7 @@ import '../checkbox/checkbox.js';
 import '../compare-bar/compare-bar.js';
 import '../compare-picker/compare-picker.js';
 import '../grid/grid.js';
-import '../product-card/product-card.js';
+import { appendFinishes } from '../product-card/product-card.js';
 import '../swatch/swatch.js';
 import css from './catalog-listing.css?inline';
 
@@ -139,6 +139,15 @@ class ArqCatalogListing extends ArqElement {
         // solo se anuncia a lectores de pantalla.
         this.#notify(`Podés comparar hasta ${bar.items.length} productos. Sacá uno de la barra para sumar otro.`);
       }
+    });
+    // Otro acabado en la card: es otro SKU. «Comparar» y la compare-bar usan el
+    // SKU y la foto del acabado que se ve.
+    grid.addEventListener('arq:finish', (event) => {
+      const card = event.target;
+      const data = this.#cards.get(card);
+      if (!data) return;
+      Object.assign(data, { sku: event.detail.sku ?? data.sku, href: event.detail.href, image: event.detail.image });
+      if (this.unit === 'productos') card.compared = bar.has(data.sku);
     });
     bar.addEventListener('arq:compare-change', () => {
       this.#syncCompared();
@@ -394,13 +403,7 @@ class ArqCatalogListing extends ArqElement {
     card.append(title);
     // Acabados en los dos listados (Figma 1153:5679 y 1160:6116); la meta,
     // solo en Colecciones (aplicaciones de la colección).
-    for (const { name, src } of data.finishes ?? []) {
-      const swatch = document.createElement('arq-swatch');
-      swatch.slot = 'finishes';
-      swatch.textContent = name;
-      if (src) swatch.src = src;
-      card.append(swatch);
-    }
+    appendFinishes(card, data.finishes);
     if (!compare && data.meta) {
       const meta = document.createElement('span');
       meta.slot = 'meta';

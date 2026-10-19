@@ -21,7 +21,7 @@
 import { ArqElement } from '../../base/arq-element.js';
 import { getCollection } from '../../data/catalog.js';
 import '../grid/grid.js';
-import '../product-card/product-card.js';
+import { appendFinishes } from '../product-card/product-card.js';
 import '../swatch/swatch.js';
 import '../carousel-controls/carousel-controls.js';
 import css from './coleccion.css?inline';
@@ -108,13 +108,7 @@ class ArqColeccion extends ArqElement {
         title.slot = 'name';
         title.textContent = data.name;
         card.append(title);
-        for (const { name, src } of data.finishes ?? []) {
-          const swatch = document.createElement('arq-swatch');
-          swatch.slot = 'finishes';
-          swatch.textContent = name;
-          if (src) swatch.src = src;
-          card.append(swatch);
-        }
+        appendFinishes(card, data.finishes);
         if (data.meta) {
           const meta = document.createElement('span');
           meta.slot = 'meta';

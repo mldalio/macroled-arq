@@ -10,7 +10,11 @@ Tarjeta de producto (Productos) o de colección (Colecciones, página de colecci
   image="…/principal.jpg" image-hover="…/principal-on.jpg"
   image-lit="…/principal-on.jpg" image-hover-lit="…/ambiente-1-on.jpg">
   <h3 slot="name">Kanu Jardín</h3>
-  <arq-swatch slot="finishes" src="…/negro.jpg">Negro</arq-swatch>
+  <!-- Con más de un acabado: el elegido lleva selected; lo que cambia al elegir, en data-* -->
+  <arq-swatch slot="finishes" selected src="…/negro.png" data-sku="KANU-J-N" data-href="/arq/producto/kanu-jardin?sku=KANU-J-N"
+    data-image="…/principal.jpg" data-image-hover="…/principal-on.jpg"
+    data-image-lit="…/principal-on.jpg" data-image-hover-lit="…/ambiente-1-on.jpg">Negro</arq-swatch>
+  <arq-swatch slot="finishes" src="…/verde.png" data-sku="KANU-J-V" data-href="…?sku=KANU-J-V" data-image="…">Verde</arq-swatch>
 </arq-product-card>
 
 <!-- Colecciones: con Meta, sin Comparar -->
@@ -26,7 +30,7 @@ Tarjeta de producto (Productos) o de colección (Colecciones, página de colecci
 | --- | --- | --- | --- |
 | Name | slot `name` | — | `<h3>` con el nombre: es lo que lleva el link |
 | Meta · Show meta | slot `meta` | — | Tipo o datos técnicos, hasta 2 líneas. Sin contenido no se muestra |
-| Show finishes | slot `finishes` | — | `arq-swatch`; el tamaño lo pone la tarjeta: siempre Small (16 × 16), en Large y en Small. Sin contenido no se muestra |
+| Show finishes | slot `finishes` | — | `arq-swatch`; el tamaño lo pone la tarjeta: siempre Small (16 × 16), en Large y en Small. Sin contenido no se muestra. Con más de uno y `data-*` son elegibles (ver Acabados elegibles) |
 | Show compare | `show-compare` | `showCompare` | booleano: checkbox "Comparar" |
 | — | `compared` | `compared` | booleano: "Comparar" marcado |
 | Size | `size` | `size` | `large` · `small`. Por defecto `large`. Large pasa sola al aspecto Small hasta 767 px |
@@ -38,6 +42,7 @@ Tarjeta de producto (Productos) o de colección (Colecciones, página de colecci
 - **Imágenes** (DESIGN.md §8): en reposo, la principal apagada; con hover sobre la imagen o foco, la principal encendida (con Iluminar: reposo la principal encendida y hover el ambiente 1 encendido; sobre el nombre o «Comparar» la imagen no cambia), con un fundido entre dos `<img>` (`motion/duration/slow`, instantáneo con movimiento reducido). Dentro de un bloque con `data-arq-theme="dark"` (Iluminar) pasa a las encendidas (`src/base/theme.js`). En táctiles no hay hover. Aplica también a Size=Small (decisión 2026-10-02 · product-card).
 - **Faltantes:** sin imagen de hover no hay cambio; sin encendida queda la apagada; sin principal, fondo `color/surface/subtle` con el nombre.
 - **Carga:** solo la imagen visible de entrada (`loading="lazy"`); la de hover al primer hover o foco; las encendidas al activar Iluminar. Las imágenes son decorativas (`alt=""`): el nombre lo da el link.
+- **Acabados elegibles:** con más de un swatch y datos por acabado (`data-sku`, `data-href`, `data-image`, `data-image-hover`, `data-image-lit`, `data-image-hover-lit`; `appendFinishes(card, finishes)` los arma desde `src/data/catalog.js`) los swatches pasan a `role="radio"` dentro de un `radiogroup` «Acabado». El elegido (`selected`, por defecto el primero: negro) lleva el State=Selected del swatch (borde `border/strong`) y todos el State=Hover; **no crece**: siempre Small (16). Elegir uno (clic, Enter, Espacio o flechas) cambia las cuatro imágenes y el `href` a los de esa variante (la foto nueva se pide antes y se cambia cuando está lista) y emite `arq:finish { name, sku, href, image }`; el listado lo usa para que «Comparar» y la compare-bar tomen el SKU del acabado que se ve. Con **un solo acabado** no hay elegido ni se puede elegir. Un acabado sin fotos muestra el fondo con el nombre. Los swatches van por encima del link estirado: el clic no navega.
 - **Evento:** `arq:compare { checked }` al marcar o desmarcar "Comparar" (la página arma la compare-bar).
 - **Grilla:** la tarjeta toma el ancho de su columna. En el listado: `repeat(auto-fill, minmax(var(--arq-layout-card-min), 1fr))` y `layout/card-min-wide` desde 1600 px (DESIGN.md §2).
 
@@ -47,10 +52,11 @@ Tarjeta de producto (Productos) o de colección (Colecciones, página de colecci
 | --- | --- |
 | Imagen | `ratio/portrait` (7:10; un contenedor puede cambiarla con la variable local `--card-ratio`, como el search-sheet con `ratio/square`), fondo `color/surface/subtle`, sin borde (como el set; la ficha dice `color/border/subtle`) |
 | Gap imagen–info | `space/gap/md` (Small `space/gap/sm`) |
-| Info | padding `space/gap/xs` arriba y `space/gap/sm` abajo, gap `space/gap/xs` |
-| Nombre | `role/heading-3` (Small `role/body-regular`) en `color/text/primary` |
+| Info | padding `space/gap/xs` arriba y `space/gap/sm` abajo, gap `space/gap/xs` (Small `space/gap/md`) |
+| Título | Large: nombre y acabados en fila, gap `space/gap/sm`. Small (y Large hasta 767 px): en **columna**, el nombre arriba y los acabados debajo, gap `space/gap/sm` |
+| Nombre | `role/heading-3` (Small `role/body-xl`; en Mobile `role/heading-3`, que también vale 20/28) en `color/text/primary` |
 | Meta | `role/body` (Small `role/body-sm`) en `color/text/secondary`, hasta 2 líneas |
-| Acabados | gap `space/gap/xs`; swatch Small (16) en Large y en Small (decisiones.md, 2026-10-19 · Acabados de la card a 16 px) |
+| Acabados | gap `space/gap/xs` (Small `space/gap/sm`); swatch Small (16) en Large y en Small, elegible con Selected y Hover del swatch (decisiones.md, 2026-10-19 · Acabados de la card a 16 px y Elegir acabado en la card) |
 | Sin imagen | nombre en `role/body-sm`, `color/text/secondary` (con `text/tertiary` no llega a 4.5 en Dark) |
 | Fundido | `motion/duration/slow` + `motion/easing/standard` |
 | Foco | `border/strong` en `color/border/focus`, separado 2 px |
