@@ -91,6 +91,10 @@ class ArqCatalogListing extends ArqElement {
     this.#category = categoryFromUrl();
     this.#query = new URLSearchParams(location.search).get('q')?.trim() ?? '';
     root.querySelector('slot[name="nav"]').addEventListener('slotchange', () => this.#markNav());
+    // Si cambia el href de un link del nav (la demo reescribe los que llegan
+    // de Typesense), se vuelve a marcar el actual. selected no es href: no
+    // se dispara a sí mismo.
+    new MutationObserver(() => this.#markNav()).observe(this, { subtree: true, attributes: true, attributeFilter: ['href'] });
     this.#fillNav();
     // Cambiar de categoría no recarga la página: se actualiza la URL y se
     // vuelve a pedir solo el listado (sin parpadeo, también con Iluminar).
