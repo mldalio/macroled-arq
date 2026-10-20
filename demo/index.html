@@ -1061,7 +1061,7 @@
           <arq-compare-product data-demo-compare-product="filled" style="max-width: 280px"></arq-compare-product>
           <arq-compare-product data-demo-compare-product="empty" style="max-width: 280px"></arq-compare-product>
         </div>
-        <p class="demo-note role-body-sm">Size=Compact (Figma 1912:5841 · 1912:5860 · 1912:5864): miniatura layout/compare-thumb + nombre + quitar, o una caja punteada «Agregar producto» (pasale el mouse para ver empty-hover). Con show-sku se ve el SKU (Desktop del compare-header Compact); sin él, solo el nombre (Mobile).</p>
+        <p class="demo-note role-body-sm">Size=Compact (Figma 1912:5841 · 1912:5860 · 1912:5864): miniatura layout/compare-thumb + nombre + quitar, o una caja punteada «Agregar producto» (pasale el mouse para ver empty-hover). Con show-sku se ve el SKU (el compare-header Compact lo muestra en Desktop y en Mobile). Hasta 767 px va apilado y centrado (Breakpoint=Mobile, 2763:5525 · 2763:5533 · 2763:5537); en el compare-header Mobile toma el ancho de layout/compare-column.</p>
         <div class="demo-row demo-compare-compact">
           <arq-compare-product size="compact" show-sku data-demo-compare-product="filled"></arq-compare-product>
           <arq-compare-product size="compact" data-demo-compare-product="filled"></arq-compare-product>
@@ -1080,7 +1080,7 @@
 
       <section class="demo-section" aria-labelledby="demo-compare-header">
         <h2 id="demo-compare-header" class="demo-heading role-label">compare-header · &lt;arq-compare-header&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 1265:4330. Toggle «Solo diferencias» + hasta 3 compare-product, estiradas a la misma altura (un lugar vacío ocupa todo el alto de la columna). Type (Default/Compact) no es una prop: un IntersectionObserver lo cambia solo al desplazar; el Compact usa compare-product Size=Compact (con SKU en Desktop, solo el nombre en Mobile). En Mobile el Default no muestra controles (ni toggle ni espaciador). Para ver el Compact fijo bajo el navbar en una página real, abrí <a href="/demo/comparativa.html?sku=KANU-J-500-12W-N-WW,KANU-P-350-12W-N-WW,TORI-J-450-7W-G-WW">demo/comparativa.html</a>.</p>
+        <p class="demo-note role-body-sm">Figma 1265:4330. Toggle «Solo diferencias» + hasta 3 compare-product, estiradas a la misma altura (un lugar vacío ocupa todo el alto de la columna). Type (Default/Compact) no es una prop: un IntersectionObserver lo cambia solo al desplazar; el Compact usa compare-product Size=Compact (con SKU; en Mobile apilado, una columna de la tabla por producto). En Mobile el Default no muestra controles (ni toggle ni espaciador). Para ver el Compact fijo bajo el navbar en una página real, abrí <a href="/demo/comparativa.html?sku=KANU-J-500-12W-N-WW,KANU-P-350-12W-N-WW,TORI-J-450-7W-G-WW">demo/comparativa.html</a>.</p>
         <div class="demo-bleed">
           <arq-compare-header data-demo-compare-header="3"></arq-compare-header>
         </div>
