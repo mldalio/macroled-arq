@@ -68,24 +68,6 @@ import '../download-item/download-item.js';
 import css from './ficha-producto.css?inline';
 
 
-// Solo en desarrollo: completa los archivos que faltan con unos de prueba para
-// ver el modal con todas sus filas (Instrucciones, CAD 2D/3D, Fotometrías, IES).
-// En el build no existe (import.meta.env.DEV es false).
-function simulateFiles(files) {
-  const list = [...files];
-  if (!import.meta.env.DEV) return list;
-  const fake = [
-    ['manual', 'Instrucciones'],
-    ['cad', 'CAD 2D/3D'],
-    ['fotometria', 'Fotometrías'],
-    ['ies', 'IES'],
-  ];
-  for (const [type, label] of fake) {
-    if (!list.some((file) => file.type === type)) list.push({ type, label, href: '/demo/fixtures/img/producto-1.svg' });
-  }
-  return list;
-}
-
 const TEXT = {
   loading: 'Cargando producto…',
   notFound: 'No encontramos este producto.',
@@ -660,7 +642,7 @@ class ArqFichaProducto extends ArqElement {
     const featured = document.createElement('arq-download-item');
     featured.emphasis = 'featured';
     featured.textContent = TEXT.datasheet;
-    const items = simulateFiles(details.downloads).map((file) => {
+    const items = details.downloads.map((file) => {
       const item = document.createElement('arq-download-item');
       item.href = file.href;
       item.textContent = file.label;

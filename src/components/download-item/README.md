@@ -16,6 +16,8 @@ Opción del modal de descargas: texto + `icon/download`. Cada opción descarga s
 | Label | slot por defecto | — | Nombre del archivo ("IES", "CAD 2D/3D") |
 | Emphasis | `emphasis` | `emphasis` | `default` · `featured`. Por defecto `default`. Featured es el archivo principal: la ficha técnica |
 | — | `href` | `href` | URL del archivo (campos `ies`, `cad`, `manual`, `fotometria` de `docs/typesense-schema.md`) |
+| Show format · Format | `show-format` + slot `meta` | `showFormat` | Formato del archivo («PDF», «DWG») debajo del nombre, `role/body-compact-regular` en `color/text/tertiary`. Apagado por defecto; por ahora ninguna página lo usa |
+| — | `loading` | `loading` | Solo sin `href`: «Generando…» con `aria-busy` mientras se genera la ficha técnica |
 
 - **Con `href`** es un `<a download>`. **Sin `href`** es un `<button>` que emite `arq:download`: la ficha técnica se genera al hacer clic (decisión 2026-10-02 · Ficha técnica en PDF).
 - **Si un archivo falta,** la página no pone la opción.

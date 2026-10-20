@@ -70,4 +70,4 @@ La ficha de producto y la página Descargas usan el mismo modal: producto (minia
 </arq-download-modal>
 ```
 
-El formato (`show-format` en download-file-row) queda como variante apagada; el modal ya no usa download-file-row. En desarrollo (`npm run dev`) la ficha completa los archivos que faltan con unos de prueba.
+El formato es una variante de download-item (`show-format` + slot `meta`), apagada por ahora. Los archivos salen de la base (IES, Manual, CAD 2D/3D, Fotometría); la ficha técnica se genera siempre.

@@ -378,16 +378,16 @@ Tarjeta de descarga de un archivo general (Descargas: «Catálogo Macroled ARQ 2
 
 Fila de archivo del modal de descargas: nombre, formato y peso. "Unavailable" cuando la variante no tiene ese archivo (por ejemplo, sin IES).
 
-Código: download-modal `show-product`. En Descargas · propuesta los archivos del modal son download-file-row en lugar de download-item.
+Código: ya no lo usa el modal (ficha y Descargas usan download-item); queda con `show-format`.
 
 Loading (solo en código, la ficha técnica que se genera): el nombre pasa a «Generando…» con aria-busy mientras se arma el PDF. TODO (diseño): State=Loading.
 
 ## download-item
 
 - Figma: [1101-5542](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1101-5542)
-- Propiedades: Label; Emphasis: Default · Featured; State: Default · Hover · Focus
+- Propiedades: Label; Show format; Format; Emphasis: Default · Featured; State: Default · Hover · Focus
 
-Opción del modal de descargas, con texto role/body-xl (más grande que un button) + icon/download; cada opción descarga su archivo directamente. Emphasis: Default (línea inferior border/subtle, Hover subraya el texto) o Featured (caja con border/strong y padding space/padding/lg; para el archivo principal, la ficha técnica; Hover surface/faint). State: Default, Hover, Focus.
+Opción del modal de descargas, con texto role/body-xl (más grande que un button) + icon/download; cada opción descarga su archivo directamente. Emphasis: Default (línea inferior border/subtle, Hover subraya el texto) o Featured (caja con border/strong y padding space/padding/lg; para el archivo principal, la ficha técnica; Hover surface/faint). State: Default, Hover, Focus. Show format (apagada por defecto, solo de código por ahora): muestra el formato del archivo («PDF», «DWG») debajo del nombre, role/body-compact-regular en text/tertiary.
 
 ## download-modal
 
@@ -396,7 +396,7 @@ Opción del modal de descargas, con texto role/body-xl (más grande que un butto
 
 Modal de descargas con opciones download-item. Desktop: esquina inferior derecha, separado layout/gutter del borde, ancho layout/filter-panel (560). Mobile: abajo, a layout/gutter de los bordes y ocupando el ancho (alto según el contenido). Siempre con color/overlay/scrim detrás; mientras está abierto, la página de atrás no se desplaza. Página Descargas: sku Compact debajo del título (código: atributo sku), opciones Emphasis=Default.
 
-Descargas · propuesta final (2554:20048 · Mobile 2554:20133): título role/heading-1, el producto (miniatura, sku y variante en role/body-compact-regular) y los archivos como download-file-row, a space/gap/xl; en Mobile, hoja pegada abajo a todo el ancho. Código: atributo `show-product`.
+Ficha y Descargas (2554:20048 · Mobile 2554:20133): título role/heading-2, el producto (miniatura, sku y variante en role/body-compact-regular), la ficha técnica como download-item Featured y los archivos de la base como download-item Default, a space/gap/xl; en Mobile, hoja pegada abajo a todo el ancho. Código: atributo `show-product`.
 
 ## family-card
 
