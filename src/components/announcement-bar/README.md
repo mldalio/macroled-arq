@@ -34,10 +34,10 @@ Línea fina arriba del navbar, solo en la Home, con un aviso y su link («Suscri
 | Parte | Token |
 | --- | --- |
 | Fondo | `color/surface/default` en Dark |
-| Padding | `space/padding/xs` × `layout/gutter` (`--page-gutter`); alto 40 con el button |
-| Link | button Underline `compact`: `role/body-compact-regular` (14/24), `color/action/primary` en Dark; subrayado `border/default` (1 px) solo en hover y pressed, más fino y más pegado al texto que en el resto de los button (arranca `space/padding/2xs` antes del borde inferior de la línea de 24) |
+| Padding | `space/padding/2xs` × `layout/gutter` (`--page-gutter`); alto 30 con el button |
+| Link | button Underline `compact`: `role/body-sm` (12/16) e ícono `icon/sm`, `color/action/primary` en Dark; subrayado `border/default` (1 px) solo en hover y pressed, más fino y más pegado al texto que en el resto de los button (justo debajo de la línea de 16) |
 
 ## Pendientes
 
-- En Figma el texto de 14 es un override del estilo del label en la instancia de button (el set de button no tiene `compact`).
+- En Figma el texto de 12 y el ícono de 12 son overrides en la instancia de button (el set de button no tiene `compact`).
 - Falta sumar la barra a las pantallas de Final.

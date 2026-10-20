@@ -7,16 +7,16 @@
 }
 
 /* Siempre en Dark local: fondo color/surface/default (neutral/800). Padding
-   space/padding/xs × --page-gutter (más los 4 del button Underline arriba y
-   abajo). El link va centrado; si no entra, el texto baja de línea dentro
-   del button.
-   Alto 40, como el set. */
+   space/padding/2xs × --page-gutter (más los 4 del button Underline arriba y
+   abajo). El link va centrado, en role/body-sm (button compact); si no
+   entra, el texto baja de línea dentro del button.
+   Alto 30, como el set (2026-10-20: antes 40). */
 .bar {
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--arq-space-padding-xs) var(--page-gutter);
+  padding: var(--arq-space-padding-2xs) var(--page-gutter);
   background: var(--arq-color-surface-default);
   color: var(--arq-color-text-primary);
   text-align: center;

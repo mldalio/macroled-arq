@@ -1166,3 +1166,9 @@ Salió de revisar los valores de `color_carcasa` de toda la base (326 documentos
 - Reemplazos: section `sand` → `color/surface/sand`; compare-header Compact y glosario de la ficha → `layout/navbar-height`; mega-link → `layout/mega-link-thumb`; search-result Simple → `layout/result-thumb`; product-gallery `fill` → `layout/gallery-thumb-overlay` (las miniaturas pasan de 105 a 66, como Figma); category-card, collection-tile y search-card → `motion/scale/hover`; menú de input Select → `motion/scale/enter`; catalog-listing cargando y project-slide inactivo → `opacity/muted`; carousel-controls → `opacity/track`.
 - Con `prefers-reduced-motion` ya no hay zoom en category-card, collection-tile ni search-card (antes el zoom pasaba de golpe).
 - DESIGN.md §3–§6: tokens nuevos y `color/surface/bone`.
+
+## 2026-10-20 · announcement-bar más chica
+
+- Pedido de Lau: el texto más chico y un poco menos de padding. El label pasa de `role/body-compact-regular` (14/24) a `role/body-sm` (12/16) y el ícono de `icon/md` a `icon/sm` (12); el padding de la barra, de `space/padding/xs` a `space/padding/2xs`. Alto: de 40 a 30. El área del link sigue en 24 (mínimo de §9).
+- El subrayado de `compact` va justo debajo de la línea de 16 (2 px más arriba que en el resto de los button, pedido de Lau) y más fino: 1 px también en hover y pressed.
+- Figma: set announcement-bar (2780:8595) con su descripción y ficha `doc/announcement-bar`. El hero `full-height` mide el alto real de la barra, así que no cambia.
