@@ -39,16 +39,18 @@
 }
 
 /* Hover y Focus: zoom mínimo de la imagen, recortada por el recuadro (solo
-   transform, sin mover el layout). Con prefers-reduced-motion la duración vale 0.
-   TODO (diseño): la escala (1.05) no tiene token. */
-@media (hover: hover) and (pointer: fine) {
+   transform, sin mover el layout), a motion/scale/hover. Con movimiento
+   reducido no hay zoom (DESIGN.md §6). */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .card:hover .img {
-    transform: scale(1.05);
+    transform: scale(var(--arq-motion-scale-hover));
   }
 }
 
-.card:focus-visible .img {
-  transform: scale(1.05);
+@media (prefers-reduced-motion: no-preference) {
+  .card:focus-visible .img {
+    transform: scale(var(--arq-motion-scale-hover));
+  }
 }
 
 .name {

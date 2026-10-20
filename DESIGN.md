@@ -196,7 +196,7 @@ Para los dos usos:
 
 Estos valores **no se usan en componentes**. Están acá para entender de dónde salen los semánticos.
 
-- **Color:** neutral (0–900, con 25, 75, 150, 725, 750 y 775), bronze, cacao, olive, terracotta (50–900), offwhite, red / green / amber y alpha. Bronze, cacao, olive, terracotta y offwhite quedan en Figma como paleta de marca, pero **no se exportan a `tokens.json`** hasta que un semántico los use.
+- **Color:** neutral (0–900, con 25, 75, 150, 725, 750 y 775), bronze, cacao, olive, terracotta (50–900), offwhite, red / green / amber y alpha. Bronze, cacao, olive, terracotta y offwhite quedan en Figma como paleta de marca, pero **no se exportan a `tokens.json`** hasta que un semántico los use. Hoy se exportan solo `offwhite/bone` y `offwhite/sand` (los usan `color/surface/bone` y `color/surface/sand`).
 - **Espaciado (px en Figma, rem en código):** 0 · 2 · 3 · 4 · 5 · 6 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 56 · 64 · 80 · 96 · 128 · 160.
 - **Tipografía:** familia única Albert Sans; pesos 300–700; tamaños 10 · 11 · 12 · 14 · 16 · 18 · 20 · 24 · 32 · 40 · 48 · 64 · 80.
 - **Radio:** `radius/0 · 2 · 4 · 8 · 16 · 24 · full`. **Borde:** `border/1 · border/2`. **Blur:** `blur/12`.
@@ -228,6 +228,7 @@ Estos valores **no se usan en componentes**. Están acá para entender de dónde
 | alpha/white-10 · white-22 | #FFFFFF al 10 % · 22 % |
 | alpha/black-60 | #000000 al 60 % |
 | alpha/transparent | #000000 al 0 % |
+| offwhite/bone · offwhite/sand | #F3F0E9 · #F7F1EC |
 
 ---
 
@@ -254,6 +255,8 @@ Cómo elegir un token:
 | color/surface/inverse-hover | neutral/750 | neutral/150 | Hover sobre fondo inverso |
 | color/surface/inverse-pressed | neutral/600 | neutral/200 | Pressed sobre fondo inverso |
 | color/surface/transparent | alpha/transparent | alpha/transparent | Fondo transparente explícito |
+| color/surface/bone | offwhite/bone | neutral/750 | Banda cálida del Home (Productos destacados y Herramientas) |
+| color/surface/sand | offwhite/sand | neutral/750 | Banda cálida destacada del Home (Casa FOA), un punto más rosada que bone |
 
 ### Texto e íconos
 
@@ -307,6 +310,8 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 | layout/measure | 400 | 400 | Ancho máximo de un texto de lectura junto a otro elemento (bajada de section-header y de page-header List). En Mobile el texto ocupa todo el ancho |
 | layout/measure-wide | 520 | 520 | Ancho máximo de un texto de lectura en una columna principal (page-header Detail). En Mobile el texto ocupa todo el ancho |
 | layout/gallery-thumb | 105 | 76 | Ancho de gallery-thumb en product-gallery. El alto sale de ratio/landscape (5:4) |
+| layout/gallery-thumb-overlay | 66 | 66 | Ancho de gallery-thumb cuando las miniaturas van sobre la foto (product-gallery `fill`, Ficha v2, desde 1024 px) |
+| layout/navbar-height | 56 | 56 | Alto de la barra del navbar. Lo que queda fijo debajo (compare-header Compact) o se trae a la vista (glosario de la ficha) se ubica a esta distancia del borde superior |
 | layout/filter-panel | 560 | 560 | Ancho de los paneles en Desktop: filter-panel, download-modal y compare-picker. En Mobile no se usa |
 | layout/compare-picker-list | 400 | 400 | Alto de la lista de compare-picker en Desktop (5 filas de compare-picker-item); las demás se desplazan adentro. En Mobile no se usa |
 | layout/table-thumb | 100 | 100 | Miniatura cuadrada de cada fila de la tabla de variantes (Glosario de la ficha y página Descargas) |
@@ -317,6 +322,8 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 | layout/mega-menu-image | 420 | 420 | Ancho de la imagen del mega-menu. El alto sale de ratio/portrait-soft (4:5) |
 | layout/search-field | 360 | 360 | Ancho de search-field en el navbar Desktop; search-dropdown toma el mismo ancho. En Mobile el campo ocupa el ancho disponible |
 | layout/search-thumb | 48 | 48 | Miniatura cuadrada de search-result |
+| layout/result-thumb | 100 | 76 | Miniatura cuadrada de search-result Type=Simple (resultado grande, sin SKU) |
+| layout/mega-link-thumb | 60 | 60 | Miniatura cuadrada de mega-link (Show image) |
 | layout/catalog-nav | 240 | 240 | Ancho del sidebar catalog-nav en Productos y Colecciones (desde 1024 px) |
 | layout/download-thumb | 72 | 72 | Miniatura cuadrada de la tabla de Descargas (filas y tarjetas Mobile) y del producto en el modal de descargas |
 | layout/download-search | 480 | 480 | Ancho del buscador de la tabla de Descargas. En Mobile el campo ocupa el ancho disponible |
@@ -345,6 +352,8 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 | Token | Valor | Uso |
 | --- | --- | --- |
 | opacity/disabled | 50 (Figma) · 0.5 (código) | Imagen o parte gráfica deshabilitada (miniatura de compare-picker-item Disabled). El texto deshabilitado no usa opacidad: va en `color/text/disabled` |
+| opacity/muted | 50 · 0.5 | Atenuar algo que sigue a la vista pero no es lo activo: la grilla de un listado mientras carga, el velo de un slide inactivo |
+| opacity/track | 35 · 0.35 | Pista de un indicador de progreso (carousel-controls); el tramo recorrido va al 100 % |
 
 - En Figma las variables de opacidad van de 0 a 100 (el campo de opacidad); `npm run tokens:import` las pasa a 0–1.
 
@@ -425,6 +434,8 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 | motion/easing/illumination | cubic-bezier(0.1, 0.1, 0.95, 0.4) | Iluminar: curva del fondo. Calculada para que el brillo cambie parejo, como un dimmer |
 | motion/easing/illumination-image | cubic-bezier(0.42, 0, 0.58, 1) | Iluminar: curva del fundido de las fotos |
 | motion/scale/pressed | 0,97 | Escala de button (Filled y Outline) e icon-button mientras se presionan, con fast y easing/out |
+| motion/scale/hover | 1,05 | Zoom de la imagen dentro de su recorte en el hover de una tarjeta que es link (category-card, collection-tile, search-card), con slow y easing/standard. La tarjeta no cambia de tamaño |
+| motion/scale/enter | 0,97 | Escala de partida de un menú que aparece desde su disparador (menú de input Select): crece hasta 1 con base y easing/out, junto con el fundido |
 
 - Con `prefers-reduced-motion: reduce`, las duraciones fast, base, slow, expand, panel e illumination-lead pasan a 0; illumination e illumination-image pasan a fade (Iluminar sigue siendo un fundido, todo junto); los botones no se achican al presionarlos. fade no cambia: con reduced motion se quitan los desplazamientos, los cambios de escala y de alto, pero quedan los fundidos (no marean y evitan los cambios bruscos). feedback tampoco cambia: es un tiempo de lectura, no una animación.
 - Se anima solo `opacity`, `transform` y colores. Nunca ancho ni posición de layout.

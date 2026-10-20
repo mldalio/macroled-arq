@@ -123,7 +123,7 @@ textarea.control {
   /* Al abrir, crece desde el campo (scale 0.97 → 1, motion/duration/base)
      y funde (motion/duration/fade), con motion/easing/out. Al cerrar, sin
      animación. Con reduced motion base vale 0: queda solo el fundido.
-     TODO: la escala 0.97 no tiene token (como la de search-card). */
+     La escala de partida es motion/scale/enter. */
   transform-origin: top;
   transition:
     opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out),
@@ -133,7 +133,7 @@ textarea.control {
 @starting-style {
   .menu:not([hidden]) {
     opacity: 0;
-    transform: scale(0.97);
+    transform: scale(var(--arq-motion-scale-enter));
   }
 }
 

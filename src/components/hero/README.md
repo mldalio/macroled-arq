@@ -56,7 +56,7 @@ Hero de página de Home y Contacto: media a sangre (imagen o video), scrim, eyeb
 El navbar **no** va dentro del hero (`docs/decisiones.md`, 2026-10-01 · hero y navbar). Para que se superponga, la página necesita:
 
 1. `<arq-navbar theme="transparent">` antes del hero, con posición absoluta (o fija) arriba, sobre la media. El hero no se corre hacia abajo: la media empieza en el borde superior de la página, como en Figma.
-2. El contenido del hero va abajo (`justify-content: flex-end`), así que la franja de 56 px del navbar no lo tapa mientras haya alto: con `70svh`, un título de hasta 3–4 líneas queda lejos. Para reservar la franja hace falta un token. `TODO`: crear `layout/navbar-height` (56) en Figma al construir navbar; lo usan hero y compare-header Compact.
+2. El contenido del hero va abajo (`justify-content: flex-end`), así que la franja de 56 px del navbar no lo tapa mientras haya alto: con `70svh`, un título de hasta 3–4 líneas queda lejos. Para reservar la franja está `layout/navbar-height` (56, desde 2026-10-20). `TODO` (diseño): decidir si el hero la reserva.
 3. El navbar pasa a Default al hacer scroll: lo resuelve el navbar, no el hero.
 
 ## Layout
@@ -83,6 +83,6 @@ El navbar **no** va dentro del hero (`docs/decisiones.md`, 2026-10-01 · hero y 
 ## Pendientes
 
 - `hero/scrim` es un estilo de relleno de Figma y el export de variables no lo trae: el degradado está copiado con sus valores en `hero.css`, como excepción fija (igual que los px del logo; `docs/decisiones.md`, 2026-10-01 · hero). Si cambia en Figma, se copia a mano.
-- `TODO` (navbar): crear `layout/navbar-height` (56) en Figma al construir navbar; lo usan hero y compare-header Compact.
+- `TODO` (diseño): `layout/navbar-height` ya existe (lo usan compare-header Compact y el glosario de la ficha); falta decidir si el hero reserva esa franja.
 - El gap entre texto y CTA en Desktop (`space/gap/xl`) no está en Figma (allí es justify-between).
 - La ficha dice que el hero tiene "el modo Light fijado". En código no hay Light local: si un ancestro estuviera en Dark, `color/text/inverse` cambiaría. No pasa en Home ni Contacto (no tienen Iluminar).

@@ -19,8 +19,9 @@
 //   header.addEventListener('arq:add', () => picker.show()); // compare-picker
 //
 // - No consulta Typesense: recibe los datos ya armados (AGENTS.md · Datos).
-// - TODO (navbar): falta el token layout/navbar-height (docs/decisiones.md,
-//   2026-10-01 · hero). Mientras tanto se mide el alto real de <arq-navbar>.
+// - Compact va fijo bajo el navbar: se mide el alto real de <arq-navbar> (el
+//   navbar Mobile se oculta al aparecer Compact); sin navbar, 0. Antes de
+//   medir, layout/navbar-height.
 // - Compact: miniatura + nombre + SKU + quitar. En Mobile cada producto ocupa
 //   una columna de compare-table, apilado y centrado (como
 //   macroled.com.ar/comparativa; Figma: compare-product Breakpoint=Mobile).

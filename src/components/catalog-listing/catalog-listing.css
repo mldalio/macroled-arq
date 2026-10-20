@@ -45,9 +45,9 @@
 /* Cargando otra categoría o filtros: la grilla que sigue a la vista se
    atenúa para que se note que el clic llegó. Solo si la respuesta tarda más
    que motion/duration/fast (una respuesta rápida no parpadea); vuelve al
-   instante. TODO (token): no hay opacidad semántica para «cargando». */
+   instante, en opacity/muted. */
 .grid {
-  --busy-opacity: 0.5;
+  --busy-opacity: var(--arq-opacity-muted);
   transition-property: opacity;
   transition-duration: var(--arq-motion-duration-fast);
   transition-timing-function: var(--arq-motion-easing-standard);

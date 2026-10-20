@@ -39,22 +39,6 @@
           }
         }
       },
-      "bone": {
-        "$type": "color",
-        "$value": "{neutral.750}",
-        "$description": "Fondo cálido de las bandas del Home (Productos destacados y Herramientas). En Dark coincide con surface/subtle.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "FRAME_FILL",
-              "SHAPE_FILL"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-color-surface-bone)"
-            }
-          }
-        }
-      },
       "inverse": {
         "$type": "color",
         "$value": "{neutral.0}",
@@ -195,6 +179,38 @@
             ],
             "codeSyntax": {
               "WEB": "var(--arq-color-surface-transparent)"
+            }
+          }
+        }
+      },
+      "sand": {
+        "$type": "color",
+        "$value": "{neutral.750}",
+        "$description": "Fondo cálido de una banda destacada del Home (Casa FOA). Par de color/surface/bone, un punto más rosado. En Dark coincide con surface/subtle.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-surface-sand)"
+            }
+          }
+        }
+      },
+      "bone": {
+        "$type": "color",
+        "$value": "{neutral.750}",
+        "$description": "Fondo cálido de las bandas del Home (Productos destacados y Herramientas). En Dark coincide con surface/subtle.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-surface-bone)"
             }
           }
         }

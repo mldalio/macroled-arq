@@ -20,6 +20,36 @@
           }
         }
       }
+    },
+    "muted": {
+      "$type": "number",
+      "$value": 50,
+      "$description": "Atenuar algo que sigue a la vista pero no es lo activo: la grilla de un listado mientras carga otra categoría o filtro, el velo de un slide inactivo. En Figma 0–100 (50 = 50 %); en código 0–1 (0.5).",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "OPACITY"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-opacity-muted)"
+          }
+        }
+      }
+    },
+    "track": {
+      "$type": "number",
+      "$value": 35,
+      "$description": "Pista de un indicador de progreso (carousel-controls): la línea completa va atenuada y el tramo recorrido, al 100 %. En Figma 0–100 (35 = 35 %); en código 0–1 (0.35).",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "OPACITY"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-opacity-track)"
+          }
+        }
+      }
     }
   }
 }

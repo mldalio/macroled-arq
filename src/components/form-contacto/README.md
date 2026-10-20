@@ -60,7 +60,7 @@ El HTML del embed completo está en [src/pages/contacto.html](../../pages/contac
 - `TODO` (n8n): falta `VITE_N8N_WEBHOOK_URL` y confirmar el formato que espera el webhook.
 - `TODO` (diseño): textos de error por caso e indicador de campo obligatorio (README de input).
 - `TODO` (diseño): revisar el Mobile de v3, que se armó en Figma desde el Desktop con las columnas apiladas, como el código.
-- `TODO` (diseño): distancia del sticky al navbar (falta `layout/navbar-height`).
+- `TODO` (diseño): distancia del sticky al navbar. Hoy `space/section/md`; con `layout/navbar-height` (2026-10-20) quedaría pegado al navbar.
 - `TODO` (diseño): el hover de faq-item (`color/surface/faint`) no se ve sobre el fondo faint del bloque.
 - `TODO` (n8n): confirmar que el webhook acepte adjuntos de 25 MB.
 - `TODO` (contenido): email y teléfono son los de Final; confirmar los datos reales.

@@ -27,7 +27,7 @@ Tarjeta de categoría del Home (Interior, Exterior, Lámparas y artefactos…): 
 
 Patrón común de las tarjetas (`src/base/card-link.css`, `docs/decisiones.md` · Tarjetas con link estirado): el `<a>` envuelve solo el nombre, así el nombre accesible es corto ("Interior"), y su `::after` cubre la tarjeta, así toda la tarjeta es clickeable.
 
-- **Hover** (solo con mouse): borde `border/default` en `color/border/hover` sobre la imagen, hacia adentro, y la imagen hace zoom (`scale(1.05)`) dentro del recorte. La tarjeta no cambia de tamaño. Duración `motion/duration/slow`. `TODO` (diseño): no hay token de escala y Figma no muestra el zoom. El cursor es el de enlace (`pointer`).
+- **Hover** (solo con mouse): borde `border/default` en `color/border/hover` sobre la imagen, hacia adentro, y la imagen hace zoom (`motion/scale/hover`, 1,05) dentro del recorte. La tarjeta no cambia de tamaño. Duración `motion/duration/slow`; sin zoom con `prefers-reduced-motion`. El set de Figma no muestra el zoom: lo describe la variable. El cursor es el de enlace (`pointer`).
 - **Focus:** anillo de DESIGN.md §7 alrededor de toda la tarjeta.
 - **Entrada al hacer scroll:** cuando la tarjeta entra en pantalla sube `space/gap/2xl` y aparece (una sola vez), escalonada con `motion/duration/fast` por tarjeta entre sus hermanas. Sin JS o con `prefers-reduced-motion: reduce` se ve quieta. `TODO` (diseño): no está en Figma.
 

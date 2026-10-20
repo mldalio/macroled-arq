@@ -35,12 +35,12 @@
   -webkit-user-drag: none;
 }
 
-/* Velo Inactivo. TODO (diseño): opacity 50 % no tiene token. */
+/* Velo Inactivo, en opacity/muted. */
 .veil {
   position: absolute;
   inset: 0;
   background: var(--arq-color-surface-default);
-  opacity: 0.5;
+  opacity: var(--arq-opacity-muted);
   pointer-events: none;
   transition-property: opacity, color, background-color, border-color, outline-color;
   transition-duration: var(--arq-motion-duration-slow);

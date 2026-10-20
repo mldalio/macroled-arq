@@ -81,15 +81,16 @@
 /* Hover: zoom de la imagen dentro del recorte. La tarjeta no cambia de
    tamaño. Solo con mouse, igual que el borde de card-link.css.
    motion/duration/slow: es un cambio de imagen, como el fundido de
-   product-card. TODO (diseño): no hay token de escala; 1.05 no está en
-   Figma (el set solo define el borde de hover). */
+   product-card. Escala motion/scale/hover (el set solo define el borde de
+   hover). */
 .card-media ::slotted(*) {
   transition: transform var(--arq-motion-duration-slow) var(--arq-motion-easing-standard) !important;
 }
 
-@media (hover: hover) {
+/* Con movimiento reducido no hay zoom (DESIGN.md §6). */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .card:has(.card-link:hover) .card-media ::slotted(*) {
-    transform: scale(1.05) !important;
+    transform: scale(var(--arq-motion-scale-hover)) !important;
   }
 }
 
@@ -197,16 +198,18 @@
     outline: none;
   }
 
-  /* Zoom leve de la foto, dentro del recorte. Misma duración que la bajada.
-     TODO (diseño): no hay token de escala; 1.05 no está en Figma. */
+  /* Zoom leve de la foto, dentro del recorte (motion/scale/hover). Misma
+     duración que la bajada. */
   :host([overlay]) .card-media ::slotted(*) {
     transition: transform calc(var(--arq-motion-duration-slow) * 4)
       var(--arq-motion-easing-standard) !important;
   }
 
-  :host([overlay]:hover) .card-media ::slotted(*),
-  :host([overlay]:focus-within) .card-media ::slotted(*) {
-    transform: scale(1.05) !important;
+  @media (prefers-reduced-motion: no-preference) {
+    :host([overlay]:hover) .card-media ::slotted(*),
+    :host([overlay]:focus-within) .card-media ::slotted(*) {
+      transform: scale(var(--arq-motion-scale-hover)) !important;
+    }
   }
 }
 

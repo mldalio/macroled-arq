@@ -36,11 +36,9 @@
   background: var(--arq-color-surface-bone);
 }
 
-/* Home: banda de Casa FOA.
-   TODO (diseño): #f7f1ec no tiene token. Crear el color en Figma y reemplazar
-   este valor suelto. */
+/* Home: banda de Casa FOA (color/surface/sand). */
 :host([background='sand']) {
-  background: #f7f1ec;
+  background: var(--arq-color-surface-sand);
 }
 
 /* Home v2: padding simétrico space/section/lg. section usa el gutter;

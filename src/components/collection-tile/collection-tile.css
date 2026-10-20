@@ -39,8 +39,7 @@
   max-width: none !important;
   height: 100% !important;
   object-fit: cover;
-  /* Zoom leve en hover, igual que category-card overlay.
-     TODO (diseño): no hay token de escala; 1.05 no está en Figma. */
+  /* Zoom leve en hover (motion/scale/hover), igual que category-card overlay. */
   transition: transform calc(var(--arq-motion-duration-slow) * 4)
     var(--arq-motion-easing-standard) !important;
 }
@@ -136,9 +135,12 @@
     outline: none;
   }
 
-  :host(:hover) ::slotted([slot='image']),
-  :host(:focus-within) ::slotted([slot='image']) {
-    transform: scale(1.05) !important;
+  /* Con movimiento reducido no hay zoom (DESIGN.md §6). */
+  @media (prefers-reduced-motion: no-preference) {
+    :host(:hover) ::slotted([slot='image']),
+    :host(:focus-within) ::slotted([slot='image']) {
+      transform: scale(var(--arq-motion-scale-hover)) !important;
+    }
   }
 }
 

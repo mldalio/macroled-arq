@@ -557,6 +557,22 @@
           }
         }
       }
+    },
+    "sand": {
+      "$type": "color",
+      "$value": "#f7f1ec",
+      "$description": "Arena, cálido claro; un punto más rosado que offwhite/bone. Fondo alternativo de sección en modo Light (banda de Casa FOA en el Home). No se usa en componentes ni en texto.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-offwhite-sand)"
+          }
+        }
+      }
     }
   },
   "red": {
