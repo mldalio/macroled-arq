@@ -67,6 +67,25 @@ import '../download-modal/download-modal.js';
 import '../download-item/download-item.js';
 import css from './ficha-producto.css?inline';
 
+
+// Solo en desarrollo: completa los archivos que faltan con unos de prueba para
+// ver el modal con todas sus filas (Instrucciones, CAD 2D/3D, Fotometrías, IES).
+// En el build no existe (import.meta.env.DEV es false).
+function simulateFiles(files) {
+  const list = [...files];
+  if (!import.meta.env.DEV) return list;
+  const fake = [
+    ['manual', 'Instrucciones'],
+    ['cad', 'CAD 2D/3D'],
+    ['fotometria', 'Fotometrías'],
+    ['ies', 'IES'],
+  ];
+  for (const [type, label] of fake) {
+    if (!list.some((file) => file.type === type)) list.push({ type, label, href: '/demo/fixtures/img/producto-1.svg' });
+  }
+  return list;
+}
+
 const TEXT = {
   loading: 'Cargando producto…',
   notFound: 'No encontramos este producto.',
@@ -180,7 +199,7 @@ class ArqFichaProducto extends ArqElement {
     `</div>` +
     `</div>` +
     `<arq-compare-bar class="compare-bar"></arq-compare-bar>` +
-    `<arq-download-modal id="downloads-modal"><slot name="modal-title" slot="title"></slot></arq-download-modal>`;
+    `<arq-download-modal id="downloads-modal" show-product><slot name="modal-title" slot="title"></slot></arq-download-modal>`;
 
   #product = null;
 
@@ -242,7 +261,7 @@ class ArqFichaProducto extends ArqElement {
     table.addEventListener('arq:downloads', (event) => this.#fillModal(event.detail.sku));
     root.querySelector('arq-download-modal').addEventListener('arq:download', (event) => {
       event.stopPropagation();
-      this.#datasheet(event.currentTarget.dataset.sku);
+      this.#datasheet(event.currentTarget.dataset.sku, event.target.closest('arq-download-item'));
     });
 
     this.#load();
@@ -628,20 +647,27 @@ class ArqFichaProducto extends ArqElement {
     );
   }
 
+  // Mismo modal que Descargas (show-product: miniatura, SKU y variante): la
+  // ficha técnica es un download-item Featured y los archivos, Default.
   #fillModal(sku) {
+    const { group, variantAttributes } = this.#product;
     const modal = this.shadowRoot.querySelector('arq-download-modal');
+    const details = variantDetails(group, sku);
     modal.dataset.sku = sku;
+    modal.sku = sku;
+    modal.thumb = details.images[0]?.src ?? null;
+    modal.meta = variantAttributes.map((field) => details.values[field]).filter(Boolean).join(', ');
     const featured = document.createElement('arq-download-item');
     featured.emphasis = 'featured';
     featured.textContent = TEXT.datasheet;
-    const files = variantDetails(this.#product.group, sku).downloads.map((file) => {
+    const items = simulateFiles(details.downloads).map((file) => {
       const item = document.createElement('arq-download-item');
       item.href = file.href;
       item.textContent = file.label;
       return item;
     });
     for (const item of modal.querySelectorAll(':scope > arq-download-item')) item.remove();
-    modal.append(featured, ...files);
+    modal.append(featured, ...items);
   }
 
   // ── Inspiración ───────────────────────────────────────────────────

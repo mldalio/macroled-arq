@@ -53,7 +53,21 @@ modal.addEventListener('arq:download', () => generarFichaTecnica(sku)); // la fi
 | Separación de los bordes | `layout/gutter` |
 | Fondo · borde | `color/surface/default` · `border/default` en `color/border/default` |
 | Padding · gap encabezado–opciones | `space/padding/xl-2xl` · `space/gap/2xl` |
-| Título | `role/heading-1` en `color/text/primary`; sku Compact debajo a `space/gap/sm`. Con sku, el cerrar queda arriba, alineado al título |
+| Título | `role/heading-2` en `color/text/primary`; sku Compact debajo a `space/gap/sm`. Con sku, el cerrar queda arriba, alineado al título |
 | Featured–lista | `space/gap/md` |
 | Cerrar | icon-button Size=Large con `icon/close` |
 | Scrim | `color/overlay/scrim` |
+
+## Ficha y Descargas (`show-product`)
+
+La ficha de producto y la página Descargas usan el mismo modal: producto (miniatura, SKU y variante), la ficha técnica como `download-item` `emphasis="featured"` (caja con borde, sin `href`: emite `arq:download`) y el resto de los archivos como `download-item` Default. La lista no lleva línea arriba.
+
+```html
+<arq-download-modal show-product sku="…" meta="Negro, 6 W, luz cálida" thumb="…">
+  <h2 slot="title">Descargas</h2>
+  <arq-download-item emphasis="featured">Ficha técnica</arq-download-item>
+  <arq-download-item href="…">CAD 2D/3D</arq-download-item>
+</arq-download-modal>
+```
+
+El formato (`show-format` en download-file-row) queda como variante apagada; el modal ya no usa download-file-row. En desarrollo (`npm run dev`) la ficha completa los archivos que faltan con unos de prueba.

@@ -142,8 +142,8 @@
    Título → producto → archivos a space/gap/xl. Producto: miniatura en
    color/surface/subtle y, a space/gap/md, sku Compact con la meta
    (role/body-compact-regular en color/text/tertiary) a space/gap/xs.
-   Archivos: download-file-row a space/gap/md con una línea arriba
-   (border/default en color/border/subtle).
+   Archivos: download-item Featured (ficha técnica) y Default (el resto, con su
+   línea inferior), uno debajo del otro; la lista no lleva línea arriba.
    Miniatura de layout/download-thumb, como la tabla de Descargas. */
 :host([show-product]) .sheet {
   gap: var(--arq-space-gap-xl);
@@ -180,11 +180,6 @@
 
 .meta {
   color: var(--arq-color-text-tertiary);
-}
-
-:host([show-product]) .list {
-  gap: var(--arq-space-gap-md);
-  border-top: var(--arq-border-default) solid var(--arq-color-border-subtle);
 }
 
 /* Mobile: hoja pegada al borde inferior, a todo el ancho (2554:20133).

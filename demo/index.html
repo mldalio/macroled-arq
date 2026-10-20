@@ -728,7 +728,7 @@
           <arq-button type="outline" show-icon icon="download" data-demo-download-open="demo-descargas">Descargas (ficha)</arq-button>
           <arq-button type="outline" show-icon icon="download" data-demo-download-open="demo-descargas-pocas">Descargas (solo IES)</arq-button>
           <arq-button type="outline" show-icon icon="download" data-demo-download-open="demo-descargas-sku">Descargas (con SKU)</arq-button>
-          <arq-button type="outline" show-icon icon="download" data-demo-download-open="demo-descargas-producto">Descargas (show-product, propuesta)</arq-button>
+          <arq-button type="outline" show-icon icon="download" data-demo-download-open="demo-descargas-producto">Descargas (show-product: ficha y Descargas)</arq-button>
         </div>
         <arq-download-modal id="demo-descargas">
           <h2 slot="title">Descargas</h2>
@@ -747,11 +747,14 @@
           <arq-download-item href="/demo/fixtures/img/producto-3.svg">Fotometría</arq-download-item>
           <arq-download-item href="/demo/fixtures/img/producto-1.svg">IES</arq-download-item>
         </arq-download-modal>
-        <!-- Descargas · propuesta (Figma 2554:20048 · 2554:20133): producto y download-file-row; Mobile, hoja abajo a todo el ancho -->
+        <!-- Descargas y ficha (Figma 2554:20048 · 2554:20133): producto, ficha técnica Featured y archivos Default; Mobile, hoja abajo a todo el ancho -->
         <arq-download-modal id="demo-descargas-producto" show-product sku="RMS-ATD302-B-6W-WW" meta="Negro, 6 W, luz cálida">
           <h2 slot="title">Descargas</h2>
-          <arq-download-file-row>Ficha técnica<span slot="meta">PDF</span></arq-download-file-row>
-          <arq-download-file-row href="/demo/fixtures/img/producto-1.svg">Fotometría<span slot="meta">IES</span></arq-download-file-row>
+          <arq-download-item emphasis="featured">Ficha técnica</arq-download-item>
+          <arq-download-item href="/demo/fixtures/img/producto-1.svg">Instrucciones</arq-download-item>
+          <arq-download-item href="/demo/fixtures/img/producto-2.svg">CAD 2D/3D</arq-download-item>
+          <arq-download-item href="/demo/fixtures/img/producto-3.svg">Fotometrías</arq-download-item>
+          <arq-download-item href="/demo/fixtures/img/producto-1.svg">IES</arq-download-item>
         </arq-download-modal>
         <arq-download-modal id="demo-descargas-pocas">
           <h2 slot="title">Descargas</h2>
@@ -764,13 +767,13 @@
         <h2 id="demo-download-file-row" class="demo-heading role-label">download-file-row · &lt;arq-download-file-row&gt;</h2>
         <p class="demo-note role-body-sm">Figma 2554:20047 (Descargas · propuesta). Nombre role/body-xl, formato role/body-compact-regular en color/text/tertiary e icon/download. Con href, link de descarga; sin href, botón que emite arq:download. Hover subraya el nombre.</p>
         <div class="demo-downloads" role="list">
-          <arq-download-file-row>Ficha técnica<span slot="meta">PDF</span></arq-download-file-row>
-          <arq-download-file-row href="/demo/fixtures/img/producto-1.svg">Fotometría<span slot="meta">IES</span></arq-download-file-row>
-          <arq-download-file-row href="/demo/fixtures/img/producto-2.svg">Instrucciones de instalación con un nombre de archivo largo<span slot="meta">PDF</span></arq-download-file-row>
+          <arq-download-file-row show-format>Ficha técnica<span slot="meta">PDF</span></arq-download-file-row>
+          <arq-download-file-row show-format href="/demo/fixtures/img/producto-1.svg">Fotometría<span slot="meta">IES</span></arq-download-file-row>
+          <arq-download-file-row show-format href="/demo/fixtures/img/producto-2.svg">Instrucciones de instalación con un nombre de archivo largo<span slot="meta">PDF</span></arq-download-file-row>
         </div>
         <div class="demo-dark" data-arq-theme="dark">
           <div class="demo-downloads" role="list">
-            <arq-download-file-row href="/demo/fixtures/img/producto-1.svg">CAD 2D/3D<span slot="meta">DWG</span></arq-download-file-row>
+            <arq-download-file-row show-format href="/demo/fixtures/img/producto-1.svg">CAD 2D/3D<span slot="meta">DWG</span></arq-download-file-row>
           </div>
         </div>
       </section>
@@ -1246,6 +1249,8 @@
           <arq-sku size="compact">KANU-J-500-12W-N-WW</arq-sku>
           <arq-sku copied>KANU-J-500-12W-N-WW</arq-sku>
           <arq-sku size="compact" copied>KANU-J-500-12W-N-WW</arq-sku>
+          <arq-sku size="compact" dense>KANU-J-500-12W-N-WW</arq-sku>
+          <arq-sku size="compact" dense copied>KANU-J-500-12W-N-WW</arq-sku>
           <arq-sku size="underline">KANU-J-500-12W-N-WW</arq-sku>
           <arq-sku size="underline" copied>KANU-J-500-12W-N-WW</arq-sku>
         </div>

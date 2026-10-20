@@ -17,7 +17,7 @@ Fila de archivo del modal de descargas de la página Descargas: nombre, formato 
 | Figma | Atributo / slot | Prop JS | Valores |
 | --- | --- | --- | --- |
 | Label | slot por defecto | — | Nombre del archivo («Ficha técnica», «IES») |
-| Meta | slot `meta` | — | Formato y peso («PDF, 1,2 MB»). Opcional: sin el slot, solo el nombre (así lo usa Descargas) |
+| Show format · Meta | `show-format` + slot `meta` | `showFormat` | Formato y peso («PDF, 1,2 MB»). Apagado por defecto: sin `show-format` solo se ve el nombre (así lo usan Descargas y la ficha por ahora) |
 | — | `href` | `href` | URL del archivo. Sin `href` es un botón que emite `arq:download` (la ficha técnica se genera al hacer clic) |
 | Availability | — | — | Solo Available: si la variante no tiene el archivo, la página no pone la fila |
 | — | `loading` | `loading` | Solo sin `href`: mientras se genera la ficha técnica el nombre pasa a «Generando…», con `aria-busy`, y otro clic no hace nada. `TODO` (diseño): no hay State=Loading en el set |

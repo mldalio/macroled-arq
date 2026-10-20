@@ -9,6 +9,8 @@
 // - Con href es un <a download> (archivo de la base: IES, CAD, MANUAL,
 //   FOTOMETRIA). Sin href es un <button> que emite arq:download: la ficha
 //   técnica se genera al hacer clic (decisión 2026-10-02 · Ficha técnica en PDF).
+// - loading (solo sin href): mientras se genera la ficha técnica el nombre pasa a
+//   «Generando…» (como button Loading), con aria-busy; otro clic no hace nada.
 // - Si un archivo falta, la página no pone la opción.
 // - Emphasis: Default (línea inferior; Hover subraya el texto, como dice la
 //   descripción) o Featured (caja con borde; para la ficha técnica; Hover
@@ -24,6 +26,7 @@ class ArqDownloadItem extends ArqElement {
   static properties = {
     emphasis: { type: String, values: ['default', 'featured'], default: 'default' }, // Emphasis
     href: { type: String }, // URL del archivo
+    loading: { type: Boolean }, // generando la ficha técnica (sin href)
   };
   static template = `<div class="slot-host"></div>`;
 
@@ -33,24 +36,37 @@ class ArqDownloadItem extends ArqElement {
     // Default va en la lista del modal; Featured queda fuera de la lista.
     if (this.emphasis === 'featured') this.removeAttribute('role');
     else this.setAttribute('role', 'listitem');
+    if (changed.has('loading') || this.#control) this.#busy();
     if (!changed.has('href') && this.#control) return;
     // <a download> con href; <button> sin href. Se rehace solo si cambia el tipo.
     const tag = this.href ? 'a' : 'button';
     if (this.#control?.localName !== tag) {
       const control = document.createElement(tag);
       control.className = 'row';
-      control.innerHTML = `<span class="label role-body-xl"><slot></slot></span>${icon('download')}`;
+      control.innerHTML = `<span class="label role-body-xl"><span class="name"><slot></slot></span><span class="busy" hidden>Generando…</span></span>${icon('download')}`;
       if (tag === 'button') {
         control.type = 'button';
-        control.addEventListener('click', () => this.emit('download', {}));
+        control.addEventListener('click', () => {
+          if (!this.loading) this.emit('download', {});
+        });
       }
       this.shadowRoot.querySelector('.slot-host').replaceChildren(control);
       this.#control = control;
+      this.#busy();
     }
     if (this.href) {
       this.#control.setAttribute('href', this.href);
       this.#control.setAttribute('download', '');
     }
+  }
+
+  // loading (sin href): el nombre pasa a «Generando…», con aria-busy
+  #busy() {
+    if (!this.#control) return;
+    const busy = Boolean(this.loading && !this.href);
+    this.#control.toggleAttribute('aria-busy', busy);
+    this.#control.querySelector('.name').hidden = busy;
+    this.#control.querySelector('.busy').hidden = !busy;
   }
 
   /** El foco va al link o botón interno. */
