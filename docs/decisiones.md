@@ -1184,3 +1184,9 @@ Salió de revisar los valores de `color_carcasa` de toda la base (326 documentos
 - Al abrir el menú se ve siempre la primera pestaña y su primer link (Embutir), y la foto llega al borde inferior (la línea del menú va solo debajo de las columnas).
 - Al 2026-10-20 están marcados DAO-EC-X1-N (Embutir), DOULI-C-15W-N-WW (Colgante), YORU-J-8W-N-WW (Jardín) y KANU-P-350-12W-N-WW (Pared). Dan 404 las fotos de ambiente de DAO-EC-X1-N y KANU-P-350-12W-N-WW y las siete `col-*_AMBIENT_1_ON.webp`: ahí el preview usa el respaldo.
 - Typesense conserva 187 documentos de Skyline (`RMS-*`) que ya no están en la hoja: n8n agrega y actualiza, no borra. No se listan (no tienen `is_group_default`). `TODO` (datos): decidir si se borran del índice.
+
+## 2026-10-20 · Colecciones: categorías en Filtrar
+
+- Pedido de Lau: en Colecciones, hasta 1023 px, se veía `catalog-nav-mobile` («Todas las colecciones») arriba de la grilla además del botón Filtrar, y no funcionaba como Productos.
+- Ahora Colecciones hace lo mismo que Productos: sin `catalog-nav-mobile` arriba de la grilla y con las categorías en la pestaña Categorías de filter-panel (Show categories). Desde 1024 px sigue el sidebar.
+- Reemplaza «Colecciones no cambia» (2026-10-19) y «Colecciones Mobile sigue con catalog-nav-mobile». DESIGN.md §2 y AGENTS.md actualizados.
