@@ -200,6 +200,8 @@ Botón anterior / siguiente de los carruseles (Destacados, Proyectos). Cuadrado 
 
 Flechas anterior / siguiente para carruseles con scroll horizontal (mosaico de Colección, proyectos de Home). icon-button Size=Large con icon/arrow-left y icon/arrow-right. Position: Start (anterior deshabilitada) · Middle · End (siguiente deshabilitada); deshabilitada = icon-button State=Disabled (atributo disabled). En mobile no se muestran: el carrusel se desliza y la imagen siguiente asoma como indicador. El scroll (snap) se resuelve en código.
 
+Solo de código (sin variante en Figma): buttons=carousel (carousel-button cuadrado, Home), buttons=chevron (icon-button Large con chevrons, sin borde ni fondo) y buttons=none (solo la línea de progreso, a todo el ancho). progress=scroll hace que la línea mida la parte visible del contenido y siga el scroll (trazo de border/strong sobre pista fina): es la barra de columnas de variants-table.
+
 ## catalog-nav
 
 - Figma: [1035-2411](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1035-2411)
@@ -762,9 +764,9 @@ Opción de select-menu. Muestra opcional (Show swatch; swatch/sm con border/defa
 ## sku
 
 - Figma: [920-2539](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=920-2539)
-- Propiedades: Code; Size: Default · Compact · Underline; State: Default · Hover · Copied
+- Propiedades: Code; Size: Default · Compact · Dense · Underline; State: Default · Hover · Copied
 
-Código de producto con botón de copiar. Size: Default (bloque del configurador, con etiqueta SKU) y Compact (fila de la tabla de variantes). State: Default (ícono icon/secondary), Hover (ícono icon/primary), Copied (confirmación "Copiado", text/success).
+Código de producto con botón de copiar. Size: Default (bloque del configurador, con etiqueta SKU), Compact (código en role/body, 16/24), Dense (Compact con el código en role/body-compact, 14/24: variants-table; en código, size="compact" dense, que desde 1920 px vuelve a 16/24) y Underline. State: Default (ícono icon/secondary), Hover (ícono icon/primary), Copied (confirmación "Copiado", text/success).
 
 Textos largos: el código se parte en varias líneas, nunca se corta. Si falla el portapapeles: el código queda seleccionado y se anuncia "Copialo con Ctrl+C" ("⌘C" en Mac) en lugar de "Copiado", en color/text/secondary.
 
@@ -824,29 +826,37 @@ Switch del toggle (pista + círculo), compartido por todas las variantes de togg
 ## variants-table
 
 - Figma: [1068-5582](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1068-5582)
-- Propiedades: Show search; Filters: Off · On; Breakpoint: Desktop · Mobile
+- Propiedades: Type: Product · Catalog; Breakpoint: Desktop · Mobile
 
-Tabla de variantes: Glosario de la ficha (el título va aparte como título de sección) y página Descargas (todos los SKU del catálogo). Botón Filtros en button Filled con icon/filter; en código abre filter-panel (panel lateral, como Descargas) en lugar de desplegar filter-bar (2026-10-15; Figma conserva Filters=On con filter-bar: TODO actualizar el set). A la derecha, descargas con button Outline + icon/download. Filas: variants-table-row Header + una Row por SKU. Ocupa el ancho del contenido: controles (toolbar y filter-bar) y filas llevan padding lateral layout/gutter, así la filter-bar queda dentro de los márgenes, alineada con la tabla (decisión 2026-10-05 · variants-table dentro del contenido). En mobile el scroll de las columnas llega al borde de la pantalla. Scroll: en Figma cada fila tiene su propio frame scroll porque Figma no puede sincronizar el desplazamiento entre instancias; es solo una especificación de qué columnas se mueven. En código la tabla usa un único contenedor con overflow-x: auto que envuelve header y filas, así los títulos se desplazan junto con los datos; las celdas de inicio (miniatura + SKU; hasta 1023 px solo la miniatura) y de fin (descarga) van con position: sticky (left: 0 / right: 0) y fondo propio (surface/default, surface/faint en Hover) para tapar lo que pasa por debajo.
+Tabla de variantes: un solo componente para la ficha (Type=Product, los SKU de un grupo) y la página Descargas (Type=Catalog, todos los SKU del catálogo). Breakpoint: Desktop · Mobile (hasta 767 px).
 
-Una sola tabla para la ficha y Descargas (2026-10-20 · Una sola variants-table; en código, `type`: `product` y `catalog`; el set de Figma todavía tiene Show search: TODO agregar la prop Type). Type=product (ficha): Filtros Filled con la cantidad a la izquierda y, a la derecha, CAD 2D/3D y Manual (button Outline + icon/download, del campo `cad` y `manual` de la base); las filas muestran solo el sku. Type=catalog (Descargas): el buscador a la izquierda (de layout/download-search, 480) y Filtros a la derecha, del lado donde se abre filter-panel; debajo del buscador, la cantidad; debajo de Filtros, a la derecha, lo aplicado (chips y «Limpiar filtros»); nombre sobre el sku en cada fila. Mismas columnas en los dos, en este orden: Acabado, Tamaño (en mm), Potencia, Temp., CRI, Flujo lum., Ángulo, Eficiencia, IP, Regulación. Encabezado en role/body-regular con fondo surface/soft, barra fija debajo del navbar al desplazar, miniatura layout/table-thumb (100), sku Compact, difuminado de space/gap/3xl junto a las columnas fijas y, en Mobile, las tarjetas de Descargas.
+Barra. Product: botón Filtros (Filled, icon/filter) con la cantidad («4 variantes», role/body, text/secondary) a la izquierda y, a la derecha, CAD 2D/3D y Manual (button Outline + icon/download; en código salen de los campos cad y manual del SKU predeterminado). Catalog: buscador (search-field, layout/download-search = 480) a la izquierda y Filtros a la derecha; debajo del buscador la cantidad («4 productos»); debajo de Filtros, a la derecha, los filtros aplicados (filter-chip) y «Limpiar filtros». En código la barra queda fija debajo del navbar (layout/navbar-height) solo si la tabla no entra en la pantalla, con la fila de encabezados.
 
-Ficha v2: botón Filtros siempre Filled (abierto, con icon/close) y, al lado, la cantidad («4 variantes», role/body, text/secondary). La barra de filtros (filter-bar) va con fondo surface/soft. Encabezado en role/body-regular (text/tertiary); valores en role/body-lg-regular. Miniatura de 100 × 100 (layout/table-thumb = 100), filas de 116. Breakpoint=Mobile (hasta 767 px): en lugar de la tabla, una variants-table-card por variante (imagen, sku con descarga y datos en dos columnas), separadas space/gap/6xl.
+Tabla (Desktop). Header + una fila por SKU (variants-table-row). Columnas, en este orden: Acabado, Tamaño (en mm), Potencia, Temp., CRI, Flujo lum., Ángulo, Eficiencia, IP, Regulación. Encabezado en role/body-compact-regular (text/tertiary) con fondo surface/soft; valores en role/body-compact-regular (text/primary); sku Size=Dense; en Type=Catalog el nombre del producto, subrayado, sobre el sku (Show name). Las columnas de datos miden lo mismo (la de valor más largo, calculado en código) y el ancho que sobra se reparte entre ellas; una columna con un valor muy largo (Tamaño, Regulación) mide lo suyo. Miniatura layout/table-thumb (100). Miniatura, sku (desde 1024 px) y Descargas quedan fijas con position: sticky; mientras queda tabla por ver, un difuminado de space/gap/3xl junto a las columnas fijas lo avisa. Abajo, la línea de progreso de las columnas (la de carousel-controls de la Home: trazo de border/strong sobre una pista fina, sin flechas, a todo el ancho): se muestra solo si la tabla no entra en el ancho y queda pegada al borde inferior de la pantalla.
+
+Mobile (hasta 767 px): en lugar de la tabla, una variants-table-card por variante. Los filtros se abren en filter-panel (panel lateral en Desktop, pantalla completa en Mobile).
+
+Jerarquía de texto: nombre, sku, datos y encabezados en 14 px hasta 1919 px y en 16 px desde 1920 px (el nombre sigue en 14).
+
+Scroll: en Figma las filas son solo especificación; en código hay un único contenedor con overflow-x: auto para header y filas.
 
 ## variants-table-card
 
 - Figma: [2399-31269](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2399-31269)
-- Propiedades: —
+- Propiedades: Show name; Name
 
-Tarjeta de variante de la tabla de variantes en Mobile (hasta 767 px), en lugar de la tabla. Imagen (16:10), sku subrayado con el botón de descarga (icon-button Size=Large, Background=Outline) y los datos en dos columnas: etiqueta role/body-sm (text/secondary) y valor role/body-sm-medium (text/primary), separador inferior border/subtle, padding vertical space/padding/sm. Entre tarjetas, space/gap/6xl. Cantidad de datos libre en código. No confundir con variants-table-row (Desktop).
+Tarjeta de variante de la tabla de variantes en Mobile (hasta 767 px), en lugar de la tabla. Cabecera: miniatura (layout/download-thumb, 72) a la izquierda, a su lado el producto (nombre opcional —Show name · Name, role/body-compact-regular subrayado, solo en Descargas, que lleva a la ficha— sobre el sku Size=Dense) y la descarga (icon-button Size=Large, Background=Outline) arriba a la derecha. Debajo, seis datos en dos columnas: Potencia · Temp. / CRI · Flujo lum. / Acabado · Tamaño. Etiqueta role/body-compact-regular (text/secondary) y valor role/body-compact-medium (text/primary), sin espacio entre sí; separador inferior de cada fila border/subtle (la última no lleva) y padding vertical space/padding/sm. La línea que separa las tarjetas es border/default en color/border/default y va de borde a borde de la pantalla: el contenido conserva layout/gutter a los lados y space/padding/lg arriba y abajo. Sin botones de texto. No confundir con variants-table-row (Desktop).
 
 ## variants-table-row
 
 - Figma: [923-2708](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=923-2708)
-- Propiedades: Type: Header · Row; State: Default · Hover; Breakpoint: Mobile · Desktop
+- Propiedades: Show name; Name; Type: Header · Row; State: Default · Hover; Breakpoint: Mobile · Desktop
 
-Fila de la tabla de variantes (Glosario de la ficha y página Descargas). Tres zonas: fixed-start (miniatura layout/table-thumb + sku Size=Underline) y fixed-end (descarga: icon-button Size=Large Background=Outline con icon/download, centrado en la columna; abre el modal con los archivos del SKU. El Header lleva «Descargas» en role/body-regular, centrado; en Mobile, sin título) quedan fijas; scroll contiene las columnas de datos y es lo único que se desplaza en horizontal, junto con sus títulos del Header. En Figma el scroll de cada fila es solo especificación; en código hay un único scroll compartido por header y filas (ver la descripción de variants-table). Type: Header (role/body-regular, text/tertiary) y Row (valores role/body-lg-regular, text/primary). Separador inferior border/subtle, gap space/gap/sm y padding lateral space/padding/sm y, en Row, vertical space/padding/sm (la miniatura y el botón de descarga no quedan pegados al borde de la línea). Row State: Default y Hover (surface/faint). Breakpoint: Desktop · Mobile (en Mobile el Header de la descarga va sin título).
+Fila de la tabla de variantes (ficha y página Descargas). Type: Header · Row. State: Default · Hover (surface/faint). Breakpoint: Desktop · Mobile. Props: Show name · Name (el nombre del producto, solo en Type=Catalog: role/body-compact-regular, subrayado, sobre el sku, a space/gap/sm).
 
-Ficha v2: encabezado en role/body-regular (text/tertiary); valores en role/body-lg-regular (text/primary); miniatura layout/table-thumb (100) y fila de 116. En Mobile la tabla se reemplaza por variants-table-card.
+Tres zonas: fixed-start (miniatura layout/table-thumb + sku Size=Dense) y fixed-end (descarga: icon-button Size=Large Background=Outline con icon/download, centrado; abre el modal con los archivos del SKU; el Header lleva «Descargas», centrado) quedan fijas; scroll contiene las columnas de datos. En Figma el scroll de cada fila es solo especificación; en código hay un único scroll compartido por header y filas (ver variants-table).
+
+Columnas en este orden: Acabado, Tamaño, Potencia, Temp., CRI, Flujo lum., Ángulo, Eficiencia, IP, Regulación. Header: role/body-compact-regular en text/tertiary y fondo surface/soft. Row: valores en role/body-compact-regular (text/primary). Todo el texto es de 14 px (16 desde 1920 px en código). Separador inferior border/subtle, gap space/gap/sm y padding lateral space/padding/sm; en Row, vertical space/padding/sm.
 
 ## Íconos
 

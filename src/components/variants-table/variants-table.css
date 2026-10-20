@@ -27,15 +27,15 @@
   padding-block: var(--arq-space-padding-md);
 }
 
-/* Fija: queda pegada debajo del navbar al desplazar (alto 56: space/gap/md × 2 +
-   icon/xl, como en catalog-listing; TODO layout/navbar-height), con el buscador
+/* Fija: queda pegada debajo del navbar al desplazar (a layout/navbar-height del
+   borde superior), con el buscador
    y Filtros en catalog y Filtros y los archivos generales en product. La pone
    el JS (.fixed) solo si la tabla no entra en la pantalla. Fondo
    color/surface/default: tapa las filas que pasan por debajo (z-index sobre las
    columnas fijas). */
 .controls.fixed {
   position: sticky;
-  top: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
+  top: var(--arq-layout-navbar-height);
   z-index: 3;
   background: var(--arq-color-surface-default);
 }
