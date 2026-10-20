@@ -15,6 +15,12 @@
 // - Si la flecha con foco se deshabilita, el foco pasa a la otra.
 // - aria-controls con ariaControlsElements: un id del DOM de la página no se
 //   puede referenciar desde el Shadow DOM.
+// - progress="scroll" (solo con buttons="carousel"): en lugar de un tramo por slide,
+//   la línea muestra qué parte del contenido se ve (el trazo mide lo que el ancho
+//   visible sobre el total y se mueve con el scrollLeft), sin contador. Es la de
+//   variants-table. Si no hay nada para desplazar, la línea no se muestra.
+// - page-inset: ancho que tapan las columnas fijas de una tabla; cada salto de
+//   página mide el ancho visible menos ese valor, así no se saltea contenido.
 // - Con prefers-reduced-motion el salto es instantáneo.
 // - El contenedor (snap, peek) no es parte del componente: TODO (páginas).
 
@@ -35,8 +41,13 @@ class ArqCarouselControls extends ArqElement {
     labelPrev: { type: String, default: 'Anterior' },
     labelNext: { type: String, default: 'Siguiente' },
     // Solo código. icon: icon-button Large (Colección). carousel: carousel-button
-    // de Figma (Destacados y Proyectos de la Home).
-    buttons: { type: String, values: ['icon', 'carousel'], default: 'icon' },
+    // de Figma (Destacados y Proyectos de la Home). chevron: solo el chevron, sin
+    // borde ni fondo (icon-button Large Background=None: el área clickeable es la
+    // del botón). none: sin flechas, solo la línea de progreso (con progress="scroll":
+    // variants-table).
+    buttons: { type: String, values: ['icon', 'carousel', 'chevron', 'none'], default: 'icon' },
+    progress: { type: String, values: ['slides', 'scroll'], default: 'slides' }, // solo código: qué mide la línea (tramo por slide o parte visible)
+    pageInset: { type: Number, default: 0 }, // solo código: ancho tapado por columnas fijas, se resta al salto de página
     index: { type: Number, default: 0 }, // slide actual, desde 0
     count: { type: Number, default: 1 }, // cantidad de slides
   };
@@ -49,6 +60,8 @@ class ArqCarouselControls extends ArqElement {
     `<arq-carousel-button class="prev square" direction="previous" hidden></arq-carousel-button>` +
     `<arq-icon-button class="next icon" size="large" icon="arrow-right"></arq-icon-button>` +
     `<arq-carousel-button class="next square" direction="next" hidden></arq-carousel-button>` +
+    `<arq-icon-button class="prev chevron" size="large" icon="chevron-left" hidden></arq-icon-button>` +
+    `<arq-icon-button class="next chevron" size="large" icon="chevron-right" hidden></arq-icon-button>` +
     `</div>` +
     `</div>`;
 
@@ -69,7 +82,7 @@ class ArqCarouselControls extends ArqElement {
 
   /** El par visible: icon-button o carousel-button. */
   #pair() {
-    const kind = this.buttons === 'carousel' ? 'square' : 'icon';
+    const kind = { carousel: 'square', chevron: 'chevron' }[this.buttons] ?? 'icon';
     const root = this.shadowRoot;
     return {
       prev: root.querySelector(`.prev.${kind}`),
@@ -90,9 +103,10 @@ class ArqCarouselControls extends ArqElement {
 
   update(changed) {
     const root = this.shadowRoot;
-    const carousel = this.buttons === 'carousel';
-    for (const button of root.querySelectorAll('.icon')) button.hidden = carousel;
-    for (const button of root.querySelectorAll('.square')) button.hidden = !carousel;
+    for (const kind of ['icon', 'square', 'chevron']) {
+      const shown = this.buttons !== 'none' && (this.buttons === 'carousel' ? 'square' : this.buttons === 'chevron' ? 'chevron' : 'icon') === kind;
+      for (const button of root.querySelectorAll(`.${kind}`)) button.hidden = !shown;
+    }
     const { prev, next } = this.#pair();
     if (changed.has('labelPrev') || changed.has('buttons')) {
       for (const button of root.querySelectorAll('.prev')) button.textContent = this.labelPrev;
@@ -175,7 +189,24 @@ class ArqCarouselControls extends ArqElement {
       this.#pair().next.disabled = !scrollable || position === 'end';
     }
     if (position !== this.position) this.position = position;
-    if (this.buttons === 'carousel') this.#progressFromScroll(target);
+    if (this.progress === 'scroll' && this.buttons !== 'icon') this.#progressByScroll(target, scrollable);
+    else if (this.buttons === 'carousel') this.#progressFromScroll(target);
+  }
+
+  /** Línea de variants-table: el trazo es la parte visible del contenido. */
+  #progressByScroll(target, scrollable) {
+    const root = this.shadowRoot;
+    const progress = root.querySelector('.progress');
+    root.querySelector('.count').hidden = true;
+    progress.hidden = !scrollable;
+    progress.dataset.mode = 'scroll';
+    progress.setAttribute('aria-hidden', 'true');
+    for (const attribute of ['role', 'aria-valuemin', 'aria-valuemax', 'aria-valuenow', 'aria-valuetext']) progress.removeAttribute(attribute);
+    if (!scrollable) return;
+    const size = Math.min(1, target.clientWidth / target.scrollWidth);
+    const offset = target.scrollLeft / target.scrollWidth;
+    progress.style.setProperty('--progress-size', String(size));
+    progress.style.setProperty('--progress-offset', String(offset));
   }
 
   /** La línea de Home: un tramo por slide, sobre la pista. */
@@ -183,6 +214,7 @@ class ArqCarouselControls extends ArqElement {
     const root = this.shadowRoot;
     const count = Math.max(this.count || 1, 1);
     const index = Math.min(Math.max(this.index || 0, 0), count - 1);
+    if (this.progress === 'scroll') return; // la línea la arma #progressByScroll
     const show = this.buttons === 'carousel' && count > 1;
     const countEl = root.querySelector('.count');
     const progress = root.querySelector('.progress');
@@ -225,7 +257,7 @@ class ArqCarouselControls extends ArqElement {
     }
     const item = this.step === 'item' ? target.children[0] : null;
     const gap = item ? Number.parseFloat(getComputedStyle(target).columnGap || getComputedStyle(target).gap) || 0 : 0;
-    const amount = item ? item.getBoundingClientRect().width + gap : target.clientWidth;
+    const amount = item ? item.getBoundingClientRect().width + gap : Math.max(target.clientWidth - (this.pageInset || 0), 1);
     target.scrollBy({
       left: direction * amount,
       behavior: this.#reducedMotion.matches ? 'auto' : 'smooth',

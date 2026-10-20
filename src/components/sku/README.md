@@ -16,6 +16,7 @@ Código de producto con botón de copiar. Size=Default en el configurador de la 
 | --- | --- | --- | --- |
 | Code | slot por defecto | `code` (solo lectura) | el SKU tal como viene de Sheets (identificador opaco: puede tener espacios o paréntesis) |
 | Size | `size` | `size` | `default` · `compact` · `underline` (def. `default`) |
+| — (solo de código) | `dense` | `dense` | booleano; con `size="compact"`, el código en `role/body-compact` (14/24) y, desde 1920 px (Wide), en `role/body` (16/24). Lo usa variants-table. TODO (Figma): el set no tiene este tamaño |
 | State=Copied | `copied` | `copied` | booleano; lo pone el componente al copiar y lo saca pasado `motion/duration/feedback` (2000 ms) |
 
 - **Size=Underline** (Ficha v2): solo el código, subrayado, en `role/caption-medium`; sin etiqueta ni ícono. Al hacer clic, «Copiado» (o el aviso de error) **reemplaza al código en el mismo lugar**, no va al costado, porque el SKU es muy largo. Se usa en las filas de la tabla y en las tarjetas Mobile de variants-table.
@@ -31,7 +32,7 @@ Código de producto con botón de copiar. Size=Default en el configurador de la 
 | Parte | Token |
 | --- | --- |
 | Etiqueta "SKU" | `color/text/secondary` · `role/label` (solo Default) |
-| Código | `color/text/primary` · `role/body-lg` (Compact: `role/body`) |
+| Código | `color/text/primary` · `role/body-lg` (Compact: `role/body`; Compact + `dense`: `role/body-compact`, 16 desde 1920 px) |
 | Ícono · Hover | `copy` en `icon/md`, `color/icon/secondary` · `color/icon/primary` |
 | "Copiado" | `color/text/success` · `role/caption` |
 | "Copialo con Ctrl+C" / "⌘C" | `color/text/secondary` · `role/caption` |

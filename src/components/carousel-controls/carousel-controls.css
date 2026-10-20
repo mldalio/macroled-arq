@@ -20,7 +20,8 @@
 
 /* Home (buttons=carousel): contador, línea y flechas.
    TODO (diseño): Figma separa esas partes con 20; el más cercano es space/gap-lg (24). */
-:host([buttons='carousel']) .controls {
+:host([buttons='carousel']) .controls,
+:host([buttons='chevron']) .controls {
   gap: var(--arq-space-gap-lg);
 }
 
@@ -58,6 +59,25 @@
   background: var(--arq-color-text-primary);
   transform: translateX(calc(var(--progress-index, 0) * 100%));
   transition: transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
+}
+
+/* progress="scroll" (variants-table): el trazo mide la parte visible del
+   contenido y sigue el scroll (sin transición: acompaña el dedo o la rueda), con
+   el mismo grosor y pista de la Home. Con buttons="none" ocupa todo el ancho. */
+:host([buttons='none']) {
+  display: flex;
+  width: 100%;
+}
+
+:host([buttons='none']) .controls,
+:host([buttons='none']) .progress {
+  width: 100%;
+}
+
+.progress[data-mode='scroll'] .indicator {
+  width: calc(100% * var(--progress-size, 1));
+  transform: translateX(calc(var(--progress-offset, 0) / var(--progress-size, 1) * 100%));
+  transition: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

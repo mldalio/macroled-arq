@@ -25,7 +25,6 @@ import './components/select-menu/select-menu.js';
 import './components/select/select.js';
 import './components/filter-bar/filter-bar.js';
 import './components/variants-table/variants-table.js';
-import './components/downloads-table/downloads-table.js';
 import './components/gallery-thumb/gallery-thumb.js';
 import './components/product-gallery/product-gallery.js';
 import './components/family-card/family-card.js';

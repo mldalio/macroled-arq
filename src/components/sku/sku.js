@@ -40,6 +40,7 @@ class ArqSku extends ArqElement {
   static styles = css;
   static properties = {
     size: { type: String, values: ['default', 'compact', 'underline'], default: 'default' }, // Size
+    dense: { type: Boolean }, // solo de código: con Size=Compact, el código en 14/24 (role/body-compact) y, desde 1920 px (Wide), 16/24 (role/body); lo usa variants-table
     copied: { type: Boolean }, // State=Copied
   };
   static template =

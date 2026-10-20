@@ -1,7 +1,7 @@
 /* descargas · Descargas · propuesta final 2575:22875 (Desktop 2564:20607 ·
    Mobile 2558:20149). Solo tokens semánticos. Arriba, el bloque de la página
    (título, bajada y catálogo general); debajo, «Buscar archivos por producto»
-   y downloads-table, que pone su propio margen (--page-gutter). Al final
+   y variants-table, que pone su propio margen (--page-gutter). Al final
    space/section/xl. */
 
 :host {

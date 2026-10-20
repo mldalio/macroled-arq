@@ -831,28 +831,17 @@
       </section>
 
       <section class="demo-section demo-section--bleed" aria-labelledby="demo-variants-table">
-        <h2 id="demo-variants-table" class="demo-heading role-label">variants-table · &lt;arq-variants-table&gt; (+ variants-table-row)</h2>
-        <p class="demo-note role-body-sm">Figma 1068:5582 · 923:2708. Glosario de Kanu Jardín (columnas de la Ficha de Final; SKU de ejemplo). Tabla real con scroll horizontal; miniatura + SKU y descarga quedan fijas. Filtros: un select por atributo de variante, con las opciones sin filas deshabilitadas. El ícono de cada fila abre el download-modal de prueba.</p>
+        <h2 id="demo-variants-table" class="demo-heading role-label">variants-table · &lt;arq-variants-table&gt; (+ variants-table-row y variants-table-card)</h2>
+        <p class="demo-note role-body-sm">Figma 1068:5582 · 923:2708 · 2399:31269. Un solo componente para la ficha y Descargas; las columnas son las mismas (Acabado, Tamaño en mm, Potencia, Temp., CRI, Flujo lum., Ángulo, Eficiencia, IP, Regulación). Tabla real con scroll horizontal: miniatura, SKU y descarga quedan fijas y un difuminado junto a la descarga avisa que hay más columnas. Filtros abre filter-panel. Mobile (390 px): una tarjeta por variante.</p>
+        <p class="demo-note role-body-sm">Type=product (ficha, por defecto): Filtros con la cantidad a la izquierda y CAD 2D/3D y Manual (slot downloads) a la derecha; las filas muestran solo el SKU. El ícono de cada fila abre el download-modal de prueba.</p>
         <arq-variants-table data-demo-glosario downloads="demo-descargas">
           <arq-button slot="downloads" type="outline" show-icon icon="download" href="/demo/fixtures/img/producto-1.svg">CAD 2D/3D</arq-button>
           <arq-button slot="downloads" type="outline" show-icon icon="download" href="/demo/fixtures/img/producto-2.svg">Manual</arq-button>
         </arq-variants-table>
-        <p class="demo-note role-body-sm">Página Descargas (Figma 1808:20165 · 1808:20882), solo de código: show-search (busca en el SKU y el nombre: probá «900» o «kanu»). En Dark, además show-sort («Ordenar por» SKU A–Z / Z–A), que hoy no usa ninguna página.</p>
-        <arq-variants-table data-demo-glosario show-search downloads="demo-descargas-sku" label="Variantes con buscador"></arq-variants-table>
-        <div class="demo-dark" data-arq-theme="dark">
-          <arq-variants-table data-demo-glosario show-search show-sort label="Variantes (Dark)"></arq-variants-table>
-        </div>
-      </section>
-
-      <section class="demo-section demo-section--bleed" aria-labelledby="demo-downloads-table">
-        <h2 id="demo-downloads-table" class="demo-heading role-label">downloads-table · &lt;arq-downloads-table&gt;</h2>
-        <p class="demo-note role-body-sm">Descargas · propuesta final (Figma 2575:22875). Tabla de la página Descargas: buscador, filtros de selección múltiple con chips y «Limpiar filtros», nombre + sku en cada fila y, en Mobile, tarjetas con «Descargas» y «Ver producto». Filtros abre filter-panel (panel lateral; Mobile, pantalla completa) y se aplica con «Ver N productos». Página completa: <a href="/demo/descargas.html">descargas</a>.</p>
-        <arq-downloads-table data-demo-downloads downloads="demo-descargas-producto" label="Productos"></arq-downloads-table>
-        <p class="demo-note role-body-sm">Cargando (loading) · sin filas que cumplan (vacío: escribí en el buscador algo que no exista) · Dark.</p>
-        <arq-downloads-table loading label="Productos (cargando)"></arq-downloads-table>
-        <div class="demo-dark" data-arq-theme="dark">
-          <arq-downloads-table data-demo-downloads label="Productos (Dark)"></arq-downloads-table>
-        </div>
+        <p class="demo-note role-body-sm">Type=catalog (página Descargas, Figma 2575:22875): buscador a la izquierda y Filtros a la derecha; debajo del buscador, la cantidad y lo aplicado (chips y «Limpiar filtros»); nombre sobre el SKU en cada fila; «Ver producto» en las tarjetas Mobile; de a 100 filas con «Ver más productos»; búsqueda y filtros en la URL. Página completa: <a href="/demo/descargas.html">descargas</a>.</p>
+        <arq-variants-table type="catalog" data-demo-downloads downloads="demo-descargas-producto" label="Productos"></arq-variants-table>
+        <p class="demo-note role-body-sm">Cargando (loading) · sin filas que cumplan (vacío: escribí en el buscador algo que no exista).</p>
+        <arq-variants-table type="catalog" loading label="Productos (cargando)"></arq-variants-table>
       </section>
 
       <section class="demo-section" aria-labelledby="demo-catalog-nav-item">
