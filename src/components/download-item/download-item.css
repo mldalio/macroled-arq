@@ -29,10 +29,21 @@
   -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
 }
 
-.label {
+.info {
+  display: flex;
   flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xs);
   min-width: 0;
+}
+
+.label {
   overflow-wrap: break-word;
+}
+
+/* Formato (show-format): role/body-compact-regular en color/text/tertiary */
+.meta {
+  color: var(--arq-color-text-tertiary);
 }
 
 /* icon/download en icon/md, color/icon/primary */
