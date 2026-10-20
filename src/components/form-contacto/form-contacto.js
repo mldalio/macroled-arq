@@ -55,8 +55,10 @@ const PROVINCES = [
   'San Juan', 'San Luis', 'Santa Cruz', 'Santa Fe', 'Santiago del Estero', 'Tierra del Fuego', 'Tucumán',
 ];
 
-// TODO (diseño): textos de error por caso y campos obligatorios no están
-// diseñados (README de input). Obligatorios: nombre, email y detalles.
+// TODO (código): pasar los textos de error diseñados en Figma (Final › Contacto,
+// «Textos de error · formulario de contacto», 2805:26390; decisiones.md,
+// 2026-10-20). Obligatorios: nombre, email y detalles (sin marca; los demás
+// dicen «(opcional)»).
 const ERRORS = {
   nombre: 'Completá tu nombre.',
   email: { valueMissing: 'Completá tu email.', typeMismatch: 'Revisá el formato del email.' },

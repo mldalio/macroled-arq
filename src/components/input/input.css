@@ -2,8 +2,7 @@
    Campo en caja con borde leve (color/border/default), como choice-chip y
    file-upload; antes era solo una línea inferior (decisiones.md, 2026-10-06 ·
    Contacto: títulos e inputs). El borde es border/default en todos los
-   estados: solo cambia el color, no hay salto de layout.
-   TODO (Figma): el set 930:2364 sigue con la línea inferior. */
+   estados: solo cambia el color, no hay salto de layout. */
 
 :host {
   display: block;
