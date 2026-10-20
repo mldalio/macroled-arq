@@ -297,9 +297,7 @@ Título de grupo de la tabla comparativa (role/body-xl en caja normal, color/tex
 - Figma: [1265-4330](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1265-4330)
 - Propiedades: Type: Default · Compact; Breakpoint: Desktop · Mobile
 
-Cabecera de la comparativa. Type=Default: columna de controles (toggle "Solo diferencias") + compare-product por columna; es estática. Type=Compact: versión mini que aparece fija arriba (position: fixed/sticky bajo el navbar) cuando la cabecera Default sale de pantalla; usa compare-product Size=Compact (miniatura + nombre + quitar; el SKU solo en Desktop; un lugar libre es la caja «Agregar producto»). compare-slot queda solo para compare-bar. En mobile las columnas (144 + gap 16) se alinean con compare-row Mobile y el scroll horizontal se sincroniza con la tabla; la columna de controles (120) queda fija.
-
-> **En código (2026-10-19):** en Mobile, el Compact funciona como macroled.com.ar/comparativa: cada producto ocupa una columna de compare-table (layout/compare-column, mismas líneas verticales color/border/subtle) con la miniatura, el nombre y el SKU apilados y centrados, sin recortar; quitar en la esquina y «Agregar producto» del alto de la columna. Se desplaza junto con la tabla. Desktop no cambia. `TODO` (Figma): el set Compact/Mobile (1265:4329) sigue en una fila con el nombre solo.
+Cabecera de la comparativa. Type=Default: columna de controles (toggle "Solo diferencias") + compare-product por columna; es estática. Type=Compact: versión mini que aparece fija arriba (position: fixed/sticky bajo el navbar) cuando la cabecera Default sale de pantalla; usa compare-product Size=Compact (miniatura + nombre + SKU + quitar; un lugar libre es la caja «Agregar producto»). compare-slot queda solo para compare-bar. En Mobile (como macroled.com.ar/comparativa) cada producto ocupa una columna de compare-table: layout/compare-column (160) a space/gap/md, y desde la segunda con la misma línea izquierda color/border/subtle y padding space/padding/md que un valor; usa compare-product Size=Compact, Breakpoint=Mobile (apilado). El scroll horizontal se sincroniza con la tabla y el toggle «Solo diferencias» queda debajo, fijo.
 
 ## compare-picker
 
@@ -318,9 +316,9 @@ Fila del modal «Agregar producto» de la comparativa. Default/Hover: botón Agr
 ## compare-product
 
 - Figma: [1057-2522](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1057-2522)
-- Propiedades: Name; SKU; Show SKU; Size: Default · Compact; State: Filled · Empty · empty-hover
+- Propiedades: Name; SKU; Show SKU; Size: Default · Compact; State: Filled · Empty · empty-hover; Breakpoint: Desktop · Mobile (solo Size=Compact)
 
-Columna de producto en compare-header. Size=Default: State=Filled (foto, nombre, SKU, link, selects de familia y variante, quitar) / Empty (agregar luminaria, cuando hay menos de 3). Size=Compact: versión mini para el compare-header Compact. Filled: miniatura (layout/compare-thumb), nombre en role/label, SKU en role/body-sm (Show SKU; en Mobile se oculta) y quitar. Empty: caja punteada border/default del alto de la miniatura con «+» y «Agregar producto» en role/body-sm; empty-hover: fondo surface/faint y borde border/strong. Toma el ancho de la columna (FILL). La imagen mantiene proporción 1:1 (aspect ratio bloqueado): al cambiar el ancho de la columna, el alto de la media acompaña. La media tiene un tope de layout/compare-media-max.
+Columna de producto en compare-header. Size=Default: State=Filled (foto, nombre, SKU, link, selects de familia y variante, quitar) / Empty (agregar luminaria, cuando hay menos de 3). Size=Compact: versión mini para el compare-header Compact. Filled: miniatura (layout/compare-thumb), nombre en role/label, SKU en role/body-sm (Show SKU) y quitar. Breakpoint=Desktop en una fila; Breakpoint=Mobile (como macroled.com.ar/comparativa) del ancho de layout/compare-column, con miniatura, nombre y SKU apilados y centrados a space/gap/sm, sin recortar el nombre, y quitar en la esquina superior derecha. Empty: caja punteada border/default con «+» y «Agregar producto» en role/body-sm (Desktop: del alto de la miniatura, en fila; Mobile: del alto de la columna, apilados); empty-hover: fondo surface/faint y borde border/strong. Toma el ancho de la columna (FILL). La imagen mantiene proporción 1:1 (aspect ratio bloqueado): al cambiar el ancho de la columna, el alto de la media acompaña. La media tiene un tope de layout/compare-media-max.
 
 ## compare-row
 

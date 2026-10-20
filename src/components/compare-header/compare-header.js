@@ -23,7 +23,7 @@
 //   2026-10-01 · hero). Mientras tanto se mide el alto real de <arq-navbar>.
 // - Compact: miniatura + nombre + SKU + quitar. En Mobile cada producto ocupa
 //   una columna de compare-table, apilado y centrado (como
-//   macroled.com.ar/comparativa); TODO (Figma): el set Mobile sigue en fila.
+//   macroled.com.ar/comparativa; Figma: compare-product Breakpoint=Mobile).
 
 import { ArqElement } from '../../base/arq-element.js';
 import '../toggle/toggle.js';

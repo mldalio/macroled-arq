@@ -655,7 +655,7 @@ Link a cada set en Figma (`node-id`). Base: `https://www.figma.com/design/djAb2r
 | compare-header | [1265-4330](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1265-4330) | Type: Default · Compact; Breakpoint: Desktop · Mobile |
 | compare-picker | [2724-8761](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2724-8761) | Breakpoint: Desktop · Mobile; State: Results · No results |
 | compare-picker-item | [2723-8420](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2723-8420) | Name; Meta; State: Default · Hover · Added · Disabled |
-| compare-product | [1057-2522](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1057-2522) | Name; SKU; Show SKU; Size: Default · Compact; State: Filled · Empty · empty-hover |
+| compare-product | [1057-2522](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1057-2522) | Name; SKU; Show SKU; Size: Default · Compact; State: Filled · Empty · empty-hover; Breakpoint: Desktop · Mobile (solo Compact) |
 | compare-row | [1263-4317](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1263-4317) | Label; Value 1–3; Show value 1–3; Breakpoint: Desktop · Mobile |
 | compare-slot | [1233-3656](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1233-3656) | Name; Meta; State: Filled · Empty · empty-hover |
 | contact-item | [1303-4340](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1303-4340) | Label; Value; State: Default · Hover · Focus |

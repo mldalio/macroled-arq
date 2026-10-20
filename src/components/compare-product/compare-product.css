@@ -328,7 +328,7 @@
    la miniatura, el nombre y el SKU van apilados y centrados, sin recortar el
    nombre; quitar queda en la esquina superior derecha. Empty: la caja
    punteada toma el alto de la columna, con el «+» arriba del texto.
-   TODO (Figma): el set Compact/Mobile (1265:4329) sigue en una fila. */
+   Figma: Size=Compact, Breakpoint=Mobile (2763:5525, 2763:5533, 2763:5537). */
 @media (max-width: 767px) {
   :host([size='compact']) .compact {
     position: relative;
