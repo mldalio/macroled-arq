@@ -18,9 +18,13 @@
 //   (role/heading-2) sobre la foto. Al cambiar de pestaña muestra el primer
 //   link. Ancho layout/mega-menu-image, ratio/portrait-soft como mínimo; si
 //   el contenido es más alto, la foto se estira. Sin foto, color/surface/subtle.
+//   Si la foto del link no carga, prueba sus fallbacks en orden (fotos de
+//   productos de la categoría); si ninguna carga, color/surface/subtle.
 //   La prop images ({ pestaña: url }) pisa la foto inicial de cada pestaña.
 // - El panel no se abre ni se cierra solo: lo muestra el navbar (atributo
-//   hidden en el host).
+//   hidden en el host). Al abrirlo, el navbar llama a reset(): vuelve a la
+//   primera pestaña y al preview de su primer link.
+// - La línea inferior va solo debajo de las columnas: la foto llega al borde.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { SingleSelect } from '../../base/single-select.js';
@@ -62,6 +66,7 @@ class ArqMegaMenu extends ArqElement {
 
   #navigation = null;
   #images = {};
+  #fallbacks = []; // fotos de respaldo que le quedan al preview actual
   #id = ++uid;
 
   /** Árbol de navegación de src/data/catalog.js (getNavigation). */
@@ -84,6 +89,13 @@ class ArqMegaMenu extends ArqElement {
     if (this.shadowRoot.querySelector('.tabs')) this.#resetPreview();
   }
 
+  /** Al abrir: primera pestaña y preview de su primer link (Por espacio → Embutir). */
+  reset() {
+    const first = this.shadowRoot.querySelector('arq-tab')?.value;
+    if (first && first !== this.tab) this.tab = first; // update() reinicia el preview
+    else if (this.shadowRoot.querySelector('.tabs')) this.#resetPreview();
+  }
+
   setup() {
     const root = this.shadowRoot;
     const tabs = root.querySelector('.tabs');
@@ -94,7 +106,11 @@ class ArqMegaMenu extends ArqElement {
     });
     const img = root.querySelector('.preview img');
     img.addEventListener('load', () => (img.hidden = false));
-    img.addEventListener('error', () => (img.hidden = true));
+    img.addEventListener('error', () => {
+      const next = this.#fallbacks.shift();
+      if (next) img.src = next;
+      else img.hidden = true;
+    });
     // Preview: el link con el mouse encima o con el foco
     const panels = root.querySelector('.panels');
     const onLink = (event) => {
@@ -145,7 +161,7 @@ class ArqMegaMenu extends ArqElement {
   // Datos del preview en el link: foto, eyebrow y nombre
   #link(link, eyebrow, meta = '') {
     return (
-      `<arq-mega-link href="${esc(link.href)}" show-arrow data-image="${esc(link.image ?? '')}" data-eyebrow="${esc(eyebrow)}" data-title="${esc(link.label)}">` +
+      `<arq-mega-link href="${esc(link.href)}" show-arrow data-image="${esc(link.image ?? '')}" data-fallbacks="${esc(JSON.stringify(link.fallbacks ?? []))}" data-eyebrow="${esc(eyebrow)}" data-title="${esc(link.label)}">` +
       `${esc(link.label)}${meta ? `<span slot="meta">${esc(meta)}</span>` : ''}</arq-mega-link>`
     );
   }
@@ -200,15 +216,19 @@ class ArqMegaMenu extends ArqElement {
   }
 
   #showPreview(link, image) {
-    this.#setPreview(image || link.dataset.image, link.dataset.eyebrow, link.dataset.title);
+    this.#setPreview(image || link.dataset.image, link.dataset.eyebrow, link.dataset.title, image ? [] : JSON.parse(link.dataset.fallbacks || '[]'));
   }
 
-  #setPreview(src, eyebrow, title) {
+  #setPreview(src, eyebrow, title, fallbacks = []) {
+    // Sin foto propia, la primera de respaldo
+    if (!src) src = fallbacks.shift();
+    this.#fallbacks = fallbacks;
     const root = this.shadowRoot;
     const img = root.querySelector('.preview img');
     // La foto anterior queda hasta que carga la nueva (sin parpadeo)
     if (src) {
       if (img.getAttribute('src') !== src) img.src = src;
+      else if (img.hidden && img.complete && this.#fallbacks.length) img.src = this.#fallbacks.shift(); // esa ya falló
     } else {
       img.removeAttribute('src');
       img.hidden = true;

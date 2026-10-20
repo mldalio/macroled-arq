@@ -2,7 +2,7 @@
 
 Campos disponibles en Typesense. Los componentes y `src/data/` usan **solo** los campos de este documento: si un campo no está acá, no existe.
 
-- Fuente: Google Sheets «Macroled ARQ - Base de datos - Final». Los **encabezados de la hoja son los nombres de campo** (`product_name`, `description`, `color_carcasa`…). La sincronización (n8n, fuera del repo) pasa cada columna con su mismo nombre.
+- Fuente: Google Sheets «Macroled ARQ - Base de datos - Final». Los **encabezados de la hoja son los nombres de campo** (`product_name`, `description`, `color_carcasa`…). La sincronización (n8n, fuera del repo) pasa cada columna con su mismo nombre; las que cambiaron de nombre se traducen en su `COLUMN_ALIASES` (`tipo_producto` → `product_type`, `img_hero_off` → `img_main`…). **Una casilla nueva** (TRUE / FALSE) hay que sumarla a `BOOLEAN_FIELDS` del nodo Code de n8n: si no, llega como texto (`"TRUE"`) y el sitio no la reconoce. Hoy: `is_group_default`, `is_menu_default`, `new`.
 - **Un documento por fila**, `id` = `sku`. Estructura y decisiones: `docs/decisiones.md`, 2026-10-07 · Base de datos sin IDs.
 - En el front se usa solo la search-only key (ver `.env.example`).
 - El único archivo que conoce estos campos es `src/data/typesense-adapter.js` (los técnicos, `src/data/attributes.js`).
@@ -22,6 +22,7 @@ Colección `macroled_arq` en `typesense.coresagroup.com`: 139 documentos (132 SK
 | Colección | Fila con `product_type` «Colección» (SKU `col-<id>`). Su `familia` lista las familias que reúne («Tori, Mini Tori»); el id sale del nombre | `product_type`, `familia`, `product_name` |
 | Pertenencia a una colección | La colección cuya `familia` incluye la del producto. Los accesorios no entran. Una colección sin productos publicados no se muestra | `familia` |
 | Accesorio | `product_type` «Accesorio». Con qué producto se usa: su nombre | `compatible_with` |
+| Foto del mega-menú de una aplicación | Un SKU marcado por link de Por espacio (aplicación y entorno; o Artefactos / Lámparas). Su `img_ambient_1_on` es la foto del menú. Fuera del esquema (no hace falta indexarlo): n8n lo pasa como bool | `is_menu_default` (bool) |
 | Navegación | Ambiente = `macrofamilia` (Exterior · Interior); aplicación = `subfamilia`; tipo = `product_type` (Luminaria · Lámpara · Artefacto) | |
 
 ### Imágenes: listas con posición fija
@@ -46,6 +47,7 @@ Dónde se usa cada foto:
 | Galería de la ficha | `img_main`, `img_ambient_1`, front, back, left, right, pers_1, pers_2, detail_1, detail_2 (las que existen) | Cada una a su `_on` |
 | Ficha: ambiente · descripción · inspiración | `img_ambient_2` a `5` · `img_ambient_6` · `img_ambient_7` (del SKU predeterminado) | No cambian |
 | Card de colección | `img_collection` | `img_collection_on` |
+| Preview del mega-menú (aplicación y colección) | `img_ambient_1_on` del SKU con `is_menu_default` o de la fila `col-*` (si falta, `img_ambient_1`). Sin foto o si no carga: prueba en orden las de contexto y después las de estudio de los productos de la categoría (colección: solo las de contexto de sus productos). Decisión 2026-10-20 · Fotos del mega-menú | No cambia (el mega-menú siempre es Light) |
 | Página de colección | Galería, `collection_description_image`, inspiración | No cambian |
 
 - Una variante sin fotos propias no toma las del predeterminado (serían de otro color o tamaño): se ve el fondo neutro.

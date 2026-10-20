@@ -6,9 +6,10 @@
   display: block;
 }
 
+/* La línea inferior va solo debajo de las columnas (.panels): la foto del
+   preview llega hasta el borde, sin el filete claro debajo. */
 .menu {
   background: var(--arq-color-surface-default);
-  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
 }
 
 /* Pestañas: arriba space/gap/md, a los lados layout/gutter, separación
@@ -30,6 +31,7 @@
   display: flex;
   flex: 1;
   min-width: 0;
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
 }
 
 /* Contenido: padding space/padding/2xl (a la izquierda layout/gutter) */

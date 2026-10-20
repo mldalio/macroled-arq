@@ -7,8 +7,8 @@
 //   const { cards, count } = await listProducts({ environment: 'Exterior', filters: { potencia: ['12W'] } });
 //
 // Forma del catálogo:
-//   collection: { id, name, intro, description, images: { studio, studioOn, context, contextOn, gallery[], description, inspiration[] } }
-//   group: { id, name, family, collection, productType, hasDefault, environment[], application, variantAttributes[],
+//   collection: { id, name, intro, description, images: { menu, studio, studioOn, context, contextOn, gallery[], description, inspiration[] } }
+//   group: { id, name, family, collection, productType, hasDefault, menuImage, environment[], application, variantAttributes[],
 //            story, inspiration, video, images: { ambient[], description, inspiration }, specs: { campo: valor },
 //            variants: [{ sku, isDefault, description, attributes: { campo: valor },
 //                         images: { main, studio, studioOn, context, contextOn, gallery[], galleryOn[] },
@@ -721,10 +721,15 @@ export async function listCompareCandidates({ query = '', selected = [] } = {}) 
  * ese entorno. Lámparas y Artefactos: un link por producto. Las opciones sin
  * productos no aparecen; una sección sin links es null.
  * image: foto del preview del mega-menu (contexto; sin contexto, estudio).
+ * fallbacks: fotos que el preview prueba en orden si image no carga.
  * thumb: miniatura del submenú mobile (estudio). eyebrow: texto sobre la foto
  * del preview en Colecciones ("Línea Interior", frame 2295:23730).
- * TODO (datos): qué foto muestra el preview de una categoría (Embutir,
- * Jardín…). Por ahora, la del primer producto de la categoría que tenga foto.
+ * Foto de Por espacio (Embutir, Jardín, Artefactos…): img_ambient_1_on del
+ * producto de la categoría marcado con is_menu_default; de Colecciones: la de
+ * su fila col-*. Sin esa foto, o si no carga: las de contexto de los
+ * productos de la categoría, en orden,
+ * y después las de estudio; en una colección, solo las de contexto
+ * (decisiones.md, 2026-10-20 · Fotos del mega-menú).
  */
 export async function getNavigation() {
   const { groups: all, collections } = await loadCatalog();
@@ -734,11 +739,28 @@ export async function getNavigation() {
     const images = pick(g.defaultVariant.images);
     return { image: images.context ?? images.studio ?? null, thumb: images.studio ?? null };
   };
-  const categoryImages = (filter) => {
-    const found = groups.filter((g) => inCategory(g, filter)).map(groupImages).find((i) => i.image);
-    return found ?? { image: null, thumb: null };
+  // Fotos que puede probar el preview, en orden: primero las de contexto de
+  // todos los productos y después las de estudio.
+  const productPhotos = (list, { studio = true } = {}) => {
+    const images = list.map((g) => pick(g.defaultVariant.images));
+    return [...images.map((i) => i.context), ...(studio ? images.map((i) => i.studio) : [])];
   };
-  const link = (label, filter) => ({ label, href: categoryHref(filter), count: count(filter), ...categoryImages(filter) });
+  // image: la primera; fallbacks: las que prueba si esa no carga.
+  const preview = (candidates) => {
+    const [image = null, ...fallbacks] = [...new Set(candidates.filter(Boolean))];
+    return { image, fallbacks };
+  };
+  const link = (label, filter) => {
+    const inside = groups.filter((g) => inCategory(g, filter));
+    return {
+      label,
+      href: categoryHref(filter),
+      count: count(filter),
+      // Primero la del producto marcado con is_menu_default
+      ...preview([inside.find((g) => g.menuImage)?.menuImage, ...productPhotos(inside)]),
+      thumb: inside.map(groupImages).find((i) => i.image)?.thumb ?? null,
+    };
+  };
   const environmentSection = (environment, allLabel) => {
     const applications = [...new Set(groups.filter((g) => g.productType === 'Luminaria' && g.environment.includes(environment)).map((g) => g.application).filter(Boolean))];
     const links = [
@@ -761,7 +783,8 @@ export async function getNavigation() {
       meta: [...new Set(own.map((g) => g.application ?? g.productType).filter(Boolean))].join(' · '),
       href: collectionHref(c.id),
       eyebrow: environments.length ? `Línea ${environments.join(' · ')}` : '',
-      image: images.context ?? images.studio ?? null,
+      // Colecciones: solo fotos de contexto, nunca de estudio (pedido de Lau, 2026-10-20)
+      ...preview([images.menu, ...productPhotos(own, { studio: false })]),
       thumb: images.studio ?? null,
     };
   };

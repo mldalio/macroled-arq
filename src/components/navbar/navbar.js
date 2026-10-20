@@ -397,6 +397,7 @@ class ArqNavbar extends ArqElement {
     if (next !== this.#megaOpen) {
       clearTimeout(this.#megaTimer);
       if (next) {
+        root.querySelector('.mega').reset(); // primera pestaña y su primer link
         wrap.hidden = false;
         void wrap.offsetHeight; // fija el estado inicial antes de is-open
       }
