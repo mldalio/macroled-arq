@@ -50,6 +50,20 @@
   overflow-wrap: anywhere;
 }
 
+/* dense (solo de código, con Size=Compact): código en role/body-compact (14/24);
+   desde 1920 px (Wide, como los tipos de texto) vuelve a role/body (16/24). */
+:host([dense][size='compact']) .code {
+  font-size: var(--arq-type-body-compact-size);
+  line-height: var(--arq-type-body-compact-leading);
+}
+
+@media (min-width: 1920px) {
+  :host([dense][size='compact']) .code {
+    font-size: var(--arq-type-body-size);
+    line-height: var(--arq-type-body-leading);
+  }
+}
+
 /* Centrado en la primera línea del código: (interlineado − alto) / 2 */
 .copy {
   display: inline-flex;

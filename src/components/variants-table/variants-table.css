@@ -1,10 +1,10 @@
-/* variants-table · Figma 1068:5582 + variants-table-row 923:2708.
-   Solo tokens semánticos. La tabla ocupa el ancho del contenido de la página:
-   el host toma el margen de página (--page-gutter) y adentro no hay gutter, así
-   en todos los breakpoints las líneas empiezan en la miniatura y terminan en el
-   ícono de descarga (con space/padding/sm adentro). Los filtros se abren en un
-   panel lateral (filter-panel) (docs/decisiones.md, 2026-10-05 · variants-table
-   dentro del contenido; 2026-10-15 · Filtros del glosario en panel lateral). */
+/* variants-table · Figma 1068:5582 + variants-table-row 923:2708, y Descargas ·
+   propuesta final 2575:22875 (type="catalog"). Solo tokens semánticos. Ocupa
+   el ancho del contenido de la página: el host toma el margen de página
+   (--page-gutter) y las líneas van de la miniatura a la descarga. Un solo
+   componente para la ficha y Descargas (docs/decisiones.md, 2026-10-20 · Una
+   sola variants-table): lo que cambia con el type es la barra, el nombre en
+   las filas y la barra de columnas. */
 
 :host {
   display: flex;
@@ -12,53 +12,99 @@
   gap: var(--arq-space-gap-md);
   min-width: 0;
   margin-inline: var(--page-gutter);
+  color: var(--arq-color-text-primary);
 }
 
-.toolbar {
-  --page-gutter: var(--arq-space-0);
-}
-
-/* Filas: space/padding/sm a los lados (miniatura y descarga no quedan pegadas
-   al borde de la línea) y space/padding/xs arriba y abajo en Row (el set) */
-.scroll {
-  --page-gutter: var(--arq-space-padding-sm);
-}
-
-/* Barra, centrada en alto. Padding space/padding/md arriba y abajo; a los
-   lados, el borde del contenido. Filtros (siempre Filled) con la cantidad al
-   lado a la izquierda; a la derecha, las descargas (ficha) o el buscador de
-   layout/search-field (Show search, Descargas). Con show-sort, Ordenar por. */
-.toolbar {
-  display: flex;
-  flex-wrap: wrap;
+/* Controles en grilla; padding vertical space/padding/md. Type=product
+   (ficha): Filtros con la cantidad al lado a la izquierda y, a la derecha, los
+   archivos generales del grupo; abajo, lo aplicado (chips y «Limpiar
+   filtros»). */
+.controls {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
   align-items: center;
   gap: var(--arq-space-gap-md);
-  padding: var(--arq-space-padding-md) var(--page-gutter);
+  padding-block: var(--arq-space-padding-md);
 }
 
-.filters-group {
-  display: flex;
-  align-items: center;
-  gap: var(--arq-space-gap-md);
+/* Fija: queda pegada debajo del navbar al desplazar (alto 56: space/gap/md × 2 +
+   icon/xl, como en catalog-listing; TODO layout/navbar-height), con el buscador
+   y Filtros en catalog y Filtros y los archivos generales en product. La pone
+   el JS (.fixed) solo si la tabla no entra en la pantalla. Fondo
+   color/surface/default: tapa las filas que pasan por debajo (z-index sobre las
+   columnas fijas). */
+.controls.fixed {
+  position: sticky;
+  top: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
+  z-index: 3;
+  background: var(--arq-color-surface-default);
+}
+
+.toggle-filters {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
 }
 
 .total {
+  grid-column: 2;
+  grid-row: 1;
   color: var(--arq-color-text-secondary);
 }
 
-/* Con buscador (Descargas) no va la cantidad */
-:host([show-search]) .total {
-  display: none;
+.downloads {
+  grid-column: 3;
+  grid-row: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--arq-space-gap-sm);
 }
 
-/* Filtros aplicados (chips y «Limpiar filtros»), debajo de la barra, como en
-   Descargas: chips a space/gap/sm y el link a space/gap/lg */
+.search {
+  grid-column: 1 / 3;
+  grid-row: 1;
+  justify-self: start;
+  width: 100%;
+  max-width: var(--arq-layout-download-search);
+  min-width: 0;
+}
+
+/* Aplicados, debajo de la barra: chips a space/gap/sm y «Limpiar filtros» a
+   space/gap/lg */
 .applied {
+  grid-column: 1 / -1;
+  grid-row: 2;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--arq-space-gap-lg);
-  padding-bottom: var(--arq-space-padding-md);
+}
+
+/* Type=catalog (Descargas): arriba el buscador a la izquierda (de
+   layout/download-search, 480) y Filtros a la derecha, del lado donde se abre
+   filter-panel; abajo, debajo del buscador, la cantidad y, debajo de Filtros,
+   a la derecha, lo aplicado (chips y «Limpiar filtros»); columnas a
+   space/gap/lg. TODO: sin frame de Figma para esta disposición
+   (pedido de diseño, 2026-10-15). */
+:host([type='catalog']) .controls {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  column-gap: var(--arq-space-gap-lg);
+}
+
+:host([type='catalog']) .toggle-filters {
+  grid-column: 3;
+  justify-self: end;
+}
+
+:host([type='catalog']) .total {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+:host([type='catalog']) .applied {
+  grid-column: 2 / 4;
+  justify-content: flex-end;
 }
 
 .chips {
@@ -67,33 +113,38 @@
   gap: var(--arq-space-gap-sm);
 }
 
-.downloads,
-.sort,
-.search {
-  margin-inline-start: auto;
+/* Primera carga (decisiones.md, 2026-10-15 · Descargas): al reemplazar las
+   filas de carga, la tabla (o las tarjetas) funde con motion/duration/base.
+   La clase reveal la pone y la quita el JS: al buscar o filtrar no funde.
+   La lista de colores repite la de la hoja base (transition-property no se
+   suma, se reemplaza). Con reduced motion queda el fundido
+   (motion/duration/fade); los colores, en fast, que vale 0. */
+.reveal {
+  transition-property: opacity, color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
+  transition-duration: var(--arq-motion-duration-base);
+  transition-timing-function: var(--arq-motion-easing-standard);
 }
 
-.search {
-  flex: 0 1 var(--arq-layout-search-field);
-  min-width: 0;
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    transition-duration: var(--arq-motion-duration-fade), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast);
+    transition-timing-function: var(--arq-motion-easing-out);
+  }
 }
 
-.downloads {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--arq-space-gap-sm);
+@starting-style {
+  .reveal:not([hidden]) {
+    opacity: 0;
+  }
 }
 
-/* Sin filas que cumplan la búsqueda o los filtros */
-.empty {
-  margin: 0;
-  padding-block: var(--arq-space-padding-md);
-  color: var(--arq-color-text-secondary);
-}
-
-/* Un solo contenedor con scroll para encabezado y filas, sin barra visible:
-   se desplaza con el trackpad, el touch o las flechas (tiene foco). */
+/* ── Tabla (Desktop) ─────────────────────────────────────────────
+   Un solo contenedor con scroll horizontal; su barra no se ve (quedaría al
+   final de cientos de filas). En su lugar, .scrollbar: línea de progreso
+   pegada al borde inferior de la pantalla mientras la tabla está a la
+   vista (DESIGN.md §2 pide sin barra visible: excepción a confirmar). */
 .scroll {
+  --page-gutter: var(--arq-space-padding-sm);
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
@@ -101,6 +152,20 @@
 
 .scroll::-webkit-scrollbar {
   display: none;
+}
+
+/* Barra de columnas: la línea de progreso de arq-carousel-controls (como en la
+   Home, sin flechas), de todo el ancho de la tabla, abajo y pegada al borde
+   inferior de la pantalla mientras la tabla está a la vista, con
+   space/padding/xs arriba y abajo. Fondo color/surface/default: tapa las filas
+   que pasan por debajo. Solo aparece si la tabla no entra en el ancho. */
+.scrollbar {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  padding-block: var(--arq-space-padding-xs);
+  background: var(--arq-color-surface-default);
 }
 
 .scroll:focus-visible {
@@ -114,31 +179,50 @@
   border-spacing: 0;
 }
 
-/* Celdas: separador inferior border/default en color/border/subtle; entre
-   columnas space/gap/sm como mínimo. Las fijas miden lo que su contenido
-   (width: 1%) y el ancho que sobra se reparte entre las columnas de datos:
-   así el SKU no se lleva el espacio y los datos no quedan apretados. */
+/* Celdas: línea inferior border/default en color/border/subtle; entre
+   columnas de datos, al menos space/gap/lg (en la propuesta, columnas fijas de
+   96 a space/gap/sm: con valores largos quedaban pegadas). Las fijas miden su
+   contenido y el ancho que sobra se reparte entre las de datos. */
 th,
 td {
-  padding: 0 var(--arq-space-gap-sm) 0 0;
+  padding: 0 var(--arq-space-gap-lg) 0 0;
+  --cell-bg: var(--arq-color-surface-default);
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
-  background: var(--arq-color-surface-default);
+  background: var(--cell-bg);
   text-align: start;
   white-space: nowrap;
   vertical-align: middle;
 }
 
-/* Encabezado (Type=Header): role/body-regular en color/text/tertiary,
-   padding vertical space/padding/sm-md */
+/* Columnas de datos del mismo ancho (--col-width, lo mide el JS: la más ancha),
+   menos las wide (valor largo), que miden lo suyo */
+.cell {
+  display: inline-block;
+}
+
+/* El texto no baja de ese ancho: la tabla no achica las columnas y, si no
+   entran, se desplaza */
+.data {
+  width: var(--col-width, auto);
+}
+
+.data > .cell {
+  min-width: var(--col-width, 0);
+}
+
+/* Encabezado: role/body-regular (el de la ficha, sin mayúsculas) en
+   color/text/tertiary, padding vertical space/padding/sm-md. Fondo
+   color/surface/soft: corta lo plano de la tabla y marca el patrón de
+   lectura (también detrás de las columnas fijas y de su difuminado). */
 thead th {
+  --cell-bg: var(--arq-color-surface-soft);
   padding-block: var(--arq-space-padding-sm-md);
   color: var(--arq-color-text-tertiary);
   font-weight: inherit;
 }
 
-/* Filas (Type=Row): valores role/body-lg-regular en color/text/primary. Padding vertical
-   space/padding/sm (en Figma, xs): el botón de descarga no queda pegado a la
-   línea. Hover color/surface/faint. */
+/* Filas: valores role/body-lg-regular en color/text/primary, padding vertical
+   space/padding/sm; Hover color/surface/faint */
 tbody th,
 tbody td {
   padding-block: var(--arq-space-padding-sm);
@@ -147,13 +231,11 @@ tbody td {
 
 @media (hover: hover) and (pointer: fine) {
   tbody tr:hover > * {
-    background: var(--arq-color-surface-faint);
+    --cell-bg: var(--arq-color-surface-faint);
   }
 }
 
-/* Columnas fijas de inicio, pegadas al borde izquierdo: la miniatura (.start)
-   y el sku (.sku-col), a space/gap/sm entre sí. Del sku a la primera columna
-   de datos, space/gap/sm-md. Las dos miden lo que su contenido. */
+/* Fijas de inicio: miniatura y producto (sku, con el nombre encima en catalog) */
 .start {
   position: sticky;
   left: 0;
@@ -166,29 +248,81 @@ tbody td {
   position: sticky;
   left: calc(var(--page-gutter) + var(--arq-layout-table-thumb) + var(--arq-space-gap-sm));
   z-index: 1;
-  width: 1%;
-  padding-inline-end: var(--arq-space-gap-sm-md);
+  /* sin ancho: absorbe el que sobra (las demás columnas no se estiran) */
+  padding-inline-end: var(--arq-space-gap-xl);
   font-weight: inherit;
 }
 
+/* Miniatura de layout/table-thumb (100), la de la ficha, en las filas de la
+   tabla; en las tarjetas Mobile, layout/download-thumb (72) */
 .thumb {
   display: block;
-  flex: none;
   width: var(--arq-layout-table-thumb);
   height: var(--arq-layout-table-thumb);
   overflow: hidden;
   background: var(--arq-color-surface-subtle);
 }
 
-.thumb img {
+.thumb img,
+.card-thumb img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-/* Columna fija de fin (Descargas), pegada al borde derecho. Encabezado
-   «Descargas» en role/body-regular y el icon-button centrados en la columna */
+/* Producto: nombre (role/body-compact-regular, subrayado) sobre el sku Compact,
+   a space/gap/sm (0,5 rem) en la tabla (Desktop y Tablet); en la tarjeta
+   Mobile, space/gap/xs */
+.product {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-sm);
+  min-width: 0;
+}
+
+.card-head .product {
+  gap: var(--arq-space-gap-xs);
+}
+
+.name {
+  color: var(--arq-color-text-primary);
+}
+
+/* En catalog, nombre y miniatura llevan a la ficha del producto: sin el
+   subrayado del navegador; el nombre se subraya (border/default) con el mouse.
+   Foco: anillo separado. */
+.name-link,
+.thumb-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* El nombre va siempre subrayado (border/default; border/strong con el mouse,
+   como el button Underline): indica que lleva a otra página. */
+.name-link {
+  text-decoration: underline;
+  text-decoration-thickness: var(--arq-border-default);
+  text-underline-offset: var(--arq-space-gap-xs);
+}
+
+.thumb-link {
+  display: block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .name-link:hover {
+    text-decoration-thickness: var(--arq-border-strong);
+  }
+}
+
+.name-link:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: var(--arq-border-strong);
+}
+
+/* Fija de fin: Descargas, centrada */
 th.end,
 td.end {
   position: sticky;
@@ -199,15 +333,184 @@ td.end {
   text-align: center;
 }
 
-/* Tablet y Mobile (hasta 1023 px, como los listados): solo la miniatura queda
-   fija; el sku se desplaza con los datos y deja lugar para verlos */
+/* Hasta 1023 px solo la miniatura queda fija; el sku se desplaza con los datos */
 @media (max-width: 1023px) {
   .sku-col {
     position: static;
   }
 }
 
-/* variants-table-card (Mobile, Figma 2399:31269): solo hasta 767 px */
+/* Más fila por ver: un difuminado de space/gap/3xl junto a las columnas fijas,
+   del transparente al fondo de la celda (también en Hover), del lado donde
+   queda contenido. Lo marca el JS (.more-start / .more-end). Aparece y se va
+   con motion/duration/fast. TODO (diseño): no está en la propuesta; pedido
+   2026-10-19. */
+.end::before,
+.sku-col::after,
+.start::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--arq-space-gap-3xl);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);
+}
+
+.end::before {
+  right: 100%;
+  background: linear-gradient(to right, var(--arq-color-surface-transparent), var(--cell-bg));
+}
+
+.sku-col::after,
+.start::after {
+  left: 100%;
+  background: linear-gradient(to left, var(--arq-color-surface-transparent), var(--cell-bg));
+}
+
+/* Del lado de inicio, junto a la última columna fija: producto desde
+   1024 px, miniatura hasta 1023 px. Cada difuminado existe solo donde su
+   columna es fija: sin sticky, se ubicaría respecto de la página y
+   agrandaría su ancho (scroll horizontal de toda la página). */
+.more-end .end::before,
+.more-start .sku-col::after,
+.more-start .start::after {
+  opacity: 1;
+}
+
+@media (min-width: 1024px) {
+  .start::after {
+    content: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .sku-col::after {
+    content: none;
+  }
+}
+
+/* Jerarquía de texto (nombre · sku · datos). Hasta 1919 px: nombre, sku (dense),
+   datos y encabezados, todo en 14 (role/body-compact-regular). Desde 1920 px
+   (Wide): sku, datos y encabezados en 16; el nombre sigue en 14. No hay roles
+   que pasen de 14 a 16: se sube el tamaño con los tokens de role/body. El
+   nombre va en Regular y se distingue por el subrayado. */
+@media (min-width: 1920px) {
+  .table thead th,
+  .head-table thead th,
+  .table tbody td {
+    font-size: var(--arq-type-body-size);
+    line-height: var(--arq-type-body-leading);
+  }
+}
+
+/* ── Ver más ─────────────────────────────────────────────────────
+   button Outline centrado debajo de las filas, a space/gap/xl.
+   TODO (diseño): no está en la propuesta; se usa el button de siempre. */
+.more {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--arq-space-gap-xl);
+}
+
+/* ── Vacío (2564:21134) ──────────────────────────────────────────
+   Título role/heading-2 y ayuda role/body-regular (color/text/secondary) a
+   space/gap/sm-md; arriba space/section/sm y abajo space/section/md.
+   La ayuda va hasta layout/measure-wide (520; la propuesta, 560: diferencia
+   menor, sin variable propia). */
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-sm-md);
+  padding: var(--arq-space-section-sm) 0 var(--arq-space-section-md);
+}
+
+.empty p {
+  margin: 0;
+}
+
+.empty-title {
+  color: var(--arq-color-text-primary);
+}
+
+.empty-text {
+  max-width: var(--arq-layout-measure-wide);
+  color: var(--arq-color-text-secondary);
+}
+
+/* ── Cargando (2564:21523 · Mobile 2565:22239) ────────────────────
+   Bloques en color/surface/subtle con la forma de las filas. Barras de
+   icon/sm y space/gap/sm-md de alto (las de la propuesta: 12 y 14). */
+.skeleton {
+  display: flex;
+  flex-direction: column;
+}
+
+.sk-row {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  padding: var(--arq-space-padding-sm);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+.sk-thumb {
+  flex: none;
+  width: var(--arq-layout-table-thumb);
+  height: var(--arq-layout-table-thumb);
+  background: var(--arq-color-surface-subtle);
+}
+
+.sk-product {
+  display: flex;
+  flex: 0 0 25%;
+  flex-direction: column;
+  gap: var(--arq-space-gap-sm);
+  padding-inline-start: var(--arq-space-padding-sm);
+}
+
+.sk-bar {
+  display: block;
+  width: 70%;
+  height: var(--arq-space-gap-sm-md);
+  background: var(--arq-color-surface-subtle);
+}
+
+.sk-short {
+  width: 35%;
+  height: var(--arq-icon-sm);
+}
+
+.sk-cells {
+  display: flex;
+  flex: 1 1 auto;
+  gap: var(--arq-space-gap-sm);
+  min-width: 0;
+}
+
+.sk-cell {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.sk-cell .sk-bar {
+  width: 55%;
+}
+
+.sk-download {
+  flex: none;
+  width: var(--arq-icon-xl);
+  height: var(--arq-icon-xl);
+  margin-inline: var(--arq-space-padding-lg);
+  background: var(--arq-color-surface-subtle);
+}
+
+.sk-card {
+  display: none;
+}
+
+/* ── Tarjetas (Mobile) ───────────────────────────────────────────── */
 .cards {
   display: none;
   margin: 0;
@@ -216,56 +519,103 @@ td.end {
 }
 
 @media (max-width: 767px) {
-  /* Mobile: Filtros y el buscador comparten la fila; el buscador ocupa lo
-     que queda (Show search). */
-  .search {
-    flex: 1 1 0;
+  /* Mobile. Ficha: Filtros con la cantidad en la primera fila, los archivos
+     generales debajo y lo aplicado abajo de todo. Descargas: el buscador
+     arriba, a todo el ancho; Filtros con la cantidad debajo (2558:20156) y lo
+     aplicado abajo de todo */
+  .controls,
+  :host([type='catalog']) .controls {
+    grid-template-columns: auto minmax(0, 1fr);
   }
 
-  /* En lugar de la tabla, una tarjeta por variante, a space/gap/6xl */
-  .scroll {
+  .downloads {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-content: flex-start;
+  }
+
+  .applied,
+  :host([type='catalog']) .applied {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+
+  :host([type='catalog']) .search {
+    grid-column: 1 / -1;
+    max-width: none;
+  }
+
+  :host([type='catalog']) .toggle-filters {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
+  }
+
+  :host([type='catalog']) .total {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .scroll,
+  .scrollbar {
     display: none;
   }
 
   .cards:not([hidden]) {
     display: flex;
     flex-direction: column;
-    gap: var(--arq-space-gap-6xl);
   }
 
-  /* Imagen ratio/wide (16:10) en color/surface/subtle; sku con la descarga y
-     los datos en dos columnas, todo a space/gap/md */
+  /* Las tarjetas salen del margen de la página: la línea que las separa va de
+     borde a borde de la pantalla y el contenido conserva el margen
+     (padding lateral --page-gutter). */
+  .cards,
+  .skeleton {
+    margin-inline: calc(-1 * var(--page-gutter));
+  }
+
+  /* Tarjeta: padding vertical space/padding/lg y línea inferior
+     border/default en color/border/default (más marcada que la de las
+     filas de datos, que va en color/border/subtle); cabecera, datos y acciones a
+     space/gap/md */
   .card {
     display: flex;
     flex-direction: column;
     gap: var(--arq-space-gap-md);
+    padding: var(--arq-space-padding-lg) var(--page-gutter);
+    border-bottom: var(--arq-border-default) solid var(--arq-color-border-default);
   }
 
-  .card-image {
+  /* Miniatura (layout/download-thumb) y producto a space/gap/md */
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: var(--arq-space-gap-md);
+  }
+
+  /* El producto ocupa lo que queda; la descarga, arriba a la derecha */
+  .card-head .product {
+    flex: 1 1 auto;
+  }
+
+  .card-head .thumb-link,
+  .card-head arq-icon-button {
+    flex: none;
+  }
+
+  .card-thumb {
     display: block;
-    aspect-ratio: 16 / 10;
+    flex: none;
+    width: var(--arq-layout-download-thumb);
+    height: var(--arq-layout-download-thumb);
     overflow: hidden;
     background: var(--arq-color-surface-subtle);
   }
 
-  .card-image img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .card-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--arq-space-gap-sm);
-  }
-
-  /* Datos: etiqueta role/body-sm (color/text/secondary) y valor
-     role/body-sm-medium (color/text/primary), a space/gap/sm; separador
-     inferior border/default en color/border/subtle y padding vertical
-     space/padding/sm. Cantidad libre. */
+  /* Datos en dos columnas: etiqueta role/body-compact-regular
+     (color/text/secondary) y valor role/body-medium, a space/gap/xs; padding
+     vertical space/padding/sm y línea inferior border/default en
+     color/border/subtle */
   .card-data {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -275,9 +625,15 @@ td.end {
   .card-item {
     display: flex;
     flex-direction: column;
-    gap: var(--arq-space-gap-sm);
     padding-block: var(--arq-space-padding-sm);
     border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  }
+
+  /* La última fila de datos no lleva línea: debajo ya está la de la tarjeta.
+     Son dos columnas: el último dato y, si el total es par, el de al lado. */
+  .card-item:last-child,
+  .card-item:nth-last-child(2):nth-child(odd) {
+    border-bottom: 0;
   }
 
   .card-item dt {
@@ -288,5 +644,68 @@ td.end {
     margin: 0;
     color: var(--arq-color-text-primary);
     overflow-wrap: break-word;
+  }
+
+  /* Cargando: tarjetas en lugar de filas */
+  .sk-row {
+    display: none;
+  }
+
+  .sk-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--arq-space-gap-md);
+    padding: var(--arq-space-padding-lg) var(--page-gutter);
+    border-bottom: var(--arq-border-default) solid var(--arq-color-border-default);
+  }
+
+  .sk-head {
+    display: flex;
+    align-items: center;
+    gap: var(--arq-space-gap-md);
+  }
+
+  .sk-card .sk-thumb {
+    width: var(--arq-layout-download-thumb);
+    height: var(--arq-layout-download-thumb);
+  }
+
+  .sk-card .sk-product {
+    flex: 1 1 auto;
+    padding: 0;
+  }
+
+  .sk-data {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--arq-space-gap-md);
+  }
+
+  .sk-data .sk-bar {
+    width: 50%;
+  }
+}
+
+/* Copia del encabezado, pegada debajo de la barra fija mientras el real quedó
+   arriba (solo Desktop y Tablet; el JS la muestra). Mismas columnas y mismas
+   columnas fijas que la tabla, con su difuminado. */
+.head {
+  --page-gutter: var(--arq-space-padding-sm);
+  position: absolute;
+  top: 100%;
+  inset-inline: 0;
+  overflow: hidden;
+  background: var(--arq-color-surface-default);
+}
+
+.head-table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+@media (max-width: 767px) {
+  .head {
+    display: none;
   }
 }

@@ -20,7 +20,9 @@ Flechas anterior / siguiente para un carrusel con scroll horizontal (mosaico de 
 | — | `for` | `for` | id del contenedor con scroll, en el DOM de la página (o del Shadow Root que contiene al control) |
 | — | `step` | `step` | `page` (un ancho visible, def.) · `item` (una tarjeta; Productos destacados) |
 | — | `label-prev` · `label-next` | `labelPrev` · `labelNext` | nombres accesibles (def. "Anterior" · "Siguiente") |
-| — | `buttons` | `buttons` | `icon` (def., icon-button Large: Colección) · `carousel` (carousel-button: Destacados y Proyectos) |
+| — | `buttons` | `buttons` | `icon` (def., icon-button Large: Colección) · `carousel` (carousel-button, cuadrado con borde: Destacados y Proyectos) · `chevron` (icon-button Large con `icon/chevron-left` y `icon/chevron-right`, sin borde ni fondo) · `none` (sin flechas, solo la línea de progreso, a todo el ancho: variants-table) |
+| — | `progress` | `progress` | Solo código, con `buttons="carousel"` o `"chevron"`. `slides` (def.: un tramo por slide, con contador) · `scroll` (el trazo mide la parte visible del contenido y sigue el scroll, con el grosor de la Home y sin contador: variants-table). Sin nada para desplazar, no se muestra |
+| — | `page-inset` | `pageInset` | Solo código. Ancho que tapan las columnas fijas de una tabla; se resta al salto de página (variants-table) |
 | — | `index` · `count` | `index` · `count` | slide actual desde 0 y cantidad. Con `buttons="carousel"` arman el contador (`01 / 06`) y la línea de progreso. Con `for`, se calculan solas |
 
 ## Comportamiento

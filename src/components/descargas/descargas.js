@@ -4,7 +4,7 @@
 //
 // Página Descargas: arriba, el título con su bajada y el catálogo general
 // (tapa, nombre, bajada y «Descargar catálogo»); debajo, «Buscar archivos por
-// producto» con downloads-table (todos los SKU del catálogo, buscador y
+// producto» con variants-table type="catalog" (todos los SKU del catálogo, buscador y
 // filtros de selección múltiple) y el modal de descargas de cada fila. El
 // embed imprime los textos por slot; el componente pide las filas a
 // getDownloadsTable() (src/data/catalog.js).
@@ -20,7 +20,7 @@
 //     <h2 slot="modal-title">Descargas</h2>
 //   </arq-descargas>
 //
-// - Filtros: panel lateral (filter-panel) de downloads-table; de las dos
+// - Filtros: panel lateral (filter-panel) de variants-table; de las dos
 //   propuestas se eligió esta (decisiones.md, 2026-10-15 · Descargas ·
 //   propuesta final).
 // - Catálogo: Desktop, tapa a la izquierda y textos con button Outline;
@@ -35,7 +35,7 @@
 import { ArqElement } from '../../base/arq-element.js';
 import { getDownloadsTable, skuDownloads } from '../../data/catalog.js';
 import '../button/button.js';
-import '../downloads-table/downloads-table.js';
+import '../variants-table/variants-table.js';
 import '../download-modal/download-modal.js';
 import '../download-file-row/download-file-row.js';
 import css from './descargas.css?inline';
@@ -76,7 +76,7 @@ class ArqDescargas extends ArqElement {
     `<div class="search-title role-heading-1"><slot name="search-title"></slot></div>` +
     `<p class="status role-body" role="status" hidden></p>` +
     `<arq-button class="retry" type="underline" show-underline hidden>${TEXT.retry}</arq-button>` +
-    `<arq-downloads-table class="table" downloads="downloads-modal"></arq-downloads-table>` +
+    `<arq-variants-table class="table" type="catalog" downloads="downloads-modal"></arq-variants-table>` +
     `</div>` +
     `<arq-download-modal id="downloads-modal" show-product><slot name="modal-title" slot="title"></slot></arq-download-modal>`;
 
@@ -171,7 +171,7 @@ class ArqDescargas extends ArqElement {
     status.hidden = !message;
   }
 
-  // El modal se abre al hacer clic (downloads-table); los archivos llegan
+  // El modal se abre al hacer clic (variants-table); los archivos llegan
   // enseguida porque el catálogo ya está cargado.
   async #fillModal(sku) {
     const modal = this.shadowRoot.querySelector('arq-download-modal');

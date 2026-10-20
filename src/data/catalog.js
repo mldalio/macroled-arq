@@ -16,7 +16,7 @@
 // specs vale para todas las variantes del grupo; attributes de la variante pisa o completa.
 
 import { loadSource, loadGroupDetails } from './source.js';
-import { ATTRIBUTES, DOWNLOAD_FILTERS, FILTER_FIELDS, GLOSSARY_COLUMNS, attributeInfo, specSections } from './attributes.js';
+import { ATTRIBUTES, DOWNLOAD_FILTERS, FILTER_FIELDS, TABLE_COLUMNS, attributeInfo, specSections, tableValues } from './attributes.js';
 import { variantOptions, findVariant, choose } from './variants.js';
 import { normalize, queryWords, matchesWords } from './text.js';
 import { finishImage } from './finishes.js';
@@ -283,8 +283,8 @@ export async function listCollections({ filters } = {}) {
  * Ficha de un grupo: { group, collection, variants, variantAttributes,
  * family: cards de las otras familias de la colección, images: { ambient[],
  * description, inspiration[] } (las que no cambian con la variante),
- * glossary: datos de variants-table, files: descargas de la barra del
- * glosario }. null si no existe.
+ * glossary: datos de variants-table, files: archivos generales de la barra de
+ * la tabla (CAD 2D/3D y Manual) }. null si no existe.
  */
 export async function getProduct(groupId) {
   const { groups, groupById } = await loadCatalog();
@@ -311,9 +311,10 @@ export async function getProduct(groupId) {
       inspiration: unique(images.inspiration),
     },
     glossary: glossary(group),
-    // TODO (datos): la barra del glosario muestra CAD 2D/3D y Manual (Final,
-    // 1218:10708). No hay archivos por grupo en la base: salen del SKU
-    // predeterminado.
+    // La barra de la tabla muestra CAD 2D/3D y Manual (campos `cad` y `manual`
+    // de Typesense). No hay archivos por grupo en la base: salen del SKU
+    // predeterminado del grupo (is_group_default; sin marca, el primero). Sin
+    // valor en ese SKU, el botón no aparece.
     files: downloads(group.defaultVariant).filter((file) => file.type === 'cad' || file.type === 'manual'),
   };
 }
@@ -321,20 +322,28 @@ export async function getProduct(groupId) {
 const unique = (value) => [...new Set([value ?? []].flat().filter(hasValue))];
 
 /**
- * Datos de variants-table: una fila por SKU del grupo (columnas en attributes.js).
- * Un SKU sin foto propia muestra el neutro, sin la del predeterminado (como la
- * galería, decisiones.md 2026-10-07): así se ve qué falta cargar.
+ * Columnas de variants-table (TABLE_COLUMNS, en orden): las mismas en la ficha
+ * y en Descargas; solo las que algún SKU tiene cargadas.
+ */
+const tableColumns = (variants) =>
+  TABLE_COLUMNS.filter(({ field }) => variants.some((v) => hasValue(v.values[field]))).map(({ field, label, wide }) => ({ key: field, label, wide }));
+
+/**
+ * Datos de variants-table (type product): una fila por SKU del grupo. Un SKU
+ * sin foto propia muestra el neutro, sin la del predeterminado (como la
+ * galería, decisiones.md 2026-10-07): así se ve qué falta cargar. El tamaño
+ * va en mm (la base lo trae en cm).
  */
 function glossary(group) {
   return {
-    columns: GLOSSARY_COLUMNS.filter(({ field }) => group.variants.some((v) => hasValue(v.values[field]))).map(({ field, label }) => ({ key: field, label })),
+    columns: tableColumns(group.variants),
     filters: group.variantAttributes.map((key) => ({ key, label: attributeInfo(key).label, swatches: attributeInfo(key).control === 'swatches' })),
-    rows: group.variants.map((v) => ({ sku: v.sku, thumb: v.images?.studio ?? null, attributes: v.values, values: v.values })),
+    rows: group.variants.map((v) => ({ sku: v.sku, thumb: v.images?.studio ?? null, attributes: v.values, values: tableValues(v.values) })),
   };
 }
 
 /**
- * Página Descargas: variants-table con todos los SKU del catálogo, en el orden
+ * Página Descargas: variants-table (type catalog) con todos los SKU del catálogo, en el orden
  * de los grupos. Filtros: DOWNLOAD_FILTERS (attributes.js), solo los que
  * tienen al menos dos valores en el catálogo. Sin
  * archivos en la barra: no hay un grupo (decisiones.md, 2026-10-05 · Glosario).
@@ -389,11 +398,8 @@ async function downloadsTable() {
   const variants = groups.flatMap((group) => group.variants.map((variant) => ({ group, variant })));
   const varies = (field) => new Set(variants.map(({ variant }) => variant.values[field]).filter(hasValue)).size > 1;
   return {
-    // Columnas: una por filtro, en el mismo orden (Montaje, Acabado,
-    // Potencia…), con el nombre corto; solo las que tienen algún valor.
-    columns: DOWNLOAD_FILTERS.filter(({ field }) => variants.some(({ variant }) => hasValue(variant.values[field]))).map(
-      ({ field, label, column }) => ({ key: field, label: column ?? label }),
-    ),
+    // Columnas: las mismas que las de la ficha (TABLE_COLUMNS)
+    columns: tableColumns(variants.map(({ variant }) => variant)),
     filters: DOWNLOAD_FILTERS.filter(({ field }) => varies(field)).map(({ field, label }) => ({
       key: field,
       label,
@@ -410,7 +416,7 @@ async function downloadsTable() {
       thumb: variant.images?.studio ?? null,
       search: [group.name, group.collectionData?.name].filter(Boolean).join(' '),
       attributes: variant.values,
-      values: variant.values,
+      values: tableValues(variant.values),
     })),
   };
 }
