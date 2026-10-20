@@ -28,7 +28,7 @@ Listado de Productos (y de Colecciones con `unit="colecciones"`): navegación de
 | slot `nav` | — | un `arq-catalog-nav` con los grupos fijos (Interior, Exterior, Lámparas y artefactos, Colecciones) y su link «Todo…». Cada grupo con `data-arq-nav="interior · exterior · lamparas-artefactos · colecciones"` recibe el resto de sus links de los datos (`getCatalogNav()`: solo categorías con productos) |
 | slot `filter-title` | — | el `<h2>` del filter-panel ("Filtrar") |
 
-En Productos Mobile y Tablet (hasta 1023 px), el árbol de navegación aparece en la tab Categorías de Filtrar. Los grupos y enlaces se copian del `arq-catalog-nav` del HTML para conservar sus URLs y la selección actual. Desde 1024 px se ve el sidebar. Colecciones mantiene su navegación en todos los anchos.
+En Productos y Colecciones, en Mobile y Tablet (hasta 1023 px), el árbol de navegación aparece en la tab Categorías de Filtrar. Los grupos y enlaces se copian del `arq-catalog-nav` del HTML para conservar sus URLs y la selección actual. Desde 1024 px se ve el sidebar.
 
 ## Comportamiento
 
@@ -50,7 +50,7 @@ En Productos Mobile y Tablet (hasta 1023 px), el árbol de navegación aparece e
 
 | | Desde 1024 px | Hasta 1023 px | Hasta 767 px |
 | --- | --- | --- | --- |
-| Armado | sidebar a la izquierda, contenido a la derecha a `space/section/sm` | nav (catalog-nav-mobile), toolbar y grilla apilados a `space/gap/xl` | ídem |
+| Armado | sidebar a la izquierda, contenido a la derecha a `space/section/sm` | toolbar y grilla apilados (las categorías, en la pestaña Categorías de filter-panel) a `space/gap/xl` | ídem |
 | Toolbar → grilla | `space/gap/xl-2xl` | `space/gap/xl-2xl` | `space/gap/xl` |
 | Grilla | 3 columnas hasta 1919 px; 4 desde 1920 px | auto-fill | filas a `space/gap/xl`, columnas a `space/gap/md` |
 | Padding | `layout/gutter` a los lados, `space/section/xl` abajo | ídem | ídem (valores Mobile) |

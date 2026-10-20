@@ -51,7 +51,7 @@ class ArqFilterPanel extends ArqElement {
     open: { type: Boolean },
     count: { type: Number }, // resultado para "Ver N productos" (lo calcula la página)
     unit: { type: String, values: ['productos', 'colecciones', 'variantes'], default: 'productos' },
-    showCategories: { type: Boolean }, // Productos Mobile: tabs de características y categorías
+    showCategories: { type: Boolean }, // Productos y Colecciones, Mobile: tabs de características y categorías
   };
   static template =
     `<dialog class="dialog" data-arq-theme="light">` +

@@ -67,7 +67,7 @@ class ArqCatalogListing extends ArqElement {
     `<arq-grid class="grid"></arq-grid>` +
     `</div>` +
     `</div>` +
-    `<arq-filter-panel id="filters"><slot name="filter-title" slot="title"></slot></arq-filter-panel>` +
+    `<arq-filter-panel id="filters" show-categories><slot name="filter-title" slot="title"></slot></arq-filter-panel>` +
     `<arq-compare-bar class="compare"></arq-compare-bar>` +
     `<arq-compare-picker class="picker"></arq-compare-picker>` +
     `<div class="compare-space" aria-hidden="true"></div>` +
@@ -272,7 +272,6 @@ class ArqCatalogListing extends ArqElement {
     const root = this.shadowRoot;
     root.querySelector('.toolbar').unit = this.unit;
     root.querySelector('arq-filter-panel').unit = this.unit;
-    root.querySelector('arq-filter-panel').showCategories = this.unit === 'productos';
     if (this.#query && this.unit === 'productos') this.#titleFromQuery();
     this.#load({ rows: true });
   }

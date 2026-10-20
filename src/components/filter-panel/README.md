@@ -21,7 +21,7 @@ panel.addEventListener('arq:filters', (e) => (panel.count = contar(e.detail.filt
 panel.addEventListener('arq:apply', (e) => aplicar(e.detail.filters));
 ```
 
-En Productos Mobile y Tablet (hasta 1023 px), `show-categories` agrega las tabs `arq-tab` Características y Categorías. El listado aporta un `<nav slot="categories">` con `arq-catalog-nav-group` y `arq-catalog-nav-item`; el grupo actual aparece abierto. Al abrir el panel se selecciona Características. En Categorías, los enlaces navegan directamente y las acciones de filtros técnicos quedan ocultas. Desktop y Colecciones mantienen el panel habitual.
+En Productos y Colecciones, en Mobile y Tablet (hasta 1023 px), `show-categories` agrega las tabs `arq-tab` Características y Categorías. El listado aporta un `<nav slot="categories">` con `arq-catalog-nav-group` y `arq-catalog-nav-item`; el grupo actual aparece abierto. Al abrir el panel se selecciona Características. En Categorías, los enlaces navegan directamente y las acciones de filtros técnicos quedan ocultas. En Desktop el panel no muestra las tabs.
 
 ## Props
 
