@@ -52,7 +52,8 @@
 //   que incluye su familia. Los accesorios no entran en las colecciones.
 // - Accesorio: product_type «Accesorio»; compatible_with es el nombre del
 //   producto con el que se usa.
-// - Foto del mega-menú: img_ambient_1_on (o img_ambient_1 si falta). En una
+// - Foto del mega-menú: img_ambient_1_on (o img_ambient_1, la columna
+//   img_ambient_1_off de la hoja, si falta). En una
 //   aplicación de Por espacio (Embutir, Jardín…), la del SKU con
 //   is_menu_default (casilla, como is_group_default); en una colección, la de
 //   su fila col-* (decisiones.md, 2026-10-20 · Fotos del mega-menú).

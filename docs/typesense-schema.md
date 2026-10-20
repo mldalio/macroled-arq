@@ -29,6 +29,8 @@ Colección `macroled_arq` en `typesense.coresagroup.com`: 139 documentos (132 SK
 
 Cada lista guarda siempre sus fotos en la misma posición; una foto que falta queda como `""` en su lugar. Una lista sin ninguna foto llega vacía (`[]`). La arma la sincronización a partir de las columnas `img_*` de la hoja.
 
+**Nombres de la hoja y de Typesense.** En este documento y en el código, las fotos llevan el nombre de Typesense. Algunas columnas de la hoja se llaman distinto y n8n las traduce (`COLUMN_ALIASES`): `img_hero_off` → `img_main`, `img_hero_on` → `img_main_on`, `img_ambient_1_off` → `img_ambient_1`. O sea: `img_ambient_1` es la columna **`img_ambient_1_off`** de la hoja. `TODO` (n8n): la lista `multimagen_ambiente` busca `img_ambient_1_off` después de renombrarla, así que la foto apagada del ambiente 1 nunca llega (la posición queda vacía).
+
 | Lista | Posiciones |
 | --- | --- |
 | `multimagen_producto` | 0 `img_main` · 1 `img_main_on` |
@@ -47,7 +49,7 @@ Dónde se usa cada foto:
 | Galería de la ficha | `img_main`, `img_ambient_1`, front, back, left, right, pers_1, pers_2, detail_1, detail_2 (las que existen) | Cada una a su `_on` |
 | Ficha: ambiente · descripción · inspiración | `img_ambient_2` a `5` · `img_ambient_6` · `img_ambient_7` (del SKU predeterminado) | No cambian |
 | Card de colección | `img_collection` | `img_collection_on` |
-| Preview del mega-menú (aplicación y colección) | `img_ambient_1_on` del SKU con `is_menu_default` o de la fila `col-*` (si falta, `img_ambient_1`). Sin foto o si no carga: prueba en orden las de contexto y después las de estudio de los productos de la categoría (colección: solo las de contexto de sus productos). Decisión 2026-10-20 · Fotos del mega-menú | No cambia (el mega-menú siempre es Light) |
+| Preview del mega-menú (aplicación y colección) | `img_ambient_1_on` del SKU con `is_menu_default` o de la fila `col-*` (si falta, `img_ambient_1`: la columna `img_ambient_1_off` de la hoja; hoy no llega, ver Nombres de la hoja y de Typesense). Sin foto o si no carga: prueba en orden las de contexto y después las de estudio de los productos de la categoría (colección: solo las de contexto de sus productos). Decisión 2026-10-20 · Fotos del mega-menú | No cambia (el mega-menú siempre es Light) |
 | Página de colección | Galería, `collection_description_image`, inspiración | No cambian |
 
 - Una variante sin fotos propias no toma las del predeterminado (serían de otro color o tamaño): se ve el fondo neutro.
