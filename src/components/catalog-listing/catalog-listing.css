@@ -124,10 +124,10 @@
   }
 }
 
-/* Mobile y Tablet: en Productos las categorías van en una pestaña de
+/* Mobile y Tablet: en Productos y Colecciones las categorías van en una pestaña de
    filter-panel, no arriba de la grilla */
 @media (max-width: 1023px) {
-  :host(:not([unit='colecciones'])) .nav {
+  .nav {
     display: none;
   }
 }
