@@ -76,8 +76,7 @@
 }
 
 /* Type=Simple (solo de código): miniatura cuadrada grande y nombre, sin SKU,
-   flecha ni línea. La miniatura es layout/table-thumb (100) y en Mobile
-   layout/gallery-thumb (76). TODO (diseño): token propio para esta miniatura.
+   flecha ni línea. La miniatura es layout/result-thumb (100; 76 en Mobile).
    El nombre va en color/text/tertiary; lo que coincide con la búsqueda, en
    color/text/primary con más peso (role/body-medium, que ya viene en la marca).
    Hover, Focus y Active: todo el nombre en color/text/primary y Medium, sin fondo. */
@@ -98,15 +97,8 @@
 }
 
 :host([type='simple']) .thumb {
-  width: var(--arq-layout-table-thumb);
-  height: var(--arq-layout-table-thumb);
-}
-
-@media (max-width: 767px) {
-  :host([type='simple']) .thumb {
-    width: var(--arq-layout-gallery-thumb);
-    height: var(--arq-layout-gallery-thumb);
-  }
+  width: var(--arq-layout-result-thumb);
+  height: var(--arq-layout-result-thumb);
 }
 
 :host([type='simple']) .meta,

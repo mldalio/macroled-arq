@@ -12,6 +12,7 @@
   --arq-color-surface-inverse-hover: var(--arq-neutral-150); /** Hover de un fondo color/surface/inverse (botón primario). */
   --arq-color-surface-inverse-pressed: var(--arq-neutral-200); /** Pressed de un fondo color/surface/inverse (botón primario). */
   --arq-color-surface-bone: var(--arq-neutral-750); /** Fondo cálido de las bandas del Home (Productos destacados y Herramientas). En Dark coincide con surface/subtle. */
+  --arq-color-surface-sand: var(--arq-neutral-750); /** Fondo cálido de una banda destacada del Home (Casa FOA). Par de color/surface/bone, un punto más rosado. En Dark coincide con surface/subtle. */
   --arq-color-text-primary: var(--arq-neutral-100); /** Títulos, nombres de producto y texto de máxima jerarquía. */
   --arq-color-text-secondary: var(--arq-neutral-200); /** Texto de lectura: párrafos, descripciones, valores de especificaciones. */
   --arq-color-text-tertiary: var(--arq-neutral-500); /** Texto secundario: metadatos, etiquetas, ayudas, captions, SKU. */

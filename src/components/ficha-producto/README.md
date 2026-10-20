@@ -68,7 +68,7 @@ Tablet (768–1023 px) usa la columna Desktop salvo en los bloques marcados: ah�
 
 - `TODO` (diseño) Medidas sin token: Descargas e introducción de Explora 440 (`layout/measure`), lista de características 539 (`layout/measure-wide`), sangría de la lista 21 (`space/padding/lg`), alto de la galería de ambiente 684 / 440 (70svh), texto de Inspiración 330 (`layout/measure`), fotos de Inspiración 440 × 568 (`ratio/portrait-soft`) y family-card de 200 y 328 (`layout/card-min` y `layout/card-min-wide`).
 - `TODO` (diseño) Mensaje de error si no se puede generar la ficha técnica en PDF (hoy queda en consola).
-- `TODO` (navbar) Falta `layout/navbar-height` (56): el margen al llegar al glosario usa `space/gap/4xl`.
+- Al llegar al glosario («Ver glosario»), el margen superior es `layout/navbar-height` (56): el título queda justo debajo del navbar fijo.
 - `TODO` (datos) Archivos de la barra del glosario: no hay descargas por grupo; salen del SKU predeterminado. Imágenes de los acabados, `alt` de las fotos y columnas del glosario (`src/data/attributes.js`).
 - `TODO` (diseño) "Características del producto" va en `role/body-medium` como Desktop; en Mobile Final lo muestra en Regular.
 - Video de inspiración (`video_inspiration`): hoy vacío en la base; ver «Fotos de ambiente».

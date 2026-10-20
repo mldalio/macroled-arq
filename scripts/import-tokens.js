@@ -13,7 +13,8 @@
 //   - motion/duration/fast, base, slow, expand, panel e illumination-lead suman
 //     el modo reducedMotion = 0ms.
 //   - No se importan las paletas de marca sin uso (bronze, cacao, olive,
-//     terracotta, offwhite), salvo offwhite/bone: lo usa color/surface/bone.
+//     terracotta, offwhite), salvo las que usa un semántico (USED_BRAND):
+//     offwhite/bone (color/surface/bone) y offwhite/sand (color/surface/sand).
 //   - role/* no son variables (son estilos de texto): se conservan del
 //     tokens.json actual.
 // Valida el resultado con las mismas reglas que npm run tokens. Si hay
@@ -28,6 +29,7 @@ const TARGET = new URL('../tokens/tokens.json', import.meta.url);
 // Modo de Figma → modo del repo (null = valor base).
 const MODE_MAP = { Value: null, Light: null, Desktop: null, Dark: 'dark', Mobile: 'mobile', Tablet: 'tablet', Large: 'large', Wide: 'wide' };
 const EXCLUDED_GROUPS = ['bronze', 'cacao', 'olive', 'terracotta', 'offwhite'];
+const USED_BRAND = ['offwhite.bone', 'offwhite.sand'];
 // motion/duration/fade y feedback no cambian: un fundido y un tiempo de lectura no marean.
 // illumination e illumination-image tampoco: con movimiento reducido pasan a
 // motion/duration/fade en src/styles/global.css (siguen siendo fundidos).
@@ -100,7 +102,7 @@ for (const file of files) {
   if (!(mode in MODE_MAP)) throw new Error(`${file}: modo "${mode}" desconocido (${Object.keys(MODE_MAP).join(', ')})`);
   const repoMode = MODE_MAP[mode];
   for (const [path, token] of flatten(data)) {
-    if (EXCLUDED_GROUPS.includes(path.split('.')[0]) && path !== 'offwhite.bone') continue;
+    if (EXCLUDED_GROUPS.includes(path.split('.')[0]) && !USED_BRAND.includes(path)) continue;
     const type = repoType(path, token.$type);
     const value = convert(path, type, token.$value);
     const entry = tokens.get(path) ?? { type, modes: {}, order: order++, collection };

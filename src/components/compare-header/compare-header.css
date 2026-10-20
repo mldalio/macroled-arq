@@ -58,10 +58,11 @@
   min-width: 0;
 }
 
-/* Compact: fijo bajo el navbar (alto medido en JS, TODO layout/navbar-height). */
+/* Compact: fijo bajo el navbar (alto medido en JS; antes de medir,
+   layout/navbar-height). */
 .compact {
   position: fixed;
-  top: var(--navbar-height, 0px);
+  top: var(--navbar-height, var(--arq-layout-navbar-height));
   left: 0;
   right: 0;
   z-index: 2;

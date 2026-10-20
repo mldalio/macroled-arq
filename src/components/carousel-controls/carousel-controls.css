@@ -29,8 +29,8 @@
   color: var(--arq-color-text-secondary);
 }
 
-/* Pista de 96 (space/gap-5xl) y trazo de 2 (border/strong).
-   TODO (diseño): la pista va al 35 % y no hay token de opacidad. */
+/* Pista de 96 (space/gap-5xl) y trazo de 2 (border/strong). La pista va
+   en opacity/track. */
 .progress {
   position: relative;
   flex: none;
@@ -45,7 +45,7 @@
   left: 0;
   height: var(--arq-border-default);
   background: var(--arq-color-text-secondary);
-  opacity: 0.35;
+  opacity: var(--arq-opacity-track);
   transform: translateY(-50%);
 }
 

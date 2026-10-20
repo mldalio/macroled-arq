@@ -80,13 +80,12 @@ button.link {
   color: var(--arq-color-text-tertiary);
 }
 
-/* Miniatura (Show image): cuadrada de 60, fondo color/surface/subtle sin
-   imagen. 60 no tiene token: layout/search-thumb + space/gap/sm-md (48 + 12
-   en Mobile, donde se usa). TODO (token layout/mega-link-thumb). */
+/* Miniatura (Show image): cuadrada de layout/mega-link-thumb (60), fondo
+   color/surface/subtle sin imagen. */
 .thumb {
   position: relative;
   flex: none;
-  width: calc(var(--arq-layout-search-thumb) + var(--arq-space-gap-sm-md));
+  width: var(--arq-layout-mega-link-thumb);
   aspect-ratio: 1 / 1;
   background: var(--arq-color-surface-subtle);
 }

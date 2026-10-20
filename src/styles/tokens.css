@@ -154,6 +154,10 @@
   --arq-layout-catalog-cover: 168px; /** Ancho de la tapa del catálogo general en la página Descargas (168 Desktop · 104 Mobile). El alto sale de ratio/portrait-soft (4:5). */
   --arq-layout-download-search: 480px; /** Ancho del buscador de la tabla de Descargas (downloads-table). En Mobile el campo ocupa el ancho disponible. */
   --arq-layout-compare-picker-list: 400px; /** Alto de la lista de compare-picker en Desktop: 5 filas de compare-picker-item (80 cada una); las demás se desplazan adentro. En Mobile el CSS no usa este valor (la lista ocupa el alto que queda en la pantalla completa). */
+  --arq-layout-navbar-height: 56px; /** Alto de la barra del navbar (56 en todos los modos). Lo que queda fijo debajo del navbar (compare-header Compact, columna fija de la ficha) se ubica a esta distancia del borde superior. */
+  --arq-layout-mega-link-thumb: 60px; /** Miniatura cuadrada de mega-link (Show image), en el menú Mobile y en las colecciones del mega-menu. */
+  --arq-layout-result-thumb: 100px; /** Miniatura cuadrada de search-result Type=Simple (resultado grande, sin SKU): 100 en Desktop, Tablet y Large; 76 en Mobile. */
+  --arq-layout-gallery-thumb-overlay: 66px; /** Ancho de gallery-thumb cuando las miniaturas van sobre la foto (product-gallery que llena el alto, Ficha v2, desde 1024 px). El alto sale de ratio/landscape (5:4). */
   --arq-motion-duration-fast: 120ms; /** Hover, toggle, foco. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-base: 200ms; /** Desplegables (disclosure) y menús. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-slow: 320ms; /** Fundido de imágenes de product-card y mensaje de form-message al aparecer. En ms. Con prefers-reduced-motion: 0. */
@@ -169,8 +173,13 @@
   --arq-motion-easing-illumination: cubic-bezier(0.1, 0.1, 0.95, 0.4); /** Iluminar: curva del fondo. Calculada para que el brillo de la página cambie parejo, como un dimmer: el fundido entre claro y oscuro oscurece mucho al principio de la mezcla y esta curva lo compensa. */
   --arq-motion-easing-illumination-image: cubic-bezier(0.42, 0, 0.58, 1); /** Iluminar: curva del fundido de las fotos (entrada y salida suaves). */
   --arq-motion-scale-pressed: 0.97; /** Escala de button e icon-button mientras se presionan (State=Pressed, :active en código). Se anima con motion/duration/fast y motion/easing/out. Con prefers-reduced-motion no cambia de tamaño. Sin unidad. */
+  --arq-motion-scale-hover: 1.05; /** Zoom de la imagen dentro de su recorte en el hover de una tarjeta que es link (category-card, collection-tile, search-card). La tarjeta no cambia de tamaño. Se anima con motion/duration/slow y motion/easing/standard. Con prefers-reduced-motion no hay zoom. Sin unidad. */
+  --arq-motion-scale-enter: 0.97; /** Escala de partida de un menú o panel chico que aparece desde su disparador (menú de input Select, search-card): crece de 0,97 a 1 con motion/duration/base y motion/easing/out, junto con el fundido. Con prefers-reduced-motion queda solo el fundido. Sin unidad. */
   --arq-opacity-disabled: 0.5; /** Opacidad de una imagen o parte gráfica deshabilitada (la miniatura de compare-picker-item Disabled). En Figma 0–100 (50 = 50 %); en código 0–1 (0.5). El texto deshabilitado no usa opacidad: va en color/text/disabled. */
+  --arq-opacity-muted: 0.5; /** Atenuar algo que sigue a la vista pero no es lo activo: la grilla de un listado mientras carga otra categoría o filtro, el velo de un slide inactivo. En Figma 0–100 (50 = 50 %); en código 0–1 (0.5). */
+  --arq-opacity-track: 0.35; /** Pista de un indicador de progreso (carousel-controls): la línea completa va atenuada y el tramo recorrido, al 100 %. En Figma 0–100 (35 = 35 %); en código 0–1 (0.35). */
   --arq-offwhite-bone: #f3f0e9; /** Blanco hueso, cálido suave; acompaña al bronze. Fondo alternativo de sección en modo Light, para dar ritmo entre bloques. No se usa en componentes ni en texto. */
+  --arq-offwhite-sand: #f7f1ec; /** Arena, cálido claro; un punto más rosado que offwhite/bone. Fondo alternativo de sección en modo Light (banda de Casa FOA en el Home). No se usa en componentes ni en texto. */
   --arq-space-section-2xs: var(--arq-space-32); /** Separación mínima entre bloques de página. */
   --arq-space-section-xs: var(--arq-space-48); /** Separación ajustada entre bloques de página. */
   --arq-space-section-sm: var(--arq-space-64); /** Separación reducida entre bloques de página. */
@@ -220,6 +229,7 @@
   --arq-color-surface-inverse-pressed: var(--arq-neutral-600); /** Pressed de un fondo color/surface/inverse (botón primario). */
   --arq-color-surface-transparent: var(--arq-alpha-transparent); /** Fondo transparente explícito: sin relleno, para estados que no pintan fondo. */
   --arq-color-surface-bone: var(--arq-offwhite-bone); /** Fondo cálido de las bandas del Home (Productos destacados y Herramientas). En Dark coincide con surface/subtle. */
+  --arq-color-surface-sand: var(--arq-offwhite-sand); /** Fondo cálido de una banda destacada del Home (Casa FOA). Par de color/surface/bone, un punto más rosado. En Dark coincide con surface/subtle. */
   --arq-color-text-primary: var(--arq-neutral-900); /** Títulos, nombres de producto y texto de máxima jerarquía. */
   --arq-color-text-secondary: var(--arq-neutral-750); /** Texto de lectura: párrafos, descripciones, valores de especificaciones. */
   --arq-color-text-tertiary: var(--arq-neutral-600); /** Texto secundario: metadatos, etiquetas, ayudas, captions, SKU. */
@@ -302,6 +312,7 @@
   --arq-color-surface-inverse-hover: var(--arq-neutral-150); /** Hover de un fondo color/surface/inverse (botón primario). */
   --arq-color-surface-inverse-pressed: var(--arq-neutral-200); /** Pressed de un fondo color/surface/inverse (botón primario). */
   --arq-color-surface-bone: var(--arq-neutral-750); /** Fondo cálido de las bandas del Home (Productos destacados y Herramientas). En Dark coincide con surface/subtle. */
+  --arq-color-surface-sand: var(--arq-neutral-750); /** Fondo cálido de una banda destacada del Home (Casa FOA). Par de color/surface/bone, un punto más rosado. En Dark coincide con surface/subtle. */
   --arq-color-text-primary: var(--arq-neutral-100); /** Títulos, nombres de producto y texto de máxima jerarquía. */
   --arq-color-text-secondary: var(--arq-neutral-200); /** Texto de lectura: párrafos, descripciones, valores de especificaciones. */
   --arq-color-text-tertiary: var(--arq-neutral-500); /** Texto secundario: metadatos, etiquetas, ayudas, captions, SKU. */
@@ -342,6 +353,7 @@
   --arq-color-surface-inverse-hover: var(--arq-neutral-750); /** Hover de un fondo color/surface/inverse (botón primario). */
   --arq-color-surface-inverse-pressed: var(--arq-neutral-600); /** Pressed de un fondo color/surface/inverse (botón primario). */
   --arq-color-surface-bone: var(--arq-offwhite-bone); /** Fondo cálido de las bandas del Home (Productos destacados y Herramientas). En Dark coincide con surface/subtle. */
+  --arq-color-surface-sand: var(--arq-offwhite-sand); /** Fondo cálido de una banda destacada del Home (Casa FOA). Par de color/surface/bone, un punto más rosado. En Dark coincide con surface/subtle. */
   --arq-color-text-primary: var(--arq-neutral-900); /** Títulos, nombres de producto y texto de máxima jerarquía. */
   --arq-color-text-secondary: var(--arq-neutral-750); /** Texto de lectura: párrafos, descripciones, valores de especificaciones. */
   --arq-color-text-tertiary: var(--arq-neutral-600); /** Texto secundario: metadatos, etiquetas, ayudas, captions, SKU. */
@@ -377,6 +389,7 @@
     --arq-layout-compare-label: 120px; /** Columna de etiquetas de la comparativa (compare-row, compare-group y la columna de controles de compare-header). En Mobile queda fija al desplazar. */
     --arq-layout-featured-thumb: 120px;
     --arq-layout-catalog-cover: 104px; /** Ancho de la tapa del catálogo general en la página Descargas (168 Desktop · 104 Mobile). El alto sale de ratio/portrait-soft (4:5). */
+    --arq-layout-result-thumb: 76px; /** Miniatura cuadrada de search-result Type=Simple (resultado grande, sin SKU): 100 en Desktop, Tablet y Large; 76 en Mobile. */
     --arq-space-section-2xs: var(--arq-space-24); /** Separación mínima entre bloques de página. */
     --arq-space-section-xs: var(--arq-space-32); /** Separación ajustada entre bloques de página. */
     --arq-space-section-sm: var(--arq-space-40); /** Separación reducida entre bloques de página. */

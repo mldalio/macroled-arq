@@ -205,6 +205,32 @@
             }
           }
         }
+      },
+      "hover": {
+        "$type": "number",
+        "$value": 1.0499999523162842,
+        "$description": "Zoom de la imagen dentro de su recorte en el hover de una tarjeta que es link (category-card, collection-tile, search-card). La tarjeta no cambia de tamaño. Se anima con motion/duration/slow y motion/easing/standard. Con prefers-reduced-motion no hay zoom. Sin unidad.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-motion-scale-hover)"
+            }
+          }
+        }
+      },
+      "enter": {
+        "$type": "number",
+        "$value": 0.9700000286102295,
+        "$description": "Escala de partida de un menú o panel chico que aparece desde su disparador (menú de input Select, search-card): crece de 0,97 a 1 con motion/duration/base y motion/easing/out, junto con el fundido. Con prefers-reduced-motion queda solo el fundido. Sin unidad.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-motion-scale-enter)"
+            }
+          }
+        }
       }
     }
   }

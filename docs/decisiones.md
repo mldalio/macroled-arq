@@ -1157,3 +1157,12 @@ Salió de revisar los valores de `color_carcasa` de toda la base (326 documentos
   - `motion/scale/hover` (1,05: zoom de category-card, collection-tile y search-card) y `motion/scale/enter` (0,97: menú de input Select y search-card al aparecer).
   - `opacity/muted` (50: grilla cargando y slide inactivo) y `opacity/track` (35: pista de carousel-controls).
   - Sin token, a propósito: medidas de un solo uso (fotos de 684, bajadas de 440, padding de 10 de mega-link), el desplazamiento de la grilla `stagger` (prueba) y el ancho de tarjeta del carrusel mobile (es un porcentaje). El título Regular 50/64 de Home v2 pide un estilo `role/*` nuevo: queda para acordar.
+
+## 2026-10-20 · Tokens nuevos en código
+
+- Export por MCP de 1 · Primitive · Color, 2 · Semantic · Color, Dimension, Motion y Opacity; `tokens:import` sumó los 10 tokens nuevos sin quitar ni cambiar otros.
+- **color/surface/bone** estaba solo en el repo (Home, 2026-10-19): se creó en Figma con el mismo valor y descripción para que el export no lo borre.
+- `import-tokens.js`: las primitivas de marca que usa un semántico van en `USED_BRAND` (`offwhite/bone`, `offwhite/sand`).
+- Reemplazos: section `sand` → `color/surface/sand`; compare-header Compact y glosario de la ficha → `layout/navbar-height`; mega-link → `layout/mega-link-thumb`; search-result Simple → `layout/result-thumb`; product-gallery `fill` → `layout/gallery-thumb-overlay` (las miniaturas pasan de 105 a 66, como Figma); category-card, collection-tile y search-card → `motion/scale/hover`; menú de input Select → `motion/scale/enter`; catalog-listing cargando y project-slide inactivo → `opacity/muted`; carousel-controls → `opacity/track`.
+- Con `prefers-reduced-motion` ya no hay zoom en category-card, collection-tile ni search-card (antes el zoom pasaba de golpe).
+- DESIGN.md §3–§6: tokens nuevos y `color/surface/bone`.

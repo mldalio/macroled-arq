@@ -15,7 +15,7 @@ Tarjeta de producto recomendado del [search-sheet](../search-sheet/README.md): *
 | `image` | Imagen de estudio. Sin imagen queda el recuadro `color/surface/subtle` |
 
 - Imagen `ratio/square` (1:1). El search-sheet puede pasar `--card-ratio` (más ancha que alta) si el alto de la pantalla no alcanza.
-- Hover y Focus: zoom mínimo de la imagen (escala 1.05, recortada por el recuadro, `motion/duration/slow` con `motion/easing/standard`; 0 con `prefers-reduced-motion`). No cambia la imagen ni responde a Iluminar (eso es de product-card). TODO: la escala no tiene token.
+- Hover y Focus: zoom mínimo de la imagen (`motion/scale/hover`, 1,05, recortada por el recuadro, `motion/duration/slow` con `motion/easing/standard`; sin zoom con `prefers-reduced-motion`). No cambia la imagen ni responde a Iluminar (eso es de product-card).
 - State: Hover y Focus salen de `:hover` y `:focus-visible`.
 
 ## Tokens
