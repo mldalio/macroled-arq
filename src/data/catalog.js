@@ -258,7 +258,7 @@ export async function listProducts({ filters, query, ...category } = {}) {
     const variant = match.bySku ? matchingVariant(group, active, match.variant) : firstFinishVariant(group, active);
     return variant ? [productCard(group, variant, active)] : [];
   });
-  return { cards, count: cards.length, filters: filterRows(scope) };
+  return demoListing({ cards, count: cards.length, filters: filterRows(scope) });
 }
 
 /** Cuántas cards daría un listado con estos filtros (para "Ver N productos"). */
@@ -275,7 +275,7 @@ export async function listCollections({ filters } = {}) {
     if (!own.some((group) => matchingVariant(group, active))) return [];
     return [collectionCard(collection, own)];
   });
-  return { cards, count: cards.length, filters: filterRows(groups.filter((g) => g.collection)) };
+  return demoListing({ cards, count: cards.length, filters: filterRows(groups.filter((g) => g.collection)) });
 }
 
 // ── Ficha de producto ────────────────────────────────────────────────
@@ -359,7 +359,8 @@ function shortName(group, groups) {
 }
 
 // Solo `npm run dev` (demo): ?data=worst|empty|one|huge|error cambia los datos
-// de Descargas por los de demo/fixtures/peor-caso.js, para ver la página con el
+// de Descargas (y ?data=loading|loading-one|loading-empty|loading-error, los
+// listados) por los de demo/fixtures/peor-caso.js, para ver la página con el
 // peor caso (break-ui). En el build import.meta.env.DEV es false y el bloque no
 // llega a dist/.
 async function demoData() {
@@ -368,6 +369,13 @@ async function demoData() {
     if (mode && mode !== 'demo') return { mode, fixtures: await import('../../demo/fixtures/peor-caso.js') };
   }
   return null;
+}
+
+// Listados (Productos y Colecciones) en la demo: ?data=loading… demora la
+// respuesta como la primera visita sin caché, para ver las cards de carga.
+async function demoListing(result) {
+  const demo = await demoData();
+  return demo ? demo.fixtures.catalogListing(demo.mode, result) : result;
 }
 
 export async function getDownloadsTable() {

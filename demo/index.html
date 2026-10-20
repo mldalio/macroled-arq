@@ -1000,6 +1000,28 @@
             <h3 slot="name">Sin imagen</h3>
           </arq-product-card>
         </div>
+        <h3 class="demo-subheading role-body-sm">Cargando (loading): cada card de carga junto a la card que reemplaza, con el mismo alto. En Productos: demo/productos.html?data=loading (también loading-one, loading-empty, loading-error)</h3>
+        <div class="demo-card-grid">
+          <arq-product-card loading show-compare></arq-product-card>
+          <arq-product-card href="#demo-product-card" show-compare image="/demo/fixtures/img/card-estudio.svg">
+            <h3 slot="name">Kanu Jardín</h3>
+            <arq-swatch slot="finishes" src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
+            <arq-swatch slot="finishes">Verde</arq-swatch>
+          </arq-product-card>
+          <arq-product-card loading></arq-product-card>
+          <arq-product-card href="#demo-product-card" image="/demo/fixtures/img/card-estudio.svg">
+            <h3 slot="name">Kanu</h3>
+            <span slot="meta">Exterior · Jardín · Pared</span>
+          </arq-product-card>
+        </div>
+        <div class="demo-card-grid demo-card-grid--small">
+          <arq-product-card loading size="small"></arq-product-card>
+          <arq-product-card href="#demo-product-card" size="small" image="/demo/fixtures/img/card-estudio.svg">
+            <h3 slot="name">Kanu Pared</h3>
+            <span slot="meta">Jardín · Pared</span>
+            <arq-swatch slot="finishes" src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
+          </arq-product-card>
+        </div>
         <div class="demo-dark" data-arq-theme="dark">
           <h3 class="demo-subheading role-body-sm">Dark fijo (Iluminar encendido)</h3>
           <div class="demo-card-grid">
@@ -1009,6 +1031,7 @@
               <h3 slot="name">Kanu Jardín</h3>
               <arq-swatch slot="finishes" src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
             </arq-product-card>
+            <arq-product-card loading show-compare></arq-product-card>
             <arq-product-card href="#demo-product-card">
               <h3 slot="name">Sin imagen (Dark)</h3>
               <span slot="meta">Exterior · Jardín</span>

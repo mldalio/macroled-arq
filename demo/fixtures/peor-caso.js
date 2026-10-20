@@ -8,6 +8,9 @@
 //   ?data=one     Una sola fila («1 producto»).
 //   ?data=huge    1.500 filas (las reales repetidas con otro SKU).
 //   ?data=error   La consulta falla.
+//   ?data=loading Productos y Colecciones: la respuesta tarda como la primera
+//                 visita (cards de carga); -one, -empty y -error cambian lo
+//                 que llega después.
 //
 // Los valores son creíbles: salen de la base (los más largos de cada columna,
 // medidos el 2026-10-15) o de nombres y SKU con la forma de los de Sheets. El
@@ -129,6 +132,26 @@ export function downloadsTable(mode, real) {
     return { ...real, rows };
   }
   if (mode === 'worst') return { ...real, rows: [...WORST_ROWS, ...real.rows] };
+  return real;
+}
+
+// Primera visita sin caché: ~3 s medidos con 2 pedidos de 250 documentos
+// (decisiones.md, 2026-10-19 · Caché del catálogo entre páginas).
+const FIRST_VISIT = 3000;
+
+/**
+ * Listado de Productos o Colecciones para el modo pedido, a partir del real.
+ *   ?data=loading        demora la respuesta (cards de carga) y llega el real
+ *   ?data=loading-one    … y llega una sola card («1 producto»)
+ *   ?data=loading-empty  … y no llega ninguna (vacío)
+ *   ?data=loading-error  … y la consulta falla
+ */
+export async function catalogListing(mode, real) {
+  if (!mode.startsWith('loading')) return real;
+  await new Promise((resolve) => setTimeout(resolve, FIRST_VISIT));
+  if (mode === 'loading-error') throw new Error('Peor caso (demo): la consulta falló');
+  if (mode === 'loading-empty') return { ...real, cards: [], count: 0 };
+  if (mode === 'loading-one') return { ...real, cards: real.cards.slice(0, 1), count: 1 };
   return real;
 }
 

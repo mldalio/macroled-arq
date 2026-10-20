@@ -284,7 +284,10 @@ class ArqCatalogListing extends ArqElement {
     const request = ++this.#request;
     const text = TEXT[this.unit] ?? TEXT.productos;
     this.setAttribute('aria-busy', 'true');
-    if (rows) this.#status(text.loading);
+    // Primera carga (todavía sin cards): cards de carga en lugar de la grilla.
+    // Después, otra categoría o filtros atenúan la grilla que sigue a la vista.
+    if (!this.#cards.size) this.#renderSkeleton();
+    if (rows) this.#status(text.loading, { quiet: true });
     let result = null;
     try {
       result = await this.#list(this.#filters);
@@ -321,10 +324,31 @@ class ArqCatalogListing extends ArqElement {
     }
   }
 
-  #status(message) {
+  // quiet: solo para lectores de pantalla («Cargando productos…»: lo que se ve
+  // son las cards de carga)
+  #status(message, { quiet = false } = {}) {
     const status = this.shadowRoot.querySelector('.status');
     status.textContent = message;
     status.hidden = !message;
+    status.classList.toggle('visually-hidden', quiet);
+  }
+
+  // Cards de carga (product-card loading): dos filas de la grilla, así llenan
+  // la pantalla sin sumar scroll de más. Aparecen recién después de un
+  // fundido corto (catalog-listing.css): con el catálogo en caché llegan las
+  // cards antes y no se ven.
+  #renderSkeleton() {
+    const grid = this.shadowRoot.querySelector('.grid');
+    if (grid.querySelector('[loading]')) return;
+    const tracks = getComputedStyle(grid.shadowRoot.querySelector('.grid')).gridTemplateColumns.split(' ').filter(Boolean);
+    const compare = this.unit === 'productos';
+    const cards = Array.from({ length: Math.max(tracks.length, 1) * 2 }, () => {
+      const card = document.createElement('arq-product-card');
+      card.loading = true;
+      card.showCompare = compare;
+      return card;
+    });
+    grid.replaceChildren(...cards);
   }
 
   // Vacía y vuelve a escribir el aviso, así se anuncia aunque se repita.
@@ -338,10 +362,17 @@ class ArqCatalogListing extends ArqElement {
 
   #render(cards) {
     const compare = this.unit === 'productos';
+    // Si las cards de carga ya se ven, las cards ocupan su lugar sin la
+    // entrada (con el fundido desde 0 el gris bajaba a blanco y volvía): lo
+    // que aparece es la foto (fundido de product-card). Si todavía no se
+    // veían (respuesta rápida), entrada normal.
+    const skeleton = this.shadowRoot.querySelector('.grid > [loading]');
+    const settled = Boolean(skeleton) && Number.parseFloat(getComputedStyle(skeleton).opacity) > 0;
     this.#cards = new Map(cards.map((data, index) => {
       const card = this.#card(data, compare);
       // Escalón de la entrada (catalog-listing.css): solo las 8 primeras
       card.style.setProperty('--enter-index', String(Math.min(index, ENTER_STAGGERED)));
+      card.classList.toggle('settled', settled);
       return [card, data];
     }));
     this.shadowRoot.querySelector('.grid').replaceChildren(...this.#cards.keys());

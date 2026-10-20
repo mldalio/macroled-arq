@@ -32,6 +32,13 @@
 //   crecer (siempre Small, 16). Elegir uno cambia las imágenes y el link a las de
 //   ese acabado y emite arq:finish { name, sku, href, image }. Con un solo
 //   acabado no hay elegido ni se puede elegir.
+// - loading: card de carga (skeleton) con la misma geometría (bloque 7:10,
+//   nombre, acabados y Comparar o meta) en color/surface/subtle, como las
+//   filas de carga de Descargas, con una franja de brillo que la cruza
+//   (shimmer; fija con reduced motion). Fuera del árbol de accesibilidad. TODO (diseño): State=Loading no está en el set de Figma.
+// - La foto principal funde al cargar la primera vez (motion/duration/slow);
+//   si ya estaba en la caché aparece directo. Al cambiar de acabado o con
+//   Iluminar, no.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { trackThemeImage, watchTheme, whenImageReady } from '../../base/theme.js';
@@ -74,6 +81,7 @@ class ArqProductCard extends ArqElement {
     imageHover: { type: String }, // hover sin Iluminar: principal encendida
     imageLit: { type: String }, // principal (hero), luz encendida
     imageHoverLit: { type: String }, // hover con Iluminar: ambiente 1 encendido
+    loading: { type: Boolean }, // card de carga (skeleton)
   };
   static template =
     `<div class="card">` +
@@ -86,12 +94,18 @@ class ArqProductCard extends ArqElement {
     `<div class="title"><a class="card-link name"><slot name="name"></slot></a><span class="finishes" hidden><slot name="finishes"></slot></span></div>` +
     `<p class="meta" hidden><slot name="meta"></slot></p>` +
     `<arq-checkbox class="compare" show-label hidden>Comparar</arq-checkbox>` +
+    // Cargando: barras con el alto de línea de cada texto, así la card de
+    // carga mide lo mismo que la card que la reemplaza
+    `<span class="sk sk-title"><span class="sk-name"><span class="sk-bar"></span></span>` +
+    `<span class="sk-swatches"><span></span><span></span><span></span></span></span>` +
+    `<span class="sk sk-detail"><span class="sk-bar sk-short"></span></span>` +
     `</div>` +
     `</div>`;
 
   #dark = false;
   #hoverWanted = false;
   #finishToken = 0;
+  #revealed = false; // la foto principal ya tuvo su fundido de entrada
 
   setup() {
     const root = this.shadowRoot;
@@ -99,10 +113,15 @@ class ArqProductCard extends ArqElement {
       // Se muestra al cargar. No se usa hidden: una <img> lazy oculta no se carga.
       img.addEventListener('load', () => img.classList.add('loaded'));
       img.addEventListener('error', () => {
-        img.classList.remove('loaded');
+        img.classList.remove('loaded', 'reveal');
         if (img.classList.contains('base')) this.#renderFallback(true);
       });
     }
+    // El fundido de entrada es uno solo: después la foto cambia sin él
+    const base = root.querySelector('.base');
+    base.addEventListener('transitionend', (event) => {
+      if (event.propertyName === 'opacity' && base.classList.contains('loaded')) base.classList.remove('reveal');
+    });
     // La de hover se pide recién al primer hover o foco.
     const wantHover = () => {
       if (this.#hoverWanted) return;
@@ -141,6 +160,8 @@ class ArqProductCard extends ArqElement {
   /** Iluminar (src/base/theme.js): pasa a las imágenes encendidas. */
   themeChanged(dark) {
     const root = this.shadowRoot;
+    // El brillo del shimmer de carga es otro color en Dark (product-card.css)
+    root.querySelector('.card').classList.toggle('is-dark', dark);
     const base = root.querySelector('.base');
     const hover = root.querySelector('.hover');
     const hoverActive = Number.parseFloat(getComputedStyle(hover).opacity) > 0.5 && hover.classList.contains('loaded');
@@ -172,6 +193,12 @@ class ArqProductCard extends ArqElement {
     const compare = root.querySelector('.compare');
     compare.hidden = !this.showCompare;
     compare.checked = this.compared;
+    const card = root.querySelector('.card');
+    card.classList.toggle('is-loading', this.loading);
+    card.classList.toggle('has-compare', this.showCompare);
+    // La card de carga no es contenido: el aviso lo da el listado (role="status")
+    if (this.loading) this.setAttribute('aria-hidden', 'true');
+    else if (changed.has('loading')) this.removeAttribute('aria-hidden');
     if (changed.has('size')) this.#renderSize();
     if ([...changed].some((prop) => prop.startsWith('image'))) this.#renderImages();
     this.#renderSlots();
@@ -191,7 +218,12 @@ class ArqProductCard extends ArqElement {
     // TODO (diseño): que el nombre de Small tenga un rol que valga 20/28 en los dos modos.
     const nameRole = !small ? 'role-heading-3' : MOBILE.matches ? 'role-heading-3' : 'role-body-xl';
     root.querySelector('.name').className = `card-link name ${nameRole}`;
-    root.querySelector('.meta').className = `meta ${small ? 'role-body-sm' : 'role-body'}`;
+    const metaRole = small ? 'role-body-sm' : 'role-body';
+    root.querySelector('.meta').className = `meta ${metaRole}`;
+    // Cargando: cada barra en el alto de línea del texto que reemplaza
+    // (Comparar va en role/body, como el label del checkbox)
+    root.querySelector('.sk-name').className = `sk-name ${nameRole}`;
+    root.querySelector('.sk-detail').className = `sk sk-detail ${this.showCompare ? 'role-body' : metaRole}`;
     // Los acabados van siempre en Size=Small (16 × 16), en Large y en Small: a 20 se veían grandes.
     for (const swatch of this.querySelectorAll(':scope > arq-swatch[slot="finishes"]')) {
       swatch.setAttribute('size', 'small');
@@ -302,8 +334,18 @@ class ArqProductCard extends ArqElement {
   #setSrc(img, src) {
     if (img.getAttribute('src') === (src ?? null)) return;
     img.classList.remove('loaded');
-    if (src) img.src = src;
-    else img.removeAttribute('src');
+    if (!src) {
+      img.removeAttribute('src');
+      return;
+    }
+    img.src = src;
+    // Primera foto principal: funde al llegar, salvo que ya esté lista en el
+    // mismo instante (en caché). complete solo no alcanza: una lazy que todavía
+    // no empezó a cargar también da complete, pero sin tamaño.
+    if (img.classList.contains('base') && !this.#revealed) {
+      this.#revealed = true;
+      if (!(img.complete && img.naturalWidth)) img.classList.add('reveal');
+    }
   }
 
   #createThemeOverlay(media, src) {
