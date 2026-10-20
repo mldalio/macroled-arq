@@ -117,7 +117,7 @@ Las variables CSS atraviesan el Shadow DOM. Un bloque en modo Dark se logra con 
 | Desktop | 1024–1439 | 40 |
 | Large | ≥ 1440 | 64 |
 
-- **Listados** (Productos y Colecciones): hasta 1023 px no hay sidebar `catalog-nav`. En Productos las categorías van en la pestaña Categorías de filter-panel (Show categories); Colecciones usa `catalog-nav-mobile`.
+- **Listados** (Productos y Colecciones): hasta 1023 px no hay sidebar `catalog-nav`. En los dos, las categorías van en la pestaña Categorías de filter-panel (Show categories); `catalog-nav-mobile` no se usa en los listados.
 - **Tablet (768–1023 px):** Final no tiene un diseño Tablet; el registro de lo que hace el código está en la sección «Tablet · registro (2026-10-19)» de Final (frames de 834 px). Donde el layout Desktop no entra, se apila como Mobile y conserva los tamaños de Desktop: cabecera de Descargas (catálogo debajo del título), Contacto (información arriba y formulario debajo, campos de a dos), compare-bar (acciones debajo de los lugares) y mega-menu (sin el preview). `docs/decisiones.md`, 2026-10-19 · Tablet.
 - **Grilla de catálogo:** `layout/card-min` vale 280 (160 en mobile) y desde 1600 px se usa `layout/card-min-wide` (340). El cambio se resuelve en el CSS de la grilla, no en `tokens.css` (que solo refleja los modos de Figma):
 
