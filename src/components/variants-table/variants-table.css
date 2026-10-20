@@ -157,14 +157,14 @@
 /* Barra de columnas: la línea de progreso de arq-carousel-controls (como en la
    Home, sin flechas), de todo el ancho de la tabla, abajo y pegada al borde
    inferior de la pantalla mientras la tabla está a la vista, con
-   space/padding/xs arriba y abajo. Fondo color/surface/default: tapa las filas
+   space/padding/sm (0,5 rem) arriba y abajo. Fondo color/surface/default: tapa las filas
    que pasan por debajo. Solo aparece si la tabla no entra en el ancho. */
 .scrollbar {
   position: sticky;
   bottom: 0;
   z-index: 3;
   display: flex;
-  padding-block: var(--arq-space-padding-xs);
+  padding-block: var(--arq-space-padding-sm);
   background: var(--arq-color-surface-default);
 }
 

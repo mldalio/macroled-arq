@@ -28,16 +28,16 @@
 //   button Underline (2561:20649). El button y los estilos de texto cambian con
 //   el breakpoint (matchMedia).
 // - El modal (download-modal show-product) muestra la miniatura, el SKU y la
-//   variante («Negro, 6 W, luz cálida») y los archivos como download-file-row:
-//   «Ficha técnica» (emite arq:datasheet { sku }, como la ficha) y los de ese
-//   SKU, solo con el nombre: sin formato ni peso (pedido 2026-10-15).
+//   variante («Negro, 6 W, luz cálida») y los archivos como download-item:
+//   «Ficha técnica» (Featured; emite arq:datasheet { sku }, como la ficha) y los
+//   de ese SKU (Default), solo con el nombre.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { getDownloadsTable, skuDownloads } from '../../data/catalog.js';
 import '../button/button.js';
 import '../variants-table/variants-table.js';
 import '../download-modal/download-modal.js';
-import '../download-file-row/download-file-row.js';
+import '../download-item/download-item.js';
 import css from './descargas.css?inline';
 
 const TEXT = {
@@ -97,7 +97,7 @@ class ArqDescargas extends ArqElement {
       if (!sku) return;
       const detail = { sku };
       this.emit('datasheet', detail);
-      const row = event.target.closest?.('arq-download-file-row');
+      const row = event.target.closest?.('arq-download-item');
       if (!row || !detail.pending) return;
       row.loading = true;
       const done = () => (row.loading = false);
@@ -179,15 +179,17 @@ class ArqDescargas extends ArqElement {
     modal.sku = sku;
     modal.meta = row?.meta ?? '';
     modal.thumb = row?.thumb ?? null;
-    for (const item of modal.querySelectorAll(':scope > arq-download-file-row')) item.remove();
-    modal.append(this.#fileRow(TEXT.datasheet));
+    for (const item of modal.querySelectorAll(':scope > arq-download-item')) item.remove();
+    const datasheet = this.#fileRow(TEXT.datasheet);
+    datasheet.emphasis = 'featured';
+    modal.append(datasheet);
     const files = await skuDownloads(sku);
     if (modal.sku !== sku) return;
     modal.append(...files.map((file) => this.#fileRow(file.label, file.href)));
   }
 
   #fileRow(label, href) {
-    const item = document.createElement('arq-download-file-row');
+    const item = document.createElement('arq-download-item');
     if (href) item.href = href;
     item.append(label);
     return item;

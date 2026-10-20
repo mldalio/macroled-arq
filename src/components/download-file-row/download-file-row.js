@@ -12,7 +12,8 @@
 // - Availability=Unavailable (la variante no tiene ese archivo): la página no
 //   pone la fila, como download-item. TODO (diseño): si se quiere mostrar la
 //   fila deshabilitada, falta ver la variante Unavailable del set.
-// - Sin slot meta, la fila muestra solo el nombre (Descargas, 2026-10-15).
+// - El formato (slot meta) es una variante: solo se ve con show-format (apagado
+//   por defecto; por ahora ninguna página lo usa). Sin slot meta, solo el nombre.
 // - Hover subraya el nombre (como download-item Default); Focus, anillo de
 //   DESIGN.md §7. No son props.
 // - loading (sin href): mientras se genera la ficha técnica el nombre pasa a
@@ -29,15 +30,18 @@ class ArqDownloadFileRow extends ArqElement {
   static styles = css;
   static properties = {
     href: { type: String }, // URL del archivo
+    showFormat: { type: Boolean }, // Show format: muestra el formato (slot meta). Apagado por defecto
     loading: { type: Boolean }, // generando la ficha técnica (sin href)
   };
   static template = `<div class="slot-host"></div>`;
 
   #control = null;
+  #syncMeta = null;
 
   update(changed) {
     this.setAttribute('role', 'listitem');
     if (changed.has('href') || !this.#control) this.#build();
+    this.#syncMeta?.();
     const busy = Boolean(this.loading && !this.href);
     this.#control.toggleAttribute('aria-busy', busy);
     this.#control.querySelector('.name').hidden = busy;
@@ -55,7 +59,8 @@ class ArqDownloadFileRow extends ArqElement {
         `<span class="meta role-body-compact-regular"><slot name="meta"></slot></span></span>${icon('download')}`;
       // Sin formato, la línea de meta no ocupa lugar
       const metaSlot = control.querySelector('slot[name="meta"]');
-      const syncMeta = () => (metaSlot.parentElement.hidden = !metaSlot.assignedNodes().length);
+      const syncMeta = () => (metaSlot.parentElement.hidden = !this.showFormat || !metaSlot.assignedNodes().length);
+      this.#syncMeta = syncMeta;
       metaSlot.addEventListener('slotchange', syncMeta);
       syncMeta();
       if (tag === 'button') {

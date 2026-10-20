@@ -133,7 +133,7 @@
   --arq-layout-measure-wide: 520px; /** Ancho máximo de un texto de lectura en una columna principal (título y bajada de page-header Detail). En Mobile el texto ocupa todo el ancho. */
   --arq-layout-gallery-thumb: 105px; /** Ancho de gallery-thumb en product-gallery (105 Desktop · 76 Mobile). El alto sale de ratio/landscape (5:4). */
   --arq-layout-filter-panel: 560px; /** Ancho de los paneles en Desktop: filter-panel (lateral sobre el scrim) y download-modal. En Mobile el CSS no usa este valor. */
-  --arq-layout-table-thumb: 100px; /** Miniatura cuadrada de cada fila de la tabla de variantes (glosario de la ficha). */
+  --arq-layout-table-thumb: 100px; /** Miniatura cuadrada de cada fila de variants-table (ficha y Descargas) (100). */
   --arq-layout-compare-thumb: 48px; /** Foto cuadrada de compare-slot Size=Default (compare-bar y compare-header Compact en Desktop). */
   --arq-layout-compare-slot: 400px; /** Ancho máximo de compare-slot Size=Default, para que no se estire en pantallas anchas. */
   --arq-layout-compare-label: 200px; /** Columna de etiquetas de la comparativa (compare-row, compare-group y la columna de controles de compare-header). En Mobile queda fija al desplazar. */
@@ -150,11 +150,11 @@
   --arq-layout-pdf-spec-label: 260px; /** Ancho fijo de la etiqueta de pdf-spec-row en la ficha técnica PDF (A4). El valor ocupa el resto de la fila. */
   --arq-layout-carousel-button: 44px; /** Lado del botón anterior/siguiente de los carruseles (cuadrado). */
   --arq-layout-catalog-nav: 240px; /** Ancho del sidebar catalog-nav en Productos y Colecciones (desde 1024 px). Hasta 1023 px se usa catalog-nav-mobile. */
-  --arq-layout-download-thumb: 72px; /** Miniatura cuadrada de cada fila y tarjeta de la tabla de Descargas (downloads-table) y del producto en el modal de descargas (download-modal show-product). */
+  --arq-layout-download-thumb: 72px; /** Miniatura cuadrada de cada tarjeta Mobile de variants-table (ficha y Descargas) (72) y del producto en el modal de descargas (download-modal show-product). */
   --arq-layout-catalog-cover: 168px; /** Ancho de la tapa del catálogo general en la página Descargas (168 Desktop · 104 Mobile). El alto sale de ratio/portrait-soft (4:5). */
-  --arq-layout-download-search: 480px; /** Ancho del buscador de la tabla de Descargas (downloads-table). En Mobile el campo ocupa el ancho disponible. */
+  --arq-layout-download-search: 480px; /** Ancho del buscador de variants-table Type=Catalog (Descargas). En Mobile el campo ocupa el ancho disponible. */
   --arq-layout-compare-picker-list: 400px; /** Alto de la lista de compare-picker en Desktop: 5 filas de compare-picker-item (80 cada una); las demás se desplazan adentro. En Mobile el CSS no usa este valor (la lista ocupa el alto que queda en la pantalla completa). */
-  --arq-layout-navbar-height: 56px; /** Alto de la barra del navbar (56 en todos los modos). Lo que queda fijo debajo del navbar (compare-header Compact, columna fija de la ficha) se ubica a esta distancia del borde superior. */
+  --arq-layout-navbar-height: 56px; /** Alto de la barra del navbar (56 en todos los modos). Lo que queda fijo debajo del navbar (compare-header Compact, columna fija de la ficha, barra de variants-table) se ubica a esta distancia del borde superior. */
   --arq-layout-mega-link-thumb: 60px; /** Miniatura cuadrada de mega-link (Show image), en el menú Mobile y en las colecciones del mega-menu. */
   --arq-layout-result-thumb: 100px; /** Miniatura cuadrada de search-result Type=Simple (resultado grande, sin SKU): 100 en Desktop, Tablet y Large; 76 en Mobile. */
   --arq-layout-gallery-thumb-overlay: 66px; /** Ancho de gallery-thumb cuando las miniaturas van sobre la foto (product-gallery que llena el alto, Ficha v2, desde 1024 px). El alto sale de ratio/landscape (5:4). */

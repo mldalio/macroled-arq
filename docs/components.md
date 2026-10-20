@@ -95,7 +95,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [tab](#tab) | `<arq-tab>` | En código ([README](../src/components/tab/README.md)) |
 | ✅ [toggle](#toggle) | `<arq-toggle>` | En código ([README](../src/components/toggle/README.md)) |
 | ✅ [toggle-switch](#toggle-switch) | — | Dentro de toggle ([README](../src/components/toggle/README.md)) |
-| ✅ [variants-table](#variants-table) | `<arq-variants-table>` | En código ([README](../src/components/variants-table/README.md)) · Un solo componente para la ficha (`type="product"`) y Descargas (`type="catalog"`, propuesta 2575:22875); reemplaza a `<arq-downloads-table>` (2026-10-20). TODO: sumar la prop Type al set de Figma |
+| ✅ [variants-table](#variants-table) | `<arq-variants-table>` | En código ([README](../src/components/variants-table/README.md)) · Un solo componente para la ficha (`type="product"`) y Descargas (`type="catalog"`, propuesta 2575:22875); reemplaza a `<arq-downloads-table>` (2026-10-20). El set de Figma ya tiene Type (Product · Catalog) y Breakpoint (2026-10-20) |
 | ✅ [variants-table-card](#variants-table-card) | dentro de `<arq-variants-table>` | En código, como parte de variants-table (Mobile) ([README](../src/components/variants-table/README.md)) |
 | ✅ [variants-table-row](#variants-table-row) | — | Dentro de variants-table ([README](../src/components/variants-table/README.md)) · Ficha v2 |
 
@@ -826,7 +826,7 @@ Switch del toggle (pista + círculo), compartido por todas las variantes de togg
 ## variants-table
 
 - Figma: [1068-5582](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1068-5582)
-- Propiedades: Type: Product · Catalog; Breakpoint: Desktop · Mobile
+- Propiedades: Type: Product · Catalog; State: Default · Applied; Breakpoint: Desktop · Mobile; Show more
 
 Tabla de variantes: un solo componente para la ficha (Type=Product, los SKU de un grupo) y la página Descargas (Type=Catalog, todos los SKU del catálogo). Breakpoint: Desktop · Mobile (hasta 767 px).
 
@@ -835,6 +835,8 @@ Barra. Product: botón Filtros (Filled, icon/filter) con la cantidad («4 varian
 Tabla (Desktop). Header + una fila por SKU (variants-table-row). Columnas, en este orden: Acabado, Tamaño (en mm), Potencia, Temp., CRI, Flujo lum., Ángulo, Eficiencia, IP, Regulación. Encabezado en role/body-compact-regular (text/tertiary) con fondo surface/soft; valores en role/body-compact-regular (text/primary); sku Size=Dense; en Type=Catalog el nombre del producto, subrayado, sobre el sku (Show name). Las columnas de datos miden lo mismo (la de valor más largo, calculado en código) y el ancho que sobra se reparte entre ellas; una columna con un valor muy largo (Tamaño, Regulación) mide lo suyo. Miniatura layout/table-thumb (100). Miniatura, sku (desde 1024 px) y Descargas quedan fijas con position: sticky; mientras queda tabla por ver, un difuminado de space/gap/3xl junto a las columnas fijas lo avisa. Abajo, la línea de progreso de las columnas (la de carousel-controls de la Home: trazo de border/strong sobre una pista fina, sin flechas, a todo el ancho): se muestra solo si la tabla no entra en el ancho y queda pegada al borde inferior de la pantalla.
 
 Mobile (hasta 767 px): en lugar de la tabla, una variants-table-card por variante. Los filtros se abren en filter-panel (panel lateral en Desktop, pantalla completa en Mobile).
+
+State=Applied: los filtros aplicados como filter-chip y «Limpiar filtros» debajo de la barra (Catalog Desktop: a la derecha, debajo de Filtros; Mobile: debajo de todo). Show more (solo Catalog): botón «Ver más productos» (Outline) centrado al final; en código suma otras 100 filas.
 
 Jerarquía de texto: nombre, sku, datos y encabezados en 14 px hasta 1919 px y en 16 px desde 1920 px (el nombre sigue en 14).
 

@@ -56,7 +56,7 @@ class ArqDownloadModal extends ArqElement {
     `<div class="sheet">` +
     `<div class="header">` +
     `<div class="title-wrap">` +
-    `<div class="title role-heading-1"><slot name="title"></slot></div>` +
+    `<div class="title role-heading-2"><slot name="title"></slot></div>` +
     `<arq-sku class="sku" size="compact" hidden></arq-sku>` +
     `</div>` +
     `<arq-icon-button icon="close" size="large" class="close">Cerrar descargas</arq-icon-button>` +
