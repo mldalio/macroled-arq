@@ -777,4 +777,30 @@ export async function getNavigation() {
   };
 }
 
+// Links de catalog-nav (sidebar de Productos). Los grupos (Interior, Exterior,
+// Lámparas y artefactos, Colecciones) y su "Todo…" están fijos en el HTML de
+// la página; esto trae lo de adentro. Solo las categorías con productos.
+export async function getCatalogNav() {
+  const { groups: all, collections } = await loadCatalog();
+  const groups = all.filter((g) => g.hasDefault);
+  const count = (filter) => groups.filter((g) => inCategory(g, filter) && isListed(g, filter.productType)).length;
+  const link = (label, filter) => ({ label, href: categoryHref(filter), count: count(filter) });
+  const environment = (env) => {
+    const applications = [...new Set(groups.filter((g) => g.productType === 'Luminaria' && g.environment.includes(env)).map((g) => g.application).filter(Boolean))];
+    return [
+      ...applications.map((application) => link(application, { environment: env, application, productType: 'Luminaria' })),
+      link('Artefactos', { environment: env, productType: 'Artefacto' }),
+      link('Lámparas', { environment: env, productType: 'Lámpara' }),
+    ].filter((l) => l.count);
+  };
+  return {
+    interior: environment('Interior'),
+    exterior: environment('Exterior'),
+    'lamparas-artefactos': [link('Lámparas', { productType: 'Lámpara' }), link('Artefactos', { productType: 'Artefacto' })].filter((l) => l.count),
+    colecciones: collections
+      .filter((c) => groups.some((g) => g.collection === c.id))
+      .map((c) => ({ label: c.name, href: categoryHref({ collection: c.id }) })),
+  };
+}
+
 export { ATTRIBUTES };

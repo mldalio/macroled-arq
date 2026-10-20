@@ -151,7 +151,7 @@ class ArqMegaMenu extends ArqElement {
   }
 
   // Por espacio y Lámparas y artefactos: una columna por sección, con título
-  // (role/heading-1), links y "Ver todo…" (→) al pie.
+  // (role/heading-1), links y "Ver todo…" (↗) al pie.
   #sectionColumns(sections) {
     return (
       `<div class="columns">` +
@@ -161,7 +161,7 @@ class ArqMegaMenu extends ArqElement {
             `<div class="column">` +
             `<div class="top"><p class="title role-heading-1">${esc(section.label)}</p>` +
             `<div class="links">${section.links.map((l) => this.#link(l, `${section.label} · ${l.label}`)).join('')}</div></div>` +
-            `<arq-button class="all" type="underline" show-underline show-icon icon="arrow-right" href="${esc(section.all.href)}">${esc(section.all.label)}</arq-button>` +
+            `<arq-button class="all" type="underline" show-underline show-icon icon="arrow-up-right" href="${esc(section.all.href)}">${esc(section.all.label)}</arq-button>` +
             `</div>`,
         )
         .join('') +
