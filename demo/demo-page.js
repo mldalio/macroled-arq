@@ -104,6 +104,21 @@ if (load) {
   fillContacto(name === 'contacto' ? dataMode() : null);
 } else document.body.textContent = `No existe src/pages/${name}.html`;
 
+// Links que los componentes agregan después (catalog-nav desde Typesense):
+// también pasan a su demo, así el link actual coincide con la URL.
+new MutationObserver((records) => {
+  for (const record of records) {
+    for (const node of record.addedNodes) {
+      if (node.nodeType !== Node.ELEMENT_NODE) continue;
+      for (const link of [node, ...node.querySelectorAll('[href^="/arq"]')]) {
+        const href = link.getAttribute('href');
+        const demo = href?.startsWith('/arq') ? demoHref(href) : null;
+        if (demo) link.setAttribute('href', demo);
+      }
+    }
+  }
+}).observe(document.body, { subtree: true, childList: true });
+
 document.addEventListener('click', (event) => {
   if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey) return;
   const link = event.composedPath().find((node) => node.localName === 'a' && node.hasAttribute('href'));

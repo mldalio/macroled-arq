@@ -7633,7 +7633,11 @@ var Wo = ":host{box-sizing:border-box;min-width:0;padding:0 var(--page-gutter) v
 	setup() {
 		new URLSearchParams(location.search).get("view") === "colecciones" && (this.unit = "colecciones");
 		let e = this.shadowRoot;
-		this.#e = Zo(), this.#t = new URLSearchParams(location.search).get("q")?.trim() ?? "", e.querySelector("slot[name=\"nav\"]").addEventListener("slotchange", () => this.#w()), this.#C(), e.addEventListener("click", this.#s), document.querySelector("arq-page-header")?.addEventListener("click", this.#s), fi(!1), e.querySelector(".grid").addEventListener("click", (e) => {
+		this.#e = Zo(), this.#t = new URLSearchParams(location.search).get("q")?.trim() ?? "", e.querySelector("slot[name=\"nav\"]").addEventListener("slotchange", () => this.#w()), new MutationObserver(() => this.#w()).observe(this, {
+			subtree: !0,
+			attributes: !0,
+			attributeFilter: ["href"]
+		}), this.#C(), e.addEventListener("click", this.#s), document.querySelector("arq-page-header")?.addEventListener("click", this.#s), fi(!1), e.querySelector(".grid").addEventListener("click", (e) => {
 			e.composedPath().some((e) => e.localName === "a" && e.hasAttribute("href")) && fi(document.documentElement.getAttribute("data-arq-theme") === "dark");
 		}), window.addEventListener("popstate", this.#c);
 		let t = e.querySelector("arq-filter-panel");
