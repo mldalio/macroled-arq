@@ -1,0 +1,62 @@
+/* carousel-button · Figma 2387:8532. Solo tokens semánticos.
+   Cuadrado layout/carousel-button, borde color/border/disabled, chevron icon/md. */
+
+:host {
+  display: inline-flex;
+  flex: none;
+  vertical-align: middle;
+  color: var(--arq-color-icon-primary);
+}
+
+.control {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--arq-layout-carousel-button);
+  height: var(--arq-layout-carousel-button);
+  margin: 0;
+  padding: 0;
+  border: var(--arq-border-default) solid var(--arq-color-border-disabled);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-default);
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+}
+
+.glyph {
+  display: inline-flex;
+}
+
+.icon {
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+}
+
+.control:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.control:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.control:enabled:hover {
+  background: var(--arq-color-surface-hover);
+}
+
+.control:enabled:active {
+  background: var(--arq-color-surface-selected);
+}
+
+/* State=Disabled: fondo color/surface/subtle. El chevron pasa a color/icon/disabled. */
+:host([disabled]) {
+  color: var(--arq-color-icon-disabled);
+}
+
+:host([disabled]) .control {
+  background: var(--arq-color-surface-subtle);
+  cursor: default;
+}

@@ -134,8 +134,28 @@
   overflow-wrap: break-word;
 }
 
-/* Acabados: gap space/gap/xs; swatch Small (16) en Large y en Small */
+/* Small (y Large hasta 767 px): info a space/gap/md, y el nombre y los acabados
+   uno debajo del otro (columna) a space/gap/sm, con los acabados también a
+   space/gap/sm (el set, Size=Small) */
+.is-small .info {
+  gap: var(--arq-space-gap-md);
+}
+
+.is-small .title {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.is-small .finishes {
+  gap: var(--arq-space-gap-sm);
+}
+
+/* Acabados: gap space/gap/xs; swatch Small (16) en Large y en Small. Elegible
+   (role="radiogroup"): el swatch trae Hover y Selected; por encima del ::after
+   del link estirado para recibir el clic */
 .finishes {
+  position: relative;
+  z-index: var(--card-above);
   display: flex;
   flex: none;
   align-items: center;

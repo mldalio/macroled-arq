@@ -1,0 +1,84 @@
+/* tool-card · Home v2. Solo tokens semánticos.
+   TODO (diseño): Grande es 520×642 y Chico 311×369; no hay ratio/*.
+   El Home usa esas proporciones un 10 % más bajas (520/578 y 311/332). */
+
+:host {
+  display: block;
+  flex: 1 1 0;
+  min-width: 0;
+  color: var(--arq-color-text-primary);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-md);
+  color: inherit;
+  text-decoration: none;
+}
+
+.card:focus {
+  outline: none;
+}
+
+.card:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 311 / 332;
+  background: var(--arq-color-surface-strong);
+  overflow: hidden;
+}
+
+:host([size='large']) .media {
+  aspect-ratio: 520 / 578;
+}
+
+::slotted([slot='image']) {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+
+.placeholder {
+  padding: var(--arq-space-padding-md);
+  color: var(--arq-color-text-tertiary);
+  text-align: center;
+}
+
+.caption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xs);
+  min-width: 0;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-sm);
+}
+
+.title,
+.subtitle {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.subtitle {
+  color: var(--arq-color-text-secondary);
+}
+
+.icon {
+  flex: none;
+  width: var(--arq-icon-lg);
+  height: var(--arq-icon-lg);
+  color: var(--arq-color-icon-primary);
+}

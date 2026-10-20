@@ -19,8 +19,8 @@ panel.addEventListener('arq:apply', (e) => (toolbar.count = aplicar(e.detail.fil
 | --- | --- | --- | --- |
 | Count | `count` | `count` | Número de resultados. Se muestra con su sustantivo y separador de miles: "1 producto", "11 productos", "1.500 productos" |
 | — | `unit` | `unit` | `productos` · `colecciones`. Por defecto `productos` |
-| State | `state` | `state` | `default` · `scroll`. Por defecto `default`. Lo pone el listado al desplazarse |
 | Show iluminar | `show-iluminar` | `showIluminar` | booleano. En Figma viene en `true`; en código hay que escribirlo |
+| — (solo código) | `stuck` | `stuck` | booleano. Lo pone el listado mientras la barra está pegada debajo del navbar: la línea superior pasa a `color/surface/transparent` (sin cambiar el alto), para que no se vea doble con la del navbar |
 | — | `for` | `for` | `id` del `arq-filter-panel` que abre Filtrar |
 | button · Show count | `filter-count` | `filterCount` | Filtros aplicados. Con `for` se actualiza solo al aplicar |
 | Breakpoint | — | — | Media query: hasta 767 px es Mobile |
@@ -28,7 +28,7 @@ panel.addEventListener('arq:apply', (e) => (toolbar.count = aplicar(e.detail.fil
 - **Count** va en un `aria-live="polite"`: se anuncia cuando la página lo cambia al filtrar.
 - **Filtrar:** button Outline con `icon/filter`. Con filtros aplicados muestra la cantidad (Show count) y pasa a `icon/filter-off`; para lectores de pantalla dice "Filtrar, 3 filtros activos" y que abre un diálogo (`aria-haspopup="dialog"`, `aria-controls` al panel). Con `for` abre el panel y el foco vuelve al botón al cerrarlo. Sin `for`, emite `arq:filter-open`.
 - **Iluminar** (decisión 2026-10-02 · catalog-toolbar): pone `data-arq-theme="dark"` en `<html>` (toda la página pasa a Dark y las product-card a sus imágenes encendidas) y no se recuerda: al recargar o volver a la página arranca apagado. Si se entra a un producto con Iluminar encendido, la ficha llega iluminada (`handOffTheme` de `src/base/theme.js`, en `sessionStorage` por 10 s). El toggle sigue a `<html>` si otro lo cambia. La ficha tiene su propio Iluminar (navbar, hero y foto) y no usa esta preferencia. El cambio es un fundido de toda la pantalla con View Transitions (`switchTheme` de `src/base/theme.js`, `--arq-illumination-bg-duration`), sin una transición por elemento; sin soporte, cada elemento funde por su cuenta (decisión 2026-10-16 · Iluminar sin saltos).
-- **State=Scroll:** la barra queda fija al desplazarse el listado. Pasa a padding vertical `space/padding/sm`. No muestra el nombre de la página (se sacó el 2026-10-19).
+- **Al desplazarse:** el listado la deja fija debajo del navbar, sin cambiarle el tamaño: mantiene el padding vertical `space/padding/md` (se sacó State=Scroll el 2026-10-19).
 - El divider va en la misma fila que el toggle: mide 20 (el alto del toggle), como el set.
 
 ## Tokens
@@ -38,6 +38,5 @@ panel.addEventListener('arq:apply', (e) => (toolbar.count = aplicar(e.detail.fil
 | Líneas | `border/default` en `color/border/subtle` arriba y abajo (el set; la ficha dice solo abajo) |
 | Padding vertical | `space/padding/md` (alto 70 con el botón) |
 | Count | `role/body` en `color/text/secondary`, en una línea |
-| Padding vertical en Scroll | `space/padding/sm` |
 | Gap entre acciones | `space/gap/xl` en Desktop, `space/gap/lg` en Mobile (el set; la ficha dice `lg` en los dos) |
 | Toggle · divider · Filtrar | toggle (Show label) · divider Vertical Subtle · button Outline |

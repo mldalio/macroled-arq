@@ -23,7 +23,7 @@ menu.navigation = await getNavigation(); // src/data/catalog.js
 
 - **Un solo componente:** pestañas, columnas, links y "Ver todo…" salen de los datos. Una pestaña sin datos no se muestra.
 - **Por espacio:** columnas Interior y Exterior; **Lámparas y artefactos:** un link por producto. Cada columna con título `role/heading-1`, `arq-mega-link` y su "Ver todo…" (button Underline con →) al pie; los dos "Ver todo…" quedan alineados abajo. **Colecciones:** título, links con bajada en cuatro columnas y "Ver todas las colecciones" (↗, como el frame).
-- **Preview:** a la derecha, la foto del link con el mouse encima o con el foco, con eyebrow (`role/label`) y nombre (`role/heading-2`) en `color/text/inverse` sobre un degradado. Por espacio: "Interior · Colgante"; Colecciones: "Línea Interior". Al cambiar de pestaña muestra el primer link. Sin foto: `color/surface/subtle`, sin texto. Es decorativo (`aria-hidden`).
+- **Preview:** a la derecha, la foto del link con el mouse encima o con el foco, con eyebrow (`role/label`) y nombre (`role/heading-2`) en `color/text/inverse` sobre un degradado. Por espacio: "Interior · Colgante"; Colecciones: "Línea Interior". Al cambiar de pestaña muestra el primer link. Sin foto: `color/surface/subtle`, sin texto. Es decorativo (`aria-hidden`). En Tablet (768–1023 px) no se muestra: las columnas toman todo el ancho, con `layout/gutter` a los dos lados (`TODO` diseño: el set no tiene Tablet).
 - **Pestañas:** `arq-tab` en un `role="tablist"` (SingleSelect): ← → cambian de pestaña, Inicio / Fin. Cada panel es `role="tabpanel"`.
 - **No se abre solo:** lo muestra y lo oculta el navbar (`hidden`).
 

@@ -32,6 +32,7 @@ Botón del sistema en tres jerarquías: Filled (acción principal), Outline (sec
 | — | `href` | `href` | Con `href` se dibuja un `<a>` (navegación); sin `href`, un `<button type="button">` |
 | — | `target` | `target` | Para links. Con `_blank` suma `rel="noopener"` |
 | — | `submit` | `submit` | booleano · envía el `<form>` del que es parte (ElementInternals + `requestSubmit()`): corre la validación y dispara `submit`, como un botón nativo. No es prop de Figma (`type` ya es Filled · Outline · Underline) |
+| — | `compact` | `compact` | booleano · texto en `role/body-compact-regular` (14/24) en lugar de `role/body-regular` (16/24). Solo de código: lo usa announcement-bar. En Figma es un override del estilo del label en la instancia de button del set announcement-bar (2780:8595) |
 
 - Los booleanos son atributos de presencia (AGENTS.md): Show icon y Show underline, que en Figma valen `true` por defecto, en código están desactivados hasta que se escribe el atributo.
 - Hover, Pressed y Focus no son props: `:hover`, `:active`, `:focus-visible`.

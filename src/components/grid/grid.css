@@ -34,6 +34,42 @@
   min-width: 0;
 }
 
+/* editorial · Home v2, Explorar por espacio.
+   Las tres fotos tienen el mismo ancho. El alto de la fila no cambia.
+   Las fotos no siguen el padding de la sección: llegan al borde. El título
+   se queda con ese margen. */
+:host([layout='editorial']) {
+  margin-inline: calc(var(--section-inline, 0px) * -1);
+  width: calc(100% + var(--section-inline, 0px) * 2);
+}
+@media (min-width: 768px) {
+  .grid.editorial {
+    display: flex;
+    align-items: stretch;
+    /* Figma usa space/5 (5 px). No hay token semántico entre gap/xs (4) y gap/sm (8). */
+    gap: var(--arq-space-5);
+    /* Alto de las cerradas del frame (614 sobre 1440). El ancho lo reparte el flex. */
+    aspect-ratio: 1440 / 614;
+  }
+
+  .grid.editorial ::slotted(*) {
+    flex: 1 1 0;
+    min-width: 0;
+    align-self: stretch;
+  }
+}
+
+/* stagger · PRUEBA (2026-10-06, fuera de Figma): en Desktop las tarjetas
+   pares bajan space/section/xl + space/section/sm (líneas del Home: Sento
+   más abajo que Douli). Si se descarta, borrar esta regla y el atributo
+   stagger de home.html.
+   TODO (diseño): no hay token para este desplazamiento; se suman dos. */
+@media (min-width: 768px) {
+  :host([stagger]) ::slotted(:nth-child(even)) {
+    margin-top: calc(var(--arq-space-section-xl) + var(--arq-space-section-sm));
+  }
+}
+
 @media (max-width: 767px) {
   .grid.auto {
     gap: var(--arq-space-gap-xl) var(--arq-space-gap-md);
@@ -87,4 +123,11 @@
     width: calc((100cqi - var(--arq-layout-gutter)) * 0.8);
     scroll-snap-align: start;
   }
+}
+
+/* gap="sm": space/gap/sm entre tarjetas en Desktop y Mobile (también en el
+   carrusel). Va al final para ganarle a los gaps de arriba. */
+:host([gap='sm']) .grid,
+:host([gap='sm'][mobile='carousel']) .grid {
+  gap: var(--arq-space-gap-sm);
 }

@@ -20,6 +20,7 @@
 
 import { ArqElement } from '../../base/arq-element.js';
 import '../icon-button/icon-button.js';
+import '../carousel-button/carousel-button.js';
 import css from './carousel-controls.css?inline';
 
 const POSITIONS = ['start', 'middle', 'end'];
@@ -30,13 +31,25 @@ class ArqCarouselControls extends ArqElement {
   static properties = {
     position: { type: String, values: POSITIONS, default: 'start' }, // Position
     for: { type: String }, // id del contenedor con scroll
+    step: { type: String, values: ['page', 'item'], default: 'page' }, // page: un ancho visible; item: una tarjeta
     labelPrev: { type: String, default: 'Anterior' },
     labelNext: { type: String, default: 'Siguiente' },
+    // Solo código. icon: icon-button Large (Colección). carousel: carousel-button
+    // de Figma (Destacados y Proyectos de la Home).
+    buttons: { type: String, values: ['icon', 'carousel'], default: 'icon' },
+    index: { type: Number, default: 0 }, // slide actual, desde 0
+    count: { type: Number, default: 1 }, // cantidad de slides
   };
   static template =
     `<div class="controls" role="group">` +
-    `<arq-icon-button class="prev" size="large" icon="arrow-left"></arq-icon-button>` +
-    `<arq-icon-button class="next" size="large" icon="arrow-right"></arq-icon-button>` +
+    `<p class="count role-caption" hidden></p>` +
+    `<div class="progress" hidden><span class="track"></span><span class="indicator"></span></div>` +
+    `<div class="arrows">` +
+    `<arq-icon-button class="prev icon" size="large" icon="arrow-left"></arq-icon-button>` +
+    `<arq-carousel-button class="prev square" direction="previous" hidden></arq-carousel-button>` +
+    `<arq-icon-button class="next icon" size="large" icon="arrow-right"></arq-icon-button>` +
+    `<arq-carousel-button class="next square" direction="next" hidden></arq-carousel-button>` +
+    `</div>` +
     `</div>`;
 
   #target = null;
@@ -50,8 +63,18 @@ class ArqCarouselControls extends ArqElement {
 
   setup() {
     const root = this.shadowRoot;
-    root.querySelector('.prev').addEventListener('click', () => this.#go(-1));
-    root.querySelector('.next').addEventListener('click', () => this.#go(1));
+    for (const button of root.querySelectorAll('.prev')) button.addEventListener('click', () => this.#go(-1));
+    for (const button of root.querySelectorAll('.next')) button.addEventListener('click', () => this.#go(1));
+  }
+
+  /** El par visible: icon-button o carousel-button. */
+  #pair() {
+    const kind = this.buttons === 'carousel' ? 'square' : 'icon';
+    const root = this.shadowRoot;
+    return {
+      prev: root.querySelector(`.prev.${kind}`),
+      next: root.querySelector(`.next.${kind}`),
+    };
   }
 
   // ArqElement corre setup() y update() solo en la primera conexión; si el
@@ -67,11 +90,18 @@ class ArqCarouselControls extends ArqElement {
 
   update(changed) {
     const root = this.shadowRoot;
-    const prev = root.querySelector('.prev');
-    const next = root.querySelector('.next');
-    if (changed.has('labelPrev')) prev.textContent = this.labelPrev;
-    if (changed.has('labelNext')) next.textContent = this.labelNext;
+    const carousel = this.buttons === 'carousel';
+    for (const button of root.querySelectorAll('.icon')) button.hidden = carousel;
+    for (const button of root.querySelectorAll('.square')) button.hidden = !carousel;
+    const { prev, next } = this.#pair();
+    if (changed.has('labelPrev') || changed.has('buttons')) {
+      for (const button of root.querySelectorAll('.prev')) button.textContent = this.labelPrev;
+    }
+    if (changed.has('labelNext') || changed.has('buttons')) {
+      for (const button of root.querySelectorAll('.next')) button.textContent = this.labelNext;
+    }
     root.querySelector('.controls').setAttribute('aria-label', `${this.labelPrev} / ${this.labelNext}`);
+    this.#progress();
 
     if (changed.has('for')) this.#connectTarget();
 
@@ -109,8 +139,9 @@ class ArqCarouselControls extends ArqElement {
     this.#children.observe(target, { childList: true });
     this.#observeChildren();
     // aria-controls hacia el carrusel (los botones están dentro de icon-button)
-    customElements.whenDefined('arq-icon-button').then(() => {
-      for (const button of this.shadowRoot.querySelectorAll('arq-icon-button')) {
+    const tag = this.buttons === 'carousel' ? 'arq-carousel-button' : 'arq-icon-button';
+    customElements.whenDefined(tag).then(() => {
+      for (const button of this.shadowRoot.querySelectorAll(tag)) {
         const control = button.shadowRoot?.querySelector('button');
         if (control && 'ariaControlsElements' in control) control.ariaControlsElements = [target];
       }
@@ -141,9 +172,49 @@ class ArqCarouselControls extends ArqElement {
     const scrollable = max > 1;
     if (scrollable !== this.#scrollable) {
       this.#scrollable = scrollable;
-      this.shadowRoot.querySelector('.next').disabled = !scrollable || position === 'end';
+      this.#pair().next.disabled = !scrollable || position === 'end';
     }
     if (position !== this.position) this.position = position;
+    if (this.buttons === 'carousel') this.#progressFromScroll(target);
+  }
+
+  /** La línea de Home: un tramo por slide, sobre la pista. */
+  #progress() {
+    const root = this.shadowRoot;
+    const count = Math.max(this.count || 1, 1);
+    const index = Math.min(Math.max(this.index || 0, 0), count - 1);
+    const show = this.buttons === 'carousel' && count > 1;
+    const countEl = root.querySelector('.count');
+    const progress = root.querySelector('.progress');
+    countEl.hidden = !show;
+    progress.hidden = !show;
+    const current = String(index + 1).padStart(2, '0');
+    const total = String(count).padStart(2, '0');
+    countEl.textContent = `${current} / ${total}`;
+    progress.style.setProperty('--progress-count', String(count));
+    progress.style.setProperty('--progress-index', String(index));
+    progress.setAttribute('role', 'progressbar');
+    progress.setAttribute('aria-valuemin', '1');
+    progress.setAttribute('aria-valuemax', String(count));
+    progress.setAttribute('aria-valuenow', String(index + 1));
+    progress.setAttribute('aria-valuetext', `${index + 1} de ${count}`);
+  }
+
+  #progressFromScroll(target) {
+    const children = [...target.children];
+    const count = Math.max(children.length, 1);
+    const first = children[0];
+    const gap = first ? Number.parseFloat(getComputedStyle(target).columnGap || getComputedStyle(target).gap) || 0 : 0;
+    const step = first ? first.getBoundingClientRect().width + gap : target.clientWidth || 1;
+    const index = Math.min(count - 1, Math.max(0, Math.round(target.scrollLeft / Math.max(step, 1))));
+    if (this.count !== count) this.count = count;
+    if (this.index !== index) this.index = index;
+    else this.#progress();
+  }
+
+  /** Avanza o retrocede un paso (page o item). Lo usa el autoplay del Home. */
+  go(direction) {
+    this.#go(direction);
   }
 
   #go(direction) {
@@ -152,8 +223,11 @@ class ArqCarouselControls extends ArqElement {
       this.emit(direction < 0 ? 'prev' : 'next');
       return;
     }
+    const item = this.step === 'item' ? target.children[0] : null;
+    const gap = item ? Number.parseFloat(getComputedStyle(target).columnGap || getComputedStyle(target).gap) || 0 : 0;
+    const amount = item ? item.getBoundingClientRect().width + gap : target.clientWidth;
     target.scrollBy({
-      left: direction * target.clientWidth,
+      left: direction * amount,
       behavior: this.#reducedMotion.matches ? 'auto' : 'smooth',
     });
   }

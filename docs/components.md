@@ -5,22 +5,23 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 - Si este archivo no coincide con Figma, manda Figma y se actualiza este archivo.
 - Al crear o modificar un componente en código, actualizar su **Estado en código** y su marca.
 
-**83 de 85 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
+**84 de 86 en código.** ✅ en código (en `main`, con README y en la demo) · ⬜ pendiente · ⏸️ en espera de diseño.
 
 | Componente | Etiqueta | Estado en código |
 | --- | --- | --- |
 | ✅ [accordion-item](#accordion-item) | `<arq-accordion-item>` | En código ([README](../src/components/accordion-item/README.md)) |
+| ✅ [announcement-bar](#announcement-bar) | `<arq-announcement-bar>` | En código ([README](../src/components/announcement-bar/README.md)). Solo en la Home, antes del navbar |
 | ✅ [breadcrumb](#breadcrumb) | `<arq-breadcrumb>` | En código ([README](../src/components/breadcrumb/README.md)) |
 | ✅ [breadcrumb-item](#breadcrumb-item) | `<arq-breadcrumb-item>` | En código ([README](../src/components/breadcrumb-item/README.md)) |
 | ✅ [button](#button) | `<arq-button>` | En código ([README](../src/components/button/README.md)) |
-| ⬜ [carousel-button](#carousel-button) | — | Pendiente. Hoy los carruseles usan `<arq-carousel-controls>` |
+| ✅ [carousel-button](#carousel-button) | `<arq-carousel-button>` | En código ([README](../src/components/carousel-button/README.md)). Lo usan los sliders de la Home (`buttons="carousel"`) |
 | ✅ [carousel-controls](#carousel-controls) | `<arq-carousel-controls>` | En código ([README](../src/components/carousel-controls/README.md)) |
 | ✅ [catalog-nav](#catalog-nav) | `<arq-catalog-nav>` | En código ([README](../src/components/catalog-nav/README.md)) |
 | ✅ [catalog-nav-group](#catalog-nav-group) | `<arq-catalog-nav-group>` | En código ([README](../src/components/catalog-nav-group/README.md)) |
 | ✅ [catalog-nav-item](#catalog-nav-item) | `<arq-catalog-nav-item>` | En código ([README](../src/components/catalog-nav-item/README.md)) |
 | ✅ [catalog-nav-mobile](#catalog-nav-mobile) | — | Dentro de catalog-nav ([README](../src/components/catalog-nav/README.md)) |
 | ✅ [catalog-nav-trigger](#catalog-nav-trigger) | — | Dentro de catalog-nav ([README](../src/components/catalog-nav/README.md)) |
-| ✅ [catalog-toolbar](#catalog-toolbar) | `<arq-catalog-toolbar>` | En código ([README](../src/components/catalog-toolbar/README.md)) · State=Scroll sin nombre de la página |
+| ✅ [catalog-toolbar](#catalog-toolbar) | `<arq-catalog-toolbar>` | En código ([README](../src/components/catalog-toolbar/README.md)) · sin State=Scroll |
 | ✅ [category-card](#category-card) | `<arq-category-card>` | En código ([README](../src/components/category-card/README.md)) |
 | ✅ [checkbox](#checkbox) | `<arq-checkbox>` | En código ([README](../src/components/checkbox/README.md)) |
 | ✅ [choice-chip](#choice-chip) | `<arq-choice-chip>` | En código ([README](../src/components/choice-chip/README.md)) · Selected en `color/surface/inverse` |
@@ -104,10 +105,16 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 
 | Componente | Etiqueta | Para qué |
 | --- | --- | --- |
-| ✅ section | `<arq-section>` | Bloque de página: gutter, padding de sección y encabezado → contenido → acción ([README](../src/components/section/README.md)) |
+| ✅ section | `<arq-section>` | Bloque de página: gutter, padding de sección y encabezado → contenido → acción. Con `reveal`, el bloque entero aparece al entrar en pantalla. El margen lateral es de títulos y textos; Explorar, el mosaico y el carrusel de proyectos llegan al borde ([README](../src/components/section/README.md)) |
 | ✅ grid | `<arq-grid>` | Grilla de tarjetas; en Mobile apila, dos columnas o carrusel ([README](../src/components/grid/README.md)) |
 | ✅ project-mosaic | `<arq-project-mosaic>` | Mosaico de fotos de proyectos del Home (DESIGN.md §12) ([README](../src/components/project-mosaic/README.md)) |
-| ✅ featured-products | `<arq-featured-products>` | Productos destacados del Home, por grupo, con datos del catálogo ([README](../src/components/featured-products/README.md)) |
+| ✅ featured-products | `<arq-featured-products>` | Productos destacados del Home, por grupo, con datos del catálogo. La fila se desliza con el dedo o el mouse ([README](../src/components/featured-products/README.md)) |
+| ✅ text-block | `<arq-text-block>` | Kicker, título y bajada de una escena del Home ([README](../src/components/text-block/README.md)) |
+| ✅ collection-tile | `<arq-collection-tile>` | Tarjeta del mosaico de colecciones del Home ([README](../src/components/collection-tile/README.md)) |
+| ✅ collection-mosaic | `<arq-collection-mosaic>` | Mosaico de colecciones del Home ([README](../src/components/collection-mosaic/README.md)) |
+| ✅ tool-card | `<arq-tool-card>` | Recurso de «Herramientas para proyectar» ([README](../src/components/tool-card/README.md)) |
+| ✅ project-slide | `<arq-project-slide>` | Slide del carrusel de proyectos del Home ([README](../src/components/project-slide/README.md)) |
+| ✅ project-slider | `<arq-project-slider>` | Carrusel de proyectos del Home, en bucle. Con `autoplay` avanza solo; se arrastra con el mouse y el clic abre la foto en un lightbox ([README](../src/components/project-slider/README.md)) |
 | ✅ catalog-listing | `<arq-catalog-listing>` | Listado de Productos (y Colecciones): nav, toolbar, grilla, filtros y comparar ([README](../src/components/catalog-listing/README.md)) |
 | ✅ coleccion | `<arq-coleccion>` | Página de colección: cards de sus productos, galería, texto + imagen y mosaico con flechas ([README](../src/components/coleccion/README.md)) |
 | ✅ form-contacto | `<arq-form-contacto>` | Contacto (v3): información por slot (fija al desplazar en Desktop), formulario con validación, honeypot y envío a n8n, y preguntas frecuentes opcionales por slot ([README](../src/components/form-contacto/README.md)) |
@@ -133,6 +140,13 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 - Propiedades: Title; Open: False · True; State: Default · Hover · Focus; Breakpoint: Desktop · Mobile
 
 Uso: bloques de especificaciones de la ficha (características lumínicas, eléctricas, materiales), con spec-list adentro. No confundir con faq-item. Ítem de acordeón de la ficha (botón con aria-expanded). Título role/body-xl. Open=False y Open=True: sin fondo, línea inferior border/default; ícono plus / minus en icon-button Size=Large, Background=Outline con borde border/default (48 × 48, ícono 24). Open=True: contenido libre (en la ficha, dos spec-list en columnas separadas por space/gap/4xl). Padding space/padding/xl-2xl arriba y abajo cerrado, space/padding/lg abierto, space/padding/xl a los lados; gap título–contenido space/gap/xs. State: Default, Hover (solo Open=False: surface/faint), Focus (anillo border/focus).
+
+## announcement-bar
+
+- Figma: [2780-8595](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2780-8595) · ficha `doc/announcement-bar` (`2781:13825`)
+- Propiedades: Breakpoint: Desktop · Mobile
+
+Línea fina arriba del navbar, solo en la Home, con un aviso y su link (hoy «Suscribite al newsletter», a la sección Newsletter de la Home). Siempre en modo Dark (fijado en cada variante): fondo color/surface/default y no cambia con Iluminar. Padding space/padding/xs × layout/gutter; el link va centrado: button Type=Underline, Show underline=false (el subrayado aparece en hover), Show icon con icon/arrow-up-right y el label en role/body-compact-regular (14/24). En hover el subrayado es de 1 px (border/default) y va más pegado al texto que en el resto de los button. Alto 40. Breakpoint: Desktop · Mobile (en Mobile, si el texto no entra, baja de línea). Al hacer scroll se va con la página y el navbar queda pegado arriba. En código: <arq-announcement-bar> con el button por slot (atributo compact del button para el texto de 14).
 
 ## breadcrumb
 
@@ -199,7 +213,7 @@ Sidebar de filtros del catálogo (Interior abierto, resto cerrado). Compuesto po
 
 Grupo desplegable del sidebar de catálogo (catalog-nav). Encabezado: label role/body-xl (color/text/primary abierto, color/text/secondary cerrado) e icon-button Size=Default, Background=None con icon/chevron-up (Open=True) o icon/chevron-down (Open=False). Open=True muestra la lista de catalog-nav-item con sangría space/padding/lg y un riel (línea izquierda border/default en color/border/subtle); los ítems van pegados, sin gap, y la lista lleva space/padding/xs abajo. Padding vertical space/padding/md, gap encabezado–lista space/gap/md y línea inferior border/default en color/border/subtle. Selected marca el grupo de la categoría actual (sin diferencia visual); en código lo maneja el grupo, no el ítem.
 
-Movimiento (código): la lista se despliega y se pliega animando el alto (motion/duration/expand, motion/easing/out), como faq-item, y el chevron gira media vuelta con el mismo tiempo. Con reduced motion, el alto cambia de golpe y queda el fundido (motion/duration/fade).
+Movimiento (código): como el pliegue de compare-bar. La lista cambia de golpe y la línea del grupo y los grupos de abajo vuelven con transform desde donde estaban (motion/duration/expand, motion/easing/standard); al abrir, la lista se descubre con clip-path al mismo ritmo. No se anima el alto. El chevron gira media vuelta con el mismo tiempo y la misma curva. Con reduced motion, cambia de golpe y queda el fundido (motion/duration/fade).
 
 ## catalog-nav-item
 
@@ -225,9 +239,9 @@ Encabezado desplegable de catalog-nav-mobile. Mismo patrón que accordion-item: 
 ## catalog-toolbar
 
 - Figma: [1244-4058](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1244-4058)
-- Propiedades: Count; Show iluminar; Breakpoint: Desktop · Mobile; State: Default · Scroll (en código, atributo `state="scroll"`: la barra fija del catálogo al desplazarse, con padding vertical `space/padding/sm`. Sin nombre de la página: `docs/decisiones.md`, 2026-10-19 · catalog-toolbar sin nombre de la página)
+- Propiedades: Count; Show iluminar; Breakpoint: Desktop · Mobile (sin State: `docs/decisiones.md`, 2026-10-19 · catalog-toolbar sin State=Scroll). Solo en código, `stuck`: pegada debajo del navbar, sin línea superior (2026-10-19 · Navbar fijo en los listados)
 
-Barra sobre la grilla de Productos y Colecciones: cantidad (role/body, color/text/secondary), toggle Iluminar, divider vertical y botón Filtrar (button Outline expuesto: con filtros activos, Show count + icon/filter-off). Mismo contenido en Desktop y Mobile. State: Default · Scroll. Scroll (al desplazarse la página) solo achica el padding vertical (space/padding/sm); no muestra el nombre de la página, que ya está en el h1 del page-header.
+Barra sobre la grilla de Productos y Colecciones: cantidad (role/body, color/text/secondary), toggle Iluminar, divider vertical y botón Filtrar (button Outline expuesto: con filtros activos, Show count + icon/filter-off). Mismo contenido en Desktop y Mobile. No cambia al desplazarse la página: mantiene el padding vertical space/padding/md.
 
 ## category-card
 
@@ -267,9 +281,7 @@ Opción seleccionable en forma de chip para elegir entre pocas opciones visibles
 - Figma: [1233-3963](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1233-3963)
 - Propiedades: Title; Breakpoint: Desktop · Mobile; Open: True · False
 
-Barra fija inferior para comparar productos (hasta 3). Título + count-badge con la cantidad seleccionada, compare-slot (Filled/Empty) y acciones: button Underline «Borrar todo» y Filled «Comparar». Usa el tema oscuro (modo Dark de Color) fijado en cada variante. Desktop: slots Size=Default separados por divider Vertical. Mobile (como macroled.com.ar): los productos elegidos, uno arriba de otro (compare-slot Default con divider Horizontal Subtle), más un solo lugar vacío (compare-slot Empty) para agregar mientras haya menos de 3, y «Comparar» debajo a todo el ancho. El lugar vacío abre compare-picker. Se ve también en «Todas las colecciones». Open (Desktop y Mobile): el título lleva un chevron que pliega la lista (chevron-down abierta, chevron-up plegada); plegada quedan el título, «Borrar todo» y «Comparar» (en Desktop, en una sola línea y con el chevron en la punta derecha). Arranca abierta y se vuelve a abrir al agregar un producto.
-Movimiento (código): entra desde el borde de abajo al elegir el primer producto y sale por el mismo borde, como un panel: motion/duration/panel con motion/easing/standard, como filter-panel. El espacio que el listado reserva abajo se quita recién cuando la barra terminó de salir. Al plegar y desplegar con el chevron (Open), la barra se desliza igual: el borde de arriba baja o sube a su lugar nuevo con motion/duration/panel y motion/easing/standard. Con reduced motion, solo el fundido (motion/duration/fade).
-
+Barra fija inferior para comparar productos (hasta 3). Título + count-badge con la cantidad seleccionada, compare-slot (Filled/Empty) y acciones: button Underline «Borrar todo» y Filled «Comparar». Usa el tema oscuro (modo Dark de Color) fijado en cada variante. Desktop: slots Size=Default separados por divider Vertical. Mobile (como macroled.com.ar): los productos elegidos, uno arriba de otro (compare-slot Default con divider Horizontal Subtle), más un solo lugar vacío (compare-slot Empty) para agregar mientras haya menos de 3, y «Comparar» debajo a todo el ancho. Tablet (768–1023, solo código): los tres lugares en una línea y «Borrar todo» y «Comparar» debajo, a la derecha. El lugar vacío abre compare-picker. Se ve también en «Todas las colecciones». Open (Desktop y Mobile): el título lleva un chevron que pliega la lista (chevron-down abierta, chevron-up plegada); plegada quedan el título, «Borrar todo» y «Comparar» (en Desktop, en una sola línea y con el chevron en la punta derecha). Arranca abierta y se vuelve a abrir al agregar un producto.
 Movimiento (código): entra desde el borde de abajo al elegir el primer producto y sale por el mismo borde, como un panel: motion/duration/panel con motion/easing/standard, como filter-panel. El espacio que el listado reserva abajo se quita recién cuando la barra terminó de salir. Al plegar y desplegar con el chevron (Open), la barra se desliza igual: el borde de arriba baja o sube a su lugar nuevo con motion/duration/panel y motion/easing/standard. Con reduced motion, solo el fundido (motion/duration/fade).
 
 ## compare-group
@@ -444,7 +456,7 @@ Filtro aplicado que se puede quitar (todo el chip es el botón; en código: butt
 
 Panel de filtros que se abre desde el botón Filtrar del catalog-toolbar. Desktop: panel lateral de 560 sobre scrim (color/overlay/scrim). Mobile: pantalla completa (modos Mobile de Dimension y Type). Contenido: filter-row (checkbox) + footer con button Underline "Borrar todo" y Filled "Ver N productos". Filtros aplicados: fila "applied" con filter-chip (8 lugares, 3 visibles) que se quitan uno por uno; Show applied la oculta cuando no hay filtros. "Borrar todo" los quita todos.
 
-Show categories (solo Mobile, en Productos; en código el atributo show-categories): tabs Características · Categorías debajo del encabezado, gap space/gap/xl y línea inferior border/default en color/border/subtle. Categorías muestra los grupos de catalog-nav (el de la categoría actual abierto) y oculta filtros, resumen, chips y footer; sus links cambian el listado y cierran el panel. Show category list representa la tab Categorías activa: en código no es una prop, es el estado de la tab.
+Show categories (Mobile y Tablet, hasta 1023 px, en Productos; en código el atributo show-categories): tabs Características · Categorías debajo del encabezado, gap space/gap/xl y línea inferior border/default en color/border/subtle. Categorías muestra los grupos de catalog-nav (el de la categoría actual abierto) y oculta filtros, resumen, chips y footer; sus links cambian el listado y cierran el panel. Show category list representa la tab Categorías activa: en código no es una prop, es el estado de la tab.
 
 ## filter-row
 
@@ -558,7 +570,7 @@ Link del mega menú y del submenú mobile: nombre, bajada opcional (Show meta, p
 - Figma: [841-2282](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=841-2282)
 - Propiedades: Tab: Por espacio · Lámparas y artefactos · Colecciones
 
-Mega menú de Productos (desktop). Se abre desde nav-link "Productos" (Open=True) y se muestra debajo del navbar. Tres pestañas: Por espacio (Exterior / Interior), Lámparas y artefactos, y Colecciones. La imagen de la derecha se puede cambiar según la pestaña. Es un solo componente: categorías, links y el texto de "Ver todo…" salen de los datos.
+Mega menú de Productos (desktop). Se abre desde nav-link "Productos" (Open=True) y se muestra debajo del navbar. Tres pestañas: Por espacio (Exterior / Interior), Lámparas y artefactos, y Colecciones. La imagen de la derecha se puede cambiar según la pestaña. Es un solo componente: categorías, links y el texto de "Ver todo…" salen de los datos. Tablet (768–1023, solo código): no se muestra la imagen; las columnas toman todo el ancho, con layout/gutter a los dos lados.
 
 ## nav-link
 
@@ -652,7 +664,7 @@ Fila de especificación de la ficha PDF. Etiqueta role/body (color/text/secondar
 - Figma: [990-2372](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=990-2372)
 - Propiedades: Name; Meta; Show meta; Show finishes; Show compare; Size: Large · Small; State: Default · Hover · Focus
 
-Tarjeta de producto o familia, siempre vertical (imagen 7:10). Size: Large (listados de Productos, Colecciones y página de colección) y Small (ficha → "Otras familias de la colección"). State: Default, Hover y Focus. Hover y Focus cambian la imagen (no hay borde): Light muestra estudio con luz apagada y en hover contexto con luz apagada; con Iluminar (Dark) muestra estudio con luz encendida y en hover contexto con luz encendida. La variante Hover de Figma es una referencia estática; las reglas completas están en DESIGN.md §8 · Imágenes de product-card. Props: Name, Meta (tipo de producto o datos técnicos, admite dos líneas), Show meta, Show finishes (acabados con swatch Size=Small, 16 × 16, en Large y en Small; se reemplaza el color de cada uno) y Show compare (checkbox "Comparar"). En código la tarjeta es un link al producto y el checkbox va fuera de ese link. El ancho lo define la grilla; la imagen mantiene la proporción.
+Tarjeta de producto o familia, siempre vertical (imagen 7:10). Size: Large (listados de Productos, Colecciones y página de colección) y Small (ficha → "Otras familias de la colección"). State: Default, Hover y Focus. Hover y Focus cambian la imagen (no hay borde): Light muestra estudio con luz apagada y en hover contexto con luz apagada; con Iluminar (Dark) muestra estudio con luz encendida y en hover contexto con luz encendida. La variante Hover de Figma es una referencia estática; las reglas completas están en DESIGN.md §8 · Imágenes de product-card. Props: Name, Meta (tipo de producto o datos técnicos, admite dos líneas), Show meta, Show finishes (acabados con swatch Size=Small, 16 × 16, en Large y en Small; se reemplaza el color de cada uno; con más de un acabado se eligen: el elegido, por defecto el negro, lleva State=Selected y todos el Hover del swatch, sin crecer, y al elegir otro la imagen de la card pasa a la de ese acabado; con uno solo no se ve elegido). Size=Small (y Large hasta 767 px) apila el nombre y los acabados en columna (gap space/gap/sm), con el nombre a 20/28 (role/body-xl; en Mobile role/heading-3), la info a space/gap/md y los acabados a space/gap/sm y Show compare (checkbox "Comparar"). En código la tarjeta es un link al producto y el checkbox va fuera de ese link. El ancho lo define la grilla; la imagen mantiene la proporción.
 
 En grillas de listado: ancho mínimo layout/card-min (280); la grilla suma columnas sola (auto-fill), así la imagen 7:10 no crece de más en pantallas grandes.
 

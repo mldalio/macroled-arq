@@ -102,9 +102,11 @@
     column-gap: var(--arq-space-section-xs);
   }
 
+  /* Toolbar y sidebar quedan pegados debajo del navbar, que está siempre a la
+     vista (alto 56: space/gap/md × 2 + icon/xl, como la barra del navbar). */
   .toolbar {
     position: sticky;
-    top: 0;
+    top: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
     z-index: 3;
     /* Fija sobre la grilla: tapa las cards. Funde con Iluminar a la par del
        fondo de la página (misma duración y curva que :host y .arq-page). */
@@ -117,24 +119,20 @@
 
   .nav {
     position: sticky;
-    top: 0;
+    top: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
     align-self: start;
   }
+}
 
-  .toolbar.nav-visible {
-    top: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
-  }
-
-  .nav.nav-visible {
-    top: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
+/* Mobile y Tablet: en Productos las categorías van en una pestaña de
+   filter-panel, no arriba de la grilla */
+@media (max-width: 1023px) {
+  :host(:not([unit='colecciones'])) .nav {
+    display: none;
   }
 }
 
 @media (max-width: 767px) {
-  :host(:not([unit='colecciones'])) .nav {
-    display: none;
-  }
-
   .content {
     gap: var(--arq-space-gap-xl);
   }

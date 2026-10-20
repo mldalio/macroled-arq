@@ -26,6 +26,12 @@
 //   767 px (grilla mobile; decisión 2026-10-02 · product-card).
 // - Show meta y Show finishes: se muestran si su slot tiene contenido.
 // - Show compare: checkbox "Comparar"; emite arq:compare { checked }.
+// - Acabados elegibles: con más de un acabado y datos por acabado (data-* de
+//   cada swatch, ver appendFinishes) los swatches son un radiogroup: el elegido
+//   (selected) lleva el borde de Selected y todos el de Hover del swatch, sin
+//   crecer (siempre Small, 16). Elegir uno cambia las imágenes y el link a las de
+//   ese acabado y emite arq:finish { name, sku, href, image }. Con un solo
+//   acabado no hay elegido ni se puede elegir.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { trackThemeImage, watchTheme, whenImageReady } from '../../base/theme.js';
@@ -34,6 +40,27 @@ import cardLinkCss from '../../base/card-link.css?inline';
 import css from './product-card.css?inline';
 
 const MOBILE = matchMedia('(max-width: 767px)');
+
+/**
+ * Agrega los acabados de una card como swatches del slot finishes. finishes:
+ * [{ name, src, selected, sku, href, image, imageHover, imageLit, imageHoverLit }]
+ * (src/data/catalog.js). Lo que trae cada acabado va en data-* del swatch: lo
+ * lee la card al elegirlo.
+ */
+export function appendFinishes(card, finishes = []) {
+  for (const finish of finishes) {
+    const swatch = document.createElement('arq-swatch');
+    swatch.slot = 'finishes';
+    swatch.textContent = finish.name;
+    if (finish.src) swatch.src = finish.src;
+    if (finish.selected) swatch.setAttribute('selected', '');
+    for (const key of FINISH_DATA) if (finish[key]) swatch.dataset[key] = finish[key];
+    card.append(swatch);
+  }
+}
+
+// Qué lleva cada swatch elegible (data-sku, data-href, data-image, …)
+const FINISH_DATA = ['sku', 'href', 'image', 'imageHover', 'imageLit', 'imageHoverLit'];
 
 class ArqProductCard extends ArqElement {
   static tag = 'arq-product-card';
@@ -64,6 +91,7 @@ class ArqProductCard extends ArqElement {
 
   #dark = false;
   #hoverWanted = false;
+  #finishToken = 0;
 
   setup() {
     const root = this.shadowRoot;
@@ -97,6 +125,9 @@ class ArqProductCard extends ArqElement {
     for (const name of ['name', 'meta', 'finishes']) {
       root.querySelector(`slot[name="${name}"]`).addEventListener('slotchange', () => this.#renderSlots());
     }
+    const finishes = root.querySelector('.finishes');
+    finishes.addEventListener('click', (event) => this.#chooseFinish(event.target.closest?.('arq-swatch')));
+    finishes.addEventListener('keydown', (event) => this.#finishKey(event));
     const compare = root.querySelector('.compare');
     compare.addEventListener('arq:change', (event) => {
       event.stopPropagation();
@@ -155,7 +186,11 @@ class ArqProductCard extends ArqElement {
     const small = this.#small();
     const root = this.shadowRoot;
     root.querySelector('.card').classList.toggle('is-small', small);
-    root.querySelector('.name').className = `card-link name ${small ? 'role-body-regular' : 'role-heading-3'}`;
+    // Small se ve a 20/28 (el set): role/body-xl en Desktop; en Mobile body-xl baja a 16/24,
+    // así que usa role/heading-3, que en Mobile vale 20/28 (mismo peso).
+    // TODO (diseño): que el nombre de Small tenga un rol que valga 20/28 en los dos modos.
+    const nameRole = !small ? 'role-heading-3' : MOBILE.matches ? 'role-heading-3' : 'role-body-xl';
+    root.querySelector('.name').className = `card-link name ${nameRole}`;
     root.querySelector('.meta').className = `meta ${small ? 'role-body-sm' : 'role-body'}`;
     // Los acabados van siempre en Size=Small (16 × 16), en Large y en Small: a 20 se veían grandes.
     for (const swatch of this.querySelectorAll(':scope > arq-swatch[slot="finishes"]')) {
@@ -169,8 +204,82 @@ class ArqProductCard extends ArqElement {
       root.querySelector(`slot[name="${name}"]`).assignedNodes({ flatten: true }).some((node) => node.nodeType === Node.ELEMENT_NODE || node.textContent.trim());
     root.querySelector('.meta').hidden = !filled('meta');
     root.querySelector('.finishes').hidden = !filled('finishes');
+    this.#renderFinishes();
     root.querySelector('.fallback').textContent = this.querySelector('[slot="name"]')?.textContent.trim() ?? '';
     this.#renderSize();
+  }
+
+  #swatches() {
+    return [...this.querySelectorAll(':scope > arq-swatch[slot="finishes"]')];
+  }
+
+  // Elegible: más de un acabado y datos por acabado. Un solo acabado queda como
+  // imagen (sin elegido), como los de las cards de colección.
+  #renderFinishes() {
+    const swatches = this.#swatches();
+    const group = this.shadowRoot.querySelector('.finishes');
+    const choosable = swatches.length > 1 && swatches.some((swatch) => swatch.dataset.sku || swatch.dataset.image);
+    if (!choosable) {
+      group.removeAttribute('role');
+      return;
+    }
+    group.setAttribute('role', 'radiogroup');
+    group.setAttribute('aria-label', 'Acabado');
+    // Sin elegido en los datos: el primero (negro)
+    if (!swatches.some((swatch) => swatch.hasAttribute('selected'))) swatches[0].setAttribute('selected', '');
+    for (const swatch of swatches) {
+      const on = swatch.hasAttribute('selected');
+      swatch.setAttribute('role', 'radio');
+      swatch.setAttribute('aria-checked', String(on));
+      swatch.setAttribute('tabindex', on ? '0' : '-1');
+    }
+  }
+
+  #finishKey(event) {
+    const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+    const swatches = this.#swatches();
+    const index = swatches.indexOf(event.target.closest?.('arq-swatch'));
+    if (index === -1) return;
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.#chooseFinish(swatches[index]);
+    } else if (keys[event.key]) {
+      event.preventDefault();
+      const next = swatches[(index + keys[event.key] + swatches.length) % swatches.length];
+      next.focus();
+      this.#chooseFinish(next);
+    }
+  }
+
+  // Elegir un acabado: las imágenes y el link pasan a los de ese acabado. La foto
+  // nueva se pide antes y se cambia cuando está lista, así no se ve el fondo vacío.
+  #chooseFinish(swatch) {
+    if (!swatch || swatch.getAttribute('role') !== 'radio' || swatch.hasAttribute('selected')) return;
+    for (const other of this.#swatches()) {
+      const on = other === swatch;
+      other.toggleAttribute('selected', on);
+      other.setAttribute('aria-checked', String(on));
+      other.setAttribute('tabindex', on ? '0' : '-1');
+    }
+    const data = swatch.dataset;
+    const next = {
+      href: data.href ?? this.href,
+      image: data.image ?? null,
+      imageHover: data.imageHover ?? null,
+      imageLit: data.imageLit ?? null,
+      imageHoverLit: data.imageHoverLit ?? null,
+    };
+    const token = ++this.#finishToken;
+    const apply = () => {
+      if (token === this.#finishToken) Object.assign(this, next);
+    };
+    const visible = (this.#dark && next.imageLit) || next.image;
+    if (visible) {
+      const preload = new Image();
+      preload.onload = preload.onerror = apply;
+      preload.src = visible;
+    } else apply();
+    this.emit('finish', { name: swatch.textContent.trim(), sku: data.sku ?? null, href: next.href, image: next.image });
   }
 
   #renderImages() {

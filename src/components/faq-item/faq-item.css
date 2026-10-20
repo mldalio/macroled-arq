@@ -103,6 +103,22 @@
   outline: none;
 }
 
+/* Home v2: número a la izquierda y línea también abajo en el último. */
+:host([number]) .number {
+  flex: none;
+  width: var(--arq-icon-xl);
+  color: var(--arq-color-text-tertiary);
+}
+
+:host([number]) .answer {
+  max-width: none;
+  padding-inline-start: calc(var(--arq-icon-xl) + var(--arq-space-gap-lg));
+}
+
+:host([number]:last-child) .item {
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-default);
+}
+
 @media (max-width: 767px) {
   .answer {
     max-width: none;

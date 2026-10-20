@@ -939,16 +939,11 @@
         <div class="demo-dark" data-arq-theme="dark">
           <arq-catalog-toolbar count="11" unit="productos" filter-count="2"></arq-catalog-toolbar>
         </div>
-        <h3 class="demo-subheading role-body-sm">State=Scroll (state="scroll"): padding vertical space/padding/sm</h3>
-        <arq-catalog-toolbar count="11" unit="productos" state="scroll" show-iluminar></arq-catalog-toolbar>
-        <div class="demo-dark" data-arq-theme="dark">
-          <arq-catalog-toolbar count="11" unit="productos" state="scroll" show-iluminar></arq-catalog-toolbar>
-        </div>
       </section>
 
       <section class="demo-section" aria-labelledby="demo-product-card">
         <h2 id="demo-product-card" class="demo-heading role-label">product-card · &lt;arq-product-card&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 990:2372. Grilla de listado (auto-fill, layout/card-min; desde 1600 px card-min-wide). Hover y foco: fundido estudio → contexto. Iluminar: versiones encendidas. Large pasa a Small hasta 767 px (probar «Ver 390»). Imágenes de ejemplo (las columnas reales están en TODO).</p>
+        <p class="demo-note role-body-sm">Figma 990:2372. Grilla de listado (auto-fill, layout/card-min; desde 1600 px card-min-wide). Hover y foco: fundido estudio → contexto. Iluminar: versiones encendidas. Large pasa a Small hasta 767 px (probar «Ver 390»). Acabados: con más de uno, la muestra elegida lleva el borde de Selected y al elegir otra cambian las imágenes y el link (Kanu Jardín); con uno solo no hay elegido. Imágenes de ejemplo (las columnas reales están en TODO).</p>
         <div data-demo-iluminar class="demo-card-block">
           <arq-toggle show-label>Iluminar</arq-toggle>
           <div class="demo-card-grid">
@@ -956,9 +951,14 @@
               image="/demo/fixtures/img/card-estudio.svg" image-hover="/demo/fixtures/img/card-contexto.svg"
               image-lit="/demo/fixtures/img/card-estudio-on.svg" image-hover-lit="/demo/fixtures/img/card-contexto-on.svg">
               <h3 slot="name">Kanu Jardín</h3>
-              <arq-swatch slot="finishes" src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
-              <arq-swatch slot="finishes">Verde</arq-swatch>
-              <arq-swatch slot="finishes">Terracota</arq-swatch>
+              <!-- Acabados elegibles: el elegido (selected) y lo que cambia al elegir, en data-* -->
+              <arq-swatch slot="finishes" selected src="/demo/fixtures/img/acabado-negro.svg" data-sku="KANU-N" data-href="#kanu-negro"
+                data-image="/demo/fixtures/img/card-estudio.svg" data-image-hover="/demo/fixtures/img/card-contexto.svg"
+                data-image-lit="/demo/fixtures/img/card-estudio-on.svg" data-image-hover-lit="/demo/fixtures/img/card-contexto-on.svg">Negro</arq-swatch>
+              <arq-swatch slot="finishes" data-sku="KANU-T" data-href="#kanu-terracota"
+                data-image="/demo/fixtures/img/producto-2.svg" data-image-hover="/demo/fixtures/img/producto-2-on.svg"
+                data-image-lit="/demo/fixtures/img/producto-2-on.svg" data-image-hover-lit="/demo/fixtures/img/producto-2-on.svg">Terracota</arq-swatch>
+              <arq-swatch slot="finishes" data-sku="KANU-V" data-href="#kanu-verde">Verde (sin imágenes: muestra el nombre)</arq-swatch>
             </arq-product-card>
             <arq-product-card href="#demo-product-card" show-compare compared
               image="/demo/fixtures/img/card-estudio.svg" image-lit="/demo/fixtures/img/card-estudio-on.svg">
@@ -1575,6 +1575,27 @@
         </div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-announcement-bar">
+        <h2 id="demo-announcement-bar" class="demo-heading role-label">announcement-bar · &lt;arq-announcement-bar&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 2780:8595. Línea arriba del navbar, solo en la Home, siempre en Dark local (no cambia con el switch de tema). Link: button Underline compact (14/24), sin subrayado en reposo y con arrow-up-right. En la Home se va con el scroll y el navbar queda pegado arriba: probalo en demo/home.html.</p>
+        <div class="demo-navbar">
+          <arq-announcement-bar label="Novedades">
+            <arq-button type="underline" compact show-icon icon="arrow-up-right" href="#demo-announcement-bar">Suscribite al newsletter</arq-button>
+          </arq-announcement-bar>
+          <arq-navbar label="Principal (con announcement-bar)">
+            <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-announcement-bar">Descargas</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-announcement-bar">Contacto</arq-nav-link>
+          </arq-navbar>
+        </div>
+        <p class="demo-note role-body-sm">Texto largo (en 390 px baja de línea):</p>
+        <div class="demo-navbar">
+          <arq-announcement-bar>
+            <arq-button type="underline" compact show-icon icon="arrow-up-right" href="#demo-announcement-bar">Suscribite al newsletter y recibí lanzamientos, catálogos y recursos para proyectar antes que nadie</arq-button>
+          </arq-announcement-bar>
+        </div>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-navbar">
         <h2 id="demo-navbar" class="demo-heading role-label">navbar · &lt;arq-navbar&gt;</h2>
         <p class="demo-note role-body-sm">Figma 753:2907 y frames 2295:23568 · 2295:23605. Productos abre el mega-menu (Desktop) o, en Mobile, la lista Interior · Exterior · Lámparas y artefactos · Colecciones (un nivel sin datos no aparece): cada fila entra a su submenú (con «volver»; Colecciones con miniaturas y «Ver todo» fijo abajo; Lámparas y artefactos con dos grupos, set 2312:8904). La lupa abre la búsqueda: escribí «kanu», «jardín» o un SKU; ↑ ↓ eligen y Enter abre; Esc cierra. Datos del catálogo: Typesense. En la demo la barra no queda fija.</p>
@@ -2133,6 +2154,25 @@
             <arq-input slot="email" name="email-dark" input-type="email" placeholder="Tu email profesional" required>Email</arq-input>
             <arq-button slot="action">Suscribirme</arq-button>
           </arq-cta-block>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-carousel-button">
+        <h2 id="demo-carousel-button" class="demo-heading role-label">carousel-button · &lt;arq-carousel-button&gt;</h2>
+        <p class="demo-note role-body-sm">Figma 2387:8532. Cuadrado de los sliders de Destacados y Proyectos. Direction Previous · Next. State=Disabled: fondo surface/subtle.</p>
+        <p class="demo-subheading role-body-sm">Previous y Next, Default y Disabled</p>
+        <div class="demo-row">
+          <arq-carousel-button direction="previous">Anterior</arq-carousel-button>
+          <arq-carousel-button direction="previous" disabled>Anterior</arq-carousel-button>
+          <arq-carousel-button direction="next">Siguiente</arq-carousel-button>
+          <arq-carousel-button direction="next" disabled>Siguiente</arq-carousel-button>
+        </div>
+        <p class="demo-subheading role-body-sm">Contenedor en modo Dark</p>
+        <div class="demo-row demo-dark" data-arq-theme="dark">
+          <arq-carousel-button direction="previous">Anterior</arq-carousel-button>
+          <arq-carousel-button direction="previous" disabled>Anterior</arq-carousel-button>
+          <arq-carousel-button direction="next">Siguiente</arq-carousel-button>
+          <arq-carousel-button direction="next" disabled>Siguiente</arq-carousel-button>
         </div>
       </section>
 

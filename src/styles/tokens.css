@@ -170,6 +170,7 @@
   --arq-motion-easing-illumination-image: cubic-bezier(0.42, 0, 0.58, 1); /** Iluminar: curva del fundido de las fotos (entrada y salida suaves). */
   --arq-motion-scale-pressed: 0.97; /** Escala de button e icon-button mientras se presionan (State=Pressed, :active en código). Se anima con motion/duration/fast y motion/easing/out. Con prefers-reduced-motion no cambia de tamaño. Sin unidad. */
   --arq-opacity-disabled: 0.5; /** Opacidad de una imagen o parte gráfica deshabilitada (la miniatura de compare-picker-item Disabled). En Figma 0–100 (50 = 50 %); en código 0–1 (0.5). El texto deshabilitado no usa opacidad: va en color/text/disabled. */
+  --arq-offwhite-bone: #f3f0e9; /** Blanco hueso, cálido suave; acompaña al bronze. Fondo alternativo de sección en modo Light, para dar ritmo entre bloques. No se usa en componentes ni en texto. */
   --arq-space-section-2xs: var(--arq-space-32); /** Separación mínima entre bloques de página. */
   --arq-space-section-xs: var(--arq-space-48); /** Separación ajustada entre bloques de página. */
   --arq-space-section-sm: var(--arq-space-64); /** Separación reducida entre bloques de página. */
@@ -218,6 +219,7 @@
   --arq-color-surface-inverse-hover: var(--arq-neutral-750); /** Hover de un fondo color/surface/inverse (botón primario). */
   --arq-color-surface-inverse-pressed: var(--arq-neutral-600); /** Pressed de un fondo color/surface/inverse (botón primario). */
   --arq-color-surface-transparent: var(--arq-alpha-transparent); /** Fondo transparente explícito: sin relleno, para estados que no pintan fondo. */
+  --arq-color-surface-bone: var(--arq-offwhite-bone); /** Fondo cálido de las bandas del Home (Productos destacados y Herramientas). En Dark coincide con surface/subtle. */
   --arq-color-text-primary: var(--arq-neutral-900); /** Títulos, nombres de producto y texto de máxima jerarquía. */
   --arq-color-text-secondary: var(--arq-neutral-750); /** Texto de lectura: párrafos, descripciones, valores de especificaciones. */
   --arq-color-text-tertiary: var(--arq-neutral-600); /** Texto secundario: metadatos, etiquetas, ayudas, captions, SKU. */
@@ -299,6 +301,7 @@
   --arq-color-surface-inverse: var(--arq-neutral-0); /** Fondo de máximo contraste: botón primario, footer, bandas oscuras. Siempre con color/text/inverse encima. */
   --arq-color-surface-inverse-hover: var(--arq-neutral-150); /** Hover de un fondo color/surface/inverse (botón primario). */
   --arq-color-surface-inverse-pressed: var(--arq-neutral-200); /** Pressed de un fondo color/surface/inverse (botón primario). */
+  --arq-color-surface-bone: var(--arq-neutral-750); /** Fondo cálido de las bandas del Home (Productos destacados y Herramientas). En Dark coincide con surface/subtle. */
   --arq-color-text-primary: var(--arq-neutral-100); /** Títulos, nombres de producto y texto de máxima jerarquía. */
   --arq-color-text-secondary: var(--arq-neutral-200); /** Texto de lectura: párrafos, descripciones, valores de especificaciones. */
   --arq-color-text-tertiary: var(--arq-neutral-500); /** Texto secundario: metadatos, etiquetas, ayudas, captions, SKU. */
@@ -338,6 +341,7 @@
   --arq-color-surface-inverse: var(--arq-neutral-900); /** Fondo de máximo contraste: botón primario, footer, bandas oscuras. Siempre con color/text/inverse encima. */
   --arq-color-surface-inverse-hover: var(--arq-neutral-750); /** Hover de un fondo color/surface/inverse (botón primario). */
   --arq-color-surface-inverse-pressed: var(--arq-neutral-600); /** Pressed de un fondo color/surface/inverse (botón primario). */
+  --arq-color-surface-bone: var(--arq-offwhite-bone); /** Fondo cálido de las bandas del Home (Productos destacados y Herramientas). En Dark coincide con surface/subtle. */
   --arq-color-text-primary: var(--arq-neutral-900); /** Títulos, nombres de producto y texto de máxima jerarquía. */
   --arq-color-text-secondary: var(--arq-neutral-750); /** Texto de lectura: párrafos, descripciones, valores de especificaciones. */
   --arq-color-text-tertiary: var(--arq-neutral-600); /** Texto secundario: metadatos, etiquetas, ayudas, captions, SKU. */

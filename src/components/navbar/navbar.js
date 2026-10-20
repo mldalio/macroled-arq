@@ -31,8 +31,9 @@
 //   desktop queda sobre la foto, con el campo en blanco (Default). La lupa y
 //   el menú van en Dark local sobre la foto. Con prefers-reduced-transparency
 //   o prefers-contrast: more, la barra queda Default también sobre la foto.
-// - Posición: sticky arriba en Default; fixed en Transparent (se superpone al
-//   hero). TODO (diseño): confirmar.
+// - Posición: sticky arriba en los dos Theme; Transparent se superpone al
+//   hero con un margen inferior negativo (su alto), así arranca debajo de
+//   announcement-bar si la hay. TODO (diseño): confirmar.
 // - Datos: la navegación (getNavigation) y la búsqueda (searchProducts) salen
 //   de src/data/catalog.js. Se piden al abrir Productos o al escribir, no al
 //   cargar la página. Decisión 2026-10-02 · navbar.

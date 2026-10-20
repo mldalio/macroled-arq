@@ -7,7 +7,11 @@
   min-width: 0;
 }
 
-.group {
+/* La línea inferior va en ::after para que se deslice junto con los grupos de
+   abajo al abrir y cerrar (#slide en el JS). */
+.group::after {
+  content: '';
+  display: block;
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
 }
 
@@ -58,11 +62,11 @@
 }
 
 /* Open=True: chevron-up · Open=False: chevron-down. Es un solo chevron que
-   gira media vuelta, con el mismo tiempo y la misma curva que el alto de la
-   lista (motion/duration/expand + motion/easing/out). Con reduced motion,
-   expand vale 0 y cambia de golpe. */
+   gira media vuelta, con el mismo tiempo y la misma curva que el
+   deslizamiento (motion/duration/expand + motion/easing/standard). Con reduced
+   motion, expand vale 0 y cambia de golpe. */
 .icon {
-  transition: rotate var(--arq-motion-duration-expand) var(--arq-motion-easing-out);
+  transition: rotate var(--arq-motion-duration-expand) var(--arq-motion-easing-standard);
 }
 
 :host([open]) .icon {
@@ -76,9 +80,7 @@
 }
 
 /* Lista: sangría space/padding/lg y abajo space/padding/md + space/padding/xs
-   (el padding del grupo más el de la lista). El padding va adentro de lo que
-   se recorta (.items-clip): el panel (.items) no lleva padding, así cerrado
-   mide 0 (Disclosure animateHeight). */
+   (el padding del grupo más el de la lista). */
 .items-inner {
   padding-inline-start: var(--arq-space-padding-lg);
   padding-bottom: calc(var(--arq-space-padding-md) + var(--arq-space-padding-xs));

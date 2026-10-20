@@ -58,6 +58,73 @@
   width: 100%;
 }
 
+/* Home v2: newsletter sobre foto, texto a la derecha.
+   TODO (diseño): el título es Regular 50/64; se usa role/display-sm en Regular.
+   El campo de Figma es una caja; acá sigue el arq-input (línea inferior)
+   dentro de la barra color/bg/subtle. */
+:host(.has-media) .block {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--arq-space-gap-6xl);
+  align-content: center;
+  justify-items: start;
+  aspect-ratio: 1440 / 564;
+  padding: var(--arq-space-section-lg) var(--arq-space-padding-4xl);
+  overflow: hidden;
+  background: var(--arq-color-surface-inverse);
+}
+
+:host(.has-media) .media {
+  position: absolute;
+  inset: 0;
+}
+
+:host(.has-media) ::slotted([slot='media']) {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+
+:host(.has-media) .text,
+:host(.has-media) .action {
+  position: relative;
+  z-index: 1;
+  grid-column: 2;
+}
+
+:host(.has-media) .text {
+  gap: var(--arq-space-gap-lg);
+}
+
+:host(.has-media) .kicker,
+:host(.has-media) .title,
+:host(.has-media) .description {
+  color: var(--arq-color-text-inverse);
+}
+
+:host(.has-media) .title {
+  font-weight: var(--arq-font-weight-regular);
+}
+
+:host(.has-media) .kicker {
+  margin: 0;
+}
+
+:host(.has-media) .action {
+  width: min(100%, var(--arq-layout-measure));
+  justify-content: space-between;
+  padding: var(--arq-space-padding-md);
+  padding-inline-start: var(--arq-space-padding-lg);
+  background: var(--arq-color-surface-subtle);
+}
+
+:host(.has-media) .email {
+  width: auto;
+  flex: 1 1 auto;
+}
+
 /* Mobile: todo apilado a space/gap/xl y a ancho completo (también el button) */
 @media (max-width: 767px) {
   .block {
@@ -80,6 +147,23 @@
   }
 
   ::slotted(arq-button) {
+    width: 100%;
+  }
+
+  :host(.has-media) .block {
+    grid-template-columns: 1fr;
+    aspect-ratio: auto;
+    min-height: 70svh;
+  }
+
+  :host(.has-media) .text,
+  :host(.has-media) .action {
+    grid-column: 1;
+  }
+
+  :host(.has-media) .action {
+    flex-direction: row;
+    align-items: center;
     width: 100%;
   }
 }

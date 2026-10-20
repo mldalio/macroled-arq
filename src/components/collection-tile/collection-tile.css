@@ -1,0 +1,150 @@
+/* collection-tile · Home v2. Solo tokens semánticos.
+   Foto a sangre, scrim abajo, kicker + nombre + flecha. El link estirado
+   está en src/base/card-link.css. En hover aparece la bajada. */
+
+:host {
+  display: block;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Entrada del mosaico: el padre pone .reveal y --reveal-index.
+   Cada tarjeta espera a que termine la anterior (slow × 2, la misma
+   duración de la entrada). Los keyframes están en src/base/reveal.css. */
+:host(.reveal:not(.revealed)) {
+  opacity: 0;
+}
+
+:host(.reveal.revealed) {
+  animation: arq-reveal calc(var(--arq-motion-duration-slow) * 2) var(--arq-motion-easing-standard) backwards;
+  animation-delay: calc(var(--arq-motion-duration-slow) * 2 * var(--reveal-index, 0));
+}
+
+.card {
+  height: 100%;
+  overflow: hidden;
+  background: var(--arq-color-surface-inverse);
+  color: var(--arq-color-text-inverse);
+}
+
+.card-media {
+  position: absolute;
+  inset: 0;
+}
+
+::slotted([slot='image']) {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+  object-fit: cover;
+  /* Zoom leve en hover, igual que category-card overlay.
+     TODO (diseño): no hay token de escala; 1.05 no está en Figma. */
+  transition: transform calc(var(--arq-motion-duration-slow) * 4)
+    var(--arq-motion-easing-standard) !important;
+}
+
+/* Scrim de Home v2: el tercio inferior, de transparente a negro 78 %.
+   Excepción como el scrim del hero: es un relleno de Figma, no una variable. */
+.scrim {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 50%;
+  background: linear-gradient(to top, rgb(0 0 0 / 78%), rgb(0 0 0 / 0%));
+  pointer-events: none;
+}
+
+.tag {
+  position: absolute;
+  top: var(--arq-space-padding-lg);
+  left: var(--arq-space-padding-lg);
+  z-index: var(--card-above);
+  padding: var(--arq-space-padding-xs) var(--arq-space-padding-sm);
+  border: var(--arq-border-default) solid var(--arq-color-border-default);
+  background: var(--arq-color-surface-default);
+  color: var(--arq-color-text-secondary);
+}
+
+.info {
+  position: absolute;
+  right: var(--arq-space-padding-xl);
+  bottom: var(--arq-space-padding-xl);
+  left: var(--arq-space-padding-xl);
+  z-index: var(--card-above);
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-sm-md);
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-md);
+}
+
+.label,
+.name,
+.description {
+  margin: 0;
+}
+
+.label {
+  opacity: 0.8;
+}
+
+.name {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--arq-color-text-inverse);
+}
+
+.icon {
+  flex: none;
+  width: var(--arq-icon-xl);
+  height: var(--arq-icon-xl);
+  color: var(--arq-color-icon-inverse);
+  pointer-events: none;
+}
+
+.description {
+  display: grid;
+  grid-template-rows: 0fr;
+  color: var(--arq-color-text-inverse);
+  opacity: 0;
+  transition-property: grid-template-rows, opacity, color, background-color, border-color, outline-color;
+  transition-duration: calc(var(--arq-motion-duration-slow) * 4);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+.description-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (hover: hover) {
+  :host(:hover) .description,
+  :host(:focus-within) .description {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  .card:has(.card-link:hover) .card-media {
+    outline: none;
+  }
+
+  :host(:hover) ::slotted([slot='image']),
+  :host(:focus-within) ::slotted([slot='image']) {
+    transform: scale(1.05) !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .description {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+}

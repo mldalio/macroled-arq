@@ -618,7 +618,7 @@ Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe
 
 - Confirmar nombres de campo con quien arma la base; faltan `product_group_id` y `collection_id` (`typesense-adapter.js`).
 - Qué foto es cada una: las cuatro de product-card (estudio y contexto, apagada y encendida), las de una card de colección y las del mega-menu.
-- Acabados: tabla de códigos (N, V, R, B, BN, P); regla del blanco mate y del acero para los productos Skyline, cuando se organice su estructura en la base (`docs/acabados.md`, Pendientes).
+- Acabados: regla del blanco mate y del acero para los productos Skyline, cuando se organice su estructura en la base (`docs/acabados.md`, Pendientes).
 - Orden de las cards (hoy, el de la hoja).
 - Archivos de descarga por grupo (hoy CAD y Manual del SKU predeterminado).
 - Regla de Artefactos: ¿también dentro de Interior y Exterior, como Lámparas?
@@ -1071,8 +1071,73 @@ Salió de revisar los valores de `color_carcasa` de toda la base (326 documentos
 - **Acero (`RMS-S-S`): sin imagen.** Producto de un solo color que la ficha no ofrece como variante; se resuelve junto con la regla de los productos Skyline.
 - **«Blanco y negro» no existe en la base:** solo está en `demo/fixtures/peor-caso.js` (datos de prueba).
 
+## 2026-10-19 · Blanco y negro y códigos de acabado
+
+- **«Blanco y negro» (código BN del SKU)** tiene imagen propia: `acabado-blanco-y-negro.png`, mitad blanco mate arriba a la izquierda y mitad negro mate abajo a la derecha, con corte nítido en diagonal (Figma, sección ACABADOS). Se mapea por nombre en `SLUGS` (`src/data/finishes.js`). Hoy no hay SKU con ese valor en la base: el mapeo queda listo para cuando se carguen.
+- **La tabla de códigos de acabado (N, V, R, B, BN, P) se descarta.** El acabado sale siempre del nombre completo de `color_carcasa` y el SKU es un identificador opaco, así que no hace falta traducir letras. Se sacó de los pendientes de DESIGN.md §12, de `docs/acabados.md`, del README de `swatch` y de `docs/setup.md`.
+
 ## 2026-10-19 · catalog-toolbar sin nombre de la página
 
 - catalog-toolbar State=Scroll ya no muestra el nombre de la página («Exterior») ni el divider antes de la cantidad: el nombre ya está en el `<h1>` del page-header. Scroll solo pasa a padding vertical `space/padding/sm`.
 - Se quitó del código (atributo `name` de `<arq-catalog-toolbar>` y la copia del `<h1>` en `arq-catalog-listing`), de la demo, del README, de `docs/components.md` y de DESIGN.md.
 - Figma: se sacaron el texto del nombre y el divider de la variante State=Scroll (1810:19453), se actualizó la descripción del set (1244:4058) y la copia de DESIGN.md en Plan del proyecto. La ficha `doc/catalog-toolbar` no lo mencionaba.
+
+## 2026-10-19 · Elegir acabado en la card
+
+- **La card de producto deja elegir el acabado.** Con más de un acabado, los swatches son un radiogroup: el elegido (por defecto el primero, negro) lleva State=Selected del swatch y todos el Hover, sin crecer (siempre Small, 16). Al elegir uno cambian las cuatro imágenes y el link a los de ese acabado. Con un solo acabado no se ve elegido ni se puede elegir.
+- **Cada acabado es un SKU.** `src/data/catalog.js` (`finishOptions`) arma, por acabado, la variante que lo tiene: la que ya se ve, o la predeterminada, o la primera, prefiriendo las que cumplen los filtros activos. De ella salen el SKU, el link (`?sku=`) y las fotos. La card avisa con `arq:finish` y el listado actualiza el SKU y la foto de «Comparar» y de la compare-bar.
+- **Arranca en negro.** Sin SKU buscado, la card muestra la variante del primer acabado en el orden de la card (negro, blanco, terracota, verde, el resto), con la predeterminada del grupo primero entre las de ese acabado (`firstFinishVariant`). Antes arrancaba en la predeterminada del grupo, aunque no fuera negra. Con filtros, la primera que los cumple en ese orden; con un SKU buscado, ese SKU.
+- **Un acabado sin fotos** muestra el fondo con el nombre (regla de §8), no la foto de otro color.
+- **Solo en cards de producto** (Productos y página de colección). Las cards de colección no lo tienen: sus imágenes son de la colección.
+- **Mobile (Size=Small):** nombre y acabados en columna a `space/gap/sm`; nombre a 20/28 (`role/body-xl`; en Mobile `role/heading-3`); info a `space/gap/md`; acabados a `space/gap/sm`. Sale del set de Figma (990:2327).
+- **Área de clic de los swatches: queda en 16 × 16.** Aunque es menos que el mínimo de 24 × 24 de DESIGN.md §9, se decidió no ampliarla (2026-10-19). Es una excepción de las muestras de la card.
+
+## 2026-10-19 · catalog-toolbar sin State=Scroll
+
+- Lau no quiere que la barra se achique al desplazarse la página: se sacó State=Scroll. Queda siempre con padding vertical `space/padding/md`; el listado la sigue dejando fija debajo del navbar.
+- Código: atributo `state` de `<arq-catalog-toolbar>`, su regla CSS y la línea de `arq-catalog-listing` que lo ponía; demo, README, `docs/components.md` y DESIGN.md (§8 y Anexo A).
+- Figma: se borró la variante State=Scroll (1810:19453, sin instancias) y la propiedad State del set (1244:4058); las variantes quedan `Breakpoint=Desktop` y `Breakpoint=Mobile`. Se actualizó la descripción del set y las copias de DESIGN.md y COMPONENTS.md en Plan del proyecto.
+
+## 2026-10-19 · Navbar fijo en los listados
+
+- Lau quiere el navbar siempre a la vista en Productos y Colecciones: ya no se esconde al bajar (desde 1024 px) ni vuelve al subir. Reemplaza lo de 2026-10-16 · Productos: movimiento y scroll (umbral de dirección y toolbar y sidebar que acompañaban al navbar con `transform`).
+- La barra de herramientas y el sidebar quedan pegados siempre debajo del navbar (`top` del alto de la barra: `space/gap/md` × 2 + `icon/xl`).
+- **Sin doble línea:** pegada debajo del navbar, la línea superior de catalog-toolbar se juntaba con la inferior del navbar. Mientras está pegada, el listado le pone el atributo `stuck` (solo de código, sin variante en Figma) y la línea pasa a `color/surface/transparent` con `motion/duration/fast`; el borde mantiene su ancho para que la barra no cambie de alto. Se detecta con un `IntersectionObserver` (margen superior del `top` sticky + 1 px), sin escuchar el scroll.
+- **Sidebar de catálogo como compare-bar:** a Lau el despliegue de catalog-nav-group le resultaba lento (alto animado con `grid-template-rows` y `motion/easing/out`, que hace casi todo al principio y se arrastra al final). Ahora funciona como el pliegue de compare-bar (`#slide`): la lista cambia de golpe y la línea del grupo (en `::after`) y los grupos de abajo vuelven con `transform` desde donde estaban, con `motion/duration/expand` (250 ms) y `motion/easing/standard`; al abrir, la lista se descubre con `clip-path` al mismo ritmo. El chevron gira con el mismo tiempo y curva. Ya no usa Disclosure `animateHeight` (queda solo en faq-item); DESIGN.md §6 pasa a dos casos de alto animado. Con reduced motion, de golpe con el fundido de Disclosure.
+- Se quitó de `arq-catalog-listing` el seguimiento de la dirección del scroll y `#followNavbar`, y de navbar el atributo `data-arq-catalog-hidden`. Sigue `data-arq-compare-hidden` (la comparativa Mobile, que reemplaza el navbar por compare-header Compact).
+
+## 2026-10-19 · announcement-bar (propuesta)
+
+- Lau pidió una línea fina arriba del navbar, en todas las páginas, con fondo oscuro y «Suscribite al newsletter». No hay set en Figma: se arma primero en código como propuesta y, si queda bien, se diseña en Figma (set + ficha `doc/announcement-bar`).
+- `<arq-announcement-bar>` con un button Underline por slot, sin subrayado en reposo (sin `show-underline`: aparece en hover), con el ícono `arrow-up-right` y texto de 14 px (`role/body-compact-regular`) con el atributo `compact` del button, solo de código. Pedido de Lau. Siempre en Dark local (`data-arq-theme="dark"` en el `<aside>` interno, como compare-bar): no cambia con Iluminar.
+- **Al hacer scroll se oculta:** va en el flujo de la página, antes del navbar, y se va con el contenido; no escucha el scroll.
+- **navbar Transparent pasa de fixed a sticky** con margen inferior negativo (su alto, 56): sigue encima del hero, pero arranca debajo de la barra y se pega arriba cuando la barra se va. Sin la barra se ve igual que antes. El alto de la barra del navbar queda en una variable local (`--bar-height`).
+- El link va a la sección Newsletter de la Home: `/arq#newsletter` (el cta-block lleva `id="newsletter"`). Confirmado por Lau.
+- **Figma (19/10):** set `announcement-bar` (2780:8595) en Componentes › 2 · Navegación › Announcement bar: Breakpoint Desktop · Mobile, modo Dark fijado en cada variante, padding `space/padding/xs` × `layout/gutter`, button Underline (Show underline=false, icon/arrow-up-right) como instancia expuesta y el label con el estilo `role/body-compact-regular` como override (el set de button no tiene `compact`). Ficha `doc/announcement-bar` (2781:13825) en Documentación › 2 · Navegación. Link confirmado: sección Newsletter de la Home.
+- **Ajustes (19/10):** con `compact`, el subrayado del button Underline sube (arranca `space/padding/2xs` antes del borde inferior de la línea de 24, en lugar de 3 px debajo): con texto de 14 sobraba aire. También es más fino: queda en `border/default` (1 px) en hover y pressed, en lugar de `border/strong` (2 px). Solo afecta a compact; el resto de los button sigue como Figma. El hero `full-height` de la Home descuenta el alto de announcement-bar (lo mide con un `ResizeObserver`): barra + hero ocupan el 100 % del alto de la pantalla.
+- **Figma (19/10, cierre):** descripción del set y ficha `doc/announcement-bar` con el subrayado de 1 px y más pegado en hover; anotación de Dev Mode «✅ En código: arq-announcement-bar (src/components/announcement-bar)»; copias de DESIGN.md y COMPONENTS.md de Plan del proyecto actualizadas (la de COMPONENTS.md ya venía atrasada respecto del repo).
+
+## 2026-10-19 · announcement-bar solo en la Home
+
+- Lau pidió que la barra vaya solo en la Home. Reemplaza «en todas las páginas» de 2026-10-19 · announcement-bar (propuesta): se sacó de los embeds de Productos, Colección, Ficha, Comparativa, Descargas y Contacto.
+- El navbar sigue siendo sticky en Default y en Transparent: sin la barra se ve igual que antes. El hero `full-height` solo descuenta la barra si está en la página.
+- Figma: descripción del set, ficha `doc/announcement-bar` y copias de DESIGN.md y COMPONENTS.md de Plan del proyecto.
+
+## 2026-10-19 · Tablet
+
+- Final no tiene pantallas Tablet (768–1023 px) y varias pantallas usaban el layout Desktop, que no entra: nombres de una letra por línea en compare-bar, el título de Descargas partido en sílabas, campos angostos en Contacto y columnas apretadas en el mega-menu. Criterio: donde el Desktop no entra, se apila como Mobile y conserva los tamaños de Desktop.
+- **Productos:** hasta 1023 px (antes, hasta 767) las categorías van en la pestaña Categorías de filter-panel y no se muestra catalog-nav-mobile arriba de la grilla. En Tablet el panel sigue lateral, con scrim. Colecciones no cambia.
+- **compare-bar:** en Tablet los tres lugares van en una línea y «Borrar todo» y «Comparar» debajo, a la derecha, a `space/gap/md`. Plegada, una sola línea como en Desktop.
+- **Descargas:** en Tablet el catálogo va debajo del título, a `space/gap/xl`, con la bajada hasta `layout/measure-wide`.
+- **Tabla de Descargas:** pedido de Lau, un indicador de que hay más fila por ver. Un difuminado de `space/gap/3xl`, del transparente al fondo de la celda (también en Hover), junto a la columna fija de cada lado mientras queda contenido de ese lado (a la derecha, junto a Descargas; a la izquierda, junto al producto desde 1024 px o a la miniatura hasta 1023 px). Entra y sale con `motion/duration/fast`. Se ve en cualquier ancho en que la tabla no entra (no en Mobile, que usa tarjetas). Se eligió difuminado y no blur (el blur sobre texto se ve sucio y cuesta en el teléfono).
+- **Contacto:** en Tablet la información va arriba y el formulario debajo (como Mobile), con los campos de a dos; la bajada hasta `layout/measure-wide` y la información sin sticky.
+- **mega-menu:** en Tablet no se muestra el preview (`layout/mega-menu-image`, 420): las columnas toman todo el ancho, con `layout/gutter` a los dos lados. Se probó la miniatura de mega-link (Show image) en las colecciones y no entra en 4 columnas a 800–900 px: queda sin miniatura.
+- Figma: descripciones de los sets filter-panel (1225:13576), compare-bar (1233:3963) y mega-menu (841:2282); fichas `doc/filter-panel`, `doc/compare-bar` y `doc/mega-menu`; copias de DESIGN.md y COMPONENTS.md en Plan del proyecto (la de compare-bar en COMPONENTS.md venía atrasada: se copió la del repo, y en `docs/components.md` se sacó el párrafo de movimiento que estaba repetido).
+
+## 2026-10-19 · Tablet: registro en Figma
+
+- Lau pidió las pantallas Tablet en Figma como registro. Sección «Tablet · registro (2026-10-19)» (2791:24150) en Final, a la derecha de todo: Productos, Productos · filtros (Características y Categorías), compare-bar, Descargas, Contacto y Mega menu (Por espacio y Colecciones), a 834 px (iPad vertical) con el modo Tablet de Dimension. Se armaron clonando las Desktop y apilando lo que el código apila, más una nota con el criterio.
+- Desacoplados porque los sets no tienen variante Tablet: compare-bar (fila vertical) y filter-panel (Desktop con las tabs y la lista de categorías copiadas de su variante Mobile). Los sets no se tocaron.
+- En la tabla de Descargas, el difuminado es un rectángulo con degradado: la parada final está atada a `color/surface/default`; la inicial es blanco al 0 % sin variable, porque Figma mezcla sin premultiplicar y con `color/surface/transparent` (negro al 0 %) el medio se ve gris. En código no pasa.
+- En la cabecera de Productos, la bajada del page-header se desató de `layout/measure-wide` y llena el lugar libre (≈ 400, como `layout/measure` en código): la variable no se puede cambiar en la instancia.
+- Pendiente: el footer de Figma no entra en 834 («Redes» se corta); en código sí entra.

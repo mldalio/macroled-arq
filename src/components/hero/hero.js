@@ -15,7 +15,8 @@
 //   con role/display desde un contenedor interno (::slotted(h1) hereda).
 // - Media por slot: está en el HTML del embed y el navegador la descubre sin
 //   esperar al JS (es el LCP). Con video y prefers-reduced-motion se pausa y
-//   queda el poster.
+//   queda el poster. Un video sin autoplay ni loop se reproduce una vez y
+//   queda en el último frame (src/base/play-once.js).
 // - El navbar no va adentro: la página pone <arq-navbar theme="transparent">
 //   encima (README).
 // - Dark local (DESIGN.md §2): el slot action va en un contenedor interno con
@@ -25,11 +26,13 @@
 //   se muestra si su slot tiene contenido.
 // - Es un <div> y no un <header>: el banner de la página es el navbar.
 // - full-height (solo código, la usa la Home): ocupa todo el alto del viewport
-//   (100svh) en Desktop y Mobile, en lugar de 70svh.
+//   (100svh) en Desktop y Mobile, en lugar de 70svh. Si hay announcement-bar,
+//   descuenta su alto: barra + hero ocupan la pantalla.
 // - size="compact" (Size=Compact, Contacto): título en role/display-lg y hero
 //   más bajo (decisiones.md, 2026-10-14 · Contacto v3).
 
 import { ArqElement } from '../../base/arq-element.js';
+import { playOnce } from '../../base/play-once.js';
 import css from './hero.css?inline';
 
 const OPTIONAL = ['eyebrow', 'description', 'action'];
@@ -51,7 +54,7 @@ class ArqHero extends ArqElement {
     `<div class="title role-display"><slot name="title"></slot></div>` +
     `<p class="description role-body-lg" hidden><slot name="description"></slot></p>` +
     `</div>` +
-    `<div class="action" data-arq-theme="dark" hidden><slot name="action"></slot></div>` +
+    `<div class="action" hidden><slot name="action"></slot></div>` +
     `</div>` +
     `</div>`;
 
@@ -62,6 +65,13 @@ class ArqHero extends ArqElement {
       slot.addEventListener('slotchange', () => this.update());
     }
     this.#reducedMotion.addEventListener('change', () => this.#syncVideo());
+    // full-height: con announcement-bar arriba del navbar, la barra y el hero
+    // juntos ocupan la pantalla. Se mide la barra (si el texto baja de línea,
+    // cambia de alto) y se descuenta en el CSS con --announcement-height.
+    const bar = document.querySelector('arq-announcement-bar');
+    if (bar) {
+      new ResizeObserver(() => this.style.setProperty('--announcement-height', `${bar.offsetHeight}px`)).observe(bar);
+    }
   }
 
   update() {
@@ -73,9 +83,22 @@ class ArqHero extends ArqElement {
         .some((node) => node.nodeType === Node.ELEMENT_NODE || node.textContent.trim());
     for (const name of OPTIONAL) root.querySelector(`.${name}`).hidden = !filled(name);
     const title = root.querySelector('.title');
-    title.classList.toggle('role-display', this.size !== 'compact');
-    title.classList.toggle('role-display-lg', this.size === 'compact');
+    // Home a pantalla completa: el título del frame es role/display-lg (80).
+    const displayLg = this.size === 'compact' || this.fullHeight;
+    title.classList.toggle('role-display', !displayLg);
+    title.classList.toggle('role-display-lg', displayLg);
+    // Filled queda oscuro sobre la foto (Home v2). Outline y Underline
+    // siguen en Dark local para verse claros.
+    const action = root.querySelector('.action');
+    const button = root
+      .querySelector('slot[name="action"]')
+      .assignedElements({ flatten: true })
+      .find((el) => el.localName === 'arq-button');
+    const type = button?.getAttribute('type') || 'filled';
+    if (button && type !== 'filled') action.setAttribute('data-arq-theme', 'dark');
+    else action.removeAttribute('data-arq-theme');
     this.#syncVideo();
+    playOnce(root.querySelector('slot[name="media"]').assignedElements());
   }
 
   // Videos que venían con autoplay en el HTML (para volver a reproducirlos).

@@ -39,6 +39,22 @@
           }
         }
       },
+      "bone": {
+        "$type": "color",
+        "$value": "{offwhite.bone}",
+        "$description": "Fondo cálido de las bandas del Home (Productos destacados y Herramientas). En Dark coincide con surface/subtle.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-surface-bone)"
+            }
+          }
+        }
+      },
       "inverse": {
         "$type": "color",
         "$value": "{neutral.900}",

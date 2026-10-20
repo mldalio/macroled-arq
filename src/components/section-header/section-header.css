@@ -54,6 +54,49 @@
   max-width: var(--arq-layout-measure);
 }
 
+/* El kicker de Type=Editorial vive en title-block. En el resto, title-block
+   no genera caja para no cambiar Link, Description, Title ni Stacked. */
+.title-block {
+  display: contents;
+}
+
+/* Type=Editorial (Home v2): kicker + título a la izquierda, bajada a la
+   derecha, línea inferior border/subtle.
+   TODO (diseño): el título es Regular 50/64; se usa role/display-sm (48/56)
+   en Regular. No hay role/* Regular de ese tamaño.
+   La bajada mide 340; se usa layout/measure (400). */
+:host([type='editorial']) .title-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-lg);
+  min-width: 0;
+}
+
+:host([type='editorial']) .text {
+  display: contents;
+}
+
+:host([type='editorial']) .header {
+  padding-bottom: var(--arq-space-padding-xl);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+:host([type='editorial']) .title {
+  font-weight: var(--arq-font-weight-regular);
+}
+
+:host([type='editorial']) .kicker {
+  margin: 0;
+  color: var(--arq-color-text-secondary);
+}
+
+:host([type='editorial']) .description {
+  flex: 0 1 var(--arq-layout-measure);
+  max-width: var(--arq-layout-measure);
+  text-align: end;
+}
+
 /* Type=Stacked: título y bajada arriba, link debajo a space/gap/lg */
 :host([type='stacked']) .header {
   flex-direction: column;
@@ -83,9 +126,11 @@
     display: flex;
   }
 
-  :host([type='description']) .description {
+  :host([type='description']) .description,
+  :host([type='editorial']) .description {
     flex: none;
     max-width: none;
+    text-align: start;
   }
 
   :host([type='link']) .link,

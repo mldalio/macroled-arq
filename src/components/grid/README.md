@@ -15,6 +15,9 @@ Grilla de tarjetas o bloques de una página. Componente de layout, sin set en Fi
 | --- | --- | --- |
 | `columns` | `columns` | columnas en Desktop. Sin `columns`: `auto-fill` con `layout/card-min` y `layout/card-min-wide` desde 1600 px (DESIGN.md §2) |
 | `mobile` | `mobile` | hasta 767 px: `stack` · `two-columns` · `carousel` (def. `stack`) |
+| `gap` | `gap` | `default` · `sm` (def. `default`). `sm`: `space/gap/sm` entre tarjetas en Desktop y Mobile (Explorar por espacio del Home; no está en Final, que usa 24) |
+| `stagger` | `stagger` | booleano. PRUEBA (fuera de Figma): en Desktop, las tarjetas pares bajan `space/section/xl` + `space/section/sm` (líneas del Home). En Mobile no cambia |
+| `layout` | `layout` | `default` · `editorial` (def. `default`). `editorial`: Home v2. Las tres fotos tienen el mismo ancho y el alto de la fila no cambia. La fila no sigue el padding lateral de la sección. El hueco es `space/5` (5 px): no hay semántico entre `gap/xs` y `gap/sm` |
 
 ## Layout
 

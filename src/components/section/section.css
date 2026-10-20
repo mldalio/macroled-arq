@@ -5,16 +5,59 @@
   /* Gap encabezado → contenido → acción: space/gap/2xl en Desktop y
      space/gap/xl en Mobile (dos tokens distintos en el Home de Figma). */
   --section-gap: var(--arq-space-gap-2xl);
+  /* Margen lateral. Lo heredan las filas de imagen que no lo siguen
+     (Explorar, mosaico, carrusel de proyectos): solo títulos y textos. */
+  --section-inline: var(--page-gutter);
 
   display: block;
   box-sizing: border-box;
   min-width: 0;
-  padding: 0 var(--page-gutter) var(--arq-space-section-xl);
+  padding: 0 var(--section-inline) var(--arq-space-section-xl);
   background: var(--arq-color-surface-default);
 }
 
+/* Igual que la banda: Final usa 100 sin token, se usa el más cercano. */
 :host([padding-top]) {
-  padding-top: var(--arq-space-section-xl);
+  padding-top: var(--arq-space-section-md);
+}
+
+/* Banda para diferenciar la sección de la siguiente: space/section/md arriba
+   y abajo (gana sobre padding-top). TODO (diseño): en Final el fondo es
+   #f7f7f7 sin variable (neutral/50), se usa color/surface/subtle (#f0f0f0) hasta
+   que se enlace; y el padding es 100 sin token, se usa el más cercano. La
+   sección que sigue lleva padding-top. */
+:host([background='subtle']) {
+  padding-block: var(--arq-space-section-md);
+  background: var(--arq-color-surface-subtle);
+}
+
+/* Home: Productos destacados y Herramientas. Figma usa offwhite/bone. */
+:host([background='bone']) {
+  background: var(--arq-color-surface-bone);
+}
+
+/* Home: banda de Casa FOA.
+   TODO (diseño): #f7f1ec no tiene token. Crear el color en Figma y reemplazar
+   este valor suelto. */
+:host([background='sand']) {
+  background: #f7f1ec;
+}
+
+/* Home v2: padding simétrico space/section/lg. section usa el gutter;
+   wide usa space/padding/4xl (80). bleed=end deja el carrusel llegar al
+   borde derecho. */
+:host([padding='section']) {
+  --section-inline: var(--page-gutter);
+  padding: var(--arq-space-section-lg) var(--section-inline);
+}
+
+:host([padding='wide']) {
+  --section-inline: var(--arq-space-padding-4xl);
+  padding: var(--arq-space-section-lg) var(--section-inline);
+}
+
+:host([bleed='end']) {
+  padding-inline-end: 0;
 }
 
 .section {
@@ -25,6 +68,7 @@
 }
 
 .head,
+.lead,
 .body {
   min-width: 0;
 }
@@ -68,6 +112,45 @@
 
   :host([layout='split']) .action {
     grid-area: action;
+  }
+
+  /* Home v2: la columna de texto es layout/measure-wide y el hueco entre
+     columnas es space/gap/6xl. */
+  :host([layout='split'][padding='wide']) .section {
+    grid-template-columns: var(--arq-layout-measure-wide) minmax(0, 1fr);
+    column-gap: var(--arq-space-gap-6xl);
+  }
+
+  /* Herramientas: el título ocupa el ancho, como Productos destacados.
+     La tarjeta grande arranca a la altura de las chicas (y sigue más abajo). */
+  :host([layout='tools']) .section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.22fr);
+    grid-template-areas:
+      'head head'
+      'lead body';
+    column-gap: var(--arq-space-gap-6xl);
+    row-gap: var(--arq-space-gap-2xl);
+    align-items: start;
+  }
+
+  :host([layout='tools']) .head {
+    grid-area: head;
+  }
+
+  :host([layout='tools']) .lead {
+    grid-area: lead;
+    justify-self: start;
+    width: 90%;
+  }
+
+  :host([layout='tools']) .body {
+    grid-area: body;
+    display: flex;
+    gap: var(--arq-space-gap-sm);
+    align-items: flex-start;
+    justify-self: end;
+    width: 90%;
   }
 }
 

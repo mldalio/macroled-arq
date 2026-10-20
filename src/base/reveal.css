@@ -1,0 +1,22 @@
+/* Entrada al hacer scroll (src/base/reveal.js): sube space/gap/2xl y aparece,
+   como category-card. Escalonada con motion/duration/fast por elemento.
+   Es una animación y no una transición para no pisar las transiciones de
+   cada componente; backwards: al terminar no queda ningún estilo puesto.
+   Con prefers-reduced-motion las duraciones valen 0 desde tokens.css.
+   TODO (diseño): no está en Figma ni hay token de desplazamiento. */
+
+.reveal:not(.revealed) {
+  opacity: 0;
+}
+
+.reveal.revealed {
+  animation: arq-reveal calc(var(--arq-motion-duration-slow) * 2) var(--arq-motion-easing-standard) backwards;
+  animation-delay: calc(var(--arq-motion-duration-fast) * var(--reveal-index, 0));
+}
+
+@keyframes arq-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(var(--arq-space-gap-2xl));
+  }
+}
