@@ -29,7 +29,7 @@
 // - Iluminar: lo resuelve catalog-toolbar (data-arq-theme en <html>).
 
 import { ArqElement } from '../../base/arq-element.js';
-import { listProducts, listCollections, listCompareCandidates } from '../../data/catalog.js';
+import { listProducts, listCollections, listCompareCandidates, getCatalogNav } from '../../data/catalog.js';
 import { handOffTheme } from '../../base/theme.js';
 import '../catalog-toolbar/catalog-toolbar.js';
 import '../filter-panel/filter-panel.js';
@@ -91,6 +91,7 @@ class ArqCatalogListing extends ArqElement {
     this.#category = categoryFromUrl();
     this.#query = new URLSearchParams(location.search).get('q')?.trim() ?? '';
     root.querySelector('slot[name="nav"]').addEventListener('slotchange', () => this.#markNav());
+    this.#fillNav();
     // Cambiar de categoría no recarga la página: se actualiza la URL y se
     // vuelve a pedir solo el listado (sin parpadeo, también con Iluminar).
     root.addEventListener('click', this.#onNavClick);
@@ -396,6 +397,34 @@ class ArqCatalogListing extends ArqElement {
       panel.append(row);
     }
     this.#count({});
+  }
+
+  // Los grupos del sidebar (Interior, Exterior, Lámparas y artefactos,
+  // Colecciones) y su "Todo…" están fijos en el HTML; los links de adentro
+  // salen de los datos: cada catalog-nav-group con data-arq-nav="<grupo>"
+  // recibe los de getCatalogNav(). Sin datos, queda solo lo del HTML.
+  async #fillNav() {
+    const nav = this.shadowRoot.querySelector('slot[name="nav"]').assignedElements()[0];
+    const groups = nav?.querySelectorAll('arq-catalog-nav-group[data-arq-nav]');
+    if (!groups?.length) return;
+    let links;
+    try {
+      links = await getCatalogNav();
+    } catch (error) {
+      console.error('[arq] catalog-listing: no se pudieron cargar las categorías', error);
+      return;
+    }
+    for (const group of groups) {
+      group.querySelectorAll(':scope > [data-arq-nav-item]').forEach((item) => item.remove());
+      for (const link of links[group.dataset.arqNav] ?? []) {
+        const item = document.createElement('arq-catalog-nav-item');
+        item.setAttribute('href', link.href);
+        item.setAttribute('data-arq-nav-item', '');
+        item.textContent = link.label;
+        group.append(item);
+      }
+    }
+    this.#markNav();
   }
 
   // Marca el ítem de la categoría actual: el que enlaza a esta misma página.

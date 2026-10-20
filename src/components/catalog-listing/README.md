@@ -25,7 +25,7 @@ Listado de Productos (y de Colecciones con `unit="colecciones"`): navegación de
 | Atributo / slot | Prop JS | Valores · por defecto |
 | --- | --- | --- |
 | `unit` | `unit` | `productos` · `colecciones` (def. `productos`) |
-| slot `nav` | — | un `arq-catalog-nav` con los links de categoría (en el HTML: indexables) |
+| slot `nav` | — | un `arq-catalog-nav` con los grupos fijos (Interior, Exterior, Lámparas y artefactos, Colecciones) y su link «Todo…». Cada grupo con `data-arq-nav="interior · exterior · lamparas-artefactos · colecciones"` recibe el resto de sus links de los datos (`getCatalogNav()`: solo categorías con productos) |
 | slot `filter-title` | — | el `<h2>` del filter-panel ("Filtrar") |
 
 En Productos Mobile y Tablet (hasta 1023 px), el árbol de navegación aparece en la tab Categorías de Filtrar. Los grupos y enlaces se copian del `arq-catalog-nav` del HTML para conservar sus URLs y la selección actual. Desde 1024 px se ve el sidebar. Colecciones mantiene su navegación en todos los anchos.

@@ -6,8 +6,8 @@
   Las cards, los filtros y la compare-bar salen de Typesense (arq-catalog-listing).
   La categoría va en la URL: ?environment=, ?application=, ?product_type= y ?collection= (las cards de producto de una colección, en este mismo listado; las URLs de categoría están PENDIENTES, docs/urls.md).
   La búsqueda también: ?q= ("Ver todos los resultados" del buscador; decisiones.md, 2026-10-05 · Búsqueda en Productos).
-  TODO (datos): los links de catalog-nav siguen el árbol de getNavigation() del catálogo de ejemplo; revisarlos con la base real
-  (las opciones sin productos no van).
+  catalog-nav: los grupos y su "Todo…" son fijos; los demás links los completa arq-catalog-listing desde Typesense
+  (data-arq-nav, getCatalogNav de src/data/catalog.js; solo categorías con productos).
 -->
 <arq-navbar>
   <!-- TODO (diseño): en Final, Productos aparece como Current sin flecha; se deja has-dropdown para el mega-menu -->
@@ -29,30 +29,20 @@
 
   <arq-catalog-listing>
     <arq-catalog-nav slot="nav" label="Categorías">
-      <arq-catalog-nav-group>
+      <arq-catalog-nav-group data-arq-nav="interior">
         <span slot="label">Interior</span>
         <arq-catalog-nav-item href="/arq/productos?environment=Interior">Todo interior</arq-catalog-nav-item>
-        <arq-catalog-nav-item href="/arq/productos?environment=Interior&amp;application=Colgante&amp;product_type=Luminaria">Colgante</arq-catalog-nav-item>
-        <arq-catalog-nav-item href="/arq/productos?environment=Interior&amp;product_type=L%C3%A1mpara">Lámparas</arq-catalog-nav-item>
       </arq-catalog-nav-group>
-      <arq-catalog-nav-group>
+      <arq-catalog-nav-group data-arq-nav="exterior">
         <span slot="label">Exterior</span>
         <arq-catalog-nav-item href="/arq/productos?environment=Exterior">Todo exterior</arq-catalog-nav-item>
-        <arq-catalog-nav-item href="/arq/productos?environment=Exterior&amp;application=Jard%C3%ADn&amp;product_type=Luminaria">Jardín</arq-catalog-nav-item>
-        <arq-catalog-nav-item href="/arq/productos?environment=Exterior&amp;application=Pared&amp;product_type=Luminaria">Pared</arq-catalog-nav-item>
-        <arq-catalog-nav-item href="/arq/productos?environment=Exterior&amp;product_type=L%C3%A1mpara">Lámparas</arq-catalog-nav-item>
       </arq-catalog-nav-group>
-      <arq-catalog-nav-group>
+      <arq-catalog-nav-group data-arq-nav="lamparas-artefactos">
         <span slot="label">Lámparas y artefactos</span>
-        <arq-catalog-nav-item href="/arq/productos?product_type=L%C3%A1mpara">Lámparas</arq-catalog-nav-item>
       </arq-catalog-nav-group>
-      <arq-catalog-nav-group>
+      <arq-catalog-nav-group data-arq-nav="colecciones">
         <span slot="label">Colecciones</span>
         <arq-catalog-nav-item href="/arq/productos?view=colecciones">Todas las colecciones</arq-catalog-nav-item>
-        <arq-catalog-nav-item href="/arq/productos?collection=kanu">Kanu</arq-catalog-nav-item>
-        <arq-catalog-nav-item href="/arq/productos?collection=tori">Tori</arq-catalog-nav-item>
-        <arq-catalog-nav-item href="/arq/productos?collection=douli">Douli</arq-catalog-nav-item>
-        <arq-catalog-nav-item href="/arq/productos?collection=yoru">Yoru</arq-catalog-nav-item>
       </arq-catalog-nav-group>
     </arq-catalog-nav>
     <h2 slot="filter-title">Filtrar</h2>
