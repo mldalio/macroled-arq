@@ -73,6 +73,30 @@
   visibility: visible;
 }
 
+/* Primera carga de la foto principal (.reveal lo pone el JS si no estaba en la
+   caché): funde sobre el fondo color/surface/subtle con motion/duration/slow +
+   motion/easing/standard, el mismo fundido que el hover. Con reduced motion,
+   motion/duration/fade (DESIGN.md §6: los fundidos se quedan). */
+/* Mientras espera, en 0 sin transición (si no, bajaba de 1 a 0 y el
+   transitionend quitaba .reveal antes de que llegara la foto) */
+.base.reveal {
+  opacity: 0;
+  transition: none;
+}
+
+.base.reveal.loaded {
+  opacity: 1;
+  transition-property: opacity;
+  transition-duration: var(--arq-motion-duration-slow);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .base.reveal.loaded {
+    transition-duration: var(--arq-motion-duration-fade);
+  }
+}
+
 /* Fundido entre estudio y contexto: motion/duration/slow + motion/easing/standard.
    Repite la lista de la hoja base porque transition-property no se suma.
    Con prefers-reduced-motion la duración vale 0 (tokens.css). */
@@ -181,4 +205,138 @@
 .compare {
   position: relative;
   z-index: var(--card-above);
+}
+
+/* ── Cargando (loading) ───────────────────────────────────────────
+   Sin set en Figma (TODO diseño): bloques en color/surface/subtle, como las
+   filas de carga de Descargas (2564:21523). El bloque 7:10 es el fondo de
+   .card-media; cada barra va en una línea con el alto de línea de su texto
+   (1lh del role/*), así no salta nada al llegar las cards. Barras de
+   space/gap/md (nombre) y space/gap/sm-md (detalle).
+   Shimmer: una franja de brillo cruza los bloques en diagonal, de izquierda
+   a derecha (elegido por Lau sobre el pulso). El degradé es uno solo para
+   toda la pantalla (background-attachment: fixed): la franja pasa pareja por
+   todas las cards a la vez, en vez de una por bloque; en iOS Safari fixed no
+   aplica y cada bloque lleva su franja. Brillo en color/surface/default
+   (Dark: color/surface/strong, más claro que subtle; default en Dark es más
+   oscuro). Ciclo de 1,6 s lineal (movimiento constante). Con reduced motion,
+   fijos.
+   TODO (token): duración del shimmer (valor suelto, pedido de Lau). */
+.card.is-loading {
+  --shimmer-shine: var(--arq-color-surface-default);
+  --shimmer-duration: 1600ms;
+}
+
+.card.is-dark.is-loading {
+  --shimmer-shine: var(--arq-color-surface-strong);
+}
+
+.is-loading .card-media,
+.is-loading .sk-bar,
+.is-loading .sk-swatches > span {
+  background-image: linear-gradient(
+    105deg,
+    var(--arq-color-surface-subtle) 44%,
+    var(--shimmer-shine) 50%,
+    var(--arq-color-surface-subtle) 56%
+  );
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: 300% 100%;
+  animation: arq-skeleton-shimmer var(--shimmer-duration) linear infinite;
+}
+
+/* 100 % → 0 %: la franja entra por la izquierda y sale por la derecha */
+@keyframes arq-skeleton-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-loading .card-media,
+  .is-loading .sk-bar,
+  .is-loading .sk-swatches > span {
+    background-image: none;
+    animation: none;
+  }
+}
+
+.sk {
+  display: none;
+}
+
+.is-loading .img,
+.is-loading .fallback,
+.is-loading .title,
+.is-loading .meta,
+.is-loading .compare {
+  display: none;
+}
+
+.is-loading .sk {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+}
+
+/* Nombre + acabados: en fila como .title (Small: en columna) */
+.sk-title {
+  gap: var(--arq-space-gap-sm);
+}
+
+.is-small .sk-title {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sk-name {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  align-self: stretch;
+  min-width: 0;
+  height: 1lh;
+}
+
+.sk-bar {
+  display: block;
+  width: 60%;
+  height: var(--arq-space-gap-md);
+  background: var(--arq-color-surface-subtle);
+}
+
+.sk-short {
+  width: 35%;
+  height: var(--arq-space-gap-sm-md);
+}
+
+/* Acabados: tres muestras de swatch/sm, como los swatch Small de la card */
+.sk-swatches {
+  display: flex;
+  flex: none;
+  gap: var(--arq-space-gap-xs);
+}
+
+.is-small .sk-swatches {
+  gap: var(--arq-space-gap-sm);
+}
+
+.sk-swatches > span {
+  width: var(--arq-swatch-sm);
+  height: var(--arq-swatch-sm);
+  background: var(--arq-color-surface-subtle);
+}
+
+/* Comparar (checkbox: padding space/gap/xs arriba y abajo) o meta */
+.sk-detail {
+  height: 1lh;
+}
+
+.has-compare .sk-detail {
+  padding-block: var(--arq-space-gap-xs);
 }

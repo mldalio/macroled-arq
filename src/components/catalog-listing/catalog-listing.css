@@ -53,7 +53,7 @@
   transition-timing-function: var(--arq-motion-easing-standard);
 }
 
-:host([aria-busy='true']) .grid {
+:host([aria-busy='true']) .grid:not(:has(> [loading])) {
   opacity: var(--busy-opacity);
   transition-delay: var(--arq-motion-duration-fast);
 }
@@ -75,6 +75,31 @@
     opacity: 0;
     transform: translateY(var(--arq-space-gap-sm));
   }
+}
+
+/* Cards de carga (primera carga, product-card loading): aparecen con un
+   fundido de motion/duration/fade después de esperar lo mismo. Con el
+   catálogo en caché las cards llegan antes y no se llegan a ver (sin
+   parpadeo). Sin desplazamiento ni escalón; fade no cambia con reduced
+   motion. */
+.grid > arq-product-card[loading] {
+  transition-property: opacity;
+  transition-duration: var(--arq-motion-duration-fade);
+  transition-timing-function: var(--arq-motion-easing-standard);
+  transition-delay: var(--arq-motion-duration-fade);
+}
+
+@starting-style {
+  .grid > arq-product-card[loading] {
+    opacity: 0;
+    transform: none;
+  }
+}
+
+/* Cards que reemplazan a las de carga ya visibles: en su lugar, sin entrada
+   (la foto funde sola, product-card) */
+.grid > arq-product-card.settled {
+  transition: none;
 }
 
 /* Reduced motion (DESIGN.md §6): sin desplazamiento ni escalón, queda el
