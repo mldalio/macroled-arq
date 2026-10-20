@@ -136,6 +136,19 @@
             }
           }
         }
+      },
+      "shimmer": {
+        "$type": "number",
+        "$value": 1600,
+        "$description": "Cards de carga (product-card State=Loading): tiempo en que la franja de brillo del shimmer cruza la pantalla, lineal y continua. En ms. Con prefers-reduced-motion no hay franja (bloques fijos).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [],
+            "codeSyntax": {
+              "WEB": "var(--arq-motion-duration-shimmer)"
+            }
+          }
+        }
       }
     },
     "easing": {

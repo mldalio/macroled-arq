@@ -208,7 +208,7 @@
 }
 
 /* ── Cargando (loading) ───────────────────────────────────────────
-   Sin set en Figma (TODO diseño): bloques en color/surface/subtle, como las
+   Figma: State=Loading (estática). Bloques en color/surface/subtle, como las
    filas de carga de Descargas (2564:21523). El bloque 7:10 es el fondo de
    .card-media; cada barra va en una línea con el alto de línea de su texto
    (1lh del role/*), así no salta nada al llegar las cards. Barras de
@@ -219,12 +219,10 @@
    todas las cards a la vez, en vez de una por bloque; en iOS Safari fixed no
    aplica y cada bloque lleva su franja. Brillo en color/surface/default
    (Dark: color/surface/strong, más claro que subtle; default en Dark es más
-   oscuro). Ciclo de 1,6 s lineal (movimiento constante). Con reduced motion,
-   fijos.
-   TODO (token): duración del shimmer (valor suelto, pedido de Lau). */
+   oscuro). Ciclo de motion/duration/shimmer, lineal (movimiento constante).
+   Con reduced motion, fijos. */
 .card.is-loading {
   --shimmer-shine: var(--arq-color-surface-default);
-  --shimmer-duration: 1600ms;
 }
 
 .card.is-dark.is-loading {
@@ -243,7 +241,7 @@
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: 300% 100%;
-  animation: arq-skeleton-shimmer var(--shimmer-duration) linear infinite;
+  animation: arq-skeleton-shimmer var(--arq-motion-duration-shimmer) linear infinite;
 }
 
 /* 100 % → 0 %: la franja entra por la izquierda y sale por la derecha */
