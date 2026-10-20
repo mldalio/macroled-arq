@@ -26,7 +26,7 @@ Bloque de página: margen lateral, padding inferior y el armado encabezado → c
 | `layout` | `layout` | `stack` · `split` (def. `stack`) |
 | `padding-top` | `paddingTop` | booleano: suma `space/section/md` arriba (primer bloque después del hero o el que sigue a una banda `subtle`) |
 | `background` | `background` | `default` · `subtle` · `bone` · `sand` (def. `default`). `subtle`: banda `color/surface/subtle`. `bone`: `color/surface/bone` (offwhite/bone; en Dark igual que subtle). `sand`: banda de Casa FOA (`#f7f1ec`, sin token) |
-| `reveal` | `reveal` | presencia: el bloque entero aparece una vez al entrar en pantalla (fade y subida, `src/base/reveal.js`). Con `prefers-reduced-motion` se ve quieto |
+| `reveal` | `reveal` | presencia: el bloque entero aparece al entrar en pantalla (fade y subida) y se va al hacer scroll hacia arriba, así la entrada se repite. Al bajar y dejarlo atrás queda visible. Con `prefers-reduced-motion` se ve quieto |
 | slot `header` | — | un `arq-section-header` |
 | slot por defecto | — | el contenido (grilla, mosaico, feature-block, lista) |
 | slot `action` | — | un `arq-button` al final del bloque, en Desktop y Mobile |

@@ -60,8 +60,7 @@
 
 /* Home v2: newsletter sobre foto, texto a la derecha.
    TODO (diseño): el título es Regular 50/64; se usa role/display-sm en Regular.
-   El campo de Figma es una caja; acá sigue el arq-input (línea inferior)
-   dentro de la barra color/bg/subtle. */
+   El email es el mismo arq-input de Contacto (caja con borde), sin barra alrededor. */
 :host(.has-media) .block {
   position: relative;
   display: grid;
@@ -114,10 +113,9 @@
 
 :host(.has-media) .action {
   width: min(100%, var(--arq-layout-measure));
-  justify-content: space-between;
-  padding: var(--arq-space-padding-md);
-  padding-inline-start: var(--arq-space-padding-lg);
-  background: var(--arq-color-surface-subtle);
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--arq-space-gap-md);
 }
 
 :host(.has-media) .email {

@@ -91,6 +91,7 @@ import './components/project-mosaic/project-mosaic.js';
 import './components/text-block/text-block.js';
 import './components/collection-tile/collection-tile.js';
 import './components/collection-mosaic/collection-mosaic.js';
+import './components/collection-index/collection-index.js';
 import './components/tool-card/tool-card.js';
 import './components/project-slide/project-slide.js';
 import './components/project-slider/project-slider.js';

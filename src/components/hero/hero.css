@@ -112,6 +112,32 @@
    inferior, de transparente a negro 70 %. Con announcement-bar arriba, se
    descuenta su alto (--announcement-height, lo mide hero.js): barra + hero
    ocupan la pantalla. */
+/* TODO (diseño): no hay alto entre 70svh y 100svh. 80svh es un paso chico
+   para la banda de la Home. */
+:host([tall]) .hero {
+  height: 80svh;
+}
+
+/* Parallax: la foto queda quieta y la página pasa por encima. Mismo recurso
+   que la descripción de la ficha (clip-path + position: fixed; en iOS
+   background-attachment: fixed no funciona). Con movimiento reducido, la
+   foto se mueve con la página. */
+:host([parallax]) .media {
+  overflow: hidden;
+  clip-path: inset(0);
+}
+
+:host([parallax]) ::slotted([slot='media']) {
+  position: fixed !important;
+  inset: 0 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host([parallax]) ::slotted([slot='media']) {
+    position: absolute !important;
+  }
+}
+
 :host([full-height]) .hero {
   height: calc(100svh - var(--announcement-height, var(--arq-space-0)));
 }

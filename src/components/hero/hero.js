@@ -42,6 +42,8 @@ class ArqHero extends ArqElement {
   static styles = css;
   static properties = {
     fullHeight: { type: Boolean },
+    tall: { type: Boolean }, // un poco más que 70svh; solo la banda de la Home
+    parallax: { type: Boolean }, // la foto queda fija mientras la página pasa (como la descripción de la ficha)
     size: { type: String, values: ['default', 'compact'], default: 'default' }, // Size
   };
   static template =

@@ -16,9 +16,9 @@
 //   2026-10-02 · Home); las product-card que muestra reciben datos.
 // - Home v2: el slot intro (texto) queda a la izquierda y las tarjetas van en
 //   una fila con scroll (slider). Autoplay: una tarjeta por intervalo; se
-//   pausa solo al hacer hover (o foco) en una product-card, al deslizar,
+//   sigue con el mouse encima. Se pausa al enfocar una product-card, al deslizar,
 //   fuera de pantalla o prefers-reduced-motion.
-//   TODO (diseño): no hay token de intervalo; se usa motion/duration/feedback × 2.
+//   TODO (diseño): no hay token de intervalo; se usa motion/duration/feedback × 1.5 (3 s).
 // - Se desliza con el dedo o arrastrando con el mouse. Un toque sigue
 //   abriendo la ficha; si hubo desplazamiento, ese clic no navega.
 // - Entrada al hacer scroll (src/base/reveal.js), escalonada por tarjeta.
@@ -51,7 +51,6 @@ class ArqFeaturedProducts extends ArqElement {
   #reveal = null;
   #timer = 0;
   #inView = false;
-  #hover = false;
   #drag = null;
   #suppressClick = false;
   #suppressTimer = 0;
@@ -66,8 +65,6 @@ class ArqFeaturedProducts extends ArqElement {
   setup() {
     this.shadowRoot.querySelector('.fallback slot').addEventListener('slotchange', () => this.#load());
     const rail = this.shadowRoot.querySelector('.rail');
-    rail.addEventListener('pointerenter', (event) => this.#onCardPointer(event, true), true);
-    rail.addEventListener('pointerleave', (event) => this.#onCardPointer(event, false), true);
     rail.addEventListener('pointerdown', (event) => this.#dragStart(event));
     rail.addEventListener('pointermove', (event) => this.#dragMove(event));
     rail.addEventListener('pointerup', (event) => this.#dragEnd(event));
@@ -140,13 +137,6 @@ class ArqFeaturedProducts extends ArqElement {
     return node.closest?.('arq-product-card') ?? null;
   }
 
-  #onCardPointer(event, entering) {
-    if (!this.#cardFrom(event.target)) return;
-    if (!entering && this.#cardFrom(event.relatedTarget)) return;
-    this.#hover = entering;
-    this.#syncAutoplay();
-  }
-
   #cardHasFocus() {
     const active = this.shadowRoot.activeElement;
     return Boolean(this.#cardFrom(active));
@@ -154,7 +144,7 @@ class ArqFeaturedProducts extends ArqElement {
 
   #interval() {
     const ms = Number.parseFloat(getComputedStyle(this).getPropertyValue('--arq-motion-duration-feedback')) || 2000;
-    return ms * 2;
+    return ms * 1.5;
   }
 
   #syncAutoplay() {
@@ -162,7 +152,6 @@ class ArqFeaturedProducts extends ArqElement {
     const canPlay =
       !rail.hidden &&
       this.#inView &&
-      !this.#hover &&
       !this.#drag &&
       !this.#cardHasFocus() &&
       !this.#reducedMotion.matches &&

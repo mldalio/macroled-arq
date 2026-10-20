@@ -19,7 +19,7 @@
 // TODO (diseño): Home v2 no tiene frame Mobile; hasta 767 px se apila el pie
 // y no se muestran las flechas (misma regla que carousel-controls).
 // TODO (diseño): autoplay, arrastre y lightbox no están en Figma. El intervalo
-// de autoplay (4 s) no tiene token.
+// de autoplay (3 s) no tiene token.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { containScroll } from '../../base/scroll-lock.js';
@@ -27,7 +27,7 @@ import '../carousel-controls/carousel-controls.js';
 import '../icon-button/icon-button.js';
 import css from './project-slider.css?inline';
 
-const AUTOPLAY_MS = 4000;
+const AUTOPLAY_MS = 3000;
 const DRAG_START = 6;
 
 class ArqProjectSlider extends ArqElement {
@@ -66,7 +66,6 @@ class ArqProjectSlider extends ArqElement {
   #onWrap = null;
   #drag = null;
   #suppressClick = false;
-  #hovering = false;
   #reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   #resize = new ResizeObserver(() => this.#align());
   #onMotion = () => this.#armAutoplay();
@@ -104,16 +103,6 @@ class ArqProjectSlider extends ArqElement {
       }
     });
     const rail = root.querySelector('.rail');
-    rail.addEventListener('pointerenter', (event) => {
-      if (event.pointerType !== 'mouse') return;
-      this.#hovering = true;
-      this.#armAutoplay();
-    });
-    rail.addEventListener('pointerleave', (event) => {
-      if (event.pointerType !== 'mouse') return;
-      this.#hovering = false;
-      this.#armAutoplay();
-    });
     rail.addEventListener('pointerdown', (event) => this.#dragStart(event));
     rail.addEventListener('pointermove', (event) => this.#dragMove(event));
     rail.addEventListener('pointerup', (event) => this.#dragEnd(event));
@@ -481,7 +470,6 @@ class ArqProjectSlider extends ArqElement {
     const dialog = this.shadowRoot?.querySelector('.lightbox');
     return Boolean(this.autoplay)
       && !this.#reduced.matches
-      && !this.#hovering
       && !this.#drag
       && !dialog?.open
       && !document.hidden

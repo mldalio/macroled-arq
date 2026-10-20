@@ -1,0 +1,96 @@
+/* collection-index · Home, bajo «Diseño que inspira». Solo tokens semánticos.
+   TODO (diseño): no está en Figma. Lista role/display-sm y foto ratio/landscape. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--arq-space-gap-4xl);
+  min-width: 0;
+}
+
+.names {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-2xl);
+  min-width: 0;
+}
+
+.list {
+  width: 100%;
+  min-width: 0;
+}
+
+::slotted(a) {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding-block: var(--arq-space-padding-sm);
+  border-block: var(--arq-border-strong) solid transparent;
+  color: var(--arq-color-text-tertiary);
+  font: inherit;
+  letter-spacing: inherit;
+  text-decoration: none;
+  overflow-wrap: break-word;
+  transition-property: color, border-color;
+  transition-duration: var(--arq-motion-duration-fast);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+::slotted(a[aria-current='true']) {
+  color: var(--arq-color-text-primary);
+  border-block-color: var(--arq-color-border-strong);
+}
+
+::slotted(a:focus-visible) {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.stage {
+  position: relative;
+  min-width: 0;
+  aspect-ratio: 5 / 4;
+  overflow: hidden;
+  background: var(--arq-color-surface-subtle);
+}
+
+.photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: var(--arq-motion-duration-slow);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+.photo.is-shown {
+  opacity: 1;
+}
+
+@media (max-width: 767px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--arq-space-gap-xl);
+  }
+
+  .stage {
+    order: -1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo {
+    transition: none;
+  }
+}

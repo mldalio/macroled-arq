@@ -159,3 +159,22 @@
     --section-gap: var(--arq-space-gap-xl);
   }
 }
+
+/* reveal: el fundido va y vuelve. La hoja base anima una sola vez; acá la
+   transición reemplaza esa animación para poder deshacerla al subir. */
+.section.reveal {
+  transform: translateY(var(--arq-space-gap-2xl));
+  transition-property: opacity, transform;
+  transition-duration: calc(var(--arq-motion-duration-slow) * 2);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+.section.reveal:not(.revealed) {
+  pointer-events: none;
+}
+
+.section.reveal.revealed {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}

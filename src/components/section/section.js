@@ -40,7 +40,7 @@ class ArqSection extends ArqElement {
     padding: { type: String, values: ['default', 'section', 'wide'], default: 'default' },
     bleed: { type: String, values: ['none', 'end'], default: 'none' },
     background: { type: String, values: ['default', 'subtle', 'bone', 'sand'], default: 'default' },
-    reveal: { type: Boolean }, // entrada al hacer scroll: el bloque entero aparece una vez
+    reveal: { type: Boolean }, // fade al entrar; al subir se va y vuelve a entrar la próxima vez
   };
   static template =
     `<div class="section">` +
@@ -52,6 +52,9 @@ class ArqSection extends ArqElement {
     `</div>`;
 
   #observer = null;
+  #onScroll = null;
+  #scrollY = 0;
+  #scrollingUp = false;
 
   setup() {
     // Un contenedor sin contenido se oculta: así no suma el gap.
@@ -64,33 +67,45 @@ class ArqSection extends ArqElement {
   }
 
   disconnectedCallback() {
-    this.#observer?.disconnect();
+    this.#stopReveal();
   }
 
   update(changed) {
     if (changed.has('reveal')) this.#armReveal();
   }
 
-  // El bloque entero (título, contenido y pie) aparece una sola vez al entrar
-  // en pantalla. Misma entrada que el resto del Home (src/base/reveal.js).
+  // El bloque entero aparece al entrar en pantalla y se va al hacer scroll
+  // hacia arriba, para que la entrada se repita. Al bajar y dejarlo atrás
+  // queda visible. Misma entrada que el resto del Home (src/base/reveal.js).
   // Con prefers-reduced-motion se ve quieto.
   #armReveal() {
-    this.#observer?.disconnect();
-    this.#observer = null;
+    this.#stopReveal();
     const section = this.shadowRoot.querySelector('.section');
     section.classList.remove('reveal', 'revealed');
     if (!this.reveal || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     section.classList.add('reveal');
+    this.#scrollY = window.scrollY;
+    this.#onScroll = () => {
+      const y = window.scrollY;
+      this.#scrollingUp = y < this.#scrollY;
+      this.#scrollY = y;
+    };
+    window.addEventListener('scroll', this.#onScroll, { passive: true });
     this.#observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting) return;
-        section.classList.add('revealed');
-        this.#observer.disconnect();
-        this.#observer = null;
+        if (this.#scrollingUp && entry.intersectionRatio < 0.35) section.classList.remove('revealed');
+        else if (entry.intersectionRatio >= 0.15) section.classList.add('revealed');
       },
-      { threshold: 0.15 },
+      { threshold: [0, 0.15, 0.35] },
     );
     this.#observer.observe(this);
+  }
+
+  #stopReveal() {
+    this.#observer?.disconnect();
+    this.#observer = null;
+    if (this.#onScroll) window.removeEventListener('scroll', this.#onScroll);
+    this.#onScroll = null;
   }
 }
 
