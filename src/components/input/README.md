@@ -77,5 +77,5 @@ Con reduced motion quedan solo los fundidos. Al cerrar el menú o quitar el erro
 
 - **Foco:** solo cambia el color de la línea, sin anillo (excepción a DESIGN.md §7, anotada en `docs/decisiones.md`).
 - **Textarea:** 4 filas visibles por defecto (`rows="4"`; se cambia con el atributo `rows`) y solo se agranda hacia abajo (`resize: vertical`), según la descripción del set.
-- `TODO` Textos de error por caso de validación, indicador de campo obligatorio y estado Hover: no están diseñados.
+- Textos de error por caso e indicador de campo obligatorio: diseñados en Figma para Contacto (Final › Contacto, «Textos de error · formulario de contacto», 2805:26390; `docs/decisiones.md`, 2026-10-20). `TODO` pasarlos a form-contacto. `TODO` estado Hover: no está diseñado.
 - Helper y error comparten la prop Helper en Figma; en código son separados (slot `helper` y atributo `error`).

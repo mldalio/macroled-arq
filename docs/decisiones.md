@@ -1141,3 +1141,19 @@ Salió de revisar los valores de `color_carcasa` de toda la base (326 documentos
 - En la tabla de Descargas, el difuminado es un rectángulo con degradado: la parada final está atada a `color/surface/default`; la inicial es blanco al 0 % sin variable, porque Figma mezcla sin premultiplicar y con `color/surface/transparent` (negro al 0 %) el medio se ve gris. En código no pasa.
 - En la cabecera de Productos, la bajada del page-header se desató de `layout/measure-wide` y llena el lugar libre (≈ 400, como `layout/measure` en código): la variable no se puede cambiar en la instancia.
 - Pendiente: el footer de Figma no entra en 834 («Redes» se corta); en código sí entra.
+
+## 2026-10-20 · Figma: Tablet, textos de error y tokens nuevos
+
+- **Tablet · diseño:** Lau pidió el diseño Tablet de Mega menu, Descargas y Contacto. Sección «Tablet · diseño (2026-10-20)» (2803:40995) en Final, a la derecha del registro del 19/10, con frames de 834 en el modo Tablet de Dimension. Sale del registro, revisado como diseño:
+  - **footer:** variante nueva `Breakpoint=Tablet` en el set (2803:8580): marca arriba y debajo Productos, Información y Redes, de `layout/footer-column` a `space/gap/xl`, a `space/gap/2xl` de la marca. Cierra el pendiente del 19/10 («Redes» se cortaba). `TODO` código: hoy el footer Tablet es el de Desktop achicado y parte «Lámparas y artefactos».
+  - **Descargas:** la download-card del catálogo de `layout/measure-wide`, con título y bajada visibles (en el registro el bloque tenía alto fijo y la recortaba). Igual que el código.
+  - **Contacto:** Contacto y Recursos técnicos en dos columnas a `space/gap/xl`, debajo de la bajada. `TODO` código: hoy van apilados.
+  - **Mega menu:** las tres pestañas, sin preview. Lámparas y artefactos con el contenido del frame 2295:23691; Colecciones con las filas alineadas a 68.
+- **Textos de error del formulario de contacto:** «Contacto v3 · errores» (2804:26205) y la tabla «Textos de error · formulario de contacto» (2805:26390) en Final › Contacto. Obligatorios: nombre, email y detalles, sin marca (los demás dicen «(opcional)»). Cada error debajo de su campo; al enviar con errores, el foco va al primero y debajo del botón aparece «Revisá los campos marcados para enviar tu consulta.» (form-message Error). Nuevos respecto del código: validación del teléfono, el aviso al enviar, y los textos del adjunto y del envío fallido. `TODO` código: pasarlos a form-contacto y file-upload.
+- **Tokens nuevos en Figma** (cada uno con descripción y code syntax; `TODO` exportarlos por MCP a `tokens/figma/`, `npm run tokens:import` y `npm run tokens`, y reemplazar los valores sueltos):
+  - `offwhite/sand` (#F7F1EC, Primitive) y `color/surface/sand` (Light `offwhite/sand`, Dark `neutral/750`): la banda de Casa FOA del Home (section `background="sand"`).
+  - `layout/navbar-height` (56): compare-header Compact y la columna fija de la ficha.
+  - `layout/mega-link-thumb` (60), `layout/result-thumb` (100 · Mobile 76, search-result Simple), `layout/gallery-thumb-overlay` (66, miniaturas sobre la foto en la Ficha v2).
+  - `motion/scale/hover` (1,05: zoom de category-card, collection-tile y search-card) y `motion/scale/enter` (0,97: menú de input Select y search-card al aparecer).
+  - `opacity/muted` (50: grilla cargando y slide inactivo) y `opacity/track` (35: pista de carousel-controls).
+  - Sin token, a propósito: medidas de un solo uso (fotos de 684, bajadas de 440, padding de 10 de mega-link), el desplazamiento de la grilla `stagger` (prueba) y el ancho de tarjeta del carrusel mobile (es un porcentaje). El título Regular 50/64 de Home v2 pide un estilo `role/*` nuevo: queda para acordar.
