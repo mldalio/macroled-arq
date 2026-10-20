@@ -9,6 +9,31 @@ if (mega) {
   getNavigation().then((navigation) => (mega.navigation = navigation));
 }
 
+// mega-menu con fotos que no cargan: el preview pasa a la foto de respaldo
+// (fallbacks, en orden); el último link no tiene ninguna que cargue y queda en
+// color/surface/subtle.
+const fallback = document.querySelector('[data-demo-mega-menu-fallback]');
+if (fallback) {
+  const link = (label, image, ...fallbacks) => ({ label, href: '#demo-mega-menu', count: 1, image, fallbacks: fallbacks.filter(Boolean), thumb: null });
+  const missing = '/demo/fixtures/img/no-existe.webp';
+  fallback.navigation = {
+    sections: {
+      interior: {
+        id: 'interior',
+        label: 'Interior',
+        href: '#demo-mega-menu',
+        all: { label: 'Ver todo interior', href: '#demo-mega-menu' },
+        links: [
+          link('Foto propia', '/demo/fixtures/img/card-contexto-on.svg', '/demo/fixtures/img/card-estudio.svg'),
+          link('Sin cargar, con respaldo', missing, '/demo/fixtures/img/no-existe-2.webp', '/demo/fixtures/img/card-estudio.svg'),
+          link('Sin cargar, sin respaldo', missing, '/demo/fixtures/img/no-existe-2.webp'),
+        ],
+      },
+    },
+    collections: [],
+  };
+}
+
 // Navbar con Lámparas y artefactos de ejemplo: el catálogo de Typesense
 // todavía no tiene productos de tipo Lámpara ni Artefacto, y sin datos la
 // fila no aparece. Al resto del árbol lo trae getNavigation().

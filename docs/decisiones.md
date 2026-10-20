@@ -1172,3 +1172,15 @@ Salió de revisar los valores de `color_carcasa` de toda la base (326 documentos
 - Pedido de Lau: el texto más chico y un poco menos de padding. El label pasa de `role/body-compact-regular` (14/24) a `role/body-sm` (12/16) y el ícono de `icon/md` a `icon/sm` (12); el padding de la barra, de `space/padding/xs` a `space/padding/2xs`. Alto: de 40 a 30. El área del link sigue en 24 (mínimo de §9).
 - El subrayado de `compact` va justo debajo de la línea de 16 (2 px más arriba que en el resto de los button, pedido de Lau) y más fino: 1 px también en hover y pressed.
 - Figma: set announcement-bar (2780:8595) con su descripción y ficha `doc/announcement-bar`. El hero `full-height` mide el alto real de la barra, así que no cambia.
+
+## 2026-10-20 · Fotos del mega-menú
+
+- Pedido de Lau: el preview del mega-menú muestra una foto de contexto elegida para cada aplicación de Por espacio (Embutir, Colgante, Jardín…, también Artefactos y Lámparas) y para cada colección, traída de Typesense.
+- **Aplicaciones:** columna nueva `is_menu_default` (casilla, como `is_group_default`). Se marca un SKU por link de Por espacio (por aplicación y entorno; para Artefactos y Lámparas, un producto de ese tipo) y su foto de ambiente pasa a ser la del menú. No hacen falta filas ni SKU nuevos (el SKU no se inventa). Se descartó una fila «Aplicación» por link por eso mismo. Si hay más de un TRUE en una aplicación, manda el primero en el orden de la hoja.
+- **n8n y Typesense:** `is_menu_default` se sumó a `BOOLEAN_FIELDS` del nodo Code de n8n (llega como `true` / `false`). No está en el esquema de Typesense y no hace falta: se guarda igual y el sitio lo recibe (no se filtra por él).
+- **Foto:** se reutiliza la columna `img_ambient_1_on` (llega en `multimagen_ambiente`); si está vacía, `img_ambient_1`. Sirve igual para el SKU marcado y para la fila de colección.
+- **Colecciones:** la foto se guarda aparte (`images.menu`), no como contexto, para que la card de colección siga sin cambiar en hover.
+- **Respaldo:** sin foto propia, o si no carga, el preview prueba en orden las fotos de contexto de los productos de la categoría y después las de estudio, hasta encontrar una que cargue. En una colección, solo las de contexto de sus productos: nunca una de estudio (pedido de Lau). Si ninguna carga, `color/surface/subtle`. Hace falta probar en orden porque muchas URL de la base todavía dan 404.
+- Al abrir el menú se ve siempre la primera pestaña y su primer link (Embutir), y la foto llega al borde inferior (la línea del menú va solo debajo de las columnas).
+- Al 2026-10-20 están marcados DAO-EC-X1-N (Embutir), DOULI-C-15W-N-WW (Colgante), YORU-J-8W-N-WW (Jardín) y KANU-P-350-12W-N-WW (Pared). Dan 404 las fotos de ambiente de DAO-EC-X1-N y KANU-P-350-12W-N-WW y las siete `col-*_AMBIENT_1_ON.webp`: ahí el preview usa el respaldo.
+- Typesense conserva 187 documentos de Skyline (`RMS-*`) que ya no están en la hoja: n8n agrega y actualiza, no borra. No se listan (no tienen `is_group_default`). `TODO` (datos): decidir si se borran del índice.

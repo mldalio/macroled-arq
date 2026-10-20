@@ -52,6 +52,10 @@
 //   que incluye su familia. Los accesorios no entran en las colecciones.
 // - Accesorio: product_type «Accesorio»; compatible_with es el nombre del
 //   producto con el que se usa.
+// - Foto del mega-menú: img_ambient_1_on (o img_ambient_1 si falta). En una
+//   aplicación de Por espacio (Embutir, Jardín…), la del SKU con
+//   is_menu_default (casilla, como is_group_default); en una colección, la de
+//   su fila col-* (decisiones.md, 2026-10-20 · Fotos del mega-menú).
 // - Imágenes: listas multimagen_* con posición fija (IMAGE_SLOTS). Un lugar
 //   vacío ('') es una foto que falta.
 
@@ -65,6 +69,7 @@ const FIELDS = {
   environment: 'macrofamilia',
   application: 'subfamilia',
   isDefault: 'is_group_default',
+  isMenuDefault: 'is_menu_default',
   isNew: 'new',
   variantAttributes: 'variant_attributes',
   compatibleWith: 'compatible_with',
@@ -108,7 +113,7 @@ const DOWNLOADS = ['ies', 'cad', 'manual', 'fotometria'];
 // Un campo nuevo que use una pantalla se agrega acá; si no, llega vacío.
 export const LIGHT_FIELDS = Object.freeze([
   'sku', FIELDS.name, FIELDS.family, FIELDS.productType, FIELDS.environment, FIELDS.application,
-  FIELDS.isDefault, FIELDS.isNew, FIELDS.variantAttributes, FIELDS.compatibleWith,
+  FIELDS.isDefault, FIELDS.isMenuDefault, FIELDS.isNew, FIELDS.variantAttributes, FIELDS.compatibleWith,
   FIELDS.collectionIntro, FIELDS.collectionDescription, FIELDS.collectionGallery, FIELDS.collectionInspiration,
   'multimagen_producto', 'multimagen_ambiente', 'multimagen_coleccion',
   ...Object.keys(ATTRIBUTES),
@@ -168,6 +173,9 @@ function groupImages(doc) {
   };
 }
 
+// Foto del mega-menú de una fila de colección o de un SKU con is_menu_default.
+const menuImage = (s) => s.ambient1On ?? s.ambient1 ?? null;
+
 function collectionFromDoc(doc) {
   const s = slots(doc);
   return {
@@ -177,6 +185,9 @@ function collectionFromDoc(doc) {
     intro: text(doc[FIELDS.collectionIntro]),
     description: text(doc[FIELDS.collectionDescription]),
     images: {
+      // menu: solo el mega-menú. No es «context»: la card de colección no
+      // cambia en hover (typesense-schema.md · Imágenes).
+      menu: menuImage(s),
       studio: s.card ?? null,
       studioOn: s.cardOn ?? null,
       gallery: list(doc[FIELDS.collectionGallery]),
@@ -223,6 +234,11 @@ export function fromDocuments(docs) {
       // ¿La base marca un SKU predeterminado (is_group_default)? Sin marca, el primero
       // hace de predeterminado en la ficha, pero el grupo no se lista (catalog.js · isListed).
       hasDefault: rows.some((doc) => doc[FIELDS.isDefault] === true),
+      // Foto de su aplicación en el mega-menú: la del SKU marcado con is_menu_default.
+      menuImage: (() => {
+        const marked = rows.find((doc) => doc[FIELDS.isMenuDefault] === true);
+        return marked ? menuImage(slots(marked)) : null;
+      })(),
       environment: list(first[FIELDS.environment]),
       application: text(first[FIELDS.application]) || null,
       variantAttributes: variantFields(first[FIELDS.variantAttributes]),

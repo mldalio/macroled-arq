@@ -61,7 +61,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [link-list](#link-list) | `<arq-link-list>` | En código ([README](../src/components/link-list/README.md)) |
 | ✅ [logo](#logo) | `<arq-logo>` | En código ([README](../src/components/logo/README.md)) |
 | ✅ [mega-link](#mega-link) | `<arq-mega-link>` | En código ([README](../src/components/mega-link/README.md)) |
-| ✅ [mega-menu](#mega-menu) | `<arq-mega-menu>` | En código ([README](../src/components/mega-menu/README.md)) |
+| ✅ [mega-menu](#mega-menu) | `<arq-mega-menu>` | En código ([README](../src/components/mega-menu/README.md)). Fotos del preview desde Typesense (`is_menu_default` y filas `col-*`) |
 | ✅ [nav-link](#nav-link) | `<arq-nav-link>` | En código ([README](../src/components/nav-link/README.md)) |
 | ✅ [navbar](#navbar) | `<arq-navbar>` | En código ([README](../src/components/navbar/README.md)); submenús Mobile Interior · Exterior · Lámparas y artefactos · Colecciones |
 | ✅ [option-group](#option-group) | `<arq-option-group>` | En código ([README](../src/components/option-group/README.md)) |
@@ -570,6 +570,7 @@ Link del mega menú y del submenú mobile: nombre, bajada opcional (Show meta, p
 
 - Figma: [841-2282](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=841-2282)
 - Propiedades: Tab: Por espacio · Lámparas y artefactos · Colecciones
+- Código: la foto del preview de cada aplicación es la del SKU con `is_menu_default` y la de cada colección, la de su fila `col-*` (`img_ambient_1_on`); si no carga, prueba fotos de productos en orden. Al abrir vuelve a la primera pestaña y su primer link (docs/decisiones.md, 2026-10-20 · Fotos del mega-menú)
 
 Mega menú de Productos (desktop). Se abre desde nav-link "Productos" (Open=True) y se muestra debajo del navbar. Tres pestañas: Por espacio (Exterior / Interior), Lámparas y artefactos, y Colecciones. La imagen de la derecha se puede cambiar según la pestaña. Es un solo componente: categorías, links y el texto de "Ver todo…" salen de los datos. Tablet (768–1023, solo código): no se muestra la imagen; las columnas toman todo el ancho, con layout/gutter a los dos lados.
 
