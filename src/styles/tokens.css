@@ -168,6 +168,7 @@
   --arq-motion-duration-illumination: 800ms; /** Iluminar: cambio de fondo y textos de la página entre claro y oscuro (Productos, Colecciones y ficha). Tiempo total desde el clic, contando el adelanto de las fotos. En ms. Con prefers-reduced-motion se usa motion/duration/fade. */
   --arq-motion-duration-illumination-image: 900ms; /** Iluminar: fundido de las fotos de product-card y product-gallery entre apagada y encendida. En ms. Con prefers-reduced-motion se usa motion/duration/fade. */
   --arq-motion-duration-illumination-lead: 180ms; /** Iluminar: cuánto se adelantan las fotos al fondo, para que se vea que la luz se prende antes de que cambie la página. En ms. Con prefers-reduced-motion: 0 (todo funde junto). */
+  --arq-motion-duration-shimmer: 1600ms; /** Cards de carga (product-card State=Loading): tiempo en que la franja de brillo del shimmer cruza la pantalla, lineal y continua. En ms. Con prefers-reduced-motion no hay franja (bloques fijos). */
   --arq-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1); /** Cambios de estado: hover, foco, selección, paneles y fundidos de imagen. Para entradas, motion/easing/out. */
   --arq-motion-easing-out: cubic-bezier(0.23, 1, 0.32, 1); /** Entradas: algo que aparece o se despliega (arranca rápido y frena suave). */
   --arq-motion-easing-illumination: cubic-bezier(0.1, 0.1, 0.95, 0.4); /** Iluminar: curva del fondo. Calculada para que el brillo de la página cambie parejo, como un dimmer: el fundido entre claro y oscuro oscurece mucho al principio de la mezcla y esta curva lo compensa. */

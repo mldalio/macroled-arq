@@ -35,7 +35,7 @@
 // - loading: card de carga (skeleton) con la misma geometría (bloque 7:10,
 //   nombre, acabados y Comparar o meta) en color/surface/subtle, como las
 //   filas de carga de Descargas, con una franja de brillo que la cruza
-//   (shimmer; fija con reduced motion). Fuera del árbol de accesibilidad. TODO (diseño): State=Loading no está en el set de Figma.
+//   (shimmer; fija con reduced motion). Fuera del árbol de accesibilidad. Figma: State=Loading.
 // - La foto principal funde al cargar la primera vez (motion/duration/slow);
 //   si ya estaba en la caché aparece directo. Al cambiar de acabado o con
 //   Iluminar, no.
