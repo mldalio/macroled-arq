@@ -4,16 +4,17 @@
 //
 //   <arq-navbar theme="transparent">
 //     <arq-nav-link slot="links" has-dropdown data-menu="products">Productos</arq-nav-link>
-//     <arq-nav-link slot="links" href="/arq/nosotros">Nosotros</arq-nav-link>
 //     <arq-nav-link slot="links" has-dropdown data-menu="recursos">Recursos</arq-nav-link>
+//     <arq-nav-link slot="links" href="/arq/nosotros">Nosotros</arq-nav-link>
 //     <arq-nav-link slot="links" href="/arq/contacto" current>Contacto</arq-nav-link>
 //   </arq-navbar>
 //
 // - Los links llegan por slot (indexables). has-dropdown abre un panel:
 //   data-menu="products" el mega-menu de Productos; data-menu="recursos"
 //   el panel de Recursos (Catálogos y Descargas en mega-link, con lugar
-//   para una foto).
-//   En Mobile cada uno entra a su submenú.
+//   para una foto). En desktop con mouse se abren al pasar el cursor y se
+//   cierran al salir. En Mobile cada uno entra a su submenú (clic). Sin
+//   mouse (tablet táctil), el clic sigue abriendo el panel.
 // - Mode no es prop: es el estado de la barra (Default · Search · Menu ·
 //   Products · Interior · Exterior · Lámparas y artefactos · Colecciones),
 //   que cambia con las
@@ -78,6 +79,8 @@ import { containScroll } from '../../base/scroll-lock.js';
 import css from './navbar.css?inline';
 
 const MOBILE = matchMedia('(max-width: 767px)');
+// Desktop con mouse: los dropdowns se abren al pasar el cursor, no con el clic.
+const HOVER = matchMedia('(hover: hover) and (pointer: fine)');
 // Quien pidió menos transparencia o más contraste ve la barra Default también
 // sobre la foto: el texto claro sobre una foto que cambia, con un fondo al
 // 10 % y blur, puede no leerse.
@@ -183,14 +186,19 @@ class ArqNavbar extends ArqElement {
     });
     SOLID.addEventListener('change', () => this.#syncLinks());
 
-    // Productos y Recursos (nav-link con has-dropdown; data-menu dice cuál)
+    // Productos y Recursos (nav-link con has-dropdown; data-menu dice cuál).
+    // Con mouse, el clic no abre: lo hace el cursor (y el foco, con teclado).
     this.addEventListener('arq:toggle', (event) => {
       if (event.target.localName !== 'arq-nav-link') return;
       event.stopPropagation();
       const which = event.target.dataset.menu === 'recursos' ? 'recursos' : 'products';
       if (MOBILE.matches) this.#setMode(which);
-      else this.#toggleMega(event.detail.open, which);
+      else if (!HOVER.matches) this.#toggleMega(event.detail.open, which);
     });
+    this.addEventListener('pointerover', (event) => this.#hoverMega(event));
+    this.addEventListener('pointerout', (event) => this.#leaveMega(event));
+    this.addEventListener('focusin', (event) => this.#hoverMega(event));
+    this.addEventListener('focusout', (event) => this.#leaveMega(event));
     // Al acercarse a Productos se pide la navegación: el mega-menu ya tiene su
     // foto inicial cargada cuando se abre.
     for (const type of ['pointerover', 'focusin']) {
@@ -439,6 +447,54 @@ class ArqNavbar extends ArqElement {
 
   #megaTimer = 0;
   #megaWhich = 'products';
+  #hoverTimer = 0;
+
+  // Dropdown, panel, o el aire de la barra entre la palabra y el panel.
+  #hoverZone(event) {
+    const path = event.composedPath();
+    const link = path.find((node) => node.localName === 'arq-nav-link' && node.hasAttribute('has-dropdown'));
+    const panel = path.some((node) => node.classList?.contains('mega-wrap'));
+    const bridge = path.some((node) => node.classList?.contains('bar') || node.classList?.contains('links'));
+    const away = path.some((node) =>
+      (node.localName === 'arq-nav-link' && !node.hasAttribute('has-dropdown'))
+      || node.localName === 'arq-logo'
+      || node.classList?.contains('search')
+      || node.classList?.contains('scrim'));
+    return { link, panel, bridge, away };
+  }
+
+  #hoverMega(event) {
+    if (MOBILE.matches || !HOVER.matches) return;
+    const { link, panel, bridge, away } = this.#hoverZone(event);
+    if (link) {
+      clearTimeout(this.#hoverTimer);
+      const which = link.dataset.menu === 'recursos' ? 'recursos' : 'products';
+      if (this.#megaOpen && this.#megaWhich === which) return;
+      this.#toggleMega(true, which);
+      return;
+    }
+    if (panel || (bridge && !away)) {
+      clearTimeout(this.#hoverTimer);
+      return;
+    }
+    if (this.#megaOpen && away) this.#scheduleMegaClose();
+  }
+
+  // Salir del link o del panel hacia afuera de la barra.
+  #leaveMega(event) {
+    if (MOBILE.matches || !HOVER.matches) return;
+    const { link, panel } = this.#hoverZone(event);
+    if (!link && !panel) return;
+    const next = event.relatedTarget;
+    if (next && (next === this || this.contains(next) || this.shadowRoot.contains(next))) return;
+    this.#scheduleMegaClose();
+  }
+
+  #scheduleMegaClose() {
+    clearTimeout(this.#hoverTimer);
+    const ms = parseFloat(getComputedStyle(this).getPropertyValue('--arq-motion-duration-fade')) || 150;
+    this.#hoverTimer = setTimeout(() => this.#toggleMega(false), ms);
+  }
 
   // Misma transición que el top sheet: la barra pasa a sólida y clara (Light
   // local, también con Iluminar) y el panel se abre como una persiana.
@@ -469,7 +525,7 @@ class ArqNavbar extends ArqElement {
       else navbar.removeAttribute('data-arq-theme');
       wrap.classList.toggle('is-open', next);
       navbar.classList.toggle('mega-open', next);
-      const { transitionDuration } = getComputedStyle(wrap);
+      const { transitionDuration } = getComputedStyle(root.querySelector('.mega-drawer'));
       const ms = Math.max(0, ...transitionDuration.split(',').map((value) => (parseFloat(value) || 0) * (/mss*$/.test(value) ? 1 : 1000)));
       this.#megaTimer = setTimeout(() => {
         navbar.classList.remove('mega-motion');

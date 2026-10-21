@@ -99,21 +99,29 @@
 /* Derecha: links (gap space/gap/xl) y búsqueda */
 .right {
   display: flex;
-  align-items: center;
+  align-items: stretch;
+  align-self: stretch;
   gap: var(--arq-space-gap-xl);
   min-width: 0;
 }
 
 .links {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: var(--arq-space-gap-xl);
+}
+
+/* Los links sin panel quedan al centro de la barra. Los que abren un panel
+   ocupan todo el alto, así el cursor no sale del link al bajar de la palabra. */
+.links ::slotted(:not([has-dropdown])) {
+  align-self: center;
 }
 
 .search {
   position: relative;
   display: flex;
   align-items: center;
+  align-self: center;
 }
 
 /* Search: el campo reemplaza a la lupa (layout/search-field) y el dropdown
@@ -133,31 +141,36 @@
   display: none;
 }
 
-/* Mega-menu: debajo de la barra, a todo el ancho. Misma transición que el
-   top sheet (search-sheet.css): persiana grid-template-rows 0fr → 1fr y el
-   contenido, quieto, se hace visible con un fundido; la barra pasa a
-   sólida con el mismo tiempo. Sin demoras ni movimientos que sigan después
-   de que la persiana termina. */
+/* Mega-menu: debajo de la barra, a todo el ancho. La persiana es un clip
+   (el contenido no se mueve, se descubre). El wrap ya mide su alto final
+   al abrir, y ::before cubre esa caja: si el clip todavía no llegó, el
+   cursor igual está «adentro» y puede bajar desde la palabra. */
 .mega-wrap {
   position: absolute;
   top: 100%;
   inset-inline: 0;
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows var(--mega-slow) var(--arq-motion-easing-standard);
 }
 
 .mega-wrap[hidden] {
   display: none;
 }
 
-.mega-wrap.is-open {
-  grid-template-rows: 1fr;
+.mega-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
 }
 
 .mega-drawer {
+  position: relative;
   min-height: 0;
   overflow: clip;
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path var(--mega-slow) var(--arq-motion-easing-standard);
+}
+
+.mega-wrap.is-open .mega-drawer {
+  clip-path: inset(0 0 0 0);
 }
 
 .mega,

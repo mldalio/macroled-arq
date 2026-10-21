@@ -49,31 +49,12 @@
   display: block;
 }
 
-/* Chevron (Has dropdown, desktop): chevron-down en icon/sm, gira al abrir */
-.chevron {
-  display: none;
-  flex: none;
-}
-
-:host([has-dropdown]) .chevron {
-  display: inline-flex;
-}
-
-.chevron .icon {
-  width: var(--arq-icon-sm);
-  height: var(--arq-icon-sm);
-}
-
-[aria-expanded='true'] .chevron .icon {
-  transform: rotate(180deg);
-}
-
 /* Flecha final de mobile: oculta en desktop */
 .trailing {
   display: none;
 }
 
-/* State=Hover (desktop): subrayado por debajo de label y chevron, como el
+/* State=Hover (desktop): subrayado debajo del label, como el
    button Underline: termina 3 px (space/padding/2xs) debajo del texto. */
 .link::after {
   content: '';
@@ -85,7 +66,7 @@
   visibility: hidden;
 }
 
-/* Sin subrayado en Current ni Open (Open solo gira la flecha). Solo con
+/* Sin subrayado en Current ni Open. Solo con
    mouse: en táctil quedaría pegado después del toque. */
 @media (hover: hover) and (pointer: fine) {
   .link:not(.current):not([aria-expanded='true']):hover::after {
@@ -124,10 +105,6 @@
   :host([theme='inverse']) .link::after {
     background: var(--arq-color-icon-inverse);
   }
-
-  :host([theme='inverse']) .chevron {
-    color: var(--arq-color-icon-inverse);
-  }
 }
 
 /* ── Mobile: fila del menú, ancho completo ────────────────────── */
@@ -148,13 +125,8 @@
     white-space: normal;
   }
 
-  /* En mobile no va el chevron de desktop: la flecha final indica que entra
-     al submenú (una sola flecha, aunque tenga Has dropdown). */
-  :host([has-dropdown]) .chevron {
-    display: none;
-  }
-
-  /* Flecha final en todas las filas: chevron-right; Current: arrow-right */
+  /* Flecha final en todas las filas: chevron-right; Current: arrow-right.
+     Has dropdown no lleva la flecha hacia abajo de desktop. */
   .trailing {
     display: inline-flex;
     flex: none;

@@ -7,15 +7,17 @@
 //
 // - Sin dropdown: <a href>. Current: aria-current="page" + indicador.
 // - Con dropdown: <button aria-expanded>. Al tocarlo emite arq:toggle
-//   { open: !open }; open y current los controla el navbar.
+//   { open: !open } en Mobile y en pantallas sin mouse. En desktop con
+//   mouse el navbar abre el panel al pasar el cursor. open y current los
+//   controla el navbar.
 //   El mega-menu incluye los "Ver todo…" (Productos deja de ser link).
 // Breakpoint es CSS (≤ 767 px: fila del menú mobile). El estilo de texto
 // (role/body → role/heading-3) lo cambia el JS con el mismo media query.
 // Current en desktop sube a role/body-medium
 // (decisiones.md, 2026-10-05 · Contacto: ajustes).
 // TODO (navbar): aria-controls hacia el mega-menu (los ids no cruzan el Shadow DOM).
-// Theme=Inverse (navbar Transparent sobre el hero): label, indicador,
-// subrayado y chevron en color/text/inverse y color/icon/inverse. Solo desktop:
+// Theme=Inverse (navbar Transparent sobre el hero): label, indicador y
+// subrayado en color/text/inverse y color/icon/inverse. Solo desktop:
 // el menú mobile siempre va sobre color/surface/default.
 
 import { ArqElement } from '../../base/arq-element.js';
@@ -39,7 +41,6 @@ class ArqNavLink extends ArqElement {
     `<a class="link">` +
     `<span class="indicator" aria-hidden="true"></span>` +
     `<span class="label role-body"><slot></slot></span>` +
-    `<span class="chevron">${icon('chevron-down')}</span>` +
     `<span class="trailing">${icon('chevron-right')}${icon('arrow-right')}</span>` +
     `</a>`;
 
@@ -93,7 +94,11 @@ class ArqNavLink extends ArqElement {
     next.className = current.className;
     if (tag === 'button') {
       next.type = 'button';
-      next.addEventListener('click', () => this.emit('toggle', { open: !this.open }));
+      next.addEventListener('click', () => {
+      // Desktop con mouse: el navbar abre el panel al pasar el cursor.
+      if (!mobile.matches && matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+      this.emit('toggle', { open: !this.open });
+    });
     }
     next.append(...current.childNodes);
     current.replaceWith(next);

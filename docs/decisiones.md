@@ -1268,3 +1268,17 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 
 - Pedido: sacar el bloque de arriba de `/arq/descargas` (título «Descargas», bajada y el catálogo general con tapa y «Descargar catálogo»). Los catálogos están en `/arq/catalogos`.
 - La página arranca en «Buscar archivos por producto» (`role/heading-1`), ahora el `<h1>`. Se fueron `catalog-href` y los slots `title`, `description`, `catalog-cover`, `catalog-title`, `catalog-description` y `catalog-action`.
+
+## 2026-10-21 · Dropdowns del navbar con hover
+
+- Pedido: Productos y Recursos se abren al pasar el mouse, no con el clic.
+- En desktop con mouse (`hover: hover` y `pointer: fine`) el panel se abre al entrar al nav-link y se cierra al salir del link y del panel. El link ocupa el alto de la barra y el panel ya tiene su caja (aunque la persiana todavía se esté abriendo), así se puede bajar de la palabra y recorrer el menú. Esc y un clic afuera siguen cerrando. El foco del teclado también abre. El clic en el link no abre ni cierra.
+- En Mobile sigue el submenú con clic. En una pantalla táctil de ancho desktop, el clic sigue abriendo el panel.
+
+## 2026-10-21 · Sin flecha en los dropdowns del navbar
+
+- Pedido: sacar el chevron hacia abajo de Productos y Recursos. En desktop el ítem queda solo con el nombre. En mobile sigue la flecha hacia la derecha, la que entra al submenú.
+
+## 2026-10-21 · Orden del navbar
+
+- Pedido: Nosotros va justo antes de Contacto. El menú queda Productos, Recursos, Nosotros, Contacto, en todas las páginas.
