@@ -201,6 +201,13 @@ export const PRINT_ROLES = Object.freeze({
     "lineHeight": 24,
     "letterSpacing": 0
   },
+  "body-xl-light": {
+    "fontFamily": "Albert Sans",
+    "fontWeight": 300,
+    "fontSize": 16,
+    "lineHeight": 24,
+    "letterSpacing": 0
+  },
   "body-lg": {
     "fontFamily": "Albert Sans",
     "fontWeight": 300,

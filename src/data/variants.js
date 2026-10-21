@@ -24,7 +24,7 @@
  * @typedef {Record<string, string>} Selection  campo → valor elegido
  */
 
-import { queryWords, matchesWords } from './text.js';
+import { queryWords, matchWords } from './text.js';
 
 const hasValue = (value) => value !== undefined && value !== null && String(value).trim() !== '';
 
@@ -113,11 +113,21 @@ export function choose(selection, attribute, value) {
 // ── Buscador y orden de la página Descargas (variants-table) ──────
 // decisiones.md, 2026-10-06 · Descargas.
 
-/** SKU que coinciden con la búsqueda: en el SKU o en `search` (nombre del producto y de la colección). */
+/**
+ * SKU que coinciden con la búsqueda: en el SKU o en `search` (nombre del
+ * producto y de la colección). El SKU va tal cual; el nombre acepta errores de
+ * tipeo (src/data/text.js). Los que coinciden tal cual van primero.
+ */
 export function searchVariants(variants, query) {
   const words = queryWords(query ?? '');
   if (!words.length) return variants;
-  return variants.filter((variant) => matchesWords(`${variant.sku} ${variant.search ?? ''}`, words));
+  const exact = [];
+  const typo = [];
+  for (const variant of variants) {
+    if (matchWords(`${variant.sku} ${variant.search ?? ''}`, words, { typos: false })) exact.push(variant);
+    else if (matchWords(variant.search ?? '', words)) typo.push(variant);
+  }
+  return [...exact, ...typo];
 }
 
 // Órdenes del select «Ordenar por»: por SKU (decisiones.md, 2026-10-06 · Descargas).

@@ -46,7 +46,7 @@ Se quitaron `show-search` (ahora es `type="catalog"`) y `show-sort` (solo de có
 
 | | `product` (ficha) | `catalog` (Descargas) |
 | --- | --- | --- |
-| Barra | Filtros con la cantidad («4 variantes») a la izquierda; CAD 2D/3D y Manual a la derecha | Buscador (`layout/download-search`, 480) a la izquierda; Filtros a la derecha; debajo del buscador la cantidad («4 productos»); debajo de Filtros, a la derecha, lo aplicado (chips y «Limpiar filtros») |
+| Barra | Filtros con la cantidad («4 variantes») a la izquierda; CAD 2D/3D y Manual a la derecha | Buscador (search-field `size="medium" show-icon show-clear`, `layout/download-search`, 480) a la izquierda; Filtros a la derecha; debajo del buscador la cantidad («4 productos»); debajo de Filtros, a la derecha, lo aplicado (chips y «Limpiar filtros») |
 | Mobile (barra) | Filtros + cantidad, archivos debajo, aplicado abajo | Buscador arriba a todo el ancho; Filtros + cantidad debajo; aplicado abajo |
 | Fila | Solo el sku | Nombre del producto sobre el sku |
 | Tarjeta Mobile | Descarga (ícono) arriba a la derecha | Igual, con el nombre como link a la ficha |

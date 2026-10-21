@@ -55,7 +55,10 @@
 }
 
 /* State=Hover (desktop): subrayado debajo del label, como el
-   button Underline: termina 3 px (space/padding/2xs) debajo del texto. */
+   button Underline: termina 3 px (space/padding/2xs) debajo del texto.
+   Se dibuja de izquierda a derecha al entrar y se va hacia la derecha al
+   salir (transform, motion/duration/base y easing/standard): al pasar de un
+   link al otro, la línea parece seguir al cursor. Con reduced motion, de golpe. */
 .link::after {
   content: '';
   position: absolute;
@@ -63,14 +66,17 @@
   top: calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));
   height: var(--arq-border-default);
   background: var(--arq-color-border-strong);
-  visibility: hidden;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
 }
 
 /* Sin subrayado en Current ni Open. Solo con
    mouse: en táctil quedaría pegado después del toque. */
 @media (hover: hover) and (pointer: fine) {
   .link:not(.current):not([aria-expanded='true']):hover::after {
-    visibility: visible;
+    transform: scaleX(1);
+    transform-origin: left;
   }
 }
 
@@ -80,7 +86,7 @@
 }
 
 .link:active::after {
-  visibility: hidden;
+  transform: scaleX(0);
 }
 
 /* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí, no hay token de offset) */

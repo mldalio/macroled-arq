@@ -1321,3 +1321,48 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - Excepción, `filter: false`: medidas y datos con casi un valor por producto o que no se eligen al buscar (Flujo luminoso, Eficiencia, SDCM, Vida útil, Factor de potencia, THD, Driver, EMC, Altura, Medidas, Largo de cable, Peso, Temperatura de operación, Garantía). Se descartó un tope de opciones: en una categoría chica Potencia tiene un valor por producto, igual que Flujo o Peso.
 - Solo Productos (y Colecciones, que usa la misma función). Descargas sigue con `DOWNLOAD_FILTERS`.
 - `TODO` (datos): las opciones muestran la base como está: «0,6 | 0.6», «Superficial | Superficie», «20 | IP20», «4 | IK06».
+
+## 2026-10-21 · Búsqueda con errores de tipeo
+
+- Pedido: "kani" no encontraba Kanu ni "dai" a Dao.
+- Los tres buscadores (navbar, listado de Productos y Descargas) aceptan errores de tipeo con el criterio permisivo: 1 error en palabras de 3 a 5 letras y 2 desde 6; hasta 2 letras, tal cual. Un error es una letra cambiada, de más, de menos o dos vecinas invertidas. Se compara con el comienzo de cada palabra del texto, así funciona mientras se escribe (`src/data/text.js`).
+- Los SKU no aceptan errores: un código parecido es otro producto.
+- Los que coinciden tal cual van primero; después, los con errores de tipeo.
+- A prueba: si aparecen demasiados resultados sin relación, pasar al criterio de Typesense (1 error desde 4 letras, 2 desde 8) cambiando `typosFor`.
+
+## 2026-10-21 · Buscador: texto grande
+
+- Pedido: lo que se escribe en el buscador pasaba desapercibido frente a los resultados.
+- search-field suma Size: `large` en el search-sheet del navbar (lo escrito en `role/heading-3`, 24/32 · 20/28 en Mobile) y `medium` en Descargas (`role/body-xl`, 20/28 · 16/24). En Descargas, 24 competía con el título y la tabla: es una herramienta dentro de una página densa, no la pantalla entera.
+- El placeholder va un peso menos que lo escrito, en Light (`role/heading-3-light` · `role/body-xl-light`, estilo nuevo). Bajar el color no servía: el siguiente gris es `color/text/disabled`, que no llega a AA y dice "deshabilitado".
+- Show clear: con texto, una cruz a la derecha borra lo escrito, en los dos buscadores. Show icon: Descargas lleva la lupa, como el general.
+- Se mantiene la diferencia: caja con borde en Descargas (un control más entre Filtros y las descargas de la tabla, todos con borde) y solo línea en el search-sheet (el campo es lo único en pantalla).
+- compare-picker y la búsqueda `search="inline"` siguen en `role/body`. En Figma: Size, Show icon y Show clear en los sets search-field y search-field-line; estilo `role/body-xl-light`.
+
+## 2026-10-21 · search-sheet: cruz y announcement-bar
+
+- Al cerrar, la cruz del sheet quedaba encima de la lupa del navbar mientras la barra volvía a ser transparente. Ahora la lupa y la cruz se funden una con otra (`motion/duration/fast`) al abrir y al cerrar.
+- Con announcement-bar a la vista, todo lo que se abre desde el navbar arranca en su barra, y announcement-bar queda visible y sin scrim: el mega-menu y Recursos (con su scrim), el top sheet (con su scrim) y el menú mobile. El navbar mide dónde está la barra al abrir (`--bar-top`; en el sheet, `--sheet-top`).
+
+## 2026-10-21 · Navbar: cerrar al volver a la barra y transiciones
+
+- Pedido: el mega-menu solo se cerraba sacando el mouse por abajo; el cambio entre Productos y Recursos y el hover de los links eran bruscos.
+- Con el panel abierto, pasar por Nosotros, Contacto o la lupa (o el scrim) lo cierra. El logo y los espacios vacíos de la barra no: se pueden cruzar. Espera `motion/duration/base` antes de cerrar (con reduced motion, `fade`), así un roce no lo cierra. Referencia: samsung.com/ar (unos 200 ms).
+- Sobre el scrim (la zona oscura debajo del panel) se escucha `pointermove` además de `pointerover`: al bajar del panel al scrim, Chrome no siempre emite `pointerover`. Si el mouse vuelve al panel antes de que pase la demora, sigue abierto.
+- Al cerrar, el contenido se desvanece con la persiana (antes se ocultaba de golpe y se cerraba vacía).
+- De Productos a Recursos (o al revés), como samsung.com/ar: el cambio espera `motion/duration/base` con el cursor encima (cruzar el link de pasada no lo cambia; con teclado, al instante); el contenido hace un fundido cruzado (`motion/duration/slow`) sobre el fondo fijo del drawer (antes cada panel traía su fondo y a mitad del fundido se veía el scrim), y el alto visible va del de uno al del otro con el recorte de la persiana (`clip-path`, `motion/duration/panel`), sin animar `height`.
+- El search-sheet no se cierra al pasar por la barra (su barra tapa el nav y se perdería lo escrito): se cierra con la cruz, Esc o un clic en el scrim.
+- Hover de nav-link: el subrayado se dibuja de izquierda a derecha y se va hacia la derecha (`transform`, `motion/duration/base`, `motion/easing/standard`). Con reduced motion, de golpe.
+
+## 2026-10-21 · search-sheet: cruz para borrar
+
+- Se probó «Borrar» (texto) en lugar de la cruz chica que borra lo escrito, porque queda debajo de la cruz que cierra el sheet. Por ahora queda la cruz chica (icon-button Default); se revisa con el equipo.
+
+## 2026-10-21 · search-sheet: apertura, pie y recomendados
+
+- Al abrir, la franja de arriba se veía gris contra el panel blanco: el scrim (::backdrop) cubría también la barra del navbar mientras la del sheet pasaba de transparente a sólida. Ahora el scrim arranca debajo de la barra, como el del mega-menu.
+- «Ver todos los productos» lleva abajo space/padding/2xl, el mismo aire que los «Ver todo…» del mega-menu.
+- La fila de recomendados va a sangre a la derecha: llega al borde de la pantalla y el margen (--page-gutter) aparece recién al final del scroll horizontal.
+- Recomendados en ratio/landscape (5:4) en lugar de ratio/square, para que entren con ese aire sin achatar la imagen.
+- «Ver todos los resultados para “…”» del sheet (search-see-all Type=Simple) va siempre en 14: role/body-compact-regular y el término en role/body-compact-medium (role/body-sm medía 12 y subía a 14 recién desde 1920 px). El search-dropdown sigue en role/body-sm.
+- A prueba: el zoom de search-card en hover pasa de motion/scale/hover (1.05) a 1.1. TODO: si se confirma, token en Figma (subir motion/scale/hover para todas las tarjetas o uno nuevo solo para search-card).

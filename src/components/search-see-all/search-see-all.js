@@ -10,7 +10,9 @@
 //   manda el set).
 // - Íconos (lupa y flecha) en color/icon/tertiary.
 // - Type: default o simple (solo de código, para el search-sheet): sin la lupa y
-//   con la flecha pegada al texto, no al extremo derecho. TODO (diseño).
+//   con la flecha pegada al texto, no al extremo derecho. Texto siempre en 14
+//   (role/body-compact-regular, término role/body-compact-medium): body-sm
+//   mide 12 y sube a 14 recién desde 1920 px. TODO (diseño).
 // - State: Hover (:hover, fondo color/surface/hover) y Focus (:focus-visible).
 
 import { ArqElement } from '../../base/arq-element.js';
@@ -41,8 +43,17 @@ class ArqSearchSeeAll extends ArqElement {
     this.shadowRoot.querySelector('a').click();
   }
 
-  update() {
+  update(changed) {
     const root = this.shadowRoot;
+    if (changed.has('type')) {
+      const simple = this.type === 'simple';
+      const text = root.querySelector('.text');
+      const term = root.querySelector('.term');
+      text.classList.toggle('role-body-sm', !simple);
+      text.classList.toggle('role-body-compact-regular', simple);
+      term.classList.toggle('role-body-sm-medium', !simple);
+      term.classList.toggle('role-body-compact-medium', simple);
+    }
     const link = root.querySelector('a');
     if (this.href) link.setAttribute('href', this.href);
     else link.removeAttribute('href');

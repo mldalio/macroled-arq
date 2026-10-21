@@ -36,6 +36,11 @@ sheet.show(botonLupa);     // el foco vuelve a botonLupa al cerrar
 
 - **Diálogo modal nativo** (`<dialog>` + `showModal()`): foco en el campo, Esc / cruz / clic en el scrim cierran y emiten `arq:close`. La página de atrás no se desplaza (`scroll-lock`).
 - **Transición en capas** (menos de medio segundo, con `transition`; al cerrar, la misma al revés): la barra pasa de transparente a sólida, el panel se abre como una persiana (`grid-template-rows` 0fr → 1fr), el campo y el contenido bajan `space/gap/lg` a la par del panel, los productos llegan un instante después (fundido y `space/gap/sm` hacia abajo) y la página de atrás se aclara a medias con un velo `color/surface/faint` al 50 %. Detalle y tiempos en `search-sheet.css`. `close()` espera a que termine antes de cerrar el diálogo.
+- **Arriba:** arranca en la barra del navbar (`--sheet-top`, lo pone el navbar): con announcement-bar a la vista, debajo de ella. El scrim arranca debajo de la barra (no oscurece la del navbar mientras la del sheet se vuelve sólida).
+- **Cruz y lupa:** la cruz del sheet va en el lugar de la lupa del navbar; se funden una con otra (`motion/duration/fast`) al abrir y al cerrar.
+- **Campo:** search-field `type="line" size="large" show-clear`: lo escrito en `role/heading-3`, el placeholder en Light y, con texto, la cruz chica que borra.
+- **Recomendados:** search-card en `ratio/landscape` (5:4); la fila va a sangre a la derecha (llega al borde de la pantalla y el margen aparece al final del scroll). «Ver todos los productos» con `space/padding/2xl` abajo, como los «Ver todo…» del mega-menu.
+- **Ver todos los resultados:** search-see-all `type="simple"`, siempre en 14.
 - `over-photo` (lo pone el navbar): la barra estaba transparente sobre la foto del hero; el logo y la cruz arrancan en inverso y pasan a primary con la barra. Con la barra blanca, el sheet parte de ella sin saltos.
 - Los eventos del campo (`arq:input`, `arq:submit`, `arq:navigate`) salen del componente; `field` devuelve el search-field e `items` los resultados en orden (para ↑ / ↓).
 - **Responsive** por media query: Desktop desde 1024 px (6 tarjetas; Productos a la izquierda y Colecciones a la derecha), Tablet 768–1023 (4 tarjetas; grupos apilados) y Mobile hasta 767 (2 tarjetas, logo Small).
