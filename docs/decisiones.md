@@ -1314,3 +1314,10 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - Pedido: la bajada del page-header era siempre la misma. Ahora cambia con el grupo de la categoría: Interior, Exterior y Lámparas y artefactos (las subcategorías usan la de su grupo). Sin categoría queda la del HTML; Colecciones sigue sin bajada.
 - Provisorio: el texto va en `data-arq-description` de cada `catalog-nav-group` del embed (`src/pages/productos.html`). `TODO` (datos): pasarlo a Typesense.
 
+## 2026-10-21 · Filtros de Productos según los datos
+
+- Pedido: los filtros no pueden ser una lista fija. Reemplaza «solo Potencia y Temperatura de color» (`filter: true` en `attributes.js`).
+- Es filtro todo campo técnico de `src/data/attributes.js` con al menos dos valores en la categoría, en el orden de ese archivo. Un campo nuevo aparece solo.
+- Excepción, `filter: false`: medidas y datos con casi un valor por producto o que no se eligen al buscar (Flujo luminoso, Eficiencia, SDCM, Vida útil, Factor de potencia, THD, Driver, EMC, Altura, Medidas, Largo de cable, Peso, Temperatura de operación, Garantía). Se descartó un tope de opciones: en una categoría chica Potencia tiene un valor por producto, igual que Flujo o Peso.
+- Solo Productos (y Colecciones, que usa la misma función). Descargas sigue con `DOWNLOAD_FILTERS`.
+- `TODO` (datos): las opciones muestran la base como está: «0,6 | 0.6», «Superficial | Superficie», «20 | IP20», «4 | IK06».

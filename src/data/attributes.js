@@ -4,8 +4,10 @@
 //
 // - label: texto visible (spec-row, compare-row, filtros, selectores).
 // - section: sección del acordeón de la ficha y grupo de la comparativa (SECTIONS).
-// - filter: es filtro en los listados (filter-panel). Solo los campos facet del
-//   índice real pueden filtrar en Typesense (docs/typesense-schema.md).
+// - filter: false: nunca es filtro en Productos. Los demás campos son filtro
+//   cuando tienen al menos dos valores en la categoría (filterRows en
+//   catalog.js): un campo nuevo aparece solo. Se excluyen las medidas y los
+//   datos con casi un valor por producto o que nadie elige al buscar.
 // - control: selector de variante: 'swatches' (acabado) o 'tiles' (el resto).
 // - column: nombre anterior de la columna en la hoja. variant_attributes ahora
 //   trae nombres de campo; column queda sin uso desde que no hay catálogo mixto.
@@ -27,38 +29,38 @@ const a = (label, section, extra = {}) => Object.freeze({ label, section, contro
 
 export const ATTRIBUTES = Object.freeze({
   // Lumínicas
-  potencia: a('Potencia', 'luminicas', { filter: true }),
-  flujo_luminoso: a('Flujo luminoso', 'luminicas'),
-  lumenes_lmw: a('Eficiencia luminosa', 'luminicas'),
-  temperatura_color: a('Temperatura de color', 'luminicas', { filter: true }),
+  potencia: a('Potencia', 'luminicas'),
+  flujo_luminoso: a('Flujo luminoso', 'luminicas', { filter: false }),
+  lumenes_lmw: a('Eficiencia luminosa', 'luminicas', { filter: false }),
+  temperatura_color: a('Temperatura de color', 'luminicas'),
   cri: a('CRI', 'luminicas'),
   angulo_apertura: a('Ángulo de apertura', 'luminicas'),
   ugr: a('UGR', 'luminicas'),
-  sdcm: a('SDCM', 'luminicas'),
+  sdcm: a('SDCM', 'luminicas', { filter: false }),
   tipo_led: a('Tipo de LED', 'luminicas'),
-  vida_util: a('Vida útil', 'luminicas'),
+  vida_util: a('Vida útil', 'luminicas', { filter: false }),
   // Eléctricas
   tension_proveedor: a('Tensión de entrada', 'electricas'),
-  factor_potencia: a('Factor de potencia', 'electricas'),
-  thd: a('THD', 'electricas'),
+  factor_potencia: a('Factor de potencia', 'electricas', { filter: false }),
+  thd: a('THD', 'electricas', { filter: false }),
   dimeable: a('Dimerizable', 'electricas'),
-  tipo_driver: a('Driver', 'electricas'),
-  emc: a('EMC', 'electricas'),
+  tipo_driver: a('Driver', 'electricas', { filter: false }),
+  emc: a('EMC', 'electricas', { filter: false }),
   // Materiales y dimensiones
   color_carcasa: a('Color', 'materiales', { control: 'swatches', column: 'Color de carcasa' }),
-  altura: a('Altura', 'materiales', { column: 'Altura' }),
-  tamanio: a('Medidas', 'materiales'),
+  altura: a('Altura', 'materiales', { column: 'Altura', filter: false }),
+  tamanio: a('Medidas', 'materiales', { filter: false }),
   material_cuerpo: a('Material del cuerpo', 'materiales'),
   material_lente: a('Material de la lente', 'materiales'),
-  largo_cable: a('Largo de cable', 'materiales'),
-  peso: a('Peso', 'materiales'),
+  largo_cable: a('Largo de cable', 'materiales', { filter: false }),
+  peso: a('Peso', 'materiales', { filter: false }),
   // Instalación y protección
   proteccion_ip: a('Grado de protección', 'instalacion'),
   proteccion_ik: a('Resistencia al impacto', 'instalacion'),
   tipo_montaje: a('Montaje', 'instalacion'),
-  temperatura_operacion: a('Temperatura de operación', 'instalacion'),
+  temperatura_operacion: a('Temperatura de operación', 'instalacion', { filter: false }),
   // Comercial
-  garantia_proveedor: a('Garantía', 'comercial'),
+  garantia_proveedor: a('Garantía', 'comercial', { filter: false }),
 });
 
 // Columnas de variants-table, en orden, con la etiqueta corta del encabezado
@@ -129,9 +131,6 @@ export const DOWNLOAD_FILTERS = Object.freeze([
 export function attributeInfo(field) {
   return ATTRIBUTES[field] ?? { label: field, control: 'tiles' };
 }
-
-/** Campos que son filtro en los listados, en orden. */
-export const FILTER_FIELDS = Object.freeze(Object.keys(ATTRIBUTES).filter((field) => ATTRIBUTES[field].filter));
 
 /**
  * Secciones con sus filas para un conjunto de valores (campo → valor). Una
