@@ -22,7 +22,7 @@ Selector de acabado por muestras: una fila de `arq-swatch` que funciona como gru
 | — | `label` | `label` | Nombre accesible del grupo. option-group lo completa con su etiqueta si no viene |
 
 - **Comportamiento:** `role="radiogroup"` con `SingleSelect` (`src/base/single-select.js`): una sola elegida, flechas, Inicio / Fin y las deshabilitadas se saltean. Cada muestra es `role="radio"` (no hace falta escribirlo: un swatch dentro del picker es elegible solo).
-- **Tamaño automático:** la elegida va en Size=Large y el resto en Size=Default, como el set. No se escribe `size` en las muestras.
+- **Tamaño automático:** todas van en `size="xlarge"` (`swatch/xl`, 32) y la elegida no crece (2026-10-21, para que se vea el acabado y sea fácil de tocar). En Figma el set todavía muestra la elegida en Large y el resto en Default: TODO (Figma). No se escribe `size` en las muestras.
 - **Evento:** el `arq:change` de la muestra elegida (`{ value, selected: true }`) sale del picker.
 - Si las muestras no entran en una línea, bajan a la siguiente.
 

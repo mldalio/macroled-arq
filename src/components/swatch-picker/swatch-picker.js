@@ -12,8 +12,9 @@
 //
 // - Una sola elegida; flechas, Inicio y Fin; las deshabilitadas se saltean
 //   (SingleSelect). Emite el arq:change de la muestra elegida.
-// - Tamaño automático, como el set: la elegida en Size=Large, el resto en
-//   Size=Default. No hace falta escribir size en las muestras.
+// - Tamaño automático: todas en Size=XLarge (swatch/xl, 32), la elegida no
+//   crece (decisiones.md, 2026-10-21 · Configurador de la ficha). No hace falta
+//   escribir size en las muestras.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { SingleSelect } from '../../base/single-select.js';
@@ -31,17 +32,9 @@ class ArqSwatchPicker extends ArqElement {
     this.setAttribute('role', 'radiogroup');
     this.select = new SingleSelect(this, { items: 'arq-swatch' });
     const sizes = () => {
-      for (const swatch of this.select.items) {
-        const size = swatch.hasAttribute('selected') ? 'large' : 'default';
-        if (swatch.getAttribute('size') !== size) swatch.setAttribute('size', size);
-      }
+      for (const swatch of this.select.items) if (swatch.getAttribute('size') !== 'xlarge') swatch.setAttribute('size', 'xlarge');
     };
-    new MutationObserver(sizes).observe(this, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['selected'],
-    });
+    new MutationObserver(sizes).observe(this, { childList: true, subtree: true });
     sizes();
   }
 

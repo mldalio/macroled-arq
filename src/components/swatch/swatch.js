@@ -19,7 +19,7 @@ class ArqSwatch extends ArqElement {
   static tag = 'arq-swatch';
   static styles = css;
   static properties = {
-    size: { type: String, values: ['small', 'default', 'large'], default: 'small' }, // Size (def. Small)
+    size: { type: String, values: ['small', 'default', 'large', 'xlarge'], default: 'small' }, // Size (def. Small; XLarge solo de código, swatch-picker)
     selected: { type: Boolean }, // State=Selected
     disabled: { type: Boolean }, // State=Disabled: acabado sin combinación con lo ya elegido
     src: { type: String },

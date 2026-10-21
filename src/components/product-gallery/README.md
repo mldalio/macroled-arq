@@ -27,6 +27,7 @@ gallery.images = [
 | image | slot `image` | — | Un `<img>` con la imagen principal. Va en el HTML del embed: es el LCP (`fetchpriority="high"`, sin `loading="lazy"`). Si no viene, el componente crea uno con la primera de `images` |
 | thumbs | — | `images` | Lista `{ src, srcOn?, alt }` (solo JS). La primera es la principal. Al cambiarla (otra variante) vuelve a la primera. Con menos de dos no hay miniaturas |
 | Breakpoint | — | — | Media query: hasta 767 px es Mobile |
+| — (solo de código) | `inset-thumbs` | `insetThumbs` | booleano. En Mobile la foto va a todo el ancho y la fila de miniaturas lleva el margen de página (`--page-gutter`), deslizándose de borde a borde. Lo usa la ficha (2026-10-21) |
 
 - **Métodos:** `select(index)` muestra en grande la imagen `index`.
 - **Miniaturas:** un `<button>` cada una; se recorren con Tab y la elegida lleva `aria-current="true"` (cierra el TODO de gallery-thumb). El nombre de cada una es su `alt`.
@@ -39,7 +40,7 @@ gallery.images = [
 
 | Parte | Token |
 | --- | --- |
-| Imagen principal | `ratio/landscape` (5:4), fondo `color/surface/subtle`, `radius/control` |
+| Imagen principal | `ratio/landscape` (5:4; la página puede pisarlo con la variable local `--gallery-ratio`, la ficha usa 4:5 en Mobile), fondo `color/surface/subtle`, `radius/control` |
 | Gap imagen–miniaturas (Mobile) · entre miniaturas | `space/gap/sm` |
 | Ancho de miniatura | `layout/gallery-thumb` (105 Desktop · 76 Mobile); el alto sale de 5:4 |
 | Separación de las miniaturas al borde (Desktop) | `space/padding/lg` |

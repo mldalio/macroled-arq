@@ -1,5 +1,5 @@
 /* swatch-picker · Figma 1063:4881. Solo tokens semánticos.
-   Fila de muestras centradas en vertical (la elegida mide 24, el resto 20).
+   Fila de muestras de swatch/xl (32), todas iguales: la elegida no crece.
    Si no entran, bajan a otra línea. */
 
 :host {

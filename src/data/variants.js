@@ -12,12 +12,20 @@
 //   let selection = initialSelection(variants, attributes, skuDeLaUrl);
 //   variantOptions(variants, attributes, selection);
 //   // → [{ attribute: 'color_carcasa', options: [{ value: 'Negro', selected: true, disabled: false }, …] }, …]
+//   selection = choose(variants, attributes, selection, 'altura', '90 cm');
 //   findVariant(variants, selection); // → el SKU elegido (o null)
 //
-// - Las opciones de cada atributo son los valores únicos de los SKU, en el
-//   orden en que aparecen (el de la hoja). Las celdas vacías no son opción.
-// - Una opción va deshabilitada si no forma un SKU con lo ya elegido en los
-//   demás atributos. Por eso elegir una opción habilitada siempre da un SKU.
+// - Las opciones de cada atributo son los valores únicos de los SKU, ordenados
+//   (números de menor a mayor). Las celdas vacías no son opción.
+// - Característica madre (decisiones.md, 2026-10-21 · Característica madre):
+//   el color si el grupo lo tiene; si no, la primera de VARIANT_ATTRIBUTES.
+//   Va primera y sus opciones nunca se apagan. Las demás siguen el orden de
+//   VARIANT_ATTRIBUTES y dependen solo de las de arriba: una opción va
+//   deshabilitada si no forma un SKU con lo elegido en las anteriores. Una
+//   opción deshabilitada no se puede elegir.
+// - Al elegir, las de abajo se acomodan: queda el valor que tenían si existe
+//   con lo nuevo; si no, el del SKU predeterminado, o el primero que exista.
+//   Así la selección siempre es un SKU.
 
 /**
  * @typedef {{ sku: string, isDefault?: boolean, attributes: Record<string, string> }} Variant
@@ -25,6 +33,7 @@
  */
 
 import { queryWords, matchesWords } from './text.js';
+import { attributeInfo } from './attributes.js';
 
 const hasValue = (value) => value !== undefined && value !== null && String(value).trim() !== '';
 
@@ -59,18 +68,30 @@ export function initialSelection(variants, attributes, sku) {
   return Object.fromEntries(attributes.map((attribute) => [attribute, variant.attributes[attribute]]));
 }
 
-/** Opciones de cada atributo con su estado (selected, disabled). */
+/**
+ * Atributos en el orden del configurador: la característica madre primero (el
+ * color si lo hay; si no, la primera) y el resto en el orden de la hoja.
+ */
+export function configuratorOrder(attributes) {
+  const lead = attributes.find((attribute) => attributeInfo(attribute).control === 'swatches') ?? attributes[0];
+  return lead ? [lead, ...attributes.filter((attribute) => attribute !== lead)] : [];
+}
+
+// ¿Hay un SKU con `value` en `attribute` y lo elegido en los atributos de arriba?
+const availableAfter = (variants, above, selection, attribute, value) =>
+  variants.some(
+    (variant) => variant.attributes[attribute] === value && above.every((other) => variant.attributes[other] === selection[other]),
+  );
+
+/** Opciones de cada atributo con su estado (selected, disabled), en el orden del configurador. */
 export function variantOptions(variants, attributes, selection) {
-  return attributes.map((attribute) => ({
+  const ordered = configuratorOrder(attributes);
+  return ordered.map((attribute, i) => ({
     attribute,
     options: variantValues(variants, attribute).map((value) => ({
       value,
       selected: selection[attribute] === value,
-      disabled: !variants.some(
-        (variant) =>
-          variant.attributes[attribute] === value &&
-          attributes.every((other) => other === attribute || variant.attributes[other] === selection[other]),
-      ),
+      disabled: !availableAfter(variants, ordered.slice(0, i), selection, attribute, value),
     })),
   }));
 }
@@ -105,9 +126,23 @@ export function filterOptions(variants, attributes, filters) {
   }));
 }
 
-/** Nueva selección al elegir `value` en `attribute`. */
-export function choose(selection, attribute, value) {
-  return { ...selection, [attribute]: value };
+/**
+ * Nueva selección al elegir `value` en `attribute` (una opción habilitada).
+ * Los atributos de abajo conservan su valor si existe con lo nuevo; si no,
+ * toman el del SKU predeterminado o el primero disponible.
+ */
+export function choose(variants, attributes, selection, attribute, value) {
+  const ordered = configuratorOrder(attributes);
+  const next = { ...selection, [attribute]: value };
+  const fallback = variants.find((variant) => variant.isDefault)?.attributes ?? {};
+  ordered.forEach((other, i) => {
+    if (i <= ordered.indexOf(attribute)) return;
+    const above = ordered.slice(0, i);
+    const fits = (candidate) => hasValue(candidate) && availableAfter(variants, above, next, other, candidate);
+    if (fits(next[other])) return;
+    next[other] = fits(fallback[other]) ? fallback[other] : variantValues(variants, other).find(fits) ?? next[other];
+  });
+  return next;
 }
 
 // ── Buscador y orden de la página Descargas (variants-table) ──────

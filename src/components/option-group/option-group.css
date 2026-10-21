@@ -13,16 +13,31 @@
   gap: var(--arq-space-gap-md);
 }
 
+/* Etiqueta en text/tertiary (2026-10-21: pesa menos que las opciones) y, en
+   Swatches, el valor elegido a space/gap/sm, en text/secondary y como llega de
+   la base (sin mayúsculas). */
+.heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--arq-space-gap-sm);
+}
+
 .label {
+  color: var(--arq-color-text-tertiary);
+}
+
+.value {
   color: var(--arq-color-text-secondary);
 }
 
-/* Type=Tiles: fila de option-tile en Hug content, separados por space/gap/sm.
-   Si no entran, bajan a otra línea (decisión 2026-10-02). */
+/* Type=Tiles: fila de option-tile en Hug content. Sin caja, el dato solo:
+   space/gap/lg entre opciones y space/gap/sm entre filas (2026-10-21). Si no
+   entran, bajan a otra línea (decisión 2026-10-02). */
 .options {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--arq-space-gap-sm);
+  gap: var(--arq-space-gap-sm) var(--arq-space-gap-lg);
   align-self: stretch; /* la fila ocupa el ancho para poder hacer wrap; los tiles no se estiran */
 }
 

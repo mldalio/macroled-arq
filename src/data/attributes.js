@@ -18,8 +18,8 @@
 export const SECTIONS = Object.freeze([
   { id: 'luminicas', label: 'Características lumínicas' },
   { id: 'electricas', label: 'Características eléctricas' },
-  { id: 'materiales', label: 'Materiales y dimensiones' },
-  { id: 'instalacion', label: 'Instalación y protección' },
+  // Materiales, dimensiones, instalación y protección en una sola sección (2026-10-21)
+  { id: 'materiales', label: 'Materiales e instalación' },
   { id: 'comercial', label: 'Información comercial' },
 ]);
 
@@ -44,7 +44,7 @@ export const ATTRIBUTES = Object.freeze({
   dimeable: a('Dimerizable', 'electricas'),
   tipo_driver: a('Driver', 'electricas'),
   emc: a('EMC', 'electricas'),
-  // Materiales y dimensiones
+  // Materiales e instalación
   color_carcasa: a('Color', 'materiales', { control: 'swatches', column: 'Color de carcasa' }),
   altura: a('Altura', 'materiales', { column: 'Altura' }),
   tamanio: a('Medidas', 'materiales'),
@@ -52,11 +52,10 @@ export const ATTRIBUTES = Object.freeze({
   material_lente: a('Material de la lente', 'materiales'),
   largo_cable: a('Largo de cable', 'materiales'),
   peso: a('Peso', 'materiales'),
-  // Instalación y protección
-  proteccion_ip: a('Grado de protección', 'instalacion'),
-  proteccion_ik: a('Resistencia al impacto', 'instalacion'),
-  tipo_montaje: a('Montaje', 'instalacion'),
-  temperatura_operacion: a('Temperatura de operación', 'instalacion'),
+  proteccion_ip: a('Grado de protección', 'materiales'),
+  proteccion_ik: a('Resistencia al impacto', 'materiales'),
+  tipo_montaje: a('Montaje', 'materiales'),
+  temperatura_operacion: a('Temperatura de operación', 'materiales'),
   // Comercial
   garantia_proveedor: a('Garantía', 'comercial'),
 });

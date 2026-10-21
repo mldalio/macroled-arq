@@ -6,11 +6,15 @@
 //
 //   <arq-toggle show-label>Iluminar</arq-toggle>
 //   <arq-toggle checked show-label>Solo diferencias</arq-toggle>
+//   <arq-toggle theme="inverse" show-label>Iluminar</arq-toggle>   <!-- sobre foto oscura -->
 //
 // El switch (pista + círculo) es toggle-switch: va siempre adentro, no es un
 // elemento propio. Es un <input type="checkbox" role="switch"> real: todo el
 // componente es clickeable, incluido el texto. Emite arq:change { checked }.
 // Pasar la página a Dark con Iluminar lo hace la página (no el toggle).
+// Theme=Inverse (solo de código, sobre una foto oscura): Dark local en el
+// contenedor interno, en los tonos secondary (un blanco apagado, no el blanco
+// pleno de color/border/strong), para no llamar la atención sobre la foto.
 
 import { ArqElement } from '../../base/arq-element.js';
 import css from './toggle.css?inline';
@@ -23,6 +27,7 @@ class ArqToggle extends ArqElement {
     checked: { type: Boolean }, // Checked
     disabled: { type: Boolean }, // State=Disabled
     showLabel: { type: Boolean }, // Show label
+    theme: { type: String, values: ['default', 'inverse'], default: 'default' }, // Theme (solo de código)
     name: { type: String },
     value: { type: String, default: 'on' },
   };
@@ -57,6 +62,9 @@ class ArqToggle extends ArqElement {
     this.#input.disabled = this.disabled;
     // Show label=false: el texto queda solo para lectores de pantalla.
     this.shadowRoot.querySelector('.label').classList.toggle('visually-hidden', !this.showLabel);
+    const toggle = this.shadowRoot.querySelector('.toggle');
+    if (this.theme === 'inverse') toggle.setAttribute('data-arq-theme', 'dark');
+    else toggle.removeAttribute('data-arq-theme');
     this.#internals.setFormValue(this.checked ? this.value : null);
   }
 

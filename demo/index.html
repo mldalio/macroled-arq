@@ -506,7 +506,7 @@
             </arq-spec-list>
           </arq-accordion-item>
           <arq-accordion-item>
-            <span slot="title">Materiales y dimensiones</span>
+            <span slot="title">Materiales e instalación</span>
             <arq-spec-list>
               <arq-spec-row><span slot="label">Material del cuerpo</span>Aluminio inyectado con difusor de policarbonato opal</arq-spec-row>
               <arq-spec-row><span slot="label">Dimensiones</span>100 × 100 × 500 mm</arq-spec-row>
@@ -1519,7 +1519,7 @@
 
       <section class="demo-section" aria-labelledby="demo-toggle">
         <h2 id="demo-toggle" class="demo-heading role-label">toggle · &lt;arq-toggle&gt; (con toggle-switch adentro)</h2>
-        <p class="demo-note role-body-sm">Figma 926:3102 y 1131:6383. Checked × Disabled; sin show-label (texto solo para lectores). Hover y Focus con el mouse y con Tab.</p>
+        <p class="demo-note role-body-sm">Figma 926:3102 y 1131:6383. Checked × Disabled; sin show-label (texto solo para lectores). Hover y Focus con el mouse y con Tab. theme="inverse": blanco apagado sobre fotos oscuras (la ficha lo elige según la foto).</p>
         <div class="demo-row">
           <arq-toggle show-label>Iluminar</arq-toggle>
           <arq-toggle checked show-label>Solo diferencias</arq-toggle>
@@ -1535,6 +1535,17 @@
           <arq-toggle checked show-label>Iluminar</arq-toggle>
           <arq-toggle disabled show-label>Iluminar</arq-toggle>
           <arq-toggle checked disabled show-label>Iluminar</arq-toggle>
+        </div>
+        <h3 class="demo-subheading role-body-sm">theme="inverse" (solo de código): sobre una foto oscura, en Light y en Dark</h3>
+        <div class="demo-row demo-on-inverse">
+          <arq-toggle theme="inverse" show-label>Iluminar</arq-toggle>
+          <arq-toggle theme="inverse" checked show-label>Iluminar</arq-toggle>
+          <arq-toggle theme="inverse" disabled show-label>Iluminar</arq-toggle>
+          <arq-toggle theme="inverse">Iluminar (sin show-label)</arq-toggle>
+        </div>
+        <div class="demo-row demo-dark" data-arq-theme="dark">
+          <arq-toggle theme="inverse" show-label>Iluminar</arq-toggle>
+          <arq-toggle theme="inverse" checked show-label>Iluminar</arq-toggle>
         </div>
       </section>
 

@@ -91,13 +91,16 @@ export function watchTheme(host, method) {
 // duración), para no quedar claro sobre claro y sin un corte duro. Las variables van en <html> (atraviesan
 // los Shadow DOM) y se quitan al terminar, así hover y foco no se retrasan.
 // Debe coincidir con --arq-illumination-bg-duration (global.css).
-const TEXT_VARS = ['--arq-theme-text-delay', '--arq-theme-text-duration', '--arq-theme-text-easing', '--arq-theme-bg-duration', '--arq-theme-bg-easing'];
+// Los fondos de los elementos (botón Filled, option-tile, select) funden con la
+// misma duración y curva que el fondo del bloque (--arq-theme-surface-*): con
+// motion/duration/fast cambiaban de golpe mientras el bloque seguía claro.
+const TEXT_VARS = ['--arq-theme-text-delay', '--arq-theme-text-duration', '--arq-theme-text-easing', '--arq-theme-bg-duration', '--arq-theme-bg-easing', '--arq-theme-surface-duration', '--arq-theme-surface-easing'];
 let themeTimer = 0;
 
 // Aplicar el tema sin ninguna transición (al llegar a la ficha ya iluminada): por
 // esos cuadros todas las duraciones valen 0, así no se ve el salto de claro a
 // oscuro. Se quitan dos cuadros después, cuando el cambio ya se pintó.
-const INSTANT_VARS = ['--arq-illumination-bg-duration', '--arq-illumination-image-duration', '--arq-theme-bg-duration', '--arq-theme-text-duration', '--arq-theme-text-delay'];
+const INSTANT_VARS = ['--arq-illumination-bg-duration', '--arq-illumination-image-duration', '--arq-theme-bg-duration', '--arq-theme-text-duration', '--arq-theme-text-delay', '--arq-theme-surface-duration'];
 
 /** Ejecuta `apply` (que cambia data-arq-theme) sin transiciones. */
 export function withoutThemeTransition(apply) {
@@ -184,6 +187,8 @@ export function animateThemeChange(bgMs = 1200) {
     style.setProperty(TEXT_VARS[2], 'var(--arq-motion-easing-standard)');
     style.setProperty(TEXT_VARS[3], fade);
     style.setProperty(TEXT_VARS[4], 'var(--arq-motion-easing-standard)');
+    style.setProperty(TEXT_VARS[5], fade);
+    style.setProperty(TEXT_VARS[6], 'var(--arq-motion-easing-standard)');
     clearTimeout(themeTimer);
     themeTimer = setTimeout(() => TEXT_VARS.forEach((name) => style.removeProperty(name)), 1000);
     return;
@@ -191,9 +196,13 @@ export function animateThemeChange(bgMs = 1200) {
   style.setProperty(TEXT_VARS[0], `${Math.round(bgMs * 0.25)}ms`);
   style.setProperty(TEXT_VARS[1], `${Math.round(bgMs * 0.5)}ms`);
   style.setProperty(TEXT_VARS[2], 'cubic-bezier(0.4, 0, 0.2, 1)');
-  // Fondo del navbar: solo funde lento al iluminar; el resto del tiempo (scroll, cambio de página) usa la duración rápida
-  style.setProperty(TEXT_VARS[3], `${bgMs}ms`);
-  style.setProperty(TEXT_VARS[4], 'cubic-bezier(0.45, 0, 0.2, 1)');
+  // Fondo del navbar: solo funde lento al iluminar; el resto del tiempo (scroll, cambio de página) usa la duración rápida.
+  // Con la misma duración y curva que el fondo de la página y del hero de la ficha
+  // (--arq-illumination-bg-*): con una propia, la barra se apagaba a destiempo (2026-10-21).
+  style.setProperty(TEXT_VARS[3], 'var(--arq-illumination-bg-duration)');
+  style.setProperty(TEXT_VARS[4], 'var(--arq-illumination-bg-easing)');
+  style.setProperty(TEXT_VARS[5], 'var(--arq-illumination-bg-duration)');
+  style.setProperty(TEXT_VARS[6], 'var(--arq-illumination-bg-easing)');
   clearTimeout(themeTimer);
   themeTimer = setTimeout(() => TEXT_VARS.forEach((name) => style.removeProperty(name)), bgMs + 100);
 }

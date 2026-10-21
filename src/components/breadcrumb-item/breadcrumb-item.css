@@ -38,6 +38,22 @@
   color: var(--arq-color-text-tertiary);
 }
 
+/* Theme=Transparent (solo de código, 2026-10-21): sobre una foto (ficha). Link
+   y separador en color/text/secondary: tertiary no llega a 4,5:1 sobre una
+   foto de tono medio. El modo (Light o Dark) lo pone quien la ubica. */
+:host([theme='transparent']) .item,
+:host([theme='transparent']) .separator {
+  color: var(--arq-color-text-secondary);
+}
+
+/* State=Current: página actual, sin link. El color va en .item (que funde con
+   Iluminar) y la etiqueta lo hereda: en .label, con transition: none, cambiaba
+   de golpe y quedaba a destiempo de los links (2026-10-21). Después de
+   Theme=Transparent, para ganarle. */
+:host([current]) .item {
+  color: var(--arq-color-text-primary);
+}
+
 /* State=Hover: color/text/primary, como dice la ficha (diseño corrige Figma).
    Solo con mouse: "Hover solo aplica en desktop". */
 @media (hover: hover) and (pointer: fine) {
@@ -46,10 +62,7 @@
   }
 }
 
-/* State=Current: página actual, sin link */
-.label[aria-current='page'] {
-  color: var(--arq-color-text-primary);
-}
+
 
 /* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí, no hay token de offset) */
 a.label:focus-visible {

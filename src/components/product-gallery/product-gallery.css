@@ -17,7 +17,8 @@
    !important: los estilos del sitio para img ganan sobre ::slotted. */
 .image {
   position: relative;
-  aspect-ratio: 5 / 4;
+  /* --gallery-ratio: local, la ficha lo pisa en Mobile (ratio/portrait-soft) */
+  aspect-ratio: var(--gallery-ratio, 5 / 4);
   overflow: hidden;
   border-radius: var(--arq-radius-control);
   background: var(--arq-color-surface-subtle);
@@ -70,6 +71,16 @@ arq-gallery-thumb {
   flex: none;
   width: var(--arq-layout-gallery-thumb);
   scroll-snap-align: start;
+}
+
+/* inset-thumbs (solo de código, ficha Mobile): la foto va a todo el ancho y la
+   fila de miniaturas lleva el margen de página; se desliza de borde a borde */
+@media (max-width: 767px) {
+  :host([inset-thumbs]) .thumbs {
+    margin-inline: 0;
+    padding-inline: var(--page-gutter);
+    scroll-padding-inline: var(--page-gutter);
+  }
 }
 
 /* Desktop: sobre la imagen, abajo a la izquierda, a space/padding/lg del

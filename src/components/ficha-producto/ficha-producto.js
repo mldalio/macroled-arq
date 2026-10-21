@@ -28,6 +28,14 @@
 //   <arq-navbar> de la página; la galería pasa a las fotos encendidas. No se
 //   recuerda: recargar la ficha la deja apagada. Solo llega encendida si se
 //   entró desde un listado iluminado (theme.js, takeThemeHandoff).
+// - Breadcrumb y toggle Iluminar flotan sobre la foto (arriba a la izquierda y
+//   abajo a la derecha). Se mide el brillo de la parte de la foto que queda
+//   debajo de cada uno y se usa la versión con más contraste, con Iluminar
+//   prendido o apagado. Foto clara: data-arq-theme="light" (el toggle negro de
+//   siempre). Foto oscura: toggle Theme=Inverse (blanco apagado) y breadcrumb
+//   en Dark. Se vuelve a medir al cambiar la foto o el tamaño. La foto se lee
+//   de una copia chica con CORS (config.images.sampleBase); si no se puede, el
+//   toggle sigue el modo del hero.
 // - STORY (Markdown limitado): el componente arma con el texto, en el DOM de
 //   la página, un <h2> con la primera línea (el título, con o sin «## », slot
 //   story-title), un <p> por línea y un <ul> con las líneas «-», con createElement
@@ -43,6 +51,7 @@ import { ArqElement } from '../../base/arq-element.js';
 import { animateThemeChange, refreshTheme, setBrowserBar, takeThemeHandoff, withoutThemeTransition } from '../../base/theme.js';
 import { getProduct, variantDetails, collectionHref } from '../../data/catalog.js';
 import { attributeInfo } from '../../data/attributes.js';
+import { config } from '../../config.js';
 import { variantOptions, initialSelection, findVariant, choose } from '../../data/variants.js';
 import '../breadcrumb/breadcrumb.js';
 import '../breadcrumb-item/breadcrumb-item.js';
@@ -80,6 +89,26 @@ const TEXT = {
 
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// Brillo (luminancia relativa, WCAG) de la foto debajo del toggle o del
+// breadcrumb a partir del cual la versión oscura (neutral/900) contrasta más
+// que la clara (neutral/200): (L + 0,05)² = (0,0052 + 0,05) × (0,745 + 0,05) → L ≈ 0,16.
+const BACKDROP_LIGHT = 0.16;
+const BACKDROP_SAMPLE = 16; // lado de la muestra reducida, en píxeles de canvas
+
+// Copia chica de la foto que se puede leer con CORS (config.images); null si
+// la foto viene de otro servidor (no se intenta: dejaría un error en consola).
+const sampleSrc = (src) => {
+  const { sampleFrom, sampleBase } = config.images;
+  if (src.startsWith(sampleFrom)) return sampleBase + src.slice(sampleFrom.length);
+  const cdn = new URL(sampleBase).origin;
+  return src.startsWith(`${cdn}/`) ? src : null;
+};
+
+const toLinear = (channel) => {
+  const c = channel / 255;
+  return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+};
+
 class ArqFichaProducto extends ArqElement {
   static tag = 'arq-ficha-producto';
   static styles = css;
@@ -95,23 +124,23 @@ class ArqFichaProducto extends ArqElement {
     `<div class="hero">` +
     `<div class="configurator">` +
     `<div class="gallery-column">` +
-    `<arq-product-gallery class="gallery" fill>` +
+    `<arq-product-gallery class="gallery" fill inset-thumbs>` +
+    `<arq-breadcrumb class="breadcrumb needs-data" slot="overlay"></arq-breadcrumb>` +
     `<arq-toggle class="iluminar needs-data" slot="overlay" show-label>Iluminar</arq-toggle>` +
     `</arq-product-gallery>` +
     `</div>` +
     `<div class="configurator-column">` +
     `<div class="header">` +
-    `<arq-breadcrumb class="breadcrumb needs-data"></arq-breadcrumb>` +
     `<div class="title-row">` +
     `<div class="title role-display"><slot name="title"></slot></div>` +
+    // Descripción de la variante: debajo del nombre, en 14 px y discreta
+    // (decisiones.md, 2026-10-21 · Configurador de la ficha)
+    `<div class="description role-body-compact"><span class="variant-description" hidden></span></div>` +
     `<arq-sku class="sku needs-data" size="compact"></arq-sku>` +
     `</div>` +
     `</div>` +
     `<div class="info">` +
     `<p class="status role-body" role="status" hidden></p>` +
-    `<div class="product">` +
-    `<div class="description role-body-regular"><span class="variant-description" hidden></span></div>` +
-    `</div>` +
     `<div class="options needs-data"></div>` +
     `</div>` +
     `<div class="buy needs-data">` +
@@ -211,6 +240,7 @@ class ArqFichaProducto extends ArqElement {
     syncLabel();
 
     root.querySelector('.iluminar').addEventListener('arq:change', (event) => this.#iluminar(event.detail.checked));
+    this.#watchToggleBackdrop();
     // Viene de Productos o Colecciones iluminado: la ficha arranca iluminada, sin fundido
     if (takeThemeHandoff()) {
       root.querySelector('.iluminar').checked = true;
@@ -219,7 +249,8 @@ class ArqFichaProducto extends ArqElement {
     root.querySelector('.options').addEventListener('arq:change', (event) => {
       const attribute = event.target.closest('[data-attribute]')?.dataset.attribute;
       if (!attribute || !event.detail?.selected) return;
-      this.#selection = choose(this.#selection, attribute, event.detail.value);
+      const { variants, variantAttributes } = this.#product;
+      this.#selection = choose(variants, variantAttributes, this.#selection, attribute, event.detail.value);
       this.#refreshOptions();
       this.#showVariant({ updateUrl: true });
     });
@@ -310,12 +341,13 @@ class ArqFichaProducto extends ArqElement {
     root.querySelector('.breadcrumb').replaceChildren(
       ...crumbs.map(({ label, href }) => {
         const item = document.createElement('arq-breadcrumb-item');
+        item.theme = 'transparent'; // va sobre la foto
         item.href = href;
         item.showSeparator = true;
         item.textContent = label;
         return item;
       }),
-      Object.assign(document.createElement('arq-breadcrumb-item'), { current: true, textContent: group.name }),
+      Object.assign(document.createElement('arq-breadcrumb-item'), { current: true, theme: 'transparent', textContent: group.name }),
     );
     for (const link of root.querySelectorAll('.collection-link')) {
       link.hidden = !collection;
@@ -323,6 +355,107 @@ class ArqFichaProducto extends ArqElement {
       link.href = collectionHref(collection.id);
       link.textContent = `Ver colección ${collection.name}`;
     }
+  }
+
+  // ── Contraste del toggle Iluminar con la foto ─────────────────────
+  #backdrops = new Map(); // foto → promesa de su copia chica decodificada
+  #backdropFrame = 0;
+
+  #watchToggleBackdrop() {
+    const root = this.shadowRoot;
+    const gallery = root.querySelector('.gallery');
+    const schedule = () => {
+      cancelAnimationFrame(this.#backdropFrame);
+      this.#backdropFrame = requestAnimationFrame(() => this.#syncOverlayTones());
+    };
+    // load no burbujea: en captura llega el de la imagen principal (variante, miniatura o Iluminar)
+    gallery.addEventListener('load', schedule, true);
+    const resize = new ResizeObserver(schedule);
+    resize.observe(gallery);
+    resize.observe(root.querySelector('.iluminar'));
+    resize.observe(root.querySelector('.breadcrumb'));
+    schedule();
+  }
+
+  async #syncOverlayTones() {
+    const root = this.shadowRoot;
+    const toggle = root.querySelector('.iluminar');
+    const breadcrumb = root.querySelector('.breadcrumb');
+    const img = root.querySelector('.gallery > img[slot="image"]');
+    // src (no currentSrc): al iluminar se mide la foto nueva antes de que termine de cargar
+    const src = img && img.style.display !== 'none' && img.getAttribute('src') ? img.src : null;
+    const measure = async (element) => {
+      if (!src) return null;
+      try {
+        return await this.#backdropLuminance(src, img, element);
+      } catch {
+        return null; // la foto no se puede leer (sin CORS): queda el modo del hero
+      }
+    };
+    const [toggleLuminance, breadcrumbLuminance] = await Promise.all([measure(toggle), measure(breadcrumb)]);
+    if (src && img.src !== src) return; // cambió la foto mientras se medía
+    // La otra versión (apagada o encendida) de esta foto, lista para Iluminar
+    const shown = root.querySelector('.gallery').images.find((image) => [image.src, image.srcOn].some((url) => url && new URL(url, location.href).href === src));
+    for (const url of [shown?.src, shown?.srcOn]) if (url) this.#backdropImage(url).catch(() => {});
+    const dark = (luminance) => luminance !== null && luminance < BACKDROP_LIGHT;
+    toggle.theme = dark(toggleLuminance) ? 'inverse' : 'default';
+    if (toggleLuminance === null || dark(toggleLuminance)) toggle.removeAttribute('data-arq-theme');
+    else toggle.setAttribute('data-arq-theme', 'light');
+    if (breadcrumbLuminance === null) breadcrumb.removeAttribute('data-arq-theme');
+    else breadcrumb.setAttribute('data-arq-theme', dark(breadcrumbLuminance) ? 'dark' : 'light');
+  }
+
+  // Luminancia media de la parte de la foto que tapa el toggle, con el recorte
+  // de object-fit: cover. Se lee una copia chica de la foto pedida con CORS
+  // (sampleSrc): la del <img> no se puede leer.
+  async #backdropLuminance(src, img, toggle) {
+    const image = await this.#backdropImage(src);
+    if (!image) return null;
+    const box = img.getBoundingClientRect();
+    const area = toggle.getBoundingClientRect();
+    if (!box.width || !box.height || !area.width || !area.height) return null;
+    const scale = Math.max(box.width / image.naturalWidth, box.height / image.naturalHeight);
+    const left = box.left + (box.width - image.naturalWidth * scale) / 2;
+    const top = box.top + (box.height - image.naturalHeight * scale) / 2;
+    const canvas = document.createElement('canvas');
+    canvas.width = BACKDROP_SAMPLE;
+    canvas.height = BACKDROP_SAMPLE;
+    const context = canvas.getContext('2d', { willReadFrequently: true });
+    context.drawImage(
+      image,
+      (area.left - left) / scale,
+      (area.top - top) / scale,
+      area.width / scale,
+      area.height / scale,
+      0,
+      0,
+      BACKDROP_SAMPLE,
+      BACKDROP_SAMPLE,
+    );
+    const { data } = context.getImageData(0, 0, BACKDROP_SAMPLE, BACKDROP_SAMPLE);
+    let total = 0;
+    for (let i = 0; i < data.length; i += 4) {
+      total += 0.2126 * toLinear(data[i]) + 0.7152 * toLinear(data[i + 1]) + 0.0722 * toLinear(data[i + 2]);
+    }
+    return total / (data.length / 4);
+  }
+
+  // La copia chica se pide solo si la foto existe: la original ya la pidió la
+  // galería (sale de la caché); si falta en la base, no se suma otro error.
+  #backdropImage(src) {
+    if (!this.#backdrops.has(src)) {
+      const sample = sampleSrc(src);
+      const load = (url, cors) => {
+        const image = new Image();
+        if (cors) image.crossOrigin = 'anonymous';
+        image.src = url;
+        return image.decode().then(() => image);
+      };
+      const ready = sample ? load(src, false).then(() => load(sample, true)) : Promise.resolve(null);
+      ready.catch(() => this.#backdrops.delete(src)); // se reintenta la próxima vez
+      this.#backdrops.set(src, ready);
+    }
+    return this.#backdrops.get(src);
   }
 
   #iluminar(dark) {
@@ -337,6 +470,9 @@ class ArqFichaProducto extends ArqElement {
       else element.removeAttribute('data-arq-theme');
     }
     refreshTheme(); // el observer de theme.js no ve el cambio dentro del Shadow DOM
+    // La galería ya pasó a la otra foto: breadcrumb y toggle cambian en el mismo
+    // instante que el hero (las copias para medir están precargadas), no al cargar la foto
+    this.#syncOverlayTones();
     setBrowserBar(dark, document.querySelector('arq-navbar') ?? hero); // la barra del navegador sigue al navbar
   }
 
@@ -379,6 +515,9 @@ class ArqFichaProducto extends ArqElement {
         item.selected = options[i].selected;
         item.disabled = options[i].disabled;
       });
+      // Color: el acabado elegido junto a la etiqueta (la muestra no tiene texto)
+      const group = root.querySelector(`.options [data-attribute="${CSS.escape(attribute)}"]`);
+      if (group?.type === 'swatches') group.value = options.find((option) => option.selected)?.value ?? '';
     }
   }
 
@@ -399,6 +538,9 @@ class ArqFichaProducto extends ArqElement {
     description.textContent = details.description ?? '';
     description.hidden = !details.description;
     root.querySelector('.gallery').images = details.images;
+    // Copias para medir el brillo de la primera foto, apagada y encendida: así
+    // el toggle cambia junto con la foto al iluminar
+    for (const src of [details.images?.[0]?.src, details.images?.[0]?.srcOn]) if (src) this.#backdropImage(src).catch(() => {});
     this.#renderSpecs(details.sections);
     const compare = root.querySelector('.compare');
     compare.checked = root.querySelector('.compare-bar').has(details.sku);

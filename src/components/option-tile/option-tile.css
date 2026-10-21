@@ -1,5 +1,8 @@
 /* option-tile · Figma 921:2487. Solo tokens semánticos.
-   Sin caja: solo línea inferior de border/default (también en Selected: 1 px). */
+   Sin caja (2026-10-21): el dato y, debajo, la línea que marca la elegida
+   (border/strong en color/border/strong). Sin padding lateral ni superior, sin
+   fondo. La línea está siempre reservada (transparente), así elegir no mueve
+   nada. decisiones.md, 2026-10-21 · Configurador de la ficha. */
 
 /* Hug content: mide lo que mide su texto (no se estira para llenar la fila);
    si no entran todos, bajan a otra línea (option-group hace wrap). */
@@ -15,27 +18,31 @@
   display: flex;
   flex: 1;
   align-items: center;
-  justify-content: center;
   min-width: 0;
-  padding: var(--arq-space-padding-sm-md) var(--arq-space-padding-md);
-  border-bottom: var(--arq-border-default) solid var(--arq-color-border-default);
+  padding: 0 0 var(--arq-space-padding-xs);
+  border-bottom: var(--arq-border-strong) solid var(--arq-color-surface-transparent);
   border-radius: var(--arq-radius-control);
   /* Default en text/secondary (no tertiary): así no se confunde con Disabled */
   color: var(--arq-color-text-secondary);
-  text-align: center;
+  /* La línea y el texto funden de una opción a otra, como el hover de los
+     swatches (motion/duration/base, 2026-10-21) */
+  transition-property: color, border-color;
+  transition-duration: var(--arq-theme-text-duration, var(--arq-motion-duration-base));
+  transition-delay: var(--arq-theme-text-delay, 0s);
+  transition-timing-function: var(--arq-theme-text-easing, var(--arq-motion-easing-standard));
 }
 
-/* State=Hover */
-:host(:not([disabled]):not([selected]):hover) .tile {
-  border-bottom-color: var(--arq-color-border-hover);
-  background: var(--arq-color-surface-faint);
-  color: var(--arq-color-text-primary);
+/* State=Hover: línea gris. Solo con mouse: en táctil quedaría pegado. */
+@media (hover: hover) and (pointer: fine) {
+  :host(:not([disabled]):not([selected]):hover) .tile {
+    border-bottom-color: var(--arq-color-border-hover);
+    color: var(--arq-color-text-primary);
+  }
 }
 
-/* State=Selected */
+/* State=Selected: la línea es el indicador */
 :host([selected]) .tile {
   border-bottom-color: var(--arq-color-border-strong);
-  background: var(--arq-color-surface-soft);
   color: var(--arq-color-text-primary);
 }
 
@@ -44,10 +51,10 @@
   cursor: default;
 }
 
+/* No forma un SKU con lo elegido arriba (característica madre): tenue, sin
+   tachado, y no se puede elegir (2026-10-21) */
 :host([disabled]) .tile {
-  border-bottom-color: var(--arq-color-border-disabled);
   color: var(--arq-color-text-disabled);
-  text-decoration: line-through;
 }
 
 /* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí, no hay token de offset) */

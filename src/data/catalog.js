@@ -565,8 +565,9 @@ const selectionOf = (group, variant) => Object.fromEntries(group.variantAttribut
 
 /**
  * Selectores de variante de una columna de la comparativa: uno por campo de
- * VARIANT_ATTRIBUTES (Color, Altura…), con la misma disponibilidad que el
- * configurador de la ficha (una opción que no forma un SKU va deshabilitada).
+ * VARIANT_ATTRIBUTES, en el orden y con la misma disponibilidad que el
+ * configurador de la ficha (característica madre primero; una opción que no
+ * forma un SKU con las de arriba va deshabilitada).
  *   [{ field, label, value, options: [{ value, label, disabled, showSwatch, swatch }] }]
  * swatch: imagen del acabado (finishes.js); sin imagen, el select muestra el neutro.
  */
@@ -600,7 +601,7 @@ export async function skuForAttribute(sku, field, value) {
   const group = groups.find((g) => g.variants.some((v) => v.sku === sku));
   const current = group?.variants.find((v) => v.sku === sku);
   if (!group || !current) return null;
-  const selection = choose(selectionOf(group, current), field, value);
+  const selection = choose(variantList(group), group.variantAttributes, selectionOf(group, current), field, value);
   return findVariant(variantList(group), selection)?.sku ?? null;
 }
 

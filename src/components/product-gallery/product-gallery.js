@@ -32,7 +32,9 @@ import css from './product-gallery.css?inline';
 class ArqProductGallery extends ArqElement {
   static tag = 'arq-product-gallery';
   static styles = css;
-  static properties = {};
+  static properties = {
+    insetThumbs: { type: Boolean }, // solo de código: en Mobile, miniaturas con el margen de página
+  };
   static template = `<div class="gallery"><div class="image"><slot name="image"></slot><slot name="overlay"></slot></div><div class="thumbs" hidden></div></div>`;
 
   #images = [];

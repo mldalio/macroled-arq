@@ -25,6 +25,7 @@ Grupo de configuración de la ficha con etiqueta: elige un atributo de la varian
 | --- | --- | --- | --- |
 | Label | `label` | `label` | Texto de la etiqueta (`role/label`, la mayúscula la pone el estilo) |
 | Type | `type` | `type` | `tiles` · `swatches` · `select`. **Por defecto `tiles`** |
+| — (solo de código) | `value` | `value` | valor elegido junto a la etiqueta («COLOR Negro»); solo visual (`aria-hidden`). La ficha lo usa en Swatches |
 | — (opciones) | slot por defecto | — | Tiles: `arq-option-tile`. Swatches: un `arq-swatch-picker` |
 
 - **Tiles:** el propio grupo es el `role="radiogroup"` (con `aria-label` = etiqueta) y usa `SingleSelect`: una sola elegida, flechas, Inicio / Fin, saltea las deshabilitadas. Los tiles van en **Hug content** (miden lo que su texto) y, si no entran en una línea, bajan a la siguiente (decisión 2026-10-02).
@@ -39,7 +40,8 @@ Grupo de configuración de la ficha con etiqueta: elige un atributo de la varian
 
 | Parte | Token |
 | --- | --- |
-| Etiqueta | `role/label` en `color/text/secondary` |
 | Gap etiqueta–opciones | `space/gap/md` |
-| Gap entre tiles | `space/gap/sm` |
+| Etiqueta | `role/label` en `color/text/tertiary` (antes `secondary`, 2026-10-21) |
+| Valor elegido (`value`) | `role/body-sm` en `color/text/secondary`, a `space/gap/sm` de la etiqueta |
+| Gap entre tiles | `space/gap/lg` entre opciones, `space/gap/sm` entre filas (2026-10-21, sin caja; en Figma, `space/gap/sm`: TODO) |
 | Opciones | ver `option-tile` y `swatch-picker` |

@@ -21,7 +21,7 @@ class DemoConfigurator extends HTMLElement {
     this.addEventListener('arq:change', (event) => {
       const attribute = event.target.closest('[data-attribute]')?.dataset.attribute;
       if (!attribute || !event.detail?.selected) return;
-      this.selection = choose(this.selection, attribute, event.detail.value);
+      this.selection = choose(this.group.variants, this.group.variantAttributes, this.selection, attribute, event.detail.value);
       this.refresh();
     });
     this.build();
