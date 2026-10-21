@@ -1231,3 +1231,10 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - URL `/arq/nosotros`, embed `src/pages/nosotros.html`. Sin hero de apertura: el navbar va en Theme Default y la página arranca en un `feature-block`. Siguen tres `feature-block` de Oficio (sobre `background="bone"`, con `size` large, small y medium), otro `feature-block`, una banda `hero` tall + parallax, `project-mosaic` con `bleed` y `cta-block` a Contacto.
 - «Conocer Macroled ARQ» de la Home apunta ahí. El footer suma Nosotros en Información, en todas las páginas. El navbar sigue el de Figma (Productos, Descargas, Contacto): no se agregó el link.
 - TODO: confirmar textos; las fotos están en `arq_nosotros/` y hay que reemplazarlas por assets de Webflow antes de pegar el embed; si el link entra al navbar, hacerlo en Figma primero.
+
+## 2026-10-21 · Foto inicial del mega-menú
+
+- Pedido de Lau: al abrir el mega-menú tiene que verse una foto fija, por ahora la de Colgante. Antes mostraba la del primer link (Embutir), cuya foto da 404 y caía en el respaldo.
+- Al abrir (y al volver a Por espacio) el preview muestra el link Interior · Colgante, con su eyebrow y nombre. Se elige en `OPENING` de `mega-menu.js`; si ese link no existe, el primero. Las demás pestañas siguen con su primer link. Hover y foco siguen cambiando la foto.
+- `TODO`: DESIGN.md §8 (ficha mega-menu) todavía dice «su primer link»; se actualiza en una rama `docs/` junto con la copia del Plan del proyecto en Figma.
+- Para que la foto ya esté al abrir, el navbar pide la navegación al acercarse a Productos (mouse o foco), como la búsqueda con sus recomendados; antes la pedía recién al abrir y el preview quedaba vacío hasta que llegaban los datos y cargaba la foto.
