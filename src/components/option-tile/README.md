@@ -1,6 +1,6 @@
 # option-tile · `<arq-option-tile>`
 
-Opción de configuración de la ficha (altura, potencia, temperatura). Funciona como radio dentro de option-group Type=Tiles. Sin caja: solo línea inferior. No confundir con choice-chip, que es para formularios.
+Opción de configuración de la ficha (altura, potencia, temperatura). Funciona como radio dentro de option-group Type=Tiles. Sin caja: el dato y, solo en la elegida, una línea debajo. No confundir con choice-chip, que es para formularios.
 
 - Figma: [921-2487](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2487) · ficha `doc/option-tile` (`1461:9043`)
 
@@ -29,9 +29,11 @@ Opción de configuración de la ficha (altura, potencia, temperatura). Funciona 
 
 | Parte | Token |
 | --- | --- |
-| Línea inferior | `border/default` en `color/border/default` (Hover `color/border/hover`, Selected `color/border/strong`, Disabled `color/border/disabled`) |
-| Fondo Hover · Selected | `color/surface/faint` · `color/surface/soft` |
-| Texto | `color/text/secondary` (Hover y Selected `color/text/primary`, Disabled `color/text/disabled` tachado) · `role/body-regular` |
-| Padding | `space/padding/sm-md` × `space/padding/md` |
+| Línea inferior | `border/strong` (2 px), siempre reservada: transparente (`color/surface/transparent`) en Default y Disabled, `color/border/hover` en Hover, `color/border/strong` en Selected |
+| Fondo | ninguno (tampoco en Hover ni Selected) |
+| Texto | `color/text/secondary` (Hover y Selected `color/text/primary`, Disabled `color/text/disabled`, sin tachado desde 2026-10-21) · `role/body-regular` |
+| Transición | línea y texto en `motion/duration/base` · `motion/easing/standard` (con Iluminar, la duración del texto de la página) |
+| Padding | solo abajo, `space/padding/xs` entre el texto y la línea |
 | Foco | `border/strong` en `color/border/focus`, separado 2 px (DESIGN.md §7) |
-- Selected mantiene la línea en 1 px (set de Figma); DESIGN.md §5 asocia `border/strong` (2 px) a la selección de muestras, no a option-tile.
+
+- **2026-10-21 · sin caja** (`docs/decisiones.md`, Configurador de la ficha): se sacaron el padding lateral y superior y los fondos; la línea pasó a ser el indicador de selección (2 px solo en la elegida). TODO (Figma): actualizar el set 921:2487, que todavía tiene caja, línea de 1 px en todas y fondo en Hover y Selected.

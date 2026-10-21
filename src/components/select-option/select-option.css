@@ -56,6 +56,12 @@
   color: var(--arq-color-text-disabled);
 }
 
+/* Disabled: la muestra del acabado también queda apagada, en opacity/disabled
+   (parte gráfica deshabilitada, DESIGN.md §5), no solo el nombre. */
+:host([disabled]) .swatch {
+  opacity: var(--arq-opacity-disabled);
+}
+
 /* multiple (Descargas · propuesta 2575:22875): caja de checkbox como el set
    checkbox (icon/sm dentro de icon/md; marcada en color/action/primary, sin
    tilde), opción de 40 sin línea (padding space/padding/sm × md) y nombre en

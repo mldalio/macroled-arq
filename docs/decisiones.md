@@ -1366,3 +1366,55 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - Recomendados en ratio/landscape (5:4) en lugar de ratio/square, para que entren con ese aire sin achatar la imagen.
 - «Ver todos los resultados para “…”» del sheet (search-see-all Type=Simple) va siempre en 14: role/body-compact-regular y el término en role/body-compact-medium (role/body-sm medía 12 y subía a 14 recién desde 1920 px). El search-dropdown sigue en role/body-sm.
 - A prueba: el zoom de search-card en hover pasa de motion/scale/hover (1.05) a 1.1. TODO: si se confirma, token en Figma (subir motion/scale/hover para todas las tarjetas o uno nuevo solo para search-card).
+
+## 2026-10-21 · Toggle Iluminar según la foto
+
+- Pedido: que el toggle Iluminar de la ficha contraste con la foto que tiene debajo, clara u oscura.
+- La ficha mide el brillo medio (luminancia relativa) de la parte de la foto que tapa el toggle, con el recorte de `object-fit: cover`. Sobre una foto clara va la versión de siempre (negra; `data-arq-theme="light"` en el toggle, aunque el hero esté en Dark). Sobre una foto oscura va toggle `theme="inverse"`, un blanco apagado (neutral/200: `color/icon/secondary` y `color/text/secondary` en Dark) y no el blanco pleno, para no llamar la atención. Decide la foto, con Iluminar prendido o apagado. El corte es L ≈ 0,16, donde neutral/900 y neutral/200 contrastan lo mismo.
+- Se vuelve a medir al cambiar la foto (variante, miniatura o Iluminar) y el tamaño. La primera foto de cada variante, apagada y encendida, se mide por adelantado, así el toggle cambia junto con la foto.
+- Las fotos vienen de `s3.coresagroup.com`, que no manda encabezados CORS: no se pueden leer sus píxeles. Se mide una copia de 128 px que sirve el CloudFront `d1zltvqju4u8ql.cloudfront.net/fit-in/128x128/<misma ruta>` con CORS (`config.images.sampleFrom` y `sampleBase`, `src/config.js`). Una foto de otro servidor no se mide (no deja errores en consola) y el toggle sigue el modo del hero.
+- Theme=Inverse del toggle es solo de código: falta sumarlo al set de Figma.
+
+## 2026-10-21 · Fondos con Iluminar
+
+- Pedido: al iluminar la ficha, el fondo del botón «Generar ficha técnica» y de los option-tile saltaba.
+- El fondo del hero funde en `motion/duration/illumination` con su curva, pero la hoja base de cada componente funde `background-color` en `motion/duration/fast`: el botón Filled pasaba a claro mientras el hero seguía claro. Ahora `animateThemeChange` (`src/base/theme.js`) pone `--arq-theme-surface-duration` y `--arq-theme-surface-easing` con la duración y la curva del fondo mientras dura el cambio, y la hoja base las usa para `background-color`. Al terminar se quitan, así el hover sigue rápido.
+
+## 2026-10-21 · Acabado no disponible con opacidad
+
+- Pedido: la línea diagonal del swatch Disabled casi no se veía.
+- El swatch Disabled (ficha) y la muestra de select-option Disabled (comparativa) quedan en `opacity/disabled`, como el texto deshabilitado; sin la línea diagonal. Falta actualizar la variante State=Disabled del set swatch en Figma.
+
+## 2026-10-21 · Configurador de la ficha
+
+- Pedido: lo más importante del configurador es elegir el color y las demás características; la descripción es lo menos relevante y cambia con esa elección.
+- **Orden:** encabezado (nombre, descripción y sku), opciones, Comparar y acciones. Entre el encabezado y las opciones, `space/gap/2xl` (antes `space/gap/4xl`, demasiado aire); entre características, `space/gap/xl-2xl` (antes `space/gap/lg`, quedaban pegadas).
+- **Descripción:** debajo del nombre y arriba del sku, a `space/gap/sm` de los dos, en `role/body-compact` (14 px, Light) y `color/text/tertiary`, para que no compita; desde 1920 px (Wide) pasa a 16/24 con el mismo peso y color, como sku Dense. Se probó abajo, antes de Comparar, y arriba de las especificaciones: en los dos lugares quedaba suelta. Sigue cambiando con la variante; si no hay, no deja espacio.
+- **Alto de la sección (desde 1024 px):** el hero mide el alto de la pantalla debajo del navbar (`100svh` − `layout/navbar-height`). La foto queda fija (`position: sticky`) y, si el configurador no entra, se desplaza con la página, sin barra de scroll propia. Con poco contenido, las acciones quedan abajo. En Tablet la ficha sigue apilada (la columna de info quedaría de unos 280 px).
+- **Mobile y Tablet:** la foto va primero, a todo el ancho y pegada al navbar (en Mobile, en `ratio/portrait-soft` 4:5, para que se sienta vertical; en Tablet sigue 5:4); las miniaturas llevan el margen de página (`inset-thumbs` de product-gallery) y después vienen breadcrumb, nombre, sku y descripción.
+- **Etiquetas de las opciones:** se quedan (sin ellas «2700K» o una fila de muestras no dicen qué se elige, y son el nombre del grupo para lectores de pantalla), en `color/text/tertiary` para que pesen menos. En Color, el acabado elegido va junto a la etiqueta («COLOR Negro», `role/body-sm` en `color/text/secondary`), porque la muestra no tiene texto.
+- **option-tile sin caja:** el dato solo, sin padding lateral ni superior y sin fondo. La línea de abajo marca la elegida (`border/strong` en `color/border/strong`); las demás no tienen línea y en hover muestran una gris (`color/border/hover`). Entre opciones, `space/gap/lg`.
+- **Swatches más grandes:** token nuevo `swatch/xl` = 32 (creado en Figma). En swatch-picker todas las muestras miden 32 y la elegida no crece. La elegida lleva un borde fino (`border/default` en `color/border/strong`) separado de la muestra por `space/padding/2xs`: el borde Selected de 2 px pegado a la muestra no se veía sobre el acabado negro. Size=XLarge del swatch es solo de código por ahora.
+- **No disponible:** el color ya no se apaga (ver Característica madre). Una opción de texto que no existe con lo de arriba queda en `color/text/disabled`, sin tachado, y no se puede elegir. `opacity/disabled` bajó de 50 a 40 en Figma. Vale para el swatch y la muestra de select-option Disabled y para la miniatura de compare-picker-item Disabled.
+- Falta en Figma: Size=XLarge en el set swatch, el swatch-picker con todas a 32, el option-tile sin caja y la ficha con el nuevo orden.
+
+## 2026-10-21 · Característica madre
+
+- Pedido: en productos como Tori Jardín (color, altura y potencia) cada opción se comparaba con todas las demás elegidas, se apagaba casi todo y no había forma de pasar a otras variantes. Un acabado apagado en tono pastel además invitaba a hacer clic, y el clic no hacía nada.
+- **La característica madre** rige a las demás: el color si el grupo lo tiene (esté donde esté en `variant_attributes`); si no, la primera de `variant_attributes`. Va primera en el configurador y sus opciones nunca se apagan. Con una sola característica, esa es la madre.
+- **Las demás** siguen el orden de `variant_attributes` y dependen solo de las de arriba: Altura según el color, Potencia según color y altura. Una opción que no forma un SKU con lo de arriba queda apagada y **no se puede elegir**.
+- **Al elegir**, las de abajo se acomodan: queda el valor que tenían si existe con lo nuevo; si no, el del SKU predeterminado, o el primero que exista. La selección siempre es un SKU.
+- Vale para la ficha y para los selects de la comparativa (`configuratorOrder`, `variantOptions` y `choose` de `src/data/variants.js`).
+
+## 2026-10-21 · Breadcrumb sobre la foto
+
+- Pedido: el breadcrumb flota sobre la foto, como las miniaturas y el toggle Iluminar, en Desktop y en Mobile.
+- Va arriba a la izquierda de la foto: en Desktop a `space/padding/xl` del borde de arriba y `space/padding/xl-2xl` del izquierdo (alineado con las miniaturas); en Mobile y Tablet a `space/padding/md`, como el toggle.
+- Contraste: igual que el toggle, la ficha mide el brillo de la foto debajo del breadcrumb. Foto clara: `data-arq-theme="light"`; foto oscura: `data-arq-theme="dark"`. Los links y el separador van en `color/text/secondary` (breadcrumb-item `theme="transparent"`, solo de código), porque `color/text/tertiary` no llega a 4,5:1 sobre una foto de tono medio.
+- **A tiempo con Iluminar:** el ítem actual del breadcrumb toma el color en su contenedor (que funde), no en la etiqueta (sin transición: cambiaba de golpe y los niveles anteriores parecían ir a destiempo). Breadcrumb y toggle cambian de modo en el mismo instante que el hero, con la medición de la foto nueva (las copias de la versión apagada y encendida se precargan), no cuando termina de cargar. El fondo del navbar funde con la misma duración y curva que el hero (`--arq-illumination-bg-*`, `animateThemeChange` de `src/base/theme.js`); antes usaba 1200 ms y una curva propia y se apagaba a destiempo.
+
+## 2026-10-21 · Hover del configurador y secciones de la ficha
+
+- **Hover de los acabados:** el mismo borde separado de la muestra elegida (`border/default`, separado `space/padding/2xs`), en `color/border/hover`, menos intenso que el `color/border/strong` de la elegida. El borde está siempre reservado (transparente) y funde en `motion/duration/base` con `motion/easing/standard`, así pasar de una muestra a otra es suave. Con reduced motion, el cambio es instantáneo.
+- **Opciones de texto (option-tile):** la línea y el texto funden igual, en `motion/duration/base`; con Iluminar siguen la duración del texto de la página.
+- **Secciones:** «Materiales y dimensiones» e «Instalación y protección» quedan en una sola, **«Materiales e instalación»** (grado de protección, resistencia al impacto, montaje y temperatura de operación pasan ahí). Vale para el acordeón de la ficha, los grupos de la comparativa y la ficha técnica en PDF (`SECTIONS` de `src/data/attributes.js`).

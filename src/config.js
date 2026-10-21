@@ -18,6 +18,13 @@ export const config = Object.freeze({
   // Termina en «/». VITE_FINISHES_BASE_URL la pisa (pruebas con otro servidor).
   images: Object.freeze({
     finishesBase: env.VITE_FINISHES_BASE_URL ?? 'https://s3.coresagroup.com/MACROLED/ARQ/imagenes/acabados/',
+    // Copia chica de una foto para leer sus píxeles (brillo debajo del toggle
+    // Iluminar de la ficha). El servidor de las fotos no manda CORS; el
+    // CloudFront sirve los mismos archivos con CORS y en el tamaño pedido
+    // (fit-in/128x128/<misma ruta>). decisiones.md, 2026-10-21 · Toggle Iluminar
+    // según la foto.
+    sampleFrom: 'https://s3.coresagroup.com/',
+    sampleBase: 'https://d1zltvqju4u8ql.cloudfront.net/fit-in/128x128/',
   }),
   // Ficha técnica en PDF: se cargan de jsDelivr con versión fija al primer clic
   // y no entran en dist/arq.js (decisiones.md, 2026-10-02 · Ficha técnica en PDF).

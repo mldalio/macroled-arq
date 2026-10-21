@@ -28,6 +28,12 @@
   height: var(--arq-swatch-lg);
 }
 
+/* Size=XLarge (solo de código, 2026-10-21): swatch-picker de la ficha, swatch/xl */
+:host([size='xlarge']) .swatch {
+  width: var(--arq-swatch-xl);
+  height: var(--arq-swatch-xl);
+}
+
 .swatch img {
   display: block;
   width: 100%;
@@ -58,29 +64,51 @@
   border-color: var(--arq-color-border-strong);
 }
 
-/* State=Disabled: borde color/border/disabled y línea diagonal (capa
-   "unavailable" del set) de border/default en color/icon/tertiary, por
-   encima de la imagen y por debajo del borde. */
+/* Size=XLarge (swatch-picker de la ficha): la elegida no crece. Selected es un
+   borde de border/default en color/border/strong, separado de la muestra por
+   space/padding/2xs, así se ve también sobre el acabado negro. Hover, el mismo
+   borde en color/border/hover (menos intenso). Es un outline siempre
+   reservado (transparente): no cambia el tamaño, no mueve las demás y funde de
+   una muestra a otra en motion/duration/base (2026-10-21). */
+:host([size='xlarge']) .swatch {
+  outline: var(--arq-border-default) solid var(--arq-color-surface-transparent);
+  outline-offset: var(--arq-space-padding-2xs);
+  transition-property: outline-color;
+  transition-duration: var(--arq-motion-duration-base);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+/* El borde interno queda fino también en Hover y Selected: el aro lo reemplaza */
+:host([size='xlarge']) .swatch::after,
+:host([size='xlarge'][role='radio']:not([disabled]):hover) .swatch::after {
+  border-width: var(--arq-border-default);
+  border-color: var(--arq-color-border-subtle);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :host([size='xlarge'][role='radio']:not([disabled]):not([selected]):hover) .swatch {
+    outline-color: var(--arq-color-border-hover);
+  }
+}
+
+:host([size='xlarge'][selected]) .swatch {
+  outline-color: var(--arq-color-border-strong);
+}
+
+/* State=Disabled: acabado sin combinación con las otras opciones elegidas.
+   La muestra queda en opacity/disabled (parte gráfica deshabilitada, DESIGN.md
+   §5), con el borde en color/border/disabled. Reemplaza a la línea diagonal de
+   la capa "unavailable" del set, que casi no se veía (2026-10-21). */
 :host([disabled]) {
   cursor: default;
 }
 
-:host([disabled]) .swatch::after {
-  border-color: var(--arq-color-border-disabled);
+:host([disabled]) .swatch {
+  opacity: var(--arq-opacity-disabled);
 }
 
-:host([disabled]) .swatch::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom right,
-    transparent calc(50% - var(--arq-border-default) / 2),
-    var(--arq-color-icon-tertiary) calc(50% - var(--arq-border-default) / 2),
-    var(--arq-color-icon-tertiary) calc(50% + var(--arq-border-default) / 2),
-    transparent calc(50% + var(--arq-border-default) / 2)
-  );
-  pointer-events: none;
+:host([disabled]) .swatch::after {
+  border-color: var(--arq-color-border-disabled);
 }
 
 /* Foco: anillo de DESIGN.md §7 por fuera (2px: valor fijado ahí) */

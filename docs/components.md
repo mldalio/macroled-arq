@@ -617,7 +617,7 @@ Grupo de configuración con etiqueta. Type: Tiles (fila de option-tile en Fill, 
 - Figma: [921-2487](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2487)
 - Propiedades: Label; State: Default · Hover · Selected · Focus · Disabled
 
-Uso: configurar el producto en la ficha (altura, potencia, temperatura), dentro de option-group Type=Tiles. No confundir con choice-chip, que es para formularios.
+Uso: configurar el producto en la ficha (altura, potencia, temperatura), dentro de option-group Type=Tiles. No confundir con choice-chip, que es para formularios. En código (2026-10-21), sin caja: el dato y la línea border/strong solo en la elegida; falta actualizar el set.
 
 Opción seleccionable de configuración (altura, potencia, temperatura…), funciona como radio (role=radio). Sin caja: solo línea inferior. Default: sin fondo, border/default abajo, text/secondary. Hover: surface/faint, border/hover, text/primary. Selected: surface/soft, border/strong abajo, text/primary. Focus: anillo border/focus. Disabled: border/disabled y text/disabled, tachado (combinación no disponible). Padding space/padding/sm-md × space/padding/md, texto role/body-regular. En un grupo va en Fill.
 
@@ -805,14 +805,14 @@ Fila de especificación técnica (Ficha v2): etiqueta role/body-regular y valor 
 - Figma: [1063-4880](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1063-4880)
 - Propiedades: Size: Small · Default · Large; State: Default · Hover · Selected · Focus · Disabled
 
-Muestra de acabado (único swatch del sistema). Size: Small (16, menú, filtro y cards), Default (20, swatch-picker), Large (24, select Field y muestra elegida). State: Default (borde color/border/subtle para que se vea el acabado blanco), Hover (border/strong 2 px, color/border/strong), Selected (border/strong), Focus (anillo color/border/focus por fuera, no cambia el tamaño), Disabled (acabado sin combinación con las otras opciones elegidas: borde color/border/disabled y línea diagonal border/default en color/icon/tertiary; no se puede elegir). Siempre cuadrado (radius/control = 0). El relleno es la imagen del acabado del servidor de la empresa, en el fill de la instancia; fallback color/surface/subtle. En swatch-picker la elegida va en Size=Large, State=Selected. Cuando es solo visual (product-card, filtro) se usa State=Default. Interactivo: role=radio con aria-label del acabado.
+Muestra de acabado (único swatch del sistema). Size: Small (16, menú, filtro y cards), Default (20, swatch-picker), Large (24, select Field y muestra elegida). State: Default (borde color/border/subtle para que se vea el acabado blanco), Hover (border/strong 2 px, color/border/strong), Selected (border/strong), Focus (anillo color/border/focus por fuera, no cambia el tamaño), Disabled (acabado sin combinación con las otras opciones elegidas: en código, la muestra en opacity/disabled con borde color/border/disabled, en lugar de la línea diagonal de Figma; no se puede elegir). Siempre cuadrado (radius/control = 0). El relleno es la imagen del acabado del servidor de la empresa, en el fill de la instancia; fallback color/surface/subtle. En swatch-picker la elegida va en Size=Large, State=Selected (en código, todas en Size=XLarge = swatch/xl, 32). Cuando es solo visual (product-card, filtro) se usa State=Default. Interactivo: role=radio con aria-label del acabado.
 
 ## swatch-picker
 
 - Figma: [1063-4881](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1063-4881)
 - Propiedades: —
 
-Selector de acabado por muestras (role=radiogroup): fila de swatch con gap space/gap/sm-md; la elegida en Selected. Alternativa a select Field cuando hay pocas opciones y se quieren ver todas.
+Selector de acabado por muestras (role=radiogroup): fila de swatch con gap space/gap/sm-md; la elegida en Selected. Alternativa a select Field cuando hay pocas opciones y se quieren ver todas. En código (2026-10-21), todas las muestras en Size=XLarge (swatch/xl, 32) y la elegida no crece; falta actualizar el set.
 
 ## tab
 
@@ -826,7 +826,7 @@ Pestaña (role="tab"). Label role/body-regular en color/text/secondary; Selected
 - Figma: [926-3102](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=926-3102)
 - Propiedades: Label; Show label; Checked: False · True; State: Default · Hover · Focus · Disabled
 
-Interruptor con texto. El switch es siempre una instancia de toggle-switch, a la izquierda; el texto va a la derecha (gap space/gap/sm) en role/body-regular, en caja normal (p. ej. "Iluminar", "Solo diferencias"). Checked: False · True. State: Default · Hover · Focus · Disabled (texto color/text/disabled). Props: Label, Show label. role=switch con aria-checked.
+Interruptor con texto. El switch es siempre una instancia de toggle-switch, a la izquierda; el texto va a la derecha (gap space/gap/sm) en role/body-regular, en caja normal (p. ej. "Iluminar", "Solo diferencias"). Checked: False · True. State: Default · Hover · Focus · Disabled (texto color/text/disabled). Props: Label, Show label. role=switch con aria-checked. En código suma `theme="inverse"` (sin variante en Figma): blanco apagado para fotos oscuras, lo elige la ficha según la foto.
 
 ## toggle-switch
 

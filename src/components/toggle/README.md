@@ -17,12 +17,14 @@ Interruptor con texto para opciones binarias que se aplican al instante: "Ilumin
 | Show label | `show-label` | `showLabel` | booleano. **En Figma viene en `true`; en código, sin el atributo el texto queda solo para lectores de pantalla** |
 | Checked | `checked` | `checked` | booleano (switch encendido) |
 | State=Disabled | `disabled` | `disabled` | booleano |
+| — (solo de código) | `theme` | `theme` | `default` · `inverse` (sobre foto oscura) · def. `default` |
 | — | `name` · `value` | `name` · `value` | para formularios (`value` def. `on`) |
 
 - Sin Hover (decisión del equipo, 2026-10-16); Focus es CSS.
 - **toggle-switch** (pista + círculo) va siempre adentro de toggle: no es un elemento propio ("no se usa suelto").
 - **Es un `<input type="checkbox" role="switch">` real:** todo el componente es clickeable, incluido el texto; Espacio lo cambia. `el.focus()` enfoca el input.
 - Emite `arq:change` con `{ checked, value }`. Encendido, manda `name=value` si está en un `<form>`.
+- **Theme=Inverse** (2026-10-21, solo de código; TODO (Figma): sumar la variante al set): versión clara para cuando el toggle va sobre una foto oscura. Es un blanco apagado (neutral/200 en Dark), no el blanco pleno, para no llamar la atención. En la ficha lo elige `<arq-ficha-producto>` midiendo el brillo de la foto debajo del toggle.
 - **Iluminar:** el toggle solo avisa el cambio. Poner `data-arq-theme="dark"` en `<html>` (listados) o en navbar / hero / explora-coleccion (ficha) lo hace la página.
 
 ## Tokens
@@ -36,6 +38,7 @@ Interruptor con texto para opciones binarias que se aplican al instante: "Ilumin
 | Círculo | `icon/sm`, corre `icon/sm` + `space/gap/sm` |
 | Label | `color/text/primary` (Disabled `color/text/disabled`) · `role/body-regular` |
 | Gap | `space/gap/sm` |
+| Theme=Inverse | Dark local en el contenedor interno; pista, círculo y borde `color/icon/secondary`, label `color/text/secondary` (neutral/200); On: pista `color/icon/secondary`, círculo `color/action/on-primary` |
 | Foco | `border/strong` en `color/border/focus`, separado 2 px de la pista (DESIGN.md §7) |
 
 ## Pendientes

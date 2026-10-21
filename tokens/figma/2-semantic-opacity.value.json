@@ -8,8 +8,8 @@
   "opacity": {
     "disabled": {
       "$type": "number",
-      "$value": 50,
-      "$description": "Opacidad de una imagen o parte gráfica deshabilitada (la miniatura de compare-picker-item Disabled). En Figma 0–100 (50 = 50 %); en código 0–1 (0.5). El texto deshabilitado no usa opacidad: va en color/text/disabled.",
+      "$value": 40,
+      "$description": "Opacidad de una imagen o parte gráfica deshabilitada: la miniatura de compare-picker-item Disabled y la muestra de un acabado no disponible (swatch y select-option Disabled). En Figma 0–100 (40 = 40 %); en código 0–1 (0.4). El texto deshabilitado no usa opacidad: va en color/text/disabled.",
       "$extensions": {
         "com.figma": {
           "scopes": [

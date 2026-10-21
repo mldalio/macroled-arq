@@ -35,29 +35,39 @@
 }
 
 /* Galería (14 columnas de 24) y configurador (9), separados space/gap/3xl:
-   14fr · 9fr. La galería mantiene 4:3 (1093 × 813 en Final) y el configurador
-   toma su alto. */
+   14fr · 9fr. Desde 1024 px la sección mide el alto de la pantalla debajo del
+   navbar: la foto queda fija (sticky) y, si el configurador no entra, se
+   desplaza con la página, sin barra de scroll propia (2026-10-21). */
 .configurator {
   display: grid;
   grid-template-columns: minmax(0, 14fr) minmax(0, 9fr);
   column-gap: var(--arq-space-gap-3xl);
-  align-items: stretch;
+  align-items: start;
 }
 
 .gallery-column {
-  position: relative;
+  position: sticky;
+  top: var(--arq-layout-navbar-height);
   display: flex;
   flex-direction: column;
-  aspect-ratio: 4 / 3;
+  height: calc(100svh - var(--arq-layout-navbar-height));
   min-width: 0;
-  /* con aspect-ratio, el ancho saldría del alto estirado: se fija a la columna */
-  justify-self: stretch;
   overflow: hidden;
 }
 
 .gallery {
   flex: 1 1 auto;
   min-height: 0;
+}
+
+/* Breadcrumb: sobre la foto (slot overlay), arriba a la izquierda, alineado
+   con las miniaturas (2026-10-21). El modo lo elige la ficha según la foto. */
+.breadcrumb {
+  position: absolute;
+  z-index: 2;
+  top: var(--arq-space-padding-xl);
+  left: var(--arq-space-padding-xl-2xl);
+  max-width: calc(100% - 2 * var(--arq-space-padding-xl-2xl));
 }
 
 /* Iluminar: dentro de la foto (slot overlay de product-gallery), abajo a la
@@ -69,13 +79,18 @@
   bottom: var(--arq-space-padding-xl);
 }
 
-/* Configurador: encabezado y datos arriba, comparar y acciones abajo */
+/* Configurador: encabezado y opciones arriba; descripción, comparar y acciones
+   abajo. Encabezado y opciones a space/gap/2xl (2026-10-21: con 4xl quedaba
+   demasiado aire). */
 .configurator-column {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: var(--arq-space-gap-4xl);
+  gap: var(--arq-space-gap-2xl);
+  box-sizing: border-box;
   min-width: 0;
+  /* Al menos el alto de la foto: con poco contenido, las acciones quedan abajo */
+  min-height: calc(100svh - var(--arq-layout-navbar-height));
   padding-right: var(--page-gutter);
   /* el hero ya no lleva padding inferior: el aire de los botones va acá (Figma 2612:12210) */
   padding-bottom: var(--arq-space-padding-xl);
@@ -117,18 +132,25 @@
   color: var(--arq-color-text-secondary);
 }
 
-.product {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--arq-space-gap-lg);
-  min-width: 0;
-}
-
+/* Descripción de la variante: entre el nombre y el sku (gap de .title-row), en
+   role/body-compact (14 px, Light) y color/text/tertiary, para que no compita.
+   Desde 1920 px (Wide, como sku Dense) pasa a 16/24 con el mismo peso y color. */
 .description {
   max-width: 100%;
   color: var(--arq-color-text-tertiary);
   overflow-wrap: break-word;
+}
+
+@media (min-width: 1920px) {
+  .description {
+    font-size: var(--arq-type-body-size);
+    line-height: var(--arq-type-body-leading);
+  }
+}
+
+/* Variante sin descripción: no queda el espacio */
+.description:has(> .variant-description[hidden]) {
+  display: none;
 }
 
 ::slotted([slot='description']) {
@@ -137,10 +159,11 @@
   color: inherit !important;
 }
 
+/* Entre características, space/gap/xl-2xl (antes lg: quedaban pegadas) */
 .options {
   display: flex;
   flex-direction: column;
-  gap: var(--arq-space-gap-lg);
+  gap: var(--arq-space-gap-xl-2xl);
 }
 
 .buy {
@@ -607,6 +630,7 @@
   .configurator {
     display: flex;
     flex-direction: column;
+    align-items: stretch; /* Desktop usa start por la foto sticky */
     gap: var(--arq-space-gap-2xl);
   }
 
@@ -614,20 +638,29 @@
     display: contents;
   }
 
+  /* Foto arriba, a todo el ancho y pegada al navbar; las miniaturas con el
+     margen de página (inset-thumbs) y después la info (2026-10-21) */
   .header {
-    order: -1;
-    padding: var(--arq-space-padding-xl) var(--page-gutter) 0;
+    padding: 0 var(--page-gutter);
   }
 
   .gallery-column {
-    aspect-ratio: auto;
-    margin-inline: var(--page-gutter);
+    position: relative;
+    top: auto;
+    height: auto;
   }
 
-  /* Iluminar sigue dentro de la foto, abajo a la derecha */
+  /* Iluminar sigue dentro de la foto, abajo a la derecha; el breadcrumb,
+     arriba a la izquierda */
   .iluminar {
     right: var(--arq-space-padding-md);
     bottom: var(--arq-space-padding-md);
+  }
+
+  .breadcrumb {
+    top: var(--arq-space-padding-md);
+    left: var(--arq-space-padding-md);
+    max-width: calc(100% - 2 * var(--arq-space-padding-md));
   }
 
   .info,
@@ -701,6 +734,12 @@
 
 /* ── Mobile ─────────────────────────────────────────────────────── */
 @media (max-width: 767px) {
+  /* Foto principal más alta que ancha: ratio/portrait-soft (4:5) en lugar de
+     ratio/landscape, para que se sienta vertical (2026-10-21) */
+  .gallery {
+    --gallery-ratio: 4 / 5;
+  }
+
   .header {
     gap: var(--arq-space-gap-2xl);
   }

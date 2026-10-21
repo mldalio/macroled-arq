@@ -35,6 +35,7 @@ El HTML del embed completo está en [src/pages/ficha.html](../../pages/ficha.htm
 - **Variante:** abre con `?sku=` si es del grupo; si no, con la predeterminada. Al elegir otra en el configurador se actualiza `?sku=` con `history.replaceState` (la URL siempre lleva el SKU, también la de la predeterminada: al abrir sin `?sku=` se agrega con `replaceState`). Cambian galería, sku, descripción, acordeón y descargas; el resto no (decisión 2026-10-02 · Ficha de producto por grupo).
 - **Configurador:** un option-group por atributo de `variant_attributes`, en ese orden: Swatches para el acabado y Tiles para el resto (`src/data/attributes.js`). Las opciones que no forman un SKU van deshabilitadas (`src/data/variants.js`).
 - **Iluminar:** el toggle pone `data-arq-theme="dark"` en el hero (contenedor interno) y en el `<arq-navbar>` de la página. La galería pasa a las fotos encendidas. No se recuerda: recargar la ficha la deja apagada. Solo llega iluminada si se entró desde Productos o Colecciones iluminados (`takeThemeHandoff`, `src/base/theme.js`). Con Iluminar, el hero baja su padding inferior a `space/section/lg` y Descargas suma `space/section/md` arriba (DESIGN.md §2 · Cambio de fondo).
+- **Toggle Iluminar sobre la foto:** se mide el brillo de la foto debajo del toggle. Foto clara: el toggle de siempre (negro, `data-arq-theme="light"`). Foto oscura: `theme="inverse"` (blanco apagado). Decide la foto, con Iluminar prendido o apagado. La foto se lee de una copia chica con CORS (`config.images.sampleBase`); si no se puede, el toggle sigue el modo del hero (`docs/decisiones.md`, 2026-10-21 · Toggle Iluminar según la foto).
 - **Ver glosario:** desplaza hasta el glosario y le pasa el foco a su título.
 - **Descargas:** "Ficha técnica" (se genera) y los archivos del SKU elegido, en el orden de Final (CAD 2D/3D, Manual, IES, Fotometría). Un archivo que falta no se muestra.
 - **Acordeón:** una sección por grupo de especificaciones. La primera abre abierta; al cambiar de variante quedan abiertas las mismas.
@@ -72,3 +73,11 @@ Tablet (768–1023 px) usa la columna Desktop salvo en los bloques marcados: ah�
 - `TODO` (datos) Archivos de la barra del glosario: no hay descargas por grupo; salen del SKU predeterminado. Imágenes de los acabados, `alt` de las fotos y columnas del glosario (`src/data/attributes.js`).
 - `TODO` (diseño) "Características del producto" va en `role/body-medium` como Desktop; en Mobile Final lo muestra en Regular.
 - Video de inspiración (`video_inspiration`): hoy vacío en la base; ver «Fotos de ambiente».
+
+## Configurador (2026-10-21)
+
+- **Característica madre:** el color, o la primera de `variant_attributes` si no hay color. Va primera y nunca se apaga; las demás dependen solo de las de arriba y una apagada no se puede elegir. Al elegir, las de abajo se acomodan solas (`src/data/variants.js`; `docs/decisiones.md`, 2026-10-21 · Característica madre).
+- **Descripción** de la variante: debajo del nombre y arriba del sku, en `role/body-compact` (14 px; 16/24 desde 1920 px, mismo peso) y `color/text/tertiary`.
+- **Desde 1024 px** el hero mide el alto de la pantalla debajo del navbar: la foto queda fija (sticky) y el configurador se desplaza con la página si no entra. **Mobile y Tablet:** foto a todo el ancho pegada al navbar, miniaturas con margen y la info debajo.
+- **Breadcrumb** sobre la foto, arriba a la izquierda; su modo (Light o Dark) sale del brillo de la foto, como el del toggle Iluminar.
+- En Color, el acabado elegido va junto a la etiqueta (`value` de option-group).

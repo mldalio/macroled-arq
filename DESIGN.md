@@ -342,7 +342,7 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 | border/default · focus · strong | 1 · 1 · 2 | 1 · 1 · 2 | Bordes / foco (se distingue por color) / hover y selección de muestras |
 | blur/backdrop | 12 | 12 | Desenfoque del fondo detrás de una superficie translúcida (background blur en Figma, `backdrop-filter` en código), junto con color/overlay/translucent |
 | icon/sm · md · lg · xl · 2xl | 12 · 16 · 20 · 24 · 32 | 12 · 16 · 24 · 24 · 32 | Íconos |
-| swatch/sm · md · lg | 16 · 20 · 24 | 16 · 20 · 24 | Muestras de acabado |
+| swatch/sm · md · lg · xl | 16 · 20 · 24 · 32 | 16 · 20 · 24 · 32 | Muestras de acabado (xl: swatch-picker de la ficha) |
 
 - **gap** es la distancia *entre* elementos; **padding**, el aire *dentro* de un bloque; **section**, la distancia *entre* bloques de página. `section` no se usa adentro de un bloque aunque coincida en valor.
 - **No hay sombras.**
@@ -351,7 +351,7 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 
 | Token | Valor | Uso |
 | --- | --- | --- |
-| opacity/disabled | 50 (Figma) · 0.5 (código) | Imagen o parte gráfica deshabilitada (miniatura de compare-picker-item Disabled). El texto deshabilitado no usa opacidad: va en `color/text/disabled` |
+| opacity/disabled | 40 (Figma) · 0.4 (código) | Imagen o parte gráfica deshabilitada (miniatura de compare-picker-item Disabled; muestra de swatch y select-option Disabled). El texto deshabilitado no usa opacidad: va en `color/text/disabled` |
 | opacity/muted | 50 · 0.5 | Atenuar algo que sigue a la vista pero no es lo activo: la grilla de un listado mientras carga, el velo de un slide inactivo |
 | opacity/track | 35 · 0.35 | Pista de un indicador de progreso (carousel-controls); el tramo recorrido va al 100 % |
 
@@ -595,7 +595,7 @@ La regla vale **donde se use la card**, no solo en los listados: en la sección 
 - La imagen es un PNG cuadrado de 128 × 128 px (un gradient diseñado en Figma, sección ACABADOS), servido desde el servidor de imágenes de la empresa: `https://s3.coresagroup.com/MACROLED/ARQ/imagenes/acabados/acabado-<slug>.png`. Si falta o no carga, se muestra un neutro con el nombre en texto: nunca rompe la ficha.
 - Hay dos terminaciones: **metálica** (franja de brillo en diagonal: los acabados de DAO) y **mate** (degradé suave, luz arriba a la izquierda y bordes laterales apenas más oscuros: verde, terracota, beige, pardo, negro mate, blanco mate). «Blanco y negro» (código BN del SKU) es mitad blanco mate y mitad negro mate, cortados en diagonal.
 - **El negro tiene dos imágenes con el mismo nombre en la base.** Negro mate (`acabado-negro-mate`) en las familias Kanu, Nobu, Tori, Koen, Douli, Yoru y Sento; negro metálico (`acabado-negro`) en el resto. Lo decide el código por la familia del producto. «Negro satinado» es lo mismo que el negro mate.
-- En la ficha, el acabado se elige con swatch-picker (option-group Type=Swatches): la muestra elegida a 24 px y las demás a 20 px. En las cards de producto y de colección, las muestras son siempre swatch Small (16 × 16). En la card de producto, con más de un acabado, se elige: el elegido (por defecto el negro) lleva el Selected del swatch sin crecer, y al elegir otro cambian las imágenes y el link a los de ese SKU; con un solo acabado no se ve elegido.
+- En la ficha, el acabado se elige con swatch-picker (option-group Type=Swatches): todas las muestras a `swatch/xl` (32 px); la elegida no crece, lleva el Selected del swatch. En las cards de producto y de colección, las muestras son siempre swatch Small (16 × 16). En la card de producto, con más de un acabado, se elige: el elegido (por defecto el negro) lleva el Selected del swatch sin crecer, y al elegir otro cambian las imágenes y el link a los de ese SKU; con un solo acabado no se ve elegido.
 - Cómo funciona y cómo agregar un acabado, una familia o una regla: `docs/acabados.md`.
 
 ---

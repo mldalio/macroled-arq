@@ -36,8 +36,13 @@ class ArqOptionGroup extends ArqElement {
   static properties = {
     label: { type: String }, // Label
     type: { type: String, values: ['tiles', 'select', 'swatches'], default: 'tiles' }, // Type
+    value: { type: String }, // solo de código: el valor elegido junto a la etiqueta («COLOR Negro»)
   };
-  static template = `<div class="group"><span class="label role-label"></span><div class="options"><slot></slot></div></div>`;
+  static template =
+    `<div class="group"><span class="heading"><span class="label role-label"></span>` +
+    // El lector de pantalla ya anuncia la opción elegida: el valor es solo visual
+    `<span class="value role-body-sm" aria-hidden="true" hidden></span></span>` +
+    `<div class="options"><slot></slot></div></div>`;
 
   setup() {
     this.select = new SingleSelect(this, { items: 'arq-option-tile' });
@@ -46,6 +51,11 @@ class ArqOptionGroup extends ArqElement {
 
   update(changed) {
     if (changed.has('label')) this.shadowRoot.querySelector('.label').textContent = this.label ?? '';
+    if (changed.has('value')) {
+      const value = this.shadowRoot.querySelector('.value');
+      value.textContent = this.value ?? '';
+      value.hidden = !this.value;
+    }
     if (this.type === 'tiles') {
       this.setAttribute('role', 'radiogroup');
       if (this.label) this.setAttribute('aria-label', this.label);

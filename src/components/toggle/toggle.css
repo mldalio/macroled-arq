@@ -84,6 +84,30 @@
   color: var(--arq-color-text-disabled);
 }
 
+/* Theme=Inverse (solo de código): sobre una foto oscura. El contenedor
+   interno va en Dark local (data-arq-theme="dark", lo pone el JS) y todo usa
+   los tonos secondary (neutral/200 en Dark): claro, pero apagado. */
+:host([theme='inverse']:not([disabled])) .track {
+  border-color: var(--arq-color-icon-secondary);
+}
+
+:host([theme='inverse']:not([disabled])) .thumb {
+  background: var(--arq-color-icon-secondary);
+}
+
+:host([theme='inverse']:not([disabled])) .label {
+  color: var(--arq-color-text-secondary);
+}
+
+:host([theme='inverse']:not([disabled])) .native:checked + .track {
+  border-color: var(--arq-color-icon-secondary);
+  background: var(--arq-color-icon-secondary);
+}
+
+:host([theme='inverse']:not([disabled])) .native:checked + .track .thumb {
+  background: var(--arq-color-action-on-primary);
+}
+
 /* Foco: anillo de DESIGN.md §7 alrededor de la pista (2px: valor fijado ahí). */
 .native:focus-visible + .track {
   outline: var(--arq-border-strong) solid var(--arq-color-border-focus);

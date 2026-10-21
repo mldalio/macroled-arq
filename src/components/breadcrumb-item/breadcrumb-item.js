@@ -19,6 +19,7 @@ class ArqBreadcrumbItem extends ArqElement {
     href: { type: String },
     showSeparator: { type: Boolean }, // Show separator
     current: { type: Boolean }, // State=Current
+    theme: { type: String, values: ['default', 'transparent'], default: 'default' }, // solo de código: sobre una foto
   };
   static template = `<span class="item role-label"><span class="label"><slot></slot></span><span class="separator" aria-hidden="true" hidden>/</span></span>`;
 

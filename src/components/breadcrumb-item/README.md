@@ -16,6 +16,7 @@ Un nivel del breadcrumb: label (link) y separador "/" opcional. No se usa suelto
 | Label | slot por defecto | — | nombre de la sección, en caja normal (la mayúscula la pone `role/label`) |
 | Show separator | `show-separator` | `showSeparator` | booleano · "/" después del label. **En Figma viene en `true`; en código, sin el atributo no hay separador.** Se pone en todos los ítems menos el último |
 | State=Current | `current` | `current` | booleano · página actual: `color/text/primary`, sin link y sin separador (aunque tenga `show-separator`), con `aria-current="page"` |
+| — (solo de código) | `theme` | `theme` | `default` · `transparent`: sobre una foto, link y separador en `color/text/secondary` (tertiary no llega a 4,5:1 sobre una foto de tono medio). El modo lo pone quien la ubica (ficha, 2026-10-21) |
 | — | `href` | `href` | destino del link. Sin `href` (o con `current`) el label es texto |
 
 - State=Hover es `:hover`, solo en dispositivos con mouse (`@media (hover: hover) and (pointer: fine)`): el label pasa a `color/text/primary`.

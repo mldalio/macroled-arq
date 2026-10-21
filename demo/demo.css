@@ -171,6 +171,12 @@
   color: var(--arq-color-text-primary);
 }
 
+/* Fondo oscuro en modo Light, como una foto oscura: Theme=Inverse del toggle */
+.demo-on-inverse {
+  padding: var(--arq-space-padding-lg);
+  background: var(--arq-color-surface-inverse);
+}
+
 /* Fondo color/action/primary para probar Tone=Inverse del count-badge */
 .demo-on-primary {
   padding: var(--arq-space-padding-md);
