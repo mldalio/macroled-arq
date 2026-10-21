@@ -19,6 +19,7 @@
     <header class="demo-header">
       <h1 class="demo-title role-body">Macroled Arq · Demo</h1>
       <a class="role-body" href="/demo/home.html">Página: Home</a>
+      <a class="role-body" href="/demo/nosotros.html">Página: Nosotros</a>
       <a class="role-body" href="/demo/productos.html">Página: Productos</a>
       <label class="demo-switch">
         <input type="checkbox" id="demo-theme" />
@@ -2344,6 +2345,22 @@
           <h2 slot="title">Iluminación para fachadas y espacios exteriores</h2>
           <span slot="description">Descripción de la colección destacada, su uso y los espacios para los que está pensada.</span>
           <arq-button slot="action" type="underline" show-underline show-icon icon="arrow-right" href="#demo-feature-block">Ver colección</arq-button>
+        </arq-feature-block>
+        <p class="demo-subheading role-body-sm">Size large / small / medium (solo código, Nosotros)</p>
+        <arq-feature-block size="large">
+          <img slot="image" src="/demo/fixtures/img/hero-1.svg" alt="Foto grande" loading="lazy">
+          <h2 slot="title">Confort visual</h2>
+          <span slot="description">Texto más chico al lado de la foto grande.</span>
+        </arq-feature-block>
+        <arq-feature-block layout="image-right" size="small">
+          <img slot="image" src="/demo/fixtures/img/producto-2.svg" alt="Foto chica" loading="lazy">
+          <h2 slot="title">Pureza estética</h2>
+          <span slot="description">Foto cuadrada, corrida hacia la derecha.</span>
+        </arq-feature-block>
+        <arq-feature-block size="medium">
+          <img slot="image" src="/demo/fixtures/img/hero-1.svg" alt="Foto mediana" loading="lazy">
+          <h2 slot="title">De profesional a profesional</h2>
+          <span slot="description">Foto 4:3, corrida hacia la izquierda.</span>
         </arq-feature-block>
         <p class="demo-subheading role-body-sm">Contenedor en modo Dark</p>
         <div class="demo-dark" data-arq-theme="dark">

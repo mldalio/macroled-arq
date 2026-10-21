@@ -42,6 +42,57 @@
     'content image';
 }
 
+/* size (solo código, Nosotros): la foto cambia de ancho y de proporción
+   para poder escalonar. TODO (diseño): no hay estas medidas en Figma. */
+:host([size='large']) .block {
+  grid-template-columns: 62% minmax(0, 1fr);
+}
+
+:host([size='large'][layout='image-right']) .block {
+  grid-template-columns: minmax(0, 1fr) 62%;
+}
+
+:host([size='medium']) .block {
+  grid-template-columns: 44% minmax(0, 1fr);
+}
+
+:host([size='medium'][layout='image-right']) .block {
+  grid-template-columns: minmax(0, 1fr) 44%;
+}
+
+:host([size='small']) .block {
+  grid-template-columns: 30% minmax(0, 1fr);
+}
+
+:host([size='small'][layout='image-right']) .block {
+  grid-template-columns: minmax(0, 1fr) 30%;
+}
+
+:host([size='medium']) .image {
+  aspect-ratio: 4 / 3;
+}
+
+:host([size='small']) .image {
+  aspect-ratio: 1 / 1;
+}
+
+/* El del medio y el chico no arrancan en el mismo borde que el grande. */
+:host([size='medium']) {
+  margin-top: var(--arq-space-section-md);
+  margin-inline-start: var(--arq-space-section-xl);
+}
+
+:host([size='small']) {
+  margin-top: var(--arq-space-section-lg);
+  margin-inline-end: var(--arq-space-section-xl);
+}
+
+:host([size]) .content,
+:host([size][layout='image-right']) .content {
+  padding-top: 0;
+  gap: var(--arq-space-gap-md);
+}
+
 .media {
   overflow: hidden;
   background: var(--arq-color-surface-subtle);
@@ -115,10 +166,20 @@
    para pantallas bajas (decisiones.md, 2026-10-05 · Home: alturas y meta). */
 @media (min-width: 768px) {
   /* width: 100 % para que el tope recorte la foto y no la angoste (con
-     aspect-ratio, max-height achica también el ancho) */
-  .image {
+     aspect-ratio, max-height achica también el ancho). El tope no aplica a
+     medium y small: si no, las tres fotos quedan del mismo alto. */
+  :host(:not([size])) .image,
+  :host([size='large']) .image {
     width: 100%;
     max-height: max(50svh, 100svh - var(--arq-space-section-xl));
+  }
+}
+
+@media (max-width: 767px) {
+  :host([size='medium']),
+  :host([size='small']) {
+    margin-inline: 0;
+    margin-top: var(--arq-space-gap-2xl);
   }
 }
 
@@ -126,8 +187,11 @@
 @media (max-width: 767px) {
   .block,
   :host([layout='image-right']) .block,
+  :host([size]) .block,
+  :host([size][layout='image-right']) .block,
   .block:has(.secondary[hidden]),
-  :host([layout='image-right']) .block:has(.secondary[hidden]) {
+  :host([layout='image-right']) .block:has(.secondary[hidden]),
+  :host([size]) .block:has(.secondary[hidden]) {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: none;
     grid-template-areas:

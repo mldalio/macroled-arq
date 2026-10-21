@@ -41,9 +41,9 @@
   background: var(--arq-color-surface-sand);
 }
 
-/* Home v2: padding simétrico space/section/lg. section usa el gutter;
-   wide usa space/padding/4xl (80). bleed=end deja el carrusel llegar al
-   borde derecho. */
+/* Home v2. section: padding simétrico space/section/lg y el gutter.
+   wide: space/section/md arriba y abajo, space/padding/4xl a los lados.
+   bleed=end deja el carrusel llegar al borde derecho. */
 :host([padding='section']) {
   --section-inline: var(--page-gutter);
   padding: var(--arq-space-section-lg) var(--section-inline);
@@ -51,7 +51,7 @@
 
 :host([padding='wide']) {
   --section-inline: var(--arq-space-padding-4xl);
-  padding: var(--arq-space-section-lg) var(--section-inline);
+  padding: var(--arq-space-section-md) var(--section-inline);
 }
 
 :host([bleed='end']) {

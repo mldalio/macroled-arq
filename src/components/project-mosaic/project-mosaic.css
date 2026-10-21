@@ -6,6 +6,16 @@
 :host {
   display: block;
   min-width: 0;
+  --mosaic-gap: var(--arq-space-gap-lg);
+}
+
+/* bleed: las fotos ignoran el padding de la sección y llegan al borde de la
+   página. El título se queda adentro. Solo Nosotros.
+   TODO (diseño): el hueco pedido es 5px y no hay token de ese valor. */
+:host([bleed]) {
+  --mosaic-gap: 5px;
+  margin-inline: calc(var(--section-inline, 0px) * -1);
+  width: calc(100% + var(--section-inline, 0px) * 2);
 }
 
 /* Desktop: cuatro columnas iguales y dos filas. Así la 1.ª (dos columnas) mide
@@ -15,7 +25,7 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-template-rows: 1fr 1fr;
-  gap: var(--arq-space-gap-lg);
+  gap: var(--mosaic-gap);
 }
 
 ::slotted(img) {
@@ -59,7 +69,13 @@
    (decisiones.md, 2026-10-05 · Home: alturas y meta). */
 ::slotted(img:nth-child(3)),
 ::slotted(img:nth-child(4)) {
-  max-height: calc((max(50svh, 100svh - var(--arq-space-section-xl) * 2) - var(--arq-space-gap-lg)) / 2) !important;
+  max-height: calc((max(50svh, 100svh - var(--arq-space-section-xl) * 2) - var(--mosaic-gap)) / 2) !important;
+}
+
+/* bleed: un poco más alto que el tope del Home (resta un solo section/xl). */
+:host([bleed]) ::slotted(img:nth-child(3)),
+:host([bleed]) ::slotted(img:nth-child(4)) {
+  max-height: calc((max(50svh, 100svh - var(--arq-space-section-xl)) - var(--mosaic-gap)) / 2) !important;
 }
 
 ::slotted(img:nth-child(n + 5)) {
@@ -70,10 +86,13 @@
    TODO (diseño): en el set miden 350 × 420 y 169 × 200, sin ratio del sistema;
    se usa ratio/portrait-soft (4:5), el más cercano. */
 @media (max-width: 767px) {
+  :host(:not([bleed])) {
+    --mosaic-gap: var(--arq-space-gap-sm-md);
+  }
+
   .mosaic {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: none;
-    gap: var(--arq-space-gap-sm-md);
   }
 
   ::slotted(img) {

@@ -28,7 +28,7 @@ import { dataMode, fillContacto } from '/demo/demo-data-toggle.js';
 const pages = import.meta.glob('/src/pages/*.html', { query: '?raw', import: 'default' });
 // Peor caso del embed (break-ui, ?data=worst): demo/fixtures/<página>-peor-caso.html
 const worstPages = import.meta.glob('/demo/fixtures/*-peor-caso.html', { query: '?raw', import: 'default' });
-const DEMOS = { '/arq': 'home', '/arq/productos': 'productos', '/arq/contacto': 'contacto', '/arq/comparativa': 'comparativa', '/arq/descargas': 'descargas' };
+const DEMOS = { '/arq': 'home', '/arq/productos': 'productos', '/arq/contacto': 'contacto', '/arq/comparativa': 'comparativa', '/arq/descargas': 'descargas', '/arq/nosotros': 'nosotros' };
 
 /** URL de la demo para un link de Arq, o null si esa página no tiene demo. */
 function demoHref(href) {

@@ -427,6 +427,8 @@ Sin respuesta, la pregunta no se muestra (en código: si falta un dato, esa part
 
 Bloque editorial destacado: imagen grande (y secundaria opcional) + eyebrow, título role/display-sm, bajada y button. Layout: Image left e Image right (se alternan); Breakpoint=Mobile apila. Props: Label, Title, Description, Show secondary image.
 
+En código, `size` (`large` · `medium` · `small`) achica la foto y el texto para escalonar en Nosotros. No está en el set de Figma. `reveal` hace entrar la foto y el texto juntos al hacer scroll (misma entrada que el Home).
+
 ## file-upload
 
 - Figma: [1113-2499](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1113-2499)

@@ -20,15 +20,19 @@
 //   ratio/wide (TODO: en el set tiene alto fijo, sin ratio).
 
 import { ArqElement } from '../../base/arq-element.js';
+import { reveal, revealCss } from '../../base/reveal.js';
 import css from './feature-block.css?inline';
 
-const OPTIONAL = ['label', 'description', 'action', 'secondary'];
+const OPTIONAL = ['label', 'title', 'description', 'action', 'secondary'];
 
 class ArqFeatureBlock extends ArqElement {
   static tag = 'arq-feature-block';
-  static styles = css;
+  static styles = revealCss + css;
   static properties = {
     layout: { type: String, values: ['image-left', 'image-right'], default: 'image-left' }, // Layout
+    // Tamaño de la foto, solo código (Nosotros). Sin size, queda el 50 % del set.
+    size: { type: String, values: ['large', 'medium', 'small'] },
+    reveal: { type: Boolean }, // la foto y el texto entran juntos al hacer scroll
   };
   static template =
     `<div class="block">` +
@@ -42,13 +46,20 @@ class ArqFeatureBlock extends ArqElement {
     `<div class="media secondary" hidden><slot name="secondary"></slot></div>` +
     `</div>`;
 
+  #reveal = null;
+
   setup() {
     for (const name of OPTIONAL) {
       this.shadowRoot.querySelector(`slot[name="${name}"]`).addEventListener('slotchange', () => this.update());
     }
   }
 
-  update() {
+  disconnectedCallback() {
+    this.#reveal?.disconnect();
+    this.#reveal = null;
+  }
+
+  update(changed) {
     const root = this.shadowRoot;
     for (const name of OPTIONAL) {
       root.querySelector(`.${name}`).hidden = !root
@@ -56,6 +67,25 @@ class ArqFeatureBlock extends ArqElement {
         .assignedNodes({ flatten: true })
         .some((node) => node.nodeType === Node.ELEMENT_NODE || node.textContent.trim());
     }
+    // Con size el título baja de display a heading-3 y la bajada a body:
+    // el texto queda más chico al lado de la foto.
+    const compact = Boolean(this.size);
+    const title = root.querySelector('.title');
+    title.classList.toggle('role-display-sm', !compact);
+    title.classList.toggle('role-heading-3-light', compact);
+    const description = root.querySelector('.description');
+    description.classList.toggle('role-body-lg', !compact);
+    description.classList.toggle('role-body', compact);
+    if (changed?.has('reveal')) this.#armReveal();
+  }
+
+  // Foto y texto entran juntos, una sola vez, cuando el bloque llega a la
+  // pantalla. Misma entrada que el Home (src/base/reveal.js).
+  #armReveal() {
+    this.#reveal?.disconnect();
+    const block = this.shadowRoot.querySelector('.block');
+    block.classList.remove('reveal', 'revealed');
+    this.#reveal = this.reveal ? reveal([block]) : null;
   }
 }
 

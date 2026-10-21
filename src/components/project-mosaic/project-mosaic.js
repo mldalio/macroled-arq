@@ -23,6 +23,9 @@ import css from './project-mosaic.css?inline';
 class ArqProjectMosaic extends ArqElement {
   static tag = 'arq-project-mosaic';
   static styles = css;
+  static properties = {
+    bleed: { type: Boolean }, // fotos al borde de la página, con 5px entre ellas
+  };
   static template = `<div class="mosaic"><slot></slot></div>`;
 }
 
