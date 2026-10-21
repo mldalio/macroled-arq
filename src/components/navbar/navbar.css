@@ -36,10 +36,12 @@
 }
 
 /* Scrim del mega-menú: color/overlay/scrim sobre la página, detrás de la barra
-   y del panel (el stacking context es el host). Mismo fundido que el panel. */
+   y del panel (el stacking context es el host). Mismo fundido que el panel.
+   Arranca en la barra (--bar-top, lo pone el navbar al abrir): announcement-bar
+   queda a la vista, sin scrim. */
 .scrim {
   position: fixed;
-  inset: 0;
+  inset: var(--bar-top, 0dvh) 0 0 0;
   z-index: -1;
   background: var(--arq-color-overlay-scrim);
   opacity: 0;
@@ -124,6 +126,19 @@
   align-self: center;
 }
 
+/* Con el top sheet abierto, la cruz del sheet va en el lugar de la lupa: la
+   lupa se funde con ella (motion/duration/fast) al abrir y al cerrar, para
+   que no se vean las dos encimadas mientras la barra es transparente */
+.search-open,
+.search-open-mobile {
+  transition: opacity var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);
+}
+
+:host([mode='search']:not([search='inline'])) .search-open,
+:host([mode='search']:not([search='inline'])) .search-open-mobile {
+  opacity: 0;
+}
+
 /* Search: el campo reemplaza a la lupa (layout/search-field) y el dropdown
    va debajo, con el mismo ancho */
 .search-box {
@@ -184,6 +199,35 @@
 .mega-wrap.is-open .mega,
 .mega-wrap.is-open .recursos {
   opacity: 1;
+}
+
+/* De Productos a Recursos (o al revés) con el panel abierto: fundido
+   cruzado (motion/duration/slow). Los dos ocupan la misma celda: el que sale
+   (.leaving, lo pone el navbar) se desvanece mientras el que entra aparece.
+   El fondo es del drawer y no se mueve: lo que cambia es el contenido, nunca
+   se ve el scrim a través. El alto visible lo acompaña el navbar con el
+   recorte de la persiana (#swapPanels). */
+.mega-drawer {
+  display: grid;
+  background: var(--arq-color-surface-default);
+}
+
+.mega-drawer > * {
+  grid-area: 1 / 1;
+  align-self: start;
+}
+
+.mega-wrap.is-open .mega.leaving,
+.mega-wrap.is-open .recursos.leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@starting-style {
+  .mega-wrap.is-open .mega,
+  .mega-wrap.is-open .recursos {
+    opacity: 0;
+  }
 }
 
 /* Recursos: links al costado (misma superficie que el mega-menu) y una foto
@@ -261,12 +305,14 @@
 }
 
 /* ── Menú mobile (Mode=Menu y Products): diálogo a pantalla completa ── */
+/* Menú mobile: desde la barra (--bar-top) hasta el pie de la pantalla, así
+   announcement-bar sigue a la vista arriba, como con el top sheet */
 .menu {
   box-sizing: border-box;
-  inset: 0;
+  inset: var(--bar-top, 0dvh) 0 auto 0;
   width: 100%;
   max-width: none;
-  height: 100dvh;
+  height: calc(100dvh - var(--bar-top, 0dvh));
   max-height: none;
   margin: 0;
   padding: 0;
@@ -275,6 +321,11 @@
   background: var(--arq-color-surface-default);
   color: var(--arq-color-text-primary);
   overscroll-behavior: contain;
+}
+
+/* Sin el velo del navegador: el menú tapa la página y announcement-bar queda limpia */
+.menu::backdrop {
+  background: var(--arq-color-surface-transparent);
 }
 
 /* Columna: barra arriba y el nivel abierto debajo (un submenú largo se

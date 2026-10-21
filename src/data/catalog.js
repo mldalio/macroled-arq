@@ -18,7 +18,7 @@
 import { loadSource, loadGroupDetails } from './source.js';
 import { ATTRIBUTES, DOWNLOAD_FILTERS, TABLE_COLUMNS, attributeInfo, specSections, tableValues } from './attributes.js';
 import { variantOptions, findVariant, choose } from './variants.js';
-import { normalize, queryWords, matchesWords } from './text.js';
+import { normalize, queryWords, matchWords } from './text.js';
 import { finishImage } from './finishes.js';
 
 let pending = null;
@@ -254,7 +254,8 @@ export async function listProducts({ filters, query, ...category } = {}) {
     const match = words.length ? searchMatch(group, words) : { variant: group.defaultVariant, bySku: false };
     if (match) found.set(group, match);
   }
-  const scope = [...found.keys()];
+  // Con búsqueda, primero los que coinciden tal cual y después los con errores de tipeo
+  const scope = [...found.keys()].sort((a, b) => Number(found.get(a).typo) - Number(found.get(b).typo));
   const active = activeFilters(filters);
   const withFilters = Object.keys(active).length > 0;
   const cards = scope.flatMap((group) => {
@@ -648,22 +649,30 @@ export async function getCompare(skus) {
 // La usan search-dropdown (searchProducts) y el listado de Productos con ?q=
 // (listProducts), con el mismo criterio (decisiones.md, 2026-10-05 · Búsqueda
 // en Productos): cada palabra tiene que aparecer, sin importar tildes,
-// mayúsculas ni plural (src/data/text.js).
+// mayúsculas ni plural, y con errores de tipeo salvo en el SKU (src/data/text.js).
+// Los que coinciden tal cual van antes que los con errores de tipeo.
 
 const groupText = (group) => [group.name, group.collectionData?.name, group.application, group.productType, ...group.environment].join(' ');
 
 /**
- * ¿El grupo coincide con la búsqueda? { variant, bySku } o null. Si coincide
- * un SKU, esa variante (bySku); si no, la predeterminada.
+ * ¿El grupo coincide con la búsqueda? { variant, bySku, typo } o null. Si
+ * coincide un SKU, esa variante (bySku); si no, la predeterminada. typo: la
+ * coincidencia es con errores de tipeo.
  */
 function searchMatch(group, words) {
-  // Si el texto del grupo coincide (nombre, colección…), manda la variante
-  // predeterminada (is_group_default), la misma del listado. Solo si coincide
-  // únicamente por SKU se usa esa variante.
-  if (matchesWords(groupText(group), words)) return { variant: group.defaultVariant, bySku: false };
-  const variant = group.variants.find((v) => matchesWords(v.sku, words));
-  return variant ? { variant, bySku: true } : null;
+  // Si el texto del grupo coincide tal cual (nombre, colección…), manda la
+  // variante predeterminada (is_group_default), la misma del listado. Después,
+  // un SKU tal cual (los SKU no aceptan errores de tipeo: un código parecido
+  // es otro producto). Por último, el texto del grupo con errores de tipeo.
+  const text = matchWords(groupText(group), words);
+  if (text === 'exact') return { variant: group.defaultVariant, bySku: false, typo: false };
+  const variant = group.variants.find((v) => matchWords(v.sku, words, { typos: false }));
+  if (variant) return { variant, bySku: true, typo: false };
+  return text ? { variant: group.defaultVariant, bySku: false, typo: true } : null;
 }
+
+// Primero los que coinciden tal cual (orden estable dentro de cada grupo)
+const exactFirst = (items) => items.sort((a, b) => Number(a.typo) - Number(b.typo));
 
 /**
  * Búsqueda por nombre, colección, aplicación o SKU: { results: [{ kind:
@@ -674,16 +683,21 @@ export async function searchProducts(query, { limit = 5 } = {}) {
   const words = queryWords(query);
   if (!words.length) return { results: [], total: 0 };
   const { groups, collections } = await loadCatalog();
-  const products = groups.flatMap((group) => {
-    const match = searchMatch(group, words);
-    if (!match) return [];
-    const card = productCard(group, match.variant);
-    return [{ kind: 'product', name: group.name, meta: match.variant.sku, href: card.href, image: card.image }];
-  });
-  const found = collections
-    .filter((c) => matchesWords(c.name, words))
-    .map((c) => ({ kind: 'collection', name: c.name, meta: 'Colección', href: collectionHref(c.id), image: c.images?.studio ?? null }));
-  const results = [...products, ...found];
+  const products = exactFirst(
+    groups.flatMap((group) => {
+      const match = searchMatch(group, words);
+      if (!match) return [];
+      const card = productCard(group, match.variant);
+      return [{ kind: 'product', name: group.name, meta: match.variant.sku, href: card.href, image: card.image, typo: match.typo }];
+    }),
+  );
+  const found = exactFirst(
+    collections.flatMap((c) => {
+      const match = matchWords(c.name, words);
+      return match ? [{ kind: 'collection', name: c.name, meta: 'Colección', href: collectionHref(c.id), image: c.images?.studio ?? null, typo: match === 'typo' }] : [];
+    }),
+  );
+  const results = [...products, ...found].map(({ typo, ...result }) => result);
   // total: solo productos (luminarias). «Ver todos los resultados (N)» lleva al
   // listado de Productos, que no incluye colecciones.
   return { results: results.slice(0, limit), total: products.length };

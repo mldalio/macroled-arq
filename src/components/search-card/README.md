@@ -14,8 +14,8 @@ Tarjeta de producto recomendado del [search-sheet](../search-sheet/README.md): *
 | `href` | Destino. Toda la tarjeta es un link |
 | `image` | Imagen de estudio. Sin imagen queda el recuadro `color/surface/subtle` |
 
-- Imagen `ratio/square` (1:1). El search-sheet puede pasar `--card-ratio` (más ancha que alta) si el alto de la pantalla no alcanza.
-- Hover y Focus: zoom mínimo de la imagen (`motion/scale/hover`, 1,05, recortada por el recuadro, `motion/duration/slow` con `motion/easing/standard`; sin zoom con `prefers-reduced-motion`). No cambia la imagen ni responde a Iluminar (eso es de product-card).
+- Imagen `ratio/square` (1:1) por defecto; el search-sheet la pasa a `ratio/landscape` (5:4) con `--card-ratio`, y más ancha si el alto de la pantalla no alcanza.
+- Hover y Focus: zoom de la imagen, recortada por el recuadro (`motion/duration/slow` con `motion/easing/standard`; sin zoom con `prefers-reduced-motion`). `TODO` (prueba): 1,1, más notorio que `motion/scale/hover` (1,05); falta decidir el token. No cambia la imagen ni responde a Iluminar (eso es de product-card).
 - State: Hover y Focus salen de `:hover` y `:focus-visible`.
 
 ## Tokens

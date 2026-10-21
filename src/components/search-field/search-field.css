@@ -18,7 +18,7 @@
 }
 
 /* Sin cruz, el padding derecho es el mismo que el izquierdo */
-:host(:not([show-close])) .field {
+:host(:not([show-close]):not([show-clear])) .field {
   padding-inline-end: var(--arq-space-padding-md);
 }
 
@@ -46,6 +46,16 @@
   opacity: 1;
 }
 
+/* Size large y medium: lo que se escribe en Regular (role/heading-3 ·
+   role/body-xl) y el placeholder un peso menos, en Light
+   (role/heading-3-light · role/body-xl-light). ::placeholder no acepta una
+   clase role-*: tamaño e interlineado son los mismos y solo cambia el peso,
+   que toma el de esos roles. */
+:host([size='large']) .input::placeholder,
+:host([size='medium']) .input::placeholder {
+  font-weight: var(--arq-font-weight-light);
+}
+
 .input:focus {
   outline: none;
 }
@@ -56,8 +66,16 @@
   appearance: none;
 }
 
-.close {
+.close,
+.clear {
   flex: none;
+}
+
+/* Show icon: la lupa también en Type=Box */
+:host([show-icon]) .lead {
+  display: inline-flex;
+  flex: none;
+  color: var(--arq-color-icon-tertiary);
 }
 
 /* Type=Line (solo de código): sin caja ni fondo, solo la línea inferior de

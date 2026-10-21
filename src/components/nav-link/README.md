@@ -23,7 +23,7 @@ Link de primer nivel del navbar (desktop) y fila del menú mobile. Current marca
 
 - Hover, Pressed y Focus son CSS. Breakpoint es CSS: hasta 767 px es la fila del menú mobile.
 - **Sin dropdown:** `<a href>`. **Con dropdown:** `<button aria-expanded>`. En Mobile y sin mouse, al tocarlo emite `arq:toggle` con `{ open: !open }` y el navbar abre o cierra. En desktop con mouse el clic no emite: el navbar abre el panel al pasar el cursor.
-- **Desktop:** `role/body`, hug. Hover subraya el label. Pressed: texto `color/text/tertiary`. Current: guion antes del label, sin subrayado, y texto en `role/body-medium`. Has dropdown no lleva flecha.
+- **Desktop:** `role/body`, hug. Hover subraya el label: la línea se dibuja de izquierda a derecha y se va hacia la derecha (`transform`, `motion/duration/base`, `motion/easing/standard`; de golpe con reduced motion). Pressed: texto `color/text/tertiary`. Current: guion antes del label, sin subrayado, y texto en `role/body-medium`. Has dropdown no lleva flecha.
 - **Mobile:** fila a todo el ancho con padding `space/gap/md` × `layout/gutter`, `role/heading-3`. Todas las filas llevan una flecha al final (`chevron-right`; en Current, `arrow-right`), también las que tienen Has dropdown (una sola flecha). Pressed: fondo `color/surface/selected`; Hover (solo con mouse): `color/surface/hover`. Sin borde inferior.
 - Una sola Current por navbar.
 

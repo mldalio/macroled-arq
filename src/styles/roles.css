@@ -72,6 +72,15 @@
   letter-spacing: var(--arq-font-tracking-normal);
 }
 
+/* Body XL en Light: placeholder de search-field Size=Medium (buscador de Descargas). */
+.role-body-xl-light {
+  font-family: var(--arq-font-family-sans);
+  font-weight: var(--arq-font-weight-light);
+  font-size: var(--arq-type-body-xl-size);
+  line-height: var(--arq-type-body-xl-leading);
+  letter-spacing: var(--arq-font-tracking-normal);
+}
+
 /* Bajadas y párrafos destacados. */
 .role-body-lg {
   font-family: var(--arq-font-family-sans);

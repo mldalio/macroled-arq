@@ -151,7 +151,7 @@ class ArqVariantsTable extends ArqElement {
   };
   static template =
     `<div class="controls">` +
-    `<arq-search-field class="search" placeholder="${TEXT.search}" label="${TEXT.searchLabel}" hidden></arq-search-field>` +
+    `<arq-search-field class="search" size="medium" show-icon show-clear placeholder="${TEXT.search}" label="${TEXT.searchLabel}" hidden></arq-search-field>` +
     `<arq-button class="toggle-filters" show-icon icon="filter">${TEXT.filters}</arq-button>` +
     `<span class="total role-body" aria-hidden="true"></span>` +
     `<div class="downloads"><slot name="downloads"></slot></div>` +

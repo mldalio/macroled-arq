@@ -78,7 +78,7 @@ class ArqSearchSheet extends ArqElement {
     `<arq-icon-button class="close" icon="close" size="large" background="none">Cerrar búsqueda</arq-icon-button>` +
     `</div>` +
     `<div class="drawer"><div class="drawer-inner">` +
-    `<div class="field-row"><arq-search-field class="field" type="line"></arq-search-field></div>` +
+    `<div class="field-row"><arq-search-field class="field" type="line" size="large" show-clear></arq-search-field></div>` +
     `<div class="content">` +
     `<div class="recommended">` +
     `<p class="title role-label"></p>` +
@@ -246,7 +246,7 @@ class ArqSearchSheet extends ArqElement {
     const cards = root.querySelector('.cards');
     cards.style.removeProperty('--card-ratio');
     const content = root.querySelector('.content');
-    let ratio = 1; // las cards parten de 1:1
+    let ratio = 5 / 4; // las cards parten de ratio/landscape (5:4, como --card-ratio en el CSS)
     // Un par de pasadas: al cambiar la imagen, el texto y la fila se reacomodan
     for (let pass = 0; pass < 3; pass++) {
       const overflow = content.scrollHeight - content.clientHeight;

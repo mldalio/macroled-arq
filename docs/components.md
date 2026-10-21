@@ -592,6 +592,8 @@ State=Current: sección activa (indicador visible); en Desktop el label pasa a r
 
 Theme=Inverse: para navbar Theme=Transparent sobre foto (label color/text/inverse, indicador y subrayado en color/icon/inverse).
 
+Hover (Desktop): el subrayado se dibuja de izquierda a derecha y se va hacia la derecha (motion/duration/base, motion/easing/standard); al pasar de un link a otro parece seguir al cursor. Con reduced motion, de golpe.
+
 ## navbar
 
 - Figma: [753-2907](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=753-2907)
@@ -600,6 +602,8 @@ Theme=Inverse: para navbar Theme=Transparent sobre foto (label color/text/invers
 Barra de navegación de Macroled Arq. Breakpoint: Desktop · Mobile. Mode: Default, Search (buscador abierto), Menu (menú mobile abierto), Products (submenú de Productos en mobile, con "volver"), Recursos (submenú mobile de Catálogos y Descargas, con "volver") y los cuatro submenús que abre Products en mobile: Interior, Exterior, Lámparas y artefactos y Colecciones (volver con el nombre del nivel, links en mega-link Size=Large y "Ver todo…" al pie; Lámparas y artefactos y Colecciones llevan miniatura). En desktop, Productos y Recursos se abren al pasar el mouse (Open=True con el panel debajo). Recursos abierto = el mismo panel, con el título Recursos (`role/heading-1`, igual que Interior y Exterior) y Catálogos y Descargas debajo (`arq-mega-link`, igual que Embutir y Colgante) y una foto grande a la derecha (slot `recursos-media`; sin foto, color/surface/subtle). Catálogos apunta a `/arq/catalogos`. Theme: Default · Transparent (sobre la foto del hero; pasa a Default al hacer scroll). Theme=Transparent: fondo translúcido color/overlay/translucent + background blur blur/backdrop. El link de la página actual va en State=Current; el que despliega un menú usa Has dropdown. Theme=Transparent con Mode=Search (desktop): la barra sigue translúcida y search-field queda igual que en Default (fondo color/surface/default, texto y cruz en color/text/primary). Sobre la foto, la lupa y el menú (icon-button) van en modo Dark local (en código, data-arq-theme="dark"): ícono claro, hover y foco del modo Dark. Con Mode=Menu y Products (mobile) la barra pasa a Default: las variantes Transparent son iguales a las Default.
 
 Con prefers-reduced-transparency: reduce o prefers-contrast: more, Theme=Transparent se ve como Default también sobre la foto.
+
+Productos y Recursos (Desktop): se cierran al pasar por Nosotros, Contacto, la lupa o el scrim, con una demora de motion/duration/base (el logo y el aire de la barra se pueden cruzar). El cambio de Productos a Recursos espera motion/duration/base con el cursor encima y hace un fundido cruzado del contenido sobre un fondo fijo, con el alto acompañando (motion/duration/panel). Con announcement-bar a la vista, el mega-menu, su scrim, el search-sheet y el menú mobile arrancan en la barra del navbar: announcement-bar queda a la vista y sin scrim.
 
 ## option-group
 
@@ -695,7 +699,7 @@ Desplegable de resultados en desktop. State: Results · No results. Aparece deba
 
 - Figma: set `2555:8441` (documentado desde el código, sin revisión de diseño)
 
-Tarjeta de producto recomendado del search-sheet: solo la imagen en `ratio/square` y el nombre en `role/body-regular`. No lleva tipo de producto, acabados ni comparar: no es una product-card. Toda la tarjeta es un link; Hover y Focus: zoom mínimo de la imagen (escala 1.05, recortada por el recuadro); Focus suma el anillo separado.
+Tarjeta de producto recomendado del search-sheet: la imagen en `ratio/landscape` (5:4) y el nombre en `role/body-regular`. No lleva tipo de producto, acabados ni comparar: no es una product-card. Toda la tarjeta es un link; Hover y Focus: zoom de la imagen (escala 1.1, recortada por el recuadro; `TODO`: prueba, más notorio que motion/scale/hover, falta decidir el token); Focus suma el anillo separado. En código el search-sheet le pasa la proporción con `--card-ratio`.
 
 ## search-collection
 
@@ -706,16 +710,17 @@ Resultado de búsqueda de una colección, discreto: miniatura chica (layout/sear
 ## search-sheet
 
 - Figma: set `2549:8722` (página Componentes › 2 · Navegación › Búsqueda · top sheet) y ficha `doc/search-sheet` (`2551:32422`). Documentado a partir del código (2026-10-15): falta la revisión de diseño. Sus piezas están como sets aparte: `search-field-line` (`2547:8166`, = `type="line"`), `search-result-simple` (`2547:8167`, = `type="simple"`) `search-collection` (`2547:8168`), `search-card` (`2555:8441`) y `search-see-all-simple` (`2574:8361`)
-- Código: es la búsqueda del navbar (`search="sheet"`, por defecto); `type="line"` en search-field; demo en Desktop, Tablet y Mobile en demo/index.html
+- Código: es la búsqueda del navbar (`search="sheet"`, por defecto); `type="line" size="large" show-clear` en search-field; la cruz se funde con la lupa del navbar y, con announcement-bar, el sheet arranca debajo de ella; demo en Desktop, Tablet y Mobile en demo/index.html
 
-Búsqueda del sitio como top sheet que baja desde arriba con scrim: barra (logo + cerrar), search-field Type=Line y, con el campo vacío, productos recomendados (search-card, imagen cuadrada y nombre, en una fila con scroll) y un button Underline «Ver todos los productos»; al escribir, los productos y colecciones que coinciden. Los resultados van en dos grupos: Productos (search-result Type=Simple: miniatura de 100 y nombre en gris con lo que coincide en negro; hover en negro) y, discretas, Colecciones (search-collection) a la derecha en Desktop. Desktop, Tablet y Mobile (el navbar con search="inline" conserva search-dropdown y search-screen). TODO: revisión de diseño; decidir si las variantes Line y Simple pasan a ser Type de search-field y search-result (hoy son sets aparte en Figma).
+Búsqueda del sitio como top sheet: un panel que baja desde arriba, a todo el ancho, con la barra (logo y cierre), el campo de búsqueda y el contenido según los datos. Es la búsqueda del navbar en Desktop, Tablet y Mobile. Arranca en la barra del navbar: con announcement-bar a la vista, debajo de ella; el scrim arranca debajo de la barra. La cruz de cierre va en el lugar de la lupa del navbar y se funden una con otra al abrir y al cerrar. Campo: search-field-line Size=Large (lo escrito en role/heading-3, el placeholder en role/heading-3-light) y, con texto, Show clear (cruz chica que borra). Estados: Recommended (campo vacío: search-card en ratio/landscape en una fila a sangre a la derecha, que llega al borde de la pantalla, y «Ver todos los productos» con space/padding/2xl abajo, como los «Ver todo…» del mega-menu), Results (Productos con search-result-simple y Colecciones con search-collection, más search-see-all-simple: en Desktop debajo de Productos; en Tablet y Mobile al pie) y No results (search-dropdown). Breakpoint: Desktop (desde 1024 px), Tablet (768–1023) y Mobile (hasta 767). Sin versión Dark. TODO: revisión de diseño.
 
 ## search-field
 
 - Figma: [795-2179](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=795-2179)
-- Propiedades: Show close; State: Empty · Focus · Filled
+- Propiedades: Show close; Show icon; Show clear; Size: Default · Medium; State: Empty · Focus · Filled. search-field-line (`2547:8166`, = `type="line"`): Show clear; Size: Default · Large; State
+- Estilo nuevo: `role/body-xl-light` (placeholder de Size=Medium)
 
-Campo de búsqueda. En desktop reemplaza a la lupa dentro del navbar y la cruz cierra la búsqueda. En mobile va sin cruz (Show close = false), junto a la flecha de volver. Estados: Empty, Focus (borde color/border/focus de border/focus) y Filled. En código suma `type="line"` (solo línea inferior y lupa a la izquierda, para el search-sheet): variante de prueba, no está en Figma.
+Campo de búsqueda. En desktop reemplaza a la lupa dentro del navbar y la cruz cierra la búsqueda. En mobile va sin cruz (Show close = false), junto a la flecha de volver. Estados: Empty, Focus (borde color/border/focus de border/focus) y Filled. Size: Default (role/body) · Medium (Descargas: placeholder role/body-xl-light, lo escrito role/body-xl) · Large (solo en search-field-line, la búsqueda del navbar: placeholder role/heading-3-light, lo escrito role/heading-3). Show icon: la lupa a la izquierda (Descargas). Show clear: con texto, una cruz chica que borra lo escrito (no cierra la búsqueda, eso es Show close). En código: `size`, `show-icon`, `show-clear` y `type="line"` (solo línea inferior y lupa a la izquierda, para el search-sheet).
 
 ## search-result
 
@@ -737,6 +742,8 @@ Búsqueda en mobile, a pantalla completa. La flecha vuelve a la página (cierra 
 - Propiedades: State: Default · Hover · Focus
 
 Última fila de los resultados: lleva a la página de resultados completos. Default, Hover y Focus. El término buscado va en SemiBold con color/text/primary.
+
+search-see-all-simple (`2574:8361`, = `type="simple"`, search-sheet): sin la lupa, con la flecha pegada al texto y sin fondo. Texto siempre en 14: role/body-compact-regular y color/text/tertiary, el término en role/body-compact-medium y color/text/primary.
 
 ## section-header
 

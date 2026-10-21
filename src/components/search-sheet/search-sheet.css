@@ -6,13 +6,16 @@
 }
 
 /* <dialog> sin los estilos del navegador: pegado arriba, a todo el ancho y
-   hasta 100dvh (si el contenido no entra, scrollea adentro). Sin sombra. */
+   hasta el pie de la pantalla (si el contenido no entra, scrollea adentro).
+   Sin sombra. Con announcement-bar a la vista, arranca debajo de ella, donde
+   está la barra del navbar (--sheet-top, lo pone el navbar al abrir), como el
+   mega-menu; el scrim también arranca ahí, así la barra sigue a la vista. */
 .dialog {
   box-sizing: border-box;
-  inset: 0 0 auto 0;
+  inset: var(--sheet-top, 0dvh) 0 auto 0;
   width: 100%;
   max-width: none;
-  max-height: 100dvh;
+  max-height: var(--sheet-height);
   margin: 0;
   padding: 0;
   border: 0;
@@ -45,6 +48,11 @@
    productos 500/250 ms, velo 400 ms, header 500 ms: se llevaron a los tokens
    de movimiento más cercanos; --sheet-slow se deriva de ellos. */
 .dialog::backdrop {
+  /* Debajo de la barra, como el scrim del mega-menu: la barra del navbar no se
+     oscurece mientras la del sheet pasa de transparente a sólida (si no, la
+     franja de arriba se ve gris contra el panel blanco). ::backdrop hereda las
+     variables del <dialog>. */
+  top: calc(var(--sheet-top, 0dvh) + var(--bar-height));
   background: var(--arq-color-overlay-scrim); /* el mismo scrim que filter-panel */
   opacity: 0;
   transition: opacity var(--sheet-slow) var(--arq-motion-easing-standard);
@@ -65,7 +73,7 @@
   display: grid;
   grid-template-rows: auto 0fr;
   align-content: start; /* la fila de la barra no se estira mientras la persiana se abre */
-  max-height: 100dvh;
+  max-height: var(--sheet-height);
   transition: grid-template-rows var(--sheet-slow) var(--arq-motion-easing-standard);
 }
 
@@ -109,10 +117,19 @@
 
 /* Cruz: icon-button Large sin fondo (48). Toma el color de la barra (así pasa
    de inverso a primary con ella) y se corre space/padding/sm-md hacia afuera
-   para que el ícono quede alineado con el margen de la página */
+   para que el ícono quede alineado con el margen de la página.
+   Va en el mismo lugar que la lupa del navbar: se funden una con otra
+   (motion/duration/fast) al abrir y al cerrar, para que no se vean las dos
+   encimadas mientras la barra todavía es transparente. */
 .close {
   color: inherit;
   margin-inline-end: calc(var(--arq-space-padding-sm-md) * -1);
+  opacity: 0;
+  transition: opacity var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);
+}
+
+.dialog.is-open .close {
+  opacity: 1;
 }
 
 /* Panel: fondo sólido, recortado mientras la persiana se abre */
@@ -125,7 +142,7 @@
 .drawer-inner {
   display: flex;
   flex-direction: column;
-  max-height: calc(100dvh - var(--bar-height));
+  max-height: calc(var(--sheet-height) - var(--bar-height));
   opacity: 0;
   transition-property: opacity;
   transition-duration: var(--arq-motion-duration-slow);
@@ -215,14 +232,21 @@
    con un mínimo de layout/card-min por tarjeta (entran las que quepan). */
 .cards {
   --cols: 4;
-  /* Recomendados más cuadrados (ratio/square, 1:1). Si el alto de la pantalla no
-     alcanza, search-sheet.js pone un --card-ratio más ancho que alto (inline) para
-     que el panel no scrollee; la cantidad de cards sigue dependiendo del ancho. */
-  --card-ratio: 1 / 1;
+  /* Recomendados en ratio/landscape (5:4), más bajos que cuadrados, para que
+     entren con el aire del pie. Si el alto de la pantalla no alcanza,
+     search-sheet.js pone un --card-ratio más ancho (inline) para que el panel
+     no scrollee; la cantidad de cards sigue dependiendo del ancho. */
+  --card-ratio: 5 / 4;
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: calc((100% - var(--arq-space-gap-md) * (var(--cols) - 1)) / (var(--cols) + 0.4));
   gap: var(--arq-space-gap-md);
+  /* A sangre a la derecha: la fila llega al borde de la pantalla (la card que
+     asoma no queda cortada en el margen) y el margen aparece recién al final
+     del scroll, como padding. El ancho de las columnas no cambia: el 100 % de
+     la caja de contenido es el mismo. */
+  margin-inline-end: calc(var(--page-gutter) * -1);
+  padding-inline-end: var(--page-gutter);
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x proximity;
@@ -237,12 +261,13 @@
   scroll-snap-align: start;
 }
 
-/* "Ver todos los productos": fuera del scroll, al pie y pegado al borde con el
-   margen lateral del logo (--page-gutter); abajo space/gap/lg */
+/* "Ver todos los productos": fuera del scroll, al pie, con el margen lateral
+   del logo (--page-gutter); abajo space/padding/2xl, el mismo aire que los
+   «Ver todo…» del mega-menu */
 .all {
   flex: none;
   display: flex;
-  padding: 0 var(--page-gutter) var(--arq-space-gap-lg);
+  padding: 0 var(--page-gutter) var(--arq-space-padding-2xl);
 }
 
 .all[hidden] {
@@ -337,9 +362,11 @@
   }
 }
 
-/* Alto de la barra (como el del navbar): space/gap/md × 2 + icon/xl */
+/* Alto de la barra (como el del navbar): space/gap/md × 2 + icon/xl.
+   --sheet-height: lo que queda de pantalla debajo de --sheet-top. */
 :host {
   --bar-height: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
+  --sheet-height: calc(100dvh - var(--sheet-top, 0dvh));
   /* motion/duration/panel (400 ms; 0 con reduced motion) */
   --sheet-slow: var(--arq-motion-duration-panel);
 }
