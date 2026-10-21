@@ -16,7 +16,7 @@
 // specs vale para todas las variantes del grupo; attributes de la variante pisa o completa.
 
 import { loadSource, loadGroupDetails } from './source.js';
-import { ATTRIBUTES, DOWNLOAD_FILTERS, FILTER_FIELDS, TABLE_COLUMNS, attributeInfo, specSections, tableValues } from './attributes.js';
+import { ATTRIBUTES, DOWNLOAD_FILTERS, TABLE_COLUMNS, attributeInfo, specSections, tableValues } from './attributes.js';
 import { variantOptions, findVariant, choose } from './variants.js';
 import { normalize, queryWords, matchesWords } from './text.js';
 import { finishImage } from './finishes.js';
@@ -110,8 +110,13 @@ const activeFilters = (filters = {}) => Object.fromEntries(Object.entries(filter
 /**
  * Filas del filter-panel para un conjunto de grupos: [{ name, label, options:
  * [{ value, count }] }]. count: grupos con alguna variante con ese valor.
- * Un filtro con menos de dos valores no se muestra.
+ * Los filtros salen de los datos (decisiones.md, 2026-10-21 · Filtros de
+ * Productos según los datos): es filtro todo campo técnico (ATTRIBUTES, en ese
+ * orden) con al menos dos valores en la categoría, salvo los marcados
+ * filter: false.
  */
+const FILTER_FIELDS = Object.keys(ATTRIBUTES).filter((field) => ATTRIBUTES[field].filter !== false);
+
 function filterRows(groups) {
   return FILTER_FIELDS.map((field) => {
     const counts = new Map();
