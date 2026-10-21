@@ -8,6 +8,8 @@
   La búsqueda también: ?q= ("Ver todos los resultados" del buscador; decisiones.md, 2026-10-05 · Búsqueda en Productos).
   catalog-nav: los grupos y su "Todo…" son fijos; los demás links los completa arq-catalog-listing desde Typesense
   (data-arq-nav, getCatalogNav de src/data/catalog.js; solo categorías con productos).
+  Bajada: data-arq-description de cada grupo reemplaza la del page-header cuando la categoría es de ese grupo.
+  TODO (datos): provisoria en el HTML hasta que la bajada de cada categoría venga de Typesense.
 -->
 <arq-preloader open page></arq-preloader>
 <arq-navbar>
@@ -31,15 +33,15 @@
 
   <arq-catalog-listing>
     <arq-catalog-nav slot="nav" label="Categorías">
-      <arq-catalog-nav-group data-arq-nav="interior">
+      <arq-catalog-nav-group data-arq-nav="interior" data-arq-description="Luminarias para casas, oficinas y locales. Cada modelo cuenta con ficha técnica y archivos IES para especificar.">
         <span slot="label">Interior</span>
         <arq-catalog-nav-item href="/arq/productos?environment=Interior">Todo interior</arq-catalog-nav-item>
       </arq-catalog-nav-group>
-      <arq-catalog-nav-group data-arq-nav="exterior">
+      <arq-catalog-nav-group data-arq-nav="exterior" data-arq-description="Luminarias para fachadas, jardines y caminos. Cada modelo cuenta con ficha técnica y archivos IES para especificar.">
         <span slot="label">Exterior</span>
         <arq-catalog-nav-item href="/arq/productos?environment=Exterior">Todo exterior</arq-catalog-nav-item>
       </arq-catalog-nav-group>
-      <arq-catalog-nav-group data-arq-nav="lamparas-artefactos">
+      <arq-catalog-nav-group data-arq-nav="lamparas-artefactos" data-arq-description="Lámparas y artefactos para completar cada proyecto. Cada modelo cuenta con ficha técnica para especificar.">
         <span slot="label">Lámparas y artefactos</span>
       </arq-catalog-nav-group>
       <arq-catalog-nav-group data-arq-nav="colecciones">
