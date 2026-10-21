@@ -35,6 +35,7 @@ Encabezado de la página: breadcrumb, título (el único `<h1>`) y bajada. Type=
 | Show description | `show-description` | `showDescription` | booleano (Productos: sí · Colecciones: no) |
 | Show back | `show-back` + `back-href` + slot `back` | `showBack` · `backHref` | booleano, solo Detail. Label del link en el slot (por ejemplo "Volver a productos") |
 | Show action | `show-action` + slot `action` | `showAction` | booleano, solo Detail. Un `<arq-button>` (Filled, en Figma con `icon/download`) |
+| — | `title-style` | `titleStyle` | `display` · `heading-1` (def. `display`). Solo de código. `heading-1` es el de «Buscar archivos por producto» en Descargas; lo usa Catálogos |
 | Breakpoint | — | — | media query: hasta 767 px es Mobile |
 
 - **Los Show… vienen en `true` en Figma; en código, sin el atributo la parte no se ve** (AGENTS.md). Una parte con su atributo pero sin contenido tampoco se ve.

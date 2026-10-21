@@ -44,6 +44,7 @@ class ArqPageHeader extends ArqElement {
     showAction: { type: Boolean }, // Show action (solo Detail)
     backHref: { type: String }, // destino de Volver: la página padre
     searchTitle: { type: Boolean }, // solo de código: título de búsqueda en role/display
+    titleStyle: { type: String, values: ['display', 'heading-1'], default: 'display' }, // solo de código: Catálogos usa heading-1
   };
   static template =
     `<div class="header">` +
@@ -90,10 +91,14 @@ class ArqPageHeader extends ArqElement {
     // Desktop Type=List: título role/display-lg y bajada role/body. Mobile y
     // Type=Detail: role/display y role/body-lg.
     // search-title (solo de código): "Resultados para «…»" va en role/display.
-    const large = !detail && !mobile.matches && !this.searchTitle;
+    // title-style="heading-1" (solo de código): Catálogos, igual que
+    // «Buscar archivos por producto» en Descargas.
+    const heading = this.titleStyle === 'heading-1';
+    const large = !heading && !detail && !mobile.matches && !this.searchTitle;
     const title = root.querySelector('.title');
+    title.classList.toggle('role-heading-1', heading);
     title.classList.toggle('role-display-lg', large);
-    title.classList.toggle('role-display', !large);
+    title.classList.toggle('role-display', !heading && !large);
     const description = root.querySelector('.description');
     description.classList.toggle('role-body', large);
     description.classList.toggle('role-body-lg', !large);

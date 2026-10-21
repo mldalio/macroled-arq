@@ -20,6 +20,7 @@
       <h1 class="demo-title role-body">Macroled Arq · Demo</h1>
       <a class="role-body" href="/demo/home.html">Página: Home</a>
       <a class="role-body" href="/demo/nosotros.html">Página: Nosotros</a>
+      <a class="role-body" href="/demo/catalogos.html">Página: Catálogos</a>
       <a class="role-body" href="/demo/productos.html">Página: Productos</a>
       <label class="demo-switch">
         <input type="checkbox" id="demo-theme" />
@@ -678,6 +679,26 @@
             <img slot="image" src="/demo/fixtures/img/card-estudio.svg" alt="" loading="lazy">
             <h3 slot="name">Kanu Jardín</h3>
           </arq-family-card>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-labelledby="demo-catalog-card">
+        <h2 id="demo-catalog-card" class="demo-heading role-label">catalog-card · &lt;arq-catalog-card&gt;</h2>
+        <p class="demo-note role-body-sm">Sin set en Figma. Página Catálogos: tapa ratio/portrait, título y dos links (ver y descargar). Sin href las acciones se ven y no navegan. Página completa: <a href="/demo/catalogos.html">catálogos</a>.</p>
+        <div class="demo-row">
+          <arq-catalog-card href="#demo-catalog-card" style="width: 240px; max-width: 100%">
+            <img slot="image" src="/demo/fixtures/img/catalogo-portada.png" alt="" loading="lazy">
+            <span slot="title">Catálogo general 2026</span>
+          </arq-catalog-card>
+          <arq-catalog-card style="width: 240px; max-width: 100%">
+            <span slot="title">Sin imagen y sin archivo, con un título muy largo para ver cómo se parte en varias líneas</span>
+          </arq-catalog-card>
+        </div>
+        <div class="demo-dark" data-arq-theme="dark">
+          <arq-catalog-card href="#demo-catalog-card" style="width: 240px; max-width: 100%">
+            <img slot="image" src="/demo/fixtures/img/catalogo-portada.png" alt="" loading="lazy">
+            <span slot="title">Catálogo (Dark)</span>
+          </arq-catalog-card>
         </div>
       </section>
 
@@ -1601,8 +1622,9 @@
             <arq-button type="underline" compact show-icon icon="arrow-up-right" href="#demo-announcement-bar">Suscribite al newsletter</arq-button>
           </arq-announcement-bar>
           <arq-navbar label="Principal (con announcement-bar)">
-            <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
-            <arq-nav-link slot="links" href="#demo-announcement-bar">Descargas</arq-nav-link>
+            <arq-nav-link slot="links" has-dropdown data-menu="products">Productos</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-announcement-bar">Nosotros</arq-nav-link>
+            <arq-nav-link slot="links" has-dropdown data-menu="recursos">Recursos</arq-nav-link>
             <arq-nav-link slot="links" href="#demo-announcement-bar">Contacto</arq-nav-link>
           </arq-navbar>
         </div>
@@ -1619,8 +1641,9 @@
         <p class="demo-note role-body-sm">Figma 753:2907 y frames 2295:23568 · 2295:23605. Productos abre el mega-menu (Desktop) o, en Mobile, la lista Interior · Exterior · Lámparas y artefactos · Colecciones (un nivel sin datos no aparece): cada fila entra a su submenú (con «volver»; Colecciones con miniaturas y «Ver todo» fijo abajo; Lámparas y artefactos con dos grupos, set 2312:8904). La lupa abre la búsqueda: escribí «kanu», «jardín» o un SKU; ↑ ↓ eligen y Enter abre; Esc cierra. Datos del catálogo: Typesense. En la demo la barra no queda fija.</p>
         <div class="demo-navbar">
           <arq-navbar>
-            <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
-            <arq-nav-link slot="links" href="#demo-navbar">Descargas</arq-nav-link>
+            <arq-nav-link slot="links" has-dropdown data-menu="products">Productos</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-navbar">Nosotros</arq-nav-link>
+            <arq-nav-link slot="links" has-dropdown data-menu="recursos">Recursos</arq-nav-link>
             <arq-nav-link slot="links" href="#demo-navbar" current>Contacto</arq-nav-link>
           </arq-navbar>
           <div class="demo-placeholder role-body-sm">Contenido de la página</div>
@@ -1628,8 +1651,9 @@
         <p class="demo-note role-body-sm">Theme=Transparent sobre la foto del hero (nav-link Theme=Inverse). Al abrir un menú o la búsqueda pasa a Default:</p>
         <div class="demo-navbar demo-navbar--photo">
           <arq-navbar theme="transparent" label="Principal (sobre foto)">
-            <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
-            <arq-nav-link slot="links" href="#demo-navbar">Descargas</arq-nav-link>
+            <arq-nav-link slot="links" has-dropdown data-menu="products">Productos</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-navbar">Nosotros</arq-nav-link>
+            <arq-nav-link slot="links" has-dropdown data-menu="recursos">Recursos</arq-nav-link>
             <arq-nav-link slot="links" href="#demo-navbar">Contacto</arq-nav-link>
           </arq-navbar>
           <img src="/demo/fixtures/img/hero-1.svg" alt="">
@@ -1637,16 +1661,18 @@
         <p class="demo-note role-body-sm">Dark (Iluminar en la ficha: data-arq-theme="dark" en el navbar):</p>
         <div class="demo-navbar">
           <arq-navbar data-arq-theme="dark" label="Principal (Dark)">
-            <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
-            <arq-nav-link slot="links" href="#demo-navbar">Descargas</arq-nav-link>
+            <arq-nav-link slot="links" has-dropdown data-menu="products">Productos</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-navbar">Nosotros</arq-nav-link>
+            <arq-nav-link slot="links" has-dropdown data-menu="recursos">Recursos</arq-nav-link>
             <arq-nav-link slot="links" href="#demo-navbar">Contacto</arq-nav-link>
           </arq-navbar>
         </div>
         <p class="demo-note role-body-sm">Con Lámparas y artefactos de ejemplo (Typesense todavía no tiene lámparas ni artefactos). En Mobile («Ver a 390»): menú → Productos → Lámparas y artefactos; en Desktop, la pestaña del mega-menu:</p>
         <div class="demo-navbar">
           <arq-navbar data-demo-navbar-types label="Principal (Lámparas y artefactos de ejemplo)">
-            <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
-            <arq-nav-link slot="links" href="#demo-navbar">Descargas</arq-nav-link>
+            <arq-nav-link slot="links" has-dropdown data-menu="products">Productos</arq-nav-link>
+            <arq-nav-link slot="links" href="#demo-navbar">Nosotros</arq-nav-link>
+            <arq-nav-link slot="links" has-dropdown data-menu="recursos">Recursos</arq-nav-link>
             <arq-nav-link slot="links" href="#demo-navbar">Contacto</arq-nav-link>
           </arq-navbar>
         </div>
@@ -2448,6 +2474,18 @@
               <img src="/demo/fixtures/img/home/destacada-nami.jpg" alt="Spot entre plantas" loading="lazy">
             </arq-project-mosaic>
             <arq-button slot="action" type="underline" show-underline show-icon icon="arrow-right" href="#demo-layout">Ver colecciones</arq-button>
+          </arq-section>
+        </div>
+
+        <p class="demo-subheading role-body-sm">arq-project-mosaic zoom (Nosotros): hover y clic para ampliar</p>
+        <div class="demo-bleed demo-layout">
+          <arq-section>
+            <arq-project-mosaic zoom>
+              <img src="/demo/fixtures/img/home/proyecto-1.jpg" alt="Balizas en un patio de hormigón" loading="lazy">
+              <img src="/demo/fixtures/img/home/proyecto-2.jpg" alt="Living con colgante" loading="lazy">
+              <img src="/demo/fixtures/img/home/proyecto-3.jpg" alt="Comedor con colgantes" loading="lazy">
+              <img src="/demo/fixtures/img/home/destacada-nami.jpg" alt="Spot entre plantas" loading="lazy">
+            </arq-project-mosaic>
           </arq-section>
         </div>
 

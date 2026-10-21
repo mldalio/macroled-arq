@@ -67,8 +67,14 @@
 
 .head,
 .lead,
-.body {
+.body,
+.rail {
   min-width: 0;
+}
+
+/* En Desktop el rail no arma caja: lead y body siguen en la grilla. */
+.rail {
+  display: contents;
 }
 
 /* La acción toma el ancho de su texto, a la izquierda */
@@ -155,6 +161,47 @@
 @media (max-width: 767px) {
   :host {
     --section-gap: var(--arq-space-gap-xl);
+    /* La fila de fotos (y el resto de los carruseles) se desliza adentro.
+       Lo que se pasa del ancho de la sección no ensancha la página. */
+    overflow-x: clip;
+  }
+
+  /* Títulos y textos: space/padding/sm. Las fotos que no siguen este margen
+     (Explorar, carrusel de proyectos) siguen llegando al borde. */
+  :host,
+  :host([padding='section']),
+  :host([padding='wide']) {
+    --section-inline: var(--arq-space-padding-sm);
+  }
+
+  /* Herramientas: las tres tarjetas en fila. Se deslizan con el dedo y la
+     siguiente asoma. El título se queda con el margen de la sección.
+     TODO (diseño): Home v2 no tiene frame Mobile. El 80 % no tiene token. */
+  :host([layout='tools']) .rail {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--arq-space-gap-sm);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    margin-inline-end: calc(var(--section-inline, 0px) * -1);
+    padding-inline-end: var(--section-inline, 0px);
+  }
+
+  :host([layout='tools']) .rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  :host([layout='tools']) .lead,
+  :host([layout='tools']) .body {
+    display: contents;
+  }
+
+  :host([layout='tools']) ::slotted(arq-tool-card) {
+    flex: none;
+    width: 80%;
+    scroll-snap-align: start;
   }
 }
 

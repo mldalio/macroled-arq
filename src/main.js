@@ -29,6 +29,7 @@ import './components/gallery-thumb/gallery-thumb.js';
 import './components/product-gallery/product-gallery.js';
 import './components/family-card/family-card.js';
 import './components/download-card/download-card.js';
+import './components/catalog-card/catalog-card.js';
 import './components/download-item/download-item.js';
 import './components/download-file-row/download-file-row.js';
 import './components/download-modal/download-modal.js';

@@ -8,11 +8,12 @@
   TODO (imágenes): las src apuntan a /home_portada/ y /demo/fixtures/img/.
   Antes de pegar en Webflow, reemplazarlas por las URLs de Webflow Assets.
   TODO (contenido): los textos son un borrador en la voz de la Home. Confirmarlos.
-  TODO (diseño): el navbar y el footer de Figma no tienen este link.
+  TODO (diseño): el navbar y el footer de Figma no tienen este link. En código el navbar sí lo lista (2026-10-21).
 -->
 <arq-navbar>
-  <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
-  <arq-nav-link slot="links" href="/arq/descargas">Descargas</arq-nav-link>
+  <arq-nav-link slot="links" has-dropdown data-menu="products">Productos</arq-nav-link>
+  <arq-nav-link slot="links" href="/arq/nosotros" current>Nosotros</arq-nav-link>
+  <arq-nav-link slot="links" has-dropdown data-menu="recursos">Recursos</arq-nav-link>
   <arq-nav-link slot="links" href="/arq/contacto">Contacto</arq-nav-link>
 </arq-navbar>
 
@@ -39,7 +40,8 @@
       <h2 slot="title">Cómo pensamos el producto</h2>
     </arq-section-header>
     <arq-feature-block size="large" reveal>
-      <img slot="image" src="../../arq_nosotros/DSC09303_websize.jpg" alt="Living en madera con luz cálida sobre el sillón" loading="lazy">
+      <!-- Encuadre: en desktop el recuadro es más ancho y bajo; 64% deja la pieza entera adentro. -->
+      <img slot="image" src="../../arq_nosotros/DSC09303_websize.jpg" alt="Luminaria circular encendida sobre el piso, junto a una raja de luz" loading="lazy" style="object-position: center 64%">
       <h3 slot="title">Confort visual</h3>
       <span slot="description">Nos interesa la calidad de la luz, no la cantidad. Cuidamos el deslumbramiento, el rendimiento cromático y la atmósfera que cada espacio necesita.</span>
     </arq-feature-block>
@@ -81,11 +83,11 @@
       <h2 slot="title">Dónde se pone a prueba.</h2>
       <span slot="description">Espacios en los que la luminaria trabaja con la materia. <br> Un espacio bien resuelto no se nota. Se siente.</span>
     </arq-section-header>
-    <arq-project-mosaic bleed>
+    <arq-project-mosaic bleed zoom>
       <img src="../../arq_nosotros/DSC08599-HDR_websize.jpg" alt="Jardín interior con piezas de vidrio y luz en el piso" loading="lazy">
       <img src="../../arq_nosotros/DSC09274_websize.jpg" alt="Living con muro terracota, biblioteca y barra" loading="lazy">
-      <img src="../../arq_nosotros/DSC09099_websize.jpg" alt="Colgante negro encendido bajo un techo de tela" loading="lazy">
-      <img src="../../arq_nosotros/DSC09491_websize.jpg" alt="Cielo raso oscuro con embutidos y una banda de luz cálida" loading="lazy">
+      <img src="../../arq_nosotros/DSC08871_websize.jpg" alt="Colgante negro encendido bajo un techo de tela" loading="lazy">
+      <img src="../../arq_nosotros/DSC08958_websize.jpg" alt="Cielo raso oscuro con embutidos y una banda de luz cálida" loading="lazy">
     </arq-project-mosaic>
   </arq-section>
 

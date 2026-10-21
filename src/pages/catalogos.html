@@ -1,0 +1,53 @@
+<!--
+  Catálogos · /arq/catalogos · Code Embed de Webflow
+  Sin pantalla en Final. Título con page-header en role/heading-1 (el de
+  «Buscar archivos por producto» en Descargas) y una grilla de tapas.
+  docs/decisiones.md, 2026-10-21 · Catálogos.
+  Se edita acá y se pega en Webflow. dist/arq.js, dist/arq.css y Albert Sans se cargan a nivel sitio.
+
+  TODO (datos): URL de cada PDF. Sin href, ver y descargar se ven y no navegan.
+  TODO (imágenes): las tapas están en la raíz del repo (tapa_catalogo.jpg y
+  tapa_skyline.png). Antes de pegar en Webflow, reemplazarlas por las URLs
+  de Webflow Assets. Confirmar los nombres.
+-->
+<arq-navbar>
+  <arq-nav-link slot="links" has-dropdown data-menu="products">Productos</arq-nav-link>
+  <arq-nav-link slot="links" href="/arq/nosotros">Nosotros</arq-nav-link>
+  <arq-nav-link slot="links" has-dropdown data-menu="recursos" current>Recursos</arq-nav-link>
+  <arq-nav-link slot="links" href="/arq/contacto">Contacto</arq-nav-link>
+</arq-navbar>
+
+<main class="arq-page">
+  <arq-page-header title-style="heading-1">
+    <h1 slot="title">Catálogos 2026</h1>
+  </arq-page-header>
+
+  <arq-section>
+    <arq-grid columns="4" mobile="two-columns">
+      <arq-catalog-card>
+        <img slot="image" src="/tapa_catalogo.jpg" alt="" loading="lazy">
+        <span slot="title">Catálogo general 2026</span>
+      </arq-catalog-card>
+      <arq-catalog-card>
+        <img slot="image" src="/tapa_skyline.png" alt="" loading="lazy">
+        <span slot="title">Catálogo Skyline 2026</span>
+      </arq-catalog-card>
+    </arq-grid>
+  </arq-section>
+</main>
+
+<arq-footer>
+  <span slot="tagline">Diseño lumínico para la arquitectura contemporánea.</span>
+  <h2 slot="productos-title">Productos</h2>
+  <arq-footer-link slot="productos" href="/arq/productos?environment=Interior">Interior</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?environment=Exterior">Exterior</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?product_type=L%C3%A1mpara">Lámparas y Artefactos</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?view=colecciones">Colecciones</arq-footer-link>
+  <h2 slot="informacion-title">Información</h2>
+  <arq-footer-link slot="informacion" href="/arq/nosotros">Nosotros</arq-footer-link>
+  <arq-footer-link slot="informacion" href="/arq/contacto">Contacto</arq-footer-link>
+  <arq-footer-link slot="informacion" href="/arq/descargas">Descargas</arq-footer-link>
+  <h2 slot="redes-title">Redes</h2>
+  <arq-footer-link slot="redes" href="https://www.instagram.com/" target="_blank" show-icon icon="instagram" label="Macroled Arq en Instagram">Instagram</arq-footer-link>
+  <arq-footer-link slot="redes" href="https://www.youtube.com/" target="_blank" show-icon icon="youtube" label="Macroled Arq en YouTube">YouTube</arq-footer-link>
+</arq-footer>

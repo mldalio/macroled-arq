@@ -90,6 +90,12 @@
     flex-direction: column;
     align-items: flex-start;
   }
+
+  /* Desktop usa layout/card-min-wide (340). En Mobile, el ancho de tarjeta
+     del catálogo (layout/card-min, 160) para que entre más de una. */
+  .rail > * {
+    flex-basis: var(--arq-layout-card-min);
+  }
 }
 
 /* Reserva: los links del HTML, uno debajo del otro */

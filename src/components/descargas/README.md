@@ -1,16 +1,10 @@
 # descargas · `<arq-descargas>`
 
-Contenido de la página Descargas: arriba, el título con su bajada y el catálogo general (tapa, nombre, bajada y «Descargar catálogo»); debajo, «Buscar archivos por producto» con [downloads-table](../downloads-table/README.md) (todos los SKU del catálogo, buscador y filtros de selección múltiple) y el download-modal de cada fila. Contenedor de página, sin set en Figma: sale de «Descargas · propuesta final (desktop y mobile)» (`2575:22875`: Desktop `2564:20607` · Mobile `2558:20149` · modal `2554:20132` / `2554:20214`). Decisión: `docs/decisiones.md`, 2026-10-15 · Descargas · propuesta final.
+Contenido de la página Descargas: «Buscar archivos por producto» con [variants-table](../variants-table/README.md) type catalog (todos los SKU del catálogo, buscador y filtros de selección múltiple) y el download-modal de cada fila. El catálogo general está en `/arq/catalogos`. Contenedor de página, sin set en Figma: sale de «Descargas · propuesta final (desktop y mobile)» (`2575:22875`: Desktop `2564:20607` · Mobile `2558:20149` · modal `2554:20132` / `2554:20214`), sin el bloque de arriba. Decisión: `docs/decisiones.md`, 2026-10-21 · Descargas sin hero.
 
 ```html
-<arq-descargas catalog-href="…/catalogo.pdf">
-  <h1 slot="title">Descargas</h1>
-  <span slot="description">…</span>
-  <img slot="catalog-cover" src="…" alt="">
-  <span slot="catalog-title">Catálogo Macroled ARQ 2026</span>
-  <span slot="catalog-description">…</span>
-  <span slot="catalog-action">Descargar catálogo</span>
-  <h2 slot="search-title">Buscar archivos por producto</h2>
+<arq-descargas>
+  <h1 slot="search-title">Buscar archivos por producto</h1>
   <h2 slot="modal-title">Descargas</h2>
 </arq-descargas>
 ```
@@ -21,18 +15,11 @@ El HTML del embed completo está en [src/pages/descargas.html](../../pages/desca
 
 | Atributo / slot | Contenido |
 | --- | --- |
-| `catalog-href` | URL del PDF del catálogo general (se abre en otra pestaña). Sin URL, «Descargar catálogo» no se muestra |
-| slot `title` | `<h1>` de la página (`role/display`) |
-| slot `description` | Bajada (`role/body-regular` en `color/text/secondary`, hasta `layout/measure`) |
-| slot `catalog-cover` | `<img>` de la tapa del catálogo (4:5), de `layout/catalog-cover` (168 · Mobile 104) |
-| slot `catalog-title` | Nombre del catálogo (`role/heading-3`; Mobile `role/body-xl`) |
-| slot `catalog-description` | Bajada del catálogo (`role/body` en `color/text/secondary`; Mobile `role/body-compact-regular` en `color/text/tertiary`) |
-| slot `catalog-action` | Texto del botón (Desktop button Outline, Mobile Underline, con `icon/download`) |
-| slot `search-title` | `<h2>` «Buscar archivos por producto» (`role/heading-1`) |
+| slot `search-title` | `<h1>` «Buscar archivos por producto» (`role/heading-1`) |
 | slot `modal-title` | Título del download-modal |
 
 - Los textos van por slot desde el embed, para que queden indexables.
-- Bloque de arriba: `space/section/sm` arriba; Desktop, textos a la izquierda y el catálogo a la derecha (tapa y textos a `space/gap/lg`); Mobile, apilados a `space/gap/xl`, con la tapa chica a `space/gap/md`. Tablet (768–1023 px) también apilado a `space/gap/xl`, con los tamaños de Desktop y la bajada hasta `layout/measure-wide` (lado a lado, el título se partía). «Buscar archivos por producto»: `space/section/sm` arriba y la tabla a `space/gap/md`.
+- «Buscar archivos por producto»: `space/section/sm` arriba y la tabla a `space/gap/md`.
 
 ## Comportamiento
 
@@ -41,8 +28,3 @@ El HTML del embed completo está en [src/pages/descargas.html](../../pages/desca
 - **Modal** (download-modal `show-product`): miniatura, SKU y variante; debajo, download-file-row: «Ficha técnica» (emite `arq:datasheet { sku }`; mientras se genera el PDF la fila dice «Generando…», con la promesa `detail.pending`, como la ficha) y los archivos del SKU (`skuDownloads()`), solo con el nombre.
 - **Estados:** mientras carga, filas de carga y «Buscando…»; sin SKU, «Todavía no hay productos para descargar.»; si falla la carga, «No se pudieron cargar las descargas. Probá de nuevo en unos minutos.» con «Reintentar» (button Underline; al volver a cargar, el foco va al buscador). `TODO` (diseño): «Reintentar» no está en la propuesta. Sin filas que cumplan, el vacío de downloads-table.
 - **Peor caso (demo):** `/demo/descargas.html?data=worst|empty|one|huge|error`, escrito a mano en la URL (`demo/demo-data-toggle.js`).
-
-## Pendientes
-
-- `TODO` (datos): URL del catálogo general y su portada (la demo usa la de Figma).
-- La bajada del catálogo es distinta en Desktop («Todas las familias, con especificaciones…») y Mobile («Catálogo general en PDF, 24 MB») en la propuesta: va un solo texto.

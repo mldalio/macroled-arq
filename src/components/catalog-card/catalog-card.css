@@ -1,0 +1,114 @@
+/* catalog-card · página Catálogos. Sin set en Figma.
+   Portada ratio/portrait (7:10) + título + ver y descargar.
+   Solo tokens semánticos. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-md);
+}
+
+/* ratio/portrait, como family-card Large. Sin imagen: color/surface/subtle. */
+.card-media {
+  aspect-ratio: 7 / 10;
+  background: var(--arq-color-surface-subtle);
+  overflow: hidden;
+}
+
+.card-media ::slotted(*) {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+  object-fit: cover;
+  /* !important: los estilos de img del sitio pisan el transition del slot. */
+  transition: transform var(--arq-motion-duration-slow) var(--arq-motion-easing-standard) !important;
+}
+
+/* Hover: la tapa hace zoom dentro del recorte (motion/scale/hover). La card
+   no cambia de tamaño. Con movimiento reducido no hay zoom (DESIGN.md §6). */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .card:hover .card-media ::slotted(*) {
+    transform: scale(var(--arq-motion-scale-hover)) !important;
+  }
+}
+
+.caption {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-sm);
+}
+
+.title {
+  margin: 0;
+  color: var(--arq-color-text-primary);
+  overflow-wrap: break-word;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-xs);
+}
+
+/* Misma caja que icon-button Size=Default (ícono icon/md + space/padding/xs).
+   Son links: icon-button es un <button> y no navega. */
+.action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--arq-space-padding-xs);
+  border-radius: var(--arq-radius-control);
+  color: var(--arq-color-icon-primary);
+  text-decoration: none;
+  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
+  transition:
+    background-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard),
+    scale var(--arq-motion-duration-slow) var(--arq-motion-easing-standard);
+}
+
+.action[href] {
+  cursor: pointer;
+}
+
+.action:not([href]) {
+  cursor: default;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .action:hover {
+    background: var(--arq-color-surface-hover);
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .action:hover {
+    scale: var(--arq-motion-scale-hover);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .action[href]:active {
+    scale: var(--arq-motion-scale-pressed);
+  }
+}
+
+.action:focus {
+  outline: none;
+}
+
+.action:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.icon {
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+}

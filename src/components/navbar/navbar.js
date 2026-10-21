@@ -3,14 +3,17 @@
 // Barra de navegación de Macroled Arq, primer elemento de todas las páginas.
 //
 //   <arq-navbar theme="transparent">
-//     <arq-nav-link slot="links" has-dropdown>Productos</arq-nav-link>
-//     <arq-nav-link slot="links" href="/arq/descargas">Descargas</arq-nav-link>
+//     <arq-nav-link slot="links" has-dropdown data-menu="products">Productos</arq-nav-link>
+//     <arq-nav-link slot="links" href="/arq/nosotros">Nosotros</arq-nav-link>
+//     <arq-nav-link slot="links" has-dropdown data-menu="recursos">Recursos</arq-nav-link>
 //     <arq-nav-link slot="links" href="/arq/contacto" current>Contacto</arq-nav-link>
 //   </arq-navbar>
 //
-// - Los links llegan por slot (indexables). El que tiene has-dropdown abre
-//   Productos: en Desktop el mega-menu debajo de la barra; en Mobile el submenú
-//   de Productos dentro del menú.
+// - Los links llegan por slot (indexables). has-dropdown abre un panel:
+//   data-menu="products" el mega-menu de Productos; data-menu="recursos"
+//   el panel de Recursos (Catálogos y Descargas en mega-link, con lugar
+//   para una foto).
+//   En Mobile cada uno entra a su submenú.
 // - Mode no es prop: es el estado de la barra (Default · Search · Menu ·
 //   Products · Interior · Exterior · Lámparas y artefactos · Colecciones),
 //   que cambia con las
@@ -50,7 +53,11 @@
 //   barra estaba transparente sobre la foto, el sheet arranca igual
 //   (atributo over-photo) y se vuelve sólido; si ya era blanca, también
 //   parte de la misma barra.
-// - Mega-menu: Esc o un clic afuera lo cierran y el foco vuelve a Productos.
+// - Mega-menu y Recursos: Esc o un clic afuera los cierran y el foco vuelve al link que los abrió.
+// - Recursos (Desktop): columna de links a la izquierda y una foto grande a la
+//   derecha (slot recursos-media; sin foto, color/surface/subtle). Catálogos
+//   apunta a /arq/catalogos. Descargas es
+//   /arq/descargas. En Mobile, submenú con «volver» y los dos links.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { icon } from '../../base/icons.js';
@@ -85,7 +92,7 @@ class ArqNavbar extends ArqElement {
   static styles = css;
   static properties = {
     theme: { type: String, values: ['default', 'transparent'], default: 'default' }, // Theme
-    mode: { type: String, values: ['default', 'search', 'menu', 'products', ...SUBMENUS], default: 'default' }, // Mode (lo pone el componente)
+    mode: { type: String, values: ['default', 'search', 'menu', 'products', 'recursos', ...SUBMENUS], default: 'default' }, // Mode (lo pone el componente)
     search: { type: String, values: ['inline', 'sheet'], default: 'sheet' }, // cómo se abre la búsqueda (solo de código)
     label: { type: String, default: 'Principal' }, // nombre del <nav>
   };
@@ -109,7 +116,19 @@ class ArqNavbar extends ArqElement {
     `</div>` +
     `</div>` +
     `</nav>` +
-    `<div class="mega-wrap" hidden><div class="mega-drawer"><arq-mega-menu class="mega" data-arq-theme="light"></arq-mega-menu></div></div>` +
+    `<div class="mega-wrap" hidden><div class="mega-drawer">` +
+    `<arq-mega-menu class="mega" data-arq-theme="light"></arq-mega-menu>` +
+    `<div class="recursos" data-arq-theme="light" hidden>` +
+    `<nav class="recursos-nav" aria-label="Recursos">` +
+    `<p class="recursos-title role-heading-1">Recursos</p>` +
+    `<div class="recursos-links">` +
+    `<arq-mega-link href="/arq/catalogos" show-arrow>Catálogos</arq-mega-link>` +
+    `<arq-mega-link href="/arq/descargas" show-arrow>Descargas</arq-mega-link>` +
+    `</div>` +
+    `</nav>` +
+    `<div class="recursos-media" aria-hidden="true"><slot name="recursos-media"></slot></div>` +
+    `</div>` +
+    `</div></div>` +
     `</header>` +
     `<dialog class="menu" data-arq-theme="light">` +
     `<div class="menu-bar">` +
@@ -120,6 +139,13 @@ class ArqNavbar extends ArqElement {
     `<div class="menu-products" hidden>` +
     `<button type="button" class="back role-body-medium">${icon('chevron-left')}<span>Productos</span></button>` +
     `<div class="groups"></div>` +
+    `</div>` +
+    `<div class="menu-recursos" hidden>` +
+    `<button type="button" class="back back-recursos role-body-medium">${icon('chevron-left')}<span>Recursos</span></button>` +
+    `<div class="recursos-list">` +
+    `<arq-mega-link size="large" href="/arq/catalogos">Catálogos</arq-mega-link>` +
+    `<arq-mega-link size="large" href="/arq/descargas">Descargas</arq-mega-link>` +
+    `</div>` +
     `</div>` +
     `<div class="menu-sub" hidden>` +
     `<button type="button" class="back back-sub role-body-medium">${icon('chevron-left')}<span class="sub-label"></span></button>` +
@@ -157,12 +183,13 @@ class ArqNavbar extends ArqElement {
     });
     SOLID.addEventListener('change', () => this.#syncLinks());
 
-    // Productos (nav-link con has-dropdown)
+    // Productos y Recursos (nav-link con has-dropdown; data-menu dice cuál)
     this.addEventListener('arq:toggle', (event) => {
       if (event.target.localName !== 'arq-nav-link') return;
       event.stopPropagation();
-      if (MOBILE.matches) this.#setMode('products');
-      else this.#toggleMega(event.detail.open);
+      const which = event.target.dataset.menu === 'recursos' ? 'recursos' : 'products';
+      if (MOBILE.matches) this.#setMode(which);
+      else this.#toggleMega(event.detail.open, which);
     });
     // Al acercarse a Productos se pide la navegación: el mega-menu ya tiene su
     // foto inicial cargada cuando se abre.
@@ -237,9 +264,10 @@ class ArqNavbar extends ArqElement {
     root.querySelector('.menu-close').addEventListener('click', () => this.#setMode('default'));
     menu.addEventListener('cancel', (event) => {
       event.preventDefault();
-      this.#setMode(SUBMENUS.includes(this.mode) ? 'products' : this.mode === 'products' ? 'menu' : 'default');
+      this.#setMode(SUBMENUS.includes(this.mode) ? 'products' : this.mode === 'products' || this.mode === 'recursos' ? 'menu' : 'default');
     });
     root.querySelector('.back').addEventListener('click', () => this.#setMode('menu'));
+    root.querySelector('.back-recursos').addEventListener('click', () => this.#setMode('menu'));
     root.querySelector('.back-sub').addEventListener('click', () => this.#setMode('products'));
     // Filas de Productos: entran a su submenú
     root.querySelector('.groups').addEventListener('click', (event) => {
@@ -256,8 +284,9 @@ class ArqNavbar extends ArqElement {
     this.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && this.#megaOpen) {
         event.stopPropagation();
+        const which = this.#megaWhich;
         this.#toggleMega(false);
-        this.#productsLink()?.focus();
+        this.#dropdown(which)?.focus();
       }
     });
     document.addEventListener('click', (event) => {
@@ -287,6 +316,7 @@ class ArqNavbar extends ArqElement {
 
     this.shadowRoot.querySelector('slot[name="links"]').addEventListener('slotchange', () => this.#syncLinks());
     this.#syncLinks();
+    this.#markRecursosCurrent();
   }
 
   update(changed) {
@@ -295,8 +325,24 @@ class ArqNavbar extends ArqElement {
   }
 
   // ── Links ────────────────────────────────────────────────────────
+  #dropdown(which) {
+    return this.querySelector(`arq-nav-link[data-menu="${which}"]`) || this.querySelector('arq-nav-link[has-dropdown]');
+  }
+
   #productsLink() {
-    return this.querySelector('arq-nav-link[has-dropdown]');
+    return this.#dropdown('products');
+  }
+
+  // El link del panel que coincide con la página (Descargas o, cuando exista, Catálogos).
+  #markRecursosCurrent() {
+    const page = decodeURIComponent(location.pathname).replace(/\/$/, '').split('/').pop().replace(/\.html$/, '');
+    for (const link of this.shadowRoot.querySelectorAll('.recursos-nav arq-mega-link, .recursos-list arq-mega-link')) {
+      const target = (link.getAttribute('href') || '').split('/').pop();
+      const anchor = link.shadowRoot?.querySelector('a');
+      if (!anchor) continue;
+      if (target && target === page) anchor.setAttribute('aria-current', 'page');
+      else anchor.removeAttribute('aria-current');
+    }
   }
 
   // Desktop: los links van en la barra; Mobile: dentro del menú.
@@ -343,7 +389,7 @@ class ArqNavbar extends ArqElement {
 
     // Menú mobile (Menu, Products y sus submenús)
     const sub = SUBMENUS.includes(mode);
-    const inMenu = mode === 'menu' || mode === 'products' || sub;
+    const inMenu = mode === 'menu' || mode === 'products' || mode === 'recursos' || sub;
     if (inMenu && !menu.open) {
       this.#menuOpener = root.querySelector('.menu-open');
       menu.showModal();
@@ -355,6 +401,7 @@ class ArqNavbar extends ArqElement {
     }
     root.querySelector('.menu-main').hidden = mode !== 'menu';
     root.querySelector('.menu-products').hidden = mode !== 'products';
+    root.querySelector('.menu-recursos').hidden = mode !== 'recursos';
     root.querySelector('.menu-sub').hidden = !sub;
     if (sub) this.#renderSub(mode);
     if (mode === 'products') {
@@ -362,10 +409,12 @@ class ArqNavbar extends ArqElement {
       // Volviendo de un submenú, el foco va a su fila; si no, a «volver»
       const row = SUBMENUS.includes(previous) && root.querySelector(`.groups [data-sub="${previous}"]`);
       requestAnimationFrame(() => (row || root.querySelector('.back')).focus());
+    } else if (mode === 'recursos') {
+      requestAnimationFrame(() => root.querySelector('.back-recursos').focus());
     } else if (sub) {
       requestAnimationFrame(() => root.querySelector('.back-sub').focus());
-    } else if (mode === 'menu' && previous === 'products') {
-      requestAnimationFrame(() => this.#productsLink()?.focus());
+    } else if (mode === 'menu' && (previous === 'products' || previous === 'recursos')) {
+      requestAnimationFrame(() => this.#dropdown(previous)?.focus());
     }
     if (mode !== 'search') {
       root.querySelector('.search-screen').open = false;
@@ -389,22 +438,29 @@ class ArqNavbar extends ArqElement {
   }
 
   #megaTimer = 0;
+  #megaWhich = 'products';
 
   // Misma transición que el top sheet: la barra pasa a sólida y clara (Light
   // local, también con Iluminar) y el panel se abre como una persiana.
-  #toggleMega(open) {
+  // which: 'products' (mega-menu) o 'recursos'.
+  #toggleMega(open, which = 'products') {
     const root = this.shadowRoot;
     const wrap = root.querySelector('.mega-wrap');
     const navbar = root.querySelector('.navbar');
-    const link = this.#productsLink();
     const next = Boolean(open) && !MOBILE.matches;
-    if (next) this.#ensureNavigation();
+    if (next && which === 'products') this.#ensureNavigation();
     if (next && this.mode === 'search') this.#setMode('default');
-    if (link) link.open = next;
+    if (next) this.#megaWhich = which;
+    const kind = next ? which : this.#megaWhich;
+    for (const link of this.querySelectorAll('arq-nav-link[has-dropdown]')) {
+      link.open = next && (link.dataset.menu || 'products') === kind;
+    }
+    root.querySelector('.mega').hidden = !(next && kind === 'products');
+    root.querySelector('.recursos').hidden = !(next && kind === 'recursos');
+    if (next && kind === 'products') root.querySelector('.mega').reset(); // primera pestaña y su preview inicial (Colgante)
     if (next !== this.#megaOpen) {
       clearTimeout(this.#megaTimer);
       if (next) {
-        root.querySelector('.mega').reset(); // primera pestaña y su preview inicial (Colgante)
         wrap.hidden = false;
         void wrap.offsetHeight; // fija el estado inicial antes de is-open
       }

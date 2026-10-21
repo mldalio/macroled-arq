@@ -120,3 +120,175 @@
     display: none !important;
   }
 }
+
+/* zoom (solo código, Nosotros): la foto hace zoom dentro del recorte y el
+   clic la abre. Escala motion/scale/hover, igual que category-card. */
+:host([zoom]) .mosaic > slot:not([name]) {
+  display: none;
+}
+
+.frame {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--arq-color-surface-subtle);
+  color: inherit;
+  cursor: zoom-in;
+}
+
+.frame:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+:host([zoom]) .frame[data-index='0'] {
+  grid-column: 1 / span 2;
+  grid-row: 1 / span 2;
+  height: 100%;
+  contain: size;
+}
+
+:host([zoom]) .frame[data-index='1'] {
+  grid-column: 3 / span 2;
+  grid-row: 1;
+  height: 100%;
+  contain: size;
+}
+
+:host([zoom]) .frame[data-index='2'] {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+:host([zoom]) .frame[data-index='3'] {
+  grid-column: 4;
+  grid-row: 2;
+}
+
+:host([zoom]) .frame[data-index='2'],
+:host([zoom]) .frame[data-index='3'] {
+  height: auto;
+  aspect-ratio: 1 / 1;
+  max-height: calc((max(50svh, 100svh - var(--arq-space-section-xl) * 2) - var(--mosaic-gap)) / 2);
+}
+
+:host([zoom][bleed]) .frame[data-index='2'],
+:host([zoom][bleed]) .frame[data-index='3'] {
+  max-height: calc((max(50svh, 100svh - var(--arq-space-section-xl)) - var(--mosaic-gap)) / 2);
+}
+
+/* La foto no define el alto de la celda: si no, cada archivo (más alto o
+   más ancho) desalinea las dos de abajo. */
+.frame ::slotted(img) {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transition: transform var(--arq-motion-duration-slow) var(--arq-motion-easing-standard) !important;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .frame:hover ::slotted(img) {
+    transform: scale(var(--arq-motion-scale-hover)) !important;
+  }
+}
+
+/* Lightbox: mismo armado que el de project-slider. */
+.lightbox {
+  box-sizing: border-box;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: var(--arq-layout-gutter);
+  border: 0;
+  background: var(--arq-color-surface-transparent);
+  color: var(--arq-color-text-primary);
+  overflow: hidden;
+}
+
+.lightbox[open] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: var(--arq-space-gap-md);
+}
+
+.lightbox::backdrop {
+  background: var(--arq-color-overlay-scrim);
+}
+
+.lightbox-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-md);
+  min-width: 0;
+}
+
+.lightbox-count {
+  margin: 0;
+  min-width: 0;
+  color: var(--arq-color-text-primary);
+}
+
+.lightbox-stage {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  justify-items: center;
+  gap: var(--arq-space-gap-md);
+  min-width: 0;
+  min-height: 0;
+}
+
+.lightbox-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  object-fit: contain;
+}
+
+.lightbox-prev,
+.lightbox-next,
+.lightbox-close {
+  flex: none;
+}
+
+@media (max-width: 767px) {
+  :host([zoom]) .frame[data-index='0'] {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    contain: none;
+  }
+
+  :host([zoom]) .frame[data-index='1'],
+  :host([zoom]) .frame[data-index='2'] {
+    grid-column: auto;
+    grid-row: auto;
+    height: auto;
+    max-height: none;
+    aspect-ratio: 4 / 5;
+    contain: none;
+  }
+
+  :host([zoom]) .frame[data-index='3'] {
+    display: none !important;
+  }
+}

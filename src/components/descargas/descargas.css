@@ -1,7 +1,7 @@
 /* descargas · Descargas · propuesta final 2575:22875 (Desktop 2564:20607 ·
-   Mobile 2558:20149). Solo tokens semánticos. Arriba, el bloque de la página
-   (título, bajada y catálogo general); debajo, «Buscar archivos por producto»
-   y variants-table, que pone su propio margen (--page-gutter). Al final
+   Mobile 2558:20149), sin el bloque de arriba (título, bajada y catálogo
+   general: ahora está en /arq/catalogos). «Buscar archivos por producto» y
+   variants-table, que pone su propio margen (--page-gutter). Al final
    space/section/xl. */
 
 :host {
@@ -9,83 +9,6 @@
   min-width: 0;
   padding-bottom: var(--arq-space-section-xl);
   color: var(--arq-color-text-primary);
-}
-
-/* Título + bajada a la izquierda y el catálogo a la derecha (arriba
-   alineados); space/section/sm arriba */
-.hero {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--arq-space-gap-lg);
-  padding: var(--arq-space-section-sm) var(--page-gutter) 0;
-}
-
-/* Título role/display y bajada role/body-regular (color/text/secondary) a
-   space/gap/lg; la bajada hasta layout/measure */
-.heading {
-  display: flex;
-  flex-direction: column;
-  gap: var(--arq-space-gap-lg);
-  min-width: 0;
-}
-
-.title {
-  color: var(--arq-color-text-primary);
-  overflow-wrap: break-word;
-}
-
-.description {
-  max-width: var(--arq-layout-measure);
-  color: var(--arq-color-text-secondary);
-}
-
-/* Catálogo: tapa (ratio/portrait-soft, 4:5) y textos a space/gap/lg; nombre,
-   bajada y acción a space/gap/sm, la acción con space/padding/md arriba.
-   Tapa de layout/catalog-cover (168 Desktop · 104 Mobile). Sin fondo, como la
-   propuesta (la portada es un PNG recortado). La bajada mide 300 (sin
-   variable): va hasta layout/measure. */
-.catalog {
-  display: flex;
-  flex: none;
-  align-items: flex-start;
-  gap: var(--arq-space-gap-lg);
-  min-width: 0;
-}
-
-.cover {
-  flex: none;
-  width: var(--arq-layout-catalog-cover);
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-}
-
-.cover ::slotted(img) {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.catalog-info {
-  display: flex;
-  flex-direction: column;
-  gap: var(--arq-space-gap-sm);
-  min-width: 0;
-}
-
-.catalog-title {
-  color: var(--arq-color-text-primary);
-}
-
-.catalog-description {
-  max-width: var(--arq-layout-measure);
-  color: var(--arq-color-text-secondary);
-}
-
-.catalog-actions {
-  display: flex;
-  padding-top: var(--arq-space-padding-md);
 }
 
 /* «Buscar archivos por producto» role/heading-1 y la tabla a space/gap/md;
@@ -112,62 +35,4 @@
 .retry {
   align-self: flex-start;
   margin-inline-start: var(--page-gutter);
-}
-
-/* Tablet (768–1023): el catálogo no se achica y apretaba el título (se
-   partía en sílabas). Como en Mobile, el catálogo va debajo, a
-   space/gap/xl, con los tamaños de Desktop. TODO (diseño): Tablet no tiene
-   pantalla en Final. */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .hero {
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--arq-space-gap-xl);
-  }
-
-  .description {
-    max-width: var(--arq-layout-measure-wide);
-  }
-}
-
-/* Mobile (2558:20151): título y bajada arriba; el catálogo debajo, a
-   space/gap/xl, con la tapa chica a la izquierda (space/gap/md), nombre
-   role/body-xl, bajada role/body-compact-regular (color/text/tertiary) a
-   space/gap/xs y «Descargar catálogo» Underline con space/padding/sm-md
-   arriba. space/section/sm arriba y abajo.
-   La tapa toma layout/catalog-cover (104 en Mobile). */
-@media (max-width: 767px) {
-  .hero {
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--arq-space-gap-xl);
-    padding-bottom: var(--arq-space-section-sm);
-  }
-
-  .description {
-    max-width: none;
-  }
-
-  .catalog {
-    gap: var(--arq-space-gap-md);
-  }
-
-
-  .catalog-info {
-    flex: 1 1 auto;
-    gap: var(--arq-space-gap-xs);
-  }
-
-  .catalog-description {
-    max-width: none;
-    color: var(--arq-color-text-tertiary);
-  }
-
-  .catalog-actions {
-    padding-top: var(--arq-space-padding-sm-md);
-  }
-
-  .search-section {
-    padding-top: var(--arq-space-section-sm);
-  }
 }

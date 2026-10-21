@@ -18,7 +18,7 @@ import { ArqElement } from '../../base/arq-element.js';
 import { icon } from '../../base/icons.js';
 import css from './text-block.css?inline';
 
-const OPTIONAL = ['kicker', 'description'];
+const OPTIONAL = ['kicker', 'title', 'description'];
 
 class ArqTextBlock extends ArqElement {
   static tag = 'arq-text-block';

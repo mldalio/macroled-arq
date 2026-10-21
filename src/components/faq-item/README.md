@@ -43,6 +43,7 @@ Los ítems se apilan uno debajo del otro, a ancho completo de la columna. Cada u
 | Padding arriba y abajo | `space/padding/lg` (24) | `space/padding/lg` (20) |
 | Alto cerrado (una línea) | 73 | 65 |
 | Respuesta | hasta `layout/measure-wide` | ancho completo |
+| Con `number` | el número queda a la izquierda de la pregunta y la respuesta se alinea con el texto | el número pasa arriba: pregunta y respuesta arrancan en el mismo borde que el título de la sección |
 
 - **Hover:** fondo `color/surface/faint`, solo con el ítem cerrado (el set no tiene Open=True + Hover).
 - **Focus:** anillo de DESIGN.md §7 alrededor de todo el ítem, abierto o cerrado. No cambia el tamaño.

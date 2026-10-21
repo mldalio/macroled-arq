@@ -123,4 +123,20 @@
   .answer {
     max-width: none;
   }
+
+  /* El número pasa arriba: la pregunta y la respuesta arrancan en el mismo
+     borde que el título de la sección. */
+  :host([number]) .trigger {
+    flex-wrap: wrap;
+    row-gap: var(--arq-space-gap-xs);
+  }
+
+  :host([number]) .number {
+    flex: 1 0 100%;
+    width: auto;
+  }
+
+  :host([number]) .answer {
+    padding-inline-start: 0;
+  }
 }

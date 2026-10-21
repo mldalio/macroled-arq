@@ -123,6 +123,52 @@
     width: calc((100cqi - var(--arq-layout-gutter)) * 0.8);
     scroll-snap-align: start;
   }
+
+  /* editorial · Explorar por espacio. La fila se desliza adentro de esta
+     caja: el host recorta (clip) para que el ancho de las fotos no ensanche
+     la página. La siguiente asoma. El ::after deja llegar la última al mismo
+     borde izquierdo que la primera, sin un margen de más.
+     TODO (diseño): Home v2 no tiene frame Mobile. El 80 % no tiene token. */
+  :host([layout='editorial']) {
+    min-width: 0;
+    /* hidden en los dos ejes: si solo se oculta el horizontal, el vertical
+       pasa a auto y el host se vuelve otro scroll. */
+    overflow: hidden;
+  }
+
+  :host([layout='editorial']) .grid.editorial {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    min-width: 0;
+    aspect-ratio: auto;
+    gap: var(--arq-space-5);
+    overflow-x: auto;
+    /* clip, no auto: si el vertical queda en auto, la entrada (la tarjeta
+       sube space/gap/2xl) deja un scroll vertical adentro de la fila. */
+    overflow-y: clip;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  :host([layout='editorial']) .grid.editorial::-webkit-scrollbar {
+    display: none;
+  }
+
+  :host([layout='editorial']) .grid.editorial::after {
+    content: '';
+    flex: none;
+    width: calc(20% - var(--arq-space-5));
+    scroll-snap-align: none;
+  }
+
+  :host([layout='editorial']) ::slotted(*) {
+    flex: none;
+    width: 80%;
+    align-self: stretch;
+    scroll-snap-align: start;
+  }
 }
 
 /* gap="sm": space/gap/sm entre tarjetas en Desktop y Mobile (también en el

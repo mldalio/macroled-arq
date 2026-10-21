@@ -160,15 +160,84 @@
   overflow: clip;
 }
 
-.mega {
+.mega,
+.recursos {
   opacity: 0;
   transition-property: opacity;
   transition-duration: var(--arq-motion-duration-slow);
   transition-timing-function: var(--arq-motion-easing-standard);
 }
 
-.mega-wrap.is-open .mega {
+.mega-wrap.is-open .mega,
+.mega-wrap.is-open .recursos {
   opacity: 1;
+}
+
+/* Recursos: links al costado (misma superficie que el mega-menu) y una foto
+   a la derecha, a sangre. Sin foto, color/surface/subtle.
+   Alto mínimo: el del preview de Productos en ratio/portrait-soft (4:5).
+   Ancho de la foto: 2 × layout/mega-menu-image; si no entra, se achica.
+   La columna de links ocupa el resto.
+   TODO (diseño): no hay token de este panel; el set de Figma no lo tiene.
+   TODO (imagen): el slot recursos-media espera la foto. */
+.recursos {
+  display: flex;
+  align-items: stretch;
+  background: var(--arq-color-surface-default);
+}
+
+.recursos[hidden] {
+  display: none;
+}
+
+.recursos-nav {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 var(--arq-layout-measure);
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--arq-space-gap-xl-2xl);
+  min-width: var(--arq-layout-measure);
+  margin: 0;
+  padding: var(--arq-space-section-sm) var(--arq-space-padding-2xl) var(--arq-space-section-sm) var(--page-gutter);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+/* Mismo título que Interior / Exterior en el mega-menu (role/heading-1). */
+.recursos-title {
+  margin: 0;
+  color: var(--arq-color-text-primary);
+}
+
+.recursos-links {
+  display: flex;
+  flex-direction: column;
+}
+
+.recursos-media {
+  position: relative;
+  flex: 0 1 calc(var(--arq-layout-mega-menu-image) * 2);
+  width: calc(var(--arq-layout-mega-menu-image) * 2);
+  max-width: calc(var(--arq-layout-mega-menu-image) * 2);
+  min-width: 0;
+  min-height: calc(var(--arq-layout-mega-menu-image) * 5 / 4);
+  background: var(--arq-color-surface-subtle);
+}
+
+.recursos-media ::slotted(img) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Tablet: la columna de links cede ancho para que la foto siga siendo la grande. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .recursos-nav {
+    flex-basis: var(--arq-layout-catalog-nav);
+    min-width: var(--arq-layout-catalog-nav);
+  }
 }
 
 /* La barra pasa a sólida con el mismo tiempo del sheet (al abrir y al cerrar) */
@@ -224,10 +293,22 @@
 }
 
 /* Mode=Products: arriba space/gap/sm, abajo space/gap/xl */
-.menu-products {
+.menu-products,
+.menu-recursos {
   display: flex;
   flex-direction: column;
   padding: var(--arq-space-gap-sm) 0 var(--arq-space-gap-xl);
+}
+
+.menu-products[hidden],
+.menu-recursos[hidden] {
+  display: none;
+}
+
+.recursos-list {
+  display: flex;
+  flex-direction: column;
+  padding: var(--arq-space-gap-md) var(--page-gutter) var(--arq-space-padding-md);
 }
 
 /* Volver: chevron-left + "Productos" (role/body-medium,

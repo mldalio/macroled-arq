@@ -25,6 +25,7 @@ Mosaico de fotos de proyectos ("Diseño que inspira" del Home). Componente de la
 | Proporción | 3.ª y 4.ª `ratio/square` (dan el alto de las filas) | todas `ratio/portrait-soft` (4:5) |
 | Gap | `space/gap/lg` | `space/gap/sm-md` |
 | `bleed` | las fotos salen del padding y llegan al borde; el hueco es 5px (no hay token) | igual |
+| `zoom` | solo código (Nosotros): la foto hace zoom al pasar el mouse (`motion/scale/hover`) y el clic la abre | el clic la abre; sin hover |
 | Alto máximo | `100svh` − 2 × `space/section/xl` (mín. `50svh`), mitad por fila; al tope las fotos se recortan | sin tope |
 | Sin foto (o cargando) | fondo `color/surface/subtle` | ídem |
 

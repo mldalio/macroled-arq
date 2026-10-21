@@ -1,5 +1,6 @@
 // Los 20 íconos de Figma (icon/*, sección icons 1075:4571), leídos por MCP
 // desde la variante Theme=Default de cada uno (node id en cada entrada).
+// eye no está en ese set: lo usa catalog-card (ver el PDF). TODO (diseño).
 // Son trazos de 1 px en una grilla de 16 × 16. En código:
 // - stroke="currentColor": el color lo pone el componente (color/icon/*).
 //   Theme=Inverse no es otro SVG: es el mismo con color/icon/inverse.
@@ -33,6 +34,8 @@ const paths = {
   'copy': '<path vector-effect="non-scaling-stroke" shape-rendering="crispEdges" d="M11 5V2H2V11H5M5 5H14V14H5V5Z"/>',
   // 898:2286
   'download': '<path vector-effect="non-scaling-stroke" d="M8 1.79545V10.0682M4.4 7.70455L8 11.25L11.6 7.70455M2 14.2045H14"/>',
+  // TODO (diseño): no está en el set de Figma (icons 1075:4571). Trazo de 1 px, misma grilla.
+  'eye': '<path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" d="M1 8C2.6 4.7 5.1 3.25 8 3.25C10.9 3.25 13.4 4.7 15 8C13.4 11.3 10.9 12.75 8 12.75C5.1 12.75 2.6 11.3 1 8Z"/><path vector-effect="non-scaling-stroke" d="M8 10.2C9.22 10.2 10.2 9.22 10.2 8C10.2 6.78 9.22 5.8 8 5.8C6.78 5.8 5.8 6.78 5.8 8C5.8 9.22 6.78 10.2 8 10.2Z"/>',
   // 854:2420
   'filter': '<path vector-effect="non-scaling-stroke" d="M2.5 4.5H13.5M4.5 8H11.5M7 11.5H9"/>',
   // 1061:4839

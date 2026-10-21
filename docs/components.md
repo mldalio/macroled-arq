@@ -107,7 +107,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | --- | --- | --- |
 | ✅ section | `<arq-section>` | Bloque de página: gutter, padding de sección y encabezado → contenido → acción. Con `reveal`, el bloque entero aparece al entrar en pantalla. El margen lateral es de títulos y textos; Explorar, el mosaico y el carrusel de proyectos llegan al borde ([README](../src/components/section/README.md)) |
 | ✅ grid | `<arq-grid>` | Grilla de tarjetas; en Mobile apila, dos columnas o carrusel ([README](../src/components/grid/README.md)) |
-| ✅ project-mosaic | `<arq-project-mosaic>` | Mosaico de fotos de proyectos del Home (DESIGN.md §12) ([README](../src/components/project-mosaic/README.md)) |
+| ✅ project-mosaic | `<arq-project-mosaic>` | Mosaico de fotos de proyectos del Home (DESIGN.md §12). Con `zoom`, hover y clic para ampliar (Nosotros) ([README](../src/components/project-mosaic/README.md)) |
 | ✅ featured-products | `<arq-featured-products>` | Productos destacados del Home, por grupo, con datos del catálogo. La fila se desliza con el dedo o el mouse ([README](../src/components/featured-products/README.md)) |
 | ✅ text-block | `<arq-text-block>` | Kicker, título y bajada de una escena del Home ([README](../src/components/text-block/README.md)) |
 | ✅ collection-tile | `<arq-collection-tile>` | Tarjeta del mosaico de colecciones del Home ([README](../src/components/collection-tile/README.md)) |
@@ -117,10 +117,11 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ project-slide | `<arq-project-slide>` | Slide del carrusel de proyectos del Home ([README](../src/components/project-slide/README.md)) |
 | ✅ project-slider | `<arq-project-slider>` | Carrusel de proyectos del Home, en bucle. Con `autoplay` avanza solo; se arrastra con el mouse y el clic abre la foto en un lightbox ([README](../src/components/project-slider/README.md)) |
 | ✅ catalog-listing | `<arq-catalog-listing>` | Listado de Productos (y Colecciones): nav, toolbar, grilla, filtros y comparar ([README](../src/components/catalog-listing/README.md)) |
+| ✅ catalog-card | `<arq-catalog-card>` | Tapa de la página Catálogos: portada, título, ver y descargar ([README](../src/components/catalog-card/README.md)) |
 | ✅ coleccion | `<arq-coleccion>` | Página de colección: cards de sus productos, galería, texto + imagen y mosaico con flechas ([README](../src/components/coleccion/README.md)) |
 | ✅ form-contacto | `<arq-form-contacto>` | Contacto (v3): información por slot (fija al desplazar en Desktop), formulario con validación, honeypot y envío a n8n, y preguntas frecuentes opcionales por slot ([README](../src/components/form-contacto/README.md)) |
 | ✅ ficha-producto | `<arq-ficha-producto>` | Ficha de producto: hero con galería y configurador, descargas, especificaciones, descripción, glosario, inspiración y colección ([README](../src/components/ficha-producto/README.md)) |
-| ✅ descargas | `<arq-descargas>` | Página Descargas: título, bajada y download-card del catálogo arriba; «Buscar producto» con variants-table (todos los SKU, buscador) y el modal de descargas de cada fila ([README](../src/components/descargas/README.md)) |
+| ✅ descargas | `<arq-descargas>` | Página Descargas: «Buscar archivos por producto» con variants-table (todos los SKU, buscador) y el modal de descargas de cada fila ([README](../src/components/descargas/README.md)) |
 | ✅ comparativa | `<arq-comparativa>` | Página Comparativa: combina compare-header y compare-table con los SKU de `?sku=`, con datos del catálogo ([README](../src/components/comparativa/README.md)) |
 
 ### Páginas
@@ -134,6 +135,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ Ficha de producto | [src/pages/ficha.html](../src/pages/ficha.html) | `demo/ficha.html` (`?group=` y `?sku=`) |
 | ✅ Comparativa | [src/pages/comparativa.html](../src/pages/comparativa.html) | `demo/comparativa.html` (`?sku=`) |
 | ✅ Descargas | [src/pages/descargas.html](../src/pages/descargas.html) | `demo/descargas.html` |
+| ✅ Catálogos | [src/pages/catalogos.html](../src/pages/catalogos.html) | `demo/catalogos.html` |
 
 ## accordion-item
 
@@ -594,7 +596,7 @@ Theme=Inverse: para navbar Theme=Transparent sobre foto (label color/text/invers
 - Figma: [753-2907](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=753-2907)
 - Propiedades: Breakpoint: Desktop · Mobile; Mode: Default · Menu · Search · Products · Colecciones · Interior · Exterior · Lámparas y artefactos; Theme: Default · Transparent
 
-Barra de navegación de Macroled Arq. Breakpoint: Desktop · Mobile. Mode: Default, Search (buscador abierto), Menu (menú mobile abierto), Products (submenú de Productos en mobile, con "volver") y los cuatro submenús que abre Products en mobile: Interior, Exterior, Lámparas y artefactos y Colecciones (volver con el nombre del nivel, links en mega-link Size=Large y "Ver todo…" al pie; Lámparas y artefactos y Colecciones llevan miniatura). En desktop, Productos abierto = nav-link Open=True con mega-menu debajo. Theme: Default · Transparent (sobre la foto del hero; pasa a Default al hacer scroll). Theme=Transparent: fondo translúcido color/overlay/translucent + background blur blur/backdrop. El link de la página actual va en State=Current; el que despliega un menú usa Has dropdown. Theme=Transparent con Mode=Search (desktop): la barra sigue translúcida y search-field queda igual que en Default (fondo color/surface/default, texto y cruz en color/text/primary). Sobre la foto, la lupa y el menú (icon-button) van en modo Dark local (en código, data-arq-theme="dark"): ícono claro, hover y foco del modo Dark. Con Mode=Menu y Products (mobile) la barra pasa a Default: las variantes Transparent son iguales a las Default.
+Barra de navegación de Macroled Arq. Breakpoint: Desktop · Mobile. Mode: Default, Search (buscador abierto), Menu (menú mobile abierto), Products (submenú de Productos en mobile, con "volver"), Recursos (submenú mobile de Catálogos y Descargas, con "volver") y los cuatro submenús que abre Products en mobile: Interior, Exterior, Lámparas y artefactos y Colecciones (volver con el nombre del nivel, links en mega-link Size=Large y "Ver todo…" al pie; Lámparas y artefactos y Colecciones llevan miniatura). En desktop, Productos abierto = nav-link Open=True con mega-menu debajo. Recursos abierto = el mismo panel, con el título Recursos (`role/heading-1`, igual que Interior y Exterior) y Catálogos y Descargas debajo (`arq-mega-link`, igual que Embutir y Colgante) y una foto grande a la derecha (slot `recursos-media`; sin foto, color/surface/subtle). Catálogos apunta a `/arq/catalogos`. Theme: Default · Transparent (sobre la foto del hero; pasa a Default al hacer scroll). Theme=Transparent: fondo translúcido color/overlay/translucent + background blur blur/backdrop. El link de la página actual va en State=Current; el que despliega un menú usa Has dropdown. Theme=Transparent con Mode=Search (desktop): la barra sigue translúcida y search-field queda igual que en Default (fondo color/surface/default, texto y cruz en color/text/primary). Sobre la foto, la lupa y el menú (icon-button) van en modo Dark local (en código, data-arq-theme="dark"): ícono claro, hover y foco del modo Dark. Con Mode=Menu y Products (mobile) la barra pasa a Default: las variantes Transparent son iguales a las Default.
 
 Con prefers-reduced-transparency: reduce o prefers-contrast: more, Theme=Transparent se ve como Default también sobre la foto.
 

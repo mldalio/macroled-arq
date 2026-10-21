@@ -1142,6 +1142,11 @@ Salió de revisar los valores de `color_carcasa` de toda la base (326 documentos
 - En la cabecera de Productos, la bajada del page-header se desató de `layout/measure-wide` y llena el lugar libre (≈ 400, como `layout/measure` en código): la variable no se puede cambiar en la instancia.
 - Pendiente: el footer de Figma no entra en 834 («Redes» se corta); en código sí entra.
 
+## 2026-10-20 · Home: Explorar por espacio en Mobile
+
+- En Mobile las tres fotos de Explorar por espacio se apilaban (el layout `editorial` solo armaba la fila desde 768 px). Pedido: que queden una al lado de la otra y se deslicen con el dedo.
+- Hasta 767 px, `arq-grid layout="editorial"` es una fila con scroll horizontal y snap, adentro de la caja. Cada foto ocupa el 80 % del ancho y la siguiente asoma; el hueco sigue siendo `space/5`. La última llega al mismo borde izquierdo que la primera. `arq-section` recorta el eje horizontal (`overflow-x: clip`) para que esa fila, y el resto de los carruseles, no ensanchen la página. El margen lateral de títulos y textos pasa a `space/padding/sm`; las fotos que lo cancelan siguen al borde. Home v2 no tiene frame Mobile: el 80 % es el mismo criterio del carrusel de `arq-grid`.
+
 ## 2026-10-20 · Figma: Tablet, textos de error y tokens nuevos
 
 - **Tablet · diseño:** Lau pidió el diseño Tablet de Mega menu, Descargas y Contacto. Sección «Tablet · diseño (2026-10-20)» (2803:40995) en Final, a la derecha del registro del 19/10, con frames de 834 en el modo Tablet de Dimension. Sale del registro, revisado como diseño:
@@ -1230,7 +1235,7 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - Pedido: una página de marca con la base de la Home y el mismo criterio editorial (foto protagonista, título corto, bajada, alternancia izquierda/derecha). No hay frame en Final.
 - URL `/arq/nosotros`, embed `src/pages/nosotros.html`. Sin hero de apertura: el navbar va en Theme Default y la página arranca en un `feature-block`. Siguen tres `feature-block` de Oficio (sobre `background="bone"`, con `size` large, small y medium), otro `feature-block`, una banda `hero` tall + parallax, `project-mosaic` con `bleed` y `cta-block` a Contacto.
 - «Conocer Macroled ARQ» de la Home apunta ahí. El footer suma Nosotros en Información, en todas las páginas. El navbar sigue el de Figma (Productos, Descargas, Contacto): no se agregó el link.
-- TODO: confirmar textos; las fotos están en `arq_nosotros/` y hay que reemplazarlas por assets de Webflow antes de pegar el embed; si el link entra al navbar, hacerlo en Figma primero.
+- TODO: confirmar textos; las fotos están en `arq_nosotros/` y hay que reemplazarlas por assets de Webflow antes de pegar el embed.
 
 ## 2026-10-21 · Foto inicial del mega-menú
 
@@ -1238,3 +1243,28 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - Al abrir (y al volver a Por espacio) el preview muestra el link Interior · Colgante, con su eyebrow y nombre. Se elige en `OPENING` de `mega-menu.js`; si ese link no existe, el primero. Las demás pestañas siguen con su primer link. Hover y foco siguen cambiando la foto.
 - `TODO`: DESIGN.md §8 (ficha mega-menu) todavía dice «su primer link»; se actualiza en una rama `docs/` junto con la copia del Plan del proyecto en Figma.
 - Para que la foto ya esté al abrir, el navbar pide la navegación al acercarse a Productos (mouse o foco), como la búsqueda con sus recomendados; antes la pedía recién al abrir y el preview quedaba vacío hasta que llegaban los datos y cargaba la foto.
+
+## 2026-10-21 · Nosotros en el navbar
+
+- Pedido: el menú tiene que incluir Nosotros. Va en todas las páginas, entre Productos y Descargas (`/arq/nosotros`). En la página Nosotros el link va en `current`. El menú mobile usa los mismos links del slot.
+- Figma todavía no lo tiene (set navbar y footer). TODO: sumarlo en el set y en la ficha `doc/navbar`.
+
+## 2026-10-21 · Recursos
+
+- Pedido: Descargas deja de ser un link suelto. En el navbar se llama Recursos y abre un panel, con la misma apertura que Productos (debajo de la barra, scrim, Light local). A la izquierda, Catálogos y Descargas; a la derecha, el lugar de una foto grande. La referencia es una columna de links al costado y la foto a sangre. Los dos links son `arq-mega-link`, el mismo de Embutir y Colgante dentro de Interior: fila con línea inferior, fondo en hover y flecha. Arriba, el título Recursos en `role/heading-1`, el de Interior y Exterior.
+- Descargas sigue en `/arq/descargas`. Catálogos apunta a `/arq/catalogos`: la página todavía no existe. Sin foto, el lugar queda en `color/surface/subtle` (slot `recursos-media`). En la página Descargas, Recursos va en `current`. En Mobile, Recursos entra a un submenú con volver y los dos links, sin la foto.
+- El menú queda: Productos, Nosotros, Recursos, Contacto. El footer no cambia (sigue listando Descargas).
+- TODO (diseño): no está en el set de Figma. El alto mínimo de la foto es `layout/mega-menu-image` en 4:5. El ancho es 2 × `layout/mega-menu-image` (si no entra, se achica) y la columna de links ocupa el resto (mínimo `layout/measure`; en Tablet, `layout/catalog-nav`). TODO (imagen): falta la foto del panel.
+
+## 2026-10-21 · Catálogos
+
+- Pedido: una página en `/arq/catalogos` (el link de Recursos) con el título «Catálogos 2026» y tapas de catálogo. La referencia es una grilla de portadas verticales, con el nombre debajo y dos acciones: ver y descargar. Por ahora, dos tapas.
+- Sin pantalla en Final. El título es `page-header` Type=List, sin breadcrumb ni bajada, en `role/heading-1` (el de «Buscar archivos por producto» en Descargas, no el `role/display-lg` del título de página). Atributo de código `title-style="heading-1"`. Las tapas son `catalog-card` (componente nuevo, sin set): ratio/portrait, título `role/body` y dos links (ver en otra pestaña, descargar). En Desktop la grilla es de 4 columnas, así cada tapa queda del tamaño de una de cuatro y las que faltan no estiran las dos. En Mobile, dos columnas. Al pasar el mouse, la tapa y los botones de ver y descargar hacen zoom (`motion/scale/hover`) sin cambiar el tamaño de la card.
+- Los nombres son provisorios: «Catálogo general 2026» y «Catálogo Skyline 2026» (la tapa dice Skyline). Las tapas son `tapa_catalogo.jpg` y `tapa_skyline.png`. Sin URL de PDF, ver y descargar se ven y no navegan.
+- En la página, Recursos va en `current`. El footer no cambia.
+- TODO (datos): URL de cada PDF y tapas definitivas. TODO (diseño): no hay set; `icon/eye` no está en el set de íconos.
+
+## 2026-10-21 · Descargas sin hero
+
+- Pedido: sacar el bloque de arriba de `/arq/descargas` (título «Descargas», bajada y el catálogo general con tapa y «Descargar catálogo»). Los catálogos están en `/arq/catalogos`.
+- La página arranca en «Buscar archivos por producto» (`role/heading-1`), ahora el `<h1>`. Se fueron `catalog-href` y los slots `title`, `description`, `catalog-cover`, `catalog-title`, `catalog-description` y `catalog-action`.

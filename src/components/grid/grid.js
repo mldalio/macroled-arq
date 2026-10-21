@@ -13,6 +13,10 @@
 // - mobile (hasta 767 px): stack (una columna, separadas space/section/md),
 //   two-columns (dos, a space/gap/sm-md) o carousel (fila con scroll y snap,
 //   la tarjeta siguiente asoma; llega hasta el borde derecho de la pantalla).
+// - layout="editorial": Home v2, Explorar por espacio. En Desktop, tres fotos
+//   del mismo ancho a ras del borde. En Mobile (hasta 767 px) siguen en fila
+//   dentro de la caja (el host recorta): se deslizan con el dedo, la siguiente
+//   asoma y la página no se mueve de costado.
 // - gap="sm": space/gap/sm entre tarjetas en Desktop y Mobile (Explorar por
 //   espacio del Home).
 // - stagger (PRUEBA, fuera de Figma): en Desktop, las tarjetas pares bajan

@@ -30,5 +30,6 @@ Home v2: texto a la izquierda (`slot="intro"`) y fila con scroll a la derecha (s
 
 | Parte | Token |
 | --- | --- |
-| Entre tarjetas | `space/gap/sm` en Desktop y Mobile (`gap="sm"` de `arq-grid`) |
+| Entre tarjetas | `space/gap/sm` en Desktop y Mobile |
+| Ancho de tarjeta | `layout/card-min-wide` (340). En Mobile, `layout/card-min` (160) |
 | Reserva | links a `space/gap/sm`, `role/body` en `color/text/primary` |

@@ -45,8 +45,10 @@ class ArqSection extends ArqElement {
   static template =
     `<div class="section">` +
     `<div class="head" hidden><slot name="header"></slot></div>` +
+    `<div class="rail">` +
     `<div class="lead" hidden><slot name="lead"></slot></div>` +
     `<div class="body"><slot></slot></div>` +
+    `</div>` +
     `<div class="action" hidden><slot name="action"></slot></div>` +
     `<div class="mobile-action" hidden><slot name="mobile-action"></slot></div>` +
     `</div>`;

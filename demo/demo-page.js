@@ -13,8 +13,6 @@
 // demo, ?group=<id> hace de ítem: cambia data-group y el nombre, que sale del
 // catálogo de Typesense. El resto lo trae el componente.
 // Colección: lo mismo con ?collection=<id>.
-// Descargas: la demo pone la portada de ejemplo del catálogo (en Webflow,
-// TODO: la portada real).
 // Datos de peor caso (break-ui): ?data= en Descargas y Contacto, escrito a mano
 // en la URL (demo/demo-data-toggle.js). Descargas los toma de
 // demo/fixtures/peor-caso.js por src/data/catalog.js; Contacto, del embed
@@ -28,7 +26,7 @@ import { dataMode, fillContacto } from '/demo/demo-data-toggle.js';
 const pages = import.meta.glob('/src/pages/*.html', { query: '?raw', import: 'default' });
 // Peor caso del embed (break-ui, ?data=worst): demo/fixtures/<página>-peor-caso.html
 const worstPages = import.meta.glob('/demo/fixtures/*-peor-caso.html', { query: '?raw', import: 'default' });
-const DEMOS = { '/arq': 'home', '/arq/productos': 'productos', '/arq/contacto': 'contacto', '/arq/comparativa': 'comparativa', '/arq/descargas': 'descargas', '/arq/nosotros': 'nosotros' };
+const DEMOS = { '/arq': 'home', '/arq/productos': 'productos', '/arq/contacto': 'contacto', '/arq/comparativa': 'comparativa', '/arq/descargas': 'descargas', '/arq/nosotros': 'nosotros', '/arq/catalogos': 'catalogos' };
 
 /** URL de la demo para un link de Arq, o null si esa página no tiene demo. */
 function demoHref(href) {
@@ -73,19 +71,6 @@ async function cmsItem(content) {
   document.title = `Macroled Arq · ${group?.name ?? id}`;
 }
 
-// Portada de ejemplo de Descargas (solo demo)
-function demoDescargas(content) {
-  const page = content.querySelector('arq-descargas');
-  if (!page) return;
-  if (!page.querySelector('[slot="catalog-cover"]')) {
-    const cover = document.createElement('img');
-    cover.slot = 'catalog-cover';
-    cover.src = '/demo/fixtures/img/catalogo-portada.png';
-    cover.alt = '';
-    page.prepend(cover);
-  }
-}
-
 const name = document.body.dataset.demoPage;
 const worst = ['worst', 'sent'].includes(dataMode()) && worstPages[`/demo/fixtures/${name}-peor-caso.html`];
 const load = worst || pages[`/src/pages/${name}.html`];
@@ -98,7 +83,6 @@ if (load) {
     if (demo) link.setAttribute('href', demo);
   }
   await cmsItem(template.content);
-  demoDescargas(template.content);
   await cmsCollection(template.content);
   document.body.replaceChildren(template.content);
   fillContacto(name === 'contacto' ? dataMode() : null);

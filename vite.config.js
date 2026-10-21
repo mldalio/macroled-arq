@@ -21,6 +21,10 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   server: {
     open: '/demo/index.html',
+    // En Windows, vigilar un JPG abierto (arq_nosotros) tira el server con EBUSY.
+    watch: {
+      ignored: ['**/arq_nosotros/**'],
+    },
   },
   plugins: [
     {
