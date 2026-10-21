@@ -12,6 +12,10 @@
 //
 // - Los links quedan en el HTML de la página (indexables) y son la reserva: si
 //   el catálogo no carga o ningún grupo existe, se muestran como lista.
+// - Mientras carga, una product-card loading por link (el mismo skeleton del
+//   listado de Productos). Aparecen con un fundido corto y demorado: con el
+//   catálogo en caché no llegan a verse. Si ya se veían, las cards ocupan su
+//   lugar sin la entrada al hacer scroll (lo que aparece es la foto).
 // - Como el navbar, es un contenedor que consulta por src/data/ (decisiones.md,
 //   2026-10-02 · Home); las product-card que muestra reciben datos.
 // - Home v2: el slot intro (texto) queda a la izquierda y las tarjetas van en
@@ -44,6 +48,7 @@ class ArqFeaturedProducts extends ArqElement {
     `</div>` +
     `<div class="rail" id="featured-rail"></div>` +
     `</div>` +
+    `<p class="status visually-hidden" role="status"></p>` +
     `<div class="fallback role-body" hidden><slot></slot></div>`;
 
   #groups = '';
@@ -105,6 +110,9 @@ class ArqFeaturedProducts extends ArqElement {
 
     const request = ++this.#request;
     this.setAttribute('aria-busy', 'true');
+    // Una card de carga por link: la fila ya mide lo que va a medir.
+    if (groups.length) this.#renderSkeleton(groups.length);
+    this.#status(groups.length ? 'Cargando productos…' : '');
     let cards = [];
     try {
       cards = groups.length ? await getProductCards(groups) : [];
@@ -113,16 +121,43 @@ class ArqFeaturedProducts extends ArqElement {
     }
     if (request !== this.#request) return;
     this.removeAttribute('aria-busy');
+    this.#status('');
     this.#render(cards);
+  }
+
+  // Mismo skeleton que el listado (product-card loading), una por grupo del HTML.
+  #renderSkeleton(count) {
+    const rail = this.shadowRoot.querySelector('.rail');
+    if (rail.querySelectorAll('[loading]').length === count) return;
+    const cards = Array.from({ length: count }, () => {
+      const card = document.createElement('arq-product-card');
+      card.loading = true;
+      return card;
+    });
+    this.#reveal?.disconnect();
+    this.#reveal = null;
+    rail.replaceChildren(...cards);
+    rail.hidden = false;
+    this.shadowRoot.querySelector('.controls').hidden = true;
+    this.shadowRoot.querySelector('.fallback').hidden = true;
+    this.#syncAutoplay();
+  }
+
+  #status(message) {
+    this.shadowRoot.querySelector('.status').textContent = message;
   }
 
   #render(cards) {
     const root = this.shadowRoot;
     const rail = root.querySelector('.rail');
+    // Si las cards de carga ya se ven, las cards ocupan su lugar sin la
+    // entrada (con el fundido desde 0 el gris bajaba a blanco y volvía).
+    const skeleton = rail.querySelector('[loading]');
+    const settled = Boolean(skeleton) && Number.parseFloat(getComputedStyle(skeleton).opacity) > 0;
     const elements = cards.map((card) => this.#card(card));
     rail.replaceChildren(...elements);
     this.#reveal?.disconnect();
-    this.#reveal = reveal(elements);
+    this.#reveal = settled ? null : reveal(elements);
     rail.hidden = cards.length === 0;
     root.querySelector('.controls').hidden = cards.length === 0;
     root.querySelector('.fallback').hidden = cards.length > 0;
@@ -151,6 +186,7 @@ class ArqFeaturedProducts extends ArqElement {
     const rail = this.shadowRoot.querySelector('.rail');
     const canPlay =
       !rail.hidden &&
+      !rail.querySelector('[loading]') &&
       this.#inView &&
       !this.#drag &&
       !this.#cardHasFocus() &&

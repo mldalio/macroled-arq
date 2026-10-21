@@ -8,9 +8,9 @@
 //   ?data=one     Una sola fila («1 producto»).
 //   ?data=huge    1.500 filas (las reales repetidas con otro SKU).
 //   ?data=error   La consulta falla.
-//   ?data=loading Productos y Colecciones: la respuesta tarda como la primera
-//                 visita (cards de carga); -one, -empty y -error cambian lo
-//                 que llega después.
+//   ?data=loading Productos, Colecciones y destacados del Home: la respuesta
+//                 tarda como la primera visita (cards de carga); -one, -empty
+//                 y -error cambian lo que llega después.
 //
 // Los valores son creíbles: salen de la base (los más largos de cada columna,
 // medidos el 2026-10-15) o de nombres y SKU con la forma de los de Sheets. El

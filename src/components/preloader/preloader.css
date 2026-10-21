@@ -1,0 +1,91 @@
+/* preloader · sin set en Figma. Solo tokens semánticos.
+   Pantalla blanca con el logo y una línea que se completa.
+   En la demo (sin page) la línea se recorre sola en motion/duration/shimmer.
+   En las páginas (page) --progress es la parte ya cargada.
+   El ancho de la línea es el del logo, no un valor suelto. */
+
+:host {
+  position: fixed;
+  inset: 0;
+  /* z-index sin token: por encima del navbar (4) */
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  background: var(--arq-color-surface-default);
+  color: var(--arq-color-text-primary);
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition-property: opacity, visibility;
+  transition-duration: var(--arq-motion-duration-fade), 0s;
+  transition-timing-function: var(--arq-motion-easing-standard), linear;
+  transition-delay: 0s, var(--arq-motion-duration-fade);
+}
+
+:host([open]) {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: 0s, 0s;
+}
+
+.cluster {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: max-content;
+  gap: var(--arq-space-gap-lg);
+}
+
+/* Mismo ancho que logo Size=Default. Excepción a «sin px»: es la medida
+   del archivo del logo (logo.css), no del sistema. */
+.mark {
+  display: block;
+  width: 181px;
+  height: auto;
+  aspect-ratio: 181 / 16;
+}
+
+/* La línea ocupa el ancho del logo y crece con scaleX (transform, no el ancho).
+   En una página (--progress) sigue lo que ya cargó. En la vista de la demo,
+   la animación .run la recorre una vez. */
+.track {
+  height: var(--arq-border-default);
+  overflow: hidden;
+}
+
+.line {
+  display: block;
+  height: 100%;
+  background: currentColor;
+  transform: scaleX(var(--progress, 0));
+  transform-origin: left center;
+  transition-property: transform;
+  transition-duration: var(--arq-motion-duration-base);
+  transition-timing-function: var(--arq-motion-easing-out);
+}
+
+:host([open]:not([page])) .line.run {
+  transition: none;
+  animation: arq-preloader-line var(--arq-motion-duration-shimmer) var(--arq-motion-easing-out) forwards;
+}
+
+@keyframes arq-preloader-line {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host([open]) .line.run {
+    animation: none;
+    transform: scaleX(1);
+  }
+}
+
+@media print {
+  :host {
+    display: none !important;
+  }
+}

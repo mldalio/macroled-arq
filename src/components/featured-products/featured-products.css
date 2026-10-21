@@ -53,6 +53,23 @@
   scroll-snap-align: start;
 }
 
+/* Cards de carga (product-card loading): el mismo fundido que el listado.
+   Aparecen después de esperar motion/duration/fade: con el catálogo en caché
+   las cards llegan antes y no se ven. Sin desplazamiento; fade no cambia
+   con reduced motion. */
+.rail > arq-product-card[loading] {
+  transition-property: opacity;
+  transition-duration: var(--arq-motion-duration-fade);
+  transition-timing-function: var(--arq-motion-easing-standard);
+  transition-delay: var(--arq-motion-duration-fade);
+}
+
+@starting-style {
+  .rail > arq-product-card[loading] {
+    opacity: 0;
+  }
+}
+
 /* Título arriba, controles a la derecha y tarjetas debajo. El carrusel
    llega al borde derecho; el título conserva el margen de la sección. */
 :host([layout='stacked']) .layout {

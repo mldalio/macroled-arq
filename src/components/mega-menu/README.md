@@ -22,7 +22,7 @@ menu.navigation = await getNavigation(); // src/data/catalog.js
 | — | `label` | `label` | Nombre del tablist. Por defecto "Productos" |
 
 - **Un solo componente:** pestañas, columnas, links y "Ver todo…" salen de los datos. Una pestaña sin datos no se muestra.
-- **Por espacio:** columnas Interior y Exterior; **Lámparas y artefactos:** un link por producto. Cada columna con título `role/heading-1`, `arq-mega-link` y su "Ver todo…" (button Underline con ↗) al pie; los dos "Ver todo…" quedan alineados abajo. **Colecciones:** título, links con bajada en cuatro columnas y "Ver todas las colecciones".
+- **Por espacio:** columnas Interior y Exterior. El título (`role/heading-1`) es el link a esa categoría, con la línea del button Underline al pasar el mouse. No hay «Ver todo…» al pie. **Lámparas y artefactos:** un link por producto; cada columna con título, `arq-mega-link` y su «Ver todo…» (button Underline con ↗) al pie. **Colecciones:** el título es el link a todas las colecciones, con la misma línea; los links van con bajada en cuatro columnas. No hay «Ver todas las colecciones».
 - **Preview:** a la derecha, la foto del link con el mouse encima o con el foco, con eyebrow (`role/label`) y nombre (`role/heading-2`) en `color/text/inverse` sobre un degradado. Por espacio: "Interior · Colgante"; Colecciones: "Línea Interior". Al abrir o cambiar de pestaña muestra una foto fija: en Por espacio, la de Colgante (Interior); en las demás pestañas, o si no hay Colgante, la del primer link (`OPENING` en `mega-menu.js`). Si la foto del link no carga, prueba en orden sus `fallbacks` (de `getNavigation()`); si ninguna carga o no hay foto: `color/surface/subtle`, sin texto. Es decorativo (`aria-hidden`). En Tablet (768–1023 px) no se muestra: las columnas toman todo el ancho, con `layout/gutter` a los dos lados (`TODO` diseño: el set no tiene Tablet).
 - **Pestañas:** `arq-tab` en un `role="tablist"` (SingleSelect): ← → cambian de pestaña, Inicio / Fin. Cada panel es `role="tabpanel"`.
 - **No se abre solo:** lo muestra y lo oculta el navbar (`hidden`). Al abrirlo, el navbar llama a `reset()`: vuelve a la primera pestaña y a su preview inicial (Por espacio → Colgante), aunque antes se haya pasado por otro.
@@ -34,7 +34,7 @@ menu.navigation = await getNavigation(); // src/data/catalog.js
 | Fondo · línea inferior | `color/surface/default` · `border/default` en `color/border/subtle`, solo debajo de las columnas: la foto del preview llega al borde |
 | Pestañas | padding `space/gap/md` arriba y `layout/gutter` a los lados, gap `space/gap/xl`, línea `color/border/subtle` |
 | Contenido | padding `space/padding/2xl` (a la izquierda `layout/gutter`); columnas a `space/gap/2xl`; título → links `space/gap/xl-2xl`; "Ver todo…" a `space/gap/xl` como mínimo |
-| Colecciones | título → grilla, columnas y "Ver todas…" a `space/gap/xl` |
+| Colecciones | título → grilla y columnas a `space/gap/xl` |
 | Preview | `layout/mega-menu-image` de ancho, `ratio/portrait-soft` como mínimo (se estira con el contenido); padding `space/padding/xl-2xl`, gap `space/gap/sm`; fondo `color/surface/subtle` |
 
 ## Pendientes

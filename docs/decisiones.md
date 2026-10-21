@@ -1275,6 +1275,11 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - En desktop con mouse (`hover: hover` y `pointer: fine`) el panel se abre al entrar al nav-link y se cierra al salir del link y del panel. El link ocupa el alto de la barra y el panel ya tiene su caja (aunque la persiana todavía se esté abriendo), así se puede bajar de la palabra y recorrer el menú. Esc y un clic afuera siguen cerrando. El foco del teclado también abre. El clic en el link no abre ni cierra.
 - En Mobile sigue el submenú con clic. En una pantalla táctil de ancho desktop, el clic sigue abriendo el panel.
 
+## 2026-10-21 · Títulos Interior y Exterior del mega-menú
+
+- Pedido: Interior y Exterior son el link a esa categoría, con la línea de «Ver todo interior» al pasar el mouse. Esos botones del pie se van. La flecha diagonal se sacó después. Lámparas y Artefactos siguen con su «Ver todo…».
+- Colecciones hace lo mismo: el título es el link a `/arq/productos?view=colecciones` y se va «Ver todas las colecciones». En mobile, el «Ver todo» del submenú sigue.
+
 ## 2026-10-21 · Sin flecha en los dropdowns del navbar
 
 - Pedido: sacar el chevron hacia abajo de Productos y Recursos. En desktop el ítem queda solo con el nombre. En mobile sigue la flecha hacia la derecha, la que entra al submenú.
@@ -1282,3 +1287,24 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 ## 2026-10-21 · Orden del navbar
 
 - Pedido: Nosotros va justo antes de Contacto. El menú queda Productos, Recursos, Nosotros, Contacto, en todas las páginas.
+
+## 2026-10-21 · Cards de carga en los destacados del Home
+
+- Pedido: el carrusel de productos de la Home usa el mismo skeleton que el listado de Productos.
+- Mientras `getProductCards` no responde, `<arq-featured-products>` muestra una `product-card` con `loading` por cada link del HTML (misma geometría y shimmer; sin Comparar, porque los destacados no lo tienen). Las flechas siguen ocultas hasta que llegan las cards.
+- Mismo tiempo de aparición que el listado: fundido de `motion/duration/fade` después de esperar lo mismo, así con el catálogo en caché no se ven. Si ya se veían, las cards ocupan su lugar sin la entrada al hacer scroll.
+- «Cargando productos…» queda en un `role="status"` solo para lectores de pantalla. En la demo, `demo/home.html?data=loading` demora la respuesta igual que Productos.
+
+## 2026-10-21 · Preloader: solo la vista
+
+- Pedido: una pantalla de entrada para todas las páginas. Primero se define cómo se ve; todavía no cubre las páginas.
+- Fondo blanco (Light local, también si la página está en Dark), el logo de Macroled ARQ (el dibujo de Size=Default, sin link) y una línea debajo, del mismo ancho, que se completa de izquierda a derecha con `scaleX`.
+- `TODO` (diseño): no hay token para esa duración. Sin `page`, la línea de la demo usa `motion/duration/shimmer` (1600 ms). En las páginas lo reemplaza la decisión de abajo.
+
+## 2026-10-21 · Preloader en todas las páginas
+
+- Pedido: no mostrar la página hasta que estén cargadas las imágenes, los videos y los textos.
+- Cada embed de `src/pages/` abre con `<arq-preloader open page>`. `dist/arq.css` pinta esa etiqueta en blanco antes de que el módulo se defina, así no se ve la página en el medio.
+- La línea es la parte ya cargada. Se espera: imágenes (las `lazy` se piden igual, si no las de abajo no arrancan mientras la pantalla las tapa), videos hasta el primer frame, la fuente y los componentes con `aria-busy` (listado, destacados, ficha, colección, comparativa, descargas). Después funde con `motion/duration/fade`.
+- Si un recurso no responde, a los 20 s se muestra la página igual. `TODO` (diseño): no hay token para ese tope.
+- Hay que volver a pegar los embeds en Webflow.

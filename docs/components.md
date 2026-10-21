@@ -108,7 +108,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ section | `<arq-section>` | Bloque de página: gutter, padding de sección y encabezado → contenido → acción. Con `reveal`, el bloque entero aparece al entrar en pantalla. El margen lateral es de títulos y textos; Explorar, el mosaico y el carrusel de proyectos llegan al borde ([README](../src/components/section/README.md)) |
 | ✅ grid | `<arq-grid>` | Grilla de tarjetas; en Mobile apila, dos columnas o carrusel ([README](../src/components/grid/README.md)) |
 | ✅ project-mosaic | `<arq-project-mosaic>` | Mosaico de fotos de proyectos del Home (DESIGN.md §12). Con `zoom`, hover y clic para ampliar (Nosotros) ([README](../src/components/project-mosaic/README.md)) |
-| ✅ featured-products | `<arq-featured-products>` | Productos destacados del Home, por grupo, con datos del catálogo. La fila se desliza con el dedo o el mouse ([README](../src/components/featured-products/README.md)) |
+| ✅ featured-products | `<arq-featured-products>` | Productos destacados del Home, por grupo, con datos del catálogo. Mientras carga, las mismas cards de carga del listado. La fila se desliza con el dedo o el mouse ([README](../src/components/featured-products/README.md)) |
 | ✅ text-block | `<arq-text-block>` | Kicker, título y bajada de una escena del Home ([README](../src/components/text-block/README.md)) |
 | ✅ collection-tile | `<arq-collection-tile>` | Tarjeta del mosaico de colecciones del Home ([README](../src/components/collection-tile/README.md)) |
 | ✅ collection-mosaic | `<arq-collection-mosaic>` | Mosaico de colecciones del Home ([README](../src/components/collection-mosaic/README.md)) |
@@ -116,6 +116,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ tool-card | `<arq-tool-card>` | Recurso de «Herramientas para proyectar» ([README](../src/components/tool-card/README.md)) |
 | ✅ project-slide | `<arq-project-slide>` | Slide del carrusel de proyectos del Home ([README](../src/components/project-slide/README.md)) |
 | ✅ project-slider | `<arq-project-slider>` | Carrusel de proyectos del Home, en bucle. Con `autoplay` avanza solo; se arrastra con el mouse y el clic abre la foto en un lightbox ([README](../src/components/project-slider/README.md)) |
+| ✅ preloader | `<arq-preloader>` | Pantalla de entrada de todas las páginas: blanco, logo y una línea que avanza hasta que cargan imágenes, videos y textos ([README](../src/components/preloader/README.md)) |
 | ✅ catalog-listing | `<arq-catalog-listing>` | Listado de Productos (y Colecciones): nav, toolbar, grilla, filtros y comparar ([README](../src/components/catalog-listing/README.md)) |
 | ✅ catalog-card | `<arq-catalog-card>` | Tapa de la página Catálogos: portada, título, ver y descargar ([README](../src/components/catalog-card/README.md)) |
 | ✅ coleccion | `<arq-coleccion>` | Página de colección: cards de sus productos, galería, texto + imagen y mosaico con flechas ([README](../src/components/coleccion/README.md)) |
@@ -578,7 +579,7 @@ Link del mega menú y del submenú mobile: nombre, bajada opcional (Show meta, p
 - Propiedades: Tab: Por espacio · Lámparas y artefactos · Colecciones
 - Código: la foto del preview de cada aplicación es la del SKU con `is_menu_default` y la de cada colección, la de su fila `col-*` (`img_ambient_1_on`); si no carga, prueba fotos de productos en orden. Al abrir vuelve a la primera pestaña con la foto fija de Colgante (en las demás pestañas, su primer link) (docs/decisiones.md, 2026-10-20 · Fotos del mega-menú; 2026-10-21 · Foto inicial del mega-menú)
 
-Mega menú de Productos (desktop). Se abre desde nav-link "Productos" (Open=True) y se muestra debajo del navbar. Tres pestañas: Por espacio (Exterior / Interior), Lámparas y artefactos, y Colecciones. La imagen de la derecha se puede cambiar según la pestaña. Es un solo componente: categorías, links y el texto de "Ver todo…" salen de los datos. Tablet (768–1023, solo código): no se muestra la imagen; las columnas toman todo el ancho, con layout/gutter a los dos lados.
+Mega menú de Productos (desktop). Se abre desde nav-link "Productos" (Open=True) y se muestra debajo del navbar. Tres pestañas: Por espacio (Exterior / Interior), Lámparas y artefactos, y Colecciones. La imagen de la derecha se puede cambiar según la pestaña. Es un solo componente: categorías, links y el texto de "Ver todo…" salen de los datos. En código, Interior, Exterior y Colecciones no llevan «Ver todo…»: el título es el link (línea al pasar el mouse). Tablet (768–1023, solo código): no se muestra la imagen; las columnas toman todo el ancho, con layout/gutter a los dos lados.
 
 ## nav-link
 

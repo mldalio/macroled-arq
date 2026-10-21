@@ -461,7 +461,12 @@ export async function getDatasheet(sku) {
  */
 export async function getProductCards(groupIds) {
   const { groupById } = await loadCatalog();
-  return groupIds.map((id) => groupById.get(id)).filter(Boolean).map((group) => ({ ...productCard(group), meta: productKind(group) }));
+  const cards = groupIds.map((id) => groupById.get(id)).filter(Boolean).map((group) => ({ ...productCard(group), meta: productKind(group) }));
+  // Demo: ?data=loading… demora igual que el listado, para ver las cards de carga del Home.
+  const demo = await demoData();
+  if (!demo?.mode.startsWith('loading')) return cards;
+  const listing = await demo.fixtures.catalogListing(demo.mode, { cards, count: cards.length, filters: [] });
+  return listing.cards;
 }
 
 /**

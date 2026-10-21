@@ -153,7 +153,7 @@ class ArqMegaMenu extends ArqElement {
       .join('');
     root.querySelector('.panels').innerHTML = available
       .map((t) => {
-        const content = t.id === 'colecciones' ? this.#collections(nav) : this.#sectionColumns(this.#columns(t.id));
+        const content = t.id === 'colecciones' ? this.#collections(nav) : this.#sectionColumns(this.#columns(t.id), t.id === 'por-espacio');
         return `<div class="panel panel--${t.id}" role="tabpanel" id="${ids(t).panel}" aria-labelledby="${ids(t).tab}" data-tab="${t.id}"${t.id === this.tab ? '' : ' hidden'}>${content}</div>`;
       })
       .join('');
@@ -170,17 +170,22 @@ class ArqMegaMenu extends ArqElement {
   }
 
   // Por espacio y Lámparas y artefactos: una columna por sección, con título
-  // (role/heading-1), links y "Ver todo…" (↗) al pie.
-  #sectionColumns(sections) {
+  // (role/heading-1) y links. En Por espacio el título es el link (la línea
+  // del button Underline al pasar el mouse) y no hay «Ver todo…».
+  #sectionColumns(sections, titleLink = false) {
+    const title = (section) =>
+      titleLink
+        ? `<a class="title title-link role-heading-1" href="${esc(section.href)}"><span class="title-text">${esc(section.label)}</span></a>`
+        : `<p class="title role-heading-1">${esc(section.label)}</p>`;
     return (
       `<div class="columns">` +
       sections
         .map(
           (section) =>
             `<div class="column">` +
-            `<div class="top"><p class="title role-heading-1">${esc(section.label)}</p>` +
+            `<div class="top">${title(section)}` +
             `<div class="links">${section.links.map((l) => this.#link(l, `${section.label} · ${l.label}`)).join('')}</div></div>` +
-            `<arq-button class="all" type="underline" show-underline show-icon icon="arrow-up-right" href="${esc(section.all.href)}">${esc(section.all.label)}</arq-button>` +
+            (titleLink ? '' : `<arq-button class="all" type="underline" show-underline show-icon icon="arrow-up-right" href="${esc(section.all.href)}">${esc(section.all.label)}</arq-button>`) +
             `</div>`,
         )
         .join('') +
@@ -188,9 +193,9 @@ class ArqMegaMenu extends ArqElement {
     );
   }
 
-  // Colecciones: un título, los links repartidos en cuatro columnas (con la
-  // bajada de aplicaciones; las primeras columnas llevan uno más si no da
-  // justo) y un solo "Ver todas las colecciones" (↗, como el frame).
+  // Colecciones: el título es el link a todas (la misma línea al pasar el
+  // mouse) y los links van en cuatro columnas (con la bajada de
+  // aplicaciones; las primeras llevan uno más si no da justo).
   #collections(nav) {
     const list = nav?.collections ?? [];
     const base = Math.floor(list.length / COLLECTION_COLUMNS);
@@ -202,12 +207,15 @@ class ArqMegaMenu extends ArqElement {
       start += size;
       return items;
     });
+    const href = nav?.allCollections?.href ?? '';
+    const title = href
+      ? `<a class="title title-link role-heading-1" href="${esc(href)}"><span class="title-text">Colecciones</span></a>`
+      : `<p class="title role-heading-1">Colecciones</p>`;
     return (
-      `<p class="title role-heading-1">Colecciones</p>` +
+      title +
       `<div class="columns columns--collections">` +
       columns.map((items) => `<div class="links column">${items.map((c) => this.#link(c, c.eyebrow, c.meta)).join('')}</div>`).join('') +
-      `</div>` +
-      `<arq-button class="all" type="underline" show-underline show-icon icon="arrow-up-right" href="${esc(nav?.allCollections?.href)}">${esc(nav?.allCollections?.label)}</arq-button>`
+      `</div>`
     );
   }
 

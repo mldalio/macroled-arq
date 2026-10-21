@@ -251,3 +251,17 @@ document.addEventListener('arq:submit', (event) => {
   const log = document.querySelector('[data-demo-cta-log]');
   if (log && event.target.localName === 'arq-cta-block') log.textContent = `arq:submit → email: ${event.detail.email}`;
 });
+
+// ── preloader: vista al entrar y con el botón ──
+const preloader = document.querySelector('#demo-preloader-screen');
+const playPreloader = () => {
+  if (!preloader) return;
+  preloader.open = false;
+  requestAnimationFrame(() => {
+    preloader.open = true;
+  });
+};
+document.querySelector('#demo-preloader-play')?.addEventListener('click', playPreloader);
+preloader?.addEventListener('arq:done', () => {
+  preloader.open = false;
+});

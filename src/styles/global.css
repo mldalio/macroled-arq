@@ -19,6 +19,17 @@
   --arq-illumination-style: fade;
 }
 
+/* El embed trae <arq-preloader open page> y el script es un módulo: hasta que
+   el componente se define, esta regla tapa la página. Después siguen los
+   estilos del shadow. z-index sin token, el mismo que el componente (sobre
+   el navbar, que es 4). */
+arq-preloader[open]:not(:defined) {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  background: var(--arq-color-surface-default);
+}
+
 /* Fondo de la página en las pantallas con Iluminar (Productos, Colecciones): va
    en el <main> del embed (class="arq-page"), no en body ni en html. Lo que queda
    transparente (page-header) deja ver esta capa, que funde en el mismo cuadro que
