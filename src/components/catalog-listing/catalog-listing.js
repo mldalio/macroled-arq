@@ -82,6 +82,7 @@ class ArqCatalogListing extends ArqElement {
   #request = 0;
   #htmlCrumbs = null; // niveles del breadcrumb del HTML después de Inicio
   #htmlTitle = null; // <h1> del HTML (Productos), para volver a él sin categoría
+  #htmlDescription = null; // bajada del HTML, ídem
 
   setup() {
     // Productos y Colecciones comparten el mismo embed. "Todas las
@@ -522,6 +523,14 @@ class ArqCatalogListing extends ArqElement {
     const sub = item && item !== firstItem;
     const label = sub ? item.textContent.trim() : groupLabel;
     const title = document.querySelector('arq-page-header > [slot="title"]');
+    // La bajada es la del grupo (data-arq-description), también en sus
+    // subcategorías. TODO (datos): provisoria en el HTML hasta que venga de
+    // Typesense.
+    const description = document.querySelector('arq-page-header > [slot="description"]');
+    if (description) {
+      this.#htmlDescription ??= description.textContent;
+      description.textContent = (label && group.dataset.arqDescription) || this.#htmlDescription;
+    }
     if (!label && this.#query && this.unit === 'productos') return this.#titleFromQuery();
     if (title) {
       this.#htmlTitle ??= title.textContent;

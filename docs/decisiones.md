@@ -1308,3 +1308,9 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - La línea es la parte ya cargada. Se espera: imágenes (las `lazy` se piden igual, si no las de abajo no arrancan mientras la pantalla las tapa), videos hasta el primer frame, la fuente y los componentes con `aria-busy` (listado, destacados, ficha, colección, comparativa, descargas). Después funde con `motion/duration/fade`.
 - Si un recurso no responde, a los 20 s se muestra la página igual. `TODO` (diseño): no hay token para ese tope.
 - Hay que volver a pegar los embeds en Webflow.
+
+## 2026-10-21 · Bajada por categoría en Productos
+
+- Pedido: la bajada del page-header era siempre la misma. Ahora cambia con el grupo de la categoría: Interior, Exterior y Lámparas y artefactos (las subcategorías usan la de su grupo). Sin categoría queda la del HTML; Colecciones sigue sin bajada.
+- Provisorio: el texto va en `data-arq-description` de cada `catalog-nav-group` del embed (`src/pages/productos.html`). `TODO` (datos): pasarlo a Typesense.
+
