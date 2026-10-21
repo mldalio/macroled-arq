@@ -75,7 +75,7 @@
 }
 
 /* El tope de ancho de lectura es para la bajada, no para el título: un título
-   corto como "Comparar luminarias" tiene que entrar en una sola línea. */
+   corto como "Comparar productos" tiene que entrar en una sola línea. */
 :host([type='detail']) .main {
   gap: var(--arq-space-gap-md);
 }
