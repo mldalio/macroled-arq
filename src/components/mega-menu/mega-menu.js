@@ -15,15 +15,15 @@
 //   Tablist con tab + SingleSelect: ← → cambian de pestaña, Inicio / Fin.
 // - Preview a la derecha (frame "imagen · preview hover"): la foto del link
 //   con el mouse encima o con el foco, con eyebrow (role/label) y nombre
-//   (role/heading-2) sobre la foto. Al cambiar de pestaña muestra el primer
-//   link. Ancho layout/mega-menu-image, ratio/portrait-soft como mínimo; si
+//   (role/heading-2) sobre la foto. Al abrir o cambiar de pestaña muestra el
+//   link de OPENING (Por espacio: Colgante) o, si no está, el primero. Ancho layout/mega-menu-image, ratio/portrait-soft como mínimo; si
 //   el contenido es más alto, la foto se estira. Sin foto, color/surface/subtle.
 //   Si la foto del link no carga, prueba sus fallbacks en orden (fotos de
 //   productos de la categoría); si ninguna carga, color/surface/subtle.
 //   La prop images ({ pestaña: url }) pisa la foto inicial de cada pestaña.
 // - El panel no se abre ni se cierra solo: lo muestra el navbar (atributo
 //   hidden en el host). Al abrirlo, el navbar llama a reset(): vuelve a la
-//   primera pestaña y al preview de su primer link.
+//   primera pestaña y a su preview inicial.
 // - La línea inferior va solo debajo de las columnas: la foto llega al borde.
 
 import { ArqElement } from '../../base/arq-element.js';
@@ -40,6 +40,9 @@ const TABS = [
   { id: 'colecciones', label: 'Colecciones' },
 ];
 const COLLECTION_COLUMNS = 4;
+// Link cuya foto se ve al abrir cada pestaña (data-eyebrow); si no está, el
+// primero. Por ahora, Colgante en Por espacio (pedido de Lau, 2026-10-21).
+const OPENING = { 'por-espacio': 'Interior · Colgante' };
 let uid = 0;
 
 class ArqMegaMenu extends ArqElement {
@@ -89,7 +92,7 @@ class ArqMegaMenu extends ArqElement {
     if (this.shadowRoot.querySelector('.tabs')) this.#resetPreview();
   }
 
-  /** Al abrir: primera pestaña y preview de su primer link (Por espacio → Embutir). */
+  /** Al abrir: primera pestaña y su preview inicial (Por espacio → Colgante). */
   reset() {
     const first = this.shadowRoot.querySelector('arq-tab')?.value;
     if (first && first !== this.tab) this.tab = first; // update() reinicia el preview
@@ -208,9 +211,11 @@ class ArqMegaMenu extends ArqElement {
     );
   }
 
-  // Al cambiar de pestaña: la foto de images[pestaña] o la del primer link
+  // Al cambiar de pestaña: la foto de images[pestaña] o la del link de OPENING
+  // (si no, el primero)
   #resetPreview() {
-    const first = this.shadowRoot.querySelector(`[role="tabpanel"][data-tab="${this.tab}"] arq-mega-link`);
+    const links = [...this.shadowRoot.querySelectorAll(`[role="tabpanel"][data-tab="${this.tab}"] arq-mega-link`)];
+    const first = links.find((l) => l.dataset.eyebrow === OPENING[this.tab]) ?? links[0];
     if (first) this.#showPreview(first, this.#images[this.tab]);
     else this.#setPreview(this.#images[this.tab], '', '');
   }

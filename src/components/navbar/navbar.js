@@ -164,6 +164,13 @@ class ArqNavbar extends ArqElement {
       if (MOBILE.matches) this.#setMode('products');
       else this.#toggleMega(event.detail.open);
     });
+    // Al acercarse a Productos se pide la navegación: el mega-menu ya tiene su
+    // foto inicial cargada cuando se abre.
+    for (const type of ['pointerover', 'focusin']) {
+      this.addEventListener(type, (event) => {
+        if (event.target.closest?.('arq-nav-link[has-dropdown]')) this.#ensureNavigation();
+      });
+    }
 
     // Búsqueda desktop (o el sheet, en todos los anchos). Al acercarse a la lupa
     // se piden los recomendados, para que el sheet ya los tenga al abrirse.
@@ -397,7 +404,7 @@ class ArqNavbar extends ArqElement {
     if (next !== this.#megaOpen) {
       clearTimeout(this.#megaTimer);
       if (next) {
-        root.querySelector('.mega').reset(); // primera pestaña y su primer link
+        root.querySelector('.mega').reset(); // primera pestaña y su preview inicial (Colgante)
         wrap.hidden = false;
         void wrap.offsetHeight; // fija el estado inicial antes de is-open
       }
