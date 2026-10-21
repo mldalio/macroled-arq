@@ -5,479 +5,6 @@
       "mode": "Large"
     }
   },
-  "space": {
-    "section": {
-      "2xs": {
-        "$type": "number",
-        "$value": "{space.32}",
-        "$description": "Separación mínima entre bloques de página.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-section-2xs)"
-            }
-          }
-        }
-      },
-      "xs": {
-        "$type": "number",
-        "$value": "{space.48}",
-        "$description": "Separación ajustada entre bloques de página.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-section-xs)"
-            }
-          }
-        }
-      },
-      "sm": {
-        "$type": "number",
-        "$value": "{space.64}",
-        "$description": "Separación reducida entre bloques de página.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-section-sm)"
-            }
-          }
-        }
-      },
-      "md": {
-        "$type": "number",
-        "$value": "{space.96}",
-        "$description": "Separación estándar entre secciones y arriba/abajo de la página.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-section-md)"
-            }
-          }
-        }
-      },
-      "lg": {
-        "$type": "number",
-        "$value": "{space.128}",
-        "$description": "Separación amplia entre secciones.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-section-lg)"
-            }
-          }
-        }
-      },
-      "xl": {
-        "$type": "number",
-        "$value": "{space.160}",
-        "$description": "Separación máxima, para secciones destacadas.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-section-xl)"
-            }
-          }
-        }
-      }
-    },
-    "gap": {
-      "xs": {
-        "$type": "number",
-        "$value": "{space.4}",
-        "$description": "Elementos muy pegados, como un ícono junto a su texto.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-gap-xs)"
-            }
-          }
-        }
-      },
-      "sm": {
-        "$type": "number",
-        "$value": "{space.8}",
-        "$description": "Entre título y bajada, o label e input.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-gap-sm)"
-            }
-          }
-        }
-      },
-      "sm-md": {
-        "$type": "number",
-        "$value": "{space.12}",
-        "$description": "Gap entre sm (8) y md (16): 12 en Desktop y Mobile.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-gap-sm-md)"
-            }
-          }
-        }
-      },
-      "md": {
-        "$type": "number",
-        "$value": "{space.16}",
-        "$description": "Separación entre elementos de un bloque (título y párrafo, filas de una lista).",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-gap-md)"
-            }
-          }
-        }
-      },
-      "lg": {
-        "$type": "number",
-        "$value": "{space.24}",
-        "$description": "Entre grupos dentro de un bloque.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-gap-lg)"
-            }
-          }
-        }
-      },
-      "xl": {
-        "$type": "number",
-        "$value": "{space.32}",
-        "$description": "Entre el encabezado de una sección y su contenido, o columnas grandes.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-gap-xl)"
-            }
-          }
-        }
-      },
-      "xl-2xl": {
-        "$type": "number",
-        "$value": "{space.40}",
-        "$description": "Gap entre xl y 2xl: 40 en Desktop, 32 en Mobile.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-gap-xl-2xl)"
-            }
-          }
-        }
-      },
-      "2xl": {
-        "$type": "number",
-        "$value": "{space.48}",
-        "$description": "Entre grupos grandes de contenido dentro de una sección.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-gap-2xl)"
-            }
-          }
-        }
-      },
-      "3xl": {
-        "$type": "number",
-        "$value": "{space.64}",
-        "$description": "Distancia entre elementos grandes dentro de un bloque (64 desktop / 48 mobile).",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-gap-3xl)"
-            }
-          }
-        }
-      },
-      "4xl": {
-        "$type": "number",
-        "$value": "{space.80}",
-        "$description": "Distancia entre elementos grandes dentro de un bloque (80 desktop / 56 mobile).",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-gap-4xl)"
-            }
-          }
-        }
-      },
-      "5xl": {
-        "$type": "number",
-        "$value": "{space.96}",
-        "$description": "Distancia entre elementos grandes dentro de un bloque (96 desktop / 64 mobile).",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-gap-5xl)"
-            }
-          }
-        }
-      },
-      "6xl": {
-        "$type": "number",
-        "$value": "{space.128}",
-        "$description": "Distancia entre elementos grandes dentro de un bloque (128 desktop / 96 mobile).",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-gap-6xl)"
-            }
-          }
-        }
-      }
-    },
-    "padding": {
-      "2xs": {
-        "$type": "number",
-        "$value": "{space.3}",
-        "$description": "Relleno mínimo de controles muy compactos (track del toggle).",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-padding-2xs)"
-            }
-          }
-        }
-      },
-      "xs": {
-        "$type": "number",
-        "$value": "{space.4}",
-        "$description": "Relleno de badges y chips.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-padding-xs)"
-            }
-          }
-        }
-      },
-      "sm": {
-        "$type": "number",
-        "$value": "{space.8}",
-        "$description": "Relleno de botones y controles compactos.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-padding-sm)"
-            }
-          }
-        }
-      },
-      "md": {
-        "$type": "number",
-        "$value": "{space.16}",
-        "$description": "Relleno estándar de tarjetas, inputs y paneles.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-padding-md)"
-            }
-          }
-        }
-      },
-      "lg": {
-        "$type": "number",
-        "$value": "{space.24}",
-        "$description": "Relleno de tarjetas grandes y side sheets.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-padding-lg)"
-            }
-          }
-        }
-      },
-      "xl": {
-        "$type": "number",
-        "$value": "{space.32}",
-        "$description": "Relleno de modales y bloques destacados.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-padding-xl)"
-            }
-          }
-        }
-      },
-      "2xl": {
-        "$type": "number",
-        "$value": "{space.48}",
-        "$description": "Relleno de bloques muy aireados.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-padding-2xl)"
-            }
-          }
-        }
-      },
-      "sm-md": {
-        "$type": "number",
-        "$value": "{space.12}",
-        "$description": "Padding intermedio entre sm (8) y md (16): 12 en Desktop y Mobile.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-padding-sm-md)"
-            }
-          }
-        }
-      },
-      "xl-2xl": {
-        "$type": "number",
-        "$value": "{space.40}",
-        "$description": "Padding entre xl y 2xl: 40 en Desktop, 32 en Mobile.",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-padding-xl-2xl)"
-            }
-          }
-        }
-      },
-      "3xl": {
-        "$type": "number",
-        "$value": "{space.64}",
-        "$description": "Padding interno de bloques grandes (64 desktop / 48 mobile).",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-padding-3xl)"
-            }
-          }
-        }
-      },
-      "4xl": {
-        "$type": "number",
-        "$value": "{space.80}",
-        "$description": "Padding interno de bloques grandes (80 desktop / 56 mobile).",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-padding-4xl)"
-            }
-          }
-        }
-      },
-      "5xl": {
-        "$type": "number",
-        "$value": "{space.96}",
-        "$description": "Padding interno de bloques grandes (96 desktop / 64 mobile).",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-padding-5xl)"
-            }
-          }
-        }
-      },
-      "6xl": {
-        "$type": "number",
-        "$value": "{space.128}",
-        "$description": "Padding interno de bloques grandes (128 desktop / 96 mobile).",
-        "$extensions": {
-          "com.figma": {
-            "scopes": [
-              "GAP"
-            ],
-            "codeSyntax": {
-              "WEB": "var(--arq-space-padding-6xl)"
-            }
-          }
-        }
-      }
-    }
-  },
   "layout": {
     "gutter": {
       "$type": "number",
@@ -972,6 +499,479 @@
       }
     }
   },
+  "space": {
+    "section": {
+      "2xs": {
+        "$type": "number",
+        "$value": "{space.32}",
+        "$description": "Separación mínima entre bloques de página.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-section-2xs)"
+            }
+          }
+        }
+      },
+      "xs": {
+        "$type": "number",
+        "$value": "{space.48}",
+        "$description": "Separación ajustada entre bloques de página.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-section-xs)"
+            }
+          }
+        }
+      },
+      "sm": {
+        "$type": "number",
+        "$value": "{space.64}",
+        "$description": "Separación reducida entre bloques de página.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-section-sm)"
+            }
+          }
+        }
+      },
+      "md": {
+        "$type": "number",
+        "$value": "{space.96}",
+        "$description": "Separación estándar entre secciones y arriba/abajo de la página.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-section-md)"
+            }
+          }
+        }
+      },
+      "lg": {
+        "$type": "number",
+        "$value": "{space.128}",
+        "$description": "Separación amplia entre secciones.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-section-lg)"
+            }
+          }
+        }
+      },
+      "xl": {
+        "$type": "number",
+        "$value": "{space.160}",
+        "$description": "Separación máxima, para secciones destacadas.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-section-xl)"
+            }
+          }
+        }
+      }
+    },
+    "gap": {
+      "xs": {
+        "$type": "number",
+        "$value": "{space.4}",
+        "$description": "Elementos muy pegados, como un ícono junto a su texto.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-gap-xs)"
+            }
+          }
+        }
+      },
+      "sm": {
+        "$type": "number",
+        "$value": "{space.8}",
+        "$description": "Entre título y bajada, o label e input.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-gap-sm)"
+            }
+          }
+        }
+      },
+      "sm-md": {
+        "$type": "number",
+        "$value": "{space.12}",
+        "$description": "Gap entre sm (8) y md (16): 12 en Desktop y Mobile.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-gap-sm-md)"
+            }
+          }
+        }
+      },
+      "md": {
+        "$type": "number",
+        "$value": "{space.16}",
+        "$description": "Separación entre elementos de un bloque (título y párrafo, filas de una lista).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-gap-md)"
+            }
+          }
+        }
+      },
+      "lg": {
+        "$type": "number",
+        "$value": "{space.24}",
+        "$description": "Entre grupos dentro de un bloque.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-gap-lg)"
+            }
+          }
+        }
+      },
+      "xl": {
+        "$type": "number",
+        "$value": "{space.32}",
+        "$description": "Entre el encabezado de una sección y su contenido, o columnas grandes.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-gap-xl)"
+            }
+          }
+        }
+      },
+      "xl-2xl": {
+        "$type": "number",
+        "$value": "{space.40}",
+        "$description": "Gap entre xl y 2xl: 40 en Desktop, 32 en Mobile.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-gap-xl-2xl)"
+            }
+          }
+        }
+      },
+      "2xl": {
+        "$type": "number",
+        "$value": "{space.48}",
+        "$description": "Entre grupos grandes de contenido dentro de una sección.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-gap-2xl)"
+            }
+          }
+        }
+      },
+      "3xl": {
+        "$type": "number",
+        "$value": "{space.64}",
+        "$description": "Distancia entre elementos grandes dentro de un bloque (64 desktop / 48 mobile).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-gap-3xl)"
+            }
+          }
+        }
+      },
+      "4xl": {
+        "$type": "number",
+        "$value": "{space.80}",
+        "$description": "Distancia entre elementos grandes dentro de un bloque (80 desktop / 56 mobile).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-gap-4xl)"
+            }
+          }
+        }
+      },
+      "5xl": {
+        "$type": "number",
+        "$value": "{space.96}",
+        "$description": "Distancia entre elementos grandes dentro de un bloque (96 desktop / 64 mobile).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-gap-5xl)"
+            }
+          }
+        }
+      },
+      "6xl": {
+        "$type": "number",
+        "$value": "{space.128}",
+        "$description": "Distancia entre elementos grandes dentro de un bloque (128 desktop / 96 mobile).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-gap-6xl)"
+            }
+          }
+        }
+      }
+    },
+    "padding": {
+      "2xs": {
+        "$type": "number",
+        "$value": "{space.3}",
+        "$description": "Relleno mínimo de controles muy compactos (track del toggle).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-padding-2xs)"
+            }
+          }
+        }
+      },
+      "xs": {
+        "$type": "number",
+        "$value": "{space.4}",
+        "$description": "Relleno de badges y chips.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-padding-xs)"
+            }
+          }
+        }
+      },
+      "sm": {
+        "$type": "number",
+        "$value": "{space.8}",
+        "$description": "Relleno de botones y controles compactos.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-padding-sm)"
+            }
+          }
+        }
+      },
+      "md": {
+        "$type": "number",
+        "$value": "{space.16}",
+        "$description": "Relleno estándar de tarjetas, inputs y paneles.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-padding-md)"
+            }
+          }
+        }
+      },
+      "lg": {
+        "$type": "number",
+        "$value": "{space.24}",
+        "$description": "Relleno de tarjetas grandes y side sheets.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-padding-lg)"
+            }
+          }
+        }
+      },
+      "xl": {
+        "$type": "number",
+        "$value": "{space.32}",
+        "$description": "Relleno de modales y bloques destacados.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-padding-xl)"
+            }
+          }
+        }
+      },
+      "2xl": {
+        "$type": "number",
+        "$value": "{space.48}",
+        "$description": "Relleno de bloques muy aireados.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-padding-2xl)"
+            }
+          }
+        }
+      },
+      "sm-md": {
+        "$type": "number",
+        "$value": "{space.12}",
+        "$description": "Padding intermedio entre sm (8) y md (16): 12 en Desktop y Mobile.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-padding-sm-md)"
+            }
+          }
+        }
+      },
+      "xl-2xl": {
+        "$type": "number",
+        "$value": "{space.40}",
+        "$description": "Padding entre xl y 2xl: 40 en Desktop, 32 en Mobile.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-padding-xl-2xl)"
+            }
+          }
+        }
+      },
+      "3xl": {
+        "$type": "number",
+        "$value": "{space.64}",
+        "$description": "Padding interno de bloques grandes (64 desktop / 48 mobile).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-padding-3xl)"
+            }
+          }
+        }
+      },
+      "4xl": {
+        "$type": "number",
+        "$value": "{space.80}",
+        "$description": "Padding interno de bloques grandes (80 desktop / 56 mobile).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-padding-4xl)"
+            }
+          }
+        }
+      },
+      "5xl": {
+        "$type": "number",
+        "$value": "{space.96}",
+        "$description": "Padding interno de bloques grandes (96 desktop / 64 mobile).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-padding-5xl)"
+            }
+          }
+        }
+      },
+      "6xl": {
+        "$type": "number",
+        "$value": "{space.128}",
+        "$description": "Padding interno de bloques grandes (128 desktop / 96 mobile).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "GAP"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-space-padding-6xl)"
+            }
+          }
+        }
+      }
+    }
+  },
   "radius": {
     "control": {
       "$type": "number",
@@ -1170,6 +1170,21 @@
           ],
           "codeSyntax": {
             "WEB": "var(--arq-swatch-lg)"
+          }
+        }
+      }
+    },
+    "xl": {
+      "$type": "number",
+      "$value": "{space.32}",
+      "$description": "Muestra de acabado elegible de la ficha (32): swatch-picker, todas del mismo tamaño (la elegida no crece). Se ve el acabado y el área para tocar llega a 32.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-swatch-xl)"
           }
         }
       }

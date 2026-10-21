@@ -176,7 +176,7 @@
   --arq-motion-scale-pressed: 0.97; /** Escala de button e icon-button mientras se presionan (State=Pressed, :active en código). Se anima con motion/duration/fast y motion/easing/out. Con prefers-reduced-motion no cambia de tamaño. Sin unidad. */
   --arq-motion-scale-hover: 1.05; /** Zoom de la imagen dentro de su recorte en el hover de una tarjeta que es link (category-card, collection-tile, search-card). La tarjeta no cambia de tamaño. Se anima con motion/duration/slow y motion/easing/standard. Con prefers-reduced-motion no hay zoom. Sin unidad. */
   --arq-motion-scale-enter: 0.97; /** Escala de partida de un menú o panel chico que aparece desde su disparador (menú de input Select, search-card): crece de 0,97 a 1 con motion/duration/base y motion/easing/out, junto con el fundido. Con prefers-reduced-motion queda solo el fundido. Sin unidad. */
-  --arq-opacity-disabled: 0.5; /** Opacidad de una imagen o parte gráfica deshabilitada (la miniatura de compare-picker-item Disabled). En Figma 0–100 (50 = 50 %); en código 0–1 (0.5). El texto deshabilitado no usa opacidad: va en color/text/disabled. */
+  --arq-opacity-disabled: 0.4; /** Opacidad de una imagen o parte gráfica deshabilitada: la miniatura de compare-picker-item Disabled y la muestra de un acabado no disponible (swatch y select-option Disabled). En Figma 0–100 (40 = 40 %); en código 0–1 (0.4). El texto deshabilitado no usa opacidad: va en color/text/disabled. */
   --arq-opacity-muted: 0.5; /** Atenuar algo que sigue a la vista pero no es lo activo: la grilla de un listado mientras carga otra categoría o filtro, el velo de un slide inactivo. En Figma 0–100 (50 = 50 %); en código 0–1 (0.5). */
   --arq-opacity-track: 0.35; /** Pista de un indicador de progreso (carousel-controls): la línea completa va atenuada y el tramo recorrido, al 100 %. En Figma 0–100 (35 = 35 %); en código 0–1 (0.35). */
   --arq-offwhite-bone: #f3f0e9; /** Blanco hueso, cálido suave; acompaña al bronze. Fondo alternativo de sección en modo Light, para dar ritmo entre bloques. No se usa en componentes ni en texto. */
@@ -268,6 +268,7 @@
   --arq-swatch-sm: var(--arq-space-16); /** Muestra de acabado chica (16): opciones de menú y celdas de filtro. */
   --arq-swatch-md: var(--arq-space-20); /** Muestra de acabado del selector de muestras (20). */
   --arq-swatch-lg: var(--arq-space-24); /** Muestra grande (24): campo select y muestra seleccionada. */
+  --arq-swatch-xl: var(--arq-space-32); /** Muestra de acabado elegible de la ficha (32): swatch-picker, todas del mismo tamaño (la elegida no crece). Se ve el acabado y el área para tocar llega a 32. */
   --arq-type-display-size: var(--arq-font-size-64); /** Tamaño del estilo role/display. Lo usa el estilo de texto: no aplicar directo. */
   --arq-type-display-leading: var(--arq-font-leading-72); /** Interlineado del estilo role/display. Lo usa el estilo de texto: no aplicar directo. */
   --arq-type-display-sm-size: var(--arq-font-size-48); /** Tamaño del estilo role/display-sm. Lo usa el estilo de texto: no aplicar directo. */
