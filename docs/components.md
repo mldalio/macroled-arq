@@ -849,7 +849,7 @@ Switch del toggle (pista + círculo), compartido por todas las variantes de togg
 
 Microinteracción SKU (2026-10-22), compartida con el hero: fundido cruzado con motion/duration/fade y motion/easing/standard, sin escala ni desplazamiento. Se reserva el espacio de ambos estados y se vuelve al código/ícono tras motion/duration/feedback. Repetir la copia prolonga el aviso sin reiniciar movimiento. El fundido se mantiene con movimiento reducido. Se conserva el verde color/text/success.
 
-Prueba visual (pendiente de aprobación): SKU Compact con confirmación «Copiado» en el lugar del código, solo en esta tabla y sus tarjetas. El código y el ícono se ocultan conservando su espacio; la fila y el ancho de columna no cambian. Actualización de la variante en Figma pendiente de aprobación.
+Aprobado (2026-10-22): SKU Compact con confirmación «Copiado» en el lugar del código, solo en esta tabla y sus tarjetas. El código y el ícono se ocultan conservando su espacio; la fila y el ancho de columna no cambian.
 
 Scroll horizontal (2026-10-22): indicador basado en el ancho real de la tabla, con tolerancia de 1 px. Se recorta el desborde decorativo cuando las columnas caben y se evita que el reparto de espacio sobrante cree scroll artificial.
 
@@ -859,7 +859,7 @@ Descargas (2026-10-22): las filas de producto de la tabla usan padding superior 
 
 Descargas (2026-10-22): en Desktop, el ancho del buscador sigue el ancho del título de la página. En Mobile, el fondo de los controles se extiende a ambos bordes para tapar el contenido durante el scroll, conservando el padding lateral y el offset sticky.
 
-Prueba visual (2026-10-22): buscador de Descargas con search-field Type=Line, lupa y línea inferior, manteniendo Size=Medium y el ancho layout/download-search.
+Aprobado (2026-10-22): buscador de Descargas con search-field Type=Line, lupa y línea inferior, manteniendo Size=Medium y el ancho layout/download-search.
 
 Descargas (2026-10-22): el contenedor de página usa space/section/md antes del título (6 rem en Desktop) y aplica space/gap/xl al host de la tabla (2 rem en Desktop). La barra y el encabezado sticky conservan sus offsets y padding; el espaciado de la ficha no cambia.
 

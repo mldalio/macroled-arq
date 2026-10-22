@@ -227,6 +227,7 @@ Estos valores **no se usan en componentes**. Están acá para entender de dónde
 | alpha/ink-10 · ink-22 | #101010 al 10 % · 22 % |
 | alpha/white-10 · white-22 | #FFFFFF al 10 % · 22 % |
 | alpha/black-60 | #000000 al 60 % |
+| alpha/black-70 · black-90 | #000000 al 70 % · 90 % |
 | alpha/transparent | #000000 al 0 % |
 | offwhite/bone · offwhite/sand | #F3F0E9 · #F7F1EC |
 
@@ -290,7 +291,8 @@ Cómo elegir un token:
 | color/action/primary-hover | neutral/750 | neutral/200 | Hover del botón Filled |
 | color/action/on-primary | neutral/0 | neutral/900 | Texto e ícono sobre color/action/primary |
 | color/accent/default | neutral/900 | neutral/150 | Detalles de marca |
-| color/overlay/scrim | alpha/black-60 | alpha/black-60 | Detrás de download-modal (siempre) y filter-panel (solo desktop) |
+| color/overlay/scrim | alpha/black-70 | alpha/black-70 | Detrás del menú desplegable, filter-panel (solo desktop), download-modal, buscador y compare-picker |
+| color/overlay/scrim-gallery | alpha/black-90 | alpha/black-90 | Detrás de las fotos ampliadas (visor de FOA y de la galería de ambiente de la ficha) |
 | color/overlay/translucent | alpha/ink-10 | alpha/ink-10 | Fondo translúcido de barras sobre fotos (navbar Transparent), junto con blur/backdrop |
 | hero/scrim (estilo de relleno) | Degradado negro 52 → 20 → 20 → 68 % | Igual | Scrim del hero sobre media. Ya incluye el oscurecido de la imagen. Único para Desktop y Mobile |
 

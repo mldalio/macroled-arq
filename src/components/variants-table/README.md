@@ -75,7 +75,7 @@ Se quitaron `show-search` (ahora es `type="catalog"`) y `show-sort` (solo de có
 
 ## Tokens
 
-Prueba pendiente de aprobación: en las tablas de Descargas y variantes de la ficha (también sus tarjetas Mobile), «Copiado» reemplaza temporalmente al código en el mismo lugar. Se conserva el espacio del código y del ícono para no mover la fila ni cambiar el ancho de columna. La variante en Figma queda pendiente de la aprobación visual.
+Aprobado (2026-10-22): en las tablas de Descargas y variantes de la ficha (también sus tarjetas Mobile), «Copiado» reemplaza temporalmente al código en el mismo lugar. Se conserva el espacio del código y del ícono para no mover la fila ni cambiar el ancho de columna.
 
 La barra de desplazamiento y los difuminados se activan por el ancho real de las columnas, con tolerancia de 1 px por redondeo. Los desbordes decorativos no habilitan el scroll; repartir el espacio sobrante entre columnas tampoco puede generar desborde.
 
@@ -83,7 +83,7 @@ En Mobile, `.card` separa el encabezado y los datos con `space/gap/sm` (0.5 rem)
 
 En la tabla de Descargas, las celdas de cada fila de producto usan padding superior e inferior `space/padding/sm-md` (12 px).
 
-Prueba visual en Descargas (2026-10-22): el buscador usa `arq-search-field type="line" size="medium"`, con lupa y línea inferior como el buscador general. Conserva el ancho `layout/download-search` y la búsqueda local por nombre o SKU.
+Aprobado (2026-10-22), en Descargas: el buscador usa `arq-search-field type="line" size="medium"`, con lupa y línea inferior como el buscador general. Conserva el ancho `layout/download-search` y la búsqueda local por nombre o SKU.
 
 | Parte | Token |
 | --- | --- |
