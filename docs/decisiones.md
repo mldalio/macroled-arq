@@ -1491,7 +1491,7 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 
 - Pedido de Gabriela. La información técnica de la ficha pasa a dos pestañas con el mismo `arq-tab` del mega-menu (separación `space/gap/xl`, línea `border/default` en `color/border/subtle`): **Especificaciones** (acordeón con Características lumínicas, Características eléctricas y Materiales e instalación) e **Información comercial** (su lista de datos, sin acordeón: el título ya es la pestaña).
 - Al cambiar de variante queda la pestaña elegida. Si una variante no trae datos comerciales, la pestaña no aparece (y con una sola, no se muestra la barra).
-- `TODO` (diseño): no está en Figma; agregar las pestañas a la Ficha de Final y a `doc/ficha-producto`.
+- Figma al día (2026-10-22): las cuatro Fichas de Final (Desktop, Mobile e Iluminar) llevan el frame `info-tecnica` (tabs + acordeón), con el acordeón abierto según el breakpoint; `doc/tab`, `doc/accordion-item` y la descripción del set tab suman este uso. `TODO` (diseño): falta dibujar la pestaña Información comercial seleccionada.
 - Abiertas por defecto: en Desktop las tres secciones de Especificaciones; en Mobile (hasta 767 px) solo Características lumínicas. Se decide la primera vez que se arma; al cambiar de variante quedan como las dejó la persona.
 
 ## 2026-10-22 · Ficha: descripción en minúscula y Iluminar del breadcrumb
