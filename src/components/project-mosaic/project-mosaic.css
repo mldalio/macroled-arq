@@ -227,7 +227,7 @@
 }
 
 .lightbox::backdrop {
-  background: var(--arq-color-overlay-scrim);
+  background: var(--arq-color-overlay-scrim-gallery);
 }
 
 .lightbox-bar {

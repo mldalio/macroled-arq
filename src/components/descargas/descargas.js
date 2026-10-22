@@ -51,6 +51,19 @@ class ArqDescargas extends ArqElement {
     `<arq-download-modal id="downloads-modal" show-product><slot name="modal-title" slot="title"></slot></arq-download-modal>`;
 
   #rows = new Map();
+  #titleObserver = new ResizeObserver((entries) => {
+    const width = entries[0]?.contentRect.width;
+    if (width > 0) this.shadowRoot.querySelector('.table').style.setProperty('--arq-download-search-width', `${width}px`);
+  });
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.#titleObserver.observe(this.shadowRoot.querySelector('.search-title'));
+  }
+
+  disconnectedCallback() {
+    this.#titleObserver.disconnect();
+  }
 
   setup() {
     const root = this.shadowRoot;

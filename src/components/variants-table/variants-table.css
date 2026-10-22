@@ -66,7 +66,7 @@
   grid-row: 1;
   justify-self: start;
   width: 100%;
-  max-width: var(--arq-layout-download-search);
+  max-width: var(--arq-download-search-width, var(--arq-layout-download-search));
   min-width: 0;
 }
 
@@ -154,6 +154,12 @@
   display: none;
 }
 
+/* Sin columnas fuera de vista, recortar los desbordes decorativos evita
+   desplazarse hacia un espacio vacío. */
+.scroll.fits {
+  overflow-x: clip;
+}
+
 /* Barra de columnas: la línea de progreso de arq-carousel-controls (como en la
    Home, sin flechas), de todo el ancho de la tabla, abajo y pegada al borde
    inferior de la pantalla mientras la tabla está a la vista, con
@@ -227,6 +233,11 @@ tbody th,
 tbody td {
   padding-block: var(--arq-space-padding-sm);
   color: var(--arq-color-text-primary);
+}
+
+:host([type='catalog']) tbody th,
+:host([type='catalog']) tbody td {
+  padding-block: var(--arq-space-padding-sm-md);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -519,6 +530,12 @@ td.end {
 }
 
 @media (max-width: 767px) {
+  /* Fondo hasta los bordes; el contenido conserva el margen de página. */
+  :host([type='catalog']) .controls {
+    margin-inline: calc(-1 * var(--page-gutter));
+    padding-inline: var(--page-gutter);
+  }
+
   /* Mobile. Ficha: Filtros con la cantidad en la primera fila, los archivos
      generales debajo y lo aplicado abajo de todo. Descargas: el buscador
      arriba, a todo el ancho; Filtros con la cantidad debajo (2558:20156) y lo
@@ -581,7 +598,7 @@ td.end {
   .card {
     display: flex;
     flex-direction: column;
-    gap: var(--arq-space-gap-md);
+    gap: var(--arq-space-gap-sm);
     padding: var(--arq-space-padding-lg) var(--page-gutter);
     border-bottom: var(--arq-border-default) solid var(--arq-color-border-default);
   }

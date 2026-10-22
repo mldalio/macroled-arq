@@ -847,6 +847,22 @@ Switch del toggle (pista + círculo), compartido por todas las variantes de togg
 
 ## variants-table
 
+Microinteracción SKU (2026-10-22), compartida con el hero: fundido cruzado con motion/duration/fade y motion/easing/standard, sin escala ni desplazamiento. Se reserva el espacio de ambos estados y se vuelve al código/ícono tras motion/duration/feedback. Repetir la copia prolonga el aviso sin reiniciar movimiento. El fundido se mantiene con movimiento reducido. Se conserva el verde color/text/success.
+
+Prueba visual (pendiente de aprobación): SKU Compact con confirmación «Copiado» en el lugar del código, solo en esta tabla y sus tarjetas. El código y el ícono se ocultan conservando su espacio; la fila y el ancho de columna no cambian. Actualización de la variante en Figma pendiente de aprobación.
+
+Scroll horizontal (2026-10-22): indicador basado en el ancho real de la tabla, con tolerancia de 1 px. Se recorta el desborde decorativo cuando las columnas caben y se evita que el reparto de espacio sobrante cree scroll artificial.
+
+Mobile (2026-10-22): gap de las tarjetas entre encabezado y datos en space/gap/sm (0.5 rem).
+
+Descargas (2026-10-22): las filas de producto de la tabla usan padding superior e inferior space/padding/sm-md (12 px).
+
+Descargas (2026-10-22): en Desktop, el ancho del buscador sigue el ancho del título de la página. En Mobile, el fondo de los controles se extiende a ambos bordes para tapar el contenido durante el scroll, conservando el padding lateral y el offset sticky.
+
+Prueba visual (2026-10-22): buscador de Descargas con search-field Type=Line, lupa y línea inferior, manteniendo Size=Medium y el ancho layout/download-search.
+
+Descargas (2026-10-22): el contenedor de página usa space/section/md antes del título (6 rem en Desktop) y aplica space/gap/xl al host de la tabla (2 rem en Desktop). La barra y el encabezado sticky conservan sus offsets y padding; el espaciado de la ficha no cambia.
+
 - Figma: [1068-5582](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1068-5582)
 - Propiedades: Type: Product · Catalog; State: Default · Applied; Breakpoint: Desktop · Mobile; Show more
 
@@ -883,5 +899,11 @@ Tres zonas: fixed-start (miniatura layout/table-thumb + sku Size=Dense) y fixed-
 Columnas en este orden: Acabado, Tamaño, Potencia, Temp., CRI, Flujo lum., Ángulo, Eficiencia, IP, Regulación. Header: role/body-compact-regular en text/tertiary y fondo surface/soft. Row: valores en role/body-compact-regular (text/primary). Todo el texto es de 14 px (16 desde 1920 px en código). Separador inferior border/subtle, gap space/gap/sm y padding lateral space/padding/sm; en Row, vertical space/padding/sm.
 
 ## Íconos
+
+Chevrons de Recomendados (2026-10-22): fundido de entrada y salida con motion/duration/fade y motion/easing/standard, también al llegar a un extremo; sin escala ni desplazamiento.
+
+Galerías (2026-10-22): ambiente de la ficha con autoplay cada 3 s como Destacados, cursor grab/grabbing, arrastre y ampliación con el visor compartido de FOA. Los controles táctiles de ambiente usan chevrons. Recomendados del buscador usa arq-carousel-button con chevrons y estilo original, superpuesto a ambos lados y centrado en las imágenes. Aparecen con hover de la sección o foco de teclado; cada dirección solo si queda contenido por recorrer de ese lado. Sin arrastre con mouse. Overlays actualizados en Figma: color/overlay/scrim al 70 % para menú, filtros, descargas, buscador y comparación; color/overlay/scrim-gallery al 90 % para fotos ampliadas.
+
+Agregado en código (2026-10-22): icon/check (Figma 2891:13154), asset original de 16 × 16 en src/base/assets/check.svg. Se expone como icon('check') y acompaña «Copiado» en el hero y variants-table, con color semántico heredado.
 
 20 íconos de trazo de 1 px (`icon/<nombre>`): arrow-down, arrow-left, arrow-right, arrow-up, arrow-up-right, chevron-down, chevron-left, chevron-right, chevron-up, close, copy, download, filter, filter-off, instagram, menu, minus, plus, search, youtube. Theme=Default: color/icon/primary · Theme=Inverse: color/icon/inverse (sobre foto o fondos oscuros). En código: SVG inline con `stroke="currentColor"`.

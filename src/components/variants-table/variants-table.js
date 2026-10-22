@@ -154,7 +154,7 @@ class ArqVariantsTable extends ArqElement {
   };
   static template =
     `<div class="controls">` +
-    `<arq-search-field class="search" size="medium" show-icon show-clear placeholder="${TEXT.search}" label="${TEXT.searchLabel}" hidden></arq-search-field>` +
+    `<arq-search-field class="search" type="line" size="medium" show-icon show-clear placeholder="${TEXT.search}" label="${TEXT.searchLabel}" hidden></arq-search-field>` +
     `<arq-button class="toggle-filters" show-icon icon="filter">${TEXT.filters}</arq-button>` +
     `<span class="total role-body" aria-hidden="true"></span>` +
     `<div class="downloads"><slot name="downloads"></slot></div>` +
@@ -327,10 +327,15 @@ class ArqVariantsTable extends ArqElement {
     const scroll = root.querySelector('.scroll');
     const bar = root.querySelector('.scrollbar');
     const head = root.querySelector('.head');
+    const table = root.querySelector('.table');
+    // scrollWidth incluye también desbordes decorativos de las columnas sticky.
+    // El ancho real de la tabla determina si quedan columnas por desplazar.
+    const overflow = () => Math.max(0, table.getBoundingClientRect().width - scroll.clientWidth);
     const edges = () => {
-      const rest = scroll.scrollWidth - scroll.clientWidth - scroll.scrollLeft;
+      const max = overflow();
+      const rest = max - scroll.scrollLeft;
       for (const target of [scroll, head]) {
-        target.classList.toggle('more-start', scroll.scrollLeft > 1);
+        target.classList.toggle('more-start', max > 1 && scroll.scrollLeft > 1);
         target.classList.toggle('more-end', rest > 1);
       }
     };
@@ -339,7 +344,9 @@ class ArqVariantsTable extends ArqElement {
       edges();
     }, { passive: true });
     this.#measure = () => {
-      bar.hidden = scroll.hidden || scroll.scrollWidth <= scroll.clientWidth;
+      const fits = overflow() <= 1;
+      bar.hidden = scroll.hidden || fits;
+      scroll.classList.toggle('fits', fits);
       edges();
     };
     const observer = new ResizeObserver(() => {
@@ -455,7 +462,7 @@ class ArqVariantsTable extends ArqElement {
           `<td class="start">${thumb(row, 'thumb', catalog)}</td>` +
           `<th scope="row" class="sku-col"><span class="product">` +
           (catalog && row.name ? productName(row, 'role-body-compact-regular') : '') +
-          `<arq-sku size="compact" dense>${esc(row.sku)}</arq-sku></span></th>` +
+          `<arq-sku size="compact" dense data-arq-copy-feedback="replace">${esc(row.sku)}</arq-sku></span></th>` +
           columns.map((c) => `<td class="role-body-compact-regular${c.wide ? ' wide' : ' data'}"><span class="cell">${esc(row.values?.[c.key] ?? '—')}</span></td>`).join('') +
           `<td class="end">${download(row.sku)}</td>` +
           `</tr>`,
@@ -469,7 +476,7 @@ class ArqVariantsTable extends ArqElement {
           `<li class="card">` +
           `<span class="card-head">${thumb(row, 'card-thumb', catalog)}<span class="product">` +
           (catalog && row.name ? productName(row, 'role-body-compact-regular') : '') +
-          `<arq-sku size="compact" dense>${esc(row.sku)}</arq-sku></span>${download(row.sku)}</span>` +
+          `<arq-sku size="compact" dense data-arq-copy-feedback="replace">${esc(row.sku)}</arq-sku></span>${download(row.sku)}</span>` +
           (cardColumns.length
             ? `<dl class="card-data">` +
               cardColumns
@@ -541,16 +548,23 @@ class ArqVariantsTable extends ArqElement {
       }
     };
     apply(0);
+    const available = this.shadowRoot.querySelector('.scroll').clientWidth;
+    const fitsNaturally = table.getBoundingClientRect().width <= available + 1;
     // Lo que sobra: lo que ocupa de más la columna del sku (la única sin ancho fijo)
     const sku = table.querySelector('thead th.sku-col');
     const products = [...table.querySelectorAll('tbody .product')];
-    if (sku && products.length && columns.size) {
+    if (fitsNaturally && sku && products.length && columns.size) {
       const natural = Math.max(...products.map((product) => Math.max(...[...product.children].map((child) => child.getBoundingClientRect().width))));
       const extra = sku.getBoundingClientRect().width - natural - parseFloat(getComputedStyle(sku).paddingInlineEnd);
-      if (extra > 1) apply(Math.floor(extra / columns.size));
+      if (extra > 1) {
+        apply(Math.floor(extra / columns.size));
+        // Repartir espacio vacío nunca debe crear un desborde nuevo.
+        if (table.getBoundingClientRect().width > available + 1) apply(0);
+      }
     }
     this.#availableWidth = this.shadowRoot.querySelector('.scroll').clientWidth;
     this.#sized = widths.length > 0;
+    this.#measure?.();
     this.#syncHead();
   }
 

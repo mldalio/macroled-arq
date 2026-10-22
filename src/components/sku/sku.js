@@ -25,11 +25,11 @@ const FAILED_TEXT = isApple ? 'Copialo con ⌘C' : 'Copialo con Ctrl+C';
 
 // motion/duration/feedback ("2000ms" o "2s") en milisegundos. Sale de tokens.css
 // (dist/arq.css), así el tiempo se cambia desde Figma.
-function feedbackMs(element) {
-  const raw = getComputedStyle(element).getPropertyValue('--arq-motion-duration-feedback').trim();
+function feedbackMs(element, name = 'feedback') {
+  const raw = getComputedStyle(element).getPropertyValue(`--arq-motion-duration-${name}`).trim();
   const value = Number.parseFloat(raw);
   if (Number.isNaN(value)) {
-    if (import.meta.env.DEV) console.warn('[arq] <arq-sku>: falta --arq-motion-duration-feedback (¿se cargó arq.css?)');
+    if (import.meta.env.DEV) console.warn(`[arq] <arq-sku>: falta --arq-motion-duration-${name} (¿se cargó arq.css?)`);
     return 0;
   }
   return raw.endsWith('ms') ? value : value * 1000;
@@ -48,7 +48,7 @@ class ArqSku extends ArqElement {
     `<span class="label role-label">SKU</span>` +
     `<button type="button" class="row"><span class="code"><slot></slot></span>` +
     `<span class="copy">${icon('copy')}</span>` +
-    `<span class="copied role-caption" aria-hidden="true">${COPIED_TEXT}</span>` +
+    `<span class="copied role-caption" aria-hidden="true"><span class="success-icon">${icon('check')}</span>${COPIED_TEXT}</span>` +
     `<span class="failed role-caption" aria-hidden="true">${FAILED_TEXT}</span></button>` +
     `<span class="visually-hidden" aria-live="polite"></span>` +
     `</span>`;
@@ -93,7 +93,9 @@ class ArqSku extends ArqElement {
     }
     this.copied = true;
     this.emit('copy', { code: this.code });
-    this.#timer = setTimeout(() => (this.copied = false), feedbackMs(this));
+    this.#timer = setTimeout(() => {
+      this.copied = false;
+    }, feedbackMs(this));
   }
 
   update() {

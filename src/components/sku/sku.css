@@ -81,6 +81,23 @@
   height: var(--arq-icon-md);
 }
 
+/* El check de Figma acompaña la confirmación del hero y de las tablas. */
+.success-icon {
+  display: none;
+  flex: none;
+}
+
+:host([data-arq-copy-motion]) .copied,
+:host([data-arq-copy-feedback='replace']) .copied {
+  align-items: center;
+  gap: var(--arq-space-gap-xs);
+}
+
+:host([data-arq-copy-motion]) .success-icon,
+:host([data-arq-copy-feedback='replace']) .success-icon {
+  display: inline-flex;
+}
+
 /* State=Hover: el ícono pasa a color/icon/primary. Solo con mouse: en táctil
    quedaría pegado después del toque. */
 @media (hover: hover) and (pointer: fine) {
@@ -115,6 +132,28 @@
 
 /* Entra con un fundido (motion/duration/fade, que se queda con reduced
    motion); vuelve al ícono sin animación */
+/* Prueba en variants-table: confirmación en el lugar del código, sin mover
+   el contenido ni ensanchar la columna. Pendiente de aprobación visual. */
+:host([size='compact'][data-arq-copy-feedback='replace']) .row {
+  position: relative;
+}
+
+:host([size='compact'][data-arq-copy-feedback='replace'][copied]) .copy {
+  display: inline-flex;
+  visibility: hidden;
+}
+
+:host([size='compact'][data-arq-copy-feedback='replace'][copied]) .code {
+  visibility: hidden;
+}
+
+:host([size='compact'][data-arq-copy-feedback='replace']) .copied {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  white-space: nowrap;
+}
+
 .copied,
 .failed {
   transition-property: opacity, color;
@@ -152,6 +191,54 @@
 
 .row:focus:not(:focus-visible) {
   outline: none;
+}
+
+/* Microinteracción de texto: fundido cruzado sin escala ni desplazamiento.
+   Los elementos permanecen en su lugar durante ambos estados. */
+:host([data-arq-copy-motion]) .row {
+  display: inline-grid;
+  grid-template-columns: minmax(0, auto) max-content;
+}
+
+:host([data-arq-copy-motion]) .code {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+:host([data-arq-copy-motion]) .copy,
+:host([data-arq-copy-motion]) .copied,
+:host([data-arq-copy-motion]) .failed {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+:host([data-arq-copy-motion]) :is(.code, .copy, .copied),
+:host([data-arq-copy-feedback='replace']) :is(.code, .copy, .copied) {
+  transition: opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-standard);
+}
+
+:host([data-arq-copy-motion]) .copied,
+:host([data-arq-copy-feedback='replace']) .copied {
+  display: inline-flex;
+  opacity: 0;
+  pointer-events: none;
+}
+
+:host([data-arq-copy-motion][copied]) .copy,
+:host([data-arq-copy-feedback='replace'][copied]) .copy {
+  display: inline-flex;
+  visibility: visible;
+  opacity: 0;
+}
+
+:host([data-arq-copy-feedback='replace'][copied]) .code {
+  visibility: visible;
+  opacity: 0;
+}
+
+:host([data-arq-copy-motion][copied]) .copied,
+:host([data-arq-copy-feedback='replace'][copied]) .copied {
+  opacity: 1;
 }
 
 /* Size=Underline (Ficha v2, glosario): solo el código, subrayado y en

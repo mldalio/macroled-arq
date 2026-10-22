@@ -126,6 +126,9 @@
   --arq-alpha-white-22: rgba(255, 255, 255, 0.22);
   --arq-alpha-black-60: rgba(0, 0, 0, 0.6);
   --arq-alpha-transparent: rgba(0, 0, 0, 0);
+  --arq-alpha-black-80: rgba(0, 0, 0, 0.8); /** Negro al 80 % de opacidad para el scrim de modales, visores y paneles. */
+  --arq-alpha-black-70: rgba(0, 0, 0, 0.7); /** Negro al 70 % de opacidad para overlays. */
+  --arq-alpha-black-90: rgba(0, 0, 0, 0.9); /** Negro al 90 % de opacidad para overlays. */
   --arq-layout-card-min: 280px; /** Ancho mínimo de tarjeta en la grilla de catálogo (auto-fill). Desde 1600 px se reemplaza por layout/card-min-wide con una media query. */
   --arq-layout-card-min-wide: 340px; /** Ancho mínimo de tarjeta en la grilla de catálogo desde 1600 px. Se aplica en el CSS de la grilla con una media query (min-width: 1600px); no es un modo. */
   --arq-layout-compare-media-max: 2000px; /** Tope de ancho de la foto de compare-product. En la práctica la foto ocupa la columna. */
@@ -257,8 +260,9 @@
   --arq-color-action-primary-hover: var(--arq-neutral-750); /** Hover de la acción principal. */
   --arq-color-action-on-primary: var(--arq-neutral-0); /** Texto e íconos sobre color/action/primary. */
   --arq-color-accent-default: var(--arq-neutral-900); /** Acento para detalles: foco, estados activos, etiquetas. Light neutral/900, Dark neutral/150. Nunca fondo de botones ni de bloques grandes. */
-  --arq-color-overlay-scrim: var(--arq-alpha-black-60); /** Fondo semitransparente detrás de modales y paneles laterales. */
+  --arq-color-overlay-scrim: var(--arq-alpha-black-70); /** Fondo negro al 70 % detrás del menú, filtros, descargas, buscador y selector de comparación. */
   --arq-color-overlay-translucent: var(--arq-alpha-ink-10); /** Fondo translúcido para barras sobre fotos (navbar Transparent), junto con blur/backdrop. Igual en Light y Dark. */
+  --arq-color-overlay-scrim-gallery: var(--arq-alpha-black-90); /** Fondo negro al 90 % detrás de galerías de fotos ampliadas (FOA y ficha). */
   --arq-layout-gutter: var(--arq-space-40); /** Margen lateral de la página. Mobile 20 · Tablet (768–1023) 32 · Desktop (1024–1439) 40 · Large (desde 1440) 64. Desde 1920 el margen crece para que el contenido no pase de layout/max-width; los fondos siguen a todo el ancho. */
   --arq-icon-sm: var(--arq-space-12); /** Íconos dentro de texto pequeño o chips. */
   --arq-icon-md: var(--arq-space-16); /** Íconos por defecto (botones, navegación). */

@@ -19,9 +19,11 @@ El HTML del embed completo está en [src/pages/descargas.html](../../pages/desca
 | slot `modal-title` | Título del download-modal |
 
 - Los textos van por slot desde el embed, para que queden indexables.
-- «Buscar archivos por producto»: `space/section/sm` arriba y la tabla a `space/gap/md`.
+- «Buscar archivos por producto»: `space/section/md` arriba (6 rem en Desktop) y la tabla a `space/gap/md`. En esta página, el gap interno de `arq-variants-table` es `space/gap/xl` (2 rem en Desktop). Se mantienen los valores responsive de los tokens y los offsets y padding de la barra y encabezado sticky.
 
 ## Comportamiento
+
+- En Desktop, la línea del buscador se ajusta al ancho real del título mediante ResizeObserver, también al cargar la fuente o cambiar el tamaño de pantalla. En Mobile, el fondo de la barra de búsqueda y filtros llega a los bordes y tapa las tarjetas que pasan por debajo; los controles conservan el margen lateral.
 
 - **Filtros:** panel lateral (filter-panel de downloads-table). De las dos propuestas se eligió esta; la desplegable quedó en la historia de la rama `feat/descargas-propuesta`.
 - **Filas:** todos los SKU (`getDownloadsTable()` de `src/data/catalog.js`), con el nombre corto del producto (la colección: «Nobu»; con la aplicación si la colección tiene varios productos: «Kanu Pared»; sin colección, la primera palabra: «Skyline»), el link a su ficha (`?sku=`) y la variante («Negro, 6 W, luz cálida») para el modal. Columnas: una por filtro (`DOWNLOAD_FILTERS`), en el mismo orden y con el nombre corto (Temp., Material, Tensión); solo las que tienen algún valor. Todo en una línea: si no entran, la tabla se desliza en horizontal (producto y descarga quedan fijos). Filtros: `DOWNLOAD_FILTERS` (`attributes.js`), en el orden de la propuesta: Montaje, Acabado, Potencia, Temperatura de color, IP, Regulación, CRI, Ángulo, Fuente, Material del cuerpo y Tensión de entrada; solo los que tienen al menos dos valores. Tamaño, Flujo luminoso y Eficiencia no son filtro (casi un valor por SKU) ni columna. `TODO` (diseño): Familia y Fotometría de la propuesta no tienen campo en la base.

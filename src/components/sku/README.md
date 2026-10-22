@@ -29,6 +29,10 @@ Código de producto con botón de copiar. Size=Default en el configurador de la 
 
 ## Tokens
 
+En el hero y variants-table, «Copiado» lleva delante `icon/check` de Figma (2891:13154), separado por space/gap/xs. Se usa el SVG original de 16 × 16 con color/text/success heredado; acompaña el mismo fundido de la confirmación.
+
+Microinteracción del hero y variants-table: fundido cruzado de opacidad con motion/duration/fade y motion/easing/standard, sin escala ni desplazamiento. En tablas, «Copiado» ocupa el lugar del código; en el hero, el del ícono, con espacio reservado para evitar cambios de ancho. Tras motion/duration/feedback vuelve el estado inicial con el mismo fundido. Repetir la copia prolonga el aviso sin reiniciar el movimiento. El fundido se mantiene con movimiento reducido. Se conserva color/text/success.
+
 | Parte | Token |
 | --- | --- |
 | Etiqueta "SKU" | `color/text/secondary` · `role/label` (solo Default) |

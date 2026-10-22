@@ -225,6 +225,44 @@
   color: var(--arq-color-text-tertiary);
 }
 
+.cards-wrap {
+  position: relative;
+  min-width: 0;
+}
+
+.rail-arrow {
+  position: absolute;
+  z-index: 1;
+  top: var(--arq-search-arrow-top, 50%);
+  transform: translateY(-50%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-standard),
+    visibility 0s linear var(--arq-motion-duration-fade);
+}
+
+.rail-prev { inset-inline-start: var(--arq-space-gap-md); }
+.rail-next { inset-inline-end: var(--arq-space-gap-md); }
+
+@media (hover: hover) and (pointer: fine) {
+  .recommended:hover .rail-arrow:not([data-arq-unavailable]) {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+}
+
+/* El acceso con teclado no depende del hover. En táctil queda el scroll nativo. */
+.recommended:focus-within .rail-arrow:not([data-arq-unavailable]) {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
 /* Fila de tarjetas en una sola línea, con scroll horizontal sin barra visible
    (como variants-table). --cols: cuántas entran enteras; la siguiente asoma
    (peek) para que se vea que se desliza. Desde 1600 px 5 (como la grilla, que

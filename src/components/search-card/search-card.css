@@ -9,6 +9,7 @@
 /* Imagen → nombre: space/gap/sm */
 .card {
   display: flex;
+  cursor: pointer;
   flex-direction: column;
   gap: var(--arq-space-gap-sm);
   color: var(--arq-color-text-primary);

@@ -49,6 +49,9 @@
 //   TODO (diseño): el PDF no tiene diseño; se genera cuando exista.
 
 import { ArqElement } from '../../base/arq-element.js';
+import { HorizontalRail } from '../../base/horizontal-rail.js';
+import { PhotoViewer, photoViewerTemplate } from '../../base/photo-viewer.js';
+import viewerCss from '../../base/photo-viewer.css?inline';
 import { animateThemeChange, refreshTheme, setBrowserBar, takeThemeHandoff, withoutThemeTransition } from '../../base/theme.js';
 import { getProduct, variantDetails, collectionHref, listCompareCandidates } from '../../data/catalog.js';
 import { attributeInfo } from '../../data/attributes.js';
@@ -73,7 +76,6 @@ import '../spec-row/spec-row.js';
 import '../variants-table/variants-table.js';
 import '../family-card/family-card.js';
 import '../icon-button/icon-button.js';
-import { icon } from '../../base/icons.js';
 import '../download-modal/download-modal.js';
 import '../download-item/download-item.js';
 import css from './ficha-producto.css?inline';
@@ -113,7 +115,7 @@ const toLinear = (channel) => {
 
 class ArqFichaProducto extends ArqElement {
   static tag = 'arq-ficha-producto';
-  static styles = css;
+  static styles = css + viewerCss;
   static properties = {
     // Destino del botón del bloque «¿Te interesa este producto?»
     ctaHref: { type: String, default: '/arq/contacto' },
@@ -138,7 +140,7 @@ class ArqFichaProducto extends ArqElement {
     // Descripción de la variante: debajo del nombre, en 14 px y discreta
     // (decisiones.md, 2026-10-21 · Configurador de la ficha)
     `<div class="description role-body-compact"><span class="variant-description" hidden></span></div>` +
-    `<arq-sku class="sku needs-data" size="compact"></arq-sku>` +
+    `<arq-sku class="sku needs-data" size="compact" data-arq-copy-motion></arq-sku>` +
     `</div>` +
     `</div>` +
     `<div class="info">` +
@@ -164,11 +166,11 @@ class ArqFichaProducto extends ArqElement {
     `<div class="ambient" role="region" aria-label="Galería de ambiente" tabindex="0"></div>` +
     // Flechas debajo de las fotos en pantallas sin cursor (táctiles); con cursor, la flecha sigue al mouse
     `<div class="ambient-controls">` +
-    `<arq-icon-button class="ambient-prev" icon="arrow-left" size="large" background="outline" disabled>${TEXT.previous}</arq-icon-button>` +
-    `<arq-icon-button class="ambient-next" icon="arrow-right" size="large" background="outline">${TEXT.next}</arq-icon-button>` +
+    `<arq-icon-button class="ambient-prev" icon="chevron-left" size="large" background="outline" disabled>${TEXT.previous}</arq-icon-button>` +
+    `<arq-icon-button class="ambient-next" icon="chevron-right" size="large" background="outline">${TEXT.next}</arq-icon-button>` +
     `</div>` +
-    `<span class="ambient-cursor" aria-hidden="true" hidden>${icon('arrow-right')}${icon('arrow-left')}</span>` +
     `</div>` +
+    photoViewerTemplate +
     // Glosario de variantes
     `<div class="glossary needs-data">` +
     `<div class="glossary-title role-display-sm"><slot name="glossary-title"></slot></div>` +
@@ -216,6 +218,18 @@ class ArqFichaProducto extends ArqElement {
     `<arq-download-modal id="downloads-modal" show-product><slot name="modal-title" slot="title"></slot></arq-download-modal>`;
 
   #product = null;
+  #ambientRail = null;
+  #viewer = null;
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.#ambientRail?.connect();
+  }
+
+  disconnectedCallback() {
+    this.#ambientRail?.disconnect();
+    this.#viewer?.close();
+  }
 
   update(changed) {
     if (changed.has('ctaHref')) this.shadowRoot.querySelector('.cta-action').href = this.ctaHref;
@@ -659,90 +673,48 @@ class ArqFichaProducto extends ArqElement {
     const root = this.shadowRoot;
     const ambient = root.querySelector('.ambient');
     root.querySelector('.ambient-block').hidden = !images.ambient.length;
-    ambient.replaceChildren(...images.ambient.map((src, i) => image(src, `${group.name}, ambiente ${i + 1}`)));
+    this.#viewer?.close();
+    ambient.replaceChildren(...images.ambient.map((src, i) => {
+      const img = image(src, `${group.name}, ambiente ${i + 1}`);
+      img.tabIndex = 0; img.draggable = false; img.setAttribute('role', 'button');
+      img.setAttribute('aria-label', `Ampliar ${img.alt}`);
+      return img;
+    }));
+    ambient.scrollLeft = 0;
     ambient.dispatchEvent(new Event('scroll'));
   }
 
-  // Galería de ambiente: con mouse, el cursor pasa a ser la flecha (icon/arrow-right o arrow-left)
-  // y el clic desplaza la fila; sin cursor (táctil), dos botones debajo de las fotos.
-  // Mitad derecha: siguiente; mitad izquierda: anterior. Al inicio solo hay «siguiente» y,
-  // al final, solo «anterior».
+  // Avance nativo como Destacados; arrastrar desplaza y clic abre la foto.
   #setupAmbient() {
     const root = this.shadowRoot;
     const scroller = root.querySelector('.ambient');
-    const cursor = root.querySelector('.ambient-cursor');
+    const photos = () => [...scroller.querySelectorAll('img')].map(img => ({ src: img.currentSrc || img.src, alt: img.alt }));
+    this.#viewer = new PhotoViewer(root, photos, open => { this.#ambientRail.blocked = open; });
+    this.#ambientRail = new HorizontalRail(this, scroller, {
+      autoplay: true,
+      open: event => {
+        const img = event.composedPath().find(node => node.localName === 'img');
+        if (img) this.#viewer.open([...scroller.children].indexOf(img), img);
+      },
+    });
     const prev = root.querySelector('.ambient-prev');
     const next = root.querySelector('.ambient-next');
-    const canPrev = () => scroller.scrollLeft > 1;
-    const canNext = () => scroller.scrollLeft + scroller.clientWidth < scroller.scrollWidth - 1;
-    let pointer = null;
-
-    const direction = (x) => {
-      const box = scroller.getBoundingClientRect();
-      let dir = x < box.left + box.width / 2 ? -1 : 1;
-      if (dir === -1 && !canPrev()) dir = 1;
-      if (dir === 1 && !canNext()) dir = -1;
-      return dir;
-    };
-    const place = () => {
-      const scrollable = canPrev() || canNext();
-      scroller.classList.toggle('is-scrollable', scrollable);
-      cursor.hidden = !pointer || !scrollable;
-      if (cursor.hidden) return;
-      cursor.dataset.direction = direction(pointer.x) === 1 ? 'next' : 'prev';
-      cursor.style.transform = `translate(${pointer.x}px, ${pointer.y}px)`;
-    };
-    // De a una foto. Adelante: la próxima foto que no entra completa (con el margen de la derecha)
-    // y que todavía no está alineada a la izquierda; se la lleva hasta que entre completa, o
-    // alineada a la izquierda si es más ancha que la pantalla. Atrás: la última foto cortada a
-    // la izquierda, alineada a la izquierda. La última queda con el margen derecho.
-    const go = (dir) => {
-      const box = scroller.getBoundingClientRect();
-      const inset = parseFloat(getComputedStyle(scroller).paddingLeft) || 0;
-      const here = scroller.scrollLeft;
-      const items = [...scroller.children].map((img) => {
-        const rect = img.getBoundingClientRect();
-        return { left: rect.left - box.left + here, right: rect.right - box.left + here };
-      });
-      const max = scroller.scrollWidth - scroller.clientWidth;
-      let target;
-      if (dir === 1) {
-        const item = items.find((i) => i.right > here + scroller.clientWidth - inset + 2 && i.left > here + inset + 2);
-        target = item ? Math.min(item.right + inset - scroller.clientWidth, item.left - inset) : max;
-      } else {
-        const item = [...items].reverse().find((i) => i.left < here + inset - 2);
-        target = item ? item.left - inset : 0;
-      }
-      scroller.scrollTo({ left: Math.min(Math.max(target, 0), max), behavior: reducedMotion() ? 'auto' : 'smooth' });
-    };
-
     const sync = () => {
-      prev.disabled = !canPrev();
-      next.disabled = !canNext();
-      place();
+      prev.disabled = scroller.scrollLeft <= 1;
+      next.disabled = scroller.scrollLeft + scroller.clientWidth >= scroller.scrollWidth - 1;
     };
     scroller.addEventListener('scroll', sync, { passive: true });
-    // las fotos cambian el ancho total al cargar
-    scroller.addEventListener('load', sync, true);
-    new ResizeObserver(sync).observe(scroller);
-
-    scroller.addEventListener('pointermove', (event) => {
-      if (event.pointerType !== 'mouse') return;
-      pointer = { x: event.clientX, y: event.clientY };
-      place();
-    });
-    scroller.addEventListener('pointerleave', () => {
-      pointer = null;
-      place();
-    });
-    scroller.addEventListener('click', (event) => {
-      if (event.pointerType === 'mouse' || event.detail > 0) {
-        if (!(canPrev() || canNext())) return;
-        go(direction(event.clientX));
+    scroller.addEventListener('arq:rail-resize', sync);
+    scroller.addEventListener('keydown', event => {
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        event.preventDefault(); this.#ambientRail.go(event.key === 'ArrowLeft' ? -1 : 1);
+      } else if (event.key === 'Enter' || event.key === ' ') {
+        const index = [...scroller.children].indexOf(event.target);
+        if (index >= 0) { event.preventDefault(); this.#viewer.open(index, event.target); }
       }
     });
-    prev.addEventListener('click', () => go(-1));
-    next.addEventListener('click', () => go(1));
+    prev.addEventListener('click', () => this.#ambientRail.go(-1));
+    next.addEventListener('click', () => this.#ambientRail.go(1));
   }
 
   // ── Descripción ───────────────────────────────────────────────────

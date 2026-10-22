@@ -18,6 +18,8 @@ Carrusel de `scene/proyectos` de Home v2: fotos de obra con el slide Activo al c
 
 ## Props
 
+El visor comparte plantilla y estilos con la galería de ambiente de la ficha (`src/base/photo-viewer.*`). Su fondo usa `color/overlay/scrim-gallery`, negro al 90 % en Light y Dark. Los paneles y modales de interfaz usan `color/overlay/scrim`, al 70 %.
+
 | Atributo | Valores |
 | --- | --- |
 | `autoplay` | presencia = avanza solo cada 3 s. Sin atributo, quieto |

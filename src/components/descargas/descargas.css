@@ -11,16 +11,25 @@
   color: var(--arq-color-text-primary);
 }
 
-/* «Buscar archivos por producto» role/heading-1 y la tabla a space/gap/md;
-   arriba space/section/sm */
+/* «Buscar archivos por producto» role/heading-1; arriba space/section/md
+   (6 rem en Desktop). El espaciado queda fuera de los controles sticky. */
 .search-section {
   display: flex;
   flex-direction: column;
   gap: var(--arq-space-gap-md);
-  padding-top: var(--arq-space-section-sm);
+  padding-top: var(--arq-space-section-md);
+}
+
+/* Separación inicial entre controles y filas (2 rem en Desktop).
+   La barra y el encabezado fijados conservan sus offsets y padding. */
+.table {
+  gap: var(--arq-space-gap-xl);
 }
 
 .search-title {
+  align-self: flex-start;
+  box-sizing: border-box;
+  max-width: 100%;
   padding-inline: var(--page-gutter);
   color: var(--arq-color-text-primary);
 }

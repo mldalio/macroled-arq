@@ -1013,6 +1013,54 @@
           }
         }
       }
+    },
+    "black-80": {
+      "$type": "color",
+      "$value": "#000000cc",
+      "$description": "Negro al 80 % de opacidad para el scrim de modales, visores y paneles.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-alpha-black-80)"
+          }
+        }
+      }
+    },
+    "black-70": {
+      "$type": "color",
+      "$value": "#000000b2",
+      "$description": "Negro al 70 % de opacidad para overlays.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-alpha-black-70)"
+          }
+        }
+      }
+    },
+    "black-90": {
+      "$type": "color",
+      "$value": "#000000e5",
+      "$description": "Negro al 90 % de opacidad para overlays.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-alpha-black-90)"
+          }
+        }
+      }
     }
   },
   "neutral": {

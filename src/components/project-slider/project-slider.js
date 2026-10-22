@@ -26,13 +26,15 @@ import { containScroll } from '../../base/scroll-lock.js';
 import '../carousel-controls/carousel-controls.js';
 import '../icon-button/icon-button.js';
 import css from './project-slider.css?inline';
+import viewerCss from '../../base/photo-viewer.css?inline';
+import { photoViewerTemplate } from '../../base/photo-viewer.js';
 
 const AUTOPLAY_MS = 3000;
 const DRAG_START = 6;
 
 class ArqProjectSlider extends ArqElement {
   static tag = 'arq-project-slider';
-  static styles = css;
+  static styles = css + viewerCss;
   static properties = {
     autoplay: { type: Boolean },
   };
@@ -46,17 +48,7 @@ class ArqProjectSlider extends ArqElement {
     `<arq-carousel-controls class="controls" buttons="carousel" label-prev="Proyecto anterior" label-next="Proyecto siguiente"></arq-carousel-controls>` +
     `</div>` +
     `</div>` +
-    `<dialog class="lightbox" data-arq-theme="dark" aria-label="Galería ampliada">` +
-    `<div class="lightbox-bar">` +
-    `<p class="lightbox-count role-body" aria-live="polite"></p>` +
-    `<arq-icon-button class="lightbox-close" icon="close" size="large" background="subtle">Cerrar</arq-icon-button>` +
-    `</div>` +
-    `<div class="lightbox-stage">` +
-    `<arq-icon-button class="lightbox-prev" icon="chevron-left" size="large" background="subtle">Foto anterior</arq-icon-button>` +
-    `<img class="lightbox-image" alt="">` +
-    `<arq-icon-button class="lightbox-next" icon="chevron-right" size="large" background="subtle">Foto siguiente</arq-icon-button>` +
-    `</div>` +
-    `</dialog>`;
+    photoViewerTemplate;
 
   #index = 0;
   #lightbox = 0;

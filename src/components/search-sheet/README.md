@@ -55,6 +55,10 @@ sheet.show(botonLupa);     // el foco vuelve a botonLupa al cerrar
 
 ## Tokens
 
+Los chevrons aparecen y desaparecen con fundido `motion/duration/fade` y `motion/easing/standard`, sin escala ni desplazamiento. El fundido también se aplica al llegar a los extremos; la dirección deja de ser interactiva inmediatamente. Con movimiento reducido se conserva solo este fundido.
+
+La fila de Recomendados usa `arq-carousel-button` con los estilos originales y chevrons a ambos lados, centrados en la altura de las imágenes. Aparecen al hacer hover sobre la sección o al navegar con teclado. Solo aparece cada dirección si hay contenido por recorrer de ese lado; si todo cabe, no hay botones. Cada clic avanza una tarjeta. Sin arrastre con mouse ni cursor grab; en táctil mantiene el scroll nativo. El clic en una tarjeta abre el producto.
+
 | Parte | Token |
 | --- | --- |
 | Panel | fondo `color/surface/default`, sin sombra |
@@ -70,5 +74,5 @@ sheet.show(botonLupa);     // el foco vuelve a botonLupa al cerrar
 
 - Diseño en Figma (sheet en los tres anchos, y las variantes de search-field, search-result y search-collection).
 - Criterio de «recomendados» (`getRecommendedProducts` en `src/data/catalog.js` toma hoy los primeros del catálogo con foto).
-- Animación de cierre, flechas del carrusel de recomendados.
+- Animación de cierre.
 - Rendimiento: el catálogo tarda varios segundos en la primera carga; la búsqueda en vivo y los recomendados esperan ese tiempo.

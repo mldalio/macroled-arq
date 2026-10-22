@@ -1463,3 +1463,17 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - **Hover de toda la opción:** como la fila entera es clickeable, reacciona entera (también sobre el número): label `color/text/primary`, número `color/text/secondary`, caja con borde `border/strong`. Fundido de color `motion/duration/fast` con `motion/easing/standard` (0 con reduced motion), solo con mouse. En filter-row suma un fondo tenue `color/surface/faint` en toda la opción, que se asoma `space/padding/sm-md` a los lados y `space/padding/xs` arriba y abajo (el gap entre opciones baja lo mismo: la distancia entre opciones no cambia); el cuerpo de filter-panel deja ese lugar a la izquierda para que el scroll no lo corte. No va en opciones Disabled ni en el «Comparar» de las tarjetas.
 - **Barra de scroll del panel:** el cuerpo de filter-panel llega al borde derecho y devuelve el margen como padding, así la barra queda en el borde del panel, a `space/padding/xl-2xl` (Mobile `layout/gutter`) del contenido, que sigue alineado con el título y el footer.
 - **Qué cuenta:** lo que daría «Ver N» si se marcara esa opción con lo demás marcado (en el mismo filtro, como si fuera la única elegida ahí). Productos: productos (cards); Colecciones: colecciones; variants-table (ficha y Descargas): variantes, con la búsqueda. Una opción en 0 se oculta (ver Filtros que no aplican). Lo marcado sin resultados queda a la vista, sin número.
+
+## 2026-10-22 · Galería de ambiente, Recomendados y scrim
+
+- Ambiente de la ficha: avance automático con el patrón de Destacados (una foto cada `motion/duration/feedback × 1.5`, 3 s, scroll suave y vuelta al inicio). Pausa al interactuar, con foco, fuera de vista, pestaña oculta, visor abierto y movimiento reducido.
+- El cursor de flechas se reemplaza por grab/grabbing. Arrastrar desplaza; clic o Enter/Espacio sobre una foto abre un visor completo como el de FOA, compartiendo plantilla y estilos. Los controles táctiles usan chevrons. El visor admite ←/→, Esc, botón de cierre y devuelve el foco a la foto.
+- Recomendados del buscador: arq-carousel-button con chevrons y el estilo original del componente, superpuesto a ambos lados y centrado en las imágenes. Aparecen al hacer hover sobre la sección o con foco de teclado. Cada dirección solo aparece si queda contenido por recorrer de ese lado; si todo cabe, no hay botones. Un clic avanza una tarjeta. Sin arrastre con mouse; en táctil sigue el desplazamiento nativo.
+- El usuario eligió elevar el scrim del 60 al 80 % en todos los modales y paneles. En Figma se creó `alpha/black-80` y `color/overlay/scrim` apunta a ese primitivo en Light y Dark. Se exportaron las colecciones afectadas y se regeneraron los tokens.
+- El mosaico de Colección está en la ficha individual de una colección, debajo del bloque de texto e imagen. No se modificaron sus controles en esta tarea.
+
+## 2026-10-22 · Opacidad diferenciada de paneles y galerías
+
+- Reemplaza la elección anterior del 80 % compartido: menú desplegable, panel de filtros, modal de descargas, buscador general y selector de comparación usan negro al 70 % (`color/overlay/scrim` → `alpha/black-70`).
+- Las galerías ampliadas de FOA y de la ficha usan negro al 90 % (`color/overlay/scrim-gallery` → `alpha/black-90`). El visor de project-mosaic usa el mismo token de galería.
+- Ambos tokens tienen los mismos valores en Light y Dark. Se actualizaron en Figma, se exportaron las colecciones afectadas y se regeneraron los archivos de tokens.

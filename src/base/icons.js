@@ -9,6 +9,8 @@
 // - Sin width/height: el tamaño lo define el CSS del componente con --arq-icon-*.
 // - aria-hidden: el nombre accesible lo lleva el botón o link que contiene al ícono.
 
+import checkSvg from './assets/check.svg?raw';
+
 const paths = {
   // 1242:21745
   'arrow-down': '<path vector-effect="non-scaling-stroke" d="M8 2V13.3M12.65 8.65L8 13.3L3.35 8.65"/>',
@@ -57,7 +59,7 @@ const paths = {
 };
 
 /** Nombres disponibles, iguales a Figma sin el prefijo icon/ */
-export const iconNames = Object.freeze(Object.keys(paths));
+export const iconNames = Object.freeze([...Object.keys(paths), 'check']);
 
 /**
  * Devuelve el SVG del ícono como string, para usar dentro de un template:
@@ -65,6 +67,10 @@ export const iconNames = Object.freeze(Object.keys(paths));
  * Un nombre desconocido devuelve '' (y avisa en desarrollo).
  */
 export function icon(name) {
+  // Figma 2891:13154: asset original 16 × 16, con color semántico heredado.
+  if (name === 'check') return checkSvg
+    .replace('<svg ', '<svg class="icon" data-icon="check" aria-hidden="true" focusable="false" ')
+    .replace('fill="black"', 'fill="currentColor"');
   const path = paths[name];
   if (!path) {
     if (import.meta.env.DEV) console.warn(`[arq] icon: no existe "${name}". Disponibles: ${iconNames.join(', ')}`);

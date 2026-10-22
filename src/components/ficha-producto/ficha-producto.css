@@ -252,55 +252,21 @@
   width: calc(var(--page-gutter) - var(--ambient-gap));
 }
 
-/* Con mouse: el cursor es la flecha de la galería (icon/arrow-right o arrow-left, según la
-   mitad donde está y si ya se desplazó), en blanco (color/icon/inverse). */
-.ambient-cursor {
-  position: fixed;
-  z-index: 3;
-  top: 0;
-  left: 0;
-  display: block;
-  --cursor-size: calc(var(--arq-icon-2xl) * 2);
-  width: var(--cursor-size);
-  height: var(--cursor-size);
-  margin: calc(var(--cursor-size) / -2) 0 0 calc(var(--cursor-size) / -2);
-  color: var(--arq-color-icon-inverse);
-  pointer-events: none;
-}
+.ambient-controls { display: none; }
 
-.ambient-cursor[hidden] {
-  display: none;
+.ambient { touch-action: pan-x pan-y pinch-zoom; }
+.ambient img:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: calc(-1 * var(--arq-border-strong));
 }
-
-/* TODO (diseño): no hay ícono más grande que icon/2xl; el cursor es el doble (64) y el trazo
-   pasa a border/strong para que se note */
-.ambient-cursor .icon {
-  width: 100%;
-  height: 100%;
-  stroke-width: var(--arq-border-strong);
-}
-
-.ambient-cursor[data-direction='next'] [data-icon='arrow-left'],
-.ambient-cursor[data-direction='prev'] [data-icon='arrow-right'] {
-  display: none;
-}
-
-.ambient-controls {
-  display: none;
-}
-
 @media (hover: hover) and (pointer: fine) {
-  .ambient.is-scrollable {
-    cursor: none;
-  }
+  .ambient { cursor: zoom-in; }
+  .ambient[data-arq-scrollable] { cursor: grab; }
+  .ambient[data-arq-dragging] { cursor: grabbing; user-select: none; }
 }
 
 /* Sin cursor (táctil): las dos flechas, abajo a la derecha de las fotos */
 @media (hover: none), (pointer: coarse) {
-  .ambient-cursor {
-    display: none;
-  }
-
   .ambient-controls {
     display: flex;
     justify-content: flex-end;

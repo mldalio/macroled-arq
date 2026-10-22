@@ -45,6 +45,7 @@ import { ArqElement } from '../../base/arq-element.js';
 import { containScroll } from '../../base/scroll-lock.js';
 import '../logo/logo.js';
 import '../icon-button/icon-button.js';
+import '../carousel-button/carousel-button.js';
 import '../button/button.js';
 import '../search-field/search-field.js';
 import '../search-result/search-result.js';
@@ -82,7 +83,9 @@ class ArqSearchSheet extends ArqElement {
     `<div class="content">` +
     `<div class="recommended">` +
     `<p class="title role-label"></p>` +
-    `<div class="cards"></div>` +
+    `<div class="cards-wrap"><div class="cards"></div>` +
+    `<arq-carousel-button class="rail-arrow rail-prev" direction="previous" hidden>Productos anteriores</arq-carousel-button>` +
+    `<arq-carousel-button class="rail-arrow rail-next" direction="next" hidden>Productos siguientes</arq-carousel-button></div>` +
     `</div>` +
     `<div class="results"></div>` +
     `</div>` +
@@ -129,6 +132,11 @@ class ArqSearchSheet extends ArqElement {
 
   setup() {
     const root = this.shadowRoot;
+    const cards = root.querySelector('.cards');
+    cards.addEventListener('scroll', () => this.#syncRecommendedControls(), { passive: true });
+    cards.addEventListener('dragstart', event => event.preventDefault());
+    root.querySelector('.rail-prev').addEventListener('click', () => this.#scrollRecommended(-1));
+    root.querySelector('.rail-next').addEventListener('click', () => this.#scrollRecommended(1));
     this.#dialog = root.querySelector('dialog');
     root.querySelector('.close').addEventListener('click', () => this.close());
     // Logo Default en Desktop y Small en Mobile (como el navbar)
@@ -153,6 +161,56 @@ class ArqSearchSheet extends ArqElement {
     this.#renderRecommended();
     this.#renderResults();
     window.addEventListener('resize', () => this.#fit());
+  }
+
+  #recommendedResize = new ResizeObserver(() => this.#syncRecommendedControls());
+  connectedCallback() {
+    super.connectedCallback();
+    this.#watchRecommended();
+  }
+  disconnectedCallback() {
+    this.#recommendedResize.disconnect();
+  }
+
+  #watchRecommended() {
+    this.#recommendedResize.disconnect();
+    const cards = this.shadowRoot.querySelector('.cards');
+    this.#recommendedResize.observe(cards);
+    if (cards.firstElementChild) this.#recommendedResize.observe(cards.firstElementChild);
+    this.#syncRecommendedControls();
+  }
+
+  #syncRecommendedControls() {
+    const root = this.shadowRoot;
+    const cards = root.querySelector('.cards');
+    const max = cards.scrollWidth - cards.clientWidth;
+    const prev = root.querySelector('.rail-prev');
+    const next = root.querySelector('.rail-next');
+    const states = [
+      [prev, !cards.firstElementChild || max <= 1 || cards.scrollLeft <= 1, cards.firstElementChild],
+      [next, !cards.firstElementChild || max - cards.scrollLeft <= 1, cards.lastElementChild],
+    ];
+    for (const [button, unavailable, fallback] of states) {
+      if (unavailable && root.activeElement === button) fallback?.focus();
+      button.toggleAttribute('data-arq-unavailable', unavailable);
+      button.inert = unavailable;
+      button.setAttribute('aria-hidden', String(unavailable));
+      // El CSS completa el fundido antes de ocultarlo visualmente.
+      button.hidden = false;
+    }
+    const media = cards.firstElementChild?.shadowRoot?.querySelector('.media');
+    if (media) root.querySelector('.cards-wrap').style.setProperty('--arq-search-arrow-top', `${media.getBoundingClientRect().height / 2}px`);
+  }
+
+  #scrollRecommended(direction) {
+    const cards = this.shadowRoot.querySelector('.cards');
+    const item = cards.firstElementChild;
+    if (!item) return;
+    const gap = parseFloat(getComputedStyle(cards).columnGap) || 0;
+    cards.scrollBy({
+      left: direction * (item.getBoundingClientRect().width + gap),
+      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+    });
   }
 
   update(changed) {
@@ -232,6 +290,7 @@ class ArqSearchSheet extends ArqElement {
     );
     // Sin recomendados no se muestra el bloque (ni el título ni el link)
     root.querySelector('.recommended').dataset.empty = String(this.#recommended.length === 0);
+    if (this.isConnected) this.#watchRecommended();
     this.#syncAll();
     this.#fit();
   }

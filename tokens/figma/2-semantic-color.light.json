@@ -490,8 +490,8 @@
     "overlay": {
       "scrim": {
         "$type": "color",
-        "$value": "{alpha.black-60}",
-        "$description": "Fondo semitransparente detrás de modales y paneles laterales.",
+        "$value": "{alpha.black-70}",
+        "$description": "Fondo negro al 70 % detrás del menú, filtros, descargas, buscador y selector de comparación.",
         "$extensions": {
           "com.figma": {
             "scopes": [
@@ -516,6 +516,22 @@
             ],
             "codeSyntax": {
               "WEB": "var(--arq-color-overlay-translucent)"
+            }
+          }
+        }
+      },
+      "scrim-gallery": {
+        "$type": "color",
+        "$value": "{alpha.black-90}",
+        "$description": "Fondo negro al 90 % detrás de galerías de fotos ampliadas (FOA y ficha).",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-overlay-scrim-gallery)"
             }
           }
         }
