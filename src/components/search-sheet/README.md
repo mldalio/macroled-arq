@@ -39,7 +39,7 @@ sheet.show(botonLupa);     // el foco vuelve a botonLupa al cerrar
 - **Arriba:** arranca en la barra del navbar (`--sheet-top`, lo pone el navbar): con announcement-bar a la vista, debajo de ella. El scrim arranca debajo de la barra (no oscurece la del navbar mientras la del sheet se vuelve sólida).
 - **Cruz y lupa:** la cruz del sheet va en el lugar de la lupa del navbar; se funden una con otra (`motion/duration/fast`) al abrir y al cerrar.
 - **Campo:** search-field `type="line" size="large" show-clear`: lo escrito en `role/heading-3`, el placeholder en Light y, con texto, la cruz chica que borra.
-- **Recomendados:** search-card en `ratio/landscape` (5:4); la fila va a sangre a la derecha (llega al borde de la pantalla y el margen aparece al final del scroll). «Ver todos los productos» con `space/padding/2xl` abajo, como los «Ver todo…» del mega-menu.
+- **Recomendados:** search-card en `ratio/square` (1:1), con `space/gap/lg` entre ellas (`space/gap/md` en Mobile). Entran enteras 4 (5 desde 1600 px, 3 en Tablet, 2 en Mobile) y la siguiente asoma cortada en el margen derecho para mostrar que se desliza; el salto es de a una tarjeta (snap y botones) y la última termina contra el margen. Si el alto de la pantalla no alcanza (laptops), se suman columnas: las tarjetas se achican y siguen cuadradas. Si todas entran, no hay scroll ni tarjeta cortada. Los botones son `arq-carousel-button` `background="frosted"`. «Ver todos los productos» con `space/padding/2xl` abajo, como los «Ver todo…» del mega-menu.
 - **Ver todos los resultados:** search-see-all `type="simple"`, siempre en 14.
 - `over-photo` (lo pone el navbar): la barra estaba transparente sobre la foto del hero; el logo y la cruz arrancan en inverso y pasan a primary con la barra. Con la barra blanca, el sheet parte de ella sin saltos.
 - Los eventos del campo (`arq:input`, `arq:submit`, `arq:navigate`) salen del componente; `field` devuelve el search-field e `items` los resultados en orden (para ↑ / ↓).
@@ -57,7 +57,7 @@ sheet.show(botonLupa);     // el foco vuelve a botonLupa al cerrar
 
 Los chevrons aparecen y desaparecen con fundido `motion/duration/fade` y `motion/easing/standard`, sin escala ni desplazamiento. El fundido también se aplica al llegar a los extremos; la dirección deja de ser interactiva inmediatamente. Con movimiento reducido se conserva solo este fundido.
 
-La fila de Recomendados usa `arq-carousel-button` con los estilos originales y chevrons a ambos lados, centrados en la altura de las imágenes. Aparecen al hacer hover sobre la sección o al navegar con teclado. Solo aparece cada dirección si hay contenido por recorrer de ese lado; si todo cabe, no hay botones. Cada clic avanza una tarjeta. Sin arrastre con mouse ni cursor grab; en táctil mantiene el scroll nativo. El clic en una tarjeta abre el producto.
+La fila de Recomendados usa `arq-carousel-button` con los estilos originales y chevrons a ambos lados, centrados en la altura de las imágenes. Aparecen solo al hacer hover sobre la fila de tarjetas o al navegar con teclado (foco visible; un clic con el mouse no los deja fijos). Solo aparece cada dirección si hay contenido por recorrer de ese lado; si todo cabe, no hay botones. Cada clic avanza una tarjeta. Sin arrastre con mouse ni cursor grab; en táctil mantiene el scroll nativo. El clic en una tarjeta abre el producto.
 
 | Parte | Token |
 | --- | --- |

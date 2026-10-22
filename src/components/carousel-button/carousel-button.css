@@ -6,6 +6,7 @@
   flex: none;
   vertical-align: middle;
   color: var(--arq-color-icon-primary);
+  --blur: var(--arq-blur-backdrop);
 }
 
 .control {
@@ -51,12 +52,48 @@
   background: var(--arq-color-surface-selected);
 }
 
-/* State=Disabled: fondo color/surface/subtle. El chevron pasa a color/icon/disabled. */
+/* State=Disabled (Background=Outline): sin relleno, sigue siendo outline: el
+   borde ya es color/border/disabled y el chevron pasa a color/icon/disabled. */
 :host([disabled]) {
   color: var(--arq-color-icon-disabled);
 }
 
 :host([disabled]) .control {
-  background: var(--arq-color-surface-subtle);
+  background: var(--arq-color-surface-transparent);
   cursor: default;
+}
+
+/* Background=Frosted: para fotos y capas con transparencia (color/overlay/frosted,
+   60 %), para que se note sobre fotos y fondos claros u oscuros (buscador, hero
+   de la ficha, galerías). Borde de 1 px en color/border/subtle para que no se pierda sobre
+   fotos claras; en hover pasa a color/border/default. El chevron queda en color/icon/primary.
+   TODO: dentro de un contenedor Dark, color/icon/primary pasa a claro y se
+   pierde sobre el blanco; resolver al usarlo en el hero de la ficha. */
+/* Blur más suave que el del navbar: blur/backdrop-soft (4). */
+:host([background='frosted']) {
+  --blur: var(--arq-blur-backdrop-soft);
+}
+
+:host([background='frosted']) .control {
+  border-color: var(--arq-color-border-subtle);
+  background: var(--arq-color-overlay-frosted);
+  -webkit-backdrop-filter: blur(var(--blur));
+  backdrop-filter: blur(var(--blur));
+}
+
+:host([background='frosted']) .control:enabled:hover,
+:host([background='frosted']) .control:enabled:active {
+  border-color: var(--arq-color-border-default);
+  background: var(--arq-color-overlay-frosted);
+}
+
+:host([background='frosted'][disabled]) .control {
+  background: var(--arq-color-overlay-frosted);
+}
+
+/* En Frosted el chevron va en icon/xl (24), como el de los
+   botones de la galería de FOA, en vez de icon/md (16). */
+:host([background='frosted']) .icon {
+  width: var(--arq-icon-xl);
+  height: var(--arq-icon-xl);
 }

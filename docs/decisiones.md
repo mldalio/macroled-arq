@@ -1477,3 +1477,12 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - Reemplaza la elección anterior del 80 % compartido: menú desplegable, panel de filtros, modal de descargas, buscador general y selector de comparación usan negro al 70 % (`color/overlay/scrim` → `alpha/black-70`).
 - Las galerías ampliadas de FOA y de la ficha usan negro al 90 % (`color/overlay/scrim-gallery` → `alpha/black-90`). El visor de project-mosaic usa el mismo token de galería.
 - Ambos tokens tienen los mismos valores en Light y Dark. Se actualizaron en Figma, se exportaron las colecciones afectadas y se regeneraron los archivos de tokens.
+
+## 2026-10-22 · Recomendados del buscador: salto por tarjeta
+
+- Pedido de Gabriela, con capturas de referencia (Occhio). El salto de los chevrons cortaba la tarjeta; ahora es de a una (`scroll-snap-type: x mandatory` y botones) y la última card (`scroll-snap-align: end`) termina contra el margen derecho.
+- Tarjetas siempre `ratio/square`, con `space/gap/lg` (`space/gap/md` en Mobile). Entran enteras 4 (5 desde 1600 px, 3 en Tablet, 2 en Mobile) y la siguiente asoma cortada en el margen (`--peek`, media tarjeta) para mostrar que hay scroll. Si todas entran (`data-scroll="false"`), reparten el ancho y no asoma nada.
+- Laptops y pantallas bajas: en vez de achatar la imagen (antes `--card-ratio`, que quedaba rectangular y muy grande), `search-sheet.js` suma columnas hasta que el panel entra sin scroll; las tarjetas se achican y siguen cuadradas.
+- carousel-button gana la prop `background`: `outline` (por defecto, fondos lisos) y `frosted` (sobre fotos y capas con transparencia). El Disabled de `outline` pasa a sin relleno (antes `color/surface/subtle`, que parecía un botón relleno).
+- Frosted: blanco al 60 % (`color/overlay/frosted` → `alpha/white-60`), blur suave (`blur/backdrop-soft` → `blur/4`; no se toca `blur/backdrop` del navbar), borde fino `color/border/subtle` y chevron en `icon/xl` (24). Probado primero una variante `translucent` (negro al 10 %, `color/overlay/translucent`): no se notaba sobre fotos y se descartó. Todos los tokens nuevos se crearon en Figma y se exportaron.
+- Uso: Recomendados del buscador, donde los botones aparecen solo al pasar el mouse sobre la fila (o con foco de teclado). Para el hero y las galerías de la ficha se prevé una versión con menos opacidad y más minimalista; no está en uso ahí. `TODO`: dentro de un contenedor Dark el chevron (`color/icon/primary`) pasa a claro y se pierde sobre el blanco; resolverlo entonces.

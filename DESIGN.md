@@ -292,6 +292,7 @@ Cómo elegir un token:
 | color/action/on-primary | neutral/0 | neutral/900 | Texto e ícono sobre color/action/primary |
 | color/accent/default | neutral/900 | neutral/150 | Detalles de marca |
 | color/overlay/scrim | alpha/black-70 | alpha/black-70 | Detrás del menú desplegable, filter-panel (solo desktop), download-modal, buscador y compare-picker |
+| color/overlay/frosted | alpha/white-60 | alpha/white-60 | Fondo blanco translúcido de controles sobre fotos (carousel-button Background=Frosted), con blur/backdrop-soft |
 | color/overlay/scrim-gallery | alpha/black-90 | alpha/black-90 | Detrás de las fotos ampliadas (visor de FOA y de la galería de ambiente de la ficha) |
 | color/overlay/translucent | alpha/ink-10 | alpha/ink-10 | Fondo translúcido de barras sobre fotos (navbar Transparent), junto con blur/backdrop |
 | hero/scrim (estilo de relleno) | Degradado negro 52 → 20 → 20 → 68 % | Igual | Scrim del hero sobre media. Ya incluye el oscurecido de la imagen. Único para Desktop y Mobile |
@@ -342,6 +343,7 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 | radius/control | 0 | 0 | Esquinas rectas |
 | radius/pill | 999 | 999 | Solo si el componente lo requiere (toggle-switch) o se pide explícitamente |
 | border/default · focus · strong | 1 · 1 · 2 | 1 · 1 · 2 | Bordes / foco (se distingue por color) / hover y selección de muestras |
+| blur/backdrop-soft | 4 | 4 | Desenfoque suave para controles sobre fotos (carousel-button Frosted). Con color/overlay/frosted |
 | blur/backdrop | 12 | 12 | Desenfoque del fondo detrás de una superficie translúcida (background blur en Figma, `backdrop-filter` en código), junto con color/overlay/translucent |
 | icon/sm · md · lg · xl · 2xl | 12 · 16 · 20 · 24 · 32 | 12 · 16 · 24 · 24 · 32 | Íconos |
 | swatch/sm · md · lg · xl | 16 · 20 · 24 · 32 | 16 · 20 · 24 · 32 | Muestras de acabado (xl: swatch-picker de la ficha) |
@@ -526,7 +528,7 @@ Todo en inglés. Los valores que son contenido (por ejemplo, los tabs del mega m
 | product-card | Size: Large · Small. State: Default · Hover · Focus · Loading. Props: Name · Meta · Show meta · Show finishes · Show compare | Toma el ancho de su columna (FILL). ratio/portrait. Acabados siempre swatch Small (16), elegibles si hay más de uno: el elegido (por defecto el negro) con el Selected del swatch y todos con su Hover, sin crecer; al elegir otro, la imagen y el link pasan a los de ese acabado. Small (y Large hasta 767 px): nombre (20/28: role/body-xl, en Mobile role/heading-3) y acabados en columna a space/gap/sm, info a space/gap/md. Hover y Iluminar cambian la imagen (ver Imágenes de product-card). Loading (atributo `loading`): card de carga con la misma geometría en color/surface/subtle y un shimmer (franja color/surface/default; Dark color/surface/strong) cada motion/duration/shimmer; la usan Productos y Colecciones en la primera carga, dos filas de la grilla, con `aria-hidden` |
 | product-gallery · gallery-thumb | Breakpoint: Desktop · Mobile / State: Default · Hover · Selected · Focus | ratio/landscape |
 | carousel-controls | Position: Start · Middle · End | icon-button Large con flechas. Solo de código: buttons=carousel (carousel-button, Home), chevron (icon-button sin borde ni fondo) y none con progress=scroll (solo la línea de progreso, a todo el ancho: barra de columnas de variants-table) |
-| carousel-button | Direction: Previous · Next. State: Default · Disabled | Cuadrado de layout/carousel-button, borde color/border/disabled, chevron icon/md. Carruseles de Destacados y Proyectos |
+| carousel-button | Direction: Previous · Next. Background: Outline · Frosted. State: Default · Disabled | Cuadrado de layout/carousel-button. Outline (fondos lisos: Destacados y Proyectos de la Home): borde color/border/disabled, chevron icon/md; Disabled sin relleno. Frosted (sobre fotos: Recomendados del buscador; después hero y galerías de la ficha): fondo color/overlay/frosted con blur/backdrop-soft, borde color/border/subtle y chevron icon/xl; aparece al pasar el mouse sobre el carrusel |
 | catalog-toolbar | Breakpoint: Desktop · Mobile. Props: Count · Show iluminar | Cantidad ("11 productos" / "10 colecciones"), toggle Iluminar y botón Filtrar. No cambia al desplazarse la página |
 | catalog-nav · catalog-nav-group · catalog-nav-item | — / Open: True · False. Selected: False · True / Size: Large · Default. State: Default · Hover · Selected · Focus | Sidebar desde 1024 px, de layout/catalog-nav. Grupo: label role/body-xl, chevron, línea inferior y lista con riel. Ítem: role/body-compact (Default) o role/body-lg (Large) |
 | catalog-nav-mobile · catalog-nav-trigger | Open: False · True / Open × State: Default · Hover · Focus | Hasta 1023 px. Abierto: la sección actual abierta con su opción marcada; las demás visibles y cerradas |

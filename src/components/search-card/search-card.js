@@ -7,7 +7,7 @@
 //   <arq-search-card href="/arq/producto/kanu-jardin" image="…">Kanu Jardín</arq-search-card>
 //
 // - Toda la tarjeta es un link (<a>). Imagen ratio/square (1:1); el
-//   search-sheet puede pedir otra con --card-ratio si el alto de la pantalla no
+//   search-sheet puede pedir otra con --card-ratio (hoy no la usa)
 //   alcanza. Sin imagen queda el recuadro de color/surface/subtle.
 // - Nombre en role/body-regular y color/text/primary, por slot (indexable).
 // - State: Hover (:hover) y Focus (:focus-visible); no cambia la imagen.

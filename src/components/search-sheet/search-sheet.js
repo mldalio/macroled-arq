@@ -84,8 +84,8 @@ class ArqSearchSheet extends ArqElement {
     `<div class="recommended">` +
     `<p class="title role-label"></p>` +
     `<div class="cards-wrap"><div class="cards"></div>` +
-    `<arq-carousel-button class="rail-arrow rail-prev" direction="previous" hidden>Productos anteriores</arq-carousel-button>` +
-    `<arq-carousel-button class="rail-arrow rail-next" direction="next" hidden>Productos siguientes</arq-carousel-button></div>` +
+    `<arq-carousel-button class="rail-arrow rail-prev" direction="previous" background="frosted" hidden>Productos anteriores</arq-carousel-button>` +
+    `<arq-carousel-button class="rail-arrow rail-next" direction="next" background="frosted" hidden>Productos siguientes</arq-carousel-button></div>` +
     `</div>` +
     `<div class="results"></div>` +
     `</div>` +
@@ -296,24 +296,21 @@ class ArqSearchSheet extends ArqElement {
   }
 
   // El panel nunca scrollea: si los recomendados no entran en el alto de la
-  // pantalla, la imagen de las cards se vuelve más ancha que alta (--card-ratio,
-  // que lee search-sheet.css). El ancho de las cards no cambia: cuántas se ven
-  // depende solo del ancho de la pantalla. Se mide con el panel abierto.
+  // pantalla, se suman columnas (--cols de search-sheet.css): las tarjetas se
+  // achican y siguen cuadradas. Se mide con el panel abierto. Si todas las
+  // tarjetas entran en las columnas, no hay scroll ni tarjeta asomando.
   #fit() {
     if (!this.#dialog?.open) return;
     const root = this.shadowRoot;
     const cards = root.querySelector('.cards');
-    cards.style.removeProperty('--card-ratio');
     const content = root.querySelector('.content');
-    let ratio = 5 / 4; // las cards parten de ratio/landscape (5:4, como --card-ratio en el CSS)
-    // Un par de pasadas: al cambiar la imagen, el texto y la fila se reacomodan
-    for (let pass = 0; pass < 3; pass++) {
-      const overflow = content.scrollHeight - content.clientHeight;
-      const width = cards.firstElementChild?.getBoundingClientRect().width;
-      if (overflow <= 0 || !width) break;
-      const height = Math.max(1, width / ratio - overflow);
-      ratio = width / height;
-      cards.style.setProperty('--card-ratio', String(ratio));
+    cards.style.removeProperty('--cols');
+    const base = parseInt(getComputedStyle(cards).getPropertyValue('--cols'), 10) || 4;
+    const count = cards.children.length;
+    for (let cols = base; cols <= base + 3; cols++) {
+      cards.style.setProperty('--cols', String(cols));
+      cards.dataset.scroll = String(count > cols);
+      if (content.scrollHeight - content.clientHeight <= 0) break;
     }
   }
 

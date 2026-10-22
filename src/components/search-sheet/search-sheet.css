@@ -247,7 +247,7 @@
 .rail-next { inset-inline-end: var(--arq-space-gap-md); }
 
 @media (hover: hover) and (pointer: fine) {
-  .recommended:hover .rail-arrow:not([data-arq-unavailable]) {
+  .cards-wrap:hover .rail-arrow:not([data-arq-unavailable]) {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
@@ -255,40 +255,40 @@
   }
 }
 
-/* El acceso con teclado no depende del hover. En táctil queda el scroll nativo. */
-.recommended:focus-within .rail-arrow:not([data-arq-unavailable]) {
+/* El acceso con teclado no depende del hover (solo foco de teclado: con un clic
+   del mouse el foco queda en el botón y lo dejaría fijo). En táctil queda el
+   scroll nativo. */
+.cards-wrap:has(:focus-visible) .rail-arrow:not([data-arq-unavailable]) {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
   transition-delay: 0s;
 }
 
-/* Fila de tarjetas en una sola línea, con scroll horizontal sin barra visible
-   (como variants-table). --cols: cuántas entran enteras; la siguiente asoma
-   (peek) para que se vea que se desliza. Desde 1600 px 5 (como la grilla, que
-   pasa a card-min-wide en ese corte), de 1024 a 1599 px 4, Tablet 3 y Mobile 3
-   con un mínimo de layout/card-min por tarjeta (entran las que quepan). */
+/* Fila de tarjetas cuadradas en una sola línea, con scroll horizontal sin
+   barra visible. --cols: cuántas entran enteras; la siguiente asoma cortada en
+   el margen de la derecha (--peek, una fracción de tarjeta) para que se vea que
+   se desliza. Desde 1600 px 5, de 1024 a 1599 px 4, Tablet 3 y Mobile 2. El
+   salto es de a una tarjeta (snap) y la última termina contra el margen. Si
+   todas entran (data-scroll="false"), no asoma nada y reparten el ancho.
+   search-sheet.js suma columnas (tarjetas más chicas, siempre cuadradas) si el
+   alto de la pantalla no alcanza. */
 .cards {
   --cols: 4;
-  /* Recomendados en ratio/landscape (5:4), más bajos que cuadrados, para que
-     entren con el aire del pie. Si el alto de la pantalla no alcanza,
-     search-sheet.js pone un --card-ratio más ancho (inline) para que el panel
-     no scrollee; la cantidad de cards sigue dependiendo del ancho. */
-  --card-ratio: 5 / 4;
+  --peek: 0.5;
+  --gap: var(--arq-space-gap-lg);
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: calc((100% - var(--arq-space-gap-md) * (var(--cols) - 1)) / (var(--cols) + 0.4));
-  gap: var(--arq-space-gap-md);
-  /* A sangre a la derecha: la fila llega al borde de la pantalla (la card que
-     asoma no queda cortada en el margen) y el margen aparece recién al final
-     del scroll, como padding. El ancho de las columnas no cambia: el 100 % de
-     la caja de contenido es el mismo. */
-  margin-inline-end: calc(var(--page-gutter) * -1);
-  padding-inline-end: var(--page-gutter);
+  grid-auto-columns: calc((100% - var(--gap) * var(--cols)) / (var(--cols) + var(--peek)));
+  gap: var(--gap);
   overflow-x: auto;
   overscroll-behavior-x: contain;
-  scroll-snap-type: x proximity;
+  scroll-snap-type: x mandatory;
   scrollbar-width: none;
+}
+
+.cards[data-scroll='false'] {
+  grid-auto-columns: calc((100% - var(--gap) * (var(--cols) - 1)) / var(--cols));
 }
 
 .cards::-webkit-scrollbar {
@@ -297,6 +297,10 @@
 
 .cards > * {
   scroll-snap-align: start;
+}
+
+.cards > :last-child {
+  scroll-snap-align: end;
 }
 
 /* "Ver todos los productos": fuera del scroll, al pie, con el margen lateral
@@ -392,11 +396,8 @@
 /* Mobile: 2 tarjetas */
 @media (max-width: 767px) {
   .cards {
-    /* Cuántas entran enteras según el ancho: nunca más angostas que
-       layout/card-min (160 en Mobile), así la imagen crece en pantallas chicas
-       y la siguiente asoma */
-    --cols: 3;
-    grid-auto-columns: max(var(--arq-layout-card-min), calc((100% - var(--arq-space-gap-md) * (var(--cols) - 1)) / (var(--cols) + 0.4)));
+    --cols: 2;
+    --gap: var(--arq-space-gap-md);
   }
 }
 

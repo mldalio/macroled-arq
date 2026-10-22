@@ -7,8 +7,9 @@
 //   <arq-carousel-button direction="previous">Anterior</arq-carousel-button>
 //   <arq-carousel-button direction="next" disabled>Siguiente</arq-carousel-button>
 //
-// Direction: Previous · Next. State=Disabled es el atributo disabled (fondo
-// color/surface/subtle). Hover, Pressed y Focus no son props.
+// Direction: Previous · Next. Background: outline (por defecto, fondos planos) ·
+// frosted (blanco al 60 % con blur), sobre fotos o capas con transparencia. State=Disabled es el
+// atributo disabled (sin relleno). Hover, Pressed y Focus no son props.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { icon } from '../../base/icons.js';
@@ -19,6 +20,7 @@ class ArqCarouselButton extends ArqElement {
   static styles = css;
   static properties = {
     direction: { type: String, values: ['previous', 'next'], default: 'previous' }, // Direction
+    background: { type: String, values: ['outline', 'frosted'], default: 'outline' }, // Background
     disabled: { type: Boolean }, // State=Disabled
   };
   static template =
