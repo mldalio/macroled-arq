@@ -5,6 +5,7 @@
 //
 //   <arq-checkbox name="comparar" value="KANU-J-500" show-label>Comparar</arq-checkbox>
 //   <arq-checkbox size="large" checked show-label>Exterior</arq-checkbox>
+//   <arq-checkbox size="large" show-label count="12">Negro</arq-checkbox>   → «Negro … 12»
 //
 // Es un <input type="checkbox"> real (dentro del Shadow DOM) con su <label>:
 // toda la fila es clickeable. Va con el formulario por ElementInternals
@@ -12,6 +13,8 @@
 
 import { ArqElement } from '../../base/arq-element.js';
 import css from './checkbox.css?inline';
+
+const NUMBER = new Intl.NumberFormat('es-AR');
 
 class ArqCheckbox extends ArqElement {
   static tag = 'arq-checkbox';
@@ -24,12 +27,14 @@ class ArqCheckbox extends ArqElement {
     showLabel: { type: Boolean }, // Show label
     name: { type: String },
     value: { type: String, default: 'on' },
+    count: { type: Number }, // Show count + Count: resultados de la opción («Negro (12)»)
   };
   static template =
     `<label class="row">` +
     `<input type="checkbox" class="native visually-hidden">` +
     `<span class="control" aria-hidden="true"><span class="box"></span></span>` +
     `<span class="label"><slot></slot></span>` +
+    `<span class="count" hidden></span>` +
     `</label>`;
 
   #internals = this.attachInternals();
@@ -59,6 +64,11 @@ class ArqCheckbox extends ArqElement {
     this.shadowRoot.querySelector('.label').classList.toggle('visually-hidden', !this.showLabel);
     this.shadowRoot.querySelector('.label').classList.toggle('role-body', this.size !== 'large');
     this.shadowRoot.querySelector('.label').classList.toggle('role-body-lg', this.size === 'large');
+    // Count: mismo estilo que el label, al borde derecho; sin número no se muestra
+    const count = this.shadowRoot.querySelector('.count');
+    count.hidden = !this.showLabel || !Number.isFinite(this.count);
+    count.textContent = Number.isFinite(this.count) ? NUMBER.format(this.count) : '';
+    count.className = `count ${this.size === 'large' ? 'role-body-lg' : 'role-body'}`;
     this.#internals.setFormValue(this.checked ? this.value : null);
   }
 

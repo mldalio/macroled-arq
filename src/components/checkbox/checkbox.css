@@ -9,8 +9,11 @@
 }
 
 /* padding vertical: Figma usa space/gap/xs */
+/* flex: 1: si el contenedor estira el checkbox (opciones de filter-row), toda
+   la fila es clickeable y la cantidad va al borde */
 .row {
   position: relative;
+  flex: 1;
   display: inline-flex;
   align-items: center;
   gap: var(--arq-space-gap-sm);
@@ -44,8 +47,33 @@
 
 /* Label: color/text/secondary (primary en hover) */
 .label {
+  flex: 1 1 auto;
   min-width: 0;
   color: var(--arq-color-text-secondary);
+}
+
+/* Hover de toda la fila (en filter-row ocupa todo el ancho): label, cantidad y
+   borde de la caja cambian de color juntos, con un fundido corto
+   (motion/duration/fast, que vale 0 con reduced motion). Solo color: el grosor
+   del borde cambia de golpe y no mueve nada (la caja es border-box). */
+.label,
+.count,
+.box {
+  transition:
+    color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard),
+    border-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard),
+    background-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);
+}
+
+/* Count (Show count): al borde derecho (space between), en color/text/tertiary
+   (no cambia en hover); cifras de ancho fijo para que la columna quede pareja.
+   Con un label de varias líneas queda a la altura de la primera. */
+.count {
+  flex: none;
+  align-self: flex-start;
+  margin-inline-start: auto;
+  color: var(--arq-color-text-tertiary);
+  font-variant-numeric: tabular-nums;
 }
 
 /* State=Hover: borde border/strong; la caja es border-box, no cambia de tamaño.
@@ -58,6 +86,10 @@
 
   .row:hover .label {
     color: var(--arq-color-text-primary);
+  }
+
+  .row:hover .count {
+    color: var(--arq-color-text-secondary);
   }
 }
 
@@ -91,7 +123,9 @@
 }
 
 :host([disabled]) .label,
-:host([disabled]) .row:hover .label {
+:host([disabled]) .row:hover .label,
+:host([disabled]) .count,
+:host([disabled]) .row:hover .count {
   color: var(--arq-color-text-disabled);
 }
 

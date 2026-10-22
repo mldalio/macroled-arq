@@ -80,6 +80,7 @@ class ArqCatalogListing extends ArqElement {
   #filters = {};
   #cards = new Map(); // product-card → datos de la card
   #request = 0;
+  #countRequest = 0; // la última cuenta de «Ver N» gana (las respuestas pueden llegar desordenadas)
   #htmlCrumbs = null; // niveles del breadcrumb del HTML después de Inicio
   #htmlTitle = null; // <h1> del HTML (Productos), para volver a él sin categoría
   #htmlDescription = null; // bajada del HTML, ídem
@@ -315,14 +316,27 @@ class ArqCatalogListing extends ArqElement {
     return this.unit === 'colecciones' ? listCollections({ filters }) : listProducts({ ...this.#category, query: this.#query, filters });
   }
 
-  // "Ver N productos" mientras se marcan filtros (el listado no cambia)
+  // "Ver N productos" mientras se marcan filtros (el listado no cambia). Las
+  // opciones que darían 0 con lo marcado se ocultan (decisiones.md,
+  // 2026-10-22 · Filtros que no aplican).
   async #count(filters) {
     const panel = this.shadowRoot.querySelector('arq-filter-panel');
+    const request = ++this.#countRequest;
+    let result = null;
     try {
-      panel.count = (await this.#list(filters)).count;
+      result = await this.#list(filters);
     } catch {
-      panel.count = null;
+      // sin resultado: el botón queda sin número y las opciones, como estaban
     }
+    if (request !== this.#countRequest) return;
+    panel.count = result ? result.count : null;
+    if (!result?.available) return;
+    // Cantidad al lado de cada opción: las cards que daría con lo demás marcado
+    for (const option of panel.options) {
+      const count = result.available[option.getAttribute('name')]?.[option.value];
+      option.count = count ?? null;
+    }
+    panel.showAvailable((option) => Number.isFinite(option.count));
   }
 
   // quiet: solo para lectores de pantalla («Cargando productos…»: lo que se ve

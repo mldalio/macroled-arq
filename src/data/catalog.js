@@ -128,6 +128,34 @@ function filterRows(groups) {
   }).filter((row) => row.options.length > 1);
 }
 
+/**
+ * Opciones que todavía dan resultados con los filtros marcados, con cuántas
+ * cards daría cada una: { campo: { valor: cantidad } }. Un valor cuenta una
+ * card si alguna de sus variantes lo tiene y cumple los filtros de los otros
+ * campos (en el mismo campo se suman). `cardOf` agrupa por card: el grupo en
+ * Productos, la colección en Colecciones. El panel oculta las que no están y
+ * muestra la cantidad al lado de cada una (decisiones.md, 2026-10-22 ·
+ * Filtros que no aplican · Cantidad por opción).
+ */
+function availableValues(groups, active, cardOf = (group) => group) {
+  const available = {};
+  for (const field of FILTER_FIELDS) {
+    const others = { ...active };
+    delete others[field];
+    const cards = new Map(); // valor → Set de cards
+    for (const group of groups) {
+      for (const variant of group.variants) {
+        const value = variant.values[field];
+        if (!hasValue(value) || !variantMatches(variant, others)) continue;
+        if (!cards.has(value)) cards.set(value, new Set());
+        cards.get(value).add(cardOf(group));
+      }
+    }
+    available[field] = Object.fromEntries([...cards].map(([value, set]) => [value, set.size]));
+  }
+  return available;
+}
+
 // ── Cards ────────────────────────────────────────────────────────────
 function meta(group) {
   if (group.productType && group.productType !== 'Luminaria') return group.productType;
@@ -242,7 +270,8 @@ function collectionCard(collection, groups) {
  * application, productType, collection }. filters: { campo: [valores] }.
  * query: texto de la búsqueda (?q=), con el criterio de searchProducts.
  * Devuelve { cards, count, filters: filas del filter-panel de la categoría
- * (y de la búsqueda) }.
+ * (y de la búsqueda), available: { campo: { valor: cards } } de las opciones
+ * que dan resultados con `filters` }.
  */
 export async function listProducts({ filters, query, ...category } = {}) {
   const { groups } = await loadCatalog();
@@ -264,7 +293,7 @@ export async function listProducts({ filters, query, ...category } = {}) {
     const variant = match.bySku ? matchingVariant(group, active, match.variant) : firstFinishVariant(group, active);
     return variant ? [productCard(group, variant, active)] : [];
   });
-  return demoListing({ cards, count: cards.length, filters: filterRows(scope) });
+  return demoListing({ cards, count: cards.length, filters: filterRows(scope), available: availableValues(scope, active) });
 }
 
 /** Cuántas cards daría un listado con estos filtros (para "Ver N productos"). */
@@ -281,7 +310,8 @@ export async function listCollections({ filters } = {}) {
     if (!own.some((group) => matchingVariant(group, active))) return [];
     return [collectionCard(collection, own)];
   });
-  return demoListing({ cards, count: cards.length, filters: filterRows(groups.filter((g) => g.collection)) });
+  const scope = groups.filter((g) => g.collection);
+  return demoListing({ cards, count: cards.length, filters: filterRows(scope), available: availableValues(scope, active, (group) => group.collection) });
 }
 
 // ── Ficha de producto ────────────────────────────────────────────────
