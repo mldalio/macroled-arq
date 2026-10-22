@@ -596,6 +596,12 @@ Hover (Desktop): el subrayado se dibuja de izquierda a derecha y se va hacia la 
 
 ## navbar
 
+Mega-menu (2026-10-22): el preview de Productos llega al borde superior del desplegable, junto a las pestañas; la línea de las pestañas termina al comenzar la imagen. Se conserva la altura del cuerpo y el preview sigue oculto en Tablet.
+
+Indicador visual (2026-10-22): al abrir un desplegable, se ocultan temporalmente el guion y la tipografía destacada del enlace de página actual; se restauran al cerrar. Se conserva aria-current="page" en el enlace.
+
+Código (2026-10-22): Productos y Recursos abren y cierran por clic. Los cuatro links comparten el subrayado animado de hover junto al texto. Con el desplegable abierto se oculta el subrayado y la tipografía pasa a role/body-medium, como en el indicador de página actual. En Productos y Recursos el guion lateral aparece solo mientras su desplegable está abierto, independientemente de la página actual. Nosotros y Contacto conservan el guion de página actual.
+
 - Figma: [753-2907](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=753-2907)
 - Propiedades: Breakpoint: Desktop · Mobile; Mode: Default · Menu · Search · Products · Colecciones · Interior · Exterior · Lámparas y artefactos; Theme: Default · Transparent
 

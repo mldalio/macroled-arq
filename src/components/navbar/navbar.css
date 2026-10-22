@@ -113,9 +113,9 @@
   gap: var(--arq-space-gap-xl);
 }
 
-/* Los links sin panel quedan al centro de la barra. Los que abren un panel
-   ocupan todo el alto, así el cursor no sale del link al bajar de la palabra. */
-.links ::slotted(:not([has-dropdown])) {
+/* Todos los links tienen el mismo alto: el subrayado animado queda junto
+   al texto también en Productos y Recursos. */
+.links ::slotted(arq-nav-link) {
   align-self: center;
 }
 

@@ -6,10 +6,8 @@
 //   <arq-nav-link has-dropdown>Productos</arq-nav-link>
 //
 // - Sin dropdown: <a href>. Current: aria-current="page" + indicador.
-// - Con dropdown: <button aria-expanded>. Al tocarlo emite arq:toggle
-//   { open: !open } en Mobile y en pantallas sin mouse. En desktop con
-//   mouse el navbar abre el panel al pasar el cursor. open y current los
-//   controla el navbar.
+// - Con dropdown: <button aria-expanded>. Al activarlo emite arq:toggle
+//   { open: !open } en todos los dispositivos. open y current los controla el navbar.
 //   El mega-menu incluye los "Ver todo…" (Productos deja de ser link).
 // Breakpoint es CSS (≤ 767 px: fila del menú mobile). El estilo de texto
 // (role/body → role/heading-3) lo cambia el JS con el mismo media query.
@@ -45,6 +43,15 @@ class ArqNavLink extends ArqElement {
     `</a>`;
 
   #control = null;
+  #currentIndicatorVisible = true;
+
+  /** El navbar prioriza visualmente el desplegable sin alterar aria-current. */
+  setCurrentIndicatorVisible(visible) {
+    this.#currentIndicatorVisible = Boolean(visible);
+    if (!this.#control) return;
+    this.#control.classList.toggle('current', this.current && !this.hasDropdown && this.#currentIndicatorVisible);
+    this.#applyRole();
+  }
 
   setup() {
     this.#control = this.shadowRoot.querySelector('.link');
@@ -56,8 +63,9 @@ class ArqNavLink extends ArqElement {
   #applyRole() {
     const label = this.shadowRoot.querySelector('.label');
     const desktop = !mobile.matches;
-    label.classList.toggle('role-body', desktop && !this.current);
-    label.classList.toggle('role-body-medium', desktop && this.current);
+    const current = this.hasDropdown ? this.open : this.current && this.#currentIndicatorVisible;
+    label.classList.toggle('role-body', desktop && !current);
+    label.classList.toggle('role-body-medium', desktop && current);
     label.classList.toggle('role-heading-3', !desktop);
   }
 
@@ -79,9 +87,9 @@ class ArqNavLink extends ArqElement {
     } else {
       control.setAttribute('aria-expanded', String(this.open));
     }
-    // Current también se marca en el botón (indicador), sin aria-current.
-    control.classList.toggle('current', this.current);
-    if (changed.has('current')) this.#applyRole();
+    // Los enlaces indican la página actual; los botones indican el panel abierto.
+    control.classList.toggle('current', this.current && !this.hasDropdown && this.#currentIndicatorVisible);
+    if (changed.has('current') || changed.has('hasDropdown') || changed.has('open')) this.#applyRole();
   }
 
   // <a> para navegar, <button> para abrir el menú. Se cambia el elemento
@@ -95,8 +103,6 @@ class ArqNavLink extends ArqElement {
     if (tag === 'button') {
       next.type = 'button';
       next.addEventListener('click', () => {
-      // Desktop con mouse: el navbar abre el panel al pasar el cursor.
-      if (!mobile.matches && matchMedia('(hover: hover) and (pointer: fine)').matches) return;
       this.emit('toggle', { open: !this.open });
     });
     }

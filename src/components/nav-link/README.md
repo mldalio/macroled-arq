@@ -22,7 +22,10 @@ Link de primer nivel del navbar (desktop) y fila del menú mobile. Current marca
 | Theme | `theme` | `theme` | `default` · `inverse` (def. `default`) · Inverse en el navbar Transparent, sobre foto (solo desktop) |
 
 - Hover, Pressed y Focus son CSS. Breakpoint es CSS: hasta 767 px es la fila del menú mobile.
-- **Sin dropdown:** `<a href>`. **Con dropdown:** `<button aria-expanded>`. En Mobile y sin mouse, al tocarlo emite `arq:toggle` con `{ open: !open }` y el navbar abre o cierra. En desktop con mouse el clic no emite: el navbar abre el panel al pasar el cursor.
+- **Sin dropdown:** `<a href>`. **Con dropdown:** `<button aria-expanded>`. Al activarlo emite `arq:toggle` con `{ open: !open }` en todos los dispositivos.
+- **Hover compartido:** Productos y Recursos usan el mismo subrayado animado y la misma distancia al texto que Nosotros y Contacto. Con el desplegable abierto no muestran subrayado y usan `role/body-medium`, igual que el indicador de página actual.
+- **Guion lateral:** en Productos y Recursos indica únicamente el desplegable abierto (`open`); desaparece al cerrarlo. En enlaces como Nosotros y Contacto indica la página actual (`current`). Los dropdowns ignoran `current`.
+- Mientras un desplegable está abierto, el navbar oculta el guion y la tipografía destacada de la página actual. Al cerrar los restaura. El enlace mantiene `aria-current="page"` durante toda la interacción.
 - **Desktop:** `role/body`, hug. Hover subraya el label: la línea se dibuja de izquierda a derecha y se va hacia la derecha (`transform`, `motion/duration/base`, `motion/easing/standard`; de golpe con reduced motion). Pressed: texto `color/text/tertiary`. Current: guion antes del label, sin subrayado, y texto en `role/body-medium`. Has dropdown no lleva flecha.
 - **Mobile:** fila a todo el ancho con padding `space/gap/md` × `layout/gutter`, `role/heading-3`. Todas las filas llevan una flecha al final (`chevron-right`; en Current, `arrow-right`), también las que tienen Has dropdown (una sola flecha). Pressed: fondo `color/surface/selected`; Hover (solo con mouse): `color/surface/hover`. Sin borde inferior.
 - Una sola Current por navbar.

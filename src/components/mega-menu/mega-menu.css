@@ -9,12 +9,17 @@
 /* La línea inferior va solo debajo de las columnas (.panels): la foto del
    preview llega hasta el borde, sin el filete claro debajo. */
 .menu {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--arq-layout-mega-menu-image);
+  grid-template-rows: auto 1fr;
   background: var(--arq-color-surface-default);
 }
 
 /* Pestañas: arriba space/gap/md, a los lados layout/gutter, separación
    space/gap/xl y línea inferior color/border/subtle */
 .tabs {
+  grid-column: 1;
+  grid-row: 1;
   display: flex;
   gap: var(--arq-space-gap-xl);
   padding: var(--arq-space-gap-md) var(--page-gutter) 0;
@@ -23,14 +28,16 @@
 
 /* Cuerpo: columnas a la izquierda y preview a la derecha */
 .body {
-  display: flex;
-  align-items: stretch;
+  display: contents;
 }
 
 .panels {
+  grid-column: 1;
+  grid-row: 2;
   display: flex;
   flex: 1;
   min-width: 0;
+  min-height: calc(var(--arq-layout-mega-menu-image) * 5 / 4);
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
 }
 
@@ -146,10 +153,12 @@
   gap: 0;
 }
 
-/* Preview: layout/mega-menu-image de ancho y ratio/portrait-soft (4:5) como
-   mínimo; si el contenido es más alto, se estira. Fondo color/surface/subtle
+/* Preview: layout/mega-menu-image de ancho; abarca las pestañas y el cuerpo,
+   cuyo mínimo conserva ratio/portrait-soft (4:5). Fondo color/surface/subtle
    sin foto. Texto abajo: padding space/padding/xl-2xl, gap space/gap/sm. */
 .preview {
+  grid-column: 2;
+  grid-row: 1 / 3;
   position: relative;
   box-sizing: border-box;
   display: flex;
@@ -158,7 +167,6 @@
   justify-content: flex-end;
   gap: var(--arq-space-gap-sm);
   width: var(--arq-layout-mega-menu-image);
-  aspect-ratio: 4 / 5;
   padding: var(--arq-space-padding-xl-2xl);
   overflow: hidden;
   background: var(--arq-color-surface-subtle);
@@ -212,6 +220,14 @@
    contenido toma todo el ancho, con layout/gutter también a la derecha.
    TODO (diseño): el set no tiene Tablet. */
 @media (min-width: 768px) and (max-width: 1023px) {
+  .menu {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .panels {
+    min-height: 0;
+  }
+
   .preview {
     display: none;
   }

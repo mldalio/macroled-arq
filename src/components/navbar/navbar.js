@@ -80,7 +80,6 @@ import css from './navbar.css?inline';
 
 const MOBILE = matchMedia('(max-width: 767px)');
 // Desktop con mouse: los dropdowns se abren al pasar el cursor, no con el clic.
-const HOVER = matchMedia('(hover: hover) and (pointer: fine)');
 // Quien pidió menos transparencia o más contraste ve la barra Default también
 // sobre la foto: el texto claro sobre una foto que cambia, con un fondo al
 // 10 % y blur, puede no leerse.
@@ -186,26 +185,18 @@ class ArqNavbar extends ArqElement {
     });
     SOLID.addEventListener('change', () => this.#syncLinks());
 
-    // Productos y Recursos (nav-link con has-dropdown; data-menu dice cuál).
-    // Con mouse, el clic no abre: lo hace el cursor (y el foco, con teclado).
+    // Productos y Recursos se abren y cierran con clic en todos los dispositivos.
     this.addEventListener('arq:toggle', (event) => {
       if (event.target.localName !== 'arq-nav-link') return;
       event.stopPropagation();
       const which = event.target.dataset.menu === 'recursos' ? 'recursos' : 'products';
       if (MOBILE.matches) this.#setMode(which);
-      else if (!HOVER.matches) this.#toggleMega(event.detail.open, which);
+      else this.#toggleMega(!(this.#megaOpen && this.#megaWhich === which), which);
     });
-    this.addEventListener('pointerover', (event) => this.#hoverMega(event));
-    this.addEventListener('pointerout', (event) => this.#leaveMega(event));
-    this.addEventListener('focusin', (event) => this.#hoverMega(event));
-    this.addEventListener('focusout', (event) => this.#leaveMega(event));
-    // Al acercarse a Productos se pide la navegación: el mega-menu ya tiene su
-    // foto inicial cargada cuando se abre.
-    for (const type of ['pointerover', 'focusin']) {
-      this.addEventListener(type, (event) => {
-        if (event.target.closest?.('arq-nav-link[has-dropdown]')) this.#ensureNavigation();
-      });
-    }
+    // Preparar el contenido al activar cualquiera de los dropdowns.
+    this.addEventListener('arq:toggle', (event) => {
+      if (event.target.localName === 'arq-nav-link' && event.target.dataset.menu !== 'recursos') this.#ensureNavigation();
+    });
 
     // Búsqueda desktop (o el sheet, en todos los anchos). Al acercarse a la lupa
     // se piden los recomendados, para que el sheet ya los tenga al abrirse.
@@ -287,16 +278,6 @@ class ArqNavbar extends ArqElement {
     containScroll(root.querySelector('.navbar'), { when: () => this.#megaOpen });
     // Clic en el scrim del mega-menú: lo cierra
     root.querySelector('.scrim').addEventListener('click', () => this.#toggleMega(false));
-    // Mouse sobre el scrim (debajo del panel): lo cierra con la demora de
-    // siempre. Con pointermove y no solo pointerover: al bajar del panel al
-    // scrim, Chrome a veces no emite pointerover. Una sola demora por vez.
-    root.querySelector('.scrim').addEventListener('pointermove', () => {
-      if (this.#megaOpen && HOVER.matches && !this.#hoverTimer) this.#scheduleMegaClose();
-    });
-    // De vuelta en el panel antes de que se cierre: sigue abierto (mismo motivo)
-    root.querySelector('.mega-wrap').addEventListener('pointermove', () => {
-      if (this.#hoverTimer) this.#cancelMegaClose();
-    });
 
     // Mega-menu: Esc (con el foco en Productos o adentro) y clic afuera
     this.addEventListener('keydown', (event) => {
@@ -381,7 +362,10 @@ class ArqNavbar extends ArqElement {
     const overPhoto = this.mode === 'default' || (this.mode === 'search' && (!MOBILE.matches || this.#sheetSearch));
     const inverse = this.theme === 'transparent' && overPhoto && !this.#scrolled && !this.#megaOpen && !SOLID.matches;
     this.shadowRoot.querySelector('.navbar').classList.toggle('over-photo', inverse);
-    for (const link of this.querySelectorAll('arq-nav-link')) link.theme = inverse ? 'inverse' : 'default';
+    for (const link of this.querySelectorAll('arq-nav-link')) {
+      link.theme = inverse ? 'inverse' : 'default';
+      link.setCurrentIndicatorVisible(!this.#megaOpen);
+    }
     // Lupa y menú: Dark local sobre la foto
     for (const button of this.shadowRoot.querySelectorAll('.search-open, .actions arq-icon-button')) {
       if (inverse) button.setAttribute('data-arq-theme', 'dark');
@@ -470,77 +454,6 @@ class ArqNavbar extends ArqElement {
 
   #megaTimer = 0;
   #megaWhich = 'products';
-  #hoverTimer = 0;
-
-  // Dropdown, panel, o lo que cierra el panel (away): los links sin panel
-  // (Nosotros, Contacto), la lupa y el scrim. El resto de la barra (logo,
-  // espacios vacíos) no cambia nada: se puede cruzar sin que se cierre.
-  #hoverZone(event) {
-    const path = event.composedPath();
-    const link = path.find((node) => node.localName === 'arq-nav-link' && node.hasAttribute('has-dropdown'));
-    const panel = path.some((node) => node.classList?.contains('mega-wrap'));
-    const away = path.some((node) =>
-      (node.localName === 'arq-nav-link' && !node.hasAttribute('has-dropdown'))
-      || node.classList?.contains('search')
-      || node.classList?.contains('scrim'));
-    return { link, panel, away };
-  }
-
-  #hoverMega(event) {
-    if (MOBILE.matches || !HOVER.matches) return;
-    const { link, panel, away } = this.#hoverZone(event);
-    if (link) {
-      this.#cancelMegaClose();
-      const which = link.dataset.menu === 'recursos' ? 'recursos' : 'products';
-      if (this.#megaOpen && this.#megaWhich === which) {
-        clearTimeout(this.#switchTimer);
-        return;
-      }
-      // Con el panel abierto, cambiar de Productos a Recursos (o al revés)
-      // espera motion/duration/base con el cursor encima: cruzar el link de
-      // pasada no lo cambia. Con el teclado, al instante.
-      clearTimeout(this.#switchTimer);
-      if (this.#megaOpen && event.type !== 'focusin') {
-        this.#switchTimer = setTimeout(() => this.#toggleMega(true, which), this.#ms('base'));
-      } else {
-        this.#toggleMega(true, which);
-      }
-      return;
-    }
-    clearTimeout(this.#switchTimer);
-    if (panel) {
-      this.#cancelMegaClose();
-      return;
-    }
-    // Sobre Nosotros, Contacto, la lupa o el scrim, el panel se cierra (con demora)
-    if (this.#megaOpen && away) this.#scheduleMegaClose();
-  }
-
-  // Salir del link o del panel hacia afuera de la barra.
-  #leaveMega(event) {
-    if (MOBILE.matches || !HOVER.matches) return;
-    const { link, panel } = this.#hoverZone(event);
-    if (!link && !panel) return;
-    const next = event.relatedTarget;
-    if (next && (next === this || this.contains(next) || this.shadowRoot.contains(next))) return;
-    this.#scheduleMegaClose();
-  }
-
-  // Demora antes de cerrar: motion/duration/base, así un roce no lo cierra.
-  // Con reduced motion base vale 0: queda fade, que no cambia.
-  #scheduleMegaClose() {
-    this.#cancelMegaClose();
-    clearTimeout(this.#switchTimer);
-    this.#hoverTimer = setTimeout(() => {
-      this.#hoverTimer = 0;
-      this.#toggleMega(false);
-    }, Math.max(this.#ms('base'), this.#ms('fade')));
-  }
-
-  #cancelMegaClose() {
-    clearTimeout(this.#hoverTimer);
-    this.#hoverTimer = 0;
-  }
 
   // Duración de un token motion/duration/<name>, en ms
   #ms(name) {
@@ -549,7 +462,6 @@ class ArqNavbar extends ArqElement {
   }
 
   #swapTimer = 0;
-  #switchTimer = 0;
 
   // De Productos a Recursos (o al revés) con el panel abierto. Los dos ocupan
   // la misma celda: el que sale se desvanece mientras el que entra aparece

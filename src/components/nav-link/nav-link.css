@@ -45,7 +45,8 @@
   transition-delay: var(--arq-theme-text-delay, 0s);
 }
 
-.current .indicator {
+.current .indicator,
+.link[aria-expanded='true'] .indicator {
   display: block;
 }
 
@@ -71,7 +72,7 @@
   transition: transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
 }
 
-/* Sin subrayado en Current ni Open. Solo con
+/* Sin subrayado en Current ni con el desplegable abierto. Solo con
    mouse: en táctil quedaría pegado después del toque. */
 @media (hover: hover) and (pointer: fine) {
   .link:not(.current):not([aria-expanded='true']):hover::after {
