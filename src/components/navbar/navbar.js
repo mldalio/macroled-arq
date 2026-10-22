@@ -363,6 +363,10 @@ class ArqNavbar extends ArqElement {
     const inverse = this.theme === 'transparent' && overPhoto && !this.#scrolled && !this.#megaOpen && !SOLID.matches;
     this.shadowRoot.querySelector('.navbar').classList.toggle('over-photo', inverse);
     for (const link of this.querySelectorAll('arq-nav-link')) {
+      // Si el navbar se activa antes que sus links (HTML insertado de una vez,
+      // como en la demo), se activa el link acá: si no, theme quedaría como
+      // propiedad suelta y el método no existiría todavía.
+      customElements.upgrade(link);
       link.theme = inverse ? 'inverse' : 'default';
       link.setCurrentIndicatorVisible(!this.#megaOpen);
     }
