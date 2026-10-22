@@ -1,7 +1,7 @@
 // compare-picker · Figma 2724:8761 (sin ficha doc/compare-picker todavía)
 //
 // Modal «Agregar producto» de la comparativa. Lo abren el lugar vacío (+) de
-// compare-bar en Productos y el compare-product vacío (y el «Agregar producto»
+// compare-bar (listados y ficha) y el compare-product vacío (y el «Agregar producto»
 // de la cabecera compacta) en Comparativa. No consulta: la página le pasa los
 // productos (src/data/catalog.js · listCompareCandidates) y agrega lo elegido.
 //

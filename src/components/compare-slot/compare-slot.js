@@ -15,7 +15,7 @@
 //   se quitó del set y del código (decisiones.md, 2026-10-19).
 // - Quitar emite arq:remove { sku }.
 // - Empty es clickeable: todo el lugar es un botón «Agregar producto» que
-//   emite arq:add (en Productos abre compare-picker). Mantiene el dibujo del
+//   emite arq:add (en los listados y la ficha abre compare-picker). Mantiene el dibujo del
 //   set (foto en color/surface/subtle con el «+» resaltado y el texto) dentro
 //   de una caja punteada, como el lugar vacío de compare-product Compact
 //   (Comparativa); Hover con fondo color/surface/faint y borde
