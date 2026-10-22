@@ -1205,6 +1205,21 @@
           }
         }
       }
+    },
+    "backdrop-soft": {
+      "$type": "number",
+      "$value": "{blur.4}",
+      "$description": "Desenfoque suave (4) del fondo detrás de una superficie translúcida sobre fotos (carousel-button Background=Frosted). Más sutil que blur/backdrop.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "EFFECT_FLOAT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-blur-backdrop-soft)"
+          }
+        }
+      }
     }
   }
 }

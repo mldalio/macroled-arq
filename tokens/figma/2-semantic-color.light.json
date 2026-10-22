@@ -535,6 +535,22 @@
             }
           }
         }
+      },
+      "frosted": {
+        "$type": "color",
+        "$value": "{alpha.white-60}",
+        "$description": "Fondo blanco translúcido (60 %) para controles sobre fotos, junto con blur/backdrop-soft (carousel-button Background=Frosted). Igual en Light y Dark.",
+        "$extensions": {
+          "com.figma": {
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "codeSyntax": {
+              "WEB": "var(--arq-color-overlay-frosted)"
+            }
+          }
+        }
       }
     },
     "icon": {
