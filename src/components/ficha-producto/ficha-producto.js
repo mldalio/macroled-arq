@@ -50,7 +50,8 @@
 
 import { ArqElement } from '../../base/arq-element.js';
 import { HorizontalRail } from '../../base/horizontal-rail.js';
-import { PhotoViewer, photoViewerTemplate } from '../../base/photo-viewer.js';
+import { SingleSelect } from '../../base/single-select.js';
+import { PhotoViewer,photoViewerTemplate } from '../../base/photo-viewer.js';
 import viewerCss from '../../base/photo-viewer.css?inline';
 import { animateThemeChange, refreshTheme, setBrowserBar, takeThemeHandoff, withoutThemeTransition } from '../../base/theme.js';
 import { getProduct, variantDetails, collectionHref, listCompareCandidates } from '../../data/catalog.js';
@@ -70,6 +71,7 @@ import '../option-group/option-group.js';
 import '../option-tile/option-tile.js';
 import '../swatch-picker/swatch-picker.js';
 import '../swatch/swatch.js';
+import '../tab/tab.js';
 import '../accordion-item/accordion-item.js';
 import '../spec-list/spec-list.js';
 import '../spec-row/spec-row.js';
@@ -159,7 +161,8 @@ class ArqFichaProducto extends ArqElement {
     `</div>` +
     // Especificaciones (cambian con la variante)
     `<div class="details needs-data">` +
-    `<div class="accordion"></div>` +
+    `<div class="spec-tabs" role="tablist" aria-label="Información técnica" hidden></div>` +
+    `<div class="spec-panels"></div>` +
     `</div>` +
     // Galería de ambiente
     `<div class="ambient-block needs-data" hidden>` +
@@ -241,6 +244,12 @@ class ArqFichaProducto extends ArqElement {
 
   setup() {
     const root = this.shadowRoot;
+    const specTabs = root.querySelector('.spec-tabs');
+    new SingleSelect(specTabs, { items: 'arq-tab' });
+    specTabs.addEventListener('arq:change', (event) => {
+      event.stopPropagation();
+      this.#showSpecTab(event.detail.value);
+    });
     this.#moveMainImage();
     root.querySelector('slot[name="inspiration"]').addEventListener('slotchange', () => this.#syncInspiration());
     this.#syncInspiration();
@@ -498,6 +507,24 @@ class ArqFichaProducto extends ArqElement {
     this.#applyDark(dark);
   }
 
+  #followPhotoTimer = 0;
+
+  #followPhoto() {
+    const root = this.shadowRoot;
+    const elements = [root.querySelector('.breadcrumb'), root.querySelector('.iluminar')];
+    const vars = {
+      '--arq-theme-text-delay': '0s',
+      '--arq-theme-text-duration': 'var(--arq-illumination-image-duration)',
+      '--arq-theme-text-easing': 'var(--arq-illumination-image-easing)',
+    };
+    for (const element of elements) for (const [name, value] of Object.entries(vars)) element.style.setProperty(name, value);
+    clearTimeout(this.#followPhotoTimer);
+    // Se quitan al terminar, así hover y foco no se retrasan
+    this.#followPhotoTimer = setTimeout(() => {
+      for (const element of elements) for (const name of Object.keys(vars)) element.style.removeProperty(name);
+    }, 1200);
+  }
+
   #applyDark(dark) {
     const hero = this.shadowRoot.querySelector('.hero');
     for (const element of [hero, ...document.querySelectorAll('arq-navbar')]) {
@@ -505,6 +532,10 @@ class ArqFichaProducto extends ArqElement {
       else element.removeAttribute('data-arq-theme');
     }
     refreshTheme(); // el observer de theme.js no ve el cambio dentro del Shadow DOM
+    // Breadcrumb y toggle están sobre la foto: su color funde con ella (misma
+    // duración y curva, sin el retraso del resto de los textos), no con el texto
+    // de la página, que arranca después y quedaba a destiempo (2026-10-22).
+    this.#followPhoto();
     // La galería ya pasó a la otra foto: breadcrumb y toggle cambian en el mismo
     // instante que el hero (las copias para medir están precargadas), no al cargar la foto
     this.#syncOverlayTones();
@@ -588,35 +619,88 @@ class ArqFichaProducto extends ArqElement {
     this.emit('variant', { sku: variant.sku });
   }
 
-  // Acordeón: una sección por grupo de especificaciones (src/data/attributes.js).
-  // Al cambiar de variante quedan abiertas las mismas secciones; la primera vez,
-  // la primera (Final).
+  // Dos pestañas (tab, como el mega-menu): «Especificaciones» con un acordeón por
+  // grupo (lumínicas, eléctricas, materiales e instalación) e «Información
+  // comercial» con su lista. Al cambiar de variante queda la pestaña elegida y
+  // abiertas las mismas secciones; la primera vez, las tres en Desktop y solo la
+  // primera (lumínicas) en Mobile. Una pestaña sin
+  // datos no se muestra (src/data/attributes.js).
+  #specTab = 'specs';
+
+  #specList(section) {
+    const list = document.createElement('arq-spec-list');
+    list.columns = true;
+    for (const row of section.rows) {
+      const spec = document.createElement('arq-spec-row');
+      const label = document.createElement('span');
+      label.slot = 'label';
+      label.textContent = row.label;
+      spec.append(label, String(row.value));
+      list.append(spec);
+    }
+    return list;
+  }
+
   #renderSpecs(sections) {
-    const container = this.shadowRoot.querySelector('.accordion');
-    const previous = [...container.children];
-    const open = previous.length ? new Set(previous.filter((item) => item.open).map((item) => item.dataset.section)) : new Set([sections[0]?.id]);
-    container.replaceChildren(
-      ...sections.map((section) => {
-        const item = document.createElement('arq-accordion-item');
-        item.dataset.section = section.id;
-        item.open = open.has(section.id);
-        const title = document.createElement('span');
-        title.slot = 'title';
-        title.textContent = section.label;
-        const list = document.createElement('arq-spec-list');
-        list.columns = true;
-        for (const row of section.rows) {
-          const spec = document.createElement('arq-spec-row');
-          const label = document.createElement('span');
-          label.slot = 'label';
-          label.textContent = row.label;
-          spec.append(label, String(row.value));
-          list.append(spec);
-        }
-        item.append(title, list);
-        return item;
+    const root = this.shadowRoot;
+    const tablist = root.querySelector('.spec-tabs');
+    const panels = root.querySelector('.spec-panels');
+    const previous = [...panels.querySelectorAll('arq-accordion-item')];
+    const technical = sections.filter((section) => section.id !== 'comercial');
+    const open = previous.length ? new Set(previous.filter((item) => item.open).map((item) => item.dataset.section)) : new Set(matchMedia('(max-width: 767px)').matches ? [technical[0]?.id] : technical.map((section) => section.id));
+
+    const accordion = document.createElement('div');
+    accordion.className = 'accordion';
+    for (const section of technical) {
+      const item = document.createElement('arq-accordion-item');
+      item.dataset.section = section.id;
+      item.open = open.has(section.id);
+      const title = document.createElement('span');
+      title.slot = 'title';
+      title.textContent = section.label;
+      item.append(title, this.#specList(section));
+      accordion.append(item);
+    }
+    const commercial = sections.find((section) => section.id === 'comercial');
+
+    const tabs = [
+      technical.length && { id: 'specs', label: 'Especificaciones', content: accordion },
+      commercial && { id: 'commercial', label: commercial.label, content: this.#specList(commercial) },
+    ].filter(Boolean);
+    if (!tabs.some((tab) => tab.id === this.#specTab)) this.#specTab = tabs[0]?.id;
+
+    tablist.replaceChildren(
+      ...tabs.map((tab) => {
+        const el = document.createElement('arq-tab');
+        el.id = `spec-tab-${tab.id}`;
+        el.value = tab.id;
+        el.setAttribute('aria-controls', `spec-panel-${tab.id}`);
+        el.selected = tab.id === this.#specTab;
+        el.textContent = tab.label;
+        return el;
       }),
     );
+    panels.replaceChildren(
+      ...tabs.map((tab) => {
+        const panel = document.createElement('div');
+        panel.className = 'spec-panel';
+        panel.id = `spec-panel-${tab.id}`;
+        panel.dataset.tab = tab.id;
+        panel.setAttribute('role', 'tabpanel');
+        panel.setAttribute('aria-labelledby', `spec-tab-${tab.id}`);
+        panel.hidden = tab.id !== this.#specTab;
+        panel.append(tab.content);
+        return panel;
+      }),
+    );
+    tablist.hidden = tabs.length < 2;
+  }
+
+  #showSpecTab(id) {
+    const root = this.shadowRoot;
+    this.#specTab = id;
+    for (const tab of root.querySelectorAll('.spec-tabs arq-tab')) tab.selected = tab.value === id;
+    for (const panel of root.querySelectorAll('.spec-panel')) panel.hidden = panel.dataset.tab !== id;
   }
 
   #pickerRequest = 0;

@@ -1486,3 +1486,15 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - carousel-button gana la prop `background`: `outline` (por defecto, fondos lisos) y `frosted` (sobre fotos y capas con transparencia). El Disabled de `outline` pasa a sin relleno (antes `color/surface/subtle`, que parecía un botón relleno).
 - Frosted: blanco al 60 % (`color/overlay/frosted` → `alpha/white-60`), blur suave (`blur/backdrop-soft` → `blur/4`; no se toca `blur/backdrop` del navbar), borde fino `color/border/subtle` y chevron en `icon/xl` (24). Probado primero una variante `translucent` (negro al 10 %, `color/overlay/translucent`): no se notaba sobre fotos y se descartó. Todos los tokens nuevos se crearon en Figma y se exportaron.
 - Uso: Recomendados del buscador, donde los botones aparecen solo al pasar el mouse sobre la fila (o con foco de teclado). Para el hero y las galerías de la ficha se prevé una versión con menos opacidad y más minimalista; no está en uso ahí. `TODO`: dentro de un contenedor Dark el chevron (`color/icon/primary`) pasa a claro y se pierde sobre el blanco; resolverlo entonces.
+
+## 2026-10-22 · Ficha: información técnica en pestañas
+
+- Pedido de Gabriela. La información técnica de la ficha pasa a dos pestañas con el mismo `arq-tab` del mega-menu (separación `space/gap/xl`, línea `border/default` en `color/border/subtle`): **Especificaciones** (acordeón con Características lumínicas, Características eléctricas y Materiales e instalación) e **Información comercial** (su lista de datos, sin acordeón: el título ya es la pestaña).
+- Al cambiar de variante queda la pestaña elegida. Si una variante no trae datos comerciales, la pestaña no aparece (y con una sola, no se muestra la barra).
+- `TODO` (diseño): no está en Figma; agregar las pestañas a la Ficha de Final y a `doc/ficha-producto`.
+- Abiertas por defecto: en Desktop las tres secciones de Especificaciones; en Mobile (hasta 767 px) solo Características lumínicas. Se decide la primera vez que se arma; al cambiar de variante quedan como las dejó la persona.
+
+## 2026-10-22 · Ficha: descripción en minúscula y Iluminar del breadcrumb
+
+- La descripción de la variante (debajo del nombre) se muestra en minúscula con la primera letra en mayúscula (`text-transform: lowercase` + `::first-letter` en mayúscula); el dato no se modifica.
+- Breadcrumb y toggle Iluminar van sobre la foto, pero su color funía con el texto de la página (retraso del 25 % y 50 % de duración), cuando la foto ya había empezado a cambiar. Ahora, al iluminar, funden con la foto: sin retraso y con `--arq-illumination-image-duration` y `-easing`. Las variables se ponen en los dos elementos y se quitan a los 1,2 s (hover y foco no se retrasan).
