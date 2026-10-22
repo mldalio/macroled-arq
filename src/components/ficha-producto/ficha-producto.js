@@ -44,12 +44,13 @@
 //   hacer scroll (parallax).
 // - "Ver descargas" lleva al glosario, donde está la descarga de cada SKU.
 // - Comparar: suma la variante elegida a la compare-bar de la ficha (hasta 3).
+//   El lugar vacío (+) de la barra abre compare-picker, como en el listado.
 // - "Generar ficha técnica" y "Ficha técnica" (modal del glosario) emiten arq:datasheet { sku }.
 //   TODO (diseño): el PDF no tiene diseño; se genera cuando exista.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { animateThemeChange, refreshTheme, setBrowserBar, takeThemeHandoff, withoutThemeTransition } from '../../base/theme.js';
-import { getProduct, variantDetails, collectionHref } from '../../data/catalog.js';
+import { getProduct, variantDetails, collectionHref, listCompareCandidates } from '../../data/catalog.js';
 import { attributeInfo } from '../../data/attributes.js';
 import { config } from '../../config.js';
 import { variantOptions, initialSelection, findVariant, choose } from '../../data/variants.js';
@@ -59,6 +60,7 @@ import '../button/button.js';
 import '../toggle/toggle.js';
 import '../checkbox/checkbox.js';
 import '../compare-bar/compare-bar.js';
+import '../compare-picker/compare-picker.js';
 import '../product-gallery/product-gallery.js';
 import '../sku/sku.js';
 import '../option-group/option-group.js';
@@ -210,6 +212,7 @@ class ArqFichaProducto extends ArqElement {
     `</div>` +
     `</div>` +
     `<arq-compare-bar class="compare-bar"></arq-compare-bar>` +
+    `<arq-compare-picker class="picker"></arq-compare-picker>` +
     `<arq-download-modal id="downloads-modal" show-product><slot name="modal-title" slot="title"></slot></arq-download-modal>`;
 
   #product = null;
@@ -267,6 +270,24 @@ class ArqFichaProducto extends ArqElement {
     });
     bar.addEventListener('arq:compare-change', () => {
       compare.checked = bar.has(this.#sku);
+      if (picker.open) this.#loadPicker();
+    });
+    // «Agregar producto» (compare-picker): lo abre el lugar vacío (+) de la
+    // compare-bar; lo que se agrega va a la barra (como en catalog-listing).
+    const picker = root.querySelector('.picker');
+    bar.addEventListener('arq:add', (event) => {
+      event.stopPropagation();
+      picker.show(); // emite arq:search: carga la lista
+    });
+    picker.addEventListener('arq:search', () => this.#loadPicker());
+    // El lugar vacío que lo abrió ya tiene producto: el foco vuelve a la barra
+    picker.addEventListener('arq:close', (event) => {
+      if (!event.detail.restored) bar.focusAdd();
+    });
+    picker.addEventListener('arq:add', (event) => {
+      // En la barra, la misma meta que las cards (no la del modal)
+      const { sku, name, cardMeta, meta, image } = event.detail.item;
+      bar.add({ sku, name, meta: cardMeta ?? meta, image });
     });
 
     // Glosario: el ícono de cada fila abre el modal con los archivos de ese SKU
@@ -582,6 +603,24 @@ class ArqFichaProducto extends ArqElement {
         return item;
       }),
     );
+  }
+
+  #pickerRequest = 0;
+
+  // Productos del compare-picker con la búsqueda del modal; los de la barra
+  // salen como Agregado (y con 3, el resto Disabled).
+  async #loadPicker() {
+    const root = this.shadowRoot;
+    const picker = root.querySelector('.picker');
+    const selected = root.querySelector('.compare-bar').items.map((item) => item.sku);
+    const request = ++this.#pickerRequest;
+    picker.count = selected.length;
+    try {
+      const { items } = await listCompareCandidates({ ...picker.search, selected });
+      if (request === this.#pickerRequest) picker.items = items;
+    } catch (error) {
+      console.error('[arq] compare-picker: no se pudo cargar el catálogo', error);
+    }
   }
 
   #compareItem() {

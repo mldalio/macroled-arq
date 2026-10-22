@@ -23,7 +23,7 @@ Lugar de producto en compare-bar, en Desktop y en la lista apilada de Mobile. co
 | — | `sku` | `sku` | Identifica el producto en `arq:remove` |
 | — | `empty-label` | `emptyLabel` | Texto de Empty. Por defecto "Agregar producto" |
 
-- **Empty es clickeable:** todo el lugar es un botón «Agregar producto» (`empty-label`) que emite `arq:add`; en Productos abre `compare-picker`. Mantiene el dibujo del set (la foto en `color/surface/subtle` con el «+» en `color/icon/primary`, y el texto) dentro de una caja punteada (`border/default` dashed en `color/border/default`), como el lugar vacío de compare-product Compact (Comparativa): la foto contra el borde izquierdo y padding derecho `space/padding/md`, cursor pointer; Hover con fondo `color/surface/faint` y borde `color/border/strong`. Foco: anillo `color/border/focus` por dentro de la caja. En el set: State=Empty y State=empty-hover, como compare-product.
+- **Empty es clickeable:** todo el lugar es un botón «Agregar producto» (`empty-label`) que emite `arq:add`; en Productos, Colecciones y la ficha abre `compare-picker`. Mantiene el dibujo del set (la foto en `color/surface/subtle` con el «+» en `color/icon/primary`, y el texto) dentro de una caja punteada (`border/default` dashed en `color/border/default`), como el lugar vacío de compare-product Compact (Comparativa): la foto contra el borde izquierdo y padding derecho `space/padding/md`, cursor pointer; Hover con fondo `color/surface/faint` y borde `color/border/strong`. Foco: anillo `color/border/focus` por dentro de la caja. En el set: State=Empty y State=empty-hover, como compare-product.
 - **Quitar** (icon-button con `icon/close`, "Quitar Kanu Jardín") emite `arq:remove { sku }`.
 - Toma el ancho de su columna, hasta `layout/compare-slot`.
 
