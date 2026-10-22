@@ -139,6 +139,12 @@
   max-width: 100%;
   color: var(--arq-color-text-tertiary);
   overflow-wrap: break-word;
+  /* En minúscula, salvo la primera letra, como llegue de la base (2026-10-22) */
+  text-transform: lowercase;
+}
+
+.description::first-letter {
+  text-transform: uppercase;
 }
 
 @media (min-width: 1920px) {
@@ -189,6 +195,32 @@
    y en "Ver descargas"). */
 .details {
   padding: var(--arq-space-gap-4xl) var(--page-gutter) var(--arq-space-gap-4xl) var(--arq-space-section-lg);
+}
+
+/* Pestañas de la información técnica: las del mega-menu (separación gap/xl,
+   línea border/default en border/subtle debajo) */
+.spec-tabs {
+  display: flex;
+  gap: var(--arq-space-gap-xl);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  overflow-x: auto;
+}
+
+/* La línea de las pestañas hace de línea superior del acordeón */
+.spec-tabs:not([hidden]) + .spec-panels .accordion {
+  border-top: 0;
+}
+
+.spec-tabs:not([hidden]) + .spec-panels .spec-panel[data-tab='commercial'] {
+  padding-top: var(--arq-space-gap-xl);
+}
+
+.spec-tabs[hidden] {
+  display: none;
+}
+
+.spec-panel[hidden] {
+  display: none;
 }
 
 .accordion {

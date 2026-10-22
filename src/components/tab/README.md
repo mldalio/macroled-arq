@@ -1,6 +1,6 @@
 # tab · `<arq-tab>`
 
-Pestaña para cambiar entre vistas de un mismo contenido sin salir de la página (Por espacio, Lámparas y artefactos, Colecciones en el mega-menu). Si cada opción lleva a otra URL, se usa nav-link.
+Pestaña para cambiar entre vistas de un mismo contenido sin salir de la página (Por espacio, Lámparas y artefactos, Colecciones en el mega-menu; Especificaciones e Información comercial en la ficha). Si cada opción lleva a otra URL, se usa nav-link.
 
 - Figma: [929-2287](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=929-2287) · ficha `doc/tab` (`1451:5248`)
 
