@@ -76,6 +76,9 @@ const NUMBER = new Intl.NumberFormat('es-AR');
 
 const esc = (text) => String(text ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
+// Celda con dato (como hasValue de src/data/attributes.js: «-» cuenta como vacío)
+const filled = (value) => value !== undefined && value !== null && String(value).trim() !== '' && value !== '-';
+
 const TEXT = {
   filters: 'Filtros',
   search: 'Buscar por nombre o SKU…',
@@ -368,15 +371,24 @@ class ArqVariantsTable extends ArqElement {
   }
 
   #build() {
-    const root = this.shadowRoot;
-    const { columns } = this.#data;
-    // Encabezado: imagen · SKU · columnas · descarga
-    root.querySelector('.table thead').innerHTML =
+    this.#refresh();
+  }
+
+  // Encabezado: imagen · SKU · columnas · descarga
+  #renderHead(columns) {
+    this.shadowRoot.querySelector('.table thead').innerHTML =
       `<tr><th scope="col" class="start"><span class="visually-hidden">${TEXT.image}</span></th>` +
       `<th scope="col" class="sku-col role-body-compact-regular">${TEXT.sku}</th>` +
       columns.map((c) => `<th scope="col" class="role-body-compact-regular${c.wide ? ' wide' : ' data'}"><span class="cell">${esc(c.label)}</span></th>`).join('') +
       `<th scope="col" class="end role-body-compact-regular">${TEXT.downloads}</th></tr>`;
-    this.#refresh();
+  }
+
+  // Columnas con algún dato en las filas que cumplen la búsqueda y los filtros
+  // (todas, no solo la tanda visible: «Ver más» no cambia las columnas). Una
+  // columna vacía en todas no se muestra.
+  #shownColumns(visible) {
+    if (!visible.length) return this.#data.columns;
+    return this.#data.columns.filter((c) => visible.some((row) => filled(row.values?.[c.key])));
   }
 
   // Filas de la búsqueda (antes de los filtros). Solo catalog busca.
@@ -424,10 +436,12 @@ class ArqVariantsTable extends ArqElement {
   #refresh() {
     const root = this.shadowRoot;
     const catalog = this.#catalog;
-    const { columns, filters } = this.#data;
+    const { filters } = this.#data;
     const visible = this.#visible();
     const page = catalog ? visible.slice(0, this.#shown) : visible;
     const active = this.#filterCount();
+    const columns = this.#shownColumns(visible);
+    this.#renderHead(columns);
     // Botón: «Filtros (N)»; deshabilitado mientras carga o si no hay filtros
     const toggle = root.querySelector('.toggle-filters');
     toggle.textContent = active ? `${TEXT.filters} (${active})` : TEXT.filters;
