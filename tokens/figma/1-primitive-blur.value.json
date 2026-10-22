@@ -6,6 +6,18 @@
     }
   },
   "blur": {
+    "4": {
+      "$type": "number",
+      "$value": 4,
+      "$extensions": {
+        "com.figma": {
+          "scopes": [],
+          "codeSyntax": {
+            "WEB": "var(--arq-blur-4)"
+          }
+        }
+      }
+    },
     "12": {
       "$type": "number",
       "$value": 12,

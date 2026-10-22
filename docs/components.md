@@ -194,7 +194,11 @@ Pressed (Filled y Outline): además del fondo, el botón se achica a motion/scal
 - Figma: [2387-8532](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2387-8532)
 - Propiedades: Direction: Previous · Next; State: Default · Disabled
 
-Botón anterior / siguiente de los carruseles (Destacados, Proyectos). Cuadrado de 44 px (layout/carousel-button), borde color/border/disabled, chevron icon/md. Direction: Previous o Next. State: Default o Disabled (fondo color/surface/subtle; se usa en Previous cuando el carrusel está en la primera slide).
+Botón anterior / siguiente de los carruseles. Direction: Previous o Next. Background: Outline o Frosted. State: Default o Disabled.
+
+Outline (fondos lisos: Destacados y Proyectos de la Home): cuadrado de 44 px (layout/carousel-button), borde color/border/disabled, chevron icon/md. Disabled: sin relleno y chevron color/icon/disabled; se usa en Previous cuando el carrusel está en la primera slide.
+
+Frosted (sobre fotos o capas con transparencia): fondo color/overlay/frosted (blanco al 60 %) con blur/backdrop-soft (4), borde color/border/subtle (hover: color/border/default) y chevron icon/xl (24). Se usa en los Recomendados del buscador (solo al pasar el mouse sobre la fila o con foco de teclado) y, más adelante, sobre las fotos del hero y las galerías de la ficha (probablemente con menos opacidad y más minimalista; todavía no está en uso). En código es background="frosted".
 
 ## carousel-controls
 
@@ -709,7 +713,7 @@ Desplegable de resultados en desktop. State: Results · No results. Aparece deba
 
 - Figma: set `2555:8441` (documentado desde el código, sin revisión de diseño)
 
-Tarjeta de producto recomendado del search-sheet: la imagen en `ratio/landscape` (5:4) y el nombre en `role/body-regular`. No lleva tipo de producto, acabados ni comparar: no es una product-card. Toda la tarjeta es un link; Hover y Focus: zoom de la imagen (escala 1.1, recortada por el recuadro; `TODO`: prueba, más notorio que motion/scale/hover, falta decidir el token); Focus suma el anillo separado. En código el search-sheet le pasa la proporción con `--card-ratio`.
+Tarjeta de producto recomendado del search-sheet: la imagen en `ratio/square` (1:1) y el nombre en `role/body-regular`. No lleva tipo de producto, acabados ni comparar: no es una product-card. Toda la tarjeta es un link; Hover y Focus: zoom de la imagen (escala 1.1, recortada por el recuadro; `TODO`: prueba, más notorio que motion/scale/hover, falta decidir el token); Focus suma el anillo separado. En código el search-sheet le pasa la proporción con `--card-ratio`.
 
 ## search-collection
 

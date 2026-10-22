@@ -1061,6 +1061,22 @@
           }
         }
       }
+    },
+    "white-60": {
+      "$type": "color",
+      "$value": "#ffffff99",
+      "$description": "Blanco al 60 % de opacidad para superficies translúcidas claras.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-alpha-white-60)"
+          }
+        }
+      }
     }
   },
   "neutral": {

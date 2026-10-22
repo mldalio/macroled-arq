@@ -80,6 +80,7 @@ export const PRINT_TOKENS = Object.freeze({
   "color/overlay/scrim": "#000000B2",
   "color/overlay/translucent": "#1010101A",
   "color/overlay/scrim-gallery": "#000000E5",
+  "color/overlay/frosted": "#FFFFFF99",
   "layout/gutter": 40,
   "layout/card-min": 280,
   "layout/card-min-wide": 340,

@@ -2233,13 +2233,18 @@
 
       <section class="demo-section" aria-labelledby="demo-carousel-button">
         <h2 id="demo-carousel-button" class="demo-heading role-label">carousel-button · &lt;arq-carousel-button&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 2387:8532. Cuadrado de los sliders de Destacados y Proyectos. Direction Previous · Next. State=Disabled: fondo surface/subtle.</p>
+        <p class="demo-note role-body-sm">Figma 2387:8532. Cuadrado de los sliders de Destacados y Proyectos. Direction Previous · Next. State=Disabled: sin relleno. Background Outline · Frosted.</p>
         <p class="demo-subheading role-body-sm">Previous y Next, Default y Disabled</p>
         <div class="demo-row">
           <arq-carousel-button direction="previous">Anterior</arq-carousel-button>
           <arq-carousel-button direction="previous" disabled>Anterior</arq-carousel-button>
           <arq-carousel-button direction="next">Siguiente</arq-carousel-button>
           <arq-carousel-button direction="next" disabled>Siguiente</arq-carousel-button>
+        </div>
+        <p class="demo-subheading role-body-sm">Background=Frosted (blanco al 60 %, blur 4) sobre foto: buscador, y luego la ficha</p>
+        <div class="demo-row" style="background: linear-gradient(90deg, var(--arq-neutral-700), var(--arq-neutral-400)); padding: var(--arq-space-padding-lg);">
+          <arq-carousel-button background="frosted" direction="previous">Anterior</arq-carousel-button>
+          <arq-carousel-button background="frosted" direction="next">Siguiente</arq-carousel-button>
         </div>
         <p class="demo-subheading role-body-sm">Contenedor en modo Dark</p>
         <div class="demo-row demo-dark" data-arq-theme="dark">
