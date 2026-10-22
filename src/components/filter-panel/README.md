@@ -36,12 +36,12 @@ En Productos y Colecciones, en Mobile y Tablet (hasta 1023 px), `show-categories
 | — (filas) | slot por defecto | — | `arq-filter-row` |
 | Breakpoint | — | — | Media query: hasta 767 px es Mobile |
 
-- **Métodos:** `show(opener)` abre (el foco vuelve a `opener` al cerrar), `close()` cierra descartando, `apply()` aplica y cierra, `clear()` es "Borrar todo". `filters` devuelve lo marcado: `{ name: [values] }`.
-- **Eventos:** `arq:filters { filters }` en cada cambio (para recalcular `count`, también al descartar); `arq:apply { filters }` al tocar "Ver N".
-- **Cuándo se aplica** (decisión 2026-10-02 · filter-panel): con el panel abierto el listado no cambia, solo el número del botón. "Ver N productos" aplica y cierra. La X, el scrim o Esc descartan los cambios y vuelven a lo marcado al abrir.
+- **Métodos:** `show(opener)` abre (el foco vuelve a `opener` al cerrar), `close()` cierra descartando, `apply()` aplica y cierra, `clear()` es "Borrar todo". `showAvailable(isAvailable)` oculta las opciones que no darían resultados (`isAvailable(checkbox)` → false; lo marcado queda siempre) y las filas con una sola opción visible; la página lo llama con cada `arq:filters` (decisiones.md, 2026-10-22 · Filtros que no aplican). `filters` devuelve lo marcado: `{ name: [values] }`.
+- **Eventos:** `arq:filters { filters }` en cada cambio (para recalcular `count`, también al descartar); `arq:apply { filters }` al tocar "Ver N" y al tocar "Borrar todo".
+- **Cuándo se aplica** (decisión 2026-10-02 · filter-panel): con el panel abierto el listado no cambia, solo el número del botón. "Ver N productos" aplica y cierra. La X, el scrim o Esc descartan los cambios y vuelven a lo marcado al abrir. Excepción: "Borrar todo" aplica en el momento y deja el panel abierto; cerrar después no restaura lo borrado (decisión 2026-10-22).
 - **Diálogo modal nativo** (`<dialog>` + `showModal()`): el foco queda adentro (arranca en cerrar), Esc y el scrim cierran, y el foco vuelve al botón que lo abrió.
-- **Chips:** tocar uno desmarca su opción y el foco pasa al chip siguiente, al anterior o a cerrar. "Borrar todo" desmarca todo sin cerrar.
-- El cuerpo (las filas) tiene scroll propio; encabezado, chips y footer quedan fijos.
+- **Chips:** tocar uno desmarca su opción y el foco pasa al chip siguiente, al anterior o a cerrar. "Borrar todo" desmarca todo y lo aplica, sin cerrar.
+- El cuerpo (las filas) tiene scroll propio; encabezado, chips y footer quedan fijos. La barra de scroll va al borde derecho del panel, separada del contenido por todo el margen lateral (decisiones.md, 2026-10-22 · Cantidad por opción).
 - **Siempre en Light**, también con Iluminar: el `<dialog>` lleva `data-arq-theme="light"` (Light local, `src/styles/light.css`). Las filas y el título, que llegan por slot, lo heredan.
 
 `show-categories` es un atributo booleano opcional. El slot `categories` recibe el árbol de navegación; no cambia el slot por defecto de `arq-filter-row`.

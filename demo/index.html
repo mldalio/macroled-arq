@@ -1491,7 +1491,7 @@
 
       <section class="demo-section" aria-labelledby="demo-checkbox">
         <h2 id="demo-checkbox" class="demo-heading role-label">checkbox · &lt;arq-checkbox&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 975:2322. Size Default y Large × Checked × Disabled; sin show-label (texto solo para lectores) y texto largo. «Ver valor» muestra lo que manda el formulario.</p>
+        <p class="demo-note role-body-sm">Figma 975:2322. Size Default y Large × Checked × Disabled; con count (Show count: el número al borde derecho cuando el checkbox ocupa todo el ancho, como en filter-row); sin show-label (texto solo para lectores) y texto largo. «Ver valor» muestra lo que manda el formulario.</p>
         <form class="demo-stack" data-demo-form>
           <div class="demo-row">
             <arq-checkbox name="comparar" value="kanu" show-label>Comparar</arq-checkbox>
@@ -1506,8 +1506,15 @@
             <arq-checkbox size="large" name="aplicacion" value="jardin" disabled show-label>Jardín</arq-checkbox>
             <arq-checkbox size="large" name="aplicacion" value="pared" checked disabled show-label>Pared</arq-checkbox>
           </div>
+          <div class="demo-row">
+            <arq-checkbox size="large" name="acabado" value="negro" show-label count="24">Negro</arq-checkbox>
+            <arq-checkbox size="large" name="acabado" value="terracota" checked show-label count="7">Terracota</arq-checkbox>
+            <arq-checkbox size="large" name="acabado" value="verde" disabled show-label count="2">Verde</arq-checkbox>
+            <arq-checkbox name="acabado" value="blanco" show-label count="1500">Blanco</arq-checkbox>
+          </div>
           <div class="demo-narrow">
             <arq-checkbox size="large" name="aplicacion" value="largo" show-label>Una opción de filtro con un texto largo que se parte en dos líneas</arq-checkbox>
+            <arq-checkbox size="large" name="aplicacion" value="largo-count" show-label count="12">Una opción de filtro con un texto largo y la cantidad al final</arq-checkbox>
           </div>
           <div class="demo-row">
             <arq-button type="outline" data-demo-show>Ver valor</arq-button>
@@ -1521,6 +1528,7 @@
           <arq-checkbox disabled show-label>Comparar</arq-checkbox>
           <arq-checkbox checked disabled show-label>Comparar</arq-checkbox>
           <arq-checkbox size="large" checked show-label>Interior</arq-checkbox>
+          <arq-checkbox size="large" show-label count="7">Terracota</arq-checkbox>
         </div>
       </section>
 

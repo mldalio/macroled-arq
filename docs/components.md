@@ -263,9 +263,10 @@ La imagen tiene la proporción bloqueada: al crecer la columna crece en alto sin
 ## checkbox
 
 - Figma: [975-2322](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=975-2322)
-- Propiedades: Label; Show label; Size: Large · Default; Checked: False · True; State: Default · Hover · Focus · Disabled
+- Propiedades: Label; Show label; Count; Show count; Size: Large · Default; Checked: False · True; State: Default · Hover · Focus · Disabled
 
 Checkbox. Checked: False / True. State: Default, Hover, Focus (anillo separado alrededor de todo el checkbox, DESIGN.md §7) y Disabled. Props: Label y Show label. Se usa en los filtros de Productos y en "Comparar" de las tarjetas. En código es un <input type="checkbox"> real con su <label>; toda la fila es clickeable. Dentro de una tarjeta, el checkbox va fuera del link de la tarjeta.
+Show count + Count: cantidad de resultados de la opción, sin paréntesis, en el mismo estilo de texto que el label y color/text/tertiary (Disabled: color/text/disabled). El label crece y el número queda al borde derecho (space between): con la instancia en Fill, las cantidades forman una columna alineada con el −/+ de filter-row. Hover (toda la fila, también sobre el número): label en color/text/primary, número en color/text/secondary y borde de la caja border/strong, con un fundido de color motion/duration/fast y motion/easing/standard. La usan las opciones de filter-row en filter-panel. En código, atributo `count`.
 
 Size: Default (role/body, 14) o Large (role/body-lg, 16) — en lugar de sobrescribir el estilo en cada instancia.
 
@@ -463,6 +464,7 @@ Filtro aplicado que se puede quitar (todo el chip es el botón; en código: butt
 - Propiedades: Title; Summary; Show summary; Show applied; Show categories; Show category list; Breakpoint: Desktop · Mobile
 
 Panel de filtros que se abre desde el botón Filtrar del catalog-toolbar. Desktop: panel lateral de 560 sobre scrim (color/overlay/scrim). Mobile: pantalla completa (modos Mobile de Dimension y Type). Contenido: filter-row (checkbox) + footer con button Underline "Borrar todo" y Filled "Ver N productos". Filtros aplicados: fila "applied" con filter-chip (8 lugares, 3 visibles) que se quitan uno por uno; Show applied la oculta cuando no hay filtros. "Borrar todo" los quita todos.
+«Borrar todo» aplica en el momento, sin cerrar el panel. Las opciones que no darían resultados con lo marcado se ocultan (lo marcado queda siempre) y cada una muestra su cantidad (checkbox Show count, al borde derecho). La barra de scroll del cuerpo va al borde derecho del panel, separada del contenido por todo el margen lateral.
 
 Show categories (Mobile y Tablet, hasta 1023 px, en Productos; en código el atributo show-categories): tabs Características · Categorías debajo del encabezado, gap space/gap/xl y línea inferior border/default en color/border/subtle. Categorías muestra los grupos de catalog-nav (el de la categoría actual abierto) y oculta filtros, resumen, chips y footer; sus links cambian el listado y cierran el panel. Show category list representa la tab Categorías activa: en código no es una prop, es el estado de la tab.
 
@@ -472,6 +474,8 @@ Show categories (Mobile y Tablet, hasta 1023 px, en Productos; en código el atr
 - Propiedades: Label; Open: True · False; State: Default · Hover · Focus
 
 Fila desplegable del panel de filtros (filter-panel). Mismo patrón que catalog-nav-group: encabezado con icon-button icon/plus / icon/minus y borde inferior color/border/subtle. Opciones = checkbox; trae 8 lugares (6 visibles): ocultá o mostrá los que necesites y editá Label/Checked en cada uno. Estados: Hover (borde color/border/default + icon-button Hover), Focus (borde color/border/focus). Tocar el encabezado alterna Open.
+Opciones a todo el ancho (checkbox en Fill, Show count): la cantidad queda al borde derecho, en columna con el −/+ (padding derecho space/padding/xs, como el icon-button).
+Hover de cada opción (toda la fila): fondo color/surface/faint que se asoma space/padding/sm-md a los lados y space/padding/xs arriba y abajo (el gap entre opciones baja lo mismo, la distancia entre opciones no cambia), junto con el Hover del checkbox (label primary, cantidad secondary, caja border/strong). Fundido motion/duration/fast. No va en opciones Disabled.
 
 ## footer
 

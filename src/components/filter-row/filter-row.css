@@ -61,14 +61,37 @@
   display: none;
 }
 
-/* Opciones: checkbox Large, gap space/gap/sm-md; abajo space/padding/sm (el
-   del set) + space/padding/md (el padding inferior de la fila). */
+/* Opciones: checkbox Large a todo el ancho (Fill en el set: la cantidad queda
+   al borde derecho, en columna con el −/+), gap space/gap/sm-md; abajo
+   space/padding/sm (el del set) + space/padding/md (el padding inferior de la fila). */
 .options {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: var(--arq-space-gap-sm-md);
+  align-items: stretch;
+  /* space/gap/sm-md entre opciones, menos el padding vertical del fondo de hover */
+  gap: calc(var(--arq-space-gap-sm-md) - 2 * var(--arq-space-padding-xs));
+  /* La cantidad termina donde termina el −/+ (dentro del padding de icon-box) */
+  padding-inline-end: var(--arq-space-padding-xs);
   padding-bottom: calc(var(--arq-space-padding-sm) + var(--arq-space-padding-md));
+}
+
+/* Hover de cada opción: fondo tenue color/surface/faint (el hover de opciones
+   sin fondo, DESIGN.md §4) en toda la fila. El fondo se asoma
+   space/padding/sm-md a cada lado (margen negativo + padding), así caja, label
+   y cantidad no se mueven, y space/padding/xs arriba y abajo (el gap entre
+   opciones baja lo mismo: de una opción a la otra sigue habiendo la misma
+   distancia). Fundido motion/duration/fast. */
+::slotted(arq-checkbox) {
+  margin-inline: calc(-1 * var(--arq-space-padding-sm-md));
+  padding: var(--arq-space-padding-xs) var(--arq-space-padding-sm-md);
+  background: var(--arq-color-surface-transparent);
+  transition: background-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  ::slotted(arq-checkbox:not([disabled]):hover) {
+    background: var(--arq-color-surface-faint);
+  }
 }
 
 /* State=Hover: línea color/border/default e ícono en Hover (sin fondo, como el set) */

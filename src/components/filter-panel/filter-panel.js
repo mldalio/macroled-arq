@@ -28,7 +28,8 @@
 // - Mientras está abierto el listado no cambia. "Ver N" emite arq:apply
 //   { filters } y cierra. Cerrar con la X, el scrim o Esc descarta los cambios:
 //   vuelve a lo marcado al abrir (decisión 2026-10-02 · filter-panel).
-// - "Borrar todo" desmarca todo sin cerrar. Tocar un chip desmarca su opción y
+// - "Borrar todo" desmarca todo y lo aplica en el momento (arq:apply), sin
+//   cerrar: cerrar después ya no lo restaura (decisión 2026-10-22). Tocar un chip desmarca su opción y
 //   el foco pasa al chip siguiente (o al anterior, o a cerrar).
 
 import { ArqElement } from '../../base/arq-element.js';
@@ -173,10 +174,28 @@ class ArqFilterPanel extends ArqElement {
     this.open = false;
   }
 
-  /** "Borrar todo": desmarca todo sin cerrar. */
+  /**
+   * Oculta las opciones que no darían resultados con lo marcado
+   * (`isAvailable(option)` → false) y los filtros que se quedan sin nada que
+   * elegir (una sola opción visible no filtra). Lo marcado siempre queda a la
+   * vista, para poder desmarcarlo (decisiones.md, 2026-10-22 · Filtros que no aplican).
+   */
+  showAvailable(isAvailable) {
+    for (const row of this.querySelectorAll('arq-filter-row')) {
+      const options = [...row.querySelectorAll(':scope > arq-checkbox')];
+      for (const option of options) option.hidden = !option.checked && !isAvailable(option);
+      const visible = options.filter((option) => !option.hidden);
+      row.hidden = visible.length < 2 && !visible.some((option) => option.checked);
+    }
+  }
+
+  /** "Borrar todo": desmarca todo y lo aplica en el momento, sin cerrar. */
   clear() {
     for (const option of this.options) option.checked = false;
     this.#changed();
+    // Lo borrado ya quedó aplicado: cerrar después no lo restaura.
+    if (this.#snapshot) this.#snapshot = new Map(this.options.map((option) => [option, false]));
+    this.emit('apply', { filters: this.filters });
   }
 
   #showDialog() {

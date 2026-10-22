@@ -650,11 +650,12 @@ class ArqVariantsTable extends ArqElement {
   }
 
   // ── Panel lateral ────────────────────────────────────────────────
-  // Las filas se arman al abrir, con lo aplicado marcado; mientras está
-  // abierto solo cambian el estado deshabilitado y «Ver N …».
+  // Las filas se arman al abrir, con lo aplicado marcado. Con cada cambio se
+  // ocultan las opciones que no darían filas con la búsqueda y lo marcado, y
+  // los filtros sin nada que elegir (filter-panel showAvailable; decisiones.md,
+  // 2026-10-22 · Filtros que no aplican).
   #openPanel(opener) {
     const panel = this.shadowRoot.querySelector('.panel');
-    const rows = this.#searched();
     const { filters } = this.#data;
     const groups = this.#options();
     panel.replaceChildren(
@@ -673,7 +674,6 @@ class ArqVariantsTable extends ArqElement {
           checkbox.value = option.value;
           checkbox.textContent = option.value;
           checkbox.checked = option.selected;
-          checkbox.disabled = option.disabled;
           row.append(checkbox);
         }
         // Abierta si tiene filtros aplicados (filter-row)
@@ -681,20 +681,22 @@ class ArqVariantsTable extends ArqElement {
         return row;
       }),
     );
-    panel.count = filterVariants(rows, this.#values).length;
+    this.#syncPanel(this.#values);
     panel.show(opener);
   }
 
+  // Cantidad al lado de cada opción: las filas que daría con la búsqueda y los
+  // otros filtros (en el mismo filtro los valores se suman, así que cuenta
+  // como si fuera el único elegido ahí). Sin filas, la opción se oculta.
   #syncPanel(values) {
     const panel = this.shadowRoot.querySelector('.panel');
     const rows = this.#searched();
-    const groups = this.#options(values);
-    panel.querySelectorAll('arq-filter-row').forEach((row, i) => {
-      const options = groups[i] ?? [];
-      row.querySelectorAll('arq-checkbox').forEach((checkbox, j) => {
-        checkbox.disabled = Boolean(options[j]?.disabled) && !checkbox.checked;
-      });
-    });
+    for (const checkbox of panel.options) {
+      const key = checkbox.getAttribute('name');
+      const count = filterVariants(rows, { ...values, [key]: [checkbox.value] }).length;
+      checkbox.count = count || null;
+    }
+    panel.showAvailable((checkbox) => Number.isFinite(checkbox.count));
     panel.count = filterVariants(rows, values).length;
   }
 

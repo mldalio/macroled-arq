@@ -66,12 +66,13 @@
 /* Header · applied · body (con scroll propio) · footer, gap space/gap/lg,
    padding space/padding/xl-2xl */
 .sheet {
+  --sheet-inline: var(--arq-space-padding-xl-2xl); /* margen lateral; el cuerpo lo usa para la barra de scroll */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: var(--arq-space-gap-lg);
   height: 100%;
-  padding: var(--arq-space-padding-xl-2xl);
+  padding: var(--arq-space-padding-xl-2xl) var(--sheet-inline);
 }
 
 .header {
@@ -110,12 +111,17 @@
 }
 
 /* Filas con scroll propio. El padding space/padding/xs deja lugar al anillo
-   de foco de las filas, que el overflow cortaría; el margen lo compensa. */
+   de foco de las filas, que el overflow cortaría; el margen lo compensa. A la
+   derecha el cuerpo llega al borde del panel: la barra de scroll queda ahí,
+   lejos del contenido (que sigue alineado con el título y el footer). */
 .body {
   flex: 1 1 auto;
   min-height: 0;
   margin: calc(-1 * var(--arq-space-padding-xs));
+  margin-inline: calc(-1 * var(--arq-space-padding-sm-md)) calc(-1 * var(--sheet-inline));
   padding: var(--arq-space-padding-xs);
+  /* izquierda: el fondo de hover de las opciones (filter-row) se asoma space/padding/sm-md */
+  padding-inline: var(--arq-space-padding-sm-md) var(--sheet-inline);
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -145,8 +151,9 @@
      «Ver N productos» no queda debajo; vale 0 si el sitio no usa
      viewport-fit=cover. */
   .sheet {
+    --sheet-inline: var(--arq-layout-gutter);
     gap: var(--arq-space-gap-xl);
-    padding: var(--arq-space-padding-lg) var(--arq-layout-gutter)
+    padding: var(--arq-space-padding-lg) var(--sheet-inline)
       calc(var(--arq-space-padding-lg) + env(safe-area-inset-bottom, var(--arq-space-0)));
   }
 

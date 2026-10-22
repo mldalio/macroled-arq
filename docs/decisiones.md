@@ -1441,3 +1441,25 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - Pedido: en responsive, el padding izquierdo y derecho de las preguntas frecuentes no seguía al resto de la página.
 - `layout="split"` usa `--page-gutter` a los lados en todos los anchos (newsletter y footer), en vez de `space/padding/4xl` y, en mobile, `space/padding/sm`.
 - Las dos columnas arrancan en 1024. Hasta ahí el bloque se apila: la columna de `layout/measure-wide` (520) más el hueco se comía el margen y las preguntas quedaban sin ancho.
+
+## 2026-10-22 · «Borrar todo» de los filtros se aplica en el momento
+
+- Pedido: en los paneles de filtros (filter-panel: Productos, Colecciones, ficha y Descargas), «Borrar todo» no se aplicaba hasta tocar «Ver N». Ahora desmarca todo y lo aplica en el momento (`arq:apply`): el listado o la tabla se actualizan sin cerrar el panel.
+- Cerrar después con la X, el scrim o Esc ya no restaura lo borrado. Lo que se marque después de borrar sigue la regla de 2026-10-02: se aplica con «Ver N» y cerrar lo descarta.
+
+## 2026-10-22 · Filtros que no aplican
+
+- Pedido: en Descargas, con una búsqueda el panel mostraba todo el catálogo y apagaba casi todo (buscando «kanu»: 59 de 72 opciones grises, mezcladas con las que sirven). Se veía roto y obligaba a recorrer opciones que no sirven.
+- **Las opciones que no darían resultados se ocultan**, no se apagan: las que no existen en lo que se está viendo (la búsqueda en variants-table; la categoría y la búsqueda en Productos y Colecciones) y las que dejarían «Ver 0» con lo marcado. Se recalcula con cada opción que se marca o desmarca, así que la lista se acomoda mientras se elige (se eligió así frente a dejarlas apagadas, separadas abajo o plegadas).
+- Lo marcado queda siempre a la vista, para poder desmarcarlo. Un filtro que se queda con una sola opción visible (sin marcar) no filtra nada y se oculta entero.
+- Una opción sirve si alguna variante tiene ese valor y cumple los filtros de los otros campos (dentro del mismo campo los valores se suman).
+- Código: `showAvailable(isAvailable)` de filter-panel oculta opciones y filas; variants-table lo llama con `filterOptions` (`src/data/variants.js`) y catalog-listing con `available`, que devuelven `listProducts` y `listCollections` (`src/data/catalog.js`).
+
+## 2026-10-22 · Cantidad por opción en los filtros
+
+- Pedido: mostrar al lado de cada opción de filtro cuántos resultados da, como el catálogo de Macroled (macroled.com.ar/productos).
+- **checkbox** suma en Figma (975:2322) **Show count** (en `false` por defecto, así no cambian las instancias que ya había) y **Count**. En código, atributo `count` (el número, con separador de miles).
+- **Cómo se ve:** el número sin paréntesis, al borde derecho (space between: en Figma caja y label van en `content` y el número al otro extremo), en el mismo estilo de texto que el label y `color/text/tertiary` (Disabled `color/text/disabled`), con cifras de ancho fijo. Las opciones de filter-row ocupan todo el ancho (Fill), así las cantidades forman una columna que termina donde el −/+ (padding derecho `space/padding/xs`). Se eligió frente a «Negro (24)»: repite la alineación de spec-row y del −/+, se compara de un vistazo y no se mezcla con valores numéricos («12W (4)»). Con un label de varias líneas, el número queda a la altura de la primera.
+- **Hover de toda la opción:** como la fila entera es clickeable, reacciona entera (también sobre el número): label `color/text/primary`, número `color/text/secondary`, caja con borde `border/strong`. Fundido de color `motion/duration/fast` con `motion/easing/standard` (0 con reduced motion), solo con mouse. En filter-row suma un fondo tenue `color/surface/faint` en toda la opción, que se asoma `space/padding/sm-md` a los lados y `space/padding/xs` arriba y abajo (el gap entre opciones baja lo mismo: la distancia entre opciones no cambia); el cuerpo de filter-panel deja ese lugar a la izquierda para que el scroll no lo corte. No va en opciones Disabled ni en el «Comparar» de las tarjetas.
+- **Barra de scroll del panel:** el cuerpo de filter-panel llega al borde derecho y devuelve el margen como padding, así la barra queda en el borde del panel, a `space/padding/xl-2xl` (Mobile `layout/gutter`) del contenido, que sigue alineado con el título y el footer.
+- **Qué cuenta:** lo que daría «Ver N» si se marcara esa opción con lo demás marcado (en el mismo filtro, como si fuera la única elegida ahí). Productos: productos (cards); Colecciones: colecciones; variants-table (ficha y Descargas): variantes, con la búsqueda. Una opción en 0 se oculta (ver Filtros que no aplican). Lo marcado sin resultados queda a la vista, sin número.

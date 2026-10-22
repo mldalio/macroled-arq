@@ -19,6 +19,7 @@ Checkbox con label. Se usa en las opciones de filter-row (panel de filtros, Size
 | Checked | `checked` | `checked` | booleano |
 | State=Disabled | `disabled` | `disabled` | booleano |
 | — | `name` · `value` | `name` · `value` | como un `<input type="checkbox">` (`value` def. `on`) |
+| Show count + Count | `count` | `count` | número de resultados de la opción, al borde derecho de la fila, con separador de miles. Sin el atributo no se muestra (**en Figma Show count viene en `false`**) |
 
 - Hover y Focus son CSS.
 - **Es un `<input type="checkbox">` real** con su `<label>`: toda la fila (caja + texto) es clickeable y Espacio lo marca. `el.focus()` enfoca el input.
@@ -35,6 +36,8 @@ Checkbox con label. Se usa en las opciones de filter-row (panel de filtros, Size
 | Caja marcada | `color/action/primary` (Hover `color/action/primary-hover`) |
 | Disabled | `color/icon/disabled` · texto `color/text/disabled` |
 | Label | `color/text/secondary` (Hover `color/text/primary`) · `role/body` (Large `role/body-lg`) |
+| Count | mismo rol que el label en `color/text/tertiary` (Hover `color/text/secondary`; Disabled `color/text/disabled`), al borde derecho (como mínimo a `space/gap/sm` del label), cifras de ancho fijo. Con un label de varias líneas queda a la altura de la primera. Si el contenedor estira el checkbox (filter-row), toda la fila es clickeable |
+| Hover | toda la fila: label, número y borde de la caja cambian juntos, fundido de color `motion/duration/fast` con `motion/easing/standard` |
 | Gap · padding vertical | `space/gap/sm` · `space/gap/xs` (como en Figma) |
 | Foco | `border/strong` en `color/border/focus`, separado 2 px de la caja (DESIGN.md §7) |
 
