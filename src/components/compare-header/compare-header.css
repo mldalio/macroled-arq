@@ -75,20 +75,25 @@
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
 }
 
-/* El texto del toggle va en una sola línea: la columna se ajusta al contenido
-   en vez de fijarse a layout/compare-label. */
+/* Compact/Desktop alineado con compare-table: el toggle ocupa la columna de
+   etiquetas (layout/compare-label + space/gap/lg) y cada producto, una
+   columna de valores, con la misma línea izquierda (color/border/subtle) y
+   el mismo padding que un valor. El texto del toggle va en una sola línea. */
+.compact {
+  gap: 0;
+}
+
 .compact .controls {
   display: flex;
   align-items: center;
-  width: auto;
+  padding-inline-end: var(--arq-space-gap-lg);
   white-space: nowrap;
 }
 
 .slots {
   display: flex;
   flex: 1 1 auto;
-  align-items: center;
-  gap: var(--arq-space-gap-lg);
+  align-items: stretch;
   min-width: 0;
   overflow: hidden;
 }
@@ -96,6 +101,8 @@
 .slots > * {
   flex: 1 1 0;
   min-width: 0;
+  padding-inline: var(--arq-space-padding-md) var(--arq-space-gap-lg);
+  border-left: var(--arq-border-default) solid var(--arq-color-border-subtle);
 }
 
 @media (max-width: 767px) {
@@ -184,6 +191,8 @@
     flex: none;
     box-sizing: border-box;
     width: var(--column-width);
+    padding-inline: 0;
+    border-left: 0;
   }
 
   .slots > * + * {
