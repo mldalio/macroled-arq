@@ -3832,7 +3832,10 @@ var ui = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 		let s = e.querySelector(".toggle-filters");
 		s.textContent = a ? `${H.filters} (${a})` : H.filters, s.disabled = this.loading || !n.length, this.#j(), e.querySelector(".table tbody").innerHTML = i.map((e) => `<tr><td class="start">${yi(e, "thumb", t)}</td><th scope="row" class="sku-col"><span class="product">` + (t && e.name ? bi(e, "role-body-compact-regular") : "") + `<arq-sku size="compact" dense>${V(e.sku)}</arq-sku></span></th>` + o.map((t) => `<td class="role-body-compact-regular${t.wide ? " wide" : " data"}"><span class="cell">${V(e.values?.[t.key] ?? "—")}</span></td>`).join("") + `<td class="end">${vi(e.sku)}</td></tr>`).join("");
 		let c = gi.map((e) => o.find((t) => t.key === e)).filter(Boolean);
-		e.querySelector(".cards").innerHTML = i.map((e) => `<li class="card"><span class="card-head">${yi(e, "card-thumb", t)}<span class="product">` + (t && e.name ? bi(e, "role-body-compact-regular") : "") + `<arq-sku size="compact" dense>${V(e.sku)}</arq-sku></span>${vi(e.sku)}</span>` + (c.length ? "<dl class=\"card-data\">" + c.map((t) => `<div class="card-item"><dt class="role-body-compact-regular">${V(t.label)}</dt><dd class="role-body-compact-medium">${V(e.values?.[t.key] ?? "—")}</dd></div>`).join("") + "</dl>" : "") + "</li>").join(""), e.querySelector(".total").textContent = this.loading ? H.loading : this.#m(r.length);
+		e.querySelector(".cards").innerHTML = i.map((e) => {
+			let n = t ? c.filter((t) => (e.values?.[t.key] ?? "") !== "") : c;
+			return `<li class="card"><span class="card-head">${yi(e, "card-thumb", t)}<span class="product">` + (t && e.name ? bi(e, "role-body-compact-regular") : "") + `<arq-sku size="compact" dense>${V(e.sku)}</arq-sku></span>${vi(e.sku)}</span>` + (n.length ? "<dl class=\"card-data\">" + n.map((t) => `<div class="card-item"><dt class="role-body-compact-regular">${V(t.label)}</dt><dd class="role-body-compact-medium">${V(e.values?.[t.key] ?? "—")}</dd></div>`).join("") + "</dl>" : "") + "</li>";
+		}).join(""), e.querySelector(".total").textContent = this.loading ? H.loading : this.#m(r.length);
 		let l = !this.loading && !r.length && this.#e.rows.length > 0;
 		!this.loading && !this.#r && !e.querySelector(".skeleton").hidden && this.#A(), e.querySelector(".skeleton").hidden = !this.loading, this.loading && this.#F(), e.querySelector(".scroll").hidden = l || this.loading, e.querySelector(".cards").hidden = l || this.loading, e.querySelector(".more").hidden = !t || this.loading || r.length <= this.#i, e.querySelector(".empty").hidden = !l, l && this.#k(a), this.#E(), this.#O();
 	}
@@ -8385,7 +8388,7 @@ var ws = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		type: String,
 		default: "/arq/contacto"
 	} };
-	static template = `<div class="page"><div class="hero"><div class="configurator"><div class="gallery-column"><arq-product-gallery class="gallery" fill inset-thumbs><arq-breadcrumb class="breadcrumb needs-data" slot="overlay"></arq-breadcrumb><arq-toggle class="iluminar needs-data" slot="overlay" show-label>Iluminar</arq-toggle></arq-product-gallery></div><div class="configurator-column"><div class="header"><div class="title-row"><div class="title role-display"><slot name="title"></slot></div><div class="description role-body-compact"><span class="variant-description" hidden></span></div><arq-sku class="sku needs-data" size="compact"></arq-sku></div></div><div class="info"><p class="status role-body" role="status" hidden></p><div class="options needs-data"></div></div><div class="buy needs-data"><arq-checkbox class="compare" show-label>Comparar</arq-checkbox><div class="actions"><arq-button class="datasheet">Generar ficha técnica</arq-button><arq-button class="to-glossary" type="outline">Ver descargas</arq-button></div></div></div></div></div><div class="details needs-data"><div class="accordion"></div></div><div class="ambient-block needs-data" hidden><div class="ambient" role="region" aria-label="Galería de ambiente" tabindex="0"></div><div class="ambient-controls"><arq-icon-button class="ambient-prev" icon="arrow-left" size="large" background="outline" disabled>${Q.previous}</arq-icon-button><arq-icon-button class="ambient-next" icon="arrow-right" size="large" background="outline">${Q.next}</arq-icon-button></div><span class="ambient-cursor" aria-hidden="true" hidden>${I("arrow-right")}${I("arrow-left")}</span></div><div class="glossary needs-data"><div class="glossary-title role-display-sm"><slot name="glossary-title"></slot></div><arq-variants-table class="table" downloads="downloads-modal"></arq-variants-table></div><div class="story-block needs-data"><div class="story" data-arq-theme="dark" hidden><div class="story-bg" hidden><img alt="" loading="lazy"></div><div class="story-title"><slot name="story-title"></slot></div><div class="story-body"><div class="story-text"><slot name="story-text"></slot><slot name="story-list"></slot></div><arq-button class="story-link" type="underline" show-underline show-icon icon="arrow-up-right" hidden></arq-button></div></div></div><div class="cta" hidden><div class="cta-block"><div class="cta-text"><div class="cta-title role-heading-1"><slot name="cta-title"></slot></div><p class="cta-description role-body-lg"><slot name="cta-description"></slot></p></div><arq-button class="cta-action" show-icon icon="arrow-right"><slot name="cta-action"></slot></arq-button></div></div><div class="inspiration" hidden><div class="inspiration-copy"><div class="inspiration-text role-body-lg"><slot name="inspiration"></slot></div></div><div class="inspiration-images needs-data"></div></div><div class="collection needs-data" hidden><div class="collection-intro"><div class="collection-title role-heading-2"><slot name="collection-title"></slot></div><arq-button class="collection-link" type="underline" show-underline show-icon icon="arrow-up-right"></arq-button></div><div class="cards collection-cards"></div></div></div><arq-compare-bar class="compare-bar"></arq-compare-bar><arq-download-modal id="downloads-modal" show-product><slot name="modal-title" slot="title"></slot></arq-download-modal>`;
+	static template = `<div class="page"><div class="hero"><div class="configurator"><div class="gallery-column"><arq-product-gallery class="gallery" fill inset-thumbs><arq-breadcrumb class="breadcrumb needs-data" slot="overlay"></arq-breadcrumb><arq-toggle class="iluminar needs-data" slot="overlay" show-label>Iluminar</arq-toggle></arq-product-gallery></div><div class="configurator-column"><div class="header"><div class="title-row"><div class="title role-display"><slot name="title"></slot></div><div class="description role-body-compact"><span class="variant-description" hidden></span></div><arq-sku class="sku needs-data" size="compact"></arq-sku></div></div><div class="info"><p class="status role-body" role="status" hidden></p><div class="options needs-data"></div></div><div class="buy needs-data"><arq-checkbox class="compare" show-label>Comparar</arq-checkbox><div class="actions"><arq-button class="datasheet">Generar ficha técnica</arq-button><arq-button class="to-glossary" type="outline">Ver descargas</arq-button></div></div></div></div></div><div class="details needs-data"><div class="accordion"></div></div><div class="ambient-block needs-data" hidden><div class="ambient" role="region" aria-label="Galería de ambiente" tabindex="0"></div><div class="ambient-controls"><arq-icon-button class="ambient-prev" icon="arrow-left" size="large" background="outline" disabled>${Q.previous}</arq-icon-button><arq-icon-button class="ambient-next" icon="arrow-right" size="large" background="outline">${Q.next}</arq-icon-button></div><span class="ambient-cursor" aria-hidden="true" hidden>${I("arrow-right")}${I("arrow-left")}</span></div><div class="glossary needs-data"><div class="glossary-title role-display-sm"><slot name="glossary-title"></slot></div><arq-variants-table class="table" downloads="downloads-modal"></arq-variants-table></div><div class="story-block needs-data"><div class="story" data-arq-theme="dark" hidden><div class="story-bg" hidden><img alt="" loading="lazy"></div><div class="story-title"><slot name="story-title"></slot></div><div class="story-body"><div class="story-text"><slot name="story-text"></slot><slot name="story-list"></slot></div><arq-button class="story-link" type="underline" show-underline show-icon icon="arrow-up-right" hidden></arq-button></div></div></div><div class="cta" hidden><div class="cta-block"><div class="cta-text"><div class="cta-title role-heading-1"><slot name="cta-title"></slot></div><p class="cta-description role-body-lg"><slot name="cta-description"></slot></p></div><arq-button class="cta-action" show-icon icon="arrow-right"><slot name="cta-action"></slot></arq-button></div></div><div class="inspiration" hidden><div class="inspiration-copy"><div class="inspiration-text role-body-lg"><slot name="inspiration"></slot></div></div><div class="inspiration-images needs-data"></div></div><div class="collection needs-data" hidden><div class="collection-intro"><div class="collection-title role-heading-2"><slot name="collection-title"></slot></div><arq-button class="collection-link" type="underline" show-underline show-icon icon="arrow-up-right"></arq-button></div><div class="cards collection-cards"></div></div></div><arq-compare-bar class="compare-bar"></arq-compare-bar><arq-compare-picker class="picker"></arq-compare-picker><arq-download-modal id="downloads-modal" show-product><slot name="modal-title" slot="title"></slot></arq-download-modal>`;
 	#e = null;
 	update(e) {
 		e.has("ctaHref") && (this.shadowRoot.querySelector(".cta-action").href = this.ctaHref);
@@ -8395,21 +8398,35 @@ var ws = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 	#r = null;
 	setup() {
 		let e = this.shadowRoot;
-		this.#o(), e.querySelector("slot[name=\"inspiration\"]").addEventListener("slotchange", () => this.#A()), this.#A(), e.querySelector("slot[name=\"cta-title\"]").addEventListener("slotchange", () => this.#P()), this.#P(), this.#w();
+		this.#o(), e.querySelector("slot[name=\"inspiration\"]").addEventListener("slotchange", () => this.#M()), this.#M(), e.querySelector("slot[name=\"cta-title\"]").addEventListener("slotchange", () => this.#I()), this.#I(), this.#E();
 		let t = matchMedia("(max-width: 1023px)"), n = () => e.querySelector(".iluminar").showLabel = !t.matches;
 		t.addEventListener("change", n), n(), e.querySelector(".iluminar").addEventListener("arq:change", (e) => this.#m(e.detail.checked)), this.#u(), Ri() && (e.querySelector(".iluminar").checked = !0, ji(() => this.#h(!0))), e.querySelector(".options").addEventListener("arq:change", (e) => {
 			let t = e.target.closest("[data-attribute]")?.dataset.attribute;
 			if (!t || !e.detail?.selected) return;
 			let { variants: n, variantAttributes: r } = this.#e;
 			this.#t = Je(n, r, this.#t, t, e.detail.value), this.#_(), this.#v({ updateUrl: !0 });
-		}), e.querySelector(".datasheet").addEventListener("click", (e) => this.#x(this.#r, e.currentTarget)), e.querySelector(".to-glossary").addEventListener("click", () => this.#S());
+		}), e.querySelector(".datasheet").addEventListener("click", (e) => this.#C(this.#r, e.currentTarget)), e.querySelector(".to-glossary").addEventListener("click", () => this.#w());
 		let r = e.querySelector(".compare"), i = e.querySelector(".compare-bar");
 		r.addEventListener("arq:change", (e) => {
-			e.stopPropagation(), this.#r && (e.detail.checked ? i.add(this.#b()) || (r.checked = !1) : i.remove(this.#r));
+			e.stopPropagation(), this.#r && (e.detail.checked ? i.add(this.#S()) || (r.checked = !1) : i.remove(this.#r));
 		}), i.addEventListener("arq:compare-change", () => {
-			r.checked = i.has(this.#r);
-		}), e.querySelector(".table").addEventListener("arq:downloads", (e) => this.#O(e.detail.sku)), e.querySelector("arq-download-modal").addEventListener("arq:download", (e) => {
-			e.stopPropagation(), this.#x(e.currentTarget.dataset.sku, e.target.closest("arq-download-item"));
+			r.checked = i.has(this.#r), a.open && this.#x();
+		});
+		let a = e.querySelector(".picker");
+		i.addEventListener("arq:add", (e) => {
+			e.stopPropagation(), a.show();
+		}), a.addEventListener("arq:search", () => this.#x()), a.addEventListener("arq:close", (e) => {
+			e.detail.restored || i.focusAdd();
+		}), a.addEventListener("arq:add", (e) => {
+			let { sku: t, name: n, cardMeta: r, meta: a, image: o } = e.detail.item;
+			i.add({
+				sku: t,
+				name: n,
+				meta: r ?? a,
+				image: o
+			});
+		}), e.querySelector(".table").addEventListener("arq:downloads", (e) => this.#A(e.detail.sku)), e.querySelector("arq-download-modal").addEventListener("arq:download", (e) => {
+			e.stopPropagation(), this.#C(e.currentTarget.dataset.sku, e.target.closest("arq-download-item"));
 		}), this.#i();
 	}
 	async #i() {
@@ -8427,10 +8444,10 @@ var ws = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		}
 		this.#e = t, this.#a("");
 		let r = new URLSearchParams(location.search).get("sku");
-		this.#t = Be(t.variants, t.variantAttributes, r), this.#s(), this.#T(t.group.story), this.#k(t.group.inspiration), this.#g(), this.#_(), this.#v({
+		this.#t = Be(t.variants, t.variantAttributes, r), this.#s(), this.#D(t.group.story), this.#j(t.group.inspiration), this.#g(), this.#_(), this.#v({
 			updateUrl: !0,
 			sku: t.variants.find((e) => e.sku === r)?.sku ?? t.variants.find((e) => e.isDefault)?.sku
-		}), this.#C(), this.#D(), this.#N(), this.#F(), this.shadowRoot.querySelector(".page").toggleAttribute("data-ready", !0);
+		}), this.#T(), this.#k(), this.#F(), this.#L(), this.shadowRoot.querySelector(".page").toggleAttribute("data-ready", !0);
 	}
 	#a(e) {
 		let t = this.shadowRoot.querySelector(".status");
@@ -8576,7 +8593,21 @@ var ws = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 			return t.append(n, i), t;
 		}));
 	}
-	#b() {
+	#b = 0;
+	async #x() {
+		let e = this.shadowRoot, t = e.querySelector(".picker"), n = e.querySelector(".compare-bar").items.map((e) => e.sku), r = ++this.#b;
+		t.count = n.length;
+		try {
+			let { items: e } = await cn({
+				...t.search,
+				selected: n
+			});
+			r === this.#b && (t.items = e);
+		} catch (e) {
+			console.error("[arq] compare-picker: no se pudo cargar el catálogo", e);
+		}
+	}
+	#S() {
 		let { group: e } = this.#e, t = Gt(e, this.#r);
 		return {
 			sku: this.#r,
@@ -8585,7 +8616,7 @@ var ws = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 			image: t.images?.[0]?.src ?? null
 		};
 	}
-	#x(e, t = null) {
+	#C(e, t = null) {
 		if (!e) return;
 		let n = { sku: e };
 		if (this.emit("datasheet", n), !t || !n.pending) return;
@@ -8593,7 +8624,7 @@ var ws = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		let r = () => t.loading = !1;
 		n.pending.then(r, r);
 	}
-	#S() {
+	#w() {
 		this.shadowRoot.querySelector(".glossary").scrollIntoView({
 			behavior: Ts() ? "auto" : "smooth",
 			block: "start"
@@ -8601,11 +8632,11 @@ var ws = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		let e = this.querySelector(":scope > [slot=\"glossary-title\"]");
 		e && (e.tabIndex = -1, e.focus({ preventScroll: !0 }));
 	}
-	#C() {
+	#T() {
 		let { group: e, images: t } = this.#e, n = this.shadowRoot, r = n.querySelector(".ambient");
 		n.querySelector(".ambient-block").hidden = !t.ambient.length, r.replaceChildren(...t.ambient.map((t, n) => As(t, `${e.name}, ambiente ${n + 1}`))), r.dispatchEvent(new Event("scroll"));
 	}
-	#w() {
+	#E() {
 		let e = this.shadowRoot, t = e.querySelector(".ambient"), n = e.querySelector(".ambient-cursor"), r = e.querySelector(".ambient-prev"), i = e.querySelector(".ambient-next"), a = () => t.scrollLeft > 1, o = () => t.scrollLeft + t.clientWidth < t.scrollWidth - 1, s = null, c = (e) => {
 			let n = t.getBoundingClientRect(), r = e < n.left + n.width / 2 ? -1 : 1;
 			return r === -1 && !a() && (r = 1), r === 1 && !o() && (r = -1), r;
@@ -8648,7 +8679,7 @@ var ws = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 			}
 		}), r.addEventListener("click", () => u(-1)), i.addEventListener("click", () => u(1));
 	}
-	#T(e) {
+	#D(e) {
 		for (let e of this.querySelectorAll(":scope > [slot=\"story-title\"], :scope > [slot=\"story-text\"], :scope > [slot=\"story-list\"]")) e.remove();
 		let t = String(e ?? "").split("\n").map((e) => e.trim()).filter(Boolean), n = [], r = null;
 		for (let e of t) {
@@ -8660,9 +8691,9 @@ var ws = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 			let i = e.startsWith("## "), a = !n.length, o = document.createElement(a ? "h2" : i ? "h3" : "p");
 			o.slot = a ? "story-title" : "story-text", o.textContent = i ? e.slice(3).trim() : e, n.push(o);
 		}
-		this.append(...n, ...r ? [r] : []), this.#n = n.length > 0 || !!r, this.#E();
+		this.append(...n, ...r ? [r] : []), this.#n = n.length > 0 || !!r, this.#O();
 	}
-	#E() {
+	#O() {
 		let e = this.shadowRoot, { images: t, collection: n } = this.#e ?? {}, r = e.querySelector(".story");
 		r.hidden = !this.#n;
 		let i = e.querySelector(".story-bg");
@@ -8670,14 +8701,14 @@ var ws = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		let a = e.querySelector(".story-link");
 		a.hidden = !n, n && (a.href = S(n.id), a.textContent = `Ver colección ${n.name}`);
 	}
-	#D() {
+	#k() {
 		let { group: e, glossary: t, files: n } = this.#e, r = this.shadowRoot.querySelector(".table");
 		r.label = `Variantes de ${e.name}`, r.data = t, r.replaceChildren(...n.map((e) => {
 			let t = document.createElement("arq-button");
 			return t.slot = "downloads", t.type = "outline", t.showIcon = !0, t.icon = "download", t.href = e.href, t.textContent = e.label, t;
 		}));
 	}
-	#O(e) {
+	#A(e) {
 		let { group: t, variantAttributes: n } = this.#e, r = this.shadowRoot.querySelector("arq-download-modal"), i = Gt(t, e);
 		r.dataset.sku = e, r.sku = e, r.thumb = i.images[0]?.src ?? null, r.meta = n.map((e) => i.values[e]).filter(Boolean).join(", ");
 		let a = document.createElement("arq-download-item");
@@ -8689,7 +8720,7 @@ var ws = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		for (let e of r.querySelectorAll(":scope > arq-download-item")) e.remove();
 		r.append(a, ...o);
 	}
-	#k(e) {
+	#j(e) {
 		let t = this.querySelector(":scope > [slot=\"inspiration\"]");
 		if (!e) {
 			t?.remove();
@@ -8697,27 +8728,27 @@ var ws = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		}
 		t || (t = document.createElement("p"), t.slot = "inspiration", this.append(t)), t.textContent = e;
 	}
-	#A() {
+	#M() {
 		let e = this.shadowRoot, t = e.querySelector("slot[name=\"inspiration\"]").assignedElements().length > 0, n = e.querySelector(".inspiration-images").children.length > 0;
 		e.querySelector(".inspiration").hidden = !t && !n;
 	}
-	#j() {
+	#N() {
 		return this.#e.images.ambient;
 	}
-	#M(e, t) {
+	#P(e, t) {
 		let n = this.#e.group.video;
 		if (!n) return As(e, t, "media-wide");
 		let r = document.createElement("video");
 		return r.src = n, r.controls = !0, r.playsInline = !0, r.preload = "metadata", r.className = "media-wide", r.setAttribute("aria-label", t), r;
 	}
-	#N() {
-		let { group: e } = this.#e, [, , , t, n] = this.#j(), r = [t && this.#M(t, `${e.name}, video`), n && As(n, `${e.name}, inspiración`, "media-portrait")];
-		this.shadowRoot.querySelector(".inspiration-images").replaceChildren(...r.filter(Boolean)), this.#A();
+	#F() {
+		let { group: e } = this.#e, [, , , t, n] = this.#N(), r = [t && this.#P(t, `${e.name}, video`), n && As(n, `${e.name}, inspiración`, "media-portrait")];
+		this.shadowRoot.querySelector(".inspiration-images").replaceChildren(...r.filter(Boolean)), this.#M();
 	}
-	#P() {
+	#I() {
 		this.shadowRoot.querySelector(".cta").hidden = !this.shadowRoot.querySelector("slot[name=\"cta-title\"]").assignedElements().length;
 	}
-	#F() {
+	#L() {
 		let { collection: e, family: t } = this.#e, n = this.shadowRoot.querySelector(".collection");
 		n.hidden = !e || !t.length, n.querySelector(".collection-cards").replaceChildren(...t.map((e) => js(e, "large")));
 	}

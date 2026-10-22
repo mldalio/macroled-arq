@@ -464,15 +464,17 @@ class ArqVariantsTable extends ArqElement {
     // Mobile: una tarjeta por variante
     const cardColumns = CARD_COLUMNS.map((key) => columns.find((c) => c.key === key)).filter(Boolean);
     root.querySelector('.cards').innerHTML = page
-      .map(
-        (row) =>
+      .map((row) => {
+        // En catalog, cada tarjeta muestra solo los datos que su SKU tiene cargados
+        const items = catalog ? cardColumns.filter((c) => (row.values?.[c.key] ?? '') !== '') : cardColumns;
+        return (
           `<li class="card">` +
           `<span class="card-head">${thumb(row, 'card-thumb', catalog)}<span class="product">` +
           (catalog && row.name ? productName(row, 'role-body-compact-regular') : '') +
           `<arq-sku size="compact" dense>${esc(row.sku)}</arq-sku></span>${download(row.sku)}</span>` +
-          (cardColumns.length
+          (items.length
             ? `<dl class="card-data">` +
-              cardColumns
+              items
                 .map(
                   (c) =>
                     `<div class="card-item"><dt class="role-body-compact-regular">${esc(c.label)}</dt>` +
@@ -481,8 +483,9 @@ class ArqVariantsTable extends ArqElement {
                 .join('') +
               `</dl>`
             : '') +
-          `</li>`,
-      )
+          `</li>`
+        );
+      })
       .join('');
     // Cantidad · cargando · vacío
     root.querySelector('.total').textContent = this.loading ? TEXT.loading : this.#countText(visible.length);
