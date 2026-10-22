@@ -106,6 +106,8 @@ class ArqCompareProduct extends ArqElement {
       const field = event.target.dataset.field;
       if (field) this.emit('change', { field, value: event.detail.value });
     });
+    // Si la imagen no carga, queda el fondo de la miniatura (sin ícono de imagen rota)
+    for (const img of root.querySelectorAll('img')) img.addEventListener('error', () => (img.hidden = true));
     this.#render();
   }
 

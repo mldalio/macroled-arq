@@ -5274,7 +5274,9 @@ var Ea = ":host{min-width:0;display:block}.product{gap:var(--arq-space-gap-lg);f
 				field: t,
 				value: e.detail.value
 			});
-		}), this.#t();
+		});
+		for (let t of e.querySelectorAll("img")) t.addEventListener("error", () => t.hidden = !0);
+		this.#t();
 	}
 	update() {
 		this.#t();
@@ -5314,7 +5316,7 @@ var Ea = ":host{min-width:0;display:block}.product{gap:var(--arq-space-gap-lg);f
 }).define();
 //#endregion
 //#region src/components/compare-header/compare-header.css?inline
-var Da = ":host{z-index:2;display:block;position:relative}.default{align-items:flex-start;gap:var(--arq-space-gap-xl);padding-inline:var(--page-gutter);padding-block-end:var(--arq-space-section-xs);display:flex;position:relative}.sentinel{width:var(--arq-border-default);height:var(--arq-border-default);position:absolute;bottom:0;left:0}.controls{width:var(--arq-layout-compare-label);flex:none}.default .controls{flex-direction:column;justify-content:flex-end;align-self:stretch;display:flex}.products{align-items:stretch;gap:var(--arq-space-gap-xl);flex:auto;min-width:0;display:flex}.products>*{flex:1 1 0;min-width:0}.compact{top:var(--navbar-height,var(--arq-layout-navbar-height));z-index:2;align-items:center;gap:var(--arq-space-gap-lg);padding-inline:var(--page-gutter);padding-block:var(--arq-space-padding-sm-md);background:var(--arq-color-surface-default);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex;position:fixed;left:0;right:0}.compact .controls{white-space:nowrap;align-items:center;width:auto;display:flex}.slots{align-items:center;gap:var(--arq-space-gap-lg);flex:auto;min-width:0;display:flex;overflow:hidden}.slots>*{flex:1 1 0;min-width:0}@media (width<=767px){:host{--column-width:var(--arq-layout-compare-column)}.default{width:100%;min-width:0;padding-inline:0}.default .controls{display:none}.products>*{width:var(--column-width);flex:none}.products{gap:var(--arq-space-gap-md);padding-inline:var(--page-gutter);scrollbar-width:none;overflow-x:auto}.products::-webkit-scrollbar{display:none}.slots::-webkit-scrollbar{display:none}.compact{align-items:stretch;gap:var(--arq-space-gap-md);flex-direction:column;padding-inline:0;top:0;overflow:visible}.slots{box-sizing:border-box;gap:var(--arq-space-gap-md);width:100%;padding-inline:var(--page-gutter);overscroll-behavior-x:contain;scrollbar-width:none;flex:auto;order:1;overflow-x:auto}.compact .controls{width:auto;padding-inline:var(--page-gutter);order:2}.slots{align-items:stretch}.slots>*{box-sizing:border-box;width:var(--column-width);flex:none}.slots>*+*{border-left:var(--arq-border-default) solid var(--arq-color-border-subtle);padding-inline-start:var(--arq-space-padding-md)}}@media print{.compact{display:none}.default{padding-inline:var(--page-gutter);break-inside:avoid;gap:0}.default .controls{padding-inline-end:var(--arq-space-gap-lg);display:block}.controls arq-toggle{visibility:hidden}.products{gap:0;padding-inline:0;overflow:visible}.products>*{width:auto;padding-inline:var(--arq-space-padding-md) var(--arq-space-gap-lg);flex:1 1 0}}@media (width<=767px){:host([embedded]) .default{width:max-content;min-width:100%}:host([embedded]) .products{flex:none;width:max-content;overflow:visible}}", Oa = 3, G = matchMedia("(max-width: 767px)");
+var Da = ":host{z-index:2;display:block;position:relative}.default{align-items:flex-start;gap:var(--arq-space-gap-xl);padding-inline:var(--page-gutter);padding-block-end:var(--arq-space-section-xs);display:flex;position:relative}.sentinel{width:var(--arq-border-default);height:var(--arq-border-default);position:absolute;bottom:0;left:0}.controls{width:var(--arq-layout-compare-label);flex:none}.default .controls{flex-direction:column;justify-content:flex-end;align-self:stretch;display:flex}.products{align-items:stretch;gap:var(--arq-space-gap-xl);flex:auto;min-width:0;display:flex}.products>*{flex:1 1 0;min-width:0}.compact{top:var(--navbar-height,var(--arq-layout-navbar-height));z-index:2;align-items:center;gap:var(--arq-space-gap-lg);padding-inline:var(--page-gutter);padding-block:var(--arq-space-padding-sm-md);background:var(--arq-color-surface-default);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);gap:0;display:flex;position:fixed;left:0;right:0}.compact .controls{white-space:nowrap;align-items:center;padding-inline-end:var(--arq-space-gap-lg);display:flex}.slots{flex:auto;align-items:stretch;min-width:0;display:flex;overflow:hidden}.slots>*{min-width:0;padding-inline:var(--arq-space-padding-md) var(--arq-space-gap-lg);border-left:var(--arq-border-default) solid var(--arq-color-border-subtle);flex:1 1 0}@media (width<=767px){:host{--column-width:var(--arq-layout-compare-column)}.default{width:100%;min-width:0;padding-inline:0}.default .controls{display:none}.products>*{width:var(--column-width);flex:none}.products{gap:var(--arq-space-gap-md);padding-inline:var(--page-gutter);scrollbar-width:none;overflow-x:auto}.products::-webkit-scrollbar{display:none}.slots::-webkit-scrollbar{display:none}.compact{align-items:stretch;gap:var(--arq-space-gap-md);flex-direction:column;padding-inline:0;top:0;overflow:visible}.slots{box-sizing:border-box;gap:var(--arq-space-gap-md);width:100%;padding-inline:var(--page-gutter);overscroll-behavior-x:contain;scrollbar-width:none;flex:auto;order:1;overflow-x:auto}.compact .controls{width:auto;padding-inline:var(--page-gutter);order:2}.slots{align-items:stretch}.slots>*{box-sizing:border-box;width:var(--column-width);border-left:0;flex:none;padding-inline:0}.slots>*+*{border-left:var(--arq-border-default) solid var(--arq-color-border-subtle);padding-inline-start:var(--arq-space-padding-md)}}@media print{.compact{display:none}.default{padding-inline:var(--page-gutter);break-inside:avoid;gap:0}.default .controls{padding-inline-end:var(--arq-space-gap-lg);display:block}.controls arq-toggle{visibility:hidden}.products{gap:0;padding-inline:0;overflow:visible}.products>*{width:auto;padding-inline:var(--arq-space-padding-md) var(--arq-space-gap-lg);flex:1 1 0}}@media (width<=767px){:host([embedded]) .default{width:max-content;min-width:100%}:host([embedded]) .products{flex:none;width:max-content;overflow:visible}}", Oa = 3, G = matchMedia("(max-width: 767px)");
 (class extends F {
 	static tag = "arq-compare-header";
 	static styles = Da;
@@ -5330,12 +5332,11 @@ var Da = ":host{z-index:2;display:block;position:relative}.default{align-items:f
 	#e = [];
 	#t = null;
 	#n = !1;
-	#r = !1;
 	get products() {
 		return this.#e;
 	}
 	set products(e) {
-		this.#e = (Array.isArray(e) ? e : []).slice(0, Oa), this.isConnected && this.#i();
+		this.#e = (Array.isArray(e) ? e : []).slice(0, Oa), this.isConnected && this.#r();
 	}
 	setup() {
 		let e = this.shadowRoot;
@@ -5363,10 +5364,10 @@ var Da = ":host{z-index:2;display:block;position:relative}.default{align-items:f
 			let n = [...e.querySelectorAll(".slots arq-compare-product")].indexOf(t.target);
 			this.emit("add", { index: n });
 		});
-		for (let t of e.querySelectorAll(".products, .slots")) t.addEventListener("scroll", () => this.#o(t));
-		G.addEventListener("change", () => this.#a()), this.#s(), addEventListener("resize", () => {
-			this.#s(), G.matches && document.querySelector("arq-navbar")?.removeAttribute("data-arq-compare-hidden");
-		}), this.#i();
+		for (let t of e.querySelectorAll(".products, .slots")) t.addEventListener("scroll", () => this.#a(t));
+		G.addEventListener("change", () => this.#i()), this.#o(), addEventListener("resize", () => {
+			this.#o(), G.matches && document.querySelector("arq-navbar")?.removeAttribute("data-arq-compare-hidden");
+		}), this.#r();
 	}
 	disconnectedCallback() {
 		this.#t?.disconnect(), document.querySelector("arq-navbar")?.removeAttribute("data-arq-compare-hidden");
@@ -5374,7 +5375,7 @@ var Da = ":host{z-index:2;display:block;position:relative}.default{align-items:f
 	update(e) {
 		if (e.has("diffLabel") || e.has("onlyDifferences")) for (let e of this.shadowRoot.querySelectorAll("arq-toggle")) e.textContent = this.diffLabel ?? "", e.checked = this.onlyDifferences;
 	}
-	#i() {
+	#r() {
 		let e = this.shadowRoot, t = e.querySelector(".products"), n = e.querySelector(".slots");
 		for (let e = 0; e < Oa; e++) {
 			let r = this.#e[e] ?? null, i = t.children[e];
@@ -5384,9 +5385,9 @@ var Da = ":host{z-index:2;display:block;position:relative}.default{align-items:f
 		}
 		for (; t.children.length > Oa;) t.lastElementChild.remove();
 		for (; n.children.length > Oa;) n.lastElementChild.remove();
-		this.#a();
+		this.#i();
 	}
-	#a() {
+	#i() {
 		for (let e of this.shadowRoot.querySelectorAll(".slots arq-compare-product")) e.showSku = !0;
 		document.querySelector("arq-navbar")?.removeAttribute("data-arq-compare-hidden");
 	}
@@ -5394,30 +5395,31 @@ var Da = ":host{z-index:2;display:block;position:relative}.default{align-items:f
 		if (G.matches) for (let t of this.shadowRoot.querySelectorAll(".products, .slots")) t.scrollLeft = e;
 	}
 	refreshCompact() {
-		this.#s();
+		this.#o();
 	}
-	#o(e) {
+	#a(e) {
 		if (!(!G.matches || this.#n)) {
 			this.#n = !0;
 			for (let t of this.shadowRoot.querySelectorAll(".products, .slots")) t !== e && (t.scrollLeft = e.scrollLeft);
 			this.emit("scroll", { left: e.scrollLeft }), this.#n = !1;
 		}
 	}
-	#s() {
+	#o() {
 		let e = document.querySelector("arq-navbar"), t = e ? Math.round(e.getBoundingClientRect().height) : 0;
-		this.shadowRoot.querySelector(".compact").style.setProperty("--navbar-height", `${t}px`), this.#c(t);
+		this.shadowRoot.querySelector(".compact").style.setProperty("--navbar-height", `${t}px`), this.#s(t);
 	}
-	#c(e = 0) {
-		this.#t?.disconnect(), this.#r = !1, this.#l(!1);
+	#s(e = 0) {
+		this.#t?.disconnect(), this.#c(!1);
 		let t = this.shadowRoot.querySelector(".sentinel");
 		this.#t = new IntersectionObserver(([e]) => {
-			e.isIntersecting && (this.#r = !0), this.#l(this.#r && e.boundingClientRect.top < 0);
+			let t = e.rootBounds?.top ?? 0;
+			this.#c(!e.isIntersecting && e.boundingClientRect.bottom <= t);
 		}, {
-			rootMargin: `${G.matches ? 0 : -e}px 0px 0px 0px`,
+			rootMargin: `${G.matches ? 0 : -e}px 0px 10000% 0px`,
 			threshold: 0
 		}), this.#t.observe(t);
 	}
-	#l(e) {
+	#c(e) {
 		if (!this.getClientRects().length) return;
 		this.shadowRoot.querySelector(".compact").hidden = !e;
 		let t = document.querySelector("arq-navbar");

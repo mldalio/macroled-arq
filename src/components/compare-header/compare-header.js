@@ -58,7 +58,6 @@ class ArqCompareHeader extends ArqElement {
   #products = [];
   #io = null;
   #syncingScroll = false;
-  #defaultWasVisible = false;
 
   /** Hasta 3: cada item { sku, name, href, image, meta, family, variant } o null (Empty). */
   get products() {
@@ -195,16 +194,19 @@ class ArqCompareHeader extends ArqElement {
 
   // El centinela queda al final del Default. Su posición vertical permite
   // distinguir que la cabecera ya pasó por arriba de que aún esté más abajo.
+  // No hace falta haberlo visto: al recargar ya desplazado, con Fin o con un
+  // salto de scroll, el centinela pasa por arriba sin cruzar la pantalla. Por
+  // eso la zona observada se extiende hacia abajo sin límite práctico: el
+  // único cruce posible es el borde superior (bajo el navbar en Desktop).
   #watch(navbarHeight = 0) {
     this.#io?.disconnect();
-    this.#defaultWasVisible = false;
     this.#setCompact(false);
     const sentinel = this.shadowRoot.querySelector('.sentinel');
     this.#io = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) this.#defaultWasVisible = true;
-      this.#setCompact(this.#defaultWasVisible && entry.boundingClientRect.top < 0);
+      const top = entry.rootBounds?.top ?? 0;
+      this.#setCompact(!entry.isIntersecting && entry.boundingClientRect.bottom <= top);
     }, {
-      rootMargin: `${MOBILE.matches ? 0 : -navbarHeight}px 0px 0px 0px`,
+      rootMargin: `${MOBILE.matches ? 0 : -navbarHeight}px 0px 10000% 0px`,
       threshold: 0,
     });
     this.#io.observe(sentinel);
