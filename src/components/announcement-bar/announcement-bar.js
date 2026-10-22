@@ -1,6 +1,6 @@
 // announcement-bar · Figma 2780:8595 · ficha doc/announcement-bar (2781:13825)
 //
-// Línea fina arriba del navbar, solo en la Home, con un aviso y su link
+// Línea fina arriba del navbar, en la Home, Nosotros y Catálogos, con un aviso y su link
 // («Suscribite al newsletter»).
 //
 //   <arq-announcement-bar>

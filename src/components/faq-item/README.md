@@ -25,7 +25,7 @@ Pregunta frecuente desplegable, para el bloque de preguntas frecuentes del Home.
 | Open | `open` | `open` | booleano (def. cerrado) |
 | State | — | — | Hover y Focus por CSS (`:hover`, `:focus-visible`) |
 
-- **Texto, no bloques:** la pregunta y la respuesta van como texto (la respuesta puede tener un `<a>`). El componente las pone en su propio botón y en su panel, con `role/heading-3-light` y `role/body`. Si llegan dentro de un `<p>` o un `<h3>`, toman los estilos de Webflow.
+- **Texto, no bloques:** la pregunta y la respuesta van como texto (la respuesta puede tener un `<a>`). El componente las pone en su propio botón y en su panel, con `role/body-xl` y `role/body`. Con `number`, la pregunta usa `role/heading-3`. Si llegan dentro de un `<p>` o un `<h3>`, toman los estilos de Webflow.
 - **La respuesta queda en el HTML** aunque el ítem esté cerrado (indexable). Cerrado, el panel queda con alto 0 y `visibility: hidden` (Disclosure `animateHeight`).
 - **Sin respuesta no se muestra:** si el slot de la respuesta está vacío, el ítem lleva `data-arq-empty` y no se ve (AGENTS.md: si falta un dato, esa parte no se muestra).
 - **Varios abiertos:** cada ítem abre y cierra por su cuenta.
@@ -55,7 +55,7 @@ Los ítems se apilan uno debajo del otro, a ancho completo de la columna. Cada u
 | Parte | Token |
 | --- | --- |
 | Separador (arriba) | `border/default` en `color/border/default` |
-| Pregunta | `color/text/primary` · `role/heading-3-light` |
+| Pregunta | `color/text/primary` · `role/body-xl` (con `number`, `role/heading-3`) |
 | Respuesta | `color/text/secondary` · `role/body` · ancho máximo `layout/measure-wide` (Desktop) |
 | Link en la respuesta | `color/text/primary`, subrayado |
 | Ícono | `icon/plus` / `icon/minus` · `icon/md` · `color/icon/primary` |

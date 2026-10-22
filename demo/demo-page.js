@@ -44,7 +44,7 @@ function demoHref(href) {
     return `/demo/coleccion.html?${url.searchParams}`;
   }
   const demo = DEMOS[path];
-  return demo ? `/demo/${demo}.html${url.search}` : null;
+  return demo ? `/demo/${demo}.html${url.search}${url.hash}` : null;
 }
 
 // Simula el ítem del CMS de otra colección (solo demo)

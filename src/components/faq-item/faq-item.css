@@ -119,11 +119,13 @@
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-default);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
   .answer {
     max-width: none;
   }
+}
 
+@media (max-width: 767px) {
   /* El número pasa arriba: la pregunta y la respuesta arrancan en el mismo
      borde que el título de la sección. */
   :host([number]) .trigger {

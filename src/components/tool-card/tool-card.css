@@ -44,6 +44,22 @@
   width: 100% !important;
   height: 100% !important;
   object-fit: cover;
+  /* !important: los estilos de img del sitio pisan el transition del slot. */
+  transition: transform var(--arq-motion-duration-slow) var(--arq-motion-easing-standard) !important;
+}
+
+/* Hover y foco: la foto hace zoom dentro del recorte (motion/scale/hover).
+   La tarjeta no cambia de tamaño. Con movimiento reducido no hay zoom. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .card:hover ::slotted([slot='image']) {
+    transform: scale(var(--arq-motion-scale-hover)) !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card:focus-visible ::slotted([slot='image']) {
+    transform: scale(var(--arq-motion-scale-hover)) !important;
+  }
 }
 
 .placeholder {

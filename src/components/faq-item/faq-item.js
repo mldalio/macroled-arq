@@ -32,7 +32,7 @@ class ArqFaqItem extends ArqElement {
     `<div class="item">` +
     `<button type="button" class="trigger">` +
     `<span class="number role-caption" hidden></span>` +
-    `<span class="question role-heading-3-light"><slot name="question"></slot></span>` +
+    `<span class="question role-body-xl"><slot name="question"></slot></span>` +
     `${icon('plus')}${icon('minus')}` +
     `</button>` +
     // .answer-clip es el que se recorta: sin padding, así cerrado mide 0
@@ -65,7 +65,7 @@ class ArqFaqItem extends ArqElement {
     label.hidden = !number;
     const question = this.shadowRoot.querySelector('.question');
     question.classList.toggle('role-heading-3', Boolean(number));
-    question.classList.toggle('role-heading-3-light', !number);
+    question.classList.toggle('role-body-xl', !number);
   }
 }
 

@@ -20,7 +20,7 @@ Recurso de la escena Herramientas de Home v2: imagen o placeholder, título, baj
 | — | `href` | destino de la tarjeta |
 | title | slot `title` | `role/body-medium` |
 | subtitle | slot `subtitle` | `role/caption` |
-| image | slot `image` | foto. Sin foto se ve el placeholder |
+| image | slot `image` | foto. Sin foto se ve el placeholder. En hover y foco hace zoom dentro del recorte (`motion/scale/hover`); la tarjeta no cambia de tamaño |
 | placeholder | slot `placeholder` | texto sobre `color/surface/strong` |
 
 TODO (diseño): las medidas 520×642 y 311×369 no tienen token de ratio. Las imágenes de Catálogo, Fichas y Descargas en Figma son placeholders.

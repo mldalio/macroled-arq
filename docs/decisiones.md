@@ -1418,3 +1418,26 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - **Hover de los acabados:** el mismo borde separado de la muestra elegida (`border/default`, separado `space/padding/2xs`), en `color/border/hover`, menos intenso que el `color/border/strong` de la elegida. El borde está siempre reservado (transparente) y funde en `motion/duration/base` con `motion/easing/standard`, así pasar de una muestra a otra es suave. Con reduced motion, el cambio es instantáneo.
 - **Opciones de texto (option-tile):** la línea y el texto funden igual, en `motion/duration/base`; con Iluminar siguen la duración del texto de la página.
 - **Secciones:** «Materiales y dimensiones» e «Instalación y protección» quedan en una sola, **«Materiales e instalación»** (grado de protección, resistencia al impacto, montaje y temperatura de operación pasan ahí). Vale para el acordeón de la ficha, los grupos de la comparativa y la ficha técnica en PDF (`SECTIONS` de `src/data/attributes.js`).
+
+## 2026-10-21 · Barra de newsletter en Nosotros
+
+- Pedido: la misma línea de arriba que la Home, con «Suscribite al newsletter».
+- `<arq-announcement-bar>` va antes del navbar en `src/pages/nosotros.html`. El link sigue a `/arq#newsletter`. Al hacer scroll se va y el navbar queda pegado arriba, como en la Home.
+- Reemplaza «solo en la Home» (2026-10-19) para esta página. El resto de las páginas sigue sin la barra.
+
+## 2026-10-21 · Barra de newsletter en Catálogos
+
+- Pedido: la misma línea de arriba que la Home, con «Suscribite al newsletter».
+- `<arq-announcement-bar>` va antes del navbar en `src/pages/catalogos.html`. El link sigue a `/arq#newsletter`.
+
+## 2026-10-21 · Preguntas del FAQ más chicas
+
+- Pedido: el texto de los desplegables de preguntas frecuentes un poco más chico.
+- Sin `number`, la pregunta pasa de `role/heading-3-light` (24 px) a `role/body-xl` (20 px). La respuesta sigue en `role/body`. Con `number`, la pregunta sigue en `role/heading-3`.
+- Figma y DESIGN.md siguen en `role/heading-3-light`. Falta corregir el set y la ficha `doc/faq-item`.
+
+## 2026-10-21 · Margen del FAQ en la Home
+
+- Pedido: en responsive, el padding izquierdo y derecho de las preguntas frecuentes no seguía al resto de la página.
+- `layout="split"` usa `--page-gutter` a los lados en todos los anchos (newsletter y footer), en vez de `space/padding/4xl` y, en mobile, `space/padding/sm`.
+- Las dos columnas arrancan en 1024. Hasta ahí el bloque se apila: la columna de `layout/measure-wide` (520) más el hueco se comía el margen y las preguntas quedaban sin ancho.

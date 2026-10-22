@@ -10,7 +10,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | Componente | Etiqueta | Estado en código |
 | --- | --- | --- |
 | ✅ [accordion-item](#accordion-item) | `<arq-accordion-item>` | En código ([README](../src/components/accordion-item/README.md)) |
-| ✅ [announcement-bar](#announcement-bar) | `<arq-announcement-bar>` | En código ([README](../src/components/announcement-bar/README.md)). Solo en la Home, antes del navbar |
+| ✅ [announcement-bar](#announcement-bar) | `<arq-announcement-bar>` | En código ([README](../src/components/announcement-bar/README.md)). En la Home, Nosotros y Catálogos, antes del navbar |
 | ✅ [breadcrumb](#breadcrumb) | `<arq-breadcrumb>` | En código ([README](../src/components/breadcrumb/README.md)) |
 | ✅ [breadcrumb-item](#breadcrumb-item) | `<arq-breadcrumb-item>` | En código ([README](../src/components/breadcrumb-item/README.md)) |
 | ✅ [button](#button) | `<arq-button>` | En código ([README](../src/components/button/README.md)) |
@@ -150,7 +150,7 @@ Uso: bloques de especificaciones de la ficha (características lumínicas, eléc
 - Figma: [2780-8595](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2780-8595) · ficha `doc/announcement-bar` (`2781:13825`)
 - Propiedades: Breakpoint: Desktop · Mobile
 
-Línea fina arriba del navbar, solo en la Home, con un aviso y su link (hoy «Suscribite al newsletter», a la sección Newsletter de la Home). Siempre en modo Dark (fijado en cada variante): fondo color/surface/default y no cambia con Iluminar. Padding space/padding/2xs × layout/gutter; el link va centrado: button Type=Underline, Show underline=false (el subrayado aparece en hover), Show icon con icon/arrow-up-right en icon/sm y el label en role/body-sm (12/16). En hover el subrayado es de 1 px (border/default) y va más pegado al texto que en el resto de los button. Alto 30. Breakpoint: Desktop · Mobile (en Mobile, si el texto no entra, baja de línea). Al hacer scroll se va con la página y el navbar queda pegado arriba. En código: <arq-announcement-bar> con el button por slot (atributo compact del button para el texto de 12 y el ícono de 12).
+Línea fina arriba del navbar, en la Home, Nosotros y Catálogos, con un aviso y su link (hoy «Suscribite al newsletter», a la sección Newsletter de la Home). Siempre en modo Dark (fijado en cada variante): fondo color/surface/default y no cambia con Iluminar. Padding space/padding/2xs × layout/gutter; el link va centrado: button Type=Underline, Show underline=false (el subrayado aparece en hover), Show icon con icon/arrow-up-right en icon/sm y el label en role/body-sm (12/16). En hover el subrayado es de 1 px (border/default) y va más pegado al texto que en el resto de los button. Alto 30. Breakpoint: Desktop · Mobile (en Mobile, si el texto no entra, baja de línea). Al hacer scroll se va con la página y el navbar queda pegado arriba. En código: <arq-announcement-bar> con el button por slot (atributo compact del button para el texto de 12 y el ícono de 12).
 
 ## breadcrumb
 
@@ -417,7 +417,7 @@ Card de otra familia de la colección (link a su ficha): imagen recortada (en el
 
 Uso: preguntas frecuentes (Home y Contacto): pregunta y respuesta en texto. No confundir con accordion-item, que agrupa especificaciones en la ficha.
 
-Pregunta frecuente desplegable. Open=False (icon/plus) / Open=True (icon/minus + respuesta). State: Default, Hover (surface/faint), Focus (anillo color/border/focus). Pregunta en role/heading-3-light, respuesta role/body color/text/secondary, línea superior border/default en color/border/default. Ícono icon/plus / icon/minus de icon/md. En código: <details>/<summary> o button con aria-expanded.
+Pregunta frecuente desplegable. Open=False (icon/plus) / Open=True (icon/minus + respuesta). State: Default, Hover (surface/faint), Focus (anillo color/border/focus). En Figma la pregunta es role/heading-3-light; en código, role/body-xl (decisiones.md, 2026-10-21 · Preguntas del FAQ más chicas). Con number, role/heading-3. Respuesta role/body color/text/secondary, línea superior border/default en color/border/default. Ícono icon/plus / icon/minus de icon/md. En código: <details>/<summary> o button con aria-expanded.
 
 Movimiento: al abrir y al cerrar, la respuesta anima el alto (motion/duration/expand) y la opacidad (motion/duration/base) con motion/easing/out. Con reduced motion, el alto cambia de golpe y queda el fundido (motion/duration/fade).
 

@@ -54,6 +54,12 @@
   padding: var(--arq-space-section-md) var(--section-inline);
 }
 
+/* FAQ (layout=split): el margen lateral es el de la página, el mismo de
+   newsletter y footer, y cambia con el viewport. */
+:host([layout='split']) {
+  --section-inline: var(--page-gutter);
+}
+
 :host([bleed='end']) {
   padding-inline-end: 0;
 }
@@ -87,42 +93,6 @@
 @media (min-width: 768px) {
   .mobile-action {
     display: none;
-  }
-
-  /* layout="split" (FAQ del Home): encabezado y acción en una columna de
-     layout/measure, contenido a la derecha. Encabezado → acción a
-     space/gap/lg, como el texto → link de section-header Stacked.
-     TODO (diseño): entre columnas el set usa space/section/md, un token de
-     separación entre bloques, dentro de un bloque (DESIGN.md §5). */
-  :host([layout='split']) .section {
-    display: grid;
-    grid-template-columns: var(--arq-layout-measure) minmax(0, 1fr);
-    grid-template-rows: auto 1fr;
-    grid-template-areas:
-      'head body'
-      'action body';
-    column-gap: var(--arq-space-section-md);
-    row-gap: var(--arq-space-gap-lg);
-    align-items: start;
-  }
-
-  :host([layout='split']) .head {
-    grid-area: head;
-  }
-
-  :host([layout='split']) .body {
-    grid-area: body;
-  }
-
-  :host([layout='split']) .action {
-    grid-area: action;
-  }
-
-  /* Home v2: la columna de texto es layout/measure-wide y el hueco entre
-     columnas es space/gap/6xl. */
-  :host([layout='split'][padding='wide']) .section {
-    grid-template-columns: var(--arq-layout-measure-wide) minmax(0, 1fr);
-    column-gap: var(--arq-space-gap-6xl);
   }
 
   /* Herramientas: el título ocupa el ancho, como Productos destacados.
@@ -167,11 +137,16 @@
   }
 
   /* Títulos y textos: space/padding/sm. Las fotos que no siguen este margen
-     (Explorar, carrusel de proyectos) siguen llegando al borde. */
+     (Explorar, carrusel de proyectos) siguen llegando al borde.
+     El FAQ queda con --page-gutter, como newsletter y footer. */
   :host,
   :host([padding='section']),
   :host([padding='wide']) {
     --section-inline: var(--arq-space-padding-sm);
+  }
+
+  :host([layout='split']) {
+    --section-inline: var(--page-gutter);
   }
 
   /* Herramientas: las tres tarjetas en fila. Se deslizan con el dedo y la
@@ -202,6 +177,43 @@
     flex: none;
     width: 80%;
     scroll-snap-align: start;
+  }
+}
+
+/* FAQ en dos columnas solo desde Desktop (1024). Hasta ahí se apila, para
+   que el margen lateral no lo coma la columna de layout/measure-wide.
+   TODO (diseño): entre columnas el set usa space/section/md, un token de
+   separación entre bloques, dentro de un bloque (DESIGN.md §5). */
+@media (min-width: 1024px) {
+  :host([layout='split']) .section {
+    display: grid;
+    grid-template-columns: var(--arq-layout-measure) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      'head body'
+      'action body';
+    column-gap: var(--arq-space-section-md);
+    row-gap: var(--arq-space-gap-lg);
+    align-items: start;
+  }
+
+  :host([layout='split']) .head {
+    grid-area: head;
+  }
+
+  :host([layout='split']) .body {
+    grid-area: body;
+  }
+
+  :host([layout='split']) .action {
+    grid-area: action;
+  }
+
+  /* Home v2: la columna de texto es layout/measure-wide y el hueco entre
+     columnas es space/gap/6xl. */
+  :host([layout='split'][padding='wide']) .section {
+    grid-template-columns: var(--arq-layout-measure-wide) minmax(0, 1fr);
+    column-gap: var(--arq-space-gap-6xl);
   }
 }
 

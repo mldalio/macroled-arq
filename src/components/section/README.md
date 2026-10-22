@@ -41,7 +41,7 @@ Bloque de página: margen lateral, padding inferior y el armado encabezado → c
 | --- | --- | --- |
 | Padding | `--page-gutter` a los lados (`layout/gutter`, con tope en `layout/max-width`), `space/section/xl` abajo. `padding="wide"`: `space/section/md` arriba y abajo, `space/padding/4xl` a los lados. Ese margen es de títulos y textos: Explorar, el mosaico de colecciones y el carrusel de proyectos lo cancelan y llegan al borde | a los lados `space/padding/sm` (títulos y textos). Arriba y abajo, `space/section/md` en `padding="wide"`. Las fotos que cancelan el margen siguen al borde |
 | Gap encabezado → contenido → acción | `space/gap/2xl` | `space/gap/xl` |
-| `layout="split"` | encabezado y acción en una columna de `layout/measure` (acción a `space/gap/lg`), contenido a la derecha a `space/section/md` | apilado: encabezado, contenido, acción |
+| `layout="split"` | desde 1024: encabezado y acción en una columna de `layout/measure` (acción a `space/gap/lg`), contenido a la derecha a `space/section/md`. El margen lateral es `--page-gutter` (no `space/padding/4xl`) | apilado: encabezado, contenido, acción, con `--page-gutter` a los lados |
 | `layout="tools"` | título a lo ancho; tarjeta grande y las chicas en dos columnas | las tarjetas en una fila con scroll (80 % del ancho, la siguiente asoma). `TODO` (diseño): sin frame Mobile |
 | Fondo | `color/surface/default`; `subtle` usa `color/surface/subtle`; `bone` usa `color/surface/bone`; `sand` usa `#f7f1ec` (Casa FOA, sin token) | ídem |
 

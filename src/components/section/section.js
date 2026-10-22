@@ -16,8 +16,9 @@
 // - Slots: header (section-header), el contenido por defecto, action (button
 //   al final del bloque, en Desktop y Mobile) y mobile-action (solo hasta
 //   767 px: el link de un section-header Type=Link, que en Mobile no se ve).
-// - layout="split": en Desktop el encabezado y la acción van en una columna de
-//   layout/measure y el contenido a la derecha (FAQ del Home). En Mobile apila.
+// - layout="split": desde 1024 el encabezado y la acción van en una columna de
+//   layout/measure y el contenido a la derecha (FAQ del Home). Hasta ahí apila.
+//   El margen lateral es --page-gutter.
 // - padding-top: suma space/section/md arriba (primer bloque después del hero,
 //   o el que sigue a una banda con background="subtle").
 // - background="subtle": banda color/bg/subtle con space/section/md arriba y
