@@ -17,6 +17,9 @@
 //   3 documentos con SKU distinto y el mismo product_name «Kanu Jardín» → 1 grupo
 //   «Kanu Jardín» (id: kanu-jardin) con 3 variantes. Una card del listado es 1
 //   grupo, no 1 SKU.
+//   Con grupo_variantes, varios product_name pueden ser un solo grupo: «Daö
+//   Simple» y «Daö Doble» (grupo DAO-E) → 1 grupo «Daö» con 4 variantes (color y
+//   módulos). Ver «Producto (grupo)» más abajo.
 //
 // ES EL ÚNICO LUGAR QUE CONOCE LOS NOMBRES DE CAMPO DEL ÍNDICE
 //   (los de identificación, textos e imágenes; los técnicos están en
@@ -44,9 +47,16 @@
 //   Estructura de la hoja y del índice: docs/typesense-schema.md (decisiones.md,
 //   2026-10-07 · Base de datos sin IDs).
 //
-// - Producto (grupo): las filas con el mismo product_name. El id (slug de la
-//   ficha y del CMS) sale del nombre: «Kanu Jardín» → kanu-jardin. Una fila sin
+// - Producto (grupo): las filas con el mismo grupo_variantes (el SKU cortado que
+//   comparten todas las variantes de un producto). Una fila sin grupo_variantes
+//   se agrupa por product_name, como antes. El nombre del grupo son las palabras
+//   que comparten al principio los product_name de sus filas («Daö Simple» y «Daö
+//   Doble» → «Daö»); con un solo nombre, ese. El id (slug de la ficha y del CMS)
+//   sale del nombre del grupo: «Kanu Jardín» → kanu-jardin. Una fila sin
 //   product_name todavía no se publica.
+// - SKU predeterminado del grupo: una fila con is_group_default; si hay varias
+//   marcadas (una por product_name), la de SKU menor (X1 antes que X2); sin marca,
+//   la primera.
 // - Colección: una fila con product_type «Colección». Su familia lista las
 //   familias que reúne («Tori, Mini Tori»); un producto pertenece a la colección
 //   que incluye su familia. Los accesorios no entran en las colecciones.
@@ -62,9 +72,14 @@
 
 import { ATTRIBUTES, variantFields } from './attributes.js';
 import { normalize } from './text.js';
+import { applyModels } from './models.js';
 
 const FIELDS = {
   name: 'product_name',
+  variantGroup: 'grupo_variantes',
+  // Nivel mayor de agrupación (opcional): varios grupo_variantes que son un solo producto
+  // con modelos (Daö y Mini Daö). Hoy lo completa models.js; más adelante, la hoja.
+  productGroup: 'grupo_producto',
   family: 'familia',
   productType: 'product_type',
   environment: 'macrofamilia',
@@ -113,7 +128,7 @@ const DOWNLOADS = ['ies', 'cad', 'manual', 'fotometria'];
 //   product_name): descripción, descargas, resto de las fotos y textos.
 // Un campo nuevo que use una pantalla se agrega acá; si no, llega vacío.
 export const LIGHT_FIELDS = Object.freeze([
-  'sku', FIELDS.name, FIELDS.family, FIELDS.productType, FIELDS.environment, FIELDS.application,
+  'sku', FIELDS.name, FIELDS.variantGroup, FIELDS.productGroup, 'modelo', FIELDS.family, FIELDS.productType, FIELDS.environment, FIELDS.application,
   FIELDS.isDefault, FIELDS.isMenuDefault, FIELDS.isNew, FIELDS.variantAttributes, FIELDS.compatibleWith,
   FIELDS.collectionIntro, FIELDS.collectionDescription, FIELDS.collectionGallery, FIELDS.collectionInspiration,
   'multimagen_producto', 'multimagen_ambiente', 'multimagen_coleccion',
@@ -198,13 +213,41 @@ function collectionFromDoc(doc) {
   };
 }
 
+// SKU predeterminado del grupo: el marcado con is_group_default. Con varias marcadas
+// (la base marca una por product_name o por modelo), el de SKU más corto y, a igual
+// largo, el menor: el modelo estándar antes que el Mini (DAO-T-X1-N antes que
+// DAO-MINI-T-X1-N) y X1 antes que X2 («Simple» antes que «Doble»). Sin marca, la primera.
+// Lo ideal es marcar uno solo por grupo en la hoja.
+function defaultRow(rows) {
+  const marked = rows.filter((doc) => doc[FIELDS.isDefault] === true);
+  if (marked.length < 2) return marked[0] ?? rows[0];
+  const bySku = (a, b) => String(a.sku).length - String(b.sku).length || String(a.sku).localeCompare(String(b.sku), 'es', { numeric: true });
+  return [...marked].sort(bySku)[0];
+}
+
+// Nombre del grupo: las palabras del nombre del predeterminado que están en todos los
+// product_name de sus filas, sin importar tildes ni mayúsculas: «Daö Simple», «Daö
+// Doble» y «Mini Dao Simple» → «Daö»; «Daö Trimless Doble» y «Mini Daö Trimless Triple»
+// → «Daö Trimless». Con un solo nombre, ese. Si no comparten ninguna palabra, el del
+// predeterminado.
+function groupName(rows, first) {
+  const own = text(first[FIELDS.name]);
+  const names = [...new Set(rows.map((doc) => text(doc[FIELDS.name])).filter(Boolean))];
+  if (names.length < 2) return own;
+  const others = names.map((name) => name.split(/\s+/).map(normalize));
+  const shared = own.split(/\s+/).filter((word) => others.every((words) => words.includes(normalize(word))));
+  return shared.length ? shared.join(' ') : own;
+}
+
 /**
  * Documentos → { collections, groups, withDetails(id, documentosDeDetalle) }.
  * withDetails devuelve el grupo reconstruido con los campos de DETAIL_FIELDS.
  */
-export function fromDocuments(docs) {
+export function fromDocuments(rawDocs) {
   const collections = [];
-  const byGroup = new Map();
+  const byKey = new Map();
+  // Productos con modelos (Daö y Mini Daö): completa grupo_producto y modelo (models.js)
+  const docs = applyModels(rawDocs);
   for (const doc of docs) {
     const name = text(doc[FIELDS.name]);
     if (!name) continue; // sin nombre: todavía no se publica
@@ -212,21 +255,39 @@ export function fromDocuments(docs) {
       collections.push(collectionFromDoc(doc));
       continue;
     }
-    const id = slug(name);
-    if (!byGroup.has(id)) byGroup.set(id, []);
-    byGroup.get(id).push(doc);
+    // grupo_producto (si la fila lo trae) manda sobre grupo_variantes. Una fila sin ninguno
+    // de los dos se agrupa por su nombre, como antes.
+    const variantGroup = text(doc[FIELDS.productGroup]) || text(doc[FIELDS.variantGroup]);
+    const key = variantGroup ? `g:${variantGroup}` : `n:${slug(name)}`;
+    if (!byKey.has(key)) byKey.set(key, []);
+    byKey.get(key).push(doc);
+  }
+
+  // id de cada grupo: el slug de su nombre. Si dos grupos dan el mismo, el segundo
+  // suma su grupo_variantes para no pisarse.
+  const byGroup = new Map();
+  for (const rows of byKey.values()) {
+    const base = slug(groupName(rows, defaultRow(rows)));
+    const id = byGroup.has(base) ? `${base}-${slug(text(rows[0][FIELDS.variantGroup])) || byGroup.size}` : base;
+    byGroup.set(id, rows);
   }
 
   const collectionOf = (family) => collections.find((c) => c.families.includes(normalize(family)))?.id ?? null;
-  const idByName = new Map([...byGroup].map(([id, rows]) => [normalize(rows[0][FIELDS.name]), id]));
+  // compatible_with nombra un producto por su product_name: cualquiera de los de un grupo lleva a él.
+  const idByName = new Map([...byGroup].flatMap(([id, rows]) => rows.map((doc) => [normalize(doc[FIELDS.name]), id])));
 
   const groupFromRows = (id, rows) => {
-    const first = rows.find((doc) => doc[FIELDS.isDefault] === true) ?? rows[0];
+    const first = defaultRow(rows);
+    const names = new Set(rows.map((doc) => text(doc[FIELDS.name])));
     const productType = text(first[FIELDS.productType]) || null;
     const compatible = list(first[FIELDS.compatibleWith]).map((name) => idByName.get(normalize(name))).filter(Boolean);
     return {
       id,
-      name: text(first[FIELDS.name]),
+      name: groupName(rows, first),
+      // grupo_variantes: el SKU cortado que comparten las variantes. variantNames: el
+      // grupo reúne varios product_name (Simple, Doble…): cada variante lleva el suyo.
+      variantGroup: text(first[FIELDS.variantGroup]),
+      variantNames: names.size > 1,
       // Familia de la base («Kanu», «Tori»…): decide la imagen de algunos
       // acabados (finishes.js). Un grupo, una familia: la de su SKU predeterminado.
       family: list(first[FIELDS.family])[0] ?? '',
@@ -251,6 +312,8 @@ export function fromDocuments(docs) {
       specs: {},
       variants: rows.map((doc) => ({
         sku: doc.sku,
+        // Nombre de esta variante (product_name de su fila): «Daö Doble» dentro del grupo «Daö»
+        name: text(doc[FIELDS.name]),
         isDefault: doc === first,
         // Novedad: la columna «new» de Sheets (bool), por SKU. Cada SKU marcado es un producto
         // recomendado del buscador, con sus propias fotos (catalog.js · getRecommendedProducts).

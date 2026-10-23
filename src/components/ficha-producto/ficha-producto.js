@@ -400,6 +400,17 @@ class ArqFichaProducto extends ArqElement {
     }
   }
 
+  // Un grupo que reúne varios product_name («Daö Simple», «Daö Doble») muestra el de
+  // la variante elegida: en el título (el h1 del CMS, que llega por slot y empieza con
+  // el nombre del grupo) y en la última migaja del breadcrumb.
+  #renderName(name) {
+    if (!this.#product.group.variantNames || !name) return;
+    const title = this.querySelector(':scope > [slot="title"]');
+    if (title && title.textContent !== name) title.textContent = name;
+    const current = this.shadowRoot.querySelector('.breadcrumb').lastElementChild;
+    if (current && current.textContent !== name) current.textContent = name;
+  }
+
   // ── Contraste del toggle Iluminar con la foto ─────────────────────
   #backdrops = new Map(); // foto → promesa de su copia chica decodificada
   #backdropFrame = 0;
@@ -599,6 +610,7 @@ class ArqFichaProducto extends ArqElement {
     const root = this.shadowRoot;
 
     root.querySelector('.sku').textContent = details.sku;
+    this.#renderName(details.name);
     const description = root.querySelector('.variant-description');
     description.textContent = details.description ?? '';
     description.hidden = !details.description;

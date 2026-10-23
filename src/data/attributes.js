@@ -9,6 +9,9 @@
 //   catalog.js): un campo nuevo aparece solo. Se excluyen las medidas y los
 //   datos con casi un valor por producto o que nadie elige al buscar.
 // - control: selector de variante: 'swatches' (acabado) o 'tiles' (el resto).
+// - summary: false: no entra en el resumen de la card de colección (variantSummary).
+// - unit: [singular, plural] de un valor que es solo un número (módulos: «1 – 3
+//   módulos» en el resumen de la card de colección).
 // - column: nombre anterior de la columna en la hoja. variant_attributes ahora
 //   trae nombres de campo; column queda sin uso desde que no hay catálogo mixto.
 //
@@ -49,6 +52,11 @@ export const ATTRIBUTES = Object.freeze({
   // Materiales e instalación
   color_carcasa: a('Color', 'materiales', { control: 'swatches', column: 'Color de carcasa' }),
   altura: a('Altura', 'materiales', { column: 'Altura', filter: false }),
+  // Modelo de un producto con varios (Daö: Estándar · Mini). Lo completa models.js o la
+  // columna `modelo` de la hoja. No va en el resumen de la card de colección.
+  modelo: a('Modelo', 'materiales', { filter: false, summary: false }),
+  // Cantidad de módulos (Daö: 1, 2 o 3). Distingue variantes de un mismo grupo.
+  modulos: a('Módulos', 'materiales', { filter: false, unit: ['módulo', 'módulos'] }),
   tamanio: a('Medidas', 'materiales', { filter: false }),
   material_cuerpo: a('Material del cuerpo', 'materiales'),
   material_lente: a('Material de la lente', 'materiales'),
