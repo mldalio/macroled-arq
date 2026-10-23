@@ -37,8 +37,26 @@
   min-width: 0;
 }
 
+/* align-self: el subrayado de hover mide lo que el texto, no toda la fila */
 .label {
+  position: relative;
+  align-self: flex-start;
   overflow-wrap: break-word;
+}
+
+/* Subrayado de hover (Default): border/default justo debajo del texto. Como
+   nav-link: se dibuja de izquierda a derecha y se va hacia la derecha
+   (motion/duration/base, easing/standard). */
+:host(:not([emphasis='featured'])) .label::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  height: var(--arq-border-default);
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
 }
 
 /* Formato (show-format): role/body-compact-regular en color/text/tertiary */
@@ -64,9 +82,9 @@
 /* Hover: Default subraya el texto (descripción del set); Featured pinta
    color/surface/faint */
 @media (hover: hover) and (pointer: fine) {
-  :host(:not([emphasis='featured'])) .row:hover .label {
-    text-decoration: underline;
-    text-decoration-thickness: var(--arq-border-default);
+  :host(:not([emphasis='featured'])) .row:hover .label::after {
+    transform: scaleX(1);
+    transform-origin: left;
   }
 
   :host([emphasis='featured']) .row:hover {

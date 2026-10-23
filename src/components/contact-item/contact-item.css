@@ -22,19 +22,33 @@
 }
 
 .value {
+  position: relative;
   max-width: 100%;
   color: var(--arq-color-text-primary);
   text-decoration: none;
   overflow-wrap: anywhere;
 }
 
-/* State=Hover: subrayado del valor (border/default). Solo con mouse: en
-   táctil quedaría pegado después del toque. */
+/* State=Hover: subrayado del valor (border/default), 3 px debajo del texto
+   (space/padding/2xs). Como nav-link: se dibuja de izquierda a derecha y se
+   va hacia la derecha (motion/duration/base, easing/standard). Solo con
+   mouse: en táctil quedaría pegado después del toque. */
+.value[href]::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));
+  height: var(--arq-border-default);
+  background: var(--arq-color-border-strong);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
+}
+
 @media (hover: hover) and (pointer: fine) {
-  .value[href]:hover {
-    text-decoration: underline;
-    text-decoration-thickness: var(--arq-border-default);
-    text-underline-offset: var(--arq-space-padding-2xs);
+  .value[href]:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
   }
 }
 

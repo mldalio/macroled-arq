@@ -103,15 +103,19 @@
   position: absolute;
   inset-inline: 0;
   top: calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));
-  height: var(--arq-border-default);
+  height: var(--arq-border-strong);
   background: var(--arq-color-border-strong);
-  visibility: hidden;
+  /* Como nav-link y el button Underline: se dibuja de izquierda a derecha y
+     se va hacia la derecha (motion/duration/base, easing/standard). */
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .title-link:hover .title-text::after {
-    visibility: visible;
-    height: var(--arq-border-strong);
+    transform: scaleX(1);
+    transform-origin: left;
   }
 }
 
@@ -120,8 +124,8 @@
 }
 
 .title-link:active .title-text::after {
-  visibility: visible;
-  height: var(--arq-border-strong);
+  transform: scaleX(1);
+  transform-origin: left;
   background: var(--arq-color-text-tertiary);
 }
 
