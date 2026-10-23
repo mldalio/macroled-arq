@@ -1,6 +1,6 @@
 # catalog-toolbar · `<arq-catalog-toolbar>`
 
-Barra sobre la grilla de Productos y Colecciones: cantidad de resultados, toggle Iluminar, divider vertical y botón Filtrar.
+Barra sobre la grilla de Productos y Colecciones: cantidad de resultados, toggle Iluminar (solo en Productos; en Colecciones `show-iluminar` va apagado), divider vertical y botón Filtrar.
 
 - Figma: [1244-4058](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1244-4058) · ficha `doc/catalog-toolbar` (`1427:2499`)
 

@@ -1498,3 +1498,8 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 
 - La descripción de la variante (debajo del nombre) se muestra en minúscula con la primera letra en mayúscula (`text-transform: lowercase` + `::first-letter` en mayúscula); el dato no se modifica.
 - Breadcrumb y toggle Iluminar van sobre la foto, pero su color funía con el texto de la página (retraso del 25 % y 50 % de duración), cuando la foto ya había empezado a cambiar. Ahora, al iluminar, funden con la foto: sin retraso y con `--arq-illumination-image-duration` y `-easing`. Las variables se ponen en los dos elementos y se quitan a los 1,2 s (hover y foco no se retrasan).
+
+## 2026-10-23 · Colecciones sin Iluminar
+
+- Pedido de Gabriela. «Todas las colecciones» (`?view=colecciones`) no tiene el toggle Iluminar: `catalog-listing` apaga `show-iluminar` del toolbar cuando `unit` es `colecciones`. Si el listado venía iluminado de Productos (cambio de vista sin recarga), vuelve a Light.
+- DESIGN.md (§2 · Iluminar, footer y catalog-toolbar) y el README de catalog-toolbar al día. `TODO` (Figma): quitar Iluminar del frame de Colecciones y de la ficha de catalog-toolbar, y actualizar la copia de DESIGN.md en Plan del proyecto.
