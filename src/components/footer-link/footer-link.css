@@ -42,7 +42,11 @@
   top: 100%;
   height: var(--arq-border-default);
   background: var(--arq-color-border-strong);
-  visibility: hidden;
+  /* Como nav-link: se dibuja de izquierda a derecha y se va hacia la derecha
+     (motion/duration/base, easing/standard). */
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
 }
 
 /* State=Hover: texto color/text/primary + subrayado. Solo con mouse: en
@@ -53,7 +57,8 @@
   }
 
   .link[href]:hover::after {
-    visibility: visible;
+    transform: scaleX(1);
+    transform-origin: left;
   }
 }
 
@@ -63,7 +68,7 @@
 }
 
 .link[href]:active::after {
-  visibility: hidden;
+  transform: scaleX(0);
 }
 
 /* Foco: anillo de DESIGN.md §7 (2px: valor fijado ahí, no hay token de offset) */

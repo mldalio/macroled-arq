@@ -172,16 +172,10 @@
 /* compact + Underline: subrayado más pegado al texto (justo debajo de la línea
    de 16, en lugar de 2 px más abajo) y más fino, en border/default (1 px)
    también en hover y pressed. */
-:host([compact][type='underline']) .text::after,
-:host([compact][type='underline']) .control:not(.inactive):active .text::after {
+:host([compact][type='underline']) .text::before,
+:host([compact][type='underline']) .text::after {
   top: 100%;
   height: var(--arq-border-default);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  :host([compact][type='underline']) .control:not(.inactive):hover .text::after {
-    height: var(--arq-border-default);
-  }
 }
 
 /* ── Underline ────────────────────────────────────────────────── */
@@ -194,8 +188,11 @@
 
 /* Subrayado: en Figma, una línea que termina 3 px debajo de la caja del texto
    (3 = space/padding/2xs; no hay un token de offset de subrayado). Se ancla
-   por arriba para que al pasar a 2 px crezca hacia abajo, dentro del padding
-   de space/gap/xs: es absoluto, así que el alto del botón no cambia. */
+   por arriba para que la de 2 px crezca hacia abajo, dentro del padding
+   de space/gap/xs: es absoluta, así que el alto del botón no cambia.
+   Dos líneas: ::before es la de reposo (Show underline=true, border/default)
+   y ::after la de hover y pressed (border/strong), encima. */
+:host([type='underline']) .text::before,
 :host([type='underline']) .text::after {
   content: '';
   position: absolute;
@@ -203,31 +200,40 @@
   top: calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));
   height: var(--arq-border-default);
   background: var(--arq-color-border-strong);
-  visibility: hidden;
 }
 
-/* Show underline=true: siempre. Show underline=false: solo en hover y pressed.
-   border/default (1 px) en reposo; border/strong (2 px) en hover y pressed. */
-:host([type='underline'][show-underline]) .text::after,
-:host([type='underline']) .control:not(.inactive):active .text::after {
-  visibility: visible;
+/* Show underline=false: sin línea de reposo */
+:host([type='underline']:not([show-underline])) .text::before {
+  display: none;
 }
 
-:host([type='underline']) .control:not(.inactive):active .text::after {
+/* Hover: como nav-link, se dibuja de izquierda a derecha al entrar y se va
+   hacia la derecha al salir (transform, motion/duration/base y
+   easing/standard). Con reduced motion, de golpe (la duración pasa a 0). */
+:host([type='underline']) .text::after {
   height: var(--arq-border-strong);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
 }
 
 @media (hover: hover) and (pointer: fine) {
   :host([type='underline']) .control:not(.inactive):hover .text::after {
-    visibility: visible;
-    height: var(--arq-border-strong);
+    transform: scaleX(1);
+    transform-origin: left;
   }
+}
+
+:host([type='underline']) .control:not(.inactive):active .text::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
 :host([type='underline']) .control:not(.inactive):active {
   color: var(--arq-color-text-tertiary);
 }
 
+:host([type='underline']) .control:not(.inactive):active .text::before,
 :host([type='underline']) .control:not(.inactive):active .text::after {
   background: var(--arq-color-text-tertiary);
 }
@@ -237,6 +243,6 @@
   color: var(--arq-color-text-disabled);
 }
 
-:host([type='underline']) .control.inactive .text::after {
+:host([type='underline']) .control.inactive .text::before {
   background: var(--arq-color-border-disabled);
 }

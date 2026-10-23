@@ -310,12 +310,30 @@ tbody td {
   text-decoration: none;
 }
 
-/* El nombre va siempre subrayado (border/default; border/strong con el mouse,
-   como el button Underline): indica que lleva a otra página. */
+/* El nombre va siempre subrayado, como el button Underline con Show underline:
+   indica que lleva a otra página. ::before es la línea de reposo
+   (border/default) y ::after la de hover (border/strong), que se dibuja de
+   izquierda a derecha y se va hacia la derecha (motion/duration/base,
+   easing/standard), como nav-link. 3 px debajo del texto (space/padding/2xs). */
 .name-link {
-  text-decoration: underline;
-  text-decoration-thickness: var(--arq-border-default);
-  text-underline-offset: var(--arq-space-gap-xs);
+  position: relative;
+}
+
+.name-link::before,
+.name-link::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));
+  height: var(--arq-border-default);
+  background: var(--arq-color-border-strong);
+}
+
+.name-link::after {
+  height: var(--arq-border-strong);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
 }
 
 .thumb-link {
@@ -323,8 +341,9 @@ tbody td {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .name-link:hover {
-    text-decoration-thickness: var(--arq-border-strong);
+  .name-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
   }
 }
 

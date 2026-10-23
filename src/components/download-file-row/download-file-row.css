@@ -36,9 +36,27 @@
   min-width: 0;
 }
 
+/* align-self: el subrayado de hover mide lo que el texto, no toda la fila */
 .label {
+  position: relative;
+  align-self: flex-start;
   color: var(--arq-color-text-primary);
   overflow-wrap: break-word;
+}
+
+/* Subrayado de hover: border/default justo debajo del texto. Como nav-link:
+   se dibuja de izquierda a derecha y se va hacia la derecha
+   (motion/duration/base, easing/standard). */
+.label::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  height: var(--arq-border-default);
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
 }
 
 .meta {
@@ -54,9 +72,9 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .row:hover .label {
-    text-decoration: underline;
-    text-decoration-thickness: var(--arq-border-default);
+  .row:hover .label::after {
+    transform: scaleX(1);
+    transform-origin: left;
   }
 }
 
