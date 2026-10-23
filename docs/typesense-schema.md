@@ -23,7 +23,7 @@ Colección `macroled_arq` en `typesense.coresagroup.com`: 139 documentos (132 SK
 | Pertenencia a una colección | La colección cuya `familia` incluye la del producto. Los accesorios no entran. Una colección sin productos publicados no se muestra | `familia` |
 | Accesorio | `product_type` «Accesorio». Con qué producto se usa: su nombre | `compatible_with` |
 | Foto del mega-menú de una aplicación | Un SKU marcado por link de Por espacio (aplicación y entorno; o Artefactos / Lámparas). Su `img_ambient_1_on` es la foto del menú. Fuera del esquema (no hace falta indexarlo): n8n lo pasa como bool | `is_menu_default` (bool) |
-| Navegación | Ambiente = `macrofamilia` (Exterior · Interior); aplicación = `subfamilia`; tipo = `product_type` (Luminaria · Lámpara · Artefacto) | |
+| Navegación | Ambiente = `macrofamilia` (Exterior · Interior); aplicación = `subfamilia`; tipo = `product_type` (Luminaria · Lámpara · Artefacto; **vacío = Luminaria**, se completa solo en lo que no es luminaria) | |
 
 ### Imágenes: listas con posición fija
 
@@ -95,7 +95,7 @@ Lo que sigue es la propuesta con la que se armó la base. **No es el estado actu
 | COLLECTION_NAME | `collection_name` | string | — | colección | Nombre visible de la colección (breadcrumb, cards, mega menú) |
 | APPLICATION | `application` | string | sí | grupo | Jardín, Bañadores, Aplicar, Pared, Embutir, Colgante. Vacío en lámparas y artefactos |
 | ENVIRONMENT | `environment` | string[] | sí | grupo | Interior, Exterior o los dos (lámparas). Ver `docs/decisiones.md`, 2026-10-02 · Navegación |
-| PRODUCT_TYPE | `product_type` | string | sí | grupo | Luminaria, Lámpara o Artefacto |
+| PRODUCT_TYPE | `product_type` | string | sí | grupo | Lámpara, Artefacto o Accesorio; vacío = Luminaria |
 | COLLECTION_APPLICATIONS | `collection_applications` | string[] | — | colección | Aplicaciones de la colección (bajada del mega-link y de la card de colección) |
 | IS_GROUP_DEFAULT | `is_group_default` | bool | sí | SKU | Un `true` por grupo: SKU inicial y card del grupo |
 | IS_COLLECTION_DEFAULT | `is_collection_default` | bool | sí | SKU | Un `true` por colección: documento representante |
