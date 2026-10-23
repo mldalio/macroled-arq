@@ -504,19 +504,26 @@
   }
 }
 
-/* Impresión (comparativa: "Imprimir comparación", window.print): solo el
-   logo, en el flujo de la página y sin fondo translúcido ni línea. */
+/* Impresión (comparativa: "Descargar comparación", window.print): solo el
+   logo, sin fondo translúcido ni línea. */
 @media print {
+  /* Arriba a la derecha de la primera hoja, al lado del título de
+     page-header: la barra mide --page-gutter + el interlineado de
+     role/heading-3 (el del título) y el logo se centra en esa línea. */
   :host,
   :host([theme='transparent']),
   :host([data-arq-compare-hidden]) {
-    position: static;
+    position: absolute;
+    top: 0;
+    inset-inline-end: 0;
     margin-bottom: 0;
     transform: none;
   }
 
   .bar,
   .over-photo .bar {
+    height: calc(var(--page-gutter) + var(--arq-type-heading-3-leading));
+    padding-block: var(--page-gutter) 0;
     padding-inline: var(--page-gutter);
     border-bottom: none;
     background: var(--arq-color-surface-default);

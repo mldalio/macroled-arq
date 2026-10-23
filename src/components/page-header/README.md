@@ -18,7 +18,8 @@ Encabezado de la página: breadcrumb, título (el único `<h1>`) y bajada. Type=
 <!-- Type=Detail -->
 <arq-page-header type="detail" show-back back-href="/arq/productos" show-description show-action>
   <span slot="back">Volver a productos</span>
-  <h1 slot="title">Comparativa</h1>
+  <h1 slot="title">Comparar productos</h1>
+  <span slot="print-title">Comparativa de productos</span>
   <span slot="description">…</span>
   <arq-button slot="action" show-icon icon="download" data-arq-print>Descargar comparación</arq-button>
 </arq-page-header>
@@ -36,6 +37,7 @@ Encabezado de la página: breadcrumb, título (el único `<h1>`) y bajada. Type=
 | Show back | `show-back` + `back-href` + slot `back` | `showBack` · `backHref` | booleano, solo Detail. Label del link en el slot (por ejemplo "Volver a productos") |
 | Show action | `show-action` + slot `action` | `showAction` | booleano, solo Detail. Un `<arq-button>` (Filled, en Figma con `icon/download`) |
 | — | `title-style` | `titleStyle` | `display` · `heading-1` (def. `display`). Solo de código. `heading-1` es el de «Buscar archivos por producto» en Descargas; lo usa Catálogos |
+| — | slot `print-title` | — | Solo de código. Título de la hoja impresa: al imprimir reemplaza al `<h1>`, en role/heading-3 (la altura del logo, que va al lado; comparativa: «Comparativa de productos»). En pantalla no se ve |
 | Breakpoint | — | — | media query: hasta 767 px es Mobile |
 
 - **Los Show… vienen en `true` en Figma; en código, sin el atributo la parte no se ve** (AGENTS.md). Una parte con su atributo pero sin contenido tampoco se ve.

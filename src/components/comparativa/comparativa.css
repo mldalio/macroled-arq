@@ -59,8 +59,16 @@
   }
 }
 
-/* Impresión: "Solo diferencias" se imprime como esté, pero el toggle no. */
+/* Impresión: "Solo diferencias" se imprime como esté, pero el toggle no.
+   La página se imprime sin margen de hoja (@page en comparativa.html): el
+   aire de arriba y de abajo va acá y se repite en cada hoja (clone). */
 @media print {
+  .page {
+    padding-block: var(--arq-space-padding-2xl);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
   .mobile-controls,
   .mobile-controls:not([hidden]) {
     display: none;
