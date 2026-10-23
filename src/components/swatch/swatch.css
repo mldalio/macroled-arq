@@ -58,10 +58,16 @@
 }
 
 /* State=Hover y Selected: border/strong (2 px) en color/border/strong */
-:host([role='radio']:not([disabled]):hover) .swatch::after,
 :host([selected]) .swatch::after {
   border-width: var(--arq-border-strong);
   border-color: var(--arq-color-border-strong);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :host([role='radio']:not([disabled]):hover) .swatch::after {
+    border-width: var(--arq-border-strong);
+    border-color: var(--arq-color-border-strong);
+  }
 }
 
 /* Size=XLarge (swatch-picker de la ficha): la elegida no crece. Selected es un
@@ -79,13 +85,17 @@
 }
 
 /* El borde interno queda fino también en Hover y Selected: el aro lo reemplaza */
-:host([size='xlarge']) .swatch::after,
-:host([size='xlarge'][role='radio']:not([disabled]):hover) .swatch::after {
+:host([size='xlarge']) .swatch::after {
   border-width: var(--arq-border-default);
   border-color: var(--arq-color-border-subtle);
 }
 
 @media (hover: hover) and (pointer: fine) {
+  :host([size='xlarge'][role='radio']:not([disabled]):hover) .swatch::after {
+    border-width: var(--arq-border-default);
+    border-color: var(--arq-color-border-subtle);
+  }
+
   :host([size='xlarge'][role='radio']:not([disabled]):not([selected]):hover) .swatch {
     outline-color: var(--arq-color-border-hover);
   }
@@ -119,4 +129,33 @@
 
 :host(:focus:not(:focus-visible)) {
   outline: none;
+}
+
+/* Alto contraste (forced-colors): se conservan la imagen y el fondo neutro
+   (forced-color-adjust: none); el borde pasa a CanvasText y el de la elegida a
+   Highlight (el ancho solo no alcanza para distinguirla). */
+@media (forced-colors: active) {
+  .swatch {
+    forced-color-adjust: none;
+  }
+
+  .swatch::after,
+  :host([size='xlarge']) .swatch::after,
+  :host([role='radio']:not([disabled]):hover) .swatch::after,
+  :host([size='xlarge'][role='radio']:not([disabled]):hover) .swatch::after {
+    border-color: CanvasText;
+  }
+
+  :host([selected]) .swatch::after,
+  :host([selected][role='radio']:not([disabled]):hover) .swatch::after {
+    border-color: Highlight;
+  }
+
+  :host([size='xlarge'][selected]) .swatch {
+    outline-color: Highlight;
+  }
+
+  :host([disabled]) .swatch::after {
+    border-color: GrayText;
+  }
 }

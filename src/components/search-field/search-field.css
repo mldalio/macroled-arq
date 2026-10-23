@@ -109,3 +109,13 @@
   width: var(--arq-icon-lg);
   height: var(--arq-icon-lg);
 }
+
+/* prefers-contrast: more: color/border/default no llega al 3:1 que pide WCAG
+   para el borde de un control (DESIGN §9); la caja y la línea pasan a
+   color/border/strong, como input */
+@media (prefers-contrast: more) {
+  .field,
+  :host([type='line']) .field {
+    border-color: var(--arq-color-border-strong);
+  }
+}

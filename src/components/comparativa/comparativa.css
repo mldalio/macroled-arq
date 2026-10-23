@@ -18,6 +18,13 @@
   color: var(--arq-color-text-secondary);
 }
 
+/* Región viva (DESIGN.md §9): está siempre y vacía; sin texto sale del flujo
+   (sin alto ni padding) pero sigue en el árbol de accesibilidad. */
+.status:empty {
+  position: absolute;
+  padding: 0;
+}
+
 /* Toggle "Solo diferencias" en Mobile: compare-header no lo muestra ahí (el
    set lo deja fuera del scroll horizontal, en una fila aparte). En Desktop no
    hace falta: compare-header ya lo muestra en su columna de controles. */

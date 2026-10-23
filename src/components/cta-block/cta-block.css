@@ -103,6 +103,8 @@
   color: var(--arq-color-text-inverse);
 }
 
+/* TODO (diseño): el título sobre foto es Regular y no hay role/* Regular de
+   ese tamaño; el peso es un primitivo (como text-block y section-header). */
 :host(.has-media) .title {
   font-weight: var(--arq-font-weight-regular);
 }

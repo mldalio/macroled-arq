@@ -132,6 +132,13 @@
   color: var(--arq-color-text-secondary);
 }
 
+/* Región viva (DESIGN.md §9): está siempre y vacía; sin texto sale del flujo
+   (sin alto ni padding) pero sigue en el árbol de accesibilidad. */
+.status:empty {
+  position: absolute;
+  padding: 0;
+}
+
 /* Descripción de la variante: entre el nombre y el sku (gap de .title-row), en
    role/body-compact (14 px, Light) y color/text/tertiary, para que no compita.
    Desde 1920 px (Wide, como sku Dense) pasa a 16/24 con el mismo peso y color. */

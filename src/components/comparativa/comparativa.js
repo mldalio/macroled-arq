@@ -74,7 +74,7 @@ class ArqComparativa extends ArqElement {
   static properties = {};
   static template =
     `<div class="page">` +
-    `<p class="status role-body" role="status" hidden></p>` +
+    `<p class="status role-body" role="status"></p>` +
     `<div class="mobile-controls" hidden><arq-toggle show-label class="diff-mobile">Solo diferencias</arq-toggle></div>` +
     `<div class="scroll" aria-label="Comparación de productos" hidden>` +
     `<arq-compare-header class="header" embedded></arq-compare-header>` +
@@ -190,6 +190,7 @@ class ArqComparativa extends ArqElement {
       if (request === this.#pickerRequest) picker.items = items;
     } catch (error) {
       console.error('[arq] compare-picker: no se pudo cargar el catálogo', error);
+      if (request === this.#pickerRequest) picker.showError();
     }
   }
 
@@ -262,7 +263,6 @@ class ArqComparativa extends ArqElement {
   #status(message) {
     const status = this.shadowRoot.querySelector('.status');
     status.textContent = message;
-    status.hidden = !message;
     if (message) this.#count(0);
   }
 }

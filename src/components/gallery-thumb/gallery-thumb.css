@@ -39,8 +39,10 @@
 }
 
 /* State=Hover */
-.thumb:hover::after {
-  border-color: var(--arq-color-border-hover);
+@media (hover: hover) and (pointer: fine) {
+  .thumb:hover::after {
+    border-color: var(--arq-color-border-hover);
+  }
 }
 
 /* State=Selected (gana sobre Hover) */

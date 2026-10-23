@@ -134,3 +134,30 @@
   outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
   outline-offset: 2px;
 }
+
+/* Alto contraste (forced-colors): el sistema borra los fondos y la caja
+   marcada (un cuadrado lleno, sin tilde) quedaría igual a la vacía. Se usan
+   los colores del sistema: borde CanvasText, marcada en Highlight y
+   deshabilitada en GrayText. */
+@media (forced-colors: active) {
+  .box,
+  .row:hover .box {
+    border-color: CanvasText;
+    forced-color-adjust: none;
+  }
+
+  .native:checked + .control .box,
+  .row:hover .native:checked + .control .box {
+    border-color: Highlight;
+    background: Highlight;
+  }
+
+  :host([disabled]) .box,
+  :host([disabled]) .native:checked + .control .box {
+    border-color: GrayText;
+  }
+
+  :host([disabled]) .native:checked + .control .box {
+    background: GrayText;
+  }
+}

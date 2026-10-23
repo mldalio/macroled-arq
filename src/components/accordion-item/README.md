@@ -23,11 +23,12 @@ Bloque desplegable de especificaciones de la ficha (características lumínicas,
 | --- | --- | --- | --- |
 | Title | slot `title` | — | Texto del encabezado (`role/heading-3`) |
 | Open | `open` | `open` | booleano · cerrado por defecto |
+| — | `heading-level` | `headingLevel` | número 1–6 · `3`. Solo de código: `aria-level` del encabezado |
 | — (contenido) | slot por defecto | — | En la ficha, una `arq-spec-list` |
 
 - **No son props:** State=Hover (`:hover`, solo cerrado, como el set), State=Focus (`:focus-visible`, anillo alrededor de todo el ítem) y Breakpoint (media query `max-width: 767px`).
 - **Comportamiento** (`src/base/disclosure.js`): el encabezado es un `<button>` con `aria-expanded` y `aria-controls`; Enter y Espacio abren y cierran. El contenido queda en el HTML aunque esté cerrado. Pueden quedar varios abiertos. La acción del usuario emite `arq:toggle` con `{ open }`.
-- **Título:** va dentro del botón, por eso se escribe como `<span slot="title">` y no como `h2` / `h3` (un encabezado dentro de un botón pierde su rol). Mismo criterio que faq-item.
+- **Título:** va dentro del botón, por eso se escribe como `<span slot="title">` y no como `h2` / `h3` (un encabezado dentro de un botón pierde su rol). Mismo criterio que faq-item. El botón va dentro de un `role="heading"` (patrón accordion de ARIA) para poder recorrer las especificaciones por encabezados; el nivel sale de `heading-level` (solo de código, 1–6, por defecto 3), según dónde esté el acordeón en la página.
 - **Ícono +/–:** medidas de icon-button Size=Large (48 × 48, ícono 24) sin borde ni fondo, cerrado y abierto; es parte del botón: no hay un botón dentro de otro.
 - **Ficha v2** (2085:26124 · 2118:33571 · 2587:26558): sin fondo al abrir; línea inferior `border/default` abierto y cerrado (la de arriba del primero la pone el acordeón de la ficha); contenido en una o dos columnas (`<arq-spec-list columns>`).
 - **Alto:** cerrado mide 128: la línea inferior se descuenta del padding.

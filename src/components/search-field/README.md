@@ -21,9 +21,13 @@ Campo de búsqueda. En Desktop va en el navbar con la cruz que cierra la búsque
 | — | `placeholder` | `placeholder` | Por defecto "Buscar productos…" |
 | — | `label` | `label` | Nombre accesible. Por defecto "Buscar productos" |
 | — | `active-label` | `activeLabel` | Resultado activo, se anuncia en `aria-live` (lo pone el navbar) |
+| — | `status` | `status` | Cantidad de resultados, «sin resultados» o error; se anuncia en otra región `aria-live`, siempre presente y vacía al inicio (lo pone el navbar) |
+| — | `combobox` | `combobox` | booleano (solo de código): el campo abre una lista de resultados. El input pasa a `role="combobox"` con `aria-autocomplete="list"` |
+| — | `expanded` | `expanded` | booleano: la lista está a la vista (`aria-expanded`, con `combobox`) |
 
 - **Eventos:** `arq:input { value }` al escribir, `arq:submit { value }` con Enter, `arq:navigate { step }` con ↑ / ↓ y `arq:close` con la cruz.
-- El foco del campo se marca con el borde (`color/border/focus`), como el set.
+- El foco del campo se marca solo con el borde (`color/border/focus`), como el set: sin anillo separado (excepción a DESIGN §7; el cursor y el borde ya lo marcan).
+- Con `prefers-contrast: more`, la caja y la línea pasan a `color/border/strong` (`color/border/default` no llega a 3:1).
 
 ## Tokens
 
@@ -35,7 +39,7 @@ Campo de búsqueda. En Desktop va en el navbar con la cruz que cierra la búsque
 
 ## Pendientes
 
-- `TODO` (a11y) Los resultados viven en otro Shadow DOM y `aria-activedescendant` no lo cruza: el activo se anuncia con `aria-live`. Revisar con lector de pantalla.
+- `TODO` (a11y) Los resultados viven en otro Shadow DOM y `aria-activedescendant` y `aria-controls` no lo cruzan: con `combobox` el campo no los lleva, y el activo se anuncia con `aria-live`. Revisar con lector de pantalla.
 
 ## Type (solo de código)
 

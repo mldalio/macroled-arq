@@ -11,9 +11,10 @@
 
 /* bleed: las fotos ignoran el padding de la sección y llegan al borde de la
    página. El título se queda adentro. Solo Nosotros.
-   TODO (diseño): el hueco pedido es 5px y no hay token de ese valor. */
+   El hueco es 5 px: space/5, como grid.css y collection-mosaic.css.
+   TODO (diseño): es un primitivo; no hay semántico entre gap/xs (4) y gap/sm (8). */
 :host([bleed]) {
-  --mosaic-gap: 5px;
+  --mosaic-gap: var(--arq-space-5);
   margin-inline: calc(var(--section-inline, 0px) * -1);
   width: calc(100% + var(--section-inline, 0px) * 2);
 }
@@ -197,7 +198,7 @@
   transition: transform var(--arq-motion-duration-slow) var(--arq-motion-easing-standard) !important;
 }
 
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .frame:hover ::slotted(img) {
     transform: scale(var(--arq-motion-scale-hover)) !important;
   }

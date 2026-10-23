@@ -26,6 +26,8 @@ El visor comparte plantilla y estilos con la galería de ambiente de la ficha (`
 
 El slide con `active` arranca al centro. Arrastrar la tira con el mouse (o el dedo) la mueve y suelta en la foto más cercana. Un clic, o Enter / Espacio con el carrusel enfocado, abre esa foto en un lightbox (flechas, Esc y el fondo lo cierran). Flechas del pie o teclas ← → cambian el Activo. El recorrido es un bucle: después de la última foto sigue la primera, y al revés, con las mismas imágenes repetidas a los lados. Las flechas no se deshabilitan.
 
-`autoplay` avanza solo cada 3 s, también con el mouse encima. Se pausa al arrastrar, con el lightbox abierto, con la pestaña oculta y con `prefers-reduced-motion`.
+`autoplay` avanza solo cada 3 s. Se detiene con el mouse encima o el foco adentro y no vuelve mientras siga así (WCAG 2.2.2); también al arrastrar, con el lightbox abierto, con la pestaña oculta y con `prefers-reduced-motion`. `TODO` (diseño): falta un botón de pausa visible (no hay ícono de pausa en el set).
+
+**Teclado:** el slider es enfocable; ← → cambian de proyecto y Enter o Espacio abre la foto del proyecto activo. Al cerrar el visor, el foco vuelve al slider.
 
 TODO (diseño): Home v2 no tiene frame Mobile. Hasta 767 px no se muestran las flechas. Autoplay, arrastre y lightbox no están en Figma.

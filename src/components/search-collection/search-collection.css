@@ -36,8 +36,8 @@
 }
 
 /* Nombre en color/text/tertiary; lo que coincide, en color/text/primary
-   (role/body-medium viene en la marca). Hover, Focus y Active: todo en primary
-   y en Medium (el peso de role/body-medium; los roles no cambian con el estado) */
+   (role/body-medium viene en la marca). Hover, Focus y Active: todo en primary,
+   sin cambiar el peso (DESIGN.md §6) */
 .name {
   min-width: 0;
   overflow-wrap: break-word;
@@ -52,9 +52,13 @@
   color: var(--arq-color-text-primary);
 }
 
-.card[href]:hover .name,
 .card:focus-visible .name,
 .card.active .name {
   color: var(--arq-color-text-primary);
-  font-weight: var(--arq-font-weight-medium);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card[href]:hover .name {
+    color: var(--arq-color-text-primary);
+  }
 }

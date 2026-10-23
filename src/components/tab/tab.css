@@ -18,8 +18,10 @@
 }
 
 /* State=Hover */
-:host(:not([disabled]):hover) .tab {
-  color: var(--arq-color-text-primary);
+@media (hover: hover) and (pointer: fine) {
+  :host(:not([disabled]):hover) .tab {
+    color: var(--arq-color-text-primary);
+  }
 }
 
 /* State=Selected */

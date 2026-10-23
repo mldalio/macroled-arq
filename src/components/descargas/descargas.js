@@ -44,7 +44,7 @@ class ArqDescargas extends ArqElement {
   static template =
     `<div class="search-section">` +
     `<div class="search-title role-heading-1"><slot name="search-title"></slot></div>` +
-    `<p class="status role-body" role="status" hidden></p>` +
+    `<p class="status role-body" role="status"></p>` +
     `<arq-button class="retry" type="underline" show-underline hidden>${TEXT.retry}</arq-button>` +
     `<arq-variants-table class="table" type="catalog" downloads="downloads-modal"></arq-variants-table>` +
     `</div>` +
@@ -123,7 +123,6 @@ class ArqDescargas extends ArqElement {
   #status(message) {
     const status = this.shadowRoot.querySelector('.status');
     status.textContent = message;
-    status.hidden = !message;
   }
 
   // El modal se abre al hacer clic (variants-table); los archivos llegan

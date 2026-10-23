@@ -115,7 +115,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ collection-index | `<arq-collection-index>` | Lista de colecciones del Home: la foto cambia al pasar el mouse por el nombre ([README](../src/components/collection-index/README.md)) |
 | ✅ tool-card | `<arq-tool-card>` | Recurso de «Herramientas para proyectar» ([README](../src/components/tool-card/README.md)) |
 | ✅ project-slide | `<arq-project-slide>` | Slide del carrusel de proyectos del Home ([README](../src/components/project-slide/README.md)) |
-| ✅ project-slider | `<arq-project-slider>` | Carrusel de proyectos del Home, en bucle. Con `autoplay` avanza solo; se arrastra con el mouse y el clic abre la foto en un lightbox ([README](../src/components/project-slider/README.md)) |
+| ✅ project-slider | `<arq-project-slider>` | Carrusel de proyectos del Home, en bucle. Con `autoplay` avanza solo y se detiene con el mouse encima o el foco adentro (WCAG 2.2.2; falta un botón de pausa en el diseño); se arrastra con el mouse y el clic abre la foto en un lightbox ([README](../src/components/project-slider/README.md)) |
 | ✅ preloader | `<arq-preloader>` | Pantalla de entrada de todas las páginas: blanco, logo y una línea que avanza hasta que cargan imágenes, videos y textos ([README](../src/components/preloader/README.md)) |
 | ✅ catalog-listing | `<arq-catalog-listing>` | Listado de Productos (y Colecciones): nav, toolbar, grilla, filtros y comparar ([README](../src/components/catalog-listing/README.md)) |
 | ✅ catalog-card | `<arq-catalog-card>` | Tapa de la página Catálogos: portada, título, ver y descargar ([README](../src/components/catalog-card/README.md)) |
@@ -123,6 +123,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ form-contacto | `<arq-form-contacto>` | Contacto (v3): información por slot (fija al desplazar en Desktop), formulario con validación, honeypot y envío a n8n, y preguntas frecuentes opcionales por slot ([README](../src/components/form-contacto/README.md)) |
 | ✅ ficha-producto | `<arq-ficha-producto>` | Ficha de producto: hero con galería y configurador, descargas, especificaciones, descripción, glosario, inspiración y colección ([README](../src/components/ficha-producto/README.md)) |
 | ✅ descargas | `<arq-descargas>` | Página Descargas: «Buscar archivos por producto» con variants-table (todos los SKU, buscador) y el modal de descargas de cada fila ([README](../src/components/descargas/README.md)) |
+| ✅ compare-table | `<arq-compare-table>` | Tabla de la Comparativa: hasta 3 productos; arma adentro compare-group, compare-section-group y compare-row. «Solo diferencias» llega desde compare-header ([README](../src/components/compare-table/README.md)) |
 | ✅ comparativa | `<arq-comparativa>` | Página Comparativa: combina compare-header y compare-table con los SKU de `?sku=`, con datos del catálogo ([README](../src/components/comparativa/README.md)) |
 
 ### Páginas
@@ -137,13 +138,14 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ Comparativa | [src/pages/comparativa.html](../src/pages/comparativa.html) | `demo/comparativa.html` (`?sku=`) |
 | ✅ Descargas | [src/pages/descargas.html](../src/pages/descargas.html) | `demo/descargas.html` |
 | ✅ Catálogos | [src/pages/catalogos.html](../src/pages/catalogos.html) | `demo/catalogos.html` |
+| ✅ Nosotros | [src/pages/nosotros.html](../src/pages/nosotros.html) | `demo/nosotros.html` (sin pantalla en Final: bloques de la Home; decisiones.md, 2026-10-20 · Nosotros) |
 
 ## accordion-item
 
 - Figma: [922-2645](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=922-2645)
 - Propiedades: Title; Open: False · True; State: Default · Hover · Focus; Breakpoint: Desktop · Mobile
 
-Uso: bloques de especificaciones de la ficha (características lumínicas, eléctricas, materiales), con spec-list adentro. No confundir con faq-item. Ítem de acordeón de la ficha (botón con aria-expanded). Título role/body-xl. Open=False y Open=True: sin fondo, línea inferior border/default; ícono plus / minus en icon-button Size=Large, Background=Outline con borde border/default (48 × 48, ícono 24). Open=True: contenido libre (en la ficha, dos spec-list en columnas separadas por space/gap/4xl). Padding space/padding/xl-2xl arriba y abajo cerrado, space/padding/lg abierto, space/padding/xl a los lados; gap título–contenido space/gap/xs. State: Default, Hover (solo Open=False: surface/faint), Focus (anillo border/focus).
+Uso: bloques de especificaciones de la ficha (características lumínicas, eléctricas, materiales), con spec-list adentro. No confundir con faq-item. Ítem de acordeón de la ficha (botón con aria-expanded). El título es un encabezado accesible (nivel 3 por defecto; heading-level en código). Título role/body-xl. Open=False y Open=True: sin fondo, línea inferior border/default; ícono plus / minus en icon-button Size=Large, Background=Outline con borde border/default (48 × 48, ícono 24). Open=True: contenido libre (en la ficha, dos spec-list en columnas separadas por space/gap/4xl). Padding space/padding/xl-2xl arriba y abajo cerrado, space/padding/lg abierto, space/padding/xl a los lados; gap título–contenido space/gap/xs. State: Default, Hover (solo Open=False: surface/faint), Focus (anillo border/focus).
 
 ## announcement-bar
 
@@ -196,9 +198,15 @@ Pressed (Filled y Outline): además del fondo, el botón se achica a motion/scal
 
 Botón anterior / siguiente de los carruseles. Direction: Previous o Next. Background: Outline o Frosted. State: Default o Disabled.
 
-Outline (fondos lisos: Destacados y Proyectos de la Home): cuadrado de 44 px (layout/carousel-button), borde color/border/disabled, chevron icon/md. Disabled: sin relleno y chevron color/icon/disabled; se usa en Previous cuando el carrusel está en la primera slide.
+Background=Outline (fondos planos: Destacados y Proyectos de la Home): cuadrado de 44 px (layout/carousel-button), fondo color/surface/default, borde color/border/disabled, chevron icon/md. Disabled: sin relleno (sigue siendo outline), borde color/border/disabled y chevron color/icon/disabled; se usa en Previous cuando el carrusel está en la primera slide.
 
-Frosted (sobre fotos o capas con transparencia): fondo color/overlay/frosted (blanco al 60 %) con blur/backdrop-soft (4), borde color/border/subtle (hover: color/border/default) y chevron icon/xl (24). Se usa en los Recomendados del buscador (solo al pasar el mouse sobre la fila o con foco de teclado) y, más adelante, sobre las fotos del hero y las galerías de la ficha (probablemente con menos opacidad y más minimalista; todavía no está en uso). En código es background="frosted".
+Background=Frosted (sobre fotos o capas con transparencia): mismo cuadrado de 44 px, fondo color/overlay/frosted (blanco al 60 %) con desenfoque de fondo blur/backdrop-soft (4), borde de 1 px en color/border/subtle (en hover, color/border/default) y chevron icon/xl (24) en color/icon/primary. En código es background="frosted".
+
+Cuándo se usa cada uno: Outline en secciones de fondo liso (Home). Frosted en el carrusel de Recomendados del search-sheet y, más adelante, sobre las fotos del hero y de las galerías de la ficha (probablemente con menos opacidad y más minimalista; todavía no está en uso). En Frosted los botones solo aparecen al pasar el mouse sobre la fila de tarjetas o con foco de teclado, y cada dirección solo si queda contenido de ese lado; por eso no se usa Disabled en la práctica. El chevron de Frosted es un trazo de 1 px escalado a 24 (ícono desvinculado de icon/chevron).
+
+El autoplay del carrusel se detiene con el mouse encima o con el foco adentro (TODO: falta un botón de pausa visible).
+
+TODO: dentro de un contenedor Dark color/icon/primary pasa a claro y se pierde sobre el blanco; resolver al usarlo en el hero de la ficha.
 
 ## carousel-controls
 
@@ -207,7 +215,9 @@ Frosted (sobre fotos o capas con transparencia): fondo color/overlay/frosted (bl
 
 Flechas anterior / siguiente para carruseles con scroll horizontal (mosaico de Colección, proyectos de Home). icon-button Size=Large con icon/arrow-left y icon/arrow-right. Position: Start (anterior deshabilitada) · Middle · End (siguiente deshabilitada); deshabilitada = icon-button State=Disabled (atributo disabled). En mobile no se muestran: el carrusel se desliza y la imagen siguiente asoma como indicador. El scroll (snap) se resuelve en código.
 
-Solo de código (sin variante en Figma): buttons=carousel (carousel-button cuadrado, Home), buttons=chevron (icon-button Large con chevrons, sin borde ni fondo) y buttons=none (solo la línea de progreso, a todo el ancho). progress=scroll hace que la línea mida la parte visible del contenido y siga el scroll (trazo de border/strong sobre pista fina): es la barra de columnas de variants-table.
+Solo de código (sin variante en Figma): buttons=carousel (carousel-button cuadrado, Home), buttons=chevron (icon-button Large con chevrons, sin borde ni fondo) y buttons=none (solo la línea de progreso, a todo el ancho). progress=scroll hace que la línea mida la parte visible del contenido y siga el scroll (borde border/strong sobre pista fina): es la barra de columnas de variants-table.
+
+El autoplay se detiene con el mouse encima o con el foco adentro del carrusel (TODO: falta un botón de pausa visible).
 
 ## catalog-nav
 
@@ -264,6 +274,8 @@ Tarjeta de categoría del Home: imagen + nombre + flecha; toda la tarjeta es lin
 
 La imagen tiene la proporción bloqueada: al crecer la columna crece en alto sin deformarse.
 
+En overlay (solo de código), la bajada aparece con el bloque de texto subiendo (transform) y un fundido, en hover y también con el foco de teclado.
+
 ## checkbox
 
 - Figma: [975-2322](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=975-2322)
@@ -312,9 +324,9 @@ Cabecera de la comparativa. Type=Default: columna de controles (toggle "Solo dif
 ## compare-picker
 
 - Figma: [2724-8761](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2724-8761)
-- Propiedades: Breakpoint: Desktop · Mobile; State: Results · No results
+- Propiedades: Breakpoint: Desktop · Mobile; State: Results · No results · Error · Error
 
-Modal «Agregar producto» de la comparativa. Se abre desde el lugar vacío (+) del compare-bar en Productos, Colecciones y la ficha de producto (en Mobile, el lugar vacío debajo de los elegidos) y desde el compare-product vacío / «+ Agregar producto» en Comparativa. Buscador (search-field Type=Line) por nombre, SKU o familia; sin chips de categoría (se sacaron: se busca solo con el buscador). Lista de compare-picker-item (Added si ya está; Disabled con 3 elegidos). Al pie, «Ver todos los productos»: button Underline con subrayado e icon/arrow-right, lleva al listado de Productos. Desktop: modal centrado sobre scrim, ancho layout/filter-panel, la lista mide layout/compare-picker-list (400: 5 filas; las demás se desplazan adentro) y el panel abraza el contenido. Mobile: pantalla completa. Sin resultados: solo mensaje, sin CTA; se sigue buscando en el mismo modal. Siempre en Light. En código: <arq-compare-picker>.
+Modal «Agregar producto» de la comparativa. Se abre desde el lugar vacío (+) del compare-bar en Productos, Colecciones y la ficha de producto (en Mobile, el lugar vacío debajo de los elegidos) y desde el compare-product vacío / «+ Agregar producto» en Comparativa. Buscador (search-field Type=Line) por nombre, SKU o familia; sin chips de categoría (se sacaron: se busca solo con el buscador). Lista de compare-picker-item (Added si ya está; Disabled con 3 elegidos). Al pie, «Ver todos los productos»: button Underline con subrayado e icon/arrow-right, lleva al listado de Productos. Desktop: modal centrado sobre scrim, ancho layout/filter-panel, la lista mide layout/compare-picker-list (400: 5 filas; las demás se desplazan adentro) y el panel abraza el contenido. Mobile: pantalla completa. Sin resultados: solo mensaje, sin CTA; se sigue buscando en el mismo modal. State=Error: no se pudo cargar la lista; «No se pudieron cargar los productos.», «Probá de nuevo en unos minutos.» y «Reintentar» (button Underline), que vuelve a buscar. Siempre en Light. En código: <arq-compare-picker>.
 
 ## compare-picker-item
 
@@ -691,7 +703,7 @@ Fila de especificación de la ficha PDF. Etiqueta role/body (color/text/secondar
 - Figma: [990-2372](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=990-2372)
 - Propiedades: Name; Meta; Show meta; Show finishes; Show compare; Size: Large · Small; State: Default · Hover · Focus
 
-Tarjeta de producto o familia, siempre vertical (imagen 7:10). Size: Large (listados de Productos, Colecciones y página de colección) y Small (ficha → "Otras familias de la colección"). State: Default, Hover y Focus. Hover y Focus cambian la imagen (no hay borde): Light muestra estudio con luz apagada y en hover contexto con luz apagada; con Iluminar (Dark) muestra estudio con luz encendida y en hover contexto con luz encendida. La variante Hover de Figma es una referencia estática; las reglas completas están en DESIGN.md §8 · Imágenes de product-card. Props: Name, Meta (tipo de producto o datos técnicos, admite dos líneas), Show meta, Show finishes (acabados con swatch Size=Small, 16 × 16, en Large y en Small; se reemplaza el color de cada uno; con más de un acabado se eligen: el elegido, por defecto el negro, lleva State=Selected y todos el Hover del swatch, sin crecer, y al elegir otro la imagen de la card pasa a la de ese acabado; con uno solo no se ve elegido). Size=Small (y Large hasta 767 px) apila el nombre y los acabados en columna (gap space/gap/sm), con el nombre a 20/28 (role/body-xl; en Mobile role/heading-3), la info a space/gap/md y los acabados a space/gap/sm y Show compare (checkbox "Comparar"). En código la tarjeta es un link al producto y el checkbox va fuera de ese link. En código, además, `loading`: card de carga con la misma geometría en `color/surface/subtle`, con shimmer (State=Loading en Figma; decisiones.md 2026-10-20 · Cards de carga). El ancho lo define la grilla; la imagen mantiene la proporción.
+Tarjeta de producto o familia, siempre vertical (imagen 7:10). Size: Large (listados de Productos, Colecciones y página de colección) y Small (ficha → "Otras familias de la colección"; en código, Large pasa sola a Small hasta 767 px). State: Default, Hover y Focus. Hover y Focus cambian la imagen (no hay borde): Light muestra estudio con luz apagada y en hover contexto con luz apagada; con Iluminar (Dark) muestra estudio con luz encendida y en hover contexto con luz encendida. La variante Hover de Figma es una referencia estática; las reglas completas están en DESIGN.md §8 · Imágenes de product-card. Props: Name, Meta (tipo de producto o datos técnicos, admite dos líneas), Show meta, Show finishes y Show compare (checkbox "Comparar"). Acabados: swatch Size=Small (16 × 16) en Large y en Small, gap space/gap/xs (Small space/gap/sm); se reemplaza el relleno de cada uno por la imagen del acabado. Con más de un acabado se eligen: el primero (por defecto el negro) va en State=Selected, sin crecer, y todos tienen el State=Hover del swatch; al elegir otro, las imágenes de la card pasan a las de ese acabado (SKU). Con un solo acabado no se ve Selected, porque es el único. Size=Small apila el nombre y los acabados en columna (gap space/gap/sm), con el nombre a 20/28 (role/body-xl; en Mobile role/heading-3, que también vale 20/28) y la info a space/gap/md. En código la tarjeta es un link al producto; «Comparar» se anuncia con el nombre del producto (texto oculto); los acabados y el checkbox van fuera de ese link. El ancho lo define la grilla; la imagen mantiene la proporción. State=Loading: card de carga mientras llegan los datos (primera carga de Productos y Colecciones), con la misma geometría que Default: imagen 7:10, una barra en la línea del nombre (space/gap/md de alto), tres muestras de swatch/sm y una barra corta (space/gap/sm-md) en la línea de la meta o de «Comparar», todo en color/surface/subtle. En código se anima con un shimmer: una franja de brillo (color/surface/default; en Dark color/surface/strong) cruza los bloques en diagonal cada motion/duration/shimmer, lineal, una sola para toda la pantalla; con prefers-reduced-motion, fija. La variante es estática: el movimiento lo describe este texto. Va fuera del árbol de accesibilidad (el aviso «Cargando…» lo da el listado).
 
 En grillas de listado: ancho mínimo layout/card-min (280); la grilla suma columnas sola (auto-fill), así la imagen 7:10 no crece de más en pantallas grandes.
 
@@ -705,9 +717,9 @@ Galería de la ficha: imagen principal + fila de gallery-thumb (la primera en Se
 ## search-dropdown
 
 - Figma: [796-2271](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=796-2271)
-- Propiedades: State: Results · No results
+- Propiedades: State: Results · No results · Error · Error
 
-Desplegable de resultados en desktop. State: Results · No results. Aparece debajo del campo cuando hay texto escrito, con el mismo ancho que el campo. Muestra hasta 4-5 productos y "Ver todos los resultados". Con el campo vacío no se muestra.
+Desplegable de resultados en desktop. State: Results · No results · Error. Aparece debajo del campo cuando hay texto escrito, con el mismo ancho que el campo. Muestra hasta 4-5 productos y "Ver todos los resultados". Con el campo vacío no se muestra. State=Error: la búsqueda falló; mismo dibujo que No results con «No se pudo completar la búsqueda.» y «Probá de nuevo en unos minutos.».
 
 ## search-card
 
@@ -719,7 +731,7 @@ Tarjeta de producto recomendado del search-sheet: la imagen en `ratio/square` (1
 
 - Figma: set `2547:8168` (documentado desde el código, sin revisión de diseño)
 
-Resultado de búsqueda de una colección, discreto: miniatura chica (layout/search-thumb) y nombre, con lo que coincide con la búsqueda en color/text/primary y el resto en tertiary. Va a la derecha del search-sheet en Desktop.
+Resultado de colección del search-sheet, discreto: miniatura de layout/search-thumb (48) y nombre en role/body-regular. Color y énfasis como search-result-simple: color/text/tertiary con la coincidencia en color/text/primary y role/body-medium; Hover, Active y Focus: todo el nombre en color/text/primary, sin cambiar el peso. Va a la derecha del search-sheet en Desktop. En código: arq-search-collection.
 
 ## search-sheet
 
@@ -734,7 +746,9 @@ Búsqueda del sitio como top sheet: un panel que baja desde arriba, a todo el an
 - Propiedades: Show close; Show icon; Show clear; Size: Default · Medium; State: Empty · Focus · Filled. search-field-line (`2547:8166`, = `type="line"`): Show clear; Size: Default · Large; State
 - Estilo nuevo: `role/body-xl-light` (placeholder de Size=Medium)
 
-Campo de búsqueda. En desktop reemplaza a la lupa dentro del navbar y la cruz cierra la búsqueda. En mobile va sin cruz (Show close = false), junto a la flecha de volver. Estados: Empty, Focus (borde color/border/focus de border/focus) y Filled. Size: Default (role/body) · Medium (Descargas: placeholder role/body-xl-light, lo escrito role/body-xl) · Large (solo en search-field-line, la búsqueda del navbar: placeholder role/heading-3-light, lo escrito role/heading-3). Show icon: la lupa a la izquierda (Descargas). Show clear: con texto, una cruz chica que borra lo escrito (no cierra la búsqueda, eso es Show close). En código: `size`, `show-icon`, `show-clear` y `type="line"` (solo línea inferior y lupa a la izquierda, para el search-sheet).
+Campo de búsqueda. En desktop reemplaza a la lupa dentro del navbar y la cruz cierra la búsqueda. En mobile va sin cruz (Show close = false), junto a la flecha de volver. Estados: Empty, Focus (borde color/border/focus de border/focus) y Filled. Size: Default (role/body) · Medium (Descargas: placeholder role/body-xl-light, lo escrito role/body-xl) (Large, la búsqueda del navbar: placeholder role/heading-3-light, lo escrito role/heading-3; está en el set search-field-line). Show icon: la lupa a la izquierda (Descargas). Show clear: con texto, una cruz que borra lo escrito (no cierra la búsqueda, eso es Show close). En código: size, show-icon, show-clear. El foco se marca solo con el borde (color/border/focus), sin anillo separado. En código es un combobox que anuncia la cantidad de resultados.
+
+Descargas (variants-table Type=Catalog) usa search-field-line en lugar de este set (aprobado 2026-10-22).
 
 ## search-result
 
@@ -746,9 +760,9 @@ Resultado de búsqueda: miniatura, nombre, SKU y flecha. Default, Hover, Active 
 ## search-screen
 
 - Figma: [796-2351](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=796-2351)
-- Propiedades: State: Empty · Results · No results
+- Propiedades: State: Empty · Results · No results · Error · Error
 
-Búsqueda en mobile, a pantalla completa. La flecha vuelve a la página (cierra la búsqueda). State: Empty (campo en foco, sin contenido), Results y No results.
+Búsqueda en mobile, a pantalla completa. La flecha vuelve a la página (cierra la búsqueda). State: Empty (campo en foco, sin contenido), Results, No results y Error (la búsqueda falló: search-dropdown State=Error).
 
 ## search-see-all
 
@@ -778,7 +792,7 @@ Selector con menú desplegable (arq-select). Dos tipos: etiqueta arriba (Type=Fi
 - Figma: [1061-4867](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1061-4867)
 - Propiedades: Type: Finishes · Filter · Text
 
-Lista desplegable de select (hasta 7 opciones). Fondo surface/default, borde border/default, sin sombra. Type: Finishes (ancho del campo, todas con muestra) y Filter (ancho propio; primera opción "Todos" sin muestra). Hereda el modo Dark.
+Lista desplegable de select (hasta 7 opciones). Fondo surface/default, borde border/default, sin sombra. Type: Finishes (ancho del campo, todas con muestra) y Filter (ancho propio; primera opción "Todos" sin muestra). Hereda el modo Dark. La lista toma el nombre de la etiqueta del select.
 
 ## select-option
 
@@ -906,7 +920,7 @@ Columnas en este orden: Acabado, Tamaño, Potencia, Temp., CRI, Flujo lum., Áng
 
 Chevrons de Recomendados (2026-10-22): fundido de entrada y salida con motion/duration/fade y motion/easing/standard, también al llegar a un extremo; sin escala ni desplazamiento.
 
-Galerías (2026-10-22): ambiente de la ficha con autoplay cada 3 s como Destacados, cursor grab/grabbing, arrastre y ampliación con el visor compartido de FOA. Los controles táctiles de ambiente usan chevrons. Recomendados del buscador usa arq-carousel-button con chevrons y estilo original, superpuesto a ambos lados y centrado en las imágenes. Aparecen con hover de la sección o foco de teclado; cada dirección solo si queda contenido por recorrer de ese lado. Sin arrastre con mouse. Overlays actualizados en Figma: color/overlay/scrim al 70 % para menú, filtros, descargas, buscador y comparación; color/overlay/scrim-gallery al 90 % para fotos ampliadas.
+Galerías (2026-10-22): ambiente de la ficha con autoplay cada 3 s como Destacados (se detiene con el mouse encima o el foco adentro, WCAG 2.2.2), cursor grab/grabbing, arrastre y ampliación con el visor compartido de FOA. Los controles táctiles de ambiente usan chevrons. Recomendados del buscador usa arq-carousel-button con chevrons y estilo original, superpuesto a ambos lados y centrado en las imágenes. Aparecen con hover de la sección o foco de teclado; cada dirección solo si queda contenido por recorrer de ese lado. Sin arrastre con mouse. Overlays actualizados en Figma: color/overlay/scrim al 70 % para menú, filtros, descargas, buscador y comparación; color/overlay/scrim-gallery al 90 % para fotos ampliadas.
 
 Agregado en código (2026-10-22): icon/check (Figma 2891:13154), asset original de 16 × 16 en src/base/assets/check.svg. Se expone como icon('check') y acompaña «Copiado» en el hero y variants-table, con color semántico heredado.
 

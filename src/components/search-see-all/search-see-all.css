@@ -16,8 +16,10 @@
   text-decoration: none;
 }
 
-.row[href]:hover {
-  background: var(--arq-color-surface-hover);
+@media (hover: hover) and (pointer: fine) {
+  .row[href]:hover {
+    background: var(--arq-color-surface-hover);
+  }
 }
 
 .row:focus-visible {
@@ -53,15 +55,20 @@
   flex: none;
 }
 
-:host([type='simple']) .row[href]:hover {
-  background: none;
+@media (hover: hover) and (pointer: fine) {
+  :host([type='simple']) .row[href]:hover {
+    background: none;
+  }
+
+  :host([type='simple']) .row[href]:hover .text {
+    color: var(--arq-color-text-primary);
+  }
 }
 
 :host([type='simple']) .row:focus-visible {
   outline-offset: 2px;
 }
 
-:host([type='simple']) .row[href]:hover .text,
 :host([type='simple']) .row:focus-visible .text {
   color: var(--arq-color-text-primary);
 }

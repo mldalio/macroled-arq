@@ -118,7 +118,8 @@
 
 /* State=No results: mensaje centrado, role/body-regular en
    color/text/primary + ayuda role/body-compact en color/text/tertiary,
-   a space/gap/md. Sin CTA. */
+   a space/gap/md. Sin CTA. Error (sin set): el mismo bloque con
+   «Reintentar» (button Underline) debajo. */
 .empty {
   display: flex;
   flex-direction: column;

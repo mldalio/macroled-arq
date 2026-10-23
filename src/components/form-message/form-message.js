@@ -7,8 +7,11 @@
 //   <arq-form-message tone="error">No pudimos enviar. Probá de nuevo.</arq-form-message>
 //
 // Success lleva role="status" y Error role="alert": el lector de pantalla lo
-// anuncia cuando aparece o cambia el texto. Mover el foco después de enviar lo
-// decide el formulario (form-contacto).
+// anuncia cuando cambia el texto. Como toda región viva (DESIGN.md §9), está
+// siempre en la página y vacío hasta que hay un resultado: quien lo usa no lo
+// oculta con hidden, cambia solo su texto. Sin texto, el párrafo interno no se
+// dibuja (y al aparecer funde). Mover el foco después de enviar lo decide el
+// formulario (form-contacto).
 
 import { ArqElement } from '../../base/arq-element.js';
 import css from './form-message.css?inline';
@@ -20,6 +23,16 @@ class ArqFormMessage extends ArqElement {
     tone: { type: String, values: ['success', 'error'], default: 'success' }, // Tone
   };
   static template = `<p class="message role-body"><slot></slot></p>`;
+
+  setup() {
+    const slot = this.shadowRoot.querySelector('slot');
+    const message = this.shadowRoot.querySelector('.message');
+    const sync = () => {
+      message.hidden = !slot.assignedNodes().some((node) => node.textContent.trim());
+    };
+    slot.addEventListener('slotchange', sync);
+    sync();
+  }
 
   update() {
     this.setAttribute('role', this.tone === 'error' ? 'alert' : 'status');

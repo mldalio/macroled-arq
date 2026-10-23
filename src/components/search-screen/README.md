@@ -23,7 +23,7 @@ screen.show(botonLupa); // el foco vuelve a botonLupa al cerrar
 | — | `open` | `open` | booleano. Mejor `show(opener)` y `close()` |
 | — | `label` | `label` | Nombre del diálogo. Por defecto "Buscar" |
 
-- **Diálogo modal nativo** (`<dialog>` + `showModal()`): el foco arranca en el campo y queda adentro. Volver o Esc cierran y emiten `arq:close`.
+- **Diálogo modal nativo** (`<dialog>` + `showModal()`): el foco arranca en el campo y queda adentro. Volver o Esc cierran y emiten `arq:close`. El campo es un combobox (`search-field combobox`) y anuncia la cantidad de resultados (prop `status`, la pone el navbar).
 - Los eventos del campo (`arq:input`, `arq:submit`, `arq:navigate`) salen del componente; `field` devuelve el search-field.
 - Los resultados llevan `layout/gutter` a los lados (variable local `--search-inline`).
 

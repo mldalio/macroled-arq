@@ -72,6 +72,21 @@ class ArqInput extends ArqElement {
   #options = [];
   #selectValue = '';
   #combobox = null;
+  #quiet = false;
+
+  /**
+   * Pone o quita el error (como la prop error). Con announce: false, el mensaje
+   * se ve y queda en aria-describedby, pero no se anuncia por la región viva.
+   */
+  setError(message, { announce = true } = {}) {
+    if (message) {
+      if (message === this.error) return;
+      this.#quiet = !announce;
+      this.error = message;
+    } else {
+      this.removeAttribute('error');
+    }
+  }
 
   /** Opciones de Type=Select: [{ value, label?, disabled? }] (solo JS). */
   get options() {
@@ -157,8 +172,13 @@ class ArqInput extends ArqElement {
     const error = root.querySelector('.error');
     error.textContent = this.error ?? '';
     root.querySelector('.error-wrap').hidden = !hasError;
+    // setError(…, { announce: false }): el error se ve pero no pasa por la
+    // región viva (al enviar, el formulario lleva el foco al primer campo
+    // inválido, que ya lee su aria-describedby; los demás no se encadenan).
     const live = root.querySelector('.live');
-    if (live.textContent !== (this.error ?? '')) live.textContent = this.error ?? '';
+    const spoken = this.#quiet && hasError ? '' : (this.error ?? '');
+    this.#quiet = false;
+    if (live.textContent !== spoken) live.textContent = spoken;
     helper.hidden = hasError || !this.showHelper;
     control.setAttribute('aria-invalid', String(hasError));
     const describedBy = [hasError ? this.#ids.error : null, !helper.hidden ? this.#ids.helper : null].filter(Boolean);

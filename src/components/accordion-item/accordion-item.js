@@ -11,7 +11,10 @@
 //
 // - El título (slot title) va dentro del <button> con aria-expanded
 //   (Disclosure). No es un h2/h3: un encabezado dentro de un botón pierde su
-//   rol para los lectores de pantalla (mismo criterio que faq-item).
+//   rol para los lectores de pantalla (mismo criterio que faq-item). El botón
+//   va dentro de un role="heading" (patrón accordion de ARIA), así se puede
+//   recorrer las especificaciones por encabezados. Nivel: heading-level
+//   (por defecto 3).
 // - El contenido (slot por defecto) queda en el HTML aunque esté cerrado.
 //   Pueden quedar varios abiertos a la vez.
 // - Título en role/heading-3 (Ficha v2). El ícono +/– tiene las medidas de
@@ -32,13 +35,16 @@ class ArqAccordionItem extends ArqElement {
   static styles = css;
   static properties = {
     open: { type: Boolean }, // Open
+    headingLevel: { type: Number, default: 3 }, // solo de código: aria-level del encabezado
   };
   static template =
     `<div class="item">` +
+    `<div class="heading" role="heading" aria-level="3">` +
     `<button type="button" class="trigger">` +
     `<span class="title role-heading-3"><slot name="title"></slot></span>` +
     `<span class="icon-box">${icon('plus')}${icon('minus')}</span>` +
     `</button>` +
+    `</div>` +
     `<div class="content" part="panel"><slot></slot></div>` +
     `</div>`;
 
@@ -47,6 +53,11 @@ class ArqAccordionItem extends ArqElement {
       trigger: this.shadowRoot.querySelector('.trigger'),
       panel: this.shadowRoot.querySelector('.content'),
     });
+  }
+
+  update() {
+    const level = Math.min(6, Math.max(1, Math.round(this.headingLevel) || 3));
+    this.shadowRoot.querySelector('.heading').setAttribute('aria-level', String(level));
   }
 }
 

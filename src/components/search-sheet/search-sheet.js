@@ -19,13 +19,18 @@
 //     (search-result Type=Simple: miniatura y nombre) y Colecciones
 //     (search-collection), más search-see-all (results.href).
 //   · no-results: results.items vacío (search-dropdown No results).
+//   · error: results.error en true, la búsqueda falló (search-dropdown
+//     State=Error).
+// - Los títulos de grupo (Productos, Colecciones) no son encabezados: el
+//   componente no crea h1–h6 (AGENTS.md). Cada grupo es role="group" con el
+//   título como nombre (aria-labelledby).
 // - Diálogo modal nativo (<dialog> + showModal): el foco arranca en el campo y
 //   queda adentro; Esc, la cruz o un clic en el scrim cierran (arq:close) y el
 //   foco vuelve a opener. La página de atrás no se desplaza (scroll-lock).
 // - Transición en capas, de menos de medio segundo (tokens de movimiento, que
 //   con prefers-reduced-motion valen 0). Al abrir: la barra pasa de transparente
-//   a sólida; el panel se despliega como una persiana (grid-template-rows 0fr →
-//   1fr); el campo y el contenido bajan un poco mientras se hacen visibles; los
+//   a sólida; el panel se descubre como una persiana (un recorte, clip-path,
+//   sin animar el alto); el campo y el contenido bajan un poco mientras se hacen visibles; los
 //   productos llegan un instante después, con un fundido y un movimiento corto
 //   hacia abajo; y la página de atrás se aclara a medias con un velo claro. Al
 //   cerrar pasa lo mismo al revés (close() espera a que termine y recién ahí
@@ -79,7 +84,7 @@ class ArqSearchSheet extends ArqElement {
     `<arq-icon-button class="close" icon="close" size="large" background="none">Cerrar búsqueda</arq-icon-button>` +
     `</div>` +
     `<div class="drawer"><div class="drawer-inner">` +
-    `<div class="field-row"><arq-search-field class="field" type="line" size="large" show-clear></arq-search-field></div>` +
+    `<div class="field-row"><arq-search-field class="field" type="line" size="large" show-clear combobox></arq-search-field></div>` +
     `<div class="content">` +
     `<div class="recommended">` +
     `<p class="title role-label"></p>` +
@@ -114,7 +119,7 @@ class ArqSearchSheet extends ArqElement {
     if (this.shadowRoot) this.#renderRecommended();
   }
 
-  /** Resultados de la búsqueda: { query, items: [{ kind: 'product' | 'collection', name, href, image }], total, href }. null con el campo vacío. */
+  /** Resultados de la búsqueda: { query, items: [{ kind: 'product' | 'collection', name, href, image }], total, href, error? }. null con el campo vacío. */
   get results() {
     return this.#results;
   }
@@ -258,9 +263,9 @@ class ArqSearchSheet extends ArqElement {
     }, this.#duration());
   }
 
-  // Lo que dura la transición más larga (la de la persiana; 0 con reduced motion), en ms
+  // Lo que dura la transición más larga (la de la persiana, en .drawer; 0 con reduced motion), en ms
   #duration() {
-    const { transitionDuration } = getComputedStyle(this.shadowRoot.querySelector('.sheet'));
+    const { transitionDuration } = getComputedStyle(this.shadowRoot.querySelector('.drawer'));
     return Math.max(0, ...transitionDuration.split(',').map((value) => (parseFloat(value) || 0) * (/mss*$/.test(value) ? 1 : 1000)));
   }
 
@@ -339,10 +344,10 @@ class ArqSearchSheet extends ArqElement {
     const collection = (r) => `<arq-search-collection term="${term}" href="${esc(r.href)}"${imageAttr(r)}>${esc(r.name)}</arq-search-collection>`;
     container.classList.toggle('has-both', products.length > 0 && collections.length > 0);
     container.innerHTML = !items.length
-      ? `<arq-search-dropdown state="no-results" term="${esc(results.query)}"></arq-search-dropdown>`
-      : (products.length ? `<section class="group"><h3 class="group-title role-label">Productos</h3><div class="list">${products.map(product).join('')}</div></section>` : '') +
+      ? `<arq-search-dropdown state="${results.error ? 'error' : 'no-results'}" term="${esc(results.query)}"></arq-search-dropdown>`
+      : (products.length ? `<div class="group" role="group" aria-labelledby="group-products"><p class="group-title role-label" id="group-products">Productos</p><div class="list">${products.map(product).join('')}</div></div>` : '') +
         (collections.length
-          ? `<section class="group group-collections"><h3 class="group-title role-label">Colecciones</h3><div class="collections">${collections.map(collection).join('')}</div></section>`
+          ? `<div class="group group-collections" role="group" aria-labelledby="group-collections"><p class="group-title role-label" id="group-collections">Colecciones</p><div class="collections">${collections.map(collection).join('')}</div></div>`
           : '') +
         // «Ver todos»: al final de los resultados (en Desktop, debajo de Productos)
         `<div class="see-all">${seeAll}</div>`;

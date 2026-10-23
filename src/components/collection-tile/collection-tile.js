@@ -42,6 +42,14 @@ class ArqCollectionTile extends ArqElement {
   setup() {
     this.shadowRoot.querySelector('slot[name="label"]').addEventListener('slotchange', () => this.update(new Set()));
     this.shadowRoot.querySelector('slot[name="description"]').addEventListener('slotchange', () => this.update(new Set()));
+    // Cuánto baja el bloque en reposo para que la bajada quede fuera de la
+    // tarjeta (la bajada, más el gap). La subida en hover es un transform (CSS).
+    const info = this.shadowRoot.querySelector('.info');
+    const titleRow = this.shadowRoot.querySelector('.title-row');
+    new ResizeObserver(() => {
+      const shift = info.offsetHeight - (titleRow.offsetTop + titleRow.offsetHeight);
+      info.style.setProperty('--description-shift', `${Math.max(shift, 0)}px`);
+    }).observe(info);
   }
 
   update() {

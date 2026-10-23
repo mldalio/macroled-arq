@@ -14,6 +14,7 @@
 //   picker.addEventListener('arq:search', (e) => buscar(e.detail.query));
 //   picker.addEventListener('arq:add', (e) => agregar(e.detail.item));
 //   picker.items = [{ id, sku, name, meta, image, added }];
+//   picker.showError();         // no se pudo cargar: error + «Reintentar» (emite arq:search)
 //   picker.count = 2;           // productos ya elegidos (con 3, el resto queda Disabled)
 //   boton.addEventListener('click', () => picker.show(boton));  // emite arq:search
 //
@@ -53,6 +54,11 @@ const TEXT = {
   hint: 'Probá con otro nombre, SKU o familia.',
   count: (n) => (n === 1 ? '1 producto' : `${n} productos`),
   added: (name) => `${name} agregado a la comparación.`,
+  // Mismo texto que el error de los listados (catalog-listing) y «Reintentar»
+  // como en Descargas (State=Error del set 2724:8761).
+  error: 'No se pudieron cargar los productos.',
+  errorHint: 'Probá de nuevo en unos minutos.',
+  retry: 'Reintentar',
 };
 
 class ArqComparePicker extends ArqElement {
@@ -75,6 +81,7 @@ class ArqComparePicker extends ArqElement {
     `<div class="empty" hidden>` +
     `<p class="empty-title role-body-regular"></p>` +
     `<p class="empty-hint role-body-compact">${TEXT.hint}</p>` +
+    `<arq-button class="retry" type="underline" show-underline hidden>${TEXT.retry}</arq-button>` +
     `</div>` +
     `<div class="footer"><arq-button class="go" type="underline" show-underline show-icon icon="arrow-right">Ver todos los productos</arq-button></div>` +
     `<span class="visually-hidden" aria-live="polite"></span>` +
@@ -87,6 +94,7 @@ class ArqComparePicker extends ArqElement {
   #items = [];
   #query = '';
   #searched = false;
+  #failed = false;
 
   /** Productos de la lista: [{ id, sku, name, meta, image, added }]. */
   get items() {
@@ -95,6 +103,14 @@ class ArqComparePicker extends ArqElement {
 
   set items(list) {
     this.#items = Array.isArray(list) ? list.filter((item) => item && item.sku) : [];
+    this.#failed = false;
+    this.#render();
+  }
+
+  /** La lista no se pudo cargar: muestra el error y «Reintentar» (vuelve a emitir arq:search). */
+  showError() {
+    this.#items = [];
+    this.#failed = true;
     this.#render();
   }
 
@@ -138,6 +154,10 @@ class ArqComparePicker extends ArqElement {
       if (!item || item.added || this.count >= MAX) return;
       this.emit('add', { item: { ...item } });
       this.#announce(TEXT.added(item.name));
+    });
+    root.querySelector('.retry').addEventListener('click', () => {
+      root.querySelector('.search').focus();
+      this.#emitSearch();
     });
     root.querySelector('slot[name="title"]').addEventListener('slotchange', () => this.#name());
     this.#name();
@@ -217,11 +237,17 @@ class ArqComparePicker extends ArqElement {
     const empty = !nodes.length;
     list.hidden = empty;
     root.querySelector('.empty').hidden = !empty;
-    root.querySelector('.empty-title').textContent = empty ? TEXT.noResults(this.#query) : '';
-    // Resultado de una búsqueda: se anuncia la cantidad (o que no hay)
-    if (this.#searched) {
+    const failed = this.#failed;
+    const title = failed ? TEXT.error : TEXT.noResults(this.#query);
+    const hint = failed ? TEXT.errorHint : TEXT.hint;
+    root.querySelector('.empty-title').textContent = empty ? title : '';
+    root.querySelector('.empty-hint').textContent = hint;
+    root.querySelector('.retry').hidden = !failed;
+    // Resultado de una búsqueda: se anuncia la cantidad (o que no hay). El
+    // error se anuncia siempre (también al abrir).
+    if (this.#searched || failed) {
       this.#searched = false;
-      this.#announce(empty ? `${TEXT.noResults(this.#query)} ${TEXT.hint}` : TEXT.count(nodes.length));
+      this.#announce(empty ? `${title} ${hint}` : TEXT.count(nodes.length));
     }
   }
 
