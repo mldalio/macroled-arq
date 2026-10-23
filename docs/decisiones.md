@@ -1537,7 +1537,7 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - **Card:** al elegir otro acabado se mantiene lo demás de la variante (Doble negro → Doble blanco, no Simple).
 - **Buscador:** un resultado por grupo; si lo escrito coincide con el nombre de una variante («dao doble») o con un SKU, el resultado lleva a esa variante (`?sku=`) y muestra su nombre. Comparativa, ficha técnica y Descargas muestran el nombre de la variante («Daö Doble») cuando el grupo reúne varios.
 - **Ficha:** el título (h1 del CMS) y la última migaja del breadcrumb pasan al nombre de la variante elegida cuando el grupo reúne varios product_name («Daö Doble»); el detalle se pide por lista de SKU (antes por `product_name`), porque un grupo reúne varios nombres.
-- Skyline sigue la misma regla cuando vuelva a la hoja (v2); necesita `variant_attributes` y un campo de largo para los rieles. `TODO` (docs): AGENTS.md y DESIGN.md dicen «grupo = filas con el mismo `product_name`»; se actualizan en una rama `docs/` y después su copia en Figma.
+- Skyline sigue la misma regla cuando vuelva a la hoja (v2); necesita `variant_attributes` y un campo de largo para los rieles. Docs de gobierno (AGENTS.md, DESIGN.md y `docs/urls.md`) actualizados el 2026-10-23; queda la copia en Figma.
 
 ## 2026-10-23 · Modelos de un producto (Daö y Mini Daö)
 
@@ -1567,7 +1567,7 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - **Breadcrumb y título:** el nivel con el nombre de la colección en el breadcrumb de la ficha lleva a `/arq/productos?collection=<id>` (antes, a su página). En el listado de una colección (`?collection=<id>`) el `<h1>` es el nombre de la colección («Daö») y el breadcrumb queda «Inicio / Colecciones / Daö», con «Colecciones» abriendo el mega-menu en su pestaña. Arreglo: al sacar «Todas las colecciones», el primer ítem del grupo Colecciones (Daö) se tomaba como la vista completa del grupo y el título quedaba «Colecciones»; ese grupo ya no tiene vista completa.
 - Se quitan `listCollections` y lo que solo usaba esa vista, la prop `unit="colecciones"` de catalog-listing, catalog-toolbar y filter-panel, y el ítem «Todas las colecciones» del catalog-nav. Una URL vieja con `?view=colecciones` muestra el listado de Productos.
 - **Cómo retomarla:** `docs/archivo/todas-las-colecciones.md` (qué era, qué se quitó, la última versión con la vista: commit `da4962f`, y cómo recuperarla con git). Sin código comentado en el proyecto.
-- `TODO` (docs de gobierno y Figma): DESIGN.md (§2 Iluminar, mega-menu, catalog-toolbar y compare-bar), `docs/components.md` (compare-bar) y la ficha de Figma todavía mencionan «Todas las colecciones».
+- Docs de gobierno: AGENTS.md y DESIGN.md al día (2026-10-23). `TODO` (Figma): la copia de AGENTS.md y DESIGN.md en Plan del proyecto y las menciones de «Todas las colecciones» en la ficha de Figma y en `docs/components.md` (compare-bar).
 
 ## 2026-10-23 · compare-bar sticky
 

@@ -85,7 +85,7 @@ dist/arq.js · dist/arq.css    ← única salida que carga Webflow
 - Los encabezados (h1–h6) se escriben en el HTML de la página con slot; el componente los estiliza con `::slotted()` y nunca crea su propia etiqueta de encabezado.
 - **Foco:** siempre `:focus-visible` con un anillo separado: `outline` de `--arq-border-strong` en `--arq-color-border-focus` y `outline-offset: 2px`. El foco nunca cambia el tamaño del componente.
 - Las props booleanas de Figma que vienen activadas por defecto (Show icon, Show underline…) en código van desactivadas por defecto, porque son atributos de presencia. Se aclara en el README del componente.
-- **Responsive:** Desktop es la base; Mobile con `@media (max-width: 767px)`. Hasta 1023 px, los listados (Productos y Colecciones) llevan las categorías en la pestaña Categorías de filter-panel.
+- **Responsive:** Desktop es la base; Mobile con `@media (max-width: 767px)`. Hasta 1023 px, el listado de Productos lleva las categorías en la pestaña Categorías de filter-panel.
 - **Dark:** solo con `data-arq-theme="dark"`, en dos usos: Iluminar (switch del usuario) y Dark local (fijo por diseño, sobre fotos o fondos oscuros). Dónde va el atributo en cada caso: DESIGN.md §2 · Modo Dark. Nunca `prefers-color-scheme`.
 - Los desplegables (accordion-item, faq-item, filter-row, catalog-nav-group, catalog-nav-trigger) comparten un disclosure base.
 - Cantidades variables (filas, opciones, acabados) son libres en código aunque en Figma haya un número fijo.
@@ -116,10 +116,12 @@ dist/arq.js · dist/arq.css    ← única salida que carga Webflow
 </arq-ficha-producto>
 ```
 
-- **Grupo:** las filas con el mismo `product_name`. Su id es el nombre en minúsculas con guiones (`kanu-jardin`): es el vínculo entre Webflow CMS y Typesense, y el slug de la ficha. Colección: lo mismo con el nombre de su fila «Colección» (`kanu`). La variante elegida va en `?sku=`; sin parámetro, el SKU predeterminado del grupo.
+Si el grupo reúne varios `product_name` («Daö Simple», «Daö Doble»), el componente cambia el texto de ese `<h1>` al de la variante elegida; el HTML del CMS imprime el nombre del grupo.
+
+- **Grupo:** las filas con el mismo `grupo_variantes` (el SKU cortado que comparten las variantes de un producto); sin él, las filas con el mismo `product_name`. Su nombre son las palabras que comparten los `product_name` de sus filas, y su id es ese nombre en minúsculas con guiones (`kanu-jardin`, `dao`): es el vínculo entre Webflow CMS y Typesense, y el slug de la ficha. Un producto con modelos (Daö y Mini Daö) es un solo grupo con el selector Modelo (`src/data/models.js`; más adelante, las columnas `grupo_producto` y `modelo` de la hoja). Colección: lo mismo con el nombre de su fila «Colección» (`kanu`). La variante elegida va en `?sku=`; sin parámetro, el SKU predeterminado del grupo. Detalle: `docs/decisiones.md`, 2026-10-23 · Productos agrupados por grupo_variantes y Modelos de un producto.
 - **SKU:** el criterio de formato está pendiente: tratarlo como identificador opaco, tal como viene de Sheets (puede tener espacios o paréntesis). No usarlo directo como `id` HTML ni como slug.
 - **Textos:** solo de los datos. Si falta un dato, esa parte no se muestra (sin texto de respaldo en el HTML), para ver qué falta en la base.
-- **Listados:** salen de Typesense con una sola consulta; `src/data/` agrupa, filtra y cuenta (una card por grupo, o por colección en Colecciones). No se usa Collection List de Webflow.
+- **Listados:** salen de Typesense con una sola consulta; `src/data/` agrupa, filtra y cuenta (una card por grupo). Se lista un grupo con SKU predeterminado marcado (`is_group_default`); `product_type` vacío es Luminaria y solo se completa en lo que no lo es (Lámpara, Artefacto, Accesorio), que se ven en su categoría. No hay vista «Todas las colecciones» (`docs/archivo/todas-las-colecciones.md`): los links de «Colecciones» abren el mega-menu del navbar (`data-arq-menu="colecciones"`) y cada colección lleva a `/arq/productos?collection=<id>`. No se usa Collection List de Webflow.
 - **product-card:** cada producto trae cuatro imágenes (estudio y contexto, con la luz apagada y encendida). Reglas de uso en DESIGN.md §8 · Imágenes de product-card.
 - Acabados: Sheets trae el nombre como texto; se normaliza a slug en inglés con un único archivo de mapeo. Si falta la imagen, mostrar un neutro con el nombre.
 
