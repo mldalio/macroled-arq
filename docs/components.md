@@ -13,7 +13,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [announcement-bar](#announcement-bar) | `<arq-announcement-bar>` | En código ([README](../src/components/announcement-bar/README.md)). En la Home, Nosotros y Catálogos, antes del navbar |
 | ✅ [breadcrumb](#breadcrumb) | `<arq-breadcrumb>` | En código ([README](../src/components/breadcrumb/README.md)) |
 | ✅ [breadcrumb-item](#breadcrumb-item) | `<arq-breadcrumb-item>` | En código ([README](../src/components/breadcrumb-item/README.md)) |
-| ✅ [button](#button) | `<arq-button>` | En código ([README](../src/components/button/README.md)) |
+| ✅ [button](#button) | `<arq-button>` | En código ([README](../src/components/button/README.md)). Underline: el subrayado de hover se dibuja como el de nav-link (DESIGN.md §6 · Movimiento) |
 | ✅ [carousel-button](#carousel-button) | `<arq-carousel-button>` | En código ([README](../src/components/carousel-button/README.md)). Lo usan los sliders de la Home (`buttons="carousel"`) |
 | ✅ [carousel-controls](#carousel-controls) | `<arq-carousel-controls>` | En código ([README](../src/components/carousel-controls/README.md)) |
 | ✅ [catalog-nav](#catalog-nav) | `<arq-catalog-nav>` | En código ([README](../src/components/catalog-nav/README.md)) |
