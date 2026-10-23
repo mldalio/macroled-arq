@@ -14,7 +14,7 @@
 // Al recargar la página (F5) o con ?arq-nocache en la URL se pide siempre al
 // servidor: así un cambio en Sheets se ve al instante.
 
-import { searchAll, quote } from './typesense.js';
+import { searchAll, inFilter } from './typesense.js';
 import { fromDocuments, LIGHT_FIELDS, DETAIL_FIELDS } from './typesense-adapter.js';
 import { config } from '../config.js';
 
@@ -57,7 +57,12 @@ export async function loadSource() {
   return fromDocuments(saved.docs);
 }
 
-/** Campos de detalle de los SKU de un grupo (product_name exacto). */
-export function loadGroupDetails(name) {
-  return searchAll({ q: '*', filter_by: `product_name:=${quote(name)}`, include_fields: DETAIL_FIELDS.join(',') });
+// SKU por consulta: la lista va en la URL (un grupo grande no entra en una sola).
+const DETAIL_CHUNK = 80;
+
+/** Campos de detalle de los SKU de un grupo. Un grupo puede reunir varios product_name: se pide por SKU. */
+export async function loadGroupDetails(skus) {
+  const chunks = Array.from({ length: Math.ceil(skus.length / DETAIL_CHUNK) }, (_, i) => skus.slice(i * DETAIL_CHUNK, (i + 1) * DETAIL_CHUNK));
+  const pages = await Promise.all(chunks.map((chunk) => searchAll({ q: '*', filter_by: inFilter('sku', chunk), include_fields: DETAIL_FIELDS.join(',') })));
+  return pages.flat();
 }

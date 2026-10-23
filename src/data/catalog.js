@@ -43,7 +43,8 @@ function link(group, collectionById) {
 }
 
 // Detalle de un grupo (descripción, descargas, fotos y textos de la ficha): una
-// consulta por grupo, filtrada por nombre. Se vuelca sobre el mismo objeto del
+// consulta por grupo, filtrada por los SKU de sus variantes (un grupo puede reunir
+// varios product_name). Se vuelca sobre el mismo objeto del
 // catálogo para que lo que ya lo referencia (cards, colección) siga igual.
 const detailed = new Map();
 
@@ -51,7 +52,7 @@ function ensureDetails(group) {
   if (!detailed.has(group.id)) {
     const request = (async () => {
       const catalog = await loadCatalog();
-      Object.assign(group, catalog.withDetails(group.id, await loadGroupDetails(group.name)));
+      Object.assign(group, catalog.withDetails(group.id, await loadGroupDetails(group.variants.map((v) => v.sku))));
       link(group, catalog.collectionById);
       return group;
     })();
@@ -60,6 +61,10 @@ function ensureDetails(group) {
   }
   return detailed.get(group.id);
 }
+
+// Nombre de una variante: «Daö Doble» dentro del grupo «Daö». Un grupo con un solo
+// product_name usa el suyo. Lo usan la comparativa, el buscador, Descargas y la ficha técnica.
+const variantName = (group, variant) => (group.variantNames && variant?.name ? variant.name : group.name);
 
 // ── URLs (docs/urls.md) ──────────────────────────────────────────────
 export const productHref = (groupId, sku) => `/arq/producto/${encodeURIComponent(groupId)}${sku ? `?sku=${encodeURIComponent(sku)}` : ''}`;
@@ -210,7 +215,11 @@ function finishOptions(group, shown, active = {}) {
   if (list.length < 2) return list;
   return list.map((finish) => {
     const own = [shown, group.defaultVariant, ...group.variants].filter((v, i, all) => all.indexOf(v) === i && finishOf(v) === finish.name);
-    const variant = own.find((v) => variantMatches(v, active)) ?? own[0];
+    // Entre las de ese acabado, primero las que comparten con la que se ve los demás atributos
+    // de variante (Doble en negro → Doble en blanco, no Simple), y a igual cantidad el orden de antes.
+    const shape = (v) => group.variantAttributes.filter((field) => !FINISH_FIELDS.includes(field) && v.values[field] === shown.values[field]).length;
+    const closest = own.map((v, i) => [v, i]).sort((a, b) => shape(b[0]) - shape(a[0]) || a[1] - b[1]).map(([v]) => v);
+    const variant = closest.find((v) => variantMatches(v, active)) ?? closest[0];
     const images = pick(variant.images);
     return {
       ...finish,
@@ -446,11 +455,11 @@ async function downloadsTable() {
     // variante en el modal («Negro, 6 W, luz cálida»).
     rows: variants.map(({ group, variant }) => ({
       sku: variant.sku,
-      name: shortName(group, groups),
+      name: group.variantNames ? variant.name : shortName(group, groups),
       href: productHref(group.id, variant.sku),
       meta: group.variantAttributes.map((field) => variant.values[field]).filter(hasValue).join(', '),
       thumb: variant.images?.studio ?? null,
-      search: [group.name, group.collectionData?.name].filter(Boolean).join(' '),
+      search: [group.name, variant.name, group.collectionData?.name].filter(Boolean).join(' '),
       attributes: variant.values,
       values: tableValues(variant.values),
     })),
@@ -483,7 +492,7 @@ export async function getDatasheet(sku) {
   const own = pick(variant.images);
   const base = pick(group.defaultVariant.images);
   return {
-    name: group.name,
+    name: variantName(group, variant),
     sku: variant.sku,
     image: own.main ?? own.studio ?? base.main ?? base.studio ?? null,
     sections: specSections(variant.values),
@@ -549,6 +558,8 @@ export function variantDetails(group, sku) {
   const galleryOn = own.galleryOn ?? [own.studioOn ?? null];
   return {
     sku: variant.sku,
+    // «Daö Doble» dentro del grupo «Daö»; un grupo con un solo product_name usa el suyo
+    name: variantName(group, variant),
     description: variant.description,
     values: variant.values,
     images: gallery.map((src, i) => ({ src, srcOn: galleryOn[i] ?? null, alt: `${group.name}, imagen ${i + 1}` })),
@@ -588,11 +599,13 @@ export async function getCollection(id) {
 function variantSummary(group) {
   const number = (value) => Number.parseFloat(String(value).replace(',', '.'));
   return group.variantAttributes
-    .filter((field) => attributeInfo(field).control !== 'swatches')
+    .filter((field) => attributeInfo(field).control !== 'swatches' && attributeInfo(field).summary !== false)
     .map((field) => {
       const values = [...new Set(group.variants.map((v) => v.values[field]).filter(hasValue))];
       values.sort((a, b) => number(a) - number(b) || String(a).localeCompare(String(b), 'es'));
-      return values.length > 1 ? `${values[0]} – ${values.at(-1)}` : values[0];
+      const range = values.length > 1 ? `${values[0]} – ${values.at(-1)}` : values[0];
+      const unit = attributeInfo(field).unit;
+      return unit && range ? `${range} ${values.length === 1 && number(values[0]) === 1 ? unit[0] : unit[1]}` : range;
     })
     .filter(Boolean)
     .join(' · ');
@@ -657,7 +670,7 @@ export async function getCompare(skus) {
     const card = productCard(group, variant);
     return {
       sku: variant.sku,
-      name: group.name,
+      name: variantName(group, variant),
       meta: variant.sku,
       image: card.image,
       href: card.href,
@@ -699,6 +712,9 @@ function searchMatch(group, words) {
   if (text === 'exact') return { variant: group.defaultVariant, bySku: false, typo: false };
   const variant = group.variants.find((v) => matchWords(v.sku, words, { typos: false }));
   if (variant) return { variant, bySku: true, typo: false };
+  // Un grupo que reúne varios product_name («Daö Simple», «Daö Doble»): «dao doble» lleva a esa variante.
+  const named = group.variantNames ? group.variants.find((v) => matchWords(v.name, words, { typos: false })) : null;
+  if (named) return { variant: named, bySku: true, typo: false };
   return text ? { variant: group.defaultVariant, bySku: false, typo: true } : null;
 }
 
@@ -719,7 +735,7 @@ export async function searchProducts(query, { limit = 5 } = {}) {
       const match = searchMatch(group, words);
       if (!match) return [];
       const card = productCard(group, match.variant);
-      return [{ kind: 'product', name: group.name, meta: match.variant.sku, href: card.href, image: card.image, typo: match.typo }];
+      return [{ kind: 'product', name: match.bySku ? variantName(group, match.variant) : group.name, meta: match.variant.sku, href: card.href, image: card.image, typo: match.typo }];
     }),
   );
   const found = exactFirst(

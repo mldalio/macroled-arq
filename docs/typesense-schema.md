@@ -15,9 +15,9 @@ Colección `macroled_arq` en `typesense.coresagroup.com`: 139 documentos (132 SK
 
 | Qué | Cómo | Campo |
 | --- | --- | --- |
-| Producto (grupo) | Filas con el mismo nombre. El id (slug de la ficha y del CMS) sale del nombre: «Kanu Jardín» → `kanu-jardin` | `product_name` |
+| Producto (grupo) | Filas con el mismo `grupo_variantes` (el SKU cortado que comparten todas las variantes de un producto: `DAO-E`). Sin `grupo_variantes`, las filas con el mismo nombre. Si un grupo reúne varios nombres («Daö Simple», «Daö Doble»), su nombre son las palabras que comparten al principio («Daö»). El id (slug de la ficha y del CMS) sale del nombre del grupo: «Kanu Jardín» → `kanu-jardin`, «Daö» → `dao` | `grupo_variantes`, `product_name` |
 | Fila no publicada | Sin nombre | `product_name` vacío |
-| SKU predeterminado | Un `true` por producto; si no hay, el primero | `is_group_default` (bool) |
+| SKU predeterminado | Un `true` por grupo; si la base marca varios (uno por `product_name`), el de SKU menor (`X1` antes que `X2`); si no hay, el primero. Conviene marcar uno solo por `grupo_variantes` | `is_group_default` (bool) |
 | Selectores de variante | Nombres de campo separados por coma: «color_carcasa, altura» | `variant_attributes` |
 | Colección | Fila con `product_type` «Colección» (SKU `col-<id>`). Su `familia` lista las familias que reúne («Tori, Mini Tori»); el id sale del nombre | `product_type`, `familia`, `product_name` |
 | Pertenencia a una colección | La colección cuya `familia` incluye la del producto. Los accesorios no entran. Una colección sin productos publicados no se muestra | `familia` |
@@ -62,6 +62,9 @@ Dónde se usa cada foto:
 - `new` (bool) marca las novedades: son los productos recomendados del buscador (una card por cada SKU marcado, con sus fotos). Sin uso en el sitio todavía: `categoria`, `nombre_origen`.
 - Técnicos: los de `src/data/attributes.js`, más `tension_pack`, `tension_salida`, `frecuencia`, `corriente_entrada`, `corriente_salida`, `marca_driver`, `anti_high_volt`, `on_off_switch`, `protector_spd`, `no_flicker`, `corriente_irrupcion`, `tiempo_irrupcion`, `clase_proteccion`, `max_lum_b16`, `max_lum_c10`, `max_lum_c16`, `td_distorsion_tonal`, `marca_led`, `tiempo_arranque`, `certificado_lm80`, `desviacion_color`, `grupo_seguridad_fotobiologica`, `conector`, `garantia_pack`, `instalacion`. Llegan como texto con unidad («12W», «50 cm», «-»).
 - Facets: `familia`, `macrofamilia`, `subfamilia`, `potencia`, `temperatura_color`, `angulo_apertura`.
+- `grupo_producto` y `modelo` (opcionales, aún no están en la hoja): un nivel mayor de agrupación para productos con modelos (Daö y Mini Daö). `grupo_producto` es el `grupo_variantes` del modelo base en las filas de todos los modelos (`DAO-E` en las de `DAO-E` y `DAO-MINI-E`); `modelo`, «Estándar» o «Mini», y se suma a `variant_attributes`. Hoy lo completa `src/data/models.js` solo para Daö; una fila que ya trae `grupo_producto` no se toca (`docs/decisiones.md`, 2026-10-23 · Modelos de un producto).
+- `modulos`: cantidad de módulos (Daö: 1, 2 o 3). Es un selector de variante (`variant_attributes`: «color_carcasa, modulos»); en la ficha va como «Módulos».
+- `TODO` (índice): `grupo_variantes` no está indexado en Typesense (no se puede filtrar por él). El front pide el detalle de la ficha por lista de SKU, así que no hace falta hoy.
 
 ### Esquema y pendientes
 
