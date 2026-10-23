@@ -68,12 +68,11 @@ class ArqCompareBar extends ArqElement {
     `<div class="head">` +
     `<button class="title toggle role-body-lg"><span>Productos seleccionados</span><arq-count-badge class="count"></arq-count-badge>` +
     `<span class="icon-box">${icon('chevron-down')}${icon('chevron-up')}</span></button>` +
-    `<arq-button type="underline" show-underline class="clear clear-mobile">Borrar todo</arq-button>` +
     `</div>` +
     `<div class="row">` +
     `<div class="slots"></div>` +
     `<div class="actions">` +
-    `<arq-button type="underline" show-underline class="clear clear-desktop">Borrar todo</arq-button>` +
+    `<arq-button type="underline" show-underline class="clear">Borrar todo</arq-button>` +
     `<arq-button class="go" show-icon icon="arrow-right">Comparar</arq-button>` +
     `</div>` +
     `</div>` +
@@ -170,7 +169,7 @@ class ArqCompareBar extends ArqElement {
     return `${this.href ?? '/arq/comparativa'}?sku=${query}`;
   }
 
-  // Al plegar o desplegar, la barra cambia de alto de golpe. Como está fija
+  // Al plegar o desplegar, la barra cambia de alto de golpe. Como está pegada
   // abajo, se anima la diferencia con transform: arranca con el borde de
   // arriba donde estaba y lo lleva a su lugar nuevo, con el mismo tiempo y la
   // misma curva que la entrada (motion/duration/panel + motion/easing/standard).
@@ -182,12 +181,15 @@ class ArqCompareBar extends ArqElement {
     const duration = Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-panel')) || 0;
     if (!duration) return;
     bar.getAnimations().forEach((animation) => animation.cancel());
+    bar.classList.remove('sliding');
     const delta = before - bar.getBoundingClientRect().top;
     if (!delta) return;
-    bar.animate([{ transform: `translateY(${delta}px)` }, { transform: 'none' }], {
+    bar.classList.add('sliding');
+    const animation = bar.animate([{ transform: `translateY(${delta}px)` }, { transform: 'none' }], {
       duration,
       easing: styles.getPropertyValue('--arq-motion-easing-standard').trim() || 'ease-out',
     });
+    animation.onfinish = () => bar.classList.remove('sliding');
   }
 
   #changed() {

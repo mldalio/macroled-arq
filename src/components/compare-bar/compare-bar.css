@@ -6,12 +6,16 @@
   display: contents;
 }
 
-/* Fija abajo, a todo el ancho: fondo color/surface/default (en Dark), línea
+/* Pegada abajo, a todo el ancho: fondo color/surface/default (en Dark), línea
    superior border/default en color/border/default; padding space/padding/md
-   × layout/gutter; gap space/gap/md */
+   × layout/gutter; gap space/gap/md. Sticky, como macroled.com.ar/productos:
+   queda pegada al borde de la pantalla mientras se recorre el contenedor y,
+   al final, se apoya sobre lo que sigue (el footer), sin espacio reservado.
+   Va al final del contenedor y a todo su ancho (catalog-listing,
+   ficha-producto). */
 .bar {
-  position: fixed;
-  inset: auto 0 0;
+  position: sticky;
+  bottom: 0;
   z-index: 3;
   box-sizing: border-box;
   display: flex;
@@ -54,8 +58,10 @@
 /* Plegar y desplegar con el chevron (Open): la barra se desliza como al
    entrar (lo hace el JS, #slide). Al plegar arranca más arriba de su lugar y
    baja: este fondo debajo de la barra (fuera de la pantalla en reposo) tapa lo
-   que quedaría a la vista entre la barra y el borde de la pantalla. */
-.bar::after {
+   que quedaría a la vista entre la barra y el borde de la pantalla. Solo
+   mientras se desliza (.sliding, lo pone #slide): apoyada sobre el footer,
+   taparía el footer. */
+.bar.sliding::after {
   content: '';
   position: absolute;
   inset: 100% 0 auto;
@@ -130,10 +136,6 @@
   gap: var(--arq-space-gap-xl);
 }
 
-.clear-mobile {
-  display: none;
-}
-
 /* Desktop: el botón del título ocupa toda la línea y el chevron queda en la
    punta derecha de la barra. */
 .toggle {
@@ -144,24 +146,11 @@
   margin-inline-start: auto;
 }
 
-/* Open=False en Desktop: una sola línea. Título y acciones comparten la
-   celda; las acciones quedan a la derecha, antes del chevron (icon-button
-   Default: icon/md + 2 × space/padding/xs, más space/gap/xl). */
-:host(:not([open])) .bar {
-  display: grid;
-  align-items: center;
-}
-
-:host(:not([open])) .head,
+/* Open=False: solo el título con el chevron. «Borrar todo» y «Comparar» se
+   ocultan con la lista (pedido de Lau 2026-10-23; el set los muestra).
+   TODO (diseño): pasarlo al set. */
 :host(:not([open])) .row {
-  grid-area: 1 / 1;
-}
-
-:host(:not([open])) .row {
-  position: relative;
-  z-index: 1;
-  justify-self: end;
-  margin-inline-end: calc(var(--arq-icon-md) + 2 * var(--arq-space-padding-xs) + var(--arq-space-gap-xl));
+  display: none;
 }
 
 /* Open: el título es el botón que pliega la lista. Ícono como
@@ -232,8 +221,8 @@
   }
 }
 
-/* ── Mobile (como macroled.com.ar): productos uno arriba de otro, "Borrar
-   todo" arriba y "Comparar" debajo a todo el ancho ── */
+/* ── Mobile (como macroled.com.ar): productos uno arriba de otro y
+   "Comparar" debajo a todo el ancho, con "Borrar todo" abajo ── */
 @media (max-width: 767px) {
   .bar {
     gap: var(--arq-space-gap-sm-md);
@@ -241,31 +230,13 @@
     border-top-color: var(--arq-color-border-subtle);
   }
 
-  .clear-mobile {
-    display: inline-flex;
-  }
-
-  .clear-desktop {
-    display: none;
-  }
-
-  /* Mobile: el chevron va junto al título y «Borrar todo» a la derecha */
+  /* Mobile: el chevron va junto al título */
   .toggle {
     flex: none;
   }
 
   .toggle .icon-box {
     margin-inline-start: 0;
-  }
-
-  :host(:not([open])) .bar {
-    display: flex;
-    align-items: stretch;
-  }
-
-  :host(:not([open])) .row {
-    justify-self: auto;
-    margin-inline-end: 0;
   }
 
   .row {
@@ -284,9 +255,16 @@
     flex: none;
   }
 
-  .actions,
+  /* «Comparar» a todo el ancho y «Borrar todo» debajo, centrado, a
+     space/gap/md: junto al título no entraba por debajo de 375 px */
+  .actions {
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: var(--arq-space-gap-md);
+  }
+
   .go {
-    flex: 1 1 auto;
+    align-self: stretch;
   }
 }
 
