@@ -55,7 +55,7 @@ sheet.show(botonLupa);     // el foco vuelve a botonLupa al cerrar
 
 ## Tokens
 
-Los chevrons aparecen y desaparecen con fundido `motion/duration/fade` y `motion/easing/standard`, sin escala ni desplazamiento. El fundido también se aplica al llegar a los extremos; la dirección deja de ser interactiva inmediatamente. Con movimiento reducido se conserva solo este fundido.
+Los chevrons aparecen con fundido `motion/duration/base` y desaparecen con `motion/duration/slow` (más lento, para que no se corten de golpe al sacar el mouse), con `motion/easing/standard`, sin escala ni desplazamiento. Al llegar a un extremo, el chevron que ya no sirve se va más rápido, con `motion/duration/fast` (no `slow`; con movimiento reducido, `fade`), para que no se haga un segundo clic pensando que sigue algo y se entre a la última card; la dirección deja de ser interactiva inmediatamente. Con movimiento reducido los dos pasan a `motion/duration/fade`.
 
 La fila de Recomendados usa `arq-carousel-button` con los estilos originales y chevrons a ambos lados, centrados en la altura de las imágenes. Aparecen solo al hacer hover sobre la fila de tarjetas o al navegar con teclado (foco visible; un clic con el mouse no los deja fijos). Solo aparece cada dirección si hay contenido por recorrer de ese lado; si todo cabe, no hay botones. Cada clic avanza una tarjeta. Sin arrastre con mouse ni cursor grab; en táctil mantiene el scroll nativo. El clic en una tarjeta abre el producto.
 

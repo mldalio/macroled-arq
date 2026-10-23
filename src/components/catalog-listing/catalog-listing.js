@@ -26,11 +26,12 @@
 //   lugar vacío (+) de la barra abre compare-picker para agregar desde ahí.
 //   La barra se ve también en «Todas las colecciones» (las cards de colección
 //   no tienen Comparar, pero la selección sigue y se puede agregar con el +).
-// - Iluminar: lo resuelve catalog-toolbar (data-arq-theme en <html>).
+// - Iluminar: lo resuelve catalog-toolbar (data-arq-theme en <html>). Solo en
+//   Productos: en «Todas las colecciones» el toggle no se muestra.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { listProducts, listCollections, listCompareCandidates, getCatalogNav } from '../../data/catalog.js';
-import { handOffTheme } from '../../base/theme.js';
+import { handOffTheme, setBrowserBar } from '../../base/theme.js';
 import '../catalog-toolbar/catalog-toolbar.js';
 import '../filter-panel/filter-panel.js';
 import '../filter-row/filter-row.js';
@@ -277,6 +278,14 @@ class ArqCatalogListing extends ArqElement {
     if (!changed.has('unit')) return;
     const root = this.shadowRoot;
     root.querySelector('.toolbar').unit = this.unit;
+    // «Todas las colecciones» no tiene Iluminar: sin el toggle, y si venía
+    // iluminado de Productos (cambio de vista sin recarga) vuelve a Light.
+    const iluminar = this.unit === 'productos';
+    root.querySelector('.toolbar').showIluminar = iluminar;
+    if (!iluminar && document.documentElement.getAttribute('data-arq-theme') === 'dark') {
+      document.documentElement.removeAttribute('data-arq-theme');
+      setBrowserBar(false);
+    }
     root.querySelector('arq-filter-panel').unit = this.unit;
     if (this.#query && this.unit === 'productos') this.#titleFromQuery();
     this.#load({ rows: true });
