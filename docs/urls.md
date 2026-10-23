@@ -4,7 +4,7 @@ Páginas del sitio en `macroled.com.ar/arq`. Todo el contenido se carga con Code
 
 - Las páginas de colección del CMS se anidan en la carpeta `/arq` de Webflow (CMS Folders).
 - Una carpeta, una página estática y una colección no pueden compartir slug en el mismo nivel. Por eso los templates del CMS van en singular (`producto`, `coleccion`) y los listados en plural (`productos`, `colecciones`).
-- La ficha de producto y la página de colección usan el slug del CMS, que es el ID de la base: `PRODUCT_GROUP_ID` (un ítem del CMS por grupo) y `COLLECTION_ID`.
+- La ficha de producto y la página de colección usan el slug del CMS, que es el ID del grupo en la base (el slug del nombre del grupo: `kanu-jardin`, `dao`; un ítem del CMS por grupo, ver AGENTS.md · Datos) y `COLLECTION_ID`.
 
 | Página | URL | Tipo en Webflow | Pantalla en Final | Notas |
 | --- | --- | --- | --- | --- |
