@@ -430,6 +430,18 @@
     --cols: 2;
     --gap: var(--arq-space-gap-md);
   }
+
+  /* El carrusel llega al borde derecho de la pantalla (sin el margen lateral); el padding
+     lo deja como espacio al final del recorrido y no cambia el ancho de las tarjetas
+     (sus columnas se miden sobre el contenido) */
+  .cards-wrap {
+    margin-inline-end: calc(var(--page-gutter) * -1);
+  }
+
+  .cards {
+    padding-inline-end: var(--page-gutter);
+    scroll-padding-inline-end: var(--page-gutter);
+  }
 }
 
 /* Alto de la barra (como el del navbar): space/gap/md × 2 + icon/xl.

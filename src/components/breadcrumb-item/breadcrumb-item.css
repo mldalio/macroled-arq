@@ -17,9 +17,8 @@
 /* Textos largos (descripción del set): si no es Current, se corta con "…"
    (el texto completo queda en el link y en su aria-label). */
 .label {
+  color: var(--arq-color-text-tertiary);
   overflow: hidden;
-  color: inherit;
-  transition: none; /* hereda el color de .item: no se suma otra transición */
   text-decoration: none;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -42,15 +41,18 @@
    y separador en color/text/secondary: tertiary no llega a 4,5:1 sobre una
    foto de tono medio. El modo (Light o Dark) lo pone quien la ubica. */
 :host([theme='transparent']) .item,
+:host([theme='transparent']) .label,
 :host([theme='transparent']) .separator {
   color: var(--arq-color-text-secondary);
 }
 
-/* State=Current: página actual, sin link. El color va en .item (que funde con
-   Iluminar) y la etiqueta lo hereda: en .label, con transition: none, cambiaba
-   de golpe y quedaba a destiempo de los links (2026-10-21). Después de
-   Theme=Transparent, para ganarle. */
-:host([current]) .item {
+/* State=Current: página actual, sin link. El color va en .item y en .label, cada
+   uno con su propia transición: si .label heredaba el color de .item (con
+   transition: none), Chrome no repintaba el texto de los links durante Iluminar
+   y quedaban a destiempo del actual (2026-10-23). Después de Theme=Transparent,
+   para ganarle. */
+:host([current]) .item,
+:host([current]) .label {
   color: var(--arq-color-text-primary);
 }
 

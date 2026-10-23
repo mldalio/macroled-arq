@@ -53,6 +53,7 @@ import { HorizontalRail } from '../../base/horizontal-rail.js';
 import { SingleSelect } from '../../base/single-select.js';
 import { PhotoViewer,photoViewerTemplate } from '../../base/photo-viewer.js';
 import viewerCss from '../../base/photo-viewer.css?inline';
+import { normalize } from '../../data/text.js';
 import { animateThemeChange, refreshTheme, setBrowserBar, takeThemeHandoff, withoutThemeTransition } from '../../base/theme.js';
 import { getProduct, variantDetails, categoryHref, listCompareCandidates } from '../../data/catalog.js';
 import { attributeInfo } from '../../data/attributes.js';
@@ -76,7 +77,8 @@ import '../accordion-item/accordion-item.js';
 import '../spec-list/spec-list.js';
 import '../spec-row/spec-row.js';
 import '../variants-table/variants-table.js';
-import '../family-card/family-card.js';
+import { appendFinishes } from '../product-card/product-card.js';
+import '../carousel-controls/carousel-controls.js';
 import '../icon-button/icon-button.js';
 import '../download-modal/download-modal.js';
 import '../download-item/download-item.js';
@@ -115,13 +117,12 @@ const toLinear = (channel) => {
   return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
 };
 
+// Familia (sin tildes ni mayúsculas) de los productos de la ficha sin Iluminar
+const NO_ILLUMINATION_FAMILY = 'dao';
+
 class ArqFichaProducto extends ArqElement {
   static tag = 'arq-ficha-producto';
   static styles = css + viewerCss;
-  static properties = {
-    // Destino del botón del bloque «¿Te interesa este producto?»
-    ctaHref: { type: String, default: '/arq/contacto' },
-  };
   static template =
     `<div class="page">` +
     // Hero (Ficha v2, 2085:27570): galería a sangre a la izquierda y configurador
@@ -190,16 +191,6 @@ class ArqFichaProducto extends ArqElement {
     `</div>` +
     `</div>` +
     `</div>` +
-    // «¿Te interesa este producto?» (los textos llegan por slot desde la página)
-    `<div class="cta" hidden>` +
-    `<div class="cta-block">` +
-    `<div class="cta-text">` +
-    `<div class="cta-title role-heading-1"><slot name="cta-title"></slot></div>` +
-    `<p class="cta-description role-body-lg"><slot name="cta-description"></slot></p>` +
-    `</div>` +
-    `<arq-button class="cta-action" show-icon icon="arrow-right"><slot name="cta-action"></slot></arq-button>` +
-    `</div>` +
-    `</div>` +
     // Inspiración: foto ancha o video + foto vertical, y el texto a la derecha
     `<div class="inspiration" hidden>` +
     `<div class="inspiration-copy">` +
@@ -213,7 +204,10 @@ class ArqFichaProducto extends ArqElement {
     `<div class="collection-title role-heading-2"><slot name="collection-title"></slot></div>` +
     `<arq-button class="collection-link" type="underline" show-underline show-icon icon="arrow-up-right"></arq-button>` +
     `</div>` +
-    `<div class="cards collection-cards"></div>` +
+    `<div class="collection-rail">` +
+    `<arq-carousel-controls class="collection-controls" buttons="carousel" progress="scroll" for="collection-rail" step="item" label-prev="Productos anteriores" label-next="Productos siguientes"></arq-carousel-controls>` +
+    `<div class="cards" id="collection-rail"></div>` +
+    `</div>` +
     `</div>` +
     `</div>` +
     `<arq-compare-bar class="compare-bar"></arq-compare-bar>` +
@@ -222,20 +216,19 @@ class ArqFichaProducto extends ArqElement {
 
   #product = null;
   #ambientRail = null;
+  #collectionRail = null;
   #viewer = null;
 
   connectedCallback() {
     super.connectedCallback();
     this.#ambientRail?.connect();
+    this.#collectionRail?.connect();
   }
 
   disconnectedCallback() {
     this.#ambientRail?.disconnect();
+    this.#collectionRail?.disconnect();
     this.#viewer?.close();
-  }
-
-  update(changed) {
-    if (changed.has('ctaHref')) this.shadowRoot.querySelector('.cta-action').href = this.ctaHref;
   }
 
   #selection = {};
@@ -253,10 +246,11 @@ class ArqFichaProducto extends ArqElement {
     this.#moveMainImage();
     root.querySelector('slot[name="inspiration"]').addEventListener('slotchange', () => this.#syncInspiration());
     this.#syncInspiration();
-    root.querySelector('slot[name="cta-title"]').addEventListener('slotchange', () => this.#syncCta());
-    this.#syncCta();
 
     this.#setupAmbient();
+    // Explora la colección: se arrastra con el mouse (cursor grab) además de las flechas
+    this.#collectionRail = new HorizontalRail(this, root.querySelector('.cards'));
+    this.#collectionRail.connect();
 
     // Hasta 1023 px (Tablet y Mobile) Iluminar es solo el interruptor; la palabra queda
     // oculta para lectores de pantalla (show-label apagado)
@@ -343,6 +337,15 @@ class ArqFichaProducto extends ArqElement {
     }
     this.#product = product;
     this.#status('');
+    // Daö no tiene Iluminar (decisiones.md, 2026-10-23): sin toggle, y si llegó iluminado desde el listado, vuelve a Light
+    if (normalize(product.group.family) === NO_ILLUMINATION_FAMILY || /^DAO-/i.test(product.group.variantGroup ?? '')) {
+      const toggle = this.shadowRoot.querySelector('.iluminar');
+      toggle.hidden = true;
+      if (toggle.checked) {
+        toggle.checked = false;
+        withoutThemeTransition(() => this.#applyDark(false));
+      }
+    }
     const sku = new URLSearchParams(location.search).get('sku');
     this.#selection = initialSelection(product.variants, product.variantAttributes, sku);
     this.#renderHeader();
@@ -956,16 +959,14 @@ class ArqFichaProducto extends ArqElement {
     this.#syncInspiration();
   }
 
-  #syncCta() {
-    this.shadowRoot.querySelector('.cta').hidden = !this.shadowRoot.querySelector('slot[name="cta-title"]').assignedElements().length;
-  }
-
   // ── Explora la colección ──────────────────────────────────────────
   #renderCollection() {
     const { collection, family } = this.#product;
     const section = this.shadowRoot.querySelector('.collection');
     section.hidden = !collection || !family.length;
-    section.querySelector('.collection-cards').replaceChildren(...family.map((card) => familyCard(card, 'large')));
+    section.querySelector('.cards').replaceChildren(...family.map(productCard));
+    // Con una sola card no hay nada que recorrer
+    section.querySelector('.collection-controls').hidden = family.length < 2;
   }
 }
 
@@ -978,21 +979,20 @@ function image(src, alt, className = '') {
   return img;
 }
 
-// Misma imagen que la product-card del grupo: estudio, luz apagada
-// (decisiones.md, 2026-10-02 · Cards).
-function familyCard(data, size) {
-  const card = document.createElement('arq-family-card');
+// Las otras familias de la colección usan la misma product-card que Productos y
+// Colecciones: imágenes de reposo y hover (también con Iluminar), acabados y link.
+function productCard(data) {
+  const card = document.createElement('arq-product-card');
   card.href = data.href;
-  if (size) card.size = size;
-  if (data.image) {
-    const img = image(data.image, '');
-    img.slot = 'image';
-    card.append(img);
-  }
+  card.image = data.image;
+  card.imageHover = data.imageHover;
+  card.imageLit = data.imageLit;
+  card.imageHoverLit = data.imageHoverLit;
   const name = document.createElement('h3');
   name.slot = 'name';
   name.textContent = data.name;
   card.append(name);
+  appendFinishes(card, data.finishes);
   return card;
 }
 

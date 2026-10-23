@@ -46,7 +46,7 @@ class ArqFeaturedProducts extends ArqElement {
     `<div class="layout">` +
     `<div class="intro">` +
     `<slot name="intro"></slot>` +
-    `<arq-carousel-controls class="controls" buttons="carousel" for="featured-rail" step="item" label-prev="Productos anteriores" label-next="Productos siguientes"></arq-carousel-controls>` +
+    `<arq-carousel-controls class="controls" buttons="carousel" progress="scroll" for="featured-rail" step="item" label-prev="Productos anteriores" label-next="Productos siguientes"></arq-carousel-controls>` +
     `</div>` +
     `<div class="rail" id="featured-rail"></div>` +
     `</div>` +

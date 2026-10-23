@@ -146,6 +146,12 @@ export const DETAIL_FIELDS = Object.freeze([
 ]);
 
 const text = (value) => (value === undefined || value === null ? '' : String(value).trim());
+
+// Módulos de Daö: la base trae «1», «2», «3» (o «1x», «X1»); se muestran siempre «x1», «x2», «x3».
+const attributeText = (field, value) => {
+  const shown = text(value);
+  return field === 'modulos' ? shown.replace(/^(?:x\s*(\d+)|(\d+)\s*x?)$/i, (_, a, b) => `x${a ?? b}`) : shown;
+};
 const list = (value) => (Array.isArray(value) ? value.map(text).filter(Boolean) : text(value) ? text(value).split(',').map((v) => v.trim()).filter(Boolean) : []);
 
 /** Slug para URLs: «Kanu Jardín» → kanu-jardin. */
@@ -323,7 +329,7 @@ export function fromDocuments(rawDocs) {
         // recomendado del buscador, con sus propias fotos (catalog.js · getRecommendedProducts).
         isNew: doc[FIELDS.isNew] === true,
         description: text(doc[FIELDS.description]),
-        attributes: Object.fromEntries(Object.keys(ATTRIBUTES).map((field) => [field, text(doc[field])]).filter(([, v]) => v && v !== '-')),
+        attributes: Object.fromEntries(Object.keys(ATTRIBUTES).map((field) => [field, attributeText(field, doc[field])]).filter(([, v]) => v && v !== '-')),
         images: variantImages(doc),
         downloads: Object.fromEntries(DOWNLOADS.map((field) => [field, text(doc[field])]).filter(([, v]) => v)),
       })),
