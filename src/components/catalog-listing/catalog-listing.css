@@ -2,11 +2,12 @@
    Solo tokens semánticos. Desde 1024 px el sidebar va a la izquierda
    (AGENTS.md: los listados usan catalog-nav-mobile hasta 1023 px). */
 
+/* El padding va en .layout y no en :host: la compare-bar (sticky) va después,
+   a todo el ancho, y al final queda apoyada sobre el footer. */
 :host {
   display: block;
   box-sizing: border-box;
   min-width: 0;
-  padding: 0 var(--page-gutter) var(--arq-space-section-xl);
   background: var(--arq-color-surface-default);
   transition-property: background-color;
   transition-duration: var(--arq-illumination-bg-duration);
@@ -19,6 +20,7 @@
   flex-direction: column;
   gap: var(--arq-space-gap-xl);
   min-width: 0;
+  padding: 0 var(--page-gutter) var(--arq-space-section-xl);
 }
 
 .nav {
