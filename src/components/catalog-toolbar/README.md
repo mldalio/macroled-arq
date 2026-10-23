@@ -1,6 +1,6 @@
 # catalog-toolbar · `<arq-catalog-toolbar>`
 
-Barra sobre la grilla de Productos y Colecciones: cantidad de resultados, toggle Iluminar (solo en Productos; en Colecciones `show-iluminar` va apagado), divider vertical y botón Filtrar.
+Barra sobre la grilla de Productos: cantidad de resultados, toggle Iluminar, divider vertical y botón Filtrar.
 
 - Figma: [1244-4058](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1244-4058) · ficha `doc/catalog-toolbar` (`1427:2499`)
 
@@ -18,7 +18,7 @@ panel.addEventListener('arq:apply', (e) => (toolbar.count = aplicar(e.detail.fil
 | Figma | Atributo | Prop JS | Valores · por defecto |
 | --- | --- | --- | --- |
 | Count | `count` | `count` | Número de resultados. Se muestra con su sustantivo y separador de miles: "1 producto", "11 productos", "1.500 productos" |
-| — | `unit` | `unit` | `productos` · `colecciones`. Por defecto `productos` |
+| — | `unit` | `unit` | `productos`. Por defecto `productos` |
 | Show iluminar | `show-iluminar` | `showIluminar` | booleano. En Figma viene en `true`; en código hay que escribirlo |
 | — (solo código) | `stuck` | `stuck` | booleano. Lo pone el listado mientras la barra está pegada debajo del navbar: la línea superior pasa a `color/surface/transparent` (sin cambiar el alto), para que no se vea doble con la del navbar |
 | — | `for` | `for` | `id` del `arq-filter-panel` que abre Filtrar |

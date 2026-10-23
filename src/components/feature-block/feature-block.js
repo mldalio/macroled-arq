@@ -8,7 +8,7 @@
 //     <span slot="label">Colección destacada</span>
 //     <h2 slot="title">Kanu</h2>
 //     <span slot="description">…</span>
-//     <arq-button slot="action" type="underline" show-underline show-icon icon="arrow-right" href="/arq/coleccion/kanu">Ver colección</arq-button>
+//     <arq-button slot="action" type="underline" show-underline show-icon icon="arrow-right" href="/arq/productos?collection=kanu">Ver colección</arq-button>
 //     <img slot="secondary" src="…" alt="…" loading="lazy">
 //   </arq-feature-block>
 //

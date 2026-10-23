@@ -4,15 +4,15 @@ Lista de colecciones del Home, debajo de «Diseño que inspira». El nombre acti
 
 ```html
 <arq-collection-index>
-  <a href="/arq/coleccion/kanu">
+  <a href="/arq/productos?collection=kanu">
     <img src="…" alt="Colección Kanu">
     Kanu
   </a>
-  <a href="/arq/coleccion/douli">
+  <a href="/arq/productos?collection=douli">
     <img src="…" alt="Colección Douli">
     Douli
   </a>
-  <arq-button slot="action" type="outline" href="/arq/productos?view=colecciones">Ver todo</arq-button>
+  <arq-button slot="action" type="outline" href="/arq/productos" data-arq-menu="colecciones">Ver todo</arq-button>
 </arq-collection-index>
 ```
 

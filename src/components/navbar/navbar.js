@@ -322,6 +322,15 @@ class ArqNavbar extends ArqElement {
       }
     });
     document.addEventListener('click', (event) => {
+      // Un link de la página con data-arq-menu="colecciones" (footer, Home, breadcrumb de
+      // la ficha) abre el menú en esa pestaña en vez de navegar. Con Ctrl/Cmd/Mayús o clic
+      // del medio, el link hace lo suyo (su href).
+      const opener = event.composedPath().find((node) => node.dataset?.arqMenu);
+      if (opener && !event.defaultPrevented && event.button === 0 && !(event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)) {
+        event.preventDefault();
+        this.#openMenu(opener.dataset.arqMenu);
+        return;
+      }
       if (!event.composedPath().includes(this)) {
         this.#toggleMega(false);
         if (this.mode === 'search' && !MOBILE.matches) this.#showResults(false);
@@ -565,7 +574,7 @@ class ArqNavbar extends ArqElement {
   // Misma transición que el top sheet: la barra pasa a sólida y clara (Light
   // local, también con Iluminar) y el panel se abre como una persiana.
   // which: 'products' (mega-menu) o 'recursos'.
-  #toggleMega(open, which = 'products') {
+  #toggleMega(open, which = 'products', tab) {
     const root = this.shadowRoot;
     const wrap = root.querySelector('.mega-wrap');
     const navbar = root.querySelector('.navbar');
@@ -592,7 +601,7 @@ class ArqNavbar extends ArqElement {
     } else {
       this.#finishSwap();
     }
-    if (next && kind === 'products') root.querySelector('.mega').reset(); // primera pestaña y su preview inicial (Colgante)
+    if (next && kind === 'products') root.querySelector('.mega').reset(tab); // la pestaña pedida o la primera, con su preview inicial (Colgante)
     if (next !== this.#megaOpen) {
       clearTimeout(this.#megaTimer);
       if (next) {
@@ -614,6 +623,17 @@ class ArqNavbar extends ArqElement {
     }
     this.#megaOpen = next;
     this.#syncLinks();
+  }
+
+  // Abre el menú de Productos en una pestaña: el mega-menu en Desktop; en Mobile, el menú
+  // directo en ese submenú. Con el menú ya abierto cambia de pestaña.
+  #openMenu(tab) {
+    this.#ensureNavigation();
+    if (MOBILE.matches) {
+      if (SUBMENUS.includes(tab)) this.#setMode(tab);
+    } else {
+      this.#toggleMega(true, 'products', tab);
+    }
   }
 
   // ── Navegación ───────────────────────────────────────────────────
@@ -671,7 +691,6 @@ class ArqNavbar extends ArqElement {
             `<span slot="meta">${esc(c.meta)}</span></arq-mega-link>`,
         )
         .join('');
-      if (nav?.allCollections) cta = `<arq-button type="underline" show-underline href="${esc(nav.allCollections.href)}">Ver todo</arq-button>`;
     } else if (id === 'lamparas-y-artefactos') {
       // Un grupo por sección: eyebrow, filas con miniatura y su "Ver todo…".
       // Los dos "Ver todo…" van dentro de la lista (se desplazan con ella).

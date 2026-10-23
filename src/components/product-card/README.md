@@ -18,7 +18,7 @@ Tarjeta de producto (Productos) o de colección (Colecciones, página de colecci
 </arq-product-card>
 
 <!-- Colecciones: con Meta, sin Comparar -->
-<arq-product-card href="/arq/coleccion/kanu" image="…">
+<arq-product-card href="/arq/productos?collection=kanu" image="…">
   <h3 slot="name">Kanu</h3>
   <span slot="meta">Exterior · Jardín · Pared</span>
 </arq-product-card>

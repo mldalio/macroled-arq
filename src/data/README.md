@@ -4,7 +4,7 @@
 
 | Archivo | Qué hace |
 | --- | --- |
-| `catalog.js` | API de las páginas: `listProducts`, `listCollections`, `getProduct` + `variantDetails`, `getProductCards`, `getCollection`, `getCompare`, `searchProducts`, `getNavigation` y las URLs (`productHref`…) |
+| `catalog.js` | API de las páginas: `listProducts`, `getProduct` + `variantDetails`, `getProductCards`, `getCollection`, `getCompare`, `searchProducts`, `getNavigation` y las URLs (`productHref`…) |
 | `source.js` | Carga desde Typesense (único origen de datos): el catálogo liviano (`LIGHT_FIELDS`) y el detalle de un grupo para la ficha (`DETAIL_FIELDS`) |
 | `typesense.js` | Cliente de Typesense con la search-only key |
 | `typesense-adapter.js` | Documentos de Typesense → catálogo: grupos por nombre, colecciones, accesorios e imágenes por posición (`docs/typesense-schema.md`) |

@@ -10,7 +10,7 @@ Bloque editorial del Home con imagen protagonista: foto grande (y una secundaria
   <span slot="label">Colección destacada</span>
   <h2 slot="title">Kanu</h2>
   <span slot="description">Descripción de la colección destacada, su uso y los espacios para los que está pensada.</span>
-  <arq-button slot="action" type="underline" show-underline show-icon icon="arrow-right" href="/arq/coleccion/kanu">Ver colección</arq-button>
+  <arq-button slot="action" type="underline" show-underline show-icon icon="arrow-right" href="/arq/productos?collection=kanu">Ver colección</arq-button>
   <img slot="secondary" src="…" alt="Detalle del acabado" loading="lazy">
 </arq-feature-block>
 ```

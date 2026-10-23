@@ -68,6 +68,7 @@ const variantName = (group, variant) => (group.variantNames && variant?.name ? v
 
 // ── URLs (docs/urls.md) ──────────────────────────────────────────────
 export const productHref = (groupId, sku) => `/arq/producto/${encodeURIComponent(groupId)}${sku ? `?sku=${encodeURIComponent(sku)}` : ''}`;
+// La página de la colección (sin links entrantes desde 2026-10-23: docs/archivo/todas-las-colecciones.md)
 export const collectionHref = (id) => `/arq/coleccion/${encodeURIComponent(id)}`;
 export const compareHref = (skus) => `/arq/comparativa?sku=${skus.map(encodeURIComponent).join(',')}`;
 // TODO (urls): las URLs de categoría están PENDIENTES (docs/urls.md). Por ahora, parámetros del listado.
@@ -137,12 +138,11 @@ function filterRows(groups) {
  * Opciones que todavía dan resultados con los filtros marcados, con cuántas
  * cards daría cada una: { campo: { valor: cantidad } }. Un valor cuenta una
  * card si alguna de sus variantes lo tiene y cumple los filtros de los otros
- * campos (en el mismo campo se suman). `cardOf` agrupa por card: el grupo en
- * Productos, la colección en Colecciones. El panel oculta las que no están y
+ * campos (en el mismo campo se suman). El panel oculta las que no están y
  * muestra la cantidad al lado de cada una (decisiones.md, 2026-10-22 ·
  * Filtros que no aplican · Cantidad por opción).
  */
-function availableValues(groups, active, cardOf = (group) => group) {
+function availableValues(groups, active) {
   const available = {};
   for (const field of FILTER_FIELDS) {
     const others = { ...active };
@@ -153,7 +153,7 @@ function availableValues(groups, active, cardOf = (group) => group) {
         const value = variant.values[field];
         if (!hasValue(value) || !variantMatches(variant, others)) continue;
         if (!cards.has(value)) cards.set(value, new Set());
-        cards.get(value).add(cardOf(group));
+        cards.get(value).add(group);
       }
     }
     available[field] = Object.fromEntries([...cards].map(([value, set]) => [value, set.size]));
@@ -183,9 +183,6 @@ const finishRank = (name) => {
 };
 const byFinishOrder = (list) => list.map((finish, i) => [finish, i]).sort((a, b) => finishRank(a[0].name) - finishRank(b[0].name) || a[1] - b[1]).map(([finish]) => finish);
 const finishes = (group) => byFinishOrder(finishNames(group).map((name) => ({ name, src: finishImage(name, group.family) })));
-// Las cards de colección juntan los acabados de varios grupos: se repite solo
-// el que tiene el mismo nombre y la misma imagen.
-const uniqueFinishes = (list) => byFinishOrder([...new Map(list.map((finish) => [`${finish.name}|${finish.src}`, finish])).values()]);
 
 // Acabado de una variante (el primer campo de acabado con valor)
 const finishOf = (variant) => FINISH_FIELDS.map((field) => variant.values[field]).find(hasValue);
@@ -257,22 +254,6 @@ function productCard(group, variant = firstFinishVariant(group) ?? group.default
 
 const pick = (object = {}) => Object.fromEntries(Object.entries(object).filter(([, v]) => hasValue(v) && (!Array.isArray(v) || v.length)));
 
-function collectionCard(collection, groups) {
-  const applications = [...new Set(groups.map((g) => g.application).filter(Boolean))];
-  const images = collection.images ?? {};
-  return {
-    id: collection.id,
-    name: collection.name,
-    meta: applications.join(' · '),
-    finishes: uniqueFinishes(groups.flatMap(finishes)),
-    href: collectionHref(collection.id),
-    image: images.studio ?? null,
-    imageHover: images.context ?? null,
-    imageLit: images.studioOn ?? null,
-    imageHoverLit: images.contextOn ?? null,
-  };
-}
-
 // ── Listados ─────────────────────────────────────────────────────────
 /**
  * Listado de Productos: una card por grupo. category: { environment,
@@ -308,19 +289,6 @@ export async function listProducts({ filters, query, ...category } = {}) {
 /** Cuántas cards daría un listado con estos filtros (para "Ver N productos"). */
 export async function countProducts(options) {
   return (await listProducts(options)).count;
-}
-
-/** Listado de Colecciones: una card por colección con algún grupo que cumple. */
-export async function listCollections({ filters } = {}) {
-  const { collections, groups } = await loadCatalog();
-  const active = activeFilters(filters);
-  const cards = collections.flatMap((collection) => {
-    const own = groups.filter((g) => g.collection === collection.id);
-    if (!own.some((group) => matchingVariant(group, active))) return [];
-    return [collectionCard(collection, own)];
-  });
-  const scope = groups.filter((g) => g.collection);
-  return demoListing({ cards, count: cards.length, filters: filterRows(scope), available: availableValues(scope, active, (group) => group.collection) });
 }
 
 // ── Ficha de producto ────────────────────────────────────────────────
@@ -597,7 +565,8 @@ export async function getCollection(id) {
  * (p. ej. la potencia) y si van en una segunda línea.
  */
 function variantSummary(group) {
-  const number = (value) => Number.parseFloat(String(value).replace(',', '.'));
+  // Ignora un prefijo no numérico («x1» de los módulos)
+  const number = (value) => Number.parseFloat(String(value).replace(/^x/i, '').replace(',', '.'));
   return group.variantAttributes
     .filter((field) => attributeInfo(field).control !== 'swatches' && attributeInfo(field).summary !== false)
     .map((field) => {
@@ -724,9 +693,11 @@ const exactFirst = (items) => items.sort((a, b) => Number(a.typo) - Number(b.typ
 /**
  * Búsqueda por nombre, colección, aplicación o SKU: { results: [{ kind:
  * 'product' | 'collection', name, meta, href, image }], total }. Un resultado por grupo (meta: el SKU; si coincide
- * un SKU, ese) y uno por colección (meta: "Colección"), como search-dropdown.
+ * un SKU, ese) y uno por colección (meta: "Colección"), como search-dropdown. limit: productos;
+ * collectionLimit: colecciones, aparte, para que muchos productos no las dejen afuera. Las colecciones
+ * llevan a la navegación de sus productos (?collection=).
  */
-export async function searchProducts(query, { limit = 5 } = {}) {
+export async function searchProducts(query, { limit = 5, collectionLimit = 3 } = {}) {
   const words = queryWords(query);
   if (!words.length) return { results: [], total: 0 };
   const { groups, collections } = await loadCatalog();
@@ -741,13 +712,18 @@ export async function searchProducts(query, { limit = 5 } = {}) {
   const found = exactFirst(
     collections.flatMap((c) => {
       const match = matchWords(c.name, words);
-      return match ? [{ kind: 'collection', name: c.name, meta: 'Colección', href: collectionHref(c.id), image: c.images?.studio ?? null, typo: match === 'typo' }] : [];
+      return match ? [{ kind: 'collection', name: c.name, meta: 'Colección', href: categoryHref({ collection: c.id }), image: c.images?.studio ?? null, typo: match === 'typo' }] : [];
     }),
   );
-  const results = [...products, ...found].map(({ typo, ...result }) => result);
+  // Cada tipo con su propio límite: con muchos productos que coinciden («dao»: 6) las
+  // colecciones no quedan afuera. El sheet las muestra en su propio grupo.
+  // Las colecciones con errores de tipeo solo si ninguna coincide tal cual («dao» → Daö, no Döuli)
+  const exactCollections = found.filter((c) => !c.typo);
+  const collectionsShown = (exactCollections.length ? exactCollections : found).slice(0, collectionLimit);
+  const results = [...products.slice(0, limit), ...collectionsShown].map(({ typo, ...result }) => result);
   // total: solo productos (luminarias). «Ver todos los resultados (N)» lleva al
   // listado de Productos, que no incluye colecciones.
-  return { results: results.slice(0, limit), total: products.length };
+  return { results, total: products.length };
 }
 
 /** URL con todos los resultados: el listado de Productos con ?q= (docs/urls.md). */
@@ -799,7 +775,7 @@ export async function listCompareCandidates({ query = '', selected = [] } = {}) 
 /**
  * Árbol único para mega-menu, menú mobile y catalog-nav (decisiones.md,
  * 2026-10-02 · Navegación), con las secciones del mega-menu de Figma (841:2282):
- *   { sections: { exterior, interior, lamparas, artefactos }, collections, allCollections }
+ *   { sections: { exterior, interior, lamparas, artefactos }, collections }
  *   sección: { id, label, href, all: { label, href }, links: [{ label, href, count, image, thumb }] }
  *   colección: { label, meta, href, eyebrow, image, thumb }
  * Exterior e Interior: aplicaciones de luminarias + Artefactos y Lámparas de
@@ -866,7 +842,8 @@ export async function getNavigation() {
     return {
       label: c.name,
       meta: [...new Set(own.map((g) => g.application ?? g.productType).filter(Boolean))].join(' · '),
-      href: collectionHref(c.id),
+      // A la navegación de productos de la colección (como el sidebar), no a su página
+      href: categoryHref({ collection: c.id }),
       eyebrow: environments.length ? `Línea ${environments.join(' · ')}` : '',
       // Colecciones: solo fotos de contexto, nunca de estudio (pedido de Lau, 2026-10-20)
       ...preview([images.menu, ...productPhotos(own, { studio: false })]),
@@ -881,7 +858,6 @@ export async function getNavigation() {
       artefactos: typeSection('Artefacto', 'Artefactos', 'Ver todos los artefactos'),
     },
     collections: collections.map(collectionLink).filter((c) => c.meta),
-    allCollections: { label: 'Ver todas las colecciones', href: '/arq/productos?view=colecciones' },
   };
 }
 

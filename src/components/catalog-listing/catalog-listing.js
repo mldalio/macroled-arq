@@ -1,7 +1,7 @@
 // catalog-listing · contenedor de página (Final: Productos 1153:5679 · 1155:5837;
 // filtros 1199:20568)
 //
-// Listado de Productos (y de Colecciones con unit="colecciones"): navegación
+// Listado de Productos: navegación
 // de categorías, catalog-toolbar, grilla de product-card, filter-panel y
 // compare-bar. Pide los datos a src/data/catalog.js, como el navbar
 // (decisiones.md, 2026-10-02 · Listados y · Productos).
@@ -21,17 +21,17 @@
 //   2026-10-05 · Búsqueda en Productos). Se combina con categoría y filtros.
 // - Filtros técnicos: las filas del filter-panel salen de los datos de la
 //   categoría. "Ver N" aplica (arq:apply) y la grilla se vuelve a armar.
-// - Comparar (solo Productos): "Comparar" de cada card suma o saca el producto
+// - Comparar: "Comparar" de cada card suma o saca el producto
 //   de la compare-bar (hasta 3; la selección se guarda en arq:compare). El
 //   lugar vacío (+) de la barra abre compare-picker para agregar desde ahí.
-//   La barra se ve también en «Todas las colecciones» (las cards de colección
-//   no tienen Comparar, pero la selección sigue y se puede agregar con el +).
-// - Iluminar: lo resuelve catalog-toolbar (data-arq-theme en <html>). Solo en
-//   Productos: en «Todas las colecciones» el toggle no se muestra.
+// - Iluminar: lo resuelve catalog-toolbar (data-arq-theme en <html>).
+// - No hay vista «Todas las colecciones» (se sacó el 2026-10-23: docs/archivo/
+//   todas-las-colecciones.md). Una colección se ve desde el catalog-nav
+//   (?collection=) y desde el mega-menu.
 
 import { ArqElement } from '../../base/arq-element.js';
-import { listProducts, listCollections, listCompareCandidates, getCatalogNav } from '../../data/catalog.js';
-import { handOffTheme, setBrowserBar } from '../../base/theme.js';
+import { listProducts, listCompareCandidates, getCatalogNav } from '../../data/catalog.js';
+import { handOffTheme } from '../../base/theme.js';
 import '../catalog-toolbar/catalog-toolbar.js';
 import '../filter-panel/filter-panel.js';
 import '../filter-row/filter-row.js';
@@ -48,17 +48,11 @@ const LISTING_DESKTOP = matchMedia('(min-width: 1024px)');
 const LISTING_WIDE = matchMedia('(min-width: 1920px)');
 const ENTER_STAGGERED = 8; // cards con escalón en la entrada; el resto entra con la octava
 
-const TEXT = {
-  productos: { loading: 'Cargando productos…', empty: 'No hay productos con estos filtros.', error: 'No se pudieron cargar los productos. Probá de nuevo en unos minutos.' },
-  colecciones: { loading: 'Cargando colecciones…', empty: 'No hay colecciones con estos filtros.', error: 'No se pudieron cargar las colecciones. Probá de nuevo en unos minutos.' },
-};
+const TEXT = { loading: 'Cargando productos…', empty: 'No hay productos con estos filtros.', error: 'No se pudieron cargar los productos. Probá de nuevo en unos minutos.' };
 
 class ArqCatalogListing extends ArqElement {
   static tag = 'arq-catalog-listing';
   static styles = css;
-  static properties = {
-    unit: { type: String, values: ['productos', 'colecciones'], default: 'productos' },
-  };
   static template =
     `<div class="layout">` +
     `<div class="nav"><slot name="nav"></slot></div>` +
@@ -87,9 +81,6 @@ class ArqCatalogListing extends ArqElement {
   #htmlDescription = null; // bajada del HTML, ídem
 
   setup() {
-    // Productos y Colecciones comparten el mismo embed. "Todas las
-    // colecciones" cambia solamente la vista del listado.
-    if (new URLSearchParams(location.search).get('view') === 'colecciones') this.unit = 'colecciones';
     const root = this.shadowRoot;
     this.#category = categoryFromUrl();
     this.#query = new URLSearchParams(location.search).get('q')?.trim() ?? '';
@@ -170,7 +161,7 @@ class ArqCatalogListing extends ArqElement {
       const data = this.#cards.get(card);
       if (!data) return;
       Object.assign(data, { sku: event.detail.sku ?? data.sku, href: event.detail.href, image: event.detail.image });
-      if (this.unit === 'productos') card.compared = bar.has(data.sku);
+      card.compared = bar.has(data.sku);
     });
     bar.addEventListener('arq:compare-change', () => {
       this.#syncCompared();
@@ -205,6 +196,8 @@ class ArqCatalogListing extends ArqElement {
   #onNavClick = (event) => {
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     const item = event.target.closest?.('arq-catalog-nav-item, arq-breadcrumb-item:not([current])');
+    // Un nivel con data-arq-menu abre el menú del navbar (arq-navbar): no cambia el listado
+    if (item?.hasAttribute('data-arq-menu')) return;
     const href = item?.getAttribute('href') ?? item?.href;
     if (!href) return;
     const url = new URL(href, location.href);
@@ -240,18 +233,16 @@ class ArqCatalogListing extends ArqElement {
     }
   }
 
-  // Relee la URL (categoría, búsqueda, vista) y recarga solo el listado. El
+  // Relee la URL (categoría y búsqueda) y recarga solo el listado. El
   // scroll queda donde está la persona.
   #goTo() {
     const params = new URLSearchParams(location.search);
-    const unit = params.get('view') === 'colecciones' ? 'colecciones' : 'productos';
     this.#category = categoryFromUrl();
     this.#query = params.get('q')?.trim() ?? '';
     this.#filters = {};
     this.shadowRoot.querySelector('arq-filter-panel').clear();
     this.#markNav();
-    if (this.unit !== unit) this.unit = unit; // update() recarga
-    else this.#load();
+    this.#load();
   }
 
   #spaceTimer = 0;
@@ -275,26 +266,15 @@ class ArqCatalogListing extends ArqElement {
     }, leaving);
   }
 
-  update(changed) {
-    if (!changed.has('unit')) return;
-    const root = this.shadowRoot;
-    root.querySelector('.toolbar').unit = this.unit;
-    // «Todas las colecciones» no tiene Iluminar: sin el toggle, y si venía
-    // iluminado de Productos (cambio de vista sin recarga) vuelve a Light.
-    const iluminar = this.unit === 'productos';
-    root.querySelector('.toolbar').showIluminar = iluminar;
-    if (!iluminar && document.documentElement.getAttribute('data-arq-theme') === 'dark') {
-      document.documentElement.removeAttribute('data-arq-theme');
-      setBrowserBar(false);
-    }
-    root.querySelector('arq-filter-panel').unit = this.unit;
-    if (this.#query && this.unit === 'productos') this.#titleFromQuery();
+  // Una sola vez, al conectarse (el componente no tiene props): carga el listado.
+  update() {
+    if (this.#query) this.#titleFromQuery();
     this.#load({ rows: true });
   }
 
   async #load({ rows = false } = {}) {
     const request = ++this.#request;
-    const text = TEXT[this.unit] ?? TEXT.productos;
+    const text = TEXT;
     this.setAttribute('aria-busy', 'true');
     // Primera carga (todavía sin cards): cards de carga en lugar de la grilla.
     // Después, otra categoría o filtros atenúan la grilla que sigue a la vista.
@@ -319,11 +299,11 @@ class ArqCatalogListing extends ArqElement {
     if (rows) this.#renderRows(result.filters);
     toolbar.count = result.count;
     this.#render(result.cards);
-    this.#status(result.count ? '' : this.#query && this.unit === 'productos' ? `No encontramos productos para «${this.#query}».` : text.empty);
+    this.#status(result.count ? '' : this.#query ? `No encontramos productos para «${this.#query}».` : text.empty);
   }
 
   #list(filters) {
-    return this.unit === 'colecciones' ? listCollections({ filters }) : listProducts({ ...this.#category, query: this.#query, filters });
+    return listProducts({ ...this.#category, query: this.#query, filters });
   }
 
   // "Ver N productos" mientras se marcan filtros (el listado no cambia). Las
@@ -366,11 +346,10 @@ class ArqCatalogListing extends ArqElement {
     const grid = this.shadowRoot.querySelector('.grid');
     if (grid.querySelector('[loading]')) return;
     const tracks = getComputedStyle(grid.shadowRoot.querySelector('.grid')).gridTemplateColumns.split(' ').filter(Boolean);
-    const compare = this.unit === 'productos';
     const cards = Array.from({ length: Math.max(tracks.length, 1) * 2 }, () => {
       const card = document.createElement('arq-product-card');
       card.loading = true;
-      card.showCompare = compare;
+      card.showCompare = true;
       return card;
     });
     grid.replaceChildren(...cards);
@@ -386,7 +365,6 @@ class ArqCatalogListing extends ArqElement {
   }
 
   #render(cards) {
-    const compare = this.unit === 'productos';
     // Si las cards de carga ya se ven, las cards ocupan su lugar sin la
     // entrada (con el fundido desde 0 el gris bajaba a blanco y volvía): lo
     // que aparece es la foto (fundido de product-card). Si todavía no se
@@ -394,39 +372,31 @@ class ArqCatalogListing extends ArqElement {
     const skeleton = this.shadowRoot.querySelector('.grid > [loading]');
     const settled = Boolean(skeleton) && Number.parseFloat(getComputedStyle(skeleton).opacity) > 0;
     this.#cards = new Map(cards.map((data, index) => {
-      const card = this.#card(data, compare);
+      const card = this.#card(data);
       // Escalón de la entrada (catalog-listing.css): solo las 8 primeras
       card.style.setProperty('--enter-index', String(Math.min(index, ENTER_STAGGERED)));
       card.classList.toggle('settled', settled);
       return [card, data];
     }));
     this.shadowRoot.querySelector('.grid').replaceChildren(...this.#cards.keys());
-    if (compare) this.#syncCompared();
+    this.#syncCompared();
   }
 
-  #card(data, compare) {
+  #card(data) {
     const card = document.createElement('arq-product-card');
     card.href = data.href;
     card.image = data.image;
     card.imageHover = data.imageHover;
     card.imageLit = data.imageLit;
     card.imageHoverLit = data.imageHoverLit;
-    card.showCompare = compare;
+    card.showCompare = true;
     // <h2>: en el listado las cards van directo debajo del <h1> del page-header
     // (sin section-header en el medio), así no se saltea un nivel.
     const title = document.createElement('h2');
     title.slot = 'name';
     title.textContent = data.name;
     card.append(title);
-    // Acabados en los dos listados (Figma 1153:5679 y 1160:6116); la meta,
-    // solo en Colecciones (aplicaciones de la colección).
     appendFinishes(card, data.finishes);
-    if (!compare && data.meta) {
-      const meta = document.createElement('span');
-      meta.slot = 'meta';
-      meta.textContent = data.meta;
-      card.append(meta);
-    }
     return card;
   }
 
@@ -503,7 +473,7 @@ class ArqCatalogListing extends ArqElement {
     this.#titleFromNav(current);
     this.#syncPanelCategories(nav);
     const header = document.querySelector('arq-page-header');
-    if (header) header.showDescription = this.unit !== 'colecciones';
+    if (header) header.showDescription = true;
   }
 
   // El panel en Mobile y Tablet reutiliza los grupos y enlaces del HTML del
@@ -539,10 +509,11 @@ class ArqCatalogListing extends ArqElement {
   // del HTML (Productos).
   #titleFromNav(item) {
     const group = item?.closest('arq-catalog-nav-group');
-    const firstItem = group?.querySelector(':scope > arq-catalog-nav-item');
     // El primer link de cada grupo es su vista completa (Todo interior,
-    // Todo exterior, Lámparas y artefactos o Todas las colecciones). Las
-    // subcategorías sí pasan a ser el título de la página.
+    // Todo exterior o Lámparas y artefactos). Las subcategorías sí pasan a ser
+    // el título de la página. Colecciones no tiene vista completa (se sacó
+    // «Todas las colecciones»): todos sus ítems son colecciones y llevan su nombre.
+    const firstItem = group?.dataset.arqNav === 'colecciones' ? null : group?.querySelector(':scope > arq-catalog-nav-item');
     const groupLabel = group?.querySelector('[slot="label"]')?.textContent.trim();
     const sub = item && item !== firstItem;
     const label = sub ? item.textContent.trim() : groupLabel;
@@ -555,7 +526,7 @@ class ArqCatalogListing extends ArqElement {
       this.#htmlDescription ??= description.textContent;
       description.textContent = (label && group.dataset.arqDescription) || this.#htmlDescription;
     }
-    if (!label && this.#query && this.unit === 'productos') return this.#titleFromQuery();
+    if (!label && this.#query) return this.#titleFromQuery();
     if (title) {
       this.#htmlTitle ??= title.textContent;
       title.textContent = label || this.#htmlTitle;
@@ -564,7 +535,11 @@ class ArqCatalogListing extends ArqElement {
     // Breadcrumb (Levels 3 · 2): Inicio / Productos sin categoría; Inicio /
     // Productos / grupo en su vista completa; Inicio / grupo / subcategoría.
     if (!label) this.#syncBreadcrumb([]);
-    else if (sub) this.#syncBreadcrumb([{ label: groupLabel, href: firstItem.getAttribute('href') }, { label }]);
+    else if (sub) {
+      // Sin vista completa (Colecciones), el nivel del grupo abre el menú del navbar en su pestaña
+      const groupCrumb = firstItem ? { label: groupLabel, href: firstItem.getAttribute('href') } : { label: groupLabel, href: location.pathname, menu: group.dataset.arqNav };
+      this.#syncBreadcrumb([groupCrumb, { label }]);
+    }
     else this.#syncBreadcrumb([{ label: 'Productos', href: location.pathname }, { label }]);
   }
 
@@ -578,12 +553,13 @@ class ArqCatalogListing extends ArqElement {
     this.#htmlCrumbs ??= [...breadcrumb.children].slice(1);
     const [home] = breadcrumb.children;
     const items = crumbs.length
-      ? crumbs.map(({ label, href }, index) => {
+      ? crumbs.map(({ label, href, menu }, index) => {
         const item = document.createElement('arq-breadcrumb-item');
         const last = index === crumbs.length - 1 && !trail;
         if (last) item.current = true;
         else {
           item.href = href;
+          if (menu) item.dataset.arqMenu = menu;
           item.showSeparator = true;
         }
         item.textContent = label;

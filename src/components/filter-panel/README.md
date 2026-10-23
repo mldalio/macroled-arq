@@ -1,6 +1,6 @@
 # filter-panel · `<arq-filter-panel>`
 
-Panel de filtros técnicos de Productos y Colecciones. Se abre desde el botón Filtrar de catalog-toolbar. Desktop: panel lateral derecho de `layout/filter-panel` sobre el scrim. Mobile: pantalla completa, sin scrim.
+Panel de filtros técnicos de Productos. Se abre desde el botón Filtrar de catalog-toolbar. Desktop: panel lateral derecho de `layout/filter-panel` sobre el scrim. Mobile: pantalla completa, sin scrim.
 
 - Figma: [1225-13576](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1225-13576) · ficha `doc/filter-panel` (`1433:2483`)
 
@@ -21,7 +21,7 @@ panel.addEventListener('arq:filters', (e) => (panel.count = contar(e.detail.filt
 panel.addEventListener('arq:apply', (e) => aplicar(e.detail.filters));
 ```
 
-En Productos y Colecciones, en Mobile y Tablet (hasta 1023 px), `show-categories` agrega las tabs `arq-tab` Características y Categorías. El listado aporta un `<nav slot="categories">` con `arq-catalog-nav-group` y `arq-catalog-nav-item`; el grupo actual aparece abierto. Al abrir el panel se selecciona Características. En Categorías, los enlaces navegan directamente y las acciones de filtros técnicos quedan ocultas. En Desktop el panel no muestra las tabs.
+En Productos, en Mobile y Tablet (hasta 1023 px), `show-categories` agrega las tabs `arq-tab` Características y Categorías. El listado aporta un `<nav slot="categories">` con `arq-catalog-nav-group` y `arq-catalog-nav-item`; el grupo actual aparece abierto. Al abrir el panel se selecciona Características. En Categorías, los enlaces navegan directamente y las acciones de filtros técnicos quedan ocultas. En Desktop el panel no muestra las tabs.
 
 ## Props
 
@@ -32,7 +32,7 @@ En Productos y Colecciones, en Mobile y Tablet (hasta 1023 px), `show-categories
 | Show applied | — | — | Los filter-chip salen de los checkbox marcados. Sin filtros no se muestran |
 | — | `open` | `open` | booleano. Mejor `show()` y `close()` |
 | — (resultado) | `count` | `count` | Lo calcula la página: "Ver 4 productos". Sin valor: "Ver productos" |
-| — | `unit` | `unit` | `productos` · `colecciones` ("Ver 1 colección") · `variantes` (glosario de la ficha). Por defecto `productos` |
+| — | `unit` | `unit` | `productos` · `variantes` (glosario de la ficha). Por defecto `productos` |
 | — (filas) | slot por defecto | — | `arq-filter-row` |
 | Breakpoint | — | — | Media query: hasta 767 px es Mobile |
 

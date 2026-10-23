@@ -2,7 +2,7 @@
 
 En Desktop el panel no lleva padding lateral. Al cargar, si la URL selecciona una categoría, abre únicamente su grupo; las demás secciones quedan cerradas. Después, abrir o cerrar un grupo no cambia el listado ni cierra los demás: el listado se actualiza recién al elegir una subcategoría, y la navegación queda como la dejó la persona.
 
-Navegación de categorías de Productos y Colecciones. Un solo componente para Desktop y Mobile: incluye catalog-nav-mobile y catalog-nav-trigger, así cada link está una sola vez en el HTML (decisión 2026-10-02 · catalog-nav).
+Navegación de categorías de Productos. Un solo componente para Desktop y Mobile: incluye catalog-nav-mobile y catalog-nav-trigger, así cada link está una sola vez en el HTML (decisión 2026-10-02 · catalog-nav).
 
 - Figma: [1035-2411](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1035-2411) (catalog-nav) · [1207-3314](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1207-3314) (catalog-nav-mobile) · [1215-3337](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1215-3337) (catalog-nav-trigger)
 - Fichas `doc/catalog-nav` (`1426:1839`), `doc/catalog-nav-mobile` (`1427:2053`) y `doc/catalog-nav-trigger` (`1427:2306`)

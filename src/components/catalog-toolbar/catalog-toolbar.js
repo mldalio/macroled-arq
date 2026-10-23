@@ -1,12 +1,12 @@
 // catalog-toolbar · Figma 1244:4058 · ficha doc/catalog-toolbar (1427:2499)
 //
-// Barra sobre la grilla de Productos y Colecciones: cantidad de resultados,
+// Barra sobre la grilla de Productos: cantidad de resultados,
 // toggle Iluminar, divider vertical y botón Filtrar.
 //
 //   <arq-catalog-toolbar count="11" unit="productos" for="filtros" show-iluminar></arq-catalog-toolbar>
 //   <arq-filter-panel id="filtros">…</arq-filter-panel>
 //
-// - Count: número + sustantivo ("1 producto", "10 colecciones"), en un aria-live
+// - Count: número + sustantivo ("1 producto", "11 productos"), en un aria-live
 //   para que se anuncie al filtrar. Lo actualiza la página.
 // - Filtrar: con for (id de un arq-filter-panel) abre el panel y, cuando el panel
 //   aplica, muestra la cantidad de filtros (Show count) y pasa a icon/filter-off.
@@ -23,7 +23,7 @@ import '../divider/divider.js';
 import '../toggle/toggle.js';
 import css from './catalog-toolbar.css?inline';
 
-const UNITS = { productos: ['producto', 'productos'], colecciones: ['colección', 'colecciones'] };
+const UNITS = { productos: ['producto', 'productos'] };
 const NUMBER = new Intl.NumberFormat('es-AR'); // «1.500 productos», como «Ver N» del filter-panel
 
 class ArqCatalogToolbar extends ArqElement {
@@ -31,7 +31,7 @@ class ArqCatalogToolbar extends ArqElement {
   static styles = css;
   static properties = {
     count: { type: Number }, // Count (número)
-    unit: { type: String, values: ['productos', 'colecciones'], default: 'productos' },
+    unit: { type: String, values: ['productos'], default: 'productos' },
     showIluminar: { type: Boolean }, // Show iluminar
     stuck: { type: Boolean }, // solo de código: pegada debajo del navbar (sin línea superior)
     for: { type: String }, // id del arq-filter-panel

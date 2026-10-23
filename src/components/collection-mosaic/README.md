@@ -6,10 +6,10 @@ Mosaico de colecciones de Home v2 (frame 2306:23088): Kanu alta a la izquierda; 
 
 ```html
 <arq-collection-mosaic>
-  <arq-collection-tile slot="primary" href="/arq/coleccion/kanu">…</arq-collection-tile>
-  <arq-collection-tile slot="wide" href="/arq/coleccion/douli">…</arq-collection-tile>
-  <arq-collection-tile slot="stack" href="/arq/coleccion/douli">…</arq-collection-tile>
-  <arq-collection-tile slot="stack" href="/arq/coleccion/sento">…</arq-collection-tile>
+  <arq-collection-tile slot="primary" href="/arq/productos?collection=kanu">…</arq-collection-tile>
+  <arq-collection-tile slot="wide" href="/arq/productos?collection=douli">…</arq-collection-tile>
+  <arq-collection-tile slot="stack" href="/arq/productos?collection=douli">…</arq-collection-tile>
+  <arq-collection-tile slot="stack" href="/arq/productos?collection=sento">…</arq-collection-tile>
 </arq-collection-mosaic>
 ```
 

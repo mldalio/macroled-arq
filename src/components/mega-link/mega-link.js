@@ -3,7 +3,7 @@
 // Link del mega-menu (desktop) y del submenú de Productos (navbar mobile).
 //
 //   <arq-mega-link href="/arq/productos?…" show-arrow>Jardín</arq-mega-link>
-//   <arq-mega-link href="/arq/coleccion/kanu" show-arrow>Kanu<span slot="meta">Jardín · Pared</span></arq-mega-link>
+//   <arq-mega-link href="/arq/productos?collection=kanu" show-arrow>Kanu<span slot="meta">Jardín · Pared</span></arq-mega-link>
 //   <arq-mega-link type="group">Interior
 //     <a slot="links" href="…">Embutir</a>
 //     <arq-button slot="links" type="underline" show-underline href="…">Ver todo</arq-button>

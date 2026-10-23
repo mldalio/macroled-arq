@@ -4,7 +4,7 @@
 // opcional. Toda la tarjeta es el link. El <h3> llega por slot. En hover
 // aparece la bajada (description, hidden en el Default de Figma).
 //
-//   <arq-collection-tile href="/arq/coleccion/kanu" featured>
+//   <arq-collection-tile href="/arq/productos?collection=kanu" featured>
 //     <img slot="image" src="…" alt="" loading="lazy">
 //     <span slot="label">Línea exterior</span>
 //     <h3 slot="name">Kanu</h3>

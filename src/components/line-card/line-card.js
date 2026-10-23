@@ -5,7 +5,7 @@
 // no son clickeables. No confundir con category-card (toda la tarjeta lleva
 // al listado) ni family-card (ficha).
 //
-//   <arq-line-card href="/arq/coleccion/douli">
+//   <arq-line-card href="/arq/productos?collection=douli">
 //     <img slot="image" src="…" alt="" loading="lazy">
 //     <span slot="label">Línea interior</span>
 //     <h3 slot="name">Douli</h3>

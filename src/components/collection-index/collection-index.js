@@ -3,11 +3,11 @@
 // los tokens de Arq (sin trama de fondo).
 //
 //   <arq-collection-index>
-//     <a href="/arq/coleccion/kanu">
+//     <a href="/arq/productos?collection=kanu">
 //       <img src="…" alt="…">
 //       Kanu
 //     </a>
-//     <arq-button slot="action" type="outline" href="/arq/productos?view=colecciones">Ver todo</arq-button>
+//     <arq-button slot="action" type="outline" href="/arq/productos" data-arq-menu="colecciones">Ver todo</arq-button>
 //   </arq-collection-index>
 //
 // Pasar el mouse (o enfocar) un nombre muestra su foto. El primero arranca
