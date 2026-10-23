@@ -925,7 +925,6 @@
             </arq-catalog-nav-group>
             <arq-catalog-nav-group>
               <span slot="label">Colecciones</span>
-              <arq-catalog-nav-item href="#demo-catalog-nav">Todas las colecciones</arq-catalog-nav-item>
               <arq-catalog-nav-item href="#demo-catalog-nav">Kanu</arq-catalog-nav-item>
               <arq-catalog-nav-item href="#demo-catalog-nav">Hoshi</arq-catalog-nav-item>
               <arq-catalog-nav-item href="#demo-catalog-nav">Nombre de colección largo que ocupa dos líneas en el sidebar</arq-catalog-nav-item>
@@ -954,8 +953,7 @@
         <h2 id="demo-catalog-toolbar" class="demo-heading role-label">catalog-toolbar · &lt;arq-catalog-toolbar&gt;</h2>
         <p class="demo-note role-body-sm">Figma 1244:4058. Productos: Filtrar abre el panel de prueba de filter-panel (for) y, al aplicar, muestra la cantidad de filtros y pasa a icon/filter-off. Iluminar pasa toda la página a Dark y lo recuerda (arq:theme): recargá para ver que vuelve igual. Colecciones sin Iluminar; 1 producto.</p>
         <arq-catalog-toolbar count="11" unit="productos" for="demo-panel-productos" show-iluminar></arq-catalog-toolbar>
-        <h3 class="demo-subheading role-body-sm">Colecciones (sin Iluminar) · 1 producto</h3>
-        <arq-catalog-toolbar count="10" unit="colecciones"></arq-catalog-toolbar>
+        <h3 class="demo-subheading role-body-sm">1 producto · con 3 filtros aplicados</h3>
         <arq-catalog-toolbar count="1" unit="productos" filter-count="3"></arq-catalog-toolbar>
         <div class="demo-dark" data-arq-theme="dark">
           <arq-catalog-toolbar count="11" unit="productos" filter-count="2"></arq-catalog-toolbar>
@@ -1209,7 +1207,7 @@
         <p class="demo-note role-body-sm">Figma 1225:13576. Diálogo modal: Desktop lateral de layout/filter-panel sobre el scrim; Mobile (390) pantalla completa. Summary y chips salen de lo marcado. «Ver N» aplica y cierra; la X, el scrim o Esc descartan los cambios. El número es de ejemplo (lo calcula la página).</p>
         <div class="demo-row">
           <arq-button type="outline" data-demo-filter-open="demo-panel-productos">Filtrar (Productos)</arq-button>
-          <arq-button type="outline" data-demo-filter-open="demo-panel-vacio">Filtrar (sin filtros, Colecciones)</arq-button>
+          <arq-button type="outline" data-demo-filter-open="demo-panel-vacio">Filtrar (sin filtros)</arq-button>
         </div>
         <p class="demo-note role-body-sm" data-demo-filter-log="demo-panel-productos">arq:apply → (todavía nada)</p>
         <arq-filter-panel id="demo-panel-productos" show-categories>
@@ -1248,7 +1246,7 @@
             <arq-checkbox size="large" show-label name="color" value="blanco">Blanco</arq-checkbox>
           </arq-filter-row>
         </arq-filter-panel>
-        <arq-filter-panel id="demo-panel-vacio" unit="colecciones">
+        <arq-filter-panel id="demo-panel-vacio">
           <h2 slot="title">Filtrar</h2>
           <arq-filter-row>
             <span slot="label">Aplicación</span>
@@ -2547,9 +2545,9 @@
           </arq-section>
         </div>
 
-        <p class="demo-subheading role-body-sm">arq-catalog-listing unit="colecciones" (sin nav ni Comparar; con meta). Productos completo, con categoría, filtros, comparar e Iluminar: <a href="/demo/productos.html">demo/productos.html</a> (y <a href="/demo/productos.html?environment=Exterior">?environment=Exterior</a>)</p>
+        <p class="demo-subheading role-body-sm">arq-catalog-listing (sin nav). Productos completo, con categoría, filtros, comparar e Iluminar: <a href="/demo/productos.html">demo/productos.html</a> (y <a href="/demo/productos.html?environment=Exterior">?environment=Exterior</a>)</p>
         <div class="demo-bleed demo-layout">
-          <arq-catalog-listing unit="colecciones">
+          <arq-catalog-listing>
             <h2 slot="filter-title">Filtrar</h2>
           </arq-catalog-listing>
         </div>

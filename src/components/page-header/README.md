@@ -33,7 +33,7 @@ Encabezado de la página: breadcrumb, título (el único `<h1>`) y bajada. Type=
 | Description | slot `description` | — | bajada de 1 o 2 líneas |
 | Type | `type` | `type` | `list` · `detail` (def. `list`) |
 | Show breadcrumb | `show-breadcrumb` + slot `breadcrumb` | `showBreadcrumb` | booleano. Un `<arq-breadcrumb>` con los niveles que correspondan a la página |
-| Show description | `show-description` | `showDescription` | booleano (Productos: sí · Colecciones: no) |
+| Show description | `show-description` | `showDescription` | booleano |
 | Show back | `show-back` + `back-href` + slot `back` | `showBack` · `backHref` | booleano, solo Detail. Label del link en el slot (por ejemplo "Volver a productos") |
 | Show action | `show-action` + slot `action` | `showAction` | booleano, solo Detail. Un `<arq-button>` (Filled, en Figma con `icon/download`) |
 | — | `title-style` | `titleStyle` | `display` · `heading-1` (def. `display`). Solo de código. `heading-1` es el de «Buscar archivos por producto» en Descargas; lo usa Catálogos |

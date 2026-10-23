@@ -5,7 +5,7 @@ Resultado de búsqueda de una **colección**, discreto: miniatura muy chica y no
 > **Componente de prueba: no existe en Figma** (TODO diseño).
 
 ```html
-<arq-search-collection href="/arq/coleccion/kanu" image="…" term="ka">Kanu</arq-search-collection>
+<arq-search-collection href="/arq/productos?collection=kanu" image="…" term="ka">Kanu</arq-search-collection>
 ```
 
 | Atributo / slot | Valores |

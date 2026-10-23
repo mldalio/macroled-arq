@@ -5,7 +5,7 @@ Tarjeta editorial de línea o colección para el Home: imagen, eyebrow, nombre, 
 - Figma: [1036-2490](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1036-2490) · ficha `doc/line-card` (`1452:6102`)
 
 ```html
-<arq-line-card href="/arq/coleccion/douli">
+<arq-line-card href="/arq/productos?collection=douli">
   <img slot="image" src="…" alt="" loading="lazy">
   <span slot="label">Línea interior</span>
   <h3 slot="name">Douli</h3>

@@ -23,7 +23,8 @@
 //   La prop images ({ pestaña: url }) pisa la foto inicial de cada pestaña.
 // - El panel no se abre ni se cierra solo: lo muestra el navbar (atributo
 //   hidden en el host). Al abrirlo, el navbar llama a reset(): vuelve a la
-//   primera pestaña y a su preview inicial.
+//   primera pestaña y a su preview inicial; con reset('colecciones') abre
+//   directo en esa pestaña.
 // - La línea inferior va solo debajo de las columnas: la foto llega al borde.
 
 import { ArqElement } from '../../base/arq-element.js';
@@ -93,8 +94,13 @@ class ArqMegaMenu extends ArqElement {
   }
 
   /** Al abrir: primera pestaña y su preview inicial (Por espacio → Colgante). */
-  reset() {
-    const first = this.shadowRoot.querySelector('arq-tab')?.value;
+  reset(tab) {
+    // tab: abrir directo en esa pestaña (un link de la página con data-arq-menu). Si el menú
+    // todavía no tiene datos queda pedida y se respeta cuando llegan; si ya los tiene y esa
+    // pestaña no existe, se ignora.
+    const tabs = [...this.shadowRoot.querySelectorAll('arq-tab')].map((t) => t.value);
+    const wanted = tab && TABS.some((t) => t.id === tab) && (!tabs.length || tabs.includes(tab)) ? tab : null;
+    const first = wanted ?? tabs[0];
     if (first && first !== this.tab) this.tab = first; // update() reinicia el preview
     else if (this.shadowRoot.querySelector('.tabs')) this.#resetPreview();
   }
@@ -193,9 +199,9 @@ class ArqMegaMenu extends ArqElement {
     );
   }
 
-  // Colecciones: el título es el link a todas (la misma línea al pasar el
-  // mouse) y los links van en cuatro columnas (con la bajada de
-  // aplicaciones; las primeras llevan uno más si no da justo).
+  // Colecciones: el título no es un link (no hay página de todas las colecciones)
+  // y los links van en cuatro columnas (con la bajada de aplicaciones; las
+  // primeras llevan uno más si no da justo).
   #collections(nav) {
     const list = nav?.collections ?? [];
     const base = Math.floor(list.length / COLLECTION_COLUMNS);
@@ -207,12 +213,8 @@ class ArqMegaMenu extends ArqElement {
       start += size;
       return items;
     });
-    const href = nav?.allCollections?.href ?? '';
-    const title = href
-      ? `<a class="title title-link role-heading-1" href="${esc(href)}"><span class="title-text">Colecciones</span></a>`
-      : `<p class="title role-heading-1">Colecciones</p>`;
     return (
-      title +
+      `<p class="title role-heading-1">Colecciones</p>` +
       `<div class="columns columns--collections">` +
       columns.map((items) => `<div class="links column">${items.map((c) => this.#link(c, c.eyebrow, c.meta)).join('')}</div>`).join('') +
       `</div>`

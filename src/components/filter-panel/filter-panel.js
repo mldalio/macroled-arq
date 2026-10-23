@@ -1,6 +1,6 @@
 // filter-panel · Figma 1225:13576 · ficha doc/filter-panel (1433:2483)
 //
-// Panel de filtros técnicos de Productos y Colecciones. Se abre desde el botón
+// Panel de filtros técnicos de Productos. Se abre desde el botón
 // Filtrar de catalog-toolbar. Desktop: panel lateral derecho de
 // layout/filter-panel sobre el scrim. Mobile: pantalla completa, sin scrim.
 //
@@ -42,7 +42,7 @@ import { SingleSelect } from '../../base/single-select.js';
 import { containScroll } from '../../base/scroll-lock.js';
 import css from './filter-panel.css?inline';
 
-const UNITS = { productos: ['producto', 'productos'], colecciones: ['colección', 'colecciones'], variantes: ['variante', 'variantes'] };
+const UNITS = { productos: ['producto', 'productos'], variantes: ['variante', 'variantes'] };
 const NUMBER = new Intl.NumberFormat('es-AR');
 
 class ArqFilterPanel extends ArqElement {
@@ -51,8 +51,8 @@ class ArqFilterPanel extends ArqElement {
   static properties = {
     open: { type: Boolean },
     count: { type: Number }, // resultado para "Ver N productos" (lo calcula la página)
-    unit: { type: String, values: ['productos', 'colecciones', 'variantes'], default: 'productos' },
-    showCategories: { type: Boolean }, // Productos y Colecciones, Mobile: tabs de características y categorías
+    unit: { type: String, values: ['productos', 'variantes'], default: 'productos' },
+    showCategories: { type: Boolean }, // Productos, Mobile: tabs de características y categorías
   };
   static template =
     `<dialog class="dialog" data-arq-theme="light">` +

@@ -4,7 +4,7 @@
 // nombre. Va en el grupo «Colecciones» del search-sheet (a la derecha en
 // Desktop); la jerarquía la llevan los productos.
 //
-//   <arq-search-collection href="/arq/coleccion/kanu" image="…" term="ka">Kanu</arq-search-collection>
+//   <arq-search-collection href="/arq/productos?collection=kanu" image="…" term="ka">Kanu</arq-search-collection>
 //
 // - Todo es un link (<a>). Miniatura cuadrada layout/search-thumb; sin imagen
 //   queda el recuadro gris (color/surface/subtle).

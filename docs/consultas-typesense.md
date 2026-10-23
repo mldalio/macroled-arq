@@ -15,7 +15,6 @@ Una consulta por pantalla, en lugar de un único catálogo con todos los documen
 | **Productos** | `filter_by: product_type:=Luminaria && is_group_default:=true` y solo los campos de la card |
 | Productos · colores de la card | Los SKU de Luminaria con solo `product_name` y `color_carcasa`, o un facet `color_carcasa` con `group_by=product_name` |
 | Productos · filtros del panel | Facets con `group_by=product_name` (cuentan grupos, no SKU). Requieren `facet: true` en esos campos y en `product_name` |
-| **Colecciones** (`?view=colecciones`) | `filter_by: product_type:=Colección`, solo con esa vista |
 | **Colección** (`/arq/coleccion/<id>`) | La colección y los productos de su familia |
 | **Ficha** | Las cards de «otras familias» todavía dependen del catálogo completo |
 | **Comparativa / PDF** | `sku:=[…]` (hasta 3), solo los campos técnicos de esos SKU |

@@ -5,7 +5,7 @@ Tarjeta de colección del mosaico de Home v2: foto, kicker, nombre y flecha. Tod
 - Figma: Home v2 `2063:29997` (y el símbolo de collection tile en `2030`)
 
 ```html
-<arq-collection-tile href="/arq/coleccion/kanu" featured>
+<arq-collection-tile href="/arq/productos?collection=kanu" featured>
   <img slot="image" src="…" alt="" loading="lazy">
   <span slot="label">Línea exterior</span>
   <h3 slot="name">Kanu</h3>

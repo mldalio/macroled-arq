@@ -54,7 +54,7 @@ import { SingleSelect } from '../../base/single-select.js';
 import { PhotoViewer,photoViewerTemplate } from '../../base/photo-viewer.js';
 import viewerCss from '../../base/photo-viewer.css?inline';
 import { animateThemeChange, refreshTheme, setBrowserBar, takeThemeHandoff, withoutThemeTransition } from '../../base/theme.js';
-import { getProduct, variantDetails, collectionHref, listCompareCandidates } from '../../data/catalog.js';
+import { getProduct, variantDetails, categoryHref, listCompareCandidates } from '../../data/catalog.js';
 import { attributeInfo } from '../../data/attributes.js';
 import { config } from '../../config.js';
 import { variantOptions, initialSelection, findVariant, choose } from '../../data/variants.js';
@@ -377,15 +377,18 @@ class ArqFichaProducto extends ArqElement {
     const root = this.shadowRoot;
     const crumbs = collection
       ? [
-          { label: 'Colecciones', href: '/arq/productos?view=colecciones' },
-          { label: collection.name, href: collectionHref(collection.id) },
+          // Sin página de todas las colecciones: este nivel abre el menú del navbar en su pestaña Colecciones
+          { label: 'Colecciones', href: '/arq/productos', menu: 'colecciones' },
+          // La colección lleva a la navegación de sus productos, como el menú y el sidebar
+          { label: collection.name, href: categoryHref({ collection: collection.id }) },
         ]
       : [{ label: 'Productos', href: '/arq/productos' }];
     root.querySelector('.breadcrumb').replaceChildren(
-      ...crumbs.map(({ label, href }) => {
+      ...crumbs.map(({ label, href, menu }) => {
         const item = document.createElement('arq-breadcrumb-item');
         item.theme = 'transparent'; // va sobre la foto
         item.href = href;
+        if (menu) item.dataset.arqMenu = menu;
         item.showSeparator = true;
         item.textContent = label;
         return item;
@@ -395,7 +398,7 @@ class ArqFichaProducto extends ArqElement {
     for (const link of root.querySelectorAll('.collection-link')) {
       link.hidden = !collection;
       if (!collection) continue;
-      link.href = collectionHref(collection.id);
+      link.href = categoryHref({ collection: collection.id }); // la navegación de sus productos
       link.textContent = `Ver colección ${collection.name}`;
     }
   }
@@ -853,7 +856,7 @@ class ArqFichaProducto extends ArqElement {
     const link = root.querySelector('.story-link');
     link.hidden = !collection;
     if (collection) {
-      link.href = collectionHref(collection.id);
+      link.href = categoryHref({ collection: collection.id }); // la navegación de sus productos
       link.textContent = `Ver colección ${collection.name}`;
     }
   }
