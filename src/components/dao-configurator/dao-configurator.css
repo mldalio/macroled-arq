@@ -1,0 +1,128 @@
+/* Configurador de Daö, dentro de la pestaña Configurador de la ficha.
+   Solo tokens semánticos. TODO (diseño): no está en Final; las fotos usan
+   ratio/landscape (5:4), el más cercano al 4:3 del demo. */
+
+:host {
+  display: block;
+  min-width: 0;
+  color: var(--arq-color-text-primary);
+}
+
+.status {
+  margin: 0;
+  color: var(--arq-color-text-secondary);
+}
+
+.status:empty {
+  position: absolute;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--arq-space-gap-3xl);
+  align-items: start;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xl-2xl);
+  min-width: 0;
+}
+
+.note {
+  margin: 0;
+  color: var(--arq-color-text-secondary);
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-lg);
+  min-width: 0;
+  padding: var(--arq-space-padding-lg);
+  background: var(--arq-color-surface-subtle);
+}
+
+.thumbs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--arq-space-gap-sm);
+  margin: 0;
+}
+
+.thumbs figure {
+  margin: 0;
+  min-width: 0;
+}
+
+.thumbs img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 5 / 4;
+  object-fit: contain;
+  background: var(--arq-color-surface-default);
+}
+
+.thumbs figcaption {
+  margin-top: var(--arq-space-gap-xs);
+  color: var(--arq-color-text-secondary);
+}
+
+.title {
+  margin: 0;
+}
+
+.specs {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--arq-space-gap-xs) var(--arq-space-gap-lg);
+  margin: 0;
+}
+
+.specs dt {
+  color: var(--arq-color-text-secondary);
+}
+
+.specs dd {
+  margin: 0;
+}
+
+.parts-title {
+  margin: 0;
+}
+
+.parts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.part {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--arq-space-gap-sm);
+  align-items: baseline;
+}
+
+.qty {
+  color: var(--arq-color-text-secondary);
+}
+
+.part-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-xs);
+  min-width: 0;
+}
+
+@media (max-width: 767px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

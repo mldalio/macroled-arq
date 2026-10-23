@@ -222,7 +222,8 @@
   border-top: 0;
 }
 
-.spec-tabs:not([hidden]) + .spec-panels .spec-panel[data-tab='commercial'] {
+.spec-tabs:not([hidden]) + .spec-panels .spec-panel[data-tab='commercial'],
+.spec-tabs:not([hidden]) + .spec-panels .spec-panel[data-tab='configurador'] {
   padding-top: var(--arq-space-gap-xl);
 }
 

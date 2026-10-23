@@ -1578,3 +1578,16 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - El fondo debajo de la barra al plegar (`.bar::after`) se muestra solo mientras se desliza (`.sliding`): apoyada sobre el footer, lo taparía.
 - **Mobile:** «Borrar todo» pasa de junto al título a debajo de «Comparar», centrado, a `space/gap/md`: por debajo de 375 px no entraba bien. `TODO` (diseño): pasarlo al set Mobile.
 - **Plegada (Open=False):** queda solo el título con el chevron; «Borrar todo» y «Comparar» se ocultan con la lista (antes, en Desktop, iban en la misma línea). `TODO` (diseño): pasarlo al set.
+
+## 2026-10-23 · Sin «Suscribite» arriba del menú
+
+- Pedido: sacar la parte de suscribirse del menú.
+- Se quitó `<arq-announcement-bar>` de la Home, Nosotros y Catálogos. El bloque de newsletter de la Home sigue. El componente queda en la demo.
+
+## 2026-10-23 · Ficha Daö: pestaña Configurador
+
+- Pedido: en las pestañas de la ficha (Especificaciones · Información comercial) sumar «Configurador», con el armado del demo `arq_nosotros/dao_config` (aro, módulos, terminación, cabezal, lámpara y frente).
+- Solo en los productos de la colección Daö. Los datos salen de Typesense (`src/data/dao-config.js`), no del CSV del demo. «Ver ficha» abre la ficha del SKU cuando el catálogo tiene ese grupo.
+- La pieza de la ficha abre elegida. En un cabezal (`DAO-C-B`) ese cabezal queda seleccionado y el aro, los módulos y el color son unos compatibles con él. Igual con una lámpara o un frente. Al cambiar de variante en la ficha, el configurador vuelve a esa pieza.
+- Frente: solo si la lámpara elegida trae `frentes_compatibles`. En `PAR11-C-5W-DIM-36G-WW` son `PAR11-C-FRENTE-B` y `PAR11-C-FRENTE-N`. Se eligen; abre el del color del aro.
+- Bornera y panal no se muestran: no tienen SKU en la base. `TODO` (diseño): la pestaña no está en Final.

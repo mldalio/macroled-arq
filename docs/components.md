@@ -10,7 +10,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | Componente | Etiqueta | Estado en código |
 | --- | --- | --- |
 | ✅ [accordion-item](#accordion-item) | `<arq-accordion-item>` | En código ([README](../src/components/accordion-item/README.md)) |
-| ✅ [announcement-bar](#announcement-bar) | `<arq-announcement-bar>` | En código ([README](../src/components/announcement-bar/README.md)). En la Home, Nosotros y Catálogos, antes del navbar |
+| ✅ [announcement-bar](#announcement-bar) | `<arq-announcement-bar>` | En código ([README](../src/components/announcement-bar/README.md)). No está en las páginas: se sacó de la Home, Nosotros y Catálogos |
 | ✅ [breadcrumb](#breadcrumb) | `<arq-breadcrumb>` | En código ([README](../src/components/breadcrumb/README.md)) |
 | ✅ [breadcrumb-item](#breadcrumb-item) | `<arq-breadcrumb-item>` | En código ([README](../src/components/breadcrumb-item/README.md)) |
 | ✅ [button](#button) | `<arq-button>` | En código ([README](../src/components/button/README.md)). Underline: el subrayado de hover se dibuja como el de nav-link (DESIGN.md §6 · Movimiento) |
@@ -121,7 +121,8 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ catalog-card | `<arq-catalog-card>` | Tapa de la página Catálogos: portada, título, ver y descargar ([README](../src/components/catalog-card/README.md)) |
 | ✅ coleccion | `<arq-coleccion>` | Página de colección: cards de sus productos, galería, texto + imagen y mosaico con flechas ([README](../src/components/coleccion/README.md)) |
 | ✅ form-contacto | `<arq-form-contacto>` | Contacto (v3): información por slot (fija al desplazar en Desktop), formulario con validación, honeypot y envío a n8n, y preguntas frecuentes opcionales por slot ([README](../src/components/form-contacto/README.md)) |
-| ✅ ficha-producto | `<arq-ficha-producto>` | Ficha de producto: hero con galería y configurador, descargas, especificaciones, descripción, glosario, inspiración y colección ([README](../src/components/ficha-producto/README.md)) |
+| ✅ ficha-producto | `<arq-ficha-producto>` | Ficha de producto: hero con galería y configurador, descargas, especificaciones, descripción, glosario, inspiración y colección. En Daö, la pestaña Configurador arma el producto ([README](../src/components/ficha-producto/README.md)) |
+| ✅ dao-configurator | `<arq-dao-configurator>` | Pestaña Configurador de la ficha Daö: aro, módulos, terminación, cabezal y lámpara, desde Typesense ([README](../src/components/dao-configurator/README.md)) |
 | ✅ descargas | `<arq-descargas>` | Página Descargas: «Buscar archivos por producto» con variants-table (todos los SKU, buscador) y el modal de descargas de cada fila ([README](../src/components/descargas/README.md)) |
 | ✅ compare-table | `<arq-compare-table>` | Tabla de la Comparativa: hasta 3 productos; arma adentro compare-group, compare-section-group y compare-row. «Solo diferencias» llega desde compare-header ([README](../src/components/compare-table/README.md)) |
 | ✅ comparativa | `<arq-comparativa>` | Página Comparativa: combina compare-header y compare-table con los SKU de `?sku=`, con datos del catálogo ([README](../src/components/comparativa/README.md)) |
@@ -152,7 +153,7 @@ Uso: bloques de especificaciones de la ficha (características lumínicas, eléc
 - Figma: [2780-8595](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2780-8595) · ficha `doc/announcement-bar` (`2781:13825`)
 - Propiedades: Breakpoint: Desktop · Mobile
 
-Línea fina arriba del navbar, en la Home, Nosotros y Catálogos, con un aviso y su link (hoy «Suscribite al newsletter», a la sección Newsletter de la Home). Siempre en modo Dark (fijado en cada variante): fondo color/surface/default y no cambia con Iluminar. Padding space/padding/2xs × layout/gutter; el link va centrado: button Type=Underline, Show underline=false (el subrayado aparece en hover), Show icon con icon/arrow-up-right en icon/sm y el label en role/body-sm (12/16). En hover el subrayado es de 1 px (border/default) y va más pegado al texto que en el resto de los button. Alto 30. Breakpoint: Desktop · Mobile (en Mobile, si el texto no entra, baja de línea). Al hacer scroll se va con la página y el navbar queda pegado arriba. En código: <arq-announcement-bar> con el button por slot (atributo compact del button para el texto de 12 y el ícono de 12).
+Línea fina arriba del navbar, con un aviso y su link (el ejemplo es «Suscribite al newsletter», a la sección Newsletter de la Home). No está en las páginas: se sacó de la Home, Nosotros y Catálogos (2026-10-23). Siempre en modo Dark (fijado en cada variante): fondo color/surface/default y no cambia con Iluminar. Padding space/padding/2xs × layout/gutter; el link va centrado: button Type=Underline, Show underline=false (el subrayado aparece en hover), Show icon con icon/arrow-up-right en icon/sm y el label en role/body-sm (12/16). En hover el subrayado es de 1 px (border/default) y va más pegado al texto que en el resto de los button. Alto 30. Breakpoint: Desktop · Mobile (en Mobile, si el texto no entra, baja de línea). Al hacer scroll se va con la página y el navbar queda pegado arriba. En código: <arq-announcement-bar> con el button por slot (atributo compact del button para el texto de 12 y el ícono de 12).
 
 ## breadcrumb
 
@@ -847,7 +848,7 @@ Selector de acabado por muestras (role=radiogroup): fila de swatch con gap space
 - Figma: [929-2287](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=929-2287)
 - Propiedades: Label; State: Default · Hover · Selected · Focus · Disabled
 
-Pestaña (role="tab"). Label role/body-regular en color/text/secondary; Selected (aria-selected="true") en role/body-medium y color/text/primary, con subrayado de 1 px (border/default) en color/border/strong. Padding inferior space/padding/sm-md. State: Default, Hover, Selected, Focus y Disabled. Se agrupan en un contenedor role="tablist" con separación space/gap/xl y una línea color/border/subtle debajo. Lo usan el mega menú de Productos y la ficha de producto (Especificaciones · Información comercial).
+Pestaña (role="tab"). Label role/body-regular en color/text/secondary; Selected (aria-selected="true") en role/body-medium y color/text/primary, con subrayado de 1 px (border/default) en color/border/strong. Padding inferior space/padding/sm-md. State: Default, Hover, Selected, Focus y Disabled. Se agrupan en un contenedor role="tablist" con separación space/gap/xl y una línea color/border/subtle debajo. Lo usan el mega menú de Productos y la ficha de producto (Especificaciones · Información comercial · Configurador en la colección Daö).
 
 ## toggle
 

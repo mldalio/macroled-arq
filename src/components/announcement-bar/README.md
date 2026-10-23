@@ -1,6 +1,6 @@
 # announcement-bar · `<arq-announcement-bar>`
 
-Línea fina arriba del navbar, en la Home, Nosotros y Catálogos, con un aviso y su link («Suscribite al newsletter»).
+Línea fina arriba del navbar, con un aviso y su link. Hoy no está en las páginas: se sacó «Suscribite al newsletter» de la Home, Nosotros y Catálogos (2026-10-23).
 
 - Figma: [2780-8595](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2780-8595) · ficha `doc/announcement-bar` (`2781:13825`)
 - Link: a la sección Newsletter de la Home (`/arq#newsletter`; el cta-block lleva `id="newsletter"`).

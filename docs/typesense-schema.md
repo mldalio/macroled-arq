@@ -64,6 +64,7 @@ Dónde se usa cada foto:
 - Facets: `familia`, `macrofamilia`, `subfamilia`, `potencia`, `temperatura_color`, `angulo_apertura`.
 - `grupo_producto` y `modelo` (opcionales, aún no están en la hoja): un nivel mayor de agrupación para productos con modelos (Daö y Mini Daö). `grupo_producto` es el `grupo_variantes` del modelo base en las filas de todos los modelos (`DAO-E` en las de `DAO-E` y `DAO-MINI-E`); `modelo`, «Estándar» o «Mini», y se suma a `variant_attributes`. Hoy lo completa `src/data/models.js` solo para Daö; una fila que ya trae `grupo_producto` no se toca (`docs/decisiones.md`, 2026-10-23 · Modelos de un producto).
 - `modulos`: cantidad de módulos (Daö: 1, 2 o 3). Es un selector de variante (`variant_attributes`: «color_carcasa, modulos»); en la ficha va como «Módulos».
+- Configurador de Daö (pestaña de la ficha): además de `familia`, `grupo_variantes`, `color_carcasa`, `modulos`, `tamanio` o `dimensiones`, `angulo_apertura`, `temperatura_color` y `multimagen_producto`, lee `categoria` (Aro, Cabezal, Accesorio), `cabezales_compatibles`, `lamparas_compatibles`, `frentes_compatibles` (SKU separados por coma), `orientacion` y `visto_en_cielorraso`.
 - `TODO` (índice): `grupo_variantes` no está indexado en Typesense (no se puede filtrar por él). El front pide el detalle de la ficha por lista de SKU, así que no hace falta hoy.
 
 ### Esquema y pendientes

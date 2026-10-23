@@ -73,6 +73,7 @@ import '../option-tile/option-tile.js';
 import '../swatch-picker/swatch-picker.js';
 import '../swatch/swatch.js';
 import '../tab/tab.js';
+import '../dao-configurator/dao-configurator.js';
 import '../accordion-item/accordion-item.js';
 import '../spec-list/spec-list.js';
 import '../spec-row/spec-row.js';
@@ -636,13 +637,17 @@ class ArqFichaProducto extends ArqElement {
     this.emit('variant', { sku: variant.sku });
   }
 
-  // Dos pestañas (tab, como el mega-menu): «Especificaciones» con un acordeón por
+  // Pestañas (tab, como el mega-menu): «Especificaciones» con un acordeón por
   // grupo (lumínicas, eléctricas, materiales e instalación) e «Información
-  // comercial» con su lista. Al cambiar de variante queda la pestaña elegida y
-  // abiertas las mismas secciones; la primera vez, las tres en Desktop y solo la
-  // primera (lumínicas) en Mobile. Una pestaña sin
-  // datos no se muestra (src/data/attributes.js).
+  // comercial» con su lista. En la colección Daö se suma «Configurador»
+  // (arq-dao-configurator): se crea una vez. El SKU de la ficha queda
+  // preseleccionado y, al cambiar de variante, vuelve a esa pieza. Al cambiar
+  // de variante queda la pestaña elegida y abiertas las mismas secciones; la
+  // primera vez, las tres en
+  // Desktop y solo la primera (lumínicas) en Mobile. Una pestaña sin datos
+  // no se muestra (src/data/attributes.js).
   #specTab = 'specs';
+  #daoConfigurator = null;
 
   #specList(section) {
     const list = document.createElement('arq-spec-list');
@@ -680,9 +685,11 @@ class ArqFichaProducto extends ArqElement {
     }
     const commercial = sections.find((section) => section.id === 'comercial');
 
+    const configurador = this.#product.collection?.id === 'dao' ? this.#configuratorPanel() : null;
     const tabs = [
       technical.length && { id: 'specs', label: 'Especificaciones', content: accordion },
       commercial && { id: 'commercial', label: commercial.label, content: this.#specList(commercial) },
+      configurador && { id: 'configurador', label: 'Configurador', content: configurador },
     ].filter(Boolean);
     if (!tabs.some((tab) => tab.id === this.#specTab)) this.#specTab = tabs[0]?.id;
 
@@ -711,6 +718,12 @@ class ArqFichaProducto extends ArqElement {
       }),
     );
     tablist.hidden = tabs.length < 2;
+  }
+
+  #configuratorPanel() {
+    if (!this.#daoConfigurator) this.#daoConfigurator = document.createElement('arq-dao-configurator');
+    if (this.#sku) this.#daoConfigurator.sku = this.#sku;
+    return this.#daoConfigurator;
   }
 
   #showSpecTab(id) {

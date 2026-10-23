@@ -9,9 +9,6 @@
   TODO (datos): «Producto 3/4/5» del frame son placeholders; el carrusel lista grupos reales.
 -->
 <arq-preloader open page></arq-preloader>
-<arq-announcement-bar>
-  <arq-button type="underline" compact show-icon icon="arrow-up-right" href="/arq#newsletter">Suscribite al newsletter</arq-button>
-</arq-announcement-bar>
 <arq-navbar theme="transparent">
   <arq-nav-link slot="links" has-dropdown data-menu="products">Productos</arq-nav-link>
   <arq-nav-link slot="links" has-dropdown data-menu="recursos">Recursos</arq-nav-link>
@@ -57,7 +54,7 @@
   <arq-section padding="wide" reveal>
     <arq-featured-products layout="stacked">
       <arq-text-block slot="intro">
-        <span slot="kicker">02 – Productos</span>
+        <span slot="kicker">Selección</span>
         <h2 slot="title">Productos destacados</h2>
       </arq-text-block>
       <a href="/arq/producto/kanu-jardin" data-group="kanu-jardin">Kanu Jardín</a>
@@ -82,7 +79,7 @@
 
   <arq-section padding="wide" reveal>
     <arq-section-header slot="header" type="editorial">
-      <span slot="kicker">Colecciones</span>
+      <span slot="kicker">Diseño</span>
       <h2 slot="title">Colecciones que inspiran</h2>
       <span slot="description">Colecciones que se adaptan a distintas necesidades y espacios.</span>
     </arq-section-header>
@@ -117,7 +114,7 @@
 
   <arq-section layout="tools" padding="wide" reveal>
     <arq-section-header slot="header" type="editorial">
-      <span slot="kicker">Herramientas</span>
+      <span slot="kicker">Recursos</span>
       <h2 slot="title">Herramientas para proyectar</h2>
       <!-- TODO (contenido): bajada de Herramientas, a confirmar -->
       <span slot="description">Catálogos, fichas técnicas y archivos para especificar cada luminaria desde el anteproyecto hasta la obra.</span>
@@ -125,11 +122,11 @@
     <arq-tool-card slot="lead" size="large" href="/arq/descargas">
       <img slot="image" src="/Cat%C3%A1logo%20Macroled%20ARQ%202026.png" alt="">
       <span slot="title">Catálogo Macroled ARQ 2026</span>
-      <span slot="subtitle">Un catálogo por familia de producto</span>
+      <span slot="subtitle">Catálogo General de productos</span>
     </arq-tool-card>
-    <arq-tool-card href="/arq/descargas">
-      <span slot="title">Soporte Técnico</span>
-      <span slot="subtitle">Autogeneradas por producto</span>
+    <arq-tool-card href="/arq/catalogos">
+      <span slot="title">Catálogos</span>
+      <span slot="subtitle">Todos los catálogos disponibles</span>
       <span slot="placeholder">Referencia a la web de descargas</span>
     </arq-tool-card>
     <arq-tool-card href="/arq/descargas">
@@ -178,7 +175,7 @@
   </arq-section>
 
   <arq-cta-block id="newsletter" type="newsletter">
-    <span slot="kicker">Newsletter</span>
+    <span slot="kicker">Novedades</span>
     <h2 slot="title">Suscribite a nuestro newsletter</h2>
     <span slot="description">Novedades, lanzamientos y recursos para seguir proyectando.</span>
     <arq-input slot="email" name="email" input-type="email" placeholder="nombre@estudio.com" autocomplete="email" enterkeyhint="send" required>Email</arq-input>
@@ -187,7 +184,7 @@
 
   <arq-section layout="split" padding="wide" reveal>
     <arq-text-block slot="header">
-      <span slot="kicker">Preguntas frecuentes</span>
+      <span slot="kicker">FAQ</span>
       <h2 slot="title">Preguntas frecuentes</h2>
       <span slot="description">¿Necesitás asesoramiento? Te acompañamos para encontrar la mejor solución para tu proyecto.</span>
     </arq-text-block>
