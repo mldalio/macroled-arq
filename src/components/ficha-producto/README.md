@@ -23,7 +23,6 @@ El HTML del embed completo está en [src/pages/ficha.html](../../pages/ficha.htm
 | slot `image` | Opcional. `<img>` principal (LCP, `fetchpriority="high"`). Pasa a la galería: es la que muestra la primera imagen de la variante. Sin ella, la galería la crea |
 | slot `downloads-title` · `glossary-title` | `<h2>` de Descargas y Glosario (`role/display-sm`) |
 | slot `inspiration` | Lo escribe el componente con `product_inspiration_text` (`role/body-xl`). No se carga en el HTML |
-| slot `cta-title` · `cta-description` · `cta-action` | Bloque «¿Te interesa este producto?»: `<h2>` (`role/heading-1`), bajada (`role/body-lg`) y texto del button Filled con `icon/arrow-right`. Sin `cta-title` el bloque no se muestra |
 | slot `collection-title` | `<h2>` de "Explora la colección" (`role/heading-2`) |
 | slot `modal-title` | `<h2>` del download-modal del glosario |
 

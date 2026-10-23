@@ -235,10 +235,11 @@ class ArqCarouselControls extends ArqElement {
   #progressFromScroll(target) {
     const children = [...target.children];
     const count = Math.max(children.length, 1);
-    const first = children[0];
-    const gap = first ? Number.parseFloat(getComputedStyle(target).columnGap || getComputedStyle(target).gap) || 0 : 0;
-    const step = first ? first.getBoundingClientRect().width + gap : target.clientWidth || 1;
-    const index = Math.min(count - 1, Math.max(0, Math.round(target.scrollLeft / Math.max(step, 1))));
+    // El contador sigue el recorrido, no la tarjeta que queda a la izquierda: con varias
+    // tarjetas a la vista el scroll llega al final antes de la última tarjeta, y así la
+    // última posición (y la flecha siguiente deshabilitada) es siempre "05 / 05".
+    const max = target.scrollWidth - target.clientWidth;
+    const index = max <= 1 ? 0 : Math.min(count - 1, Math.max(0, Math.round((target.scrollLeft / max) * (count - 1))));
     if (this.count !== count) this.count = count;
     if (this.index !== index) this.index = index;
     else this.#progress();

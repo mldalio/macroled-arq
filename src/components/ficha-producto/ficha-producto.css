@@ -72,6 +72,10 @@
 
 /* Iluminar: dentro de la foto (slot overlay de product-gallery), abajo a la
    derecha, a la altura donde terminan las miniaturas (space/padding/xl) */
+.iluminar[hidden] {
+  display: none;
+}
+
 .iluminar {
   position: absolute;
   z-index: 2;
@@ -434,7 +438,7 @@
   align-self: flex-start;
 }
 
-/* Carrusel de family-card (patrón de la descripción del set): scroll-snap,
+/* Carrusel de product-card (patrón de la descripción del set): scroll-snap,
    gap space/gap/sm, sin flechas. Alrededor, space/gap/xs para que el anillo de
    foco no se recorte (como arq-grid).
    TODO (diseño): las tarjetas miden 200 (Default) y 328 (Large) en Final, sin
@@ -453,14 +457,31 @@
   display: none;
 }
 
-.cards arq-family-card {
-  flex: none;
+/* Se arrastra con el mouse: cursor de agarre y sin snap mientras se arrastra */
+@media (hover: hover) and (pointer: fine) {
+  .cards[data-arq-scrollable] { cursor: grab; }
+  .cards[data-arq-dragging] { cursor: grabbing; scroll-snap-type: none; user-select: none; }
+}
+
+/* Laptops chicas (poca pantalla): tarjetas de layout/card-min, así la sección entra en el alto de la
+   pantalla con los nombres de las tarjetas a la vista. Con pantalla grande y alta, layout/card-min-wide. */
+.cards arq-product-card {
+  flex: 0 0 var(--arq-layout-card-min);
+  min-width: 0;
   width: var(--arq-layout-card-min);
   scroll-snap-align: start;
 }
 
-.cards arq-family-card[size='large'] {
-  width: var(--arq-layout-card-min-wide);
+/* La última termina contra el borde: el recorrido no queda a mitad de una tarjeta */
+.cards arq-product-card:last-child {
+  scroll-snap-align: end;
+}
+
+@media (min-width: 1440px) and (min-height: 860px) {
+  .cards arq-product-card {
+    flex-basis: var(--arq-layout-card-min-wide);
+    width: var(--arq-layout-card-min-wide);
+  }
 }
 
 /* ── Glosario ───────────────────────────────────────────────────── */
@@ -484,45 +505,6 @@
 }
 
 /* ── ¿Te interesa este producto? (Figma 2612:12413) ────────────────── */
-/* Marco de layout/gutter alrededor; adentro, fondo color/surface/subtle, título
-   role/heading-1 y bajada role/body-lg centrados, y button Filled.
-   TODO (diseño): el bloque mide 474 de alto en Final, sin token; crece con
-   su contenido (space/section/md arriba y abajo). */
-.cta {
-  padding: var(--arq-layout-gutter);
-}
-
-.cta-block {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--arq-space-gap-2xl);
-  padding: var(--arq-space-section-md) var(--arq-layout-gutter);
-  background: var(--arq-color-surface-subtle);
-  color: var(--arq-color-text-primary);
-  text-align: center;
-}
-
-.cta-text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--arq-space-gap-sm-md);
-}
-
-.cta-description {
-  max-width: var(--arq-layout-measure-wide);
-  margin: 0;
-  color: var(--arq-color-text-secondary);
-}
-
-::slotted([slot='cta-title']) {
-  margin: 0 !important;
-  font: inherit !important;
-  color: inherit !important;
-}
-
 .media-portrait,
 .media-wide {
   display: block;
@@ -592,14 +574,15 @@
 }
 
 /* ── Explora la colección (Light, Figma 2612:12431) ─────────────────── */
-/* Sobre color/surface/subtle, con space/section/lg a los lados y space/padding/5xl
+/* Sobre color/surface/bone, con el margen de página a los lados (space/section/lg desde 1440 px) y space/padding/5xl
    arriba y abajo. La introducción (role/heading-2) a la izquierda y la card a su derecha.
    TODO (diseño): la introducción mide 440 en Final; layout/measure + space/gap/xl-2xl. */
 .collection {
   display: flex;
   align-items: flex-start;
-  padding: var(--arq-space-padding-5xl) var(--arq-space-section-lg);
-  background: var(--arq-color-surface-subtle);
+  --collection-inline: var(--page-gutter);
+  padding: var(--arq-space-padding-5xl) 0 var(--arq-space-padding-5xl) var(--collection-inline);
+  background: var(--arq-color-surface-bone);
   color: var(--arq-color-text-primary);
 }
 
@@ -613,9 +596,82 @@
   max-width: 100%;
 }
 
-.collection-cards {
+/* Columna de las tarjetas: las flechas y el contador arriba, a la derecha, y debajo el carrusel, que llega
+   al borde derecho de la pantalla (sin el margen de la sección) */
+.collection-rail {
+  display: flex;
   flex: 1 1 auto;
+  flex-direction: column;
   min-width: 0;
+}
+
+.collection-rail > .cards {
+  margin-inline-end: 0;
+}
+
+/* Al final, la última tarjeta deja el margen de la sección a la derecha (el padding derecho
+   de un contenedor con scroll no se respeta): un espaciador de ese margen menos el gap */
+.collection-rail > .cards::after {
+  content: '';
+  flex: none;
+  width: calc(var(--collection-inline) - var(--arq-space-gap-sm));
+}
+
+.collection-controls {
+  align-self: flex-end;
+  margin-inline-end: var(--collection-inline);
+  margin-bottom: var(--arq-space-gap-lg);
+}
+
+.collection-controls[hidden] {
+  display: none;
+}
+
+/* Desktop (desde 1024 px): dos filas. Arriba, a la derecha, las flechas y el contador; debajo, el título
+   a la izquierda y las tarjetas, con el borde superior del título alineado con el de las fotos. Sin flechas
+   (una sola tarjeta) la primera fila no ocupa lugar. */
+@media (min-width: 1024px) {
+  .collection {
+    display: grid;
+    grid-template-columns: calc(var(--arq-layout-measure) + var(--arq-space-gap-xl-2xl)) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .collection-rail {
+    display: contents;
+  }
+
+  .collection-controls {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  .collection-intro {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .collection-rail > .cards {
+    grid-column: 2;
+    grid-row: 2;
+  }
+}
+
+/* Laptops chicas (1024 px o más, de poco alto): menos aire arriba y abajo, así la sección entra en la
+   pantalla con los nombres de las tarjetas a la vista */
+@media (min-width: 1024px) and (not ((min-width: 1440px) and (min-height: 860px))) {
+  .collection {
+    padding-block: var(--arq-space-padding-3xl);
+  }
+}
+
+/* Pantallas grandes (desde 1440 px): el margen lateral de la sección es space/section/lg.
+   En laptops más chicas queda el de página (layout/gutter), como el resto de las secciones. */
+@media (min-width: 1440px) {
+  .collection {
+    --collection-inline: var(--arq-space-section-lg);
+  }
 }
 
 /* ── Tablet y Mobile (hasta 1023 px) ────────────────────────────── */
@@ -718,18 +774,22 @@
     order: 1;
   }
 
-  .cta {
-    padding: var(--arq-space-section-xs) var(--page-gutter);
-  }
-
-  .cta-block {
-    padding-inline: var(--arq-layout-gutter);
-  }
-
   .collection {
     flex-direction: column;
     gap: var(--arq-space-gap-4xl);
-    padding-inline: var(--page-gutter);
+    padding-inline: var(--page-gutter) 0;
+  }
+
+  .collection-rail {
+    align-self: stretch;
+  }
+
+  .collection-controls {
+    margin-inline-end: var(--page-gutter);
+  }
+
+  .collection-rail > .cards::after {
+    width: calc(var(--page-gutter) - var(--arq-space-gap-sm));
   }
 
   .collection-intro {
@@ -739,6 +799,13 @@
 
 /* ── Mobile ─────────────────────────────────────────────────────── */
 @media (max-width: 767px) {
+  /* Tarjetas de la colección al ancho de tarjeta del catálogo (layout/card-min), como
+     Destacados de la Home: entran dos y la siguiente asoma */
+  .cards arq-product-card {
+    flex-basis: var(--arq-layout-card-min);
+    width: var(--arq-layout-card-min);
+  }
+
   /* Foto principal más alta que ancha: ratio/portrait-soft (4:5) en lugar de
      ratio/landscape, para que se sienta vertical (2026-10-21) */
   .gallery {
