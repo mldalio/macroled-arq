@@ -1008,7 +1008,7 @@ Lau no veía bien las animaciones del sidebar ni de la compare-bar: abrir un gru
 
 - **catalog-nav-group:** la lista se despliega y se pliega animando el alto, como faq-item (Disclosure `animateHeight`, `motion/duration/expand`, `motion/easing/out`), y el chevron es uno solo que gira media vuelta con el mismo tiempo. Cambia la regla de DESIGN.md §6: el alto se anima en tres casos (faq-item, catalog-nav-group y el error de input).
 - **compare-bar:** entra y sale por abajo como un panel, con `motion/duration/panel` (400 ms) y `motion/easing/standard`, como filter-panel y download-modal. Se probó `motion/easing/out` al entrar: hacía el 85–90 % del recorrido en los primeros 150 ms y se seguía viendo como un salto (revisión con improve-animations). Con standard, a los 50 ms se ve el 26 % de la barra y a los 100 ms el 68 %.
-- **Espacio reservado:** el listado deja abajo un espacio del alto de la barra para que no tape las últimas cards. Al sacar el último producto se quitaba en el acto y, con la página al final, el contenido saltaba mientras la barra todavía bajaba. Ahora se quita cuando la barra terminó de salir (`#syncSpace` en catalog-listing, con la duración de la transición de la barra). Queda un ajuste del scroll en ese momento, ya con la barra afuera.
+- **Espacio reservado:** el listado dejaba abajo un espacio del alto de la barra. Reemplazado por 2026-10-23 · compare-bar sticky (sin espacio).
 - **Chevron (Open):** plegar y desplegar se desliza como la entrada (pedido de Lau). La barra es fija abajo y cambia de alto de golpe; el JS (`#slide`) anima la diferencia con `transform`, desde donde estaba el borde de arriba hasta su lugar nuevo, con `motion/duration/panel` y `motion/easing/standard`. Al plegar, la barra arranca más arriba de su lugar: un fondo debajo de ella (`.bar::after`, fuera de la pantalla en reposo) tapa lo que quedaría a la vista. Si se aprieta otra vez a mitad de camino, sigue desde donde está. Con movimiento reducido cambia de golpe (panel vale 0). La descripción de `motion/duration/panel` suma compare-bar (Figma y `tokens.css`).
 - Con movimiento reducido, los dos quedan como estaban (alto de golpe con fundido; la barra, solo fundido).
 
@@ -1549,3 +1549,13 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - **URLs:** desaparecen los slugs `mini-dao`, `mini-dao-trimless` y `mini-dao-cabezal` (y los de la entrada anterior: `dao-simple`, `dao-doble`…). Quedan `dao`, `dao-trimless` y `dao-cabezal`. `TODO` (Webflow): un ítem del CMS por producto con esos slugs.
 - `TODO` (diseño): mostrar la dimensión (`dimensiones`, texto libre) debajo de la opción elegida del selector, para ubicar qué es el Mini. Hoy `dimensiones` no se usa en ningún lado.
 - `TODO` (n8n, opcional): aviso de posibles uniones («¿conviene unir estos grupos?») para cuando lleguen productos nuevos.
+
+## 2026-10-23 · compare-bar sticky
+
+- Pedido de Lau: el espacio que el listado reservaba abajo (`.compare-space`, del alto de la barra) quedaba entre la grilla y el footer y no servía: al final de la página la barra igual tapaba el pie del footer, y en Mobile, con la lista abierta, el hueco era enorme.
+- La compare-bar pasa de `position: fixed` a `position: sticky; bottom: 0`, como macroled.com.ar/productos: queda pegada al borde de la pantalla mientras se recorre el contenedor y, al final, se apoya sobre el footer. Sin espacio reservado (se quitan `.compare-space` y `#syncSpace` de catalog-listing).
+- Va al final de su contenedor y a todo su ancho: en catalog-listing el padding de página pasa de `:host` a `.layout`, así la barra llega de borde a borde y queda pegada al footer. En ficha-producto ya era el último elemento.
+- Si aparece con la página al final, la barra ocupa su lugar y el footer baja lo que mide la barra.
+- El fondo debajo de la barra al plegar (`.bar::after`) se muestra solo mientras se desliza (`.sliding`): apoyada sobre el footer, lo taparía.
+- **Mobile:** «Borrar todo» pasa de junto al título a debajo de «Comparar», centrado, a `space/gap/md`: por debajo de 375 px no entraba bien. `TODO` (diseño): pasarlo al set Mobile.
+- **Plegada (Open=False):** queda solo el título con el chevron; «Borrar todo» y «Comparar» se ocultan con la lista (antes, en Desktop, iban en la misma línea). `TODO` (diseño): pasarlo al set.

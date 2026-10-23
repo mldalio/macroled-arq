@@ -71,7 +71,6 @@ class ArqCatalogListing extends ArqElement {
     `<arq-filter-panel id="filters" show-categories><slot name="filter-title" slot="title"></slot></arq-filter-panel>` +
     `<arq-compare-bar class="compare"></arq-compare-bar>` +
     `<arq-compare-picker class="picker"></arq-compare-picker>` +
-    `<div class="compare-space" aria-hidden="true"></div>` +
     // Aviso para lectores de pantalla (límite de Comparar). Está siempre en la
     // página y vacío; solo cambia su texto (DESIGN.md §9).
     `<p class="notice visually-hidden" aria-live="polite"></p>`;
@@ -174,7 +173,6 @@ class ArqCatalogListing extends ArqElement {
     });
     bar.addEventListener('arq:compare-change', () => {
       this.#syncCompared();
-      requestAnimationFrame(() => this.#syncSpace());
       if (picker.open) this.#loadPicker();
     });
 
@@ -195,11 +193,6 @@ class ArqCatalogListing extends ArqElement {
       const { sku, name, cardMeta, meta, image } = event.detail.item;
       bar.add({ sku, name, meta: cardMeta ?? meta, image });
     });
-
-    // La compare-bar es fija abajo: un espacio de su alto al final del listado
-    // para que no tape las últimas cards ni el footer (README de compare-bar).
-    new ResizeObserver(() => this.#syncSpace()).observe(bar);
-    requestAnimationFrame(() => this.#syncSpace());
   }
 
   #onNavClick = (event) => {
@@ -252,27 +245,6 @@ class ArqCatalogListing extends ArqElement {
     this.#markNav();
     if (this.unit !== unit) this.unit = unit; // update() recarga
     else this.#load();
-  }
-
-  #spaceTimer = 0;
-
-  // El espacio se va recién cuando la barra terminó de bajar: si se quitaba al
-  // marcarla hidden, con la página al final el contenido saltaba para arriba
-  // mientras la barra todavía salía (motion/duration/panel).
-  #syncSpace() {
-    const bar = this.shadowRoot.querySelector('.compare');
-    const box = bar.shadowRoot?.querySelector('.bar');
-    const space = this.shadowRoot.querySelector('.compare-space');
-    const height = !bar.hidden && box && !box.hidden ? box.getBoundingClientRect().height : 0;
-    clearTimeout(this.#spaceTimer);
-    if (height || !space.style.height || !box) {
-      space.style.height = height ? `${height}px` : '';
-      return;
-    }
-    const leaving = Number.parseFloat(getComputedStyle(box).transitionDuration) * 1000 || 0;
-    this.#spaceTimer = setTimeout(() => {
-      space.style.height = '';
-    }, leaving);
   }
 
   update(changed) {
