@@ -101,6 +101,10 @@ const FIELDS = {
 
 const COLLECTION_TYPE = 'Colección';
 const ACCESSORY_TYPE = 'Accesorio';
+// Sin product_type, el producto es una luminaria: el tipo se completa solo en lo que no lo
+// es (Lámpara, Artefacto, Accesorio). Qué se lista lo decide is_group_default (el SKU
+// predeterminado marcado); el tipo solo separa las luminarias del resto (catalog.js · isListed).
+const DEFAULT_TYPE = 'Luminaria';
 
 // Posición de cada foto en las listas multimagen_* (la arma la sincronización
 // Sheets → Typesense en n8n; no cambiar el orden sin cambiarlo allá).
@@ -279,7 +283,7 @@ export function fromDocuments(rawDocs) {
   const groupFromRows = (id, rows) => {
     const first = defaultRow(rows);
     const names = new Set(rows.map((doc) => text(doc[FIELDS.name])));
-    const productType = text(first[FIELDS.productType]) || null;
+    const productType = text(first[FIELDS.productType]) || DEFAULT_TYPE;
     const compatible = list(first[FIELDS.compatibleWith]).map((name) => idByName.get(normalize(name))).filter(Boolean);
     return {
       id,

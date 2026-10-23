@@ -1549,3 +1549,11 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - **URLs:** desaparecen los slugs `mini-dao`, `mini-dao-trimless` y `mini-dao-cabezal` (y los de la entrada anterior: `dao-simple`, `dao-doble`…). Quedan `dao`, `dao-trimless` y `dao-cabezal`. `TODO` (Webflow): un ítem del CMS por producto con esos slugs.
 - `TODO` (diseño): mostrar la dimensión (`dimensiones`, texto libre) debajo de la opción elegida del selector, para ubicar qué es el Mini. Hoy `dimensiones` no se usa en ningún lado.
 - `TODO` (n8n, opcional): aviso de posibles uniones («¿conviene unir estos grupos?») para cuando lleguen productos nuevos.
+
+## 2026-10-23 · Qué se lista: is_group_default; product_type vacío es Luminaria
+
+- Al cargar la nueva estructura de Dao con `grupo_variantes`, `tipo_producto` quedó vacío en sus 35 SKU y el listado de Productos dejó de mostrarlos: exigía `product_type = Luminaria`. Había 108 filas de la hoja sin tipo.
+- Pedido de Gabriela: la columna ya no tiene que separar las cards de colección (esa vista se sacó), así que **qué se lista lo decide `is_group_default`**: un producto con SKU predeterminado marcado se lista; sin marca, no. Ya era así (`hasDefault`).
+- **`product_type` vacío = Luminaria** (`DEFAULT_TYPE` en `typesense-adapter.js`). La columna se completa solo en lo que no es luminaria: Lámpara, Artefacto y Accesorio. Esos siguen sin entrar al listado general (se ven en su categoría) y los accesorios fuera de las colecciones. «Colección» sigue marcando las filas `col-…`.
+- Costo: una lámpara sin tipo aparece en el listado general en vez de en su categoría. Es un error visible y fácil de corregir en la hoja.
+- `TODO` (n8n, opcional): aviso `sinTipoProducto` en el nodo de limpieza.
