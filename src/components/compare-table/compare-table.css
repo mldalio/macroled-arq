@@ -202,8 +202,11 @@ thead th {
    así el título de un grupo ocupa todo el ancho aunque falten columnas. Una
    fila no se corta entre hojas y el título de un grupo no queda solo al pie. */
 @media print {
+  /* Sin el space/section/xl del final: en la hoja no sigue nada (y podía
+     sumar una hoja en blanco) */
   .scroll {
     overflow: visible;
+    padding-block-end: 0;
   }
 
   .empty,
@@ -223,6 +226,22 @@ thead th {
     break-after: avoid;
   }
 
+  /* Más compacto que en pantalla: entra más por hoja. TODO (diseño): falta
+     el diseño del PDF de la comparación (DESIGN.md §12). */
+  .group th {
+    padding-block-start: var(--arq-space-gap-xl);
+  }
+
+  .row > *,
+  .row > .label-cell {
+    padding-block: var(--arq-space-padding-sm);
+  }
+
+  /* La última fila de un grupo no pasa sola a la hoja siguiente */
+  .row:last-child {
+    break-before: avoid;
+  }
+
   /* stretch: cada celda ocupa todo el alto de la fila (la línea vertical
      también); el texto se centra como en la tabla de pantalla. */
   .row {
@@ -234,6 +253,11 @@ thead th {
   .row > * {
     display: flex;
     align-items: center;
+  }
+
+  /* .row > * pisaría el display: none de .empty */
+  .row > .empty {
+    display: none;
   }
 }
 
@@ -264,7 +288,7 @@ thead th {
   }
 
   .row > * {
-    padding-block: var(--arq-space-padding-md);
+    padding-block: var(--arq-space-padding-sm);
     border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
   }
 

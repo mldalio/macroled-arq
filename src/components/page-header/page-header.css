@@ -114,9 +114,29 @@
   }
 }
 
+/* print-title: solo al imprimir */
+.print-title {
+  display: none;
+}
+
 /* Impresión: queda solo el título; volver, breadcrumb, bajada y acción son
    de la pantalla. */
 @media print {
+  /* Arriba a --page-gutter del borde de la hoja, en la misma línea que el
+     logo (navbar.css). Abajo sin padding: el aire hasta los productos lo pone
+     arq-comparativa (su padding de cada hoja). */
+  :host([type='detail']) .header {
+    padding-block: var(--page-gutter) 0;
+  }
+
+  .has-print-title .title {
+    display: none;
+  }
+
+  .has-print-title .print-title {
+    display: block;
+  }
+
   .back,
   .breadcrumb,
   .description,

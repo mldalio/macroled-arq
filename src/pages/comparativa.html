@@ -12,6 +12,16 @@
   [data-arq-compare-count] lo completa arq-comparativa con la cantidad
   ("3 productos seleccionados.").
 -->
+<!-- Impresión: sin margen de hoja, el navegador no imprime fecha, título,
+     URL ni número de página. El margen lo ponen los componentes
+     (arq-navbar arriba de la primera hoja, arq-comparativa en cada hoja).
+     Excepción a "nada global": solo en esta página y solo al imprimir
+     (docs/decisiones.md, 2026-10-23 · Impresión de la comparativa). -->
+<style>
+  @page {
+    margin: 0;
+  }
+</style>
 <arq-preloader open page></arq-preloader>
 <arq-navbar>
   <arq-nav-link slot="links" has-dropdown data-menu="products">Productos</arq-nav-link>
@@ -24,6 +34,7 @@
   <arq-page-header type="detail" show-back back-href="/arq/productos" show-description show-action>
     <span slot="back">Volver a productos</span>
     <h1 slot="title">Comparar productos</h1>
+    <span slot="print-title">Comparativa de productos</span>
     <span slot="description"><span data-arq-compare-count></span> Cambiá variantes desde cada columna.</span>
     <arq-button slot="action" show-icon icon="download" data-arq-print>Descargar comparación</arq-button>
   </arq-page-header>

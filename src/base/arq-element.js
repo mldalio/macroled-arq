@@ -56,9 +56,17 @@ const templates = new WeakMap();
 // centrado en layout/max-width. Va como padding, así los fondos siguen a todo
 // el ancho. 100vw (no 100%) para que dé lo mismo en cualquier contenedor
 // (celdas sticky, carruseles). Variable local: no se declara en :root.
+// Al imprimir, la hoja no tiene margen (comparativa: @page en su embed) y el
+// margen lateral es el mismo aire que arriba y abajo de cada hoja.
 const baseCss = `
 :host {
   --page-gutter: max(var(--arq-layout-gutter), (100vw - var(--arq-layout-max-width)) / 2);
+}
+
+@media print {
+  :host {
+    --page-gutter: var(--arq-space-padding-2xl);
+  }
 }
 
 :host([hidden]),

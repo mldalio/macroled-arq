@@ -11,7 +11,8 @@
 //
 //   <arq-page-header type="detail" show-back back-href="/arq/productos" show-description show-action>
 //     <span slot="back">Volver a productos</span>
-//     <h1 slot="title">Comparativa</h1>
+//     <h1 slot="title">Comparar productos</h1>
+//     <span slot="print-title">Comparativa de productos</span>
 //     <span slot="description">…</span>
 //     <arq-button slot="action" show-icon icon="download" data-arq-print>Descargar comparación</arq-button>
 //   </arq-page-header>
@@ -26,6 +27,10 @@
 // Type=Detail: Volver arriba; título con la bajada debajo y acción a la derecha.
 // Show breadcrumb, Show description, Show back y Show action vienen en true en
 // Figma; en código son atributos de presencia (sin el atributo no se ven).
+//
+// Slot print-title (solo de código): título de la hoja impresa, en lugar del
+// <h1> (comparativa: «Comparativa de productos»), en role/heading-3: la
+// altura del logo, que va al lado (navbar.css). En pantalla no se ve.
 
 import { ArqElement } from '../../base/arq-element.js';
 import '../button/button.js';
@@ -54,6 +59,7 @@ class ArqPageHeader extends ArqElement {
     `<div class="heading">` +
     `<div class="breadcrumb" hidden><slot name="breadcrumb"></slot></div>` +
     `<div class="title role-display"><slot name="title"></slot></div>` +
+    `<div class="print-title role-heading-3"><slot name="print-title"></slot></div>` +
     `</div>` +
     `<p class="description role-body-lg" hidden><slot name="description"></slot></p>` +
     `</div>` +
@@ -80,6 +86,8 @@ class ArqPageHeader extends ArqElement {
     root.querySelector('.breadcrumb').hidden = !this.showBreadcrumb || !filled('breadcrumb');
     root.querySelector('.description').hidden = !this.showDescription || !filled('description');
     root.querySelector('.action').hidden = !detail || !this.showAction || !filled('action');
+    // print-title (solo de código): al imprimir reemplaza al título (page-header.css).
+    root.querySelector('.header').classList.toggle('has-print-title', filled('print-title'));
 
     // Volver es un link real a la página padre (no history.back): funciona si se entra directo.
     const back = root.querySelector('.back');

@@ -212,9 +212,13 @@
     display: none;
   }
 
+  /* border-box: el ancho 100 % de Mobile incluye el gutter (si no, la
+     última columna se sale de la hoja) */
   .default {
+    box-sizing: border-box;
     gap: 0;
     padding-inline: var(--page-gutter);
+    padding-block-end: 0;
     break-inside: avoid;
   }
 
@@ -243,8 +247,9 @@
 /* embedded (arq-comparativa): en Mobile la tira de productos del Default no
    tiene scroll propio; se desplaza con el contenedor de la página, junto con
    compare-table (un solo scroll, como macroled.com.ar/comparativa). Mide su
-   contenido para que el contenedor sepa cuánto desplazar. */
-@media (max-width: 767px) {
+   contenido para que el contenedor sepa cuánto desplazar. Solo en pantalla:
+   al imprimir, los productos se reparten el ancho como las columnas. */
+@media screen and (max-width: 767px) {
   :host([embedded]) .default {
     width: max-content;
     min-width: 100%;

@@ -188,6 +188,13 @@
     display: none;
   }
 
+  /* Foto más chica que en pantalla: deja lugar a la tabla en la primera
+     hoja. TODO (diseño): falta el diseño del PDF de la comparación
+     (DESIGN.md §12); se usa el ancho de columna de la comparativa Mobile. */
+  .media {
+    max-width: var(--arq-layout-compare-column);
+  }
+
   .variant {
     display: flex;
     flex-direction: column;
