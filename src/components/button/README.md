@@ -49,7 +49,7 @@ Botón del sistema en tres jerarquías: Filled (acción principal), Outline (sec
 | Texto e ícono Outline y Underline | `color/action/primary` (Underline pressed: `color/text/tertiary`) |
 | Borde Outline | `border/default` en `color/border/strong` |
 | Fondo Outline hover · pressed · loading | `color/surface/hover` · `color/surface/selected` · `color/surface/hover` |
-| Subrayado | `border/default` (1 px) en reposo y `border/strong` (2 px) en hover y pressed, en `color/border/strong` (pressed: `color/text/tertiary`). No cambia el alto |
+| Subrayado | `border/default` (1 px) en reposo y `border/strong` (2 px) en hover y pressed, en `color/border/strong` (pressed: `color/text/tertiary`). No cambia el alto. La de hover se dibuja de izquierda a derecha y se va hacia la derecha (`motion/duration/base`, `motion/easing/standard`), encima de la de reposo |
 | Disabled | `color/text/disabled`, `color/border/disabled`, fondo Filled `color/surface/subtle` |
 | Foco | anillo `border/strong` en `color/border/focus`, separado 2 px (`outline-offset`, DESIGN.md §7). No cambia el tamaño |
 | Padding · gap | `space/gap/sm` + `space/padding/md` (Underline: `space/gap/xs`, sin padding horizontal) · `space/gap/sm` |
