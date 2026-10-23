@@ -11,7 +11,8 @@
 
 /* Entrada del mosaico: el padre pone .reveal y --reveal-index.
    Cada tarjeta espera a que termine la anterior (slow × 2, la misma
-   duración de la entrada). Los keyframes están en src/base/reveal.css. */
+   duración de la entrada). Los keyframes están en src/base/reveal.css.
+   TODO (diseño): slow × 2 sin token de duración propio. */
 :host(.reveal:not(.revealed)) {
   opacity: 0;
 }
@@ -39,13 +40,15 @@
   max-width: none !important;
   height: 100% !important;
   object-fit: cover;
-  /* Zoom leve en hover (motion/scale/hover), igual que category-card overlay. */
+  /* Zoom leve en hover (motion/scale/hover), igual que category-card overlay.
+     TODO (diseño): slow × 4 (1280 ms) sin token de duración propio. */
   transition: transform calc(var(--arq-motion-duration-slow) * 4)
     var(--arq-motion-easing-standard) !important;
 }
 
 /* Scrim de Home v2: el tercio inferior, de transparente a negro 78 %.
-   Excepción como el scrim del hero: es un relleno de Figma, no una variable. */
+   Excepción como el scrim del hero: es un relleno de Figma, no una variable.
+   TODO (diseño): pedir en Figma un estilo overlay/gradient (como hero/scrim). */
 .scrim {
   position: absolute;
   right: 0;
@@ -67,6 +70,9 @@
   color: var(--arq-color-text-secondary);
 }
 
+/* La bajada ocupa siempre su lugar; en reposo el bloque baja lo que mide la
+   bajada (--description-shift, lo mide collection-tile.js) y queda fuera de la
+   tarjeta. En hover sube con transform: no se anima el alto (DESIGN.md §6). */
 .info {
   position: absolute;
   right: var(--arq-space-padding-xl);
@@ -76,6 +82,8 @@
   display: flex;
   flex-direction: column;
   gap: var(--arq-space-gap-sm-md);
+  transform: translateY(var(--description-shift, 0));
+  transition: transform calc(var(--arq-motion-duration-slow) * 4) var(--arq-motion-easing-standard);
 }
 
 .title-row {
@@ -91,6 +99,7 @@
   margin: 0;
 }
 
+/* TODO (diseño): 80 % sin token de opacidad (opacity/* tiene 40, 50 y 35). */
 .label {
   opacity: 0.8;
 }
@@ -110,24 +119,27 @@
 }
 
 .description {
-  display: grid;
-  grid-template-rows: 0fr;
   color: var(--arq-color-text-inverse);
   opacity: 0;
-  transition-property: grid-template-rows, opacity, color, background-color, border-color, outline-color;
+  transition-property: opacity, color, background-color, border-color, outline-color;
   transition-duration: calc(var(--arq-motion-duration-slow) * 4);
   transition-timing-function: var(--arq-motion-easing-standard);
 }
 
-.description-inner {
-  min-height: 0;
-  overflow: hidden;
+:host(:focus-within) .info {
+  transform: none;
 }
 
-@media (hover: hover) {
-  :host(:hover) .description,
-  :host(:focus-within) .description {
-    grid-template-rows: 1fr;
+:host(:focus-within) .description {
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :host(:hover) .info {
+    transform: none;
+  }
+
+  :host(:hover) .description {
     opacity: 1;
   }
 
@@ -145,8 +157,11 @@
 }
 
 @media (max-width: 767px) {
+  .info {
+    transform: none;
+  }
+
   .description {
-    grid-template-rows: 1fr;
     opacity: 1;
   }
 }

@@ -15,6 +15,11 @@
   background: var(--arq-color-surface-transparent);
 }
 
+/* Contenedor role="heading" del botón: sin estilo propio */
+.heading {
+  margin: 0;
+}
+
 /* Encabezado. El padding del ítem va en el botón para que todo el alto sea
    clickeable: a los lados space/padding/xl; arriba y abajo space/padding/xl-2xl
    cerrado, space/padding/lg abierto. Gap título–ícono space/gap/md. Cerrado,

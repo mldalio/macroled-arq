@@ -113,3 +113,46 @@
   outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
   outline-offset: 2px;
 }
+
+/* Alto contraste (forced-colors): el sistema borra los fondos y el círculo
+   desaparecería. Pista en CanvasText (Highlight encendida) y círculo en
+   CanvasText (HighlightText encendido); deshabilitado en GrayText. */
+@media (forced-colors: active) {
+  .track,
+  .thumb {
+    forced-color-adjust: none;
+  }
+
+  .track,
+  :host([theme='inverse']:not([disabled])) .track {
+    border-color: CanvasText;
+    background: Canvas;
+  }
+
+  .thumb,
+  :host([theme='inverse']:not([disabled])) .thumb {
+    background: CanvasText;
+  }
+
+  .native:checked + .track,
+  :host([theme='inverse']:not([disabled])) .native:checked + .track {
+    border-color: Highlight;
+    background: Highlight;
+  }
+
+  .native:checked + .track .thumb,
+  :host([theme='inverse']:not([disabled])) .native:checked + .track .thumb {
+    background: HighlightText;
+  }
+
+  :host([disabled]) .track,
+  :host([disabled]) .native:checked + .track {
+    border-color: GrayText;
+    background: Canvas;
+  }
+
+  :host([disabled]) .thumb,
+  :host([disabled]) .native:checked + .track .thumb {
+    background: GrayText;
+  }
+}

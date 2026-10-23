@@ -93,7 +93,9 @@ class ArqProductCard extends ArqElement {
     `<div class="info">` +
     `<div class="title"><a class="card-link name"><slot name="name"></slot></a><span class="finishes" hidden><slot name="finishes"></slot></span></div>` +
     `<p class="meta" hidden><slot name="meta"></slot></p>` +
-    `<arq-checkbox class="compare" show-label hidden>Comparar</arq-checkbox>` +
+    // «Comparar» + el nombre del producto solo para lectores: en un listado
+    // cada checkbox se distingue (WCAG 2.4.6). Se ve igual que en Figma.
+    `<arq-checkbox class="compare" show-label hidden>Comparar<span class="compare-name visually-hidden"></span></arq-checkbox>` +
     // Cargando: barras con el alto de línea de cada texto, así la card de
     // carga mide lo mismo que la card que la reemplaza
     `<span class="sk sk-title"><span class="sk-name"><span class="sk-bar"></span></span>` +
@@ -237,7 +239,9 @@ class ArqProductCard extends ArqElement {
     root.querySelector('.meta').hidden = !filled('meta');
     root.querySelector('.finishes').hidden = !filled('finishes');
     this.#renderFinishes();
-    root.querySelector('.fallback').textContent = this.querySelector('[slot="name"]')?.textContent.trim() ?? '';
+    const name = this.querySelector('[slot="name"]')?.textContent.trim() ?? '';
+    root.querySelector('.fallback').textContent = name;
+    root.querySelector('.compare-name').textContent = name ? ` ${name}` : '';
     this.#renderSize();
   }
 

@@ -16,7 +16,7 @@ Mensaje de resultado debajo del botón de envío (Contacto, envío a n8n). Sin �
 | Message | slot por defecto | — | texto del resultado |
 | Tone | `tone` | `tone` | `success` · `error` (def. `success`) |
 
-- **Accesibilidad:** Success lleva `role="status"` y Error `role="alert"` (en el elemento). Se anuncia al aparecer o cambiar el texto.
+- **Accesibilidad:** Success lleva `role="status"` y Error `role="alert"` (en el elemento). Se anuncia al cambiar el texto. Es una región viva (DESIGN.md §9): va siempre en la página y vacía, y solo cambia su texto; no se oculta con `hidden`. Sin texto no dibuja nada.
 - Los errores de cada campo van en el propio input, no acá.
 - Después de enviar, Contacto muestra solo el mensaje de confirmación.
 

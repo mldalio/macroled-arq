@@ -22,6 +22,9 @@ sheet.show(botonLupa);     // el foco vuelve a botonLupa al cerrar
 | Recomendados | `results` es null | Título, [search-card](../search-card/README.md) (imagen cuadrada y nombre, sin tipo de producto) en una fila con scroll, button Underline «Ver todos los productos» |
 | Resultados | `results.items` con coincidencias | **Productos** ([search-result](../search-result/README.md) `type="simple"`: miniatura de 100, nombre en gris con lo que coincide en negro; 24 px entre filas) a la izquierda y, discretas, **Colecciones** ([search-collection](../search-collection/README.md): miniatura chica y nombre) a la derecha en Desktop; más search-see-all `type="simple"` al final: en Desktop debajo de Productos; en Tablet y Mobile al pie, después de Colecciones |
 | Sin resultados | `results.items` vacío | `search-dropdown state="no-results"` |
+| Error | `results.error` en true (la búsqueda falló) | `search-dropdown state="error"` (State=Error) |
+
+Los títulos de grupo (Productos, Colecciones) no son encabezados (el componente no crea h1–h6): cada grupo es `role="group"` con su título como nombre (`aria-labelledby`). El campo es un combobox (`search-field combobox`) y anuncia la cantidad de resultados (prop `status`, la pone el navbar).
 
 ## Props
 
@@ -35,7 +38,7 @@ sheet.show(botonLupa);     // el foco vuelve a botonLupa al cerrar
 | `all-href` · `all-label` | Link de los recomendados. Por defecto `/arq/productos` · "Ver todos los productos" |
 
 - **Diálogo modal nativo** (`<dialog>` + `showModal()`): foco en el campo, Esc / cruz / clic en el scrim cierran y emiten `arq:close`. La página de atrás no se desplaza (`scroll-lock`).
-- **Transición en capas** (menos de medio segundo, con `transition`; al cerrar, la misma al revés): la barra pasa de transparente a sólida, el panel se abre como una persiana (`grid-template-rows` 0fr → 1fr), el campo y el contenido bajan `space/gap/lg` a la par del panel, los productos llegan un instante después (fundido y `space/gap/sm` hacia abajo) y la página de atrás se aclara a medias con un velo `color/surface/faint` al 50 %. Detalle y tiempos en `search-sheet.css`. `close()` espera a que termine antes de cerrar el diálogo.
+- **Transición en capas** (menos de medio segundo, con `transition`; al cerrar, la misma al revés): la barra pasa de transparente a sólida, el panel se descubre como una persiana (un recorte, `clip-path`, como el mega-menu: no se anima el alto, DESIGN.md §6), el campo y el contenido bajan `space/gap/lg` a la par del panel, los productos llegan un instante después (fundido y `space/gap/sm` hacia abajo) y la página de atrás se aclara a medias con un velo `color/surface/faint` al 50 %. Detalle y tiempos en `search-sheet.css`. `close()` espera a que termine antes de cerrar el diálogo.
 - **Arriba:** arranca en la barra del navbar (`--sheet-top`, lo pone el navbar): con announcement-bar a la vista, debajo de ella. El scrim arranca debajo de la barra (no oscurece la del navbar mientras la del sheet se vuelve sólida).
 - **Cruz y lupa:** la cruz del sheet va en el lugar de la lupa del navbar; se funden una con otra (`motion/duration/fast`) al abrir y al cerrar.
 - **Campo:** search-field `type="line" size="large" show-clear`: lo escrito en `role/heading-3`, el placeholder en Light y, con texto, la cruz chica que borra.

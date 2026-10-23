@@ -88,7 +88,7 @@
 }
 
 /* Con movimiento reducido no hay zoom (DESIGN.md §6). */
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .card:has(.card-link:hover) .card-media ::slotted(*) {
     transform: scale(var(--arq-motion-scale-hover)) !important;
   }
@@ -101,7 +101,8 @@
 /* Entrada al hacer scroll (category-card.js): sube space/gap/2xl y aparece.
    Escalonada con motion/duration/fast por tarjeta. Redeclara la lista de
    transiciones de la hoja base para sumar transform y opacity.
-   TODO (diseño): no está en Figma ni hay token de desplazamiento. */
+   TODO (diseño): no está en Figma ni hay token de desplazamiento ni de
+   duración (slow × 2). */
 .card.reveal {
   opacity: 0;
   transform: translateY(var(--arq-space-gap-2xl));
@@ -122,9 +123,11 @@
   height: 100%;
 }
 
+/* overflow: la bajada espera oculta debajo del borde (ver .caption) */
 :host([overlay]) .card {
   height: 100%;
   gap: 0;
+  overflow: hidden;
 }
 
 :host([overlay]) .card-media {
@@ -134,6 +137,8 @@
   aspect-ratio: auto;
 }
 
+/* TODO (diseño): degradado negro 72 % → 0 sin token ni estilo; pedir en Figma
+   un estilo overlay/gradient (como hero/scrim) y usarlo acá. */
 :host([overlay]) .card-media::after {
   content: '';
   position: absolute;
@@ -146,6 +151,9 @@
   pointer-events: none;
 }
 
+/* La bajada ocupa siempre su lugar; en reposo el bloque baja lo que mide la
+   bajada (--description-shift, lo mide category-card.js) y el título queda
+   abajo. En hover sube con transform: no se anima el alto (DESIGN.md §6). */
 :host([overlay]) .caption {
   position: absolute;
   right: var(--arq-space-padding-xl);
@@ -153,6 +161,8 @@
   left: var(--arq-space-padding-xl);
   z-index: var(--card-above);
   pointer-events: none;
+  transform: translateY(var(--description-shift, 0));
+  transition: transform calc(var(--arq-motion-duration-slow) * 4) var(--arq-motion-easing-standard);
 }
 
 :host([overlay]) .title-row {
@@ -172,25 +182,30 @@
   color: var(--arq-color-icon-inverse);
 }
 
+/* TODO (diseño): la duración es motion/duration/slow × 4 (1280 ms), sin
+   token propio; pedir en Figma un motion/duration para el overlay de las cards. */
 :host([overlay]) .description {
-  display: grid;
-  grid-template-rows: 0fr;
   color: var(--arq-color-text-inverse);
   opacity: 0;
-  transition-property: grid-template-rows, opacity, color, background-color, border-color, outline-color;
+  transition-property: opacity, color, background-color, border-color, outline-color;
   transition-duration: calc(var(--arq-motion-duration-slow) * 4);
   transition-timing-function: var(--arq-motion-easing-standard);
 }
 
-:host([overlay]) .description-inner {
-  min-height: 0;
-  overflow: hidden;
+:host([overlay]:focus-within) .caption {
+  transform: none;
 }
 
-@media (hover: hover) {
-  :host([overlay]:hover) .description,
-  :host([overlay]:focus-within) .description {
-    grid-template-rows: 1fr;
+:host([overlay]:focus-within) .description {
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :host([overlay]:hover) .caption {
+    transform: none;
+  }
+
+  :host([overlay]:hover) .description {
     opacity: 1;
   }
 
@@ -228,8 +243,11 @@
     aspect-ratio: 3 / 4;
   }
 
+  :host([overlay]) .caption {
+    transform: none;
+  }
+
   :host([overlay]) .description {
-    grid-template-rows: 1fr;
     opacity: 1;
   }
 }

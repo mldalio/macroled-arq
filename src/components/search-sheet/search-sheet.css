@@ -37,14 +37,15 @@
 
    1. Scrim: la página de atrás se oscurece con color/overlay/scrim (el de filter-panel).
    2. Barra: de transparente a sólida (color/surface/default).
-   3. Panel: se abre como una persiana, grid-template-rows 0fr → 1fr.
+   3. Panel: se abre como una persiana, con un recorte (clip-path) que se
+      descubre de arriba hacia abajo, como el mega-menu del navbar.
    4. Campo y contenido: quedan quietos y se hacen visibles con un fundido mientras
       la persiana los descubre (sin deslizamiento, que se sentía como rebote).
    5. Productos y resultados: un instante después (fast), solo con fundido, y
       terminan junto con la persiana (sin movimiento que siga después).
-   TODO (diseño/motion): DESIGN.md §6 dice que solo se anima opacity,
-   transform y colores; la persiana anima grid-template-rows, a pedido (como
-   occhio.com). Valores de la referencia: panel 400 ms, contenido 200/375 ms,
+   La persiana no anima el alto (DESIGN.md §6): el panel ya ocupa su lugar y
+   lo que cambia es el recorte, así nada se mueve de layout. Valores de la
+   referencia (occhio.com): panel 400 ms, contenido 200/375 ms,
    productos 500/250 ms, velo 400 ms, header 500 ms: se llevaron a los tokens
    de movimiento más cercanos; --sheet-slow se deriva de ellos. */
 .dialog::backdrop {
@@ -67,18 +68,13 @@
   pointer-events: none;
 }
 
-/* Persiana: la fila de abajo (el panel) pasa de 0fr a 1fr; la de arriba es la barra */
+/* Barra arriba y panel abajo; la persiana es el recorte del panel (.drawer) */
 .sheet {
   box-sizing: border-box;
   display: grid;
-  grid-template-rows: auto 0fr;
-  align-content: start; /* la fila de la barra no se estira mientras la persiana se abre */
-  max-height: var(--sheet-height);
-  transition: grid-template-rows var(--sheet-slow) var(--arq-motion-easing-standard);
-}
-
-.dialog.is-open .sheet {
   grid-template-rows: auto 1fr;
+  align-content: start;
+  max-height: var(--sheet-height);
 }
 
 /* Barra: mismo alto que la del navbar (space/gap/md × 2 + icon/xl) y mismo
@@ -132,11 +128,18 @@
   opacity: 1;
 }
 
-/* Panel: fondo sólido, recortado mientras la persiana se abre */
+/* Panel: fondo sólido. Persiana: el recorte inferior va de todo el alto a 0
+   (motion/duration/panel), como .mega-drawer del navbar */
 .drawer {
   min-height: 0;
   overflow: clip;
   background: var(--arq-color-surface-default);
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path var(--sheet-slow) var(--arq-motion-easing-standard);
+}
+
+.dialog.is-open .drawer {
+  clip-path: inset(0 0 0 0);
 }
 
 .drawer-inner {

@@ -1,7 +1,11 @@
 // Scroll nativo con arrastre de mouse; comparte el ritmo de Destacados.
+// El avance automático se detiene mientras el mouse está encima o el foco
+// está adentro del bloque (el riel y sus flechas: su contenedor), y no vuelve
+// mientras siga así (WCAG 2.2.2).
+// TODO (diseño): falta un botón de pausa visible (no hay ícono de pausa en el set).
 export class HorizontalRail {
   #rail; #host; #autoplay; #open; #drag = null; #timer = 0; #pause = 0;
-  #visible = false; #blocked = false; #suppress = false; #events = null; #touching = false;
+  #visible = false; #blocked = false; #suppress = false; #events = null; #touching = false; #hovered = false;
   #reduced = matchMedia('(prefers-reduced-motion: reduce)');
   #resize; #intersection; #mutations;
 
@@ -64,8 +68,11 @@ export class HorizontalRail {
       if (this.#suppress) { e.preventDefault(); e.stopImmediatePropagation(); return; }
       if (this.#open) this.#open(e);
     }, { capture: true, signal });
-    rail.addEventListener('focusin', () => this.#sync(), { signal });
-    rail.addEventListener('focusout', () => queueMicrotask(() => this.#sync()), { signal });
+    const area = this.#area();
+    area.addEventListener('focusin', () => this.#sync(), { signal });
+    area.addEventListener('focusout', () => queueMicrotask(() => this.#sync()), { signal });
+    area.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') { this.#hovered = true; this.#sync(); } }, { signal });
+    area.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') { this.#hovered = false; this.#sync(); } }, { signal });
     document.addEventListener('visibilitychange', () => this.#sync(), { signal });
     this.#reduced.addEventListener('change', () => this.#sync(), { signal });
     this.refresh();
@@ -78,9 +85,11 @@ export class HorizontalRail {
     this.#drag = null;
     this.#rail.removeAttribute('data-arq-dragging');
     this.#touching = false;
+    this.#hovered = false;
   }
 
   set blocked(value) { this.#blocked = value; this.#sync(); }
+  #area() { return this.#rail.parentElement ?? this.#rail; }
   #scrollable() { return this.#rail.scrollWidth - this.#rail.clientWidth > 1; }
   #interval() {
     const raw = getComputedStyle(this.#host).getPropertyValue('--arq-motion-duration-feedback').trim();
@@ -103,10 +112,12 @@ export class HorizontalRail {
   }
   #stop() { clearInterval(this.#timer); this.#timer = 0; }
   #sync() {
-    const focused = this.#rail.matches(':focus-within');
-    const canPlay = this.#events && this.#autoplay && this.#visible && !this.#blocked && !this.#drag && !this.#touching && !this.#pause && !focused && !this.#reduced.matches && document.visibilityState === 'visible' && this.#scrollable();
+    const focused = this.#area().matches(':focus-within');
+    const canPlay = this.#events && this.#autoplay && this.#visible && !this.#blocked && !this.#drag && !this.#touching && !this.#pause && !focused && !this.#hovered && !this.#reduced.matches && document.visibilityState === 'visible' && this.#scrollable();
     if (!canPlay) { this.#stop(); return; }
     if (!this.#timer) this.#timer = setInterval(() => {
+      // Cada paso vuelve a mirar si puede seguir (hover, foco…)
+      this.#sync(); if (!this.#timer) return;
       if (this.#rail.scrollLeft >= this.#rail.scrollWidth - this.#rail.clientWidth - 1) this.#rail.scrollTo({ left: 0, behavior: 'smooth' });
       else this.go(1);
     }, this.#interval());

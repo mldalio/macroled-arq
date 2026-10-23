@@ -39,7 +39,7 @@ class ArqColeccion extends ArqElement {
   static properties = {};
   static template =
     `<div class="products">` +
-    `<p class="status role-body" role="status" hidden></p>` +
+    `<p class="status role-body" role="status"></p>` +
     `<arq-grid class="grid"></arq-grid>` +
     `</div>` +
     `<div class="gallery" hidden></div>` +
@@ -84,7 +84,6 @@ class ArqColeccion extends ArqElement {
   #status(message) {
     const status = this.shadowRoot.querySelector('.status');
     status.textContent = message;
-    status.hidden = !message;
   }
 
   // Solo los textos de los datos: sin dato, se quita el del HTML.

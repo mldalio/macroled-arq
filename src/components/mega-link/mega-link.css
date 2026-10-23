@@ -186,7 +186,10 @@ button.link {
 }
 
 /* Los links llegan por slot (viven en el DOM de la página): se les aplican
-   los valores de role/body-lg con sus tokens */
+   los valores de role/body-lg con sus tokens (una clase .role-* no cruza el
+   slot). TODO (código): peso, familia y tracking son primitivos porque
+   2 · Semantic · Type no tiene variables de peso; si roles.css expone los
+   valores de cada rol como variables, usar esas. */
 ::slotted(a) {
   display: block;
   width: 100%;

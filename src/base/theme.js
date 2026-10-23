@@ -195,6 +195,8 @@ export function animateThemeChange(bgMs = 1200) {
   }
   style.setProperty(TEXT_VARS[0], `${Math.round(bgMs * 0.25)}ms`);
   style.setProperty(TEXT_VARS[1], `${Math.round(bgMs * 0.5)}ms`);
+  // TODO (diseño): curva escrita a mano; ningún motion/easing equivale
+  // (standard es 0.2, 0, 0, 1). Pedir el token en Figma o pasar a uno existente.
   style.setProperty(TEXT_VARS[2], 'cubic-bezier(0.4, 0, 0.2, 1)');
   // Fondo del navbar: solo funde lento al iluminar; el resto del tiempo (scroll, cambio de página) usa la duración rápida.
   // Con la misma duración y curva que el fondo de la página y del hero de la ficha

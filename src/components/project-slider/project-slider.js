@@ -20,6 +20,11 @@
 // y no se muestran las flechas (misma regla que carousel-controls).
 // TODO (diseño): autoplay, arrastre y lightbox no están en Figma. El intervalo
 // de autoplay (3 s) no tiene token.
+// Autoplay (WCAG 2.2.2): se detiene con el mouse encima o el foco adentro (el
+// slider es enfocable: flechas ←→ cambian de proyecto y Enter o Espacio abre
+// la foto) y no vuelve mientras siga así. Al cerrar el visor, el foco vuelve
+// a donde estaba al abrirlo.
+// TODO (diseño): falta un botón de pausa visible (no hay ícono de pausa en el set).
 
 import { ArqElement } from '../../base/arq-element.js';
 import { containScroll } from '../../base/scroll-lock.js';
@@ -57,6 +62,8 @@ class ArqProjectSlider extends ArqElement {
   #timer = 0;
   #onWrap = null;
   #drag = null;
+  #hovered = false;
+  #opener = null;
   #suppressClick = false;
   #reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   #resize = new ResizeObserver(() => this.#align());
@@ -88,7 +95,8 @@ class ArqProjectSlider extends ArqElement {
         event.preventDefault();
         this.#move(1);
       }
-      if (event.key === 'Enter' || event.key === ' ') {
+      // Enter o Espacio sobre el slider (no sobre una flecha: esa se activa sola)
+      if ((event.key === 'Enter' || event.key === ' ') && event.composedPath()[0] === this) {
         event.preventDefault();
         const slides = this.#slides();
         if (slides[this.#index]) this.#openFrom(slides[this.#index]);
@@ -112,7 +120,24 @@ class ArqProjectSlider extends ArqElement {
       event.preventDefault();
       dialog.close();
     });
-    dialog.addEventListener('close', () => this.#armAutoplay());
+    dialog.addEventListener('close', () => {
+      const opener = this.#opener;
+      this.#opener = null;
+      opener?.focus({ preventScroll: true });
+      this.#armAutoplay();
+    });
+    this.addEventListener('focusin', () => this.#armAutoplay());
+    this.addEventListener('focusout', () => queueMicrotask(() => this.#armAutoplay()));
+    this.addEventListener('pointerenter', (event) => {
+      if (event.pointerType !== 'mouse') return;
+      this.#hovered = true;
+      this.#armAutoplay();
+    });
+    this.addEventListener('pointerleave', (event) => {
+      if (event.pointerType !== 'mouse') return;
+      this.#hovered = false;
+      this.#armAutoplay();
+    });
     dialog.addEventListener('keydown', (event) => {
       if (event.key === 'ArrowLeft') {
         event.preventDefault();
@@ -367,7 +392,12 @@ class ArqProjectSlider extends ArqElement {
     this.#lightbox = logical;
     this.#renderLightbox();
     const dialog = this.shadowRoot.querySelector('.lightbox');
-    if (!dialog.open) dialog.showModal();
+    if (!dialog.open) {
+      // Al cerrar, el foco vuelve al slider (enfocable): Enter o Espacio sobre
+      // él abre el visor; con el mouse, el anillo no se ve.
+      this.#opener = this;
+      dialog.showModal();
+    }
     this.#armAutoplay();
   }
 
@@ -463,6 +493,8 @@ class ArqProjectSlider extends ArqElement {
     return Boolean(this.autoplay)
       && !this.#reduced.matches
       && !this.#drag
+      && !this.#hovered
+      && !this.matches(':focus-within')
       && !dialog?.open
       && !document.hidden
       && this.#sources().length > 1;
@@ -471,7 +503,12 @@ class ArqProjectSlider extends ArqElement {
   #armAutoplay() {
     this.#stopAutoplay();
     if (!this.#canAutoplay()) return;
-    this.#timer = window.setInterval(() => this.#move(1), AUTOPLAY_MS);
+    // Cada paso vuelve a mirar si puede seguir (hover, foco…): no depende solo
+    // de los eventos.
+    this.#timer = window.setInterval(() => {
+      if (this.#canAutoplay()) this.#move(1);
+      else this.#stopAutoplay();
+    }, AUTOPLAY_MS);
   }
 
   #stopAutoplay() {

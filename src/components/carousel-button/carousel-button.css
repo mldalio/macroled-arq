@@ -44,8 +44,10 @@
   outline: none;
 }
 
-.control:enabled:hover {
-  background: var(--arq-color-surface-hover);
+@media (hover: hover) and (pointer: fine) {
+  .control:enabled:hover {
+    background: var(--arq-color-surface-hover);
+  }
 }
 
 .control:enabled:active {
@@ -81,10 +83,16 @@
   backdrop-filter: blur(var(--blur));
 }
 
-:host([background='frosted']) .control:enabled:hover,
 :host([background='frosted']) .control:enabled:active {
   border-color: var(--arq-color-border-default);
   background: var(--arq-color-overlay-frosted);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :host([background='frosted']) .control:enabled:hover {
+    border-color: var(--arq-color-border-default);
+    background: var(--arq-color-overlay-frosted);
+  }
 }
 
 :host([background='frosted'][disabled]) .control {

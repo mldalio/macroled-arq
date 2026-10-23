@@ -69,22 +69,17 @@ class ArqPreloader extends ArqElement {
     if (!changed.has('open') && !changed.has('page')) return;
     const status = this.shadowRoot.querySelector('.status');
     if (this.open && this.page) {
-      this.removeAttribute('aria-hidden');
-      this.setAttribute('aria-busy', 'true');
-      status.textContent = 'Cargando';
+      this.#announce();
       this.#scroll(true);
       this.#watch();
       return;
     }
     if (!changed.has('open')) return;
     if (this.open) {
-      this.removeAttribute('aria-hidden');
-      this.setAttribute('aria-busy', 'true');
-      status.textContent = 'Cargando';
+      this.#announce();
       this.#play();
     } else {
       this.setAttribute('aria-hidden', 'true');
-      this.removeAttribute('aria-busy');
       status.textContent = '';
       this.#scroll(false);
       this.#stop();
@@ -101,11 +96,30 @@ class ArqPreloader extends ArqElement {
     }
     window.addEventListener('wheel', this.#blockScroll, { passive: false });
     window.addEventListener('touchmove', this.#blockScroll, { passive: false });
-    for (const child of document.body?.children ?? []) {
-      if (child === this || this.#inerted.has(child) || child.hasAttribute('inert')) continue;
-      child.setAttribute('inert', '');
-      this.#inerted.add(child);
+    // Inert todo lo que no contiene al preloader: los hermanos de cada nivel,
+    // de él hasta <body>. En Webflow va dentro de un div.w-embed; marcar ese
+    // ancestro lo dejaría inert también a él (y a su aviso).
+    for (let node = this; node && node !== document.body && node.parentElement; node = node.parentElement) {
+      for (const sibling of node.parentElement.children) {
+        if (sibling === node || this.#inerted.has(sibling) || sibling.hasAttribute('inert')) continue;
+        if (sibling.localName === 'script' || sibling.localName === 'style') continue;
+        sibling.setAttribute('inert', '');
+        this.#inerted.add(sibling);
+      }
     }
+  }
+
+  // Región viva (DESIGN.md §9): primero el preloader entra al árbol de
+  // accesibilidad (sin aria-hidden) con el aviso vacío, y en el frame
+  // siguiente cambia el texto, así se anuncia. Sin aria-busy en el host: haría
+  // esperar el aviso de adentro.
+  #announce() {
+    const status = this.shadowRoot.querySelector('.status');
+    this.removeAttribute('aria-hidden');
+    status.textContent = '';
+    requestAnimationFrame(() => {
+      if (this.open) status.textContent = 'Cargando';
+    });
   }
 
   #progress(value) {

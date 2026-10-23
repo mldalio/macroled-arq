@@ -82,6 +82,8 @@
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
 }
 
+/* TODO (diseño): Home v2 usa Regular y no hay role/* Regular de ese tamaño;
+   el peso es un primitivo (como text-block y cta-block). */
 :host([type='editorial']) .title {
   font-weight: var(--arq-font-weight-regular);
 }

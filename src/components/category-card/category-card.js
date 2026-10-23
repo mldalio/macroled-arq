@@ -44,6 +44,14 @@ class ArqCategoryCard extends ArqElement {
   // Sin JS o con prefers-reduced-motion se ve quieta desde el principio.
   setup() {
     this.shadowRoot.querySelector('slot[name="description"]').addEventListener('slotchange', () => this.update(new Set()));
+    // overlay: cuánto baja el bloque en reposo para que solo se vea el título
+    // (la bajada, más el gap). La subida en hover es un transform (CSS).
+    const caption = this.shadowRoot.querySelector('.caption');
+    const titleRow = this.shadowRoot.querySelector('.title-row');
+    new ResizeObserver(() => {
+      const shift = caption.offsetHeight - (titleRow.offsetTop + titleRow.offsetHeight);
+      caption.style.setProperty('--description-shift', `${Math.max(shift, 0)}px`);
+    }).observe(caption);
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const card = this.shadowRoot.querySelector('.card');
     const index = [...this.parentElement.children].filter((el) => el.localName === this.localName).indexOf(this);

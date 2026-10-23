@@ -16,7 +16,7 @@ Resultados de la búsqueda en Desktop, debajo de search-field y con su mismo anc
 
 | Figma | Atributo / slot | Prop JS | Valores · por defecto |
 | --- | --- | --- | --- |
-| State | `state` | `state` | `results` · `no-results` (def. `results`) |
+| State | `state` | `state` | `results` · `no-results` · `error` (def. `results`). `error`: la búsqueda falló; mismo dibujo que No results con «No se pudo completar la búsqueda.» y «Probá de nuevo en unos minutos.» (State=Error, 2924:44879) |
 | — (resultados) | slot por defecto | — | `arq-search-result` (hasta 5) y `arq-search-see-all` |
 | — | `term` | `term` | Término (para el mensaje sin resultados) |
 | — | `explore-href` | `exploreHref` | Destino de "Explorá nuestros productos". Por defecto `/arq/productos` |

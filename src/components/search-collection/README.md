@@ -16,7 +16,7 @@ Resultado de búsqueda de una **colección**, discreto: miniatura muy chica y no
 | `term` | Lo que escribió el usuario, para resaltar |
 | `active` | booleano · elegido con ↑ / ↓ (lo pone el navbar) |
 
-- Nombre en `color/text/tertiary`; lo que coincide con `term`, en `color/text/primary` con más peso ([`src/base/highlight.js`](../../base/highlight.js)). Sin coincidencia, todo en tertiary. Hover, Focus y Active: todo el nombre en primary y en Medium (`role/body-medium`).
+- Nombre en `color/text/tertiary`; lo que coincide con `term`, en `color/text/primary` con más peso ([`src/base/highlight.js`](../../base/highlight.js)). Sin coincidencia, todo en tertiary. Hover, Focus y Active: todo el nombre en primary, sin cambiar el peso (DESIGN.md §6).
 - Mismo contrato que search-result para el navbar: `active` y `click()`.
 
 ## Tokens

@@ -150,6 +150,12 @@
   min-width: 0;
 }
 
+/* form-message es una región viva: está siempre, vacía hasta el resultado.
+   Vacía sale del flujo para no sumar el gap debajo del botón. */
+.message:empty {
+  position: absolute;
+}
+
 /* ── Preguntas frecuentes ───────────────────────────────────────── */
 /* Fondo color/surface/faint y space/section/lg arriba y abajo (v3).
    TODO (diseño): el hover de faq-item también es color/surface/faint, así

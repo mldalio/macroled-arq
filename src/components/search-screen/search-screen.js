@@ -35,7 +35,7 @@ class ArqSearchScreen extends ArqElement {
     `<div class="screen">` +
     `<div class="header">` +
     `<arq-icon-button class="back" icon="chevron-left">Volver</arq-icon-button>` +
-    `<arq-search-field class="field"></arq-search-field>` +
+    `<arq-search-field class="field" combobox></arq-search-field>` +
     `</div>` +
     `<div class="content"><slot></slot></div>` +
     `</div>` +

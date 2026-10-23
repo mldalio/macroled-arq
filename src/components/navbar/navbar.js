@@ -55,6 +55,14 @@
 //   (atributo over-photo) y se vuelve sólido; si ya era blanca, también
 //   parte de la misma barra.
 // - Mega-menu y Recursos: Esc o un clic afuera los cierran y el foco vuelve al link que los abrió.
+//   Con teclado, Enter o Espacio los abren y el foco queda en el link; Tab o
+//   ↓ entran al panel: la pestaña elegida del mega-menu o el primer link de
+//   Recursos. Si el foco sale del panel y de su link (Tab), se cierran.
+// - Búsqueda y lectores de pantalla: el campo es un combobox (search-field
+//   combobox) y anuncia la cantidad de resultados, «sin resultados» o el error
+//   (prop status del campo; cada diálogo tiene el suyo, porque lo de afuera de
+//   un diálogo modal queda inerte). Si la búsqueda falla, search-dropdown
+//   State=error (solo de código, TODO diseño).
 // - Recursos (Desktop): columna de links a la izquierda y una foto grande a la
 //   derecha (slot recursos-media; sin foto, color/surface/subtle). Catálogos
 //   apunta a /arq/catalogos. Descargas es
@@ -108,7 +116,7 @@ class ArqNavbar extends ArqElement {
     `<div class="search">` +
     `<arq-icon-button class="search-open" icon="search">Buscar</arq-icon-button>` +
     `<div class="search-box" hidden>` +
-    `<arq-search-field class="search-field" show-close></arq-search-field>` +
+    `<arq-search-field class="search-field" show-close combobox></arq-search-field>` +
     `<arq-search-dropdown class="search-dropdown" data-arq-theme="light" hidden></arq-search-dropdown>` +
     `</div>` +
     `</div>` +
@@ -132,7 +140,7 @@ class ArqNavbar extends ArqElement {
     `</div>` +
     `</div></div>` +
     `</header>` +
-    `<dialog class="menu" data-arq-theme="light">` +
+    `<dialog class="menu" data-arq-theme="light" aria-label="Menú">` +
     `<div class="menu-bar">` +
     `<arq-logo class="menu-logo" size="small"></arq-logo>` +
     `<arq-icon-button class="menu-close" icon="close" background="subtle">Cerrar menú</arq-icon-button>` +
@@ -192,6 +200,31 @@ class ArqNavbar extends ArqElement {
       const which = event.target.dataset.menu === 'recursos' ? 'recursos' : 'products';
       if (MOBILE.matches) this.#setMode(which);
       else this.#toggleMega(!(this.#megaOpen && this.#megaWhich === which), which);
+    });
+    // Teclado: al abrir, el foco queda en Productos o Recursos; con Tab o ↓
+    // entra al panel (en el DOM el panel va después de toda la barra).
+    this.addEventListener('keydown', (event) => {
+      if (MOBILE.matches || !['Tab', 'ArrowDown'].includes(event.key) || event.shiftKey) return;
+      const link = event.composedPath().find((node) => node.localName === 'arq-nav-link' && node.hasAttribute('has-dropdown'));
+      if (!link) return;
+      const which = link.dataset.menu === 'recursos' ? 'recursos' : 'products';
+      const open = this.#megaOpen && this.#megaWhich === which;
+      if (event.key === 'Tab' && !open) return;
+      event.preventDefault();
+      if (!open) this.#toggleMega(true, which);
+      this.#focusPanel(which);
+    });
+    // Tab fuera del panel y de su link: se cierra. Sin destino (clic en un
+    // fondo, cambio de ventana) no: de eso se ocupa el clic afuera.
+    this.addEventListener('focusin', (event) => {
+      if (!this.#megaOpen) return;
+      const path = event.composedPath();
+      const wrap = this.shadowRoot.querySelector('.mega-wrap');
+      if (!path.includes(wrap) && !path.includes(this.#dropdown(this.#megaWhich))) this.#toggleMega(false);
+    });
+    this.addEventListener('focusout', (event) => {
+      const next = event.relatedTarget;
+      if (this.#megaOpen && next && next !== this && !this.contains(next)) this.#toggleMega(false);
     });
     // Preparar el contenido al activar cualquiera de los dropdowns.
     this.addEventListener('arq:toggle', (event) => {
@@ -458,6 +491,22 @@ class ArqNavbar extends ArqElement {
 
   #megaTimer = 0;
   #megaWhich = 'products';
+  // Con teclado: el foco entra al panel (la pestaña elegida del
+  // mega-menu o el primer link de Recursos). Si la navegación todavía no
+  // llegó, espera a que llegue.
+  #focusPanel(which) {
+    const focus = () => {
+      if (!this.#megaOpen || this.#megaWhich !== which) return;
+      const root = this.shadowRoot;
+      const target =
+        which === 'recursos'
+          ? root.querySelector('.recursos-links arq-mega-link')
+          : root.querySelector('.mega').shadowRoot?.querySelector('arq-tab[selected]') ?? root.querySelector('.mega').shadowRoot?.querySelector('arq-tab');
+      target?.focus();
+    };
+    if (which === 'products' && !this.#navigation && this.#loadingNavigation) this.#loadingNavigation.then(() => requestAnimationFrame(focus));
+    else requestAnimationFrame(focus);
+  }
 
   // Duración de un token motion/duration/<name>, en ms
   #ms(name) {
@@ -663,11 +712,13 @@ class ArqNavbar extends ArqElement {
         if (query === this.#query) this.#renderResults(results, total);
       } catch (error) {
         console.error('[arq] navbar: no se pudo buscar', error);
+        if (query === this.#query) this.#renderResults([], 0, true);
       }
     }, DEBOUNCE);
   }
 
-  #renderResults(results, total) {
+  // error: la búsqueda falló (search-dropdown State=error, solo de código)
+  #renderResults(results, total, error = false) {
     const root = this.shadowRoot;
     this.#results = results;
     this.#active = -1;
@@ -681,18 +732,40 @@ class ArqNavbar extends ArqElement {
         .join('') +
       (results.length ? `<arq-search-see-all href="${esc(searchHref(query))}" term="${esc(query)}" count="${total}"></arq-search-see-all>` : '');
     const noResults = query && !results.length;
+    const emptyState = error ? 'error' : 'no-results';
     // Desktop: dropdown debajo del campo
     const dropdown = root.querySelector('.search-dropdown');
-    dropdown.state = noResults ? 'no-results' : 'results';
+    dropdown.state = noResults ? emptyState : 'results';
     dropdown.term = query;
     dropdown.innerHTML = rows;
     this.#showResults(Boolean(query));
     // Mobile: dentro de search-screen
     const screen = root.querySelector('.search-screen');
-    screen.innerHTML = noResults ? `<arq-search-dropdown state="no-results" term="${esc(query)}"></arq-search-dropdown>` : rows;
+    screen.innerHTML = noResults ? `<arq-search-dropdown state="${emptyState}" term="${esc(query)}"></arq-search-dropdown>` : rows;
     // Sheet: arma sus grupos (productos y colecciones) con los resultados
-    root.querySelector('.search-sheet').results = { query, items: results, total, href: searchHref(query) };
+    root.querySelector('.search-sheet').results = { query, items: results, total, href: searchHref(query), error };
     this.#announce();
+    // Lectores de pantalla: cuántos resultados hay, ninguno o el error. total
+    // cuenta solo productos: se suman las colecciones que se ven.
+    const count = total + results.filter((r) => r.kind === 'collection').length;
+    const status = !query
+      ? ''
+      : error
+        ? 'No se pudo completar la búsqueda.'
+        : results.length
+          ? `${count} ${count === 1 ? 'resultado' : 'resultados'}`
+          : `No se encontraron resultados para “${query}”`;
+    for (const field of this.#fields()) {
+      field.status = status;
+      field.expanded = results.length > 0;
+    }
+    root.querySelector('.search-field').expanded = !dropdown.hidden;
+  }
+
+  // Los tres campos de búsqueda: barra (search="inline"), search-screen y sheet
+  #fields() {
+    const root = this.shadowRoot;
+    return [root.querySelector('.search-field'), root.querySelector('.search-screen').field, root.querySelector('.search-sheet').field];
   }
 
   // Productos recomendados del sheet: se piden una sola vez, al acercarse a la
@@ -720,6 +793,7 @@ class ArqNavbar extends ArqElement {
 
   #showResults(show) {
     this.shadowRoot.querySelector('.search-dropdown').hidden = !show;
+    this.shadowRoot.querySelector('.search-field').expanded = show;
   }
 
   #clearSearch() {
@@ -751,9 +825,7 @@ class ArqNavbar extends ArqElement {
   #announce() {
     const item = this.#results[this.#active];
     const label = item ? `${item.name}, ${item.meta}, ${this.#active + 1} de ${this.#results.length}` : '';
-    this.shadowRoot.querySelector('.search-field').activeLabel = label;
-    this.shadowRoot.querySelector('.search-screen').field.activeLabel = label;
-    this.shadowRoot.querySelector('.search-sheet').field.activeLabel = label;
+    for (const field of this.#fields()) field.activeLabel = label;
   }
 
   #submit(value) {

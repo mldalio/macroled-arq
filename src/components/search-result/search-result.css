@@ -20,9 +20,14 @@
 }
 
 /* Hover y Active: fondo color/surface/hover */
-.result[href]:hover,
 .result.active {
   background: var(--arq-color-surface-hover);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .result[href]:hover {
+    background: var(--arq-color-surface-hover);
+  }
 }
 
 /* Focus: anillo hacia adentro (la fila ocupa todo el ancho de la lista) */
@@ -79,7 +84,7 @@
    flecha ni línea. La miniatura es layout/result-thumb (100; 76 en Mobile).
    El nombre va en color/text/tertiary; lo que coincide con la búsqueda, en
    color/text/primary con más peso (role/body-medium, que ya viene en la marca).
-   Hover, Focus y Active: todo el nombre en color/text/primary y Medium, sin fondo. */
+   Hover, Focus y Active: todo el nombre en color/text/primary, sin fondo. */
 :host([type='simple']) .result {
   gap: var(--arq-space-gap-lg);
   padding-block: 0;
@@ -87,9 +92,14 @@
   background: none;
 }
 
-:host([type='simple']) .result[href]:hover,
 :host([type='simple']) .result.active {
   background: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :host([type='simple']) .result[href]:hover {
+    background: none;
+  }
 }
 
 :host([type='simple']) .result:focus-visible {
@@ -119,12 +129,15 @@
   color: var(--arq-color-text-primary);
 }
 
-/* Hover, Active y Focus: todo el nombre en color/text/primary y en Medium
-   (el peso de role/body-medium, que ya trae la marca). Los roles no cambian con
-   el estado, por eso se pone el peso acá, como en mega-link. */
-:host([type='simple']) .result[href]:hover .name,
+/* Hover, Active y Focus: todo el nombre en color/text/primary. El peso no
+   cambia (DESIGN.md §6: cambiarlo en hover hace saltar el layout). */
 :host([type='simple']) .result.active .name,
 :host([type='simple']) .result:focus-visible .name {
   color: var(--arq-color-text-primary);
-  font-weight: var(--arq-font-weight-medium);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :host([type='simple']) .result[href]:hover .name {
+    color: var(--arq-color-text-primary);
+  }
 }

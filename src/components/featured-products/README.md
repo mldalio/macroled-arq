@@ -26,7 +26,7 @@ Productos elegidos a mano para el Home ("Productos destacados"). El embed lista 
 
 ## Layout
 
-Home v2: texto a la izquierda (`slot="intro"`) y fila con scroll a la derecha (slider: `arq-carousel-controls` con `step="item"`, una tarjeta por clic). Autoplay: avanza solo, también con el mouse encima de una `product-card`. Se pausa al enfocar una tarjeta, al deslizar, fuera de pantalla o `prefers-reduced-motion`. Al final vuelve al inicio. `TODO` (diseño): no hay token de intervalo; se usa `motion/duration/feedback` × 1.5 (3 s). En Mobile las flechas no se muestran. La fila se desliza con el dedo o arrastrando con el mouse; un toque abre la ficha y un deslizamiento no.
+Home v2: texto a la izquierda (`slot="intro"`) y fila con scroll a la derecha (slider: `arq-carousel-controls` con `step="item"`, una tarjeta por clic). Autoplay: avanza solo. Se detiene con el mouse encima o el foco adentro (tarjetas y flechas) y no vuelve mientras siga así (WCAG 2.2.2); también al deslizar, fuera de pantalla o con `prefers-reduced-motion`. `TODO` (diseño): falta un botón de pausa visible (no hay ícono de pausa en el set). Al final vuelve al inicio. `TODO` (diseño): no hay token de intervalo; se usa `motion/duration/feedback` × 1.5 (3 s). En Mobile las flechas no se muestran. La fila se desliza con el dedo o arrastrando con el mouse; un toque abre la ficha y un deslizamiento no.
 
 | Parte | Token |
 | --- | --- |

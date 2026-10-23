@@ -146,7 +146,7 @@ class ArqFichaProducto extends ArqElement {
     `</div>` +
     `</div>` +
     `<div class="info">` +
-    `<p class="status role-body" role="status" hidden></p>` +
+    `<p class="status role-body" role="status"></p>` +
     `<div class="options needs-data"></div>` +
     `</div>` +
     `<div class="buy needs-data">` +
@@ -362,7 +362,6 @@ class ArqFichaProducto extends ArqElement {
   #status(message) {
     const status = this.shadowRoot.querySelector('.status');
     status.textContent = message;
-    status.hidden = !message;
   }
 
   // ── Hero ──────────────────────────────────────────────────────────
@@ -718,6 +717,7 @@ class ArqFichaProducto extends ArqElement {
       if (request === this.#pickerRequest) picker.items = items;
     } catch (error) {
       console.error('[arq] compare-picker: no se pudo cargar el catálogo', error);
+      if (request === this.#pickerRequest) picker.showError();
     }
   }
 

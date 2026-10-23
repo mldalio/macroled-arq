@@ -41,6 +41,7 @@ Campo de formulario en caja con borde leve (`color/border/default`, 40 de alto c
 - **Es un `<input>` / `<textarea>` real** con su `<label for>`. El helper y el error van en `aria-describedby`; con error, `aria-invalid="true"` y el mensaje se anuncia por una región `aria-live` oculta que está siempre en la página (solo cambia su texto). Con `prefers-contrast: more`, la caja usa `color/border/strong`. Pasa al campo interno `autocapitalize` y `enterkeyhint` (teclado del teléfono).
 - **Formulario:** manda `name=value` con el `<form>` (ElementInternals) y le pasa la validación nativa (`required`, `input-type="email"`…): `form.reportValidity()` la muestra. `form.reset()` vuelve al valor inicial.
 - **Validación:** se valida al salir del campo o al enviar, no mientras se escribe. El texto del error lo pone el formulario con `error`.
+- **`setError(message, { announce })`** (solo JS): pone o quita el error, como `error`. Con `announce: false` el mensaje se ve y queda en `aria-describedby`, pero no pasa por la región viva: al enviar con varios errores, el formulario lleva el foco al primero (que lee su error) y no se encadenan los anuncios.
 - Eventos: `arq:input` (cada tecla) y `arq:change` (al salir del campo), con `{ value }`.
 - **`validity`** (solo lectura): el `ValidityState` del campo (`valueMissing`, `typeMismatch`…), para que el formulario elija el texto del error.
 

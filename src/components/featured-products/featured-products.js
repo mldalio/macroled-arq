@@ -19,9 +19,11 @@
 // - Como el navbar, es un contenedor que consulta por src/data/ (decisiones.md,
 //   2026-10-02 · Home); las product-card que muestra reciben datos.
 // - Home v2: el slot intro (texto) queda a la izquierda y las tarjetas van en
-//   una fila con scroll (slider). Autoplay: una tarjeta por intervalo; se
-//   sigue con el mouse encima. Se pausa al enfocar una product-card, al deslizar,
-//   fuera de pantalla o prefers-reduced-motion.
+//   una fila con scroll (slider). Autoplay: una tarjeta por intervalo. Se
+//   detiene con el mouse encima o el foco adentro (tarjetas y flechas), y no
+//   vuelve mientras siga así (WCAG 2.2.2); también al deslizar, fuera de
+//   pantalla o con prefers-reduced-motion.
+//   TODO (diseño): falta un botón de pausa visible (no hay ícono de pausa en el set).
 //   TODO (diseño): no hay token de intervalo; se usa motion/duration/feedback × 1.5 (3 s).
 // - Se desliza con el dedo o arrastrando con el mouse. Un toque sigue
 //   abriendo la ficha; si hubo desplazamiento, ese clic no navega.
@@ -57,6 +59,7 @@ class ArqFeaturedProducts extends ArqElement {
   #timer = 0;
   #inView = false;
   #drag = null;
+  #hovered = false;
   #suppressClick = false;
   #suppressTimer = 0;
   #reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -86,8 +89,19 @@ class ArqFeaturedProducts extends ArqElement {
       },
       true,
     );
-    rail.addEventListener('focusin', () => this.#syncAutoplay());
-    rail.addEventListener('focusout', () => queueMicrotask(() => this.#syncAutoplay()));
+    const root = this.shadowRoot;
+    root.addEventListener('focusin', () => this.#syncAutoplay());
+    root.addEventListener('focusout', () => queueMicrotask(() => this.#syncAutoplay()));
+    this.addEventListener('pointerenter', (event) => {
+      if (event.pointerType !== 'mouse') return;
+      this.#hovered = true;
+      this.#syncAutoplay();
+    });
+    this.addEventListener('pointerleave', (event) => {
+      if (event.pointerType !== 'mouse') return;
+      this.#hovered = false;
+      this.#syncAutoplay();
+    });
     this.#reducedMotion.addEventListener('change', this.#onReduced);
     document.addEventListener('visibilitychange', this.#onVisibility);
     this.#io.observe(this);
@@ -164,19 +178,6 @@ class ArqFeaturedProducts extends ArqElement {
     this.#syncAutoplay();
   }
 
-  #cardFrom(node) {
-    if (!node || node.nodeType !== Node.ELEMENT_NODE) return null;
-    if (node.localName === 'arq-product-card') return node;
-    const host = node.getRootNode?.()?.host;
-    if (host?.localName === 'arq-product-card') return host;
-    return node.closest?.('arq-product-card') ?? null;
-  }
-
-  #cardHasFocus() {
-    const active = this.shadowRoot.activeElement;
-    return Boolean(this.#cardFrom(active));
-  }
-
   #interval() {
     const ms = Number.parseFloat(getComputedStyle(this).getPropertyValue('--arq-motion-duration-feedback')) || 2000;
     return ms * 1.5;
@@ -189,7 +190,8 @@ class ArqFeaturedProducts extends ArqElement {
       !rail.querySelector('[loading]') &&
       this.#inView &&
       !this.#drag &&
-      !this.#cardHasFocus() &&
+      !this.#hovered &&
+      !this.shadowRoot.activeElement &&
       !this.#reducedMotion.matches &&
       document.visibilityState === 'visible' &&
       rail.scrollWidth - rail.clientWidth > 1;
@@ -199,7 +201,12 @@ class ArqFeaturedProducts extends ArqElement {
 
   #play() {
     if (this.#timer) return;
-    this.#timer = window.setInterval(() => this.#advance(), this.#interval());
+    // Cada paso vuelve a mirar si puede seguir (hover, foco…): no depende solo
+    // de los eventos.
+    this.#timer = window.setInterval(() => {
+      this.#syncAutoplay();
+      if (this.#timer) this.#advance();
+    }, this.#interval());
   }
 
   #stop() {

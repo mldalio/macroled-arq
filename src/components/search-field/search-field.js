@@ -25,9 +25,17 @@
 //   arq:input con el valor vacío y el foco vuelve al campo). Sin texto no se ve.
 //   No es la cruz de Show close, que cierra la búsqueda.
 // - Show close viene en true en Figma; en código es un atributo de presencia.
-// - Resultado activo para lectores de pantalla: los resultados viven en otro
-//   Shadow DOM y aria-activedescendant no lo cruza. El campo anuncia el activo
-//   en una región aria-live (prop activeLabel).
+// - Focus: anillo separado (DESIGN §7) alrededor de la caja o de la línea,
+//   además del borde color/border/focus. No cambia el tamaño.
+// - combobox (solo de código): el campo abre una lista de resultados (la
+//   búsqueda del navbar). El input pasa a role="combobox" con
+//   aria-autocomplete="list" y aria-expanded según la prop expanded (la pone
+//   quien muestra la lista). Sin aria-controls ni aria-activedescendant: los
+//   resultados viven en otro Shadow DOM y esas referencias no lo cruzan.
+// - Resultado activo para lectores de pantalla: por eso el campo anuncia el
+//   activo en una región aria-live (prop activeLabel), y la cantidad de
+//   resultados, «sin resultados» o el error en otra (prop status). Las dos
+//   regiones están siempre y arrancan vacías.
 //   TODO (a11y): revisar con lector de pantalla cuando esté la página de búsqueda.
 
 import { ArqElement } from '../../base/arq-element.js';
@@ -48,6 +56,9 @@ class ArqSearchField extends ArqElement {
     placeholder: { type: String, default: 'Buscar productos…' },
     label: { type: String, default: 'Buscar productos' }, // nombre accesible del campo
     activeLabel: { type: String, default: '' }, // resultado activo (se anuncia)
+    status: { type: String, default: '' }, // cantidad de resultados, sin resultados o error (se anuncia)
+    combobox: { type: Boolean }, // abre una lista de resultados (solo de código)
+    expanded: { type: Boolean }, // la lista está a la vista (con combobox)
   };
   static template =
     `<div class="field">` +
@@ -56,7 +67,8 @@ class ArqSearchField extends ArqElement {
     `<arq-icon-button class="clear" icon="close" hidden>Borrar búsqueda</arq-icon-button>` +
     `<arq-icon-button class="close" icon="close">Cerrar búsqueda</arq-icon-button>` +
     `</div>` +
-    `<span class="visually-hidden" aria-live="polite"></span>`;
+    `<span class="visually-hidden active-live" aria-live="polite"></span>` +
+    `<span class="visually-hidden status-live" aria-live="polite"></span>`;
 
   #input = null;
 
@@ -101,7 +113,17 @@ class ArqSearchField extends ArqElement {
       this.#input.classList.toggle('role-body-xl', this.size === 'medium');
       this.#input.classList.toggle('role-heading-3', this.size === 'large');
     }
-    if (changed.has('activeLabel')) root.querySelector('[aria-live]').textContent = this.activeLabel ?? '';
+    if (changed.has('combobox') || changed.has('expanded')) {
+      if (this.combobox) {
+        this.#input.setAttribute('role', 'combobox');
+        this.#input.setAttribute('aria-autocomplete', 'list');
+        this.#input.setAttribute('aria-expanded', String(Boolean(this.expanded)));
+      } else {
+        for (const name of ['role', 'aria-autocomplete', 'aria-expanded']) this.#input.removeAttribute(name);
+      }
+    }
+    if (changed.has('activeLabel')) root.querySelector('.active-live').textContent = this.activeLabel ?? '';
+    if (changed.has('status')) root.querySelector('.status-live').textContent = this.status ?? '';
   }
 }
 

@@ -22,6 +22,13 @@
   color: var(--arq-color-text-secondary);
 }
 
+/* Región viva (DESIGN.md §9): está siempre y vacía; sin texto sale del flujo
+   (sin alto ni padding) pero sigue en el árbol de accesibilidad. */
+.status:empty {
+  position: absolute;
+  padding: 0;
+}
+
 /* ── Galería: fotos lado a lado, a sangre ───────────────────────── */
 /* TODO (diseño): las fotos miden 700 × 684, sin ratio; ratio/square, el
    más cercano. */

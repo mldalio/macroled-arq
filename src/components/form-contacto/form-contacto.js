@@ -126,7 +126,8 @@ class ArqFormContacto extends ArqElement {
     `<arq-checkbox name="novedades" value="si" show-label>Quiero recibir novedades y lanzamientos</arq-checkbox>` +
     `<div class="send">` +
     `<arq-button class="send-button" submit show-icon icon="arrow-right">Enviar consulta</arq-button>` +
-    `<arq-form-message class="message" hidden></arq-form-message>` +
+    // Región viva: siempre en la página y vacía (DESIGN.md §9)
+    `<arq-form-message class="message"></arq-form-message>` +
     `</div>` +
     `</div>` +
     `</form>` +
@@ -181,10 +182,9 @@ class ArqFormContacto extends ArqElement {
     return (input.validity.typeMismatch && rule?.typeMismatch) || rule?.valueMissing || 'Revisá este campo.';
   }
 
-  #validate(input) {
+  #validate(input, { announce = true } = {}) {
     const message = this.#message(input);
-    if (message) input.error = message;
-    else input.removeAttribute('error');
+    input.setError(message, { announce });
     return !message;
   }
 
@@ -192,15 +192,18 @@ class ArqFormContacto extends ArqElement {
     const root = this.shadowRoot;
     this.#validated = true;
     const inputs = [...root.querySelectorAll('arq-input')];
-    const invalid = inputs.filter((input) => !this.#validate(input));
+    // Al enviar, los errores no pasan por las regiones vivas de cada campo (se
+    // encadenarían): el foco va al primero, que lee su error por aria-describedby.
+    const invalid = inputs.filter((input) => !this.#validate(input, { announce: false }));
+    const message = root.querySelector('.message');
     if (invalid.length) {
+      message.textContent = '';
       invalid[0].focus();
       return;
     }
 
     const button = root.querySelector('.send-button');
-    const message = root.querySelector('.message');
-    message.hidden = true;
+    message.textContent = '';
     const data = new FormData(form);
     const spam = String(data.get('website') ?? '').trim() !== '';
     data.delete('website');
@@ -215,9 +218,12 @@ class ArqFormContacto extends ArqElement {
     }
     button.loading = false;
 
+    // La región ya está vacía: el texto se escribe en un frame posterior, así se
+    // anuncia siempre (también si se repite el mismo mensaje) y con el role del
+    // tono nuevo ya puesto.
     message.tone = ok ? 'success' : 'error';
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     message.textContent = ok ? TEXT.sent : TEXT.error;
-    message.hidden = false;
     if (ok) {
       form.reset();
       this.#validated = false;

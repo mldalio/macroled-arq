@@ -235,6 +235,7 @@ class ArqCatalogListing extends ArqElement {
       if (request === this.#pickerRequest) picker.items = items;
     } catch (error) {
       console.error('[arq] compare-picker: no se pudo cargar el catálogo', error);
+      if (request === this.#pickerRequest) picker.showError();
     }
   }
 
@@ -309,7 +310,7 @@ class ArqCatalogListing extends ArqElement {
     if (rows) this.#renderRows(result.filters);
     toolbar.count = result.count;
     this.#render(result.cards);
-    this.#status(result.count ? '' : this.#query && this.unit === 'productos' ? `No hay productos para «${this.#query}».` : text.empty);
+    this.#status(result.count ? '' : this.#query && this.unit === 'productos' ? `No encontramos productos para «${this.#query}».` : text.empty);
   }
 
   #list(filters) {

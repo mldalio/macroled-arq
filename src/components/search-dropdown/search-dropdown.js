@@ -13,6 +13,9 @@
 //   No results: título "No se encontraron resultados para “término”"
 //   (role/body-strong), ayuda (role/body-sm, color/text/tertiary) y el link
 //   "Explorá nuestros productos" (explore-href).
+// - State Error (2924:44879): la búsqueda falló. Mismo dibujo que No
+//   results, con «No se pudo completar la búsqueda.» y «Probá de nuevo en unos
+//   minutos.» (la redacción de error del resto del sitio).
 // - Con el campo vacío no se muestra: lo oculta el navbar (hidden).
 // - search-screen (mobile) usa el mismo componente, a todo el ancho.
 
@@ -20,11 +23,17 @@ import { ArqElement } from '../../base/arq-element.js';
 import { icon } from '../../base/icons.js';
 import css from './search-dropdown.css?inline';
 
+const TEXT = {
+  help: 'Probá con otro término, revisá la ortografía o buscá por código de producto (SKU).',
+  errorTitle: 'No se pudo completar la búsqueda.',
+  errorHelp: 'Probá de nuevo en unos minutos.',
+};
+
 class ArqSearchDropdown extends ArqElement {
   static tag = 'arq-search-dropdown';
   static styles = css;
   static properties = {
-    state: { type: String, values: ['results', 'no-results'], default: 'results' }, // State
+    state: { type: String, values: ['results', 'no-results', 'error'], default: 'results' }, // State
     term: { type: String, default: '' },
     exploreHref: { type: String, default: '/arq/productos' },
   };
@@ -34,7 +43,7 @@ class ArqSearchDropdown extends ArqElement {
     `<div class="empty">` +
     `<div class="message">` +
     `<p class="title role-body-strong"></p>` +
-    `<p class="help role-body-sm">Probá con otro término, revisá la ortografía o buscá por código de producto (SKU).</p>` +
+    `<p class="help role-body-sm"></p>` +
     `</div>` +
     `<a class="explore role-body-sm">Explorá nuestros productos${icon('arrow-right')}</a>` +
     `</div>` +
@@ -42,10 +51,12 @@ class ArqSearchDropdown extends ArqElement {
 
   update() {
     const root = this.shadowRoot;
-    const empty = this.state === 'no-results';
+    const error = this.state === 'error';
+    const empty = this.state === 'no-results' || error;
     root.querySelector('.results').hidden = empty;
     root.querySelector('.empty').hidden = !empty;
-    root.querySelector('.title').textContent = `No se encontraron resultados para “${this.term ?? ''}”`;
+    root.querySelector('.title').textContent = error ? TEXT.errorTitle : `No se encontraron resultados para “${this.term ?? ''}”`;
+    root.querySelector('.help').textContent = error ? TEXT.errorHelp : TEXT.help;
     root.querySelector('.explore').setAttribute('href', this.exploreHref ?? '/arq/productos');
   }
 }
