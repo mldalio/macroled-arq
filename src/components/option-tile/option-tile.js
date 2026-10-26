@@ -7,6 +7,10 @@
 //
 // Clic, Enter o Espacio la eligen y emite arq:change { value, selected }.
 // Las flechas entre opciones las maneja el grupo (SingleSelect).
+//
+// Type=Value (solo la pone option-group): cuando el grupo tiene una sola
+// opción no hay nada que elegir, así que se muestra como dato: sin línea, sin
+// role ni foco, sin cursor de click. Con más opciones vuelve a Type=Option.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { Selectable } from '../../base/selectable.js';
@@ -16,6 +20,7 @@ class ArqOptionTile extends ArqElement {
   static tag = 'arq-option-tile';
   static styles = css;
   static properties = {
+    type: { type: String, values: ['option', 'value'], default: 'option' }, // Type
     selected: { type: Boolean }, // State=Selected
     disabled: { type: Boolean }, // State=Disabled
     value: { type: String },

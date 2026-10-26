@@ -1597,3 +1597,10 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - Pedido: la barra de filtros aplicados decía «Limpiar filtros» y el panel «Borrar todo», para la misma acción. Quedan los dos como «Limpiar filtros». «Borrar todo» queda solo en compare-bar (borra los productos elegidos).
 - En el panel, el botón se deshabilita mientras no hay ningún filtro marcado (antes estaba siempre habilitado). Si tenía el foco al deshabilitarse, el foco pasa a «Ver N».
 - `TODO` (diseño): cambiar el texto y el estado Disabled en el set de filter-panel de Figma; DESIGN.md (fila de filter-panel) en una rama `docs/`.
+
+## 2026-10-26 · option-tile Type=Value: una sola opción se muestra como dato
+
+- Problema: en el configurador, un grupo con una sola opción (Cabezal, Lámpara) dejaba su único tile siempre con la línea de selección de 2 px, igual que un link o un tab, y no hay nada que elegir.
+- Decisión: option-tile suma la variante Type: Option · Value. option-group (Type=Tiles) cuenta sus tiles: con uno solo lo pasa a Type=Value (sin línea, sin role ni foco, `color/text/primary`) y deja de ser un `radiogroup`; con más vuelve a Option. Regla de código en option-group, no una prop que se escriba en el HTML.
+- La línea de 2 px del tile elegido queda como está: la distingue del tab y del link de texto.
+- `TODO` (diseño): agregar Type=Value al set de option-tile en Figma y a DESIGN.md (§8, fila de option-group · option-tile).

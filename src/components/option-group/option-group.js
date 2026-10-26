@@ -46,7 +46,34 @@ class ArqOptionGroup extends ArqElement {
 
   setup() {
     this.select = new SingleSelect(this, { items: 'arq-option-tile' });
-    this.shadowRoot.querySelector('slot').addEventListener('slotchange', () => this.#labelPicker());
+    this.shadowRoot.querySelector('slot').addEventListener('slotchange', () => {
+      this.#labelPicker();
+      this.#single();
+    });
+  }
+
+  // Type=Tiles con una sola opción: no hay nada que elegir, el tile se muestra
+  // como dato (option-tile Type=Value) y el grupo deja de ser un radiogroup.
+  // Con más opciones vuelve todo a Type=Option.
+  #single() {
+    if (this.type !== 'tiles') return;
+    const tiles = [...this.querySelectorAll('arq-option-tile')];
+    const single = tiles.length === 1;
+    for (const tile of tiles) tile.setAttribute('type', single ? 'value' : 'option');
+    this.toggleAttribute('data-single', single);
+    this.#role();
+  }
+
+  #role() {
+    const group = this.type === 'tiles' && !this.hasAttribute('data-single');
+    if (group) {
+      this.setAttribute('role', 'radiogroup');
+      if (this.label) this.setAttribute('aria-label', this.label);
+      else this.removeAttribute('aria-label');
+    } else {
+      this.removeAttribute('role');
+      this.removeAttribute('aria-label');
+    }
   }
 
   update(changed) {
@@ -56,15 +83,9 @@ class ArqOptionGroup extends ArqElement {
       value.textContent = this.value ?? '';
       value.hidden = !this.value;
     }
-    if (this.type === 'tiles') {
-      this.setAttribute('role', 'radiogroup');
-      if (this.label) this.setAttribute('aria-label', this.label);
-      else this.removeAttribute('aria-label');
-    } else {
-      this.removeAttribute('role');
-      this.removeAttribute('aria-label');
-    }
+    this.#role();
     this.#labelPicker();
+    this.#single();
   }
 
   // Type=Swatches: el swatch-picker toma la etiqueta del grupo si no trae la suya.
