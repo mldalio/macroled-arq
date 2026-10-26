@@ -55,6 +55,7 @@ import { PhotoViewer,photoViewerTemplate } from '../../base/photo-viewer.js';
 import viewerCss from '../../base/photo-viewer.css?inline';
 import { normalize } from '../../data/text.js';
 import { animateThemeChange, refreshTheme, setBrowserBar, takeThemeHandoff, withoutThemeTransition } from '../../base/theme.js';
+import { getDaoConfigurator, compatibleProducts } from '../../data/dao-config.js';
 import { getProduct, variantDetails, categoryHref, listCompareCandidates } from '../../data/catalog.js';
 import { attributeInfo } from '../../data/attributes.js';
 import { config } from '../../config.js';
@@ -74,6 +75,7 @@ import '../swatch-picker/swatch-picker.js';
 import '../swatch/swatch.js';
 import '../tab/tab.js';
 import '../dao-configurator/dao-configurator.js';
+import '../compatible-products/compatible-products.js';
 import '../accordion-item/accordion-item.js';
 import '../spec-list/spec-list.js';
 import '../spec-row/spec-row.js';
@@ -91,6 +93,7 @@ const TEXT = {
   notFound: 'No encontramos este producto.',
   error: 'No se pudo cargar el producto. Probá de nuevo en unos minutos.',
   datasheet: 'Ficha técnica',
+  commercial: 'Características comerciales',
   generating: 'Generando…',
   previous: 'Anterior',
   next: 'Siguiente',
@@ -166,6 +169,11 @@ class ArqFichaProducto extends ArqElement {
     `<div class="spec-tabs" role="tablist" aria-label="Información técnica" hidden></div>` +
     `<div class="spec-panels"></div>` +
     `</div>` +
+    // Productos compatibles (colección Daö)
+    `<arq-compatible-products class="compatible needs-data">` +
+    `<span slot="title" class="compatible-title"><slot name="compatible-title"></slot></span>` +
+    `<span slot="title" class="accessory-title" hidden><slot name="accessory-title"></slot></span>` +
+    `</arq-compatible-products>` +
     // Galería de ambiente
     `<div class="ambient-block needs-data" hidden>` +
     `<div class="ambient" role="region" aria-label="Galería de ambiente" tabindex="0"></div>` +
@@ -626,6 +634,7 @@ class ArqFichaProducto extends ArqElement {
     // el toggle cambia junto con la foto al iluminar
     for (const src of [details.images?.[0]?.src, details.images?.[0]?.srcOn]) if (src) this.#backdropImage(src).catch(() => {});
     this.#renderSpecs(details.sections);
+    this.#renderCompatibles();
     const compare = root.querySelector('.compare');
     compare.checked = root.querySelector('.compare-bar').has(details.sku);
 
@@ -643,8 +652,8 @@ class ArqFichaProducto extends ArqElement {
   // (arq-dao-configurator): se crea una vez. El SKU de la ficha queda
   // preseleccionado y, al cambiar de variante, vuelve a esa pieza. Al cambiar
   // de variante queda la pestaña elegida y abiertas las mismas secciones; la
-  // primera vez, las tres en
-  // Desktop y solo la primera (lumínicas) en Mobile. Una pestaña sin datos
+  // primera vez, solo la primera
+  // (lumínicas), en Desktop y en Mobile, para llegar rápido a lo que sigue. Una pestaña sin datos
   // no se muestra (src/data/attributes.js).
   #specTab = 'specs';
   #daoConfigurator = null;
@@ -669,26 +678,30 @@ class ArqFichaProducto extends ArqElement {
     const panels = root.querySelector('.spec-panels');
     const previous = [...panels.querySelectorAll('arq-accordion-item')];
     const technical = sections.filter((section) => section.id !== 'comercial');
-    const open = previous.length ? new Set(previous.filter((item) => item.open).map((item) => item.dataset.section)) : new Set(matchMedia('(max-width: 767px)').matches ? [technical[0]?.id] : technical.map((section) => section.id));
+    const open = previous.length ? new Set(previous.filter((item) => item.open).map((item) => item.dataset.section)) : new Set([technical[0]?.id]);
 
-    const accordion = document.createElement('div');
-    accordion.className = 'accordion';
-    for (const section of technical) {
-      const item = document.createElement('arq-accordion-item');
-      item.dataset.section = section.id;
-      item.open = open.has(section.id);
-      const title = document.createElement('span');
-      title.slot = 'title';
-      title.textContent = section.label;
-      item.append(title, this.#specList(section));
-      accordion.append(item);
-    }
+    const accordionOf = (list, isOpen) => {
+      const accordion = document.createElement('div');
+      accordion.className = 'accordion';
+      for (const section of list) {
+        const item = document.createElement('arq-accordion-item');
+        item.dataset.section = section.id;
+        item.open = isOpen(section);
+        const title = document.createElement('span');
+        title.slot = 'title';
+        title.textContent = section.id === 'comercial' ? TEXT.commercial : section.label;
+        item.append(title, this.#specList(section));
+        accordion.append(item);
+      }
+      return accordion;
+    };
+    const accordion = accordionOf(technical, (section) => open.has(section.id));
     const commercial = sections.find((section) => section.id === 'comercial');
 
     const configurador = this.#product.collection?.id === 'dao' ? this.#configuratorPanel() : null;
     const tabs = [
       technical.length && { id: 'specs', label: 'Especificaciones', content: accordion },
-      commercial && { id: 'commercial', label: commercial.label, content: this.#specList(commercial) },
+      commercial && { id: 'commercial', label: commercial.label, content: accordionOf([commercial], () => !previous.length || open.has('comercial')) },
       configurador && { id: 'configurador', label: 'Configurador', content: configurador },
     ].filter(Boolean);
     if (!tabs.some((tab) => tab.id === this.#specTab)) this.#specTab = tabs[0]?.id;
@@ -718,6 +731,31 @@ class ArqFichaProducto extends ArqElement {
       }),
     );
     tablist.hidden = tabs.length < 2;
+  }
+
+  // «Accesorios y lámparas compatibles» de las fichas de Daö y, en la ficha de la
+  // lámpara, su «Accesorio requerido» (el frente). Salen de las relaciones del
+  // configurador (src/data/dao-config.js). Si no se pueden traer, no se muestra.
+  #compatibleRequest = 0;
+
+  async #renderCompatibles() {
+    const section = this.shadowRoot.querySelector('.compatible');
+    const request = ++this.#compatibleRequest;
+    if (this.#product.collection?.id !== 'dao' && !this.#sku?.startsWith('PAR11-')) {
+      section.items = [];
+      return;
+    }
+    try {
+      const { model, hrefs } = await getDaoConfigurator();
+      if (request !== this.#compatibleRequest) return;
+      const { kind, items } = compatibleProducts(model, hrefs, this.#sku);
+      section.querySelector('.compatible-title').hidden = kind === 'accessory';
+      section.querySelector('.accessory-title').hidden = kind !== 'accessory';
+      section.items = items;
+    } catch (error) {
+      console.error('[arq] productos compatibles: no se pudieron cargar', error);
+      if (request === this.#compatibleRequest) section.items = [];
+    }
   }
 
   #configuratorPanel() {

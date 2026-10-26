@@ -1,0 +1,47 @@
+/* compatible-products · solo tokens semánticos.
+   TODO (diseño): Figma 2256:28229 (AccessoriesSection) es una ficha vieja; el
+   espaciado de la sección sigue al glosario de la ficha. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xl);
+  padding: var(--arq-space-section-sm) var(--page-gutter) var(--arq-space-section-xl);
+}
+
+.section[hidden] {
+  display: none;
+}
+
+/* Grilla: layout/card-min por columna en Tablet y Mobile; 4 columnas en Desktop
+   (1024–1439 px) y 5 en Large (desde 1440 px) */
+.grid {
+  --card-min: var(--arq-layout-card-min);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
+  gap: var(--arq-space-gap-lg);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1440px) {
+  .grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.grid li {
+  min-width: 0;
+}

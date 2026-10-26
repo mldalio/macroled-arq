@@ -9,9 +9,9 @@ import { finishImage } from './finishes.js';
 
 const FAMILY = 'Dao';
 
-// Presentación, igual que el demo: orden de grupos y el nombre de cada cantidad
-// de módulos. Los colores salen de finishes.js (familia Dao).
-const MODULE_NAMES = { 1: 'Simple', 2: 'Doble', 3: 'Triple' };
+// Presentación, igual que el demo: orden de grupos. Los colores salen de
+// finishes.js (familia Dao). Los módulos se muestran «x1», «x2», «x3», como en
+// la ficha (typesense-adapter.js).
 const GROUP_ORDER = ['DAO-E', 'DAO-T', 'DAO-MINI-E', 'DAO-MINI-T', 'DAO-E-PH', 'DAO-E-DF'];
 const COLOR_ORDER = ['Negro', 'Blanco', 'Cobre', 'Bronce', 'Celeste', 'Grafito', 'Platil'];
 
@@ -117,7 +117,7 @@ export function buildDaoModel(rows) {
   const model = {
     bySku,
     groups,
-    moduleName: (qty) => MODULE_NAMES[qty] || `${qty} módulos`,
+    moduleName: (qty) => `x${qty}`,
     formatSize,
     swatch: (color) => finishImage(color, FAMILY),
     extra: (key) => {
@@ -324,12 +324,87 @@ async function loadRows() {
   return [...docs.values()].map(fromDoc);
 }
 
-/** Modelo del configurador y la ficha de cada SKU (cuando el catálogo la tiene). */
-export async function getDaoConfigurator() {
-  const [rows, { groups }] = await Promise.all([loadRows(), loadSource()]);
-  const hrefs = new Map();
-  for (const group of groups) {
-    for (const variant of group.variants) hrefs.set(variant.sku, productHref(group.id, variant.sku));
-  }
-  return { model: buildDaoModel(rows), hrefs };
+/**
+ * Lo que va en «compatibles» de la ficha de un SKU de Daö, con las relaciones
+ * del configurador (aro ← cabezal ← lámpara ← frente). El rol de cada pieza
+ * sale de quién la lista, no de `categoria` (las filas de PAR11 la traen vacía):
+ * - Lámpara (la lista un cabezal o un aro): solo sus frentes, que son accesorios
+ *   requeridos (kind 'accessory'). Sin frentes, nada.
+ * - Frente (la lista una lámpara): nada, es de su lámpara.
+ * - Aro o cabezal: los demás aros, cabezales y lámparas con los que se arma, hacia
+ *   arriba y hacia abajo, sin los frentes (kind 'compatible').
+ * Una tarjeta por grupo (los colores y módulos de un grupo son variantes de su
+ * ficha); el grupo del propio SKU no entra. Orden: aros, cabezales y lámparas.
+ * Sin SKU o sin la pieza: sin items.
+ */
+export function compatibleProducts(model, hrefs, sku) {
+  const start = model.bySku[clean(sku)];
+  if (!start) return { kind: 'compatible', items: [] };
+  const all = Object.values(model.bySku);
+  const listed = (field) => new Set(all.flatMap((row) => row[field]));
+  const heads = listed('cabezales');
+  const lamps = listed('lamparas');
+  const fronts = listed('frentes');
+  const role = (row) => (fronts.has(row.sku) ? 3 : lamps.has(row.sku) ? 2 : heads.has(row.sku) ? 1 : 0);
+
+  const children = (row) => [...row.cabezales, ...row.lamparas, ...row.frentes].map((id) => model.bySku[id]).filter(Boolean);
+  const parents = (row) => all.filter((item) => children(item).includes(row));
+  const reach = (next) => {
+    const seen = new Set();
+    const queue = [start];
+    while (queue.length) {
+      for (const row of next(queue.pop())) {
+        if (!seen.has(row)) {
+          seen.add(row);
+          queue.push(row);
+        }
+      }
+    }
+    return seen;
+  };
+  const key = (row) => row.grupo || row.sku;
+
+  const accessory = role(start) === 2;
+  let rows = [];
+  if (accessory) rows = start.frentes.map((id) => model.bySku[id]).filter(Boolean);
+  else if (role(start) !== 3) rows = [...reach(children), ...reach(parents)].filter((row) => role(row) !== 3);
+  rows = rows.filter((row) => key(row) !== key(start));
+  rows.sort((a, b) => role(a) - role(b) || orderOf(GROUP_ORDER, a.grupo) - orderOf(GROUP_ORDER, b.grupo));
+
+  const byGroup = new Map();
+  for (const row of rows) if (!byGroup.has(key(row))) byGroup.set(key(row), row);
+  return {
+    kind: accessory ? 'accessory' : 'compatible',
+    items: [...byGroup.values()].map((row) => {
+      const members = all.filter((item) => key(item) === key(row));
+      const colors = [...new Set(members.map((item) => item.color).filter(Boolean))].sort((a, b) => orderOf(COLOR_ORDER, a) - orderOf(COLOR_ORDER, b));
+      // Cantidad de módulos solo en los aros (en las demás piezas «modulos» vale 1 por omisión)
+      const qtys = role(row) === 0 ? [...new Set(members.map((item) => item.modulos))].sort((a, b) => a - b) : [];
+      const list = qtys.length > 1 ? `${qtys[0]}-${qtys.at(-1)}` : String(qtys[0] ?? '');
+      return {
+        sku: row.sku,
+        name: stripModule(row.nombre) || row.sku,
+        image: row.img,
+        href: hrefs.get(row.sku) ?? null,
+        finishes: colors.map((color) => ({ name: color, src: model.swatch(color) })),
+        meta: qtys.length ? `${list} ${qtys.at(-1) === 1 ? 'módulo' : 'módulos'}` : '',
+      };
+    }),
+  };
+}
+
+let configurator = null;
+
+/** Modelo del configurador y la ficha de cada SKU (cuando el catálogo la tiene). Se carga una vez. */
+export function getDaoConfigurator() {
+  configurator ??= (async () => {
+    const [rows, { groups }] = await Promise.all([loadRows(), loadSource()]);
+    const hrefs = new Map();
+    for (const group of groups) {
+      for (const variant of group.variants) hrefs.set(variant.sku, productHref(group.id, variant.sku));
+    }
+    return { model: buildDaoModel(rows), hrefs };
+  })();
+  configurator.catch(() => (configurator = null)); // un error permite reintentar
+  return configurator;
 }

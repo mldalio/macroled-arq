@@ -1402,6 +1402,22 @@
         </div>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-compatible-products">
+        <h2 id="demo-compatible-products" class="demo-heading role-label">compatible-products · &lt;arq-compatible-products&gt;</h2>
+        <p class="demo-note role-body-sm">Sección «Productos compatibles» de la ficha de Daö (Figma: TODO). Grilla de search-card; cada una lleva a su ficha. Sin items no se muestra. La ficha real la arma con src/data/dao-config.js (compatibleProducts).</p>
+        <arq-compatible-products id="demo-compatible">
+          <h2 slot="title">Productos compatibles</h2>
+        </arq-compatible-products>
+        <script type="module">
+          document.getElementById('demo-compatible').items = [
+            { name: 'Daö Embutir', href: '#demo-compatible-products', image: '' },
+            { name: 'Cabezal orientable con un nombre largo para probar el corte', href: '#demo-compatible-products', image: '' },
+            { name: 'Lámpara PAR11', href: '#demo-compatible-products', image: '' },
+            { name: 'Frente sin link', image: '' },
+          ];
+        </script>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-option-group">
         <h2 id="demo-option-group" class="demo-heading role-label">option-group · &lt;arq-option-group&gt;</h2>
         <p class="demo-note role-body-sm">Figma 921:2560. Type=Tiles (el grupo es el radiogroup; tiles en Fill que bajan si no entran) y Type=Swatches (swatch-picker con la etiqueta del grupo). Type=Select: TODO, select todavía no existe.</p>

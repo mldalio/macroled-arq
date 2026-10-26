@@ -58,6 +58,7 @@ import './components/search-see-all/search-see-all.js';
 import './components/search-dropdown/search-dropdown.js';
 import './components/search-screen/search-screen.js';
 import './components/search-card/search-card.js';
+import './components/compatible-products/compatible-products.js';
 import './components/search-collection/search-collection.js';
 import './components/search-sheet/search-sheet.js';
 import './components/navbar/navbar.js';
