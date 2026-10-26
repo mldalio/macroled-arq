@@ -10,15 +10,16 @@
 // pdfmake y Albert Sans se cargan de jsDelivr al primer clic (src/config.js) y
 // no entran en dist/arq.js. La imagen se lee con CORS y se pasa a JPEG en un
 // canvas (pdfmake solo acepta JPEG y PNG; las imágenes pueden venir en WebP):
-// el servidor de imágenes (S3) tiene que responder con
-// Access-Control-Allow-Origin. Si no, la portada sale con el fondo sin imagen.
+// S3 no manda Access-Control-Allow-Origin, así que la foto se pide al
+// CloudFront que sirve los mismos archivos con CORS (config.images.pdfBase).
+// Si no carga, pdf-cover sale con el fondo sin imagen.
 
 import { config } from '../config.js';
 import { getDatasheet } from '../data/catalog.js';
 import { PRINT_TOKENS as T, PRINT_ROLES as ROLES } from '../styles/print-tokens.js';
-import { CONTENT_WIDTH, FONT_WEIGHTS, buildDatasheet, coverImageHeight, fontName } from './ficha-tecnica-doc.js';
+import { COVER_IMAGE, COVER_INFO_WIDTH, FONT_WEIGHTS, buildDatasheet, fontName } from './ficha-tecnica-doc.js';
 
-// Resolución de la imagen de la portada: 2,5 × los px de Figma (unos 240 dpi en A4).
+// Resolución de la foto de pdf-cover: 2,5 × los px de Figma (unos 240 dpi en A4).
 const IMAGE_SCALE = 2.5;
 const IMAGE_QUALITY = 0.9;
 
@@ -41,9 +42,9 @@ function loadLibrary() {
   return library;
 }
 
-// Líneas que ocupa un texto con un rol en el ancho de la hoja. Se mide con la
+// Líneas que ocupa un texto con un rol en un ancho en px. Se mide con la
 // fuente de la página (Albert Sans se carga a nivel página).
-async function countLines(text, role) {
+async function countLines(text, role, maxWidth) {
   const r = ROLES[role];
   const font = `${r.fontWeight} ${r.fontSize}px "${T['font/family/sans']}"`;
   try {
@@ -58,7 +59,7 @@ async function countLines(text, role) {
   let line = '';
   for (const word of String(text).split(/\s+/).filter(Boolean)) {
     const next = line ? `${line} ${word}` : word;
-    if (line && width(next) > CONTENT_WIDTH) {
+    if (line && width(next) > maxWidth) {
       lines += 1;
       line = word;
     } else {
@@ -68,9 +69,18 @@ async function countLines(text, role) {
   return lines;
 }
 
-// Imagen recortada como object-fit: cover sobre color/surface/subtle, en JPEG.
-function coverImage(src, widthPx, heightPx) {
+// La foto se pide al CloudFront, que manda CORS (S3 no): config.images.pdfBase.
+// Una foto de otro servidor se pide tal cual.
+function corsSrc(src, sizePx) {
+  const { sampleFrom, pdfBase } = config.images;
+  if (!src.startsWith(sampleFrom)) return src;
+  return pdfBase.replaceAll('{size}', Math.round(sizePx)) + src.slice(sampleFrom.length);
+}
+
+// Foto entera (object-fit: contain) sobre color/surface/subtle, en JPEG.
+function fitImage(src, widthPx, heightPx) {
   if (!src) return Promise.resolve(null);
+  src = corsSrc(src, Math.max(widthPx, heightPx) * IMAGE_SCALE);
   return new Promise((resolve) => {
     const img = new Image();
     img.crossOrigin = 'anonymous';
@@ -83,7 +93,7 @@ function coverImage(src, widthPx, heightPx) {
         const context = canvas.getContext('2d');
         context.fillStyle = T['color/surface/subtle'];
         context.fillRect(0, 0, canvas.width, canvas.height);
-        const scale = Math.max(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight);
+        const scale = Math.min(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight);
         const w = img.naturalWidth * scale;
         const h = img.naturalHeight * scale;
         context.drawImage(img, (canvas.width - w) / 2, (canvas.height - h) / 2, w, h);
@@ -110,8 +120,11 @@ const fileName = (sku) => `ficha-tecnica-${String(sku).replace(/[^\w-]+/g, '-').
 export async function datasheetDocument(sku) {
   const data = await getDatasheet(sku);
   if (!data) return null;
-  const [nameLines, skuLines] = await Promise.all([countLines(data.name, 'display'), countLines(data.sku, 'body-lg')]);
-  const image = await coverImage(data.image, CONTENT_WIDTH, coverImageHeight({ nameLines, skuLines }));
+  const [nameLines, skuLines, image] = await Promise.all([
+    countLines(data.name, 'display', COVER_INFO_WIDTH),
+    countLines(data.sku, 'body-lg', COVER_INFO_WIDTH),
+    fitImage(data.image, COVER_IMAGE, COVER_IMAGE),
+  ]);
   return { data, definition: buildDatasheet(data, { image, nameLines, skuLines }) };
 }
 

@@ -163,6 +163,7 @@
   --arq-layout-mega-link-thumb: 60px; /** Miniatura cuadrada de mega-link (Show image), en el menú Mobile y en las colecciones del mega-menu. */
   --arq-layout-result-thumb: 100px; /** Miniatura cuadrada de search-result Type=Simple (resultado grande, sin SKU): 100 en Desktop, Tablet y Large; 76 en Mobile. */
   --arq-layout-gallery-thumb-overlay: 66px; /** Ancho de gallery-thumb cuando las miniaturas van sobre la foto (product-gallery que llena el alto, Ficha v2, desde 1024 px). El alto sale de ratio/landscape (5:4). */
+  --arq-layout-pdf-cover-image: 200px; /** Lado de la foto cuadrada del producto en pdf-cover (primera hoja de la ficha técnica PDF, A4). La foto se muestra entera (contain) sobre color/surface/subtle. */
   --arq-motion-duration-fast: 120ms; /** Hover, toggle, foco. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-base: 200ms; /** Desplegables (disclosure) y menús. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-slow: 320ms; /** Fundido de imágenes de product-card y mensaje de form-message al aparecer. En ms. Con prefers-reduced-motion: 0. */
