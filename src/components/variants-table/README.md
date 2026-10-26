@@ -52,7 +52,7 @@ Se quitaron `show-search` (ahora es `type="catalog"`) y `show-sort` (solo de có
 | Tarjeta Mobile | Descarga (ícono) arriba a la derecha | Igual, con el nombre como link a la ficha |
 | Link al producto | No | Nombre y miniatura (con `href`) |
 | Búsqueda | No | Por nombre, SKU y `row.search` (`searchVariants`) |
-| «Ver más» | No (todas las filas) | De a 100 filas |
+| «Ver más» | No (todas las filas, decisión 2026-10-26) | De a 100 filas |
 | URL | No (la ficha ya usa `?sku=`) | `?q=…&filtro=valor`, con `history.replaceState` |
 
 ## En los dos

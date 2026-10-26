@@ -142,6 +142,66 @@
   height: calc(100svh - var(--announcement-height, var(--arq-space-0)));
 }
 
+/* Portada: velo tenue que se va (la foto se enciende) y el título sube.
+   El velo queda entre la media y el scrim, así el texto no se apaga.
+   TODO (diseño): no está en Figma. opacity/track es el oscurecido más bajo
+   que hay; la curva y el tiempo son los de Iluminar. */
+:host([full-height]) .veil {
+  position: absolute;
+  inset: 0;
+  background: var(--arq-color-surface-inverse);
+  opacity: 0;
+  pointer-events: none;
+}
+
+:host([full-height]) .hero.intro:not(.entered) .veil {
+  opacity: var(--arq-opacity-track);
+}
+
+:host([full-height]) .hero.entered .veil {
+  animation: arq-hero-on var(--arq-motion-duration-illumination-image) var(--arq-motion-easing-illumination) both;
+}
+
+@keyframes arq-hero-on {
+  from {
+    opacity: var(--arq-opacity-track);
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+:host([full-height]) .hero.intro:not(.entered) .content {
+  opacity: 0;
+}
+
+:host([full-height]) .hero.intro:not(.entered) .title {
+  transform: translateY(var(--arq-space-gap-lg));
+}
+
+:host([full-height]) .hero.entered .content {
+  animation: arq-hero-in var(--arq-motion-duration-illumination-image) var(--arq-motion-easing-illumination-image) both;
+  animation-delay: var(--arq-motion-duration-illumination-lead);
+}
+
+:host([full-height]) .hero.entered .title {
+  animation: arq-hero-title var(--arq-motion-duration-illumination-image) var(--arq-motion-easing-illumination-image) both;
+  animation-delay: var(--arq-motion-duration-illumination-lead);
+}
+
+@keyframes arq-hero-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes arq-hero-title {
+  from {
+    transform: translateY(var(--arq-space-gap-lg));
+  }
+}
+
 :host([full-height]) .scrim {
   inset: auto 0 0 0;
   height: 66.666%;

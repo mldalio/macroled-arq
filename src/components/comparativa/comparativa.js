@@ -130,11 +130,21 @@ class ArqComparativa extends ArqElement {
     // Mobile: un solo scroll (.scroll) para productos y tabla. La cabecera
     // compacta lo sigue; si se desliza la compacta, mueve el contenedor.
     const scroll = root.querySelector('.scroll');
+    // written: el último scrollLeft que puso el código. Su evento scroll llega
+    // un cuadro después y no se devuelve a la cabecera (si no, ida y vuelta).
+    let written = null;
     scroll.addEventListener('scroll', () => {
+      if (written !== null && Math.abs(scroll.scrollLeft - written) < 1) {
+        written = null;
+        return;
+      }
+      written = null;
       if (MOBILE.matches) header.setScrollLeft(scroll.scrollLeft);
     });
     header.addEventListener('arq:scroll', (event) => {
-      if (MOBILE.matches && scroll.scrollLeft !== event.detail.left) scroll.scrollLeft = event.detail.left;
+      if (!MOBILE.matches || Math.abs(scroll.scrollLeft - event.detail.left) < 1) return;
+      written = event.detail.left;
+      scroll.scrollLeft = event.detail.left;
     });
     // Solo hace falta ser foco-de-teclado cuando el scroll compartido existe (Mobile).
     MOBILE.addEventListener('change', () => this.#syncScrollA11y());

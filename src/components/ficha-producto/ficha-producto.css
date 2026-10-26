@@ -152,11 +152,17 @@
   align-items: flex-start;
   gap: var(--arq-space-gap-sm);
   min-width: 0;
+  align-self: stretch; /* ocupa la columna: no toma el ancho de su palabra más larga */
 }
 
+/* Una palabra más ancha que la columna («Multidireccional» a 1024 px): se
+   corta con guion donde el idioma lo permite (lang="es" en la página) y, si
+   no, donde haga falta. break-word no achica el ancho mínimo y desbordaba. */
 .title {
   min-width: 0;
-  overflow-wrap: break-word;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 
 .info {
@@ -486,6 +492,7 @@
   margin: calc(-1 * var(--arq-space-gap-xs));
   padding: var(--arq-space-gap-xs);
   overflow-x: auto;
+  overscroll-behavior-x: contain; /* al llegar al final no mueve la página ni dispara «atrás» */
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
 }

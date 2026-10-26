@@ -115,9 +115,11 @@ class ArqProductGallery extends ArqElement {
       const other = this.#dark ? current.src : current.srcOn;
       if (other && other !== src) new Image().src = other;
     }
-    // Sin imágenes (variante sin fotos): se ve el fondo del marco. Estilo en
-    // línea porque el <img> está en el DOM de la página (Webflow le da display).
-    if (img && this.#received) img.style.display = current ? '' : 'none';
+    // Sin imágenes (variante sin fotos): se ve el fondo del marco. Con hidden y
+    // una regla !important en product-gallery.css: el <img> está en el DOM de
+    // la página (Webflow le da display) y un display en línea perdía contra
+    // ::slotted(img) { display: block !important }.
+    if (img && this.#received) img.hidden = !current;
     const row = this.shadowRoot.querySelector('.thumbs');
     row.hidden = images.length < 2;
     if (row.hidden) {

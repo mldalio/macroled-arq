@@ -3,18 +3,19 @@
 // los tokens de Arq (sin trama de fondo).
 //
 //   <arq-collection-index>
-//     <a href="/arq/productos?collection=kanu">
-//       <img src="…" alt="…">
-//       Kanu
-//     </a>
 //     <arq-button slot="action" type="outline" href="/arq/productos" data-arq-menu="colecciones">Ver todo</arq-button>
 //   </arq-collection-index>
+//
+// Los nombres salen de la columna familia de las luminarias publicadas
+// (getFamilies). Cada link abre /arq/productos?family=. El botón «Ver todo»
+// queda en el HTML.
 //
 // Pasar el mouse (o enfocar) un nombre muestra su foto. El primero arranca
 // visible. En táctil, el primer toque muestra la foto y el segundo entra.
 // TODO (diseño): no hay set ni tokens propios de este bloque.
 
 import { ArqElement } from '../../base/arq-element.js';
+import { getFamilies } from '../../data/catalog.js';
 import css from './collection-index.css?inline';
 
 class ArqCollectionIndex extends ArqElement {
@@ -59,6 +60,36 @@ class ArqCollectionIndex extends ArqElement {
       this.#select(link);
     });
     this.#sync();
+    this.#load();
+  }
+
+  async #load() {
+    let families = [];
+    try {
+      families = await getFamilies();
+    } catch (error) {
+      console.error('[arq] collection-index: no se pudieron cargar las familias', error);
+      return;
+    }
+    const action = this.querySelector('[slot="action"]');
+    for (const child of [...this.children]) {
+      if (child !== action) child.remove();
+    }
+    const links = families.map((family) => {
+      const link = document.createElement('a');
+      link.href = family.href;
+      if (family.image) {
+        const img = document.createElement('img');
+        img.src = family.image;
+        img.alt = '';
+        img.loading = 'lazy';
+        link.append(img);
+      }
+      link.append(document.createTextNode(family.name));
+      return link;
+    });
+    if (action) action.before(...links);
+    else this.append(...links);
   }
 
   #links() {

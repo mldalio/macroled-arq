@@ -212,3 +212,13 @@ button.link {
 ::slotted(arq-button) {
   margin-block: var(--arq-space-gap-sm);
 }
+
+/* Táctil: sin hover, el toque muestra lo mismo mientras el dedo apoya
+   (:active), así el link responde antes de que cargue la página siguiente */
+@media (hover: none) {
+  .link[href]:active,
+  button.link:active,
+  .trigger:active {
+    background: var(--arq-color-surface-hover);
+  }
+}

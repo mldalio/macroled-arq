@@ -18,7 +18,10 @@
 // - Open: el título es un botón que pliega y despliega la lista de productos
 //   (disclosure base, chevron-down abierta · chevron-up plegada). Plegada
 //   quedan el título, "Borrar todo" y "Comparar" (en Desktop, en una sola
-//   línea). Arranca abierta y se vuelve a abrir al agregar un producto.
+//   línea). Arranca abierta y se vuelve a abrir al agregar un producto. En
+//   Mobile, con 2 o más productos arranca plegada y no se abre sola al
+//   agregar: abierta con 3 ocupaba más de la mitad de la pantalla
+//   (decisión 2026-10-26).
 // - "Comparar" lleva a /arq/comparativa?sku=SKU1,SKU2,SKU3 (decisión 2026-10-02
 //   · Comparativa; href base en el atributo href).
 // - La selección se guarda en localStorage (arq:compare), así sigue al cambiar
@@ -92,7 +95,7 @@ class ArqCompareBar extends ArqElement {
 
   setup() {
     const root = this.shadowRoot;
-    this.open = true;
+    this.open = !this.#folds();
     this.disclosure = new Disclosure(this, {
       trigger: root.querySelector('.toggle'),
       panel: root.querySelector('.slots'),
@@ -132,9 +135,14 @@ class ArqCompareBar extends ArqElement {
   add(item) {
     if (!item?.sku || this.has(item.sku) || this.#items.length >= MAX) return false;
     this.#items.push({ sku: item.sku, name: item.name ?? '', meta: item.meta ?? '', image: item.image ?? '' });
-    this.open = true;
+    if (!this.#folds()) this.open = true;
     this.#changed();
     return true;
+  }
+
+  // Mobile con 2 o más elegidos: la lista queda plegada salvo que la persona la abra
+  #folds() {
+    return MOBILE.matches && this.#items.length >= 2;
   }
 
   /** Quita un producto por SKU. */

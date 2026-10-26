@@ -44,7 +44,9 @@
 }
 
 /* Nombre role/body-compact-regular en color/text/primary; meta role/caption
-   en color/text/tertiary; gap space/gap/xs. Una línea cada uno, con «…» */
+   en color/text/tertiary; gap space/gap/xs. Una línea cada uno, con «…».
+   El nombre llega a dos líneas: «Kanu Jardín Doble Orientable con Estaca» y
+   «… con Base» se veían iguales en una (TODO diseño: el set muestra una). */
 .info {
   display: flex;
   flex: 1 1 auto;
@@ -61,6 +63,11 @@
 }
 
 .name {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  white-space: normal;
   color: var(--arq-color-text-primary);
 }
 

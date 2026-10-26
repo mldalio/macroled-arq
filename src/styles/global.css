@@ -8,10 +8,13 @@
    motion/easing/illumination*; docs/decisiones.md, 2026-10-19). Estas variables
    los reúnen en un solo lugar para los componentes y pasan a
    motion/duration/fade con movimiento reducido (abajo). El adelanto de las
-   fotos lo lee src/base/theme.js directo del token. */
+   fotos lo lee src/base/theme.js de --arq-illumination-lead. */
 :root {
-  --arq-illumination-image-duration: var(--arq-motion-duration-illumination-image);
-  --arq-illumination-bg-duration: var(--arq-motion-duration-illumination); /* total, contando el adelanto de la foto */
+  /* TODO (diseño): más corto que los tokens de Figma (foto 900 ms, página 800 ms,
+     adelanto 180 ms). Pedir el cambio en motion/duration/illumination*. */
+  --arq-illumination-image-duration: 700ms;
+  --arq-illumination-bg-duration: 600ms; /* total, contando el adelanto de la foto */
+  --arq-illumination-lead: 140ms;
   --arq-illumination-bg-easing: var(--arq-motion-easing-illumination);
   --arq-illumination-image-easing: var(--arq-motion-easing-illumination-image);
   /* fade: la página funde entera · spread (experimental, sin usar): el modo
@@ -48,5 +51,6 @@ arq-preloader[open]:not(:defined) {
   :root {
     --arq-illumination-image-duration: var(--arq-motion-duration-fade);
     --arq-illumination-bg-duration: var(--arq-motion-duration-fade);
+    --arq-illumination-lead: 0ms;
   }
 }

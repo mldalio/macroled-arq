@@ -100,7 +100,10 @@ let themeTimer = 0;
 // Aplicar el tema sin ninguna transición (al llegar a la ficha ya iluminada): por
 // esos cuadros todas las duraciones valen 0, así no se ve el salto de claro a
 // oscuro. Se quitan dos cuadros después, cuando el cambio ya se pintó.
-const INSTANT_VARS = ['--arq-illumination-bg-duration', '--arq-illumination-image-duration', '--arq-theme-bg-duration', '--arq-theme-text-duration', '--arq-theme-text-delay', '--arq-theme-surface-duration'];
+// --arq-card-ground-duration: el fondo de product-card (el gris detrás de la
+// foto) no funde por su cuenta. En 0s entra en la foto de la View Transition
+// y se mueve con la página. El hover, cuando la variable no está, usa su tiempo.
+const INSTANT_VARS = ['--arq-illumination-bg-duration', '--arq-illumination-image-duration', '--arq-theme-bg-duration', '--arq-theme-text-duration', '--arq-theme-text-delay', '--arq-theme-surface-duration', '--arq-card-ground-duration'];
 
 /** Ejecuta `apply` (que cambia data-arq-theme) sin transiciones. */
 export function withoutThemeTransition(apply) {
@@ -148,6 +151,36 @@ export function setBrowserBar(dark, source = document.documentElement) {
   }
 }
 
+// Paneles a pantalla completa que quedan en Light con Iluminar prendido (menú
+// Mobile, search-sheet, filter-panel Mobile, compare-picker Mobile): mientras
+// están abiertos, la barra del navegador pasa a su color (si no, quedaba oscura
+// sobre una pantalla blanca). Al cerrarlos vuelve al color de Iluminar. Solo
+// actúa si Iluminar cambió la barra y en Mobile (en Desktop no son a pantalla
+// completa).
+const BAR_LIT = 'data-arq-theme-color-lit';
+const FULL_SCREEN = matchMedia('(max-width: 767px)');
+
+/** Un panel Light a pantalla completa se abre (open) o se cierra. */
+export function setPanelBar(open, panel) {
+  const metas = [...document.head.querySelectorAll(`meta[name="theme-color"][${BAR_ORIGINAL}], meta[name="theme-color"][${BAR_ADDED}]`)];
+  if (!metas.length) return;
+  if (!open) {
+    for (const meta of metas) {
+      if (!meta.hasAttribute(BAR_LIT)) continue;
+      meta.content = meta.getAttribute(BAR_LIT);
+      meta.removeAttribute(BAR_LIT);
+    }
+    return;
+  }
+  if (!FULL_SCREEN.matches) return;
+  const color = getComputedStyle(panel).getPropertyValue('--arq-color-surface-default').trim();
+  if (!color) return;
+  for (const meta of metas) {
+    if (!meta.hasAttribute(BAR_LIT)) meta.setAttribute(BAR_LIT, meta.content);
+    meta.content = color;
+  }
+}
+
 // Iluminar no se recuerda: recargar o volver a una página la deja en su estado
 // normal. La única excepción es Productos → ficha: si el listado está iluminado
 // y se entra a un producto, la ficha llega iluminada. El traspaso vive en
@@ -175,9 +208,18 @@ export function takeThemeHandoff() {
   }
 }
 
-/** Llamar justo antes de cambiar data-arq-theme por Iluminar. */
-export function animateThemeChange(bgMs = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--arq-illumination-bg-duration')) || 0) {
-  const style = document.documentElement.style;
+/**
+ * Llamar justo antes de cambiar data-arq-theme por Iluminar. `targets`: los
+ * elementos que cambian de modo (ficha: navbar y hero). Las variables van solo
+ * ahí: en <html> invalidaban el estilo de toda la página (unos 2.000 nodos)
+ * para cambiar dos bloques. Sin targets, en <html>.
+ */
+export function animateThemeChange(bgMs = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--arq-illumination-bg-duration')) || 0, targets = [document.documentElement]) {
+  const styles = targets.map((element) => element.style);
+  const style = {
+    setProperty: (name, value) => styles.forEach((s) => s.setProperty(name, value)),
+    removeProperty: (name) => styles.forEach((s) => s.removeProperty(name)),
+  };
   // Reduced motion (DESIGN.md §6): todo funde junto y corto, con
   // motion/duration/fade, como el fondo (global.css). Sin retraso.
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -232,7 +274,7 @@ const IMAGE_WAIT_MS = 400;
 const THEME_WAIT_MS = 150;
 // Las fotos se adelantan al fondo: las product-card empiezan su fundido
 // (--arq-illumination-image-duration) y el fondo arranca
-// motion/duration/illumination-lead después, para que se vea que la luz se
+// --arq-illumination-lead después, para que se vea que la luz se
 // prende. Desde ahí los dos funden a la vez: la foto vieja de la View
 // Transition la toma a mitad de camino y la página nueva la termina.
 const pendingImages = new Set();
@@ -313,7 +355,7 @@ export async function switchTheme(dark, apply, origin) {
   const spread = !reduced && origin && styles.getPropertyValue('--arq-illumination-style').trim() === 'spread';
   // Reduced motion: todo funde junto (DESIGN.md §6), sin adelantar las fotos
   if (!reduced) {
-    const lead = Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-illumination-lead')) || 0;
+    const lead = Number.parseFloat(styles.getPropertyValue('--arq-illumination-lead')) || 0;
     checkAll(dark); // las cards cambian de foto ya, con su propio fundido
     await Promise.race([Promise.all(pendingImages), wait(THEME_WAIT_MS)]);
     await wait(lead);

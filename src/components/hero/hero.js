@@ -49,6 +49,7 @@ class ArqHero extends ArqElement {
   static template =
     `<div class="hero">` +
     `<div class="media"><slot name="media"></slot></div>` +
+    `<div class="veil" aria-hidden="true"></div>` +
     `<div class="scrim" aria-hidden="true"></div>` +
     `<div class="content">` +
     `<div class="text">` +
@@ -67,6 +68,9 @@ class ArqHero extends ArqElement {
       slot.addEventListener('slotchange', () => this.update());
     }
     this.#reducedMotion.addEventListener('change', () => this.#syncVideo());
+    const pre = document.querySelector('arq-preloader[page]');
+    this.#holdPlayback = !!pre?.hasAttribute('open');
+    this.#armCover();
     // full-height: con announcement-bar arriba del navbar, la barra y el hero
     // juntos ocupan la pantalla. Se mide la barra (si el texto baja de línea,
     // cambia de alto) y se descuenta en el CSS con --announcement-height.
@@ -103,19 +107,110 @@ class ArqHero extends ArqElement {
     playOnce(root.querySelector('slot[name="media"]').assignedElements());
   }
 
+  #coverObserver = null;
+  #coverTimer = 0;
+  #holdPlayback = false;
+
+  // Portada (full-height): al irse el preloader la foto arranca apenas
+  // oscura y se enciende, y el título entra después. El video de la media,
+  // si tenía autoplay, espera a ese mismo momento y arranca desde el
+  // primer frame. TODO (diseño): la entrada no está en Figma. Con movimiento
+  // reducido no hay entrada ni reproducción.
+  #armCover() {
+    const hero = this.shadowRoot.querySelector('.hero');
+    const intro = this.fullHeight && !this.#reducedMotion.matches;
+    if (intro) hero.classList.add('intro');
+    const start = () => {
+      this.#holdPlayback = false;
+      this.#playFromStart();
+      if (intro) hero.classList.add('entered');
+    };
+    const pre = document.querySelector('arq-preloader[page]');
+    if (!pre?.hasAttribute('open')) {
+      if (intro) requestAnimationFrame(() => requestAnimationFrame(start));
+      else start();
+      return;
+    }
+    this.#coverObserver = new MutationObserver(() => {
+      if (pre.hasAttribute('open')) return;
+      this.#coverObserver.disconnect();
+      this.#coverObserver = null;
+      // El preloader todavía se funde: el video arranca cuando ya se fue.
+      const go = (event) => {
+        if (event && (event.target !== pre || event.propertyName !== 'opacity')) return;
+        pre.removeEventListener('transitionend', go);
+        window.clearTimeout(this.#coverTimer);
+        start();
+      };
+      pre.addEventListener('transitionend', go);
+      const ms = Number.parseFloat(getComputedStyle(pre).transitionDuration) * 1000 || 0;
+      this.#coverTimer = window.setTimeout(go, ms + 40);
+    });
+    this.#coverObserver.observe(pre, { attributes: true, attributeFilter: ['open'] });
+  }
+
+  disconnectedCallback() {
+    this.#coverObserver?.disconnect();
+    this.#coverObserver = null;
+    window.clearTimeout(this.#coverTimer);
+  }
+
   // Videos que venían con autoplay en el HTML (para volver a reproducirlos).
   #autoplay = new WeakSet();
+  #pinned = new WeakSet();
+
+  #videos() {
+    return this.shadowRoot
+      .querySelector('slot[name="media"]')
+      .assignedElements()
+      .filter((el) => el.localName === 'video');
+  }
+
+  // Mientras el preloader tapa la página, el video no corre: si arrancara
+  // ahora, al descubrirse ya iría por el medio.
+  #pinAtStart(video) {
+    if (this.#pinned.has(video)) return;
+    this.#pinned.add(video);
+    const pin = () => {
+      if (!this.#holdPlayback) return;
+      video.pause();
+      if (video.readyState >= HTMLMediaElement.HAVE_METADATA && video.currentTime !== 0) video.currentTime = 0;
+    };
+    video.addEventListener('play', pin);
+    video.addEventListener('loadedmetadata', pin);
+    pin();
+  }
+
+  #playFromStart() {
+    if (this.#reducedMotion.matches) {
+      this.#syncVideo();
+      return;
+    }
+    for (const video of this.#videos()) {
+      if (video.autoplay) this.#autoplay.add(video);
+      if (!this.#autoplay.has(video)) continue;
+      video.autoplay = true;
+      const go = () => {
+        if (video.readyState >= HTMLMediaElement.HAVE_METADATA) video.currentTime = 0;
+        video.play().catch(() => {});
+      };
+      if (video.readyState >= HTMLMediaElement.HAVE_METADATA) go();
+      else video.addEventListener('loadedmetadata', go, { once: true });
+    }
+  }
 
   // Video con movimiento reducido: sin reproducción, solo el poster. load()
   // vuelve al poster; sin el atributo autoplay no arranca otra vez.
   #syncVideo() {
-    const videos = this.shadowRoot
-      .querySelector('slot[name="media"]')
-      .assignedElements()
-      .filter((el) => el.localName === 'video');
-    for (const video of videos) {
+    for (const video of this.#videos()) {
       if (video.autoplay) this.#autoplay.add(video);
       if (!this.#autoplay.has(video)) continue;
+      if (this.#holdPlayback) {
+        video.autoplay = false;
+        video.pause();
+        this.#pinAtStart(video);
+        continue;
+      }
       if (this.#reducedMotion.matches) {
         if (!video.autoplay && video.paused) continue;
         video.autoplay = false;

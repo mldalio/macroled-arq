@@ -56,6 +56,11 @@
   object-fit: cover !important;
 }
 
+/* Sin foto: se ve el fondo del marco (product-gallery.js) */
+::slotted(img[hidden]) {
+  display: none !important;
+}
+
 /* Miniaturas: layout/gallery-thumb de ancho (el alto sale de 5:4), separadas
    por space/gap/sm. Si no entran, la fila se desliza con snap.
    El padding space/padding/xs deja lugar al anillo de foco (2 + 2 px), que el
@@ -66,6 +71,7 @@
   margin: calc(-1 * var(--arq-space-padding-xs));
   padding: var(--arq-space-padding-xs);
   overflow-x: auto;
+  overscroll-behavior-x: contain; /* al llegar al final no mueve la página ni dispara «atrás» */
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
 }

@@ -458,7 +458,7 @@ class ArqFichaProducto extends ArqElement {
     const breadcrumb = root.querySelector('.breadcrumb');
     const img = root.querySelector('.gallery > img[slot="image"]');
     // src (no currentSrc): al iluminar se mide la foto nueva antes de que termine de cargar
-    const src = img && img.style.display !== 'none' && img.getAttribute('src') ? img.src : null;
+    const src = img && !img.hidden && img.getAttribute('src') ? img.src : null;
     const measure = async (element) => {
       if (!src) return null;
       try {
@@ -496,6 +496,10 @@ class ArqFichaProducto extends ArqElement {
     canvas.width = BACKDROP_SAMPLE;
     canvas.height = BACKDROP_SAMPLE;
     const context = canvas.getContext('2d', { willReadFrequently: true });
+    // Las fotos de estudio son PNG con fondo transparente: lo transparente se
+    // ve sobre el fondo de la galería (color/surface/subtle), no en negro
+    context.fillStyle = getComputedStyle(img).getPropertyValue('--arq-color-surface-subtle').trim() || 'transparent';
+    context.fillRect(0, 0, BACKDROP_SAMPLE, BACKDROP_SAMPLE);
     context.drawImage(
       image,
       (area.left - left) / scale,
@@ -534,7 +538,8 @@ class ArqFichaProducto extends ArqElement {
   }
 
   #iluminar(dark) {
-    animateThemeChange();
+    // Solo cambian de modo el navbar y el hero: las variables del fundido van ahí (#applyDark)
+    animateThemeChange(undefined, [this.shadowRoot.querySelector('.hero'), ...document.querySelectorAll('arq-navbar')]);
     this.#applyDark(dark);
   }
 
@@ -735,6 +740,8 @@ class ArqFichaProducto extends ArqElement {
       }),
     );
     tablist.hidden = tabs.length < 2;
+    // Variante sin ningún dato técnico: sin el bloque (quedaba su padding en blanco)
+    root.querySelector('.details').hidden = !tabs.length;
   }
 
   // «Accesorios y lámparas compatibles» de las fichas de Daö y, en la ficha de la
@@ -791,7 +798,8 @@ class ArqFichaProducto extends ArqElement {
   #compareItem() {
     const { group } = this.#product;
     const details = variantDetails(group, this.#sku);
-    return { sku: this.#sku, name: group.name, meta: this.#sku, image: details.images?.[0]?.src ?? null };
+    // El nombre de la variante («Daö Doble»), como el <h1>, no el del grupo
+    return { sku: this.#sku, name: details.name || group.name, meta: this.#sku, image: details.images?.[0]?.src ?? null };
   }
 
   // El PDF lo genera src/pdf/ficha-tecnica.js (lo engancha main.js), que deja

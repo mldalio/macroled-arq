@@ -22,7 +22,10 @@ class ArqFilterChip extends ArqElement {
 
   setup() {
     this.#control = this.shadowRoot.querySelector('.chip');
-    const sync = () => this.#control.setAttribute('aria-label', `Quitar filtro ${this.textContent.trim()}`);
+    const sync = () => {
+      this.#control.setAttribute('aria-label', `Quitar filtro ${this.textContent.trim()}`);
+      this.#control.title = this.textContent.trim(); // un filtro largo se corta con «…»
+    };
     this.shadowRoot.querySelector('slot').addEventListener('slotchange', sync);
     sync();
   }

@@ -38,12 +38,28 @@ export function containScroll(dialog, { when = () => true } = {}) {
     },
     { passive: false },
   );
+  let startX = 0;
   let startY = 0;
-  dialog.addEventListener('touchstart', (event) => (startY = event.touches[0].clientY), { passive: true });
+  dialog.addEventListener(
+    'touchstart',
+    (event) => {
+      startX = event.touches[0].clientX;
+      startY = event.touches[0].clientY;
+    },
+    { passive: true },
+  );
   dialog.addEventListener(
     'touchmove',
     (event) => {
+      // Dos dedos: es un zoom (visor de fotos), no un scroll. Cancelarlo
+      // cancelaría también el zoom.
+      if (event.touches.length > 1) return;
+      const dx = startX - event.touches[0].clientX;
       const dy = startY - event.touches[0].clientY;
+      // Gesto de costado (un riel horizontal adentro): un touchmove cancelado
+      // anula todo el gesto. La página no se mueve de costado y los rieles ya
+      // tienen overscroll-behavior-x: contain.
+      if (Math.abs(dx) > Math.abs(dy)) return;
       if (when() && dy && !canScroll(event, dialog, dy)) event.preventDefault();
     },
     { passive: false },

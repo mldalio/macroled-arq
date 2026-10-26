@@ -72,12 +72,13 @@ export const productHref = (groupId, sku) => `/arq/producto/${encodeURIComponent
 export const collectionHref = (id) => `/arq/coleccion/${encodeURIComponent(id)}`;
 export const compareHref = (skus) => `/arq/comparativa?sku=${skus.map(encodeURIComponent).join(',')}`;
 // TODO (urls): las URLs de categoría están PENDIENTES (docs/urls.md). Por ahora, parámetros del listado.
-export function categoryHref({ environment, application, productType, collection } = {}) {
+export function categoryHref({ environment, application, productType, collection, family } = {}) {
   const params = new URLSearchParams();
   if (environment) params.set('environment', environment);
   if (application) params.set('application', application);
   if (productType) params.set('product_type', productType);
   if (collection) params.set('collection', collection);
+  if (family) params.set('family', family);
   const query = params.toString();
   return `/arq/productos${query ? `?${query}` : ''}`;
 }
@@ -103,11 +104,12 @@ function matchingVariant(group, filters, first = group.defaultVariant) {
 // las fichas no usan esta regla: encuentran todo.
 const isListed = (group, productType) => group.hasDefault && (productType ? true : group.productType === 'Luminaria');
 
-function inCategory(group, { environment, application, productType, collection } = {}) {
+function inCategory(group, { environment, application, productType, collection, family } = {}) {
   if (environment && !group.environment.includes(environment)) return false;
   if (application && group.application !== application) return false;
   if (productType && group.productType !== productType) return false;
   if (collection && group.collection !== collection) return false;
+  if (family && normalize(group.family) !== normalize(family)) return false;
   return true;
 }
 
@@ -257,7 +259,7 @@ const pick = (object = {}) => Object.fromEntries(Object.entries(object).filter((
 // ── Listados ─────────────────────────────────────────────────────────
 /**
  * Listado de Productos: una card por grupo. category: { environment,
- * application, productType, collection }. filters: { campo: [valores] }.
+ * application, productType, collection, family }. filters: { campo: [valores] }.
  * query: texto de la búsqueda (?q=), con el criterio de searchProducts.
  * Devuelve { cards, count, filters: filas del filter-panel de la categoría
  * (y de la búsqueda), available: { campo: { valor: cards } } de las opciones
@@ -284,6 +286,28 @@ export async function listProducts({ filters, query, ...category } = {}) {
     return variant ? [productCard(group, variant, active)] : [];
   });
   return demoListing({ cards, count: cards.length, filters: filterRows(scope), available: availableValues(scope, active) });
+}
+
+/**
+ * Familias de la Home (collection-index): una por `familia` de las luminarias
+ * que se listan, en el orden de la hoja. Foto: ambiente 1 del primer grupo;
+ * sin ella, la de estudio. El link abre el listado de esa familia.
+ */
+export async function getFamilies() {
+  const { groups } = await loadCatalog();
+  const seen = new Map();
+  for (const group of groups) {
+    if (!isListed(group)) continue;
+    const name = group.family.trim();
+    if (!name || seen.has(normalize(name))) continue;
+    const images = pick(group.defaultVariant.images);
+    seen.set(normalize(name), {
+      name,
+      href: categoryHref({ family: name }),
+      image: images.context ?? images.studio ?? null,
+    });
+  }
+  return [...seen.values()];
 }
 
 /** Cuántas cards daría un listado con estos filtros (para "Ver N productos"). */

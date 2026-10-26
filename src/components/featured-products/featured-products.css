@@ -36,7 +36,6 @@
   scrollbar-width: none;
   cursor: grab;
   user-select: none;
-  touch-action: pan-y;
 }
 
 .rail[data-dragging] {
