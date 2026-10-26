@@ -94,6 +94,7 @@ const TEXT = {
   error: 'No se pudo cargar el producto. Probá de nuevo en unos minutos.',
   datasheet: 'Ficha técnica',
   commercial: 'Características comerciales',
+  configure: 'Configura o arma tu Daö',
   generating: 'Generando…',
   previous: 'Anterior',
   next: 'Siguiente',
@@ -139,6 +140,8 @@ class ArqFichaProducto extends ArqElement {
     `<arq-breadcrumb class="breadcrumb needs-data" slot="overlay"></arq-breadcrumb>` +
     `<arq-toggle class="iluminar needs-data" slot="overlay" show-label>Iluminar</arq-toggle>` +
     `</arq-product-gallery>` +
+    // PRUEBA: entrada al configurador de Daö, sobre la foto (solo colección Daö)
+    `<button type="button" class="config-cta role-label" hidden>${TEXT.configure}</button>` +
     `</div>` +
     `<div class="configurator-column">` +
     `<div class="header">` +
@@ -219,6 +222,7 @@ class ArqFichaProducto extends ArqElement {
     `</div>` +
     `</div>` +
     `</div>` +
+    `<arq-dao-configurator class="dao-config"></arq-dao-configurator>` +
     `<arq-compare-bar class="compare-bar"></arq-compare-bar>` +
     `<arq-compare-picker class="picker"></arq-compare-picker>` +
     `<arq-download-modal id="downloads-modal" show-product><slot name="modal-title" slot="title"></slot></arq-download-modal>`;
@@ -285,6 +289,8 @@ class ArqFichaProducto extends ArqElement {
     });
     root.querySelector('.datasheet').addEventListener('click', (event) => this.#datasheet(this.#sku, event.currentTarget));
     root.querySelector('.to-glossary').addEventListener('click', () => this.#toGlossary());
+    const cta = root.querySelector('.config-cta');
+    cta.addEventListener('click', () => root.querySelector('.dao-config').show(this.#sku, cta));
     // Comparar: suma o saca la variante elegida de la compare-bar (hasta 3)
     const compare = root.querySelector('.compare');
     const bar = root.querySelector('.compare-bar');
@@ -635,6 +641,7 @@ class ArqFichaProducto extends ArqElement {
     for (const src of [details.images?.[0]?.src, details.images?.[0]?.srcOn]) if (src) this.#backdropImage(src).catch(() => {});
     this.#renderSpecs(details.sections);
     this.#renderCompatibles();
+    root.querySelector('.config-cta').hidden = this.#product.collection?.id !== 'dao';
     const compare = root.querySelector('.compare');
     compare.checked = root.querySelector('.compare-bar').has(details.sku);
 
@@ -656,7 +663,6 @@ class ArqFichaProducto extends ArqElement {
   // (lumínicas), en Desktop y en Mobile, para llegar rápido a lo que sigue. Una pestaña sin datos
   // no se muestra (src/data/attributes.js).
   #specTab = 'specs';
-  #daoConfigurator = null;
 
   #specList(section) {
     const list = document.createElement('arq-spec-list');
@@ -698,11 +704,9 @@ class ArqFichaProducto extends ArqElement {
     const accordion = accordionOf(technical, (section) => open.has(section.id));
     const commercial = sections.find((section) => section.id === 'comercial');
 
-    const configurador = this.#product.collection?.id === 'dao' ? this.#configuratorPanel() : null;
     const tabs = [
       technical.length && { id: 'specs', label: 'Especificaciones', content: accordion },
       commercial && { id: 'commercial', label: commercial.label, content: accordionOf([commercial], () => !previous.length || open.has('comercial')) },
-      configurador && { id: 'configurador', label: 'Configurador', content: configurador },
     ].filter(Boolean);
     if (!tabs.some((tab) => tab.id === this.#specTab)) this.#specTab = tabs[0]?.id;
 
@@ -756,12 +760,6 @@ class ArqFichaProducto extends ArqElement {
       console.error('[arq] productos compatibles: no se pudieron cargar', error);
       if (request === this.#compatibleRequest) section.items = [];
     }
-  }
-
-  #configuratorPanel() {
-    if (!this.#daoConfigurator) this.#daoConfigurator = document.createElement('arq-dao-configurator');
-    if (this.#sku) this.#daoConfigurator.sku = this.#sku;
-    return this.#daoConfigurator;
   }
 
   #showSpecTab(id) {

@@ -16,13 +16,16 @@ Opción de configuración de la ficha (altura, potencia, temperatura). Funciona 
 | Figma | Atributo | Prop JS | Valores |
 | --- | --- | --- | --- |
 | Label | slot por defecto | — | valor de la opción ("50 cm") |
-| Type | `type` | `type` | `option` · `value` (def. `option`). `value` lo pone option-group solo cuando el grupo tiene una sola opción: se muestra como dato |
+| Type | `type` | `type` | `option` · `value` · `card` (def. `option`). `value` lo pone option-group solo cuando el grupo tiene una sola opción: se muestra como dato. `card` lo pone option-group Type=Cards (configurador de Daö) |
+| — | slot `meta` | — | Type=Card: subtítulo debajo del título (`role/body-compact`, 14/24, `color/text/tertiary`); solo se reserva si trae contenido |
+| — | slot `swatch` | — | Type=Card: un `arq-swatch` antes del título (Terminación) |
 | State=Selected | `selected` | `selected` | booleano |
 | State=Disabled | `disabled` | `disabled` | booleano |
 | — | `value` | `value` | valor que se envía en `arq:change` |
 
 - Hover y Focus son CSS.
 - **Type=Value (una sola opción):** no hay nada que elegir, así que el tile se ve como dato: sin línea de selección (queda reservada, transparente), en `color/text/primary`, sin `role`, sin foco ni cursor de click. Lo decide option-group al contar sus tiles; con más de uno vuelven a Type=Option. El grupo, en ese caso, deja de ser un `radiogroup`.
+- **Type=Card (solo del configurador de Daö):** la opción en una caja, para cuando cada opción lleva un dato más (código, orientación, color de luz) y la línea sola no alcanza. Título en `role/body-regular` (16) y subtítulo opcional en `role/body-compact` (14). Caja de 1 px en `color/border/default`; elegida, el mismo borde en `color/text/secondary` (no hay un token de borde para ese tono: `TODO`); hover `color/border/hover`; Disabled `color/border/disabled`. Sin fondo ni sombra. La ficha de arriba sigue con Type=Option, sin cajas. `TODO` (diseño): Type=Card no está en el set de Figma.
 - **Comportamiento:** el elemento es el radio (`role="radio"`, `aria-checked`, `aria-disabled`). Clic, Enter o Espacio lo eligen y emite `arq:change` con `{ value, selected: true }`. Elegido no se des-elige con clic.
 - **En grupo:** va dentro de `<arq-option-group>` (Type=Tiles), que es el `role="radiogroup"` y usa `SingleSelect` (`src/base/single-select.js`) para las flechas, Inicio / Fin y una sola opción elegida.
 - En un grupo va en Hug content (`flex: 0 1 auto`): mide lo que mide su texto y no se estira para llenar la fila; si no entran todos, bajan a otra línea.

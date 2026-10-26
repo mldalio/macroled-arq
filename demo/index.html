@@ -1418,6 +1418,26 @@
         </script>
       </section>
 
+      <section class="demo-section" aria-labelledby="demo-option-cards">
+        <h2 id="demo-option-cards" class="demo-heading role-label">option-group Type=Cards · option-tile Type=Card</h2>
+        <p class="demo-note role-body-sm">Solo del configurador de Daö (Figma: TODO). Caja de solo línea con título, subtítulo opcional y swatch opcional. Elegida: borde de 2 px sin cambiar de tamaño.</p>
+        <arq-option-group type="cards" label="Cabezal">
+          <arq-option-tile value="fijo" selected>Daö Cabezal<span slot="meta">Fijo, luz hacia abajo</span></arq-option-tile>
+          <arq-option-tile value="dir">Daö Cabezal Direccionable<span slot="meta">Gira 360° e inclina hasta 45°</span></arq-option-tile>
+          <arq-option-tile value="off" disabled>Sin stock<span slot="meta">Deshabilitada</span></arq-option-tile>
+        </arq-option-group>
+        <arq-option-group type="cards" label="Terminación">
+          <arq-option-tile value="n" selected><arq-swatch slot="swatch" src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>Negro</arq-option-tile>
+          <arq-option-tile value="b"><arq-swatch slot="swatch" src="/demo/fixtures/img/acabado-blanco.svg">Blanco</arq-swatch>Blanco</arq-option-tile>
+        </arq-option-group>
+        <div data-arq-theme="dark" style="padding: 1rem; background: var(--arq-color-surface-default)">
+          <arq-option-group type="cards" label="Módulos (Dark)">
+            <arq-option-tile value="1" selected>x1</arq-option-tile>
+            <arq-option-tile value="2">x2</arq-option-tile>
+          </arq-option-group>
+        </div>
+      </section>
+
       <section class="demo-section" aria-labelledby="demo-option-group">
         <h2 id="demo-option-group" class="demo-heading role-label">option-group · &lt;arq-option-group&gt;</h2>
         <p class="demo-note role-body-sm">Figma 921:2560. Type=Tiles (el grupo es el radiogroup; tiles en Fill que bajan si no entran) y Type=Swatches (swatch-picker con la etiqueta del grupo). Type=Select: TODO, select todavía no existe.</p>

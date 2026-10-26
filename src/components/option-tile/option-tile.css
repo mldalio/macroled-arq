@@ -57,6 +57,56 @@
   color: var(--arq-color-text-primary);
 }
 
+/* Type=Card (configurador de Daö): caja de border/default; la elegida pasa al
+   color de color/text/secondary, con el mismo grosor de 1 px (no cambia de
+   tamaño). Título y subtítulo en columna a space/gap/xs; el swatch, si lo hay,
+   va antes del título.
+   TODO (diseño): no hay un token de borde para «elegida» en ese tono; se usa
+   color/text/secondary. */
+.title {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  min-width: 0;
+}
+
+.meta {
+  color: var(--arq-color-text-tertiary);
+}
+
+.meta[hidden] {
+  display: none;
+}
+
+:host([type='card']) .tile {
+  --card-pad-y: var(--arq-space-padding-sm-md);
+  --card-pad-x: var(--arq-space-padding-md);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-xs);
+  padding: var(--card-pad-y) var(--card-pad-x);
+  border: var(--arq-border-default) solid var(--arq-color-border-default);
+  transition-property: color, border-color;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :host([type='card']:not([disabled]):not([selected]):hover) .tile {
+    border-color: var(--arq-color-border-hover);
+  }
+}
+
+:host([type='card'][selected]) .tile {
+  border-color: var(--arq-color-text-secondary);
+}
+
+:host([type='card'][disabled]) .tile {
+  border-color: var(--arq-color-border-disabled);
+}
+
+:host([type='card'][disabled]) .meta {
+  color: var(--arq-color-text-disabled);
+}
+
 /* State=Disabled */
 :host([disabled]) {
   cursor: default;

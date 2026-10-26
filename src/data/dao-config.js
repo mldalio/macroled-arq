@@ -178,6 +178,7 @@ function fromRing(ring, extra = {}) {
     qty: ring.modulos,
     color: ring.color,
     head: extra.head ?? null,
+    headColor: extra.headColor ?? null,
     lamp: extra.lamp ?? null,
     front: extra.front ?? null,
   };
@@ -204,6 +205,16 @@ function selectionForLamp(model, lampSku) {
   return null;
 }
 
+// Rol de una pieza según quién la lista (las filas de PAR11 traen `categoria` vacía)
+function roleOf(model, row) {
+  const all = Object.values(model.bySku);
+  if (all.some((item) => item.frentes.includes(row.sku))) return 'front';
+  if (all.some((item) => item.lamparas.includes(row.sku))) return 'lamp';
+  if (all.some((item) => item.cabezales.includes(row.sku))) return 'head';
+  if ((row.categoria === 'Aro' || row.categoria === 'Accesorio') && model.group(row.grupo)) return 'ring';
+  return null;
+}
+
 /**
  * Estado inicial: la pieza de la ficha queda elegida y el resto es un armado
  * compatible con ella. Sin SKU, o si no está en la base, el primer aro.
@@ -211,62 +222,96 @@ function selectionForLamp(model, lampSku) {
 export function daoSelection(model, sku) {
   const row = sku ? model.bySku[clean(sku)] : null;
   if (!row) return fallbackSelection(model);
+  const role = roleOf(model, row);
 
-  if ((row.categoria === 'Aro' || row.categoria === 'Accesorio') && model.group(row.grupo)) {
-    return fromRing(row);
-  }
+  if (role === 'ring') return fromRing(row);
 
-  if (row.categoria === 'Cabezal') {
+  if (role === 'head') {
     const ring = ringsInOrder(model).find((item) => item.cabezales.includes(row.sku));
-    if (ring) return fromRing(ring, { head: row.grupo });
+    if (ring) return fromRing(ring, { head: row.grupo, headColor: row.color });
   }
 
-  if (row.categoria === 'Lámpara') {
+  if (role === 'lamp') {
     return selectionForLamp(model, row.sku) ?? fallbackSelection(model);
   }
 
-  if (row.categoria === 'Frente') {
-    const lamp = Object.values(model.bySku).find((item) => item.categoria === 'Lámpara' && item.frentes.includes(row.sku));
+  if (role === 'front') {
+    const lamp = Object.values(model.bySku).find((item) => item.frentes.includes(row.sku));
     const selection = lamp ? selectionForLamp(model, lamp.sku) : null;
     if (!selection) return fallbackSelection(model);
     const sameColor = model.ring(selection.group, selection.qty, row.color);
-    const chosen = sameColor ? fromRing(sameColor, { head: selection.head, lamp: lamp.sku, front: row.sku }) : { ...selection, front: row.sku };
-    return chosen;
+    return sameColor ? fromRing(sameColor, { head: selection.head, lamp: lamp.sku, front: row.sku }) : { ...selection, front: row.sku };
   }
 
   return fallbackSelection(model);
 }
 
 /**
- * Lo que muestra el configurador para una elección. Cada paso depende del
- * anterior. href es la ficha del SKU cuando el catálogo tiene ese grupo.
+ * La pieza de la ficha desde la que se abre el configurador: en qué paso está y
+ * qué fija. step: 'ring' | 'head' | 'lamp' | null (sin pieza). Un aro fija su
+ * grupo, módulos y color; un cabezal, su grupo y color; una lámpara (o un frente,
+ * que lleva a su lámpara), su SKU.
  */
-export function resolveDao(model, selection, hrefs) {
-  const group = model.group(selection.group) ?? model.groups[0];
+export function daoFixed(model, sku) {
+  const row = sku ? model.bySku[clean(sku)] : null;
+  const role = row ? roleOf(model, row) : null;
+  if (role === 'ring') return { step: 'ring', group: row.grupo, qty: row.modulos, color: row.color };
+  if (role === 'head') return { step: 'head', head: row.grupo, headColor: row.color };
+  if (role === 'lamp') return { step: 'lamp', lamp: row.sku };
+  if (role === 'front') {
+    const lamp = Object.values(model.bySku).find((item) => item.frentes.includes(row.sku));
+    return lamp ? { step: 'lamp', lamp: lamp.sku } : { step: null };
+  }
+  return { step: null };
+}
+
+/**
+ * Lo que muestra el configurador para una elección. Cada paso depende del
+ * anterior. fixed (de daoFixed) limita lo que se puede elegir a lo compatible
+ * con la pieza de la ficha: el aro, si la ficha es un cabezal o una lámpara; el
+ * cabezal, si es una lámpara.
+ */
+export function resolveDao(model, selection, hrefs, fixed = { step: null }) {
+  const allowed = (ring) => {
+    if (fixed.step === 'head') return model.cabezales(ring).some((item) => item.grupo === fixed.head);
+    if (fixed.step === 'lamp') return model.cabezales(ring).some((item) => item.lamparas.includes(fixed.lamp)) || ring.lamparas.includes(fixed.lamp);
+    return true;
+  };
+  const groups = model.groups.filter((item) => item.rows.some(allowed));
+  const group = groups.find((item) => item.id === selection.group) ?? groups[0];
   if (!group) return null;
-  const qty = group.modulos.includes(selection.qty) ? selection.qty : group.modulos[0];
-  const colors = model.colorsFor(group.id, qty);
+  const modulos = [...new Set(group.rows.filter(allowed).map((row) => row.modulos))].sort((a, b) => a - b);
+  const qty = modulos.includes(selection.qty) ? selection.qty : modulos[0];
+  const colors = model.colorsFor(group.id, qty).filter((item) => allowed(model.ring(group.id, qty, item)));
   const color = colors.includes(selection.color) ? selection.color : colors[0] ?? null;
   const ring = model.ring(group.id, qty, color);
   if (!ring) return null;
 
-  const heads = uniqueByGroup(model.cabezales(ring), ring.color);
-  const head = heads.find((item) => item.grupo === selection.head) ?? heads[0] ?? null;
-  const lamps = model.lamparas(head || ring);
+  let heads = uniqueByGroup(model.cabezales(ring), ring.color);
+  if (fixed.step === 'lamp') heads = heads.filter((item) => model.cabezales(ring).some((row) => row.grupo === item.grupo && row.lamparas.includes(fixed.lamp)));
+  const headGroup = heads.find((item) => item.grupo === selection.head) ?? heads[0] ?? null;
+  // Colores del cabezal: cada aro lista el cabezal de su propio color, así que se
+  // juntan los de todos los colores de ese aro (mismo grupo y módulos). Sin elección, el del aro.
+  const sameRings = colors.map((item) => model.ring(group.id, qty, item)).filter(Boolean);
+  const headRows = headGroup ? [...new Set(sameRings.flatMap((item) => model.cabezales(item)))].filter((item) => item.grupo === headGroup.grupo) : [];
+  const headColors = [...new Set(headRows.map((item) => item.color).filter(Boolean))].sort((a, b) => orderOf(COLOR_ORDER, a) - orderOf(COLOR_ORDER, b));
+  const head = headRows.find((item) => item.color === selection.headColor) ?? headRows.find((item) => item.color === ring.color) ?? headGroup;
+  let lamps = model.lamparas(head || ring);
+  if (fixed.step === 'lamp') lamps = lamps.filter((item) => item.sku === fixed.lamp);
   const lamp = lamps.find((item) => item.sku === selection.lamp) ?? lamps[0] ?? null;
   const fronts = model.frentes(lamp);
   const front = fronts.find((item) => item.sku === selection.front) ?? fronts.find((item) => item.color === ring.color) ?? fronts[0] ?? null;
 
-  const qtyName = group.modulos.length > 1 ? `${model.moduleName(qty).toLowerCase()} ` : '';
+  const qtyName = modulos.length > 1 ? `${model.moduleName(qty).toLowerCase()} ` : '';
   const ringName = `${group.name} ${qtyName}${ring.color.toLowerCase()}`.replace(/\s+/g, ' ').trim();
   const parts = [{ qty: 1, name: ringName, sku: ring.sku }];
   if (head) {
     const terminal = model.extra('bornera');
     if (terminal) parts.push({ qty: ring.modulos, name: terminal.nombre, sku: terminal.sku });
-    parts.push({ qty: ring.modulos, name: `${head.nombre || head.sku} ${ring.color.toLowerCase()}`.trim(), sku: head.sku });
+    parts.push({ qty: ring.modulos, name: `${head.nombre || head.sku} ${(head.color || ring.color).toLowerCase()}`.trim(), sku: head.sku });
   }
   if (lamp) parts.push({ qty: ring.modulos, name: lamp.nombre || lamp.sku, sku: lamp.sku });
-  if (front) parts.push({ qty: ring.modulos, name: `${front.nombre || 'Frente'} ${ring.color.toLowerCase()}`.trim(), sku: front.sku });
+  if (front) parts.push({ qty: ring.modulos, name: `${front.nombre || 'Frente'} ${(front.color || ring.color).toLowerCase()}`.trim(), sku: front.sku });
   if (lamp?.frentes.length) {
     const honeycomb = model.extra('panal');
     if (honeycomb) parts.push({ qty: ring.modulos, name: honeycomb.nombre, sku: honeycomb.sku });
@@ -280,25 +325,31 @@ export function resolveDao(model, selection, hrefs) {
     ['Medida del aro', model.formatSize(ring.dim)],
   ].filter(([, value]) => value);
 
+  const named = (row) => `${row.nombre || row.sku} ${(row.color || '').toLowerCase()}`.trim();
   return {
+    groups,
     group,
+    modulos,
     qty,
     color,
     colors,
     ring,
     heads,
     head,
+    headColors,
     lamps,
     lamp,
     fronts,
     front,
     ringName,
     title: ringName.charAt(0).toUpperCase() + ringName.slice(1),
-    thumbs: [
-      { src: ring.img, label: ringName },
-      head ? { src: head.img, label: head.nombre || head.sku } : { src: lamp?.img, label: lamp ? (lamp.nombre || lamp.sku) : 'Lámpara' },
-      front ? { src: front.img, label: front.color ? `${front.nombre || front.sku} ${front.color}` : (front.nombre || front.sku) } : null,
-    ].filter((thumb) => thumb?.src),
+    // Una foto por pieza: el panel las suma a medida que se eligen
+    pieces: {
+      ring: ring.img ? { src: ring.img, label: ringName } : null,
+      head: head?.img ? { src: head.img, label: named(head) } : null,
+      lamp: lamp?.img ? { src: lamp.img, label: lamp.nombre || lamp.sku } : null,
+      front: front?.img ? { src: front.img, label: named(front) } : null,
+    },
     specs,
     parts: parts.map((part) => ({ ...part, href: hrefs.get(part.sku) ?? null })),
   };

@@ -1648,3 +1648,12 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - Ficha: la pestaña «Información comercial» muestra su lista dentro de un accordion-item «Características comerciales» (abierto), el mismo formato que las secciones de Especificaciones.
 - Compatibles: search-card suma Size=Large (nombre en `role/body-xl`, 20 px) y los slots `finishes` (swatches Small a la derecha del nombre, como product-card) y `meta` (debajo del nombre). En los aros, la meta es la cantidad de módulos del grupo («1-3 módulos») y los acabados son los colores del grupo. La grilla va a 4 columnas de 1024 a 1439 px y a 5 desde 1440 px.
 - Configurador de Daö: la opción Módulos se muestra «x1», «x2», «x3», como en la ficha (antes «Simple», «Doble», «Triple»); el nombre del armado y las piezas siguen esa forma («Daö Embutir x2 negro»).
+
+## 2026-10-26 · Configurador de Daö en tres pasos, con option-tile Type=Card
+
+- Problema: el configurador no se entendía. Los pasos no tenían jerarquía y todas las opciones se veían como tabs o links, sin un dato que ayudara a elegir.
+- Decisión: tres pasos numerados (1 Aro, con Módulos y Terminación; 2 Cabezal; 3 Lámpara). El frente y el panal dejan de ser un paso: la lámpara Cerámica (`PAR11-C-5W-DIM-36G-WW`) los suma sola como accesorios requeridos y una nota lo avisa.
+- option-tile suma Type=Card y option-group Type=Cards: caja de solo línea (`border/default`; elegida, `border/strong` de 2 px), título 16 px y subtítulo opcional 14 px. Terminación lleva el swatch dentro de la caja. Se probaron dos opciones: caja de solo línea y fondo gris con línea abajo; la de solo línea mantiene el estilo liviano.
+- option-tile Type=Option sigue sin caja en la ficha: no se toca, para no sumar líneas arriba.
+- `TODO` (diseño): Type=Card y Type=Cards en Figma, DESIGN.md (§8, fila de option-group · option-tile) y subtítulos del paso Aro.
+- Configurador de Daö (ajustes): la caja elegida lleva 1 px en `color/text/secondary` (antes 2 px en `border/strong`). Los pasos aparecen de a uno, a medida que se elige en el anterior (fundido y ascenso de `motion/duration/base`; solo fundido con movimiento reducido), y el resultado queda fijo a la derecha mientras la columna de pasos se desplaza con la página (desde 768 px). Se pueden elegir el color del cabezal (paso 2) y el color del frente de la lámpara (paso 3); «Terminación» pasa a «Color» en todo el configurador. `TODO` (diseño): token de borde para la caja elegida.
