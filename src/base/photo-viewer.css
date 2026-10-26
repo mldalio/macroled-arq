@@ -63,3 +63,34 @@
   flex: none;
 }
 
+
+/* Al abrir, el visor y su scrim funden y la foto crece de motion/scale/enter
+   a 1 (motion/duration/base + motion/easing/out). Cierra sin animación, como
+   todo lo que aparece con @starting-style (DESIGN.md §6). Con reduced motion
+   queda solo el fundido (motion/duration/fade). */
+.lightbox,
+.lightbox::backdrop {
+  transition: opacity var(--arq-motion-duration-base) var(--arq-motion-easing-out);
+}
+
+.lightbox-image {
+  transition: scale var(--arq-motion-duration-base) var(--arq-motion-easing-out);
+}
+
+@starting-style {
+  .lightbox[open],
+  .lightbox[open]::backdrop {
+    opacity: 0;
+  }
+
+  .lightbox[open] .lightbox-image {
+    scale: var(--arq-motion-scale-enter);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox,
+  .lightbox::backdrop {
+    transition-duration: var(--arq-motion-duration-fade);
+  }
+}

@@ -73,6 +73,18 @@
   padding-block: var(--arq-space-padding-sm-md);
   background: var(--arq-color-surface-default);
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  transition: translate var(--arq-motion-duration-base) var(--arq-motion-easing-out);
+}
+
+/* Al aparecer baja desde debajo del navbar (su propio alto, motion/duration/base
+   + motion/easing/out), así se ve de dónde sale. Se va sin animación. Con
+   reduced motion aparece quieto. */
+@media (prefers-reduced-motion: no-preference) {
+  @starting-style {
+    .compact:not([hidden]) {
+      translate: 0 -100%;
+    }
+  }
 }
 
 /* Compact/Desktop alineado con compare-table: el toggle ocupa la columna de

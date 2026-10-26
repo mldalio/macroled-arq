@@ -93,9 +93,14 @@
   }
 }
 
+/* Al apretar responde rápido (motion/duration/fast + motion/easing/out, como
+   button); al soltar vuelve con la transición del hover. */
 @media (prefers-reduced-motion: no-preference) {
   .action[href]:active {
     scale: var(--arq-motion-scale-pressed);
+    transition:
+      background-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard),
+      scale var(--arq-motion-duration-fast) var(--arq-motion-easing-out);
   }
 }
 

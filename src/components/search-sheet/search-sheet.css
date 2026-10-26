@@ -453,6 +453,25 @@
   --sheet-slow: var(--arq-motion-duration-panel);
 }
 
+/* Reduced motion: sin persiana. Panel, barra y scrim funden con
+   motion/duration/fade (DESIGN.md §6: los fundidos se quedan), como
+   filter-panel y el mega-menú. */
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --sheet-slow: var(--arq-motion-duration-fade);
+  }
+
+  .drawer {
+    clip-path: none;
+    opacity: 0;
+    transition: opacity var(--sheet-slow) var(--arq-motion-easing-standard);
+  }
+
+  .dialog.is-open .drawer {
+    opacity: 1;
+  }
+}
+
 /* Pantallas bajas (laptop, celular horizontal): menos aire arriba y abajo para
    que los recomendados entren sin scroll y sigan cuadrados. Antes de achatar la
    imagen (search-sheet.js) se saca primero el aire. */

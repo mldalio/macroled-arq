@@ -99,7 +99,8 @@
 
 /* Fundido entre estudio y contexto: motion/duration/slow + motion/easing/standard.
    Repite la lista de la hoja base porque transition-property no se suma.
-   Con prefers-reduced-motion la duración vale 0 (tokens.css). */
+   Con prefers-reduced-motion queda un fundido corto (motion/duration/fade),
+   como la primera carga: es solo opacidad, sin movimiento. */
 .hover {
   opacity: 0;
   transition-property: opacity, color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
@@ -107,14 +108,22 @@
   transition-timing-function: var(--arq-motion-easing-standard);
 }
 
-.card.has-hover:has(.card-link:focus-visible) .hover {
+@media (prefers-reduced-motion: reduce) {
+  .hover {
+    transition-duration: var(--arq-motion-duration-fade);
+  }
+}
+
+.card.has-hover:has(.card-link:focus-visible) .hover.loaded {
   opacity: 1;
 }
 
 /* Hover solo sobre la imagen (.is-media-hover lo pone el JS): sobre el
-   nombre o "Comparar" la imagen no cambia */
+   nombre o "Comparar" la imagen no cambia. Solo con la foto ya cargada
+   (.loaded): la de hover se pide al primer hover y, si el fundido arrancaba
+   antes, terminaba sin foto y la foto aparecía de golpe al llegar. */
 @media (hover: hover) and (pointer: fine) {
-  .card.has-hover.is-media-hover .hover {
+  .card.has-hover.is-media-hover .hover.loaded {
     opacity: 1;
   }
 }

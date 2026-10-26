@@ -60,42 +60,21 @@
   transition-delay: var(--arq-motion-duration-fast);
 }
 
-/* Cards nuevas (otra categoría, filtros, búsqueda): entran con un fundido y
-   un desplazamiento de space/gap/sm hacia arriba, con motion/duration/base +
-   motion/easing/out, escalonadas de a motion/duration/fast ÷ 4 (≈30 ms). Solo
-   las 8 primeras llevan escalón (--enter-index, lo pone el JS); el resto entra
-   con la octava. */
-.grid > arq-product-card {
-  transition-property: opacity, transform;
-  transition-duration: var(--arq-motion-duration-base);
-  transition-timing-function: var(--arq-motion-easing-out);
-  transition-delay: calc(var(--enter-index, 0) * var(--arq-motion-duration-fast) / 4);
-}
+/* Cards nuevas (primera carga, otra categoría, filtros): la misma entrada al
+   hacer scroll que las cards del Home (src/base/reveal.js: suben
+   space/gap/2xl y aparecen cuando entran en pantalla, escalonadas). La pone
+   el JS solo en las cards que no estaban: al filtrar, las que siguen quedan
+   quietas. */
 
-@starting-style {
-  .grid > arq-product-card {
-    opacity: 0;
-    transform: translateY(var(--arq-space-gap-sm));
-  }
-}
-
-/* Cards de carga (primera carga, product-card loading): aparecen con un
-   fundido de motion/duration/fade después de esperar lo mismo. Con el
-   catálogo en caché las cards llegan antes y no se llegan a ver (sin
-   parpadeo). Sin desplazamiento ni escalón; fade no cambia con reduced
-   motion. */
+/* Cards de carga (primera carga, product-card loading): hacen la entrada
+   del Home (arq-reveal de src/base/reveal.css: suben space/gap/2xl y
+   aparecen, escalonadas con --reveal-index, que pone el JS), después de
+   esperar motion/duration/fade. Con el catálogo en caché las cards llegan
+   antes de que empiece y entran ellas (sin parpadeo). Cuando llegan los
+   datos, las cards ocupan el lugar de las de carga y la foto funde sola. */
 .grid > arq-product-card[loading] {
-  transition-property: opacity;
-  transition-duration: var(--arq-motion-duration-fade);
-  transition-timing-function: var(--arq-motion-easing-standard);
-  transition-delay: var(--arq-motion-duration-fade);
-}
-
-@starting-style {
-  .grid > arq-product-card[loading] {
-    opacity: 0;
-    transform: none;
-  }
+  animation: arq-reveal calc(var(--arq-motion-duration-slow) * 2) var(--arq-motion-easing-standard) backwards;
+  animation-delay: calc(var(--arq-motion-duration-fade) + var(--arq-motion-duration-fast) * var(--reveal-index, 0));
 }
 
 /* Cards que reemplazan a las de carga ya visibles: en su lugar, sin entrada
@@ -104,19 +83,25 @@
   transition: none;
 }
 
-/* Reduced motion (DESIGN.md §6): sin desplazamiento ni escalón, queda el
-   fundido (motion/duration/fade) */
+/* Reduced motion (DESIGN.md §6): sin entrada al hacer scroll (reveal.js no
+   anima); las cards nuevas aparecen con el fundido (motion/duration/fade). */
 @media (prefers-reduced-motion: reduce) {
   .grid > arq-product-card {
     transition-property: opacity;
     transition-duration: var(--arq-motion-duration-fade);
-    transition-delay: 0s;
+    transition-timing-function: var(--arq-motion-easing-standard);
   }
 
   @starting-style {
     .grid > arq-product-card {
-      transform: none;
+      opacity: 0;
     }
+  }
+
+  /* Las de carga: solo el fundido, después de esperar lo mismo */
+  .grid > arq-product-card[loading] {
+    animation: none;
+    transition-delay: var(--arq-motion-duration-fade);
   }
 }
 

@@ -69,7 +69,7 @@ provincia.options = [{ value: 'Buenos Aires' }, { value: 'Córdoba' }];
 | Helper · error | `color/text/tertiary` · `color/text/error` · `role/body-sm` |
 | Disabled | `color/text/disabled` en label, valor, placeholder y helper |
 | Gap · padding vertical | `space/gap/sm` · `space/gap/sm` (como en Figma) |
-| Menú de Select al abrir | escala 0.97 → 1 en `motion/duration/base` · fundido `motion/duration/fade` · `motion/easing/out` |
+| Menú de Select al abrir | escala 0.97 → 1 y fundido en `motion/duration/slow` · `motion/easing/standard` |
 | Mensaje de error al aparecer | alto `motion/duration/base` · fundido `motion/duration/fade` · `motion/easing/out` |
 
 Con reduced motion quedan solo los fundidos. Al cerrar el menú o quitar el error, sin animación (DESIGN.md §6 · Movimiento). La escala de partida es `motion/scale/enter` (0,97).
