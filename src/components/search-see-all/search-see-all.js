@@ -57,7 +57,7 @@ class ArqSearchSeeAll extends ArqElement {
     const link = root.querySelector('a');
     if (this.href) link.setAttribute('href', this.href);
     else link.removeAttribute('href');
-    const count = Number.isFinite(this.count) ? ` (${this.count})` : '';
+    const count = Number.isFinite(this.count) ? ` (${this.count.toLocaleString('es-AR')})` : '';
     root.querySelector('.lead').textContent = `Ver todos los resultados${count} para `;
     root.querySelector('.term').textContent = `“${this.term ?? ''}”`;
   }

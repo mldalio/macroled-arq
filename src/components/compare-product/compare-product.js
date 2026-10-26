@@ -152,6 +152,9 @@ class ArqCompareProduct extends ArqElement {
     }
     root.querySelector('.compact-name').textContent = data?.name ?? '';
     root.querySelector('.compact-sku').textContent = data?.sku ?? '';
+    // En la cabecera fija de Desktop, nombre y SKU largos se cortan con «…»
+    root.querySelector('.compact-name').title = data?.name ?? '';
+    root.querySelector('.compact-sku').title = data?.sku ?? '';
     root.querySelector('.compact-add-label').textContent = this.addLabel ?? '';
     root.querySelector('.compact-remove').textContent = data ? `Quitar ${data.name}` : 'Quitar';
   }

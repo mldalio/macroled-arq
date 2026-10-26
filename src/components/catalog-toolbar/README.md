@@ -1,6 +1,6 @@
 # catalog-toolbar · `<arq-catalog-toolbar>`
 
-Barra sobre la grilla de Productos: cantidad de resultados, toggle Iluminar, divider vertical y botón Filtrar.
+Barra sobre la grilla de Productos: cantidad de resultados, toggle Iluminar, divider vertical y botón Filtrar. Si la cantidad y las acciones no entran en una línea (Mobile angosto, Filtrar con cantidad), las acciones bajan a otra línea, a la derecha (antes se superponían; decisión 2026-10-26).
 
 - Figma: [1244-4058](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1244-4058) · ficha `doc/catalog-toolbar` (`1427:2499`)
 

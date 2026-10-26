@@ -33,3 +33,13 @@
   flex-shrink: 1000;
   min-width: auto;
 }
+
+/* Mobile: los ítems bajan de línea en vez de cortarse («COLEC…» no se podía
+   leer). Un ítem más ancho que la línea se sigue cortando con «…» (decisión
+   2026-10-26). */
+@media (max-width: 767px) {
+  .list {
+    flex-wrap: wrap;
+    row-gap: var(--arq-space-gap-xs);
+  }
+}

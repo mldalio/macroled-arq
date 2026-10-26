@@ -84,6 +84,7 @@ import '../search-see-all/search-see-all.js';
 import '../search-screen/search-screen.js';
 import '../search-sheet/search-sheet.js';
 import { containScroll } from '../../base/scroll-lock.js';
+import { setPanelBar } from '../../base/theme.js';
 import css from './navbar.css?inline';
 
 const MOBILE = matchMedia('(max-width: 767px)');
@@ -309,6 +310,9 @@ class ArqNavbar extends ArqElement {
 
     // Con el mega-menú abierto la página de atrás no se desplaza (rueda, touch ni teclado)
     containScroll(root.querySelector('.navbar'), { when: () => this.#megaOpen });
+    // Menú Mobile: tampoco (en el teléfono se movía la página y con ella la barra del navegador)
+    containScroll(root.querySelector('.menu'));
+    root.querySelector('.menu').addEventListener('close', () => setPanelBar(false));
     // Clic en el scrim del mega-menú: lo cierra
     root.querySelector('.scrim').addEventListener('click', () => this.#toggleMega(false));
 
@@ -440,13 +444,16 @@ class ArqNavbar extends ArqElement {
     const inMenu = mode === 'menu' || mode === 'products' || mode === 'recursos' || sub;
     // El nivel que se ve ahora (para el cambio de nivel, #slideLevel)
     const levels = [...root.querySelectorAll('.menu-main, .menu-products, .menu-recursos, .menu-sub')];
-    const from = menu.classList.contains('is-open') ? levels.find((level) => !level.hidden) : null;
+    // (el que está saliendo en un cambio en curso sigue a la vista, pero inert)
+    const from = menu.classList.contains('is-open') ? levels.find((level) => !level.hidden && !level.inert) : null;
     const fromTop = from?.offsetTop ?? 0;
     if (inMenu && !menu.open) {
       this.#syncTop();
       this.#menuOpener = root.querySelector('.menu-open');
       clearTimeout(this.#menuTimer);
       menu.showModal();
+      // Con Iluminar, la barra del navegador pasa al color del menú (Light)
+      setPanelBar(true, menu);
       void menu.offsetHeight; // fija la persiana cerrada antes de is-open
       menu.classList.add('is-open');
       // El foco arranca en cerrar (no en el logo)
@@ -510,6 +517,7 @@ class ArqNavbar extends ArqElement {
 
   #menuTimer = 0;
   #levelAnimations = [];
+  #levelPair = null; // el último cambio de nivel: { from, to }
 
   // Cierra el menú mobile al revés de como abrió (la persiana sube) y recién
   // al terminar cierra el diálogo y devuelve el foco.
@@ -531,7 +539,26 @@ class ArqNavbar extends ArqElement {
   // motion/easing/standard). Con reduced motion, solo un fundido
   // (motion/duration/fade).
   #slideLevel(from, to, forward, fromTop) {
+    // Volver al nivel anterior mientras el cambio todavía corre (tocar
+    // «volver» enseguida): las dos animaciones se dan vuelta desde donde están,
+    // en vez de saltar al final y arrancar de nuevo.
+    const [runningOut, runningEnter] = this.#levelAnimations;
+    const running = this.#levelAnimations.length === 2 && this.#levelAnimations.every((animation) => animation.playState === 'running');
+    if (running && this.#levelPair?.from === to && this.#levelPair?.to === from) {
+      for (const property of ['position', 'top', 'left', 'right']) to.style.removeProperty(property);
+      to.inert = false;
+      from.hidden = false;
+      from.inert = true;
+      Object.assign(from.style, { position: 'absolute', top: `${fromTop}px`, left: '0', right: '0' });
+      runningOut.reverse();
+      runningEnter.reverse();
+      this.#levelPair = { from, to };
+      const settle = () => this.#settleLevel(from);
+      runningEnter.finished.then(settle, settle);
+      return;
+    }
     for (const animation of this.#levelAnimations) animation.finish();
+    this.#levelPair = { from, to };
     const styles = getComputedStyle(this);
     const easing = styles.getPropertyValue('--arq-motion-easing-standard').trim() || 'ease';
     const duration = Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-panel')) || 0;
@@ -549,17 +576,17 @@ class ArqNavbar extends ArqElement {
     const out = from.animate([{ translate: '0 0', opacity: 1 }, { translate: shift(forward ? -1 : 1), opacity: 0 }], options);
     const enter = to.animate([{ translate: shift(forward ? 1 : -1), opacity: 0 }, { translate: '0 0', opacity: 1 }], options);
     this.#levelAnimations = [out, enter];
-    const done = () => {
-      from.style.removeProperty('position');
-      from.style.removeProperty('top');
-      from.style.removeProperty('left');
-      from.style.removeProperty('right');
-      from.inert = false;
-      // Si mientras tanto volvió a ser el nivel actual, queda a la vista
-      const current = { menu: '.menu-main', products: '.menu-products', recursos: '.menu-recursos' }[this.mode] ?? (SUBMENUS.includes(this.mode) ? '.menu-sub' : null);
-      from.hidden = !(current && from.matches(current));
-    };
+    const done = () => this.#settleLevel(from);
     out.finished.then(done, done);
+  }
+
+  // Al terminar un cambio de nivel: el que salió vuelve al flujo y se oculta,
+  // salvo que mientras tanto haya vuelto a ser el nivel actual.
+  #settleLevel(level) {
+    for (const property of ['position', 'top', 'left', 'right']) level.style.removeProperty(property);
+    level.inert = false;
+    const current = { menu: '.menu-main', products: '.menu-products', recursos: '.menu-recursos' }[this.mode] ?? (SUBMENUS.includes(this.mode) ? '.menu-sub' : null);
+    level.hidden = !(current && level.matches(current));
   }
 
   #closeAll() {
@@ -841,7 +868,7 @@ class ArqNavbar extends ArqElement {
       : error
         ? 'No se pudo completar la búsqueda.'
         : results.length
-          ? `${count} ${count === 1 ? 'resultado' : 'resultados'}`
+          ? `${count.toLocaleString('es-AR')} ${count === 1 ? 'resultado' : 'resultados'}`
           : `No se encontraron resultados para “${query}”`;
     for (const field of this.#fields()) {
       field.status = status;

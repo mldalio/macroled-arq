@@ -233,18 +233,32 @@
 
 .is-small .finishes {
   gap: var(--arq-space-gap-sm);
+  justify-content: flex-start;
+  max-width: 100%;
 }
 
 /* Acabados: gap space/gap/xs; swatch Small (16) en Large y en Small. Elegible
    (role="radiogroup"): el swatch trae Hover y Selected; por encima del ::after
-   del link estirado para recibir el clic */
+   del link estirado para recibir el clic.
+   Muchos acabados (8 o más en una card de 167 px): bajan a otra línea en vez de
+   salirse de la card (decisión 2026-10-26). En Large ocupan como mucho la mitad
+   de la fila, así el nombre no queda cortado a mitad de palabra.
+   Área táctil: la fila suma space/padding/xs arriba y abajo (con margen
+   negativo, no cambia el dibujo), así un toque al lado de una muestra de 16
+   cae en la fila y no abre la ficha por el link estirado. */
 .finishes {
   position: relative;
   z-index: var(--card-above);
   display: flex;
-  flex: none;
+  flex: none; /* no se achica con el nombre: baja de línea recién al pasar la mitad (max-width) */
+  flex-wrap: wrap;
+  justify-content: flex-end;
   align-items: center;
   gap: var(--arq-space-gap-xs);
+  max-width: 50%;
+  min-width: 0;
+  padding-block: var(--arq-space-padding-xs);
+  margin-block: calc(var(--arq-space-padding-xs) * -1);
 }
 
 /* Meta: color/text/secondary, hasta dos líneas (más texto va en la ficha) */

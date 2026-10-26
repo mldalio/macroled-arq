@@ -19,6 +19,7 @@
 //   componente; field devuelve el search-field.
 
 import { ArqElement } from '../../base/arq-element.js';
+import { containScroll } from '../../base/scroll-lock.js';
 import '../icon-button/icon-button.js';
 import '../search-field/search-field.js';
 import css from './search-screen.css?inline';
@@ -51,6 +52,7 @@ class ArqSearchScreen extends ArqElement {
   setup() {
     const root = this.shadowRoot;
     this.#dialog = root.querySelector('dialog');
+    containScroll(this.#dialog); // la página de atrás no se desplaza
     root.querySelector('.back').addEventListener('click', () => this.close());
     this.#dialog.addEventListener('cancel', (event) => {
       event.preventDefault();

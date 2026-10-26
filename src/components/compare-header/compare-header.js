@@ -166,7 +166,18 @@ class ArqCompareHeader extends ArqElement {
   // compartido de Default + compare-table en Mobile.
   setScrollLeft(left) {
     if (!MOBILE.matches) return;
-    for (const strip of this.shadowRoot.querySelectorAll('.products, .slots')) strip.scrollLeft = left;
+    for (const strip of this.shadowRoot.querySelectorAll('.products, .slots')) this.#write(strip, left);
+  }
+
+  // El scroll de un scrollLeft puesto por código llega en el cuadro siguiente,
+  // cuando el guard sincrónico ya se soltó: sin recordarlo, la tira avisaba con
+  // un valor viejo y la tabla volvía para atrás (tirones en Mobile).
+  #written = new WeakMap();
+
+  #write(strip, left) {
+    if (Math.abs(strip.scrollLeft - left) < 1) return;
+    this.#written.set(strip, left);
+    strip.scrollLeft = left;
   }
 
   // arq-comparativa llama esto después de quitar hidden de su contenedor. El
@@ -177,9 +188,14 @@ class ArqCompareHeader extends ArqElement {
 
   #onScroll(source) {
     if (!MOBILE.matches || this.#syncingScroll) return;
+    const written = this.#written.get(source);
+    if (written !== undefined) {
+      this.#written.delete(source);
+      if (Math.abs(source.scrollLeft - written) < 1) return; // eco de lo que puso el código
+    }
     this.#syncingScroll = true;
     for (const strip of this.shadowRoot.querySelectorAll('.products, .slots')) {
-      if (strip !== source) strip.scrollLeft = source.scrollLeft;
+      if (strip !== source) this.#write(strip, source.scrollLeft);
     }
     this.emit('scroll', { left: source.scrollLeft });
     this.#syncingScroll = false;
