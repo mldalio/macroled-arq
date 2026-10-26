@@ -25,6 +25,10 @@ export const config = Object.freeze({
     // según la foto.
     sampleFrom: 'https://s3.coresagroup.com/',
     sampleBase: 'https://d1zltvqju4u8ql.cloudfront.net/fit-in/128x128/',
+    // Foto de la ficha técnica en PDF: el mismo CloudFront, en JPEG y al tamaño
+    // que usa la hoja ({size} en px). decisiones.md, 2026-10-23 · Ficha técnica:
+    // una hoja menos.
+    pdfBase: 'https://d1zltvqju4u8ql.cloudfront.net/fit-in/{size}x{size}/filters:format(jpeg)/',
   }),
   // Ficha técnica en PDF: se cargan de jsDelivr con versión fija al primer clic
   // y no entran en dist/arq.js (decisiones.md, 2026-10-02 · Ficha técnica en PDF).

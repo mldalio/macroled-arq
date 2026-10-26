@@ -438,20 +438,35 @@ class ArqNavbar extends ArqElement {
     // Menú mobile (Menu, Products y sus submenús)
     const sub = SUBMENUS.includes(mode);
     const inMenu = mode === 'menu' || mode === 'products' || mode === 'recursos' || sub;
+    // El nivel que se ve ahora (para el cambio de nivel, #slideLevel)
+    const levels = [...root.querySelectorAll('.menu-main, .menu-products, .menu-recursos, .menu-sub')];
+    const from = menu.classList.contains('is-open') ? levels.find((level) => !level.hidden) : null;
+    const fromTop = from?.offsetTop ?? 0;
     if (inMenu && !menu.open) {
       this.#syncTop();
       this.#menuOpener = root.querySelector('.menu-open');
+      clearTimeout(this.#menuTimer);
       menu.showModal();
+      void menu.offsetHeight; // fija la persiana cerrada antes de is-open
+      menu.classList.add('is-open');
       // El foco arranca en cerrar (no en el logo)
       if (mode === 'menu') root.querySelector('.menu-close').focus();
+    } else if (inMenu && !menu.classList.contains('is-open')) {
+      // Se vuelve a abrir mientras se cerraba: la persiana vuelve desde donde está
+      clearTimeout(this.#menuTimer);
+      menu.classList.add('is-open');
     } else if (!inMenu && menu.open) {
-      menu.close();
-      this.#menuOpener?.focus();
+      this.#closeMenu(menu);
     }
-    root.querySelector('.menu-main').hidden = mode !== 'menu';
-    root.querySelector('.menu-products').hidden = mode !== 'products';
-    root.querySelector('.menu-recursos').hidden = mode !== 'recursos';
-    root.querySelector('.menu-sub').hidden = !sub;
+    if (inMenu) {
+      root.querySelector('.menu-main').hidden = mode !== 'menu';
+      root.querySelector('.menu-products').hidden = mode !== 'products';
+      root.querySelector('.menu-recursos').hidden = mode !== 'recursos';
+      root.querySelector('.menu-sub').hidden = !sub;
+      const to = levels.find((level) => !level.hidden);
+      const depth = (m) => (m === 'menu' ? 0 : m === 'products' || m === 'recursos' ? 1 : 2);
+      if (from && to && from !== to) this.#slideLevel(from, to, depth(mode) > depth(previous), fromTop);
+    }
     if (sub) this.#renderSub(mode);
     if (mode === 'products') {
       this.#ensureNavigation();
@@ -493,6 +508,60 @@ class ArqNavbar extends ArqElement {
   #scrolled = false;
   #megaOpen = false;
 
+  #menuTimer = 0;
+  #levelAnimations = [];
+
+  // Cierra el menú mobile al revés de como abrió (la persiana sube) y recién
+  // al terminar cierra el diálogo y devuelve el foco.
+  #closeMenu(menu) {
+    menu.classList.remove('is-open');
+    const { transitionDuration } = getComputedStyle(menu);
+    const ms = Math.max(0, ...transitionDuration.split(',').map((value) => (parseFloat(value) || 0) * (/ms\s*$/.test(value) ? 1 : 1000)));
+    clearTimeout(this.#menuTimer);
+    this.#menuTimer = setTimeout(() => {
+      if (menu.classList.contains('is-open')) return;
+      menu.close();
+      this.#menuOpener?.focus();
+    }, ms);
+  }
+
+  // Cambio de nivel del menú mobile (Menú → Productos → submenú, y al volver):
+  // el que sale se corre hacia un lado y se desvanece mientras el nuevo entra
+  // desde el otro, los dos a la vez (motion/duration/panel +
+  // motion/easing/standard). Con reduced motion, solo un fundido
+  // (motion/duration/fade).
+  #slideLevel(from, to, forward, fromTop) {
+    for (const animation of this.#levelAnimations) animation.finish();
+    const styles = getComputedStyle(this);
+    const easing = styles.getPropertyValue('--arq-motion-easing-standard').trim() || 'ease';
+    const duration = Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-panel')) || 0;
+    if (!duration) {
+      const fade = Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-fade')) || 0;
+      this.#levelAnimations = [to.animate([{ opacity: 0 }, { opacity: 1 }], { duration: fade, easing })];
+      return;
+    }
+    // El que sale queda a la vista encima, en el mismo lugar, sin ocupar espacio
+    from.hidden = false;
+    from.inert = true;
+    Object.assign(from.style, { position: 'absolute', top: `${fromTop}px`, left: '0', right: '0' });
+    const shift = (sign) => `calc(${sign} * var(--arq-space-gap-4xl)) 0`;
+    const options = { duration, easing };
+    const out = from.animate([{ translate: '0 0', opacity: 1 }, { translate: shift(forward ? -1 : 1), opacity: 0 }], options);
+    const enter = to.animate([{ translate: shift(forward ? 1 : -1), opacity: 0 }, { translate: '0 0', opacity: 1 }], options);
+    this.#levelAnimations = [out, enter];
+    const done = () => {
+      from.style.removeProperty('position');
+      from.style.removeProperty('top');
+      from.style.removeProperty('left');
+      from.style.removeProperty('right');
+      from.inert = false;
+      // Si mientras tanto volvió a ser el nivel actual, queda a la vista
+      const current = { menu: '.menu-main', products: '.menu-products', recursos: '.menu-recursos' }[this.mode] ?? (SUBMENUS.includes(this.mode) ? '.menu-sub' : null);
+      from.hidden = !(current && from.matches(current));
+    };
+    out.finished.then(done, done);
+  }
+
   #closeAll() {
     if (this.mode !== 'default') this.#setMode('default');
     this.#toggleMega(false);
@@ -529,7 +598,7 @@ class ArqNavbar extends ArqElement {
   // la misma celda: el que sale se desvanece mientras el que entra aparece
   // (fundido cruzado, sobre el fondo fijo del drawer) y el alto visible va del
   // de uno al del otro con el mismo recorte de la persiana (clip-path, en
-  // motion/duration/panel), sin animar height. Al terminar, el que sale se
+  // --mega-in, motion/duration/panel), sin animar height. Al terminar, el que sale se
   // oculta y el drawer ya mide lo del nuevo.
   #swapPanels(incoming, outgoing) {
     const drawer = this.shadowRoot.querySelector('.mega-drawer');
@@ -545,7 +614,7 @@ class ArqNavbar extends ArqElement {
     void drawer.offsetHeight;
     drawer.style.transition = '';
     drawer.style.clipPath = `inset(0 0 ${Math.max(0, total - target)}px 0)`;
-    this.#swapTimer = setTimeout(() => this.#finishSwap(), Math.max(this.#ms('panel'), this.#ms('slow')));
+    this.#swapTimer = setTimeout(() => this.#finishSwap(), Math.max(this.#ms('panel'), this.#ms('fade')));
   }
 
   // Termina un cambio en curso: oculta el que sale y suelta el recorte.

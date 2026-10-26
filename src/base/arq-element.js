@@ -85,6 +85,13 @@ const baseCss = `
   touch-action: manipulation;
 }
 
+/* Albert Sans en cada componente: lo que hereda la fuente (font: inherit de
+   los <button>, texto sin role/*) no toma la del body de Webflow. En la demo
+   no se nota porque su body ya usa Albert Sans. */
+:host {
+  font-family: var(--arq-font-family-sans);
+}
+
 button,
 [role='button'],
 :host([role='button']),

@@ -21,6 +21,11 @@
 //   variants-table. Si no hay nada para desplazar, la línea no se muestra.
 // - page-inset: ancho que tapan las columnas fijas de una tabla; cada salto de
 //   página mide el ancho visible menos ese valor, así no se saltea contenido.
+// - scrub (solo con progress="scroll"): la línea pasa a ser una barra de scroll
+//   (más gruesa, con pista) que se arrastra y salta al lugar del clic, con un
+//   chevron chico a cada lado que avanza media página. La barra es solo para
+//   puntero (aria-hidden: el teclado ya mueve el contenedor); los chevrons son
+//   botones. Solo variants-table lo usa; la Home no.
 // - Con prefers-reduced-motion el salto es instantáneo.
 // - El contenedor (snap, peek) no es parte del componente: TODO (páginas).
 
@@ -48,13 +53,16 @@ class ArqCarouselControls extends ArqElement {
     buttons: { type: String, values: ['icon', 'carousel', 'chevron', 'none'], default: 'icon' },
     progress: { type: String, values: ['slides', 'scroll'], default: 'slides' }, // solo código: qué mide la línea (tramo por slide o parte visible)
     pageInset: { type: Number, default: 0 }, // solo código: ancho tapado por columnas fijas, se resta al salto de página
+    scrub: { type: Boolean, default: false }, // solo código: la línea (progress="scroll") es una barra más gruesa que se arrastra y responde al clic
     index: { type: Number, default: 0 }, // slide actual, desde 0
     count: { type: Number, default: 1 }, // cantidad de slides
   };
   static template =
     `<div class="controls" role="group">` +
     `<p class="count role-caption" hidden></p>` +
+    `<arq-icon-button class="prev edge" icon="chevron-left" hidden></arq-icon-button>` +
     `<div class="progress" hidden><span class="track"></span><span class="indicator"></span></div>` +
+    `<arq-icon-button class="next edge" icon="chevron-right" hidden></arq-icon-button>` +
     `<div class="arrows">` +
     `<arq-icon-button class="prev icon" size="large" icon="arrow-left"></arq-icon-button>` +
     `<arq-carousel-button class="prev square" direction="previous" hidden></arq-carousel-button>` +
@@ -78,6 +86,36 @@ class ArqCarouselControls extends ArqElement {
     const root = this.shadowRoot;
     for (const button of root.querySelectorAll('.prev')) button.addEventListener('click', () => this.#go(-1));
     for (const button of root.querySelectorAll('.next')) button.addEventListener('click', () => this.#go(1));
+    root.querySelector('.progress').addEventListener('pointerdown', (event) => this.#scrubStart(event));
+  }
+
+  /** scrub: arrastrar el trazo, o clic en la pista para llevarlo hasta ahí. */
+  #scrubStart(event) {
+    const target = this.#target;
+    const progress = event.currentTarget;
+    if (!this.scrub || this.progress !== 'scroll' || !target || event.button > 0) return;
+    const box = progress.getBoundingClientRect();
+    const indicator = progress.querySelector('.indicator').getBoundingClientRect();
+    // Agarrado dentro del trazo, conserva el punto; en la pista, lo centra en el clic.
+    const grab = event.clientX >= indicator.left && event.clientX <= indicator.right ? event.clientX - indicator.left : indicator.width / 2;
+    const moveTo = (clientX) => {
+      const left = Math.min(Math.max(clientX - box.left - grab, 0), box.width - indicator.width);
+      target.scrollLeft = (left / box.width) * target.scrollWidth;
+    };
+    event.preventDefault();
+    progress.setPointerCapture(event.pointerId);
+    progress.classList.add('dragging');
+    moveTo(event.clientX);
+    const move = (e) => moveTo(e.clientX);
+    const end = () => {
+      progress.classList.remove('dragging');
+      progress.removeEventListener('pointermove', move);
+      progress.removeEventListener('pointerup', end);
+      progress.removeEventListener('pointercancel', end);
+    };
+    progress.addEventListener('pointermove', move);
+    progress.addEventListener('pointerup', end);
+    progress.addEventListener('pointercancel', end);
   }
 
   /** El par visible: icon-button o carousel-button. */
@@ -115,6 +153,11 @@ class ArqCarouselControls extends ArqElement {
       for (const button of root.querySelectorAll('.next')) button.textContent = this.labelNext;
     }
     root.querySelector('.controls').setAttribute('aria-label', `${this.labelPrev} / ${this.labelNext}`);
+    // scrub: chevrons chicos a los lados de la barra, como los de una barra de scroll nativa
+    const edges = this.scrub && this.progress === 'scroll';
+    for (const edge of root.querySelectorAll('.edge')) edge.hidden = !edges;
+    root.querySelector('.edge.prev').disabled = this.position === 'start';
+    root.querySelector('.edge.next').disabled = this.position === 'end' || !this.#scrollable;
     this.#progress();
 
     if (changed.has('for')) this.#connectTarget();
@@ -187,6 +230,7 @@ class ArqCarouselControls extends ArqElement {
     if (scrollable !== this.#scrollable) {
       this.#scrollable = scrollable;
       this.#pair().next.disabled = !scrollable || position === 'end';
+      this.shadowRoot.querySelector('.edge.next').disabled = !scrollable || position === 'end';
     }
     if (position !== this.position) this.position = position;
     if (this.progress === 'scroll' && this.buttons !== 'icon') this.#progressByScroll(target, scrollable);
@@ -200,6 +244,7 @@ class ArqCarouselControls extends ArqElement {
     root.querySelector('.count').hidden = true;
     progress.hidden = !scrollable;
     progress.dataset.mode = 'scroll';
+    progress.classList.toggle('scrub', this.scrub);
     progress.setAttribute('aria-hidden', 'true');
     for (const attribute of ['role', 'aria-valuemin', 'aria-valuemax', 'aria-valuenow', 'aria-valuetext']) progress.removeAttribute(attribute);
     if (!scrollable) return;
@@ -258,7 +303,9 @@ class ArqCarouselControls extends ArqElement {
     }
     const item = this.step === 'item' ? target.children[0] : null;
     const gap = item ? Number.parseFloat(getComputedStyle(target).columnGap || getComputedStyle(target).gap) || 0 : 0;
-    const amount = item ? item.getBoundingClientRect().width + gap : Math.max(target.clientWidth - (this.pageInset || 0), 1);
+    const page = Math.max(target.clientWidth - (this.pageInset || 0), 1);
+    // Los chevrons de la barra (scrub) avanzan media página, como la flecha de una barra de scroll
+    const amount = item ? item.getBoundingClientRect().width + gap : this.scrub && this.progress === 'scroll' ? page / 2 : page;
     target.scrollBy({
       left: direction * amount,
       behavior: this.#reducedMotion.matches ? 'auto' : 'smooth',

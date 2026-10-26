@@ -69,13 +69,16 @@
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transition-property: opacity;
-  transition-duration: var(--arq-motion-duration-slow);
-  transition-timing-function: var(--arq-motion-easing-standard);
+  /* La que sale queda entera debajo mientras la nueva funde encima y se va
+     al final: si las dos fundían a la vez, a mitad de camino se veía el fondo
+     a través de ambas (la foto se lavaba). */
+  transition: opacity 0s linear var(--arq-motion-duration-slow);
 }
 
 .photo.is-shown {
+  z-index: 1;
   opacity: 1;
+  transition: opacity var(--arq-motion-duration-slow) var(--arq-motion-easing-standard);
 }
 
 @media (max-width: 767px) {

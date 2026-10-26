@@ -71,6 +71,7 @@ class ArqMegaMenu extends ArqElement {
   #navigation = null;
   #images = {};
   #fallbacks = []; // fotos de respaldo que le quedan al preview actual
+  #previewId = 0; // la última foto pedida al preview (#setPreview)
   #id = ++uid;
 
   /** Árbol de navegación de src/data/catalog.js (getNavigation). */
@@ -248,10 +249,17 @@ class ArqMegaMenu extends ArqElement {
       img.removeAttribute('src');
       img.hidden = true;
     }
-    root.querySelector('.eyebrow').textContent = eyebrow ?? '';
-    root.querySelector('.eyebrow').hidden = !eyebrow;
-    root.querySelector('.preview-title').textContent = title ?? '';
-    root.querySelector('.caption').hidden = !title;
+    // El texto cambia junto con la foto: si la nueva todavía no cargó, espera
+    // (si no, el nombre nuevo quedaba un momento sobre la foto anterior).
+    const caption = () => {
+      root.querySelector('.eyebrow').textContent = eyebrow ?? '';
+      root.querySelector('.eyebrow').hidden = !eyebrow;
+      root.querySelector('.preview-title').textContent = title ?? '';
+      root.querySelector('.caption').hidden = !title;
+    };
+    const id = ++this.#previewId;
+    if (!src || img.complete) caption();
+    else img.decode().catch(() => {}).then(() => id === this.#previewId && caption());
   }
 }
 

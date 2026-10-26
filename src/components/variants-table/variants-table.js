@@ -60,6 +60,7 @@
 //   downloads="<id>", abre ese download-modal.
 
 import { ArqElement } from '../../base/arq-element.js';
+import '../text-link/text-link.js';
 import { filterOptions, filterVariants, searchVariants } from '../../data/variants.js';
 import '../button/button.js';
 import '../icon-button/icon-button.js';
@@ -140,7 +141,7 @@ const thumb = (row, className, link = false) => {
 // sku elegido; sin href, texto.
 const productName = (row, role) =>
   row.href
-    ? `<a class="name name-link ${role}" href="${esc(row.href)}">${esc(row.name)}</a>`
+    ? `<arq-text-link class="name" size="compact" href="${esc(row.href)}">${esc(row.name)}</arq-text-link>`
     : `<span class="name ${role}">${esc(row.name)}</span>`;
 
 class ArqVariantsTable extends ArqElement {
@@ -167,7 +168,7 @@ class ArqVariantsTable extends ArqElement {
     `<div class="scroll" id="scroll" tabindex="0" role="region" aria-label="Variantes">` +
     `<table class="table"><thead></thead><tbody></tbody></table>` +
     `</div>` +
-    `<div class="scrollbar" hidden><arq-carousel-controls buttons="none" progress="scroll" for="scroll"></arq-carousel-controls></div>` +
+    `<div class="scrollbar" hidden><arq-carousel-controls buttons="none" progress="scroll" scrub for="scroll"></arq-carousel-controls></div>` +
     `<ul class="cards" role="list" aria-label="Variantes"></ul>` +
     `<div class="more" hidden><arq-button class="more-button" type="outline">${TEXT.more}</arq-button></div>` +
     `<div class="skeleton" aria-hidden="true" hidden></div>` +

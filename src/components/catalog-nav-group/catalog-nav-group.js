@@ -83,15 +83,19 @@ class ArqCatalogNavGroup extends ArqElement {
     if (before === null) return;
     const styles = getComputedStyle(this);
     const duration = Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-expand')) || 0;
-    const delta = before - this.getBoundingClientRect().height;
-    if (!duration || !delta) return;
-    const options = { duration, easing: styles.getPropertyValue('--arq-motion-easing-standard').trim() || 'ease-out' };
-    const from = [{ transform: `translateY(${delta}px)` }, { transform: 'none' }];
+    if (!duration) return;
     const group = this.shadowRoot.querySelector('.group');
     const items = this.shadowRoot.querySelector('.items');
     const below = [];
     for (let next = this.nextElementSibling; next; next = next.nextElementSibling) below.push(next);
+    // Si se vuelve a tocar a mitad del desplazamiento, arranca desde donde se
+    // ve ahora (el desplazamiento en curso), no desde el lugar de reposo.
+    const current = below.length ? new DOMMatrixReadOnly(getComputedStyle(below[0]).transform).m42 : 0;
     for (const element of [group, items, ...below]) element.getAnimations().forEach((animation) => animation.cancel());
+    const delta = before - this.getBoundingClientRect().height + current;
+    if (!delta) return;
+    const options = { duration, easing: styles.getPropertyValue('--arq-motion-easing-standard').trim() || 'ease-out' };
+    const from = [{ transform: `translateY(${delta}px)` }, { transform: 'none' }];
     group.animate(from, { ...options, pseudoElement: '::after' });
     for (const element of below) element.animate(from, options);
     if (this.open) items.animate([{ clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0)' }], options);

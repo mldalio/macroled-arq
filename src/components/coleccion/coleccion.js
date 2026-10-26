@@ -24,6 +24,7 @@ import '../grid/grid.js';
 import { appendFinishes } from '../product-card/product-card.js';
 import '../swatch/swatch.js';
 import '../carousel-controls/carousel-controls.js';
+import { reveal, revealCss } from '../../base/reveal.js';
 import css from './coleccion.css?inline';
 
 const TEXT = {
@@ -35,7 +36,7 @@ const TEXT = {
 
 class ArqColeccion extends ArqElement {
   static tag = 'arq-coleccion';
-  static styles = css;
+  static styles = revealCss + css;
   static properties = {};
   static template =
     `<div class="products">` +
@@ -93,30 +94,35 @@ class ArqColeccion extends ArqElement {
     slotText(this, 'p', description);
   }
 
+  #reveal = null;
+
+  // Las cards entran al hacer scroll, como las del Home y las de Productos
+  // (src/base/reveal.js).
   #renderCards(cards) {
-    this.shadowRoot.querySelector('.grid').replaceChildren(
-      ...cards.map((data) => {
-        const card = document.createElement('arq-product-card');
-        card.href = data.href;
-        card.image = data.image;
-        card.imageHover = data.imageHover;
-        card.imageLit = data.imageLit;
-        card.imageHoverLit = data.imageHoverLit;
-        // <h2>: las cards van directo debajo del <h1> del page-header
-        const title = document.createElement('h2');
-        title.slot = 'name';
-        title.textContent = data.name;
-        card.append(title);
-        appendFinishes(card, data.finishes);
-        if (data.meta) {
-          const meta = document.createElement('span');
-          meta.slot = 'meta';
-          meta.textContent = data.meta;
-          card.append(meta);
-        }
-        return card;
-      }),
-    );
+    const elements = cards.map((data) => {
+      const card = document.createElement('arq-product-card');
+      card.href = data.href;
+      card.image = data.image;
+      card.imageHover = data.imageHover;
+      card.imageLit = data.imageLit;
+      card.imageHoverLit = data.imageHoverLit;
+      // <h2>: las cards van directo debajo del <h1> del page-header
+      const title = document.createElement('h2');
+      title.slot = 'name';
+      title.textContent = data.name;
+      card.append(title);
+      appendFinishes(card, data.finishes);
+      if (data.meta) {
+        const meta = document.createElement('span');
+        meta.slot = 'meta';
+        meta.textContent = data.meta;
+        card.append(meta);
+      }
+      return card;
+    });
+    this.#reveal?.disconnect();
+    this.shadowRoot.querySelector('.grid').replaceChildren(...elements);
+    this.#reveal = reveal(elements);
   }
 
   #renderImages({ collection, images }) {

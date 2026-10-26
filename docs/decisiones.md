@@ -483,7 +483,7 @@ ArqAccordionItem.define();
 - Diseño: `ficha_pdf · componentes` (Figma `1907:27213`): pdf-page, pdf-header, pdf-cover-title, pdf-spec-group, pdf-spec-row y pdf-footer. Código en `src/pdf/`; lo dispara `arq:datasheet { sku }` (ficha y Descargas) desde `main.js`.
 - **Se abre, no se descarga:** el PDF se muestra en una pestaña nueva, en el visor del navegador. La pestaña se abre vacía en el clic (para que no la bloqueen) y carga el PDF cuando está listo. Si el navegador la bloquea, se descarga.
 - **Librería:** pdfmake 0.3.11, de jsDelivr por `/+esm` (módulo ES, sin globales) al primer clic, con Albert Sans de `@fontsource/albert-sans`. Versiones fijas en `src/config.js`. Pagina sola y repite encabezado y pie.
-- **Hojas:** la portada es la hoja 1; las especificaciones arrancan en la 2 y suman hojas si no entran. Una sección no se parte: si no entra en lo que queda, pasa entera a la hoja siguiente. Solo una sección más alta que una hoja se corta y repite su título. El pie de la hoja 2 en adelante es el aviso legal.
+- **Hojas:** (reemplazado por 2026-10-23 · Ficha técnica: una hoja menos) la portada es la hoja 1; las especificaciones arrancan en la 2 y suman hojas si no entran. Una sección no se parte: si no entra en lo que queda, pasa entera a la hoja siguiente. Solo una sección más alta que una hoja se corta y repite su título. El pie de la hoja 2 en adelante es el aviso legal.
 - **Secciones:** las mismas del acordeón de la ficha (`specSections` de `attributes.js`), con todas las que tienen datos: con los datos reales son tres hojas.
 - **Imagen:** la principal del SKU (`img_main` → `images.main`); si falta, la de estudio. Se lee con CORS y se pasa a JPEG en un canvas (pdfmake no acepta WebP). Sin CORS, la portada sale con el fondo `color/bg/subtle` sin imagen. Requisito para el servidor de imágenes (S3): `Access-Control-Allow-Origin` para macroled.com.ar.
 - **Tokens (excepción):** pdfmake no lee variables CSS. `npm run tokens` genera también `src/styles/print-tokens.js` con los valores resueltos de Semantic y `role/*`: Color Light, Dimension Desktop y Type Mobile, como los frames de Figma («Escala Type en modo Mobile»). Se convierten px → pt (× 0,75). Nada se escribe a mano.
@@ -644,7 +644,7 @@ Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe
 - **n8n:** URL y formato del webhook de Contacto; webhook de la newsletter (cta-block) y su envío con `form-message`.
 - **Webflow:** ver si un campo Rich Text se puede insertar en un Code Embed (reemplazaría el Markdown de STORY).
 - **Nombre del PDF en el visor:** decidir si se sirve la ficha técnica desde una URL propia (`…/ficha-tecnica-<sku>.pdf`) para que Chrome la guarde con ese nombre. Opciones: función en un servidor (Cloudflare Worker, Vercel, n8n) que genere o devuelva el PDF. Hoy se guarda con un código al azar.
-- **S3:** confirmar que el servidor de imágenes responde con CORS (`Access-Control-Allow-Origin`); si no, la ficha técnica en PDF sale sin foto. Hoy Typesense no tiene imágenes cargadas y no se pudo probar.
+- **S3:** ~~confirmar que el servidor de imágenes responde con CORS~~ S3 no manda CORS; la ficha técnica en PDF pide la foto al CloudFront (2026-10-23 · Ficha técnica: una hoja menos).
 - **Código:** sincronizar el `scrollLeft` del compare-header Compact con la tabla en Mobile.
 
 ## 2026-10-13 · Ficha v2 (accordion-item, variants-table, select, spec-row)
@@ -1235,7 +1235,8 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - Pedido: una página de marca con la base de la Home y el mismo criterio editorial (foto protagonista, título corto, bajada, alternancia izquierda/derecha). No hay frame en Final.
 - URL `/arq/nosotros`, embed `src/pages/nosotros.html`. Sin hero de apertura: el navbar va en Theme Default y la página arranca en un `feature-block`. Siguen tres `feature-block` de Oficio (sobre `background="bone"`, con `size` large, small y medium), otro `feature-block`, una banda `hero` tall + parallax, `project-mosaic` con `bleed` y `cta-block` a Contacto.
 - «Conocer Macroled ARQ» de la Home apunta ahí. El footer suma Nosotros en Información, en todas las páginas. El navbar sigue el de Figma (Productos, Descargas, Contacto): no se agregó el link.
-- TODO: confirmar textos; las fotos están en `arq_nosotros/` y hay que reemplazarlas por assets de Webflow antes de pegar el embed.
+- TODO: confirmar textos.
+- Fotos: en el S3 de la empresa, `https://s3.coresagroup.com/MACROLED/ARQ/imagenes/arq_nosotros/` (2026-10-26). La carpeta `arq_nosotros/` del repo queda como copia local.
 
 ## 2026-10-21 · Foto inicial del mega-menú
 
@@ -1591,3 +1592,61 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - La pieza de la ficha abre elegida. En un cabezal (`DAO-C-B`) ese cabezal queda seleccionado y el aro, los módulos y el color son unos compatibles con él. Igual con una lámpara o un frente. Al cambiar de variante en la ficha, el configurador vuelve a esa pieza.
 - Frente: solo si la lámpara elegida trae `frentes_compatibles`. En `PAR11-C-5W-DIM-36G-WW` son `PAR11-C-FRENTE-B` y `PAR11-C-FRENTE-N`. Se eligen; abre el del color del aro.
 - Bornera y panal no se muestran: no tienen SKU en la base. `TODO` (diseño): la pestaña no está en Final.
+
+## 2026-10-23 · Ficha técnica: una hoja menos
+
+- Diseño nuevo (Figma `2940:27279`, pasado a componentes en «11 · Ficha PDF», `1907:8278`). Sin portada: la hoja 1 (pdf-page Type=Primera) lleva arriba pdf-cover y las especificaciones empiezan en la misma hoja. Con los datos reales, una hoja menos.
+- **pdf-cover:** foto cuadrada de `layout/pdf-cover-image` (200, token nuevo) y, al lado, nombre (`role/display`), SKU (`role/body-lg`) y los datos clave abajo, alineados con el pie de la foto. Si el nombre ocupa muchas líneas, el bloque crece.
+- **Foto entera** (contain) sobre `color/surface/subtle`: las fotos son 7:10 y, recortadas a un cuadrado, perdían arriba y abajo del producto.
+- **Datos clave** (pdf-key-data, hasta 4 pdf-key-item): cambian según el producto. `KEY_DATA` en `src/data/attributes.js`, en orden: Potencia, Flujo, Protección (solo desde IP44, como «IP65»: IP20 es el de interior y no dice nada), Temperatura, CRI, Ángulo. Se muestran los primeros cuatro que el SKU tiene cargados; sin ninguno, la fila no se muestra. La protección va antes que la temperatura porque en Arq casi todo es 2700K.
+- **Encabezado:** pdf-header pasa a set. Type=Default en la hoja 1: «Ficha técnica». Type=Product desde la hoja 2: el nombre (`role/body-sm-medium`) sobre el SKU (`role/body-sm`), alineados a la derecha y sin «Ficha técnica», para que una hoja suelta diga de qué producto es. Es más alto que el de la hoja 1: el margen de la hoja sale de él y pdf-cover sube lo que sobra (pdfmake no deja un margen por hoja).
+- **Pie:** sin aviso legal ni «Macroled Arq», solo el paginado.
+- Títulos de sección en `role/body-xl` y en caja normal (antes `role/label` en mayúsculas).
+- **Foto por el CloudFront:** S3 (`s3.coresagroup.com`) no manda `Access-Control-Allow-Origin` y el navegador no deja leer la foto para meterla en el PDF. Se pide al CloudFront `d1zltvqju4u8ql.cloudfront.net`, que sirve los mismos archivos con CORS, en JPEG y a 500 px (`config.images.pdfBase`); es lo que hace la ficha de macroled.com.ar y lo que ya usa el toggle Iluminar (2026-10-21). Una foto de otro servidor se pide tal cual.
+- **Fotos que faltan:** al 2026-10-23, de 170 SKU, 38 tienen la foto principal cargada en la base pero el archivo no existe en S3, y 74 no la tienen cargada. Probar con otra foto del producto solo salvaba uno: no se hace. `TODO` (datos).
+
+## 2026-10-26 · filter-panel: «Limpiar filtros» y solo con filtros marcados
+
+- Pedido: la barra de filtros aplicados decía «Limpiar filtros» y el panel «Borrar todo», para la misma acción. Quedan los dos como «Limpiar filtros». «Borrar todo» queda solo en compare-bar (borra los productos elegidos).
+- En el panel, el botón se deshabilita mientras no hay ningún filtro marcado (antes estaba siempre habilitado). Si tenía el foco al deshabilitarse, el foco pasa a «Ver N».
+- `TODO` (diseño): cambiar el texto y el estado Disabled en el set de filter-panel de Figma; DESIGN.md (fila de filter-panel) en una rama `docs/`.
+
+## 2026-10-26 · Home en /arq/inicio
+
+- Webflow no deja crear una página en la URL de una carpeta: toda página de la carpeta Arq necesita su slug (`index` está reservado) y una página `arq` en la raíz chocaría con la carpeta.
+- La Home va en `/arq/inicio`. En Webflow, redirección 301 de `/arq` a `/arq/inicio` (Site settings → Publishing): quien entra a `/arq` llega a la Home, también con `#newsletter`.
+- Los links internos apuntan directo a `/arq/inicio`, sin pasar por la redirección: el `href` por defecto de `<arq-logo>` (navbar y footer), el breadcrumb «Inicio» de Productos y los ejemplos del link al newsletter (`/arq/inicio#newsletter`).
+- Se descartó un proxy delante de `macroled.com.ar` (Cloudflare Worker) para mostrar la Home en `/arq` sin redirigir: toca el dominio del e-commerce de Macroled.
+
+## 2026-10-26 · Albert Sans en cada componente
+
+- En Webflow, el título de compare-bar («Productos seleccionados») salía con la fuente de Macroled: el `font: inherit` de su `<button>` pisaba el `role/body-lg` del mismo elemento. En la demo no se veía porque su `body` ya usa Albert Sans.
+- El rol pasa al `<span>` del texto. El encabezado «SKU» de variants-table tomaba el peso del `body` de la página por lo mismo (`font-weight: inherit` en `.sku-col`): ahora solo se aplica en las filas.
+- `ArqElement` pone `font-family: var(--arq-font-family-sans)` en cada `:host`, así nada de adentro de un componente toma la fuente del `body` de Webflow.
+
+## 2026-10-26 · option-tile Type=Value: una sola opción se muestra como dato
+
+- Problema: en el configurador, un grupo con una sola opción (Cabezal, Lámpara) dejaba su único tile siempre con la línea de selección de 2 px, igual que un link o un tab, y no hay nada que elegir.
+- Decisión: option-tile suma la variante Type: Option · Value. option-group (Type=Tiles) cuenta sus tiles: con uno solo lo pasa a Type=Value (sin línea, sin role ni foco, `color/text/primary`) y deja de ser un `radiogroup`; con más vuelve a Option. Regla de código en option-group, no una prop que se escriba en el HTML.
+- La línea de 2 px del tile elegido queda como está: la distingue del tab y del link de texto.
+- El set de option-tile en Figma ya tiene Type=Value. `TODO` (diseño): DESIGN.md (§8, fila de option-group · option-tile) y su copia en Figma.
+## 2026-10-26 · text-link: componente para links de texto
+
+- Pedido: el nombre del producto en Descargas se veía como un botón Underline (línea separada del texto, hover que dibuja otra línea). Es un link de texto, no un botón.
+- Decisión: componente nuevo `<arq-text-link>` (Size: Default · Compact; State: Default · Hover · Focus). Línea de `border/default` pegada al texto, hover que atenúa texto y línea a `color/text/tertiary`, sin animación de línea. Se usa en el nombre de variants-table Type=Catalog (fila y tarjeta Mobile) y en las piezas del armado de Daö en la ficha. button Underline queda para acciones y llamadas.
+- Medido en Chrome (Albert Sans 14, ampliado): un `<a>` en línea dejaba la línea a ~9 px de la base porque su caja es el área de contenido de la fuente, no el interlineado; con una caja de 1em + border/strong y la línea en su borde inferior queda a ~3,5 px y no toca las colas de g, p, y, q.
+- variants-table: el nombre y el sku quedan a `space/gap/sm-md` (0,75 rem) en la tabla y en la tarjeta Mobile (antes `sm` y `xs`).
+- `TODO` (diseño): ficha `doc/text-link` en Documentación y DESIGN.md (§8 y Anexo A). El set ya está en Figma (2965:9774).
+
+## 2026-10-26 · Animaciones: auditoría de todo el sitio
+
+- Pedido: revisar las animaciones de todas las páginas (skill improve-animations; con permiso para no tomar DESIGN.md como regla fija) y que las cards de Productos y Colección entren como las del Home.
+- **Entrada de cards:** Productos (catalog-listing) y Colección (coleccion) usan la entrada al hacer scroll del Home (`src/base/reveal.js`). En Productos la hacen las cards de carga si llegan a verse; si no, las cards. Al filtrar, las cards que siguen se reusan (mismos datos) y quedan quietas: solo entran las nuevas. Reemplaza el fundido de 8 px que se repetía en todas las cards con cada filtro.
+- **reveal.js:** el escalón se cuenta dentro de lo que entra junto (antes, en toda la lista: la card 8 de un riel esperaba ~1 s), con tope de 5 escalones. Mientras `arq-preloader` tapa la página no arranca: la entrada de lo que está arriba se hacía debajo del preloader y no se veía. Al terminar quita sus clases.
+- **Iluminar:** el círculo del switch tiene su propia transición (`fast` + `easing/in-out`, 120 ms, entrada y salida suaves; con `easing/out` y con `standard` se sentía brusco). `motion/easing/in-out` es nuevo en Figma (2 · Semantic · Motion). Antes tomaba la del texto de Iluminar: en la ficha arrancaba 300 ms tarde y tardaba 900 ms, junto con el fundido de la página. El círculo no se anima al mismo tiempo que el fundido general (pedido de Lau): en Productos termina antes de que arranque (después del adelanto de las fotos). Se probaron 320, 400 y 800 ms y se descartaron.
+- **Menús, más suaves (pedido de Lau):** el mega-menú entra en `panel` (400 ms) y sale en `slow` (320 ms), con `easing/standard` (250/200 ms con `easing/out` se veía rápido). El menú Mobile abre y cierra como una persiana desde la barra (`panel` + `standard`, como el search-sheet; antes aparecía de golpe) y al cambiar de nivel el que sale se corre `space/gap/4xl` y se desvanece mientras el nuevo entra del otro lado, los dos a la vez (`panel` + `standard`; con reduced motion, fundido). El menú del input Select crece y funde en `slow` + `standard`. filter-panel, download-modal y compare-picker salen en `expand` (250 ms); la entrada sigue en `panel`.
+- **Reduced motion:** el mega-menú y el search-sheet funden con `fade` en vez de aparecer de golpe (como filter-panel, plan 001). El hover de product-card funde con `fade` (antes 0).
+- **Hover de cards con overlay** (category-card, collection-tile): texto y bajada en `slow` con `easing/out`, zoom de la foto en `slow` + `standard` (lo que dice motion/scale/hover). Antes 1280 ms (`slow × 4`). collection-tile escalona de a `fast` (antes 640 ms por tarjeta).
+- **Otros:** la foto de hover de product-card funde recién cuando cargó (antes aparecía de golpe la primera vez); la sección del Home se apaga al subir recién cuando salió entera de la pantalla; catalog-card se achica al apretar en `fast`; project-slider pasa de slide con un deslizamiento rápido (0,4 px/ms, como featured-products); la opacidad de swatch Disabled funde; catalog-nav-group retoma desde donde está si se vuelve a tocar; la galería de la ficha funde con `fade` al cambiar de foto o de variante, y un fundido de Iluminar en curso no salta; el visor de fotos entra con fundido y escala `enter`; compare-header Compact baja desde el navbar; collection-index funde la foto nueva sobre la anterior (sin lavarse); el riel de destacados vuelve al principio con un fundido, no rebobinando; el preview del mega-menú cambia el texto junto con la foto.
+- **Sin cambio:** project-slide sigue cambiando de tamaño de golpe (animarlo con transform obliga a rehacer el cálculo de posiciones del slider); la repetición de la entrada de las secciones del Home y la doble entrada sección + cards quedan (es la referencia pedida).
+- Figma: `motion/easing/in-out` nuevo y descripciones de Motion al día; fichas doc/toggle, doc/mega-menu, doc/navbar, doc/search-sheet, doc/product-card y doc/category-card actualizadas. DESIGN.md §6 y §8 actualizado, y su copia en Plan del proyecto sincronizada entera con el repo (arrastraba cambios anteriores sin pasar).

@@ -25,14 +25,15 @@
 // - Comparar: "Comparar" de cada card suma o saca el producto
 //   de la compare-bar (hasta 3; la selección se guarda en arq:compare). El
 //   lugar vacío (+) de la barra abre compare-picker para agregar desde ahí.
-// - Iluminar: lo resuelve catalog-toolbar (data-arq-theme en <html>).
+// - Iluminar: lo resuelve catalog-toolbar (data-arq-theme en <html>). En la
+//   colección Daö (?collection=dao) no existe: sin toggle y la página en Light.
 // - No hay vista «Todas las colecciones» (se sacó el 2026-10-23: docs/archivo/
 //   todas-las-colecciones.md). Una colección se ve desde el catalog-nav
 //   (?collection=) y desde el mega-menu.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { listProducts, listCompareCandidates, getCatalogNav } from '../../data/catalog.js';
-import { handOffTheme } from '../../base/theme.js';
+import { handOffTheme, setBrowserBar, withoutThemeTransition } from '../../base/theme.js';
 import '../catalog-toolbar/catalog-toolbar.js';
 import '../filter-panel/filter-panel.js';
 import '../filter-row/filter-row.js';
@@ -42,18 +43,21 @@ import '../compare-picker/compare-picker.js';
 import '../grid/grid.js';
 import { appendFinishes } from '../product-card/product-card.js';
 import '../swatch/swatch.js';
+import { covered, reveal, revealCss } from '../../base/reveal.js';
 import css from './catalog-listing.css?inline';
 
 const CATEGORY_PARAMS = { environment: 'environment', application: 'application', product_type: 'productType', collection: 'collection', family: 'family' };
 const LISTING_DESKTOP = matchMedia('(min-width: 1024px)');
 const LISTING_WIDE = matchMedia('(min-width: 1920px)');
-const ENTER_STAGGERED = 8; // cards con escalón en la entrada; el resto entra con la octava
+
+// Colección (id, sin tildes) sin Iluminar, como la ficha de Daö (decisiones.md, 2026-10-23)
+const NO_ILLUMINATION_COLLECTION = 'dao';
 
 const TEXT = { loading: 'Cargando productos…', empty: 'No hay productos con estos filtros.', error: 'No se pudieron cargar los productos. Probá de nuevo en unos minutos.' };
 
 class ArqCatalogListing extends ArqElement {
   static tag = 'arq-catalog-listing';
-  static styles = css;
+  static styles = revealCss + css;
   static template =
     `<div class="layout">` +
     `<div class="nav"><slot name="nav"></slot></div>` +
@@ -74,6 +78,7 @@ class ArqCatalogListing extends ArqElement {
   #query = '';
   #filters = {};
   #cards = new Map(); // product-card → datos de la card
+  #reveal = null; // entrada al hacer scroll de las cards nuevas (reveal.js)
   #request = 0;
   #countRequest = 0; // la última cuenta de «Ver N» gana (las respuestas pueden llegar desordenadas)
   #htmlCrumbs = null; // niveles del breadcrumb del HTML después de Inicio
@@ -84,6 +89,7 @@ class ArqCatalogListing extends ArqElement {
     const root = this.shadowRoot;
     this.#category = categoryFromUrl();
     this.#query = new URLSearchParams(location.search).get('q')?.trim() ?? '';
+    this.#syncIlluminate();
     root.querySelector('slot[name="nav"]').addEventListener('slotchange', () => this.#markNav());
     // Si cambia el href de un link del nav (la demo reescribe los que llegan
     // de Typesense), se vuelve a marcar el actual. selected no es href: no
@@ -235,8 +241,24 @@ class ArqCatalogListing extends ArqElement {
     this.#query = params.get('q')?.trim() ?? '';
     this.#filters = {};
     this.shadowRoot.querySelector('arq-filter-panel').clear();
+    this.#syncIlluminate();
     this.#markNav();
     this.#load();
+  }
+
+  // La colección Daö no tiene Iluminar: sin toggle, y si se llegó iluminado
+  // (otra categoría) la página vuelve a Light.
+  #syncIlluminate() {
+    const collection = (this.#category.collection ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    const off = collection === NO_ILLUMINATION_COLLECTION;
+    this.shadowRoot.querySelector('.toolbar').showIluminar = !off;
+    const html = document.documentElement;
+    if (off && html.getAttribute('data-arq-theme') === 'dark') {
+      withoutThemeTransition(() => {
+        html.removeAttribute('data-arq-theme');
+        setBrowserBar(false);
+      });
+    }
   }
 
   // Una sola vez, al conectarse (el componente no tiene props): carga el listado.
@@ -312,16 +334,17 @@ class ArqCatalogListing extends ArqElement {
   }
 
   // Cards de carga (product-card loading): dos filas de la grilla, así llenan
-  // la pantalla sin sumar scroll de más. Aparecen recién después de un
-  // fundido corto (catalog-listing.css): con el catálogo en caché llegan las
-  // cards antes y no se ven.
+  // la pantalla sin sumar scroll de más. Entran como las cards del Home,
+  // después de esperar un fundido corto (catalog-listing.css): con el
+  // catálogo en caché llegan las cards antes y no se ven.
   #renderSkeleton() {
     const grid = this.shadowRoot.querySelector('.grid');
     if (grid.querySelector('[loading]')) return;
     const tracks = getComputedStyle(grid.shadowRoot.querySelector('.grid')).gridTemplateColumns.split(' ').filter(Boolean);
-    const cards = Array.from({ length: Math.max(tracks.length, 1) * 2 }, () => {
+    const cards = Array.from({ length: Math.max(tracks.length, 1) * 2 }, (_, index) => {
       const card = document.createElement('arq-product-card');
       card.loading = true;
+      card.style.setProperty('--reveal-index', String(Math.min(index, 5))); // escalón de la entrada (catalog-listing.css)
       card.showCompare = true;
       return card;
     });
@@ -341,17 +364,30 @@ class ArqCatalogListing extends ArqElement {
     // Si las cards de carga ya se ven, las cards ocupan su lugar sin la
     // entrada (con el fundido desde 0 el gris bajaba a blanco y volvía): lo
     // que aparece es la foto (fundido de product-card). Si todavía no se
-    // veían (respuesta rápida), entrada normal.
+    // veían (respuesta rápida, o el preloader las tapaba), entrada normal.
+    // Las cards que ya estaban (mismos datos) se reusan: al filtrar quedan
+    // quietas y conservan el acabado elegido; solo entran las nuevas. Una
+    // card del mismo producto con otros datos (otros acabados) se rehace en
+    // su lugar, sin entrada.
     const skeleton = this.shadowRoot.querySelector('.grid > [loading]');
-    const settled = Boolean(skeleton) && Number.parseFloat(getComputedStyle(skeleton).opacity) > 0;
-    this.#cards = new Map(cards.map((data, index) => {
-      const card = this.#card(data);
-      // Escalón de la entrada (catalog-listing.css): solo las 8 primeras
-      card.style.setProperty('--enter-index', String(Math.min(index, ENTER_STAGGERED)));
-      card.classList.toggle('settled', settled);
+    const settled = !covered() && Boolean(skeleton) && Number.parseFloat(getComputedStyle(skeleton).opacity) > 0;
+    const previous = new Map([...this.#cards].map(([card, data]) => [data.href, { card, json: JSON.stringify(data) }]));
+    const entering = [];
+    this.#cards = new Map(cards.map((data) => {
+      const kept = previous.get(data.href);
+      let card = kept?.json === JSON.stringify(data) ? kept.card : null;
+      if (card) {
+        if (card.classList.contains('reveal')) entering.push(card); // todavía no había entrado en pantalla
+      } else {
+        card = this.#card(data);
+        card.classList.toggle('settled', settled || Boolean(kept));
+        if (!settled && !kept) entering.push(card);
+      }
       return [card, data];
     }));
+    this.#reveal?.disconnect();
     this.shadowRoot.querySelector('.grid').replaceChildren(...this.#cards.keys());
+    this.#reveal = reveal(entering);
     this.#syncCompared();
   }
 

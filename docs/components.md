@@ -67,9 +67,12 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [option-group](#option-group) | `<arq-option-group>` | En código ([README](../src/components/option-group/README.md)) |
 | ✅ [option-tile](#option-tile) | `<arq-option-tile>` | En código ([README](../src/components/option-tile/README.md)) |
 | ✅ [page-header](#page-header) | `<arq-page-header>` | En código ([README](../src/components/page-header/README.md)) |
+| ✅ [pdf-cover](#pdf-cover) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-cover-title](#pdf-cover-title) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-footer](#pdf-footer) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-header](#pdf-header) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
+| ✅ [pdf-key-data](#pdf-key-data) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
+| ✅ [pdf-key-item](#pdf-key-item) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-page](#pdf-page) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-spec-group](#pdf-spec-group) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-spec-row](#pdf-spec-row) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
@@ -93,6 +96,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [swatch](#swatch) | `<arq-swatch>` | En código ([README](../src/components/swatch/README.md)) |
 | ✅ [swatch-picker](#swatch-picker) | `<arq-swatch-picker>` | En código ([README](../src/components/swatch-picker/README.md)) |
 | ✅ [tab](#tab) | `<arq-tab>` | En código ([README](../src/components/tab/README.md)) |
+| ✅ [text-link](#text-link) | `<arq-text-link>` | En código ([README](../src/components/text-link/README.md)) |
 | ✅ [toggle](#toggle) | `<arq-toggle>` | En código ([README](../src/components/toggle/README.md)) |
 | ✅ [toggle-switch](#toggle-switch) | — | Dentro de toggle ([README](../src/components/toggle/README.md)) |
 | ✅ [variants-table](#variants-table) | `<arq-variants-table>` | En código ([README](../src/components/variants-table/README.md)) · Un solo componente para la ficha (`type="product"`) y Descargas (`type="catalog"`, propuesta 2575:22875); reemplaza a `<arq-downloads-table>` (2026-10-20). El set de Figma ya tiene Type (Product · Catalog) y Breakpoint (2026-10-20) |
@@ -216,7 +220,7 @@ TODO: dentro de un contenedor Dark color/icon/primary pasa a claro y se pierde s
 
 Flechas anterior / siguiente para carruseles con scroll horizontal (mosaico de Colección, proyectos de Home). icon-button Size=Large con icon/arrow-left y icon/arrow-right. Position: Start (anterior deshabilitada) · Middle · End (siguiente deshabilitada); deshabilitada = icon-button State=Disabled (atributo disabled). En mobile no se muestran: el carrusel se desliza y la imagen siguiente asoma como indicador. El scroll (snap) se resuelve en código.
 
-Solo de código (sin variante en Figma): buttons=carousel (carousel-button cuadrado, Home), buttons=chevron (icon-button Large con chevrons, sin borde ni fondo) y buttons=none (solo la línea de progreso, a todo el ancho). progress=scroll hace que la línea mida la parte visible del contenido y siga el scroll (borde border/strong sobre pista fina): es la barra de columnas de variants-table.
+Solo de código (sin variante en Figma): buttons=carousel (carousel-button cuadrado, Home), buttons=chevron (icon-button Large con chevrons, sin borde ni fondo) y buttons=none (solo la línea de progreso, a todo el ancho). progress=scroll hace que la línea mida la parte visible del contenido y siga el scroll. Con scrub (solo variants-table) es una barra de scroll: pista color/surface/subtle, trazo color/border/hover de space/padding/xs (en hover y al arrastrar, color/text/tertiary y + border/strong, con fundido de motion/duration/base), arrastrable, con un chevron chico (icon-button Default) a cada lado que avanza media página.
 
 El autoplay se detiene con el mouse encima o con el foco adentro del carrusel (TODO: falta un botón de pausa visible).
 
@@ -478,10 +482,10 @@ Filtro aplicado que se puede quitar (todo el chip es el botón; en código: butt
 ## filter-panel
 
 - Figma: [1225-13576](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1225-13576)
-- Propiedades: Title; Summary; Show summary; Show applied; Show categories; Show category list; Breakpoint: Desktop · Mobile
+- Propiedades: Title; Summary; Show summary; Show applied; Show categories; Show category list; Breakpoint: Desktop · Mobile; Filters: Applied · None
 
-Panel de filtros que se abre desde el botón Filtrar del catalog-toolbar. Desktop: panel lateral de 560 sobre scrim (color/overlay/scrim). Mobile: pantalla completa (modos Mobile de Dimension y Type). Contenido: filter-row (checkbox) + footer con button Underline "Borrar todo" y Filled "Ver N productos". Filtros aplicados: fila "applied" con filter-chip (8 lugares, 3 visibles) que se quitan uno por uno; Show applied la oculta cuando no hay filtros. "Borrar todo" los quita todos.
-«Borrar todo» aplica en el momento, sin cerrar el panel. Las opciones que no darían resultados con lo marcado se ocultan (lo marcado queda siempre) y cada una muestra su cantidad (checkbox Show count, al borde derecho). La barra de scroll del cuerpo va al borde derecho del panel, separada del contenido por todo el margen lateral.
+Panel de filtros que se abre desde el botón Filtrar del catalog-toolbar. Desktop: panel lateral de 560 sobre scrim (color/overlay/scrim). Mobile: pantalla completa (modos Mobile de Dimension y Type). Contenido: filter-row (checkbox) + footer con button Underline "Limpiar filtros" y Filled "Ver N productos". Filtros aplicados: fila "applied" con filter-chip (8 lugares, 3 visibles) que se quitan uno por uno; Show applied la oculta cuando no hay filtros. "Borrar todo" los quita todos.
+«Limpiar filtros» (deshabilitado sin filtros marcados) aplica en el momento, sin cerrar el panel. Las opciones que no darían resultados con lo marcado se ocultan (lo marcado queda siempre) y cada una muestra su cantidad (checkbox Show count, al borde derecho). La barra de scroll del cuerpo va al borde derecho del panel, separada del contenido por todo el margen lateral. Filters=None es el panel recién abierto, sin ningún filtro marcado: sin resumen ni chips y con «Limpiar filtros» deshabilitado. En código no es una prop: se resuelve con lo marcado.
 
 Show categories (Mobile y Tablet, hasta 1023 px, en Productos; en código el atributo show-categories): tabs Características · Categorías debajo del encabezado, gap space/gap/xl y línea inferior border/default en color/border/subtle. Categorías muestra los grupos de catalog-nav (el de la categoría actual abierto) y oculta filtros, resumen, chips y footer; sus links cambian el listado y cierran el panel. Show category list representa la tab Categorías activa: en código no es una prop, es el estado de la tab.
 
@@ -642,9 +646,9 @@ Grupo de configuración con etiqueta. Type: Tiles (fila de option-tile en Fill, 
 ## option-tile
 
 - Figma: [921-2487](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2487)
-- Propiedades: Label; State: Default · Hover · Selected · Focus · Disabled
+- Propiedades: Label; Type: Option · Value; State: Default · Hover · Selected · Focus · Disabled
 
-Uso: configurar el producto en la ficha (altura, potencia, temperatura), dentro de option-group Type=Tiles. No confundir con choice-chip, que es para formularios. En código (2026-10-21), sin caja: el dato y la línea border/strong solo en la elegida; falta actualizar el set.
+Uso: configurar el producto en la ficha (altura, potencia, temperatura), dentro de option-group Type=Tiles. No confundir con choice-chip, que es para formularios. En código (2026-10-21), sin caja: el dato y la línea border/strong solo en la elegida; falta actualizar el set. Type=Value: con una sola opción en el grupo no hay nada que elegir, y el tile se muestra como dato (sin línea de selección ni foco). En código lo pone option-group al contar sus tiles.
 
 Opción seleccionable de configuración (altura, potencia, temperatura…), funciona como radio (role=radio). Sin caja: solo línea inferior. Default: sin fondo, border/default abajo, text/secondary. Hover: surface/faint, border/hover, text/primary. Selected: surface/soft, border/strong abajo, text/primary. Focus: anillo border/focus. Disabled: border/disabled y text/disabled, tachado (combinación no disponible). Padding space/padding/sm-md × space/padding/md, texto role/body-regular. En un grupo va en Fill.
 
@@ -657,40 +661,61 @@ Encabezado de páginas de listado (Productos, Colecciones, Descargas, Contacto).
 
 Anchos: bajada de List hasta layout/measure; columna de título y bajada de Detail hasta layout/measure-wide. El componente aplica su propio layout/gutter (como navbar y footer). El breadcrumb muestra los niveles que correspondan a la página.
 
+## pdf-cover
+
+- Figma: [2944-9521](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2944-9521)
+- Propiedades: Show key data
+
+Bloque de arriba de la primera hoja de la ficha PDF: foto del producto cuadrada (layout/pdf-cover-image, entera sobre color/surface/subtle) y, a su lado, pdf-cover-title arriba y pdf-key-data abajo, alineado con el pie de la foto. Padding vertical space/padding/xl, gap space/gap/xl, borde inferior border/default + color/border/subtle. Show key data: sin datos clave para destacar, la fila no se muestra.
+
 ## pdf-cover-title
 
 - Figma: [1907-27095](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-27095)
-- Propiedades: Eyebrow; Name; SKU
+- Propiedades: Name; SKU
 
-Bloque de título de la portada PDF: eyebrow role/label (color/text/tertiary), nombre role/display (color/text/primary) y SKU role/body-lg (color/text/secondary). Gap space/gap/sm-md, padding inferior space/padding/xl-2xl. Escala Type en modo Mobile (display = 40).
+Nombre y SKU de la ficha PDF, dentro de pdf-cover: nombre role/display (color/text/primary) y SKU role/body-lg (color/text/secondary), a space/gap/sm-md. Escala Type en modo Mobile (display = 40).
 
 ## pdf-footer
 
 - Figma: [1907-27023](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-27023)
-- Propiedades: Note; Page
+- Propiedades: Page
 
-Pie de página de la ficha PDF: nota (role/body-sm) a la izquierda y paginado (role/label) a la derecha, ambos color/text/tertiary. Borde superior border/default + color/border/subtle, padding superior space/padding/md.
+Pie de página de la ficha PDF: paginado (role/label, color/text/tertiary) al borde derecho. Sin nota ni aviso legal. Borde superior border/default + color/border/subtle, padding superior space/padding/md.
 
 ## pdf-header
 
-- Figma: [1907-27058](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-27058)
-- Propiedades: Meta; Meta 2; Show meta 2
+- Figma: [2946-9616](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2946-9616)
+- Propiedades: Type: Default · Product; Name; SKU; Label
 
-Encabezado de la ficha PDF: logo (Size=Small) y metadatos role/label en mayúsculas (color/text/tertiary), separados por space/gap/md. Portada: Meta="Ficha técnica" y Show meta 2 apagado. Páginas internas: nombre + SKU. Borde inferior border/default + color/border/subtle, padding inferior space/padding/md.
+Encabezado de la ficha PDF: logo (Size=Small) a la izquierda y, a la derecha, centrado en alto con el logo: Type=Default (hoja 1): Label «Ficha técnica» en role/label (color/text/tertiary). Type=Product (hoja 2 en adelante): nombre en role/body-sm-medium (color/text/primary) sobre el SKU en role/body-sm (color/text/tertiary), alineados a la derecha, para que una hoja suelta diga de qué producto es. Borde inferior border/default + color/border/subtle, padding inferior space/padding/md.
+
+## pdf-key-data
+
+- Figma: [2943-9594](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2943-9594)
+- Propiedades: —
+
+Datos clave de la ficha PDF (primera hoja, dentro de pdf-cover): hasta 4 pdf-key-item del mismo ancho a space/gap/sm-md, con regla superior border/default + color/border/strong. Cambian según el producto: se muestran los que tienen sentido destacar y tienen dato (`src/data/attributes.js`, `KEY_DATA`). Sin ninguno, la fila no se muestra.
+
+## pdf-key-item
+
+- Figma: [2943-9591](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2943-9591)
+- Propiedades: Label; Value
+
+Dato clave de la ficha PDF: etiqueta corta role/label en mayúsculas (color/text/tertiary) y valor role/heading-3-light (color/text/primary), a space/gap/xs, con padding superior space/padding/sm-md. Va dentro de pdf-key-data.
 
 ## pdf-page
 
 - Figma: [1907-27212](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-27212)
-- Propiedades: Type: Portada · Especificaciones
+- Propiedades: Type: Primera · Siguiente
 
-Página A4 (794×1123) de la ficha técnica PDF. Type=Portada: pdf-header (Meta="Ficha técnica"), imagen de producto (fill color/surface/subtle + imagen), pdf-cover-title y pdf-footer. Type=Especificaciones: pdf-header (nombre + SKU), tres pdf-spec-group y pdf-footer con aviso legal. Fondo color/surface/default; padding space/padding/xl-2xl arriba, space/padding/2xl a los lados, space/padding/xl abajo. Escala Type en modo Mobile. Todo el contenido sale de Typesense.
+Página A4 (794×1123) de la ficha técnica PDF. Type=Primera: pdf-header (Label «Ficha técnica»), pdf-cover (foto, nombre, SKU y datos clave), las pdf-spec-group que entran y pdf-footer. Type=Siguiente: pdf-header Type=Product (nombre sobre SKU), el resto de las pdf-spec-group y pdf-footer. Una sección no se parte: si no entra, pasa entera a la hoja siguiente. Pie sin aviso legal, solo el paginado. Fondo color/surface/default; padding space/padding/xl-2xl arriba, space/padding/2xl a los lados, space/padding/xl abajo. Escala Type en modo Mobile. Todo el contenido sale de Typesense.
 
 ## pdf-spec-group
 
 - Figma: [1907-27070](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-27070)
 - Propiedades: Title
 
-Grupo de especificaciones de la ficha PDF: título role/label en mayúsculas (color/text/primary) con borde inferior border/default + color/border/strong y padding inferior space/padding/sm-md, seguido de instancias de pdf-spec-row. Trae 6 filas: ocultá las que sobren en la instancia (las filas salen de los datos de Typesense).
+Grupo de especificaciones de la ficha PDF: título role/body-xl (color/text/primary), en caja normal, con borde inferior border/default + color/border/strong y padding inferior space/padding/sm-md, seguido de instancias de pdf-spec-row. Trae 6 filas: ocultá las que sobren en la instancia (las filas salen de los datos de Typesense). Los grupos van a space/gap/xl-2xl.
 
 ## pdf-spec-row
 
@@ -849,6 +874,13 @@ Selector de acabado por muestras (role=radiogroup): fila de swatch con gap space
 - Propiedades: Label; State: Default · Hover · Selected · Focus · Disabled
 
 Pestaña (role="tab"). Label role/body-regular en color/text/secondary; Selected (aria-selected="true") en role/body-medium y color/text/primary, con subrayado de 1 px (border/default) en color/border/strong. Padding inferior space/padding/sm-md. State: Default, Hover, Selected, Focus y Disabled. Se agrupan en un contenedor role="tablist" con separación space/gap/xl y una línea color/border/subtle debajo. Lo usan el mega menú de Productos y la ficha de producto (Especificaciones · Información comercial · Configurador en la colección Daö).
+
+## text-link
+
+- Figma: [2965-9774](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2965-9774)
+- Propiedades: Label; Size: Default · Compact; State: Default · Hover · Focus
+
+Link de texto: un nombre o una frase que lleva a otra página y sigue el estilo del texto que lo rodea (el nombre de un producto en Descargas, una pieza del armado de Daö en la ficha). Sin padding, línea de border/default (1 px) en el color del texto, pegada al texto (caja de texto de 1em + border/strong, a ~3,5 px de la base). Hover y Pressed no dibujan otra línea: atenúan texto y línea a color/text/tertiary. Size: Default (role/body-regular) · Compact (role/body-compact-regular). Foco: anillo separado. No confundir con button Underline (botón: padding propio, línea animada, íconos) ni con nav-link, footer-link o breadcrumb-item.
 
 ## toggle
 

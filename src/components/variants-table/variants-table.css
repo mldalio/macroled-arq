@@ -261,6 +261,12 @@ tbody td {
   z-index: 1;
   /* sin ancho: absorbe el que sobra (las demás columnas no se estiran) */
   padding-inline-end: var(--arq-space-gap-xl);
+}
+
+/* Sin la negrita del <th> de cada fila (su contenido trae su role/*). Solo en
+   tbody: en el encabezado pisaría el peso de role/body-compact-regular y
+   tomaría el del body de la página. */
+tbody .sku-col {
   font-weight: inherit;
 }
 
@@ -283,73 +289,28 @@ tbody td {
 }
 
 /* Producto: nombre (role/body-compact-regular, subrayado) sobre el sku Compact,
-   a space/gap/sm (0,5 rem) en la tabla (Desktop y Tablet); en la tarjeta
-   Mobile, space/gap/xs */
+   a space/gap/sm-md (0,75 rem), en la tabla (Desktop y Tablet) y en la
+   tarjeta Mobile. TODO (diseño): antes era sm en la tabla y xs en la tarjeta;
+   pasarlo al set. */
 .product {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--arq-space-gap-sm);
+  gap: var(--arq-space-gap-sm-md);
   min-width: 0;
-}
-
-.card-head .product {
-  gap: var(--arq-space-gap-xs);
 }
 
 .name {
   color: var(--arq-color-text-primary);
 }
 
-/* En catalog, nombre y miniatura llevan a la ficha del producto: sin el
-   subrayado del navegador; el nombre se subraya (border/default) con el mouse.
-   Foco: anillo separado. */
-.name-link,
-.thumb-link {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* El nombre va siempre subrayado, como el button Underline con Show underline:
-   indica que lleva a otra página. ::before es la línea de reposo
-   (border/default) y ::after la de hover (border/strong), que se dibuja de
-   izquierda a derecha y se va hacia la derecha (motion/duration/base,
-   easing/standard), como nav-link. 3 px debajo del texto (space/padding/2xs). */
-.name-link {
-  position: relative;
-}
-
-.name-link::before,
-.name-link::after {
-  content: '';
-  position: absolute;
-  inset-inline: 0;
-  top: calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));
-  height: var(--arq-border-default);
-  background: var(--arq-color-border-strong);
-}
-
-.name-link::after {
-  height: var(--arq-border-strong);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
-}
-
+/* En catalog, el nombre es un arq-text-link (size compact: línea pegada al
+   texto, hover que atenúa) y la miniatura, un link sin subrayado. Los dos llevan
+   a la ficha del producto. */
 .thumb-link {
   display: block;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .name-link:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-}
-
-.name-link:focus-visible {
-  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
-  outline-offset: var(--arq-border-strong);
+  color: inherit;
+  text-decoration: none;
 }
 
 /* Fija de fin: Descargas, centrada */

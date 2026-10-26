@@ -16,7 +16,7 @@
 // specs vale para todas las variantes del grupo; attributes de la variante pisa o completa.
 
 import { loadSource, loadGroupDetails } from './source.js';
-import { ATTRIBUTES, DOWNLOAD_FILTERS, TABLE_COLUMNS, attributeInfo, specSections, tableValues } from './attributes.js';
+import { ATTRIBUTES, DOWNLOAD_FILTERS, TABLE_COLUMNS, attributeInfo, keyData, specSections, tableValues } from './attributes.js';
 import { variantOptions, findVariant, choose } from './variants.js';
 import { normalize, queryWords, matchWords } from './text.js';
 import { finishImage } from './finishes.js';
@@ -472,9 +472,10 @@ export async function skuDownloads(sku) {
 
 /**
  * Datos de la ficha técnica en PDF de un SKU de cualquier grupo: { name, sku,
- * image, sections }, o null si no existe. image es la imagen principal
- * (img_main en Typesense); si falta, la de estudio de la variante o de la
- * predeterminada. sections, como el acordeón de la ficha.
+ * image, keyData, sections }, o null si no existe. image es la imagen
+ * principal (img_main en Typesense); si falta, la de estudio de la variante o
+ * de la predeterminada. keyData, los datos clave (attributes.js, KEY_DATA);
+ * sections, como el acordeón de la ficha.
  */
 export async function getDatasheet(sku) {
   const { groups } = await loadCatalog();
@@ -487,6 +488,7 @@ export async function getDatasheet(sku) {
     name: variantName(group, variant),
     sku: variant.sku,
     image: own.main ?? own.studio ?? base.main ?? base.studio ?? null,
+    keyData: keyData(variant.values),
     sections: specSections(variant.values),
   };
 }

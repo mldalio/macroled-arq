@@ -36,11 +36,11 @@ En Productos, en Mobile y Tablet (hasta 1023 px), `show-categories` agrega las t
 | — (filas) | slot por defecto | — | `arq-filter-row` |
 | Breakpoint | — | — | Media query: hasta 767 px es Mobile |
 
-- **Métodos:** `show(opener)` abre (el foco vuelve a `opener` al cerrar), `close()` cierra descartando, `apply()` aplica y cierra, `clear()` es "Borrar todo". `showAvailable(isAvailable)` oculta las opciones que no darían resultados (`isAvailable(checkbox)` → false; lo marcado queda siempre) y las filas con una sola opción visible; la página lo llama con cada `arq:filters` (decisiones.md, 2026-10-22 · Filtros que no aplican). `filters` devuelve lo marcado: `{ name: [values] }`.
-- **Eventos:** `arq:filters { filters }` en cada cambio (para recalcular `count`, también al descartar); `arq:apply { filters }` al tocar "Ver N" y al tocar "Borrar todo".
-- **Cuándo se aplica** (decisión 2026-10-02 · filter-panel): con el panel abierto el listado no cambia, solo el número del botón. "Ver N productos" aplica y cierra. La X, el scrim o Esc descartan los cambios y vuelven a lo marcado al abrir. Excepción: "Borrar todo" aplica en el momento y deja el panel abierto; cerrar después no restaura lo borrado (decisión 2026-10-22).
+- **Métodos:** `show(opener)` abre (el foco vuelve a `opener` al cerrar), `close()` cierra descartando, `apply()` aplica y cierra, `clear()` es "Limpiar filtros". `showAvailable(isAvailable)` oculta las opciones que no darían resultados (`isAvailable(checkbox)` → false; lo marcado queda siempre) y las filas con una sola opción visible; la página lo llama con cada `arq:filters` (decisiones.md, 2026-10-22 · Filtros que no aplican). `filters` devuelve lo marcado: `{ name: [values] }`.
+- **Eventos:** `arq:filters { filters }` en cada cambio (para recalcular `count`, también al descartar); `arq:apply { filters }` al tocar "Ver N" y al tocar "Limpiar filtros".
+- **Cuándo se aplica** (decisión 2026-10-02 · filter-panel): con el panel abierto el listado no cambia, solo el número del botón. "Ver N productos" aplica y cierra. La X, el scrim o Esc descartan los cambios y vuelven a lo marcado al abrir. Excepción: "Limpiar filtros" aplica en el momento y deja el panel abierto; cerrar después no restaura lo borrado (decisión 2026-10-22).
 - **Diálogo modal nativo** (`<dialog>` + `showModal()`): el foco queda adentro (arranca en cerrar), Esc y el scrim cierran, y el foco vuelve al botón que lo abrió.
-- **Chips:** tocar uno desmarca su opción y el foco pasa al chip siguiente, al anterior o a cerrar. "Borrar todo" desmarca todo y lo aplica, sin cerrar.
+- **Chips:** tocar uno desmarca su opción y el foco pasa al chip siguiente, al anterior o a cerrar. "Limpiar filtros" desmarca todo y lo aplica, sin cerrar.
 - El cuerpo (las filas) tiene scroll propio; encabezado, chips y footer quedan fijos. La barra de scroll va al borde derecho del panel, separada del contenido por todo el margen lateral (decisiones.md, 2026-10-22 · Cantidad por opción).
 - **Siempre en Light**, también con Iluminar: el `<dialog>` lleva `data-arq-theme="light"` (Light local, `src/styles/light.css`). Las filas y el título, que llegan por slot, lo heredan.
 
@@ -56,7 +56,7 @@ En Productos, en Mobile y Tablet (hasta 1023 px), `show-categories` agrega las t
 | Padding · gap entre bloques | Desktop `space/padding/xl-2xl` · `space/gap/lg`; Mobile `space/padding/lg` arriba y abajo, `layout/gutter` a los lados · `space/gap/xl` |
 | Título · Summary | `role/heading-1` en `color/text/primary` · `role/body` en `color/text/secondary`, gap `space/gap/xs` |
 | Chips | filter-chip con wrap, gap `space/gap/sm` |
-| Footer | button Underline "Borrar todo" + button Filled "Ver N"; en Mobile el Filled ocupa el resto, gap `space/gap/lg` |
+| Footer | button Underline "Limpiar filtros" (deshabilitado sin filtros marcados) + button Filled "Ver N"; en Mobile el Filled ocupa el resto, gap `space/gap/lg` |
 | Cerrar | icon-button Size=Large con `icon/close` |
 
 ## Pendientes
