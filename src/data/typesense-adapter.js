@@ -147,6 +147,12 @@ export const DETAIL_FIELDS = Object.freeze([
 
 const text = (value) => (value === undefined || value === null ? '' : String(value).trim());
 
+// En localhost el navegador reutiliza la foto ya descargada aunque CloudFront
+// ya tenga el archivo nuevo. Un parámetro distinto en cada carga la pide de
+// nuevo. En el build no se agrega.
+const IMAGE_BUST = import.meta.env.DEV ? String(Date.now()) : '';
+const imageUrl = (url) => (IMAGE_BUST && url ? `${url}${url.includes('?') ? '&' : '?'}arq=${IMAGE_BUST}` : url);
+
 // Módulos de Daö: la base trae «1», «2», «3» (o «1x», «X1»); se muestran siempre «x1», «x2», «x3».
 const attributeText = (field, value) => {
   const shown = text(value);
@@ -171,6 +177,7 @@ function slots(doc) {
   // vacía: si el archivo de la posición 0 es «_ON» y falta la posición 1, es el encendido.
   // TODO (datos): cuando la base respete 0 = apagado y 1 = encendido, esto no hace falta.
   if (out.ambient1 && !out.ambient1On && /_on\.\w+$/i.test(out.ambient1.split(/[?#]/)[0])) out.ambient1On = out.ambient1;
+  for (const name of Object.keys(out)) out[name] = imageUrl(out[name]);
   return out;
 }
 
@@ -216,9 +223,9 @@ function collectionFromDoc(doc) {
       menu: menuImage(s),
       studio: s.card ?? null,
       studioOn: s.cardOn ?? null,
-      gallery: list(doc[FIELDS.collectionGallery]),
+      gallery: list(doc[FIELDS.collectionGallery]).map(imageUrl),
       description: s.description ?? null,
-      inspiration: list(doc[FIELDS.collectionInspiration]),
+      inspiration: list(doc[FIELDS.collectionInspiration]).map(imageUrl),
     },
   };
 }

@@ -1,4 +1,39 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import { defineConfig } from 'vite';
+
+const bannerLoop = path.resolve('BannerLoopARQ.mp4');
+
+// El MP4 de la portada vive en la raíz. En Windows, si Cursor lo tiene abierto,
+// el servidor estático de Vite emite EBUSY y se cierra. Este middleware lo
+// sirve antes y, si sigue bloqueado, responde 503 sin tirar el proceso.
+function serveBannerLoop(req, res, next) {
+  const url = new URL(req.url, 'http://localhost');
+  if (decodeURIComponent(url.pathname) !== '/BannerLoopARQ.mp4') return next();
+  fs.stat(bannerLoop, (err, stat) => {
+    if (err) {
+      res.statusCode = err.code === 'EBUSY' ? 503 : 404;
+      res.end();
+      return;
+    }
+    const match = /bytes=(\d*)-(\d*)/.exec(req.headers.range || '');
+    const start = match?.[1] ? Number(match[1]) : 0;
+    const end = match?.[2] ? Number(match[2]) : stat.size - 1;
+    const headers = {
+      'Content-Type': 'video/mp4',
+      'Accept-Ranges': 'bytes',
+      'Content-Length': end - start + 1,
+    };
+    if (match) headers['Content-Range'] = `bytes ${start}-${end}/${stat.size}`;
+    res.writeHead(match ? 206 : 200, headers);
+    const stream = fs.createReadStream(bannerLoop, { start, end });
+    stream.on('error', () => {
+      if (!res.headersSent) res.statusCode = 503;
+      res.end();
+    });
+    stream.pipe(res);
+  });
+}
 
 // Macroled Arq · Vite en modo librería.
 //
@@ -21,9 +56,10 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   server: {
     open: '/demo/index.html',
-    // En Windows, vigilar un JPG abierto (arq_nosotros) tira el server con EBUSY.
+    // En Windows, vigilar un archivo abierto (JPG de arq_nosotros, o el MP4
+    // de la home) tira el server con EBUSY.
     watch: {
-      ignored: ['**/arq_nosotros/**'],
+      ignored: ['**/arq_nosotros/**', '**/BannerLoopARQ.mp4'],
     },
   },
   plugins: [
@@ -34,6 +70,7 @@ export default defineConfig({
       name: 'arq-demo-productos',
       apply: 'serve',
       configureServer(server) {
+        server.middlewares.use(serveBannerLoop);
         server.middlewares.use((req, res, next) => {
           const url = new URL(req.url, 'http://localhost');
           if (url.pathname.replace(/\/$/, '') !== '/arq/productos') return next();

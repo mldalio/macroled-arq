@@ -34,7 +34,7 @@ Hero de página de Home y Contacto: media a sangre (imagen o video), scrim, eyeb
 
 | Atributo | Tipo | Qué hace |
 | --- | --- | --- |
-| `full-height` | booleano (solo código) | Todo el alto del viewport (`100svh`) en Desktop y Mobile, en lugar de `70svh`. Lo usa la Home. Si la página tiene `<arq-announcement-bar>`, descuenta su alto (lo mide con un `ResizeObserver`): barra + hero ocupan la pantalla |
+| `full-height` | booleano (solo código) | Todo el alto del viewport (`100svh`) en Desktop y Mobile, en lugar de `70svh`. Lo usa la Home. Si la página tiene `<arq-announcement-bar>`, descuenta su alto (lo mide con un `ResizeObserver`): barra + hero ocupan la pantalla. Al irse el preloader, la foto arranca apenas oscura (`opacity/track`) y se enciende con el tiempo y la curva de Iluminar; el título sube `space/gap/lg` un instante después (`motion/duration/illumination-lead`). `TODO` (diseño): no está en Figma. Con `prefers-reduced-motion` no hay entrada |
 | `tall` | booleano (solo código) | `80svh`. Un poco más alto que el Default. Lo usa la banda de la Home. `TODO` (diseño): no hay token entre `70svh` y `100svh` |
 | `parallax` | booleano (solo código) | La foto queda fija mientras la página pasa por encima (el mismo recurso que la descripción de la ficha). Con `prefers-reduced-motion` se mueve con la página. Lo usa la banda de la Home |
 | `size` (Size) | `default` · `compact` | `compact`: título en `role/display-lg` y hero más bajo, con un alto mínimo de `41svh` (Desktop) o `47svh` (Mobile), la proporción del set (520 y 480 contra 880 y 720 del Default). Si el texto no entra, crece. Lo usa Contacto. `TODO` (diseño): alto de Compact sin regla ni token |
@@ -47,7 +47,7 @@ Hero de página de Home y Contacto: media a sangre (imagen o video), scrim, eyeb
 
 - La media va en el HTML del embed (slot), no la carga el JS: el navegador la descubre al leer la página.
 - **Imagen:** `fetchpriority="high"` y sin `loading="lazy"` (es lo primero que se ve). Con `alt` descriptivo; `alt=""` si es solo ambiente.
-- **Video:** `autoplay muted loop playsinline` + `poster` (y `aria-hidden="true"` si es ambiente). Con `prefers-reduced-motion: reduce` el componente lo pausa y vuelve al poster; si la preferencia cambia, lo reanuda.
+- **Video:** `autoplay muted loop playsinline` + `poster` (y `aria-hidden="true"` si es ambiente). Si la página tiene `<arq-preloader page>`, no reproduce hasta que el preloader se va y arranca en el primer frame. Con `prefers-reduced-motion: reduce` el componente lo pausa y vuelve al poster; si la preferencia cambia, lo reanuda.
 - Mientras carga (o si falta) el fondo es `color/surface/inverse`, así el texto se sigue leyendo.
 - Los estilos de posición de la media van con `!important`: en el sitio, los estilos de Webflow para `img` ganan sobre `::slotted`.
 

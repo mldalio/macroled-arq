@@ -39,7 +39,7 @@ Tarjeta de producto (Productos) o de colección (Colecciones, página de colecci
 | State=Loading | `loading` | `loading` | booleano: card de carga (skeleton), sin slots ni imágenes |
 
 - **No son props:** State=Hover y State=Focus (CSS).
-- **Link estirado** (`src/base/card-link.css`): el `<a>` envuelve solo el nombre; su `::after` cubre la tarjeta. El foco rodea la tarjeta. "Comparar" va por encima del link.
+- **Link estirado** (`src/base/card-link.css`): el `<a>` envuelve solo el nombre; su `::after` cubre la tarjeta, también la imagen. El foco rodea la tarjeta. "Comparar" y los acabados van por encima del link.
 - **Imágenes** (DESIGN.md §8): en reposo, la principal apagada; con hover sobre la imagen o foco, la principal encendida (con Iluminar: reposo la principal encendida y hover el ambiente 1 encendido; sobre el nombre o «Comparar» la imagen no cambia), con un fundido entre dos `<img>` (`motion/duration/slow`, instantáneo con movimiento reducido). Dentro de un bloque con `data-arq-theme="dark"` (Iluminar) pasa a las encendidas (`src/base/theme.js`). En táctiles no hay hover. Aplica también a Size=Small (decisión 2026-10-02 · product-card).
 - **Faltantes:** sin imagen de hover no hay cambio; sin encendida queda la apagada; sin principal, fondo `color/surface/subtle` con el nombre.
 - **Carga:** solo la imagen visible de entrada (`loading="lazy"`); la de hover al primer hover o foco; las encendidas al activar Iluminar. Las imágenes son decorativas (`alt=""`): el nombre lo da el link.
@@ -54,7 +54,7 @@ Tarjeta de producto (Productos) o de colección (Colecciones, página de colecci
 
 | Parte | Token |
 | --- | --- |
-| Imagen | `ratio/portrait` (7:10; un contenedor puede cambiarla con la variable local `--card-ratio`, como el search-sheet con `ratio/square`), fondo `color/surface/subtle`, sin borde (como el set; la ficha dice `color/border/subtle`) |
+| Imagen | `ratio/portrait` (7:10; un contenedor puede cambiarla con la variable local `--card-ratio`, como el search-sheet con `ratio/square`), sin borde (como el set; la ficha dice `color/border/subtle`). Detrás de la foto, con la luz apagada un liso `rgb(238, 233, 226)` y con Iluminar —y también en el hover de la foto— un gris `rgb(48, 48, 48)` con un halo al centro (`TODO` diseño: ninguno tiene token). Con Iluminar ese fondo entra en el fundido de la página; el hover lo funde aparte, el doble de `motion/duration/slow` |
 | Gap imagen–info | `space/gap/md` (Small `space/gap/sm`) |
 | Info | padding `space/gap/xs` arriba y `space/gap/sm` abajo, gap `space/gap/xs` (Small `space/gap/md`) |
 | Título | Large: nombre y acabados en fila, gap `space/gap/sm`. Small (y Large hasta 767 px): en **columna**, el nombre arriba y los acabados debajo, gap `space/gap/sm` |

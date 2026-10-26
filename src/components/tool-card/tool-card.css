@@ -98,3 +98,55 @@
   height: var(--arq-icon-lg);
   color: var(--arq-color-icon-primary);
 }
+
+/* Type=index: índice sin foto. Misma línea que el encabezado editorial
+   (border/subtle) y el mismo aire vertical que faq-item.
+   TODO (diseño): no está en Figma. */
+:host([type='index']) .card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'index title icon'
+    'index subtitle icon';
+  align-items: center;
+  column-gap: var(--arq-space-gap-xl);
+  row-gap: var(--arq-space-gap-xs);
+  padding-block: var(--arq-space-padding-lg);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+:host([type='index']) .index {
+  grid-area: index;
+  color: var(--arq-color-text-tertiary);
+}
+
+:host([type='index']) .caption,
+:host([type='index']) .title-row {
+  display: contents;
+}
+
+:host([type='index']) .title {
+  grid-area: title;
+}
+
+:host([type='index']) .subtitle {
+  grid-area: subtitle;
+  color: var(--arq-color-text-secondary);
+}
+
+:host([type='index']) .icon {
+  grid-area: icon;
+  transition: transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  :host([type='index']) .card:hover .icon {
+    transform: translate(var(--arq-space-gap-xs), calc(var(--arq-space-gap-xs) * -1));
+  }
+}
+
+@media (max-width: 767px) {
+  :host([type='index']) .card {
+    column-gap: var(--arq-space-gap-lg);
+  }
+}

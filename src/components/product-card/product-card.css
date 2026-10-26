@@ -13,6 +13,13 @@
   display: flex;
   flex-direction: column;
   gap: var(--arq-space-gap-md);
+  /* Las fotos van en z-index 1–2 (encima del fondo). El link estirado queda
+     en 3, para que el clic en la imagen abra la ficha. Acabados y Comparar, arriba. */
+  --card-above: 4;
+}
+
+.card-link::after {
+  z-index: 3;
 }
 
 .card.is-small {
@@ -20,12 +27,17 @@
 }
 
 /* Imagen: ratio/portrait (7:10) o la que pida el contenedor con --card-ratio
-   (variable local; el search-sheet usa ratio/square), fallback color/surface/subtle, sin borde
-   (como el set; la ficha dice color/border/subtle). */
+   (variable local; el search-sheet usa ratio/square), sin borde
+   (como el set; la ficha dice color/border/subtle).
+   Con la luz apagada el fondo es un liso. TODO (diseño): rgb(238, 233, 226)
+   no tiene token; el más cercano es offwhite/bone (#f3f0e9). Prendida, un
+   gris rgb(48, 48, 48) con un halo al centro. TODO (diseño): ese gris y los
+   blancos y negros del degradado no tienen token. La foto va encima. */
 .card-media {
   position: relative;
   aspect-ratio: var(--card-ratio, 7 / 10);
-  background: var(--arq-color-surface-subtle);
+  /* TODO (diseño): sin token. Ver comentario de arriba. */
+  background-color: rgb(238, 233, 226);
   /* Iluminar: el fondo detrás de la foto cambia con la misma duración que el de
      la página; si no, pasaba a oscuro en un instante y se veía entre las dos
      fotos mientras fundían */
@@ -33,6 +45,42 @@
   transition-delay: 0s; /* sin el retraso del texto de la hoja base: el fondo de la foto funde a la par del de la página */
   transition-duration: var(--arq-illumination-bg-duration, var(--arq-motion-duration-fast));
   transition-timing-function: var(--arq-illumination-bg-easing, var(--arq-motion-easing-standard));
+}
+
+/* Fondo prendido. Detrás de la foto: funde con Iluminar.
+   TODO (diseño): los valores no tienen token. Ver comentario de .card-media. */
+.card-media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(rgba(255, 255, 255, 0.06) 0%, rgb(255 255 255 / 5%) 35%, rgb(0 0 0 / 5%) 70%),
+    rgb(48 48 48);
+  opacity: 0;
+  pointer-events: none;
+  /* Hover: el doble de motion/duration/slow y la curva suave del fundido
+     de fotos. Iluminar no usa esta duración: el fondo entra con el fundido
+     de la página (View Transition). --arq-card-ground-duration vale 0s
+     mientras se toma la foto nueva, así no funde otra vez por su cuenta. */
+  transition-property: opacity;
+  transition-duration: var(--arq-card-ground-duration, calc(var(--arq-motion-duration-slow) * 2));
+  transition-timing-function: var(--arq-motion-easing-illumination-image);
+}
+
+/* El atributo llega cuando la página ya cambió, no con .is-dark: esa clase
+   se pone antes, para adelantar solo las fotos. */
+:host-context([data-arq-theme="dark"]) .card-media::before {
+  opacity: 1;
+}
+
+/* Misma condición que el cambio de foto: hover sobre la imagen, o foco. */
+.card.has-hover:has(.card-link:focus-visible) .card-media::before {
+  opacity: 1;
+}
+
+.is-loading .card-media::before {
+  content: none;
 }
 
 /* El hover de product-card cambia la imagen: sin el borde del patrón común */
@@ -44,6 +92,7 @@
 
 .img {
   position: absolute;
+  z-index: 1;
   inset: 0;
   width: 100%;
   height: 100%;
@@ -53,7 +102,7 @@
 
 .theme-transition {
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   inset: 0;
   width: 100%;
   height: 100%;
@@ -97,14 +146,15 @@
   }
 }
 
-/* Fundido entre estudio y contexto: motion/duration/slow + motion/easing/standard.
+/* Fundido entre estudio y contexto. El doble de motion/duration/slow, con la
+   curva de fundido de fotos (entrada y salida suaves), igual que el fondo.
    Repite la lista de la hoja base porque transition-property no se suma.
    Con prefers-reduced-motion la duración vale 0 (tokens.css). */
 .hover {
   opacity: 0;
   transition-property: opacity, color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
-  transition-duration: var(--arq-motion-duration-slow);
-  transition-timing-function: var(--arq-motion-easing-standard);
+  transition-duration: calc(var(--arq-motion-duration-slow) * 2);
+  transition-timing-function: var(--arq-motion-easing-illumination-image);
 }
 
 .card.has-hover:has(.card-link:focus-visible) .hover {
@@ -114,15 +164,17 @@
 /* Hover solo sobre la imagen (.is-media-hover lo pone el JS): sobre el
    nombre o "Comparar" la imagen no cambia */
 @media (hover: hover) and (pointer: fine) {
-  .card.has-hover.is-media-hover .hover {
+  .card.has-hover.is-media-hover .hover,
+  .card.has-hover.is-media-hover .card-media::before {
     opacity: 1;
   }
 }
 
-/* Sin imagen de estudio: fondo color/surface/subtle con el nombre, en
+/* Sin imagen de estudio: la textura con el nombre, en
    color/text/secondary (con text/tertiary no llega a 4.5 en Dark) */
 .fallback {
   position: absolute;
+  z-index: 1;
   inset: 0;
   display: flex;
   align-items: center;

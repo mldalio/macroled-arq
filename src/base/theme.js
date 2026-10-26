@@ -100,7 +100,10 @@ let themeTimer = 0;
 // Aplicar el tema sin ninguna transición (al llegar a la ficha ya iluminada): por
 // esos cuadros todas las duraciones valen 0, así no se ve el salto de claro a
 // oscuro. Se quitan dos cuadros después, cuando el cambio ya se pintó.
-const INSTANT_VARS = ['--arq-illumination-bg-duration', '--arq-illumination-image-duration', '--arq-theme-bg-duration', '--arq-theme-text-duration', '--arq-theme-text-delay', '--arq-theme-surface-duration'];
+// --arq-card-ground-duration: el fondo de product-card (el gris detrás de la
+// foto) no funde por su cuenta. En 0s entra en la foto de la View Transition
+// y se mueve con la página. El hover, cuando la variable no está, usa su tiempo.
+const INSTANT_VARS = ['--arq-illumination-bg-duration', '--arq-illumination-image-duration', '--arq-theme-bg-duration', '--arq-theme-text-duration', '--arq-theme-text-delay', '--arq-theme-surface-duration', '--arq-card-ground-duration'];
 
 /** Ejecuta `apply` (que cambia data-arq-theme) sin transiciones. */
 export function withoutThemeTransition(apply) {
@@ -232,7 +235,7 @@ const IMAGE_WAIT_MS = 400;
 const THEME_WAIT_MS = 150;
 // Las fotos se adelantan al fondo: las product-card empiezan su fundido
 // (--arq-illumination-image-duration) y el fondo arranca
-// motion/duration/illumination-lead después, para que se vea que la luz se
+// --arq-illumination-lead después, para que se vea que la luz se
 // prende. Desde ahí los dos funden a la vez: la foto vieja de la View
 // Transition la toma a mitad de camino y la página nueva la termina.
 const pendingImages = new Set();
@@ -313,7 +316,7 @@ export async function switchTheme(dark, apply, origin) {
   const spread = !reduced && origin && styles.getPropertyValue('--arq-illumination-style').trim() === 'spread';
   // Reduced motion: todo funde junto (DESIGN.md §6), sin adelantar las fotos
   if (!reduced) {
-    const lead = Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-illumination-lead')) || 0;
+    const lead = Number.parseFloat(styles.getPropertyValue('--arq-illumination-lead')) || 0;
     checkAll(dark); // las cards cambian de foto ya, con su propio fundido
     await Promise.race([Promise.all(pendingImages), wait(THEME_WAIT_MS)]);
     await wait(lead);

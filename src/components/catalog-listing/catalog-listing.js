@@ -13,6 +13,7 @@
 //
 // - Categoría: sale de la URL (?environment=, ?application=, ?product_type=,
 //   ?collection= para las cards de producto de una colección;
+//   ?family= para las de una familia (Home, collection-index);
 //   las URLs de categoría están PENDIENTES, docs/urls.md). Se marca sola el
 //   catalog-nav-item cuyo href coincide con la página, y el <h1> del
 //   page-header pasa a ser el nombre de su grupo (Interior, Exterior…).
@@ -43,7 +44,7 @@ import { appendFinishes } from '../product-card/product-card.js';
 import '../swatch/swatch.js';
 import css from './catalog-listing.css?inline';
 
-const CATEGORY_PARAMS = { environment: 'environment', application: 'application', product_type: 'productType', collection: 'collection' };
+const CATEGORY_PARAMS = { environment: 'environment', application: 'application', product_type: 'productType', collection: 'collection', family: 'family' };
 const LISTING_DESKTOP = matchMedia('(min-width: 1024px)');
 const LISTING_WIDE = matchMedia('(min-width: 1920px)');
 const ENTER_STAGGERED = 8; // cards con escalón en la entrada; el resto entra con la octava
@@ -480,6 +481,17 @@ class ArqCatalogListing extends ArqElement {
   // Exterior, Lámparas y artefactos, Colecciones). Sin ítem actual queda el
   // del HTML (Productos).
   #titleFromNav(item) {
+    if (!item && this.#category.family && !this.#query) {
+      const label = this.#category.family;
+      const title = document.querySelector('arq-page-header > [slot="title"]');
+      if (title) {
+        this.#htmlTitle ??= title.textContent;
+        title.textContent = label;
+        title.parentElement.removeAttribute('search-title');
+      }
+      this.#syncBreadcrumb([{ label: 'Productos', href: location.pathname }, { label }]);
+      return;
+    }
     const group = item?.closest('arq-catalog-nav-group');
     // El primer link de cada grupo es su vista completa (Todo interior,
     // Todo exterior o Lámparas y artefactos). Las subcategorías sí pasan a ser
