@@ -216,7 +216,7 @@ TODO: dentro de un contenedor Dark color/icon/primary pasa a claro y se pierde s
 
 Flechas anterior / siguiente para carruseles con scroll horizontal (mosaico de Colección, proyectos de Home). icon-button Size=Large con icon/arrow-left y icon/arrow-right. Position: Start (anterior deshabilitada) · Middle · End (siguiente deshabilitada); deshabilitada = icon-button State=Disabled (atributo disabled). En mobile no se muestran: el carrusel se desliza y la imagen siguiente asoma como indicador. El scroll (snap) se resuelve en código.
 
-Solo de código (sin variante en Figma): buttons=carousel (carousel-button cuadrado, Home), buttons=chevron (icon-button Large con chevrons, sin borde ni fondo) y buttons=none (solo la línea de progreso, a todo el ancho). progress=scroll hace que la línea mida la parte visible del contenido y siga el scroll (borde border/strong sobre pista fina): es la barra de columnas de variants-table.
+Solo de código (sin variante en Figma): buttons=carousel (carousel-button cuadrado, Home), buttons=chevron (icon-button Large con chevrons, sin borde ni fondo) y buttons=none (solo la línea de progreso, a todo el ancho). progress=scroll hace que la línea mida la parte visible del contenido y siga el scroll. Con scrub (solo variants-table) es una barra de scroll: pista color/surface/subtle, trazo color/border/hover de space/padding/xs (en hover y al arrastrar, color/text/tertiary y + border/strong, con fundido de motion/duration/base), arrastrable, con un chevron chico (icon-button Default) a cada lado que avanza media página.
 
 El autoplay se detiene con el mouse encima o con el foco adentro del carrusel (TODO: falta un botón de pausa visible).
 
