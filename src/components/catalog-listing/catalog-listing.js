@@ -42,12 +42,12 @@ import '../compare-picker/compare-picker.js';
 import '../grid/grid.js';
 import { appendFinishes } from '../product-card/product-card.js';
 import '../swatch/swatch.js';
+import { covered, reveal, revealCss } from '../../base/reveal.js';
 import css from './catalog-listing.css?inline';
 
 const CATEGORY_PARAMS = { environment: 'environment', application: 'application', product_type: 'productType', collection: 'collection' };
 const LISTING_DESKTOP = matchMedia('(min-width: 1024px)');
 const LISTING_WIDE = matchMedia('(min-width: 1920px)');
-const ENTER_STAGGERED = 8; // cards con escalón en la entrada; el resto entra con la octava
 
 // Colección (id, sin tildes) sin Iluminar, como la ficha de Daö (decisiones.md, 2026-10-23)
 const NO_ILLUMINATION_COLLECTION = 'dao';
@@ -56,7 +56,7 @@ const TEXT = { loading: 'Cargando productos…', empty: 'No hay productos con es
 
 class ArqCatalogListing extends ArqElement {
   static tag = 'arq-catalog-listing';
-  static styles = css;
+  static styles = revealCss + css;
   static template =
     `<div class="layout">` +
     `<div class="nav"><slot name="nav"></slot></div>` +
@@ -77,6 +77,7 @@ class ArqCatalogListing extends ArqElement {
   #query = '';
   #filters = {};
   #cards = new Map(); // product-card → datos de la card
+  #reveal = null; // entrada al hacer scroll de las cards nuevas (reveal.js)
   #request = 0;
   #countRequest = 0; // la última cuenta de «Ver N» gana (las respuestas pueden llegar desordenadas)
   #htmlCrumbs = null; // niveles del breadcrumb del HTML después de Inicio
@@ -332,16 +333,17 @@ class ArqCatalogListing extends ArqElement {
   }
 
   // Cards de carga (product-card loading): dos filas de la grilla, así llenan
-  // la pantalla sin sumar scroll de más. Aparecen recién después de un
-  // fundido corto (catalog-listing.css): con el catálogo en caché llegan las
-  // cards antes y no se ven.
+  // la pantalla sin sumar scroll de más. Entran como las cards del Home,
+  // después de esperar un fundido corto (catalog-listing.css): con el
+  // catálogo en caché llegan las cards antes y no se ven.
   #renderSkeleton() {
     const grid = this.shadowRoot.querySelector('.grid');
     if (grid.querySelector('[loading]')) return;
     const tracks = getComputedStyle(grid.shadowRoot.querySelector('.grid')).gridTemplateColumns.split(' ').filter(Boolean);
-    const cards = Array.from({ length: Math.max(tracks.length, 1) * 2 }, () => {
+    const cards = Array.from({ length: Math.max(tracks.length, 1) * 2 }, (_, index) => {
       const card = document.createElement('arq-product-card');
       card.loading = true;
+      card.style.setProperty('--reveal-index', String(Math.min(index, 5))); // escalón de la entrada (catalog-listing.css)
       card.showCompare = true;
       return card;
     });
@@ -361,17 +363,30 @@ class ArqCatalogListing extends ArqElement {
     // Si las cards de carga ya se ven, las cards ocupan su lugar sin la
     // entrada (con el fundido desde 0 el gris bajaba a blanco y volvía): lo
     // que aparece es la foto (fundido de product-card). Si todavía no se
-    // veían (respuesta rápida), entrada normal.
+    // veían (respuesta rápida, o el preloader las tapaba), entrada normal.
+    // Las cards que ya estaban (mismos datos) se reusan: al filtrar quedan
+    // quietas y conservan el acabado elegido; solo entran las nuevas. Una
+    // card del mismo producto con otros datos (otros acabados) se rehace en
+    // su lugar, sin entrada.
     const skeleton = this.shadowRoot.querySelector('.grid > [loading]');
-    const settled = Boolean(skeleton) && Number.parseFloat(getComputedStyle(skeleton).opacity) > 0;
-    this.#cards = new Map(cards.map((data, index) => {
-      const card = this.#card(data);
-      // Escalón de la entrada (catalog-listing.css): solo las 8 primeras
-      card.style.setProperty('--enter-index', String(Math.min(index, ENTER_STAGGERED)));
-      card.classList.toggle('settled', settled);
+    const settled = !covered() && Boolean(skeleton) && Number.parseFloat(getComputedStyle(skeleton).opacity) > 0;
+    const previous = new Map([...this.#cards].map(([card, data]) => [data.href, { card, json: JSON.stringify(data) }]));
+    const entering = [];
+    this.#cards = new Map(cards.map((data) => {
+      const kept = previous.get(data.href);
+      let card = kept?.json === JSON.stringify(data) ? kept.card : null;
+      if (card) {
+        if (card.classList.contains('reveal')) entering.push(card); // todavía no había entrado en pantalla
+      } else {
+        card = this.#card(data);
+        card.classList.toggle('settled', settled || Boolean(kept));
+        if (!settled && !kept) entering.push(card);
+      }
       return [card, data];
     }));
+    this.#reveal?.disconnect();
     this.shadowRoot.querySelector('.grid').replaceChildren(...this.#cards.keys());
+    this.#reveal = reveal(entering);
     this.#syncCompared();
   }
 

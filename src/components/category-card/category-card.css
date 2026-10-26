@@ -162,7 +162,7 @@
   z-index: var(--card-above);
   pointer-events: none;
   transform: translateY(var(--description-shift, 0));
-  transition: transform calc(var(--arq-motion-duration-slow) * 4) var(--arq-motion-easing-standard);
+  transition: transform var(--arq-motion-duration-slow) var(--arq-motion-easing-out);
 }
 
 :host([overlay]) .title-row {
@@ -182,14 +182,15 @@
   color: var(--arq-color-icon-inverse);
 }
 
-/* TODO (diseño): la duración es motion/duration/slow × 4 (1280 ms), sin
-   token propio; pedir en Figma un motion/duration para el overlay de las cards. */
+/* Bajada y título suben y aparecen en motion/duration/slow con
+   motion/easing/out: con 1280 ms (slow × 4) un paso rápido del mouse dejaba
+   la card a medio animar. */
 :host([overlay]) .description {
   color: var(--arq-color-text-inverse);
   opacity: 0;
   transition-property: opacity, color, background-color, border-color, outline-color;
-  transition-duration: calc(var(--arq-motion-duration-slow) * 4);
-  transition-timing-function: var(--arq-motion-easing-standard);
+  transition-duration: var(--arq-motion-duration-slow);
+  transition-timing-function: var(--arq-motion-easing-out);
 }
 
 :host([overlay]:focus-within) .caption {
@@ -213,11 +214,10 @@
     outline: none;
   }
 
-  /* Zoom leve de la foto, dentro del recorte (motion/scale/hover). Misma
-     duración que la bajada. */
+  /* Zoom leve de la foto, dentro del recorte: motion/scale/hover con
+     motion/duration/slow y motion/easing/standard, como dice el token. */
   :host([overlay]) .card-media ::slotted(*) {
-    transition: transform calc(var(--arq-motion-duration-slow) * 4)
-      var(--arq-motion-easing-standard) !important;
+    transition: transform var(--arq-motion-duration-slow) var(--arq-motion-easing-standard) !important;
   }
 
   @media (prefers-reduced-motion: no-preference) {

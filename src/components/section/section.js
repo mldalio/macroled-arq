@@ -78,8 +78,9 @@ class ArqSection extends ArqElement {
   }
 
   // El bloque entero aparece al entrar en pantalla y se va al hacer scroll
-  // hacia arriba, para que la entrada se repita. Al bajar y dejarlo atrás
-  // queda visible. Misma entrada que el resto del Home (src/base/reveal.js).
+  // hacia arriba, recién cuando salió entero de la pantalla (antes se apagaba
+  // con un tercio todavía a la vista), para que la entrada se repita. Al bajar
+  // y dejarlo atrás queda visible. Misma entrada que el resto del Home (src/base/reveal.js).
   // Con prefers-reduced-motion se ve quieto.
   #armReveal() {
     this.#stopReveal();
@@ -96,10 +97,10 @@ class ArqSection extends ArqElement {
     window.addEventListener('scroll', this.#onScroll, { passive: true });
     this.#observer = new IntersectionObserver(
       ([entry]) => {
-        if (this.#scrollingUp && entry.intersectionRatio < 0.35) section.classList.remove('revealed');
+        if (this.#scrollingUp && !entry.isIntersecting) section.classList.remove('revealed');
         else if (entry.intersectionRatio >= 0.15) section.classList.add('revealed');
       },
-      { threshold: [0, 0.15, 0.35] },
+      { threshold: [0, 0.15] },
     );
     this.#observer.observe(this);
   }

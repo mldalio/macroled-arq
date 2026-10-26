@@ -44,7 +44,15 @@
    Sale por el mismo camino. Con reduced motion queda solo el fundido
    (motion/duration/fade, bloque al final). */
 :host {
-  --panel-slow: var(--arq-motion-duration-panel); /* motion/duration/panel, como filter-panel */
+  /* Entrada: motion/duration/panel (400 ms), como filter-panel. La salida es
+     más corta (.dialog:not(.is-open), abajo): cerrar es la respuesta. */
+  --panel-slow: var(--arq-motion-duration-panel);
+}
+
+/* Salida: motion/duration/expand (250 ms). La toma el JS al cerrar
+   (transitionDuration) para saber cuándo cerrar el diálogo. */
+.dialog:not(.is-open) {
+  --panel-slow: var(--arq-motion-duration-expand);
 }
 
 .dialog::backdrop {

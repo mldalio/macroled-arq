@@ -42,6 +42,13 @@
   opacity: 0;
 }
 
+/* Cambio de foto (miniatura o variante): fundido corto, motion/duration/fade
+   (no cambia con reduced motion). */
+.theme-transition.quick {
+  transition-duration: var(--arq-motion-duration-fade);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
 ::slotted(img) {
   display: block !important;
   width: 100% !important;

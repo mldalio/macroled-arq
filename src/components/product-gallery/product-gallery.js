@@ -48,10 +48,13 @@ class ArqProductGallery extends ArqElement {
   }
 
   set images(list) {
+    // Otra variante (acabado, módulos): la foto nueva funde sobre la anterior.
+    // La primera vez no: reemplaza a la del HTML.
+    const previousSrc = this.#received ? this.querySelector(':scope > img[slot="image"]')?.getAttribute('src') : null;
     this.#images = Array.isArray(list) ? list.filter((image) => image && image.src) : [];
     this.#received = true;
     this.#index = 0;
-    if (this.isConnected) this.#render();
+    if (this.isConnected) this.#render(previousSrc, { quick: true });
   }
 
   setup() {
@@ -74,8 +77,9 @@ class ArqProductGallery extends ArqElement {
   /** Muestra en grande la imagen `index` de images. */
   select(index) {
     if (!this.#images[index] || index === this.#index) return;
+    const previousSrc = this.#mainImage()?.getAttribute('src');
     this.#index = index;
-    this.#render();
+    this.#render(previousSrc, { quick: true });
   }
 
   #src(image) {
@@ -92,14 +96,17 @@ class ArqProductGallery extends ArqElement {
     return img;
   }
 
-  #render(previousSrc = null) {
+  // previousSrc: la foto que se ve ahora, para fundir de ella a la nueva.
+  // quick: cambio de foto (miniatura, variante), con motion/duration/fade y
+  // esperando a que la nueva esté lista; sin quick, el fundido de Iluminar.
+  #render(previousSrc = null, { quick = false } = {}) {
     const images = this.#images;
     const current = images[this.#index];
     const img = this.#mainImage();
     if (img && current) {
       const src = this.#src(current);
       if (img.getAttribute('src') !== src) {
-        if (previousSrc && img.getAttribute('src') === previousSrc && src !== previousSrc) this.#crossfade(img, previousSrc, src);
+        if (previousSrc && img.getAttribute('src') === previousSrc && src !== previousSrc) this.#crossfade(img, previousSrc, src, quick);
         else img.src = src;
       }
       img.alt = current.alt ?? '';
@@ -129,26 +136,35 @@ class ArqProductGallery extends ArqElement {
     });
   }
 
-  #crossfade(img, previousSrc, nextSrc) {
-    this.#transitionImage?.remove();
+  // La foto anterior queda encima (.theme-transition) y se desvanece. Si había
+  // otro fundido en curso, ese sigue encima del nuevo: la mezcla que se ve no
+  // salta, y los dos terminan de desvanecerse.
+  #crossfade(img, previousSrc, nextSrc, quick = false) {
     const previous = document.createElement('img');
-    previous.className = 'theme-transition';
+    previous.className = quick ? 'theme-transition quick' : 'theme-transition';
     previous.src = previousSrc;
     previous.alt = '';
     previous.setAttribute('aria-hidden', 'true');
+    const image = this.shadowRoot.querySelector('.image');
+    const running = this.#transitionImage?.isConnected ? this.#transitionImage : null;
+    image.insertBefore(previous, running);
     this.#transitionImage = previous;
-    this.shadowRoot.querySelector('.image').append(previous);
     img.src = nextSrc;
-
-    // El fundido arranca en el mismo instante que el cambio de fondo (la
-    // versión nueva ya está en caché por la precarga).
     previous.addEventListener('transitionend', (event) => {
       if (event.propertyName === 'opacity') previous.remove();
     }, { once: true });
-    void previous.offsetWidth;
-    previous.classList.add('fade-out');
-    const duration = getComputedStyle(previous).transitionDuration.split(',')[0];
-    if (!Number.parseFloat(duration)) previous.remove();
+    const fade = () => {
+      if (!previous.isConnected) return;
+      void previous.offsetWidth;
+      previous.classList.add('fade-out');
+      const duration = getComputedStyle(previous).transitionDuration.split(',')[0];
+      if (!Number.parseFloat(duration)) previous.remove();
+    };
+    // Iluminar: arranca en el mismo instante que el cambio de fondo (la
+    // versión nueva ya está en caché por la precarga). Cambio de foto: espera
+    // a que la nueva esté lista, así no se ve el fondo vacío en el medio.
+    if (quick) img.decode().catch(() => {}).then(fade);
+    else fade();
   }
 }
 

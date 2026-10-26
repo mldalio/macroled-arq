@@ -7,8 +7,14 @@
    se pega arriba cuando la barra se va con el scroll. z-index sin token: por
    encima del contenido de la página. */
 :host {
-  /* motion/duration/panel (400 ms), igual que search-sheet */
-  --mega-slow: var(--arq-motion-duration-panel);
+  /* Mega-menú: entra en motion/duration/panel (400 ms), como el search-sheet,
+     y se va un poco antes, en motion/duration/slow (320 ms), los dos con
+     motion/easing/standard (frena suave). --mega-slow lo cambia .mega-open
+     (abajo). */
+  --mega-in: var(--arq-motion-duration-panel);
+  --mega-out: var(--arq-motion-duration-slow);
+  --mega-slow: var(--mega-out);
+  --mega-ease: var(--arq-motion-easing-standard);
   /* Alto de la barra: 56 (ver .bar) */
   --bar-height: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
   display: block;
@@ -35,6 +41,10 @@
   position: relative;
 }
 
+.navbar.mega-open {
+  --mega-slow: var(--mega-in);
+}
+
 /* Scrim del mega-menú: color/overlay/scrim sobre la página, detrás de la barra
    y del panel (el stacking context es el host). Mismo fundido que el panel.
    Arranca en la barra (--bar-top, lo pone el navbar al abrir): announcement-bar
@@ -46,7 +56,7 @@
   background: var(--arq-color-overlay-scrim);
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--mega-slow) var(--arq-motion-easing-standard);
+  transition: opacity var(--mega-slow) var(--mega-ease);
 }
 
 .mega-open .scrim {
@@ -181,7 +191,7 @@
   min-height: 0;
   overflow: clip;
   clip-path: inset(0 0 100% 0);
-  transition: clip-path var(--mega-slow) var(--arq-motion-easing-standard);
+  transition: clip-path var(--mega-slow) var(--mega-ease);
 }
 
 .mega-wrap.is-open .mega-drawer {
@@ -192,8 +202,8 @@
 .recursos {
   opacity: 0;
   transition-property: opacity;
-  transition-duration: var(--arq-motion-duration-slow);
-  transition-timing-function: var(--arq-motion-easing-standard);
+  transition-duration: var(--mega-slow);
+  transition-timing-function: var(--mega-ease);
 }
 
 .mega-wrap.is-open .mega,
@@ -202,7 +212,7 @@
 }
 
 /* De Productos a Recursos (o al revés) con el panel abierto: fundido
-   cruzado (motion/duration/slow). Los dos ocupan la misma celda: el que sale
+   cruzado (--mega-in). Los dos ocupan la misma celda: el que sale
    (.leaving, lo pone el navbar) se desvanece mientras el que entra aparece.
    El fondo es del drawer y no se mueve: lo que cambia es el contenido, nunca
    se ve el scrim a través. El alto visible lo acompaña el navbar con el
@@ -301,7 +311,27 @@
 .mega-motion .bar {
   transition-duration: var(--mega-slow), var(--mega-slow);
   transition-delay: 0s;
-  transition-timing-function: var(--arq-motion-easing-standard);
+  transition-timing-function: var(--mega-ease);
+}
+
+/* Reduced motion: sin persiana. El panel, su contenido y el scrim funden con
+   motion/duration/fade (DESIGN.md §6: los fundidos se quedan), como
+   filter-panel. */
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --mega-in: var(--arq-motion-duration-fade);
+    --mega-out: var(--arq-motion-duration-fade);
+  }
+
+  .mega-drawer {
+    clip-path: none;
+    opacity: 0;
+    transition: opacity var(--mega-slow) var(--mega-ease);
+  }
+
+  .mega-wrap.is-open .mega-drawer {
+    opacity: 1;
+  }
 }
 
 /* ── Menú mobile (Mode=Menu y Products): diálogo a pantalla completa ── */
@@ -333,6 +363,38 @@
 .menu[open] {
   display: flex;
   flex-direction: column;
+}
+
+/* Abre como una persiana desde la barra, igual que el search-sheet y el
+   mega-menú: el recorte inferior va de todo el alto a 0
+   (motion/duration/panel + motion/easing/standard); al cerrar vuelve a
+   subir. .is-open lo pone el navbar. overflow-x: clip para el cambio de
+   nivel, que corre los niveles hacia los costados. Con reduced motion,
+   fundido (motion/duration/fade). */
+.menu {
+  overflow-x: clip;
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path var(--arq-motion-duration-panel) var(--arq-motion-easing-standard);
+}
+
+.menu.is-open {
+  clip-path: inset(0);
+}
+
+.menu:not(.is-open) {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu {
+    clip-path: none;
+    opacity: 0;
+    transition: opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-standard);
+  }
+
+  .menu.is-open {
+    opacity: 1;
+  }
 }
 
 .menu-bar {
@@ -427,6 +489,9 @@
 .menu-sub[hidden] {
   display: none;
 }
+
+/* Cambio de nivel: lo anima el navbar (#slideLevel), el que sale y el que
+   entra a la vez. */
 
 .back-sub {
   flex: none;
