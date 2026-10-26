@@ -1,8 +1,11 @@
 /* option-tile · Figma 921:2487. Solo tokens semánticos.
    Sin caja (2026-10-21): el dato y, debajo, la línea que marca la elegida
-   (border/strong en color/border/strong). Sin padding lateral ni superior, sin
-   fondo. La línea está siempre reservada (transparente), así elegir no mueve
-   nada. decisiones.md, 2026-10-21 · Configurador de la ficha. */
+   (border/default, 1 px, en color/border/strong, como el swatch de la ficha).
+   Sin fondo. La caja del texto es 1em + border/strong (no el interlineado
+   completo) y debajo space/padding/xs (4 px): la línea queda a ~8 px de la
+   base de las letras (text-link, sin gap, a ~4). La línea está siempre reservada (transparente),
+   así elegir no mueve nada. decisiones.md, 2026-10-21 · Configurador de la
+   ficha; 2026-10-26 · línea de option-tile. */
 
 /* Hug content: mide lo que mide su texto (no se estira para llenar la fila);
    si no entran todos, bajan a otra línea (option-group hace wrap). */
@@ -20,7 +23,7 @@
   align-items: center;
   min-width: 0;
   padding: 0 0 var(--arq-space-padding-xs);
-  border-bottom: var(--arq-border-strong) solid var(--arq-color-surface-transparent);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-surface-transparent);
   border-radius: var(--arq-radius-control);
   /* Default en text/secondary (no tertiary): así no se confunde con Disabled */
   color: var(--arq-color-text-secondary);
@@ -57,12 +60,13 @@
   color: var(--arq-color-text-primary);
 }
 
-/* Type=Card (configurador de Daö): caja de border/default; la elegida pasa al
-   color de color/text/secondary, con el mismo grosor de 1 px (no cambia de
-   tamaño). Título y subtítulo en columna a space/gap/xs; el swatch, si lo hay,
-   va antes del título.
-   TODO (diseño): no hay un token de borde para «elegida» en ese tono; se usa
-   color/text/secondary. */
+/* Type=Card (configurador de Daö): caja de 1 px en color/border/subtle; la
+   elegida pasa a color/border/strong (el contraste lo da el tono, no el grosor). Título y subtítulo en columna a space/gap/xs; el swatch, si lo hay,
+   va antes del título. */
+:host(:not([type='card'])) .title {
+  line-height: calc(1em + var(--arq-border-strong));
+}
+
 .title {
   display: flex;
   align-items: center;
@@ -71,7 +75,7 @@
 }
 
 .meta {
-  color: var(--arq-color-text-tertiary);
+  color: var(--arq-color-text-secondary);
 }
 
 .meta[hidden] {
@@ -85,7 +89,7 @@
   align-items: flex-start;
   gap: var(--arq-space-gap-xs);
   padding: var(--card-pad-y) var(--card-pad-x);
-  border: var(--arq-border-default) solid var(--arq-color-border-default);
+  border: var(--arq-border-default) solid var(--arq-color-border-subtle);
   transition-property: color, border-color;
 }
 
@@ -96,7 +100,7 @@
 }
 
 :host([type='card'][selected]) .tile {
-  border-color: var(--arq-color-text-secondary);
+  border-color: var(--arq-color-border-strong);
 }
 
 :host([type='card'][disabled]) .tile {

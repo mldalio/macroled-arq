@@ -347,7 +347,7 @@ export function resolveDao(model, selection, hrefs, fixed = { step: null }) {
     pieces: {
       ring: ring.img ? { src: ring.img, label: ringName } : null,
       head: head?.img ? { src: head.img, label: named(head) } : null,
-      lamp: lamp?.img ? { src: lamp.img, label: lamp.nombre || lamp.sku } : null,
+      lamp: lamp?.img ? { src: lamp.img, label: [lamp.nombre || lamp.sku, lamp.haz].filter(Boolean).join(' · ') } : null,
       front: front?.img ? { src: front.img, label: named(front) } : null,
     },
     specs,

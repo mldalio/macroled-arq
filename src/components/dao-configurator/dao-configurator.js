@@ -11,9 +11,10 @@
 //
 // - Pasos: 1 Aro (grupo, módulos y color), 2 Cabezal (modelo y color; solo si el
 //   aro lo lleva) y 3 Lámpara (modelo y, si lo trae, color del frente).
-// - La pieza de la ficha sale ya elegida y marcada «Tu producto», sin «Cambiar»;
-//   lo que va antes se limita a lo compatible con ella (src/data/dao-config.js,
-//   daoFixed y resolveDao). Los pasos, igual, van de 1 en adelante.
+// - Siempre arranca en el aro, sin nada elegido y con el panel de la derecha
+//   vacío: la pieza de la ficha desde donde se abre no se adelanta. Cada grupo
+//   de opciones aparece cuando se eligió el anterior, «Continuar» se habilita
+//   con todo lo del paso elegido y las fotos se suman a medida que se elige.
 // - Al terminar el último paso queda el armado completo: fotos, especificaciones,
 //   piezas y «Imprimir configuración» (emite arq:print; PDF: TODO, hoy abre una
 //   hoja imprimible simple).
@@ -22,7 +23,7 @@
 
 import { ArqElement } from '../../base/arq-element.js';
 import { containScroll } from '../../base/scroll-lock.js';
-import { getDaoConfigurator, daoSelection, daoFixed, resolveDao } from '../../data/dao-config.js';
+import { getDaoConfigurator, daoSelection, resolveDao } from '../../data/dao-config.js';
 import '../icon-button/icon-button.js';
 import '../option-group/option-group.js';
 import '../option-tile/option-tile.js';
@@ -45,13 +46,20 @@ const TEXT = {
   next: 'Continuar',
   finish: 'Finalizar',
   change: 'Cambiar',
-  mine: 'Tu producto',
-  hint: 'Tu armado se va formando acá a medida que elegís.',
+  back: 'Ver resumen',
   parts: 'Piezas para este armado',
   print: 'Imprimir configuración',
 };
 
 const STEP_NAME = { ring: 'Aro', head: 'Cabezal', lamp: 'Lámpara' };
+const STEP_OF = { group: 'ring', qty: 'ring', color: 'ring', head: 'head', headColor: 'head', lamp: 'lamp', front: 'lamp' };
+// Qué se vuelve a elegir cuando cambia un grupo
+const DEPENDENTS = {
+  group: ['qty', 'color', 'head', 'headColor', 'lamp', 'front'],
+  qty: ['color'],
+  head: ['headColor', 'lamp', 'front'],
+  lamp: ['front'],
+};
 
 class ArqDaoConfigurator extends ArqElement {
   static tag = 'arq-dao-configurator';
@@ -79,10 +87,10 @@ class ArqDaoConfigurator extends ArqElement {
   #loading = null;
 
   #state = null;
-  #fixed = { step: null };
   #done = new Set(); // pasos confirmados con «Continuar»
-  #seen = new Set(); // pasos donde se eligió algo (su foto ya se ve)
+  #chosen = new Set(); // grupos donde el usuario ya eligió (group, qty, color, head, headColor, lamp, front)
   #active = null; // paso abierto
+  #editing = false; // con todo hecho: «Cambiar» vuelve a desplegar los tres pasos
   #entering = null; // paso que acaba de abrirse (animación)
   #skus = {};
   #result = null;
@@ -111,10 +119,26 @@ class ArqDaoConfigurator extends ArqElement {
       if (!key) return;
       const value = event.detail.value;
       this.#state[key] = key === 'qty' ? Number(value) : value;
-      this.#seen.add(group.closest('.step')?.dataset.section);
+      this.#chosen.add(key);
+      // Lo que depende de lo elegido se vuelve a elegir
+      for (const dependent of DEPENDENTS[key] ?? []) {
+        this.#chosen.delete(dependent);
+        this.#done.delete(STEP_OF[dependent]);
+      }
       this.#render(`[data-step="${CSS.escape(key)}"] [value="${CSS.escape(String(value))}"]`);
     });
     steps.addEventListener('click', (event) => {
+      if (event.target.closest?.('.print')) return this.#print();
+      if (event.target.closest?.('.change-all')) {
+        this.#editing = true;
+        this.#render();
+        return;
+      }
+      if (event.target.closest?.('.back')) {
+        this.#editing = false;
+        this.#render();
+        return;
+      }
       const next = event.target.closest?.('.next');
       const change = event.target.closest?.('.change');
       if (next) this.#advance();
@@ -124,13 +148,10 @@ class ArqDaoConfigurator extends ArqElement {
         this.#render();
       }
     });
-    root.querySelector('.panel').addEventListener('click', (event) => {
-      if (event.target.closest?.('.print')) this.#print();
-    });
   }
 
   /** Abre el configurador desde la ficha del SKU. El foco vuelve a `opener` al cerrar. */
-  async show(sku, opener) {
+  async show(_sku, opener) {
     this.#opener = opener ?? this.#activeElement();
     this.#showDialog();
     const root = this.shadowRoot;
@@ -152,13 +173,13 @@ class ArqDaoConfigurator extends ArqElement {
       return;
     }
     this.#status('');
-    this.#state = daoSelection(this.#model, sku);
-    this.#fixed = daoFixed(this.#model, sku);
+    this.#state = daoSelection(this.#model, null);
     this.#done = new Set();
-    this.#seen = new Set();
+    this.#chosen = new Set();
     this.#active = null;
     this.#entering = null;
     this.#skus = {};
+    this.#finalShown = false;
     this.#render();
     root.querySelector('.steps').scrollTop = 0;
   }
@@ -173,17 +194,18 @@ class ArqDaoConfigurator extends ArqElement {
 
   // ── Flujo ────────────────────────────────────────────────────────────
   #isDone(id) {
-    return this.#fixed.step === id || this.#done.has(id);
+    return this.#done.has(id);
   }
 
   #advance() {
     if (this.#active) this.#done.add(this.#active);
     this.#active = null;
+    this.#editing = false;
     this.#render();
   }
 
   #render(focus) {
-    const view = resolveDao(this.#model, this.#state, this.#hrefs, this.#fixed);
+    const view = resolveDao(this.#model, this.#state, this.#hrefs);
     if (!view) return;
     // El color del cabezal solo queda fijado si se lo eligió: si no, sigue al del aro
     this.#state = { group: view.group.id, qty: view.qty, color: view.color, head: view.head?.grupo ?? null, headColor: this.#state.headColor ?? null, lamp: view.lamp?.sku ?? null, front: view.front?.sku ?? null };
@@ -204,9 +226,19 @@ class ArqDaoConfigurator extends ArqElement {
 
     const root = this.shadowRoot;
     root.querySelector('.body').hidden = false;
-    root.querySelector('.steps').replaceChildren(...this.#steps(view, order));
+    const finished = order.every((id) => this.#isDone(id));
+    if (!finished) this.#editing = false;
+    let nodes;
+    if (finished && !this.#editing) nodes = [this.#condensed(view, order), this.#final(view, order)];
+    else {
+      this.#finalShown = false;
+      this.#result = null;
+      nodes = this.#steps(view, order);
+      if (finished) nodes.push(this.#backToSummary());
+    }
+    root.querySelector('.steps').replaceChildren(...nodes);
     root.querySelector('.panel').replaceChildren(...this.#panel(view, order));
-    const entering = root.querySelector('.step.is-entering');
+    const entering = root.querySelector('.is-entering');
     if (entering) {
       entering.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'nearest' });
       this.#entering = null;
@@ -217,7 +249,6 @@ class ArqDaoConfigurator extends ArqElement {
   // ── Pasos ────────────────────────────────────────────────────────────
   #steps(view, order) {
     return order.map((id, index) => {
-      const fixed = this.#fixed.step === id;
       const status = id === this.#active ? 'active' : this.#isDone(id) ? 'done' : 'future';
       const step = document.createElement('section');
       step.className = `step is-${status}`;
@@ -235,19 +266,14 @@ class ArqDaoConfigurator extends ArqElement {
       name.className = 'step-title role-body-xl';
       name.textContent = STEP_NAME[id];
       text.append(name);
-      if (status === 'done' || (fixed && status !== 'active')) {
+      if (status === 'done') {
         const summary = document.createElement('p');
         summary.className = 'summary role-body-compact';
         summary.textContent = this.#summary(view, id);
         text.append(summary);
       }
       head.append(number, text);
-      if (fixed) {
-        const mine = document.createElement('span');
-        mine.className = 'mine role-label';
-        mine.textContent = TEXT.mine;
-        head.append(mine);
-      } else if (status === 'done') {
+      if (status === 'done') {
         const change = document.createElement('arq-button');
         change.className = 'change';
         change.setAttribute('type', 'underline');
@@ -261,9 +287,11 @@ class ArqDaoConfigurator extends ArqElement {
       if (status === 'active') {
         const body = document.createElement('div');
         body.className = 'step-body';
-        body.append(...this.#groups(view, id));
+        const { nodes, ready } = this.#groups(view, id);
+        body.append(...nodes);
         const next = document.createElement('arq-button');
         next.className = 'next';
+        next.disabled = !ready;
         next.textContent = order.every((item) => item === id || this.#isDone(item)) ? TEXT.finish : TEXT.next;
         body.append(next);
         step.append(body);
@@ -275,39 +303,41 @@ class ArqDaoConfigurator extends ArqElement {
   #summary(view, id) {
     if (id === 'ring') return view.title;
     if (id === 'head') return view.head ? `${view.head.nombre || view.head.sku} ${(view.head.color || '').toLowerCase()}`.trim() : '';
-    const lamp = view.lamp?.nombre || view.lamp?.sku || '';
+    const lamp = [view.lamp?.nombre || view.lamp?.sku, view.lamp?.haz].filter(Boolean).join(' · ');
     return view.fronts.length > 1 && view.front?.color ? `${lamp} · frente ${view.front.color.toLowerCase()}` : lamp;
   }
 
+  // Los grupos de un paso, en orden: cada uno aparece cuando se eligió el anterior.
+  // Un grupo con una sola opción se elige solo. ready: todo lo del paso está elegido.
   #groups(view, id) {
+    const plan = [];
+    const add = (key, label, selected, options, extra = {}) => plan.push({ key, label, selected, options, ...extra });
+    const notes = [];
     if (id === 'ring') {
-      const nodes = [
-        this.#cards('group', 'Aro', view.group.id, view.groups.map((group) => ({ value: group.id, title: group.name })), { hideLabel: true }),
-      ];
-      if (view.modulos.length > 1) {
-        nodes.push(this.#cards('qty', 'Módulos', String(view.qty), view.modulos.map((qty) => ({ value: String(qty), title: this.#model.moduleName(qty) }))));
-      }
-      nodes.push(this.#cards('color', 'Color', view.color ?? '', view.colors.map((color) => this.#colorOption(color, color))));
-      if (!view.heads.length) nodes.push(this.#note(TEXT.noHead));
-      return nodes;
+      add('group', 'Aro', view.group.id, view.groups.map((group) => ({ value: group.id, title: group.name })), { hideLabel: true });
+      if (view.modulos.length > 1) add('qty', 'Módulos', String(view.qty), view.modulos.map((qty) => ({ value: String(qty), title: this.#model.moduleName(qty) })));
+      add('color', 'Color', view.color ?? '', view.colors.map((color) => this.#colorOption(color, color)));
+      if (!view.heads.length) notes.push(TEXT.noHead);
+    } else if (id === 'head') {
+      add('head', 'Cabezal', view.head?.grupo ?? '', view.heads.map((item) => ({ value: item.grupo, title: item.nombre || item.sku, meta: item.orientacion })), { hideLabel: true });
+      if (view.headColors.length > 1) add('headColor', 'Color', view.head?.color ?? '', view.headColors.map((color) => this.#colorOption(color, color)));
+    } else {
+      if (view.lamps.length) add('lamp', 'Lámpara', view.lamp?.sku ?? '', view.lamps.map((item) => ({ value: item.sku, title: item.nombre || item.sku, meta: [item.haz, item.luz].filter(Boolean).join(' · ') })), { hideLabel: true });
+      else notes.push(TEXT.noLamp);
+      if (view.fronts.length > 1) add('front', 'Color del frente', view.front?.sku ?? '', view.fronts.map((front) => this.#colorOption(front.color || front.nombre || front.sku, front.color, front.sku)));
+      if (view.fronts.length) notes.push(TEXT.withFront);
     }
-    if (id === 'head') {
-      const nodes = [
-        this.#cards('head', 'Cabezal', view.head?.grupo ?? '', view.heads.map((item) => ({ value: item.grupo, title: item.nombre || item.sku, meta: item.orientacion })), { hideLabel: true }),
-      ];
-      if (view.headColors.length > 1) {
-        nodes.push(this.#cards('headColor', 'Color', view.head?.color ?? '', view.headColors.map((color) => this.#colorOption(color, color))));
-      }
-      return nodes;
+
+    const nodes = [];
+    let ready = true;
+    for (const item of plan) {
+      if (!ready) break; // el grupo anterior todavía no se eligió
+      if (item.options.length === 1) this.#chosen.add(item.key);
+      nodes.push(this.#cards(item.key, item.label, this.#chosen.has(item.key) ? item.selected : null, item.options, { hideLabel: item.hideLabel }));
+      ready = this.#chosen.has(item.key);
     }
-    const nodes = view.lamps.length
-      ? [this.#cards('lamp', 'Lámpara', view.lamp?.sku ?? '', view.lamps.map((item) => ({ value: item.sku, title: item.nombre || item.sku, meta: item.luz })), { hideLabel: true })]
-      : [this.#note(TEXT.noLamp)];
-    if (view.fronts.length > 1) {
-      nodes.push(this.#cards('front', 'Color del frente', view.front?.sku ?? '', view.fronts.map((front) => this.#colorOption(front.color || front.nombre || front.sku, front.color, front.sku))));
-    }
-    if (view.fronts.length) nodes.push(this.#note(TEXT.withFront));
-    return nodes;
+    if (ready) nodes.push(...notes.map((text) => this.#note(text)));
+    return { nodes, ready };
   }
 
   #colorOption(title, color, value = title) {
@@ -354,17 +384,20 @@ class ArqDaoConfigurator extends ArqElement {
 
   // ── Panel: las fotos se suman a medida que se eligen ───────────────────
   #panel(view, order) {
-    const shown = (id) => this.#isDone(id) || this.#seen.has(id);
+    const has = (key) => this.#chosen.has(key);
     const pieces = [];
-    if (shown('ring')) pieces.push(view.pieces.ring);
-    if (order.includes('head') && shown('head')) pieces.push(view.pieces.head);
-    if (shown('lamp')) pieces.push(view.pieces.lamp, view.pieces.front);
+    if (has('group')) pieces.push(view.pieces.ring);
+    if (order.includes('head') && has('head')) pieces.push(view.pieces.head);
+    if (has('lamp')) pieces.push(view.pieces.lamp);
+    if (has('front') || (has('lamp') && view.fronts.length === 1)) pieces.push(view.pieces.front);
     const photos = pieces.filter(Boolean);
 
     const nodes = [];
     if (photos.length) {
       const grid = document.createElement('div');
       grid.className = 'photos';
+      grid.style.setProperty('--cols', photos.length === 1 ? '1' : '2');
+      grid.style.setProperty('--rows', String(Math.ceil(photos.length / 2)));
       for (const piece of photos) {
         const figure = document.createElement('figure');
         const img = document.createElement('img');
@@ -378,21 +411,59 @@ class ArqDaoConfigurator extends ArqElement {
         grid.append(figure);
       }
       nodes.push(grid);
-    } else {
-      const hint = document.createElement('p');
-      hint.className = 'hint role-body';
-      hint.textContent = TEXT.hint;
-      nodes.push(hint);
     }
 
-    this.#result = null;
-    if (!order.every((id) => this.#isDone(id))) return nodes;
+    return nodes;
+  }
+
+  // Con todo elegido, los tres pasos se condensan arriba en un bloque chico con
+  // «Cambiar»: al tocarlo se vuelven a desplegar y se esconde el armado.
+  #condensed(view, order) {
+    const section = document.createElement('section');
+    section.className = 'condensed';
+    if (!this.#finalShown) section.classList.add('is-entering');
+    const rows = document.createElement('dl');
+    rows.className = 'condensed-rows role-body-compact';
+    order.forEach((id, index) => {
+      const term = document.createElement('dt');
+      term.textContent = `${index + 1} ${STEP_NAME[id]}`;
+      const detail = document.createElement('dd');
+      detail.textContent = this.#summary(view, id);
+      rows.append(term, detail);
+    });
+    const change = document.createElement('arq-button');
+    change.className = 'change-all';
+    change.setAttribute('type', 'underline');
+    change.setAttribute('show-underline', '');
+    change.textContent = TEXT.change;
+    change.setAttribute('label', `${TEXT.change}: configuración`);
+    section.append(rows, change);
+    return section;
+  }
+
+  #backToSummary() {
+    const back = document.createElement('arq-button');
+    back.className = 'back';
+    back.setAttribute('type', 'underline');
+    back.setAttribute('show-underline', '');
+    back.textContent = TEXT.back;
+    return back;
+  }
+
+  // Al terminar el último paso: el armado completo queda debajo de los pasos
+  // (columna izquierda, que ya se desplaza); el panel de la derecha sigue solo
+  // con las fotos.
+  #final(view, order) {
     this.#result = view;
+    const section = document.createElement('section');
+    section.className = 'final';
+    if (!this.#finalShown) section.classList.add('is-entering');
+    this.#finalShown = true;
 
     const title = document.createElement('p');
     title.className = 'result-title role-heading-3';
     title.textContent = view.head ? `${view.title}, ${view.head.nombre || view.head.sku}` : view.title;
-    nodes.push(title);
+    section.append(title);
     if (view.specs.length) {
       const specs = document.createElement('dl');
       specs.className = 'specs role-body';
@@ -403,7 +474,7 @@ class ArqDaoConfigurator extends ArqElement {
         detail.textContent = value;
         specs.append(term, detail);
       }
-      nodes.push(specs);
+      section.append(specs);
     }
     const partsTitle = document.createElement('p');
     partsTitle.className = 'parts-title role-body-medium';
@@ -413,11 +484,12 @@ class ArqDaoConfigurator extends ArqElement {
     for (const part of view.parts) list.append(this.#part(part));
     const print = document.createElement('arq-button');
     print.className = 'print';
-    print.setAttribute('type', 'outline');
     print.textContent = TEXT.print;
-    nodes.push(partsTitle, list, print);
-    return nodes;
+    section.append(partsTitle, list, print);
+    return section;
   }
+
+  #finalShown = false;
 
   #part(part) {
     const item = document.createElement('li');

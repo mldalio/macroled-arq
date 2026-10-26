@@ -102,19 +102,22 @@
   padding-bottom: var(--arq-space-padding-3xl);
   overflow-y: auto;
   overscroll-behavior: contain;
+  /* Se desplaza con rueda, touch y teclado, sin barra a la vista */
+  scrollbar-width: none;
 }
 
-/* Panel del armado: fondo color/surface/subtle, con su propio desplazamiento */
+.steps::-webkit-scrollbar {
+  display: none;
+}
+
+/* Panel del armado: solo las fotos, siempre fijo y sin desplazamiento: las
+   tarjetas se reparten el alto disponible (1 foto: toda; 2: en fila; 3 o 4: 2 x 2) */
 .panel {
   display: flex;
   flex-direction: column;
-  gap: var(--arq-space-gap-lg);
   min-width: 0;
+  min-height: 0;
   margin-bottom: var(--arq-space-padding-xl);
-  padding: var(--arq-space-padding-lg);
-  background: var(--arq-color-surface-subtle);
-  overflow-y: auto;
-  overscroll-behavior: contain;
 }
 
 /* ── Pasos ───────────────────────────────────────────────────────── */
@@ -218,14 +221,25 @@
 /* Las fotos de las piezas se suman de a una: la nueva aparece con un fundido */
 .photos {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  flex: 1;
+  grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--rows, 1), minmax(0, 1fr));
   gap: var(--arq-space-gap-sm);
+  min-height: 0;
   margin: 0;
 }
 
+/* Tarjeta de cada pieza: fondo color/surface/subtle; la foto (de fondo blanco)
+   se funde con él (multiply) y se ve entera */
 .photos figure {
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xs);
   min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: var(--arq-space-padding-sm) var(--arq-space-padding-sm) var(--arq-space-padding-sm);
+  background: var(--arq-color-surface-subtle);
   animation: arq-photo-in var(--arq-motion-duration-slow) var(--arq-motion-easing-standard) both;
 }
 
@@ -237,19 +251,73 @@
 
 .photos img {
   display: block;
+  flex: 1;
   width: 100%;
-  aspect-ratio: 5 / 4;
+  min-height: 0;
   object-fit: contain;
-  background: var(--arq-color-surface-default);
+  mix-blend-mode: multiply;
 }
 
 .photos figcaption {
-  margin-top: var(--arq-space-gap-xs);
+  flex: none;
   color: var(--arq-color-text-secondary);
+}
+
+/* Pasos condensados (todo elegido): una lista chica con «Cambiar» a la derecha */
+.condensed {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-lg);
+  padding-bottom: var(--arq-space-padding-xl);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+.condensed-rows {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--arq-space-gap-xs) var(--arq-space-gap-lg);
+  min-width: 0;
+  margin: 0;
+}
+
+.condensed-rows dt {
+  color: var(--arq-color-text-tertiary);
+}
+
+.condensed-rows dd {
+  min-width: 0;
+  margin: 0;
+  color: var(--arq-color-text-primary);
+}
+
+.condensed.is-entering {
+  animation: arq-step-in var(--arq-motion-duration-base) var(--arq-motion-easing-out) both;
+}
+
+.back {
+  align-self: flex-start;
+  margin-top: var(--arq-space-gap-lg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .condensed.is-entering {
+    animation: arq-step-fade var(--arq-motion-duration-fade) var(--arq-motion-easing-standard) both;
+  }
+}
+
+/* Armado completo, debajo de los pasos (columna izquierda) */
+.final {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-lg);
+  padding-block: var(--arq-space-padding-xl);
 }
 
 .result-title {
   margin: 0;
+  /* Más aire entre el nombre del armado y sus características: gap/lg + gap/md */
+  margin-bottom: var(--arq-space-gap-md);
 }
 
 .specs {
@@ -274,7 +342,7 @@
 .parts {
   display: flex;
   flex-direction: column;
-  gap: var(--arq-space-gap-sm);
+  gap: var(--arq-space-gap-md); /* 1 rem entre piezas */
   margin: 0;
   padding: 0;
   list-style: none;
@@ -310,17 +378,38 @@
   }
 
   .body {
-    display: block;
+    display: flex;
+    flex-direction: column;
     overflow-y: auto;
     overscroll-behavior: contain;
+    scrollbar-width: none;
   }
 
-  .steps,
-  .panel {
+  .body::-webkit-scrollbar {
+    display: none;
+  }
+
+  .steps {
     overflow-y: visible;
   }
 
+  /* Las fotos van arriba de los pasos, en tarjetas con su proporción (5:4) */
   .panel {
+    order: -1;
+    flex: none;
     margin-bottom: var(--arq-space-padding-xl);
+  }
+
+  .panel:empty {
+    display: none;
+  }
+
+  .photos {
+    grid-template-rows: none;
+  }
+
+  .photos img {
+    flex: none;
+    aspect-ratio: 5 / 4;
   }
 }

@@ -80,6 +80,8 @@ Tablet (768–1023 px) usa la columna Desktop salvo en los bloques marcados: ah�
 
 ## Configurador (2026-10-21)
 
+> En la colección Daö, el «Configurar» de Daö ya no es una pestaña: la ficha muestra el botón «Configura tu Daö» (texto en mayúsculas, 12 px, fondo `color/surface/inverse`) centrado sobre la foto, que abre `<arq-dao-configurator>` en un modal a pantalla completa ([README](../dao-configurator/README.md)). El resto de esta sección es el configurador de variantes de la ficha.
+
 - **Característica madre:** el color, o la primera de `variant_attributes` si no hay color. Va primera y nunca se apaga; las demás dependen solo de las de arriba y una apagada no se puede elegir. Al elegir, las de abajo se acomodan solas (`src/data/variants.js`; `docs/decisiones.md`, 2026-10-21 · Característica madre).
 - **Descripción** de la variante: debajo del nombre y arriba del sku, en `role/body-compact` (14 px; 16/24 desde 1920 px, mismo peso) y `color/text/tertiary`.
 - **Desde 1024 px** el hero mide el alto de la pantalla debajo del navbar: la foto queda fija (sticky) y el configurador se desplaza con la página si no entra. **Mobile y Tablet:** foto a todo el ancho pegada al navbar, miniaturas con margen y la info debajo.

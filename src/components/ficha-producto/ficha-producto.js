@@ -94,7 +94,7 @@ const TEXT = {
   error: 'No se pudo cargar el producto. Probá de nuevo en unos minutos.',
   datasheet: 'Ficha técnica',
   commercial: 'Características comerciales',
-  configure: 'Configura o arma tu Daö',
+  configure: 'Configura tu Daö',
   generating: 'Generando…',
   previous: 'Anterior',
   next: 'Siguiente',
