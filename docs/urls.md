@@ -8,7 +8,7 @@ Páginas del sitio en `macroled.com.ar/arq`. Todo el contenido se carga con Code
 
 | Página | URL | Tipo en Webflow | Pantalla en Final | Notas |
 | --- | --- | --- | --- | --- |
-| Home | `/arq` | estática + Code Embed | Home (`1203:9715`) | El logo apunta a `/arq`. Verificar en el Designer que Webflow permita la página en la URL de la carpeta |
+| Home | `/arq/inicio` | estática + Code Embed | Home (`1203:9715`) | Webflow no deja una página en la URL de la carpeta: `/arq` redirige (301) a `/arq/inicio`. El logo, el breadcrumb «Inicio» y el link al newsletter apuntan directo a `/arq/inicio` (decisiones.md, 2026-10-26 · Home en /arq/inicio) |
 | Productos (listado) | `/arq/productos` | estática + Code Embed | Productos (`1161:6541`) | Una card por grupo, desde Typesense (decisiones.md, 2026-10-02 · Base de datos). Filtros, Iluminar y compare-bar |
 | Productos por categoría (Interior, Exterior, Lámparas y artefactos) | PENDIENTE | — | dentro de Productos | Links del footer y del catalog-nav. PENDIENTE: parámetro o subpágina. Cada categoría es un filtro sobre `environment`, `application` y `product_type` (decisiones.md, 2026-10-02 · Navegación) |
 | Ficha de producto | `/arq/producto/{slug}` · `?sku={SKU}` | template de colección CMS «Productos» + Code Embed | Ficha (`1218:10486`) | Slug = `PRODUCT_GROUP_ID`. `?sku=` elige la variante y todos los links a la ficha lo llevan, también el del SKU predeterminado (sin parámetro se abre el predeterminado y la URL se completa con su SKU); el canonical va sin parámetro. El embed imprime el grupo y el nombre (`<h1>`); el resto sale de Typesense, textos incluidos (decisiones.md, 2026-10-07 · Base de datos sin IDs). El breadcrumb (Colecciones / Kanu / Kanu Jardín) sale de los datos, no de la URL |

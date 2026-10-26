@@ -7,7 +7,7 @@ Logotipo de Macroled Arq (MACROLED + ARQ). Siempre es link a la home de Arq.
 ```html
 <arq-logo></arq-logo>
 <arq-logo size="small"></arq-logo>
-<arq-logo size="compact" href="/arq"></arq-logo>
+<arq-logo size="compact" href="/arq/inicio"></arq-logo>
 ```
 
 ## Props
@@ -15,7 +15,7 @@ Logotipo de Macroled Arq (MACROLED + ARQ). Siempre es link a la home de Arq.
 | Figma | Atributo | Prop JS | Valores · por defecto |
 | --- | --- | --- | --- |
 | Size | `size` | `size` | `default` · `small` · `compact` (def. `default`) |
-| — | `href` | `href` | destino del link (def. `/arq`) |
+| — | `href` | `href` | destino del link (def. `/arq/inicio`) |
 
 - **Default** en navbar desktop · **Small** en navbar mobile · **Compact** en el footer y donde el espacio es mínimo. Se elige el Size; no se escala a mano.
 - Tamaños: 181 × 16 · 158 × 13,97 · 117 × 10,34. Es el mismo dibujo escalado.

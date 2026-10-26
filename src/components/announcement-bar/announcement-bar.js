@@ -4,7 +4,7 @@
 // («Suscribite al newsletter»).
 //
 //   <arq-announcement-bar>
-//     <arq-button type="underline" compact show-icon icon="arrow-up-right" href="/arq#newsletter">Suscribite al newsletter</arq-button>
+//     <arq-button type="underline" compact show-icon icon="arrow-up-right" href="/arq/inicio#newsletter">Suscribite al newsletter</arq-button>
 //   </arq-announcement-bar>
 //   <arq-navbar>…</arq-navbar>
 //

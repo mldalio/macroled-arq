@@ -261,6 +261,12 @@ tbody td {
   z-index: 1;
   /* sin ancho: absorbe el que sobra (las demás columnas no se estiran) */
   padding-inline-end: var(--arq-space-gap-xl);
+}
+
+/* Sin la negrita del <th> de cada fila (su contenido trae su role/*). Solo en
+   tbody: en el encabezado pisaría el peso de role/body-compact-regular y
+   tomaría el del body de la página. */
+tbody .sku-col {
   font-weight: inherit;
 }
 
