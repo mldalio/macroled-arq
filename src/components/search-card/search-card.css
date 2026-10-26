@@ -61,7 +61,39 @@
   }
 }
 
+/* Nombre y acabados en fila (acabados a la derecha, space/gap/sm); meta debajo (space/gap/xs) */
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xs);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+}
+
 .name {
+  flex: 1 1 auto;
   min-width: 0;
   overflow-wrap: break-word;
+}
+
+.finishes {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--arq-space-gap-xs);
+}
+
+.meta {
+  min-width: 0;
+  color: var(--arq-color-text-secondary);
+  overflow-wrap: break-word;
+}
+
+.finishes[hidden],
+.meta[hidden] {
+  display: none;
 }

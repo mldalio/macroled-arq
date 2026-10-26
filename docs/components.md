@@ -81,6 +81,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [search-dropdown](#search-dropdown) | `<arq-search-dropdown>` | En código ([README](../src/components/search-dropdown/README.md)) |
 | ✅ [search-field](#search-field) | `<arq-search-field>` | En código ([README](../src/components/search-field/README.md)) |
 | ✅ [search-result](#search-result) | `<arq-search-result>` | En código ([README](../src/components/search-result/README.md)) |
+| 🧪 [compatible-products](#compatible-products) | `<arq-compatible-products>` | Sin set en Figma ([README](../src/components/compatible-products/README.md)) |
 | 🧪 [search-card](#search-card) | `<arq-search-card>` | Prueba, documentado en Figma desde el código ([README](../src/components/search-card/README.md)) |
 | 🧪 [search-collection](#search-collection) | `<arq-search-collection>` | Prueba, documentado en Figma desde el código ([README](../src/components/search-collection/README.md)) |
 | 🧪 [search-sheet](#search-sheet) | `<arq-search-sheet>` | Prueba, documentado en Figma desde el código ([README](../src/components/search-sheet/README.md)) |
@@ -126,7 +127,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ coleccion | `<arq-coleccion>` | Página de colección: cards de sus productos, galería, texto + imagen y mosaico con flechas ([README](../src/components/coleccion/README.md)) |
 | ✅ form-contacto | `<arq-form-contacto>` | Contacto (v3): información por slot (fija al desplazar en Desktop), formulario con validación, honeypot y envío a n8n, y preguntas frecuentes opcionales por slot ([README](../src/components/form-contacto/README.md)) |
 | ✅ ficha-producto | `<arq-ficha-producto>` | Ficha de producto: hero con galería y configurador, descargas, especificaciones, descripción, glosario, inspiración y colección. En Daö, la pestaña Configurador arma el producto ([README](../src/components/ficha-producto/README.md)) |
-| ✅ dao-configurator | `<arq-dao-configurator>` | Pestaña Configurador de la ficha Daö: aro, módulos, terminación, cabezal y lámpara, desde Typesense ([README](../src/components/dao-configurator/README.md)) |
+| ✅ dao-configurator | `<arq-dao-configurator>` | Modal a pantalla completa para armar un Daö (aro, cabezal y lámpara, con sus colores) paso por paso; se abre con «Configura tu Daö» sobre la foto de la ficha. Datos desde Typesense ([README](../src/components/dao-configurator/README.md)) |
 | ✅ descargas | `<arq-descargas>` | Página Descargas: «Buscar archivos por producto» con variants-table (todos los SKU, buscador) y el modal de descargas de cada fila ([README](../src/components/descargas/README.md)) |
 | ✅ compare-table | `<arq-compare-table>` | Tabla de la Comparativa: hasta 3 productos; arma adentro compare-group, compare-section-group y compare-row. «Solo diferencias» llega desde compare-header ([README](../src/components/compare-table/README.md)) |
 | ✅ comparativa | `<arq-comparativa>` | Página Comparativa: combina compare-header y compare-table con los SKU de `?sku=`, con datos del catálogo ([README](../src/components/comparativa/README.md)) |
@@ -958,3 +959,9 @@ Galerías (2026-10-22): ambiente de la ficha con autoplay cada 3 s como Destacad
 Agregado en código (2026-10-22): icon/check (Figma 2891:13154), asset original de 16 × 16 en src/base/assets/check.svg. Se expone como icon('check') y acompaña «Copiado» en el hero y variants-table, con color semántico heredado.
 
 20 íconos de trazo de 1 px (`icon/<nombre>`): arrow-down, arrow-left, arrow-right, arrow-up, arrow-up-right, chevron-down, chevron-left, chevron-right, chevron-up, close, copy, download, filter, filter-off, instagram, menu, minus, plus, search, youtube. Theme=Default: color/icon/primary · Theme=Inverse: color/icon/inverse (sobre foto o fondos oscuros). En código: SVG inline con `stroke="currentColor"`.
+
+## compatible-products
+
+- Figma: sin set. Referencia vieja: `AccessoriesSection` (2256:28229). `TODO` (diseño): set y ficha `doc/compatible-products`.
+
+Sección de compatibles de la ficha de Daö y de la lámpara: título (slot) y una grilla de search-card, cada una con link a su ficha. Fichas de Daö (aro, cabezal): «Accesorios y lámparas compatibles», sin frentes. Ficha de la lámpara: «Accesorio requerido» con su frente. Una tarjeta por grupo; relaciones del configurador. Sin items no se muestra.

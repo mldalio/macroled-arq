@@ -1638,6 +1638,26 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - variants-table: el nombre y el sku quedan a `space/gap/sm-md` (0,75 rem) en la tabla y en la tarjeta Mobile (antes `sm` y `xs`).
 - `TODO` (diseño): ficha `doc/text-link` en Documentación y DESIGN.md (§8 y Anexo A). El set ya está en Figma (2965:9774).
 
+## 2026-10-26 · Productos compatibles en la ficha de Daö
+
+- Pedido: una sección que reúna los productos compatibles con el de la ficha de Daö, con cada tarjeta llevando a su ficha. La lógica sale del configurador.
+- Decisión: componente nuevo `<arq-compatible-products>` (título por slot, grilla de search-card, la tarjeta cuadrada del buscador). `compatibleProducts()` en `src/data/dao-config.js` usa las relaciones del configurador (`cabezales_`, `lamparas_` y `frentes_compatibles`) hacia arriba y hacia abajo, una tarjeta por grupo, sin el grupo del propio SKU. `getDaoConfigurator()` carga una sola vez y lo comparten el configurador y esta sección. Va debajo de las pestañas de especificaciones.
+- El rol de cada pieza (aro, cabezal, lámpara, frente) sale de quién la lista en los campos de compatibilidad, no de `categoria`: las filas de PAR11 la traen vacía en Typesense.
+- Qué se muestra: en las fichas de Daö (aro, cabezal), «Accesorios y lámparas compatibles», sin frentes. En la ficha de la lámpara (`PAR11-`), «Accesorio requerido» con su frente (`frentes_compatibles`), porque es un accesorio de la lámpara y no de Daö. El frente no lleva sección. Sale de los campos de la base, sin SKUs escritos en el código. `TODO`: si aparecen accesorios opcionales, una columna en Sheets (requeridos / opcionales); set en Figma y ficha `doc/compatible-products`.
+- Ficha: al abrir, solo la sección de características lumínicas queda abierta (antes, las tres en Desktop), para llegar rápido a lo que sigue, como los productos compatibles. Al cambiar de variante quedan abiertas las mismas.
+- Ficha: la pestaña «Información comercial» muestra su lista dentro de un accordion-item «Características comerciales» (abierto), el mismo formato que las secciones de Especificaciones.
+- Compatibles: search-card suma Size=Large (nombre en `role/body-xl`, 20 px) y los slots `finishes` (swatches Small a la derecha del nombre, como product-card) y `meta` (debajo del nombre). En los aros, la meta es la cantidad de módulos del grupo («1-3 módulos») y los acabados son los colores del grupo. La grilla va a 4 columnas de 1024 a 1439 px y a 5 desde 1440 px.
+- Configurador de Daö: la opción Módulos se muestra «x1», «x2», «x3», como en la ficha (antes «Simple», «Doble», «Triple»); el nombre del armado y las piezas siguen esa forma («Daö Embutir x2 negro»).
+
+## 2026-10-26 · Configurador de Daö en tres pasos, con option-tile Type=Card
+
+- Problema: el configurador no se entendía. Los pasos no tenían jerarquía y todas las opciones se veían como tabs o links, sin un dato que ayudara a elegir.
+- Decisión: tres pasos numerados (1 Aro, con Módulos y Terminación; 2 Cabezal; 3 Lámpara). El frente y el panal dejan de ser un paso: la lámpara Cerámica (`PAR11-C-5W-DIM-36G-WW`) los suma sola como accesorios requeridos y una nota lo avisa.
+- option-tile suma Type=Card y option-group Type=Cards: caja de solo línea (`border/default`; elegida, `border/strong` de 2 px), título 16 px y subtítulo opcional 14 px. Terminación lleva el swatch dentro de la caja. Se probaron dos opciones: caja de solo línea y fondo gris con línea abajo; la de solo línea mantiene el estilo liviano.
+- option-tile Type=Option sigue sin caja en la ficha: no se toca, para no sumar líneas arriba.
+- `TODO` (diseño): Type=Card y Type=Cards en Figma, DESIGN.md (§8, fila de option-group · option-tile) y subtítulos del paso Aro.
+- Configurador de Daö (ajustes): la caja elegida lleva 1 px en `color/text/secondary` (antes 2 px en `border/strong`). Los pasos aparecen de a uno, a medida que se elige en el anterior (fundido y ascenso de `motion/duration/base`; solo fundido con movimiento reducido), y el resultado queda fijo a la derecha mientras la columna de pasos se desplaza con la página (desde 768 px). Se pueden elegir el color del cabezal (paso 2) y el color del frente de la lámpara (paso 3); «Terminación» pasa a «Color» en todo el configurador. `TODO` (diseño): token de borde para la caja elegida.
+
 ## 2026-10-26 · Animaciones: auditoría de todo el sitio
 
 - Pedido: revisar las animaciones de todas las páginas (skill improve-animations; con permiso para no tomar DESIGN.md como regla fija) y que las cards de Productos y Colección entren como las del Home.
@@ -1650,6 +1670,16 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - **Otros:** la foto de hover de product-card funde recién cuando cargó (antes aparecía de golpe la primera vez); la sección del Home se apaga al subir recién cuando salió entera de la pantalla; catalog-card se achica al apretar en `fast`; project-slider pasa de slide con un deslizamiento rápido (0,4 px/ms, como featured-products); la opacidad de swatch Disabled funde; catalog-nav-group retoma desde donde está si se vuelve a tocar; la galería de la ficha funde con `fade` al cambiar de foto o de variante, y un fundido de Iluminar en curso no salta; el visor de fotos entra con fundido y escala `enter`; compare-header Compact baja desde el navbar; collection-index funde la foto nueva sobre la anterior (sin lavarse); el riel de destacados vuelve al principio con un fundido, no rebobinando; el preview del mega-menú cambia el texto junto con la foto.
 - **Sin cambio:** project-slide sigue cambiando de tamaño de golpe (animarlo con transform obliga a rehacer el cálculo de posiciones del slider); la repetición de la entrada de las secciones del Home y la doble entrada sección + cards quedan (es la referencia pedida).
 - Figma: `motion/easing/in-out` nuevo y descripciones de Motion al día; fichas doc/toggle, doc/mega-menu, doc/navbar, doc/search-sheet, doc/product-card y doc/category-card actualizadas. DESIGN.md §6 y §8 actualizado, y su copia en Plan del proyecto sincronizada entera con el repo (arrastraba cambios anteriores sin pasar).
+
+## 2026-10-26 · Configurador de Daö en un modal, paso por paso
+
+- Pedido: que el configurador funcione como las páginas de compra de Apple, se abra desde la ficha de cualquier producto de Daö y se vaya armando de a un paso.
+- Decisión: modal a pantalla completa (`<arq-dao-configurator>`, diálogo nativo como compare-picker) abierto con el botón «Configura tu Daö» sobre la foto de la ficha (texto en mayúsculas, 12 px, fondo `color/surface/inverse`). La pestaña «Configurador» de la ficha se quita.
+- Siempre arranca en el aro, sin nada elegido: la pieza de la ficha no se adelanta (era confuso). Un paso abierto a la vez; dentro de un paso, cada grupo aparece al elegir el anterior; «Continuar» se habilita con todo lo del paso elegido; los pasos hechos se pliegan con «Cambiar».
+- Panel de la derecha fijo y sin scroll, solo con las fotos de las piezas, que se suman al elegir (tarjetas de `color/surface/subtle`). Al terminar, los tres pasos se condensan arriba con «Cambiar» y debajo van el nombre, las especificaciones, las piezas y «Imprimir configuración» (button Filled).
+- El color del cabezal se elige (cada aro lista el cabezal de su color, se juntan los de todos); la lámpara con frentes suma «Color del frente». El rol de cada pieza sale de quién la lista, no de `categoria` (vacía en PAR11). Las lámparas muestran ángulo de apertura y temperatura de color.
+- option-tile (Type=Option): línea de 1 px (antes 2) y gap de 4 px bajo una caja de texto de `1em + border/strong` (la línea queda a ~8 px de la base, antes ~11). Type=Card: caja de 1 px en `color/border/subtle`, elegida en `color/border/strong`, subtítulo en `color/text/secondary`.
+- `TODO`: Figma (modal, pasos plegado y condensado, panel de fotos, option-tile con la línea de 1 px y Type=Card, option-group Type=Cards, search-card Size=Large y los slots finishes y meta, compatible-products) y DESIGN.md (§8, Anexo A). El PDF de «Imprimir configuración» es provisorio (hoja simple); el real va con pdfmake. La imagen final del armado, cuando exista.
 
 ## 2026-10-26 · Auditoría de todo el sitio: peor caso, táctil y rendimiento
 

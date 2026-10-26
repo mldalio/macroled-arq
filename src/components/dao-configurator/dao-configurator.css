@@ -1,11 +1,76 @@
-/* Configurador de Daö, dentro de la pestaña Configurador de la ficha.
-   Solo tokens semánticos. TODO (diseño): no está en Final; las fotos usan
-   ratio/landscape (5:4), el más cercano al 4:3 del demo. */
+/* Configurador de Daö: modal a pantalla completa. Solo tokens semánticos.
+   PRUEBA (proto/dao-configurator-modal). TODO (diseño): no está en Figma; las
+   fotos usan ratio/landscape (5:4). Siempre en Light (data-arq-theme="light"
+   en el <dialog>). */
 
 :host {
-  display: block;
-  min-width: 0;
+  display: contents;
+  --panel-slow: var(--arq-motion-duration-panel); /* motion/duration/panel, como compare-picker */
+}
+
+/* <dialog> sin los estilos del navegador, a pantalla completa. La hoja (.sheet)
+   funde y sube un 2 % al abrir y sale por donde entró; la rueda sobre el
+   diálogo no mueve la página (src/base/scroll-lock.js). */
+.dialog {
+  box-sizing: border-box;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--arq-color-surface-transparent);
   color: var(--arq-color-text-primary);
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+.dialog[open] {
+  display: flex;
+}
+
+.dialog:not(.is-open) {
+  pointer-events: none;
+}
+
+.sheet {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xl);
+  width: 100%;
+  height: 100%;
+  padding: var(--arq-space-padding-xl) var(--arq-layout-gutter) 0;
+  background: var(--arq-color-surface-default);
+  opacity: 0;
+  transform: translateY(2%);
+  transition-property: opacity, transform;
+  transition-duration: var(--panel-slow);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+.dialog.is-open .sheet {
+  opacity: 1;
+  transform: none;
+}
+
+/* Título role/heading-2 + cerrar (icon-button Large) */
+.header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-md);
+  padding-bottom: var(--arq-space-padding-md);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+.title {
+  min-width: 0;
+  margin: 0;
 }
 
 .status {
@@ -14,21 +79,107 @@
 }
 
 .status:empty {
-  position: absolute;
+  display: none;
 }
 
-.layout {
+/* Cuerpo: pasos a la izquierda (se desplazan solos) y el armado fijo a la derecha */
+.body {
   display: grid;
+  flex: 1;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--arq-space-gap-3xl);
-  align-items: start;
+  min-height: 0;
+}
+
+.body[hidden] {
+  display: none;
 }
 
 .steps {
   display: flex;
   flex-direction: column;
-  gap: var(--arq-space-gap-xl-2xl);
   min-width: 0;
+  padding-bottom: var(--arq-space-padding-3xl);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* Se desplaza con rueda, touch y teclado, sin barra a la vista */
+  scrollbar-width: none;
+}
+
+.steps::-webkit-scrollbar {
+  display: none;
+}
+
+/* Panel del armado: solo las fotos, siempre fijo y sin desplazamiento: las
+   tarjetas se reparten el alto disponible (1 foto: toda; 2: en fila; 3 o 4: 2 x 2) */
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  margin-bottom: var(--arq-space-padding-xl);
+}
+
+/* ── Pasos ───────────────────────────────────────────────────────── */
+/* Una línea fina (border/subtle) separa un paso del siguiente. Activo: abierto
+   con sus opciones; hecho: plegado en una línea de resumen con «Cambiar»;
+   pendiente: solo el título, atenuado. */
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-lg);
+  padding-block: var(--arq-space-padding-xl);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+.step:first-child {
+  padding-top: 0;
+}
+
+.step-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--arq-space-gap-sm);
+}
+
+.step-number {
+  color: var(--arq-color-text-tertiary);
+}
+
+.step-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.step-title,
+.summary {
+  margin: 0;
+}
+
+.summary {
+  color: var(--arq-color-text-secondary);
+}
+
+.step.is-future .step-title {
+  color: var(--arq-color-text-tertiary);
+}
+
+.mine {
+  flex: none;
+  color: var(--arq-color-text-tertiary);
+}
+
+.step-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-lg);
+}
+
+.step-body > arq-option-group {
+  align-self: stretch;
 }
 
 .note {
@@ -36,42 +187,137 @@
   color: var(--arq-color-text-secondary);
 }
 
-.result {
-  display: flex;
-  flex-direction: column;
-  gap: var(--arq-space-gap-lg);
-  min-width: 0;
-  padding: var(--arq-space-padding-lg);
-  background: var(--arq-color-surface-subtle);
+/* Un paso que se abre: fundido y un leve ascenso (solo opacity y transform,
+   motion/duration/base con easing/out). Con movimiento reducido, solo el fundido. */
+.step.is-entering {
+  animation: arq-step-in var(--arq-motion-duration-base) var(--arq-motion-easing-out) both;
 }
 
-.thumbs {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--arq-space-gap-sm);
+@keyframes arq-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--arq-space-gap-md));
+  }
+}
+
+@keyframes arq-step-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step.is-entering {
+    animation: arq-step-fade var(--arq-motion-duration-fade) var(--arq-motion-easing-standard) both;
+  }
+}
+
+/* ── Panel ───────────────────────────────────────────────────────── */
+.hint {
   margin: 0;
-}
-
-.thumbs figure {
-  margin: 0;
-  min-width: 0;
-}
-
-.thumbs img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 5 / 4;
-  object-fit: contain;
-  background: var(--arq-color-surface-default);
-}
-
-.thumbs figcaption {
-  margin-top: var(--arq-space-gap-xs);
   color: var(--arq-color-text-secondary);
 }
 
-.title {
+/* Las fotos de las piezas se suman de a una: la nueva aparece con un fundido */
+.photos {
+  display: grid;
+  flex: 1;
+  grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--rows, 1), minmax(0, 1fr));
+  gap: var(--arq-space-gap-sm);
+  min-height: 0;
   margin: 0;
+}
+
+/* Tarjeta de cada pieza: fondo color/surface/subtle; la foto (de fondo blanco)
+   se funde con él (multiply) y se ve entera */
+.photos figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xs);
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: var(--arq-space-padding-sm) var(--arq-space-padding-sm) var(--arq-space-padding-sm);
+  background: var(--arq-color-surface-subtle);
+  animation: arq-photo-in var(--arq-motion-duration-slow) var(--arq-motion-easing-standard) both;
+}
+
+@keyframes arq-photo-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.photos img {
+  display: block;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.photos figcaption {
+  flex: none;
+  color: var(--arq-color-text-secondary);
+}
+
+/* Pasos condensados (todo elegido): una lista chica con «Cambiar» a la derecha */
+.condensed {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-lg);
+  padding-bottom: var(--arq-space-padding-xl);
+  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+.condensed-rows {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--arq-space-gap-xs) var(--arq-space-gap-lg);
+  min-width: 0;
+  margin: 0;
+}
+
+.condensed-rows dt {
+  color: var(--arq-color-text-tertiary);
+}
+
+.condensed-rows dd {
+  min-width: 0;
+  margin: 0;
+  color: var(--arq-color-text-primary);
+}
+
+.condensed.is-entering {
+  animation: arq-step-in var(--arq-motion-duration-base) var(--arq-motion-easing-out) both;
+}
+
+.back {
+  align-self: flex-start;
+  margin-top: var(--arq-space-gap-lg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .condensed.is-entering {
+    animation: arq-step-fade var(--arq-motion-duration-fade) var(--arq-motion-easing-standard) both;
+  }
+}
+
+/* Armado completo, debajo de los pasos (columna izquierda) */
+.final {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-lg);
+  padding-block: var(--arq-space-padding-xl);
+}
+
+.result-title {
+  margin: 0;
+  /* Más aire entre el nombre del armado y sus características: gap/lg + gap/md */
+  margin-bottom: var(--arq-space-gap-md);
 }
 
 .specs {
@@ -96,7 +342,7 @@
 .parts {
   display: flex;
   flex-direction: column;
-  gap: var(--arq-space-gap-sm);
+  gap: var(--arq-space-gap-md); /* 1 rem entre piezas */
   margin: 0;
   padding: 0;
   list-style: none;
@@ -121,8 +367,49 @@
   min-width: 0;
 }
 
+.print {
+  align-self: flex-start;
+}
+
+/* Mobile: una sola columna que se desplaza completa; el armado va después de los pasos */
 @media (max-width: 767px) {
-  .layout {
-    grid-template-columns: minmax(0, 1fr);
+  .sheet {
+    padding-inline: var(--arq-layout-gutter);
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+  }
+
+  .body::-webkit-scrollbar {
+    display: none;
+  }
+
+  .steps {
+    overflow-y: visible;
+  }
+
+  /* Las fotos van arriba de los pasos, en tarjetas con su proporción (5:4) */
+  .panel {
+    order: -1;
+    flex: none;
+    margin-bottom: var(--arq-space-padding-xl);
+  }
+
+  .panel:empty {
+    display: none;
+  }
+
+  .photos {
+    grid-template-rows: none;
+  }
+
+  .photos img {
+    flex: none;
+    aspect-ratio: 5 / 4;
   }
 }
