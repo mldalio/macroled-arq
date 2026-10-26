@@ -3,7 +3,7 @@
 //
 //   <body data-demo-page="home"></body>   →   src/pages/home.html
 //
-// Los links a una página de Arq que tiene demo (/arq → home, /arq/productos →
+// Los links a una página de Arq que tiene demo (/arq/inicio → home, /arq/productos →
 // productos, /arq/producto/<grupo> → ficha, /arq/coleccion/<id> → coleccion)
 // se cambian a su demo, con el mismo
 // ?query, para poder navegar. Los del HTML se cambian al insertarlo; los que
@@ -26,7 +26,7 @@ import { dataMode, fillContacto } from '/demo/demo-data-toggle.js';
 const pages = import.meta.glob('/src/pages/*.html', { query: '?raw', import: 'default' });
 // Peor caso del embed (break-ui, ?data=worst): demo/fixtures/<página>-peor-caso.html
 const worstPages = import.meta.glob('/demo/fixtures/*-peor-caso.html', { query: '?raw', import: 'default' });
-const DEMOS = { '/arq': 'home', '/arq/productos': 'productos', '/arq/contacto': 'contacto', '/arq/comparativa': 'comparativa', '/arq/descargas': 'descargas', '/arq/nosotros': 'nosotros', '/arq/catalogos': 'catalogos' };
+const DEMOS = { '/arq': 'home', '/arq/inicio': 'home', '/arq/productos': 'productos', '/arq/contacto': 'contacto', '/arq/comparativa': 'comparativa', '/arq/descargas': 'descargas', '/arq/nosotros': 'nosotros', '/arq/catalogos': 'catalogos' };
 
 /** URL de la demo para un link de Arq, o null si esa página no tiene demo. */
 function demoHref(href) {
