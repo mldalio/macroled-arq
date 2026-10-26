@@ -66,7 +66,7 @@ class ArqCompareBar extends ArqElement {
   static template =
     `<section class="bar" data-arq-theme="dark" aria-label="Comparar productos" hidden>` +
     `<div class="head">` +
-    `<button class="title toggle role-body-lg"><span>Productos seleccionados</span><arq-count-badge class="count"></arq-count-badge>` +
+    `<button class="title toggle"><span class="role-body-lg">Productos seleccionados</span><arq-count-badge class="count"></arq-count-badge>` +
     `<span class="icon-box">${icon('chevron-down')}${icon('chevron-up')}</span></button>` +
     `</div>` +
     `<div class="row">` +

@@ -1597,3 +1597,16 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - Pedido: la barra de filtros aplicados decía «Limpiar filtros» y el panel «Borrar todo», para la misma acción. Quedan los dos como «Limpiar filtros». «Borrar todo» queda solo en compare-bar (borra los productos elegidos).
 - En el panel, el botón se deshabilita mientras no hay ningún filtro marcado (antes estaba siempre habilitado). Si tenía el foco al deshabilitarse, el foco pasa a «Ver N».
 - `TODO` (diseño): cambiar el texto y el estado Disabled en el set de filter-panel de Figma; DESIGN.md (fila de filter-panel) en una rama `docs/`.
+
+## 2026-10-26 · Home en /arq/inicio
+
+- Webflow no deja crear una página en la URL de una carpeta: toda página de la carpeta Arq necesita su slug (`index` está reservado) y una página `arq` en la raíz chocaría con la carpeta.
+- La Home va en `/arq/inicio`. En Webflow, redirección 301 de `/arq` a `/arq/inicio` (Site settings → Publishing): quien entra a `/arq` llega a la Home, también con `#newsletter`.
+- Los links internos apuntan directo a `/arq/inicio`, sin pasar por la redirección: el `href` por defecto de `<arq-logo>` (navbar y footer), el breadcrumb «Inicio» de Productos y los ejemplos del link al newsletter (`/arq/inicio#newsletter`).
+- Se descartó un proxy delante de `macroled.com.ar` (Cloudflare Worker) para mostrar la Home en `/arq` sin redirigir: toca el dominio del e-commerce de Macroled.
+
+## 2026-10-26 · Albert Sans en cada componente
+
+- En Webflow, el título de compare-bar («Productos seleccionados») salía con la fuente de Macroled: el `font: inherit` de su `<button>` pisaba el `role/body-lg` del mismo elemento. En la demo no se veía porque su `body` ya usa Albert Sans.
+- El rol pasa al `<span>` del texto. El encabezado «SKU» de variants-table tomaba el peso del `body` de la página por lo mismo (`font-weight: inherit` en `.sku-col`): ahora solo se aplica en las filas.
+- `ArqElement` pone `font-family: var(--arq-font-family-sans)` en cada `:host`, así nada de adentro de un componente toma la fuente del `body` de Webflow.
