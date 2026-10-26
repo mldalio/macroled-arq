@@ -497,6 +497,21 @@
           }
         }
       }
+    },
+    "pdf-cover-image": {
+      "$type": "number",
+      "$value": 200,
+      "$description": "Lado de la foto cuadrada del producto en pdf-cover (primera hoja de la ficha técnica PDF, A4). La foto se muestra entera (contain) sobre color/surface/subtle.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-layout-pdf-cover-image)"
+          }
+        }
+      }
     }
   },
   "space": {

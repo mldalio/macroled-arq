@@ -483,7 +483,7 @@ ArqAccordionItem.define();
 - Diseño: `ficha_pdf · componentes` (Figma `1907:27213`): pdf-page, pdf-header, pdf-cover-title, pdf-spec-group, pdf-spec-row y pdf-footer. Código en `src/pdf/`; lo dispara `arq:datasheet { sku }` (ficha y Descargas) desde `main.js`.
 - **Se abre, no se descarga:** el PDF se muestra en una pestaña nueva, en el visor del navegador. La pestaña se abre vacía en el clic (para que no la bloqueen) y carga el PDF cuando está listo. Si el navegador la bloquea, se descarga.
 - **Librería:** pdfmake 0.3.11, de jsDelivr por `/+esm` (módulo ES, sin globales) al primer clic, con Albert Sans de `@fontsource/albert-sans`. Versiones fijas en `src/config.js`. Pagina sola y repite encabezado y pie.
-- **Hojas:** la portada es la hoja 1; las especificaciones arrancan en la 2 y suman hojas si no entran. Una sección no se parte: si no entra en lo que queda, pasa entera a la hoja siguiente. Solo una sección más alta que una hoja se corta y repite su título. El pie de la hoja 2 en adelante es el aviso legal.
+- **Hojas:** (reemplazado por 2026-10-23 · Ficha técnica: una hoja menos) la portada es la hoja 1; las especificaciones arrancan en la 2 y suman hojas si no entran. Una sección no se parte: si no entra en lo que queda, pasa entera a la hoja siguiente. Solo una sección más alta que una hoja se corta y repite su título. El pie de la hoja 2 en adelante es el aviso legal.
 - **Secciones:** las mismas del acordeón de la ficha (`specSections` de `attributes.js`), con todas las que tienen datos: con los datos reales son tres hojas.
 - **Imagen:** la principal del SKU (`img_main` → `images.main`); si falta, la de estudio. Se lee con CORS y se pasa a JPEG en un canvas (pdfmake no acepta WebP). Sin CORS, la portada sale con el fondo `color/bg/subtle` sin imagen. Requisito para el servidor de imágenes (S3): `Access-Control-Allow-Origin` para macroled.com.ar.
 - **Tokens (excepción):** pdfmake no lee variables CSS. `npm run tokens` genera también `src/styles/print-tokens.js` con los valores resueltos de Semantic y `role/*`: Color Light, Dimension Desktop y Type Mobile, como los frames de Figma («Escala Type en modo Mobile»). Se convierten px → pt (× 0,75). Nada se escribe a mano.
@@ -644,7 +644,7 @@ Lo que está esperando a alguien. Al resolver uno, se borra de acá y se escribe
 - **n8n:** URL y formato del webhook de Contacto; webhook de la newsletter (cta-block) y su envío con `form-message`.
 - **Webflow:** ver si un campo Rich Text se puede insertar en un Code Embed (reemplazaría el Markdown de STORY).
 - **Nombre del PDF en el visor:** decidir si se sirve la ficha técnica desde una URL propia (`…/ficha-tecnica-<sku>.pdf`) para que Chrome la guarde con ese nombre. Opciones: función en un servidor (Cloudflare Worker, Vercel, n8n) que genere o devuelva el PDF. Hoy se guarda con un código al azar.
-- **S3:** confirmar que el servidor de imágenes responde con CORS (`Access-Control-Allow-Origin`); si no, la ficha técnica en PDF sale sin foto. Hoy Typesense no tiene imágenes cargadas y no se pudo probar.
+- **S3:** ~~confirmar que el servidor de imágenes responde con CORS~~ S3 no manda CORS; la ficha técnica en PDF pide la foto al CloudFront (2026-10-23 · Ficha técnica: una hoja menos).
 - **Código:** sincronizar el `scrollLeft` del compare-header Compact con la tabla en Mobile.
 
 ## 2026-10-13 · Ficha v2 (accordion-item, variants-table, select, spec-row)
@@ -1591,6 +1591,18 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - La pieza de la ficha abre elegida. En un cabezal (`DAO-C-B`) ese cabezal queda seleccionado y el aro, los módulos y el color son unos compatibles con él. Igual con una lámpara o un frente. Al cambiar de variante en la ficha, el configurador vuelve a esa pieza.
 - Frente: solo si la lámpara elegida trae `frentes_compatibles`. En `PAR11-C-5W-DIM-36G-WW` son `PAR11-C-FRENTE-B` y `PAR11-C-FRENTE-N`. Se eligen; abre el del color del aro.
 - Bornera y panal no se muestran: no tienen SKU en la base. `TODO` (diseño): la pestaña no está en Final.
+
+## 2026-10-23 · Ficha técnica: una hoja menos
+
+- Diseño nuevo (Figma `2940:27279`, pasado a componentes en «11 · Ficha PDF», `1907:8278`). Sin portada: la hoja 1 (pdf-page Type=Primera) lleva arriba pdf-cover y las especificaciones empiezan en la misma hoja. Con los datos reales, una hoja menos.
+- **pdf-cover:** foto cuadrada de `layout/pdf-cover-image` (200, token nuevo) y, al lado, nombre (`role/display`), SKU (`role/body-lg`) y los datos clave abajo, alineados con el pie de la foto. Si el nombre ocupa muchas líneas, el bloque crece.
+- **Foto entera** (contain) sobre `color/surface/subtle`: las fotos son 7:10 y, recortadas a un cuadrado, perdían arriba y abajo del producto.
+- **Datos clave** (pdf-key-data, hasta 4 pdf-key-item): cambian según el producto. `KEY_DATA` en `src/data/attributes.js`, en orden: Potencia, Flujo, Protección (solo desde IP44, como «IP65»: IP20 es el de interior y no dice nada), Temperatura, CRI, Ángulo. Se muestran los primeros cuatro que el SKU tiene cargados; sin ninguno, la fila no se muestra. La protección va antes que la temperatura porque en Arq casi todo es 2700K.
+- **Encabezado:** pdf-header pasa a set. Type=Default en la hoja 1: «Ficha técnica». Type=Product desde la hoja 2: el nombre (`role/body-sm-medium`) sobre el SKU (`role/body-sm`), alineados a la derecha y sin «Ficha técnica», para que una hoja suelta diga de qué producto es. Es más alto que el de la hoja 1: el margen de la hoja sale de él y pdf-cover sube lo que sobra (pdfmake no deja un margen por hoja).
+- **Pie:** sin aviso legal ni «Macroled Arq», solo el paginado.
+- Títulos de sección en `role/body-xl` y en caja normal (antes `role/label` en mayúsculas).
+- **Foto por el CloudFront:** S3 (`s3.coresagroup.com`) no manda `Access-Control-Allow-Origin` y el navegador no deja leer la foto para meterla en el PDF. Se pide al CloudFront `d1zltvqju4u8ql.cloudfront.net`, que sirve los mismos archivos con CORS, en JPEG y a 500 px (`config.images.pdfBase`); es lo que hace la ficha de macroled.com.ar y lo que ya usa el toggle Iluminar (2026-10-21). Una foto de otro servidor se pide tal cual.
+- **Fotos que faltan:** al 2026-10-23, de 170 SKU, 38 tienen la foto principal cargada en la base pero el archivo no existe en S3, y 74 no la tienen cargada. Probar con otra foto del producto solo salvaba uno: no se hace. `TODO` (datos).
 
 ## 2026-10-26 · filter-panel: «Limpiar filtros» y solo con filtros marcados
 
