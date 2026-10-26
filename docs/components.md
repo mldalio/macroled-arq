@@ -645,9 +645,9 @@ Grupo de configuración con etiqueta. Type: Tiles (fila de option-tile en Fill, 
 ## option-tile
 
 - Figma: [921-2487](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=921-2487)
-- Propiedades: Label; State: Default · Hover · Selected · Focus · Disabled
+- Propiedades: Label; Type: Option · Value; State: Default · Hover · Selected · Focus · Disabled
 
-Uso: configurar el producto en la ficha (altura, potencia, temperatura), dentro de option-group Type=Tiles. No confundir con choice-chip, que es para formularios. En código (2026-10-21), sin caja: el dato y la línea border/strong solo en la elegida; falta actualizar el set.
+Uso: configurar el producto en la ficha (altura, potencia, temperatura), dentro de option-group Type=Tiles. No confundir con choice-chip, que es para formularios. En código (2026-10-21), sin caja: el dato y la línea border/strong solo en la elegida; falta actualizar el set. Type=Value: con una sola opción en el grupo no hay nada que elegir, y el tile se muestra como dato (sin línea de selección ni foco). En código lo pone option-group al contar sus tiles.
 
 Opción seleccionable de configuración (altura, potencia, temperatura…), funciona como radio (role=radio). Sin caja: solo línea inferior. Default: sin fondo, border/default abajo, text/secondary. Hover: surface/faint, border/hover, text/primary. Selected: surface/soft, border/strong abajo, text/primary. Focus: anillo border/focus. Disabled: border/disabled y text/disabled, tachado (combinación no disponible). Padding space/padding/sm-md × space/padding/md, texto role/body-regular. En un grupo va en Fill.
 

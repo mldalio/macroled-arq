@@ -1623,3 +1623,10 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - En Webflow, el título de compare-bar («Productos seleccionados») salía con la fuente de Macroled: el `font: inherit` de su `<button>` pisaba el `role/body-lg` del mismo elemento. En la demo no se veía porque su `body` ya usa Albert Sans.
 - El rol pasa al `<span>` del texto. El encabezado «SKU» de variants-table tomaba el peso del `body` de la página por lo mismo (`font-weight: inherit` en `.sku-col`): ahora solo se aplica en las filas.
 - `ArqElement` pone `font-family: var(--arq-font-family-sans)` en cada `:host`, así nada de adentro de un componente toma la fuente del `body` de Webflow.
+
+## 2026-10-26 · option-tile Type=Value: una sola opción se muestra como dato
+
+- Problema: en el configurador, un grupo con una sola opción (Cabezal, Lámpara) dejaba su único tile siempre con la línea de selección de 2 px, igual que un link o un tab, y no hay nada que elegir.
+- Decisión: option-tile suma la variante Type: Option · Value. option-group (Type=Tiles) cuenta sus tiles: con uno solo lo pasa a Type=Value (sin línea, sin role ni foco, `color/text/primary`) y deja de ser un `radiogroup`; con más vuelve a Option. Regla de código en option-group, no una prop que se escriba en el HTML.
+- La línea de 2 px del tile elegido queda como está: la distingue del tab y del link de texto.
+- El set de option-tile en Figma ya tiene Type=Value. `TODO` (diseño): DESIGN.md (§8, fila de option-group · option-tile) y su copia en Figma.

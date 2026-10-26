@@ -34,7 +34,7 @@
 
 /* State=Hover: línea gris. Solo con mouse: en táctil quedaría pegado. */
 @media (hover: hover) and (pointer: fine) {
-  :host(:not([disabled]):not([selected]):hover) .tile {
+  :host(:not([disabled]):not([selected]):not([type='value']):hover) .tile {
     border-bottom-color: var(--arq-color-border-hover);
     color: var(--arq-color-text-primary);
   }
@@ -43,6 +43,17 @@
 /* State=Selected: la línea es el indicador */
 :host([selected]) .tile {
   border-bottom-color: var(--arq-color-border-strong);
+  color: var(--arq-color-text-primary);
+}
+
+/* Type=Value: una sola opción, se muestra como dato. La línea sigue reservada
+   (transparente) para que el alto no cambie. */
+:host([type='value']) {
+  cursor: default;
+}
+
+:host([type='value']) .tile {
+  border-bottom-color: var(--arq-color-surface-transparent);
   color: var(--arq-color-text-primary);
 }
 

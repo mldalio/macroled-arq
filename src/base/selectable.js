@@ -20,6 +20,7 @@ const GROUP_ROLES = '[role="radiogroup"], [role="tablist"]';
 export class Selectable {
   constructor(host, { role, state }) {
     this.host = host;
+    this.role = role;
     this.state = state;
     if (!host.hasAttribute('role')) host.setAttribute('role', role);
     host.choose = () => this.choose();
@@ -35,13 +36,19 @@ export class Selectable {
 
   choose() {
     const host = this.host;
-    if (host.disabled || host.selected) return;
+    if (host.disabled || host.selected || host.type === 'value') return;
     host.selected = true;
     host.emit('change', { value: host.value ?? null, selected: true });
   }
 
   hostUpdate() {
     const host = this.host;
+    // option-tile Type=Value: se muestra como dato, no es un control
+    if (host.type === 'value') {
+      for (const name of ['role', this.state, 'aria-disabled', 'tabindex']) host.removeAttribute(name);
+      return;
+    }
+    if (!host.hasAttribute('role')) host.setAttribute('role', this.role);
     host.setAttribute(this.state, String(Boolean(host.selected)));
     if (host.disabled) host.setAttribute('aria-disabled', 'true');
     else host.removeAttribute('aria-disabled');

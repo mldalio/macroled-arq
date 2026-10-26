@@ -57,6 +57,7 @@ export class SingleSelect {
     const enabled = this.enabledItems;
     const current = this.selected && !this.selected.disabled ? this.selected : enabled[0];
     for (const item of this.items) {
+      if (item.type === 'value') continue; // option-tile Type=Value: no es un control
       item.setAttribute('tabindex', item === current ? '0' : '-1');
     }
   }
