@@ -28,7 +28,7 @@
 // - Mientras está abierto el listado no cambia. "Ver N" emite arq:apply
 //   { filters } y cierra. Cerrar con la X, el scrim o Esc descarta los cambios:
 //   vuelve a lo marcado al abrir (decisión 2026-10-02 · filter-panel).
-// - "Borrar todo" desmarca todo y lo aplica en el momento (arq:apply), sin
+// - "Limpiar filtros" desmarca todo y lo aplica en el momento (arq:apply), sin
 //   cerrar: cerrar después ya no lo restaura (decisión 2026-10-22). Tocar un chip desmarca su opción y
 //   el foco pasa al chip siguiente (o al anterior, o a cerrar).
 
@@ -71,7 +71,7 @@ class ArqFilterPanel extends ArqElement {
     `<div class="categories-panel" id="categories-panel" role="tabpanel" aria-labelledby="categories-tab" hidden><slot name="categories"></slot></div>` +
     `</div>` +
     `<div class="footer">` +
-    `<arq-button type="underline" show-underline class="clear">Borrar todo</arq-button>` +
+    `<arq-button type="underline" show-underline class="clear">Limpiar filtros</arq-button>` +
     `<arq-button class="apply"></arq-button>` +
     `</div>` +
     `</div>` +
@@ -189,7 +189,7 @@ class ArqFilterPanel extends ArqElement {
     }
   }
 
-  /** "Borrar todo": desmarca todo y lo aplica en el momento, sin cerrar. */
+  /** "Limpiar filtros": desmarca todo y lo aplica en el momento, sin cerrar. */
   clear() {
     for (const option of this.options) option.checked = false;
     this.#changed();
@@ -276,6 +276,11 @@ class ArqFilterPanel extends ArqElement {
       chip.textContent = option.textContent.trim();
       chip.option = option;
     });
+    // «Limpiar filtros» solo se habilita con al menos un filtro marcado
+    const clear = root.querySelector('.clear');
+    const hadFocus = root.activeElement === clear;
+    clear.disabled = checked.length === 0;
+    if (hadFocus && clear.disabled) root.querySelector('.apply').focus(); // el foco no se pierde
     this.#renderApply();
   }
 

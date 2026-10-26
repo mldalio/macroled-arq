@@ -1591,3 +1591,9 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - La pieza de la ficha abre elegida. En un cabezal (`DAO-C-B`) ese cabezal queda seleccionado y el aro, los módulos y el color son unos compatibles con él. Igual con una lámpara o un frente. Al cambiar de variante en la ficha, el configurador vuelve a esa pieza.
 - Frente: solo si la lámpara elegida trae `frentes_compatibles`. En `PAR11-C-5W-DIM-36G-WW` son `PAR11-C-FRENTE-B` y `PAR11-C-FRENTE-N`. Se eligen; abre el del color del aro.
 - Bornera y panal no se muestran: no tienen SKU en la base. `TODO` (diseño): la pestaña no está en Final.
+
+## 2026-10-26 · filter-panel: «Limpiar filtros» y solo con filtros marcados
+
+- Pedido: la barra de filtros aplicados decía «Limpiar filtros» y el panel «Borrar todo», para la misma acción. Quedan los dos como «Limpiar filtros». «Borrar todo» queda solo en compare-bar (borra los productos elegidos).
+- En el panel, el botón se deshabilita mientras no hay ningún filtro marcado (antes estaba siempre habilitado). Si tenía el foco al deshabilitarse, el foco pasa a «Ver N».
+- `TODO` (diseño): cambiar el texto y el estado Disabled en el set de filter-panel de Figma; DESIGN.md (fila de filter-panel) en una rama `docs/`.
