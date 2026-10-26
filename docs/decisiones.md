@@ -1235,7 +1235,8 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - Pedido: una página de marca con la base de la Home y el mismo criterio editorial (foto protagonista, título corto, bajada, alternancia izquierda/derecha). No hay frame en Final.
 - URL `/arq/nosotros`, embed `src/pages/nosotros.html`. Sin hero de apertura: el navbar va en Theme Default y la página arranca en un `feature-block`. Siguen tres `feature-block` de Oficio (sobre `background="bone"`, con `size` large, small y medium), otro `feature-block`, una banda `hero` tall + parallax, `project-mosaic` con `bleed` y `cta-block` a Contacto.
 - «Conocer Macroled ARQ» de la Home apunta ahí. El footer suma Nosotros en Información, en todas las páginas. El navbar sigue el de Figma (Productos, Descargas, Contacto): no se agregó el link.
-- TODO: confirmar textos; las fotos están en `arq_nosotros/` y hay que reemplazarlas por assets de Webflow antes de pegar el embed.
+- TODO: confirmar textos.
+- Fotos: en el S3 de la empresa, `https://s3.coresagroup.com/MACROLED/ARQ/imagenes/arq_nosotros/` (2026-10-26). La carpeta `arq_nosotros/` del repo queda como copia local.
 
 ## 2026-10-21 · Foto inicial del mega-menú
 
