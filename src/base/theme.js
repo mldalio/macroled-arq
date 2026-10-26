@@ -90,7 +90,7 @@ export function watchTheme(host, method) {
 // arrancan después del fondo (25 %) y funden despacio y parejo (50 % de su
 // duración), para no quedar claro sobre claro y sin un corte duro. Las variables van en <html> (atraviesan
 // los Shadow DOM) y se quitan al terminar, así hover y foco no se retrasan.
-// Debe coincidir con --arq-illumination-bg-duration (global.css).
+// La duración sale de --arq-illumination-bg-duration (global.css).
 // Los fondos de los elementos (botón Filled, option-tile, select) funden con la
 // misma duración y curva que el fondo del bloque (--arq-theme-surface-*): con
 // motion/duration/fast cambiaban de golpe mientras el bloque seguía claro.
@@ -176,7 +176,7 @@ export function takeThemeHandoff() {
 }
 
 /** Llamar justo antes de cambiar data-arq-theme por Iluminar. */
-export function animateThemeChange(bgMs = 1200) {
+export function animateThemeChange(bgMs = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--arq-illumination-bg-duration')) || 0) {
   const style = document.documentElement.style;
   // Reduced motion (DESIGN.md §6): todo funde junto y corto, con
   // motion/duration/fade, como el fondo (global.css). Sin retraso.

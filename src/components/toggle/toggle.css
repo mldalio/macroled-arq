@@ -33,15 +33,23 @@
 }
 
 /* Círculo icon/sm. On: se corre icon/sm + gap/sm a la derecha con transform
-   (motion/duration/fast, DESIGN.md §6). Repite la lista de colores de la hoja
-   base porque transition-property se reemplaza, no se suma. Con
-   prefers-reduced-motion la duración vale 0. */
+   (motion/duration/fast + motion/easing/illumination-image: entrada y salida
+   suaves y parejas; con easing/out salía de golpe y con standard todavía se
+   sentía brusco). TODO (diseño): la curva es la de las fotos de Iluminar; si
+   queda, pedir en Figma un motion/easing para el switch. El recorrido tiene
+   duración propia: con la de la hoja base tomaba la del texto de Iluminar
+   (hasta 900 ms en la ficha) y se movía junto con el fundido de la página;
+   con fast termina antes de que empiece. El color sigue a las superficies de
+   la página. Con prefers-reduced-motion la duración vale 0. */
 .thumb {
   width: var(--arq-icon-sm);
   height: var(--arq-icon-sm);
   border-radius: var(--arq-radius-pill);
   background: var(--arq-color-icon-primary);
-  transition-property: transform, color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
+  transition-property: transform, background-color;
+  transition-duration: var(--arq-motion-duration-fast), var(--arq-theme-surface-duration, var(--arq-motion-duration-fast));
+  transition-delay: 0s;
+  transition-timing-function: var(--arq-motion-easing-illumination-image), var(--arq-theme-surface-easing, var(--arq-motion-easing-standard));
 }
 
 .label {

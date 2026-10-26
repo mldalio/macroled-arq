@@ -30,7 +30,7 @@
 // - Entrada al hacer scroll (src/base/reveal.js), escalonada por tarjeta.
 
 import { ArqElement } from '../../base/arq-element.js';
-import { reveal, revealCss } from '../../base/reveal.js';
+import { covered, reveal, revealCss } from '../../base/reveal.js';
 import { getProductCards } from '../../data/catalog.js';
 import '../product-card/product-card.js';
 import '../carousel-controls/carousel-controls.js';
@@ -166,8 +166,9 @@ class ArqFeaturedProducts extends ArqElement {
     const rail = root.querySelector('.rail');
     // Si las cards de carga ya se ven, las cards ocupan su lugar sin la
     // entrada (con el fundido desde 0 el gris bajaba a blanco y volvía).
+    // Con el preloader encima no se vieron: entrada normal.
     const skeleton = rail.querySelector('[loading]');
-    const settled = Boolean(skeleton) && Number.parseFloat(getComputedStyle(skeleton).opacity) > 0;
+    const settled = !covered() && Boolean(skeleton) && Number.parseFloat(getComputedStyle(skeleton).opacity) > 0;
     const elements = cards.map((card) => this.#card(card));
     rail.replaceChildren(...elements);
     this.#reveal?.disconnect();
@@ -299,8 +300,20 @@ class ArqFeaturedProducts extends ArqElement {
     const rail = this.shadowRoot.querySelector('.rail');
     const max = rail.scrollWidth - rail.clientWidth;
     if (max <= 1) return;
+    // Al final vuelve al principio con un fundido corto (motion/duration/fade:
+    // se va, salta y vuelve), no rebobinando todas las cards a la vista.
     if (rail.scrollLeft >= max - 1) {
-      rail.scrollTo({ left: 0, behavior: this.#reducedMotion.matches ? 'auto' : 'smooth' });
+      const styles = getComputedStyle(this);
+      const options = {
+        duration: Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-fade')) || 0,
+        easing: styles.getPropertyValue('--arq-motion-easing-standard').trim() || 'ease',
+      };
+      const out = rail.animate([{ opacity: 1 }, { opacity: 0 }], { ...options, fill: 'forwards' });
+      out.finished.then(() => {
+        rail.scrollTo({ left: 0, behavior: 'auto' });
+        rail.animate([{ opacity: 0 }, { opacity: 1 }], options);
+        out.cancel();
+      }).catch(() => {});
       return;
     }
     this.shadowRoot.querySelector('.controls').go(1);

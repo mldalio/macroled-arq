@@ -120,20 +120,27 @@ textarea.control {
   z-index: 2;
   width: calc(100% + 2 * var(--arq-border-default));
   max-width: none;
-  /* Al abrir, crece desde el campo (scale 0.97 → 1, motion/duration/base)
-     y funde (motion/duration/fade), con motion/easing/out. Al cerrar, sin
-     animación. Con reduced motion base vale 0: queda solo el fundido.
-     La escala de partida es motion/scale/enter. */
+  /* Al abrir, crece desde el campo (scale 0.97 → 1) y funde, en
+     motion/duration/slow con motion/easing/standard (más suave que el
+     fundido corto de antes). Al cerrar, sin animación. Con reduced motion
+     slow vale 0: queda el fundido (abajo). La escala de partida es
+     motion/scale/enter. */
   transform-origin: top;
   transition:
-    opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out),
-    transform var(--arq-motion-duration-base) var(--arq-motion-easing-out);
+    opacity var(--arq-motion-duration-slow) var(--arq-motion-easing-standard),
+    transform var(--arq-motion-duration-slow) var(--arq-motion-easing-standard);
 }
 
 @starting-style {
   .menu:not([hidden]) {
     opacity: 0;
     transform: scale(var(--arq-motion-scale-enter));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu {
+    transition: opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-standard);
   }
 }
 

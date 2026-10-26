@@ -36,6 +36,7 @@ import { photoViewerTemplate } from '../../base/photo-viewer.js';
 
 const AUTOPLAY_MS = 3000;
 const DRAG_START = 6;
+const FLICK_VELOCITY = 0.4; // px/ms: un deslizamiento más rápido pasa de slide
 
 class ArqProjectSlider extends ArqElement {
   static tag = 'arq-project-slider';
@@ -436,8 +437,12 @@ class ArqProjectSlider extends ArqElement {
       id: event.pointerId,
       x: event.clientX,
       tx: this.#txFor(this.#index),
+      index: this.#index,
       moved: false,
       slide,
+      lastX: event.clientX,
+      lastT: event.timeStamp,
+      vx: 0,
     };
     event.currentTarget.setPointerCapture(event.pointerId);
     this.#armAutoplay();
@@ -453,6 +458,11 @@ class ArqProjectSlider extends ArqElement {
       this.#setDragging(true);
       this.#armAutoplay();
     }
+    // Velocidad del último tramo (px/ms), para el deslizamiento rápido (#dragEnd)
+    const dt = Math.max(event.timeStamp - this.#drag.lastT, 1);
+    this.#drag.vx = (event.clientX - this.#drag.lastX) / dt;
+    this.#drag.lastX = event.clientX;
+    this.#drag.lastT = event.timeStamp;
     event.preventDefault();
     this.shadowRoot.querySelector('.track').style.transform = `translateX(${this.#drag.tx + dx}px)`;
   }
@@ -474,6 +484,12 @@ class ArqProjectSlider extends ArqElement {
     }
     const tx = drag.tx + (event.clientX - drag.x);
     this.#index = this.#nearest(tx);
+    // Deslizamiento rápido y corto: pasa al slide siguiente aunque no haya
+    // llegado a la mitad (el mismo umbral que featured-products)
+    if (this.#index === drag.index && Math.abs(drag.vx) > FLICK_VELOCITY) {
+      const last = this.#metrics().slides.length - 1;
+      this.#index = Math.min(last, Math.max(0, drag.index - Math.sign(drag.vx)));
+    }
     if (this.#reduced.matches) this.#recenter();
     else {
       this.#paint();

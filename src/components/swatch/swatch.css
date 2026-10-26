@@ -75,11 +75,13 @@
    space/padding/2xs, así se ve también sobre el acabado negro. Hover, el mismo
    borde en color/border/hover (menos intenso). Es un outline siempre
    reservado (transparente): no cambia el tamaño, no mueve las demás y funde de
-   una muestra a otra en motion/duration/base (2026-10-21). */
+   una muestra a otra en motion/duration/base (2026-10-21). La opacidad de
+   Disabled funde con el mismo tiempo: al elegir otra opción, las muestras que
+   quedan sin combinación se apagan junto con el cambio del aro. */
 :host([size='xlarge']) .swatch {
   outline: var(--arq-border-default) solid var(--arq-color-surface-transparent);
   outline-offset: var(--arq-space-padding-2xs);
-  transition-property: outline-color;
+  transition-property: outline-color, opacity;
   transition-duration: var(--arq-motion-duration-base);
   transition-timing-function: var(--arq-motion-easing-standard);
 }
