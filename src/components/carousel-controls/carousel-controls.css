@@ -80,6 +80,68 @@
   transition: none;
 }
 
+/* scrub (variants-table): barra de scroll. Zona de agarre de space/padding/sm-md
+   de alto con la pista y el trazo centrados, de space/padding/xs; en hover y al
+   arrastrar suman border/strong (2 px). Pista en color/surface/subtle (opaca) y
+   trazo en color/border/hover (color/text/tertiary en hover y al arrastrar).
+   Grosor y color cambian con motion/duration/base y easing/standard. Con un
+   chevron (icon-button Default) a cada lado. El alto cambia en un elemento
+   absoluto dentro de una zona de alto fijo: no mueve el layout.
+   TODO (diseño): grosor a confirmar. */
+:host([buttons='none']) .progress.scrub {
+  flex: 1;
+  width: auto;
+  min-width: 0;
+}
+
+.progress.scrub {
+  --thick: var(--arq-space-padding-xs);
+  height: var(--arq-space-padding-sm-md);
+  cursor: grab;
+  touch-action: none;
+}
+
+.progress.scrub.dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.progress.scrub .track {
+  height: var(--thick);
+  background: var(--arq-color-surface-subtle);
+  opacity: 1;
+  transition: height var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
+}
+
+.progress.scrub .indicator {
+  top: calc(50% - var(--thick) / 2);
+  height: var(--thick);
+  background: var(--arq-color-border-hover);
+  /* Grosor y color con fundido; el movimiento del trazo (transform) sigue sin transición */
+  transition:
+    top var(--arq-motion-duration-base) var(--arq-motion-easing-standard),
+    height var(--arq-motion-duration-base) var(--arq-motion-easing-standard),
+    background-color var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
+}
+
+.progress.scrub.dragging {
+  --thick: calc(var(--arq-space-padding-xs) + var(--arq-border-strong));
+}
+
+.progress.scrub.dragging .indicator {
+  background: var(--arq-color-text-tertiary);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .progress.scrub:hover {
+    --thick: calc(var(--arq-space-padding-xs) + var(--arq-border-strong));
+  }
+
+  .progress.scrub:hover .indicator {
+    background: var(--arq-color-text-tertiary);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .indicator {
     transition: none;

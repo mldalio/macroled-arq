@@ -167,7 +167,7 @@ class ArqVariantsTable extends ArqElement {
     `<div class="scroll" id="scroll" tabindex="0" role="region" aria-label="Variantes">` +
     `<table class="table"><thead></thead><tbody></tbody></table>` +
     `</div>` +
-    `<div class="scrollbar" hidden><arq-carousel-controls buttons="none" progress="scroll" for="scroll"></arq-carousel-controls></div>` +
+    `<div class="scrollbar" hidden><arq-carousel-controls buttons="none" progress="scroll" scrub for="scroll"></arq-carousel-controls></div>` +
     `<ul class="cards" role="list" aria-label="Variantes"></ul>` +
     `<div class="more" hidden><arq-button class="more-button" type="outline">${TEXT.more}</arq-button></div>` +
     `<div class="skeleton" aria-hidden="true" hidden></div>` +
