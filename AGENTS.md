@@ -10,7 +10,7 @@ Reglas para todas las IAs que trabajan en este repo (Claude, Codex, Cursor u otr
 ## Contexto
 
 - Sitio en `macroled.com.ar/arq`. Se desarrolla en este repo y se carga dentro de páginas de Webflow que comparten sitio y dominio con el e-commerce de Macroled.
-- Las páginas de colección del CMS se anidan en la carpeta `/arq` de Webflow.
+- Las páginas de colección del CMS se anidan en la carpeta `/arq` de Webflow. La Home va en `/arq/inicio` (`/arq` redirige con 301): los links internos van directo ahí.
 - **Datos:** Google Sheets es la fuente maestra y alimenta Typesense, con un documento por SKU (campos e imágenes en `docs/typesense-schema.md`). Webflow CMS tiene dos colecciones, Productos y Colecciones, cargadas a mano, **solo con nombre y slug**: el ítem existe para que exista la URL. **Productos tiene un ítem por grupo** y Colecciones uno por colección. Todo el resto, textos incluidos, lo trae el componente desde Typesense. URLs en `docs/urls.md`; decisiones en `docs/decisiones.md` (2026-10-07 · Base de datos sin IDs).
 - **Formulario de contacto:** webhook de n8n.
 
@@ -98,7 +98,7 @@ dist/arq.js · dist/arq.css    ← única salida que carga Webflow
 
 - Prohibido estilar `html`, `body` o selectores globales.
 - Todo lo global lleva prefijo: variables `--arq-*`, atributos `data-arq-*`, eventos `arq:<nombre>`, localStorage `arq:<clave>`, `@keyframes arq-<nombre>`, un único global `window.Arq`.
-- La tipografía (Albert Sans) se carga a nivel página, no dentro del Shadow DOM.
+- La tipografía (Albert Sans) se carga a nivel página, no dentro del Shadow DOM. `ArqElement` la aplica en cada `:host` para que nada tome la fuente del `body` de Webflow.
 - No depender de scripts de Macroled ni modificarlos. Las interacciones de Webflow y Finsweet no entran al Shadow DOM.
 - Salida final: solo `dist/arq.js` y `dist/arq.css`, publicados en jsDelivr con tag de versión (`@v1.0.0`).
 
