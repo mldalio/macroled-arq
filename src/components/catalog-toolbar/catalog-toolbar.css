@@ -11,8 +11,9 @@
 .bar {
   display: flex;
   align-items: center;
+  flex-wrap: wrap; /* si la cantidad y las acciones no entran (320 px, Filtrar con cantidad), las acciones bajan */
   justify-content: space-between;
-  gap: var(--arq-space-gap-md);
+  gap: var(--arq-space-gap-sm-md) var(--arq-space-gap-md);
   padding-block: var(--arq-space-padding-md);
   border-block: var(--arq-border-default) solid var(--arq-color-border-subtle);
   background: var(--arq-color-surface-transparent);
@@ -28,7 +29,7 @@
 /* Count: role/body en color/text/secondary */
 .count {
   margin: 0;
-  min-width: 0;
+  flex: none; /* no se achica debajo de las acciones: si no entra, bajan ellas */
   color: var(--arq-color-text-secondary);
   white-space: nowrap; /* "11 productos" en una línea, aunque Filtrar muestre la cantidad */
 }
@@ -39,6 +40,7 @@
   align-items: center;
   gap: var(--arq-space-gap-xl);
   flex: none;
+  margin-inline-start: auto; /* abajo, siguen a la derecha */
 }
 
 /* Toggle + divider en su propia fila: el divider toma el alto del toggle (20

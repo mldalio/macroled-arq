@@ -22,8 +22,9 @@
 // - product (por defecto, ficha): los SKU de un grupo. Barra: Filtros con la
 //   cantidad («4 variantes») a la izquierda y, a la derecha, los archivos
 //   generales del grupo (slot `downloads`: CAD 2D/3D y Manual). Las filas
-//   muestran solo el sku (sin nombre). Sin buscador, sin «Ver más», sin
-//   y sin la URL.
+//   muestran solo el sku (sin nombre). Sin buscador, sin «Ver más» (todas las
+//   variantes juntas, decisión 2026-10-26) y sin la URL. Sin filtros (grupo
+//   de 1 SKU), sin el botón Filtros.
 // - catalog (Descargas): todos los SKU del catálogo. Barra: el buscador a la
 //   izquierda y Filtros a la derecha, del lado donde se abre filter-panel;
 //   debajo del buscador, la cantidad («4 productos»; cargando, «Buscando…»);
@@ -453,7 +454,8 @@ class ArqVariantsTable extends ArqElement {
     // Botón: «Filtros (N)»; deshabilitado mientras carga o si no hay filtros
     const toggle = root.querySelector('.toggle-filters');
     toggle.textContent = active ? `${TEXT.filters} (${active})` : TEXT.filters;
-    toggle.disabled = this.loading || !filters.length;
+    toggle.disabled = this.loading;
+    toggle.hidden = !this.loading && !filters.length; // nunca serviría: sin filtros, sin botón
     this.#renderChips();
     // Tabla: el nombre solo en catalog
     root.querySelector('.table tbody').innerHTML = page

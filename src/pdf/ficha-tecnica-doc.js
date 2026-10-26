@@ -5,7 +5,7 @@
 // Arma la definición de documento de pdfmake a partir de los datos del SKU.
 // No carga nada ni toca el DOM (eso es ficha-tecnica.js): se puede probar en Node.
 //
-//   buildDatasheet({ name, sku, keyData, sections }, { image: dataUrl | null, nameLines, skuLines })
+//   buildDatasheet({ name, sku, keyData, sections }, { image: dataUrl | null, nameLines, skuLines, keyLines })
 //
 // - Hoja 1 (pdf-page Type=Primera): pdf-cover (foto, nombre, SKU y datos
 //   clave) y las especificaciones que entran; pdfmake suma hojas para el resto
@@ -160,8 +160,12 @@ export const COVER_IMAGE = T['layout/pdf-cover-image'];
 /** Ancho de la columna de nombre, SKU y datos clave de pdf-cover, en px. */
 export const COVER_INFO_WIDTH = CONTENT_WIDTH - COVER_IMAGE - T['space/gap/xl'];
 
-// Alto de pdf-key-data: padding superior, etiqueta, gap y valor (una línea).
-const keyDataHeight = ruled + T['space/padding/sm-md'] + ROLES.label.lineHeight + T['space/gap/xs'] + ROLES['heading-3-light'].lineHeight;
+// Alto de pdf-key-data: padding superior, etiqueta, gap y valor (keyLines:
+// las líneas del valor más largo; «36W + 36W (Up & Down)» ocupa varias).
+const keyDataHeight = (keyLines = 1) => ruled + T['space/padding/sm-md'] + ROLES.label.lineHeight + T['space/gap/xs'] + keyLines * ROLES['heading-3-light'].lineHeight;
+
+/** Ancho de cada pdf-key-item, en px (se reparten COVER_INFO_WIDTH). */
+export const keyItemWidth = (count) => (COVER_INFO_WIDTH - (count - 1) * T['space/gap/sm-md']) / count;
 
 // pdf-key-data: hasta cuatro pdf-key-item del mismo ancho, con regla superior
 // color/border/strong. Cada uno: etiqueta role/label y valor role/heading-3-light.
@@ -191,7 +195,7 @@ function keyDataRow(items) {
 // (pdf-cover-title) arriba y los datos clave abajo, alineados con el pie de la
 // foto. Si el nombre ocupa muchas líneas, los datos clave bajan y el bloque
 // crece (en Figma, el bloque toma el alto de la columna más alta).
-function cover(data, { image, nameLines, skuLines }) {
+function cover(data, { image, nameLines, skuLines, keyLines }) {
   const side = pt(COVER_IMAGE);
   const title = [
     roleText(data.name, 'display', 'text/primary'),
@@ -200,7 +204,7 @@ function cover(data, { image, nameLines, skuLines }) {
   const titleHeight = nameLines * ROLES.display.lineHeight + T['space/gap/sm-md'] + skuLines * ROLES['body-lg'].lineHeight;
   const keyData = data.keyData ?? [];
   const info = keyData.length
-    ? [...title, { ...keyDataRow(keyData), margin: [0, pt(Math.max(T['space/gap/sm-md'], COVER_IMAGE - titleHeight - keyDataHeight)), 0, 0] }]
+    ? [...title, { ...keyDataRow(keyData), margin: [0, pt(Math.max(T['space/gap/sm-md'], COVER_IMAGE - titleHeight - keyDataHeight(keyLines))), 0, 0] }]
     : title;
   return {
     ...ruledBlock(
@@ -261,8 +265,9 @@ export function pageBreakBefore(node, { getPreviousNodesOnPage }) {
  *   options.image: foto de pdf-cover como data URL (JPEG o PNG), cuadrada y
  *     con el fondo ya pintado; null muestra solo el fondo.
  *   options.nameLines / skuLines: líneas que ocupan nombre y SKU en COVER_INFO_WIDTH.
+ *   options.keyLines: líneas del dato clave más largo en su columna (keyItemWidth).
  */
-export function buildDatasheet(data, { image = null, nameLines = 1, skuLines = 1 } = {}) {
+export function buildDatasheet(data, { image = null, nameLines = 1, skuLines = 1, keyLines = 1 } = {}) {
   // Desde la hoja 2 el cuerpo arranca a space/padding/2xl del encabezado
   // (Type=Product). En la 1, pdf-cover va debajo del encabezado Type=Default,
   // más bajo, con su propio padding (space/padding/xl): sube desde el margen
@@ -286,7 +291,7 @@ export function buildDatasheet(data, { image = null, nameLines = 1, skuLines = 1
     pageBreakBefore,
     defaultStyle: { font: fontName(ROLES.body.fontWeight) },
     content: [
-      { ...cover(data, { image, nameLines, skuLines }), margin: [0, pt(coverShift), 0, 0] },
+      { ...cover(data, { image, nameLines, skuLines, keyLines }), margin: [0, pt(coverShift), 0, 0] },
       ...sections.map((section, i) => specGroup(section, i, i === sections.length - 1)),
     ],
   };

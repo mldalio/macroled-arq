@@ -148,6 +148,36 @@ export function setBrowserBar(dark, source = document.documentElement) {
   }
 }
 
+// Paneles a pantalla completa que quedan en Light con Iluminar prendido (menú
+// Mobile, search-sheet, filter-panel Mobile, compare-picker Mobile): mientras
+// están abiertos, la barra del navegador pasa a su color (si no, quedaba oscura
+// sobre una pantalla blanca). Al cerrarlos vuelve al color de Iluminar. Solo
+// actúa si Iluminar cambió la barra y en Mobile (en Desktop no son a pantalla
+// completa).
+const BAR_LIT = 'data-arq-theme-color-lit';
+const FULL_SCREEN = matchMedia('(max-width: 767px)');
+
+/** Un panel Light a pantalla completa se abre (open) o se cierra. */
+export function setPanelBar(open, panel) {
+  const metas = [...document.head.querySelectorAll(`meta[name="theme-color"][${BAR_ORIGINAL}], meta[name="theme-color"][${BAR_ADDED}]`)];
+  if (!metas.length) return;
+  if (!open) {
+    for (const meta of metas) {
+      if (!meta.hasAttribute(BAR_LIT)) continue;
+      meta.content = meta.getAttribute(BAR_LIT);
+      meta.removeAttribute(BAR_LIT);
+    }
+    return;
+  }
+  if (!FULL_SCREEN.matches) return;
+  const color = getComputedStyle(panel).getPropertyValue('--arq-color-surface-default').trim();
+  if (!color) return;
+  for (const meta of metas) {
+    if (!meta.hasAttribute(BAR_LIT)) meta.setAttribute(BAR_LIT, meta.content);
+    meta.content = color;
+  }
+}
+
 // Iluminar no se recuerda: recargar o volver a una página la deja en su estado
 // normal. La única excepción es Productos → ficha: si el listado está iluminado
 // y se entra a un producto, la ficha llega iluminada. El traspaso vive en
@@ -175,9 +205,18 @@ export function takeThemeHandoff() {
   }
 }
 
-/** Llamar justo antes de cambiar data-arq-theme por Iluminar. */
-export function animateThemeChange(bgMs = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--arq-illumination-bg-duration')) || 0) {
-  const style = document.documentElement.style;
+/**
+ * Llamar justo antes de cambiar data-arq-theme por Iluminar. `targets`: los
+ * elementos que cambian de modo (ficha: navbar y hero). Las variables van solo
+ * ahí: en <html> invalidaban el estilo de toda la página (unos 2.000 nodos)
+ * para cambiar dos bloques. Sin targets, en <html>.
+ */
+export function animateThemeChange(bgMs = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--arq-illumination-bg-duration')) || 0, targets = [document.documentElement]) {
+  const styles = targets.map((element) => element.style);
+  const style = {
+    setProperty: (name, value) => styles.forEach((s) => s.setProperty(name, value)),
+    removeProperty: (name) => styles.forEach((s) => s.removeProperty(name)),
+  };
   // Reduced motion (DESIGN.md §6): todo funde junto y corto, con
   // motion/duration/fade, como el fondo (global.css). Sin retraso.
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) {

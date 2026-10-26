@@ -76,6 +76,7 @@ class ArqCarouselControls extends ArqElement {
   #target = null;
   #watching = false;
   #scrollable = true;
+  #scrollSetup = ''; // lo último que armó #progressByScroll (scrollable|scrub)
   #onScroll = () => this.#syncFromScroll();
   #resize = new ResizeObserver(() => this.#syncFromScroll());
   // Elementos que entran al carrusel (cards, fotos que arma la página)
@@ -241,12 +242,17 @@ class ArqCarouselControls extends ArqElement {
   #progressByScroll(target, scrollable) {
     const root = this.shadowRoot;
     const progress = root.querySelector('.progress');
-    root.querySelector('.count').hidden = true;
-    progress.hidden = !scrollable;
-    progress.dataset.mode = 'scroll';
-    progress.classList.toggle('scrub', this.scrub);
-    progress.setAttribute('aria-hidden', 'true');
-    for (const attribute of ['role', 'aria-valuemin', 'aria-valuemax', 'aria-valuenow', 'aria-valuetext']) progress.removeAttribute(attribute);
+    // La configuración cambia poco: por cada cuadro de scroll solo se mueve el trazo
+    const setup = `${scrollable}|${this.scrub}`;
+    if (setup !== this.#scrollSetup) {
+      this.#scrollSetup = setup;
+      root.querySelector('.count').hidden = true;
+      progress.hidden = !scrollable;
+      progress.dataset.mode = 'scroll';
+      progress.classList.toggle('scrub', this.scrub);
+      progress.setAttribute('aria-hidden', 'true');
+      for (const attribute of ['role', 'aria-valuemin', 'aria-valuemax', 'aria-valuenow', 'aria-valuetext']) progress.removeAttribute(attribute);
+    }
     if (!scrollable) return;
     const size = Math.min(1, target.clientWidth / target.scrollWidth);
     const offset = target.scrollLeft / target.scrollWidth;
@@ -260,6 +266,7 @@ class ArqCarouselControls extends ArqElement {
     const count = Math.max(this.count || 1, 1);
     const index = Math.min(Math.max(this.index || 0, 0), count - 1);
     if (this.progress === 'scroll') return; // la línea la arma #progressByScroll
+    this.#scrollSetup = '';
     const show = this.buttons === 'carousel' && count > 1;
     const countEl = root.querySelector('.count');
     const progress = root.querySelector('.progress');

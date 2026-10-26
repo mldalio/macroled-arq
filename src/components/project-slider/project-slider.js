@@ -37,6 +37,7 @@ import { photoViewerTemplate } from '../../base/photo-viewer.js';
 const AUTOPLAY_MS = 3000;
 const DRAG_START = 6;
 const FLICK_VELOCITY = 0.4; // px/ms: un deslizamiento más rápido pasa de slide
+const VELOCITY_WINDOW = 100; // ms de arrastre que cuentan para la velocidad al soltar
 
 class ArqProjectSlider extends ArqElement {
   static tag = 'arq-project-slider';
@@ -440,9 +441,7 @@ class ArqProjectSlider extends ArqElement {
       index: this.#index,
       moved: false,
       slide,
-      lastX: event.clientX,
-      lastT: event.timeStamp,
-      vx: 0,
+      samples: [{ x: event.clientX, t: event.timeStamp }],
     };
     event.currentTarget.setPointerCapture(event.pointerId);
     this.#armAutoplay();
@@ -454,15 +453,20 @@ class ArqProjectSlider extends ArqElement {
     if (!this.#drag.moved) {
       if (Math.abs(dx) <= DRAG_START) return;
       this.#drag.moved = true;
-      this.shadowRoot.querySelector('.track').style.transition = 'none';
+      // Si el track todavía se movía (autoplay, el soltar anterior), el
+      // arrastre sigue desde donde se ve, no desde el destino: si no, salta.
+      const track = this.shadowRoot.querySelector('.track');
+      const shown = new DOMMatrixReadOnly(getComputedStyle(track).transform).m41;
+      this.#drag.tx = shown - dx;
+      track.style.transition = 'none';
       this.#setDragging(true);
       this.#armAutoplay();
     }
-    // Velocidad del último tramo (px/ms), para el deslizamiento rápido (#dragEnd)
-    const dt = Math.max(event.timeStamp - this.#drag.lastT, 1);
-    this.#drag.vx = (event.clientX - this.#drag.lastX) / dt;
-    this.#drag.lastX = event.clientX;
-    this.#drag.lastT = event.timeStamp;
+    // Velocidad de los últimos ~100 ms (px/ms), para el deslizamiento rápido
+    // (#dragEnd); una sola muestra es ruidosa
+    const samples = this.#drag.samples;
+    samples.push({ x: event.clientX, t: event.timeStamp });
+    while (samples.length > 2 && event.timeStamp - samples[0].t > VELOCITY_WINDOW) samples.shift();
     event.preventDefault();
     this.shadowRoot.querySelector('.track').style.transform = `translateX(${this.#drag.tx + dx}px)`;
   }
@@ -483,12 +487,26 @@ class ArqProjectSlider extends ArqElement {
       return;
     }
     const tx = drag.tx + (event.clientX - drag.x);
+    const first = drag.samples[0];
+    const last = drag.samples.at(-1);
+    const vx = (last.x - first.x) / Math.max(last.t - first.t, 1);
     this.#index = this.#nearest(tx);
+    // Después del arrastre, motion/easing/out: arranca rápido y sigue el
+    // empuje del dedo (standard arranca quieto y se sentía como una pared)
+    if (!this.#reduced.matches) {
+      track.style.transition = 'transform var(--arq-motion-duration-slow) var(--arq-motion-easing-out)';
+      const restore = (event) => {
+        if (event.target !== track || event.propertyName !== 'transform') return;
+        track.removeEventListener('transitionend', restore);
+        track.style.transition = '';
+      };
+      track.addEventListener('transitionend', restore);
+    }
     // Deslizamiento rápido y corto: pasa al slide siguiente aunque no haya
     // llegado a la mitad (el mismo umbral que featured-products)
-    if (this.#index === drag.index && Math.abs(drag.vx) > FLICK_VELOCITY) {
-      const last = this.#metrics().slides.length - 1;
-      this.#index = Math.min(last, Math.max(0, drag.index - Math.sign(drag.vx)));
+    if (this.#index === drag.index && Math.abs(vx) > FLICK_VELOCITY) {
+      const lastSlide = this.#metrics().slides.length - 1;
+      this.#index = Math.min(lastSlide, Math.max(0, drag.index - Math.sign(vx)));
     }
     if (this.#reduced.matches) this.#recenter();
     else {

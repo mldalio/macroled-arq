@@ -48,6 +48,7 @@
 
 import { ArqElement } from '../../base/arq-element.js';
 import { containScroll } from '../../base/scroll-lock.js';
+import { setPanelBar } from '../../base/theme.js';
 import '../logo/logo.js';
 import '../icon-button/icon-button.js';
 import '../carousel-button/carousel-button.js';
@@ -153,6 +154,7 @@ class ArqSearchSheet extends ArqElement {
       this.#dialog.classList.add('is-open'); // ya abierto: sin transición
     } else {
       containScroll(this.#dialog);
+      this.#dialog.addEventListener('close', () => setPanelBar(false));
       this.#dialog.addEventListener('cancel', (event) => {
         event.preventDefault();
         this.close();
@@ -166,6 +168,13 @@ class ArqSearchSheet extends ArqElement {
     this.#renderRecommended();
     this.#renderResults();
     window.addEventListener('resize', () => this.#fit());
+    // Teclado del teléfono: iOS no achica dvh al abrirlo y tapaba los últimos
+    // resultados. --keyboard-inset suma ese alto al pie del contenido.
+    window.visualViewport?.addEventListener('resize', () => {
+      const viewport = window.visualViewport;
+      const inset = Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop);
+      this.style.setProperty('--keyboard-inset', `${Math.round(inset)}px`);
+    });
   }
 
   #recommendedResize = new ResizeObserver(() => this.#syncRecommendedControls());
@@ -242,6 +251,8 @@ class ArqSearchSheet extends ArqElement {
     const dialog = this.#dialog;
     if (!dialog.open) {
       dialog.showModal();
+      // Con Iluminar, la barra del navegador pasa al color del panel (Light)
+      setPanelBar(true, dialog);
       void dialog.offsetHeight; // fija el estado inicial antes de is-open
       this.#fit();
       requestAnimationFrame(() => this.field.focus({ preventScroll: true }));

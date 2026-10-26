@@ -29,4 +29,6 @@ Migas de pan: `Colecciones / Kanu / Kanu Jardín`. Contiene [`<arq-breadcrumb-it
 
 ## Textos largos
 
-Una sola fila (descripción del set). Si no entra, primero se achica el ítem actual, que se parte en varias líneas (hasta el ancho de su palabra más larga), y después se cortan con "…" los intermedios. Los separadores quedan en la primera línea.
+Una sola fila (descripción del set). Si no entra, primero se achica el ítem actual, que se parte en varias líneas (hasta el ancho de su palabra más larga), y después se cortan con "…" los intermedios. Los separadores quedan en la primera línea. Un ítem cortado lleva el texto entero en `title`.
+
+Mobile (hasta 767 px): los ítems bajan de línea en vez de cortarse (decisión 2026-10-26); solo un ítem más ancho que la línea se corta con "…".

@@ -34,6 +34,10 @@ class ArqSwatch extends ArqElement {
     const sync = () => {
       const name = this.textContent.trim();
       if (name) this.setAttribute('aria-label', name);
+      // Con el mouse encima se lee el nombre: sin imagen de acabado, las
+      // muestras son cuadrados neutros iguales (DESIGN.md §8 · Acabados)
+      if (name) this.title = name;
+      else this.removeAttribute('title');
     };
     this.shadowRoot.querySelector('slot').addEventListener('slotchange', sync);
     sync();

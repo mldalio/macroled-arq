@@ -186,10 +186,16 @@
   inset: 0;
 }
 
+/* Tope: lo que queda de pantalla debajo de la barra. La barra es sticky y el
+   panel absoluto, así que el scroll de la página no lo mueve: si una pestaña
+   tiene muchos links (o la pantalla es baja), el panel se desplaza adentro. */
 .mega-drawer {
   position: relative;
   min-height: 0;
-  overflow: clip;
+  max-height: calc(100dvh - var(--bar-top, 0dvh) - var(--arq-layout-navbar-height));
+  overflow-x: clip;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   clip-path: inset(0 0 100% 0);
   transition: clip-path var(--mega-slow) var(--mega-ease);
 }

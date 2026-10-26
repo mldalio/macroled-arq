@@ -101,3 +101,11 @@
 .row:focus:not(:focus-visible) {
   outline: none;
 }
+
+/* Táctil: sin hover, el toque muestra lo mismo mientras el dedo apoya
+   (:active), así el link responde antes de que cargue la página siguiente */
+@media (hover: none) {
+  :host([emphasis='featured']) .row:active {
+    background: var(--arq-color-surface-faint);
+  }
+}

@@ -83,6 +83,10 @@ const baseCss = `
 :host {
   -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
   touch-action: manipulation;
+  /* Sin el texto agrandado de iOS al girar a horizontal. Se hereda: alcanza
+     con el host, sin tocar html (AGENTS.md · Integración con Webflow). */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 /* Albert Sans en cada componente: lo que hereda la fuente (font: inherit de
@@ -141,6 +145,10 @@ svg * {
   color: inherit !important;
 }
 `;
+
+// iOS Safari no aplica :active (Pressed de button, icon-button, cards) si
+// ningún ancestro escucha touchstart. Un listener vacío y pasivo, una sola vez.
+document.addEventListener('touchstart', () => {}, { passive: true });
 
 function warn(message) {
   if (import.meta.env.DEV) console.warn(`[arq] ${message}`);

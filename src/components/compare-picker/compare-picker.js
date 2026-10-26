@@ -40,6 +40,7 @@
 
 import { ArqElement } from '../../base/arq-element.js';
 import { containScroll } from '../../base/scroll-lock.js';
+import { setPanelBar } from '../../base/theme.js';
 import '../icon-button/icon-button.js';
 import '../search-field/search-field.js';
 import '../button/button.js';
@@ -52,7 +53,7 @@ const FINE = matchMedia('(hover: hover) and (pointer: fine)');
 const TEXT = {
   noResults: (query) => (query ? `No encontramos productos para «${query}».` : 'No encontramos productos.'),
   hint: 'Probá con otro nombre, SKU o familia.',
-  count: (n) => (n === 1 ? '1 producto' : `${n} productos`),
+  count: (n) => (n === 1 ? '1 producto' : `${n.toLocaleString('es-AR')} productos`),
   added: (name) => `${name} agregado a la comparación.`,
   // Mismo texto que el error de los listados (catalog-listing) y «Reintentar»
   // como en Descargas (State=Error del set 2724:8761).
@@ -123,6 +124,7 @@ class ArqComparePicker extends ArqElement {
     const root = this.shadowRoot;
     this.#dialog = root.querySelector('dialog');
     containScroll(this.#dialog);
+    this.#dialog.addEventListener('close', () => setPanelBar(false));
     root.querySelector('.close').addEventListener('click', () => this.close());
     // Scrim: el clic en el ::backdrop llega al <dialog> (el contenido está en .sheet).
     this.#dialog.addEventListener('click', (event) => {
@@ -265,6 +267,8 @@ class ArqComparePicker extends ArqElement {
     this.#closing = null;
     if (!dialog.open) {
       dialog.showModal();
+      // Con Iluminar, la barra del navegador pasa al color del panel (Light)
+      setPanelBar(true, dialog);
       void dialog.offsetHeight; // fija el estado inicial antes de is-open
       // Con mouse, el foco va al buscador; en táctil, al cerrar (no abre el teclado).
       const target = FINE.matches ? this.shadowRoot.querySelector('.search') : this.shadowRoot.querySelector('.close');
