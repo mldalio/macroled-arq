@@ -96,6 +96,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [swatch](#swatch) | `<arq-swatch>` | En código ([README](../src/components/swatch/README.md)) |
 | ✅ [swatch-picker](#swatch-picker) | `<arq-swatch-picker>` | En código ([README](../src/components/swatch-picker/README.md)) |
 | ✅ [tab](#tab) | `<arq-tab>` | En código ([README](../src/components/tab/README.md)) |
+| ✅ [text-link](#text-link) | `<arq-text-link>` | En código ([README](../src/components/text-link/README.md)) |
 | ✅ [toggle](#toggle) | `<arq-toggle>` | En código ([README](../src/components/toggle/README.md)) |
 | ✅ [toggle-switch](#toggle-switch) | — | Dentro de toggle ([README](../src/components/toggle/README.md)) |
 | ✅ [variants-table](#variants-table) | `<arq-variants-table>` | En código ([README](../src/components/variants-table/README.md)) · Un solo componente para la ficha (`type="product"`) y Descargas (`type="catalog"`, propuesta 2575:22875); reemplaza a `<arq-downloads-table>` (2026-10-20). El set de Figma ya tiene Type (Product · Catalog) y Breakpoint (2026-10-20) |
@@ -873,6 +874,13 @@ Selector de acabado por muestras (role=radiogroup): fila de swatch con gap space
 - Propiedades: Label; State: Default · Hover · Selected · Focus · Disabled
 
 Pestaña (role="tab"). Label role/body-regular en color/text/secondary; Selected (aria-selected="true") en role/body-medium y color/text/primary, con subrayado de 1 px (border/default) en color/border/strong. Padding inferior space/padding/sm-md. State: Default, Hover, Selected, Focus y Disabled. Se agrupan en un contenedor role="tablist" con separación space/gap/xl y una línea color/border/subtle debajo. Lo usan el mega menú de Productos y la ficha de producto (Especificaciones · Información comercial · Configurador en la colección Daö).
+
+## text-link
+
+- Figma: [2965-9774](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2965-9774)
+- Propiedades: Label; Size: Default · Compact; State: Default · Hover · Focus
+
+Link de texto: un nombre o una frase que lleva a otra página y sigue el estilo del texto que lo rodea (el nombre de un producto en Descargas, una pieza del armado de Daö en la ficha). Sin padding, línea de border/default (1 px) en el color del texto, pegada al texto (caja de texto de 1em + border/strong, a ~3,5 px de la base). Hover y Pressed no dibujan otra línea: atenúan texto y línea a color/text/tertiary. Size: Default (role/body-regular) · Compact (role/body-compact-regular). Foco: anillo separado. No confundir con button Underline (botón: padding propio, línea animada, íconos) ni con nav-link, footer-link o breadcrumb-item.
 
 ## toggle
 

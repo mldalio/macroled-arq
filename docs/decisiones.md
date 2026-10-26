@@ -1630,3 +1630,10 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - Decisión: option-tile suma la variante Type: Option · Value. option-group (Type=Tiles) cuenta sus tiles: con uno solo lo pasa a Type=Value (sin línea, sin role ni foco, `color/text/primary`) y deja de ser un `radiogroup`; con más vuelve a Option. Regla de código en option-group, no una prop que se escriba en el HTML.
 - La línea de 2 px del tile elegido queda como está: la distingue del tab y del link de texto.
 - El set de option-tile en Figma ya tiene Type=Value. `TODO` (diseño): DESIGN.md (§8, fila de option-group · option-tile) y su copia en Figma.
+## 2026-10-26 · text-link: componente para links de texto
+
+- Pedido: el nombre del producto en Descargas se veía como un botón Underline (línea separada del texto, hover que dibuja otra línea). Es un link de texto, no un botón.
+- Decisión: componente nuevo `<arq-text-link>` (Size: Default · Compact; State: Default · Hover · Focus). Línea de `border/default` pegada al texto, hover que atenúa texto y línea a `color/text/tertiary`, sin animación de línea. Se usa en el nombre de variants-table Type=Catalog (fila y tarjeta Mobile) y en las piezas del armado de Daö en la ficha. button Underline queda para acciones y llamadas.
+- Medido en Chrome (Albert Sans 14, ampliado): un `<a>` en línea dejaba la línea a ~9 px de la base porque su caja es el área de contenido de la fuente, no el interlineado; con una caja de 1em + border/strong y la línea en su borde inferior queda a ~3,5 px y no toca las colas de g, p, y, q.
+- variants-table: el nombre y el sku quedan a `space/gap/sm-md` (0,75 rem) en la tabla y en la tarjeta Mobile (antes `sm` y `xs`).
+- `TODO` (diseño): ficha `doc/text-link` en Documentación y DESIGN.md (§8 y Anexo A). El set ya está en Figma (2965:9774).

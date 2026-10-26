@@ -14,6 +14,7 @@ import '../swatch/swatch.js';
 import '../swatch-picker/swatch-picker.js';
 import '../sku/sku.js';
 import '../button/button.js';
+import '../text-link/text-link.js';
 import css from './dao-configurator.css?inline';
 
 const TEXT = {
@@ -247,9 +248,7 @@ class ArqDaoConfigurator extends ArqElement {
     const body = document.createElement('div');
     body.className = 'part-body';
     if (part.href) {
-      const link = document.createElement('arq-button');
-      link.type = 'underline';
-      link.showUnderline = true;
+      const link = document.createElement('arq-text-link');
       link.href = part.href;
       link.textContent = part.name;
       body.append(link);

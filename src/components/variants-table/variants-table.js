@@ -60,6 +60,7 @@
 //   downloads="<id>", abre ese download-modal.
 
 import { ArqElement } from '../../base/arq-element.js';
+import '../text-link/text-link.js';
 import { filterOptions, filterVariants, searchVariants } from '../../data/variants.js';
 import '../button/button.js';
 import '../icon-button/icon-button.js';
@@ -140,7 +141,7 @@ const thumb = (row, className, link = false) => {
 // sku elegido; sin href, texto.
 const productName = (row, role) =>
   row.href
-    ? `<a class="name name-link ${role}" href="${esc(row.href)}">${esc(row.name)}</a>`
+    ? `<arq-text-link class="name" size="compact" href="${esc(row.href)}">${esc(row.name)}</arq-text-link>`
     : `<span class="name ${role}">${esc(row.name)}</span>`;
 
 class ArqVariantsTable extends ArqElement {
