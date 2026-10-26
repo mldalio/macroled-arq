@@ -1597,3 +1597,11 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - Pedido: la barra de filtros aplicados decía «Limpiar filtros» y el panel «Borrar todo», para la misma acción. Quedan los dos como «Limpiar filtros». «Borrar todo» queda solo en compare-bar (borra los productos elegidos).
 - En el panel, el botón se deshabilita mientras no hay ningún filtro marcado (antes estaba siempre habilitado). Si tenía el foco al deshabilitarse, el foco pasa a «Ver N».
 - `TODO` (diseño): cambiar el texto y el estado Disabled en el set de filter-panel de Figma; DESIGN.md (fila de filter-panel) en una rama `docs/`.
+
+## 2026-10-26 · text-link: componente para links de texto
+
+- Pedido: el nombre del producto en Descargas se veía como un botón Underline (línea separada del texto, hover que dibuja otra línea). Es un link de texto, no un botón.
+- Decisión: componente nuevo `<arq-text-link>` (Size: Default · Compact; State: Default · Hover · Focus). Línea de `border/default` pegada al texto, hover que atenúa texto y línea a `color/text/tertiary`, sin animación de línea. Se usa en el nombre de variants-table Type=Catalog (fila y tarjeta Mobile) y en las piezas del armado de Daö en la ficha. button Underline queda para acciones y llamadas.
+- Medido en Chrome (Albert Sans 14, ampliado): un `<a>` en línea dejaba la línea a ~9 px de la base porque su caja es el área de contenido de la fuente, no el interlineado; con una caja de 1em + border/strong y la línea en su borde inferior queda a ~3,5 px y no toca las colas de g, p, y, q.
+- variants-table: el nombre y el sku quedan a `space/gap/sm-md` (0,75 rem) en la tabla y en la tarjeta Mobile (antes `sm` y `xs`).
+- `TODO` (diseño): ficha `doc/text-link` en Documentación y DESIGN.md (§8 y Anexo A). El set ya está en Figma (2965:9774).

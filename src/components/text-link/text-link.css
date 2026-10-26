@@ -1,0 +1,57 @@
+/* text-link · solo tokens semánticos.
+   Link de texto: sin padding, línea de border/default pegada al texto, hover que
+   atenúa. El estilo de texto (role/body-regular o role/body-compact-regular) lo
+   pone la clase del <a>; acá solo se ajusta la caja. */
+
+:host {
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* a.link (0,1,1) gana a la clase role-* (0,1,0): el interlineado no es el del
+   role sino una caja ajustada al texto (1em + border/strong = 2 px más que el
+   cuerpo: 14 → 16, 16 → 18). Es lo que acerca la línea a las letras: en un link
+   en línea, la caja sería el área de contenido de la fuente (más alta que las
+   letras) y la línea quedaría a ~9 px. La línea va en el borde inferior de esta
+   caja, a ~3,5 px de la base: no toca las colas de g, p, y, q. */
+a.link {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  color: var(--arq-color-text-primary);
+  line-height: calc(1em + var(--arq-border-strong));
+  text-decoration: none;
+  transition: color var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
+}
+
+/* La línea sigue el color del texto: al atenuarse, se atenúan juntos */
+a.link::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  height: var(--arq-border-default);
+  background: currentColor;
+}
+
+/* State=Hover y Pressed: texto y línea a color/text/tertiary. Hover solo con
+   mouse: en táctil quedaría pegado. */
+@media (hover: hover) and (pointer: fine) {
+  a.link:hover {
+    color: var(--arq-color-text-tertiary);
+  }
+}
+
+a.link:active {
+  color: var(--arq-color-text-tertiary);
+}
+
+/* Foco: anillo separado; no cambia el tamaño */
+a.link:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: var(--arq-border-strong);
+}
+
+a.link:focus:not(:focus-visible) {
+  outline: none;
+}
