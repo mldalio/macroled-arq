@@ -24,14 +24,15 @@
 // - Comparar: "Comparar" de cada card suma o saca el producto
 //   de la compare-bar (hasta 3; la selección se guarda en arq:compare). El
 //   lugar vacío (+) de la barra abre compare-picker para agregar desde ahí.
-// - Iluminar: lo resuelve catalog-toolbar (data-arq-theme en <html>).
+// - Iluminar: lo resuelve catalog-toolbar (data-arq-theme en <html>). En la
+//   colección Daö (?collection=dao) no existe: sin toggle y la página en Light.
 // - No hay vista «Todas las colecciones» (se sacó el 2026-10-23: docs/archivo/
 //   todas-las-colecciones.md). Una colección se ve desde el catalog-nav
 //   (?collection=) y desde el mega-menu.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { listProducts, listCompareCandidates, getCatalogNav } from '../../data/catalog.js';
-import { handOffTheme } from '../../base/theme.js';
+import { handOffTheme, setBrowserBar, withoutThemeTransition } from '../../base/theme.js';
 import '../catalog-toolbar/catalog-toolbar.js';
 import '../filter-panel/filter-panel.js';
 import '../filter-row/filter-row.js';
@@ -47,6 +48,9 @@ const CATEGORY_PARAMS = { environment: 'environment', application: 'application'
 const LISTING_DESKTOP = matchMedia('(min-width: 1024px)');
 const LISTING_WIDE = matchMedia('(min-width: 1920px)');
 const ENTER_STAGGERED = 8; // cards con escalón en la entrada; el resto entra con la octava
+
+// Colección (id, sin tildes) sin Iluminar, como la ficha de Daö (decisiones.md, 2026-10-23)
+const NO_ILLUMINATION_COLLECTION = 'dao';
 
 const TEXT = { loading: 'Cargando productos…', empty: 'No hay productos con estos filtros.', error: 'No se pudieron cargar los productos. Probá de nuevo en unos minutos.' };
 
@@ -83,6 +87,7 @@ class ArqCatalogListing extends ArqElement {
     const root = this.shadowRoot;
     this.#category = categoryFromUrl();
     this.#query = new URLSearchParams(location.search).get('q')?.trim() ?? '';
+    this.#syncIlluminate();
     root.querySelector('slot[name="nav"]').addEventListener('slotchange', () => this.#markNav());
     // Si cambia el href de un link del nav (la demo reescribe los que llegan
     // de Typesense), se vuelve a marcar el actual. selected no es href: no
@@ -234,8 +239,24 @@ class ArqCatalogListing extends ArqElement {
     this.#query = params.get('q')?.trim() ?? '';
     this.#filters = {};
     this.shadowRoot.querySelector('arq-filter-panel').clear();
+    this.#syncIlluminate();
     this.#markNav();
     this.#load();
+  }
+
+  // La colección Daö no tiene Iluminar: sin toggle, y si se llegó iluminado
+  // (otra categoría) la página vuelve a Light.
+  #syncIlluminate() {
+    const collection = (this.#category.collection ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    const off = collection === NO_ILLUMINATION_COLLECTION;
+    this.shadowRoot.querySelector('.toolbar').showIluminar = !off;
+    const html = document.documentElement;
+    if (off && html.getAttribute('data-arq-theme') === 'dark') {
+      withoutThemeTransition(() => {
+        html.removeAttribute('data-arq-theme');
+        setBrowserBar(false);
+      });
+    }
   }
 
   // Una sola vez, al conectarse (el componente no tiene props): carga el listado.
