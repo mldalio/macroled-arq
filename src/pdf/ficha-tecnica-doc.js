@@ -1,15 +1,14 @@
 // Ficha técnica en PDF · Figma «11 · Ficha PDF» (1907:8278): pdf-page,
-// pdf-header, pdf-cover (pdf-cover-title + pdf-key-data / pdf-key-item),
-// pdf-spec-group, pdf-spec-row · 2 col y pdf-footer. Hoja con cotas: «pdf ·
+// pdf-header, pdf-cover (pdf-cover-title), pdf-spec-group, pdf-spec-row · 2 col y pdf-footer. Hoja con cotas: «pdf ·
 // cotas A2 · 1 hoja» (2992:45969).
 //
 // Arma la definición de documento de pdfmake a partir de los datos del SKU.
 // No carga nada ni toca el DOM (eso es ficha-tecnica.js): se puede probar en Node.
 //
-//   buildDatasheet({ name, sku, keyData, sections }, { image: dataUrl | null, cota: dataUrl | null })
+//   buildDatasheet({ name, sku, sections }, { image: dataUrl | null, cota: dataUrl | null })
 //
-// - Hoja 1 (pdf-page Type=Primera): pdf-cover (foto, cotas, nombre, SKU y
-//   datos clave) y las especificaciones en dos columnas, para que entre todo
+// - Hoja 1 (pdf-page Type=Primera): pdf-cover (nombre, SKU, foto y cotas) y
+//   las especificaciones en dos columnas, para que entre todo
 //   en una hoja; pdfmake suma hojas si no entra (Type=Siguiente).
 // - Una sección que no entra en lo que queda de la hoja sigue en la próxima,
 //   con su título repetido arriba; las filas no se parten (decisiones.md,
@@ -63,7 +62,7 @@ export const fontName = (weight) => `${T['font/family/sans'].replace(/\s+/g, '')
 
 /** Pesos de los roles que usa la ficha: son las fuentes que hay que cargar. */
 export const FONT_WEIGHTS = Object.freeze([
-  ...new Set(['label', 'heading-2', 'body-lg', 'body-compact-medium', 'body-sm', 'body-sm-medium'].map((role) => ROLES[role].fontWeight)),
+  ...new Set(['label', 'heading-2', 'body-compact-medium', 'body-sm', 'body-sm-medium'].map((role) => ROLES[role].fontWeight)),
 ]);
 
 // Colores con transparencia (color/border/subtle es tinta al 10 %): se
@@ -100,7 +99,7 @@ export function roleText(text, role, colorName, { above = 0 } = {}) {
 }
 
 // Bloque con una sola regla horizontal, debajo (header, pdf-cover) o arriba
-// (footer, pdf-key-data) de su contenido. padding: el aire entre la regla y el
+// (footer) de su contenido. padding: el aire entre la regla y el
 // contenido.
 function ruledBlock(content, { lineAt, lineColor, padding, widths = ['*'] }) {
   return {
@@ -198,34 +197,9 @@ export function cotaWidth(aspect) {
  */
 export const COTA_INSET = T['space/padding/lg'];
 
-// pdf-key-data: hasta cuatro pdf-key-item del mismo ancho, con regla superior
-// color/border/strong. Cada uno: etiqueta role/label (9 pt) y valor role/body-lg (12 pt).
-function keyDataRow(items) {
-  return {
-    table: {
-      widths: items.map(() => '*'),
-      body: [
-        items.map((item) => ({
-          stack: [roleText(item.label, 'label', 'text/tertiary'), roleText(item.value, 'body-lg', 'text/primary', { above: T['space/gap/xs'] })],
-        })),
-      ],
-    },
-    layout: {
-      hLineWidth: (i) => (i === 0 ? pt(ruled) : 0),
-      vLineWidth: () => 0,
-      hLineColor: () => color('border/strong'),
-      paddingLeft: () => 0,
-      paddingRight: (i, node) => (i < node.table.widths.length - 1 ? pt(T['space/gap/sm-md']) : 0),
-      paddingTop: () => pt(T['space/padding/sm']),
-      paddingBottom: () => 0,
-    },
-  };
-}
-
 // pdf-cover: nombre (role/heading-2, 18 pt) y SKU (role/body-sm, 9 pt) a
 // todo el ancho; debajo, a space/gap/md, la foto (COVER_MEDIA) y las cotas
-// (cotaWidth, con COTA_INSET de aire); y debajo, a todo el ancho, los datos
-// clave. Sin dibujo de cotas, la foto queda sola.
+// (cotaWidth, con COTA_INSET de aire). Sin dibujo de cotas, la foto queda sola.
 function cover(data, { image, cota }) {
   const side = pt(COVER_MEDIA);
   const title = [
@@ -240,7 +214,6 @@ function cover(data, { image, cota }) {
     // cota.width es el del dibujo, sin el aire.
     ...(cota ? [{ image: cota.image, width: pt(cota.width), height: side - 2 * pt(COTA_INSET), margin: [pt(T['space/gap/md'] + COTA_INSET), pt(COTA_INSET), pt(COTA_INSET), pt(COTA_INSET)] }] : []),
   ];
-  const keyData = data.keyData ?? [];
   return {
     ...ruledBlock(
       {
@@ -251,7 +224,6 @@ function cover(data, { image, cota }) {
             columnGap: 0,
             margin: [0, pt(T['space/gap/md']), 0, 0],
           },
-          ...(keyData.length ? [{ ...keyDataRow(keyData), margin: [0, pt(T['space/gap/md']), 0, 0] }] : []),
         ],
       },
       { lineAt: 'bottom', lineColor: color(RULE), padding: T['space/padding/md'] },
@@ -312,7 +284,7 @@ function specGroup(section, index, isLast) {
 
 /**
  * Definición de documento de pdfmake.
- *   data: { name, sku, keyData: [{ label, value }], sections: [{ label, rows: [{ label, value }] }] }
+ *   data: { name, sku, sections: [{ label, rows: [{ label, value }] }] }
  *   options.image: foto de pdf-cover como data URL (JPEG o PNG), cuadrada
  *     de COVER_MEDIA y con el fondo ya pintado; null muestra solo el fondo.
  *   options.cota: { image, width }: dibujo con cotas como data URL, con fondo
