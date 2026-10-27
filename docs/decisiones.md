@@ -1730,3 +1730,22 @@ Hoja de Figma «pdf · cotas A2 · 1 hoja» (2992:45969). Rama `feat/arq-pdf-cot
 - **Foto entera** (contain), como antes: Figma la recorta (cover) y con las fotos reales se cortaba la base de los productos altos.
 - **Cotas:** PNG en `MACROLED/ARQ/cotas/` (un archivo por medida y uno por familia), sin columna en la base. `src/data/cotas.js` relaciona cada SKU con su archivo por patrones sobre el SKU, como `finishes.js` con los acabados. Se piden al CloudFront en PNG (con CORS; el JPEG ensucia las líneas) a 4 × los px de Figma. `FUJI_12W.png` dibuja la Fuji de 7 W y se usa para ella; `DAO-E-H` es el Pinhole y `DAO_cabezal` el Cabezal Direccionable. Sin dibujo hoy: Mini Kai, Mini Kai Round, Sen, Töri Visera y Mini Töri. Sin uso: los archivos por familia (salvo PAR11), `DAO_ARO`, `DAO_PANAL` y `DAO_accesorios`.
 - **Especificaciones en dos columnas** (pdf-spec-row · 2 col, token nuevo `layout/pdf-spec-label-compact`, 160): primera mitad de las filas a la izquierda, el resto a la derecha. Una sola tabla de cinco columnas para que las reglas de las dos columnas queden alineadas aunque una fila ocupe dos líneas. Secciones a `space/gap/lg`; arrancan a `space/padding/md` de pdf-cover.
+
+## 2026-10-27 · Ficha técnica: error si no se genera
+
+- Si la ficha técnica en PDF no se puede generar (SKU inexistente, pdfmake o la fuente no cargan), la pestaña nueva se cierra y quien la pidió muestra `form-message` Tone=Error: «No se pudo generar la ficha técnica. Probá de nuevo.». En la ficha va debajo de «Generar ficha técnica» y «Ver descargas»; en el modal del glosario y en el de Descargas, debajo de la fila «Ficha técnica» (slot `message` nuevo de download-modal). Se borra al volver a intentar o al abrir el modal con otro SKU. Rama `feat/arq-pdf-error`.
+- Es una región viva (`role="alert"`): está siempre en la página, vacía, y vacía sale del flujo para no sumar el gap (como en Contacto). Se reusa form-message, sin componente nuevo; no hay diseño propio en Figma.
+- Demo: `?data=datasheet-error` en la ficha y en Descargas.
+- Figma: pdf-cover, pdf-cover-title, pdf-spec-row · 2 col y la hoja de ejemplo (2992:45969) quedaron con el diseño del código (2026-10-27 · Ficha técnica con cotas). En la hoja se sacó una fila de ejemplo para que entre en una hoja.
+
+## 2026-10-27 · Ficha técnica: ajuste de impresión
+
+Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas finas y fondo de la foto sin imprimir.
+
+- **Textos:** nombre `role/heading-2` (18 pt), SKU `role/body-sm`, datos clave `role/body-lg` (12 pt), títulos de sección `role/body-compact-medium` (10,5 pt), etiqueta y valor de las filas `role/body-sm` y `role/body-sm-medium` (9 pt, el tamaño habitual de una tabla impresa).
+- **Espacios:** márgenes de la hoja `space/padding/xl` · `xl-2xl` · `lg` (arriba · lados · abajo); encabezado y pie `space/padding/sm-md`; pdf-cover con padding `space/padding/md` y gaps `space/gap/md`; secciones a `space/gap/sm-md`; datos clave con padding superior `space/padding/sm`.
+- **Cotas:** el dibujo va a `space/padding/lg` del borde de su lugar (240 de alto, hasta 1,5 veces de ancho): se ve más chico sin mover la fila.
+- **Líneas finas:** `color/border/default` en el PDF (en pantalla las filas usan `color/border/subtle`, tinta al 10 %, que impresa no se ve).
+- **Fondo de la foto:** `color/surface/subtle` (#F0F0F0) va pintado en la imagen; no se imprime por ser un gris de 6 %, que muchas impresoras (láser, ahorro de tóner) dejan en blanco. No es un error del código. Decisión de Lau: en el PDF la foto va sobre `color/surface/strong` (#E0E0E0, 12 %), que sí se imprime (en pantalla sigue `color/surface/subtle`).
+- **Secciones que siguen en la hoja siguiente (decisión de Lau):** si una sección no entra en lo que queda de la hoja, sigue en la próxima en vez de pasar entera (reemplaza «una sección no se parte», 2026-10-06). Las filas no se parten, el título se repite arriba y nunca queda solo al pie (`headerRows`, `keepWithHeaderRows`, `dontBreakRows`). Se quitó `pageBreakBefore`.
+- Figma al día: pdf-cover (cota en un marco con `space/padding/lg`), pdf-cover-title, pdf-key-item, pdf-key-data (alto según el contenido), pdf-spec-row · 2 col, pdf-header, pdf-footer, pdf-page y la hoja 2992:45969, con sus descripciones.

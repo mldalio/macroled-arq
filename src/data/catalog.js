@@ -505,7 +505,7 @@ export async function getDatasheet(sku) {
   const variant = group.variants.find((v) => v.sku === sku);
   const own = pick(variant.images);
   const base = pick(group.defaultVariant.images);
-  return {
+  const data = {
     name: variantName(group, variant),
     sku: variant.sku,
     image: own.main ?? own.studio ?? base.main ?? base.studio ?? null,
@@ -513,6 +513,9 @@ export async function getDatasheet(sku) {
     keyData: keyData(variant.values),
     sections: specSections(variant.values),
   };
+  // Demo: ?data=datasheet-error para ver el mensaje de error.
+  const demo = await demoData();
+  return demo ? demo.fixtures.datasheet(demo.mode, data) : data;
 }
 
 /**

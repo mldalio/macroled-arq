@@ -1,6 +1,6 @@
 # form-message · `<arq-form-message>`
 
-Mensaje de resultado debajo del botón de envío (Contacto, envío a n8n). Sin ícono.
+Mensaje de resultado debajo del botón de envío (Contacto, envío a n8n). Sin ícono. También el error de la ficha técnica en PDF (ficha de producto y Descargas: «No se pudo generar la ficha técnica. Probá de nuevo.»).
 
 - Figma: [1311-4871](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1311-4871) · ficha `doc/form-message` (`1451:6043`)
 

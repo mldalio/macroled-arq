@@ -108,8 +108,8 @@ import './components/form-contacto/form-contacto.js';
 // Ficha técnica en PDF: la piden la ficha de producto y Descargas con
 // arq:datasheet { sku }. Se abre en una pestaña nueva: el evento llega dentro
 // del clic, así que el navegador no la bloquea. La promesa queda en
-// event.detail.pending para que quien la pidió muestre el botón en Loading.
-// TODO (diseño): no hay mensaje de error; hoy el error queda en consola.
+// event.detail.pending para que quien la pidió muestre el botón en Loading y,
+// si falla, el form-message Error (la pestaña nueva se cierra).
 document.addEventListener('arq:datasheet', (event) => {
   const sku = event.detail?.sku;
   if (!sku) return;
