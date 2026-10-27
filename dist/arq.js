@@ -2074,10 +2074,10 @@ function nr() {
 }
 function rr(e, t, r) {
 	let { sampleFrom: i, pdfBase: a } = n.images;
-	return e.startsWith(i) ? a.replaceAll("{size}", Math.round(t)).replace("{format}", r.split("/")[1]) + e.slice(i.length) : e;
+	return e.startsWith(i) ? a.replaceAll("{size}", Math.round(t)).replace("{format}", r) + e.slice(i.length) : e;
 }
-function ir(e, t, n, { maxPx: r = Math.max(Number(t) || 0, n), fit: i = "contain", background: a, scale: o = Qn, type: s = "image/jpeg" } = {}) {
-	return e ? (e = rr(e, r * o, s), new Promise((r) => {
+function ir(e, t, n, { maxPx: r = Math.max(Number(t) || 0, n), fit: i = "contain", background: a, scale: o = Qn, type: s = "image/jpeg", request: c = "webp" } = {}) {
+	return e ? (e = rr(e, r * o, c), new Promise((r) => {
 		let c = new Image();
 		c.crossOrigin = "anonymous", c.decoding = "async", c.onload = () => {
 			try {
@@ -2106,7 +2106,8 @@ async function or(e) {
 		maxPx: qn(Infinity) - 2 * F,
 		background: j["color/surface/default"],
 		scale: $n,
-		type: "image/png"
+		type: "image/png",
+		request: "png"
 	})]);
 	return {
 		data: t,

@@ -46,11 +46,12 @@ function loadLibrary() {
 }
 
 // La imagen se pide al CloudFront, que manda CORS (S3 no): config.images.pdfBase.
-// Una imagen de otro servidor se pide tal cual.
-function corsSrc(src, sizePx, type) {
+// Una imagen de otro servidor se pide tal cual. format: el formato en que la
+// devuelve el CloudFront.
+function corsSrc(src, sizePx, format) {
   const { sampleFrom, pdfBase } = config.images;
   if (!src.startsWith(sampleFrom)) return src;
-  return pdfBase.replaceAll('{size}', Math.round(sizePx)).replace('{format}', type.split('/')[1]) + src.slice(sampleFrom.length);
+  return pdfBase.replaceAll('{size}', Math.round(sizePx)).replace('{format}', format) + src.slice(sampleFrom.length);
 }
 
 /**
@@ -62,10 +63,13 @@ function corsSrc(src, sizePx, type) {
  *   fit: 'contain' la muestra entera (foto y cotas); 'cover' recorta para llenar.
  *   background: color de fondo (los PNG de estudio son transparentes).
  *   type: 'image/jpeg' para fotos; 'image/png' para el dibujo de líneas.
+ *   request: formato en que se pide al CloudFront. Las fotos van en webp:
+ *     conserva la transparencia de los PNG de estudio, que en jpeg el
+ *     CloudFront pinta de negro antes de que el canvas ponga el fondo.
  */
-function fitImage(src, widthPx, heightPx, { maxPx = Math.max(Number(widthPx) || 0, heightPx), fit = 'contain', background, scale: density = IMAGE_SCALE, type = 'image/jpeg' } = {}) {
+function fitImage(src, widthPx, heightPx, { maxPx = Math.max(Number(widthPx) || 0, heightPx), fit = 'contain', background, scale: density = IMAGE_SCALE, type = 'image/jpeg', request = 'webp' } = {}) {
   if (!src) return Promise.resolve(null);
-  src = corsSrc(src, maxPx * density, type);
+  src = corsSrc(src, maxPx * density, request);
   return new Promise((resolve) => {
     const img = new Image();
     img.crossOrigin = 'anonymous';
@@ -119,6 +123,7 @@ export async function datasheetDocument(sku) {
       background: T['color/surface/default'],
       scale: COTA_SCALE,
       type: 'image/png',
+      request: 'png',
     }),
   ]);
   return { data, definition: buildDatasheet(data, { image: photo?.image ?? null, cota }) };
