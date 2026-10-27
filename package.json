@@ -1,6 +1,6 @@
 {
   "name": "macroled-arq",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "private": true,
   "description": "Web Components de Macroled Arq (macroled.com.ar/arq) para cargar en Webflow.",
   "type": "module",
