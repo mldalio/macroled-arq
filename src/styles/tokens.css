@@ -163,7 +163,8 @@
   --arq-layout-mega-link-thumb: 60px; /** Miniatura cuadrada de mega-link (Show image), en el menú Mobile y en las colecciones del mega-menu. */
   --arq-layout-result-thumb: 100px; /** Miniatura cuadrada de search-result Type=Simple (resultado grande, sin SKU): 100 en Desktop, Tablet y Large; 76 en Mobile. */
   --arq-layout-gallery-thumb-overlay: 66px; /** Ancho de gallery-thumb cuando las miniaturas van sobre la foto (product-gallery que llena el alto, Ficha v2, desde 1024 px). El alto sale de ratio/landscape (5:4). */
-  --arq-layout-pdf-cover-image: 200px; /** Lado de la foto cuadrada del producto en pdf-cover (primera hoja de la ficha técnica PDF, A4). La foto se muestra entera (contain) sobre color/surface/subtle. */
+  --arq-layout-pdf-cover-image: 240px; /** Lado de la foto cuadrada del producto en pdf-cover (primera hoja de la ficha técnica PDF, A4), y alto del dibujo de cotas que va al lado. Las dos imágenes se muestran enteras (contain): la foto sobre color/surface/subtle y las cotas sobre el blanco de la hoja. */
+  --arq-layout-pdf-spec-label-compact: 160px; /** Ancho de etiqueta en pdf-spec-row cuando la tabla va en dos columnas. */
   --arq-motion-duration-fast: 120ms; /** Hover, toggle (círculo de toggle-switch, con motion/easing/in-out), foco y presión (button, icon-button, catalog-card). En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-base: 200ms; /** Desplegables (disclosure), visor de fotos y compare-header Compact al aparecer. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-duration-slow: 320ms; /** Fundido de imágenes de product-card, hover de las cards con overlay (category-card, collection-tile: texto y zoom de la foto), menú de input Select al aparecer, salida del mega-menú y mensaje de form-message. En ms. Con prefers-reduced-motion: 0. */

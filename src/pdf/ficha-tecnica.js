@@ -8,19 +8,22 @@
 // ficha-tecnica-doc.js.
 //
 // pdfmake y Albert Sans se cargan de jsDelivr al primer clic (src/config.js) y
-// no entran en dist/arq.js. La imagen se lee con CORS y se pasa a JPEG en un
-// canvas (pdfmake solo acepta JPEG y PNG; las imágenes pueden venir en WebP):
-// S3 no manda Access-Control-Allow-Origin, así que la foto se pide al
-// CloudFront que sirve los mismos archivos con CORS (config.images.pdfBase).
-// Si no carga, pdf-cover sale con el fondo sin imagen.
+// no entran en dist/arq.js. Las imágenes se leen con CORS y se pasan por un
+// canvas (pdfmake solo acepta JPEG y PNG; las fotos pueden venir en WebP):
+// S3 no manda Access-Control-Allow-Origin, así que se piden al CloudFront que
+// sirve los mismos archivos con CORS (config.images.pdfBase). Si no cargan,
+// pdf-cover sale con el fondo sin foto, o sin el recuadro de cotas.
 
 import { config } from '../config.js';
 import { getDatasheet } from '../data/catalog.js';
-import { PRINT_TOKENS as T, PRINT_ROLES as ROLES } from '../styles/print-tokens.js';
-import { COVER_IMAGE, COVER_INFO_WIDTH, FONT_WEIGHTS, buildDatasheet, fontName, keyItemWidth } from './ficha-tecnica-doc.js';
+import { PRINT_TOKENS as T } from '../styles/print-tokens.js';
+import { COVER_MEDIA, FONT_WEIGHTS, buildDatasheet, cotaWidth, fontName } from './ficha-tecnica-doc.js';
 
-// Resolución de la foto de pdf-cover: 2,5 × los px de Figma (unos 240 dpi en A4).
+// Resolución de la foto de pdf-cover: 2,5 × los px de Figma (unos 240 dpi en
+// A4). El dibujo de cotas, a 4 × (unos 380 dpi): tiene líneas de 1 px y
+// medidas en letra chica.
 const IMAGE_SCALE = 2.5;
+const COTA_SCALE = 4;
 const IMAGE_QUALITY = 0.9;
 
 let library = null;
@@ -42,62 +45,46 @@ function loadLibrary() {
   return library;
 }
 
-// Líneas que ocupa un texto con un rol en un ancho en px. Se mide con la
-// fuente de la página (Albert Sans se carga a nivel página).
-async function countLines(text, role, maxWidth) {
-  const r = ROLES[role];
-  const font = `${r.fontWeight} ${r.fontSize}px "${T['font/family/sans']}"`;
-  try {
-    await document.fonts?.load(font, text);
-  } catch {
-    // Sin la fuente se mide con la de reemplazo: es una estimación.
-  }
-  const context = document.createElement('canvas').getContext('2d');
-  context.font = font;
-  const width = (value) => context.measureText(value).width + value.length * r.letterSpacing;
-  let lines = 1;
-  let line = '';
-  for (const word of String(text).split(/\s+/).filter(Boolean)) {
-    const next = line ? `${line} ${word}` : word;
-    if (line && width(next) > maxWidth) {
-      lines += 1;
-      line = word;
-    } else {
-      line = next;
-    }
-  }
-  return lines;
-}
-
-// La foto se pide al CloudFront, que manda CORS (S3 no): config.images.pdfBase.
-// Una foto de otro servidor se pide tal cual.
-function corsSrc(src, sizePx) {
+// La imagen se pide al CloudFront, que manda CORS (S3 no): config.images.pdfBase.
+// Una imagen de otro servidor se pide tal cual.
+function corsSrc(src, sizePx, type) {
   const { sampleFrom, pdfBase } = config.images;
   if (!src.startsWith(sampleFrom)) return src;
-  return pdfBase.replaceAll('{size}', Math.round(sizePx)) + src.slice(sampleFrom.length);
+  return pdfBase.replaceAll('{size}', Math.round(sizePx)).replace('{format}', type.split('/')[1]) + src.slice(sampleFrom.length);
 }
 
-// Foto entera (object-fit: contain) sobre color/surface/subtle, en JPEG.
-function fitImage(src, widthPx, heightPx) {
+/**
+ * Imagen de un tamaño en px, lista para pdfmake: { image: dataUrl, width } o
+ * null si no carga.
+ *   widthPx: un número o, si el ancho depende de la imagen, una función de su
+ *     proporción (ancho / alto) que devuelve el ancho. maxPx: el lado más
+ *     largo posible, para pedirla al CloudFront a ese tamaño.
+ *   fit: 'contain' la muestra entera (foto y cotas); 'cover' recorta para llenar.
+ *   background: color de fondo (los PNG de estudio son transparentes).
+ *   type: 'image/jpeg' para fotos; 'image/png' para el dibujo de líneas.
+ */
+function fitImage(src, widthPx, heightPx, { maxPx = Math.max(Number(widthPx) || 0, heightPx), fit = 'contain', background = T['color/surface/subtle'], scale: density = IMAGE_SCALE, type = 'image/jpeg' } = {}) {
   if (!src) return Promise.resolve(null);
-  src = corsSrc(src, Math.max(widthPx, heightPx) * IMAGE_SCALE);
+  src = corsSrc(src, maxPx * density, type);
   return new Promise((resolve) => {
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.decoding = 'async';
     img.onload = () => {
       try {
+        const width = typeof widthPx === 'function' ? widthPx(img.naturalWidth / img.naturalHeight) : widthPx;
         const canvas = document.createElement('canvas');
-        canvas.width = Math.round(widthPx * IMAGE_SCALE);
-        canvas.height = Math.round(heightPx * IMAGE_SCALE);
+        canvas.width = Math.round(width * density);
+        canvas.height = Math.round(heightPx * density);
         const context = canvas.getContext('2d');
-        context.fillStyle = T['color/surface/subtle'];
+        context.fillStyle = background;
         context.fillRect(0, 0, canvas.width, canvas.height);
-        const scale = Math.min(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight);
+        const ratios = [canvas.width / img.naturalWidth, canvas.height / img.naturalHeight];
+        const scale = fit === 'cover' ? Math.max(...ratios) : Math.min(...ratios);
         const w = img.naturalWidth * scale;
         const h = img.naturalHeight * scale;
         context.drawImage(img, (canvas.width - w) / 2, (canvas.height - h) / 2, w, h);
-        resolve(canvas.toDataURL('image/jpeg', IMAGE_QUALITY));
+        resolve({ image: canvas.toDataURL(type, IMAGE_QUALITY), width });
       } catch (error) {
         // Canvas «tainted»: la imagen no tiene CORS.
         console.warn('[arq] ficha técnica: la imagen no se puede usar en el PDF (¿falta CORS en el servidor de imágenes?)', src, error);
@@ -120,15 +107,20 @@ const fileName = (sku) => `ficha-tecnica-${String(sku).replace(/[^\w-]+/g, '-').
 export async function datasheetDocument(sku) {
   const data = await getDatasheet(sku);
   if (!data) return null;
-  const keyData = data.keyData ?? [];
-  const [nameLines, skuLines, image, ...valueLines] = await Promise.all([
-    countLines(data.name, 'display', COVER_INFO_WIDTH),
-    countLines(data.sku, 'body-lg', COVER_INFO_WIDTH),
-    fitImage(data.image, COVER_IMAGE, COVER_IMAGE),
-    ...keyData.map((item) => countLines(item.value, 'heading-3-light', keyItemWidth(keyData.length))),
+  const [photo, cota] = await Promise.all([
+    // Foto en un cuadrado, entera.
+    fitImage(data.image, COVER_MEDIA, COVER_MEDIA),
+    // Cotas del alto de la foto; un dibujo horizontal se ensancha (cotaWidth).
+    // El dibujo (PNG con fondo blanco) se pide y se guarda en PNG: el JPEG
+    // ensucia las líneas finas.
+    fitImage(data.cota, cotaWidth, COVER_MEDIA, {
+      maxPx: cotaWidth(Infinity),
+      background: T['color/surface/default'],
+      scale: COTA_SCALE,
+      type: 'image/png',
+    }),
   ]);
-  const keyLines = Math.max(1, ...valueLines);
-  return { data, definition: buildDatasheet(data, { image, nameLines, skuLines, keyLines }) };
+  return { data, definition: buildDatasheet(data, { image: photo?.image ?? null, cota }) };
 }
 
 const pending = new Map();
