@@ -1,5 +1,5 @@
 //#region package.json
-var e = "0.3.2", t = {
+var e = "0.3.3", t = {
 	BASE_URL: "/",
 	DEV: !1,
 	MODE: "production",
@@ -3937,6 +3937,11 @@ var pa = ":host{display:inline-flex}.controls,.arrows{align-items:center;gap:var
 			type: Boolean,
 			default: !1
 		},
+		slide: {
+			type: String,
+			values: ["native", "slow"],
+			default: "native"
+		},
 		index: {
 			type: Number,
 			default: 0
@@ -3951,17 +3956,18 @@ var pa = ":host{display:inline-flex}.controls,.arrows{align-items:center;gap:var
 	#t = !1;
 	#n = !0;
 	#r = "";
-	#i = () => this.#m();
-	#a = new ResizeObserver(() => this.#m());
-	#o = new MutationObserver(() => this.#p());
+	#i = () => this.#h();
+	#a = new ResizeObserver(() => this.#h());
+	#o = new MutationObserver(() => this.#m());
 	#s = window.matchMedia("(prefers-reduced-motion: reduce)");
+	#c = null;
 	setup() {
 		let e = this.shadowRoot;
-		for (let t of e.querySelectorAll(".prev")) t.addEventListener("click", () => this.#v(-1));
-		for (let t of e.querySelectorAll(".next")) t.addEventListener("click", () => this.#v(1));
-		e.querySelector(".progress").addEventListener("pointerdown", (e) => this.#c(e));
+		for (let t of e.querySelectorAll(".prev")) t.addEventListener("click", () => this.#y(-1));
+		for (let t of e.querySelectorAll(".next")) t.addEventListener("click", () => this.#y(1));
+		e.querySelector(".progress").addEventListener("pointerdown", (e) => this.#l(e));
 	}
-	#c(e) {
+	#l(e) {
 		let t = this.#e, n = e.currentTarget;
 		if (!this.scrub || this.progress !== "scroll" || !t || e.button > 0) return;
 		let r = n.getBoundingClientRect(), i = n.querySelector(".indicator").getBoundingClientRect(), a = e.clientX >= i.left && e.clientX <= i.right ? e.clientX - i.left : i.width / 2, o = (e) => {
@@ -3974,7 +3980,7 @@ var pa = ":host{display:inline-flex}.controls,.arrows{align-items:center;gap:var
 		};
 		n.addEventListener("pointermove", s), n.addEventListener("pointerup", c), n.addEventListener("pointercancel", c);
 	}
-	#l() {
+	#u() {
 		let e = {
 			carousel: "square",
 			chevron: "chevron"
@@ -3985,10 +3991,10 @@ var pa = ":host{display:inline-flex}.controls,.arrows{align-items:center;gap:var
 		};
 	}
 	connectedCallback() {
-		super.connectedCallback(), this.#e && !this.#t && this.#d(this.#e);
+		super.connectedCallback(), this.#e && !this.#t && this.#f(this.#e);
 	}
 	disconnectedCallback() {
-		this.#f();
+		this.#p();
 	}
 	update(e) {
 		let t = this.shadowRoot;
@@ -4000,45 +4006,45 @@ var pa = ":host{display:inline-flex}.controls,.arrows{align-items:center;gap:var
 			let n = this.buttons !== "none" && (this.buttons === "carousel" ? "square" : this.buttons === "chevron" ? "chevron" : "icon") === e;
 			for (let r of t.querySelectorAll(`.${e}`)) r.hidden = !n;
 		}
-		let { prev: n, next: r } = this.#l();
+		let { prev: n, next: r } = this.#u();
 		if (e.has("labelPrev") || e.has("buttons")) for (let e of t.querySelectorAll(".prev")) e.textContent = this.labelPrev;
 		if (e.has("labelNext") || e.has("buttons")) for (let e of t.querySelectorAll(".next")) e.textContent = this.labelNext;
 		t.querySelector(".controls").setAttribute("aria-label", `${this.labelPrev} / ${this.labelNext}`);
 		let i = this.scrub && this.progress === "scroll";
 		for (let e of t.querySelectorAll(".edge")) e.hidden = !i;
-		t.querySelector(".edge.prev").disabled = this.position === "start", t.querySelector(".edge.next").disabled = this.position === "end" || !this.#n, this.#g(), e.has("for") && this.#u();
+		t.querySelector(".edge.prev").disabled = this.position === "start", t.querySelector(".edge.next").disabled = this.position === "end" || !this.#n, this.#_(), e.has("for") && this.#d();
 		let a = t.activeElement;
 		n.disabled = this.position === "start", r.disabled = this.position === "end" || !this.#n, a === n && n.disabled && r.focus(), a === r && r.disabled && n.focus();
 	}
-	#u() {
-		this.#f();
+	#d() {
+		this.#p();
 		let e = this.for ? this.getRootNode().getElementById?.(this.for) : null;
-		this.for && !e && document.readyState === "loading" && document.addEventListener("DOMContentLoaded", () => this.#u(), { once: !0 }), this.#e = e, e && this.#d(e);
+		this.for && !e && document.readyState === "loading" && document.addEventListener("DOMContentLoaded", () => this.#d(), { once: !0 }), this.#e = e, e && this.#f(e);
 	}
-	#d(e) {
-		this.#t = !0, e.addEventListener("scroll", this.#i, { passive: !0 }), this.#a.observe(e), this.#o.observe(e, { childList: !0 }), this.#p();
+	#f(e) {
+		this.#t = !0, e.addEventListener("scroll", this.#i, { passive: !0 }), this.#a.observe(e), this.#o.observe(e, { childList: !0 }), this.#m();
 		let t = this.buttons === "carousel" ? "arq-carousel-button" : "arq-icon-button";
 		customElements.whenDefined(t).then(() => {
 			for (let n of this.shadowRoot.querySelectorAll(t)) {
 				let t = n.shadowRoot?.querySelector("button");
 				t && "ariaControlsElements" in t && (t.ariaControlsElements = [e]);
 			}
-		}), this.#m();
-	}
-	#f() {
-		this.#e && this.#t && (this.#t = !1, this.#e.removeEventListener("scroll", this.#i), this.#o.disconnect(), this.#a.disconnect());
+		}), this.#h();
 	}
 	#p() {
-		for (let e of this.#e?.children ?? []) this.#a.observe(e);
-		this.#m();
+		this.#e && this.#t && (this.#t = !1, this.#e.removeEventListener("scroll", this.#i), this.#o.disconnect(), this.#a.disconnect());
 	}
 	#m() {
+		for (let e of this.#e?.children ?? []) this.#a.observe(e);
+		this.#h();
+	}
+	#h() {
 		let e = this.#e;
 		if (!e) return;
 		let t = e.scrollWidth - e.clientWidth, n = t <= 1 || e.scrollLeft <= 1 ? "start" : e.scrollLeft >= t - 1 ? "end" : "middle", r = t > 1;
-		r !== this.#n && (this.#n = r, this.#l().next.disabled = !r || n === "end", this.shadowRoot.querySelector(".edge.next").disabled = !r || n === "end"), n !== this.position && (this.position = n), this.progress === "scroll" && this.buttons !== "icon" ? this.#h(e, r) : this.buttons === "carousel" && this.#_(e);
+		r !== this.#n && (this.#n = r, this.#u().next.disabled = !r || n === "end", this.shadowRoot.querySelector(".edge.next").disabled = !r || n === "end"), n !== this.position && (this.position = n), this.progress === "scroll" && this.buttons !== "icon" ? this.#g(e, r) : this.buttons === "carousel" && this.#v(e);
 	}
-	#h(e, t) {
+	#g(e, t) {
 		let n = this.shadowRoot, r = n.querySelector(".progress"), i = `${t}|${this.scrub}`;
 		if (i !== this.#r) {
 			this.#r = i, n.querySelector(".count").hidden = !0, r.hidden = !t, r.dataset.mode = "scroll", r.classList.toggle("scrub", this.scrub), r.setAttribute("aria-hidden", "true");
@@ -4054,31 +4060,68 @@ var pa = ":host{display:inline-flex}.controls,.arrows{align-items:center;gap:var
 		let a = Math.min(1, e.clientWidth / e.scrollWidth), o = e.scrollLeft / e.scrollWidth;
 		r.style.setProperty("--progress-size", String(a)), r.style.setProperty("--progress-offset", String(o));
 	}
-	#g() {
+	#_() {
 		let e = this.shadowRoot, t = Math.max(this.count || 1, 1), n = Math.min(Math.max(this.index || 0, 0), t - 1);
 		if (this.progress === "scroll") return;
 		this.#r = "";
 		let r = this.buttons === "carousel" && t > 1, i = e.querySelector(".count"), a = e.querySelector(".progress");
 		i.hidden = !r, a.hidden = !r, i.textContent = `${String(n + 1).padStart(2, "0")} / ${String(t).padStart(2, "0")}`, a.style.setProperty("--progress-count", String(t)), a.style.setProperty("--progress-index", String(n)), a.setAttribute("role", "progressbar"), a.setAttribute("aria-valuemin", "1"), a.setAttribute("aria-valuemax", String(t)), a.setAttribute("aria-valuenow", String(n + 1)), a.setAttribute("aria-valuetext", `${n + 1} de ${t}`);
 	}
-	#_(e) {
+	#v(e) {
 		let t = [...e.children], n = Math.max(t.length, 1), r = e.scrollWidth - e.clientWidth, i = r <= 1 ? 0 : Math.min(n - 1, Math.max(0, Math.round(e.scrollLeft / r * (n - 1))));
-		this.count !== n && (this.count = n), this.index === i ? this.#g() : this.index = i;
+		this.count !== n && (this.count = n), this.index === i ? this.#_() : this.index = i;
 	}
 	go(e) {
-		this.#v(e);
+		this.#y(e);
 	}
-	#v(e) {
+	#y(e) {
 		let t = this.#e;
 		if (!t) {
 			this.emit(e < 0 ? "prev" : "next");
 			return;
 		}
-		let n = this.step === "item" ? t.children[0] : null, r = n && Number.parseFloat(getComputedStyle(t).columnGap || getComputedStyle(t).gap) || 0, i = Math.max(t.clientWidth - (this.pageInset || 0), 1), a = n ? n.getBoundingClientRect().width + r : this.scrub && this.progress === "scroll" ? i / 2 : i;
-		t.scrollBy({
+		let n = this.step === "item" ? t.children[0] : null, r = n && Number.parseFloat(getComputedStyle(t).columnGap || getComputedStyle(t).gap) || 0, i = Math.max(t.clientWidth - (this.pageInset || 0), 1), a = n ? n.getBoundingClientRect().width + r : this.scrub && this.progress === "scroll" ? i / 2 : i, o = Math.max(t.scrollWidth - t.clientWidth, 0), s = Math.min(o, Math.max(0, t.scrollLeft + e * a));
+		this.slide === "slow" ? this.#b(t, s) : t.scrollBy({
 			left: e * a,
 			behavior: this.#s.matches ? "auto" : "smooth"
 		});
+	}
+	glideTo(e) {
+		let t = this.#e;
+		if (!t) return;
+		let n = Math.max(t.scrollWidth - t.clientWidth, 0), r = Math.min(n, Math.max(0, e));
+		this.slide === "slow" ? this.#b(t, r) : t.scrollTo({
+			left: r,
+			behavior: this.#s.matches ? "auto" : "smooth"
+		});
+	}
+	cancelGlide() {
+		let e = this.#e, t = e ? e.scrollLeft : 0;
+		this.#c?.cancel(), this.#c = null, e && (e.scrollLeft = t, e.removeAttribute("data-gliding"));
+	}
+	#b(e, t) {
+		let n = e.scrollLeft;
+		this.#c?.cancel(), this.#c = null, e.scrollLeft = n, e.removeAttribute("data-gliding");
+		let r = getComputedStyle(this), i = this.#s.matches ? 0 : Number.parseFloat(r.getPropertyValue("--arq-motion-duration-slow")) || 0, a = r.getPropertyValue("--arq-motion-easing-standard").trim() || "ease";
+		if (!i || Math.abs(t - n) < 1) {
+			e.scrollLeft = t;
+			return;
+		}
+		e.setAttribute("data-gliding", "");
+		let o;
+		try {
+			o = e.animate([{ scrollLeft: n }, { scrollLeft: t }], {
+				duration: i,
+				easing: a,
+				fill: "both"
+			});
+		} catch {
+			e.removeAttribute("data-gliding"), e.scrollLeft = t;
+			return;
+		}
+		this.#c = o, o.finished.then(() => {
+			this.#c === o && (this.#c = null, e.scrollLeft = t, o.cancel(), e.removeAttribute("data-gliding"));
+		}).catch(() => {});
 	}
 }).define();
 //#endregion
@@ -8696,7 +8739,7 @@ var Qs = ":host{min-width:0;display:block}.slider{gap:var(--arq-space-gap-3xl);f
 }).define();
 //#endregion
 //#region src/components/featured-products/featured-products.css?inline
-var oc = ":host{min-width:0;display:block}.layout{align-items:flex-start;gap:var(--arq-space-gap-4xl);min-width:0;display:flex}.intro{flex:0 0 var(--arq-layout-measure);align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column;min-width:0;display:flex}.rail{gap:var(--arq-space-gap-sm);overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;cursor:grab;-webkit-user-select:none;user-select:none;flex:auto;min-width:0;display:flex;overflow-x:auto}.rail[data-dragging]{scroll-snap-type:none;cursor:grabbing}.rail::-webkit-scrollbar{display:none}.rail>*{flex:0 0 var(--arq-layout-card-min-wide);scroll-snap-align:start}.rail>arq-product-card[loading]{transition-property:opacity;transition-duration:var(--arq-motion-duration-fade);transition-timing-function:var(--arq-motion-easing-standard);transition-delay:var(--arq-motion-duration-fade)}@starting-style{.rail>arq-product-card[loading]{opacity:0}}:host([layout=stacked]) .layout{align-items:stretch;gap:var(--arq-space-gap-2xl);flex-direction:column}:host([layout=stacked]) .intro{flex-direction:row;flex:none;justify-content:space-between;align-items:flex-end;width:100%}:host([layout=stacked]) .rail{width:auto;margin-inline-end:calc(var(--section-inline,0px) * -1);padding-inline-end:var(--section-inline,0px)}@media (width<=767px){.layout{gap:var(--arq-space-gap-xl);flex-direction:column}.intro{flex-basis:auto;width:100%}:host([layout=stacked]) .intro{flex-direction:column;align-items:flex-start}.rail>*{flex-basis:var(--arq-layout-card-min)}}.fallback{align-items:flex-start;gap:var(--arq-space-gap-sm);color:var(--arq-color-text-primary);flex-direction:column;display:flex}", sc = 100;
+var oc = ":host{min-width:0;display:block}.layout{align-items:flex-start;gap:var(--arq-space-gap-4xl);min-width:0;display:flex}.intro{flex:0 0 var(--arq-layout-measure);align-items:flex-start;gap:var(--arq-space-gap-lg);flex-direction:column;min-width:0;display:flex}.rail{gap:var(--arq-space-gap-sm);overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;cursor:grab;-webkit-user-select:none;user-select:none;flex:auto;min-width:0;display:flex;overflow-x:auto}.rail[data-dragging]{scroll-snap-type:none;cursor:grabbing}.rail[data-gliding]{scroll-snap-type:none;scroll-behavior:auto}.rail::-webkit-scrollbar{display:none}.rail>*{flex:0 0 var(--arq-layout-card-min-wide);scroll-snap-align:start}.rail>arq-product-card[loading]{transition-property:opacity;transition-duration:var(--arq-motion-duration-fade);transition-timing-function:var(--arq-motion-easing-standard);transition-delay:var(--arq-motion-duration-fade)}@starting-style{.rail>arq-product-card[loading]{opacity:0}}:host([layout=stacked]) .layout{align-items:stretch;gap:var(--arq-space-gap-2xl);flex-direction:column}:host([layout=stacked]) .intro{flex-direction:row;flex:none;justify-content:space-between;align-items:flex-end;width:100%}:host([layout=stacked]) .rail{width:auto;margin-inline-end:calc(var(--section-inline,0px) * -1);padding-inline-end:var(--section-inline,0px)}@media (width<=767px){.layout{gap:var(--arq-space-gap-xl);flex-direction:column}.intro{flex-basis:auto;width:100%}:host([layout=stacked]) .intro{flex-direction:column;align-items:flex-start}.rail>*{flex-basis:var(--arq-layout-card-min)}}.fallback{align-items:flex-start;gap:var(--arq-space-gap-sm);color:var(--arq-color-text-primary);flex-direction:column;display:flex}", sc = 100;
 (class extends I {
 	static tag = "arq-featured-products";
 	static styles = Ts + oc;
@@ -8705,7 +8748,7 @@ var oc = ":host{min-width:0;display:block}.layout{align-items:flex-start;gap:var
 		values: ["side", "stacked"],
 		default: "side"
 	} };
-	static template = "<div class=\"layout\"><div class=\"intro\"><slot name=\"intro\"></slot><arq-carousel-controls class=\"controls\" buttons=\"carousel\" progress=\"scroll\" for=\"featured-rail\" step=\"item\" label-prev=\"Productos anteriores\" label-next=\"Productos siguientes\"></arq-carousel-controls></div><div class=\"rail\" id=\"featured-rail\"></div></div><p class=\"status visually-hidden\" role=\"status\"></p><div class=\"fallback role-body\" hidden><slot></slot></div>";
+	static template = "<div class=\"layout\"><div class=\"intro\"><slot name=\"intro\"></slot><arq-carousel-controls class=\"controls\" buttons=\"carousel\" progress=\"scroll\" slide=\"slow\" for=\"featured-rail\" step=\"item\" label-prev=\"Productos anteriores\" label-next=\"Productos siguientes\"></arq-carousel-controls></div><div class=\"rail\" id=\"featured-rail\"></div></div><p class=\"status visually-hidden\" role=\"status\"></p><div class=\"fallback role-body\" hidden><slot></slot></div>";
 	#e = "";
 	#t = 0;
 	#n = null;
@@ -8768,7 +8811,7 @@ var oc = ":host{min-width:0;display:block}.layout{align-items:flex-start;gap:var
 		n.replaceChildren(...a), this.#n?.disconnect(), this.#n = i ? null : As(a), n.hidden = e.length === 0, t.querySelector(".controls").hidden = e.length < 2, t.querySelector(".fallback").hidden = e.length > 0, this.#v();
 	}
 	#_() {
-		return (Number.parseFloat(getComputedStyle(this).getPropertyValue("--arq-motion-duration-feedback")) || 2e3) * 1.5;
+		return 3e3;
 	}
 	#v() {
 		let e = this.shadowRoot.querySelector(".rail");
@@ -8791,7 +8834,7 @@ var oc = ":host{min-width:0;display:block}.layout{align-items:flex-start;gap:var
 	#S(e) {
 		if (e.pointerType !== "mouse" || e.button !== 0) return;
 		let t = e.currentTarget;
-		t.scrollWidth - t.clientWidth <= 1 || (this.#T?.(), this.#a = {
+		t.scrollWidth - t.clientWidth <= 1 || (this.shadowRoot.querySelector(".controls").cancelGlide(), this.#T?.(), this.#a = {
 			id: e.pointerId,
 			x: e.clientX,
 			y: e.clientY,
@@ -8844,16 +8887,10 @@ var oc = ":host{min-width:0;display:block}.layout{align-items:flex-start;gap:var
 		let a = t.scrollWidth - t.clientWidth, o = t.scrollLeft;
 		Math.abs(e) > .4 && (o -= Math.sign(e) * n);
 		let s = Math.round(o / n), c = Math.min(a, Math.max(0, s * n));
-		if (this.#l.matches || Math.abs(c - t.scrollLeft) < 1) return t.scrollTo({
-			left: c,
-			behavior: "auto"
-		}), r();
+		if (Math.abs(c - t.scrollLeft) < 1) return r();
 		this.#T = r, t.addEventListener("scrollend", r);
 		let l = Number.parseFloat(getComputedStyle(this).getPropertyValue("--arq-motion-duration-panel")) || 400;
-		i = window.setTimeout(r, l * 2), t.scrollTo({
-			left: c,
-			behavior: "smooth"
-		});
+		i = window.setTimeout(r, l * 2), this.shadowRoot.querySelector(".controls").glideTo(c);
 	}
 	#D() {
 		if (this.#a) return;
