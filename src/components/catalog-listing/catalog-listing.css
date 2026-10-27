@@ -130,26 +130,47 @@
     transition-timing-function: var(--arq-illumination-bg-easing);
   }
 
-  /* El padding de space/padding/xs (y el margen que lo resta) deja lugar al
-     anillo de foco en los bordes cuando se desplaza. */
   .nav {
     position: sticky;
     top: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
     align-self: start;
     z-index: 3;
+  }
+
+  /* Lo que se desplaza. El padding de space/padding/xs (y el margen que lo
+     resta) deja lugar al anillo de foco en los bordes. Sin barra nativa: la
+     reemplaza la de carousel-controls. */
+  .nav-scroll {
     box-sizing: border-box;
     margin: calc(var(--arq-space-padding-xs) * -1);
     padding: var(--arq-space-padding-xs);
+    scrollbar-width: none;
+  }
+
+  .nav-scroll::-webkit-scrollbar {
+    display: none;
   }
 
   /* Tope: lo que se ve de pantalla desde el borde superior del sidebar
      (--nav-max y .scrolls los pone el JS). Solo si los grupos abiertos no
-     entran, se desplaza adentro con una barra fina. */
-  .nav.scrolls {
+     entran, se desplaza adentro. */
+  .nav.scrolls .nav-scroll {
     max-height: var(--nav-max);
     overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--arq-color-border-hover) var(--arq-color-surface-transparent);
+  }
+
+  /* Barra de scroll: la de variants-table en Descargas (carousel-controls
+     scrub), vertical, con un chevron arriba y otro abajo. Va en el espacio
+     entre el sidebar y la grilla (space/section/xs), a space/gap/sm del
+     sidebar, para no angostar los grupos. Solo mientras se desplaza. */
+  .nav-bar {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: calc(100% + var(--arq-space-gap-sm));
+  }
+
+  .nav:not(.scrolls) .nav-bar {
+    display: none;
   }
 }
 
