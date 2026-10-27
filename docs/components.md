@@ -164,13 +164,13 @@ Línea fina arriba del navbar, con un aviso y su link (el ejemplo es «Suscribit
 ## breadcrumb
 
 - Figma: [1244-12667](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1244-12667)
-- Propiedades: Levels: 3 · 2
+- Propiedades: Levels: 4 · 3 · 2
 
-Levels=3: Inicio / Sección / Página. Levels=2: Inicio / Página. El separador vive en breadcrumb-item (Show separator); el ítem actual lo trae apagado.
+Levels=4: Inicio / Productos / Sección / Página. Levels=3: Inicio / Sección / Página. Levels=2: Inicio / Página. La cantidad de niveles es libre en código. El separador vive en breadcrumb-item (Show separator); el ítem actual lo trae apagado.
 
 Textos largos: los ítems intermedios se cortan con "…" (el texto completo queda en el link); el ítem actual se parte en varias líneas.
 
-En Productos: Levels=2 sin categoría; con categoría, Levels=3 siguiendo al título (Inicio / Productos / Interior, Inicio / Exterior / Jardín, Inicio / Lámparas y artefactos / Lámpara, Inicio / Productos / Kanu en una familia). En la ficha, sin Inicio: Productos / familia / producto, o Lámparas y artefactos / subfamilia / producto.
+En Productos, siempre desde Productos: Levels=2 sin categoría; Levels=3 en la vista completa de un grupo (Inicio / Productos / Interior); Levels=4 en una subcategoría o una colección (Inicio / Productos / Exterior / Jardín, Inicio / Productos / Colecciones / Kanu). «Colecciones» abre el mega-menu en esa pestaña (no hay página de todas las colecciones). En la ficha, sin Inicio: Productos / Colecciones / familia / producto, o Productos / Lámparas y artefactos / subfamilia / producto.
 
 ## breadcrumb-item
 
@@ -241,6 +241,8 @@ Sidebar de filtros del catálogo (Interior abierto, resto cerrado). Compuesto po
 Grupo desplegable del sidebar de catálogo (catalog-nav). Encabezado: label role/body-xl (color/text/primary abierto, color/text/secondary cerrado) e icon-button Size=Default, Background=None con icon/chevron-up (Open=True) o icon/chevron-down (Open=False). Open=True muestra la lista de catalog-nav-item con sangría space/padding/lg y un riel (línea izquierda border/default en color/border/subtle); los ítems van pegados, sin gap, y la lista lleva space/padding/xs abajo. Padding vertical space/padding/md, gap encabezado–lista space/gap/md y línea inferior border/default en color/border/subtle. Selected marca el grupo de la categoría actual (sin diferencia visual); en código lo maneja el grupo, no el ítem.
 
 Movimiento (código): como el pliegue de compare-bar. La lista cambia de golpe y la línea del grupo y los grupos de abajo vuelven con transform desde donde estaban (motion/duration/expand, motion/easing/standard); al abrir, la lista se descubre con clip-path al mismo ritmo. No se anima el alto. El chevron gira media vuelta con el mismo tiempo y la misma curva. Con reduced motion, cambia de golpe y queda el fundido (motion/duration/fade).
+
+Lista larga (Colecciones, código): en el sidebar (desde 1024 px) la lista mide hasta 9 ítems y medio y el resto se desplaza adentro, con una barra fina; el medio ítem cortado avisa que hay más y el ítem elegido se centra al abrir. Así el sidebar fijo entra en la pantalla y la lista se descubre en el mismo recorrido que las otras. En filter-panel (hasta 1023 px) no se corta.
 
 ## catalog-nav-item
 
