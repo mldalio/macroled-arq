@@ -29,11 +29,6 @@
   transition-timing-function: var(--arq-illumination-bg-easing), var(--arq-theme-text-easing, var(--arq-motion-easing-standard));
 }
 
-/* Con Iluminar el bloque claro que sigue suma space/section/md (DESIGN.md §2) */
-.hero[data-arq-theme='dark'] + .details {
-  padding-top: var(--arq-space-section-md);
-}
-
 /* Galería (14 columnas de 24) y configurador (9), separados space/gap/3xl:
    14fr · 9fr. Desde 1024 px la sección mide el alto de la pantalla debajo del
    navbar: la foto queda fija (sticky) y, si el configurador no entra, se
@@ -247,7 +242,7 @@
    pone el acordeón. Descargas ya no tiene bloque propio (están en el glosario
    y en "Ver descargas"). */
 .details {
-  padding: var(--arq-space-gap-4xl) var(--page-gutter) var(--arq-space-gap-4xl) var(--arq-space-section-lg);
+  padding: var(--arq-space-section-md) var(--page-gutter) var(--arq-space-gap-4xl) var(--arq-space-section-lg);
 }
 
 /* Pestañas de la información técnica: las del mega-menu (separación gap/xl,
@@ -264,9 +259,42 @@
   border-top: 0;
 }
 
-.spec-tabs:not([hidden]) + .spec-panels .spec-panel[data-tab='commercial'],
+.spec-tabs:not([hidden]) + .spec-panels .spec-panel[data-tab='cotas'],
 .spec-tabs:not([hidden]) + .spec-panels .spec-panel[data-tab='configurador'] {
   padding-top: var(--arq-space-gap-xl);
+}
+
+/* Dibujo con cotas (cotas_img): entero, sin recorte ni fondo; en Materiales e
+   instalación queda debajo de las filas */
+.cota {
+  display: block;
+  /* El ancho lo pone el JS (#cotaImage): misma superficie para todos, la de un
+     cuadrado de layout/pdf-cover-image, según su proporción (los horizontales
+     más anchos, los verticales más angostos). TODO (diseño): tamaño sin diseño en Figma */
+  width: auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.cota[hidden] {
+  display: none;
+}
+
+/* Materiales e instalación con cotas: las mismas dos columnas que las demás
+   secciones (spec-list columns, separadas space/gap/4xl): las filas en la
+   primera, con su mismo ancho de línea, y el dibujo en la segunda. Hasta
+   1023 px se apilan (el dibujo debajo de las filas). */
+.with-cota {
+  display: grid;
+  gap: var(--arq-space-gap-xl);
+}
+
+@media (min-width: 1024px) {
+  .with-cota {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--arq-space-gap-4xl);
+    align-items: start;
+  }
 }
 
 .spec-tabs[hidden] {
@@ -779,7 +807,7 @@
   }
 
   .details {
-    padding: var(--arq-space-section-xs) var(--page-gutter);
+    padding: var(--arq-space-section-md) var(--page-gutter) var(--arq-space-section-xs);
   }
 
   /* Título arriba y texto abajo, en una columna, con el margen de página */

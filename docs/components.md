@@ -755,7 +755,7 @@ Galería de la ficha: imagen principal + fila de gallery-thumb (la primera en Se
 - Figma: [796-2271](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=796-2271)
 - Propiedades: State: Results · No results · Error · Error
 
-Desplegable de resultados en desktop. State: Results · No results · Error. Aparece debajo del campo cuando hay texto escrito, con el mismo ancho que el campo. Muestra hasta 4-5 productos y "Ver todos los resultados". Con el campo vacío no se muestra. State=Error: la búsqueda falló; mismo dibujo que No results con «No se pudo completar la búsqueda.» y «Probá de nuevo en unos minutos.».
+Desplegable de resultados en desktop. State: Results · No results · Error. Aparece debajo del campo cuando hay texto escrito, con el mismo ancho que el campo. Muestra hasta 4-5 productos y «Ver todos los resultados». Con el campo vacío no se muestra. State=No results: sin caja ni borde, como el vacío de Descargas: título «No encontramos resultados para «término».» (role/heading-2), ayuda «Probá con otro nombre, revisá la ortografía o buscá por SKU.» (role/body-regular, color/text/tertiary) y un button Underline con flecha «Todos los productos». State=Error: la búsqueda falló; mismo dibujo con «No se pudo completar la búsqueda.» y «Probá de nuevo en unos minutos.».
 
 ## search-card
 

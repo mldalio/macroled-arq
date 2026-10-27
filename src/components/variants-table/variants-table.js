@@ -94,9 +94,9 @@ const TEXT = {
   // TODO (diseño): textos del vacío por búsqueda (la propuesta solo tiene el de filtros).
   emptyTitle: 'No hay productos con estos filtros',
   emptyText: 'Probá quitar alguno de los filtros aplicados o buscar por otro nombre o SKU.',
-  emptySearchTitle: (q) => `No hay productos para «${q}»`,
+  emptySearchTitle: (q) => `No encontramos resultados para «${q}».`,
   emptySearchText: 'Probá con otro nombre o SKU, o con una parte del código.',
-  emptyBothTitle: (q) => `No hay productos para «${q}» con estos filtros`,
+  emptyBothTitle: (q) => `No encontramos resultados para «${q}» con estos filtros.`,
   // TODO (diseño): vacío de la ficha (sin buscador): no tiene diseño propio.
   emptyVariantsTitle: 'No hay variantes con estos filtros',
   emptyVariantsText: 'Probá quitar alguno de los filtros aplicados.',

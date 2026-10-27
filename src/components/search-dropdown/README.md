@@ -19,9 +19,9 @@ Resultados de la búsqueda en Desktop, debajo de search-field y con su mismo anc
 | State | `state` | `state` | `results` · `no-results` · `error` (def. `results`). `error`: la búsqueda falló; mismo dibujo que No results con «No se pudo completar la búsqueda.» y «Probá de nuevo en unos minutos.» (State=Error, 2924:44879) |
 | — (resultados) | slot por defecto | — | `arq-search-result` (hasta 5) y `arq-search-see-all` |
 | — | `term` | `term` | Término (para el mensaje sin resultados) |
-| — | `explore-href` | `exploreHref` | Destino de "Explorá nuestros productos". Por defecto `/arq/productos` |
 
-- **No results:** "No se encontraron resultados para “término”" (`role/body-strong`), ayuda (`role/body-sm`, `color/text/tertiary`) y el link "Explorá nuestros productos".
+- **No results:** «No encontramos resultados para «término».» (`role/heading-2`), ayuda «Probá con otro nombre, revisá la ortografía o buscá por SKU.» (`role/body-regular`, `color/text/tertiary`), sin caja ni línea como en Descargas, y un button Underline con flecha, «Todos los productos» (`categoryHref`). El vacío de Descargas (variants-table) usa el mismo título y «Probá con otro nombre o SKU, o con una parte del código.»
+- `TODO` (diseño): este vacío cambió respecto del set de Figma (que tenía un solo link «Explorá nuestros productos»); actualizar el set.
 - Con el campo vacío no se muestra (lo oculta el navbar). Se cierra con Esc o un clic afuera.
 - El ancho lo pone el contenedor: `layout/search-field` en el navbar.
 

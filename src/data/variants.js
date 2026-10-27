@@ -19,7 +19,8 @@
 //   (números de menor a mayor). Las celdas vacías no son opción.
 // - Característica madre (decisiones.md, 2026-10-21 · Característica madre):
 //   el color si el grupo lo tiene; si no, la primera de VARIANT_ATTRIBUTES.
-//   Va primera y sus opciones nunca se apagan. Las demás siguen el orden de
+//   Va primera y sus opciones nunca se apagan. Segunda va la potencia, si el
+//   grupo la declara; las demás siguen el orden de
 //   VARIANT_ATTRIBUTES y dependen solo de las de arriba: una opción va
 //   deshabilitada si no forma un SKU con lo elegido en las anteriores. Una
 //   opción deshabilitada no se puede elegir.
@@ -70,11 +71,14 @@ export function initialSelection(variants, attributes, sku) {
 
 /**
  * Atributos en el orden del configurador: la característica madre primero (el
- * color si lo hay; si no, la primera) y el resto en el orden de la hoja.
+ * color si lo hay; si no, la primera), la potencia segunda si el grupo la
+ * declara en VARIANT_ATTRIBUTES y el resto en el orden de la hoja.
  */
 export function configuratorOrder(attributes) {
   const lead = attributes.find((attribute) => attributeInfo(attribute).control === 'swatches') ?? attributes[0];
-  return lead ? [lead, ...attributes.filter((attribute) => attribute !== lead)] : [];
+  if (!lead) return [];
+  const second = lead !== 'potencia' && attributes.includes('potencia') ? ['potencia'] : [];
+  return [lead, ...second, ...attributes.filter((attribute) => attribute !== lead && attribute !== 'potencia')];
 }
 
 // ¿Hay un SKU con `value` en `attribute` y lo elegido en los atributos de arriba?

@@ -526,7 +526,7 @@ class ArqCatalogListing extends ArqElement {
       const title = document.querySelector('arq-page-header > [slot="title"]');
       if (title) {
         this.#htmlTitle ??= title.textContent;
-        title.textContent = label;
+        this.#setTitle(title, label);
         title.parentElement.removeAttribute('search-title');
       }
       const description = document.querySelector('arq-page-header > [slot="description"]');
@@ -561,7 +561,7 @@ class ArqCatalogListing extends ArqElement {
     if (!label && this.#query) return this.#titleFromQuery();
     if (title) {
       this.#htmlTitle ??= title.textContent;
-      title.textContent = label || this.#htmlTitle;
+      this.#setTitle(title, label || this.#htmlTitle);
       title.parentElement.removeAttribute('search-title');
     }
     // Breadcrumb (Levels 3 · 2): Inicio / Productos sin categoría; Inicio /
@@ -573,6 +573,27 @@ class ArqCatalogListing extends ArqElement {
       this.#syncBreadcrumb([groupCrumb, { label }]);
     }
     else this.#syncBreadcrumb([{ label: 'Productos', href: location.pathname }, { label }]);
+  }
+
+  // Cambia el texto del <h1> y, si ya había uno puesto y cambió, lo anima como
+  // la entrada de las cards (reveal.css) pero más sutil, porque el título es
+  // grande: sube space/gap/md y aparece, en motion/duration/slow con
+  // easing/standard. Va con la Web Animations API
+  // porque el <h1> está en el DOM de la página (slot) y no se estila desde acá.
+  // Sin movimiento con prefers-reduced-motion.
+  #titleShown = false;
+  #setTitle(title, text) {
+    const changed = title.textContent !== text;
+    title.textContent = text;
+    const animate = this.#titleShown && changed && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.#titleShown = true;
+    if (!animate) return;
+    const style = getComputedStyle(document.documentElement);
+    const token = (name) => style.getPropertyValue(`--arq-${name}`).trim();
+    title.animate(
+      [{ opacity: 0, transform: `translateY(${token('space-gap-md')})` }, { opacity: 1, transform: 'none' }],
+      { duration: parseFloat(token('motion-duration-slow')), easing: token('motion-easing-standard') },
+    );
   }
 
   // Reemplaza los niveles del breadcrumb del page-header que siguen al

@@ -142,7 +142,7 @@ export const LIGHT_FIELDS = Object.freeze([
 export const DETAIL_FIELDS = Object.freeze([
   'sku', FIELDS.name, FIELDS.isDefault, FIELDS.description, FIELDS.story, FIELDS.inspiration, FIELDS.video,
   'multimagen_vistas', 'multimagen_perspectivas', 'multimagen_detalles',
-  ...DOWNLOADS,
+  ...DOWNLOADS, 'cotas_img',
 ]);
 
 const text = (value) => (value === undefined || value === null ? '' : String(value).trim());
@@ -154,9 +154,12 @@ const IMAGE_BUST = import.meta.env.DEV ? String(Date.now()) : '';
 const imageUrl = (url) => (IMAGE_BUST && url ? `${url}${url.includes('?') ? '&' : '?'}arq=${IMAGE_BUST}` : url);
 
 // Módulos de Daö: la base trae «1», «2», «3» (o «1x», «X1»); se muestran siempre «x1», «x2», «x3».
-const attributeText = (field, value) => {
+// Un grupo que ya trae medidas «2x2», «3x3» no se toca: sus números sueltos («5», «10») se dejan
+// como vienen, sin la x delante.
+const GRID = /^\d+\s*x\s*\d+$/i;
+const attributeText = (field, value, asIs = false) => {
   const shown = text(value);
-  return field === 'modulos' ? shown.replace(/^(?:x\s*(\d+)|(\d+)\s*x?)$/i, (_, a, b) => `x${a ?? b}`) : shown;
+  return field === 'modulos' && !asIs ? shown.replace(/^(?:x\s*(\d+)|(\d+)\s*x?)$/i, (_, a, b) => `x${a ?? b}`) : shown;
 };
 const list = (value) => (Array.isArray(value) ? value.map(text).filter(Boolean) : text(value) ? text(value).split(',').map((v) => v.trim()).filter(Boolean) : []);
 
@@ -203,6 +206,8 @@ function groupImages(doc) {
     ambient: ['ambient2', 'ambient3', 'ambient4', 'ambient5', 'ambient7'].map((name) => s[name]).filter(Boolean),
     description: s.ambient6 ?? null,
     inspiration: [s.ambient7].filter(Boolean),
+    // Todas las de ambiente 2 a 7, en orden: se suman a la galería del hero de la ficha (catalog.js · variantDetails)
+    heroExtra: ['ambient2', 'ambient3', 'ambient4', 'ambient5', 'ambient6', 'ambient7'].map((name) => s[name]).filter(Boolean),
   };
 }
 
@@ -296,6 +301,7 @@ export function fromDocuments(rawDocs) {
   const groupFromRows = (id, rows) => {
     const first = defaultRow(rows);
     const names = new Set(rows.map((doc) => text(doc[FIELDS.name])));
+    const gridModules = rows.some((doc) => GRID.test(text(doc.modulos)));
     const productType = text(first[FIELDS.productType]) || DEFAULT_TYPE;
     const compatible = list(first[FIELDS.compatibleWith]).map((name) => idByName.get(normalize(name))).filter(Boolean);
     return {
@@ -336,9 +342,11 @@ export function fromDocuments(rawDocs) {
         // recomendado del buscador, con sus propias fotos (catalog.js · getRecommendedProducts).
         isNew: doc[FIELDS.isNew] === true,
         description: text(doc[FIELDS.description]),
-        attributes: Object.fromEntries(Object.keys(ATTRIBUTES).map((field) => [field, attributeText(field, doc[field])]).filter(([, v]) => v && v !== '-')),
+        attributes: Object.fromEntries(Object.keys(ATTRIBUTES).map((field) => [field, attributeText(field, doc[field], gridModules)]).filter(([, v]) => v && v !== '-')),
         images: variantImages(doc),
         downloads: Object.fromEntries(DOWNLOADS.map((field) => [field, text(doc[field])]).filter(([, v]) => v)),
+        // Dibujo con cotas (cotas_img): una URL, o una lista cuya primera es el dibujo
+        cota: text(Array.isArray(doc.cotas_img) ? doc.cotas_img[0] : doc.cotas_img),
       })),
     };
   };

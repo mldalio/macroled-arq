@@ -206,7 +206,7 @@ Hay dos usos del modo Dark. Los dos usan `data-arq-theme="dark"`; cambia quién 
 Para los dos usos:
 
 - El negro es `color/surface/default` en Dark (`neutral/800`, #1C1C1C).
-- **Cambio de fondo:** cuando una sección pasa a oscuro, su padding inferior baja un escalón (`space/section/xl` → `space/section/lg`) y la sección clara que sigue suma padding superior `space/section/md`. Desktop: 128 + 96 · Mobile: 96 + 56. Con el fondo igual, la sección siguiente no lleva padding superior. En código, el ajuste va atado a `data-arq-theme="dark"` en la sección.
+- **Cambio de fondo:** cuando una sección pasa a oscuro, su padding inferior baja un escalón (`space/section/xl` → `space/section/lg`) y la sección clara que sigue suma padding superior `space/section/md`. Desktop: 128 + 96 · Mobile: 96 + 56. Con el fondo igual, la sección siguiente no lleva padding superior. En código, el ajuste va atado a `data-arq-theme="dark"` en la sección. Excepción: en la ficha de producto las especificaciones llevan siempre `space/section/md` arriba, con Iluminar o sin él (`docs/decisiones.md`, 2026-10-27 · Ficha: especificaciones, Iluminar y descargas).
 
 ---
 

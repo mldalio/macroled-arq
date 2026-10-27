@@ -1,6 +1,6 @@
 # download-modal · `<arq-download-modal>`
 
-Modal de descargas de la ficha: la ficha técnica (download-item Featured) y los archivos del SKU elegido. Lo abren los botones de Descargas de la ficha y el ícono de descarga de cada fila del glosario.
+Modal de descargas de la ficha: la ficha técnica (download-item Featured) y los archivos del SKU elegido. Lo abren el botón «Ver descargas» de la ficha (con la variante elegida) y el ícono de descarga de cada fila del glosario.
 
 - Figma: [1375-4948](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1375-4948) · ficha `doc/download-modal`
 
