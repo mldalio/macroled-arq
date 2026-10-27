@@ -11,6 +11,8 @@
 //   ?data=loading Productos, Colecciones y destacados del Home: la respuesta
 //                 tarda como la primera visita (cards de carga); -one, -empty
 //                 y -error cambian lo que llega después.
+//   ?data=datasheet-error  La ficha técnica en PDF no se puede generar (ficha
+//                 de producto y Descargas: form-message Error).
 //
 // Los valores son creíbles: salen de la base (los más largos de cada columna,
 // medidos el 2026-10-15) o de nombres y SKU con la forma de los de Sheets. El
@@ -152,6 +154,12 @@ export async function catalogListing(mode, real) {
   if (mode === 'loading-error') throw new Error('Peor caso (demo): la consulta falló');
   if (mode === 'loading-empty') return { ...real, cards: [], count: 0 };
   if (mode === 'loading-one') return { ...real, cards: real.cards.slice(0, 1), count: 1 };
+  return real;
+}
+
+/** Ficha técnica en PDF: con ?data=datasheet-error no se puede generar. */
+export function datasheet(mode, real) {
+  if (mode === 'datasheet-error') throw new Error('Peor caso (demo): no se pudo generar la ficha técnica');
   return real;
 }
 

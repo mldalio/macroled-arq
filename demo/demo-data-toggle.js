@@ -4,7 +4,8 @@
 // lo que escribe la persona en Contacto), no tocando el componente. Solo demo:
 // no está en src/ ni llega al build.
 //
-//   Descargas  ?data=worst · empty · one · huge · error
+//   Descargas  ?data=worst · empty · one · huge · error · datasheet-error
+//   Ficha      ?data=datasheet-error (la ficha técnica en PDF no se genera)
 //   Contacto   ?data=worst · errors · sent
 
 /** Modo pedido en la URL ('demo' si no hay). */

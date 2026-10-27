@@ -134,6 +134,13 @@
   gap: var(--arq-space-gap-md);
 }
 
+/* slot message: form-message de error debajo de la ficha técnica (si no se
+   pudo generar). Es una región viva: está siempre; vacía sale del flujo para
+   no sumar el gap. */
+::slotted(arq-form-message:empty) {
+  position: absolute;
+}
+
 .list {
   display: flex;
   flex-direction: column;

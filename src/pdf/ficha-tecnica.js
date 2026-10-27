@@ -17,7 +17,7 @@
 import { config } from '../config.js';
 import { getDatasheet } from '../data/catalog.js';
 import { PRINT_TOKENS as T } from '../styles/print-tokens.js';
-import { COVER_MEDIA, FONT_WEIGHTS, buildDatasheet, cotaWidth, fontName } from './ficha-tecnica-doc.js';
+import { COTA_INSET, COVER_MEDIA, FONT_WEIGHTS, PHOTO_BACKGROUND, buildDatasheet, cotaWidth, fontName } from './ficha-tecnica-doc.js';
 
 // Resolución de la foto de pdf-cover: 2,5 × los px de Figma (unos 240 dpi en
 // A4). El dibujo de cotas, a 4 × (unos 380 dpi): tiene líneas de 1 px y
@@ -63,7 +63,7 @@ function corsSrc(src, sizePx, type) {
  *   background: color de fondo (los PNG de estudio son transparentes).
  *   type: 'image/jpeg' para fotos; 'image/png' para el dibujo de líneas.
  */
-function fitImage(src, widthPx, heightPx, { maxPx = Math.max(Number(widthPx) || 0, heightPx), fit = 'contain', background = T['color/surface/subtle'], scale: density = IMAGE_SCALE, type = 'image/jpeg' } = {}) {
+function fitImage(src, widthPx, heightPx, { maxPx = Math.max(Number(widthPx) || 0, heightPx), fit = 'contain', background, scale: density = IMAGE_SCALE, type = 'image/jpeg' } = {}) {
   if (!src) return Promise.resolve(null);
   src = corsSrc(src, maxPx * density, type);
   return new Promise((resolve) => {
@@ -109,12 +109,13 @@ export async function datasheetDocument(sku) {
   if (!data) return null;
   const [photo, cota] = await Promise.all([
     // Foto en un cuadrado, entera.
-    fitImage(data.image, COVER_MEDIA, COVER_MEDIA),
+    fitImage(data.image, COVER_MEDIA, COVER_MEDIA, { background: T[`color/${PHOTO_BACKGROUND}`] }),
     // Cotas del alto de la foto; un dibujo horizontal se ensancha (cotaWidth).
     // El dibujo (PNG con fondo blanco) se pide y se guarda en PNG: el JPEG
     // ensucia las líneas finas.
-    fitImage(data.cota, cotaWidth, COVER_MEDIA, {
-      maxPx: cotaWidth(Infinity),
+    // Con COTA_INSET de aire alrededor: se pide del tamaño del dibujo.
+    fitImage(data.cota, (aspect) => cotaWidth(aspect) - 2 * COTA_INSET, COVER_MEDIA - 2 * COTA_INSET, {
+      maxPx: cotaWidth(Infinity) - 2 * COTA_INSET,
       background: T['color/surface/default'],
       scale: COTA_SCALE,
       type: 'image/png',
