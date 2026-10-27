@@ -513,7 +513,13 @@
 /* "Ver todo…": arriba space/gap/md, a los lados layout/gutter */
 .sub-cta {
   flex: none;
-  padding: var(--arq-space-gap-md) var(--page-gutter) 0;
+  padding: var(--arq-space-gap-xl) var(--page-gutter) 0;
+}
+
+/* «Ver todos los productos» al pie del nivel Productos: igual que .sub-cta */
+.products-cta {
+  flex: none;
+  padding: var(--arq-space-gap-xl) var(--page-gutter) 0;
 }
 
 .sub-cta:empty {
@@ -553,8 +559,7 @@
 }
 
 .sub-group-cta {
-  margin-top: var(--arq-space-padding-md);
-  padding-top: var(--arq-space-gap-md);
+  padding-top: var(--arq-space-gap-xl);
 }
 
 @media (max-width: 767px) {
