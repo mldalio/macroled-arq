@@ -42,12 +42,25 @@
   overflow-wrap: break-word;
 }
 
-/* Acción: button, o email + button a space/gap/md (como el set) */
+/* Acción: button, o email + button a space/gap/md (como el set).
+   La confirmación va debajo, a todo el ancho de la acción. */
 .action {
   display: flex;
   flex: none;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--arq-space-gap-md);
+  position: relative;
+}
+
+/* form-message es una región viva: está siempre, vacía hasta el resultado.
+   Vacía sale del flujo para no sumar el hueco debajo del botón. */
+.message {
+  flex: 1 0 100%;
+}
+
+.message:empty {
+  position: absolute;
 }
 
 /* TODO (diseño): en el set el campo mide 380 fijos y no hay token; se usa el
@@ -145,6 +158,10 @@
     gap: var(--arq-space-gap-xl);
   }
 
+  .message {
+    flex: none;
+  }
+
   .email {
     width: auto;
   }
@@ -166,6 +183,7 @@
 
   :host(.has-media) .action {
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     width: 100%;
   }

@@ -320,7 +320,20 @@ function listedFamilies(groups) {
 
 // Colecciones que inspiran (Home). El orden es este, no el alfabético.
 // La comparación ignora tildes: Dao encuentra «Daö».
-const FEATURED_FAMILIES = ['Fuji', 'Ugoki', 'Tori', 'Sen', 'Dao', 'Kanu'];
+const FEATURED_FAMILIES = ['Yoru', 'Afo', 'Sento', 'Hoshi', 'Kanu', 'Koen'];
+
+// Foto elegida para la tira. El resto usa el ambiente 1 del primer grupo.
+const FEATURED_IMAGES = {
+  yoru: 'https://d1zltvqju4u8ql.cloudfront.net/fit-in/1000x1000/MACROLED/ARQ/imagenes/productos/YORU%20WEB_0002s_0001_YORU-J-8W-N-WW_AMBIENT_1_ON.webp',
+  afo: 'https://d1zltvqju4u8ql.cloudfront.net/fit-in/1000x1000/MACROLED/ARQ/imagenes/productos/afo.jpg',
+  sento: 'https://d1zltvqju4u8ql.cloudfront.net/fit-in/1000x1000/MACROLED/ARQ/imagenes/productos/SENTO-J-520-12W-N-WW_AMBIENT_ON.webp',
+  hoshi: 'https://d1zltvqju4u8ql.cloudfront.net/fit-in/filters:format(webp)/MACROLED/ARQ/imagenes/productos/HOSHI-E-7W-15G-B_AMBIENT_1_ON.png',
+  kanu: 'https://d1zltvqju4u8ql.cloudfront.net/fit-in/MACROLED/ARQ/imagenes/productos/KANU-J-500-12W-N-WW_AMBIENT_3_ON.webp',
+  koen: 'https://d1zltvqju4u8ql.cloudfront.net/fit-in/1000x1000/MACROLED/ARQ/imagenes/productos/KOEN-P-20W-N-WW_HERO_AMBIENT_3_ON.webp',
+};
+
+// Encuadre de la foto en la tira. Sin entrada, queda centrada.
+const FEATURED_FOCUS = { hoshi: 'top', afo: 'bottom' };
 
 function usualName(groups) {
   const counts = new Map();
@@ -334,22 +347,30 @@ function usualName(groups) {
 /**
  * Familias destacadas de la Home (collection-index), en el orden de
  * FEATURED_FAMILIES. Foto: ambiente 1 del primer grupo; sin ella, la de
- * estudio. El link abre el listado de esa familia. El menú sigue listando
+ * estudio. Yoru, Afo, Sento, Hoshi, Kanu y Koen usan la foto de FEATURED_IMAGES. El link abre el listado de
+ * esa familia. El menú sigue listando
  * todas, en orden alfabético.
  */
 export async function getFamilies() {
   const { groups } = await loadCatalog();
   const byKey = new Map(listedFamilies(groups).map((family) => [normalize(family.name), family]));
   return FEATURED_FAMILIES.flatMap((wanted) => {
-    const family = byKey.get(normalize(wanted));
+    const key = normalize(wanted);
+    const family = byKey.get(key);
+    const chosen = FEATURED_IMAGES[key] ?? null;
     if (!family) {
-      console.warn(`[arq] collection-index: no hay familia «${wanted}»`);
-      return [];
+      if (!chosen) {
+        console.warn(`[arq] collection-index: no hay familia «${wanted}»`);
+        return [];
+      }
+      return [{ name: wanted, href: categoryHref({ family: wanted }), image: chosen, focus: FEATURED_FOCUS[key] ?? null }];
     }
     // Si la misma familia está escrita de dos formas (Dao y Daö), se muestra la más usada.
     const name = usualName(family.groups);
     const images = pick(family.groups[0].defaultVariant.images);
-    return [{ name, href: categoryHref({ family: name }), image: images.context ?? images.studio ?? null }];
+    const image = FEATURED_IMAGES[normalize(wanted)] ?? images.context ?? images.studio ?? null;
+    const focus = FEATURED_FOCUS[normalize(wanted)] ?? null;
+    return [{ name, href: categoryHref({ family: name }), image, focus }];
   });
 }
 

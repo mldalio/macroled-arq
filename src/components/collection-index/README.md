@@ -10,7 +10,7 @@ Lista de colecciones del Home, debajo de «Diseño que inspira». El nombre acti
 
 En la Home, «Ver todas las colecciones» abre el menú de Productos en la pestaña Colecciones (en Mobile, el submenú). No hay página de todas las colecciones.
 
-Los nombres son las familias destacadas de la Home: Fuji, Ugoki, Tori, Sen, Daö y Kanu, en ese orden (`getFamilies` en `src/data/catalog.js`). Salen de la columna `familia`; si una no está en la base, no se muestra. La foto es el ambiente 1 del primer grupo de esa familia; si no hay, la de estudio. Cada nombre abre `/arq/productos?family=`. El menú sigue mostrando todas las familias, en orden alfabético.
+Los nombres son las familias destacadas de la Home: Yoru, Afo, Sento, Hoshi, Kanu y Koen, en ese orden (`getFamilies` en `src/data/catalog.js`). Salen de la columna `familia`; si una no está en la base, no se muestra. La foto es el ambiente 1 del primer grupo de esa familia; si no hay, la de estudio. Yoru, Afo, Sento, Hoshi, Kanu y Koen usan una foto elegida. Hoshi se encuadra desde arriba, para que se vea el cielorraso. Afo se encuadra desde abajo, para que se vea la base. Cada nombre abre `/arq/productos?family=`. El menú sigue mostrando todas las familias, en orden alfabético.
 
 Pasar el mouse o enfocar un nombre cambia la foto. El primero arranca visible. En táctil, el primer toque muestra la foto y el segundo abre el listado. Con `prefers-reduced-motion` el cambio es instantáneo.
 

@@ -118,7 +118,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ text-block | `<arq-text-block>` | Kicker, título y bajada de una escena del Home ([README](../src/components/text-block/README.md)) |
 | ✅ collection-tile | `<arq-collection-tile>` | Tarjeta del mosaico de colecciones del Home ([README](../src/components/collection-tile/README.md)) |
 | ✅ collection-mosaic | `<arq-collection-mosaic>` | Mosaico de colecciones del Home ([README](../src/components/collection-mosaic/README.md)) |
-| ✅ collection-index | `<arq-collection-index>` | Lista de las familias destacadas del Home (Fuji, Ugoki, Tori, Sen, Daö, Kanu): la foto cambia al pasar el mouse por el nombre. Debajo, «Ver todas las colecciones» abre el menú ([README](../src/components/collection-index/README.md)) |
+| ✅ collection-index | `<arq-collection-index>` | Lista de las familias destacadas del Home (Yoru, Afo, Sento, Hoshi, Kanu, Koen): la foto cambia al pasar el mouse por el nombre. Debajo, «Ver todas las colecciones» abre el menú ([README](../src/components/collection-index/README.md)) |
 | ✅ tool-card | `<arq-tool-card>` | Recurso de «Herramientas para proyectar». `type="index"` es la fila sin imagen ([README](../src/components/tool-card/README.md)) |
 | ✅ project-slide | `<arq-project-slide>` | Slide del carrusel de proyectos del Home ([README](../src/components/project-slide/README.md)) |
 | ✅ project-slider | `<arq-project-slider>` | Carrusel de proyectos del Home, en bucle. Con `autoplay` avanza solo y se detiene con el mouse encima o el foco adentro (WCAG 2.2.2; falta un botón de pausa en el diseño); se arrastra con el mouse y el clic abre la foto en un lightbox ([README](../src/components/project-slider/README.md)) |
@@ -382,7 +382,7 @@ Contador (productos seleccionados, filtros activos). Tone=Primary sobre superfic
 - Figma: [1265-4464](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1265-4464)
 - Propiedades: Title; Description; Type: Button · Newsletter; Breakpoint: Desktop · Mobile
 
-Bloque de cierre de página con fondo color/surface/subtle y space/section/md. Type=Button (p. ej. "¿Necesitás ayuda para elegir?" en Comparativa) o Newsletter (input + button, Home). Props: Title, Description; button e input expuestos.
+Bloque de cierre de página con fondo color/surface/subtle y space/section/md. Type=Button (p. ej. "¿Necesitás ayuda para elegir?" en Comparativa) o Newsletter (input + button, Home). Con un email válido, Newsletter muestra «Listo. Te suscribiste al newsletter.» debajo del botón. Props: Title, Description; button e input expuestos.
 
 ## divider
 
