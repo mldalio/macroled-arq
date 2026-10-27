@@ -46,7 +46,9 @@ import '../swatch/swatch.js';
 import { covered, reveal, revealCss } from '../../base/reveal.js';
 import css from './catalog-listing.css?inline';
 
-const CATEGORY_PARAMS = { environment: 'environment', application: 'application', product_type: 'productType', collection: 'collection', family: 'family' };
+// Nivel «Colecciones» del breadcrumb: abre el mega-menu en esa pestaña (no hay vista de todas)
+const COLLECTIONS_CRUMB = { label: 'Colecciones', href: '/arq/productos', menu: 'colecciones' };
+const CATEGORY_PARAMS ={ environment: 'environment', application: 'application', product_type: 'productType', collection: 'collection', family: 'family' };
 const LISTING_DESKTOP = matchMedia('(min-width: 1024px)');
 const LISTING_WIDE = matchMedia('(min-width: 1920px)');
 
@@ -518,7 +520,7 @@ class ArqCatalogListing extends ArqElement {
   // Exterior, Lámparas y artefactos, Colecciones). Sin ítem actual queda el
   // del HTML (Productos).
   #titleFromNav(item) {
-    // Una familia se abre desde Productos: Inicio / Productos / Kanu.
+    // Una familia es una colección: Inicio / Productos / Colecciones / Kanu.
     // Vale aunque el ítem del sidebar todavía no coincida con la URL.
     if (this.#category.family && !this.#query) {
       const fromNav = item?.closest('[data-arq-nav="colecciones"]') ? item.textContent.trim() : '';
@@ -536,6 +538,7 @@ class ArqCatalogListing extends ArqElement {
       }
       this.#syncBreadcrumb([
         { label: 'Productos', href: location.pathname },
+        COLLECTIONS_CRUMB,
         { label },
       ]);
       return;
@@ -564,15 +567,16 @@ class ArqCatalogListing extends ArqElement {
       title.textContent = label || this.#htmlTitle;
       title.parentElement.removeAttribute('search-title');
     }
-    // Breadcrumb (Levels 3 · 2): Inicio / Productos sin categoría; Inicio /
-    // Productos / grupo en su vista completa; Inicio / grupo / subcategoría.
+    // Breadcrumb: Inicio / Productos sin categoría; Inicio / Productos / grupo
+    // en su vista completa; Inicio / Productos / grupo / subcategoría.
+    const products = { label: 'Productos', href: location.pathname };
     if (!label) this.#syncBreadcrumb([]);
     else if (sub) {
-      // Colecciones no tiene página propia: el nivel anterior es Productos.
-      const groupCrumb = firstItem ? { label: groupLabel, href: firstItem.getAttribute('href') } : { label: 'Productos', href: location.pathname };
-      this.#syncBreadcrumb([groupCrumb, { label }]);
+      // Colecciones no tiene página propia: su nivel abre el mega-menu en esa pestaña.
+      const groupCrumb = firstItem ? { label: groupLabel, href: firstItem.getAttribute('href') } : COLLECTIONS_CRUMB;
+      this.#syncBreadcrumb([products, groupCrumb, { label }]);
     }
-    else this.#syncBreadcrumb([{ label: 'Productos', href: location.pathname }, { label }]);
+    else this.#syncBreadcrumb([products, { label }]);
   }
 
   // Reemplaza los niveles del breadcrumb del page-header que siguen al

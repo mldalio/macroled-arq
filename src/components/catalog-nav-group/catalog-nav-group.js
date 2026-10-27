@@ -70,7 +70,10 @@ class ArqCatalogNavGroup extends ArqElement {
       this.#slide(before);
       before = null;
     });
-    const sync = () => this.#syncSelected();
+    const sync = () => {
+      this.#syncSelected();
+      this.#revealSelected();
+    };
     this.shadowRoot.querySelector('slot:not([name])').addEventListener('slotchange', sync);
     new MutationObserver(sync).observe(this, { subtree: true, attributes: true, attributeFilter: ['selected'] });
     sync();
@@ -99,6 +102,26 @@ class ArqCatalogNavGroup extends ArqElement {
     group.animate(from, { ...options, pseudoElement: '::after' });
     for (const element of below) element.animate(from, options);
     if (this.open) items.animate([{ clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0)' }], options);
+  }
+
+  update(changed) {
+    if (changed.has('open')) this.#revealSelected();
+  }
+
+  // Una lista larga se desplaza adentro (CSS, desde 1024 px): el ítem elegido
+  // queda a la vista, centrado. Sin scrollIntoView, que movería la página. Se
+  // mide en el cuadro siguiente: al abrir, Disclosure muestra la lista
+  // después de update().
+  #revealSelected() {
+    requestAnimationFrame(() => this.#scrollToSelected());
+  }
+
+  #scrollToSelected() {
+    const list = this.shadowRoot.querySelector('.items-inner');
+    const item = this.querySelector(':scope > arq-catalog-nav-item[selected]');
+    if (!item || !this.open || list.scrollHeight <= list.clientHeight) return;
+    const top = item.getBoundingClientRect().top - list.getBoundingClientRect().top + list.scrollTop;
+    list.scrollTop = top - (list.clientHeight - item.offsetHeight) / 2;
   }
 
   #syncSelected() {

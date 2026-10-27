@@ -86,6 +86,30 @@
   padding-bottom: calc(var(--arq-space-padding-md) + var(--arq-space-padding-xs));
 }
 
+/* Sidebar (desde 1024 px): una lista larga (Colecciones) no pasa de 9 ítems y
+   medio (alto 32 = space/padding/xs × 2 + type/body-compact/leading): el resto
+   se desplaza adentro y el medio ítem cortado avisa que hay más. Así el
+   sidebar fijo entra en la pantalla y la lista se descubre al abrir en el
+   mismo recorrido que las otras. Arriba suma space/padding/xs (y lo resta con
+   el margen) para que el anillo de foco del primer ítem no se corte.
+   TODO (diseño): el set no tiene el caso de una lista larga; cantidad
+   elegida en código. En filter-panel (hasta 1023 px) la lista no se corta:
+   desplaza el panel. */
+@media (min-width: 1024px) {
+  /* border-box: el padding inferior queda al final del desplazamiento, no
+     tapa el medio ítem */
+  .items-inner {
+    box-sizing: border-box;
+    max-height: calc((var(--arq-space-padding-xs) * 2 + var(--arq-type-body-compact-leading)) * 9.5 + var(--arq-space-padding-xs));
+    margin-top: calc(var(--arq-space-padding-xs) * -1);
+    padding-top: var(--arq-space-padding-xs);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--arq-color-border-hover) var(--arq-color-surface-transparent);
+  }
+}
+
 /* Riel: línea izquierda border/default en color/border/subtle; los ítems van
    pegados (el aire lo da el padding de cada ítem). */
 .rail {
