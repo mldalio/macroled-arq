@@ -22,9 +22,10 @@ Grupo desplegable de catalog-nav: una macrofamilia (Interior, Exterior, Lámpara
 | — (ítems) | slot por defecto | — | `arq-catalog-nav-item`, cantidad libre |
 
 - **Comportamiento** (`src/base/disclosure.js`): el encabezado es un `<button>` con `aria-expanded`; la lista (`role="list"`) queda en el HTML aunque esté cerrada. La acción del usuario emite `arq:toggle` con `{ open }`.
+- **Pliegue:** la lista cambia de golpe y lo de abajo vuelve desde donde estaba con `transform` (`motion/easing/standard`). La duración depende del recorrido (de 4 a 15 ítems, lineal en el medio): al abrir, de `motion/duration/slow` a `motion/duration/fold`; al cerrar, de `motion/duration/expand` a `motion/duration/panel`. El chevron gira con la misma duración. Con reduced motion, de golpe con el fundido de Disclosure.
 - **Ícono:** `chevron-down` cerrado y `chevron-up` abierto, con las medidas de icon-button Size=Default (24, ícono 16), parte del botón. Hover `color/surface/hover`.
 - Siempre dentro de `arq-catalog-nav`.
-- **Lista larga** (Colecciones): desde 1024 px mide hasta 9 ítems y medio y el resto se desplaza adentro; el ítem elegido se centra al abrir. Hasta 1023 px (filter-panel) no se corta. `TODO` (diseño): el set no tiene este caso. `docs/decisiones.md`, 2026-10-19 · Navbar fijo en los listados (Listas largas del sidebar).
+- **Lista larga** (Colecciones): no se corta. Desde 1024 px el tope lo pone el listado al sidebar entero (lo que se ve de pantalla desde su borde superior; solo si no entra, se desplaza adentro). Hasta 1023 px (filter-panel) desplaza el panel. `TODO` (diseño): el set no tiene este caso. `docs/decisiones.md`, 2026-10-19 · Navbar fijo en los listados (Listas largas del sidebar).
 - `TODO` (diseño) El set de Figma ya no coincide con este README: la etiqueta es `role/body-xl` (aquí `role/label`), la línea del grupo va abajo (aquí arriba), la lista lleva una guía lateral (`rail`, `border/default` en `color/border/subtle`) con los ítems en `role/body-compact` y 12 de sangría. No se tocó: solo se pidió mover Selected al grupo.
 
 ## Tokens

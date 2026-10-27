@@ -52,6 +52,14 @@ class ArqCatalogNavGroup extends ArqElement {
     `</div>`;
 
   #auto = false; // selected lo puso el grupo al ver un ítem selected (no el HTML)
+  #itemHeight = 0; // alto de un ítem, medido con la lista a la vista
+
+  // Al cerrar, la lista ya está oculta cuando se calcula el recorrido: se usa
+  // el alto medido en el clic, antes de cerrarse.
+  #measureItem() {
+    this.#itemHeight = this.querySelector(':scope > arq-catalog-nav-item')?.offsetHeight || this.#itemHeight;
+    return this.#itemHeight;
+  }
 
   setup() {
     const header = this.shadowRoot.querySelector('.header');
@@ -60,6 +68,7 @@ class ArqCatalogNavGroup extends ArqElement {
     let before = null;
     header.addEventListener('click', () => {
       before = this.getBoundingClientRect().height;
+      this.#measureItem();
     });
     this.disclosure = new Disclosure(this, {
       trigger: header,
@@ -70,58 +79,49 @@ class ArqCatalogNavGroup extends ArqElement {
       this.#slide(before);
       before = null;
     });
-    const sync = () => {
-      this.#syncSelected();
-      this.#revealSelected();
-    };
+    const sync = () => this.#syncSelected();
     this.shadowRoot.querySelector('slot:not([name])').addEventListener('slotchange', sync);
     new MutationObserver(sync).observe(this, { subtree: true, attributes: true, attributeFilter: ['selected'] });
     sync();
   }
 
   // Como #slide de compare-bar: lo de abajo arranca donde estaba y llega a su
-  // lugar nuevo con transform. Con reduced motion expand vale 0: cambia de
-  // golpe y queda el fundido de Disclosure.
+  // lugar nuevo con transform. La duración sale del recorrido: al abrir, de
+  // motion/duration/slow (hasta 4 ítems) a motion/duration/fold (desde 15);
+  // al cerrar, más corta, de motion/duration/expand a motion/duration/panel;
+  // en el medio, lineal. Así una lista larga (Colecciones) no se descubre de
+  // un salto. Con reduced motion las duraciones valen 0: cambia de golpe y
+  // queda el fundido de Disclosure.
   #slide(before) {
     if (before === null) return;
     const styles = getComputedStyle(this);
-    const duration = Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-expand')) || 0;
-    if (!duration) return;
+    const ms = (name) => Number.parseFloat(styles.getPropertyValue(name)) || 0;
+    const short = ms(this.open ? '--arq-motion-duration-slow' : '--arq-motion-duration-expand');
+    if (!short) return;
     const group = this.shadowRoot.querySelector('.group');
     const items = this.shadowRoot.querySelector('.items');
+    const icon = this.shadowRoot.querySelector('.icon');
     const below = [];
     for (let next = this.nextElementSibling; next; next = next.nextElementSibling) below.push(next);
     // Si se vuelve a tocar a mitad del desplazamiento, arranca desde donde se
     // ve ahora (el desplazamiento en curso), no desde el lugar de reposo.
     const current = below.length ? new DOMMatrixReadOnly(getComputedStyle(below[0]).transform).m42 : 0;
-    for (const element of [group, items, ...below]) element.getAnimations().forEach((animation) => animation.cancel());
+    const angle = getComputedStyle(icon).rotate;
+    for (const element of [group, items, icon, ...below]) element.getAnimations().forEach((animation) => animation.cancel());
     const delta = before - this.getBoundingClientRect().height + current;
     if (!delta) return;
+    const itemHeight = this.#measureItem() || Math.abs(delta);
+    const progress = Math.min(Math.max((Math.abs(delta) / itemHeight - 4) / (15 - 4), 0), 1);
+    const long = ms(this.open ? '--arq-motion-duration-fold' : '--arq-motion-duration-panel');
+    const duration = Math.round(short + (long - short) * progress);
     const options = { duration, easing: styles.getPropertyValue('--arq-motion-easing-standard').trim() || 'ease-out' };
     const from = [{ transform: `translateY(${delta}px)` }, { transform: 'none' }];
     group.animate(from, { ...options, pseudoElement: '::after' });
     for (const element of below) element.animate(from, options);
     if (this.open) items.animate([{ clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0)' }], options);
-  }
-
-  update(changed) {
-    if (changed.has('open')) this.#revealSelected();
-  }
-
-  // Una lista larga se desplaza adentro (CSS, desde 1024 px): el ítem elegido
-  // queda a la vista, centrado. Sin scrollIntoView, que movería la página. Se
-  // mide en el cuadro siguiente: al abrir, Disclosure muestra la lista
-  // después de update().
-  #revealSelected() {
-    requestAnimationFrame(() => this.#scrollToSelected());
-  }
-
-  #scrollToSelected() {
-    const list = this.shadowRoot.querySelector('.items-inner');
-    const item = this.querySelector(':scope > arq-catalog-nav-item[selected]');
-    if (!item || !this.open || list.scrollHeight <= list.clientHeight) return;
-    const top = item.getBoundingClientRect().top - list.getBoundingClientRect().top + list.scrollTop;
-    list.scrollTop = top - (list.clientHeight - item.offsetHeight) / 2;
+    // El chevron gira con el mismo tiempo, desde donde esté (su transition de
+    // CSS ya había arrancado con expand)
+    icon.animate([{ rotate: angle }, { rotate: getComputedStyle(icon).rotate }], options);
   }
 
   #syncSelected() {
