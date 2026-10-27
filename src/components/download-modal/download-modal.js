@@ -67,6 +67,7 @@ class ArqDownloadModal extends ArqElement {
     `</div>` +
     `<div class="content">` +
     `<div class="featured"><slot name="featured"></slot></div>` +
+    `<slot name="message"></slot>` +
     `<div class="list" role="list"><slot></slot></div>` +
     `</div>` +
     `</div>` +

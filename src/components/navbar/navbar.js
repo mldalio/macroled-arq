@@ -150,6 +150,7 @@ class ArqNavbar extends ArqElement {
     `<div class="menu-products" hidden>` +
     `<button type="button" class="back role-body-medium">${icon('chevron-left')}<span>Productos</span></button>` +
     `<div class="groups"></div>` +
+    `<div class="products-cta"><arq-button type="underline" show-underline show-icon icon="arrow-right" href="/arq/productos">Ver todos los productos</arq-button></div>` +
     `</div>` +
     `<div class="menu-recursos" hidden>` +
     `<button type="button" class="back back-recursos role-body-medium">${icon('chevron-left')}<span>Recursos</span></button>` +

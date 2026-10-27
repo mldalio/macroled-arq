@@ -160,7 +160,12 @@ class ArqMegaMenu extends ArqElement {
       .join('');
     root.querySelector('.panels').innerHTML = available
       .map((t) => {
-        const content = t.id === 'colecciones' ? this.#collections(nav) : this.#sectionColumns(this.#columns(t.id), t.id === 'por-espacio' || t.id === 'lamparas-y-artefactos');
+        // Por espacio: «Ver todos los productos» abajo a la izquierda
+        const content =
+          t.id === 'colecciones'
+            ? this.#collections(nav)
+            : this.#sectionColumns(this.#columns(t.id), t.id === 'por-espacio' || t.id === 'lamparas-y-artefactos') +
+              (t.id === 'por-espacio' ? `<arq-button class="all-products" type="underline" show-underline show-icon icon="arrow-up-right" href="/arq/productos">Ver todos los productos</arq-button>` : '');
         return `<div class="panel panel--${t.id}" role="tabpanel" id="${ids(t).panel}" aria-labelledby="${ids(t).tab}" data-tab="${t.id}"${t.id === this.tab ? '' : ' hidden'}>${content}</div>`;
       })
       .join('');

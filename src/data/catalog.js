@@ -20,6 +20,7 @@ import { ATTRIBUTES, DOWNLOAD_FILTERS, TABLE_COLUMNS, attributeInfo, keyData, sp
 import { variantOptions, findVariant, choose } from './variants.js';
 import { normalize, queryWords, matchWords } from './text.js';
 import { finishImage } from './finishes.js';
+import { cotaUrl } from './cotas.js';
 
 let pending = null;
 
@@ -514,9 +515,10 @@ export async function skuDownloads(sku) {
 
 /**
  * Datos de la ficha técnica en PDF de un SKU de cualquier grupo: { name, sku,
- * image, keyData, sections }, o null si no existe. image es la imagen
+ * image, cota, keyData, sections }, o null si no existe. image es la imagen
  * principal (img_main en Typesense); si falta, la de estudio de la variante o
- * de la predeterminada. keyData, los datos clave (attributes.js, KEY_DATA);
+ * de la predeterminada. cota, el dibujo con medidas (cotas.js) o null.
+ * keyData, los datos clave (attributes.js, KEY_DATA);
  * sections, como el acordeón de la ficha.
  */
 export async function getDatasheet(sku) {
@@ -526,13 +528,17 @@ export async function getDatasheet(sku) {
   const variant = group.variants.find((v) => v.sku === sku);
   const own = pick(variant.images);
   const base = pick(group.defaultVariant.images);
-  return {
+  const data = {
     name: variantName(group, variant),
     sku: variant.sku,
     image: own.main ?? own.studio ?? base.main ?? base.studio ?? null,
+    cota: cotaUrl(variant.sku),
     keyData: keyData(variant.values),
     sections: specSections(variant.values),
   };
+  // Demo: ?data=datasheet-error para ver el mensaje de error.
+  const demo = await demoData();
+  return demo ? demo.fixtures.datasheet(demo.mode, data) : data;
 }
 
 /**

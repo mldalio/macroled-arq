@@ -27,6 +27,7 @@ import '../button/button.js';
 import '../variants-table/variants-table.js';
 import '../download-modal/download-modal.js';
 import '../download-item/download-item.js';
+import '../form-message/form-message.js';
 import css from './descargas.css?inline';
 
 const TEXT = {
@@ -36,6 +37,7 @@ const TEXT = {
   retry: 'Reintentar',
   label: 'Descargas por SKU',
   datasheet: 'Ficha técnica',
+  datasheetError: 'No se pudo generar la ficha técnica. Probá de nuevo.',
 };
 
 class ArqDescargas extends ArqElement {
@@ -48,7 +50,8 @@ class ArqDescargas extends ArqElement {
     `<arq-button class="retry" type="underline" show-underline hidden>${TEXT.retry}</arq-button>` +
     `<arq-variants-table class="table" type="catalog" downloads="downloads-modal"></arq-variants-table>` +
     `</div>` +
-    `<arq-download-modal id="downloads-modal" show-product><slot name="modal-title" slot="title"></slot></arq-download-modal>`;
+    `<arq-download-modal id="downloads-modal" show-product><slot name="modal-title" slot="title"></slot>` +
+    `<arq-form-message class="datasheet-error" slot="message" tone="error"></arq-form-message></arq-download-modal>`;
 
   #rows = new Map();
   #titleObserver = new ResizeObserver((entries) => {
@@ -77,8 +80,13 @@ class ArqDescargas extends ArqElement {
       event.stopPropagation();
       const { sku } = event.currentTarget;
       if (!sku) return;
+      // Si falla, form-message Error debajo de la ficha técnica; se borra al
+      // volver a intentar.
+      const message = event.currentTarget.querySelector('.datasheet-error');
+      message.textContent = '';
       const detail = { sku };
       this.emit('datasheet', detail);
+      detail.pending?.catch(() => (message.textContent = TEXT.datasheetError));
       const row = event.target.closest?.('arq-download-item');
       if (!row || !detail.pending) return;
       row.loading = true;
@@ -134,6 +142,7 @@ class ArqDescargas extends ArqElement {
     modal.meta = row?.meta ?? '';
     modal.thumb = row?.thumb ?? null;
     for (const item of modal.querySelectorAll(':scope > arq-download-item')) item.remove();
+    modal.querySelector('.datasheet-error').textContent = '';
     const datasheet = this.#fileRow(TEXT.datasheet);
     datasheet.emphasis = 'featured';
     modal.append(datasheet);

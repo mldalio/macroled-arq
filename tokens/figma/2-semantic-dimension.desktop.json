@@ -500,8 +500,8 @@
     },
     "pdf-cover-image": {
       "$type": "number",
-      "$value": 200,
-      "$description": "Lado de la foto cuadrada del producto en pdf-cover (primera hoja de la ficha técnica PDF, A4). La foto se muestra entera (contain) sobre color/surface/subtle.",
+      "$value": 240,
+      "$description": "Lado de la foto cuadrada del producto en pdf-cover (primera hoja de la ficha técnica PDF, A4), y alto del dibujo de cotas que va al lado. Las dos imágenes se muestran enteras (contain): la foto sobre color/surface/subtle y las cotas sobre el blanco de la hoja.",
       "$extensions": {
         "com.figma": {
           "scopes": [
@@ -510,6 +510,18 @@
           "codeSyntax": {
             "WEB": "var(--arq-layout-pdf-cover-image)"
           }
+        }
+      }
+    },
+    "pdf-spec-label-compact": {
+      "$type": "number",
+      "$value": 160,
+      "$description": "Ancho de etiqueta en pdf-spec-row cuando la tabla va en dos columnas.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ]
         }
       }
     }
