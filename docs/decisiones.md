@@ -1756,3 +1756,9 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 
 - **Decisión de Lau:** la ficha técnica en PDF ya no lleva la fila de características destacadas (pdf-key-data: Potencia, Flujo, Temperatura, CRI…) debajo de la foto. Esos datos ya están en las especificaciones; pdf-cover termina en la foto y las cotas. Reemplaza los datos clave de 2026-10-23 · Ficha técnica: una hoja menos.
 - Código: se quitaron `KEY_DATA`, `keyData()` (`src/data/attributes.js`), el campo `keyData` de `getDatasheet` y la fila del PDF. Figma: pdf-cover sin pdf-key-data ni la propiedad Show key data; se borraron pdf-key-data y pdf-key-item. Rama `feat/pdf-sin-datos-clave`.
+
+## 2026-10-27 · Cotas desde la base
+
+- Las cotas de la ficha técnica en PDF salen del campo `cotas_img` de Typesense (columna de Sheets con la URL del PNG), por SKU. Se borró `src/data/cotas.js` (las reglas por patrón de SKU) y `config.images.cotasBase`. Reemplaza el mapeo de 2026-10-27 · Ficha técnica con cotas. Rama `feat/pdf-cotas-desde-base`.
+- **Solo de la base (decisión de Lau):** sin `cotas_img`, la ficha sale sin cotas; no hay respaldo en el código. Al cambiar, los 108 SKU con dato coincidían con el mapeo anterior; PAR11 (5 SKU) tenía dibujo en el código y no en la hoja, y queda sin cotas hasta que se cargue.
+- `cotas_img` entra en `LIGHT_FIELDS`: el PDF se genera desde cualquier página (ficha y Descargas) sin pedir el detalle del grupo.

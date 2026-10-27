@@ -59,6 +59,7 @@ Dónde se usa cada foto:
 
 - Textos: `description` (por SKU), `product_story_text`, `product_inspiration_text`, `escena_uso_sugerido`, `collection_intro_text`, `collection_description_text`. `video_inspiration`.
 - Descargas: `ies`, `cad`, `manual`, `fotometria`.
+- `cotas_img`: URL del dibujo con cotas (PNG en `MACROLED/ARQ/cotas/`), por SKU. Lo usa solo la ficha técnica en PDF; vacío, la ficha sale sin cotas.
 - `new` (bool) marca las novedades: son los productos recomendados del buscador (una card por cada SKU marcado, con sus fotos). Sin uso en el sitio todavía: `categoria`, `nombre_origen`.
 - Técnicos: los de `src/data/attributes.js`, más `tension_pack`, `tension_salida`, `frecuencia`, `corriente_entrada`, `corriente_salida`, `marca_driver`, `anti_high_volt`, `on_off_switch`, `protector_spd`, `no_flicker`, `corriente_irrupcion`, `tiempo_irrupcion`, `clase_proteccion`, `max_lum_b16`, `max_lum_c10`, `max_lum_c16`, `td_distorsion_tonal`, `marca_led`, `tiempo_arranque`, `certificado_lm80`, `desviacion_color`, `grupo_seguridad_fotobiologica`, `conector`, `garantia_pack`, `instalacion`. Llegan como texto con unidad («12W», «50 cm», «-»).
 - Facets: `familia`, `macrofamilia`, `subfamilia`, `potencia`, `temperatura_color`, `angulo_apertura`.
