@@ -149,6 +149,41 @@ class ArqCatalogListing extends ArqElement {
     };
     LISTING_DESKTOP.addEventListener('change', observeStuck);
     observeStuck();
+
+    // Sidebar (desde 1024 px): mide como mucho lo que se ve de pantalla desde
+    // su borde superior (pegado, desde el navbar; antes, desde donde esté).
+    // Solo si lo que tiene no entra, se desplaza adentro y aparece la barra.
+    // Se compara el alto del nav del slot, al que no le suman los transform
+    // del pliegue de catalog-nav-group: así la barra no asoma mientras se
+    // cierra un grupo.
+    const side = root.querySelector('.nav');
+    let fitFrame = 0;
+    const fitNav = () => {
+      fitFrame = 0;
+      const nav = root.querySelector('slot[name="nav"]').assignedElements()[0];
+      const styles = getComputedStyle(side);
+      const top = Math.max(side.getBoundingClientRect().top, Number.parseFloat(styles.top) || 0);
+      const room = Math.max(window.innerHeight - top, 0);
+      const content = (nav?.offsetHeight ?? 0) + Number.parseFloat(styles.paddingTop) + Number.parseFloat(styles.paddingBottom);
+      side.style.setProperty('--nav-max', `${room}px`);
+      side.classList.toggle('scrolls', LISTING_DESKTOP.matches && content > room);
+    };
+    const queueFit = () => {
+      fitFrame ||= requestAnimationFrame(fitNav);
+    };
+    window.addEventListener('scroll', queueFit, { passive: true });
+    window.addEventListener('resize', queueFit);
+    // Cambios de alto: abrir o cerrar un grupo (nav del slot) y lo que corre
+    // el sidebar de lugar (título, bajada, grilla: el alto de la página).
+    const navResize = new ResizeObserver(queueFit);
+    navResize.observe(document.documentElement);
+    root.querySelector('slot[name="nav"]').addEventListener('slotchange', (event) => {
+      const nav = event.target.assignedElements()[0];
+      if (nav) navResize.observe(nav);
+      queueFit();
+    });
+    queueFit();
+
     const bar = root.querySelector('.compare');
     grid.addEventListener('arq:compare', (event) => {
       const card = event.target;

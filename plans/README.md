@@ -8,12 +8,14 @@ Planes escritos con el skill improve-animations (auditoría de Contacto y Descar
 | 002 | [Con reduced motion, el fundido de los desplegables y de la primera carga se queda](002-fundidos-base-reduced-motion.md) | LOW | DONE |
 | 003 | [Token `motion/duration/panel` en lugar de `slow × 1,25`](003-token-motion-duration-panel.md) | LOW | DONE |
 | 004 | [«Copiado» del sku con un fundido corto](004-sku-copiado-fundido.md) | LOW | DONE |
+| 005 | [El pliegue de catalog-nav-group dura según cuánto se mueve](005-catalog-nav-group-duracion-segun-recorrido.md) | HIGH | DONE |
 
 ## Orden recomendado
 
 1. **001 y 002** juntos: son la misma regla de DESIGN.md §6 (con reduced motion quedan los fundidos) y no dependen de nada.
 2. **003**: necesita cambiar una variable en Figma. Si se hace antes que 001, el plan 001 sigue valiendo igual (usa `--panel-slow`, que 003 solo redefine).
 3. **004**: independiente; es una mejora chica.
+4. **005** (2026-10-27, revisión del sidebar de Productos): va después de `fix/catalog-nav-scroll-viewport` (la lista de Colecciones sin corte), en esa misma rama o en una que salga de ella. El cambio de DESIGN.md §6 que pide va aparte, en una rama `docs/`.
 
 ## Lo que la auditoría dejó como está
 

@@ -130,11 +130,26 @@
     transition-timing-function: var(--arq-illumination-bg-easing);
   }
 
+  /* El padding de space/padding/xs (y el margen que lo resta) deja lugar al
+     anillo de foco en los bordes cuando se desplaza. */
   .nav {
     position: sticky;
     top: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
     align-self: start;
     z-index: 3;
+    box-sizing: border-box;
+    margin: calc(var(--arq-space-padding-xs) * -1);
+    padding: var(--arq-space-padding-xs);
+  }
+
+  /* Tope: lo que se ve de pantalla desde el borde superior del sidebar
+     (--nav-max y .scrolls los pone el JS). Solo si los grupos abiertos no
+     entran, se desplaza adentro con una barra fina. */
+  .nav.scrolls {
+    max-height: var(--nav-max);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--arq-color-border-hover) var(--arq-color-surface-transparent);
   }
 }
 

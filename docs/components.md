@@ -240,7 +240,7 @@ Grupo desplegable del sidebar de catálogo (catalog-nav). Encabezado: label role
 
 Movimiento (código): como el pliegue de compare-bar. La lista cambia de golpe y la línea del grupo y los grupos de abajo vuelven con transform desde donde estaban (motion/duration/expand, motion/easing/standard); al abrir, la lista se descubre con clip-path al mismo ritmo. No se anima el alto. El chevron gira media vuelta con el mismo tiempo y la misma curva. Con reduced motion, cambia de golpe y queda el fundido (motion/duration/fade).
 
-Lista larga (Colecciones, código): en el sidebar (desde 1024 px) la lista mide hasta 9 ítems y medio y el resto se desplaza adentro, con una barra fina; el medio ítem cortado avisa que hay más y el ítem elegido se centra al abrir. Así el sidebar fijo entra en la pantalla y la lista se descubre en el mismo recorrido que las otras. En filter-panel (hasta 1023 px) no se corta.
+Lista larga (Colecciones, código): la lista no se corta. En el listado (desde 1024 px) el sidebar entero mide como mucho lo que se ve de pantalla desde su borde superior y, solo si no entra, se desplaza adentro con una barra fina. En filter-panel (hasta 1023 px) desplaza el panel.
 
 ## catalog-nav-item
 
