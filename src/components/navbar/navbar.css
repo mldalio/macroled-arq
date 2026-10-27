@@ -4,8 +4,9 @@
 /* Default: queda arriba al desplazar (sticky). Transparent: también sticky,
    encima del hero gracias al margen inferior negativo (TODO diseño:
    confirmar). Así, con announcement-bar arriba, arranca debajo de la barra y
-   se pega arriba cuando la barra se va con el scroll. z-index sin token: por
-   encima del contenido y de la barra de Iluminar (4). El preloader queda en 6. */
+   se pega arriba cuando la barra se va con el scroll. z-index sin token:
+   capa 4, por encima de la barra de Iluminar (3). El preloader queda en 5
+   (docs/decisiones.md, 2026-10-27 · Capas de la página). */
 :host {
   /* Mega-menú: entra en motion/duration/panel (400 ms), como el search-sheet,
      y se va un poco antes, en motion/duration/slow (320 ms), los dos con
@@ -20,7 +21,7 @@
   display: block;
   position: sticky;
   top: 0;
-  z-index: 5;
+  z-index: 4;
   transition: transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
 }
 
@@ -186,10 +187,16 @@
   inset: 0;
 }
 
+/* Tope: lo que queda de pantalla debajo de la barra. La barra es sticky y el
+   panel absoluto, así que el scroll de la página no lo mueve: si una pestaña
+   tiene muchos links (o la pantalla es baja), el panel se desplaza adentro. */
 .mega-drawer {
   position: relative;
   min-height: 0;
-  overflow: clip;
+  max-height: calc(100dvh - var(--bar-top, 0dvh) - var(--arq-layout-navbar-height));
+  overflow-x: clip;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   clip-path: inset(0 0 100% 0);
   transition: clip-path var(--mega-slow) var(--mega-ease);
 }

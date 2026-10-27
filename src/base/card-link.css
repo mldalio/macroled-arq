@@ -15,14 +15,15 @@
      offset negativo, así no cambia el tamaño). Solo con mouse (hover: hover).
    - Un elemento interactivo dentro de la tarjeta (el checkbox de
      product-card) va por encima del ::after: position: relative + z-index:
-     var(--card-above), la variable local de abajo. */
+     var(--card-above), la variable local de abajo.
+   - isolation: isolate: los z-index de adentro (fotos, link estirado,
+     acabados) quedan dentro de la tarjeta y no compiten con el navbar, el
+     mega-menú ni las barras fijas de la página (docs/decisiones.md,
+     2026-10-27 · Capas de la página). */
 
 .card {
   --card-above: 1;
   position: relative;
-  /* El z-index del link estirado queda dentro de la tarjeta. Si no, al hacer
-     scroll compite con la barra fija (Iluminar, Filtrar, navbar) y el clic
-     abre la card. */
   isolation: isolate;
 }
 
@@ -78,4 +79,13 @@
   max-width: none !important;
   height: 100% !important;
   object-fit: cover;
+}
+
+/* Táctil: sin hover, el toque muestra lo mismo mientras el dedo apoya
+   (:active), así el link responde antes de que cargue la página siguiente */
+@media (hover: none) {
+  .card:has(.card-link:active) .card-media {
+    outline: var(--arq-border-default) solid var(--arq-color-border-hover);
+    outline-offset: calc(var(--arq-border-default) * -1);
+  }
 }

@@ -25,11 +25,11 @@
 /* El embed trae <arq-preloader open page> y el script es un módulo: hasta que
    el componente se define, esta regla tapa la página. Después siguen los
    estilos del shadow. z-index sin token, el mismo que el componente (sobre
-   el navbar, que es 5). */
+   el navbar, que es 4). */
 arq-preloader[open]:not(:defined) {
   position: fixed;
   inset: 0;
-  z-index: 6;
+  z-index: 5;
   background: var(--arq-color-surface-default);
 }
 

@@ -9,9 +9,9 @@ import { finishImage } from './finishes.js';
 
 const FAMILY = 'Dao';
 
-// Presentación, igual que el demo: orden de grupos y el nombre de cada cantidad
-// de módulos. Los colores salen de finishes.js (familia Dao).
-const MODULE_NAMES = { 1: 'Simple', 2: 'Doble', 3: 'Triple' };
+// Presentación, igual que el demo: orden de grupos. Los colores salen de
+// finishes.js (familia Dao). Los módulos se muestran «x1», «x2», «x3», como en
+// la ficha (typesense-adapter.js).
 const GROUP_ORDER = ['DAO-E', 'DAO-T', 'DAO-MINI-E', 'DAO-MINI-T', 'DAO-E-PH', 'DAO-E-DF'];
 const COLOR_ORDER = ['Negro', 'Blanco', 'Cobre', 'Bronce', 'Celeste', 'Grafito', 'Platil'];
 
@@ -117,7 +117,7 @@ export function buildDaoModel(rows) {
   const model = {
     bySku,
     groups,
-    moduleName: (qty) => MODULE_NAMES[qty] || `${qty} módulos`,
+    moduleName: (qty) => `x${qty}`,
     formatSize,
     swatch: (color) => finishImage(color, FAMILY),
     extra: (key) => {
@@ -178,6 +178,7 @@ function fromRing(ring, extra = {}) {
     qty: ring.modulos,
     color: ring.color,
     head: extra.head ?? null,
+    headColor: extra.headColor ?? null,
     lamp: extra.lamp ?? null,
     front: extra.front ?? null,
   };
@@ -204,6 +205,16 @@ function selectionForLamp(model, lampSku) {
   return null;
 }
 
+// Rol de una pieza según quién la lista (las filas de PAR11 traen `categoria` vacía)
+function roleOf(model, row) {
+  const all = Object.values(model.bySku);
+  if (all.some((item) => item.frentes.includes(row.sku))) return 'front';
+  if (all.some((item) => item.lamparas.includes(row.sku))) return 'lamp';
+  if (all.some((item) => item.cabezales.includes(row.sku))) return 'head';
+  if ((row.categoria === 'Aro' || row.categoria === 'Accesorio') && model.group(row.grupo)) return 'ring';
+  return null;
+}
+
 /**
  * Estado inicial: la pieza de la ficha queda elegida y el resto es un armado
  * compatible con ella. Sin SKU, o si no está en la base, el primer aro.
@@ -211,62 +222,96 @@ function selectionForLamp(model, lampSku) {
 export function daoSelection(model, sku) {
   const row = sku ? model.bySku[clean(sku)] : null;
   if (!row) return fallbackSelection(model);
+  const role = roleOf(model, row);
 
-  if ((row.categoria === 'Aro' || row.categoria === 'Accesorio') && model.group(row.grupo)) {
-    return fromRing(row);
-  }
+  if (role === 'ring') return fromRing(row);
 
-  if (row.categoria === 'Cabezal') {
+  if (role === 'head') {
     const ring = ringsInOrder(model).find((item) => item.cabezales.includes(row.sku));
-    if (ring) return fromRing(ring, { head: row.grupo });
+    if (ring) return fromRing(ring, { head: row.grupo, headColor: row.color });
   }
 
-  if (row.categoria === 'Lámpara') {
+  if (role === 'lamp') {
     return selectionForLamp(model, row.sku) ?? fallbackSelection(model);
   }
 
-  if (row.categoria === 'Frente') {
-    const lamp = Object.values(model.bySku).find((item) => item.categoria === 'Lámpara' && item.frentes.includes(row.sku));
+  if (role === 'front') {
+    const lamp = Object.values(model.bySku).find((item) => item.frentes.includes(row.sku));
     const selection = lamp ? selectionForLamp(model, lamp.sku) : null;
     if (!selection) return fallbackSelection(model);
     const sameColor = model.ring(selection.group, selection.qty, row.color);
-    const chosen = sameColor ? fromRing(sameColor, { head: selection.head, lamp: lamp.sku, front: row.sku }) : { ...selection, front: row.sku };
-    return chosen;
+    return sameColor ? fromRing(sameColor, { head: selection.head, lamp: lamp.sku, front: row.sku }) : { ...selection, front: row.sku };
   }
 
   return fallbackSelection(model);
 }
 
 /**
- * Lo que muestra el configurador para una elección. Cada paso depende del
- * anterior. href es la ficha del SKU cuando el catálogo tiene ese grupo.
+ * La pieza de la ficha desde la que se abre el configurador: en qué paso está y
+ * qué fija. step: 'ring' | 'head' | 'lamp' | null (sin pieza). Un aro fija su
+ * grupo, módulos y color; un cabezal, su grupo y color; una lámpara (o un frente,
+ * que lleva a su lámpara), su SKU.
  */
-export function resolveDao(model, selection, hrefs) {
-  const group = model.group(selection.group) ?? model.groups[0];
+export function daoFixed(model, sku) {
+  const row = sku ? model.bySku[clean(sku)] : null;
+  const role = row ? roleOf(model, row) : null;
+  if (role === 'ring') return { step: 'ring', group: row.grupo, qty: row.modulos, color: row.color };
+  if (role === 'head') return { step: 'head', head: row.grupo, headColor: row.color };
+  if (role === 'lamp') return { step: 'lamp', lamp: row.sku };
+  if (role === 'front') {
+    const lamp = Object.values(model.bySku).find((item) => item.frentes.includes(row.sku));
+    return lamp ? { step: 'lamp', lamp: lamp.sku } : { step: null };
+  }
+  return { step: null };
+}
+
+/**
+ * Lo que muestra el configurador para una elección. Cada paso depende del
+ * anterior. fixed (de daoFixed) limita lo que se puede elegir a lo compatible
+ * con la pieza de la ficha: el aro, si la ficha es un cabezal o una lámpara; el
+ * cabezal, si es una lámpara.
+ */
+export function resolveDao(model, selection, hrefs, fixed = { step: null }) {
+  const allowed = (ring) => {
+    if (fixed.step === 'head') return model.cabezales(ring).some((item) => item.grupo === fixed.head);
+    if (fixed.step === 'lamp') return model.cabezales(ring).some((item) => item.lamparas.includes(fixed.lamp)) || ring.lamparas.includes(fixed.lamp);
+    return true;
+  };
+  const groups = model.groups.filter((item) => item.rows.some(allowed));
+  const group = groups.find((item) => item.id === selection.group) ?? groups[0];
   if (!group) return null;
-  const qty = group.modulos.includes(selection.qty) ? selection.qty : group.modulos[0];
-  const colors = model.colorsFor(group.id, qty);
+  const modulos = [...new Set(group.rows.filter(allowed).map((row) => row.modulos))].sort((a, b) => a - b);
+  const qty = modulos.includes(selection.qty) ? selection.qty : modulos[0];
+  const colors = model.colorsFor(group.id, qty).filter((item) => allowed(model.ring(group.id, qty, item)));
   const color = colors.includes(selection.color) ? selection.color : colors[0] ?? null;
   const ring = model.ring(group.id, qty, color);
   if (!ring) return null;
 
-  const heads = uniqueByGroup(model.cabezales(ring), ring.color);
-  const head = heads.find((item) => item.grupo === selection.head) ?? heads[0] ?? null;
-  const lamps = model.lamparas(head || ring);
+  let heads = uniqueByGroup(model.cabezales(ring), ring.color);
+  if (fixed.step === 'lamp') heads = heads.filter((item) => model.cabezales(ring).some((row) => row.grupo === item.grupo && row.lamparas.includes(fixed.lamp)));
+  const headGroup = heads.find((item) => item.grupo === selection.head) ?? heads[0] ?? null;
+  // Colores del cabezal: cada aro lista el cabezal de su propio color, así que se
+  // juntan los de todos los colores de ese aro (mismo grupo y módulos). Sin elección, el del aro.
+  const sameRings = colors.map((item) => model.ring(group.id, qty, item)).filter(Boolean);
+  const headRows = headGroup ? [...new Set(sameRings.flatMap((item) => model.cabezales(item)))].filter((item) => item.grupo === headGroup.grupo) : [];
+  const headColors = [...new Set(headRows.map((item) => item.color).filter(Boolean))].sort((a, b) => orderOf(COLOR_ORDER, a) - orderOf(COLOR_ORDER, b));
+  const head = headRows.find((item) => item.color === selection.headColor) ?? headRows.find((item) => item.color === ring.color) ?? headGroup;
+  let lamps = model.lamparas(head || ring);
+  if (fixed.step === 'lamp') lamps = lamps.filter((item) => item.sku === fixed.lamp);
   const lamp = lamps.find((item) => item.sku === selection.lamp) ?? lamps[0] ?? null;
   const fronts = model.frentes(lamp);
   const front = fronts.find((item) => item.sku === selection.front) ?? fronts.find((item) => item.color === ring.color) ?? fronts[0] ?? null;
 
-  const qtyName = group.modulos.length > 1 ? `${model.moduleName(qty).toLowerCase()} ` : '';
+  const qtyName = modulos.length > 1 ? `${model.moduleName(qty).toLowerCase()} ` : '';
   const ringName = `${group.name} ${qtyName}${ring.color.toLowerCase()}`.replace(/\s+/g, ' ').trim();
   const parts = [{ qty: 1, name: ringName, sku: ring.sku }];
   if (head) {
     const terminal = model.extra('bornera');
     if (terminal) parts.push({ qty: ring.modulos, name: terminal.nombre, sku: terminal.sku });
-    parts.push({ qty: ring.modulos, name: `${head.nombre || head.sku} ${ring.color.toLowerCase()}`.trim(), sku: head.sku });
+    parts.push({ qty: ring.modulos, name: `${head.nombre || head.sku} ${(head.color || ring.color).toLowerCase()}`.trim(), sku: head.sku });
   }
   if (lamp) parts.push({ qty: ring.modulos, name: lamp.nombre || lamp.sku, sku: lamp.sku });
-  if (front) parts.push({ qty: ring.modulos, name: `${front.nombre || 'Frente'} ${ring.color.toLowerCase()}`.trim(), sku: front.sku });
+  if (front) parts.push({ qty: ring.modulos, name: `${front.nombre || 'Frente'} ${(front.color || ring.color).toLowerCase()}`.trim(), sku: front.sku });
   if (lamp?.frentes.length) {
     const honeycomb = model.extra('panal');
     if (honeycomb) parts.push({ qty: ring.modulos, name: honeycomb.nombre, sku: honeycomb.sku });
@@ -280,25 +325,31 @@ export function resolveDao(model, selection, hrefs) {
     ['Medida del aro', model.formatSize(ring.dim)],
   ].filter(([, value]) => value);
 
+  const named = (row) => `${row.nombre || row.sku} ${(row.color || '').toLowerCase()}`.trim();
   return {
+    groups,
     group,
+    modulos,
     qty,
     color,
     colors,
     ring,
     heads,
     head,
+    headColors,
     lamps,
     lamp,
     fronts,
     front,
     ringName,
     title: ringName.charAt(0).toUpperCase() + ringName.slice(1),
-    thumbs: [
-      { src: ring.img, label: ringName },
-      head ? { src: head.img, label: head.nombre || head.sku } : { src: lamp?.img, label: lamp ? (lamp.nombre || lamp.sku) : 'Lámpara' },
-      front ? { src: front.img, label: front.color ? `${front.nombre || front.sku} ${front.color}` : (front.nombre || front.sku) } : null,
-    ].filter((thumb) => thumb?.src),
+    // Una foto por pieza: el panel las suma a medida que se eligen
+    pieces: {
+      ring: ring.img ? { src: ring.img, label: ringName } : null,
+      head: head?.img ? { src: head.img, label: named(head) } : null,
+      lamp: lamp?.img ? { src: lamp.img, label: [lamp.nombre || lamp.sku, lamp.haz].filter(Boolean).join(' · ') } : null,
+      front: front?.img ? { src: front.img, label: named(front) } : null,
+    },
     specs,
     parts: parts.map((part) => ({ ...part, href: hrefs.get(part.sku) ?? null })),
   };
@@ -324,12 +375,87 @@ async function loadRows() {
   return [...docs.values()].map(fromDoc);
 }
 
-/** Modelo del configurador y la ficha de cada SKU (cuando el catálogo la tiene). */
-export async function getDaoConfigurator() {
-  const [rows, { groups }] = await Promise.all([loadRows(), loadSource()]);
-  const hrefs = new Map();
-  for (const group of groups) {
-    for (const variant of group.variants) hrefs.set(variant.sku, productHref(group.id, variant.sku));
-  }
-  return { model: buildDaoModel(rows), hrefs };
+/**
+ * Lo que va en «compatibles» de la ficha de un SKU de Daö, con las relaciones
+ * del configurador (aro ← cabezal ← lámpara ← frente). El rol de cada pieza
+ * sale de quién la lista, no de `categoria` (las filas de PAR11 la traen vacía):
+ * - Lámpara (la lista un cabezal o un aro): solo sus frentes, que son accesorios
+ *   requeridos (kind 'accessory'). Sin frentes, nada.
+ * - Frente (la lista una lámpara): nada, es de su lámpara.
+ * - Aro o cabezal: los demás aros, cabezales y lámparas con los que se arma, hacia
+ *   arriba y hacia abajo, sin los frentes (kind 'compatible').
+ * Una tarjeta por grupo (los colores y módulos de un grupo son variantes de su
+ * ficha); el grupo del propio SKU no entra. Orden: aros, cabezales y lámparas.
+ * Sin SKU o sin la pieza: sin items.
+ */
+export function compatibleProducts(model, hrefs, sku) {
+  const start = model.bySku[clean(sku)];
+  if (!start) return { kind: 'compatible', items: [] };
+  const all = Object.values(model.bySku);
+  const listed = (field) => new Set(all.flatMap((row) => row[field]));
+  const heads = listed('cabezales');
+  const lamps = listed('lamparas');
+  const fronts = listed('frentes');
+  const role = (row) => (fronts.has(row.sku) ? 3 : lamps.has(row.sku) ? 2 : heads.has(row.sku) ? 1 : 0);
+
+  const children = (row) => [...row.cabezales, ...row.lamparas, ...row.frentes].map((id) => model.bySku[id]).filter(Boolean);
+  const parents = (row) => all.filter((item) => children(item).includes(row));
+  const reach = (next) => {
+    const seen = new Set();
+    const queue = [start];
+    while (queue.length) {
+      for (const row of next(queue.pop())) {
+        if (!seen.has(row)) {
+          seen.add(row);
+          queue.push(row);
+        }
+      }
+    }
+    return seen;
+  };
+  const key = (row) => row.grupo || row.sku;
+
+  const accessory = role(start) === 2;
+  let rows = [];
+  if (accessory) rows = start.frentes.map((id) => model.bySku[id]).filter(Boolean);
+  else if (role(start) !== 3) rows = [...reach(children), ...reach(parents)].filter((row) => role(row) !== 3);
+  rows = rows.filter((row) => key(row) !== key(start));
+  rows.sort((a, b) => role(a) - role(b) || orderOf(GROUP_ORDER, a.grupo) - orderOf(GROUP_ORDER, b.grupo));
+
+  const byGroup = new Map();
+  for (const row of rows) if (!byGroup.has(key(row))) byGroup.set(key(row), row);
+  return {
+    kind: accessory ? 'accessory' : 'compatible',
+    items: [...byGroup.values()].map((row) => {
+      const members = all.filter((item) => key(item) === key(row));
+      const colors = [...new Set(members.map((item) => item.color).filter(Boolean))].sort((a, b) => orderOf(COLOR_ORDER, a) - orderOf(COLOR_ORDER, b));
+      // Cantidad de módulos solo en los aros (en las demás piezas «modulos» vale 1 por omisión)
+      const qtys = role(row) === 0 ? [...new Set(members.map((item) => item.modulos))].sort((a, b) => a - b) : [];
+      const list = qtys.length > 1 ? `${qtys[0]}-${qtys.at(-1)}` : String(qtys[0] ?? '');
+      return {
+        sku: row.sku,
+        name: stripModule(row.nombre) || row.sku,
+        image: row.img,
+        href: hrefs.get(row.sku) ?? null,
+        finishes: colors.map((color) => ({ name: color, src: model.swatch(color) })),
+        meta: qtys.length ? `${list} ${qtys.at(-1) === 1 ? 'módulo' : 'módulos'}` : '',
+      };
+    }),
+  };
+}
+
+let configurator = null;
+
+/** Modelo del configurador y la ficha de cada SKU (cuando el catálogo la tiene). Se carga una vez. */
+export function getDaoConfigurator() {
+  configurator ??= (async () => {
+    const [rows, { groups }] = await Promise.all([loadRows(), loadSource()]);
+    const hrefs = new Map();
+    for (const group of groups) {
+      for (const variant of group.variants) hrefs.set(variant.sku, productHref(group.id, variant.sku));
+    }
+    return { model: buildDaoModel(rows), hrefs };
+  })();
+  configurator.catch(() => (configurator = null)); // un error permite reintentar
+  return configurator;
 }

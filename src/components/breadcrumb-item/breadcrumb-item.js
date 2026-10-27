@@ -60,6 +60,9 @@ class ArqBreadcrumbItem extends ArqElement {
     const text = this.textContent.trim();
     if (label.localName === 'a' && text) label.setAttribute('aria-label', text);
     else label.removeAttribute('aria-label');
+    // Un ítem que no entra se corta con «…»: con el mouse encima se lee entero
+    if (!this.current && text) label.title = text;
+    else label.removeAttribute('title');
   }
 }
 

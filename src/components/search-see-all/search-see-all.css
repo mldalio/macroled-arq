@@ -51,8 +51,10 @@
   display: none;
 }
 
+/* La flecha sigue al texto, pero una búsqueda larga lo hace bajar de línea
+   (con flex: none se salía de la pantalla y se llevaba la flecha) */
 :host([type='simple']) .text {
-  flex: none;
+  flex: 0 1 auto;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -78,4 +80,20 @@
   gap: var(--arq-space-gap-sm);
   justify-content: flex-start;
   color: var(--arq-color-icon-primary);
+}
+
+/* Táctil: sin hover, el toque muestra lo mismo mientras el dedo apoya
+   (:active), así el link responde antes de que cargue la página siguiente */
+@media (hover: none) {
+  .row[href]:active {
+    background: var(--arq-color-surface-hover);
+  }
+
+  :host([type='simple']) .row[href]:active {
+    background: none;
+  }
+
+  :host([type='simple']) .row[href]:active .text {
+    color: var(--arq-color-text-primary);
+  }
 }

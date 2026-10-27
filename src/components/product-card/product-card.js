@@ -109,15 +109,22 @@ class ArqProductCard extends ArqElement {
   #hoverWanted = false;
   #finishToken = 0;
   #revealed = false; // la foto principal ya tuvo su fundido de entrada
+  #failed = new Set(); // fotos que no cargaron
 
   setup() {
     const root = this.shadowRoot;
     for (const img of root.querySelectorAll('.img')) {
       // Se muestra al cargar. No se usa hidden: una <img> lazy oculta no se carga.
       img.addEventListener('load', () => img.classList.add('loaded'));
+      // Foto que no carga (404 en la base): se recuerda, así un nuevo dibujo
+      // (Iluminar, hover) no la vuelve a pedir ni esconde el fondo con el nombre.
+      // Si era la encendida, se usa la apagada (DESIGN.md §8).
       img.addEventListener('error', () => {
         img.classList.remove('loaded', 'reveal');
-        if (img.classList.contains('base')) this.#renderFallback(true);
+        const src = img.getAttribute('src');
+        if (!src) return;
+        this.#failed.add(src);
+        this.#renderImages();
       });
     }
     // El fundido de entrada es uno solo: después la foto cambia sin él
@@ -167,7 +174,11 @@ class ArqProductCard extends ArqElement {
     root.querySelector('.card').classList.toggle('is-dark', dark);
     const base = root.querySelector('.base');
     const hover = root.querySelector('.hover');
-    const hoverActive = Number.parseFloat(getComputedStyle(hover).opacity) > 0.5 && hover.classList.contains('loaded');
+    // Se ve la de hover: lo mismo que pide el CSS (mouse sobre la imagen o foco
+    // de teclado), sin leer estilos (con muchas cards, cada lectura forzaba layout)
+    const card = root.querySelector('.card');
+    const hoverActive = card.classList.contains('has-hover') && hover.classList.contains('loaded') &&
+      (card.classList.contains('is-media-hover') || Boolean(root.querySelector('.card-link:focus-visible')));
     const visible = hoverActive ? hover : base;
     // Solo funde una foto que se ve: si no cargó (falta en el servidor), encima quedaría el ícono de imagen rota
     const previousSrc = visible.naturalWidth ? visible.currentSrc || visible.getAttribute('src') : null;
@@ -325,8 +336,9 @@ class ArqProductCard extends ArqElement {
     const root = this.shadowRoot;
     const base = root.querySelector('.base');
     const hover = root.querySelector('.hover');
-    const baseSrc = (this.#dark && this.imageLit) || this.image;
-    const hoverSrc = (this.#dark && this.imageHoverLit) || this.imageHover;
+    const usable = (src) => (src && !this.#failed.has(src) ? src : null);
+    const baseSrc = (this.#dark && usable(this.imageLit)) || usable(this.image);
+    const hoverSrc = (this.#dark && usable(this.imageHoverLit)) || usable(this.imageHover);
     this.#setSrc(base, baseSrc);
     this.#renderFallback(!baseSrc);
     root.querySelector('.card').classList.toggle('has-hover', Boolean(baseSrc && hoverSrc));

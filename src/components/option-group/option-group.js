@@ -8,6 +8,8 @@
 //     <arq-option-tile value="90 cm" disabled>90 cm</arq-option-tile>
 //   </arq-option-group>
 //
+//   <arq-option-group type="cards" label="Cabezal">       Type=Cards (solo del configurador de Daö: sus tiles pasan a option-tile Type=Card)
+//
 //   <arq-option-group type="swatches" label="Color">     Type=Swatches
 //     <arq-swatch-picker>
 //       <arq-swatch value="negro" selected src="…">Negro</arq-swatch>
@@ -35,11 +37,12 @@ class ArqOptionGroup extends ArqElement {
   static styles = css;
   static properties = {
     label: { type: String }, // Label
-    type: { type: String, values: ['tiles', 'select', 'swatches'], default: 'tiles' }, // Type
+    type: { type: String, values: ['tiles', 'cards', 'select', 'swatches'], default: 'tiles' }, // Type (Cards: solo de código, configurador de Daö)
+    labelHidden: { type: Boolean, attribute: 'label-hidden' }, // solo de código: la etiqueta no se ve (queda como nombre accesible)
     value: { type: String }, // solo de código: el valor elegido junto a la etiqueta («COLOR Negro»)
   };
   static template =
-    `<div class="group"><span class="heading"><span class="label role-label"></span>` +
+    `<div class="group"><span class="heading" hidden><span class="label role-label"></span>` +
     // El lector de pantalla ya anuncia la opción elegida: el valor es solo visual
     `<span class="value role-body-sm" aria-hidden="true" hidden></span></span>` +
     `<div class="options"><slot></slot></div></div>`;
@@ -56,6 +59,10 @@ class ArqOptionGroup extends ArqElement {
   // como dato (option-tile Type=Value) y el grupo deja de ser un radiogroup.
   // Con más opciones vuelve todo a Type=Option.
   #single() {
+    if (this.type === 'cards') {
+      for (const tile of this.querySelectorAll('arq-option-tile')) tile.setAttribute('type', 'card');
+      return;
+    }
     if (this.type !== 'tiles') return;
     const tiles = [...this.querySelectorAll('arq-option-tile')];
     const single = tiles.length === 1;
@@ -65,7 +72,7 @@ class ArqOptionGroup extends ArqElement {
   }
 
   #role() {
-    const group = this.type === 'tiles' && !this.hasAttribute('data-single');
+    const group = (this.type === 'tiles' || this.type === 'cards') && !this.hasAttribute('data-single');
     if (group) {
       this.setAttribute('role', 'radiogroup');
       if (this.label) this.setAttribute('aria-label', this.label);
@@ -78,6 +85,7 @@ class ArqOptionGroup extends ArqElement {
 
   update(changed) {
     if (changed.has('label')) this.shadowRoot.querySelector('.label').textContent = this.label ?? '';
+    this.shadowRoot.querySelector('.heading').hidden = this.labelHidden || !(this.label || this.value);
     if (changed.has('value')) {
       const value = this.shadowRoot.querySelector('.value');
       value.textContent = this.value ?? '';

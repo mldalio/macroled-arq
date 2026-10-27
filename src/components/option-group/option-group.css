@@ -23,6 +23,10 @@
   gap: var(--arq-space-gap-sm);
 }
 
+.heading[hidden] {
+  display: none;
+}
+
 .label {
   color: var(--arq-color-text-tertiary);
 }
@@ -42,6 +46,11 @@
 }
 
 /* Type=Swatches y Select: el contenido mide lo suyo (swatch-picker hace Hug) */
+/* Type=Cards: cajas a space/gap/sm, también entre filas */
+:host([type='cards']) .options {
+  gap: var(--arq-space-gap-sm);
+}
+
 :host([type='swatches']) .options,
 :host([type='select']) .options {
   display: block;

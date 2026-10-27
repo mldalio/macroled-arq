@@ -81,6 +81,24 @@ Arq vive en `macroled.com.ar/arq`, dentro del mismo sitio de Webflow que el e-co
 - **URLs:** las páginas de colección del CMS se anidan en la carpeta `/arq` (CMS Folders de Webflow). Una carpeta y una colección no pueden compartir slug en el mismo nivel. Webflow no deja una página en la URL de la carpeta: la Home va en `/arq/inicio` y `/arq` redirige (301); los links internos apuntan directo a `/arq/inicio` (`docs/urls.md`; `docs/decisiones.md`, 2026-10-26 · Home en /arq/inicio).
 - En Figma no se usa el prefijo: componentes, variantes, props y variables mantienen su nombre. El prefijo se agrega en código; el code syntax de cada variable ya lo trae (`var(--arq-…)`).
 
+### Capas (z-index)
+
+El z-index no es un token (Figma no lo tiene): es una escala fija de código. Solo estos valores compiten a nivel página:
+
+| Capa | Qué |
+| --- | --- |
+| 0 | Contenido y componentes aislados |
+| 1 | Una pieza sobre su propio fondo dentro de un componente no aislado (lo mínimo) |
+| 2 | Menús de select e input Select, compare-header, breadcrumb e Iluminar sobre la foto de la ficha |
+| 3 | Barras fijas dentro de la página: barra de Productos, compare-bar, barra y scroll de variants-table |
+| 4 | navbar (con mega-menu, search-sheet, menú Mobile y su scrim) |
+| 5 | preloader |
+| top layer | Diálogos nativos (`showModal`): filter-panel, download-modal, compare-picker, visor de fotos, configurador |
+
+- **Regla:** un componente que usa z-index para ordenar sus propias piezas (fotos apiladas, link estirado, columnas fijas) se aísla con `isolation: isolate` en su `:host` o en su contenedor, y queda en la capa 0. Así esos valores no compiten con el navbar ni con las barras fijas. Hoy: las tarjetas con link estirado (`.card` en `src/base/card-link.css`), product-gallery, collection-index, cta-block, compare-table y variants-table.
+- Lo que se abre encima de todo va en un `<dialog>` con `showModal()` (top layer), no con un z-index alto.
+- Si una página de Macroled en Webflow pone algo con z-index mayor a 4, queda sobre el navbar de Arq: no se sube la escala hasta ver un caso. `docs/decisiones.md`, 2026-10-27 · Capas de la página.
+
 ### Modos en código
 
 ```css

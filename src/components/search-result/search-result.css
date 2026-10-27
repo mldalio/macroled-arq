@@ -141,3 +141,19 @@
     color: var(--arq-color-text-primary);
   }
 }
+
+/* Táctil: sin hover, el toque muestra lo mismo mientras el dedo apoya
+   (:active), así el link responde antes de que cargue la página siguiente */
+@media (hover: none) {
+  .result[href]:active {
+    background: var(--arq-color-surface-hover);
+  }
+
+  :host([type='simple']) .result[href]:active {
+    background: none;
+  }
+
+  :host([type='simple']) .result[href]:active .name {
+    color: var(--arq-color-text-primary);
+  }
+}

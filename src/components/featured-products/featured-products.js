@@ -36,6 +36,8 @@ import '../product-card/product-card.js';
 import '../carousel-controls/carousel-controls.js';
 import css from './featured-products.css?inline';
 
+const VELOCITY_WINDOW = 100; // ms de arrastre que cuentan para la velocidad al soltar
+
 class ArqFeaturedProducts extends ArqElement {
   static tag = 'arq-featured-products';
   static styles = revealCss + css;
@@ -174,7 +176,7 @@ class ArqFeaturedProducts extends ArqElement {
     this.#reveal?.disconnect();
     this.#reveal = settled ? null : reveal(elements);
     rail.hidden = cards.length === 0;
-    root.querySelector('.controls').hidden = cards.length === 0;
+    root.querySelector('.controls').hidden = cards.length < 2; // con una sola card, las flechas no llevan a nada
     root.querySelector('.fallback').hidden = cards.length > 0;
     this.#syncAutoplay();
   }
@@ -223,18 +225,19 @@ class ArqFeaturedProducts extends ArqElement {
     return card.offsetWidth + gap;
   }
 
+  // Arrastre solo con mouse: con el dedo se desliza el scroll nativo (inercia
+  // y snap del navegador, fuera del hilo principal), como HorizontalRail.
   #dragStart(event) {
-    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    if (event.pointerType !== 'mouse' || event.button !== 0) return;
     const rail = event.currentTarget;
     if (rail.scrollWidth - rail.clientWidth <= 1) return;
+    this.#settle?.();
     this.#drag = {
       id: event.pointerId,
       x: event.clientX,
       y: event.clientY,
       left: rail.scrollLeft,
-      lastX: event.clientX,
-      lastT: event.timeStamp,
-      vx: 0,
+      samples: [{ x: event.clientX, t: event.timeStamp }],
       moved: false,
       axis: null,
     };
@@ -256,10 +259,10 @@ class ArqFeaturedProducts extends ArqElement {
       rail.setPointerCapture(event.pointerId);
       rail.setAttribute('data-dragging', '');
     }
-    const dt = Math.max(event.timeStamp - this.#drag.lastT, 1);
-    this.#drag.vx = (event.clientX - this.#drag.lastX) / dt;
-    this.#drag.lastX = event.clientX;
-    this.#drag.lastT = event.timeStamp;
+    // Velocidad sobre los últimos ~100 ms (una sola muestra es ruidosa)
+    const samples = this.#drag.samples;
+    samples.push({ x: event.clientX, t: event.timeStamp });
+    while (samples.length > 2 && event.timeStamp - samples[0].t > VELOCITY_WINDOW) samples.shift();
     event.preventDefault();
     rail.scrollLeft = this.#drag.left - dx;
   }
@@ -269,30 +272,50 @@ class ArqFeaturedProducts extends ArqElement {
     const drag = this.#drag;
     this.#drag = null;
     const rail = this.shadowRoot.querySelector('.rail');
-    rail.removeAttribute('data-dragging');
     if (drag.moved && event.type === 'pointerup') {
       this.#suppressClick = true;
       window.clearTimeout(this.#suppressTimer);
       this.#suppressTimer = window.setTimeout(() => {
         this.#suppressClick = false;
       }, 400);
-      this.#snap(drag.vx);
-    }
+      const first = drag.samples[0];
+      const last = drag.samples.at(-1);
+      this.#snap((last.x - first.x) / Math.max(last.t - first.t, 1));
+    } else rail.removeAttribute('data-dragging');
     this.#syncAutoplay();
   }
+
+  // El destino se calcula con el snap todavía apagado (data-dragging): al
+  // prenderlo, el navegador salta de golpe a la card más cercana. Se prende
+  // recién cuando el deslizamiento suave terminó.
+  #settle = null;
 
   #snap(velocity) {
     const rail = this.shadowRoot.querySelector('.rail');
     const step = this.#step();
-    if (!step) return;
+    const release = () => {
+      this.#settle = null;
+      rail.removeEventListener('scrollend', release);
+      window.clearTimeout(timer);
+      rail.removeAttribute('data-dragging');
+    };
+    let timer = 0;
+    if (!step) return release();
     const max = rail.scrollWidth - rail.clientWidth;
     let left = rail.scrollLeft;
     if (Math.abs(velocity) > 0.4) left -= Math.sign(velocity) * step;
     const index = Math.round(left / step);
-    rail.scrollTo({
-      left: Math.min(max, Math.max(0, index * step)),
-      behavior: this.#reducedMotion.matches ? 'auto' : 'smooth',
-    });
+    const target = Math.min(max, Math.max(0, index * step));
+    if (this.#reducedMotion.matches || Math.abs(target - rail.scrollLeft) < 1) {
+      rail.scrollTo({ left: target, behavior: 'auto' });
+      return release();
+    }
+    this.#settle = release;
+    rail.addEventListener('scrollend', release);
+    // Por si scrollend no llega (navegador sin soporte): tope de motion/duration/panel × 2
+    const panel = Number.parseFloat(getComputedStyle(this).getPropertyValue('--arq-motion-duration-panel')) || 400;
+    timer = window.setTimeout(release, panel * 2);
+    rail.scrollTo({ left: target, behavior: 'smooth' });
   }
 
   #advance() {

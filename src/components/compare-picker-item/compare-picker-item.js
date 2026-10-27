@@ -53,6 +53,7 @@ class ArqComparePickerItem extends ArqElement {
       this.emit('add', { sku: this.sku ?? null });
     });
     root.querySelector('slot[name="name"]').addEventListener('slotchange', () => this.#name());
+    root.querySelector('slot[name="meta"]').addEventListener('slotchange', () => this.#name());
     if (!this.hasAttribute('role')) this.setAttribute('role', 'listitem');
   }
 
@@ -83,6 +84,10 @@ class ArqComparePickerItem extends ArqElement {
   #name() {
     const name = this.querySelector('[slot="name"]')?.textContent.trim() ?? '';
     this.shadowRoot.querySelector('.product').textContent = name ? ` ${name}` : '';
+    // Lo que no entra se corta con «…»: con el mouse encima se lee entero
+    const meta = this.querySelector('[slot="meta"]')?.textContent.trim() ?? '';
+    this.shadowRoot.querySelector('.name').title = name;
+    this.shadowRoot.querySelector('.meta').title = meta;
   }
 }
 

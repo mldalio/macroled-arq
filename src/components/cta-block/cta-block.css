@@ -5,6 +5,9 @@
 :host {
   display: block;
   min-width: 0;
+  /* Sus z-index son internos: no compiten con las capas de la página
+     (docs/decisiones.md, 2026-10-27 · Capas de la página) */
+  isolation: isolate;
 }
 
 .block {

@@ -40,6 +40,7 @@ import '../filter-row/filter-row.js';
 import '../tab/tab.js';
 import { SingleSelect } from '../../base/single-select.js';
 import { containScroll } from '../../base/scroll-lock.js';
+import { setPanelBar } from '../../base/theme.js';
 import css from './filter-panel.css?inline';
 
 const UNITS = { productos: ['producto', 'productos'], variantes: ['variante', 'variantes'] };
@@ -87,6 +88,7 @@ class ArqFilterPanel extends ArqElement {
     const root = this.shadowRoot;
     this.#dialog = root.querySelector('dialog');
     containScroll(this.#dialog); // la página de atrás no se desplaza con el panel abierto
+    this.#dialog.addEventListener('close', () => setPanelBar(false));
     root.querySelector('.close').addEventListener('click', () => this.close());
     root.querySelector('.clear').addEventListener('click', () => this.clear());
     root.querySelector('.apply').addEventListener('click', () => this.apply());
@@ -206,6 +208,8 @@ class ArqFilterPanel extends ArqElement {
     this.#closing = null;
     if (!this.#dialog.open) {
       this.#dialog.showModal();
+      // Con Iluminar, la barra del navegador pasa al color del panel (Light)
+      setPanelBar(true, this.#dialog);
       void this.#dialog.offsetHeight; // fija el estado inicial antes de is-open
     }
     this.#dialog.classList.add('is-open');

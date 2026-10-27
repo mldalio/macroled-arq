@@ -119,8 +119,8 @@
   .toolbar {
     position: sticky;
     top: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
-    /* Por encima de la grilla. El navbar (5) queda arriba: el menú no lo tapa Iluminar. */
-    z-index: 4;
+    /* Capa 3: por encima de la grilla y debajo del menú (navbar, 4). */
+    z-index: 3;
     /* Fija sobre la grilla: tapa las cards. Funde con Iluminar a la par del
        fondo de la página (misma duración y curva que :host y .arq-page). */
     background: var(--arq-color-surface-default);
@@ -134,7 +134,7 @@
     position: sticky;
     top: calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));
     align-self: start;
-    z-index: 4;
+    z-index: 3;
   }
 }
 

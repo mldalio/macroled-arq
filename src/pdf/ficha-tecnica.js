@@ -17,7 +17,7 @@
 import { config } from '../config.js';
 import { getDatasheet } from '../data/catalog.js';
 import { PRINT_TOKENS as T, PRINT_ROLES as ROLES } from '../styles/print-tokens.js';
-import { COVER_IMAGE, COVER_INFO_WIDTH, FONT_WEIGHTS, buildDatasheet, fontName } from './ficha-tecnica-doc.js';
+import { COVER_IMAGE, COVER_INFO_WIDTH, FONT_WEIGHTS, buildDatasheet, fontName, keyItemWidth } from './ficha-tecnica-doc.js';
 
 // Resolución de la foto de pdf-cover: 2,5 × los px de Figma (unos 240 dpi en A4).
 const IMAGE_SCALE = 2.5;
@@ -120,12 +120,15 @@ const fileName = (sku) => `ficha-tecnica-${String(sku).replace(/[^\w-]+/g, '-').
 export async function datasheetDocument(sku) {
   const data = await getDatasheet(sku);
   if (!data) return null;
-  const [nameLines, skuLines, image] = await Promise.all([
+  const keyData = data.keyData ?? [];
+  const [nameLines, skuLines, image, ...valueLines] = await Promise.all([
     countLines(data.name, 'display', COVER_INFO_WIDTH),
     countLines(data.sku, 'body-lg', COVER_INFO_WIDTH),
     fitImage(data.image, COVER_IMAGE, COVER_IMAGE),
+    ...keyData.map((item) => countLines(item.value, 'heading-3-light', keyItemWidth(keyData.length))),
   ]);
-  return { data, definition: buildDatasheet(data, { image, nameLines, skuLines }) };
+  const keyLines = Math.max(1, ...valueLines);
+  return { data, definition: buildDatasheet(data, { image, nameLines, skuLines, keyLines }) };
 }
 
 const pending = new Map();

@@ -7,6 +7,8 @@ Ficha de un producto (grupo): hero con galería y configurador, descargas y espe
   <h1 slot="title">Kanu Jardín</h1>
   <h2 slot="downloads-title">Descargas</h2>
   <h2 slot="glossary-title">Glosario</h2>
+  <h2 slot="compatible-title">Accesorios y lámparas compatibles</h2>
+  <h2 slot="accessory-title">Accesorio requerido</h2>
   <h2 slot="collection-title">Explora la colección</h2>
   <h2 slot="modal-title">Descargas</h2>
 </arq-ficha-producto>
@@ -23,6 +25,7 @@ El HTML del embed completo está en [src/pages/ficha.html](../../pages/ficha.htm
 | slot `image` | Opcional. `<img>` principal (LCP, `fetchpriority="high"`). Pasa a la galería: es la que muestra la primera imagen de la variante. Sin ella, la galería la crea |
 | slot `downloads-title` · `glossary-title` | `<h2>` de Descargas y Glosario (`role/display-sm`) |
 | slot `inspiration` | Lo escribe el componente con `product_inspiration_text` (`role/body-xl`). No se carga en el HTML |
+| slot `compatible-title` · `accessory-title` | `<h2>` de «Accesorios y lámparas compatibles» (fichas de Daö) y de «Accesorio requerido» (ficha de la lámpara, `PAR11-`), `role/heading-2`. Se muestra uno según la ficha; el otro queda oculto |
 | slot `collection-title` | `<h2>` de "Explora la colección" (`role/heading-2`) |
 | slot `modal-title` | `<h2>` del download-modal del glosario |
 
@@ -40,6 +43,7 @@ El HTML del embed completo está en [src/pages/ficha.html](../../pages/ficha.htm
 - **Ver glosario:** desplaza hasta el glosario y le pasa el foco a su título.
 - **Descargas:** "Ficha técnica" (se genera) y los archivos del SKU elegido, en el orden de Final (CAD 2D/3D, Manual, IES, Fotometría). Un archivo que falta no se muestra.
 - **Acordeón:** una sección por grupo de especificaciones. La primera abre abierta; al cambiar de variante quedan abiertas las mismas.
+- **Información comercial:** la pestaña muestra su lista dentro del mismo acordeón, con una sección «Características comerciales» abierta, igual que las de Especificaciones.
 - **Glosario:** variants-table con una fila por SKU (columnas en `TABLE_COLUMNS` de `src/data/attributes.js`). En la barra, CAD 2D/3D y Manual. El ícono de cada fila abre el download-modal con los archivos de ese SKU.
 - **Textos solo de los datos:** descripción corta (`description` de la variante), story e inspiración. Si un dato falta, esa parte no se muestra, aunque el HTML traiga texto: así se ve qué falta en la base.
 - **Descripción (STORY):** el componente toma `product_story_text` del grupo y lo arma en el DOM de la página: la primera línea es el título (`<h2>` en `role/heading-2`, con o sin `## `), cada `## ` siguiente un `<h3>`, cada línea `- ` un ítem de la lista (con guion) y el resto un `<p>`, con `createElement` y `textContent` (nunca `innerHTML`). La sección es la foto de ambiente 6 a todo el ancho (`min-height: 100svh`) con el título (primera línea) a la izquierda y, a la derecha, el texto, la lista y el link «Ver colección …» (`role/body-xl`, Dark local: textos y subrayado claros). La foto queda quieta mientras la página pasa por encima (efecto parallax de imagen fija: `position: fixed` dentro de un recuadro con `clip-path`; con `prefers-reduced-motion` se mueve con la página). Sin foto, fondo `color/surface/default` en Dark; sin texto, la sección no se muestra. Mobile y Tablet: título arriba, texto abajo.
@@ -76,6 +80,8 @@ Tablet (768–1023 px) usa la columna Desktop salvo en los bloques marcados: ah�
 - Video de inspiración (`video_inspiration`): hoy vacío en la base; ver «Fotos de ambiente».
 
 ## Configurador (2026-10-21)
+
+> En la colección Daö, el «Configurar» de Daö ya no es una pestaña: la ficha muestra el botón «Configura tu Daö» (texto en mayúsculas, 12 px, fondo `color/surface/inverse`) centrado sobre la foto, que abre `<arq-dao-configurator>` en un modal a pantalla completa ([README](../dao-configurator/README.md)). El resto de esta sección es el configurador de variantes de la ficha.
 
 - **Característica madre:** el color, o la primera de `variant_attributes` si no hay color. Va primera y nunca se apaga; las demás dependen solo de las de arriba y una apagada no se puede elegir. Al elegir, las de abajo se acomodan solas (`src/data/variants.js`; `docs/decisiones.md`, 2026-10-21 · Característica madre).
 - **Descripción** de la variante: debajo del nombre y arriba del sku, en `role/body-compact` (14 px; 16/24 desde 1920 px, mismo peso) y `color/text/tertiary`.

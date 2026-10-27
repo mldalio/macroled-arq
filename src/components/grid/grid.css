@@ -71,7 +71,12 @@
 }
 
 @media (max-width: 767px) {
+  /* Siempre al menos 2 columnas (como Final): en 360 y 375 px, 2 × 160 + gap
+     no entraba y la grilla pasaba a una sola columna. La tarjeta baja un poco
+     de layout/card-min solo cuando hace falta; con más ancho siguen entrando
+     más columnas (decisión 2026-10-26). */
   .grid.auto {
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--card-min), (100% - var(--arq-space-gap-md)) / 2), 1fr));
     gap: var(--arq-space-gap-xl) var(--arq-space-gap-md);
   }
 
