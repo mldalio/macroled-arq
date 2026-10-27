@@ -89,36 +89,6 @@ export const TABLE_COLUMNS = Object.freeze([
   { field: 'dimeable', label: 'Regulación' },
 ]);
 
-// Datos clave de la ficha técnica en PDF (pdf-key-data), en orden de
-// prioridad, con la etiqueta corta. Se muestran los primeros KEY_DATA_MAX que
-// el SKU tiene cargados y que vale la pena destacar (when); sin ninguno, la
-// fila no se muestra (decisiones.md, 2026-10-23 · Ficha técnica: una hoja
-// menos). El grado de protección va solo desde IP44 (exterior): IP20, el de
-// interior, no dice nada. Va antes que la temperatura, que en Arq es casi
-// siempre 2700K. value: el texto que se muestra, si cambia el que llega.
-export const KEY_DATA_MAX = 4;
-export const KEY_DATA = Object.freeze([
-  { field: 'potencia', label: 'Potencia' },
-  { field: 'flujo_luminoso', label: 'Flujo' },
-  { field: 'proteccion_ip', label: 'Protección', when: (v) => ipDigits(v)?.every((d) => d >= 4), value: (v) => `IP${ipDigits(v).join('')}` },
-  { field: 'temperatura_color', label: 'Temperatura' },
-  { field: 'cri', label: 'CRI' },
-  { field: 'angulo_apertura', label: 'Ángulo' },
-]);
-
-// «65», «IP65» o «IP 65» → [6, 5]. Otro formato: null.
-function ipDigits(value) {
-  const match = String(value).match(/^\s*(?:IP\s*)?(\d)(\d)\s*$/i);
-  return match ? [Number(match[1]), Number(match[2])] : null;
-}
-
-/** Datos clave de un SKU (campo → valor): [{ field, label, value }], hasta KEY_DATA_MAX. */
-export function keyData(values) {
-  return KEY_DATA.filter(({ field, when }) => hasValue(values[field]) && (!when || when(values[field])))
-    .slice(0, KEY_DATA_MAX)
-    .map(({ field, label, value }) => ({ field, label, value: value ? value(values[field]) : values[field] }));
-}
-
 // «cm» y «mm» como unidad, también pegada al número («9,5cm»), pero no dentro de una palabra
 const CM = /(?<![a-zñ])cm(?![a-zñ])/gi;
 const MM = /(?<![a-zñ])mm(?![a-zñ])/i;

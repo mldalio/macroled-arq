@@ -1751,3 +1751,8 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 - **Fondo de la foto:** `color/surface/subtle` (#F0F0F0) va pintado en la imagen; no se imprime por ser un gris de 6 %, que muchas impresoras (láser, ahorro de tóner) dejan en blanco. No es un error del código. Decisión de Lau: en el PDF la foto va sobre `color/surface/strong` (#E0E0E0, 12 %), que sí se imprime (en pantalla sigue `color/surface/subtle`).
 - **Secciones que siguen en la hoja siguiente (decisión de Lau):** si una sección no entra en lo que queda de la hoja, sigue en la próxima en vez de pasar entera (reemplaza «una sección no se parte», 2026-10-06). Las filas no se parten, el título se repite arriba y nunca queda solo al pie (`headerRows`, `keepWithHeaderRows`, `dontBreakRows`). Se quitó `pageBreakBefore`.
 - Figma al día: pdf-cover (cota en un marco con `space/padding/lg`), pdf-cover-title, pdf-key-item, pdf-key-data (alto según el contenido), pdf-spec-row · 2 col, pdf-header, pdf-footer, pdf-page y la hoja 2992:45969, con sus descripciones.
+
+## 2026-10-27 · Ficha técnica sin datos clave
+
+- **Decisión de Lau:** la ficha técnica en PDF ya no lleva la fila de características destacadas (pdf-key-data: Potencia, Flujo, Temperatura, CRI…) debajo de la foto. Esos datos ya están en las especificaciones; pdf-cover termina en la foto y las cotas. Reemplaza los datos clave de 2026-10-23 · Ficha técnica: una hoja menos.
+- Código: se quitaron `KEY_DATA`, `keyData()` (`src/data/attributes.js`), el campo `keyData` de `getDatasheet` y la fila del PDF. Figma: pdf-cover sin pdf-key-data ni la propiedad Show key data; se borraron pdf-key-data y pdf-key-item. Rama `feat/pdf-sin-datos-clave`.

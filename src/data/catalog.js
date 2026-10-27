@@ -16,7 +16,7 @@
 // specs vale para todas las variantes del grupo; attributes de la variante pisa o completa.
 
 import { loadSource, loadGroupDetails } from './source.js';
-import { ATTRIBUTES, DOWNLOAD_FILTERS, TABLE_COLUMNS, attributeInfo, keyData, specSections, tableValues } from './attributes.js';
+import { ATTRIBUTES, DOWNLOAD_FILTERS, TABLE_COLUMNS, attributeInfo, specSections, tableValues } from './attributes.js';
 import { variantOptions, findVariant, choose } from './variants.js';
 import { normalize, queryWords, matchWords } from './text.js';
 import { finishImage } from './finishes.js';
@@ -515,10 +515,9 @@ export async function skuDownloads(sku) {
 
 /**
  * Datos de la ficha técnica en PDF de un SKU de cualquier grupo: { name, sku,
- * image, cota, keyData, sections }, o null si no existe. image es la imagen
+ * image, cota, sections }, o null si no existe. image es la imagen
  * principal (img_main en Typesense); si falta, la de estudio de la variante o
  * de la predeterminada. cota, el dibujo con medidas (cotas.js) o null.
- * keyData, los datos clave (attributes.js, KEY_DATA);
  * sections, como el acordeón de la ficha.
  */
 export async function getDatasheet(sku) {
@@ -533,7 +532,6 @@ export async function getDatasheet(sku) {
     sku: variant.sku,
     image: own.main ?? own.studio ?? base.main ?? base.studio ?? null,
     cota: cotaUrl(variant.sku),
-    keyData: keyData(variant.values),
     sections: specSections(variant.values),
   };
   // Demo: ?data=datasheet-error para ver el mensaje de error.

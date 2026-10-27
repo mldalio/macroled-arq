@@ -71,8 +71,6 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [pdf-cover-title](#pdf-cover-title) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-footer](#pdf-footer) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-header](#pdf-header) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
-| ✅ [pdf-key-data](#pdf-key-data) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
-| ✅ [pdf-key-item](#pdf-key-item) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-page](#pdf-page) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-spec-group](#pdf-spec-group) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-spec-row](#pdf-spec-row) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
@@ -668,9 +666,9 @@ Anchos: bajada de List hasta layout/measure; columna de título y bajada de Deta
 ## pdf-cover
 
 - Figma: [2944-9521](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2944-9521)
-- Propiedades: Show key data
+- Propiedades: —
 
-Bloque de arriba de la primera hoja de la ficha PDF. Nombre (role/heading-2) y SKU (role/body-sm) a todo el ancho; debajo, a space/gap/md, la foto del producto en un cuadrado de layout/pdf-cover-image, entera sobre color/surface/strong (en pantalla sería color/surface/subtle, pero ese gris no sale impreso), y, a space/gap/md, el lugar de las cotas, del mismo alto: el dibujo entero, sin recuadro, a space/padding/lg del borde; cuadrado si es vertical, y si es horizontal se ensancha hasta 1,5 veces la foto. Sin cotas, la foto queda sola. Debajo, a space/gap/md y a todo el ancho, pdf-key-data. Padding vertical space/padding/md, borde inferior border/default + color/border/default. Show key data: sin datos clave para destacar, la fila no se muestra.
+Bloque de arriba de la primera hoja de la ficha PDF. Nombre (role/heading-2) y SKU (role/body-sm) a todo el ancho; debajo, a space/gap/md, la foto del producto en un cuadrado de layout/pdf-cover-image, entera sobre color/surface/strong (en pantalla sería color/surface/subtle, pero ese gris no sale impreso), y, a space/gap/md, el lugar de las cotas, del mismo alto: el dibujo entero, sin recuadro, a space/padding/lg del borde; cuadrado si es vertical, y si es horizontal se ensancha hasta 1,5 veces la foto. Sin cotas, la foto queda sola. Padding vertical space/padding/md, borde inferior border/default + color/border/default.
 
 ## pdf-cover-title
 
@@ -693,26 +691,12 @@ Pie de página de la ficha PDF: paginado (role/label, color/text/tertiary) al bo
 
 Encabezado de la ficha PDF: logo (Size=Small) a la izquierda y, a la derecha, centrado en alto con el logo: Type=Default (hoja 1): Label «Ficha técnica» en role/label (color/text/tertiary). Type=Product (hoja 2 en adelante, en revisión, todavía no en código): nombre en role/body-medium (color/text/primary) sobre el SKU en role/body (color/text/tertiary), a la izquierda, y el logo a la derecha, como el encabezado de la ficha de macroled.com.ar. Borde inferior border/default + color/border/default, padding inferior space/padding/sm-md.
 
-## pdf-key-data
-
-- Figma: [2943-9594](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2943-9594)
-- Propiedades: —
-
-Datos clave de la ficha PDF (primera hoja, dentro de pdf-cover): hasta 4 pdf-key-item del mismo ancho a space/gap/sm-md, con regla superior border/default + color/border/strong. Cambian según el producto: se muestran los que tienen sentido destacar y tienen dato (`src/data/attributes.js`, `KEY_DATA`). Sin ninguno, la fila no se muestra.
-
-## pdf-key-item
-
-- Figma: [2943-9591](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2943-9591)
-- Propiedades: Label; Value
-
-Dato clave de la ficha PDF: etiqueta corta role/label en mayúsculas (color/text/tertiary, 9 pt) y valor role/body-lg (color/text/primary, 12 pt), a space/gap/xs, con padding superior space/padding/sm. Va dentro de pdf-key-data. Etiqueta y valor salen de los datos (src/data/attributes.js, KEY_DATA).
-
 ## pdf-page
 
 - Figma: [1907-27212](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-27212)
 - Propiedades: Type: Primera · Siguiente
 
-Página A4 (794×1123) de la ficha técnica PDF. Type=Primera: pdf-header (Label «Ficha técnica»), pdf-cover (nombre, SKU, foto, cotas y datos clave), las pdf-spec-group que entran y pdf-footer. Type=Siguiente: pdf-header Type=Product (nombre sobre SKU), el resto de las pdf-spec-group y pdf-footer. Si una sección no entra en lo que queda de la hoja, sigue en la próxima con su título repetido arriba; las filas no se parten. Pie sin aviso legal, solo el paginado. Fondo color/surface/default; padding space/padding/xl arriba, space/padding/xl-2xl a los lados, space/padding/lg abajo. Escala Type en modo Mobile. Las líneas finas van en color/border/default (color/border/subtle no sale impreso). Todo el contenido sale de Typesense.
+Página A4 (794×1123) de la ficha técnica PDF. Type=Primera: pdf-header (Label «Ficha técnica»), pdf-cover (nombre, SKU, foto y cotas), las pdf-spec-group que entran y pdf-footer. Type=Siguiente: pdf-header Type=Product (nombre sobre SKU), el resto de las pdf-spec-group y pdf-footer. Si una sección no entra en lo que queda de la hoja, sigue en la próxima con su título repetido arriba; las filas no se parten. Pie sin aviso legal, solo el paginado. Fondo color/surface/default; padding space/padding/xl arriba, space/padding/xl-2xl a los lados, space/padding/lg abajo. Escala Type en modo Mobile. Las líneas finas van en color/border/default (color/border/subtle no sale impreso). Todo el contenido sale de Typesense.
 
 ## pdf-spec-group
 
