@@ -76,6 +76,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [pdf-page](#pdf-page) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-spec-group](#pdf-spec-group) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-spec-row](#pdf-spec-row) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
+| ✅ [pdf-spec-row · 2 col](#pdf-spec-row--2-col) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [product-card](#product-card) | `<arq-product-card>` | En código ([README](../src/components/product-card/README.md)); imágenes reales con TODO |
 | ✅ [product-gallery](#product-gallery) | `<arq-product-gallery>` | En código ([README](../src/components/product-gallery/README.md)) |
 | ✅ [search-dropdown](#search-dropdown) | `<arq-search-dropdown>` | En código ([README](../src/components/search-dropdown/README.md)) |
@@ -667,7 +668,7 @@ Anchos: bajada de List hasta layout/measure; columna de título y bajada de Deta
 - Figma: [2944-9521](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2944-9521)
 - Propiedades: Show key data
 
-Bloque de arriba de la primera hoja de la ficha PDF: foto del producto cuadrada (layout/pdf-cover-image, entera sobre color/surface/subtle) y, a su lado, pdf-cover-title arriba y pdf-key-data abajo, alineado con el pie de la foto. Padding vertical space/padding/xl, gap space/gap/xl, borde inferior border/default + color/border/subtle. Show key data: sin datos clave para destacar, la fila no se muestra.
+Bloque de arriba de la primera hoja de la ficha PDF. Nombre (role/heading-1) y SKU (role/body-compact) a todo el ancho; debajo, a space/gap/lg, la foto del producto en un cuadrado de layout/pdf-cover-image (entera sobre color/surface/subtle) y, a space/gap/md, el dibujo de cotas del mismo alto, entero y sin recuadro: cuadrado si es vertical; si es horizontal se ensancha hasta 1,5 veces la foto. Sin cotas, la foto queda sola. Debajo, a space/gap/lg y a todo el ancho, pdf-key-data. Padding vertical space/padding/xl, borde inferior border/default + color/border/subtle. Show key data: sin datos clave para destacar, la fila no se muestra.
 
 ## pdf-cover-title
 
@@ -724,6 +725,14 @@ Grupo de especificaciones de la ficha PDF: título role/body-xl (color/text/prim
 - Propiedades: Label; Value
 
 Fila de especificación de la ficha PDF. Etiqueta role/body (color/text/secondary, ancho fijo 260) y valor role/body-lg-regular (color/text/primary, FILL). Padding vertical space/padding/sm-md, gap space/gap/lg, borde inferior border/default + color/border/subtle. Escala Type en modo Mobile. Versión densa de spec-row para impresión.
+
+## pdf-spec-row · 2 col
+
+- Figma: [2992-46346](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2992-46346)
+- Propiedades: Label; Value
+- En código: la hoja con cotas («pdf · cotas A2 · 1 hoja», [2992-45969](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2992-45969)) es hoy la única ficha PDF: pdf-cover con foto y cotas y las secciones en dos columnas, con textos de impresión (etiqueta role/body-compact, valor role/body-compact-regular, padding vertical space/padding/sm) ([README](../src/pdf/README.md)).
+
+Fila de especificación para tablas en dos columnas (ficha PDF). Etiqueta en layout/pdf-spec-label-compact.
 
 ## product-card
 
