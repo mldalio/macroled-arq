@@ -3886,7 +3886,7 @@ var fa = ":host{vertical-align:middle;color:var(--arq-color-icon-primary);--blur
 }).define();
 //#endregion
 //#region src/components/carousel-controls/carousel-controls.css?inline
-var pa = ":host{display:inline-flex}.controls,.arrows{align-items:center;gap:var(--arq-space-gap-sm);display:flex}:host([buttons=carousel]) .controls,:host([buttons=chevron]) .controls{gap:var(--arq-space-gap-lg)}.count{color:var(--arq-color-text-secondary);margin:0}.progress{width:var(--arq-space-gap-5xl);height:var(--arq-border-strong);flex:none;position:relative}.track{height:var(--arq-border-default);background:var(--arq-color-text-secondary);opacity:var(--arq-opacity-track);position:absolute;top:50%;left:0;right:0;transform:translateY(-50%)}.indicator{height:100%;width:calc(100% / var(--progress-count,1));background:var(--arq-color-text-primary);transform:translateX(calc(var(--progress-index,0) * 100%));transition:transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);position:absolute;top:0;left:0}:host([buttons=none]){width:100%;display:flex}:host([buttons=none]) .controls,:host([buttons=none]) .progress{width:100%}.progress[data-mode=scroll] .indicator{width:calc(100% * var(--progress-size,1));transform:translateX(calc(var(--progress-offset,0) / var(--progress-size,1) * 100%));transition:none}:host([buttons=none]) .progress.scrub{flex:1;width:auto;min-width:0}.progress.scrub{--thick:var(--arq-space-padding-xs);height:var(--arq-space-padding-sm-md);cursor:grab;touch-action:none}.progress.scrub.dragging{cursor:grabbing;-webkit-user-select:none;user-select:none}.progress.scrub .track{height:var(--thick);background:var(--arq-color-surface-subtle);opacity:1;transition:height var(--arq-motion-duration-base) var(--arq-motion-easing-standard)}.progress.scrub .indicator{top:calc(50% - var(--thick) / 2);height:var(--thick);background:var(--arq-color-border-hover);transition:top var(--arq-motion-duration-base) var(--arq-motion-easing-standard), height var(--arq-motion-duration-base) var(--arq-motion-easing-standard), background-color var(--arq-motion-duration-base) var(--arq-motion-easing-standard)}.progress.scrub.dragging{--thick:calc(var(--arq-space-padding-xs) + var(--arq-border-strong))}.progress.scrub.dragging .indicator{background:var(--arq-color-text-tertiary)}@media (hover:hover) and (pointer:fine){.progress.scrub:hover{--thick:calc(var(--arq-space-padding-xs) + var(--arq-border-strong))}.progress.scrub:hover .indicator{background:var(--arq-color-text-tertiary)}}@media (prefers-reduced-motion:reduce){.indicator{transition:none}}@media (width<=767px){:host{display:none}}", ma = [
+var pa = ":host{display:inline-flex}.controls,.arrows{align-items:center;gap:var(--arq-space-gap-sm);display:flex}:host([buttons=carousel]) .controls,:host([buttons=chevron]) .controls{gap:var(--arq-space-gap-lg)}.count{color:var(--arq-color-text-secondary);margin:0}.progress{width:var(--arq-space-gap-5xl);height:var(--arq-border-strong);flex:none;position:relative}.track{height:var(--arq-border-default);background:var(--arq-color-text-secondary);opacity:var(--arq-opacity-track);position:absolute;top:50%;left:0;right:0;transform:translateY(-50%)}.indicator{height:100%;width:calc(100% / var(--progress-count,1));background:var(--arq-color-text-primary);transform:translateX(calc(var(--progress-index,0) * 100%));transition:transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);position:absolute;top:0;left:0}:host([buttons=none]){width:100%;display:flex}:host([buttons=none]) .controls,:host([buttons=none]) .progress{width:100%}.progress[data-mode=scroll] .indicator{width:calc(100% * var(--progress-size,1));transform:translateX(calc(var(--progress-offset,0) / var(--progress-size,1) * 100%));transition:none}:host([buttons=none]) .progress.scrub{flex:1;width:auto;min-width:0}.progress.scrub{--thick:var(--arq-space-padding-xs);height:var(--arq-space-padding-sm-md);cursor:grab;touch-action:none}.progress.scrub.dragging{cursor:grabbing;-webkit-user-select:none;user-select:none}.progress.scrub .track{height:var(--thick);background:var(--arq-color-surface-subtle);opacity:1;transition:height var(--arq-motion-duration-base) var(--arq-motion-easing-standard)}.progress.scrub .indicator{top:calc(50% - var(--thick) / 2);height:var(--thick);background:var(--arq-color-border-hover);transition:top var(--arq-motion-duration-base) var(--arq-motion-easing-standard), height var(--arq-motion-duration-base) var(--arq-motion-easing-standard), background-color var(--arq-motion-duration-base) var(--arq-motion-easing-standard)}.progress.scrub.dragging{--thick:calc(var(--arq-space-padding-xs) + var(--arq-border-strong))}.progress.scrub.dragging .indicator{background:var(--arq-color-text-tertiary)}@media (hover:hover) and (pointer:fine){.progress.scrub:hover{--thick:calc(var(--arq-space-padding-xs) + var(--arq-border-strong))}.progress.scrub:hover .indicator{background:var(--arq-color-text-tertiary)}}:host([orientation=vertical]){width:auto;height:100%;display:flex}:host([orientation=vertical]) .controls{flex-direction:column;width:auto;height:100%}:host([orientation=vertical]) .progress.scrub{width:var(--arq-space-padding-sm-md);flex:1;height:auto;min-height:0}:host([orientation=vertical]) .progress.scrub .track{width:var(--thick);height:auto;transition:width var(--arq-motion-duration-base) var(--arq-motion-easing-standard);inset:0 auto 0 50%;transform:translate(-50%)}:host([orientation=vertical]) .progress.scrub .indicator{top:0;left:calc(50% - var(--thick) / 2);width:var(--thick);height:calc(100% * var(--progress-size,1));transform:translateY(calc(var(--progress-offset,0) / var(--progress-size,1) * 100%));transition:left var(--arq-motion-duration-base) var(--arq-motion-easing-standard), width var(--arq-motion-duration-base) var(--arq-motion-easing-standard), background-color var(--arq-motion-duration-base) var(--arq-motion-easing-standard)}@media (prefers-reduced-motion:reduce){.indicator{transition:none}}@media (width<=767px){:host{display:none}}", ma = [
 	"start",
 	"middle",
 	"end"
@@ -3942,6 +3942,11 @@ var pa = ":host{display:inline-flex}.controls,.arrows{align-items:center;gap:var
 			values: ["native", "slow"],
 			default: "native"
 		},
+		orientation: {
+			type: String,
+			values: ["horizontal", "vertical"],
+			default: "horizontal"
+		},
 		index: {
 			type: Number,
 			default: 0
@@ -3956,31 +3961,45 @@ var pa = ":host{display:inline-flex}.controls,.arrows{align-items:center;gap:var
 	#t = !1;
 	#n = !0;
 	#r = "";
-	#i = () => this.#h();
-	#a = new ResizeObserver(() => this.#h());
-	#o = new MutationObserver(() => this.#m());
+	#i = () => this.#g();
+	#a = new ResizeObserver(() => this.#g());
+	#o = new MutationObserver(() => this.#h());
 	#s = window.matchMedia("(prefers-reduced-motion: reduce)");
 	#c = null;
 	setup() {
 		let e = this.shadowRoot;
-		for (let t of e.querySelectorAll(".prev")) t.addEventListener("click", () => this.#y(-1));
-		for (let t of e.querySelectorAll(".next")) t.addEventListener("click", () => this.#y(1));
+		for (let t of e.querySelectorAll(".prev")) t.addEventListener("click", () => this.#b(-1));
+		for (let t of e.querySelectorAll(".next")) t.addEventListener("click", () => this.#b(1));
 		e.querySelector(".progress").addEventListener("pointerdown", (e) => this.#l(e));
 	}
 	#l(e) {
 		let t = this.#e, n = e.currentTarget;
 		if (!this.scrub || this.progress !== "scroll" || !t || e.button > 0) return;
-		let r = n.getBoundingClientRect(), i = n.querySelector(".indicator").getBoundingClientRect(), a = e.clientX >= i.left && e.clientX <= i.right ? e.clientX - i.left : i.width / 2, o = (e) => {
-			let n = Math.min(Math.max(e - r.left - a, 0), r.width - i.width);
-			t.scrollLeft = n / r.width * t.scrollWidth;
+		let r = n.getBoundingClientRect(), i = n.querySelector(".indicator").getBoundingClientRect(), a = this.#u(), o = (e) => a.vertical ? e.clientY : e.clientX, s = a.vertical ? "top" : "left", c = a.vertical ? "bottom" : "right", l = a.vertical ? "height" : "width", u = o(e) >= i[s] && o(e) <= i[c] ? o(e) - i[s] : i[l] / 2, d = (e) => {
+			let n = Math.min(Math.max(e - r[s] - u, 0), r[l] - i[l]);
+			t[a.scroll] = n / r[l] * t[a.scrollSize];
 		};
-		e.preventDefault(), n.setPointerCapture(e.pointerId), n.classList.add("dragging"), o(e.clientX);
-		let s = (e) => o(e.clientX), c = () => {
-			n.classList.remove("dragging"), n.removeEventListener("pointermove", s), n.removeEventListener("pointerup", c), n.removeEventListener("pointercancel", c);
+		e.preventDefault(), n.setPointerCapture(e.pointerId), n.classList.add("dragging"), d(o(e));
+		let f = (e) => d(o(e)), p = () => {
+			n.classList.remove("dragging"), n.removeEventListener("pointermove", f), n.removeEventListener("pointerup", p), n.removeEventListener("pointercancel", p);
 		};
-		n.addEventListener("pointermove", s), n.addEventListener("pointerup", c), n.addEventListener("pointercancel", c);
+		n.addEventListener("pointermove", f), n.addEventListener("pointerup", p), n.addEventListener("pointercancel", p);
 	}
 	#u() {
+		let e = this.orientation === "vertical";
+		return e ? {
+			vertical: e,
+			scroll: "scrollTop",
+			scrollSize: "scrollHeight",
+			clientSize: "clientHeight"
+		} : {
+			vertical: e,
+			scroll: "scrollLeft",
+			scrollSize: "scrollWidth",
+			clientSize: "clientWidth"
+		};
+	}
+	#d() {
 		let e = {
 			carousel: "square",
 			chevron: "chevron"
@@ -3991,10 +4010,10 @@ var pa = ":host{display:inline-flex}.controls,.arrows{align-items:center;gap:var
 		};
 	}
 	connectedCallback() {
-		super.connectedCallback(), this.#e && !this.#t && this.#f(this.#e);
+		super.connectedCallback(), this.#e && !this.#t && this.#p(this.#e);
 	}
 	disconnectedCallback() {
-		this.#p();
+		this.#m();
 	}
 	update(e) {
 		let t = this.shadowRoot;
@@ -4006,45 +4025,49 @@ var pa = ":host{display:inline-flex}.controls,.arrows{align-items:center;gap:var
 			let n = this.buttons !== "none" && (this.buttons === "carousel" ? "square" : this.buttons === "chevron" ? "chevron" : "icon") === e;
 			for (let r of t.querySelectorAll(`.${e}`)) r.hidden = !n;
 		}
-		let { prev: n, next: r } = this.#u();
+		let { prev: n, next: r } = this.#d();
 		if (e.has("labelPrev") || e.has("buttons")) for (let e of t.querySelectorAll(".prev")) e.textContent = this.labelPrev;
 		if (e.has("labelNext") || e.has("buttons")) for (let e of t.querySelectorAll(".next")) e.textContent = this.labelNext;
 		t.querySelector(".controls").setAttribute("aria-label", `${this.labelPrev} / ${this.labelNext}`);
 		let i = this.scrub && this.progress === "scroll";
 		for (let e of t.querySelectorAll(".edge")) e.hidden = !i;
-		t.querySelector(".edge.prev").disabled = this.position === "start", t.querySelector(".edge.next").disabled = this.position === "end" || !this.#n, this.#_(), e.has("for") && this.#d();
+		if (e.has("orientation")) {
+			let e = this.orientation === "vertical";
+			t.querySelector(".edge.prev").setAttribute("icon", e ? "chevron-up" : "chevron-left"), t.querySelector(".edge.next").setAttribute("icon", e ? "chevron-down" : "chevron-right");
+		}
+		t.querySelector(".edge.prev").disabled = this.position === "start", t.querySelector(".edge.next").disabled = this.position === "end" || !this.#n, this.#v(), e.has("for") && this.#f();
 		let a = t.activeElement;
 		n.disabled = this.position === "start", r.disabled = this.position === "end" || !this.#n, a === n && n.disabled && r.focus(), a === r && r.disabled && n.focus();
 	}
-	#d() {
-		this.#p();
+	#f() {
+		this.#m();
 		let e = this.for ? this.getRootNode().getElementById?.(this.for) : null;
-		this.for && !e && document.readyState === "loading" && document.addEventListener("DOMContentLoaded", () => this.#d(), { once: !0 }), this.#e = e, e && this.#f(e);
+		this.for && !e && document.readyState === "loading" && document.addEventListener("DOMContentLoaded", () => this.#f(), { once: !0 }), this.#e = e, e && this.#p(e);
 	}
-	#f(e) {
-		this.#t = !0, e.addEventListener("scroll", this.#i, { passive: !0 }), this.#a.observe(e), this.#o.observe(e, { childList: !0 }), this.#m();
+	#p(e) {
+		this.#t = !0, e.addEventListener("scroll", this.#i, { passive: !0 }), this.#a.observe(e), this.#o.observe(e, { childList: !0 }), this.#h();
 		let t = this.buttons === "carousel" ? "arq-carousel-button" : "arq-icon-button";
 		customElements.whenDefined(t).then(() => {
 			for (let n of this.shadowRoot.querySelectorAll(t)) {
 				let t = n.shadowRoot?.querySelector("button");
 				t && "ariaControlsElements" in t && (t.ariaControlsElements = [e]);
 			}
-		}), this.#h();
-	}
-	#p() {
-		this.#e && this.#t && (this.#t = !1, this.#e.removeEventListener("scroll", this.#i), this.#o.disconnect(), this.#a.disconnect());
+		}), this.#g();
 	}
 	#m() {
-		for (let e of this.#e?.children ?? []) this.#a.observe(e);
-		this.#h();
+		this.#e && this.#t && (this.#t = !1, this.#e.removeEventListener("scroll", this.#i), this.#o.disconnect(), this.#a.disconnect());
 	}
 	#h() {
+		for (let e of this.#e?.children ?? []) this.#a.observe(e);
+		this.#g();
+	}
+	#g() {
 		let e = this.#e;
 		if (!e) return;
-		let t = e.scrollWidth - e.clientWidth, n = t <= 1 || e.scrollLeft <= 1 ? "start" : e.scrollLeft >= t - 1 ? "end" : "middle", r = t > 1;
-		r !== this.#n && (this.#n = r, this.#u().next.disabled = !r || n === "end", this.shadowRoot.querySelector(".edge.next").disabled = !r || n === "end"), n !== this.position && (this.position = n), this.progress === "scroll" && this.buttons !== "icon" ? this.#g(e, r) : this.buttons === "carousel" && this.#v(e);
+		let t = this.#u(), n = e[t.scrollSize] - e[t.clientSize], r = e[t.scroll], i = n <= 1 || r <= 1 ? "start" : r >= n - 1 ? "end" : "middle", a = n > 1;
+		a !== this.#n && (this.#n = a, this.#d().next.disabled = !a || i === "end", this.shadowRoot.querySelector(".edge.next").disabled = !a || i === "end"), i !== this.position && (this.position = i), this.progress === "scroll" && this.buttons !== "icon" ? this.#_(e, a) : this.buttons === "carousel" && this.#y(e);
 	}
-	#g(e, t) {
+	#_(e, t) {
 		let n = this.shadowRoot, r = n.querySelector(".progress"), i = `${t}|${this.scrub}`;
 		if (i !== this.#r) {
 			this.#r = i, n.querySelector(".count").hidden = !0, r.hidden = !t, r.dataset.mode = "scroll", r.classList.toggle("scrub", this.scrub), r.setAttribute("aria-hidden", "true");
@@ -4057,32 +4080,40 @@ var pa = ":host{display:inline-flex}.controls,.arrows{align-items:center;gap:var
 			]) r.removeAttribute(e);
 		}
 		if (!t) return;
-		let a = Math.min(1, e.clientWidth / e.scrollWidth), o = e.scrollLeft / e.scrollWidth;
-		r.style.setProperty("--progress-size", String(a)), r.style.setProperty("--progress-offset", String(o));
+		let a = this.#u(), o = Math.min(1, e[a.clientSize] / e[a.scrollSize]), s = e[a.scroll] / e[a.scrollSize];
+		r.style.setProperty("--progress-size", String(o)), r.style.setProperty("--progress-offset", String(s));
 	}
-	#_() {
+	#v() {
 		let e = this.shadowRoot, t = Math.max(this.count || 1, 1), n = Math.min(Math.max(this.index || 0, 0), t - 1);
 		if (this.progress === "scroll") return;
 		this.#r = "";
 		let r = this.buttons === "carousel" && t > 1, i = e.querySelector(".count"), a = e.querySelector(".progress");
 		i.hidden = !r, a.hidden = !r, i.textContent = `${String(n + 1).padStart(2, "0")} / ${String(t).padStart(2, "0")}`, a.style.setProperty("--progress-count", String(t)), a.style.setProperty("--progress-index", String(n)), a.setAttribute("role", "progressbar"), a.setAttribute("aria-valuemin", "1"), a.setAttribute("aria-valuemax", String(t)), a.setAttribute("aria-valuenow", String(n + 1)), a.setAttribute("aria-valuetext", `${n + 1} de ${t}`);
 	}
-	#v(e) {
+	#y(e) {
 		let t = [...e.children], n = Math.max(t.length, 1), r = e.scrollWidth - e.clientWidth, i = r <= 1 ? 0 : Math.min(n - 1, Math.max(0, Math.round(e.scrollLeft / r * (n - 1))));
-		this.count !== n && (this.count = n), this.index === i ? this.#_() : this.index = i;
+		this.count !== n && (this.count = n), this.index === i ? this.#v() : this.index = i;
 	}
 	go(e) {
-		this.#y(e);
+		this.#b(e);
 	}
-	#y(e) {
+	#b(e) {
 		let t = this.#e;
 		if (!t) {
 			this.emit(e < 0 ? "prev" : "next");
 			return;
 		}
-		let n = this.step === "item" ? t.children[0] : null, r = n && Number.parseFloat(getComputedStyle(t).columnGap || getComputedStyle(t).gap) || 0, i = Math.max(t.clientWidth - (this.pageInset || 0), 1), a = n ? n.getBoundingClientRect().width + r : this.scrub && this.progress === "scroll" ? i / 2 : i, o = Math.max(t.scrollWidth - t.clientWidth, 0), s = Math.min(o, Math.max(0, t.scrollLeft + e * a));
-		this.slide === "slow" ? this.#b(t, s) : t.scrollBy({
-			left: e * a,
+		let n = this.step === "item" ? t.children[0] : null, r = n && Number.parseFloat(getComputedStyle(t).columnGap || getComputedStyle(t).gap) || 0, i = this.orientation === "vertical", a = Math.max((i ? t.clientHeight : t.clientWidth) - (this.pageInset || 0), 1), o = n ? n.getBoundingClientRect().width + r : this.scrub && this.progress === "scroll" ? a / 2 : a;
+		if (i) {
+			t.scrollBy({
+				top: e * o,
+				behavior: this.#s.matches ? "auto" : "smooth"
+			});
+			return;
+		}
+		let s = Math.max(t.scrollWidth - t.clientWidth, 0), c = Math.min(s, Math.max(0, t.scrollLeft + e * o));
+		this.slide === "slow" ? this.#x(t, c) : t.scrollBy({
+			left: e * o,
 			behavior: this.#s.matches ? "auto" : "smooth"
 		});
 	}
@@ -4090,7 +4121,7 @@ var pa = ":host{display:inline-flex}.controls,.arrows{align-items:center;gap:var
 		let t = this.#e;
 		if (!t) return;
 		let n = Math.max(t.scrollWidth - t.clientWidth, 0), r = Math.min(n, Math.max(0, e));
-		this.slide === "slow" ? this.#b(t, r) : t.scrollTo({
+		this.slide === "slow" ? this.#x(t, r) : t.scrollTo({
 			left: r,
 			behavior: this.#s.matches ? "auto" : "smooth"
 		});
@@ -4099,7 +4130,7 @@ var pa = ":host{display:inline-flex}.controls,.arrows{align-items:center;gap:var
 		let e = this.#e, t = e ? e.scrollLeft : 0;
 		this.#c?.cancel(), this.#c = null, e && (e.scrollLeft = t, e.removeAttribute("data-gliding"));
 	}
-	#b(e, t) {
+	#x(e, t) {
 		let n = e.scrollLeft;
 		this.#c?.cancel(), this.#c = null, e.scrollLeft = n, e.removeAttribute("data-gliding");
 		let r = getComputedStyle(this), i = this.#s.matches ? 0 : Number.parseFloat(r.getPropertyValue("--arq-motion-duration-slow")) || 0, a = r.getPropertyValue("--arq-motion-easing-standard").trim() || "ease";
@@ -8928,7 +8959,7 @@ var oc = ":host{min-width:0;display:block}.layout{align-items:flex-start;gap:var
 }).define();
 //#endregion
 //#region src/components/catalog-listing/catalog-listing.css?inline
-var cc = ":host{box-sizing:border-box;background:var(--arq-color-surface-default);min-width:0;transition-property:background-color;transition-duration:var(--arq-illumination-bg-duration);transition-delay:0s;transition-timing-function:var(--arq-illumination-bg-easing);display:block}.layout{gap:var(--arq-space-gap-xl);min-width:0;padding:0 var(--page-gutter) var(--arq-space-section-xl);flex-direction:column;display:flex}.nav{min-width:0}.content{gap:var(--arq-space-gap-xl-2xl);flex-direction:column;min-width:0;display:flex}.status{color:var(--arq-color-text-secondary);margin:0}.status:empty{display:none}.grid{--busy-opacity:var(--arq-opacity-muted);transition-property:opacity;transition-duration:var(--arq-motion-duration-fast);transition-timing-function:var(--arq-motion-easing-standard)}:host([aria-busy=true]) .grid:not(:has(>[loading])){opacity:var(--busy-opacity);transition-delay:var(--arq-motion-duration-fast)}.grid>arq-product-card[loading]{animation:arq-reveal calc(var(--arq-motion-duration-slow) * 2) var(--arq-motion-easing-standard) backwards;animation-delay:calc(var(--arq-motion-duration-fade) + var(--arq-motion-duration-fast) * var(--reveal-index,0))}.grid>arq-product-card.settled{transition:none}@media (prefers-reduced-motion:reduce){.grid>arq-product-card{transition-property:opacity;transition-duration:var(--arq-motion-duration-fade);transition-timing-function:var(--arq-motion-easing-standard)}@starting-style{.grid>arq-product-card{opacity:0}}.grid>arq-product-card[loading]{transition-delay:var(--arq-motion-duration-fade);animation:none}}@media (width>=1024px){.layout{grid-template-columns:var(--arq-layout-catalog-nav) minmax(0, 1fr);column-gap:var(--arq-space-section-xs);display:grid}.toolbar{top:calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));z-index:3;background:var(--arq-color-surface-default);transition-property:background-color;transition-duration:var(--arq-illumination-bg-duration);transition-delay:0s;transition-timing-function:var(--arq-illumination-bg-easing);position:sticky}.nav{top:calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));z-index:3;box-sizing:border-box;margin:calc(var(--arq-space-padding-xs) * -1);padding:var(--arq-space-padding-xs);align-self:start;position:sticky}.nav.scrolls{max-height:var(--nav-max);scrollbar-width:thin;scrollbar-color:var(--arq-color-border-hover) var(--arq-color-surface-transparent);overflow-y:auto}}@media (width<=1023px){.nav{display:none}}@media (width<=767px){.content{gap:var(--arq-space-gap-xl)}}", lc = {
+var cc = ":host{box-sizing:border-box;background:var(--arq-color-surface-default);min-width:0;transition-property:background-color;transition-duration:var(--arq-illumination-bg-duration);transition-delay:0s;transition-timing-function:var(--arq-illumination-bg-easing);display:block}.layout{gap:var(--arq-space-gap-xl);min-width:0;padding:0 var(--page-gutter) var(--arq-space-section-xl);flex-direction:column;display:flex}.nav{min-width:0}.content{gap:var(--arq-space-gap-xl-2xl);flex-direction:column;min-width:0;display:flex}.status{color:var(--arq-color-text-secondary);margin:0}.status:empty{display:none}.grid{--busy-opacity:var(--arq-opacity-muted);transition-property:opacity;transition-duration:var(--arq-motion-duration-fast);transition-timing-function:var(--arq-motion-easing-standard)}:host([aria-busy=true]) .grid:not(:has(>[loading])){opacity:var(--busy-opacity);transition-delay:var(--arq-motion-duration-fast)}.grid>arq-product-card[loading]{animation:arq-reveal calc(var(--arq-motion-duration-slow) * 2) var(--arq-motion-easing-standard) backwards;animation-delay:calc(var(--arq-motion-duration-fade) + var(--arq-motion-duration-fast) * var(--reveal-index,0))}.grid>arq-product-card.settled{transition:none}@media (prefers-reduced-motion:reduce){.grid>arq-product-card{transition-property:opacity;transition-duration:var(--arq-motion-duration-fade);transition-timing-function:var(--arq-motion-easing-standard)}@starting-style{.grid>arq-product-card{opacity:0}}.grid>arq-product-card[loading]{transition-delay:var(--arq-motion-duration-fade);animation:none}}@media (width>=1024px){.layout{grid-template-columns:var(--arq-layout-catalog-nav) minmax(0, 1fr);column-gap:var(--arq-space-section-xs);display:grid}.toolbar{top:calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));z-index:3;background:var(--arq-color-surface-default);transition-property:background-color;transition-duration:var(--arq-illumination-bg-duration);transition-delay:0s;transition-timing-function:var(--arq-illumination-bg-easing);position:sticky}.nav{top:calc(var(--arq-space-gap-md) * 2 + var(--arq-icon-xl));z-index:3;align-self:start;position:sticky}.nav-scroll{box-sizing:border-box;margin:calc(var(--arq-space-padding-xs) * -1);padding:var(--arq-space-padding-xs);scrollbar-width:none}.nav-scroll::-webkit-scrollbar{display:none}.nav.scrolls .nav-scroll{max-height:var(--nav-max);overflow-y:auto}.nav-bar{position:absolute;inset-block:0;inset-inline-start:calc(100% + var(--arq-space-gap-sm))}.nav:not(.scrolls) .nav-bar{display:none}}@media (width<=1023px){.nav{display:none}}@media (width<=767px){.content{gap:var(--arq-space-gap-xl)}}", lc = {
 	label: "Colecciones",
 	href: "/arq/productos",
 	menu: "colecciones"
@@ -8945,7 +8976,7 @@ var cc = ":host{box-sizing:border-box;background:var(--arq-color-surface-default
 }, hc = class extends I {
 	static tag = "arq-catalog-listing";
 	static styles = Ts + cc;
-	static template = "<div class=\"layout\"><div class=\"nav\"><slot name=\"nav\"></slot></div><div class=\"content\"><arq-catalog-toolbar class=\"toolbar\" for=\"filters\" show-iluminar></arq-catalog-toolbar><p class=\"status role-body\" role=\"status\"></p><arq-grid class=\"grid\"></arq-grid></div></div><arq-filter-panel id=\"filters\" show-categories><slot name=\"filter-title\" slot=\"title\"></slot></arq-filter-panel><arq-compare-bar class=\"compare\"></arq-compare-bar><arq-compare-picker class=\"picker\"></arq-compare-picker><p class=\"notice visually-hidden\" aria-live=\"polite\"></p>";
+	static template = "<div class=\"layout\"><div class=\"nav\"><div class=\"nav-scroll\" id=\"nav-scroll\"><div class=\"nav-content\"><slot name=\"nav\"></slot></div></div><arq-carousel-controls class=\"nav-bar\" for=\"nav-scroll\" buttons=\"none\" progress=\"scroll\" scrub orientation=\"vertical\" label-prev=\"Subir\" label-next=\"Bajar\"></arq-carousel-controls></div><div class=\"content\"><arq-catalog-toolbar class=\"toolbar\" for=\"filters\" show-iluminar></arq-catalog-toolbar><p class=\"status role-body\" role=\"status\"></p><arq-grid class=\"grid\"></arq-grid></div></div><arq-filter-panel id=\"filters\" show-categories><slot name=\"filter-title\" slot=\"title\"></slot></arq-filter-panel><arq-compare-bar class=\"compare\"></arq-compare-bar><arq-compare-picker class=\"picker\"></arq-compare-picker><p class=\"notice visually-hidden\" aria-live=\"polite\"></p>";
 	#e = {};
 	#t = "";
 	#n = {};
@@ -8984,46 +9015,46 @@ var cc = ":host{box-sizing:border-box;background:var(--arq-color-surface-default
 			}), a.observe(i);
 		};
 		dc.addEventListener("change", o), o();
-		let s = e.querySelector(".nav"), c = 0, l = () => {
-			c = 0;
-			let t = e.querySelector("slot[name=\"nav\"]").assignedElements()[0], n = getComputedStyle(s), r = Math.max(s.getBoundingClientRect().top, Number.parseFloat(n.top) || 0), i = Math.max(window.innerHeight - r, 0), a = (t?.offsetHeight ?? 0) + Number.parseFloat(n.paddingTop) + Number.parseFloat(n.paddingBottom);
+		let s = e.querySelector(".nav"), c = e.querySelector(".nav-scroll"), l = 0, u = () => {
+			l = 0;
+			let t = e.querySelector("slot[name=\"nav\"]").assignedElements()[0], n = Number.parseFloat(getComputedStyle(c).paddingTop) || 0, r = Math.max(s.getBoundingClientRect().top, Number.parseFloat(getComputedStyle(s).top) || 0) - n, i = Math.max(window.innerHeight - r, 0), a = (t?.offsetHeight ?? 0) + n * 2;
 			s.style.setProperty("--nav-max", `${i}px`), s.classList.toggle("scrolls", dc.matches && a > i);
-		}, u = () => {
-			c ||= requestAnimationFrame(l);
+		}, d = () => {
+			l ||= requestAnimationFrame(u);
 		};
-		window.addEventListener("scroll", u, { passive: !0 }), window.addEventListener("resize", u);
-		let d = new ResizeObserver(u);
-		d.observe(document.documentElement), e.querySelector("slot[name=\"nav\"]").addEventListener("slotchange", (e) => {
+		window.addEventListener("scroll", d, { passive: !0 }), window.addEventListener("resize", d);
+		let f = new ResizeObserver(d);
+		f.observe(document.documentElement), e.querySelector("slot[name=\"nav\"]").addEventListener("slotchange", (e) => {
 			let t = e.target.assignedElements()[0];
-			t && d.observe(t), u();
-		}), u();
-		let f = e.querySelector(".compare");
+			t && f.observe(t), d();
+		}), d();
+		let p = e.querySelector(".compare");
 		n.addEventListener("arq:compare", (e) => {
 			let t = e.target, n = this.#r.get(t);
-			n && (e.detail.checked ? f.add({
+			n && (e.detail.checked ? p.add({
 				sku: n.sku,
 				name: n.name,
 				meta: n.meta,
 				image: n.image
-			}) || (t.compared = !1, this.#x(`Podés comparar hasta ${f.items.length} productos. Sacá uno de la barra para sumar otro.`)) : f.remove(n.sku));
+			}) || (t.compared = !1, this.#x(`Podés comparar hasta ${p.items.length} productos. Sacá uno de la barra para sumar otro.`)) : p.remove(n.sku));
 		}), n.addEventListener("arq:finish", (e) => {
 			let t = e.target, n = this.#r.get(t);
 			n && (Object.assign(n, {
 				sku: e.detail.sku ?? n.sku,
 				href: e.detail.href,
 				image: e.detail.image
-			}), t.compared = f.has(n.sku));
-		}), f.addEventListener("arq:compare-change", () => {
-			this.#w(), p.open && this.#p();
+			}), t.compared = p.has(n.sku));
+		}), p.addEventListener("arq:compare-change", () => {
+			this.#w(), m.open && this.#p();
 		});
-		let p = e.querySelector(".picker");
-		f.addEventListener("arq:add", (e) => {
-			e.stopPropagation(), p.show();
-		}), p.addEventListener("arq:search", () => this.#p()), p.addEventListener("arq:close", (e) => {
-			e.detail.restored || f.focusAdd();
-		}), p.addEventListener("arq:add", (e) => {
+		let m = e.querySelector(".picker");
+		p.addEventListener("arq:add", (e) => {
+			e.stopPropagation(), m.show();
+		}), m.addEventListener("arq:search", () => this.#p()), m.addEventListener("arq:close", (e) => {
+			e.detail.restored || p.focusAdd();
+		}), m.addEventListener("arq:add", (e) => {
 			let { sku: t, name: n, cardMeta: r, meta: i, image: a } = e.detail.item;
-			f.add({
+			p.add({
 				sku: t,
 				name: n,
 				meta: r ?? i,

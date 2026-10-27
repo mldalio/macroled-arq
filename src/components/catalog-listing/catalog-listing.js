@@ -35,6 +35,7 @@ import { ArqElement } from '../../base/arq-element.js';
 import { listProducts, listCompareCandidates, getCatalogNav } from '../../data/catalog.js';
 import { handOffTheme, setBrowserBar, withoutThemeTransition } from '../../base/theme.js';
 import '../catalog-toolbar/catalog-toolbar.js';
+import '../carousel-controls/carousel-controls.js';
 import '../filter-panel/filter-panel.js';
 import '../filter-row/filter-row.js';
 import '../checkbox/checkbox.js';
@@ -62,7 +63,10 @@ class ArqCatalogListing extends ArqElement {
   static styles = revealCss + css;
   static template =
     `<div class="layout">` +
-    `<div class="nav"><slot name="nav"></slot></div>` +
+    // nav-content: el ResizeObserver de carousel-controls ve el alto del
+    // contenido cuando se abre o se cierra un grupo (un slot no tiene caja)
+    `<div class="nav"><div class="nav-scroll" id="nav-scroll"><div class="nav-content"><slot name="nav"></slot></div></div>` +
+    `<arq-carousel-controls class="nav-bar" for="nav-scroll" buttons="none" progress="scroll" scrub orientation="vertical" label-prev="Subir" label-next="Bajar"></arq-carousel-controls></div>` +
     `<div class="content">` +
     `<arq-catalog-toolbar class="toolbar" for="filters" show-iluminar></arq-catalog-toolbar>` +
     `<p class="status role-body" role="status"></p>` +
@@ -152,19 +156,23 @@ class ArqCatalogListing extends ArqElement {
 
     // Sidebar (desde 1024 px): mide como mucho lo que se ve de pantalla desde
     // su borde superior (pegado, desde el navbar; antes, desde donde esté).
-    // Solo si lo que tiene no entra, se desplaza adentro y aparece la barra.
+    // Solo si lo que tiene no entra, se desplaza adentro (nav-scroll) y
+    // aparece la barra (carousel-controls vertical).
     // Se compara el alto del nav del slot, al que no le suman los transform
     // del pliegue de catalog-nav-group: así la barra no asoma mientras se
     // cierra un grupo.
     const side = root.querySelector('.nav');
+    const scroller = root.querySelector('.nav-scroll');
     let fitFrame = 0;
     const fitNav = () => {
       fitFrame = 0;
       const nav = root.querySelector('slot[name="nav"]').assignedElements()[0];
-      const styles = getComputedStyle(side);
-      const top = Math.max(side.getBoundingClientRect().top, Number.parseFloat(styles.top) || 0);
+      // nav-scroll se asoma space/padding/xs por arriba y por abajo (lugar
+      // para el anillo de foco): se mide desde su borde, no desde el de .nav.
+      const inset = Number.parseFloat(getComputedStyle(scroller).paddingTop) || 0;
+      const top = Math.max(side.getBoundingClientRect().top, Number.parseFloat(getComputedStyle(side).top) || 0) - inset;
       const room = Math.max(window.innerHeight - top, 0);
-      const content = (nav?.offsetHeight ?? 0) + Number.parseFloat(styles.paddingTop) + Number.parseFloat(styles.paddingBottom);
+      const content = (nav?.offsetHeight ?? 0) + inset * 2;
       side.style.setProperty('--nav-max', `${room}px`);
       side.classList.toggle('scrolls', LISTING_DESKTOP.matches && content > room);
     };
