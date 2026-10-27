@@ -20,6 +20,10 @@
 .card {
   --card-above: 1;
   position: relative;
+  /* El z-index del link estirado queda dentro de la tarjeta. Si no, al hacer
+     scroll compite con la barra fija (Iluminar, Filtrar, navbar) y el clic
+     abre la card. */
+  isolation: isolate;
 }
 
 .card-link {

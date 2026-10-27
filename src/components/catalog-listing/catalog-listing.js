@@ -394,6 +394,7 @@ class ArqCatalogListing extends ArqElement {
   #card(data) {
     const card = document.createElement('arq-product-card');
     card.href = data.href;
+    card.family = data.family;
     card.image = data.image;
     card.imageHover = data.imageHover;
     card.imageLit = data.imageLit;
@@ -517,15 +518,26 @@ class ArqCatalogListing extends ArqElement {
   // Exterior, Lámparas y artefactos, Colecciones). Sin ítem actual queda el
   // del HTML (Productos).
   #titleFromNav(item) {
-    if (!item && this.#category.family && !this.#query) {
-      const label = this.#category.family;
+    // Una familia se abre desde Productos: Inicio / Productos / Kanu.
+    // Vale aunque el ítem del sidebar todavía no coincida con la URL.
+    if (this.#category.family && !this.#query) {
+      const fromNav = item?.closest('[data-arq-nav="colecciones"]') ? item.textContent.trim() : '';
+      const label = fromNav || this.#category.family;
       const title = document.querySelector('arq-page-header > [slot="title"]');
       if (title) {
         this.#htmlTitle ??= title.textContent;
         title.textContent = label;
         title.parentElement.removeAttribute('search-title');
       }
-      this.#syncBreadcrumb([{ label: 'Productos', href: location.pathname }, { label }]);
+      const description = document.querySelector('arq-page-header > [slot="description"]');
+      if (description) {
+        this.#htmlDescription ??= description.textContent;
+        description.textContent = this.#htmlDescription;
+      }
+      this.#syncBreadcrumb([
+        { label: 'Productos', href: location.pathname },
+        { label },
+      ]);
       return;
     }
     const group = item?.closest('arq-catalog-nav-group');
@@ -556,8 +568,8 @@ class ArqCatalogListing extends ArqElement {
     // Productos / grupo en su vista completa; Inicio / grupo / subcategoría.
     if (!label) this.#syncBreadcrumb([]);
     else if (sub) {
-      // Sin vista completa (Colecciones), el nivel del grupo abre el menú del navbar en su pestaña
-      const groupCrumb = firstItem ? { label: groupLabel, href: firstItem.getAttribute('href') } : { label: groupLabel, href: location.pathname, menu: group.dataset.arqNav };
+      // Colecciones no tiene página propia: el nivel anterior es Productos.
+      const groupCrumb = firstItem ? { label: groupLabel, href: firstItem.getAttribute('href') } : { label: 'Productos', href: location.pathname };
       this.#syncBreadcrumb([groupCrumb, { label }]);
     }
     else this.#syncBreadcrumb([{ label: 'Productos', href: location.pathname }, { label }]);

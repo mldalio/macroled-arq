@@ -168,7 +168,7 @@ Levels=3: Inicio / Sección / Página. Levels=2: Inicio / Página. El separador 
 
 Textos largos: los ítems intermedios se cortan con "…" (el texto completo queda en el link); el ítem actual se parte en varias líneas.
 
-En Productos: Levels=2 sin categoría; con categoría, Levels=3 siguiendo al título (Inicio / Productos / Interior, Inicio / Exterior / Jardín, Inicio / Colecciones / Kanu).
+En Productos: Levels=2 sin categoría; con categoría, Levels=3 siguiendo al título (Inicio / Productos / Interior, Inicio / Exterior / Jardín, Inicio / Lámparas y artefactos / Lámpara, Inicio / Productos / Kanu en una familia). En la ficha, sin Inicio: Productos / familia / producto, o Lámparas y artefactos / subfamilia / producto.
 
 ## breadcrumb-item
 
@@ -604,7 +604,7 @@ Link del mega menú y del submenú mobile: nombre, bajada opcional (Show meta, p
 - Propiedades: Tab: Por espacio · Lámparas y artefactos · Colecciones
 - Código: la foto del preview de cada aplicación es la del SKU con `is_menu_default` y la de cada colección, la de su fila `col-*` (`img_ambient_1_on`); si no carga, prueba fotos de productos en orden. Al abrir vuelve a la primera pestaña con la foto fija de Colgante (en las demás pestañas, su primer link) (docs/decisiones.md, 2026-10-20 · Fotos del mega-menú; 2026-10-21 · Foto inicial del mega-menú)
 
-Mega menú de Productos (desktop). Se abre desde nav-link "Productos" (Open=True) y se muestra debajo del navbar. Tres pestañas: Por espacio (Exterior / Interior), Lámparas y artefactos, y Colecciones. La imagen de la derecha se puede cambiar según la pestaña. Es un solo componente: categorías, links y el texto de "Ver todo…" salen de los datos. En código, Interior, Exterior y Colecciones no llevan «Ver todo…»: el título es el link (línea al pasar el mouse). Tablet (768–1023, solo código): no se muestra la imagen; las columnas toman todo el ancho, con layout/gutter a los dos lados.
+Mega menú de Productos (desktop). Se abre desde nav-link "Productos" (Open=True) y se muestra debajo del navbar. Tres pestañas: Por espacio (Exterior / Interior), Lámparas y artefactos, y Colecciones. La imagen de la derecha se puede cambiar según la pestaña. Es un solo componente: categorías, links y el texto de "Ver todo…" salen de los datos. En código, Interior, Exterior, Lámparas y artefactos y Colecciones no llevan «Ver todo…»: el título es el link (línea al pasar el mouse). Lámparas y artefactos lista las subfamilias de la macrofamilia `Lámparas y Artefactos`. Tablet (768–1023, solo código): no se muestra la imagen; las columnas toman todo el ancho, con layout/gutter a los dos lados.
 
 ## nav-link
 

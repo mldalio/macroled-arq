@@ -100,9 +100,6 @@ let themeTimer = 0;
 // Aplicar el tema sin ninguna transición (al llegar a la ficha ya iluminada): por
 // esos cuadros todas las duraciones valen 0, así no se ve el salto de claro a
 // oscuro. Se quitan dos cuadros después, cuando el cambio ya se pintó.
-// --arq-card-ground-duration: el fondo de product-card (el gris detrás de la
-// foto) no funde por su cuenta. En 0s entra en la foto de la View Transition
-// y se mueve con la página. El hover, cuando la variable no está, usa su tiempo.
 const INSTANT_VARS = ['--arq-illumination-bg-duration', '--arq-illumination-image-duration', '--arq-theme-bg-duration', '--arq-theme-text-duration', '--arq-theme-text-delay', '--arq-theme-surface-duration', '--arq-card-ground-duration'];
 
 /** Ejecuta `apply` (que cambia data-arq-theme) sin transiciones. */

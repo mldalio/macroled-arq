@@ -55,7 +55,7 @@ import { PhotoViewer,photoViewerTemplate } from '../../base/photo-viewer.js';
 import viewerCss from '../../base/photo-viewer.css?inline';
 import { normalize } from '../../data/text.js';
 import { animateThemeChange, refreshTheme, setBrowserBar, takeThemeHandoff, withoutThemeTransition } from '../../base/theme.js';
-import { getProduct, variantDetails, categoryHref, listCompareCandidates } from '../../data/catalog.js';
+import { getProduct, variantDetails, categoryHref, listCompareCandidates, LAMPS_ENVIRONMENT } from '../../data/catalog.js';
 import { attributeInfo } from '../../data/attributes.js';
 import { config } from '../../config.js';
 import { variantOptions, initialSelection, findVariant, choose } from '../../data/variants.js';
@@ -379,14 +379,7 @@ class ArqFichaProducto extends ArqElement {
   #renderHeader() {
     const { group, collection } = this.#product;
     const root = this.shadowRoot;
-    const crumbs = collection
-      ? [
-          // Sin página de todas las colecciones: este nivel abre el menú del navbar en su pestaña Colecciones
-          { label: 'Colecciones', href: '/arq/productos', menu: 'colecciones' },
-          // La colección lleva a la navegación de sus productos, como el menú y el sidebar
-          { label: collection.name, href: categoryHref({ collection: collection.id }) },
-        ]
-      : [{ label: 'Productos', href: '/arq/productos' }];
+    const { crumbs, see } = headerTrail(group, collection);
     root.querySelector('.breadcrumb').replaceChildren(
       ...crumbs.map(({ label, href, menu }) => {
         const item = document.createElement('arq-breadcrumb-item');
@@ -400,10 +393,10 @@ class ArqFichaProducto extends ArqElement {
       Object.assign(document.createElement('arq-breadcrumb-item'), { current: true, theme: 'transparent', textContent: group.name }),
     );
     for (const link of root.querySelectorAll('.collection-link')) {
-      link.hidden = !collection;
-      if (!collection) continue;
-      link.href = categoryHref({ collection: collection.id }); // la navegación de sus productos
-      link.textContent = `Ver colección ${collection.name}`;
+      link.hidden = !see;
+      if (!see) continue;
+      link.href = see.href;
+      link.textContent = see.label;
     }
   }
 
@@ -983,6 +976,40 @@ class ArqFichaProducto extends ArqElement {
   }
 }
 
+// Migas de la ficha (hasta 3, sin Inicio: va sobre la foto). Una luminaria
+// sale de Productos y sigue a su familia. Una lámpara o artefacto sigue a
+// su macrofamilia y, si tiene, a su subfamilia.
+function headerTrail(group, collection) {
+  const lamps = group.environment?.includes(LAMPS_ENVIRONMENT) && !group.environment.some((env) => env === 'Interior' || env === 'Exterior');
+  if (lamps) {
+    const crumbs = [{ label: 'Lámparas y artefactos', href: categoryHref({ environment: LAMPS_ENVIRONMENT }) }];
+    if (group.application) crumbs.push({ label: group.application, href: categoryHref({ environment: LAMPS_ENVIRONMENT, application: group.application }) });
+    return { crumbs };
+  }
+  const family = group.family?.trim();
+  if (family) {
+    const href = categoryHref({ family });
+    return {
+      crumbs: [
+        { label: 'Productos', href: '/arq/productos' },
+        { label: family, href },
+      ],
+      see: { href, label: `Ver colección ${family}` },
+    };
+  }
+  if (collection) {
+    const href = categoryHref({ collection: collection.id });
+    return {
+      crumbs: [
+        { label: 'Productos', href: '/arq/productos' },
+        { label: collection.name, href },
+      ],
+      see: { href, label: `Ver colección ${collection.name}` },
+    };
+  }
+  return { crumbs: [{ label: 'Productos', href: '/arq/productos' }] };
+}
+
 function image(src, alt, className = '') {
   const img = document.createElement('img');
   img.src = src;
@@ -997,6 +1024,7 @@ function image(src, alt, className = '') {
 function productCard(data) {
   const card = document.createElement('arq-product-card');
   card.href = data.href;
+  card.family = data.family;
   card.image = data.image;
   card.imageHover = data.imageHover;
   card.imageLit = data.imageLit;

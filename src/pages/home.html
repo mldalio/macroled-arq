@@ -5,7 +5,7 @@
 
   TODO (imágenes): las src de ejemplo apuntan a /demo/fixtures/img/… y /home_portada/.
   Antes de pegar en Webflow, reemplazarlas por las URLs de Webflow Assets.
-  TODO (urls): Lámparas y artefactos y el PDF del catálogo no tienen URL (docs/urls.md).
+  TODO (urls): el PDF del catálogo no tiene URL (docs/urls.md).
   TODO (datos): «Producto 3/4/5» del frame son placeholders; el carrusel lista grupos reales.
 -->
 <arq-preloader open page></arq-preloader>
@@ -42,7 +42,7 @@
         <!-- TODO (contenido): bajada de Exterior, a confirmar -->
         <span slot="description">Recorridos, jardines y fachadas. Luz que marca el paisaje sin interrumpirlo.</span>
       </arq-category-card>
-      <arq-category-card overlay href="/arq/productos">
+      <arq-category-card overlay href="/arq/productos?environment=L%C3%A1mparas%20y%20Artefactos">
         <img slot="image" src="/home_portada/lamparasyart.png" alt="" loading="lazy">
         <span slot="name">Lámparas y artefactos</span>
         <!-- TODO (contenido): bajada de Lámparas y artefactos, a confirmar -->
@@ -83,9 +83,7 @@
       <h2 slot="title">Colecciones que inspiran</h2>
       <span slot="description">Colecciones que se adaptan a distintas necesidades y espacios.</span>
     </arq-section-header>
-    <arq-collection-index>
-      <arq-button slot="action" type="outline" href="/arq/productos" data-arq-menu="colecciones">Ver todo</arq-button>
-    </arq-collection-index>
+    <arq-collection-index></arq-collection-index>
   </arq-section>
 
   <arq-section id="herramientas" padding="wide" reveal>
@@ -189,7 +187,7 @@
   <h2 slot="productos-title">Productos</h2>
   <arq-footer-link slot="productos" href="/arq/productos?environment=Interior">Interior</arq-footer-link>
   <arq-footer-link slot="productos" href="/arq/productos?environment=Exterior">Exterior</arq-footer-link>
-  <arq-footer-link slot="productos" href="/arq/productos">Lámparas y artefactos</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?environment=L%C3%A1mparas%20y%20Artefactos">Lámparas y artefactos</arq-footer-link>
   <arq-footer-link slot="productos" href="/arq/productos" data-arq-menu="colecciones">Colecciones</arq-footer-link>
   <h2 slot="informacion-title">Información</h2>
   <arq-footer-link slot="informacion" href="/arq/nosotros">Nosotros</arq-footer-link>

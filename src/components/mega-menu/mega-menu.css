@@ -151,12 +151,6 @@
   gap: var(--arq-space-gap-xl);
 }
 
-.columns--collections .column {
-  justify-content: flex-start;
-  align-items: stretch;
-  gap: 0;
-}
-
 /* Preview: layout/mega-menu-image de ancho; abarca las pestañas y el cuerpo,
    cuyo mínimo conserva ratio/portrait-soft (4:5). Fondo color/surface/subtle
    sin foto. Texto abajo: padding space/padding/xl-2xl, gap space/gap/sm. */

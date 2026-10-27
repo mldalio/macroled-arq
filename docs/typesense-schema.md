@@ -23,7 +23,7 @@ Colección `macroled_arq` en `typesense.coresagroup.com`: 139 documentos (132 SK
 | Pertenencia a una colección | La colección cuya `familia` incluye la del producto. Los accesorios no entran. Una colección sin productos publicados no se muestra | `familia` |
 | Accesorio | `product_type` «Accesorio». Con qué producto se usa: su nombre | `compatible_with` |
 | Foto del mega-menú de una aplicación | Un SKU marcado por link de Por espacio (aplicación y entorno; o Artefactos / Lámparas). Su `img_ambient_1_on` es la foto del menú. Fuera del esquema (no hace falta indexarlo): n8n lo pasa como bool | `is_menu_default` (bool) |
-| Navegación | Ambiente = `macrofamilia` (Exterior · Interior); aplicación = `subfamilia`; tipo = `product_type` (Luminaria · Lámpara · Artefacto; **vacío = Luminaria**, se completa solo en lo que no es luminaria) | |
+| Navegación | Ambiente = `macrofamilia` (Exterior · Interior · Lámparas y Artefactos); aplicación = `subfamilia`; tipo = `product_type` (Luminaria · Lámpara · Artefacto; **vacío = Luminaria**, se completa solo en lo que no es luminaria). Lámparas y artefactos se navega por macrofamilia y subfamilia, como Interior y Exterior | |
 
 ### Imágenes: listas con posición fija
 

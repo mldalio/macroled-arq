@@ -5,7 +5,7 @@
    encima del hero gracias al margen inferior negativo (TODO diseño:
    confirmar). Así, con announcement-bar arriba, arranca debajo de la barra y
    se pega arriba cuando la barra se va con el scroll. z-index sin token: por
-   encima del contenido de la página. */
+   encima del contenido y de la barra de Iluminar (4). El preloader queda en 6. */
 :host {
   /* Mega-menú: entra en motion/duration/panel (400 ms), como el search-sheet,
      y se va un poco antes, en motion/duration/slow (320 ms), los dos con
@@ -20,7 +20,7 @@
   display: block;
   position: sticky;
   top: 0;
-  z-index: 4;
+  z-index: 5;
   transition: transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
 }
 

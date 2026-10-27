@@ -21,8 +21,9 @@
 //   abren los mismos grupos. Open es la prop open (solo cuenta en Mobile).
 // - La categoría actual la guarda el grupo (catalog-nav-group selected); el
 //   texto del encabezado es el del catalog-nav-item selected de ese grupo.
-// - Al cargar se abre solo el grupo selected. Abrir otro grupo no cierra los
-//   demás ni cambia el listado: el listado cambia al elegir una subcategoría.
+// - Al cargar se abre solo el grupo selected. Abrir Colecciones cierra los
+//   demás grupos. Abrir Interior, Exterior o Lámparas no los cierra. El
+//   listado cambia al elegir una subcategoría.
 // - Al elegir un ítem, los grupos y el panel Mobile quedan como estaban.
 
 import { ArqElement } from '../../base/arq-element.js';
@@ -60,11 +61,19 @@ class ArqCatalogNav extends ArqElement {
     };
     this.shadowRoot.querySelector('slot').addEventListener('slotchange', sync);
     new MutationObserver(sync).observe(this, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['selected'] });
-    // Abrir o cerrar un grupo no cambia el listado ni cierra los demás: el
-    // listado cambia recién al elegir una subcategoría, y la navegación queda
-    // como la dejó la persona (también el panel en Mobile).
+    // Abrir Colecciones cierra los otros grupos. El listado cambia recién al
+    // elegir una subcategoría, y el panel de Mobile queda como estaba.
     this.addEventListener('arq:toggle', (event) => {
-      if (event.target.localName === 'arq-catalog-nav-group') this.#openedCurrent = true;
+      const group = event.target;
+      if (group.localName !== 'arq-catalog-nav-group') return;
+      this.#openedCurrent = true;
+      // Colecciones cierra los otros grupos. Abrir Interior, Exterior o
+      // Lámparas no cierra a los demás.
+      if (group.dataset.arqNav === 'colecciones' && group.open) {
+        for (const other of this.querySelectorAll('arq-catalog-nav-group')) {
+          if (other !== group && other.open) other.open = false;
+        }
+      }
     });
     sync();
   }
