@@ -15,11 +15,16 @@
      offset negativo, así no cambia el tamaño). Solo con mouse (hover: hover).
    - Un elemento interactivo dentro de la tarjeta (el checkbox de
      product-card) va por encima del ::after: position: relative + z-index:
-     var(--card-above), la variable local de abajo. */
+     var(--card-above), la variable local de abajo.
+   - isolation: isolate: los z-index de adentro (fotos, link estirado,
+     acabados) quedan dentro de la tarjeta y no compiten con el navbar, el
+     mega-menú ni las barras fijas de la página (docs/decisiones.md,
+     2026-10-27 · Capas de la página). */
 
 .card {
   --card-above: 1;
   position: relative;
+  isolation: isolate;
 }
 
 .card-link {
