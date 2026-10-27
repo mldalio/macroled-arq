@@ -3,9 +3,9 @@
   Pantalla: Final › Home v2 · respaldo pre-adaptación (2306:23045). No hay frame Mobile.
   Se edita acá y se pega en Webflow. dist/arq.js, dist/arq.css y Albert Sans se cargan a nivel sitio.
 
-  TODO (imágenes): las src de ejemplo apuntan a /demo/fixtures/img/… y /home_portada/.
-  Antes de pegar en Webflow, reemplazarlas por las URLs de Webflow Assets.
-  TODO (urls): el PDF del catálogo no tiene URL (docs/urls.md).
+  TODO (imágenes): Explorar por espacio ya usa CloudFront (interior, exterior, lámparas).
+  El resto de las src de ejemplo apuntan a /demo/fixtures/img/… y rutas locales.
+  Antes de pegar en Webflow, reemplazarlas por las URLs definitivas.
   TODO (datos): «Producto 3/4/5» del frame son placeholders; el carrusel lista grupos reales.
 -->
 <arq-preloader open page></arq-preloader>
@@ -32,18 +32,18 @@
     </arq-section-header>
     <arq-grid layout="editorial">
       <arq-category-card overlay href="/arq/productos?environment=Interior">
-        <img slot="image" src="/home_portada/interior.png" alt="" loading="lazy">
+        <img slot="image" src="https://d1zltvqju4u8ql.cloudfront.net/fit-in/filters:format(webp)/MACROLED/ARQ/imagenes/home/interior.png" alt="" loading="lazy">
         <span slot="name">Interior</span>
         <span slot="description">Atmósferas para vivir, trabajar y recibir. Luminarias que acompañan la arquitectura.</span>
       </arq-category-card>
       <arq-category-card overlay href="/arq/productos?environment=Exterior">
-        <img slot="image" src="/home_portada/exterior.png" alt="" loading="lazy">
+        <img slot="image" src="https://d1zltvqju4u8ql.cloudfront.net/fit-in/filters:format(webp)/MACROLED/ARQ/imagenes/home/exterior.png" alt="" loading="lazy">
         <span slot="name">Exterior</span>
         <!-- TODO (contenido): bajada de Exterior, a confirmar -->
         <span slot="description">Recorridos, jardines y fachadas. Luz que marca el paisaje sin interrumpirlo.</span>
       </arq-category-card>
       <arq-category-card overlay href="/arq/productos?environment=L%C3%A1mparas%20y%20Artefactos">
-        <img slot="image" src="/home_portada/lamparasyart.png" alt="" loading="lazy">
+        <img slot="image" src="https://d1zltvqju4u8ql.cloudfront.net/fit-in/filters:format(webp)/MACROLED/ARQ/imagenes/home/lamparasyart.png" alt="" loading="lazy">
         <span slot="name">Lámparas y artefactos</span>
         <!-- TODO (contenido): bajada de Lámparas y artefactos, a confirmar -->
         <span slot="description">La pieza que define cada ambiente. Silueta propia y emisión dirigida.</span>
@@ -71,7 +71,7 @@
   </arq-section>
 
   <arq-hero tall parallax>
-    <img slot="media" src="../../arq_nosotros/DSC09274_websize.jpg" alt="" loading="lazy">
+    <img slot="media" src="https://d1zltvqju4u8ql.cloudfront.net/fit-in/filters:format(webp)/MACROLED/ARQ/imagenes/home/nosotros.jpg" alt="" loading="lazy">
     <h2 slot="title">Iluminación de <br>vanguardia</h2>
     <span slot="description">Diseño, innovación y calidad en soluciones pensadas para transformar espacios.</span>
     <arq-button slot="action" type="outline" show-icon icon="arrow-right" href="/arq/nosotros">Conocer Macroled ARQ</arq-button>
@@ -83,28 +83,30 @@
       <h2 slot="title">Colecciones que inspiran</h2>
       <span slot="description">Colecciones que se adaptan a distintas necesidades y espacios.</span>
     </arq-section-header>
-    <arq-collection-index></arq-collection-index>
+    <arq-collection-index>
+      <arq-button slot="action" type="outline" href="/arq/productos" data-arq-menu="colecciones">Ver todas las colecciones</arq-button>
+    </arq-collection-index>
   </arq-section>
 
-  <arq-section id="herramientas" padding="wide" reveal>
+  <arq-section layout="tools" padding="wide" reveal>
     <arq-section-header slot="header" type="editorial">
       <span slot="kicker">Recursos</span>
       <h2 slot="title">Herramientas para proyectar</h2>
       <!-- TODO (contenido): bajada de Herramientas, a confirmar -->
       <span slot="description">Catálogos, fichas técnicas y archivos para especificar cada luminaria desde el anteproyecto hasta la obra.</span>
     </arq-section-header>
-    <arq-tool-card type="index" href="/arq/descargas">
-      <span slot="index">01</span>
+    <arq-tool-card slot="lead" size="large" href="https://s3.coresagroup.com/MACROLED/ARQ/catalogo/catalogo_ARQ.pdf" target="_blank">
+      <img slot="image" src="https://d1zltvqju4u8ql.cloudfront.net/fit-in/filters:format(webp)/MACROLED/ARQ/imagenes/home/catalogo_ARQ_2026.png" alt="">
       <span slot="title">Catálogo Macroled ARQ 2026</span>
       <span slot="subtitle">Catálogo General de productos</span>
     </arq-tool-card>
-    <arq-tool-card type="index" href="/arq/catalogos">
-      <span slot="index">02</span>
+    <arq-tool-card href="/arq/catalogos">
       <span slot="title">Catálogos</span>
       <span slot="subtitle">Todos los catálogos disponibles</span>
+      <span slot="placeholder">Referencia a la web de descargas</span>
     </arq-tool-card>
-    <arq-tool-card type="index" href="/arq/descargas">
-      <span slot="index">03</span>
+    <arq-tool-card href="/arq/descargas">
+      <img slot="image" src="/Fichas%20t%C3%A9cnicas%20Macroled%20Arq%20sobre%20madera.png" alt="">
       <span slot="title">Descargas</span>
       <span slot="subtitle">Centro de descargas</span>
     </arq-tool-card>

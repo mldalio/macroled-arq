@@ -117,7 +117,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ text-block | `<arq-text-block>` | Kicker, título y bajada de una escena del Home ([README](../src/components/text-block/README.md)) |
 | ✅ collection-tile | `<arq-collection-tile>` | Tarjeta del mosaico de colecciones del Home ([README](../src/components/collection-tile/README.md)) |
 | ✅ collection-mosaic | `<arq-collection-mosaic>` | Mosaico de colecciones del Home ([README](../src/components/collection-mosaic/README.md)) |
-| ✅ collection-index | `<arq-collection-index>` | Lista de familias del Home (`familia` de las luminarias): la foto cambia al pasar el mouse por el nombre ([README](../src/components/collection-index/README.md)) |
+| ✅ collection-index | `<arq-collection-index>` | Lista de las familias destacadas del Home (Fuji, Ugoki, Tori, Sen, Daö, Kanu): la foto cambia al pasar el mouse por el nombre. Debajo, «Ver todas las colecciones» abre el menú ([README](../src/components/collection-index/README.md)) |
 | ✅ tool-card | `<arq-tool-card>` | Recurso de «Herramientas para proyectar». `type="index"` es la fila sin imagen ([README](../src/components/tool-card/README.md)) |
 | ✅ project-slide | `<arq-project-slide>` | Slide del carrusel de proyectos del Home ([README](../src/components/project-slide/README.md)) |
 | ✅ project-slider | `<arq-project-slider>` | Carrusel de proyectos del Home, en bucle. Con `autoplay` avanza solo y se detiene con el mouse encima o el foco adentro (WCAG 2.2.2; falta un botón de pausa en el diseño); se arrastra con el mouse y el clic abre la foto en un lightbox ([README](../src/components/project-slider/README.md)) |

@@ -3,10 +3,14 @@
 Lista de colecciones del Home, debajo de «Diseño que inspira». El nombre activo lleva líneas arriba y abajo; su foto está a la derecha. No está en Figma: adapta una referencia de lista + foto a los tokens de Arq, sin trama de fondo.
 
 ```html
-<arq-collection-index></arq-collection-index>
+<arq-collection-index>
+  <arq-button slot="action" type="outline" href="/arq/productos" data-arq-menu="colecciones">Ver todas las colecciones</arq-button>
+</arq-collection-index>
 ```
 
-Los nombres salen de la columna `familia` de las luminarias publicadas (`getFamilies` en `src/data/catalog.js`), en orden alfabético. La foto es el ambiente 1 del primer grupo de esa familia; si no hay, la de estudio. Cada nombre abre `/arq/productos?family=`.
+En la Home, «Ver todas las colecciones» abre el menú de Productos en la pestaña Colecciones (en Mobile, el submenú). No hay página de todas las colecciones.
+
+Los nombres son las familias destacadas de la Home: Fuji, Ugoki, Tori, Sen, Daö y Kanu, en ese orden (`getFamilies` en `src/data/catalog.js`). Salen de la columna `familia`; si una no está en la base, no se muestra. La foto es el ambiente 1 del primer grupo de esa familia; si no hay, la de estudio. Cada nombre abre `/arq/productos?family=`. El menú sigue mostrando todas las familias, en orden alfabético.
 
 Pasar el mouse o enfocar un nombre cambia la foto. El primero arranca visible. En táctil, el primer toque muestra la foto y el segundo abre el listado. Con `prefers-reduced-motion` el cambio es instantáneo.
 
@@ -15,7 +19,7 @@ Pasar el mouse o enfocar un nombre cambia la foto. El primero arranca visible. E
 | Atributo / slot | Contenido |
 | --- | --- |
 | slot por defecto | lo arma el componente: un `<a href>` por familia, con un `<img>` y el nombre |
-| slot `action` | botón opcional debajo de la lista |
+| slot `action` | botón opcional debajo de la lista. En la Home: «Ver todas las colecciones» |
 
 ## Tokens
 

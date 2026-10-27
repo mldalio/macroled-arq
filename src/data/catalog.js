@@ -317,15 +317,38 @@ function listedFamilies(groups) {
   return [...byName.values()].sort((a, b) => a.name.localeCompare(b.name, 'es', { sensitivity: 'base', numeric: true }));
 }
 
+// Colecciones que inspiran (Home). El orden es este, no el alfabético.
+// La comparación ignora tildes: Dao encuentra «Daö».
+const FEATURED_FAMILIES = ['Fuji', 'Ugoki', 'Tori', 'Sen', 'Dao', 'Kanu'];
+
+function usualName(groups) {
+  const counts = new Map();
+  for (const group of groups) {
+    const name = group.family.trim();
+    counts.set(name, (counts.get(name) ?? 0) + 1);
+  }
+  return [...counts.entries()].sort((a, b) => b[1] - a[1])[0][0];
+}
+
 /**
- * Familias de la Home (collection-index), en orden alfabético. Foto: ambiente 1 del primer grupo;
- * sin ella, la de estudio. El link abre el listado de esa familia.
+ * Familias destacadas de la Home (collection-index), en el orden de
+ * FEATURED_FAMILIES. Foto: ambiente 1 del primer grupo; sin ella, la de
+ * estudio. El link abre el listado de esa familia. El menú sigue listando
+ * todas, en orden alfabético.
  */
 export async function getFamilies() {
   const { groups } = await loadCatalog();
-  return listedFamilies(groups).map(({ name, groups: own }) => {
-    const images = pick(own[0].defaultVariant.images);
-    return { name, href: categoryHref({ family: name }), image: images.context ?? images.studio ?? null };
+  const byKey = new Map(listedFamilies(groups).map((family) => [normalize(family.name), family]));
+  return FEATURED_FAMILIES.flatMap((wanted) => {
+    const family = byKey.get(normalize(wanted));
+    if (!family) {
+      console.warn(`[arq] collection-index: no hay familia «${wanted}»`);
+      return [];
+    }
+    // Si la misma familia está escrita de dos formas (Dao y Daö), se muestra la más usada.
+    const name = usualName(family.groups);
+    const images = pick(family.groups[0].defaultVariant.images);
+    return [{ name, href: categoryHref({ family: name }), image: images.context ?? images.studio ?? null }];
   });
 }
 

@@ -3,11 +3,11 @@
 // los tokens de Arq (sin trama de fondo).
 //
 //   <arq-collection-index>
-//     <arq-button slot="action" type="outline" href="/arq/productos" data-arq-menu="colecciones">Ver todo</arq-button>
+//     <arq-button slot="action" type="outline" href="/arq/productos" data-arq-menu="colecciones">Ver todas las colecciones</arq-button>
 //   </arq-collection-index>
 //
-// Los nombres salen de la columna familia, en orden alfabético (getFamilies).
-// Cada link abre /arq/productos?family=.
+// Los nombres son las familias destacadas (Fuji, Ugoki, Tori, Sen, Daö, Kanu),
+// en ese orden (getFamilies). Cada link abre /arq/productos?family=.
 //
 // Pasar el mouse (o enfocar) un nombre muestra su foto. El primero arranca
 // visible. En táctil, el primer toque muestra la foto y el segundo entra.
@@ -83,8 +83,10 @@ class ArqCollectionIndex extends ArqElement {
       link.append(document.createTextNode(family.name));
       return link;
     });
-    for (const child of [...this.children]) child.remove();
-    this.append(...links);
+    const action = this.querySelector(':scope > [slot="action"]');
+    for (const child of [...this.querySelectorAll(':scope > a')]) child.remove();
+    if (action) action.before(...links);
+    else this.append(...links);
   }
 
   #links() {
