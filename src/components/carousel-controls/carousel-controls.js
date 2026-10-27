@@ -54,6 +54,9 @@ class ArqCarouselControls extends ArqElement {
     progress: { type: String, values: ['slides', 'scroll'], default: 'slides' }, // solo código: qué mide la línea (tramo por slide o parte visible)
     pageInset: { type: Number, default: 0 }, // solo código: ancho tapado por columnas fijas, se resta al salto de página
     scrub: { type: Boolean, default: false }, // solo código: la línea (progress="scroll") es una barra más gruesa que se arrastra y responde al clic
+    // native: scrollBy suave del navegador. slow: el mismo desplazamiento que
+    // project-slider (motion/duration/slow y motion/easing/standard).
+    slide: { type: String, values: ['native', 'slow'], default: 'native' },
     index: { type: Number, default: 0 }, // slide actual, desde 0
     count: { type: Number, default: 1 }, // cantidad de slides
   };
@@ -82,6 +85,7 @@ class ArqCarouselControls extends ArqElement {
   // Elementos que entran al carrusel (cards, fotos que arma la página)
   #children = new MutationObserver(() => this.#observeChildren());
   #reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  #glideRun = null;
 
   setup() {
     const root = this.shadowRoot;
@@ -313,10 +317,66 @@ class ArqCarouselControls extends ArqElement {
     const page = Math.max(target.clientWidth - (this.pageInset || 0), 1);
     // Los chevrons de la barra (scrub) avanzan media página, como la flecha de una barra de scroll
     const amount = item ? item.getBoundingClientRect().width + gap : this.scrub && this.progress === 'scroll' ? page / 2 : page;
-    target.scrollBy({
-      left: direction * amount,
-      behavior: this.#reducedMotion.matches ? 'auto' : 'smooth',
-    });
+    const max = Math.max(target.scrollWidth - target.clientWidth, 0);
+    const left = Math.min(max, Math.max(0, target.scrollLeft + direction * amount));
+    if (this.slide === 'slow') this.#glide(target, left);
+    else target.scrollBy({ left: direction * amount, behavior: this.#reducedMotion.matches ? 'auto' : 'smooth' });
+  }
+
+  /** Lleva el carrusel a un scrollLeft. Lo usa el soltar del arrastre de Destacados. */
+  glideTo(left) {
+    const target = this.#target;
+    if (!target) return;
+    const max = Math.max(target.scrollWidth - target.clientWidth, 0);
+    const next = Math.min(max, Math.max(0, left));
+    if (this.slide === 'slow') this.#glide(target, next);
+    else target.scrollTo({ left: next, behavior: this.#reducedMotion.matches ? 'auto' : 'smooth' });
+  }
+
+  cancelGlide() {
+    const target = this.#target;
+    const current = target ? target.scrollLeft : 0;
+    this.#glideRun?.cancel();
+    this.#glideRun = null;
+    if (!target) return;
+    target.scrollLeft = current;
+    target.removeAttribute('data-gliding');
+  }
+
+  // Igual que el track de project-slider: motion/duration/slow y
+  // motion/easing/standard. El scroll suave del navegador no se puede
+  // igualar y en Webflow se dispara.
+  #glide(target, left) {
+    const from = target.scrollLeft;
+    this.#glideRun?.cancel();
+    this.#glideRun = null;
+    target.scrollLeft = from;
+    target.removeAttribute('data-gliding');
+    const styles = getComputedStyle(this);
+    const duration = this.#reducedMotion.matches ? 0 : Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-slow')) || 0;
+    const easing = styles.getPropertyValue('--arq-motion-easing-standard').trim() || 'ease';
+    if (!duration || Math.abs(left - from) < 1) {
+      target.scrollLeft = left;
+      return;
+    }
+    target.setAttribute('data-gliding', '');
+    let anim;
+    try {
+      anim = target.animate([{ scrollLeft: from }, { scrollLeft: left }], { duration, easing, fill: 'both' });
+    } catch {
+      target.removeAttribute('data-gliding');
+      target.scrollLeft = left;
+      return;
+    }
+    this.#glideRun = anim;
+    const finish = () => {
+      if (this.#glideRun !== anim) return;
+      this.#glideRun = null;
+      target.scrollLeft = left;
+      anim.cancel();
+      target.removeAttribute('data-gliding');
+    };
+    anim.finished.then(finish).catch(() => {});
   }
 }
 

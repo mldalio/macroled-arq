@@ -24,7 +24,8 @@
 //   vuelve mientras siga así (WCAG 2.2.2); también al deslizar, fuera de
 //   pantalla o con prefers-reduced-motion.
 //   TODO (diseño): falta un botón de pausa visible (no hay ícono de pausa en el set).
-//   TODO (diseño): no hay token de intervalo; se usa motion/duration/feedback × 1.5 (3 s).
+//   El paso usa la misma transición que Casa FOA (motion/duration/slow y
+//   motion/easing/standard) y la misma pausa (3 s). No hay token de intervalo.
 // - Se desliza con el dedo o arrastrando con el mouse. Un toque sigue
 //   abriendo la ficha; si hubo desplazamiento, ese clic no navega.
 // - Entrada al hacer scroll (src/base/reveal.js), escalonada por tarjeta.
@@ -48,7 +49,7 @@ class ArqFeaturedProducts extends ArqElement {
     `<div class="layout">` +
     `<div class="intro">` +
     `<slot name="intro"></slot>` +
-    `<arq-carousel-controls class="controls" buttons="carousel" progress="scroll" for="featured-rail" step="item" label-prev="Productos anteriores" label-next="Productos siguientes"></arq-carousel-controls>` +
+    `<arq-carousel-controls class="controls" buttons="carousel" progress="scroll" slide="slow" for="featured-rail" step="item" label-prev="Productos anteriores" label-next="Productos siguientes"></arq-carousel-controls>` +
     `</div>` +
     `<div class="rail" id="featured-rail"></div>` +
     `</div>` +
@@ -181,9 +182,9 @@ class ArqFeaturedProducts extends ArqElement {
     this.#syncAutoplay();
   }
 
+  // Misma pausa que project-slider (Casa FOA). No hay token de intervalo.
   #interval() {
-    const ms = Number.parseFloat(getComputedStyle(this).getPropertyValue('--arq-motion-duration-feedback')) || 2000;
-    return ms * 1.5;
+    return 3000;
   }
 
   #syncAutoplay() {
@@ -231,6 +232,7 @@ class ArqFeaturedProducts extends ArqElement {
     if (event.pointerType !== 'mouse' || event.button !== 0) return;
     const rail = event.currentTarget;
     if (rail.scrollWidth - rail.clientWidth <= 1) return;
+    this.shadowRoot.querySelector('.controls').cancelGlide();
     this.#settle?.();
     this.#drag = {
       id: event.pointerId,
@@ -306,16 +308,13 @@ class ArqFeaturedProducts extends ArqElement {
     if (Math.abs(velocity) > 0.4) left -= Math.sign(velocity) * step;
     const index = Math.round(left / step);
     const target = Math.min(max, Math.max(0, index * step));
-    if (this.#reducedMotion.matches || Math.abs(target - rail.scrollLeft) < 1) {
-      rail.scrollTo({ left: target, behavior: 'auto' });
-      return release();
-    }
+    if (Math.abs(target - rail.scrollLeft) < 1) return release();
     this.#settle = release;
     rail.addEventListener('scrollend', release);
     // Por si scrollend no llega (navegador sin soporte): tope de motion/duration/panel × 2
     const panel = Number.parseFloat(getComputedStyle(this).getPropertyValue('--arq-motion-duration-panel')) || 400;
     timer = window.setTimeout(release, panel * 2);
-    rail.scrollTo({ left: target, behavior: 'smooth' });
+    this.shadowRoot.querySelector('.controls').glideTo(target);
   }
 
   #advance() {

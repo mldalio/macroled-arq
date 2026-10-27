@@ -43,6 +43,13 @@
   cursor: grabbing;
 }
 
+/* Mientras se anima el paso, el snap no pelea con el scrollLeft.
+   La duración y la curva son las del track de Casa FOA. */
+.rail[data-gliding] {
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+}
+
 .rail::-webkit-scrollbar {
   display: none;
 }
