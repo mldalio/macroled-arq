@@ -25,6 +25,7 @@ Recurso de la escena Herramientas de Home v2. Toda la tarjeta es el link. `type=
 | Tamaño | `size` | `large` · `small` (def. `small`). Solo `type="media"` |
 | — | `type` | `media` (def.) · `index`. `index` no está en Figma |
 | — | `href` | destino de la tarjeta |
+| — | `target` | `_blank` abre el PDF en otra pestaña (`rel="noopener"`) |
 | index | slot `index` | número del índice (`type="index"`), `role/label` |
 | title | slot `title` | `role/body-medium` en `media`; `role/heading-3-light` en `index` |
 | subtitle | slot `subtitle` | `role/caption` en `media`; `role/body` en `index` |

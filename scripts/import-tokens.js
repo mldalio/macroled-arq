@@ -10,7 +10,7 @@
 //   - motion/scale/* es un número sin unidad (number).
 //   - opacity/* es un número sin unidad: en Figma 0–100 (como el campo de
 //     opacidad), en el repo 0–1 (50 → 0.5).
-//   - motion/duration/fast, base, slow, expand, panel e illumination-lead suman
+//   - motion/duration/fast, base, slow, expand, panel, fold e illumination-lead suman
 //     el modo reducedMotion = 0ms.
 //   - No se importan las paletas de marca sin uso (bronze, cacao, olive,
 //     terracotta, offwhite), salvo las que usa un semántico (USED_BRAND):
@@ -33,7 +33,7 @@ const USED_BRAND = ['offwhite.bone', 'offwhite.sand'];
 // motion/duration/fade y feedback no cambian: un fundido y un tiempo de lectura no marean.
 // illumination e illumination-image tampoco: con movimiento reducido pasan a
 // motion/duration/fade en src/styles/global.css (siguen siendo fundidos).
-const REDUCED_MOTION = ['motion.duration.fast', 'motion.duration.base', 'motion.duration.slow', 'motion.duration.expand', 'motion.duration.panel', 'motion.duration.illumination-lead'];
+const REDUCED_MOTION = ['motion.duration.fast', 'motion.duration.base', 'motion.duration.slow', 'motion.duration.expand', 'motion.duration.panel', 'motion.duration.fold', 'motion.duration.illumination-lead'];
 // Orden de los grupos de primer nivel en tokens.json (los nuevos van al final).
 const GROUP_ORDER = ['space', 'font', 'radius', 'border', 'blur', 'neutral', 'red', 'green', 'amber', 'alpha', 'color', 'layout', 'icon', 'swatch', 'type', 'motion', 'opacity', 'role'];
 

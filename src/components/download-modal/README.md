@@ -32,6 +32,7 @@ modal.addEventListener('arq:download', () => generarFichaTecnica(sku)); // la fi
 | --- | --- | --- | --- |
 | Title | slot `title` | — | `<h2>` con "Descargas" (también es el nombre del diálogo) |
 | — (opciones) | slot por defecto | — | `arq-download-item`. El Featured va arriba solo; los Default, en una lista |
+| — (solo de código) | slot `message` | — | `arq-form-message tone="error"` debajo de la ficha técnica: «No se pudo generar la ficha técnica…». Va siempre y vacío (región viva); vacío no ocupa lugar |
 | — (solo de código) | `sku` | `sku` | SKU de las descargas: sku Compact debajo del título (página Descargas) |
 | — (solo de código) | `show-product` | `showProduct` | booleano. Descargas · propuesta (2554:20048 · 2554:20133): debajo del título, el producto (miniatura, sku Compact y `meta`) y los archivos como download-file-row, todo a `space/gap/xl`; en Mobile, hoja pegada abajo a todo el ancho |
 | — | `thumb` · `meta` | `thumb` · `meta` | Con `show-product`: miniatura y resumen de la variante («Negro, 6 W, luz cálida», `role/body-compact-regular` en `color/text/tertiary`) |

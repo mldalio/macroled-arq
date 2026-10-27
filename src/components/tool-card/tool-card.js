@@ -28,6 +28,7 @@ class ArqToolCard extends ArqElement {
   static styles = css;
   static properties = {
     href: { type: String },
+    target: { type: String },
     size: { type: String, values: ['large', 'small'], default: 'small' }, // Tamaño
     type: { type: String, values: ['media', 'index'], default: 'media' }, // Type
   };
@@ -56,6 +57,10 @@ class ArqToolCard extends ArqElement {
     const card = root.querySelector('.card');
     if (this.href) card.href = this.href;
     else card.removeAttribute('href');
+    if (this.target) card.setAttribute('target', this.target);
+    else card.removeAttribute('target');
+    if (this.target === '_blank') card.setAttribute('rel', 'noopener');
+    else card.removeAttribute('rel');
     const index = this.type === 'index';
     root.querySelector('.media').hidden = index;
     root.querySelector('.index').hidden = !index;

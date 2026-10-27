@@ -127,7 +127,7 @@ const DOWNLOADS = ['ies', 'cad', 'manual', 'fotometria'];
 // que usa cada pantalla.
 // - LIGHT_FIELDS: el catálogo completo (listados, buscador, navegación,
 //   Descargas, Comparativa y PDF): identificación, colecciones, fotos de la card
-//   y de ambiente, y los campos técnicos de attributes.js.
+//   y de ambiente, el dibujo de cotas del PDF y los campos técnicos de attributes.js.
 // - DETAIL_FIELDS: lo que suma la ficha de UN grupo (consulta filtrada por
 //   product_name): descripción, descargas, resto de las fotos y textos.
 // Un campo nuevo que use una pantalla se agrega acá; si no, llega vacío.
@@ -135,7 +135,7 @@ export const LIGHT_FIELDS = Object.freeze([
   'sku', FIELDS.name, FIELDS.variantGroup, FIELDS.productGroup, 'modelo', FIELDS.family, FIELDS.productType, FIELDS.environment, FIELDS.application,
   FIELDS.isDefault, FIELDS.isMenuDefault, FIELDS.isNew, FIELDS.variantAttributes, FIELDS.compatibleWith,
   FIELDS.collectionIntro, FIELDS.collectionDescription, FIELDS.collectionGallery, FIELDS.collectionInspiration,
-  'multimagen_producto', 'multimagen_ambiente', 'multimagen_coleccion',
+  'multimagen_producto', 'multimagen_ambiente', 'multimagen_coleccion', 'cotas_img',
   ...Object.keys(ATTRIBUTES),
 ]);
 
@@ -344,6 +344,8 @@ export function fromDocuments(rawDocs) {
         description: text(doc[FIELDS.description]),
         attributes: Object.fromEntries(Object.keys(ATTRIBUTES).map((field) => [field, attributeText(field, doc[field], gridModules)]).filter(([, v]) => v && v !== '-')),
         images: variantImages(doc),
+        // Dibujo con cotas de la ficha técnica en PDF: URL del PNG o null.
+        cota: text(doc.cotas_img) || null,
         downloads: Object.fromEntries(DOWNLOADS.map((field) => [field, text(doc[field])]).filter(([, v]) => v)),
         // Dibujo con cotas (cotas_img): una URL, o una lista cuya primera es el dibujo
         cota: text(Array.isArray(doc.cotas_img) ? doc.cotas_img[0] : doc.cotas_img),

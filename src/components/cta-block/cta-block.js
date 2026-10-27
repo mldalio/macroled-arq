@@ -19,13 +19,16 @@
 // - El <h2> va en el HTML de la página (slot title); el componente le da
 //   role/heading-2 desde un contenedor interno.
 // - Newsletter: el componente valida el email (validación nativa del
-//   arq-input) al tocar el button o con Enter, y emite arq:submit con
-//   { email }. No envía: el envío a n8n y form-message llegan con el envío de
-//   formularios (TODO, decisión 2026-10-01 · cta-block).
+//   arq-input) al tocar el button o con Enter, emite arq:submit con
+//   { email } y muestra la confirmación (form-message). El envío a n8n
+//   sigue pendiente (TODO, decisión 2026-10-01 · cta-block).
 // - Aplica su propio layout/gutter (el fondo llega a los bordes).
 
 import { ArqElement } from '../../base/arq-element.js';
+import '../form-message/form-message.js';
 import css from './cta-block.css?inline';
+
+const SENT = 'Listo. Te suscribiste al newsletter.';
 
 class ArqCtaBlock extends ArqElement {
   static tag = 'arq-cta-block';
@@ -44,6 +47,7 @@ class ArqCtaBlock extends ArqElement {
     `<div class="action">` +
     `<div class="email" hidden><slot name="email"></slot></div>` +
     `<slot name="action"></slot>` +
+    `<arq-form-message class="message"></arq-form-message>` +
     `</div>` +
     `</div>`;
 
@@ -53,15 +57,16 @@ class ArqCtaBlock extends ArqElement {
       root.querySelector(`slot[name="${name}"]`).addEventListener('slotchange', () => this.update());
     }
 
-    // Newsletter: clic en el button del slot action o Enter en el email
-    root.querySelector('slot[name="action"]').addEventListener('click', () => {
-      if (this.type === 'newsletter') this.#submit();
+    // El clic nace en el shadow del button: se escucha en el host, que sí lo recibe.
+    this.addEventListener('click', (event) => {
+      if (this.type === 'newsletter' && event.target.closest?.('arq-button')) this.#submit();
     });
-    root.querySelector('slot[name="email"]').addEventListener('keydown', (event) => {
-      if (this.type === 'newsletter' && event.key === 'Enter') {
-        event.preventDefault();
-        this.#submit();
-      }
+    this.addEventListener('keydown', (event) => {
+      if (this.type !== 'newsletter' || event.key !== 'Enter') return;
+      const email = event.target.closest?.('[slot="email"]');
+      if (!email || !this.contains(email)) return;
+      event.preventDefault();
+      this.#submit();
     });
   }
 
@@ -88,11 +93,22 @@ class ArqCtaBlock extends ArqElement {
   #submit() {
     const email = this.querySelector('[slot="email"]');
     if (!email) return false;
+    const message = this.shadowRoot.querySelector('.message');
     if (typeof email.reportValidity === 'function' && !email.reportValidity()) {
+      message.textContent = '';
       email.focus?.();
       return false;
     }
-    this.emit('submit', { email: email.value });
+    const address = email.value;
+    this.emit('submit', { email: address });
+    email.value = '';
+    // La región ya está vacía: el texto se escribe un frame después, así el
+    // lector de pantalla lo anuncia (también si se repite el mismo mensaje).
+    message.tone = 'success';
+    message.textContent = '';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      message.textContent = SENT;
+    }));
     return true;
   }
 }

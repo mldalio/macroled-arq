@@ -43,6 +43,12 @@
   cursor: grabbing;
 }
 
+/* Mientras se anima el paso, el snap no pelea con el scrollLeft. */
+.rail[data-gliding] {
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+}
+
 .rail::-webkit-scrollbar {
   display: none;
 }

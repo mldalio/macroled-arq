@@ -19,7 +19,7 @@ Páginas del sitio en `macroled.com.ar/arq`. Todo el contenido se carga con Code
 | Contacto | `/arq/contacto` | estática + Code Embed | Contacto (`1364:15761`) | El estado "enviado" es la misma página |
 | Nosotros | `/arq/nosotros` | estática + Code Embed | sin pantalla | Se arma con los bloques de la Home. Textos e imágenes de ejemplo (decisiones.md, 2026-10-20 · Nosotros). El navbar la lista entre Productos y Descargas (2026-10-21); Figma todavía no |
 | Descargas | `/arq/descargas` | estática + Code Embed | Descargas (antes Glosario) (`1801:19315`) | Navbar (dentro de Recursos), footer (Información) y link-list de Contacto. Todos los SKU del catálogo en una variants-table con buscador (decisiones.md, 2026-10-06 · Descargas). Antes era `/arq/glosario`: en Webflow, redirección 301 de `/arq/glosario` a `/arq/descargas` |
-| Catálogos | `/arq/catalogos` | estática + Code Embed | sin pantalla | Link del menú Recursos. Título y dos tapas (decisiones.md, 2026-10-21 · Catálogos). Faltan los PDF y las tapas definitivas |
+| Catálogos | `/arq/catalogos` | estática + Code Embed | sin pantalla | Link del menú Recursos. Título y dos tapas (decisiones.md, 2026-10-21 · Catálogos). El PDF del catálogo general es `https://s3.coresagroup.com/MACROLED/ARQ/catalogo/catalogo_ARQ.pdf` (la tarjeta «Catálogo Macroled ARQ 2026» de la Home lo abre en otra pestaña). Falta el PDF de Skyline y las tapas definitivas |
 | Resultados de búsqueda | `/arq/productos?q=…` | el listado de Productos | sin pantalla | Destino de "Ver todos los resultados" (search-see-all) y de Enter en el buscador. No es una página aparte (decisiones.md, 2026-10-05 · Búsqueda en Productos) |
 
 No son páginas:

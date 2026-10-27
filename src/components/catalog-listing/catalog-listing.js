@@ -35,6 +35,7 @@ import { ArqElement } from '../../base/arq-element.js';
 import { listProducts, listCompareCandidates, getCatalogNav } from '../../data/catalog.js';
 import { handOffTheme, setBrowserBar, withoutThemeTransition } from '../../base/theme.js';
 import '../catalog-toolbar/catalog-toolbar.js';
+import '../carousel-controls/carousel-controls.js';
 import '../filter-panel/filter-panel.js';
 import '../filter-row/filter-row.js';
 import '../checkbox/checkbox.js';
@@ -46,7 +47,9 @@ import '../swatch/swatch.js';
 import { covered, reveal, revealCss } from '../../base/reveal.js';
 import css from './catalog-listing.css?inline';
 
-const CATEGORY_PARAMS = { environment: 'environment', application: 'application', product_type: 'productType', collection: 'collection', family: 'family' };
+// Nivel «Colecciones» del breadcrumb: abre el mega-menu en esa pestaña (no hay vista de todas)
+const COLLECTIONS_CRUMB = { label: 'Colecciones', href: '/arq/productos', menu: 'colecciones' };
+const CATEGORY_PARAMS ={ environment: 'environment', application: 'application', product_type: 'productType', collection: 'collection', family: 'family' };
 const LISTING_DESKTOP = matchMedia('(min-width: 1024px)');
 const LISTING_WIDE = matchMedia('(min-width: 1920px)');
 
@@ -60,7 +63,10 @@ class ArqCatalogListing extends ArqElement {
   static styles = revealCss + css;
   static template =
     `<div class="layout">` +
-    `<div class="nav"><slot name="nav"></slot></div>` +
+    // nav-content: el ResizeObserver de carousel-controls ve el alto del
+    // contenido cuando se abre o se cierra un grupo (un slot no tiene caja)
+    `<div class="nav"><div class="nav-scroll" id="nav-scroll"><div class="nav-content"><slot name="nav"></slot></div></div>` +
+    `<arq-carousel-controls class="nav-bar" for="nav-scroll" buttons="none" progress="scroll" scrub orientation="vertical" label-prev="Subir" label-next="Bajar"></arq-carousel-controls></div>` +
     `<div class="content">` +
     `<arq-catalog-toolbar class="toolbar" for="filters" show-iluminar></arq-catalog-toolbar>` +
     `<p class="status role-body" role="status"></p>` +
@@ -147,6 +153,45 @@ class ArqCatalogListing extends ArqElement {
     };
     LISTING_DESKTOP.addEventListener('change', observeStuck);
     observeStuck();
+
+    // Sidebar (desde 1024 px): mide como mucho lo que se ve de pantalla desde
+    // su borde superior (pegado, desde el navbar; antes, desde donde esté).
+    // Solo si lo que tiene no entra, se desplaza adentro (nav-scroll) y
+    // aparece la barra (carousel-controls vertical).
+    // Se compara el alto del nav del slot, al que no le suman los transform
+    // del pliegue de catalog-nav-group: así la barra no asoma mientras se
+    // cierra un grupo.
+    const side = root.querySelector('.nav');
+    const scroller = root.querySelector('.nav-scroll');
+    let fitFrame = 0;
+    const fitNav = () => {
+      fitFrame = 0;
+      const nav = root.querySelector('slot[name="nav"]').assignedElements()[0];
+      // nav-scroll se asoma space/padding/xs por arriba y por abajo (lugar
+      // para el anillo de foco): se mide desde su borde, no desde el de .nav.
+      const inset = Number.parseFloat(getComputedStyle(scroller).paddingTop) || 0;
+      const top = Math.max(side.getBoundingClientRect().top, Number.parseFloat(getComputedStyle(side).top) || 0) - inset;
+      const room = Math.max(window.innerHeight - top, 0);
+      const content = (nav?.offsetHeight ?? 0) + inset * 2;
+      side.style.setProperty('--nav-max', `${room}px`);
+      side.classList.toggle('scrolls', LISTING_DESKTOP.matches && content > room);
+    };
+    const queueFit = () => {
+      fitFrame ||= requestAnimationFrame(fitNav);
+    };
+    window.addEventListener('scroll', queueFit, { passive: true });
+    window.addEventListener('resize', queueFit);
+    // Cambios de alto: abrir o cerrar un grupo (nav del slot) y lo que corre
+    // el sidebar de lugar (título, bajada, grilla: el alto de la página).
+    const navResize = new ResizeObserver(queueFit);
+    navResize.observe(document.documentElement);
+    root.querySelector('slot[name="nav"]').addEventListener('slotchange', (event) => {
+      const nav = event.target.assignedElements()[0];
+      if (nav) navResize.observe(nav);
+      queueFit();
+    });
+    queueFit();
+
     const bar = root.querySelector('.compare');
     grid.addEventListener('arq:compare', (event) => {
       const card = event.target;
@@ -518,7 +563,7 @@ class ArqCatalogListing extends ArqElement {
   // Exterior, Lámparas y artefactos, Colecciones). Sin ítem actual queda el
   // del HTML (Productos).
   #titleFromNav(item) {
-    // Una familia se abre desde Productos: Inicio / Productos / Kanu.
+    // Una familia es una colección: Inicio / Productos / Colecciones / Kanu.
     // Vale aunque el ítem del sidebar todavía no coincida con la URL.
     if (this.#category.family && !this.#query) {
       const fromNav = item?.closest('[data-arq-nav="colecciones"]') ? item.textContent.trim() : '';
@@ -536,6 +581,7 @@ class ArqCatalogListing extends ArqElement {
       }
       this.#syncBreadcrumb([
         { label: 'Productos', href: location.pathname },
+        COLLECTIONS_CRUMB,
         { label },
       ]);
       return;
@@ -564,15 +610,16 @@ class ArqCatalogListing extends ArqElement {
       this.#setTitle(title, label || this.#htmlTitle);
       title.parentElement.removeAttribute('search-title');
     }
-    // Breadcrumb (Levels 3 · 2): Inicio / Productos sin categoría; Inicio /
-    // Productos / grupo en su vista completa; Inicio / grupo / subcategoría.
+    // Breadcrumb: Inicio / Productos sin categoría; Inicio / Productos / grupo
+    // en su vista completa; Inicio / Productos / grupo / subcategoría.
+    const products = { label: 'Productos', href: location.pathname };
     if (!label) this.#syncBreadcrumb([]);
     else if (sub) {
-      // Colecciones no tiene página propia: el nivel anterior es Productos.
-      const groupCrumb = firstItem ? { label: groupLabel, href: firstItem.getAttribute('href') } : { label: 'Productos', href: location.pathname };
-      this.#syncBreadcrumb([groupCrumb, { label }]);
+      // Colecciones no tiene página propia: su nivel abre el mega-menu en esa pestaña.
+      const groupCrumb = firstItem ? { label: groupLabel, href: firstItem.getAttribute('href') } : COLLECTIONS_CRUMB;
+      this.#syncBreadcrumb([products, groupCrumb, { label }]);
     }
-    else this.#syncBreadcrumb([{ label: 'Productos', href: location.pathname }, { label }]);
+    else this.#syncBreadcrumb([products, { label }]);
   }
 
   // Cambia el texto del <h1> y, si ya había uno puesto y cambió, lo anima como

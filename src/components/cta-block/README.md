@@ -35,8 +35,8 @@ Bloque de cierre de página, con fondo `color/surface/subtle` a sangre. Último 
 
 ## Newsletter
 
-- Al tocar el button o con Enter en el email, el componente corre la validación nativa del `arq-input` (`required` + `input-type="email"`). Si no pasa, muestra el mensaje del navegador y deja el foco en el campo.
-- Si pasa, emite **`arq:submit`** con `{ email }`. **No envía nada**: el envío a n8n y la respuesta con `form-message` llegan con el envío de formularios (`TODO`, ver Pendientes).
+- Al tocar el button o con Enter en el email, el componente corre la validación nativa del `arq-input` (`required` + `input-type="email"`). Si no pasa, muestra el mensaje del navegador, deja el foco en el campo y no hay confirmación.
+- Si pasa, vacía el campo, emite **`arq:submit`** con `{ email }` y muestra un `form-message` de éxito: «Listo. Te suscribiste al newsletter.». El envío a n8n sigue pendiente (`TODO`, ver Pendientes).
 
 ```js
 document.addEventListener('arq:submit', (event) => {
@@ -67,5 +67,5 @@ document.addEventListener('arq:submit', (event) => {
 
 ## Pendientes
 
-- `TODO` (formularios): el envío de la newsletter a n8n y el `form-message` de respuesta. Falta definir el webhook (en `src/config.js` hay uno solo, el de contacto) y construir el envío de formularios (`arq-button submit`, `docs/decisiones.md`).
+- `TODO` (formularios): el envío de la newsletter a n8n. La confirmación en pantalla ya aparece; falta el webhook (en `src/config.js` hay uno solo, el de contacto).
 - `TODO` (diseño): en el set el email mide 380 fijos y no hay token; se usa `layout/measure` (400).

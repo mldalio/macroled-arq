@@ -16,11 +16,10 @@
 // specs vale para todas las variantes del grupo; attributes de la variante pisa o completa.
 
 import { loadSource, loadGroupDetails } from './source.js';
-import { ATTRIBUTES, DOWNLOAD_FILTERS, TABLE_COLUMNS, attributeInfo, keyData, specSections, tableValues } from './attributes.js';
+import { ATTRIBUTES, DOWNLOAD_FILTERS, TABLE_COLUMNS, attributeInfo, specSections, tableValues } from './attributes.js';
 import { variantOptions, findVariant, choose } from './variants.js';
 import { normalize, queryWords, matchWords } from './text.js';
 import { finishImage } from './finishes.js';
-import { cotaUrl } from './cotas.js';
 
 let pending = null;
 
@@ -318,15 +317,59 @@ function listedFamilies(groups) {
   return [...byName.values()].sort((a, b) => a.name.localeCompare(b.name, 'es', { sensitivity: 'base', numeric: true }));
 }
 
+// Colecciones que inspiran (Home). El orden es este, no el alfabético.
+// La comparación ignora tildes: Dao encuentra «Daö».
+const FEATURED_FAMILIES = ['Yoru', 'Afo', 'Sento', 'Hoshi', 'Kanu', 'Koen'];
+
+// Foto elegida para la tira. El resto usa el ambiente 1 del primer grupo.
+const FEATURED_IMAGES = {
+  yoru: 'https://d1zltvqju4u8ql.cloudfront.net/fit-in/1000x1000/MACROLED/ARQ/imagenes/productos/YORU%20WEB_0002s_0001_YORU-J-8W-N-WW_AMBIENT_1_ON.webp',
+  afo: 'https://d1zltvqju4u8ql.cloudfront.net/fit-in/1000x1000/MACROLED/ARQ/imagenes/productos/afo.jpg',
+  sento: 'https://d1zltvqju4u8ql.cloudfront.net/fit-in/1000x1000/MACROLED/ARQ/imagenes/productos/SENTO-J-520-12W-N-WW_AMBIENT_ON.webp',
+  hoshi: 'https://d1zltvqju4u8ql.cloudfront.net/fit-in/filters:format(webp)/MACROLED/ARQ/imagenes/productos/HOSHI-E-7W-15G-B_AMBIENT_1_ON.png',
+  kanu: 'https://d1zltvqju4u8ql.cloudfront.net/fit-in/MACROLED/ARQ/imagenes/productos/KANU-J-500-12W-N-WW_AMBIENT_3_ON.webp',
+  koen: 'https://d1zltvqju4u8ql.cloudfront.net/fit-in/1000x1000/MACROLED/ARQ/imagenes/productos/KOEN-P-20W-N-WW_HERO_AMBIENT_3_ON.webp',
+};
+
+// Encuadre de la foto en la tira. Sin entrada, queda centrada.
+const FEATURED_FOCUS = { hoshi: 'top', afo: 'bottom' };
+
+function usualName(groups) {
+  const counts = new Map();
+  for (const group of groups) {
+    const name = group.family.trim();
+    counts.set(name, (counts.get(name) ?? 0) + 1);
+  }
+  return [...counts.entries()].sort((a, b) => b[1] - a[1])[0][0];
+}
+
 /**
- * Familias de la Home (collection-index), en orden alfabético. Foto: ambiente 1 del primer grupo;
- * sin ella, la de estudio. El link abre el listado de esa familia.
+ * Familias destacadas de la Home (collection-index), en el orden de
+ * FEATURED_FAMILIES. Foto: ambiente 1 del primer grupo; sin ella, la de
+ * estudio. Yoru, Afo, Sento, Hoshi, Kanu y Koen usan la foto de FEATURED_IMAGES. El link abre el listado de
+ * esa familia. El menú sigue listando
+ * todas, en orden alfabético.
  */
 export async function getFamilies() {
   const { groups } = await loadCatalog();
-  return listedFamilies(groups).map(({ name, groups: own }) => {
-    const images = pick(own[0].defaultVariant.images);
-    return { name, href: categoryHref({ family: name }), image: images.context ?? images.studio ?? null };
+  const byKey = new Map(listedFamilies(groups).map((family) => [normalize(family.name), family]));
+  return FEATURED_FAMILIES.flatMap((wanted) => {
+    const key = normalize(wanted);
+    const family = byKey.get(key);
+    const chosen = FEATURED_IMAGES[key] ?? null;
+    if (!family) {
+      if (!chosen) {
+        console.warn(`[arq] collection-index: no hay familia «${wanted}»`);
+        return [];
+      }
+      return [{ name: wanted, href: categoryHref({ family: wanted }), image: chosen, focus: FEATURED_FOCUS[key] ?? null }];
+    }
+    // Si la misma familia está escrita de dos formas (Dao y Daö), se muestra la más usada.
+    const name = usualName(family.groups);
+    const images = pick(family.groups[0].defaultVariant.images);
+    const image = FEATURED_IMAGES[normalize(wanted)] ?? images.context ?? images.studio ?? null;
+    const focus = FEATURED_FOCUS[normalize(wanted)] ?? null;
+    return [{ name, href: categoryHref({ family: name }), image, focus }];
   });
 }
 
@@ -492,10 +535,9 @@ export async function skuDownloads(sku) {
 
 /**
  * Datos de la ficha técnica en PDF de un SKU de cualquier grupo: { name, sku,
- * image, cota, keyData, sections }, o null si no existe. image es la imagen
+ * image, cota, sections }, o null si no existe. image es la imagen
  * principal (img_main en Typesense); si falta, la de estudio de la variante o
- * de la predeterminada. cota, el dibujo con medidas (cotas.js) o null.
- * keyData, los datos clave (attributes.js, KEY_DATA);
+ * de la predeterminada. cota, el dibujo con medidas (cotas_img) o null.
  * sections, como el acordeón de la ficha.
  */
 export async function getDatasheet(sku) {
@@ -505,14 +547,16 @@ export async function getDatasheet(sku) {
   const variant = group.variants.find((v) => v.sku === sku);
   const own = pick(variant.images);
   const base = pick(group.defaultVariant.images);
-  return {
+  const data = {
     name: variantName(group, variant),
     sku: variant.sku,
     image: own.main ?? own.studio ?? base.main ?? base.studio ?? null,
-    cota: cotaUrl(variant.sku),
-    keyData: keyData(variant.values),
+    cota: variant.cota ?? null,
     sections: specSections(variant.values),
   };
+  // Demo: ?data=datasheet-error para ver el mensaje de error.
+  const demo = await demoData();
+  return demo ? demo.fixtures.datasheet(demo.mode, data) : data;
 }
 
 /**

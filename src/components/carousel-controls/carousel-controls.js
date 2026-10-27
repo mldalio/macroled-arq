@@ -25,7 +25,10 @@
 //   (más gruesa, con pista) que se arrastra y salta al lugar del clic, con un
 //   chevron chico a cada lado que avanza media página. La barra es solo para
 //   puntero (aria-hidden: el teclado ya mueve el contenedor); los chevrons son
-//   botones. Solo variants-table lo usa; la Home no.
+//   botones. Lo usan variants-table y el sidebar de Productos; la Home no.
+// - orientation="vertical" (solo código, con buttons="none" progress="scroll"
+//   scrub): la misma barra para un contenedor con scroll vertical (sidebar de
+//   catalog-listing), con chevrons arriba y abajo.
 // - Con prefers-reduced-motion el salto es instantáneo.
 // - El contenedor (snap, peek) no es parte del componente: TODO (páginas).
 
@@ -35,6 +38,30 @@ import '../carousel-button/carousel-button.js';
 import css from './carousel-controls.css?inline';
 
 const POSITIONS = ['start', 'middle', 'end'];
+
+// cubic-bezier(x1, y1, x2, y2) → función de avance 0–1. Si el token no se lee, ease-in-out.
+function easingOf(value) {
+  const match = String(value).match(/cubic-bezier\(\s*([-\d.]+)\s*,\s*([-\d.]+)\s*,\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)/);
+  const [x1, y1, x2, y2] = match ? match.slice(1).map(Number) : [0.42, 0, 0.58, 1];
+  const cx = 3 * x1;
+  const bx = 3 * (x2 - x1) - cx;
+  const ax = 1 - cx - bx;
+  const cy = 3 * y1;
+  const by = 3 * (y2 - y1) - cy;
+  const ay = 1 - cy - by;
+  const sampleX = (t) => ((ax * t + bx) * t + cx) * t;
+  const sampleY = (t) => ((ay * t + by) * t + cy) * t;
+  const slopeX = (t) => (3 * ax * t + 2 * bx) * t + cx;
+  return (x) => {
+    let t = x;
+    for (let i = 0; i < 6; i += 1) {
+      const dx = slopeX(t);
+      if (Math.abs(dx) < 1e-6) break;
+      t -= (sampleX(t) - x) / dx;
+    }
+    return sampleY(Math.min(1, Math.max(0, t)));
+  };
+}
 
 class ArqCarouselControls extends ArqElement {
   static tag = 'arq-carousel-controls';
@@ -54,6 +81,10 @@ class ArqCarouselControls extends ArqElement {
     progress: { type: String, values: ['slides', 'scroll'], default: 'slides' }, // solo código: qué mide la línea (tramo por slide o parte visible)
     pageInset: { type: Number, default: 0 }, // solo código: ancho tapado por columnas fijas, se resta al salto de página
     scrub: { type: Boolean, default: false }, // solo código: la línea (progress="scroll") es una barra más gruesa que se arrastra y responde al clic
+    // native: scrollBy suave del navegador. slow: un paso con arranque y
+    // frenado suaves (motion/duration/fold y motion/easing/in-out).
+    slide: { type: String, values: ['native', 'slow'], default: 'native' },
+    orientation: { type: String, values: ['horizontal', 'vertical'], default: 'horizontal' }, // solo código: eje del scroll que sigue la barra
     index: { type: Number, default: 0 }, // slide actual, desde 0
     count: { type: Number, default: 1 }, // cantidad de slides
   };
@@ -82,6 +113,7 @@ class ArqCarouselControls extends ArqElement {
   // Elementos que entran al carrusel (cards, fotos que arma la página)
   #children = new MutationObserver(() => this.#observeChildren());
   #reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  #glideRun = null;
 
   setup() {
     const root = this.shadowRoot;
@@ -97,26 +129,39 @@ class ArqCarouselControls extends ArqElement {
     if (!this.scrub || this.progress !== 'scroll' || !target || event.button > 0) return;
     const box = progress.getBoundingClientRect();
     const indicator = progress.querySelector('.indicator').getBoundingClientRect();
+    const axis = this.#axis();
+    const point = (e) => (axis.vertical ? e.clientY : e.clientX);
+    const start = axis.vertical ? 'top' : 'left';
+    const end = axis.vertical ? 'bottom' : 'right';
+    const length = axis.vertical ? 'height' : 'width';
     // Agarrado dentro del trazo, conserva el punto; en la pista, lo centra en el clic.
-    const grab = event.clientX >= indicator.left && event.clientX <= indicator.right ? event.clientX - indicator.left : indicator.width / 2;
-    const moveTo = (clientX) => {
-      const left = Math.min(Math.max(clientX - box.left - grab, 0), box.width - indicator.width);
-      target.scrollLeft = (left / box.width) * target.scrollWidth;
+    const grab = point(event) >= indicator[start] && point(event) <= indicator[end] ? point(event) - indicator[start] : indicator[length] / 2;
+    const moveTo = (at) => {
+      const offset = Math.min(Math.max(at - box[start] - grab, 0), box[length] - indicator[length]);
+      target[axis.scroll] = (offset / box[length]) * target[axis.scrollSize];
     };
     event.preventDefault();
     progress.setPointerCapture(event.pointerId);
     progress.classList.add('dragging');
-    moveTo(event.clientX);
-    const move = (e) => moveTo(e.clientX);
-    const end = () => {
+    moveTo(point(event));
+    const move = (e) => moveTo(point(e));
+    const stop = () => {
       progress.classList.remove('dragging');
       progress.removeEventListener('pointermove', move);
-      progress.removeEventListener('pointerup', end);
-      progress.removeEventListener('pointercancel', end);
+      progress.removeEventListener('pointerup', stop);
+      progress.removeEventListener('pointercancel', stop);
     };
     progress.addEventListener('pointermove', move);
-    progress.addEventListener('pointerup', end);
-    progress.addEventListener('pointercancel', end);
+    progress.addEventListener('pointerup', stop);
+    progress.addEventListener('pointercancel', stop);
+  }
+
+  /** Propiedades del eje que sigue la barra (orientation). */
+  #axis() {
+    const vertical = this.orientation === 'vertical';
+    return vertical
+      ? { vertical, scroll: 'scrollTop', scrollSize: 'scrollHeight', clientSize: 'clientHeight' }
+      : { vertical, scroll: 'scrollLeft', scrollSize: 'scrollWidth', clientSize: 'clientWidth' };
   }
 
   /** El par visible: icon-button o carousel-button. */
@@ -157,6 +202,11 @@ class ArqCarouselControls extends ArqElement {
     // scrub: chevrons chicos a los lados de la barra, como los de una barra de scroll nativa
     const edges = this.scrub && this.progress === 'scroll';
     for (const edge of root.querySelectorAll('.edge')) edge.hidden = !edges;
+    if (changed.has('orientation')) {
+      const vertical = this.orientation === 'vertical';
+      root.querySelector('.edge.prev').setAttribute('icon', vertical ? 'chevron-up' : 'chevron-left');
+      root.querySelector('.edge.next').setAttribute('icon', vertical ? 'chevron-down' : 'chevron-right');
+    }
     root.querySelector('.edge.prev').disabled = this.position === 'start';
     root.querySelector('.edge.next').disabled = this.position === 'end' || !this.#scrollable;
     this.#progress();
@@ -223,9 +273,11 @@ class ArqCarouselControls extends ArqElement {
   #syncFromScroll() {
     const target = this.#target;
     if (!target) return;
-    const max = target.scrollWidth - target.clientWidth;
+    const axis = this.#axis();
+    const max = target[axis.scrollSize] - target[axis.clientSize];
+    const scrolled = target[axis.scroll];
     // 1 px de margen por redondeos del scroll con zoom o snap
-    const position = max <= 1 ? 'start' : target.scrollLeft <= 1 ? 'start' : target.scrollLeft >= max - 1 ? 'end' : 'middle';
+    const position = max <= 1 ? 'start' : scrolled <= 1 ? 'start' : scrolled >= max - 1 ? 'end' : 'middle';
     // Sin nada para desplazar, las dos flechas quedan deshabilitadas
     const scrollable = max > 1;
     if (scrollable !== this.#scrollable) {
@@ -254,8 +306,9 @@ class ArqCarouselControls extends ArqElement {
       for (const attribute of ['role', 'aria-valuemin', 'aria-valuemax', 'aria-valuenow', 'aria-valuetext']) progress.removeAttribute(attribute);
     }
     if (!scrollable) return;
-    const size = Math.min(1, target.clientWidth / target.scrollWidth);
-    const offset = target.scrollLeft / target.scrollWidth;
+    const axis = this.#axis();
+    const size = Math.min(1, target[axis.clientSize] / target[axis.scrollSize]);
+    const offset = target[axis.scroll] / target[axis.scrollSize];
     progress.style.setProperty('--progress-size', String(size));
     progress.style.setProperty('--progress-offset', String(offset));
   }
@@ -310,13 +363,75 @@ class ArqCarouselControls extends ArqElement {
     }
     const item = this.step === 'item' ? target.children[0] : null;
     const gap = item ? Number.parseFloat(getComputedStyle(target).columnGap || getComputedStyle(target).gap) || 0 : 0;
-    const page = Math.max(target.clientWidth - (this.pageInset || 0), 1);
+    const vertical = this.orientation === 'vertical';
+    const page = Math.max((vertical ? target.clientHeight : target.clientWidth) - (this.pageInset || 0), 1);
     // Los chevrons de la barra (scrub) avanzan media página, como la flecha de una barra de scroll
     const amount = item ? item.getBoundingClientRect().width + gap : this.scrub && this.progress === 'scroll' ? page / 2 : page;
-    target.scrollBy({
-      left: direction * amount,
-      behavior: this.#reducedMotion.matches ? 'auto' : 'smooth',
-    });
+    // Vertical (sidebar de catalog-listing): scroll suave del navegador
+    if (vertical) {
+      target.scrollBy({ top: direction * amount, behavior: this.#reducedMotion.matches ? 'auto' : 'smooth' });
+      return;
+    }
+    const max = Math.max(target.scrollWidth - target.clientWidth, 0);
+    const left = Math.min(max, Math.max(0, target.scrollLeft + direction * amount));
+    if (this.slide === 'slow') this.#glide(target, left);
+    else target.scrollBy({ left: direction * amount, behavior: this.#reducedMotion.matches ? 'auto' : 'smooth' });
+  }
+
+  /** Lleva el carrusel a un scrollLeft. Lo usa el soltar del arrastre de Destacados. */
+  glideTo(left) {
+    const target = this.#target;
+    if (!target) return;
+    const max = Math.max(target.scrollWidth - target.clientWidth, 0);
+    const next = Math.min(max, Math.max(0, left));
+    if (this.slide === 'slow') this.#glide(target, next);
+    else target.scrollTo({ left: next, behavior: this.#reducedMotion.matches ? 'auto' : 'smooth' });
+  }
+
+  cancelGlide() {
+    const target = this.#target;
+    const current = target ? target.scrollLeft : 0;
+    this.#glideRun?.();
+    this.#glideRun = null;
+    if (!target) return;
+    target.scrollLeft = current;
+    target.removeAttribute('data-gliding');
+  }
+
+  // El paso recorre el scroll a mano: animar scrollLeft no interpola y el
+  // salto se ve brusco. Arranca y frena con motion/easing/in-out, en
+  // motion/duration/fold (recorrido más largo que un hover).
+  #glide(target, left) {
+    const from = target.scrollLeft;
+    this.#glideRun?.();
+    this.#glideRun = null;
+    target.scrollLeft = from;
+    target.removeAttribute('data-gliding');
+    const styles = getComputedStyle(this);
+    const duration = this.#reducedMotion.matches ? 0 : Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-fold')) || 0;
+    const easing = easingOf(styles.getPropertyValue('--arq-motion-easing-in-out'));
+    if (!duration || Math.abs(left - from) < 1) {
+      target.scrollLeft = left;
+      return;
+    }
+    target.setAttribute('data-gliding', '');
+    const start = performance.now();
+    let frame = 0;
+    const stop = () => cancelAnimationFrame(frame);
+    this.#glideRun = stop;
+    const tick = (now) => {
+      if (this.#glideRun !== stop) return;
+      const t = Math.min(1, (now - start) / duration);
+      target.scrollLeft = from + (left - from) * easing(t);
+      if (t < 1) {
+        frame = requestAnimationFrame(tick);
+        return;
+      }
+      this.#glideRun = null;
+      target.scrollLeft = left;
+      target.removeAttribute('data-gliding');
+    };
+    frame = requestAnimationFrame(tick);
   }
 }
 

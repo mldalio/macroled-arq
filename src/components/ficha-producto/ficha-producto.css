@@ -231,6 +231,12 @@
   gap: var(--arq-space-gap-md);
 }
 
+/* Error de la ficha técnica (form-message): región viva, está siempre;
+   vacía sale del flujo para no sumar el gap debajo de los botones. */
+.datasheet-error:empty {
+  position: absolute;
+}
+
 /* Los dos botones se reparten la fila */
 .actions arq-button {
   flex: 1 1 0;

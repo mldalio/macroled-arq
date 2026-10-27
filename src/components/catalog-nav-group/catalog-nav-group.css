@@ -62,9 +62,10 @@
 }
 
 /* Open=True: chevron-up · Open=False: chevron-down. Es un solo chevron que
-   gira media vuelta, con el mismo tiempo y la misma curva que el
-   deslizamiento (motion/duration/expand + motion/easing/standard). Con reduced
-   motion, expand vale 0 y cambia de golpe. */
+   gira media vuelta con motion/easing/standard. Al tocar el grupo, el JS
+   (#slide) lo anima con la misma duración que el deslizamiento, que depende
+   del recorrido; esta transition queda para los cambios sin deslizamiento.
+   Con reduced motion, expand vale 0 y cambia de golpe. */
 .icon {
   transition: rotate var(--arq-motion-duration-expand) var(--arq-motion-easing-standard);
 }

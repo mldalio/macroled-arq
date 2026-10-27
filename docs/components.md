@@ -71,8 +71,6 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [pdf-cover-title](#pdf-cover-title) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-footer](#pdf-footer) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-header](#pdf-header) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
-| ✅ [pdf-key-data](#pdf-key-data) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
-| ✅ [pdf-key-item](#pdf-key-item) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-page](#pdf-page) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-spec-group](#pdf-spec-group) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-spec-row](#pdf-spec-row) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
@@ -118,7 +116,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ text-block | `<arq-text-block>` | Kicker, título y bajada de una escena del Home ([README](../src/components/text-block/README.md)) |
 | ✅ collection-tile | `<arq-collection-tile>` | Tarjeta del mosaico de colecciones del Home ([README](../src/components/collection-tile/README.md)) |
 | ✅ collection-mosaic | `<arq-collection-mosaic>` | Mosaico de colecciones del Home ([README](../src/components/collection-mosaic/README.md)) |
-| ✅ collection-index | `<arq-collection-index>` | Lista de familias del Home (`familia` de las luminarias): la foto cambia al pasar el mouse por el nombre ([README](../src/components/collection-index/README.md)) |
+| ✅ collection-index | `<arq-collection-index>` | Lista de las familias destacadas del Home (Yoru, Afo, Sento, Hoshi, Kanu, Koen): la foto cambia al pasar el mouse por el nombre. Debajo, «Ver todas las colecciones» abre el menú ([README](../src/components/collection-index/README.md)) |
 | ✅ tool-card | `<arq-tool-card>` | Recurso de «Herramientas para proyectar». `type="index"` es la fila sin imagen ([README](../src/components/tool-card/README.md)) |
 | ✅ project-slide | `<arq-project-slide>` | Slide del carrusel de proyectos del Home ([README](../src/components/project-slide/README.md)) |
 | ✅ project-slider | `<arq-project-slider>` | Carrusel de proyectos del Home, en bucle. Con `autoplay` avanza solo y se detiene con el mouse encima o el foco adentro (WCAG 2.2.2; falta un botón de pausa en el diseño); se arrastra con el mouse y el clic abre la foto en un lightbox ([README](../src/components/project-slider/README.md)) |
@@ -164,13 +162,13 @@ Línea fina arriba del navbar, con un aviso y su link (el ejemplo es «Suscribit
 ## breadcrumb
 
 - Figma: [1244-12667](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1244-12667)
-- Propiedades: Levels: 3 · 2
+- Propiedades: Levels: 4 · 3 · 2
 
-Levels=3: Inicio / Sección / Página. Levels=2: Inicio / Página. El separador vive en breadcrumb-item (Show separator); el ítem actual lo trae apagado.
+Levels=4: Inicio / Productos / Sección / Página. Levels=3: Inicio / Sección / Página. Levels=2: Inicio / Página. La cantidad de niveles es libre en código. El separador vive en breadcrumb-item (Show separator); el ítem actual lo trae apagado.
 
 Textos largos: los ítems intermedios se cortan con "…" (el texto completo queda en el link); el ítem actual se parte en varias líneas.
 
-En Productos: Levels=2 sin categoría; con categoría, Levels=3 siguiendo al título (Inicio / Productos / Interior, Inicio / Exterior / Jardín, Inicio / Lámparas y artefactos / Lámpara, Inicio / Productos / Kanu en una familia). En la ficha, sin Inicio: Productos / familia / producto, o Lámparas y artefactos / subfamilia / producto.
+En Productos, siempre desde Productos: Levels=2 sin categoría; Levels=3 en la vista completa de un grupo (Inicio / Productos / Interior); Levels=4 en una subcategoría o una colección (Inicio / Productos / Exterior / Jardín, Inicio / Productos / Colecciones / Kanu). «Colecciones» abre el mega-menu en esa pestaña (no hay página de todas las colecciones). En la ficha, sin Inicio: Productos / Colecciones / familia / producto, o Productos / Lámparas y artefactos / subfamilia / producto.
 
 ## breadcrumb-item
 
@@ -241,6 +239,8 @@ Sidebar de filtros del catálogo (Interior abierto, resto cerrado). Compuesto po
 Grupo desplegable del sidebar de catálogo (catalog-nav). Encabezado: label role/body-xl (color/text/primary abierto, color/text/secondary cerrado) e icon-button Size=Default, Background=None con icon/chevron-up (Open=True) o icon/chevron-down (Open=False). Open=True muestra la lista de catalog-nav-item con sangría space/padding/lg y un riel (línea izquierda border/default en color/border/subtle); los ítems van pegados, sin gap, y la lista lleva space/padding/xs abajo. Padding vertical space/padding/md, gap encabezado–lista space/gap/md y línea inferior border/default en color/border/subtle. Selected marca el grupo de la categoría actual (sin diferencia visual); en código lo maneja el grupo, no el ítem.
 
 Movimiento (código): como el pliegue de compare-bar. La lista cambia de golpe y la línea del grupo y los grupos de abajo vuelven con transform desde donde estaban (motion/duration/expand, motion/easing/standard); al abrir, la lista se descubre con clip-path al mismo ritmo. No se anima el alto. El chevron gira media vuelta con el mismo tiempo y la misma curva. Con reduced motion, cambia de golpe y queda el fundido (motion/duration/fade).
+
+Lista larga (Colecciones, código): la lista no se corta. En el listado (desde 1024 px) el sidebar entero mide como mucho lo que se ve de pantalla desde su borde superior y, solo si no entra, se desplaza adentro con una barra fina. En filter-panel (hasta 1023 px) desplaza el panel.
 
 ## catalog-nav-item
 
@@ -382,7 +382,7 @@ Contador (productos seleccionados, filtros activos). Tone=Primary sobre superfic
 - Figma: [1265-4464](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1265-4464)
 - Propiedades: Title; Description; Type: Button · Newsletter; Breakpoint: Desktop · Mobile
 
-Bloque de cierre de página con fondo color/surface/subtle y space/section/md. Type=Button (p. ej. "¿Necesitás ayuda para elegir?" en Comparativa) o Newsletter (input + button, Home). Props: Title, Description; button e input expuestos.
+Bloque de cierre de página con fondo color/surface/subtle y space/section/md. Type=Button (p. ej. "¿Necesitás ayuda para elegir?" en Comparativa) o Newsletter (input + button, Home). Con un email válido, Newsletter muestra «Listo. Te suscribiste al newsletter.» debajo del botón. Props: Title, Description; button e input expuestos.
 
 ## divider
 
@@ -666,51 +666,37 @@ Anchos: bajada de List hasta layout/measure; columna de título y bajada de Deta
 ## pdf-cover
 
 - Figma: [2944-9521](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2944-9521)
-- Propiedades: Show key data
+- Propiedades: —
 
-Bloque de arriba de la primera hoja de la ficha PDF. Nombre (role/heading-1) y SKU (role/body-compact) a todo el ancho; debajo, a space/gap/lg, la foto del producto en un cuadrado de layout/pdf-cover-image (entera sobre color/surface/subtle) y, a space/gap/md, el dibujo de cotas del mismo alto, entero y sin recuadro: cuadrado si es vertical; si es horizontal se ensancha hasta 1,5 veces la foto. Sin cotas, la foto queda sola. Debajo, a space/gap/lg y a todo el ancho, pdf-key-data. Padding vertical space/padding/xl, borde inferior border/default + color/border/subtle. Show key data: sin datos clave para destacar, la fila no se muestra.
+Bloque de arriba de la primera hoja de la ficha PDF. Nombre (role/heading-2) y SKU (role/body-sm) a todo el ancho; debajo, a space/gap/md, la foto del producto en un cuadrado de layout/pdf-cover-image, entera sobre color/surface/strong (en pantalla sería color/surface/subtle, pero ese gris no sale impreso), y, a space/gap/md, el lugar de las cotas, del mismo alto: el dibujo entero, sin recuadro, a space/padding/lg del borde; cuadrado si es vertical, y si es horizontal se ensancha hasta 1,5 veces la foto. Sin cotas, la foto queda sola. Padding vertical space/padding/md, borde inferior border/default + color/border/default.
 
 ## pdf-cover-title
 
 - Figma: [1907-27095](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-27095)
 - Propiedades: Name; SKU
 
-Nombre y SKU de la ficha PDF, dentro de pdf-cover: nombre role/display (color/text/primary) y SKU role/body-lg (color/text/secondary), a space/gap/sm-md. Escala Type en modo Mobile (display = 40).
+Nombre y SKU de la ficha PDF, arriba de pdf-cover a todo el ancho: nombre role/heading-2 (color/text/primary, 18 pt) y SKU role/body-sm (color/text/secondary, 9 pt), a space/gap/xs. Escala Type en modo Mobile.
 
 ## pdf-footer
 
 - Figma: [1907-27023](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-27023)
 - Propiedades: Page
 
-Pie de página de la ficha PDF: paginado (role/label, color/text/tertiary) al borde derecho. Sin nota ni aviso legal. Borde superior border/default + color/border/subtle, padding superior space/padding/md.
+Pie de página de la ficha PDF: paginado (role/label, color/text/tertiary) al borde derecho. Sin nota ni aviso legal. Borde superior border/default + color/border/default, padding superior space/padding/sm-md.
 
 ## pdf-header
 
 - Figma: [2946-9616](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2946-9616)
 - Propiedades: Type: Default · Product; Name; SKU; Label
 
-Encabezado de la ficha PDF: logo (Size=Small) a la izquierda y, a la derecha, centrado en alto con el logo: Type=Default (hoja 1): Label «Ficha técnica» en role/label (color/text/tertiary). Type=Product (hoja 2 en adelante): nombre en role/body-sm-medium (color/text/primary) sobre el SKU en role/body-sm (color/text/tertiary), alineados a la derecha, para que una hoja suelta diga de qué producto es. Borde inferior border/default + color/border/subtle, padding inferior space/padding/md.
-
-## pdf-key-data
-
-- Figma: [2943-9594](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2943-9594)
-- Propiedades: —
-
-Datos clave de la ficha PDF (primera hoja, dentro de pdf-cover): hasta 4 pdf-key-item del mismo ancho a space/gap/sm-md, con regla superior border/default + color/border/strong. Cambian según el producto: se muestran los que tienen sentido destacar y tienen dato (`src/data/attributes.js`, `KEY_DATA`). Sin ninguno, la fila no se muestra.
-
-## pdf-key-item
-
-- Figma: [2943-9591](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2943-9591)
-- Propiedades: Label; Value
-
-Dato clave de la ficha PDF: etiqueta corta role/label en mayúsculas (color/text/tertiary) y valor role/heading-3-light (color/text/primary), a space/gap/xs, con padding superior space/padding/sm-md. Va dentro de pdf-key-data.
+Encabezado de la ficha PDF: logo (Size=Small) a la izquierda y, a la derecha, centrado en alto con el logo: Type=Default (hoja 1): Label «Ficha técnica» en role/label (color/text/tertiary). Type=Product (hoja 2 en adelante, en revisión, todavía no en código): nombre en role/body-medium (color/text/primary) sobre el SKU en role/body (color/text/tertiary), a la izquierda, y el logo a la derecha, como el encabezado de la ficha de macroled.com.ar. Borde inferior border/default + color/border/default, padding inferior space/padding/sm-md.
 
 ## pdf-page
 
 - Figma: [1907-27212](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1907-27212)
 - Propiedades: Type: Primera · Siguiente
 
-Página A4 (794×1123) de la ficha técnica PDF. Type=Primera: pdf-header (Label «Ficha técnica»), pdf-cover (foto, nombre, SKU y datos clave), las pdf-spec-group que entran y pdf-footer. Type=Siguiente: pdf-header Type=Product (nombre sobre SKU), el resto de las pdf-spec-group y pdf-footer. Una sección no se parte: si no entra, pasa entera a la hoja siguiente. Pie sin aviso legal, solo el paginado. Fondo color/surface/default; padding space/padding/xl-2xl arriba, space/padding/2xl a los lados, space/padding/xl abajo. Escala Type en modo Mobile. Todo el contenido sale de Typesense.
+Página A4 (794×1123) de la ficha técnica PDF. Type=Primera: pdf-header (Label «Ficha técnica»), pdf-cover (nombre, SKU, foto y cotas), las pdf-spec-group que entran y pdf-footer. Type=Siguiente: pdf-header Type=Product (nombre sobre SKU), el resto de las pdf-spec-group y pdf-footer. Si una sección no entra en lo que queda de la hoja, sigue en la próxima con su título repetido arriba; las filas no se parten. Pie sin aviso legal, solo el paginado. Fondo color/surface/default; padding space/padding/xl arriba, space/padding/xl-2xl a los lados, space/padding/lg abajo. Escala Type en modo Mobile. Las líneas finas van en color/border/default (color/border/subtle no sale impreso). Todo el contenido sale de Typesense.
 
 ## pdf-spec-group
 
@@ -730,9 +716,9 @@ Fila de especificación de la ficha PDF. Etiqueta role/body (color/text/secondar
 
 - Figma: [2992-46346](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2992-46346)
 - Propiedades: Label; Value
-- En código: la hoja con cotas («pdf · cotas A2 · 1 hoja», [2992-45969](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2992-45969)) es hoy la única ficha PDF: pdf-cover con foto y cotas y las secciones en dos columnas, con textos de impresión (etiqueta role/body-compact, valor role/body-compact-regular, padding vertical space/padding/sm) ([README](../src/pdf/README.md)).
+- En código: la hoja con cotas («pdf · cotas A2 · 1 hoja», [2992-45969](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2992-45969)) es hoy la única ficha PDF: pdf-cover con foto y cotas y las secciones en dos columnas, con textos de impresión (etiqueta role/body-sm, valor role/body-sm-medium, padding vertical space/padding/sm) ([README](../src/pdf/README.md)).
 
-Fila de especificación para tablas en dos columnas (ficha PDF). Etiqueta en layout/pdf-spec-label-compact.
+Fila de especificación para tablas en dos columnas (ficha PDF). Etiqueta role/body-sm (color/text/secondary) en layout/pdf-spec-label-compact y valor role/body-sm-medium (color/text/primary): 12 px = 9 pt, el tamaño de una tabla impresa. Padding vertical space/padding/sm, gap space/gap/lg, borde inferior border/default + color/border/default (color/border/subtle no sale impreso).
 
 ## product-card
 

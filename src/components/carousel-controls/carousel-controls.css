@@ -142,6 +142,51 @@
   }
 }
 
+/* orientation="vertical" (sidebar de catalog-listing): la misma barra girada.
+   Ocupa el alto del host, con un chevron arriba y otro abajo; la zona de
+   agarre mide space/padding/sm-md de ancho. */
+:host([orientation='vertical']) {
+  display: flex;
+  width: auto;
+  height: 100%;
+}
+
+:host([orientation='vertical']) .controls {
+  flex-direction: column;
+  width: auto;
+  height: 100%;
+}
+
+:host([orientation='vertical']) .progress.scrub {
+  flex: 1;
+  width: var(--arq-space-padding-sm-md);
+  height: auto;
+  min-height: 0;
+}
+
+:host([orientation='vertical']) .progress.scrub .track {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  right: auto;
+  width: var(--thick);
+  height: auto;
+  transform: translateX(-50%);
+  transition: width var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
+}
+
+:host([orientation='vertical']) .progress.scrub .indicator {
+  top: 0;
+  left: calc(50% - var(--thick) / 2);
+  width: var(--thick);
+  height: calc(100% * var(--progress-size, 1));
+  transform: translateY(calc(var(--progress-offset, 0) / var(--progress-size, 1) * 100%));
+  transition:
+    left var(--arq-motion-duration-base) var(--arq-motion-easing-standard),
+    width var(--arq-motion-duration-base) var(--arq-motion-easing-standard),
+    background-color var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .indicator {
     transition: none;

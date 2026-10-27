@@ -85,6 +85,7 @@ import '../carousel-controls/carousel-controls.js';
 import '../icon-button/icon-button.js';
 import '../download-modal/download-modal.js';
 import '../download-item/download-item.js';
+import '../form-message/form-message.js';
 import css from './ficha-producto.css?inline';
 
 
@@ -104,6 +105,7 @@ const TEXT = {
   commercial: 'Características comerciales',
   configure: 'Configura tu Daö',
   generating: 'Generando…',
+  datasheetError: 'No se pudo generar la ficha técnica. Probá de nuevo.',
   previous: 'Anterior',
   next: 'Siguiente',
 };
@@ -173,6 +175,7 @@ class ArqFichaProducto extends ArqElement {
     `<arq-button class="datasheet">Generar ficha técnica</arq-button>` +
     `<arq-button class="to-downloads" type="outline">Ver descargas</arq-button>` +
     `</div>` +
+    `<arq-form-message class="datasheet-error" tone="error"></arq-form-message>` +
     `</div>` +
     `</div>` +
     `</div>` +
@@ -235,7 +238,8 @@ class ArqFichaProducto extends ArqElement {
     `<arq-dao-configurator class="dao-config"></arq-dao-configurator>` +
     `<arq-compare-bar class="compare-bar"></arq-compare-bar>` +
     `<arq-compare-picker class="picker"></arq-compare-picker>` +
-    `<arq-download-modal id="downloads-modal" show-product><slot name="modal-title" slot="title"></slot></arq-download-modal>`;
+    `<arq-download-modal id="downloads-modal" show-product><slot name="modal-title" slot="title"></slot>` +
+    `<arq-form-message class="datasheet-error" slot="message" tone="error"></arq-form-message></arq-download-modal>`;
 
   #product = null;
   #ambientRail = null;
@@ -841,11 +845,18 @@ class ArqFichaProducto extends ArqElement {
 
   // El PDF lo genera src/pdf/ficha-tecnica.js (lo engancha main.js), que deja
   // la promesa en detail.pending: mientras tanto el botón queda en Loading.
+  // Si falla, form-message Error debajo del botón (o de la ficha técnica en el
+  // modal del glosario); se borra al volver a intentar.
   #datasheet(sku, button = null) {
     if (!sku) return;
+    const inModal = Boolean(button?.closest('arq-download-modal'));
+    const message = this.shadowRoot.querySelector(inModal ? 'arq-download-modal .datasheet-error' : '.buy .datasheet-error');
+    message.textContent = '';
     const detail = { sku };
     this.emit('datasheet', detail);
-    if (!button || !detail.pending) return;
+    if (!detail.pending) return;
+    detail.pending.catch(() => (message.textContent = TEXT.datasheetError));
+    if (!button) return;
     button.loadingLabel = TEXT.generating;
     button.loading = true;
     const done = () => (button.loading = false);
@@ -990,6 +1001,7 @@ class ArqFichaProducto extends ArqElement {
       return item;
     });
     for (const item of modal.querySelectorAll(':scope > arq-download-item')) item.remove();
+    modal.querySelector('.datasheet-error').textContent = '';
     modal.append(featured, ...items);
   }
 
@@ -1056,13 +1068,17 @@ class ArqFichaProducto extends ArqElement {
   }
 }
 
-// Migas de la ficha (hasta 3, sin Inicio: va sobre la foto). Una luminaria
-// sale de Productos y sigue a su familia. Una lámpara o artefacto sigue a
-// su macrofamilia y, si tiene, a su subfamilia.
+// Migas de la ficha (hasta 4, sin Inicio: va sobre la foto). Siempre salen
+// de Productos, como las del listado. Una luminaria sigue a Colecciones (abre
+// el mega-menu en esa pestaña) y a su familia. Una lámpara o artefacto sigue
+// a su macrofamilia y, si tiene, a su subfamilia.
+const PRODUCTS_CRUMB = { label: 'Productos', href: '/arq/productos' };
+const COLLECTIONS_CRUMB = { label: 'Colecciones', href: '/arq/productos', menu: 'colecciones' };
+
 function headerTrail(group, collection) {
   const lamps = group.environment?.includes(LAMPS_ENVIRONMENT) && !group.environment.some((env) => env === 'Interior' || env === 'Exterior');
   if (lamps) {
-    const crumbs = [{ label: 'Lámparas y artefactos', href: categoryHref({ environment: LAMPS_ENVIRONMENT }) }];
+    const crumbs = [PRODUCTS_CRUMB, { label: 'Lámparas y artefactos', href: categoryHref({ environment: LAMPS_ENVIRONMENT }) }];
     if (group.application) crumbs.push({ label: group.application, href: categoryHref({ environment: LAMPS_ENVIRONMENT, application: group.application }) });
     return { crumbs };
   }
@@ -1070,24 +1086,18 @@ function headerTrail(group, collection) {
   if (family) {
     const href = categoryHref({ family });
     return {
-      crumbs: [
-        { label: 'Productos', href: '/arq/productos' },
-        { label: family, href },
-      ],
+      crumbs: [PRODUCTS_CRUMB, COLLECTIONS_CRUMB, { label: family, href }],
       see: { href, label: `Ver colección ${family}` },
     };
   }
   if (collection) {
     const href = categoryHref({ collection: collection.id });
     return {
-      crumbs: [
-        { label: 'Productos', href: '/arq/productos' },
-        { label: collection.name, href },
-      ],
+      crumbs: [PRODUCTS_CRUMB, COLLECTIONS_CRUMB, { label: collection.name, href }],
       see: { href, label: `Ver colección ${collection.name}` },
     };
   }
-  return { crumbs: [{ label: 'Productos', href: '/arq/productos' }] };
+  return { crumbs: [PRODUCTS_CRUMB] };
 }
 
 function image(src, alt, className = '') {

@@ -3,11 +3,11 @@
 // los tokens de Arq (sin trama de fondo).
 //
 //   <arq-collection-index>
-//     <arq-button slot="action" type="outline" href="/arq/productos" data-arq-menu="colecciones">Ver todo</arq-button>
+//     <arq-button slot="action" type="outline" href="/arq/productos" data-arq-menu="colecciones">Ver todas las colecciones</arq-button>
 //   </arq-collection-index>
 //
-// Los nombres salen de la columna familia, en orden alfabético (getFamilies).
-// Cada link abre /arq/productos?family=.
+// Los nombres son las familias destacadas (Yoru, Afo, Sento, Hoshi, Kanu, Koen),
+// en ese orden (getFamilies). Cada link abre /arq/productos?family=.
 //
 // Pasar el mouse (o enfocar) un nombre muestra su foto. El primero arranca
 // visible. En táctil, el primer toque muestra la foto y el segundo entra.
@@ -78,13 +78,16 @@ class ArqCollectionIndex extends ArqElement {
         img.src = family.image;
         img.alt = '';
         img.loading = 'lazy';
+        if (family.focus) img.dataset.focus = family.focus;
         link.append(img);
       }
       link.append(document.createTextNode(family.name));
       return link;
     });
-    for (const child of [...this.children]) child.remove();
-    this.append(...links);
+    const action = this.querySelector(':scope > [slot="action"]');
+    for (const child of [...this.querySelectorAll(':scope > a')]) child.remove();
+    if (action) action.before(...links);
+    else this.append(...links);
   }
 
   #links() {
@@ -113,26 +116,35 @@ class ArqCollectionIndex extends ArqElement {
     const img = link.querySelector('img');
     const src = img?.getAttribute('src') || '';
     const alt = img?.getAttribute('alt') || link.textContent.trim();
-    if (src) this.#paint(src, alt, instant || this.#reduced.matches);
+    const focus = img?.dataset.focus || '';
+    if (src) this.#paint(src, alt, focus, instant || this.#reduced.matches);
   }
 
-  #paint(src, alt, instant) {
+  #place(photo, focus) {
+    if (focus) photo.dataset.focus = focus;
+    else delete photo.dataset.focus;
+  }
+
+  #paint(src, alt, focus, instant) {
     const photos = [...this.shadowRoot.querySelectorAll('.photo')];
     const shown = photos.find((photo) => photo.classList.contains('is-shown')) ?? photos[0];
     const next = photos.find((photo) => photo !== shown);
     if (shown.getAttribute('src') === src) {
       shown.alt = alt;
+      this.#place(shown, focus);
       return;
     }
     if (instant || !next) {
       shown.src = src;
       shown.alt = alt;
+      this.#place(shown, focus);
       shown.classList.add('is-shown');
       next?.classList.remove('is-shown');
       return;
     }
     next.src = src;
     next.alt = alt;
+    this.#place(next, focus);
     next.classList.add('is-shown');
     shown.classList.remove('is-shown');
   }

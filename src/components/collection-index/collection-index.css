@@ -40,11 +40,19 @@
   color: var(--arq-color-text-tertiary);
   font: inherit;
   letter-spacing: inherit;
-  text-decoration: none;
+  /* El `a { text-decoration: underline }` de la página gana sobre ::slotted.
+     !important lo deja sin línea; el nombre elegido sigue marcándose con el borde. */
+  text-decoration: none !important;
   overflow-wrap: break-word;
   transition-property: color, border-color;
   transition-duration: var(--arq-motion-duration-fast);
   transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+::slotted(a:hover),
+::slotted(a:focus),
+::slotted(a:active) {
+  text-decoration: none !important;
 }
 
 ::slotted(a[aria-current='true']) {
@@ -71,11 +79,22 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   opacity: 0;
   /* La que sale queda entera debajo mientras la nueva funde encima y se va
      al final: si las dos fundían a la vez, a mitad de camino se veía el fondo
      a través de ambas (la foto se lavaba). */
   transition: opacity 0s linear var(--arq-motion-duration-slow);
+}
+
+/* Hoshi muestra el cielorraso; Afo, la base.
+   TODO (diseño): object-position no tiene token. */
+.photo[data-focus='top'] {
+  object-position: center top;
+}
+
+.photo[data-focus='bottom'] {
+  object-position: center bottom;
 }
 
 .photo.is-shown {

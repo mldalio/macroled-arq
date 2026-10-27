@@ -30,20 +30,24 @@
 //   descuenta su alto: barra + hero ocupan la pantalla.
 // - size="compact" (Size=Compact, Contacto): título en role/display-lg y hero
 //   más bajo (decisiones.md, 2026-10-14 · Contacto v3).
+// - reveal: el texto (título, bajada y botón) entra al hacer scroll, como las
+//   secciones del Home. La foto no. Lo usa la banda «Iluminación de vanguardia».
 
 import { ArqElement } from '../../base/arq-element.js';
 import { playOnce } from '../../base/play-once.js';
+import { reveal, revealCss } from '../../base/reveal.js';
 import css from './hero.css?inline';
 
 const OPTIONAL = ['eyebrow', 'description', 'action'];
 
 class ArqHero extends ArqElement {
   static tag = 'arq-hero';
-  static styles = css;
+  static styles = revealCss + css;
   static properties = {
     fullHeight: { type: Boolean },
     tall: { type: Boolean }, // un poco más que 70svh; solo la banda de la Home
     parallax: { type: Boolean }, // la foto queda fija mientras la página pasa (como la descripción de la ficha)
+    reveal: { type: Boolean }, // el texto entra al hacer scroll
     size: { type: String, values: ['default', 'compact'], default: 'default' }, // Size
   };
   static template =
@@ -80,7 +84,7 @@ class ArqHero extends ArqElement {
     }
   }
 
-  update() {
+  update(changed) {
     const root = this.shadowRoot;
     const filled = (name) =>
       root
@@ -105,11 +109,13 @@ class ArqHero extends ArqElement {
     else action.removeAttribute('data-arq-theme');
     this.#syncVideo();
     playOnce(root.querySelector('slot[name="media"]').assignedElements());
+    if (changed?.has('reveal')) this.#armText();
   }
 
   #coverObserver = null;
   #coverTimer = 0;
   #holdPlayback = false;
+  #textReveal = null;
 
   // Portada (full-height): al irse el preloader la foto arranca apenas
   // oscura y se enciende, y el título entra después. El video de la media,
@@ -149,10 +155,20 @@ class ArqHero extends ArqElement {
     this.#coverObserver.observe(pre, { attributes: true, attributeFilter: ['open'] });
   }
 
+  // El texto de la banda entra cuando llega a la pantalla. La foto queda.
+  #armText() {
+    this.#textReveal?.disconnect();
+    this.#textReveal = null;
+    if (!this.reveal) return;
+    this.#textReveal = reveal([this.shadowRoot.querySelector('.content')]);
+  }
+
   disconnectedCallback() {
     this.#coverObserver?.disconnect();
     this.#coverObserver = null;
     window.clearTimeout(this.#coverTimer);
+    this.#textReveal?.disconnect();
+    this.#textReveal = null;
   }
 
   // Videos que venían con autoplay en el HTML (para volver a reproducirlos).
