@@ -32,9 +32,8 @@ const a = (label, section, extra = {}) => Object.freeze({ label, section, contro
 
 export const ATTRIBUTES = Object.freeze({
   // Lumínicas
-  potencia: a('Potencia', 'luminicas'),
   flujo_luminoso: a('Flujo luminoso', 'luminicas', { filter: false }),
-  lumenes_lmw: a('Eficiencia luminosa', 'luminicas', { filter: false }),
+  lumenes_lmw: a('Eficacia luminosa', 'luminicas', { filter: false }),
   temperatura_color: a('Temperatura de color', 'luminicas'),
   cri: a('CRI', 'luminicas'),
   angulo_apertura: a('Ángulo de apertura', 'luminicas'),
@@ -43,6 +42,7 @@ export const ATTRIBUTES = Object.freeze({
   tipo_led: a('Tipo de LED', 'luminicas'),
   vida_util: a('Vida útil', 'luminicas', { filter: false }),
   // Eléctricas
+  potencia: a('Potencia', 'electricas'),
   tension_proveedor: a('Tensión de entrada', 'electricas'),
   factor_potencia: a('Factor de potencia', 'electricas', { filter: false }),
   thd: a('THD', 'electricas', { filter: false }),
@@ -58,12 +58,16 @@ export const ATTRIBUTES = Object.freeze({
   // Cantidad de módulos (Daö: 1, 2 o 3). Distingue variantes de un mismo grupo.
   modulos: a('Módulos', 'materiales', { filter: false, unit: ['módulo', 'módulos'] }),
   tamanio: a('Medidas', 'materiales', { filter: false }),
+  dimensiones: a('Dimensiones', 'materiales', { filter: false }),
+  calado: a('Calado', 'materiales', { filter: false }),
+  medidas_cabezal: a('Medidas del cabezal', 'materiales', { filter: false }),
+  color_lente: a('Color de la lente', 'materiales', { filter: false }),
   material_cuerpo: a('Material del cuerpo', 'materiales'),
   material_lente: a('Material de la lente', 'materiales'),
   largo_cable: a('Largo de cable', 'materiales', { filter: false }),
   peso: a('Peso', 'materiales', { filter: false }),
-  proteccion_ip: a('Grado de protección', 'materiales'),
-  proteccion_ik: a('Resistencia al impacto', 'materiales'),
+  proteccion_ip: a('Grado de protección', 'materiales', { prefix: 'IP' }),
+  proteccion_ik: a('Resistencia al impacto', 'materiales', { prefix: 'IK', digits: 2 }),
   tipo_montaje: a('Montaje', 'materiales'),
   temperatura_operacion: a('Temperatura de operación', 'materiales', { filter: false }),
   // Comercial
@@ -179,8 +183,17 @@ export function specSections(values) {
     ...section,
     rows: Object.entries(ATTRIBUTES)
       .filter(([field, info]) => info.section === section.id && hasValue(values[field]))
-      .map(([field, info]) => ({ field, label: info.label, value: values[field] })),
+      .map(([field, info]) => ({ field, label: info.label, value: specValue(info, values[field]) })),
   })).filter((section) => section.rows.length);
+}
+
+// prefix: un valor que es solo un número («65», «6») se muestra con su sigla
+// («IP65», «IK06»); digits rellena con ceros. «IP65» o «IP 65» no duplican el prefijo
+// y cualquier otro texto se muestra como llega.
+function specValue({ prefix, digits = 0 }, value) {
+  if (!prefix) return value;
+  const match = String(value).match(new RegExp(`^\\s*(?:${prefix}\\s*)?(\\d+)\\s*$`, 'i'));
+  return match ? `${prefix}${match[1].padStart(digits, '0')}` : value;
 }
 
 const hasValue = (value) => value !== undefined && value !== null && String(value).trim() !== '' && value !== '-';

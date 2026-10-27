@@ -847,7 +847,7 @@ class ArqNavbar extends ArqElement {
         ? 'No se pudo completar la búsqueda.'
         : results.length
           ? `${count.toLocaleString('es-AR')} ${count === 1 ? 'resultado' : 'resultados'}`
-          : `No se encontraron resultados para “${query}”`;
+          : `No encontramos resultados para «${query}»`;
     for (const field of this.#fields()) {
       field.status = status;
       field.expanded = results.length > 0;

@@ -42,7 +42,7 @@
 //   y textContent (nunca innerHTML). Así el encabezado queda en el HTML de la página.
 //   Se muestran sobre la foto de ambiente 6 a todo el ancho, que queda fija al
 //   hacer scroll (parallax).
-// - "Ver descargas" lleva al glosario, donde está la descarga de cada SKU.
+// - "Ver descargas" abre el modal de descargas de la variante elegida (el mismo que el ícono de cada fila del glosario).
 // - Comparar: suma la variante elegida a la compare-bar de la ficha (hasta 3).
 //   El lugar vacío (+) de la barra abre compare-picker, como en el listado.
 // - "Generar ficha técnica" y "Ficha técnica" (modal del glosario) emiten arq:datasheet { sku }.
@@ -88,6 +88,14 @@ import '../download-item/download-item.js';
 import css from './ficha-producto.css?inline';
 
 
+// Secciones apagadas por ahora (2026-10-27). El código y los estilos siguen para
+// volver a prenderlas poniendo la constante en true.
+// - Galería de ambiente que se desplaza: no hay tantas fotos; queda la de
+//   ambiente encendido en la galería del hero.
+// - Descripción (STORY) con foto fija (parallax).
+const SHOW_AMBIENT_GALLERY = false;
+const SHOW_STORY_PARALLAX = false;
+
 const TEXT = {
   loading: 'Cargando producto…',
   notFound: 'No encontramos este producto.',
@@ -100,7 +108,6 @@ const TEXT = {
   next: 'Siguiente',
 };
 
-const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // Brillo (luminancia relativa, WCAG) de la foto debajo del toggle o del
 // breadcrumb a partir del cual la versión oscura (neutral/900) contrasta más
@@ -124,6 +131,9 @@ const toLinear = (channel) => {
 
 // Familia (sin tildes ni mayúsculas) de los productos de la ficha sin Iluminar
 const NO_ILLUMINATION_FAMILY = 'dao';
+// Grupos sueltos sin Iluminar: Tori Visera (por id de grupo) y el frente de PAR11 (por su grupo_variantes)
+const NO_ILLUMINATION_GROUP_ID = 'tori-visera';
+const NO_ILLUMINATION_VARIANT_GROUP = /^PAR11-.*FRENTE/i;
 
 class ArqFichaProducto extends ArqElement {
   static tag = 'arq-ficha-producto';
@@ -161,7 +171,7 @@ class ArqFichaProducto extends ArqElement {
     `<arq-checkbox class="compare" show-label>Comparar</arq-checkbox>` +
     `<div class="actions">` +
     `<arq-button class="datasheet">Generar ficha técnica</arq-button>` +
-    `<arq-button class="to-glossary" type="outline">Ver descargas</arq-button>` +
+    `<arq-button class="to-downloads" type="outline">Ver descargas</arq-button>` +
     `</div>` +
     `</div>` +
     `</div>` +
@@ -193,7 +203,7 @@ class ArqFichaProducto extends ArqElement {
     `<arq-variants-table class="table" downloads="downloads-modal"></arq-variants-table>` +
     `</div>` +
     // Descripción (STORY): foto a todo el ancho con el texto encima (Dark local)
-    `<div class="story-block needs-data">` +
+    `<div class="story-block needs-data"${SHOW_STORY_PARALLAX ? '' : ' hidden'}>` +
     `<div class="story" data-arq-theme="dark" hidden>` +
     `<div class="story-bg" hidden><img alt="" loading="lazy"></div>` +
     `<div class="story-title"><slot name="story-title"></slot></div>` +
@@ -288,7 +298,11 @@ class ArqFichaProducto extends ArqElement {
       this.#showVariant({ updateUrl: true });
     });
     root.querySelector('.datasheet').addEventListener('click', (event) => this.#datasheet(this.#sku, event.currentTarget));
-    root.querySelector('.to-glossary').addEventListener('click', () => this.#toGlossary());
+    // Mismo modal que el ícono de cada fila del glosario, con la variante elegida
+    root.querySelector('.to-downloads').addEventListener('click', (event) => {
+      this.#fillModal(this.#sku);
+      root.querySelector('arq-download-modal').show(event.currentTarget);
+    });
     const cta = root.querySelector('.config-cta');
     cta.addEventListener('click', () => root.querySelector('.dao-config').show(this.#sku, cta));
     // Comparar: suma o saca la variante elegida de la compare-bar (hasta 3)
@@ -352,8 +366,14 @@ class ArqFichaProducto extends ArqElement {
     }
     this.#product = product;
     this.#status('');
-    // Daö no tiene Iluminar (decisiones.md, 2026-10-23): sin toggle, y si llegó iluminado desde el listado, vuelve a Light
-    if (normalize(product.group.family) === NO_ILLUMINATION_FAMILY || /^DAO-/i.test(product.group.variantGroup ?? '')) {
+    // Daö, Tori Visera y el frente de PAR11 no tienen Iluminar (decisiones.md, 2026-10-23): sin toggle, y si llegó iluminado desde el listado, vuelve a Light
+    const variantGroup = product.group.variantGroup ?? '';
+    if (
+      normalize(product.group.family) === NO_ILLUMINATION_FAMILY ||
+      /^DAO-/i.test(variantGroup) ||
+      product.group.id === NO_ILLUMINATION_GROUP_ID ||
+      NO_ILLUMINATION_VARIANT_GROUP.test(variantGroup)
+    ) {
       const toggle = this.shadowRoot.querySelector('.iluminar');
       toggle.hidden = true;
       if (toggle.checked) {
@@ -637,7 +657,7 @@ class ArqFichaProducto extends ArqElement {
     // Copias para medir el brillo de la primera foto, apagada y encendida: así
     // el toggle cambia junto con la foto al iluminar
     for (const src of [details.images?.[0]?.src, details.images?.[0]?.srcOn]) if (src) this.#backdropImage(src).catch(() => {});
-    this.#renderSpecs(details.sections);
+    this.#renderSpecs(details.sections, details.cota, details.name);
     this.#renderCompatibles();
     root.querySelector('.config-cta').hidden = this.#product.collection?.id !== 'dao';
     const compare = root.querySelector('.compare');
@@ -662,9 +682,9 @@ class ArqFichaProducto extends ArqElement {
   // no se muestra (src/data/attributes.js).
   #specTab = 'specs';
 
-  #specList(section) {
+  #specList(section, columns = true) {
     const list = document.createElement('arq-spec-list');
-    list.columns = true;
+    list.columns = columns;
     for (const row of section.rows) {
       const spec = document.createElement('arq-spec-row');
       const label = document.createElement('span');
@@ -676,7 +696,22 @@ class ArqFichaProducto extends ArqElement {
     return list;
   }
 
-  #renderSpecs(sections) {
+  // Dibujo con cotas (cotas_img). Si no carga, no queda un hueco.
+  #cotaImage(src, name) {
+    const img = image(src, `Cotas de ${name}`, 'cota');
+    img.addEventListener('error', () => (img.hidden = true));
+    // Los dibujos tienen medidas y textos a escalas distintas: con el mismo alto o el mismo ancho,
+    // unos se leen enormes y otros diminutos. Todos con la misma superficie (el cuadrado de
+    // layout/pdf-cover-image): el ancho sale de su proporción, y el tamaño de los textos queda parejo.
+    img.addEventListener('load', () => {
+      const side = parseFloat(getComputedStyle(img).getPropertyValue('--arq-layout-pdf-cover-image'));
+      if (!side || !img.naturalWidth || !img.naturalHeight) return;
+      img.style.width = `${img.naturalWidth * Math.sqrt((side * side) / (img.naturalWidth * img.naturalHeight))}px`;
+    });
+    return img;
+  }
+
+  #renderSpecs(sections, cota, name) {
     const root = this.shadowRoot;
     const tablist = root.querySelector('.spec-tabs');
     const panels = root.querySelector('.spec-panels');
@@ -694,7 +729,15 @@ class ArqFichaProducto extends ArqElement {
         const title = document.createElement('span');
         title.slot = 'title';
         title.textContent = section.id === 'comercial' ? TEXT.commercial : section.label;
-        item.append(title, this.#specList(section));
+        if (section.id === 'materiales' && cota) {
+          // Las filas en una sola columna a la izquierda y el dibujo con cotas a la derecha (apilados hasta 1023 px)
+          const body = document.createElement('div');
+          body.className = 'with-cota';
+          body.append(this.#specList(section, false), this.#cotaImage(cota, name));
+          item.append(title, body);
+        } else {
+          item.append(title, this.#specList(section));
+        }
         accordion.append(item);
       }
       return accordion;
@@ -705,6 +748,7 @@ class ArqFichaProducto extends ArqElement {
     const tabs = [
       technical.length && { id: 'specs', label: 'Especificaciones', content: accordion },
       commercial && { id: 'commercial', label: commercial.label, content: accordionOf([commercial], () => !previous.length || open.has('comercial')) },
+      cota && { id: 'cotas', label: 'Cotas', content: this.#cotaImage(cota, name) },
     ].filter(Boolean);
     if (!tabs.some((tab) => tab.id === this.#specTab)) this.#specTab = tabs[0]?.id;
 
@@ -808,23 +852,13 @@ class ArqFichaProducto extends ArqElement {
     detail.pending.then(done, done);
   }
 
-  #toGlossary() {
-    const glossary = this.shadowRoot.querySelector('.glossary');
-    glossary.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
-    // El foco pasa al título del glosario (el <h2> del embed)
-    const title = this.querySelector(':scope > [slot="glossary-title"]');
-    if (title) {
-      title.tabIndex = -1;
-      title.focus({ preventScroll: true });
-    }
-  }
-
   // ── Galería de ambiente ───────────────────────────────────────────
   #renderAmbient() {
     const { group, images } = this.#product;
     const root = this.shadowRoot;
     const ambient = root.querySelector('.ambient');
-    root.querySelector('.ambient-block').hidden = !images.ambient.length;
+    root.querySelector('.ambient-block').hidden = !SHOW_AMBIENT_GALLERY || !images.ambient.length;
+    if (!SHOW_AMBIENT_GALLERY) return;
     this.#viewer?.close();
     ambient.replaceChildren(...images.ambient.map((src, i) => {
       const img = image(src, `${group.name}, ambiente ${i + 1}`);
@@ -838,6 +872,7 @@ class ArqFichaProducto extends ArqElement {
 
   // Avance nativo como Destacados; arrastrar desplaza y clic abre la foto.
   #setupAmbient() {
+    if (!SHOW_AMBIENT_GALLERY) return;
     const root = this.shadowRoot;
     const scroller = root.querySelector('.ambient');
     const photos = () => [...scroller.querySelectorAll('img')].map(img => ({ src: img.currentSrc || img.src, alt: img.alt }));
@@ -875,6 +910,7 @@ class ArqFichaProducto extends ArqElement {
   // «- » → <li> de un <ul>, el resto <p>.
   #renderStory(story) {
     for (const old of this.querySelectorAll(':scope > [slot="story-title"], :scope > [slot="story-text"], :scope > [slot="story-list"]')) old.remove();
+    if (!SHOW_STORY_PARALLAX) return;
     const lines = String(story ?? '').split('\n').map((line) => line.trim()).filter(Boolean);
     const nodes = [];
     let list = null;

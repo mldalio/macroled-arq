@@ -540,7 +540,7 @@ export async function getProductCards(groupIds) {
  */
 export async function getRecommendedProducts() {
   const { groups } = await loadCatalog();
-  return groups.flatMap((group) => group.variants.filter((variant) => variant.isNew).map((variant) => ({ ...productCard(group, variant), meta: productKind(group) })));
+  return groups.flatMap((group) => group.variants.filter((variant) => variant.isNew).map((variant) => ({ ...productCard(group, variant), name: variantName(group, variant), meta: productKind(group) })));
 }
 
 // Tipo de producto: la aplicación de una luminaria («Jardín», «Colgante») o
@@ -551,11 +551,17 @@ function productKind(group) {
 }
 
 // En el orden de Descargas de la Ficha de Final (1218:10596)
-const DOWNLOAD_LABELS = { cad: 'CAD 2D/3D', manual: 'Manual', ies: 'IES', fotometria: 'Fotometría' };
+const DOWNLOAD_LABELS = { cad: 'CAD 2D/3D', manual: 'Manual', ies: 'IES', fotometria: 'Fotometría', cotas: 'Cotas' };
+
+/**
+ * Dibujo con cotas de una variante: cotas_img de la base o, mientras no esté
+ * cargado, el de cotas.js (patrones sobre el SKU). null si no tiene.
+ */
+const cotaOf = (variant) => variant.cota || cotaUrl(variant.sku);
 
 /** Archivos de un SKU: [{ type, label, href }], solo los que existen. */
 function downloads(variant) {
-  const files = pick(variant.downloads);
+  const files = { ...pick(variant.downloads), cotas: cotaOf(variant) };
   return Object.keys(DOWNLOAD_LABELS)
     .filter((type) => files[type])
     .map((type) => ({ type, label: DOWNLOAD_LABELS[type], href: files[type] }));
@@ -570,8 +576,15 @@ function downloads(variant) {
 export function variantDetails(group, sku) {
   const variant = group.variants.find((v) => v.sku === sku) ?? group.defaultVariant;
   const own = pick(variant.images);
-  const gallery = own.gallery ?? [own.studio].filter(Boolean);
-  const galleryOn = own.galleryOn ?? [own.studioOn ?? null];
+  const gallery = [...(own.gallery ?? [own.studio].filter(Boolean))];
+  const galleryOn = [...(own.galleryOn ?? [own.studioOn ?? null])];
+  // Las demás fotos de ambiente del grupo (sin versión encendida) van en el hero, después de la de ambiente 1
+  const extra = (group.images?.heroExtra ?? []).filter((src) => !gallery.includes(src));
+  if (extra.length) {
+    const at = gallery.includes(own.context) ? gallery.indexOf(own.context) + 1 : gallery.length;
+    gallery.splice(at, 0, ...extra);
+    galleryOn.splice(at, 0, ...extra.map(() => null));
+  }
   return {
     sku: variant.sku,
     // «Daö Doble» dentro del grupo «Daö»; un grupo con un solo product_name usa el suyo
@@ -581,6 +594,7 @@ export function variantDetails(group, sku) {
     images: gallery.map((src, i) => ({ src, srcOn: galleryOn[i] ?? null, alt: `${group.name}, imagen ${i + 1}` })),
     sections: specSections(variant.values),
     downloads: downloads(variant),
+    cota: cotaOf(variant),
   };
 }
 

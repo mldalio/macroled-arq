@@ -16,12 +16,25 @@
   flex-direction: column;
 }
 
-/* No results: mensaje con padding space/padding/md y gap space/gap/sm */
+/* No results / Error: el texto del vacío de Descargas (variants-table): título
+   role/heading-2 en color/text/primary, ayuda role/body-regular en
+   color/text/tertiary, sin caja ni línea. Los destinos son button Underline. */
+:host([state='no-results']) .dropdown,
+:host([state='error']) .dropdown {
+  border: 0;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xl);
+  padding: var(--arq-space-padding-md);
+}
+
 .message {
   display: flex;
   flex-direction: column;
-  gap: var(--arq-space-gap-sm);
-  padding: var(--arq-space-padding-md) var(--arq-space-padding-md);
+  gap: var(--arq-space-gap-sm-md);
 }
 
 .message p {
@@ -33,29 +46,13 @@
 }
 
 .help {
+  max-width: var(--arq-layout-measure-wide);
   color: var(--arq-color-text-tertiary);
 }
 
-/* "Explorá nuestros productos": línea superior color/border/subtle,
-   padding space/padding/sm × space/padding/md, gap space/gap/sm */
 .explore {
   display: flex;
-  align-items: center;
-  gap: var(--arq-space-gap-sm);
-  padding: var(--arq-space-padding-sm) var(--arq-space-padding-md);
-  border-top: var(--arq-border-default) solid var(--arq-color-border-subtle);
-  color: var(--arq-color-text-tertiary);
-  text-decoration: none;
-}
-
-.explore:focus-visible {
-  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
-  outline-offset: calc(var(--arq-border-strong) * -1);
-}
-
-.explore .icon {
-  flex: none;
-  width: var(--arq-icon-md);
-  height: var(--arq-icon-md);
-  color: var(--arq-color-icon-primary);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-md);
 }

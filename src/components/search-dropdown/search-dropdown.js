@@ -10,9 +10,10 @@
 //   <arq-search-dropdown state="no-results" term="lámpara roja"></arq-search-dropdown>
 //
 // - State: Results (los search-result y el search-see-all llegan por slot) o
-//   No results: título "No se encontraron resultados para “término”"
-//   (role/body-strong), ayuda (role/body-sm, color/text/tertiary) y el link
-//   "Explorá nuestros productos" (explore-href).
+//   No results: título «No encontramos resultados para «término».»
+//   (role/heading-2), ayuda (role/body-regular, color/text/tertiary) y un
+//   button Underline con flecha, «Todos los productos».
+//   La redacción es la del vacío del buscador de Descargas (variants-table).
 // - State Error (2924:44879): la búsqueda falló. Mismo dibujo que No
 //   results, con «No se pudo completar la búsqueda.» y «Probá de nuevo en unos
 //   minutos.» (la redacción de error del resto del sitio).
@@ -20,14 +21,21 @@
 // - search-screen (mobile) usa el mismo componente, a todo el ancho.
 
 import { ArqElement } from '../../base/arq-element.js';
-import { icon } from '../../base/icons.js';
+import '../button/button.js';
+import { categoryHref } from '../../data/catalog.js';
 import css from './search-dropdown.css?inline';
 
 const TEXT = {
-  help: 'Probá con otro término, revisá la ortografía o buscá por código de producto (SKU).',
+  title: (term) => `No encontramos resultados para «${term}».`,
+  help: 'Probá con otro nombre, revisá la ortografía o buscá por SKU.',
   errorTitle: 'No se pudo completar la búsqueda.',
   errorHelp: 'Probá de nuevo en unos minutos.',
 };
+
+// TODO (urls): las URLs de categoría están pendientes (docs/urls.md); categoryHref las arma.
+const LINKS = [
+  { label: 'Todos los productos', href: categoryHref() },
+];
 
 class ArqSearchDropdown extends ArqElement {
   static tag = 'arq-search-dropdown';
@@ -35,17 +43,18 @@ class ArqSearchDropdown extends ArqElement {
   static properties = {
     state: { type: String, values: ['results', 'no-results', 'error'], default: 'results' }, // State
     term: { type: String, default: '' },
-    exploreHref: { type: String, default: '/arq/productos' },
   };
   static template =
     `<div class="dropdown">` +
     `<div class="results"><slot></slot></div>` +
     `<div class="empty">` +
     `<div class="message">` +
-    `<p class="title role-body-strong"></p>` +
-    `<p class="help role-body-sm"></p>` +
+    `<p class="title role-heading-2"></p>` +
+    `<p class="help role-body-regular"></p>` +
     `</div>` +
-    `<a class="explore role-body-sm">Explorá nuestros productos${icon('arrow-right')}</a>` +
+    `<nav class="explore" aria-label="Explorar productos">` +
+    LINKS.map((l) => `<arq-button type="underline" show-underline show-icon icon="arrow-right" href="${l.href}">${l.label}</arq-button>`).join('') +
+    `</nav>` +
     `</div>` +
     `</div>`;
 
@@ -55,9 +64,8 @@ class ArqSearchDropdown extends ArqElement {
     const empty = this.state === 'no-results' || error;
     root.querySelector('.results').hidden = empty;
     root.querySelector('.empty').hidden = !empty;
-    root.querySelector('.title').textContent = error ? TEXT.errorTitle : `No se encontraron resultados para “${this.term ?? ''}”`;
+    root.querySelector('.title').textContent = error ? TEXT.errorTitle : TEXT.title(this.term ?? '');
     root.querySelector('.help').textContent = error ? TEXT.errorHelp : TEXT.help;
-    root.querySelector('.explore').setAttribute('href', this.exploreHref ?? '/arq/productos');
   }
 }
 
