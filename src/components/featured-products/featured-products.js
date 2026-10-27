@@ -24,8 +24,9 @@
 //   vuelve mientras siga así (WCAG 2.2.2); también al deslizar, fuera de
 //   pantalla o con prefers-reduced-motion.
 //   TODO (diseño): falta un botón de pausa visible (no hay ícono de pausa en el set).
-//   El paso usa la misma transición que Casa FOA (motion/duration/slow y
-//   motion/easing/standard) y la misma pausa (3 s). No hay token de intervalo.
+//   La pausa es la de Casa FOA (3 s). El paso arranca y frena suave
+//   (motion/duration/fold y motion/easing/in-out), sin cambiar el recorrido.
+//   No hay token de intervalo.
 // - Se desliza con el dedo o arrastrando con el mouse. Un toque sigue
 //   abriendo la ficha; si hubo desplazamiento, ese clic no navega.
 // - Entrada al hacer scroll (src/base/reveal.js), escalonada por tarjeta.

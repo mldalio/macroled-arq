@@ -36,6 +36,30 @@ import css from './carousel-controls.css?inline';
 
 const POSITIONS = ['start', 'middle', 'end'];
 
+// cubic-bezier(x1, y1, x2, y2) → función de avance 0–1. Si el token no se lee, ease-in-out.
+function easingOf(value) {
+  const match = String(value).match(/cubic-bezier\(\s*([-\d.]+)\s*,\s*([-\d.]+)\s*,\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)/);
+  const [x1, y1, x2, y2] = match ? match.slice(1).map(Number) : [0.42, 0, 0.58, 1];
+  const cx = 3 * x1;
+  const bx = 3 * (x2 - x1) - cx;
+  const ax = 1 - cx - bx;
+  const cy = 3 * y1;
+  const by = 3 * (y2 - y1) - cy;
+  const ay = 1 - cy - by;
+  const sampleX = (t) => ((ax * t + bx) * t + cx) * t;
+  const sampleY = (t) => ((ay * t + by) * t + cy) * t;
+  const slopeX = (t) => (3 * ax * t + 2 * bx) * t + cx;
+  return (x) => {
+    let t = x;
+    for (let i = 0; i < 6; i += 1) {
+      const dx = slopeX(t);
+      if (Math.abs(dx) < 1e-6) break;
+      t -= (sampleX(t) - x) / dx;
+    }
+    return sampleY(Math.min(1, Math.max(0, t)));
+  };
+}
+
 class ArqCarouselControls extends ArqElement {
   static tag = 'arq-carousel-controls';
   static styles = css;
@@ -54,8 +78,8 @@ class ArqCarouselControls extends ArqElement {
     progress: { type: String, values: ['slides', 'scroll'], default: 'slides' }, // solo código: qué mide la línea (tramo por slide o parte visible)
     pageInset: { type: Number, default: 0 }, // solo código: ancho tapado por columnas fijas, se resta al salto de página
     scrub: { type: Boolean, default: false }, // solo código: la línea (progress="scroll") es una barra más gruesa que se arrastra y responde al clic
-    // native: scrollBy suave del navegador. slow: el mismo desplazamiento que
-    // project-slider (motion/duration/slow y motion/easing/standard).
+    // native: scrollBy suave del navegador. slow: un paso con arranque y
+    // frenado suaves (motion/duration/fold y motion/easing/in-out).
     slide: { type: String, values: ['native', 'slow'], default: 'native' },
     index: { type: Number, default: 0 }, // slide actual, desde 0
     count: { type: Number, default: 1 }, // cantidad de slides
@@ -336,47 +360,47 @@ class ArqCarouselControls extends ArqElement {
   cancelGlide() {
     const target = this.#target;
     const current = target ? target.scrollLeft : 0;
-    this.#glideRun?.cancel();
+    this.#glideRun?.();
     this.#glideRun = null;
     if (!target) return;
     target.scrollLeft = current;
     target.removeAttribute('data-gliding');
   }
 
-  // Igual que el track de project-slider: motion/duration/slow y
-  // motion/easing/standard. El scroll suave del navegador no se puede
-  // igualar y en Webflow se dispara.
+  // El paso recorre el scroll a mano: animar scrollLeft no interpola y el
+  // salto se ve brusco. Arranca y frena con motion/easing/in-out, en
+  // motion/duration/fold (recorrido más largo que un hover).
   #glide(target, left) {
     const from = target.scrollLeft;
-    this.#glideRun?.cancel();
+    this.#glideRun?.();
     this.#glideRun = null;
     target.scrollLeft = from;
     target.removeAttribute('data-gliding');
     const styles = getComputedStyle(this);
-    const duration = this.#reducedMotion.matches ? 0 : Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-slow')) || 0;
-    const easing = styles.getPropertyValue('--arq-motion-easing-standard').trim() || 'ease';
+    const duration = this.#reducedMotion.matches ? 0 : Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-fold')) || 0;
+    const easing = easingOf(styles.getPropertyValue('--arq-motion-easing-in-out'));
     if (!duration || Math.abs(left - from) < 1) {
       target.scrollLeft = left;
       return;
     }
     target.setAttribute('data-gliding', '');
-    let anim;
-    try {
-      anim = target.animate([{ scrollLeft: from }, { scrollLeft: left }], { duration, easing, fill: 'both' });
-    } catch {
-      target.removeAttribute('data-gliding');
-      target.scrollLeft = left;
-      return;
-    }
-    this.#glideRun = anim;
-    const finish = () => {
-      if (this.#glideRun !== anim) return;
+    const start = performance.now();
+    let frame = 0;
+    const stop = () => cancelAnimationFrame(frame);
+    this.#glideRun = stop;
+    const tick = (now) => {
+      if (this.#glideRun !== stop) return;
+      const t = Math.min(1, (now - start) / duration);
+      target.scrollLeft = from + (left - from) * easing(t);
+      if (t < 1) {
+        frame = requestAnimationFrame(tick);
+        return;
+      }
       this.#glideRun = null;
       target.scrollLeft = left;
-      anim.cancel();
       target.removeAttribute('data-gliding');
     };
-    anim.finished.then(finish).catch(() => {});
+    frame = requestAnimationFrame(tick);
   }
 }
 

@@ -40,11 +40,19 @@
   color: var(--arq-color-text-tertiary);
   font: inherit;
   letter-spacing: inherit;
-  text-decoration: none;
+  /* El `a { text-decoration: underline }` de la página gana sobre ::slotted.
+     !important lo deja sin línea; el nombre elegido sigue marcándose con el borde. */
+  text-decoration: none !important;
   overflow-wrap: break-word;
   transition-property: color, border-color;
   transition-duration: var(--arq-motion-duration-fast);
   transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+::slotted(a:hover),
+::slotted(a:focus),
+::slotted(a:active) {
+  text-decoration: none !important;
 }
 
 ::slotted(a[aria-current='true']) {
