@@ -1762,3 +1762,7 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 - Las cotas de la ficha técnica en PDF salen del campo `cotas_img` de Typesense (columna de Sheets con la URL del PNG), por SKU. Se borró `src/data/cotas.js` (las reglas por patrón de SKU) y `config.images.cotasBase`. Reemplaza el mapeo de 2026-10-27 · Ficha técnica con cotas. Rama `feat/pdf-cotas-desde-base`.
 - **Solo de la base (decisión de Lau):** sin `cotas_img`, la ficha sale sin cotas; no hay respaldo en el código. Al cambiar, los 108 SKU con dato coincidían con el mapeo anterior; PAR11 (5 SKU) tenía dibujo en el código y no en la hoja, y queda sin cotas hasta que se cargue.
 - `cotas_img` entra en `LIGHT_FIELDS`: el PDF se genera desde cualquier página (ficha y Descargas) sin pedir el detalle del grupo.
+
+## 2026-10-27 · Foto transparente en el PDF
+
+- La Fuji (y cualquier foto de estudio en PNG transparente) salía en la ficha técnica sobre fondo negro: la foto se pedía al CloudFront en JPEG y el CloudFront pinta de negro la transparencia, antes de que el canvas ponga `color/surface/strong`. Ahora la foto se pide en WebP (conserva la transparencia y pesa como el JPEG); el canvas pinta el fondo y la guarda en JPEG para pdfmake. Las cotas siguen en PNG. Rama `fix/pdf-foto-transparente`.
