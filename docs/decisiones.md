@@ -1693,3 +1693,21 @@ Pasada con los skills emil-design-eng, improve-animations, find-animation-opport
 - **Quedan sin hacer:** deslizar la foto en la galería de la ficha y en el visor (no está en Figma: `TODO` diseño); el encabezado fijo de variants-table y la cabecera de la comparativa con `scroll-timeline` (requiere medirlo en un teléfono); `background-attachment: fixed` del shimmer (solo con evidencia); `viewport-fit=cover` e `interactive-widget` en el meta viewport (pendiente del sitio).
 - **Para la base:** hay URLs de fotos que dan 404 (por ejemplo `TORI-J-600-3W-R-WW_HERO_OFF.png`).
 - **DESIGN.md:** falta pasar a §2 (grilla Mobile), §8 (product-card con muchos acabados, compare-bar Mobile plegada) y la ficha de breadcrumb, en una rama `docs/` y su copia en Figma.
+
+## 2026-10-27 · Capas de la página (z-index)
+
+- Problema: los z-index de adentro de las tarjetas se escapaban a la página. product-card pone los acabados y «Comparar» en 4 (`--card-above`), el mismo valor que el navbar, y como la card va después en el DOM le ganaba: al desplazar, los swatches y el checkbox pasaban por encima del navbar, del mega-menú, de la barra de Productos y de la compare-bar, y el link estirado (3) tapaba los clics en la barra de Productos.
+- Decisión: cada componente que usa z-index para ordenar sus propias piezas se aísla (`isolation: isolate`) y queda en la capa 0 de la página. Hoy: todas las tarjetas con link estirado (`.card` en `src/base/card-link.css`: product-card, family-card, category-card, collection-tile, download-card, line-card), product-gallery, collection-index, cta-block, compare-table y variants-table. Un componente nuevo con z-index internos hace lo mismo en su `:host` o en su contenedor.
+- Escala de la página (sin token: no es un valor de Figma). Solo estos valores salen del componente:
+
+| Capa | Qué |
+| --- | --- |
+| 0 | Contenido y componentes aislados |
+| 1 | Elementos sobre su propio fondo dentro de un componente no aislado (lo mínimo) |
+| 2 | Menús de select e input Select, compare-header, breadcrumb e Iluminar sobre la foto de la ficha |
+| 3 | Barras fijas dentro de la página: barra de Productos, compare-bar, barra y scroll de variants-table |
+| 4 | navbar (con mega-menú, search-sheet, menú Mobile y su scrim) |
+| 5 | preloader |
+| top layer | Diálogos nativos (`showModal`): filter-panel, download-modal, compare-picker, visor de fotos, configurador |
+
+- Webflow: si una página de Macroled pone algo con z-index mayor a 4 (un widget, un banner), queda sobre el navbar de Arq. No se sube la escala hasta ver un caso.
