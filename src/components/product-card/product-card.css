@@ -29,65 +29,45 @@
 /* Imagen: ratio/portrait (7:10) o la que pida el contenedor con --card-ratio
    (variable local; el search-sheet usa ratio/square), sin borde
    (como el set; la ficha dice color/border/subtle).
-   Con la luz apagada el fondo es un liso. TODO (diseño): rgb(238, 233, 226)
-   no tiene token; el más cercano es offwhite/bone (#f3f0e9). Prendida, un
-   gris rgb(48, 48, 48) con un halo al centro. TODO (diseño): ese gris y los
-   blancos y negros del degradado no tienen token. La foto va encima. */
+   El fondo es el de la foto de la ficha: color/surface/subtle (claro, y gris
+   oscuro con Iluminar). La foto va encima. */
 .card-media {
   position: relative;
   aspect-ratio: var(--card-ratio, 7 / 10);
-  /* TODO (diseño): sin token. Ver comentario de arriba. */
-  background-color: rgb(238, 233, 226);
-  /* Iluminar: el fondo detrás de la foto cambia con la misma duración que el de
-     la página; si no, pasaba a oscuro en un instante y se veía entre las dos
-     fotos mientras fundían */
+  background-color: var(--arq-color-surface-subtle);
+  /* Hover y foco: fundido de motion/duration/slow. Iluminar pone
+     --arq-card-ground-duration en 0s (theme.js) y el cambio lo hace el fundido
+     de la página; si este fondo fundiera solo, se veía entre las dos fotos. */
   transition-property: background-color;
-  transition-delay: 0s; /* sin el retraso del texto de la hoja base: el fondo de la foto funde a la par del de la página */
-  transition-duration: var(--arq-illumination-bg-duration, var(--arq-motion-duration-fast));
-  transition-timing-function: var(--arq-illumination-bg-easing, var(--arq-motion-easing-standard));
+  transition-delay: 0s;
+  transition-duration: var(--arq-card-ground-duration, var(--arq-motion-duration-slow));
+  transition-timing-function: var(--arq-motion-easing-standard);
 }
 
-/* Fondo prendido. Detrás de la foto: funde con Iluminar.
-   TODO (diseño): los valores no tienen token. Ver comentario de .card-media. */
-.card-media::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background:
-    radial-gradient(rgba(255, 255, 255, 0.06) 0%, rgb(255 255 255 / 5%) 35%, rgb(0 0 0 / 5%) 70%),
-    rgb(48 48 48);
-  opacity: 0;
-  pointer-events: none;
-  /* Hover: el doble de motion/duration/slow y la curva suave del fundido
-     de fotos. Iluminar no usa esta duración: el fondo entra con el fundido
-     de la página (View Transition). --arq-card-ground-duration vale 0s
-     mientras se toma la foto nueva, así no funde otra vez por su cuenta. */
-  transition-property: opacity;
-  transition-duration: var(--arq-card-ground-duration, calc(var(--arq-motion-duration-slow) * 2));
-  transition-timing-function: var(--arq-motion-easing-illumination-image);
+@media (prefers-reduced-motion: reduce) {
+  .card-media {
+    transition-duration: var(--arq-card-ground-duration, var(--arq-motion-duration-fade));
+  }
 }
 
-/* El atributo llega cuando la página ya cambió, no con .is-dark: esa clase
-   se pone antes, para adelantar solo las fotos. */
-:host-context([data-arq-theme="dark"]) .card-media::before {
-  opacity: 1;
-}
-
-/* Misma condición que el cambio de foto: hover sobre la imagen, o foco. */
-.card.has-hover:has(.card-link:focus-visible) .card-media::before {
-  opacity: 1;
-}
-
-.is-loading .card-media::before {
-  content: none;
-}
-
-/* El hover de product-card cambia la imagen: sin el borde del patrón común */
+/* El hover de product-card cambia la imagen: sin el borde del patrón común.
+   El fondo pasa al negro de Iluminar (color/surface/subtle en Dark =
+   neutral/750). En Light ese valor es color/surface/inverse-hover. Con
+   Iluminar el fondo ya es ese negro, así que el hover no lo aclara. */
 @media (hover: hover) and (pointer: fine) {
   .card:has(.card-link:hover) .card-media {
     outline: none;
+    background-color: var(--arq-color-surface-inverse-hover);
   }
+}
+
+:host-context([data-arq-theme='dark']) .card:has(.card-link:hover) .card-media,
+:host-context([data-arq-theme='dark']) .card:has(.card-link:focus-visible) .card-media {
+  background-color: var(--arq-color-surface-subtle);
+}
+
+.card:has(.card-link:focus-visible) .card-media {
+  background-color: var(--arq-color-surface-inverse-hover);
 }
 
 .img {
@@ -98,6 +78,13 @@
   height: 100%;
   object-fit: cover;
   visibility: hidden;
+}
+
+/* TODO (diseño): no está en Figma. Fuji, Mini Kai, Mini Kai Round, Sen y el
+   producto Tori Visera se ven enteros; el resto llena el recuadro. */
+.card.is-contain .img,
+.card.is-contain .theme-transition {
+  object-fit: contain;
 }
 
 .theme-transition {
@@ -173,8 +160,7 @@
    (.loaded): la de hover se pide al primer hover y, si el fundido arrancaba
    antes, terminaba sin foto y la foto aparecía de golpe al llegar. */
 @media (hover: hover) and (pointer: fine) {
-  .card.has-hover.is-media-hover .hover.loaded,
-  .card.has-hover.is-media-hover .card-media::before {
+  .card.has-hover.is-media-hover .hover.loaded {
     opacity: 1;
   }
 }

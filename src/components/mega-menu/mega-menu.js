@@ -9,7 +9,7 @@
 //
 // - Un solo componente: pestañas, columnas, links y "Ver todo…" salen de los
 //   datos. Tres pestañas: Por espacio (Interior · Exterior), Lámparas y
-//   artefactos (Lámparas · Artefactos), y Colecciones (cuatro columnas de
+//   artefactos (la macrofamilia, con sus subfamilias), y Colecciones (cuatro columnas de
 //   mega-link con bajada). Una pestaña sin columnas no se muestra.
 // - Tab es la prop tab (por-espacio · lamparas-y-artefactos · colecciones).
 //   Tablist con tab + SingleSelect: ← → cambian de pestaña, Inicio / Fin.
@@ -145,7 +145,7 @@ class ArqMegaMenu extends ArqElement {
   #columns(tab) {
     const s = this.#navigation?.sections ?? {};
     if (tab === 'por-espacio') return [s.interior, s.exterior].filter(Boolean);
-    if (tab === 'lamparas-y-artefactos') return [s.lamparas, s.artefactos].filter(Boolean);
+    if (tab === 'lamparas-y-artefactos') return [s['lamparas-y-artefactos']].filter(Boolean);
     return [];
   }
 
@@ -160,12 +160,16 @@ class ArqMegaMenu extends ArqElement {
       .join('');
     root.querySelector('.panels').innerHTML = available
       .map((t) => {
+<<<<<<< HEAD
         // Por espacio: «Ver todos los productos» abajo a la izquierda, en la posición del «Ver todo…» de Lámparas y artefactos
         const content =
           t.id === 'colecciones'
             ? this.#collections(nav)
             : this.#sectionColumns(this.#columns(t.id), t.id === 'por-espacio') +
               (t.id === 'por-espacio' ? `<arq-button class="all-products" type="underline" show-underline show-icon icon="arrow-up-right" href="/arq/productos">Ver todos los productos</arq-button>` : '');
+=======
+        const content = t.id === 'colecciones' ? this.#collections(nav) : this.#sectionColumns(this.#columns(t.id), t.id === 'por-espacio' || t.id === 'lamparas-y-artefactos');
+>>>>>>> bd51b3f2391a0b9302ed0c2e3ce4b96267aa3cf1
         return `<div class="panel panel--${t.id}" role="tabpanel" id="${ids(t).panel}" aria-labelledby="${ids(t).tab}" data-tab="${t.id}"${t.id === this.tab ? '' : ' hidden'}>${content}</div>`;
       })
       .join('');

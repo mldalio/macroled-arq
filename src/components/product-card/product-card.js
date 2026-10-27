@@ -82,6 +82,7 @@ class ArqProductCard extends ArqElement {
     imageLit: { type: String }, // principal (hero), luz encendida
     imageHoverLit: { type: String }, // hover con Iluminar: ambiente 1 encendido
     loading: { type: Boolean }, // card de carga (skeleton)
+    family: { type: String }, // familia de la base; Fuji, Mini Kai, Mini Kai Round y Sen no recortan la foto. Tori Visera, por el nombre del producto.
   };
   static template =
     `<div class="card">` +
@@ -209,6 +210,7 @@ class ArqProductCard extends ArqElement {
     const card = root.querySelector('.card');
     card.classList.toggle('is-loading', this.loading);
     card.classList.toggle('has-compare', this.showCompare);
+    this.#syncContain(card);
     // La card de carga no es contenido: el aviso lo da el listado (role="status")
     if (this.loading) this.setAttribute('aria-hidden', 'true');
     else if (changed.has('loading')) this.removeAttribute('aria-hidden');
@@ -254,6 +256,7 @@ class ArqProductCard extends ArqElement {
     root.querySelector('.fallback').textContent = name;
     root.querySelector('.compare-name').textContent = name ? ` ${name}` : '';
     this.#renderSize();
+    this.#syncContain(root.querySelector('.card'));
   }
 
   #swatches() {
@@ -345,6 +348,16 @@ class ArqProductCard extends ArqElement {
     // cargarla al activar Iluminar; confirmar el precargado.
     const otherSrc = this.#dark ? this.image : this.imageLit;
     if (baseSrc && otherSrc && otherSrc !== baseSrc) new Image().src = otherSrc;
+  }
+
+  // Fuji, Mini Kai, Mini Kai Round y Sen son la familia. Tori Visera es el
+  // producto (en la base la familia es Tori): si no, entrarían todas las Tori.
+  #syncContain(card) {
+    const key = (value) => String(value ?? '').normalize('NFD').replace(/\p{M}/gu, '').trim().toLowerCase();
+    const family = key(this.family);
+    const name = key(this.querySelector('[slot="name"]')?.textContent);
+    const contain = family === 'fuji' || family === 'mini kai' || family === 'mini kai round' || family === 'sen' || name === 'tori visera';
+    card?.classList.toggle('is-contain', contain);
   }
 
   #setSrc(img, src) {

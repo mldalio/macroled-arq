@@ -1669,6 +1669,13 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 - **Hover de cards con overlay** (category-card, collection-tile): texto y bajada en `slow` con `easing/out`, zoom de la foto en `slow` + `standard` (lo que dice motion/scale/hover). Antes 1280 ms (`slow × 4`). collection-tile escalona de a `fast` (antes 640 ms por tarjeta).
 - **Otros:** la foto de hover de product-card funde recién cuando cargó (antes aparecía de golpe la primera vez); la sección del Home se apaga al subir recién cuando salió entera de la pantalla; catalog-card se achica al apretar en `fast`; project-slider pasa de slide con un deslizamiento rápido (0,4 px/ms, como featured-products); la opacidad de swatch Disabled funde; catalog-nav-group retoma desde donde está si se vuelve a tocar; la galería de la ficha funde con `fade` al cambiar de foto o de variante, y un fundido de Iluminar en curso no salta; el visor de fotos entra con fundido y escala `enter`; compare-header Compact baja desde el navbar; collection-index funde la foto nueva sobre la anterior (sin lavarse); el riel de destacados vuelve al principio con un fundido, no rebobinando; el preview del mega-menú cambia el texto junto con la foto.
 - **Sin cambio:** project-slide sigue cambiando de tamaño de golpe (animarlo con transform obliga a rehacer el cálculo de posiciones del slider); la repetición de la entrada de las secciones del Home y la doble entrada sección + cards quedan (es la referencia pedida).
+
+## 2026-10-26 · Lámparas y artefactos sale de macrofamilia
+
+- Pedido: el filtro de Lámparas y artefactos se arma como Interior y Exterior, desde `macrofamilia`, no desde `product_type`.
+- En la hoja el valor es `Lámparas y Artefactos`. Los links de adentro son las `subfamilia` de esos productos (hoy «Lámpara» y «Artefacto»). Esos productos no entran al listado general: se ven en esa categoría. El sidebar, el mega-menú, el menú mobile y los links del footer y del Home apuntan a `?environment=Lámparas y Artefactos`.
+- **Colecciones** (sidebar, mega-menú, menú mobile, buscador y la tira del Home) salen de `familia`: una entrada por familia de las luminarias que se listan, en orden alfabético, y el link abre `?family=`. En el sidebar, abrir Colecciones cierra los otros grupos. Las filas `product_type` «Colección» siguen para la página de la colección y «Explora la colección» de la ficha.
+- **Breadcrumb:** en el listado de una familia, Inicio / Productos / nombre. No dice Colecciones: no hay página de la que se llegue. En la ficha de una luminaria, Productos / su `familia` (`?family=`) / el producto, y «Ver colección» va a ese listado. En la ficha de una lámpara o artefacto, Lámparas y artefactos / su subfamilia / el producto. La página de colección del CMS es Inicio / Productos / nombre.
 - Figma: `motion/easing/in-out` nuevo y descripciones de Motion al día; fichas doc/toggle, doc/mega-menu, doc/navbar, doc/search-sheet, doc/product-card y doc/category-card actualizadas. DESIGN.md §6 y §8 actualizado, y su copia en Plan del proyecto sincronizada entera con el repo (arrastraba cambios anteriores sin pasar).
 
 ## 2026-10-26 · Configurador de Daö en un modal, paso por paso
@@ -1693,3 +1700,33 @@ Pasada con los skills emil-design-eng, improve-animations, find-animation-opport
 - **Quedan sin hacer:** deslizar la foto en la galería de la ficha y en el visor (no está en Figma: `TODO` diseño); el encabezado fijo de variants-table y la cabecera de la comparativa con `scroll-timeline` (requiere medirlo en un teléfono); `background-attachment: fixed` del shimmer (solo con evidencia); `viewport-fit=cover` e `interactive-widget` en el meta viewport (pendiente del sitio).
 - **Para la base:** hay URLs de fotos que dan 404 (por ejemplo `TORI-J-600-3W-R-WW_HERO_OFF.png`).
 - **DESIGN.md:** falta pasar a §2 (grilla Mobile), §8 (product-card con muchos acabados, compare-bar Mobile plegada) y la ficha de breadcrumb, en una rama `docs/` y su copia en Figma.
+
+## 2026-10-27 · Capas de la página (z-index)
+
+- Problema: los z-index de adentro de las tarjetas se escapaban a la página. product-card pone los acabados y «Comparar» en 4 (`--card-above`), el mismo valor que el navbar, y como la card va después en el DOM le ganaba: al desplazar, los swatches y el checkbox pasaban por encima del navbar, del mega-menú, de la barra de Productos y de la compare-bar, y el link estirado (3) tapaba los clics en la barra de Productos.
+- Decisión: cada componente que usa z-index para ordenar sus propias piezas se aísla (`isolation: isolate`) y queda en la capa 0 de la página. Hoy: todas las tarjetas con link estirado (`.card` en `src/base/card-link.css`: product-card, family-card, category-card, collection-tile, download-card, line-card), product-gallery, collection-index, cta-block, compare-table y variants-table. Un componente nuevo con z-index internos hace lo mismo en su `:host` o en su contenedor.
+- Escala de la página (sin token: no es un valor de Figma). Solo estos valores salen del componente:
+
+| Capa | Qué |
+| --- | --- |
+| 0 | Contenido y componentes aislados |
+| 1 | Elementos sobre su propio fondo dentro de un componente no aislado (lo mínimo) |
+| 2 | Menús de select e input Select, compare-header, breadcrumb e Iluminar sobre la foto de la ficha |
+| 3 | Barras fijas dentro de la página: barra de Productos, compare-bar, barra y scroll de variants-table |
+| 4 | navbar (con mega-menú, search-sheet, menú Mobile y su scrim) |
+| 5 | preloader |
+| top layer | Diálogos nativos (`showModal`): filter-panel, download-modal, compare-picker, visor de fotos, configurador |
+
+- Webflow: si una página de Macroled pone algo con z-index mayor a 4 (un widget, un banner), queda sobre el navbar de Arq. No se sube la escala hasta ver un caso.
+
+## 2026-10-27 · Ficha técnica con cotas
+
+Hoja de Figma «pdf · cotas A2 · 1 hoja» (2992:45969). Rama `feat/arq-pdf-cotas`.
+
+- **pdf-cover (decisión de Lau, se aparta de la hoja de Figma):** nombre y SKU arriba, a todo el ancho; debajo, la foto en un cuadrado de `layout/pdf-cover-image` (pasó de 200 a 240 en Figma) y, a `space/gap/md`, el dibujo de cotas del mismo alto, los dos enteros; las cotas sin recuadro, sobre el blanco de la hoja; y los datos clave abajo, a todo el ancho (`space/gap/lg`). Sin dibujo, la foto queda sola.
+- **Cotas horizontales (decisión de Lau):** una cota vertical o cuadrada va en un cuadrado igual al de la foto; una horizontal se ensancha lo que necesita, hasta 1,5 veces la foto (`cotaWidth`), y si es más horizontal queda más baja, centrada. Así las medidas de la más horizontal (Mini Daö Trimless Triple) llegan a unos 9 pt impresos; en el cuadrado quedaban en 6 pt, y a todo lo ancho la cota quedaba demasiado grande. Se probaron antes 3:4 con el nombre al lado (la hoja de Figma, 160 × 213), un recuadro punteado que se ensanchaba hasta una columna de especificaciones y cotas siempre cuadradas.
+- **Textos de impresión (decisión de Lau):** nombre `role/heading-1` (32 px = 24 pt), SKU `role/body-compact`, títulos de sección `role/body-lg-regular` (12 pt), etiqueta y valor de las filas `role/body-compact` y `role/body-compact-regular` (14 px = 10,5 pt) con padding vertical `space/padding/sm`. Datos clave, encabezado y pie sin cambios.
+- **Una o dos hojas (decisión de Lau):** la meta es una hoja, pero con los datos reales muchas fichas tienen más filas que Figma (Kanu Jardín: 27 contra 15) y se acepta la segunda hoja. Más adelante el archivo de cotas puede venir de una columna de Sheets.
+- **Foto entera** (contain), como antes: Figma la recorta (cover) y con las fotos reales se cortaba la base de los productos altos.
+- **Cotas:** PNG en `MACROLED/ARQ/cotas/` (un archivo por medida y uno por familia), sin columna en la base. `src/data/cotas.js` relaciona cada SKU con su archivo por patrones sobre el SKU, como `finishes.js` con los acabados. Se piden al CloudFront en PNG (con CORS; el JPEG ensucia las líneas) a 4 × los px de Figma. `FUJI_12W.png` dibuja la Fuji de 7 W y se usa para ella; `DAO-E-H` es el Pinhole y `DAO_cabezal` el Cabezal Direccionable. Sin dibujo hoy: Mini Kai, Mini Kai Round, Sen, Töri Visera y Mini Töri. Sin uso: los archivos por familia (salvo PAR11), `DAO_ARO`, `DAO_PANAL` y `DAO_accesorios`.
+- **Especificaciones en dos columnas** (pdf-spec-row · 2 col, token nuevo `layout/pdf-spec-label-compact`, 160): primera mitad de las filas a la izquierda, el resto a la derecha. Una sola tabla de cinco columnas para que las reglas de las dos columnas queden alineadas aunque una fila ocupe dos líneas. Secciones a `space/gap/lg`; arrancan a `space/padding/md` de pdf-cover.

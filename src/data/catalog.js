@@ -20,6 +20,7 @@ import { ATTRIBUTES, DOWNLOAD_FILTERS, TABLE_COLUMNS, attributeInfo, keyData, sp
 import { variantOptions, findVariant, choose } from './variants.js';
 import { normalize, queryWords, matchWords } from './text.js';
 import { finishImage } from './finishes.js';
+import { cotaUrl } from './cotas.js';
 
 let pending = null;
 
@@ -97,12 +98,22 @@ function matchingVariant(group, filters, first = group.defaultVariant) {
   return ordered.find((variant) => variantMatches(variant, filters)) ?? null;
 }
 
+// Macrofamilia de la hoja (mismo criterio que Interior y Exterior). Sus links
+// son las subfamilias. product_type en esas filas suele venir vacío.
+export const LAMPS_ENVIRONMENT = 'Lámparas y Artefactos';
+
 // Qué productos se listan (Productos, categorías y navegación): los que tienen SKU
 // predeterminado marcado en la base (is_group_default), una card por grupo. Sin
 // product_type en la categoría, solo Luminarias: las colecciones no son productos
-// y accesorios, lámparas y artefactos se ven en su categoría. La búsqueda (?q=) y
-// las fichas no usan esta regla: encuentran todo.
-const isListed = (group, productType) => group.hasDefault && (productType ? true : group.productType === 'Luminaria');
+// y los accesorios quedan afuera. Lámparas y artefactos se listan en su
+// macrofamilia, no en el listado general. La búsqueda (?q=) y las fichas no usan
+// esta regla: encuentran todo. category: { productType, environment }.
+const isListed = (group, category = {}) => {
+  if (!group.hasDefault) return false;
+  if (category.productType) return true;
+  if (group.environment.includes(LAMPS_ENVIRONMENT)) return category.environment === LAMPS_ENVIRONMENT;
+  return group.productType === 'Luminaria';
+};
 
 function inCategory(group, { environment, application, productType, collection, family } = {}) {
   if (environment && !group.environment.includes(environment)) return false;
@@ -247,6 +258,7 @@ function productCard(group, variant = firstFinishVariant(group) ?? group.default
     // Reposo: hero (img_main). Hover sin Iluminar: hero encendido (img_main_on); con Iluminar:
     // ambiente 1 encendido (img_ambient_1_on). Vale donde se use la card (docs/decisiones.md,
     // 2026-10-16 · Hover de product-card). Sin hero encendido, el hover cae al ambiente 1.
+    family: group.family,
     image: images.studio ?? null,
     imageHover: images.studioOn ?? images.context ?? null,
     imageLit: images.studioOn ?? null,
@@ -271,7 +283,7 @@ export async function listProducts({ filters, query, ...category } = {}) {
   const found = new Map();
   for (const group of groups) {
     if (!inCategory(group, category)) continue;
-    if (!words.length && !isListed(group, category.productType)) continue;
+    if (!words.length && !isListed(group, category)) continue;
     const match = words.length ? searchMatch(group, words) : { variant: group.defaultVariant, bySku: false };
     if (match) found.set(group, match);
   }
@@ -289,25 +301,33 @@ export async function listProducts({ filters, query, ...category } = {}) {
 }
 
 /**
- * Familias de la Home (collection-index): una por `familia` de las luminarias
- * que se listan, en el orden de la hoja. Foto: ambiente 1 del primer grupo;
+ * Familias que se listan: una por `familia` de las luminarias, en orden
+ * alfabético. Lámparas y artefactos no entran (se ven en su macrofamilia).
+ * Devuelve [{ name, groups }].
+ */
+function listedFamilies(groups) {
+  const byName = new Map();
+  for (const group of groups) {
+    if (!isListed(group)) continue;
+    const name = group.family.trim();
+    if (!name) continue;
+    const key = normalize(name);
+    if (!byName.has(key)) byName.set(key, { name, groups: [] });
+    byName.get(key).groups.push(group);
+  }
+  return [...byName.values()].sort((a, b) => a.name.localeCompare(b.name, 'es', { sensitivity: 'base', numeric: true }));
+}
+
+/**
+ * Familias de la Home (collection-index), en orden alfabético. Foto: ambiente 1 del primer grupo;
  * sin ella, la de estudio. El link abre el listado de esa familia.
  */
 export async function getFamilies() {
   const { groups } = await loadCatalog();
-  const seen = new Map();
-  for (const group of groups) {
-    if (!isListed(group)) continue;
-    const name = group.family.trim();
-    if (!name || seen.has(normalize(name))) continue;
-    const images = pick(group.defaultVariant.images);
-    seen.set(normalize(name), {
-      name,
-      href: categoryHref({ family: name }),
-      image: images.context ?? images.studio ?? null,
-    });
-  }
-  return [...seen.values()];
+  return listedFamilies(groups).map(({ name, groups: own }) => {
+    const images = pick(own[0].defaultVariant.images);
+    return { name, href: categoryHref({ family: name }), image: images.context ?? images.studio ?? null };
+  });
 }
 
 /** Cuántas cards daría un listado con estos filtros (para "Ver N productos"). */
@@ -472,9 +492,10 @@ export async function skuDownloads(sku) {
 
 /**
  * Datos de la ficha técnica en PDF de un SKU de cualquier grupo: { name, sku,
- * image, keyData, sections }, o null si no existe. image es la imagen
+ * image, cota, keyData, sections }, o null si no existe. image es la imagen
  * principal (img_main en Typesense); si falta, la de estudio de la variante o
- * de la predeterminada. keyData, los datos clave (attributes.js, KEY_DATA);
+ * de la predeterminada. cota, el dibujo con medidas (cotas.js) o null.
+ * keyData, los datos clave (attributes.js, KEY_DATA);
  * sections, como el acordeón de la ficha.
  */
 export async function getDatasheet(sku) {
@@ -488,6 +509,7 @@ export async function getDatasheet(sku) {
     name: variantName(group, variant),
     sku: variant.sku,
     image: own.main ?? own.studio ?? base.main ?? base.studio ?? null,
+    cota: cotaUrl(variant.sku),
     keyData: keyData(variant.values),
     sections: specSections(variant.values),
   };
@@ -717,16 +739,16 @@ function searchMatch(group, words) {
 const exactFirst = (items) => items.sort((a, b) => Number(a.typo) - Number(b.typo));
 
 /**
- * Búsqueda por nombre, colección, aplicación o SKU: { results: [{ kind:
+ * Búsqueda por nombre, familia, aplicación o SKU: { results: [{ kind:
  * 'product' | 'collection', name, meta, href, image }], total }. Un resultado por grupo (meta: el SKU; si coincide
- * un SKU, ese) y uno por colección (meta: "Colección"), como search-dropdown. limit: productos;
- * collectionLimit: colecciones, aparte, para que muchos productos no las dejen afuera. Las colecciones
- * llevan a la navegación de sus productos (?collection=).
+ * un SKU, ese) y uno por familia (meta: "Colección"), como search-dropdown. limit: productos;
+ * collectionLimit: familias, aparte, para que muchos productos no las dejen afuera. Las familias
+ * llevan al listado de sus productos (?family=).
  */
 export async function searchProducts(query, { limit = 5, collectionLimit = 3 } = {}) {
   const words = queryWords(query);
   if (!words.length) return { results: [], total: 0 };
-  const { groups, collections } = await loadCatalog();
+  const { groups } = await loadCatalog();
   const products = exactFirst(
     groups.flatMap((group) => {
       const match = searchMatch(group, words);
@@ -736,9 +758,10 @@ export async function searchProducts(query, { limit = 5, collectionLimit = 3 } =
     }),
   );
   const found = exactFirst(
-    collections.flatMap((c) => {
-      const match = matchWords(c.name, words);
-      return match ? [{ kind: 'collection', name: c.name, meta: 'Colección', href: categoryHref({ collection: c.id }), image: c.images?.studio ?? null, typo: match === 'typo' }] : [];
+    listedFamilies(groups).flatMap((family) => {
+      const match = matchWords(family.name, words);
+      const images = pick(family.groups[0].defaultVariant.images);
+      return match ? [{ kind: 'collection', name: family.name, meta: 'Colección', href: categoryHref({ family: family.name }), image: images.studio ?? images.context ?? null, typo: match === 'typo' }] : [];
     }),
   );
   // Cada tipo con su propio límite: con muchos productos que coinciden («dao»: 6) las
@@ -801,27 +824,29 @@ export async function listCompareCandidates({ query = '', selected = [] } = {}) 
 /**
  * Árbol único para mega-menu, menú mobile y catalog-nav (decisiones.md,
  * 2026-10-02 · Navegación), con las secciones del mega-menu de Figma (841:2282):
- *   { sections: { exterior, interior, lamparas, artefactos }, collections }
+ *   { sections: { exterior, interior, 'lamparas-y-artefactos' }, collections }
  *   sección: { id, label, href, all: { label, href }, links: [{ label, href, count, image, thumb }] }
  *   colección: { label, meta, href, eyebrow, image, thumb }
- * Exterior e Interior: aplicaciones de luminarias + Artefactos y Lámparas de
- * ese entorno. Lámparas y Artefactos: un link por producto. Las opciones sin
+ * Exterior, Interior y Lámparas y Artefactos: la macrofamilia, y adentro sus
+ * subfamilias. En Interior y Exterior se suman Artefactos y Lámparas de ese
+ * entorno (product_type). Colecciones: una por `familia` de las luminarias
+ * que se listan. Las opciones sin
  * productos no aparecen; una sección sin links es null.
  * image: foto del preview del mega-menu (contexto; sin contexto, estudio).
  * fallbacks: fotos que el preview prueba en orden si image no carga.
  * thumb: miniatura del submenú mobile (estudio). eyebrow: texto sobre la foto
  * del preview en Colecciones ("Línea Interior", frame 2295:23730).
  * Foto de Por espacio (Embutir, Jardín, Artefactos…): img_ambient_1_on del
- * producto de la categoría marcado con is_menu_default; de Colecciones: la de
- * su fila col-*. Sin esa foto, o si no carga: las de contexto de los
+ * producto de la categoría marcado con is_menu_default. Colecciones: fotos de
+ * contexto de los productos de esa familia, en orden de la hoja. Sin esa foto,
  * productos de la categoría, en orden,
  * y después las de estudio; en una colección, solo las de contexto
  * (decisiones.md, 2026-10-20 · Fotos del mega-menú).
  */
 export async function getNavigation() {
-  const { groups: all, collections } = await loadCatalog();
+  const { groups: all } = await loadCatalog();
   const groups = all.filter((g) => g.hasDefault); // los que se listan (isListed)
-  const count = (filter) => groups.filter((g) => inCategory(g, filter) && isListed(g, filter.productType)).length;
+  const count = (filter) => groups.filter((g) => inCategory(g, filter) && isListed(g, filter)).length;
   const groupImages = (g) => {
     const images = pick(g.defaultVariant.images);
     return { image: images.context ?? images.studio ?? null, thumb: images.studio ?? null };
@@ -849,41 +874,34 @@ export async function getNavigation() {
     };
   };
   const environmentSection = (environment, allLabel) => {
-    const applications = [...new Set(groups.filter((g) => g.productType === 'Luminaria' && g.environment.includes(environment)).map((g) => g.application).filter(Boolean))];
+    const lamps = environment === LAMPS_ENVIRONMENT;
+    const applications = [...new Set(groups.filter((g) => g.environment.includes(environment) && (lamps ? isListed(g, { environment }) : g.productType === 'Luminaria')).map((g) => g.application).filter(Boolean))];
     const links = [
-      ...applications.map((application) => link(application, { environment, application, productType: 'Luminaria' })),
-      link('Artefactos', { environment, productType: 'Artefacto' }),
-      link('Lámparas', { environment, productType: 'Lámpara' }),
+      ...applications.map((application) => link(application, lamps ? { environment, application } : { environment, application, productType: 'Luminaria' })),
+      ...(lamps ? [] : [link('Artefactos', { environment, productType: 'Artefacto' }), link('Lámparas', { environment, productType: 'Lámpara' })]),
     ].filter((l) => l.count);
     return links.length ? { id: normalize(environment), label: environment, href: categoryHref({ environment }), all: { label: allLabel, href: categoryHref({ environment }) }, links } : null;
   };
-  const typeSection = (productType, label, allLabel) => {
-    const links = groups.filter((g) => g.productType === productType).map((g) => ({ label: g.name, href: productHref(g.id, g.defaultVariant.sku), count: 1, ...groupImages(g) }));
-    return links.length ? { id: normalize(label), label, href: categoryHref({ productType }), all: { label: allLabel, href: categoryHref({ productType }) }, links } : null;
-  };
-  const collectionLink = (c) => {
-    const own = groups.filter((g) => g.collection === c.id);
-    const images = pick(c.images);
+  const familyLink = (family) => {
+    const own = family.groups;
     const environments = [...new Set(own.flatMap((g) => g.environment))];
     return {
-      label: c.name,
-      meta: [...new Set(own.map((g) => g.application ?? g.productType).filter(Boolean))].join(' · '),
-      // A la navegación de productos de la colección (como el sidebar), no a su página
-      href: categoryHref({ collection: c.id }),
+      label: family.name,
+      meta: [...new Set(own.map((g) => g.application).filter(Boolean))].join(' · '),
+      href: categoryHref({ family: family.name }),
       eyebrow: environments.length ? `Línea ${environments.join(' · ')}` : '',
-      // Colecciones: solo fotos de contexto, nunca de estudio (pedido de Lau, 2026-10-20)
-      ...preview([images.menu, ...productPhotos(own, { studio: false })]),
-      thumb: images.studio ?? null,
+      // Solo fotos de contexto, nunca de estudio (pedido de Lau, 2026-10-20)
+      ...preview(productPhotos(own, { studio: false })),
+      thumb: own.map(groupImages).find((i) => i.thumb)?.thumb ?? null,
     };
   };
   return {
     sections: {
       interior: environmentSection('Interior', 'Ver todo interior'),
       exterior: environmentSection('Exterior', 'Ver todo exterior'),
-      lamparas: typeSection('Lámpara', 'Lámparas', 'Ver todas las lámparas'),
-      artefactos: typeSection('Artefacto', 'Artefactos', 'Ver todos los artefactos'),
+      'lamparas-y-artefactos': environmentSection(LAMPS_ENVIRONMENT, 'Ver todo lámparas y artefactos'),
     },
-    collections: collections.map(collectionLink).filter((c) => c.meta),
+    collections: listedFamilies(groups).map(familyLink),
   };
 }
 
@@ -891,25 +909,23 @@ export async function getNavigation() {
 // Lámparas y artefactos, Colecciones) y su "Todo…" están fijos en el HTML de
 // la página; esto trae lo de adentro. Solo las categorías con productos.
 export async function getCatalogNav() {
-  const { groups: all, collections } = await loadCatalog();
+  const { groups: all } = await loadCatalog();
   const groups = all.filter((g) => g.hasDefault);
-  const count = (filter) => groups.filter((g) => inCategory(g, filter) && isListed(g, filter.productType)).length;
+  const count = (filter) => groups.filter((g) => inCategory(g, filter) && isListed(g, filter)).length;
   const link = (label, filter) => ({ label, href: categoryHref(filter), count: count(filter) });
   const environment = (env) => {
-    const applications = [...new Set(groups.filter((g) => g.productType === 'Luminaria' && g.environment.includes(env)).map((g) => g.application).filter(Boolean))];
+    const lamps = env === LAMPS_ENVIRONMENT;
+    const applications = [...new Set(groups.filter((g) => g.environment.includes(env) && (lamps ? isListed(g, { environment: env }) : g.productType === 'Luminaria')).map((g) => g.application).filter(Boolean))];
     return [
-      ...applications.map((application) => link(application, { environment: env, application, productType: 'Luminaria' })),
-      link('Artefactos', { environment: env, productType: 'Artefacto' }),
-      link('Lámparas', { environment: env, productType: 'Lámpara' }),
+      ...applications.map((application) => link(application, lamps ? { environment: env, application } : { environment: env, application, productType: 'Luminaria' })),
+      ...(lamps ? [] : [link('Artefactos', { environment: env, productType: 'Artefacto' }), link('Lámparas', { environment: env, productType: 'Lámpara' })]),
     ].filter((l) => l.count);
   };
   return {
     interior: environment('Interior'),
     exterior: environment('Exterior'),
-    'lamparas-artefactos': [link('Lámparas', { productType: 'Lámpara' }), link('Artefactos', { productType: 'Artefacto' })].filter((l) => l.count),
-    colecciones: collections
-      .filter((c) => groups.some((g) => g.collection === c.id))
-      .map((c) => ({ label: c.name, href: categoryHref({ collection: c.id }) })),
+    'lamparas-artefactos': environment(LAMPS_ENVIRONMENT),
+    colecciones: listedFamilies(groups).map((family) => ({ label: family.name, href: categoryHref({ family: family.name }) })),
   };
 }
 

@@ -25,10 +25,13 @@ export const config = Object.freeze({
     // según la foto.
     sampleFrom: 'https://s3.coresagroup.com/',
     sampleBase: 'https://d1zltvqju4u8ql.cloudfront.net/fit-in/128x128/',
-    // Foto de la ficha técnica en PDF: el mismo CloudFront, en JPEG y al tamaño
-    // que usa la hoja ({size} en px). decisiones.md, 2026-10-23 · Ficha técnica:
-    // una hoja menos.
-    pdfBase: 'https://d1zltvqju4u8ql.cloudfront.net/fit-in/{size}x{size}/filters:format(jpeg)/',
+    // Imágenes de la ficha técnica en PDF: el mismo CloudFront, al tamaño que
+    // usa la hoja ({size} en px) y en {format}: jpeg la foto, png las cotas.
+    // decisiones.md, 2026-10-23 · Ficha técnica: una hoja menos.
+    pdfBase: 'https://d1zltvqju4u8ql.cloudfront.net/fit-in/{size}x{size}/filters:format({format})/',
+    // Dibujos con cotas de la ficha técnica en PDF: un PNG por medida o por
+    // familia (`<archivo>.png`, src/data/cotas.js). Termina en «/».
+    cotasBase: 'https://s3.coresagroup.com/MACROLED/ARQ/cotas/',
   }),
   // Ficha técnica en PDF: se cargan de jsDelivr con versión fija al primer clic
   // y no entran en dist/arq.js (decisiones.md, 2026-10-02 · Ficha técnica en PDF).

@@ -6,9 +6,8 @@
 //     <arq-button slot="action" type="outline" href="/arq/productos" data-arq-menu="colecciones">Ver todo</arq-button>
 //   </arq-collection-index>
 //
-// Los nombres salen de la columna familia de las luminarias publicadas
-// (getFamilies). Cada link abre /arq/productos?family=. El botón «Ver todo»
-// queda en el HTML.
+// Los nombres salen de la columna familia, en orden alfabético (getFamilies).
+// Cada link abre /arq/productos?family=.
 //
 // Pasar el mouse (o enfocar) un nombre muestra su foto. El primero arranca
 // visible. En táctil, el primer toque muestra la foto y el segundo entra.
@@ -71,10 +70,6 @@ class ArqCollectionIndex extends ArqElement {
       console.error('[arq] collection-index: no se pudieron cargar las familias', error);
       return;
     }
-    const action = this.querySelector('[slot="action"]');
-    for (const child of [...this.children]) {
-      if (child !== action) child.remove();
-    }
     const links = families.map((family) => {
       const link = document.createElement('a');
       link.href = family.href;
@@ -88,8 +83,8 @@ class ArqCollectionIndex extends ArqElement {
       link.append(document.createTextNode(family.name));
       return link;
     });
-    if (action) action.before(...links);
-    else this.append(...links);
+    for (const child of [...this.children]) child.remove();
+    this.append(...links);
   }
 
   #links() {

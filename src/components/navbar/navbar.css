@@ -4,8 +4,9 @@
 /* Default: queda arriba al desplazar (sticky). Transparent: también sticky,
    encima del hero gracias al margen inferior negativo (TODO diseño:
    confirmar). Así, con announcement-bar arriba, arranca debajo de la barra y
-   se pega arriba cuando la barra se va con el scroll. z-index sin token: por
-   encima del contenido de la página. */
+   se pega arriba cuando la barra se va con el scroll. z-index sin token:
+   capa 4, por encima de la barra de Iluminar (3). El preloader queda en 5
+   (docs/decisiones.md, 2026-10-27 · Capas de la página). */
 :host {
   /* Mega-menú: entra en motion/duration/panel (400 ms), como el search-sheet,
      y se va un poco antes, en motion/duration/slow (320 ms), los dos con

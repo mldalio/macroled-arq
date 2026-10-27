@@ -102,6 +102,7 @@ class ArqColeccion extends ArqElement {
     const elements = cards.map((data) => {
       const card = document.createElement('arq-product-card');
       card.href = data.href;
+      card.family = data.family;
       card.image = data.image;
       card.imageHover = data.imageHover;
       card.imageLit = data.imageLit;

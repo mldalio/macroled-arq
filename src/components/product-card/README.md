@@ -55,7 +55,7 @@ Tarjeta de producto (Productos) o de colección (Colecciones, página de colecci
 
 | Parte | Token |
 | --- | --- |
-| Imagen | `ratio/portrait` (7:10; un contenedor puede cambiarla con la variable local `--card-ratio`, como el search-sheet con `ratio/square`), sin borde (como el set; la ficha dice `color/border/subtle`). Detrás de la foto, con la luz apagada un liso `rgb(238, 233, 226)` y con Iluminar —y también en el hover de la foto— un gris `rgb(48, 48, 48)` con un halo al centro (`TODO` diseño: ninguno tiene token). Con Iluminar ese fondo entra en el fundido de la página; el hover lo funde aparte, el doble de `motion/duration/slow` |
+| Imagen | `ratio/portrait` (7:10; un contenedor puede cambiarla con la variable local `--card-ratio`, como el search-sheet con `ratio/square`), sin borde (como el set; la ficha dice `color/border/subtle`). La foto llena el recuadro. En Fuji, Mini Kai, Mini Kai Round, Sen y en el producto Tori Visera se muestra entera (`object-fit: contain`; `TODO` diseño: no está en Figma). Detrás de la foto, el mismo fondo que la imagen de la ficha: `color/surface/subtle` (con Iluminar pasa al gris oscuro de ese token, en el fundido de la página). En hover y foco, con Iluminar apagado, el fondo es ese mismo negro (`color/surface/inverse-hover`, neutral/750) |
 | Gap imagen–info | `space/gap/md` (Small `space/gap/sm`) |
 | Info | padding `space/gap/xs` arriba y `space/gap/sm` abajo, gap `space/gap/xs` (Small `space/gap/md`) |
 | Título | Large: nombre y acabados en fila, gap `space/gap/sm`. Small (y Large hasta 767 px): en **columna**, el nombre arriba y los acabados debajo, gap `space/gap/sm` |
