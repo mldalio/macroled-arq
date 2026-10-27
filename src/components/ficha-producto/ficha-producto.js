@@ -1032,13 +1032,17 @@ class ArqFichaProducto extends ArqElement {
   }
 }
 
-// Migas de la ficha (hasta 3, sin Inicio: va sobre la foto). Una luminaria
-// sale de Productos y sigue a su familia. Una lámpara o artefacto sigue a
-// su macrofamilia y, si tiene, a su subfamilia.
+// Migas de la ficha (hasta 4, sin Inicio: va sobre la foto). Siempre salen
+// de Productos, como las del listado. Una luminaria sigue a Colecciones (abre
+// el mega-menu en esa pestaña) y a su familia. Una lámpara o artefacto sigue
+// a su macrofamilia y, si tiene, a su subfamilia.
+const PRODUCTS_CRUMB = { label: 'Productos', href: '/arq/productos' };
+const COLLECTIONS_CRUMB = { label: 'Colecciones', href: '/arq/productos', menu: 'colecciones' };
+
 function headerTrail(group, collection) {
   const lamps = group.environment?.includes(LAMPS_ENVIRONMENT) && !group.environment.some((env) => env === 'Interior' || env === 'Exterior');
   if (lamps) {
-    const crumbs = [{ label: 'Lámparas y artefactos', href: categoryHref({ environment: LAMPS_ENVIRONMENT }) }];
+    const crumbs = [PRODUCTS_CRUMB, { label: 'Lámparas y artefactos', href: categoryHref({ environment: LAMPS_ENVIRONMENT }) }];
     if (group.application) crumbs.push({ label: group.application, href: categoryHref({ environment: LAMPS_ENVIRONMENT, application: group.application }) });
     return { crumbs };
   }
@@ -1046,24 +1050,18 @@ function headerTrail(group, collection) {
   if (family) {
     const href = categoryHref({ family });
     return {
-      crumbs: [
-        { label: 'Productos', href: '/arq/productos' },
-        { label: family, href },
-      ],
+      crumbs: [PRODUCTS_CRUMB, COLLECTIONS_CRUMB, { label: family, href }],
       see: { href, label: `Ver colección ${family}` },
     };
   }
   if (collection) {
     const href = categoryHref({ collection: collection.id });
     return {
-      crumbs: [
-        { label: 'Productos', href: '/arq/productos' },
-        { label: collection.name, href },
-      ],
+      crumbs: [PRODUCTS_CRUMB, COLLECTIONS_CRUMB, { label: collection.name, href }],
       see: { href, label: `Ver colección ${collection.name}` },
     };
   }
-  return { crumbs: [{ label: 'Productos', href: '/arq/productos' }] };
+  return { crumbs: [PRODUCTS_CRUMB] };
 }
 
 function image(src, alt, className = '') {

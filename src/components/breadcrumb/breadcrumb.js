@@ -10,7 +10,7 @@
 //     <arq-breadcrumb-item current>Kanu Jardín</arq-breadcrumb-item>
 //   </arq-breadcrumb>
 //
-// Levels (3 · 2) no es una prop: la cantidad de niveles es la cantidad de ítems.
+// Levels (4 · 3 · 2) no es una prop: la cantidad de niveles es la cantidad de ítems.
 
 import { ArqElement } from '../../base/arq-element.js';
 import '../breadcrumb-item/breadcrumb-item.js';
