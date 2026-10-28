@@ -14,7 +14,9 @@
   max-width: var(--arq-layout-compare-slot);
 }
 
-/* Foto cuadrada layout/compare-thumb, fondo color/surface/subtle. Empty: icon/plus centrado */
+/* Foto cuadrada layout/compare-thumb, fondo color/surface/subtle. Filled: en
+   Light local (data-arq-theme="light", lo pone el JS), así el fondo es claro
+   también en compare-bar (Dark). Empty: icon/plus centrado */
 .thumb {
   position: relative;
   display: flex;

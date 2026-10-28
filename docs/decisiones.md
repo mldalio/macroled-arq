@@ -1816,3 +1816,31 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 ## 2026-10-28 · Breadcrumb de la ficha sin Colecciones
 
 - La ficha ya no muestra la migaja «Colecciones». Una luminaria queda Productos / su familia / el producto (Daö: Productos / Dao / Daö Simple).
+
+## 2026-10-28 · Impresión de la comparativa: grises y productos
+
+- Pedido de Lau, como en la ficha técnica (2026-10-27): los grises claros no salían impresos. Al imprimir, las líneas de compare-table pasan de `color/border/subtle` (tinta al 10 %) a `color/border/default`, y el fondo de la foto de compare-product de `color/surface/subtle` a `color/surface/strong` (con `print-color-adjust: exact`, para que el navegador no lo omita). En pantalla no cambia nada.
+- Cada producto se imprime solo con foto, nombre y SKU: ya no lleva la variante elegida (Color, Altura… como texto). El SKU ya identifica la variante.
+- **Textos como la ficha técnica (decisión de Lau):** al imprimir, la etiqueta de cada fila va en `role/body-sm` (9 pt), el valor en `role/body-sm-medium` (9 pt) y el título de grupo en `role/body-compact-medium` (10,5 pt), los mismos de las especificaciones del PDF de la ficha. Van fijos en el `@media print` de compare-table: la clase de la etiqueta dependía del ancho de la pantalla y, desde una de escritorio, salía en 12 pt. El nombre de cada producto sigue en 15 pt (`role/heading-3`): en la ficha el nombre de 18 pt es el título de la hoja; acá hay hasta tres, lado a lado.
+
+## 2026-10-28 · compare-product más chico
+
+- Pedido de Lau: en la comparativa, las cards de producto ocupaban mucho de la pantalla (la foto, cuadrada, tomaba todo el ancho de la columna: unos 500 px a 1920).
+- Decisión de Lau, después de probar varias versiones (una card de 240 px, un fondo de 240 px de alto, un cuadrado de 280 px como máximo): la foto es un cuadrado (`color/surface/subtle`) a todo el ancho de la columna, como estaba, y la foto va entera (`contain`) y centrada dentro del cuadrado, a `space/padding/xl` del borde (al imprimir, en el cuadrado de `layout/compare-column`, a `space/padding/md`). `layout/compare-media-max` queda como estaba (2000).
+- Título de la página («Comparar productos») en `role/heading-1` (`title-style="heading-1"` de page-header, como Catálogos): era `role/display`. Hay que volver a pegar el embed de `src/pages/comparativa.html` en Webflow.
+- Nombre (con la flecha del link al lado) y SKU a la izquierda; los selects a todo el ancho de la columna. Los valores de compare-table van centrados (en pantalla y al imprimir), como macroled.com.ar/comparativa.
+- Nombre en `role/body-xl` (era `role/heading-3`) y foto, info y selects a `space/gap/md` (era `space/gap/lg`).
+- compare-header Desktop toma las columnas de compare-table (como ya hacía al imprimir): la columna de controles suma `space/gap/lg` y cada producto lleva el padding de un valor, sin gap entre columnas. Antes la primera columna quedaba corrida unos 9 px respecto de la tabla y la tercera, unos 7.
+- `TODO` (Figma): el set de compare-product todavía muestra la foto sin aire alrededor, el nombre en `role/heading-3` y el gap `space/gap/lg`; la comparativa de Final, los valores alineados a la izquierda.
+
+## 2026-10-28 · Comparativa como Macroled
+
+- Pedido de Lau: la cabecera de cada producto similar a macroled.com.ar/comparativa, con sus tamaños, sumando líneas divisorias. Solo la cabecera: la tabla (títulos de grupo, textos y alto de las filas) queda como estaba. Reemplaza lo de la foto y el nombre de la entrada anterior (compare-product más chico).
+- **Medidas de Macroled (a 1440 px):** foto de 128 px centrada; nombre 17 px en negrita y SKU 13 px, centrados; líneas verticales entre columnas, también en la cabecera.
+- **compare-product:** la foto va en un cuadrado de `layout/compare-column` (160) en `color/surface/subtle`, centrado en la columna, con la foto entera a `space/padding/md` del borde (128 px, como Macroled). Nombre en `role/body-lg-medium` y SKU (`role/label`) centrados, a `space/gap/xs`. Quitar va en la esquina de la celda. Empty sigue siendo la caja punteada de toda la columna.
+- **compare-header (Desktop):** cada producto lleva la línea izquierda de su columna, como los valores de compare-table (`color/border/subtle`; al imprimir, `color/border/default`), y padding lateral `space/padding/lg` · `space/padding/xl` (más aire que un valor, con la misma diferencia entre lados, así el centro coincide con el de los valores).
+- `layout/compare-media-max` ya no lo usa compare-product: queda en 2000 en Figma. `TODO` (Figma): el set de compare-product y la comparativa de Final no tienen este diseño.
+
+## 2026-10-28 · Fotos de compare-bar sobre fondo claro
+
+- Pedido de Lau: en compare-bar (Dark local) la foto de cada producto salía sobre `color/surface/subtle` oscuro (`neutral/750`). Ahora la miniatura de compare-slot Filled lleva `data-arq-theme="light"` (Light local, DESIGN.md §2): el fondo es el `color/surface/subtle` claro, como la foto en el resto del sitio. El nombre, la meta y quitar siguen en Dark; el lugar vacío («+», Agregar producto) sigue el modo de la barra.

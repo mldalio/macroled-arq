@@ -31,7 +31,7 @@ Lugar de producto en compare-bar, en Desktop y en la lista apilada de Mobile. co
 
 | Parte | Token |
 | --- | --- |
-| Foto Default | `layout/compare-thumb` (48 × 48, token nuevo), fondo `color/surface/subtle`; Empty con `icon/plus` |
+| Foto Default | `layout/compare-thumb` (48 × 48, token nuevo), fondo `color/surface/subtle`; Filled en Light local (`data-arq-theme="light"` en la foto: fondo claro también en compare-bar, que es Dark); Empty con `icon/plus`, en el modo de la barra |
 | Ancho máximo | `layout/compare-slot` (400, token nuevo) |
 | Gap | `space/gap/sm-md`; nombre–meta `space/gap/xs` |
 | Textos | nombre `role/label` en `color/text/primary`; meta y "Agregar producto" `role/body-sm` en `color/text/secondary` |

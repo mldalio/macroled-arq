@@ -58,6 +58,35 @@
   min-width: 0;
 }
 
+/* Desktop: las columnas de producto son las de compare-table (como al
+   imprimir): la columna de controles suma el space/gap/lg de la de
+   etiquetas y cada producto lleva el padding de un valor (space/padding/md ·
+   space/gap/lg), sin gap entre columnas. Así cada card ocupa lo mismo que
+   los valores de su columna y los dos quedan centrados en el mismo eje. */
+@media screen and (min-width: 768px) {
+  .default {
+    gap: 0;
+  }
+
+  .default .controls {
+    padding-inline-end: var(--arq-space-gap-lg);
+  }
+
+  .products {
+    gap: 0;
+  }
+
+  /* Línea divisoria de cada columna (como macroled.com.ar/comparativa): la
+     misma línea izquierda color/border/subtle que los valores de la tabla.
+     Padding space/padding/lg · space/padding/xl: más aire que un valor, con
+     la misma diferencia entre los lados, así el centro coincide con el de los
+     valores (centrados) de la columna. */
+  .products > * {
+    padding-inline: var(--arq-space-padding-lg) var(--arq-space-padding-xl);
+    border-left: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  }
+}
+
 /* Compact: fijo bajo el navbar (alto medido en JS; antes de medir,
    layout/navbar-height). */
 .compact {
@@ -249,10 +278,13 @@
     overflow: visible;
   }
 
+  /* Línea divisoria de cada columna en color/border/default, como las de
+     compare-table impresa (color/border/subtle no sale impreso) */
   .products > * {
     flex: 1 1 0;
     width: auto;
     padding-inline: var(--arq-space-padding-md) var(--arq-space-gap-lg);
+    border-left: var(--arq-border-default) solid var(--arq-color-border-default);
   }
 }
 
