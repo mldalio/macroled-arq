@@ -237,7 +237,7 @@ function finishOptions(group, shown, active = {}) {
       sku: variant.sku,
       href: productHref(group.id, variant.sku),
       image: images.studio ?? null,
-      imageHover: images.studioOn ?? images.context ?? null,
+      imageHover: images.studioOn ?? images.context ?? images.contextOn ?? null,
       imageLit: images.studioOn ?? null,
       imageHoverLit: images.contextOn ?? images.context ?? images.studio ?? null,
     };
@@ -260,7 +260,7 @@ function productCard(group, variant = firstFinishVariant(group) ?? group.default
     // 2026-10-16 · Hover de product-card). Sin hero encendido, el hover cae al ambiente 1.
     family: group.family,
     image: images.studio ?? null,
-    imageHover: images.studioOn ?? images.context ?? null,
+    imageHover: images.studioOn ?? images.context ?? images.contextOn ?? null,
     imageLit: images.studioOn ?? null,
     // Con Iluminar: contexto encendido; sin él, el contexto apagado y, si no hay
     // ninguno, la contraria: la principal apagada.
@@ -273,7 +273,7 @@ const pick = (object = {}) => Object.fromEntries(Object.entries(object).filter((
 // ── Listados ─────────────────────────────────────────────────────────
 // Orden del listado sin búsqueda: los grupos de una misma colección (o, sin ella,
 // de la misma familia) juntos, en el orden en que aparece cada una en los datos.
-// Daö va casi al final, y después Tori Jardín y Tori Visera (esta, la última).
+// Dentro de cada ambiente, Daö va casi al final, y después Tori Jardín y Tori Visera (esta, la última).
 const LAST_FAMILY = 'dao';
 const LAST_GROUPS = ['tori jardin', 'tori visera'];
 
@@ -286,7 +286,9 @@ function byCollection(groups) {
   };
   const order = new Map();
   for (const group of groups) if (!order.has(key(group))) order.set(key(group), order.size);
-  return [...groups].sort((a, b) => tail(a) - tail(b) || order.get(key(a)) - order.get(key(b)));
+  // Primero Interior y después Exterior (un grupo en los dos va con Interior)
+  const space = (group) => (group.environment.includes('Interior') ? 0 : group.environment.includes('Exterior') ? 1 : 2);
+  return [...groups].sort((a, b) => space(a) - space(b) || tail(a) - tail(b) || order.get(key(a)) - order.get(key(b)));
 }
 
 /**
