@@ -8,39 +8,48 @@
   min-width: 0;
 }
 
+/* Como macroled.com.ar/comparativa (docs/decisiones.md, 2026-10-28 ·
+   Comparativa como Macroled): foto chica, nombre y SKU centrados en la
+   columna (compare-table centra los valores), selects a todo el ancho y
+   quitar en la esquina de la celda. Foto, info y selects a space/gap/md. */
 .product {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--arq-space-gap-lg);
+  gap: var(--arq-space-gap-md);
   width: 100%;
   height: 100%;
 }
 
-/* Media 1:1 (Filled), tope layout/compare-media-max, fondo color/surface/subtle */
+/* Media 1:1 (Filled): cuadrado de layout/compare-column (el de Mobile; en
+   Mobile ocupa la columna) en color/surface/subtle, centrado. La foto va
+   entera y centrada, a space/padding/md del borde (128 px, como Macroled). */
 .media {
-  position: relative;
+  box-sizing: border-box;
   width: 100%;
-  max-width: var(--arq-layout-compare-media-max);
+  max-width: var(--arq-layout-compare-column);
+  align-self: center;
   aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: var(--arq-space-padding-md);
   overflow: hidden;
   background: var(--arq-color-surface-subtle);
 }
 
 .media img {
-  position: absolute;
-  inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
+/* Quitar: en la esquina de la celda (como Macroled), no sobre la foto */
 .remove {
   position: absolute;
-  top: var(--arq-space-padding-sm-md);
-  right: var(--arq-space-padding-sm-md);
+  top: 0;
+  right: 0;
 }
 
 /* State=Empty: caja punteada sin fondo; la caja entera es un <button> (más
@@ -49,6 +58,9 @@
    estira (align-items: stretch). */
 :host([empty]) .media {
   flex: 1 1 auto;
+  align-self: stretch;
+  max-width: none;
+  padding: 0;
   background: var(--arq-color-surface-transparent);
   border: var(--arq-border-default) dashed var(--arq-color-border-default);
 }
@@ -109,16 +121,21 @@
   }
 }
 
+/* Nombre (con la flecha del link al lado) y SKU, centrados */
 .info {
   display: flex;
   flex-direction: column;
-  gap: var(--arq-space-gap-sm);
+  align-items: center;
+  gap: var(--arq-space-gap-xs);
+  text-align: center;
 }
 
 .title {
   display: flex;
   align-items: center;
-  gap: var(--arq-space-gap-sm-md);
+  justify-content: center;
+  gap: var(--arq-space-gap-sm);
+  max-width: 100%;
   color: var(--arq-color-text-primary);
   text-decoration: none;
 }
@@ -129,7 +146,7 @@
 }
 
 .name {
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   min-width: 0;
   overflow-wrap: break-word;
 }
@@ -161,26 +178,9 @@
   padding-top: var(--arq-space-gap-sm-md);
 }
 
-/* Variante elegida como texto: solo al imprimir (en pantalla están los
-   selects). Etiqueta role/label en color/text/tertiary, como el label del
-   select; valor role/body-regular en color/text/primary. */
-.variant {
-  display: none;
-  margin: 0;
-}
-
-.variant dt {
-  color: var(--arq-color-text-tertiary);
-}
-
-.variant dd {
-  margin: 0;
-  color: var(--arq-color-text-primary);
-}
-
-/* Impresión: foto, nombre, SKU y la variante elegida. Quitar y los selects
-   son de la pantalla; un lugar vacío no se imprime (compare-table tampoco
-   imprime su columna). */
+/* Impresión: foto, nombre y SKU (el SKU ya dice la variante elegida). Quitar
+   y los selects son de la pantalla; un lugar vacío no se imprime
+   (compare-table tampoco imprime su columna). */
 @media print {
   .remove,
   .selects,
@@ -188,23 +188,15 @@
     display: none;
   }
 
-  /* Foto más chica que en pantalla: deja lugar a la tabla en la primera
-     hoja. TODO (diseño): falta el diseño del PDF de la comparación
-     (DESIGN.md §12); se usa el ancho de columna de la comparativa Mobile. */
+  /* Mismo cuadrado que en pantalla. TODO (diseño): falta el diseño del PDF
+     de la comparación (DESIGN.md §12). Fondo color/surface/strong:
+     color/surface/subtle (6 %) no sale impreso, como en la ficha técnica
+     (docs/decisiones.md, 2026-10-27 · Ficha técnica: ajuste de impresión).
+     exact: el navegador no omite el fondo. */
   .media {
-    max-width: var(--arq-layout-compare-column);
-  }
-
-  .variant {
-    display: flex;
-    flex-direction: column;
-    gap: var(--arq-space-gap-sm-md);
-  }
-
-  .variant > div {
-    display: flex;
-    flex-direction: column;
-    gap: var(--arq-space-gap-xs);
+    background: var(--arq-color-surface-strong);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   :host([empty]) {
