@@ -253,7 +253,7 @@
    Ancho de la foto: 2 × layout/mega-menu-image; si no entra, se achica.
    La columna de links ocupa el resto.
    TODO (diseño): no hay token de este panel; el set de Figma no lo tiene.
-   TODO (imagen): el slot recursos-media espera la foto. */
+   La foto de respaldo es la de los catálogos. Una página puede reemplazarla con slot recursos-media. */
 .recursos {
   display: flex;
   align-items: stretch;
@@ -298,12 +298,18 @@
   background: var(--arq-color-surface-subtle);
 }
 
+.recursos-media img,
 .recursos-media ::slotted(img) {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Los lomos están en la parte baja de la foto. TODO (diseño): object-position no tiene token. */
+.recursos-media img.catalogs {
+  object-position: center 72%;
 }
 
 /* Tablet: la columna de links cede ancho para que la foto siga siendo la grande. */

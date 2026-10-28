@@ -462,6 +462,7 @@ class ArqFichaProducto extends ArqElement {
     };
     // load no burbujea: en captura llega el de la imagen principal (variante, miniatura o Iluminar)
     gallery.addEventListener('load', schedule, true);
+    gallery.addEventListener('arq:slide', schedule);
     const resize = new ResizeObserver(schedule);
     resize.observe(gallery);
     resize.observe(root.querySelector('.iluminar'));
@@ -473,7 +474,8 @@ class ArqFichaProducto extends ArqElement {
     const root = this.shadowRoot;
     const toggle = root.querySelector('.iluminar');
     const breadcrumb = root.querySelector('.breadcrumb');
-    const img = root.querySelector('.gallery > img[slot="image"]');
+    const gallery = root.querySelector('.gallery');
+    const img = gallery.currentImage;
     // src (no currentSrc): al iluminar se mide la foto nueva antes de que termine de cargar
     const src = img && !img.hidden && img.getAttribute('src') ? img.src : null;
     const measure = async (element) => {
@@ -485,7 +487,7 @@ class ArqFichaProducto extends ArqElement {
       }
     };
     const [toggleLuminance, breadcrumbLuminance] = await Promise.all([measure(toggle), measure(breadcrumb)]);
-    if (src && img.src !== src) return; // cambió la foto mientras se medía
+    if (src && (img.src !== src || gallery.currentImage !== img)) return; // cambió la foto mientras se medía
     // La otra versión (apagada o encendida) de esta foto, lista para Iluminar
     const shown = root.querySelector('.gallery').images.find((image) => [image.src, image.srcOn].some((url) => url && new URL(url, location.href).href === src));
     for (const url of [shown?.src, shown?.srcOn]) if (url) this.#backdropImage(url).catch(() => {});
@@ -681,8 +683,7 @@ class ArqFichaProducto extends ArqElement {
   // (arq-dao-configurator): se crea una vez. El SKU de la ficha queda
   // preseleccionado y, al cambiar de variante, vuelve a esa pieza. Al cambiar
   // de variante queda la pestaña elegida y abiertas las mismas secciones; la
-  // primera vez, solo la primera
-  // (lumínicas), en Desktop y en Mobile, para llegar rápido a lo que sigue. Una pestaña sin datos
+  // primera vez, todas (Desktop y Mobile). Una pestaña sin datos
   // no se muestra (src/data/attributes.js).
   #specTab = 'specs';
 
@@ -721,7 +722,7 @@ class ArqFichaProducto extends ArqElement {
     const panels = root.querySelector('.spec-panels');
     const previous = [...panels.querySelectorAll('arq-accordion-item')];
     const technical = sections.filter((section) => section.id !== 'comercial');
-    const open = previous.length ? new Set(previous.filter((item) => item.open).map((item) => item.dataset.section)) : new Set([technical[0]?.id]);
+    const open = previous.length ? new Set(previous.filter((item) => item.open).map((item) => item.dataset.section)) : new Set(technical.map((section) => section.id));
 
     const accordionOf = (list, isOpen) => {
       const accordion = document.createElement('div');

@@ -44,7 +44,7 @@ El HTML del embed completo está en [src/pages/ficha.html](../../pages/ficha.htm
 - **Cotas (prueba):** el dibujo del SKU (`cotas_img`, o `src/data/cotas.js` si la base no lo trae) se muestra en la pestaña «Cotas», debajo de Materiales e instalación y como fila «Cotas» del modal de descargas. `TODO` (diseño): dejar un solo lugar.
 - **Ver descargas:** abre el modal de descargas de la variante elegida (el mismo que el ícono de cada fila del glosario).
 - **Descargas:** "Ficha técnica" (se genera) y los archivos del SKU elegido, en el orden de Final (CAD 2D/3D, Manual, IES, Fotometría). Un archivo que falta no se muestra.
-- **Acordeón:** una sección por grupo de especificaciones. La primera abre abierta; al cambiar de variante quedan abiertas las mismas.
+- **Acordeón:** una sección por grupo de especificaciones. Todas abren abiertas; al cambiar de variante quedan abiertas las mismas (si se cerró una, sigue cerrada).
 - **Información comercial:** la pestaña muestra su lista dentro del mismo acordeón, con una sección «Características comerciales» abierta, igual que las de Especificaciones.
 - **Glosario:** variants-table con una fila por SKU (columnas en `TABLE_COLUMNS` de `src/data/attributes.js`). En la barra, CAD 2D/3D y Manual. El ícono de cada fila abre el download-modal con los archivos de ese SKU.
 - **Textos solo de los datos:** descripción corta (`description` de la variante), story e inspiración. Si un dato falta, esa parte no se muestra, aunque el HTML traiga texto: así se ve qué falta en la base.
@@ -70,7 +70,7 @@ Tablet (768–1023 px) usa la columna Desktop salvo en los bloques marcados: ah�
 | Descripción | foto a todo el ancho; título a la izquierda y texto a la derecha, con `space/section/lg` alrededor; abajo `space/section/sm` | título arriba y texto abajo, con el margen de página |
 | Glosario | título a `space/gap/md` de la tabla | ídem |
 | Inspiración | foto ancha o video y una vertical, con la proporción de Figma, y el texto a la derecha | apilado a `space/gap/xl` (también Tablet) |
-| Explora la colección | Light sobre `color/surface/subtle`, padding `space/padding/5xl` y `space/section/lg` a los lados; introducción de `layout/measure` + `space/gap/xl-2xl` | apilado a `space/gap/4xl` (también Tablet) |
+| Explora la colección | Fondo `neutral/700` y texto `color/text/inverse` (también el nombre de cada card), padding `space/padding/5xl` y `space/section/lg` a los lados; introducción de `layout/measure` + `space/gap/xl-2xl` | apilado a `space/gap/4xl` (también Tablet) |
 
 ## Pendientes
 

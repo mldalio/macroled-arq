@@ -29,8 +29,9 @@ gallery.images = [
 | Breakpoint | — | — | Media query: hasta 767 px es Mobile |
 | — (solo de código) | `inset-thumbs` | `insetThumbs` | booleano. En Mobile la foto va a todo el ancho y la fila de miniaturas lleva el margen de página (`--page-gutter`), deslizándose de borde a borde. Lo usa la ficha (2026-10-21) |
 
-- **Métodos:** `select(index)` muestra en grande la imagen `index`.
-- **Miniaturas:** un `<button>` cada una; se recorren con Tab y la elegida lleva `aria-current="true"` (cierra el TODO de gallery-thumb). El nombre de cada una es su `alt`.
+- **Métodos:** `select(index)` muestra la imagen `index` (la misma que una flecha o un deslizamiento). `currentImage` es la foto visible.
+- **Slider:** la foto principal se recorre de a una, en loop (después de la última sigue la primera). Las flechas son solo el chevron, sin caja, a la misma altura (al centro de la foto), y aparecen al pasar el mouse o con el foco del teclado. Con el dedo se desliza (scroll nativo y snap, una foto por gesto); con mouse, se arrastra. ← → con el foco en la foto, una flecha o una miniatura. Con menos de dos fotos no hay flechas.
+- **Miniaturas:** un `<button>` cada una; se recorren con Tab y la elegida lleva `aria-current="true"` (cierra el TODO de gallery-thumb). El nombre de cada una es su `alt`. Siguen a la foto visible.
 - **Desktop:** las miniaturas van sobre la imagen, abajo a la izquierda, a `space/padding/lg` del borde. **Mobile:** debajo, separadas por `space/gap/sm`.
 - **Si no entran,** la fila se desliza (scroll-snap, sin barra visible; decisión 2026-10-02 · Galerías). Con Tab, la miniatura con foco entra sola en la vista.
 - **Iluminar:** dentro de un bloque con `data-arq-theme="dark"` (en la ficha, la sección hero), la imagen grande y las miniaturas usan `srcOn`; si falta, la apagada. Lo detecta `src/base/theme.js` cuando cambia el atributo; la página no tiene que avisar.
@@ -49,6 +50,7 @@ gallery.images = [
 ## Pendientes
 
 - `TODO` (diseño) En Figma las miniaturas están a 20 del borde de la imagen y no hay token: se usa `space/padding/lg` (decisión 2026-10-02).
+- `TODO` (diseño) Las flechas del slider no están en el set: son solo el chevron (`icon/xl`), sin caja, y aparecen al pasar el mouse (decisión 2026-10-28 · Galería de la ficha: slider).
 - Orden de `images`: main, ambient_1, front, back, left, right, pers_1, pers_2, detail_1, detail_2 (las que existen), con `srcOn` desde su versión `_on` (`docs/typesense-schema.md`). Con `images` vacía (variante sin fotos), la imagen grande se oculta y se ve el fondo del marco; antes de recibir `images` no se oculta la del HTML.
 - `TODO` (datos) Los `alt` todavía no tienen campo.
 - En Mobile el alto de la miniatura sale 61 (76 × 4/5); en Figma es 60.

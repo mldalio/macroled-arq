@@ -651,8 +651,10 @@
   aspect-ratio: 346 / 447;
 }
 
-/* ── Explora la colección (Light, Figma 2612:12431) ─────────────────── */
-/* Sobre color/surface/bone, con el margen de página a los lados (space/section/lg desde 1440 px) y space/padding/5xl
+/* ── Explora la colección ─────────────────────────────────────────── */
+/* Banda oscura: neutral/700 (#454545) con texto color/text/inverse (blanco).
+   TODO: en Light no hay un color/surface que sea neutral/700.
+   El margen de página a los lados (space/section/lg desde 1440 px) y space/padding/5xl
    arriba y abajo. La introducción (role/heading-2) a la izquierda y la card a su derecha.
    TODO (diseño): la introducción mide 440 en Final; layout/measure + space/gap/xl-2xl. */
 .collection {
@@ -660,8 +662,18 @@
   align-items: flex-start;
   --collection-inline: var(--page-gutter);
   padding: var(--arq-space-padding-5xl) 0 var(--arq-space-padding-5xl) var(--collection-inline);
-  background: var(--arq-color-surface-bone);
-  color: var(--arq-color-text-primary);
+  background: var(--arq-neutral-700);
+  color: var(--arq-color-text-inverse);
+}
+
+/* El link y la línea de progreso heredan el blanco de la banda. Los botones
+   de las flechas siguen con su fondo claro. */
+.collection-link,
+.collection-controls {
+  --arq-color-action-primary: var(--arq-color-text-inverse);
+  --arq-color-border-strong: var(--arq-color-text-inverse);
+  --arq-color-text-primary: var(--arq-color-text-inverse);
+  --arq-color-text-secondary: var(--arq-color-text-inverse);
 }
 
 .collection-intro {
@@ -685,6 +697,16 @@
 
 .collection-rail > .cards {
   margin-inline-end: 0;
+}
+
+/* El nombre de cada card (Kanu Pared, etc.) va en blanco sobre la banda.
+   El resto de la card sigue en Light. */
+.collection-rail > .cards arq-product-card {
+  --arq-color-text-primary: var(--arq-color-text-inverse);
+}
+
+.collection-rail > .cards arq-product-card [slot='name'] {
+  color: var(--arq-color-text-inverse);
 }
 
 /* Al final, la última tarjeta deja el margen de la sección a la derecha (el padding derecho

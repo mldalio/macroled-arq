@@ -76,15 +76,11 @@
   aspect-ratio: 1 / 1;
 }
 
-/* El del medio y el chico no arrancan en el mismo borde que el grande. */
-:host([size='medium']) {
-  margin-top: var(--arq-space-section-md);
-  margin-inline-start: var(--arq-space-section-xl);
-}
-
+/* Varios seguidos no se tocan. El aire es el de elementos grandes dentro
+   de un bloque. Siguen el borde de la sección, sin correrse de la grilla. */
+:host([size='medium']),
 :host([size='small']) {
-  margin-top: var(--arq-space-section-lg);
-  margin-inline-end: var(--arq-space-section-xl);
+  margin-bottom: var(--arq-space-gap-4xl);
 }
 
 :host([size]) .content,
@@ -178,8 +174,7 @@
 @media (max-width: 767px) {
   :host([size='medium']),
   :host([size='small']) {
-    margin-inline: 0;
-    margin-top: var(--arq-space-gap-2xl);
+    margin-bottom: var(--arq-space-gap-2xl);
   }
 }
 

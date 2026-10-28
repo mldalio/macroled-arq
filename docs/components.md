@@ -122,7 +122,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ project-slider | `<arq-project-slider>` | Carrusel de proyectos del Home, en bucle. Con `autoplay` avanza solo y se detiene con el mouse encima o el foco adentro (WCAG 2.2.2; falta un botón de pausa en el diseño); se arrastra con el mouse y el clic abre la foto en un lightbox ([README](../src/components/project-slider/README.md)) |
 | ✅ preloader | `<arq-preloader>` | Pantalla de entrada de todas las páginas: blanco, logo y una línea que avanza hasta que cargan imágenes, videos y textos ([README](../src/components/preloader/README.md)) |
 | ✅ catalog-listing | `<arq-catalog-listing>` | Listado de Productos (y Colecciones): nav, toolbar, grilla, filtros y comparar ([README](../src/components/catalog-listing/README.md)) |
-| ✅ catalog-card | `<arq-catalog-card>` | Tapa de la página Catálogos: portada, título, ver y descargar ([README](../src/components/catalog-card/README.md)) |
+| ✅ catalog-card | `<arq-catalog-card>` | Tapa de la página Catálogos: portada y título. La tapa abre el PDF ([README](../src/components/catalog-card/README.md)) |
 | ✅ coleccion | `<arq-coleccion>` | Página de colección: cards de sus productos, galería, texto + imagen y mosaico con flechas ([README](../src/components/coleccion/README.md)) |
 | ✅ form-contacto | `<arq-form-contacto>` | Contacto (v3): información por slot (fija al desplazar en Desktop), formulario con validación, honeypot y envío a n8n, y preguntas frecuentes opcionales por slot ([README](../src/components/form-contacto/README.md)) |
 | ✅ ficha-producto | `<arq-ficha-producto>` | Ficha de producto: hero con galería y configurador, descargas, especificaciones, descripción, glosario, inspiración y colección. En Daö, la pestaña Configurador arma el producto ([README](../src/components/ficha-producto/README.md)) |
@@ -454,7 +454,7 @@ Sin respuesta, la pregunta no se muestra (en código: si falta un dato, esa part
 
 Bloque editorial destacado: imagen grande (y secundaria opcional) + eyebrow, título role/display-sm, bajada y button. Layout: Image left e Image right (se alternan); Breakpoint=Mobile apila. Props: Label, Title, Description, Show secondary image.
 
-En código, `size` (`large` · `medium` · `small`) achica la foto y el texto para escalonar en Nosotros. No está en el set de Figma. `reveal` hace entrar la foto y el texto juntos al hacer scroll (misma entrada que el Home).
+En código, `size` (`large` · `medium` · `small`) achica la foto y el texto. No está en el set de Figma. En Nosotros, las dos fotos de Oficio usan `medium`: 44 % y 4:3, título `role/heading-3-light`, alineadas a la grilla y con aire entre ellas (2026-10-28). `reveal` hace entrar la foto y el texto juntos al hacer scroll (misma entrada que el Home).
 
 ## file-upload
 
@@ -734,7 +734,7 @@ En grillas de listado: ancho mínimo layout/card-min (280); la grilla suma colum
 - Figma: [920-2490](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=920-2490)
 - Propiedades: Breakpoint: Desktop · Mobile
 
-Galería de la ficha: imagen principal + fila de gallery-thumb (la primera en Selected). Con Iluminar en On, la imagen principal cambia por la luminaria encendida. Desktop 5 miniaturas, Mobile 4 con scroll horizontal.
+Galería de la ficha: la foto principal es un slider en loop (flechas de chevron al centro, al pasar el mouse, deslizamiento y miniaturas muestran la misma foto) + fila de gallery-thumb (la visible en Selected). Con Iluminar en On, las fotos cambian por la luminaria encendida. Desktop: miniaturas sobre la imagen. Mobile: debajo, con scroll horizontal si no entran.
 
 ## search-dropdown
 

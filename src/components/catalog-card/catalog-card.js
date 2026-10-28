@@ -1,6 +1,6 @@
 // catalog-card · página Catálogos (sin set en Figma)
 //
-// Portada vertical, título y dos acciones: ver el PDF y descargarlo.
+// Portada vertical y título. La tapa abre el PDF en otra pestaña.
 // Referencia de layout: una grilla de tapas (el ejemplo que pidió la página).
 // No confundir con download-card (Descargas: la tarjeta entera descarga,
 // ratio/landscape y una bajada).
@@ -11,31 +11,21 @@
 //   </arq-catalog-card>
 //
 // - El título llega por slot. Sin imagen, la tapa queda en color/surface/subtle.
-// - href: el mismo archivo para ver (pestaña nueva) y descargar. Del mismo
-//   sitio, descargar lleva el atributo download; de otro dominio los dos se
-//   abren en otra pestaña (download no aplica entre dominios).
-// - Sin href las acciones se ven y no navegan. TODO (datos): las URL de los PDF.
+// - href: la tapa abre el PDF en otra pestaña. Sin href, la tapa no navega.
 
 import { ArqElement } from '../../base/arq-element.js';
-import { icon } from '../../base/icons.js';
 import css from './catalog-card.css?inline';
 
 class ArqCatalogCard extends ArqElement {
   static tag = 'arq-catalog-card';
   static styles = css;
   static properties = {
-    href: { type: String }, // PDF: ver y descargar
+    href: { type: String }, // PDF que abre la tapa
   };
   static template =
     `<div class="card">` +
-    `<div class="card-media"><slot name="image"></slot></div>` +
-    `<div class="caption">` +
+    `<a class="cover"><span class="visually-hidden"></span><div class="card-media"><slot name="image"></slot></div></a>` +
     `<p class="title role-body"><slot name="title"></slot></p>` +
-    `<div class="actions">` +
-    `<a class="action view">${icon('eye')}<span class="visually-hidden"></span></a>` +
-    `<a class="action download">${icon('download')}<span class="visually-hidden"></span></a>` +
-    `</div>` +
-    `</div>` +
     `</div>`;
 
   setup() {
@@ -53,33 +43,19 @@ class ArqCatalogCard extends ArqElement {
   }
 
   #links() {
-    const title = this.#title();
-    const external = this.href ? new URL(this.href, location.href).origin !== location.origin : false;
-    this.#link(this.shadowRoot.querySelector('.view'), `Ver ${title}`, { external, download: false });
-    this.#link(this.shadowRoot.querySelector('.download'), `Descargar ${title}`, { external, download: true });
-  }
-
-  #link(anchor, label, { external, download }) {
-    anchor.querySelector('.visually-hidden').textContent = label;
+    const anchor = this.shadowRoot.querySelector('.cover');
+    anchor.querySelector('.visually-hidden').textContent = `Ver ${this.#title()}`;
     if (!this.href) {
       anchor.removeAttribute('href');
       anchor.removeAttribute('target');
       anchor.removeAttribute('rel');
-      anchor.removeAttribute('download');
       anchor.setAttribute('aria-disabled', 'true');
       return;
     }
     anchor.removeAttribute('aria-disabled');
     anchor.href = this.href;
-    if (download && !external) {
-      anchor.setAttribute('download', '');
-      anchor.removeAttribute('target');
-      anchor.removeAttribute('rel');
-    } else {
-      anchor.removeAttribute('download');
-      anchor.target = '_blank';
-      anchor.rel = 'noopener';
-    }
+    anchor.target = '_blank';
+    anchor.rel = 'noopener';
   }
 }
 

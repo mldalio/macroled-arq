@@ -17,7 +17,7 @@
 }
 
 /* Imagen principal: ratio/landscape (5:4), placeholder color/surface/subtle.
-   !important: los estilos del sitio para img ganan sobre ::slotted. */
+   El track es un slider: una foto por vista, con snap. */
 .image {
   position: relative;
   /* --gallery-ratio: local, la ficha lo pisa en Mobile (ratio/portrait-soft) */
@@ -25,6 +25,103 @@
   overflow: hidden;
   border-radius: var(--arq-radius-control);
   background: var(--arq-color-surface-subtle);
+}
+
+/* El foco va en el recuadro: el anillo del track lo cortaría el overflow. */
+.image:has(.track:focus-visible) {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.track {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  cursor: grab;
+  touch-action: pan-x pan-y;
+}
+
+.track:focus {
+  outline: none;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.track[data-dragging] {
+  scroll-snap-type: none;
+  cursor: grabbing;
+}
+
+/* Flechas: solo el chevron, sin caja. Aparecen al pasar el mouse o con el
+   foco. Las dos a la misma altura, al centro de la foto. */
+.nav {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: var(--arq-space-padding-xs);
+  border: 0;
+  background: transparent;
+  color: var(--arq-color-icon-primary);
+  cursor: pointer;
+}
+
+.nav .icon {
+  width: var(--arq-icon-xl);
+  height: var(--arq-icon-xl);
+}
+
+.nav:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.nav:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.prev,
+.next {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.prev {
+  left: var(--arq-space-padding-md);
+}
+
+.next {
+  right: var(--arq-space-padding-md);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);
+  }
+
+  .gallery:hover .nav,
+  .gallery:focus-within .nav {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .nav {
+    display: none;
+  }
 }
 
 .theme-transition {
@@ -52,16 +149,28 @@
   transition-timing-function: var(--arq-motion-easing-standard);
 }
 
+/* !important: los estilos del sitio para img ganan sobre ::slotted. */
 ::slotted(img) {
   display: block !important;
+  flex: 0 0 100% !important;
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 /* Sin foto: se ve el fondo del marco (product-gallery.js) */
 ::slotted(img[hidden]) {
   display: none !important;
+}
+
+/* Miniaturas y la flecha izquierda, en la misma línea. */
+.thumbs-row {
+  display: flex;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+  min-width: 0;
 }
 
 /* Miniaturas: layout/gallery-thumb de ancho (el alto sale de 5:4), separadas
@@ -102,11 +211,16 @@ arq-gallery-thumb {
 /* Desktop: sobre la imagen, abajo a la izquierda, a space/padding/lg del
    borde (en Figma 20; TODO: sin token exacto, decisión 2026-10-02). */
 @media (min-width: 768px) {
-  .thumbs {
+  .thumbs-row {
     position: absolute;
+    z-index: 3;
     left: var(--arq-space-padding-lg);
     bottom: var(--arq-space-padding-lg);
     max-width: calc(100% - 2 * var(--arq-space-padding-lg));
+  }
+
+  .thumbs {
+    min-width: 0;
   }
 }
 
@@ -132,20 +246,29 @@ arq-gallery-thumb {
     min-height: 0;
   }
 
-  /* La foto no pone el alto: va absoluta sobre el recuadro. Si no, una foto
-     grande estira la galería y, con aspect-ratio en la columna, también su ancho
-     (la imagen se montaba sobre el configurador). */
-  :host([fill]) ::slotted(img) {
-    position: absolute !important;
-    inset: 0 !important;
+  /* La foto no pone el alto: el track cubre el recuadro. Si cada foto
+     impusiera su alto, una grande estiraría la galería y, con aspect-ratio
+     en la columna, también su ancho (se montaba sobre el configurador). */
+  :host([fill]) .prev {
+    left: var(--arq-space-padding-xl-2xl);
+  }
+
+  :host([fill]) .next {
+    right: var(--arq-space-padding-xl-2xl);
+  }
+
+  :host([fill]) .thumbs-row {
+    left: var(--arq-space-padding-xl-2xl);
+    bottom: var(--arq-space-padding-xl);
+    align-items: center;
+    max-height: calc(100% - 2 * var(--arq-space-padding-xl));
   }
 
   :host([fill]) .thumbs {
-    left: var(--arq-space-padding-xl-2xl);
-    bottom: var(--arq-space-padding-xl);
     flex-direction: column;
+    min-height: 0;
     max-width: none;
-    max-height: calc(100% - 2 * var(--arq-space-padding-xl));
+    max-height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
     scroll-snap-type: y mandatory;

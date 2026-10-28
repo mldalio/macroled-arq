@@ -5,10 +5,7 @@
   docs/decisiones.md, 2026-10-21 · Catálogos.
   Se edita acá y se pega en Webflow. dist/arq.js, dist/arq.css y Albert Sans se cargan a nivel sitio.
 
-  TODO (datos): URL de cada PDF. Sin href, ver y descargar se ven y no navegan.
-  TODO (imágenes): las tapas están en la raíz del repo (tapa_catalogo.jpg y
-  tapa_skyline.png). Antes de pegar en Webflow, reemplazarlas por las URLs
-  de Webflow Assets. Confirmar los nombres.
+  La tapa abre el PDF en otra pestaña.
 -->
 <arq-preloader open page></arq-preloader>
 <arq-navbar>
@@ -25,12 +22,12 @@
 
   <arq-section>
     <arq-grid columns="4" mobile="two-columns">
-      <arq-catalog-card>
-        <img slot="image" src="/tapa_catalogo.jpg" alt="" loading="lazy">
+      <arq-catalog-card href="https://s3.coresagroup.com/MACROLED/ARQ/catalogo/catalogo_ARQ.pdf">
+        <img slot="image" src="https://s3.coresagroup.com/MACROLED/ARQ/catalogo/tapa_catalogo.jpg" alt="" loading="lazy">
         <span slot="title">Catálogo general 2026</span>
       </arq-catalog-card>
-      <arq-catalog-card>
-        <img slot="image" src="/tapa_skyline.png" alt="" loading="lazy">
+      <arq-catalog-card href="https://s3.coresagroup.com/MACROLED/catalogos/Macroled_Skyline.pdf">
+        <img slot="image" src="https://s3.coresagroup.com/MACROLED/ARQ/catalogo/tapa_skyline.png" alt="" loading="lazy">
         <span slot="title">Catálogo Skyline 2026</span>
       </arq-catalog-card>
     </arq-grid>

@@ -137,7 +137,7 @@ class ArqNavbar extends ArqElement {
     `<arq-mega-link href="/arq/descargas" show-arrow>Descargas</arq-mega-link>` +
     `</div>` +
     `</nav>` +
-    `<div class="recursos-media" aria-hidden="true"><slot name="recursos-media"></slot></div>` +
+    `<div class="recursos-media" aria-hidden="true"><slot name="recursos-media"><img class="catalogs" src="https://d1zltvqju4u8ql.cloudfront.net/fit-in/filters:format(webp)/MACROLED/ARQ/imagenes/home/catalogos_todos.png" alt=""></slot></div>` +
     `</div>` +
     `</div></div>` +
     `</header>` +

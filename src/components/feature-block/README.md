@@ -20,7 +20,7 @@ Bloque editorial del Home con imagen protagonista: foto grande (y una secundaria
 | Figma | Atributo / slot | Prop JS | Valores · por defecto |
 | --- | --- | --- | --- |
 | Layout | `layout` | `layout` | `image-left` · `image-right` (def. `image-left`). Misma estructura HTML |
-| — | `size` | `size` | sin valor (50 %, 4:5, título `role/display-sm`) · `large` · `medium` · `small`. Solo código, para escalonar en Nosotros. Con valor, el título pasa a `role/heading-3-light` y la bajada a `role/body` |
+| — | `size` | `size` | sin valor (50 %, 4:5, título `role/display-sm`) · `large` · `medium` · `small`. Solo código. Con valor, el título pasa a `role/heading-3-light` y la bajada a `role/body`. En Nosotros, las dos fotos de Oficio usan `medium` (44 %, 4:3), alineadas a la grilla, con `space/gap/4xl` entre ellas |
 | — | `reveal` | `reveal` | presencia. La foto y el texto entran juntos al hacer scroll, una sola vez. Sin el atributo, se ven quietos |
 | Title | slot `title` | — | un `<h2>` |
 | Label | slot `label` | — | eyebrow. Sin contenido, no se muestra |
@@ -58,4 +58,4 @@ El tope hace que la sección entre en una pantalla aunque el viewport sea muy an
 
 - `TODO` (diseño): la imagen secundaria tiene alto fijo en el set (300 Desktop · 220 Mobile), sin ratio; se usa `ratio/wide` (16:10), el más cercano. DESIGN.md §5 no la lista.
 - `TODO` (diseño): la bajada mide 440 fijos en el set; se usa `layout/measure` (400).
-- `TODO` (diseño): `size` no está en el set. `large` 62 % y 4:5, `medium` 44 % y 4:3 (corrida a la derecha), `small` 30 % y 1:1 (corrida a la izquierda). El tope de alto solo aplica sin `size` y en `large`.
+- `TODO` (diseño): `size` no está en el set. `large` 62 % y 4:5, `medium` 44 % y 4:3, `small` 30 % y 1:1. El tope de alto solo aplica sin `size` y en `large`. `medium` y `small` dejan `space/gap/4xl` abajo (`space/gap/2xl` en Mobile) y no se corren del borde de la sección.

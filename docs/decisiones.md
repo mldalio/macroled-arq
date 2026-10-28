@@ -1784,6 +1784,24 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 - **Solo de la base (decisión de Lau):** sin `cotas_img`, la ficha sale sin cotas; no hay respaldo en el código. Al cambiar, los 108 SKU con dato coincidían con el mapeo anterior; PAR11 (5 SKU) tenía dibujo en el código y no en la hoja, y queda sin cotas hasta que se cargue.
 - `cotas_img` entra en `LIGHT_FIELDS`: el PDF se genera desde cualquier página (ficha y Descargas) sin pedir el detalle del grupo.
 
+## 2026-10-28 · Oficio en Nosotros, sobre la grilla
+
+- Pedido: las tres fotos de «Cómo pensamos el producto» se salían de la grilla (anchos distintos y corridas) y el texto quedaba raro al lado. La banda sigue en `background="subtle"`.
+- Las tres vuelven al `feature-block` del Home: texto en la otra columna, alternando Image left / Image right / Image left, sin correrse del borde.
+- Quedaron chicas: `size="medium"` (44 %, 4:3), título `role/heading-3-light` en vez de `role/display-sm`, y `space/gap/4xl` entre una y otra para que no se toquen. Se sacó «De profesional a profesional»; quedan Confort visual y Pureza estética.
+
 ## 2026-10-27 · Foto transparente en el PDF
 
 - La Fuji (y cualquier foto de estudio en PNG transparente) salía en la ficha técnica sobre fondo negro: la foto se pedía al CloudFront en JPEG y el CloudFront pinta de negro la transparencia, antes de que el canvas ponga `color/surface/strong`. Ahora la foto se pide en WebP (conserva la transparencia y pesa como el JPEG); el canvas pinta el fondo y la guarda en JPEG para pdfmake. Las cotas siguen en PNG. Rama `fix/pdf-foto-transparente`.
+
+## 2026-10-28 · Galería de la ficha: slider
+
+- La foto principal de `product-gallery` se recorre de a una, en loop: después de la última sigue la primera. Flechas solo con el chevron (sin caja), a la misma altura al centro de la foto, visibles al pasar el mouse o con el foco. Cada foto mide el ancho visible en píxeles enteros, para que no asome un filo de la siguiente. Con el dedo se desliza (scroll con snap). `TODO` (diseño): las flechas no están en el set de product-gallery.
+
+## 2026-10-28 · Especificaciones: acordeón abierto
+
+- En la ficha, los desplegables de Especificaciones arrancan todos abiertos (lumínicas, eléctricas, materiales e instalación y el resto que tenga datos). Información comercial sigue abierta, como ya estaba. Si se cierra uno y se cambia de variante, queda como se dejó.
+
+## 2026-10-28 · Explora la colección en gris oscuro
+
+- La banda de «Explora la colección» usa `neutral/700` (`#454545`), con el título, «Ver colección», la línea de progreso y el nombre de cada card en `color/text/inverse`. El resto de la card sigue en Light. En Light no hay un `color/surface` de ese gris.

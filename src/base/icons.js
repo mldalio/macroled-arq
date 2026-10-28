@@ -1,6 +1,6 @@
 // Los 20 íconos de Figma (icon/*, sección icons 1075:4571), leídos por MCP
 // desde la variante Theme=Default de cada uno (node id en cada entrada).
-// eye no está en ese set: lo usa catalog-card (ver el PDF). TODO (diseño).
+// eye no está en el set de Figma. Ya no lo usa catalog-card. TODO (diseño): sacarlo si sigue sin uso.
 // Son trazos de 1 px en una grilla de 16 × 16. En código:
 // - stroke="currentColor": el color lo pone el componente (color/icon/*).
 //   Theme=Inverse no es otro SVG: es el mismo con color/icon/inverse.
