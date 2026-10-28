@@ -1,4 +1,7 @@
 import { containScroll } from './scroll-lock.js';
+import { sizedImage } from './image-size.js';
+
+const VIEWER_WIDTH = 2400; // foto ampliada a pantalla completa
 
 // Mismo visor y estilos para FOA y la galería de ambiente.
 export const photoViewerTemplate =
@@ -38,7 +41,7 @@ export class PhotoViewer {
   }
   #render() {
     const photos = this.#photos(); const photo = photos[this.#index]; if (!photo) return;
-    const image = this.#dialog.querySelector('img'); image.src = photo.src; image.alt = photo.alt;
+    const image = this.#dialog.querySelector('img'); image.src = sizedImage(photo.src, VIEWER_WIDTH); image.alt = photo.alt;
     this.#dialog.querySelector('.lightbox-count').textContent = `${String(this.#index + 1).padStart(2, '0')} / ${String(photos.length).padStart(2, '0')}`;
     for (const control of this.#dialog.querySelectorAll('.lightbox-prev, .lightbox-next')) control.hidden = photos.length < 2;
   }

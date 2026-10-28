@@ -385,6 +385,8 @@ class ArqProductCard extends ArqElement {
     const name = key(this.querySelector('[slot="name"]')?.textContent);
     const contain = family === 'fuji' || family === 'mini kai' || family === 'mini kai round' || family === 'sen' || name === 'tori visera' || name.startsWith('mini kai');
     card?.classList.toggle('is-contain', contain);
+    // Foto ancha: con aire a los lados (product-card.css)
+    card?.classList.toggle('is-wide', name.startsWith('mini kai'));
   }
 
   #setSrc(img, src) {

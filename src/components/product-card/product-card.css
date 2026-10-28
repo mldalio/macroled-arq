@@ -90,8 +90,13 @@
 .card.is-contain .theme-transition {
   box-sizing: border-box;
   object-fit: contain;
-  /* Aire a los lados: una foto ancha (Mini Kai) no llega de borde a borde y
-     se ve de un tamaño parecido al de las demás cards */
+}
+
+/* Aire a los lados: una foto ancha (Mini Kai) no llega de borde a borde y se ve
+   de un tamaño parecido al de las demás cards. Solo Mini Kai: Fuji queda como estaba. */
+.card.is-wide .img,
+.card.is-wide .theme-transition {
+  box-sizing: border-box;
   padding-inline: var(--arq-space-padding-2xl);
 }
 

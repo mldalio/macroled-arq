@@ -1871,3 +1871,17 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 - **Excepción:** la ficha pone `zoom` en los productos de Exterior, cuyas fotos de estudio son un corte en zoom por diseño, salvo Tori Visera (`ZOOM_EXCEPTIONS` en `ficha-producto.js`), que sí se ve entera con aire. `TODO` (datos): marcarlo en la base (Lau pidió que sea una excepción puntual) en vez de por ambiente; ver con Lau qué productos exteriores conservan el zoom.
 - **product-card:** las fotos «enteras» (`is-contain`) suman `space/padding/2xl` a los lados, y Mini Kai (todos los productos que empiezan con «Mini Kai») entra en esa regla: una foto ancha ya no llega de borde a borde. Falta nivelar el tamaño del resto de las cards (pendiente).
 - **Orden de variantes** de una misma familia, en el listado, en `?family=` y en «Explora la colección»: embutir, aplicar, redondo y redondo de aplicar (Mini Kai, Mini Kai Aplicar, Mini Kai Round, Mini Kai Round Aplicar). Se lee del nombre (`variantRank`, `catalog.js`); «Mini Kai Round» va con Mini Kai aunque su colección o familia sea otra.
+
+## 2026-10-28 · Misma foto, mismo tratamiento en la ficha
+
+- Lau probó medir y escalar el producto en cada card (para igualar tamaños) y prefirió las cards como estaban: no está en el código. Solo cambia Fuji: sin el aire a los lados que se había sumado (queda como antes). El aire lateral queda solo para Mini Kai (`is-wide`).
+- **Ficha:** la foto apagada y la encendida llevan el mismo tratamiento (las dos con aire, o las dos llenando el recuadro): si no, al iluminar se superponen las diferencias de tamaño. La única que llena el recuadro siempre es Afo, por su foto vertical (`ZOOM_ALWAYS` en `ficha-producto.js`); los de Exterior, salvo Tori Visera, siguen sin aire.
+
+## 2026-10-28 · Fotos de producto por el CloudFront
+
+- Problema (Lau): las fotos tardaban mucho en cargar. Medido: las cards bajaban el original del S3 (Hoshi, PNG de 1,9 MB; Sento, webp de 327 KB) para mostrarlo a 350 px.
+- `src/base/image-size.js` (`sizedImage`) pide la foto al CloudFront `fit-in/<ancho>x<2 × ancho>/filters:format(webp):quality(85)/<ruta>`: Hoshi a 800 px pesa 37 KB. El webp conserva la transparencia de los PNG de estudio. Una URL que no es del servidor de imágenes ni del CloudFront queda como viene.
+- **Tamaños:** 800 px para las fotos de producto (`CARD_WIDTH`, el adaptador `typesense-adapter.js · slots`: cards, miniaturas, buscador, PDF), 1600 px en la galería de la ficha (`GALLERY_WIDTH`, `product-gallery.js`) y 2400 px en el visor de fotos ampliadas. No se tocan las cotas, descargas, catálogos ni acabados.
+- Para revertir: `sizedImage` devuelve la URL tal cual (un solo lugar).
+- `TODO`: la primera vez que se pide un tamaño, el CloudFront tarda cerca de 1 s en generarlo y después queda en caché (`max-age` de un año). Pendiente medir con el sitio real: precargar la primera fila de cards (`loading="eager"`) y `fetchpriority`. En localhost el adaptador sigue sumando `?arq=<hora>` a cada foto (no se cachea entre recargas): no es lo que pasa en producción.
+- **Cambio de variante en la ficha:** la primera foto de cada variante (apagada y encendida, al tamaño de la galería) se pide de a una cuando la página está quieta (`#warmVariantPhotos`, `ficha-producto.js`, hasta 40 variantes, no con «ahorrar datos»). Así, al cambiar de módulos o potencia la foto ya está en la caché y no espera al CloudFront.

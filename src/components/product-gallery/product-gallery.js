@@ -34,6 +34,7 @@
 import { ArqElement } from '../../base/arq-element.js';
 import { watchTheme } from '../../base/theme.js';
 import { icon } from '../../base/icons.js';
+import { GALLERY_WIDTH, sizedImage } from '../../base/image-size.js';
 import '../gallery-thumb/gallery-thumb.js';
 import css from './product-gallery.css?inline';
 
@@ -145,7 +146,7 @@ class ArqProductGallery extends ArqElement {
   }
 
   #src(image) {
-    return (this.#dark && image.srcOn) || image.src;
+    return sizedImage((this.#dark && image.srcOn) || image.src, GALLERY_WIDTH);
   }
 
   #reals() {
@@ -264,7 +265,7 @@ class ArqProductGallery extends ArqElement {
       img.alt = image.alt ?? '';
       img.draggable = false;
       if (i > 0) img.loading = 'lazy';
-      const other = this.#dark ? image.src : image.srcOn;
+      const other = sizedImage(this.#dark ? image.src : image.srcOn, GALLERY_WIDTH);
       if (other && other !== src) new Image().src = other;
     });
     this.#syncClones();

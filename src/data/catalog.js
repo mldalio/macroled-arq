@@ -282,12 +282,12 @@ const LAST_GROUPS = ['tori jardin', 'tori visera'];
 // nombre; los demás empatan en 0 y siguen el orden de los datos.
 const variantRank = (group) => {
   const name = normalize(group.name);
-  return (/round/.test(name) ? 2 : 0) + (/apli(car|que)/.test(name) ? 1 : 0);
+  return (/\bround/.test(name) ? 2 : 0) + (/\bapli(car|que)\b/.test(name) ? 1 : 0);
 };
 
 function byCollection(groups) {
   // «Mini Kai Round» va con Mini Kai: la clave ignora el «Round» final
-  const key = (group) => normalize(group.collection || group.family || group.name).replace(/s+round(ed)?$/, '');
+  const key = (group) => normalize(group.collection || group.family || group.name).replace(/\s+round(ed)?$/, '');
   const tail = (group) => {
     const own = LAST_GROUPS.indexOf(normalize(group.name));
     if (own >= 0) return 2 + own;

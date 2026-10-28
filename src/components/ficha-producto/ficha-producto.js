@@ -59,6 +59,7 @@ import { getDaoConfigurator, compatibleProducts } from '../../data/dao-config.js
 import { getProduct, variantDetails, categoryHref, listCompareCandidates, LAMPS_ENVIRONMENT } from '../../data/catalog.js';
 import { attributeInfo } from '../../data/attributes.js';
 import { config } from '../../config.js';
+import { GALLERY_WIDTH, sizedImage } from '../../base/image-size.js';
 import { variantOptions, initialSelection, findVariant, choose } from '../../data/variants.js';
 import '../breadcrumb/breadcrumb.js';
 import '../breadcrumb-item/breadcrumb-item.js';
@@ -121,10 +122,12 @@ const BACKDROP_SAMPLE = 16; // lado de la muestra reducida, en píxeles de canva
 
 // Productos con las fotos de estudio recortadas en zoom por diseño (no llevan
 // aire en la galería): los de Exterior, salvo los de ZOOM_EXCEPTIONS, que sí
-// necesitan verse enteros. TODO (datos): marcarlo en la base en vez de acá.
+// necesitan verse enteros, y los de ZOOM_ALWAYS: Afo, cuya foto es vertical
+// (también la encendida) y llena el recuadro. TODO (datos): marcarlo en la base.
 const ZOOM_EXCEPTIONS = ['tori visera'];
-const plain = (text) => String(text ?? '').normalize('NFD').replace(/p{M}/gu, '').trim().toLowerCase();
-const hasZoomPhotos = (group) => group.environment?.includes('Exterior') && !ZOOM_EXCEPTIONS.includes(plain(group.name));
+const ZOOM_ALWAYS = ['afo'];
+const plain = (text) => String(text ?? '').normalize('NFD').replace(/\p{M}/gu, '').trim().toLowerCase();
+const hasZoomPhotos = (group) => ZOOM_ALWAYS.includes(plain(group.name)) || (group.environment?.includes('Exterior') && !ZOOM_EXCEPTIONS.includes(plain(group.name)));
 
 // Copia chica de la foto que se puede leer con CORS (config.images); null si
 // la foto viene de otro servidor (no se intenta: dejaría un error en consola).
@@ -410,6 +413,8 @@ class ArqFichaProducto extends ArqElement {
     this.#refreshOptions();
     // El SKU de ?sku=, si es del grupo; si no, el is_group_default. La URL siempre queda con ?sku=
     this.#showVariant({ updateUrl: true, sku: product.variants.find((v) => v.sku === sku)?.sku ?? product.variants.find((v) => v.isDefault)?.sku });
+    // Un error de la precarga no puede cortar el resto de la ficha
+    try { this.#warmVariantPhotos(product); } catch { /* es solo una optimización */ }
     this.#renderAmbient();
     this.#renderGlossary();
     this.#renderInspirationImages();
@@ -505,7 +510,7 @@ class ArqFichaProducto extends ArqElement {
     const [toggleLuminance, breadcrumbLuminance] = await Promise.all([measure(toggle), measure(breadcrumb)]);
     if (src && (img.src !== src || gallery.currentImage !== img)) return; // cambió la foto mientras se medía
     // La otra versión (apagada o encendida) de esta foto, lista para Iluminar
-    const shown = root.querySelector('.gallery').images.find((image) => [image.src, image.srcOn].some((url) => url && new URL(url, location.href).href === src));
+    const shown = root.querySelector('.gallery').images.find((image) => [image.src, image.srcOn].some((url) => url && new URL(sizedImage(url, GALLERY_WIDTH), location.href).href === src));
     for (const url of [shown?.src, shown?.srcOn]) if (url) this.#backdropImage(url).catch(() => {});
     const dark = (luminance) => luminance !== null && luminance < BACKDROP_LIGHT;
     toggle.theme = dark(toggleLuminance) ? 'inverse' : 'default';
@@ -661,6 +666,25 @@ class ArqFichaProducto extends ArqElement {
   // sku: el SKU pedido (apertura de la ficha). Sin él, el que coincide con los
   // atributos elegidos. Un grupo sin variant_attributes no tiene selección: el
   // SKU manda (con la selección vacía findVariant daría siempre el primero).
+  // Primera foto de cada variante, apagada y encendida, pedida de a una cuando la
+  // página está quieta: al cambiar de módulos o potencia ya está en la caché (la
+  // primera vez, el CloudFront tarda cerca de 1 s en generar cada tamaño). Con
+  // «ahorrar datos» no se hace.
+  #warmVariantPhotos({ group }) {
+    if (navigator.connection?.saveData) return;
+    const urls = group.variants.slice(0, 40).flatMap((v) => [v.images?.gallery?.[0] ?? v.images?.studio, v.images?.galleryOn?.[0] ?? v.images?.studioOn])
+      .filter(Boolean).map((url) => sizedImage(url, GALLERY_WIDTH));
+    const queue = [...new Set(urls)];
+    const next = () => {
+      const url = queue.shift();
+      if (!url || !this.isConnected) return;
+      const img = new Image();
+      img.onload = img.onerror = () => setTimeout(next, 80);
+      img.src = url;
+    };
+    setTimeout(next, 1500);
+  }
+
   #showVariant({ updateUrl = false, sku = null } = {}) {
     const { group, variants } = this.#product;
     const chosen = Object.keys(this.#selection).length ? findVariant(variants, this.#selection) : null;
