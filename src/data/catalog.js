@@ -487,6 +487,24 @@ const tableColumns = (variants) =>
   TABLE_COLUMNS.filter(({ field }) => variants.some((v) => hasValue(v.values[field]))).map(({ field, label, wide }) => ({ key: field, label, wide }));
 
 /**
+ * Columnas del glosario de un grupo: las de siempre (TABLE_COLUMNS) y, para que
+ * se pueda ver y filtrar por lo mismo que se elige arriba en el hero, una
+ * columna por cada campo de VARIANT_ATTRIBUTES que no esté entre ellas (Altura,
+ * Módulos, Modelo, Color del lente). Van después de Acabado (o primeras, si no
+ * hay Acabado) y también en las tarjetas Mobile (`card`).
+ */
+function glossaryColumns(group) {
+  const columns = tableColumns(group.variants);
+  const extra = group.variantAttributes
+    .filter((field) => !columns.some((column) => column.key === field) && !TABLE_COLUMNS.some((column) => column.field === field))
+    .filter((field) => group.variants.some((v) => hasValue(v.values[field])))
+    .map((field) => ({ key: field, label: attributeInfo(field).label, card: true }));
+  const at = columns.findIndex((column) => column.key === 'color_carcasa') + 1;
+  columns.splice(at, 0, ...extra);
+  return columns;
+}
+
+/**
  * Datos de variants-table (type product): una fila por SKU del grupo. Un SKU
  * sin foto propia muestra el neutro, sin la del predeterminado (como la
  * galería, decisiones.md 2026-10-07): así se ve qué falta cargar. El tamaño
@@ -494,7 +512,7 @@ const tableColumns = (variants) =>
  */
 function glossary(group) {
   return {
-    columns: tableColumns(group.variants),
+    columns: glossaryColumns(group),
     filters: group.variantAttributes.map((key) => ({ key, label: attributeInfo(key).label, swatches: attributeInfo(key).control === 'swatches' })),
     rows: group.variants.map((v) => ({ sku: v.sku, thumb: v.images?.studio ?? null, attributes: v.values, values: tableValues(v.values) })),
   };
