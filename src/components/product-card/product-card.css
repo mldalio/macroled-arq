@@ -61,8 +61,8 @@
   }
 }
 
-:host-context([data-arq-theme='dark']) .card:has(.card-link:hover) .card-media,
-:host-context([data-arq-theme='dark']) .card:has(.card-link:focus-visible) .card-media {
+.card.is-dark:has(.card-link:hover) .card-media,
+.card.is-dark:has(.card-link:focus-visible) .card-media {
   background-color: var(--arq-color-surface-subtle);
 }
 
