@@ -954,8 +954,8 @@ export async function listCompareCandidates({ query = '', selected = [] } = {}) 
  * producto de la categoría marcado con is_menu_default. Colecciones: fotos de
  * contexto de los productos de esa familia, en orden de la hoja. Sin esa foto,
  * productos de la categoría, en orden,
- * y después las de estudio; en una colección, solo las de contexto
- * (decisiones.md, 2026-10-20 · Fotos del mega-menú).
+ * y después las de estudio; en una colección, lo mismo (contexto de sus
+ * productos y, si no hay, estudio; decisiones.md, 2026-10-28 · Mega-menu).
  */
 export async function getNavigation() {
   const { groups: all } = await loadCatalog();
@@ -1004,8 +1004,8 @@ export async function getNavigation() {
       meta: [...new Set(own.map((g) => g.application).filter(Boolean))].join(' · '),
       href: categoryHref({ family: family.name }),
       eyebrow: environments.length ? `Línea ${environments.join(' · ')}` : '',
-      // Solo fotos de contexto, nunca de estudio (pedido de Lau, 2026-10-20)
-      ...preview(productPhotos(own, { studio: false })),
+      // Contexto primero; si ningún producto de la familia tiene, estudio (igual que Por espacio)
+      ...preview(productPhotos(own)),
       thumb: own.map(groupImages).find((i) => i.thumb)?.thumb ?? null,
     };
   };

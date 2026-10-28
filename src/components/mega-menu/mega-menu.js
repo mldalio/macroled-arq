@@ -20,6 +20,8 @@
 //   el contenido es más alto, la foto se estira. Sin foto, color/surface/subtle.
 //   Si la foto del link no carga, prueba sus fallbacks en orden (fotos de
 //   productos de la categoría); si ninguna carga, color/surface/subtle.
+//   Al cambiar de link, la foto nueva se carga aparte y se funde sobre la
+//   anterior (dos capas con fondo propio), con el texto.
 //   La prop images ({ pestaña: url }) pisa la foto inicial de cada pestaña.
 // - El panel no se abre ni se cierra solo: lo muestra el navbar (atributo
 //   hidden en el host). Al abrirlo, el navbar llama a reset(): vuelve a la
@@ -41,9 +43,14 @@ const TABS = [
   { id: 'colecciones', label: 'Colecciones' },
 ];
 const COLLECTION_COLUMNS = 4;
-// Link cuya foto se ve al abrir cada pestaña (data-eyebrow); si no está, el
-// primero. Por ahora, Colgante en Por espacio (pedido de Lau, 2026-10-21).
-const OPENING = { 'por-espacio': 'Interior · Colgante' };
+// Link cuya foto se ve al abrir cada pestaña; si no está, el primero.
+// Por espacio: Interior > Embutir; Colecciones: Koen; Lámparas y artefactos: el
+// primero que sea una lámpara (pedido de Lau, 2026-10-28; antes Colgante, 2026-10-21).
+const OPENING = {
+  'por-espacio': (l) => l.dataset.eyebrow === 'Interior' && l.dataset.title === 'Embutir',
+  colecciones: (l) => l.dataset.title === 'Koen',
+  'lamparas-y-artefactos': (l) => /l[aá]mpara/i.test(l.dataset.title),
+};
 let uid = 0;
 
 class ArqMegaMenu extends ArqElement {
@@ -59,7 +66,7 @@ class ArqMegaMenu extends ArqElement {
     `<div class="body">` +
     `<div class="panels"></div>` +
     `<div class="preview" aria-hidden="true">` +
-    `<img alt="" hidden>` +
+    `<div class="photos"><img class="photo" alt=""><img class="photo" alt=""></div>` +
     `<div class="caption">` +
     `<p class="eyebrow role-label"></p>` +
     `<p class="preview-title role-heading-2"></p>` +
@@ -70,7 +77,7 @@ class ArqMegaMenu extends ArqElement {
 
   #navigation = null;
   #images = {};
-  #fallbacks = []; // fotos de respaldo que le quedan al preview actual
+  #photoUrl = null; // la foto que se ve en el preview
   #previewId = 0; // la última foto pedida al preview (#setPreview)
   #id = ++uid;
 
@@ -113,13 +120,6 @@ class ArqMegaMenu extends ArqElement {
     tabs.addEventListener('arq:change', (event) => {
       event.stopPropagation();
       this.tab = event.detail.value;
-    });
-    const img = root.querySelector('.preview img');
-    img.addEventListener('load', () => (img.hidden = false));
-    img.addEventListener('error', () => {
-      const next = this.#fallbacks.shift();
-      if (next) img.src = next;
-      else img.hidden = true;
     });
     // Preview: el link con el mouse encima o con el foco
     const panels = root.querySelector('.panels');
@@ -196,7 +196,7 @@ class ArqMegaMenu extends ArqElement {
           (section) =>
             `<div class="column">` +
             `<div class="top">${title(section)}` +
-            `<div class="links">${section.links.map((l) => this.#link(l, `${section.label} · ${l.label}`)).join('')}</div></div>` +
+            `<div class="links">${section.links.map((l) => this.#link(l, section.label)).join('')}</div></div>` +
             (titleLink ? '' : `<arq-button class="all" type="underline" show-underline show-icon icon="arrow-up-right" href="${esc(section.all.href)}">${esc(section.all.label)}</arq-button>`) +
             `</div>`,
         )
@@ -231,7 +231,7 @@ class ArqMegaMenu extends ArqElement {
   // (si no, el primero)
   #resetPreview() {
     const links = [...this.shadowRoot.querySelectorAll(`[role="tabpanel"][data-tab="${this.tab}"] arq-mega-link`)];
-    const first = links.find((l) => l.dataset.eyebrow === OPENING[this.tab]) ?? links[0];
+    const first = links.find(OPENING[this.tab] ?? (() => false)) ?? links[0];
     if (first) this.#showPreview(first, this.#images[this.tab]);
     else this.#setPreview(this.#images[this.tab], '', '');
   }
@@ -240,31 +240,70 @@ class ArqMegaMenu extends ArqElement {
     this.#setPreview(image || link.dataset.image, link.dataset.eyebrow, link.dataset.title, image ? [] : JSON.parse(link.dataset.fallbacks || '[]'));
   }
 
-  #setPreview(src, eyebrow, title, fallbacks = []) {
-    // Sin foto propia, la primera de respaldo
-    if (!src) src = fallbacks.shift();
-    this.#fallbacks = fallbacks;
-    const root = this.shadowRoot;
-    const img = root.querySelector('.preview img');
-    // La foto anterior queda hasta que carga la nueva (sin parpadeo)
-    if (src) {
-      if (img.getAttribute('src') !== src) img.src = src;
-      else if (img.hidden && img.complete && this.#fallbacks.length) img.src = this.#fallbacks.shift(); // esa ya falló
-    } else {
-      img.removeAttribute('src');
-      img.hidden = true;
-    }
-    // El texto cambia junto con la foto: si la nueva todavía no cargó, espera
-    // (si no, el nombre nuevo quedaba un momento sobre la foto anterior).
-    const caption = () => {
-      root.querySelector('.eyebrow').textContent = eyebrow ?? '';
-      root.querySelector('.eyebrow').hidden = !eyebrow;
-      root.querySelector('.preview-title').textContent = title ?? '';
-      root.querySelector('.caption').hidden = !title;
-    };
+  // La foto y el texto cambian juntos: la foto nueva se carga aparte (la
+  // primera de [src, ...fallbacks] que carga) y recién entonces se funde sobre
+  // la anterior, con el texto. Si el mouse pasa a otro link antes, la pedida
+  // anterior se descarta.
+  async #setPreview(src, eyebrow, title, fallbacks = []) {
     const id = ++this.#previewId;
-    if (!src || img.complete) caption();
-    else img.decode().catch(() => {}).then(() => id === this.#previewId && caption());
+    const candidates = [src, ...fallbacks].filter(Boolean);
+    const url = candidates[0] && candidates[0] === this.#photoUrl ? this.#photoUrl : await this.#firstLoaded(candidates);
+    if (id !== this.#previewId) return;
+    if (url !== this.#photoUrl) await this.#showPhoto(url, id);
+    if (id !== this.#previewId) return;
+    this.#setCaption(eyebrow, title);
+  }
+
+  #firstLoaded(urls) {
+    const attempt = (i) => {
+      if (i >= urls.length) return Promise.resolve(null);
+      return new Promise((resolve) => {
+        const probe = new Image();
+        probe.onload = () => resolve(urls[i]);
+        probe.onerror = () => resolve(attempt(i + 1));
+        probe.src = urls[i];
+      });
+    };
+    return attempt(0);
+  }
+
+  // Dos capas, cada una con su fondo: la nueva (is-front) se funde por encima de
+  // la anterior (is-leaving). Al terminar queda opaca y tapa la anterior, aunque
+  // sea un PNG sin fondo; durante el fundido nunca se ve solo el gris.
+  async #showPhoto(url, id) {
+    const root = this.shadowRoot;
+    const photos = [...root.querySelectorAll('.photo')];
+    const front = photos.find((p) => p.classList.contains('is-front'));
+    const back = photos.find((p) => p !== front);
+    if (url) {
+      // La capa que se reutiliza se cierra de golpe antes de cargar la foto nueva
+      back.classList.remove('is-leaving');
+      void back.offsetWidth;
+      back.src = url;
+      await back.decode().catch(() => {});
+      if (id !== this.#previewId) return;
+    }
+    this.#photoUrl = url;
+    root.querySelector('.preview').classList.toggle('has-photo', !!url);
+    if (front) {
+      front.classList.remove('is-front');
+      if (url) front.classList.add('is-leaving');
+    }
+    if (url) back.classList.add('is-front');
+  }
+
+  #setCaption(eyebrow, title) {
+    const root = this.shadowRoot;
+    const caption = root.querySelector('.caption');
+    if (root.querySelector('.preview-title').textContent === (title ?? '') && root.querySelector('.eyebrow').textContent === (eyebrow ?? '')) return;
+    root.querySelector('.eyebrow').textContent = eyebrow ?? '';
+    root.querySelector('.eyebrow').hidden = !eyebrow;
+    root.querySelector('.preview-title').textContent = title ?? '';
+    caption.hidden = !title;
+    // Reinicia el fundido de entrada del texto
+    caption.classList.remove('is-in');
+    void caption.offsetWidth;
+    caption.classList.add('is-in');
   }
 }
 

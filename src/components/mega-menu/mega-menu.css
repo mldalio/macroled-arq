@@ -184,12 +184,60 @@
   background: var(--arq-color-surface-subtle);
 }
 
-.preview img {
+/* Dos capas para el fundido entre fotos (mega-menu.js · #showPhoto): la nueva
+   (is-front) se funde sobre la anterior (is-leaving), que queda debajo y
+   tapada del todo al terminar (motion/duration/slow, curva de fundido de
+   fotos, como product-card). Cada capa lleva su fondo (color/surface/subtle):
+   una foto sin fondo (PNG de estudio) queda opaca al terminar, sin dejar ver
+   la anterior, y nunca se ve solo el gris. El contenedor aísla las capas: su
+   z-index no compite con el degradado ni con el texto. */
+.photos {
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+}
+
+.photo {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  background: var(--arq-color-surface-subtle);
+  opacity: 0;
+}
+
+.photo.is-leaving {
+  z-index: 0;
+  opacity: 1;
+}
+
+.photo.is-front {
+  z-index: 1;
+  opacity: 1;
+  transition: opacity var(--arq-motion-duration-slow) var(--arq-motion-easing-illumination-image);
+}
+
+/* Fundido de entrada del texto al cambiar de link */
+.caption.is-in {
+  animation: arq-mega-caption-in var(--arq-motion-duration-slow) var(--arq-motion-easing-standard) both;
+}
+
+@keyframes arq-mega-caption-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Con reduced motion queda un fundido corto (motion/duration/fade) */
+@media (prefers-reduced-motion: reduce) {
+  .photo.is-front {
+    transition-duration: var(--arq-motion-duration-fade);
+  }
+
+  .caption.is-in {
+    animation-duration: var(--arq-motion-duration-fade);
+  }
 }
 
 /* Degradado del frame (transparente al 45 % → negro al 70 %). Es un relleno
@@ -203,7 +251,7 @@
 }
 
 /* Sin foto no hay degradado ni texto encima */
-.preview:has(img[hidden])::after {
+.preview:not(.has-photo)::after {
   display: none;
 }
 
@@ -216,7 +264,7 @@
   color: var(--arq-color-text-inverse);
 }
 
-.preview:has(img[hidden]) .caption,
+.preview:not(.has-photo) .caption,
 .caption[hidden],
 .eyebrow[hidden] {
   display: none;
