@@ -8,10 +8,10 @@
   min-width: 0;
 }
 
-/* Como macroled.com.ar/comparativa (docs/decisiones.md, 2026-10-28 ·
-   Comparativa como Macroled): foto chica, nombre y SKU centrados en la
-   columna (compare-table centra los valores), selects a todo el ancho y
-   quitar en la esquina de la celda. Foto, info y selects a space/gap/md. */
+/* Foto a todo el ancho de la columna, nombre y SKU a la izquierda, selects a
+   todo el ancho y quitar en la esquina de la celda (docs/decisiones.md,
+   2026-10-28 · Comparativa: foto a todo el ancho). Foto, info y selects a
+   space/gap/md. */
 .product {
   position: relative;
   display: flex;
@@ -21,17 +21,12 @@
   height: 100%;
 }
 
-/* Media 1:1 (Filled): cuadrado de layout/card-min como máximo (280 Desktop ·
-   160 Mobile, donde ocupa la columna) en color/surface/soft, un gris más
-   claro que color/surface/subtle; la foto entera (contain) y centrada, a
-   space/padding/md del borde. docs/decisiones.md, 2026-10-28 · Comparativa: foto
-   más grande con fondo claro. TODO (diseño): no hay un token propio para
-   este tamaño. */
+/* Media 1:1 (Filled): cuadrado a todo el ancho de la columna en
+   color/surface/soft, un gris más claro que color/surface/subtle; la foto
+   entera (contain) y centrada, a space/padding/md del borde. */
 .media {
   box-sizing: border-box;
   width: 100%;
-  max-width: var(--arq-layout-card-min);
-  align-self: center;
   aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
@@ -48,11 +43,11 @@
   object-fit: contain;
 }
 
-/* Quitar: en la esquina de la celda (como Macroled), no sobre la foto */
+/* Quitar: en la esquina de la foto, a space/padding/sm-md de los bordes */
 .remove {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: var(--arq-space-padding-sm-md);
+  right: var(--arq-space-padding-sm-md);
 }
 
 /* State=Empty: caja punteada sin fondo; la caja entera es un <button> (más
@@ -124,19 +119,17 @@
   }
 }
 
-/* Nombre (con la flecha del link al lado) y SKU, centrados */
+/* Nombre (con la flecha del link al lado) y SKU, a la izquierda */
 .info {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--arq-space-gap-xs);
-  text-align: center;
 }
 
 .title {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: var(--arq-space-gap-sm);
   max-width: 100%;
   color: var(--arq-color-text-primary);
@@ -199,6 +192,7 @@
      omite el fondo. */
   .media {
     max-width: var(--arq-layout-compare-column);
+    align-self: center;
     padding: var(--arq-space-padding-md);
     background: var(--arq-color-surface-strong);
     -webkit-print-color-adjust: exact;

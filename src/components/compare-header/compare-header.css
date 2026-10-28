@@ -28,7 +28,7 @@
 }
 
 /* Controles: mismo ancho que la columna de etiquetas de compare-table
-   (layout/compare-label, 200 Desktop · 120 Mobile): no hay token propio. */
+   (layout/compare-label, 320 Desktop · 120 Mobile): no hay token propio. */
 .controls {
   flex: none;
   width: var(--arq-layout-compare-label);

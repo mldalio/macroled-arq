@@ -1853,6 +1853,11 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 - `TODO` (diseño): si se queda, falta un token propio para el tamaño (hoy usa `layout/card-min`, el ancho mínimo de las cards del catálogo).
 - La impresión no cambia: cuadrado de `layout/compare-column` en `color/surface/strong` con la foto a 128.
 
+## 2026-10-28 · Comparativa: foto a todo el ancho
+
+- Pedido de Lau: la foto de compare-product deja de tener ancho máximo y ocupa todo el ancho de la columna (cuadrado en `color/surface/soft`, foto entera a `space/padding/md`); reemplaza el tope de `layout/card-min` de la entrada anterior (y su `TODO` de token). Nombre y SKU vuelven a la izquierda; los valores de compare-table siguen centrados. La impresión no cambia.
+- La columna de características (`layout/compare-label`) pasa en Figma de 200 a 320 en Desktop, Tablet y Large; Mobile queda en 120. La columna de controles de compare-header la sigue.
+
 ## 2026-10-28 · Hover de product-card, orden de Productos y nombre del PDF
 
 - Pedido de Lau. **Hover de product-card** (reglas completas en DESIGN.md §8 · Imágenes de product-card y en el README del componente):
