@@ -160,7 +160,7 @@
   --arq-layout-download-search: 480px; /** Ancho del buscador de variants-table Type=Catalog (Descargas). En Mobile el campo ocupa el ancho disponible. */
   --arq-layout-compare-picker-list: 400px; /** Alto de la lista de compare-picker en Desktop: 5 filas de compare-picker-item (80 cada una); las demás se desplazan adentro. En Mobile el CSS no usa este valor (la lista ocupa el alto que queda en la pantalla completa). */
   --arq-layout-navbar-height: 56px; /** Alto de la barra del navbar (56 en todos los modos). Lo que queda fijo debajo del navbar (compare-header Compact, columna fija de la ficha, barra de variants-table) se ubica a esta distancia del borde superior. */
-  --arq-layout-mega-link-thumb: 60px; /** Miniatura cuadrada de mega-link (Show image), en el menú Mobile y en las colecciones del mega-menu. */
+  --arq-layout-mega-link-thumb: 80px; /** Miniatura cuadrada de mega-link (Show image), en el menú Mobile y en las colecciones del mega-menu. */
   --arq-layout-result-thumb: 100px; /** Miniatura cuadrada de search-result Type=Simple (resultado grande, sin SKU): 100 en Desktop, Tablet y Large; 76 en Mobile. */
   --arq-layout-gallery-thumb-overlay: 66px; /** Ancho de gallery-thumb cuando las miniaturas van sobre la foto (product-gallery que llena el alto, Ficha v2, desde 1024 px). El alto sale de ratio/landscape (5:4). */
   --arq-layout-pdf-cover-image: 240px; /** Lado de la foto cuadrada del producto en pdf-cover (primera hoja de la ficha técnica PDF, A4), y alto del dibujo de cotas que va al lado. Las dos imágenes se muestran enteras (contain): la foto sobre color/surface/subtle y las cotas sobre el blanco de la hoja. */

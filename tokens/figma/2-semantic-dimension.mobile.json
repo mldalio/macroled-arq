@@ -455,7 +455,7 @@
     },
     "mega-link-thumb": {
       "$type": "number",
-      "$value": 60,
+      "$value": 80,
       "$description": "Miniatura cuadrada de mega-link (Show image), en el menú Mobile y en las colecciones del mega-menu.",
       "$extensions": {
         "com.figma": {

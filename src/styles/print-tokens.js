@@ -111,7 +111,7 @@ export const PRINT_TOKENS = Object.freeze({
   "layout/download-search": 480,
   "layout/compare-picker-list": 400,
   "layout/navbar-height": 56,
-  "layout/mega-link-thumb": 60,
+  "layout/mega-link-thumb": 80,
   "layout/result-thumb": 100,
   "layout/gallery-thumb-overlay": 66,
   "layout/pdf-cover-image": 240,
