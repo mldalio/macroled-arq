@@ -144,7 +144,13 @@ class ArqProductCard extends ArqElement {
     // El cambio de imagen es solo con el mouse sobre la imagen. El ::after del
     // link tapa .card-media (no recibe :hover), así que se mide la posición.
     const media = root.querySelector('.card-media');
-    const setMediaHover = (on) => card.classList.toggle('is-media-hover', on);
+    const setMediaHover = (on) => {
+      card.classList.toggle('is-media-hover', on);
+      this.#syncHoverGround();
+    };
+    const link = root.querySelector('.card-link');
+    link.addEventListener('focus', () => this.#syncHoverGround());
+    link.addEventListener('blur', () => this.#syncHoverGround());
     card.addEventListener('pointermove', (event) => {
       if (event.pointerType !== 'mouse') return;
       const r = media.getBoundingClientRect();
@@ -332,6 +338,18 @@ class ArqProductCard extends ArqElement {
     this.emit('finish', { name: swatch.textContent.trim(), sku: data.sku ?? null, href: next.href, image: next.image });
   }
 
+  // Light local del fondo de la imagen mientras se ve el estudio apagado en
+  // una página iluminada (src/styles/light.css, adoptado en el Shadow DOM).
+  #syncHoverGround() {
+    const root = this.shadowRoot;
+    const card = root.querySelector('.card');
+    const on = card.classList.contains('hover-unlit') &&
+      (card.classList.contains('is-media-hover') || Boolean(root.querySelector('.card-link:focus-visible')));
+    const media = root.querySelector('.card-media');
+    if (on) media.setAttribute('data-arq-theme', 'light');
+    else media.removeAttribute('data-arq-theme');
+  }
+
   #renderImages() {
     const root = this.shadowRoot;
     const base = root.querySelector('.base');
@@ -342,6 +360,10 @@ class ArqProductCard extends ArqElement {
     this.#setSrc(base, baseSrc);
     this.#renderFallback(!baseSrc);
     root.querySelector('.card').classList.toggle('has-hover', Boolean(baseSrc && hoverSrc));
+    // Con Iluminar y sin foto de contexto, el hover muestra el estudio apagado:
+    // con el fondo gris claro de Light, no el oscuro de la página.
+    root.querySelector('.card').classList.toggle('hover-unlit', Boolean(this.#dark && hoverSrc && hoverSrc === usable(this.image)));
+    this.#syncHoverGround();
     this.#setSrc(hover, this.#hoverWanted ? hoverSrc : null);
     // Iluminar: la imagen de estudio del otro modo queda en caché, así el fundido
     // arranca al instante y termina junto con el fondo. TODO (diseño): §8 pide

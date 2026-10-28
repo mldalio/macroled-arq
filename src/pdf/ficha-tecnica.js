@@ -105,7 +105,8 @@ function fitImage(src, widthPx, heightPx, { maxPx = Math.max(Number(widthPx) || 
 
 // El SKU es un identificador opaco (puede tener espacios o paréntesis): para el
 // nombre del archivo queda solo lo seguro.
-const fileName = (sku) => `ficha-tecnica-${String(sku).replace(/[^\w-]+/g, '-').replace(/^-+|-+$/g, '')}.pdf`;
+const safeSku = (sku) => String(sku).replace(/[^\w-]+/g, '-').replace(/^-+|-+$/g, '');
+const fileName = (sku) => `${safeSku(sku)}.pdf`;
 
 /** Documento de pdfmake de un SKU, listo para generar. null si el SKU no existe. */
 export async function datasheetDocument(sku) {
@@ -146,6 +147,9 @@ export function openDatasheet(sku) {
     try {
       const [pdfMake, result] = await Promise.all([loadLibrary(), datasheetDocument(sku)]);
       if (!result) throw new Error(`el SKU «${sku}» no está en el catálogo`);
+      // El visor de Chrome nombra el archivo guardado con el título del PDF
+      // (la URL del blob no sirve: es un código al azar).
+      result.definition.info.title = safeSku(result.data.sku);
       const pdf = pdfMake.createPdf(result.definition);
       if (tab && !tab.closed) await pdf.open(tab);
       else await pdf.download(fileName(result.data.sku));
