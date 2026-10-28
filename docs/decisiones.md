@@ -1851,3 +1851,15 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 - Decisión de Lau (probado en la rama `feat/comparativa-foto-sin-fondo`): en la cabecera de la comparativa, la foto de compare-product va más grande, en un cuadrado de `layout/card-min` como máximo (280 en Desktop; en Mobile, 160, ocupa la columna) con un fondo más claro, `color/surface/soft` (#F4F4F4), y la foto entera a `space/padding/md` del borde. Antes: cuadrado de 160 en `color/surface/subtle` (#F0F0F0) con la foto a 128. Se probó también sin fondo (las fotos de estudio son PNG transparentes: el producto sobre el blanco de la página).
 - `TODO` (diseño): si se queda, falta un token propio para el tamaño (hoy usa `layout/card-min`, el ancho mínimo de las cards del catálogo).
 - La impresión no cambia: cuadrado de `layout/compare-column` en `color/surface/strong` con la foto a 128.
+
+## 2026-10-28 · Hover de product-card, orden de Productos y nombre del PDF
+
+- Pedido de Lau. **Hover de product-card** (reglas completas en DESIGN.md §8 · Imágenes de product-card y en el README del componente):
+  - El hover es uno solo para toda la tarjeta (imagen, nombre y acabados con el mouse): cambian a la vez imagen y fondo. Antes el nombre cambiaba el fondo y solo la imagen cambiaba la foto. Se anula el borde de hover de `card-link.css`.
+  - Fundido de la imagen en `motion/duration/slow` (era el doble).
+  - Sin Iluminar: hover = estudio encendido → ambiente 1 apagado → ambiente 1 encendido. Con Iluminar: ambiente 1 encendido → estudio apagado (la «contraria»); el ambiente 1 apagado no se usa con Iluminar.
+  - Excepción con Iluminar cuando el hover es el estudio apagado (Afo, Daö, Tori Visera y todo producto sin ambiente 1 encendido): la foto encendida de reposo se retira (el PNG apagado es transparente) y el fondo pasa al `color/surface/subtle` claro (Light local en `.card-media`). Si no hay otra imagen, la imagen no cambia y solo cambia el fondo.
+- **Orden de Productos** (`byCollection`, `src/data/catalog.js`; solo sin búsqueda): primero Interior y después Exterior; adentro, las colecciones (o familias) juntas en el orden de los datos; Daö casi al final de su ambiente, y Tori Jardín y Tori Visera últimos (Visera, lo último). Con búsqueda manda la coincidencia.
+- **Nombre del PDF de la ficha técnica:** el título del PDF es el SKU (el visor de Chrome lo usa para el nombre al guardar) y la descarga de respaldo se llama `<sku>.pdf`. Sigue pendiente servirla desde una URL propia (DESIGN.md §12).
+- **Configurador Daö:** el botón final dice «Descargar configuración» (era «Imprimir configuración»); entre el nombre del armado y sus características hay `space/gap/lg` y entre las características y las piezas, `space/gap/lg` + `space/gap/md`.
+- `TODO` (Figma): copiar la sección nueva de DESIGN.md §8 al frame DESIGN.md de la página Plan del proyecto (AGENTS.md pide una rama `docs/`); la variante `State=Hover` de product-card sigue siendo una referencia estática.
