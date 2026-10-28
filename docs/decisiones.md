@@ -1920,3 +1920,26 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 - **Categoría:** entra al texto del grupo junto con el nombre, la colección, la aplicación (`subfamilia`), el tipo y el ambiente (`groupText`, `catalog.js`), con la misma tolerancia (plural y errores de tipeo según el largo). `categoria` pasa a `LIGHT_FIELDS` y a `variant.category`.
 - **Descripción:** se probó y se descartó (trae palabras comunes y suma peso al catálogo liviano): la búsqueda no la mira.
 - Vale para el buscador del navbar, el listado con `?q=` y el selector de la comparativa (mismo `searchMatch`).
+
+## 2026-10-28 · Colecciones en mobile: foto de la colección y bajada de 14 px
+
+- Pedido de Gabriela. El submenú Colecciones del menú mobile mostraba la miniatura de estudio (`thumb`) y a veces ninguna. Ahora usa la misma foto que el preview del mega-menu desktop, la que se ve al pasar el mouse (`image`: contexto de los productos de la familia; sin contexto, estudio), y solo cae a `thumb` si no hay otra (`navbar.js · #renderSub`).
+- La bajada de mega-link (las subfamilias: «Jardín · Pared») pasa a `role/body-compact-regular` (14/24) también en Size=Large; antes era `role/caption` (12/14). Código: `mega-link.js`; Figma: las tres variantes Large del set (`1292:4212 · 4218 · 4224`), la descripción del set y la ficha `doc/mega-link`. Las 17 instancias del menú Colecciones Mobile siguen al set.
+
+## 2026-10-28 · Miniatura de mega-link de 80 px y fotos de contexto en Colecciones
+
+- Pedido de Gabriela. `layout/mega-link-thumb` pasa de 60 a 80 (todos los modos de Dimension): cambiado en Figma, exportado a `tokens/figma/`, `tokens.json` y `tokens.css`; DESIGN.md y su copia en Plan del proyecto, el README y `docs/components.md` al día. Vale para toda miniatura de mega-link (submenú Colecciones y Lámparas y artefactos en el menú mobile).
+- Las miniaturas del submenú Colecciones se veían casi todas de estudio o vacías: la lista de fotos de contexto solo miraba el ambiente 1 apagado (`context`), que casi no se carga. Ahora prefiere el ambiente 1 encendido (`contextOn`, el mismo que usa Por espacio) y cae al apagado, y después a estudio (`productPhotos`, `catalog.js`). Vale también para el preview del mega-menu desktop. Y mega-link prueba una lista de respaldo (`fallbacks`) si la primera foto no carga.
+- Las que sigan en gris (Döuli, Köen, Nobu, Kanu, Sento en la prueba) no tienen ninguna foto que cargue: es un tema de datos.
+
+## 2026-10-28 · Menú mobile como panel (como el buscador)
+
+- Pedido de Gabriela. El menú mobile deja de ser una pantalla completa: baja desde la barra como el top sheet. **Alto según el contenido**, con aire abajo (`space/gap/xl` × 2, el mismo del sheet), **scrim** `color/overlay/scrim` detrás con la página a la vista (un toque en el scrim lo cierra) y desplazamiento adentro si un nivel no entra en la pantalla.
+- **Crece a medida que se entra en los niveles:** al ir de Menú a Productos o a un submenú, el panel se agranda hasta el alto del nivel nuevo, y al volver se achica, con el mismo recorte de la persiana (`clip-path`, `motion/duration/panel` + `motion/easing/standard`) y sin animar `height` (DESIGN.md §6). Al achicarse mantiene su alto con `min-height` hasta terminar. Con reduced motion cambia de golpe. Código: `navbar.js · #resizeMenu`, `navbar.css · .menu`.
+- **Flechas de la pantalla principal:** solo Productos y Recursos (Has dropdown) llevan el chevron; Nosotros y Contacto, que van directo a la página, no llevan flecha (tampoco `arrow-right` en Current). `nav-link.css`.
+- `TODO` (Figma): el set nav-link Mobile y el frame Mode=Menu del navbar siguen dibujando la flecha en todas las filas y el menú a pantalla completa.
+- **Alto fijo (ajuste del mismo día):** el panel ya no sigue el alto de cada nivel: mide el 70 % de la pantalla (`70dvh`, tope: hasta el pie), que alcanza para Menú, Productos, Recursos y la mayoría de los submenús. Solo **Colecciones**, una lista larga, lo agranda a toda la pantalla (`.is-tall`; `#resizeMenu` anima el salto con el recorte y al volver se achica). Un nivel que no entra se desplaza adentro. El 70 % no es un token (como el 70svh del hero): `TODO` si hace falta ajustarlo. La pantalla principal lleva arriba el mismo aire que abajo (`space/gap/xl` × 2).
+- **Otro ajuste (mismo día):** el alto fijo baja al 50 % de la pantalla (`50dvh`) y todos los niveles del menú mobile (Menú, Productos, Recursos y submenús) arrancan a `space/gap/xl` del borde de arriba (24 en mobile; antes `space/gap/sm`, 8). Un nivel que no entra se desplaza adentro.
+- **Alto 55 %:** el alto fijo del panel pasa de 50 % a 55 % de la pantalla (`55dvh`).
+- **Filas de Colecciones (mobile):** mega-link Size=Large con miniatura lleva padding vertical `space/gap/sm-md` (12 px; antes `space/gap/md`, 16). Las filas de submenú sin miniatura siguen en 16.
+- **Miniaturas de Colecciones que no cargaban:** la imagen de mega-link llevaba `loading="lazy"`; dentro del panel del menú mobile (clip-path y scroll adentro) el navegador no la pedía nunca. Reproducido con Chrome a 390 px: 15 de 15 en `complete: false`. Ahora carga de inmediato (el menú solo arma las filas al abrirse el nivel, son unas 15) y las 15 cargan.

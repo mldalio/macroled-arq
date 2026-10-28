@@ -344,7 +344,7 @@ Tablet y Large valen lo mismo que Desktop salvo `layout/gutter` (32 y 64).
 | layout/search-field | 360 | 360 | Ancho de search-field en el navbar Desktop; search-dropdown toma el mismo ancho. En Mobile el campo ocupa el ancho disponible |
 | layout/search-thumb | 48 | 48 | Miniatura cuadrada de search-result |
 | layout/result-thumb | 100 | 76 | Miniatura cuadrada de search-result Type=Simple (resultado grande, sin SKU) |
-| layout/mega-link-thumb | 60 | 60 | Miniatura cuadrada de mega-link (Show image) |
+| layout/mega-link-thumb | 80 | 80 | Miniatura cuadrada de mega-link (Show image) |
 | layout/catalog-nav | 240 | 240 | Ancho del sidebar catalog-nav en Productos (desde 1024 px) |
 | layout/download-thumb | 72 | 72 | Miniatura cuadrada de las tarjetas Mobile de variants-table (ficha y Descargas) y del producto en el modal de descargas |
 | layout/download-search | 480 | 480 | Ancho del buscador de variants-table Type=Catalog (Descargas). En Mobile el campo ocupa el ancho disponible |

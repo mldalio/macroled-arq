@@ -992,7 +992,8 @@ export async function getNavigation() {
   // todos los productos y después las de estudio.
   const productPhotos = (list, { studio = true } = {}) => {
     const images = list.map((g) => pick(g.defaultVariant.images));
-    return [...images.map((i) => i.context), ...(studio ? images.map((i) => i.studio) : [])];
+    // Contexto: el ambiente 1 encendido (el de Por espacio) y, si falta, el apagado
+    return [...images.map((i) => i.contextOn ?? i.context), ...(studio ? images.map((i) => i.studio) : [])];
   };
   // image: la primera; fallbacks: las que prueba si esa no carga.
   const preview = (candidates) => {

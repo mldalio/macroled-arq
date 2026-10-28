@@ -27,7 +27,7 @@ Link de primer nivel del navbar (desktop) y fila del menú mobile. Current marca
 - **Guion lateral:** en Productos y Recursos indica únicamente el desplegable abierto (`open`); desaparece al cerrarlo. En enlaces como Nosotros y Contacto indica la página actual (`current`). Los dropdowns ignoran `current`.
 - Mientras un desplegable está abierto, el navbar oculta el guion y la tipografía destacada de la página actual. Al cerrar los restaura. El enlace mantiene `aria-current="page"` durante toda la interacción.
 - **Desktop:** `role/body`, hug. Hover subraya el label: la línea se dibuja de izquierda a derecha y se va hacia la derecha (`transform`, `motion/duration/base`, `motion/easing/standard`; de golpe con reduced motion). Pressed: texto `color/text/tertiary`. Current: guion antes del label, sin subrayado, y texto en `role/body-medium`. Has dropdown no lleva flecha.
-- **Mobile:** fila a todo el ancho con padding `space/gap/md` × `layout/gutter`, `role/heading-3`. Todas las filas llevan una flecha al final (`chevron-right`; en Current, `arrow-right`), también las que tienen Has dropdown (una sola flecha). Pressed: fondo `color/surface/selected`; Hover (solo con mouse): `color/surface/hover`. Sin borde inferior.
+- **Mobile:** fila a todo el ancho con padding `space/gap/md` × `layout/gutter`, `role/heading-3`. Solo las filas que abren otro nivel (Has dropdown: Productos, Recursos) llevan una flecha al final (`chevron-right`); un link directo (Nosotros, Contacto, también Current) no lleva flecha, porque va a la página. Pressed: fondo `color/surface/selected`; Hover (solo con mouse): `color/surface/hover`. Sin borde inferior.
 - Una sola Current por navbar.
 
 ## Tokens

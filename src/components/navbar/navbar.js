@@ -83,6 +83,7 @@ import '../search-result/search-result.js';
 import '../search-see-all/search-see-all.js';
 import '../search-screen/search-screen.js';
 import '../search-sheet/search-sheet.js';
+import { sizedImage } from '../../base/image-size.js';
 import { containScroll } from '../../base/scroll-lock.js';
 import { setPanelBar } from '../../base/theme.js';
 import css from './navbar.css?inline';
@@ -95,6 +96,7 @@ const MOBILE = matchMedia('(max-width: 767px)');
 const SOLID = matchMedia('(prefers-reduced-transparency: reduce), (prefers-contrast: more)');
 const esc = (text) => String(text ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const SEARCH_LIMIT = 5; // search-dropdown: "hasta 4 o 5" resultados
+const THUMB_WIDTH = 240; // ancho en px que se pide de la miniatura de mega-link (80 px a 3x)
 const DEBOUNCE = 150;
 const SUBMENUS = ['interior', 'exterior', 'lamparas-y-artefactos', 'colecciones']; // orden de Products Mobile (841:2325)
 
@@ -300,6 +302,12 @@ class ArqNavbar extends ArqElement {
       event.preventDefault();
       this.#setMode(SUBMENUS.includes(this.mode) ? 'products' : this.mode === 'products' || this.mode === 'recursos' ? 'menu' : 'default');
     });
+    // Un toque en el scrim (fuera del panel) cierra el menú, como el top sheet
+    menu.addEventListener('click', (event) => {
+      if (event.target !== menu) return;
+      const { bottom } = menu.getBoundingClientRect();
+      if (event.clientY > bottom) this.#setMode('default');
+    });
     root.querySelector('.back').addEventListener('click', () => this.#setMode('menu'));
     root.querySelector('.back-recursos').addEventListener('click', () => this.#setMode('menu'));
     root.querySelector('.back-sub').addEventListener('click', () => this.#setMode('products'));
@@ -448,6 +456,10 @@ class ArqNavbar extends ArqElement {
     // (el que está saliendo en un cambio en curso sigue a la vista, pero inert)
     const from = menu.classList.contains('is-open') ? levels.find((level) => !level.hidden && !level.inert) : null;
     const fromTop = from?.offsetTop ?? 0;
+    // Alto visible del panel antes del cambio de nivel (para que crezca o se achique, #resizeMenu)
+    const heightBefore = from ? this.#menuVisibleHeight(menu) : 0;
+    // Colecciones es una lista larga: el panel llega a toda la pantalla (el único salto de alto)
+    menu.classList.toggle('is-tall', mode === 'colecciones');
     if (inMenu && !menu.open) {
       this.#syncTop();
       this.#menuOpener = root.querySelector('.menu-open');
@@ -473,7 +485,10 @@ class ArqNavbar extends ArqElement {
       root.querySelector('.menu-sub').hidden = !sub;
       const to = levels.find((level) => !level.hidden);
       const depth = (m) => (m === 'menu' ? 0 : m === 'products' || m === 'recursos' ? 1 : 2);
-      if (from && to && from !== to) this.#slideLevel(from, to, depth(mode) > depth(previous), fromTop);
+      if (from && to && from !== to) {
+        this.#slideLevel(from, to, depth(mode) > depth(previous), fromTop);
+        this.#resizeMenu(menu, heightBefore);
+      }
     }
     if (sub) this.#renderSub(mode);
     if (mode === 'products') {
@@ -520,9 +535,57 @@ class ArqNavbar extends ArqElement {
   #levelAnimations = [];
   #levelPair = null; // el último cambio de nivel: { from, to }
 
+  #menuResizeTimer = 0;
+
+  // Alto que se ve ahora del panel del menú (con un cambio de alto en curso, el
+  // que dejó el recorte).
+  #menuVisibleHeight(menu) {
+    const total = menu.getBoundingClientRect().height;
+    const bottom = Number.parseFloat(menu.style.clipPath.match(/inset\(0px 0px ([\d.]+)px/)?.[1] ?? menu.style.clipPath.match(/inset\(0 0 ([\d.]+)px/)?.[1]) || 0;
+    return Math.max(0, total - bottom);
+  }
+
+  // El panel crece (o se achica) hasta el alto del nivel nuevo con el mismo
+  // recorte de la persiana (clip-path, motion/duration/panel), sin animar el
+  // alto: al entrar a Productos o a un submenú se descubre lo que falta, y al
+  // volver se recorta lo que sobra (el panel mantiene su alto hasta terminar).
+  // Con reduced motion (duración 0) cambia de golpe.
+  #resizeMenu(menu, before) {
+    this.#finishMenuResize(menu);
+    const after = menu.getBoundingClientRect().height;
+    if (!before || Math.abs(after - before) < 1 || !this.#ms('panel')) return;
+    const set = (clipPath, minHeight = '') => {
+      menu.style.transition = 'none';
+      menu.style.minHeight = minHeight;
+      menu.style.clipPath = clipPath;
+      void menu.offsetHeight;
+      menu.style.transition = '';
+    };
+    if (after > before) {
+      set(`inset(0 0 ${after - before}px 0)`);
+      menu.style.clipPath = 'inset(0)';
+    } else {
+      set('inset(0)', `${before}px`);
+      menu.style.clipPath = `inset(0 0 ${before - after}px 0)`;
+    }
+    this.#menuResizeTimer = setTimeout(() => this.#finishMenuResize(menu), this.#ms('panel'));
+  }
+
+  // Termina un cambio de alto en curso: suelta el recorte y el alto mínimo.
+  #finishMenuResize(menu) {
+    clearTimeout(this.#menuResizeTimer);
+    if (!menu.style.clipPath && !menu.style.minHeight) return;
+    menu.style.transition = 'none';
+    menu.style.clipPath = '';
+    menu.style.minHeight = '';
+    void menu.offsetHeight;
+    menu.style.transition = '';
+  }
+
   // Cierra el menú mobile al revés de como abrió (la persiana sube) y recién
   // al terminar cierra el diálogo y devuelve el foco.
   #closeMenu(menu) {
+    this.#finishMenuResize(menu);
     menu.classList.remove('is-open');
     const { transitionDuration } = getComputedStyle(menu);
     const ms = Math.max(0, ...transitionDuration.split(',').map((value) => (parseFloat(value) || 0) * (/ms\s*$/.test(value) ? 1 : 1000)));
@@ -775,9 +838,15 @@ class ArqNavbar extends ArqElement {
     if (id === 'colecciones') {
       links = (nav?.collections ?? [])
         .map(
-          (c) =>
-            `<arq-mega-link size="large" show-image href="${esc(c.href)}"${c.thumb ? ` image="${esc(c.thumb)}"` : ''}>${esc(c.label)}` +
-            `<span slot="meta">${esc(c.meta)}</span></arq-mega-link>`,
+          (c) => {
+            // Miniatura de layout/mega-link-thumb (80 px): se pide chica (240 = 3x), no a 800 px; la primera vez tarda menos
+            const photos = [c.image, ...(c.fallbacks ?? []), c.thumb].filter(Boolean).map((src) => sizedImage(src, THUMB_WIDTH));
+            const [photo, ...rest] = [...new Set(photos)];
+            return (
+              `<arq-mega-link size="large" show-image href="${esc(c.href)}"${photo ? ` image="${esc(photo)}"` : ''}${rest.length ? ` fallbacks="${esc(JSON.stringify(rest))}"` : ''}>${esc(c.label)}` +
+              `<span slot="meta">${esc(c.meta)}</span></arq-mega-link>`
+            );
+          },
         )
         .join('');
     } else {

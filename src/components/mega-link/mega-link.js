@@ -39,7 +39,7 @@ const ROW = (tag, end) =>
   `<span class="name"><slot></slot></span>` +
   `<span class="meta"><slot name="meta"></slot></span>` +
   `</span>` +
-  `<span class="thumb" hidden><img alt="" loading="lazy" hidden></span>` +
+  `<span class="thumb" hidden><img alt="" hidden></span>` +
   end +
   `</${tag}>`;
 const LINK = ROW('a', `<span class="arrow">${icon('arrow-right')}</span>`);
@@ -55,6 +55,8 @@ const GROUP =
   `</div>`;
 
 class ArqMegaLink extends ArqElement {
+  #queue = []; // fotos de respaldo que le quedan a la miniatura
+  #key = ''; // image y fallbacks con los que se armó #queue
   static tag = 'arq-mega-link';
   static styles = css;
   static properties = {
@@ -64,6 +66,7 @@ class ArqMegaLink extends ArqElement {
     showArrow: { type: Boolean }, // Show arrow
     showImage: { type: Boolean }, // Show image
     image: { type: String }, // miniatura (Show image); sin imagen, fondo neutro
+    fallbacks: { type: String }, // solo de código: JSON con las fotos que prueba, en orden, si image no carga
     submenu: { type: Boolean }, // solo de código: abre un submenú mobile
     href: { type: String },
   };
@@ -82,7 +85,11 @@ class ArqMegaLink extends ArqElement {
       root.querySelector('slot[name="meta"]').addEventListener('slotchange', () => this.#syncMeta());
       const img = root.querySelector('img');
       img.addEventListener('load', () => (img.hidden = false));
-      img.addEventListener('error', () => (img.hidden = true));
+      img.addEventListener('error', () => {
+        const next = this.#queue.shift();
+        if (next) img.src = next;
+        else img.hidden = true;
+      });
     }
   }
 
@@ -104,7 +111,7 @@ class ArqMegaLink extends ArqElement {
     // Menú mobile (Large y submenu): role/heading-3, como los nav-link del Menú
     const large = this.size === 'large';
     link.querySelector('.name').className = `name ${large || this.submenu ? 'role-heading-3' : 'role-body-xl'}`;
-    link.querySelector('.meta').className = `meta ${large ? 'role-caption' : 'role-body-compact-regular'}`;
+    link.querySelector('.meta').className = 'meta role-body-compact-regular'; // 14 px, también en Large
     this.#syncMeta();
     this.#syncImage();
   }
@@ -122,7 +129,19 @@ class ArqMegaLink extends ArqElement {
     const img = thumb.querySelector('img');
     thumb.hidden = !this.showImage;
     if (this.showImage && this.image) {
-      if (img.getAttribute('src') !== this.image) img.src = this.image;
+      // La lista de respaldo se toma siempre que cambia image o fallbacks (los atributos pueden
+      // llegar en cualquier orden); si ya se estaba probando otra foto, no se vuelve a la primera.
+      const key = `${this.image}|${this.fallbacks ?? ''}`;
+      if (key !== this.#key) {
+        this.#key = key;
+        try {
+          this.#queue = JSON.parse(this.fallbacks || '[]').filter((src) => src && src !== this.image);
+        } catch {
+          this.#queue = [];
+        }
+        if (img.getAttribute('src') !== this.image) img.src = this.image;
+        else if (img.hidden && img.complete) img.dispatchEvent(new Event('error')); // la primera ya falló: sigue con la lista
+      }
     } else {
       img.removeAttribute('src');
       img.hidden = true;
