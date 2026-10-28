@@ -1844,3 +1844,9 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 ## 2026-10-28 · Fotos de compare-bar sobre fondo claro
 
 - Pedido de Lau: en compare-bar (Dark local) la foto de cada producto salía sobre `color/surface/subtle` oscuro (`neutral/750`). Ahora la miniatura de compare-slot Filled lleva `data-arq-theme="light"` (Light local, DESIGN.md §2): el fondo es el `color/surface/subtle` claro, como la foto en el resto del sitio. El nombre, la meta y quitar siguen en Dark; el lugar vacío («+», Agregar producto) sigue el modo de la barra.
+
+## 2026-10-28 · Comparativa: foto más grande con fondo claro
+
+- Decisión de Lau (probado en la rama `feat/comparativa-foto-sin-fondo`): en la cabecera de la comparativa, la foto de compare-product va más grande, en un cuadrado de `layout/card-min` como máximo (280 en Desktop; en Mobile, 160, ocupa la columna) con un fondo más claro, `color/surface/soft` (#F4F4F4), y la foto entera a `space/padding/md` del borde. Antes: cuadrado de 160 en `color/surface/subtle` (#F0F0F0) con la foto a 128. Se probó también sin fondo (las fotos de estudio son PNG transparentes: el producto sobre el blanco de la página).
+- `TODO` (diseño): si se queda, falta un token propio para el tamaño (hoy usa `layout/card-min`, el ancho mínimo de las cards del catálogo).
+- La impresión no cambia: cuadrado de `layout/compare-column` en `color/surface/strong` con la foto a 128.
