@@ -74,6 +74,10 @@
   cursor: pointer;
 }
 
+.nav[hidden] {
+  display: none;
+}
+
 .nav .icon {
   width: var(--arq-icon-xl);
   height: var(--arq-icon-xl);

@@ -17,6 +17,7 @@ section.items = [{ name: 'Daö Embutir', href: '/arq/producto/dao-embutir?sku=�
 | Atributo / slot / prop | Valores |
 | --- | --- |
 | slot `title` | `<h2>` de la sección (`role/heading-2`); lo escribe la página |
+| slot `action` | Acción a la derecha del título. En la ficha de Daö, «Configura tu Daö» |
 | `items` (prop JS) | Lista de `{ name, href, image, finishes, meta }`. `finishes`: `[{ name, src }]`, swatches a la derecha del nombre; `meta`: texto debajo del nombre (módulos). Sin `href` la tarjeta no es un link; sin `image` queda el recuadro `color/surface/subtle` |
 
 - Sin items la sección no se muestra.

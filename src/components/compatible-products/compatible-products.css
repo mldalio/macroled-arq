@@ -18,6 +18,23 @@
   display: none;
 }
 
+/* Título a la izquierda y la acción (Configura tu Daö) en la punta opuesta. */
+.heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-md);
+}
+
+.title {
+  min-width: 0;
+}
+
+slot[name='action'] {
+  margin-inline-start: auto;
+}
+
 /* Grilla: layout/card-min por columna en Tablet y Mobile; 4 columnas en Desktop
    (1024–1439 px) y 5 en Large (desde 1440 px) */
 .grid {

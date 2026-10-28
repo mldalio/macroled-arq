@@ -258,7 +258,9 @@ class ArqProductGallery extends ArqElement {
     const row = this.shadowRoot.querySelector('.thumbs');
     const strip = this.shadowRoot.querySelector('.thumbs-row');
     strip.hidden = images.length < 2;
-    this.shadowRoot.querySelector('.next').hidden = images.length < 2;
+    const single = images.length < 2;
+    this.shadowRoot.querySelector('.prev').hidden = single;
+    this.shadowRoot.querySelector('.next').hidden = single;
     if (images.length < 2) row.replaceChildren();
     else {
       while (row.children.length > images.length) row.lastElementChild.remove();

@@ -22,7 +22,10 @@ class ArqCompatibleProducts extends ArqElement {
   static styles = css;
   static template =
     `<section class="section" hidden>` +
+    `<div class="heading">` +
     `<div class="title role-heading-2"><slot name="title"></slot></div>` +
+    `<slot name="action"></slot>` +
+    `</div>` +
     `<ul class="grid"></ul>` +
     `</section>`;
 

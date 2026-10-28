@@ -1805,3 +1805,11 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 ## 2026-10-28 · Explora la colección en gris oscuro
 
 - La banda de «Explora la colección» usa `neutral/700` (`#454545`), con el título, «Ver colección», la línea de progreso y el nombre de cada card en `color/text/inverse`. El resto de la card sigue en Light. En Light no hay un `color/surface` de ese gris.
+
+## 2026-10-28 · Configura tu Daö junto a los compatibles
+
+- En la ficha de Daö, «Configura tu Daö» va en la fila de «Accesorios y lámparas compatibles», en la punta opuesta al título. Ya no va sobre la foto. En «Accesorio requerido» (lámpara) no aparece.
+
+## 2026-10-28 · Breadcrumb de la ficha sin Colecciones
+
+- La ficha ya no muestra la migaja «Colecciones». Una luminaria queda Productos / su familia / el producto (Daö: Productos / Dao / Daö Simple).

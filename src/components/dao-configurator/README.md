@@ -1,6 +1,6 @@
 # dao-configurator · `<arq-dao-configurator>`
 
-Configurador de la colección Daö, en un **modal a pantalla completa**. Se abre desde el botón «Configura tu Daö» de la ficha de cualquier producto de Daö (centrado sobre la foto) y se arma paso por paso, como las páginas de compra de Apple. No tiene set en Figma todavía (`TODO` diseño).
+Configurador de la colección Daö, en un **modal a pantalla completa**. Se abre desde el botón «Configura tu Daö» de la ficha, en la punta opuesta al título «Accesorios y lámparas compatibles», y se arma paso por paso, como las páginas de compra de Apple. No tiene set en Figma todavía (`TODO` diseño).
 
 ```html
 <arq-dao-configurator></arq-dao-configurator>

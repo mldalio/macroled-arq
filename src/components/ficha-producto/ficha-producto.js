@@ -152,8 +152,6 @@ class ArqFichaProducto extends ArqElement {
     `<arq-breadcrumb class="breadcrumb needs-data" slot="overlay"></arq-breadcrumb>` +
     `<arq-toggle class="iluminar needs-data" slot="overlay" show-label>Iluminar</arq-toggle>` +
     `</arq-product-gallery>` +
-    // PRUEBA: entrada al configurador de Daö, sobre la foto (solo colección Daö)
-    `<button type="button" class="config-cta role-label" hidden>${TEXT.configure}</button>` +
     `</div>` +
     `<div class="configurator-column">` +
     `<div class="header">` +
@@ -189,6 +187,7 @@ class ArqFichaProducto extends ArqElement {
     `<arq-compatible-products class="compatible needs-data">` +
     `<span slot="title" class="compatible-title"><slot name="compatible-title"></slot></span>` +
     `<span slot="title" class="accessory-title" hidden><slot name="accessory-title"></slot></span>` +
+    `<button type="button" class="config-cta config-cta-inline role-label" slot="action" hidden>${TEXT.configure}</button>` +
     `</arq-compatible-products>` +
     // Galería de ambiente
     `<div class="ambient-block needs-data" hidden>` +
@@ -307,8 +306,9 @@ class ArqFichaProducto extends ArqElement {
       this.#fillModal(this.#sku);
       root.querySelector('arq-download-modal').show(event.currentTarget);
     });
-    const cta = root.querySelector('.config-cta');
-    cta.addEventListener('click', () => root.querySelector('.dao-config').show(this.#sku, cta));
+    for (const cta of root.querySelectorAll('.config-cta')) {
+      cta.addEventListener('click', () => root.querySelector('.dao-config').show(this.#sku, cta));
+    }
     // Comparar: suma o saca la variante elegida de la compare-bar (hasta 3)
     const compare = root.querySelector('.compare');
     const bar = root.querySelector('.compare-bar');
@@ -665,7 +665,6 @@ class ArqFichaProducto extends ArqElement {
     for (const src of [details.images?.[0]?.src, details.images?.[0]?.srcOn]) if (src) this.#backdropImage(src).catch(() => {});
     this.#renderSpecs(details.sections, details.cota, details.name);
     this.#renderCompatibles();
-    root.querySelector('.config-cta').hidden = this.#product.collection?.id !== 'dao';
     const compare = root.querySelector('.compare');
     compare.checked = root.querySelector('.compare-bar').has(details.sku);
 
@@ -794,8 +793,10 @@ class ArqFichaProducto extends ArqElement {
   async #renderCompatibles() {
     const section = this.shadowRoot.querySelector('.compatible');
     const request = ++this.#compatibleRequest;
+    const inline = this.shadowRoot.querySelector('.config-cta-inline');
     if (this.#product.collection?.id !== 'dao' && !this.#sku?.startsWith('PAR11-')) {
       section.items = [];
+      inline.hidden = true;
       return;
     }
     try {
@@ -804,10 +805,14 @@ class ArqFichaProducto extends ArqElement {
       const { kind, items } = compatibleProducts(model, hrefs, this.#sku);
       section.querySelector('.compatible-title').hidden = kind === 'accessory';
       section.querySelector('.accessory-title').hidden = kind !== 'accessory';
+      inline.hidden = kind !== 'compatible';
       section.items = items;
     } catch (error) {
       console.error('[arq] productos compatibles: no se pudieron cargar', error);
-      if (request === this.#compatibleRequest) section.items = [];
+      if (request === this.#compatibleRequest) {
+        section.items = [];
+        inline.hidden = true;
+      }
     }
   }
 
@@ -1069,12 +1074,10 @@ class ArqFichaProducto extends ArqElement {
   }
 }
 
-// Migas de la ficha (hasta 4, sin Inicio: va sobre la foto). Siempre salen
-// de Productos, como las del listado. Una luminaria sigue a Colecciones (abre
-// el mega-menu en esa pestaña) y a su familia. Una lámpara o artefacto sigue
-// a su macrofamilia y, si tiene, a su subfamilia.
+// Migas de la ficha (hasta 3, sin Inicio: va sobre la foto). Siempre salen
+// de Productos, como las del listado. Una luminaria sigue a su familia.
+// Una lámpara o artefacto sigue a su macrofamilia y, si tiene, a su subfamilia.
 const PRODUCTS_CRUMB = { label: 'Productos', href: '/arq/productos' };
-const COLLECTIONS_CRUMB = { label: 'Colecciones', href: '/arq/productos', menu: 'colecciones' };
 
 function headerTrail(group, collection) {
   const lamps = group.environment?.includes(LAMPS_ENVIRONMENT) && !group.environment.some((env) => env === 'Interior' || env === 'Exterior');
@@ -1087,14 +1090,14 @@ function headerTrail(group, collection) {
   if (family) {
     const href = categoryHref({ family });
     return {
-      crumbs: [PRODUCTS_CRUMB, COLLECTIONS_CRUMB, { label: family, href }],
+      crumbs: [PRODUCTS_CRUMB, { label: family, href }],
       see: { href, label: `Ver colección ${family}` },
     };
   }
   if (collection) {
     const href = categoryHref({ collection: collection.id });
     return {
-      crumbs: [PRODUCTS_CRUMB, COLLECTIONS_CRUMB, { label: collection.name, href }],
+      crumbs: [PRODUCTS_CRUMB, { label: collection.name, href }],
       see: { href, label: `Ver colección ${collection.name}` },
     };
   }

@@ -50,18 +50,12 @@
   overflow: hidden;
 }
 
-/* PRUEBA: entrada al configurador de Daö, centrada sobre la foto. Fondo
-   color/surface/inverse con texto inverso (el más fuerte de la zona, a la par de
-   «Generar ficha técnica»); role/label (12 px en mayúsculas). */
+/* «Configura tu Daö», en la fila de compatibles. Fondo color/surface/inverse
+   con texto inverso; role/label (12 px en mayúsculas). */
 .config-cta {
-  position: absolute;
-  inset-inline: 0;
-  bottom: var(--arq-space-gap-5xl);
-  z-index: 1;
   box-sizing: border-box;
   width: max-content;
-  max-width: calc(100% - 2 * var(--arq-layout-gutter));
-  margin-inline: auto;
+  max-width: 100%;
   padding: var(--arq-space-padding-sm-md) var(--arq-space-padding-xl);
   border: 0;
   border-radius: var(--arq-radius-control);
@@ -69,6 +63,10 @@
   color: var(--arq-color-text-inverse);
   cursor: pointer;
   transition: background-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);
+}
+
+.config-cta-inline {
+  flex: none;
 }
 
 .config-cta[hidden] {
