@@ -26,8 +26,7 @@
 // - Empty es un <button>: emite arq:add al clickear (en Comparativa abre
 //   compare-picker, «Agregar producto»).
 // - Imagen 1:1 (aspect-ratio bloqueado), tope layout/compare-media-max.
-// - Al imprimir, los selects se reemplazan por la variante elegida como texto
-//   (.variant: etiqueta y valor de cada atributo).
+// - Al imprimir quedan la foto, el nombre y el SKU, sin los selects.
 // - Las opciones de familia/variante se arman en la página: el componente
 //   solo las muestra (AGENTS.md · Datos).
 // - Size=Compact usa los mismos datos pero no muestra selects ni link: foto
@@ -63,11 +62,10 @@ class ArqCompareProduct extends ArqElement {
     `</button>` +
     `</div>` +
     `<div class="info">` +
-    `<a class="title"><span class="name role-heading-3"></span>${icon('arrow-up-right')}</a>` +
+    `<a class="title"><span class="name role-body-lg-medium"></span>${icon('arrow-up-right')}</a>` +
     `<p class="sku role-label"></p>` +
     `</div>` +
     `<div class="selects"></div>` +
-    `<dl class="variant"></dl>` +
     `</div>` +
     `<div class="compact">` +
     `<div class="thumb"><img alt="" hidden></div>` +
@@ -181,22 +179,6 @@ class ArqCompareProduct extends ArqElement {
       select.options = def.options;
       select.value = def.value;
     });
-    // Para imprimir: la opción elegida como texto (con su label, si lo tiene).
-    this.shadowRoot.querySelector('.variant').replaceChildren(
-      ...defs
-        .filter((def) => def.value !== '')
-        .map((def) => {
-          const item = document.createElement('div');
-          const term = document.createElement('dt');
-          term.className = 'role-label';
-          term.textContent = def.label;
-          const detail = document.createElement('dd');
-          detail.className = 'role-body-regular';
-          detail.textContent = def.options.find((o) => String(o.value) === String(def.value))?.label ?? def.value;
-          item.append(term, detail);
-          return item;
-        }),
-    );
   }
 }
 

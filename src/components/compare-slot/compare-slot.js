@@ -81,6 +81,12 @@ class ArqCompareSlot extends ArqElement {
     const add = root.querySelector('.add');
     add.hidden = filled;
     add.setAttribute('aria-label', this.emptyLabel ?? '');
+    // Light local (DESIGN.md §2): la foto va sobre el color/surface/subtle
+    // claro aunque compare-bar esté en Dark, como en el resto del sitio. El
+    // lugar vacío sigue el modo de la barra.
+    const thumb = root.querySelector('.thumb');
+    if (filled) thumb.dataset.arqTheme = 'light';
+    else delete thumb.dataset.arqTheme;
   }
 }
 

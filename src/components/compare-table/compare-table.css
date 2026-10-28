@@ -87,11 +87,15 @@ thead th {
   overflow-wrap: break-word;
 }
 
+/* Centrado, como macroled.com.ar/comparativa: queda alineado con la foto, el
+   nombre y el SKU de compare-product, que también van centrados en su
+   columna. */
 .value {
   padding-inline: var(--arq-space-padding-md) var(--arq-space-gap-lg);
   border-left: var(--arq-border-default) solid var(--arq-color-border-subtle);
   color: var(--arq-color-text-primary);
   overflow-wrap: break-word;
+  text-align: center;
 }
 
 @media (max-width: 767px) {
@@ -258,6 +262,10 @@ thead th {
     align-items: center;
   }
 
+  .row > .value {
+    justify-content: center;
+  }
+
   /* .row > * pisaría el display: none de .empty */
   .row > .empty {
     display: none;
@@ -307,6 +315,42 @@ thead th {
     width: auto;
     padding-inline: var(--arq-space-padding-md) var(--arq-space-gap-lg);
     border-left: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  }
+}
+
+/* Líneas de impresión: color/border/default. color/border/subtle (tinta al
+   10 %) no sale impreso, como en la ficha técnica (docs/decisiones.md,
+   2026-10-27 · Ficha técnica: ajuste de impresión). Va después de las dos
+   reglas de impresión para pisar las dos. */
+@media print {
+  .row > *,
+  .row .value,
+  .row .value:first-of-type {
+    border-color: var(--arq-color-border-default);
+  }
+
+  /* Textos como la ficha técnica (src/pdf/README.md): etiqueta role/body-sm,
+     valor role/body-sm-medium (12 px = 9 pt) y título de grupo
+     role/body-compact-medium (10,5 pt). Fijos acá y no por las clases role-*:
+     la etiqueta cambia de clase según el ancho de la pantalla. */
+  .row .row-label,
+  .row .value {
+    font-size: var(--arq-type-body-sm-size);
+    line-height: var(--arq-type-body-sm-leading);
+  }
+
+  .row .row-label {
+    font-weight: var(--arq-font-weight-regular);
+  }
+
+  .row .value {
+    font-weight: var(--arq-font-weight-medium);
+  }
+
+  .group .group-label {
+    font-size: var(--arq-type-body-compact-size);
+    line-height: var(--arq-type-body-compact-leading);
+    font-weight: var(--arq-font-weight-medium);
   }
 }
 
