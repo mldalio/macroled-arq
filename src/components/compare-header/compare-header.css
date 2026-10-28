@@ -28,7 +28,7 @@
 }
 
 /* Controles: mismo ancho que la columna de etiquetas de compare-table
-   (layout/compare-label, 200 Desktop · 120 Mobile): no hay token propio. */
+   (layout/compare-label, 320 Desktop · 120 Mobile): no hay token propio. */
 .controls {
   flex: none;
   width: var(--arq-layout-compare-label);
@@ -84,6 +84,18 @@
   .products > * {
     padding-inline: var(--arq-space-padding-lg) var(--arq-space-padding-xl);
     border-left: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  }
+}
+
+/* Pantallas chicas (Tablet y Desktop hasta 1439): menos aire en cada
+   columna, igual que compare-table, así la card de producto gana ancho. */
+@media screen and (min-width: 768px) and (max-width: 1439px) {
+  .default .controls {
+    padding-inline-end: var(--arq-space-gap-md);
+  }
+
+  .products > * {
+    padding-inline: var(--arq-space-padding-sm-md) var(--arq-space-padding-md);
   }
 }
 
@@ -144,6 +156,17 @@
   min-width: 0;
   padding-inline: var(--arq-space-padding-md) var(--arq-space-gap-lg);
   border-left: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+/* Pantallas chicas: el mismo padding que compare-table */
+@media screen and (min-width: 768px) and (max-width: 1439px) {
+  .compact .controls {
+    padding-inline-end: var(--arq-space-gap-md);
+  }
+
+  .slots > * {
+    padding-inline: var(--arq-space-padding-sm-md) var(--arq-space-padding-md);
+  }
 }
 
 @media (max-width: 767px) {

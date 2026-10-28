@@ -141,7 +141,7 @@
   --arq-layout-table-thumb: 100px; /** Miniatura cuadrada de cada fila de variants-table (ficha y Descargas) (100). */
   --arq-layout-compare-thumb: 48px; /** Foto cuadrada de compare-slot Size=Default (compare-bar y compare-header Compact en Desktop). */
   --arq-layout-compare-slot: 400px; /** Ancho máximo de compare-slot Size=Default, para que no se estire en pantallas anchas. */
-  --arq-layout-compare-label: 200px; /** Columna de etiquetas de la comparativa (compare-row, compare-group y la columna de controles de compare-header). En Mobile queda fija al desplazar. */
+  --arq-layout-compare-label: 320px; /** Columna de etiquetas de la comparativa (compare-row, compare-group y la columna de controles de compare-header). En Mobile queda fija al desplazar. */
   --arq-layout-compare-column: 160px; /** Ancho de cada columna de producto de la comparativa en Mobile (con scroll horizontal). En Desktop las columnas se reparten el ancho. */
   --arq-layout-mega-menu-image: 420px; /** Ancho de la imagen del mega-menu (a la derecha de las columnas). El alto sale de ratio/portrait-soft (4:5). */
   --arq-layout-search-field: 360px; /** Ancho de search-field en el navbar Desktop. search-dropdown toma el mismo ancho. En Mobile (search-screen) el campo ocupa el ancho disponible. */
@@ -176,7 +176,7 @@
   --arq-motion-duration-illumination-image: 900ms; /** Iluminar: fundido de las fotos de product-card y product-gallery entre apagada y encendida. En ms. Con prefers-reduced-motion se usa motion/duration/fade. */
   --arq-motion-duration-illumination-lead: 180ms; /** Iluminar: cuánto se adelantan las fotos al fondo, para que se vea que la luz se prende antes de que cambie la página. En ms. Con prefers-reduced-motion: 0 (todo funde junto). */
   --arq-motion-duration-shimmer: 1600ms; /** Cards de carga (product-card State=Loading): tiempo en que la franja de brillo del shimmer cruza la pantalla, lineal y continua. En ms. Con prefers-reduced-motion no hay franja (bloques fijos). */
-  --arq-motion-duration-fold: 500ms; /** Pliegue de un desplegable con recorrido largo: catalog-nav-group al abrir una lista de 15 ítems o más (Colecciones). La duración del pliegue va de motion/duration/slow (hasta 4 ítems) a esta, según el recorrido; al cerrar, de motion/duration/expand a motion/duration/panel. En ms. Con prefers-reduced-motion: 0. */
+  --arq-motion-duration-fold: 600ms; /** Pliegue de un desplegable con recorrido largo: catalog-nav-group al abrir una lista de 15 ítems o más (Colecciones), y paso de carousel-controls. La duración del pliegue al abrir va de motion/duration/panel (hasta 4 ítems) a esta, según el recorrido; al cerrar, de motion/duration/expand a motion/duration/panel. En ms. Con prefers-reduced-motion: 0. */
   --arq-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1); /** Cambios de estado: hover, foco, selección, paneles, menús (mega-menú, menú Mobile, menú de input Select) y fundidos de imagen. Para entradas rápidas, motion/easing/out. */
   --arq-motion-easing-out: cubic-bezier(0.23, 1, 0.32, 1); /** Entradas y respuestas rápidas: algo que aparece o se despliega (visor de fotos, compare-header Compact, texto de las cards con overlay) y la escala al presionar. Arranca rápido y frena suave. */
   --arq-motion-easing-illumination: cubic-bezier(0.1, 0.1, 0.95, 0.4); /** Iluminar: curva del fondo. Calculada para que el brillo de la página cambie parejo, como un dimmer: el fundido entre claro y oscuro oscurece mucho al principio de la mezcla y esta curva lo compensa. */
@@ -448,6 +448,7 @@
 /* Tablet: 768–1023 px */
 @media (min-width: 768px) and (max-width: 1023px) {
   :root {
+    --arq-layout-compare-label: 200px; /** Columna de etiquetas de la comparativa (compare-row, compare-group y la columna de controles de compare-header). En Mobile queda fija al desplazar. */
     --arq-layout-gutter: var(--arq-space-32); /** Margen lateral de la página. Mobile 20 · Tablet (768–1023) 32 · Desktop (1024–1439) 40 · Large (desde 1440) 64. Desde 1920 el margen crece para que el contenido no pase de layout/max-width; los fondos siguen a todo el ancho. */
   }
 }
@@ -478,6 +479,6 @@
     --arq-motion-duration-expand: 0ms; /** Alto de un desplegable que se abre o se cierra (faq-item) y salida de filter-panel, download-modal y compare-picker (más corta que su entrada). En ms. Con prefers-reduced-motion: 0. */
     --arq-motion-duration-panel: 0ms; /** Entrada de paneles y menús que se abren por encima (filter-panel, download-modal, compare-picker, search-sheet, mega-menú, menú Mobile del navbar, compare-bar) y cambio de nivel del menú Mobile. La salida es más corta: motion/duration/slow en el mega-menú, motion/duration/expand en los paneles. En ms. Con prefers-reduced-motion: 0 (queda el fundido de motion/duration/fade). */
     --arq-motion-duration-illumination-lead: 0ms; /** Iluminar: cuánto se adelantan las fotos al fondo, para que se vea que la luz se prende antes de que cambie la página. En ms. Con prefers-reduced-motion: 0 (todo funde junto). */
-    --arq-motion-duration-fold: 0ms; /** Pliegue de un desplegable con recorrido largo: catalog-nav-group al abrir una lista de 15 ítems o más (Colecciones). La duración del pliegue va de motion/duration/slow (hasta 4 ítems) a esta, según el recorrido; al cerrar, de motion/duration/expand a motion/duration/panel. En ms. Con prefers-reduced-motion: 0. */
+    --arq-motion-duration-fold: 0ms; /** Pliegue de un desplegable con recorrido largo: catalog-nav-group al abrir una lista de 15 ítems o más (Colecciones), y paso de carousel-controls. La duración del pliegue al abrir va de motion/duration/panel (hasta 4 ítems) a esta, según el recorrido; al cerrar, de motion/duration/expand a motion/duration/panel. En ms. Con prefers-reduced-motion: 0. */
   }
 }

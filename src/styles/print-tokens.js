@@ -92,7 +92,7 @@ export const PRINT_TOKENS = Object.freeze({
   "layout/table-thumb": 100,
   "layout/compare-thumb": 48,
   "layout/compare-slot": 400,
-  "layout/compare-label": 200,
+  "layout/compare-label": 320,
   "layout/compare-column": 160,
   "layout/mega-menu-image": 420,
   "layout/search-field": 360,
