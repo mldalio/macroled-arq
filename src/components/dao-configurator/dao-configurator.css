@@ -316,8 +316,6 @@
 
 .result-title {
   margin: 0;
-  /* Más aire entre el nombre del armado y sus características: gap/lg + gap/md */
-  margin-bottom: var(--arq-space-gap-md);
 }
 
 .specs {
@@ -336,7 +334,8 @@
 }
 
 .parts-title {
-  margin: 0;
+  /* Más aire entre las características y las piezas: gap/lg + gap/md */
+  margin: var(--arq-space-gap-md) 0 0;
 }
 
 .parts {
