@@ -16,7 +16,7 @@
 //   de opciones aparece cuando se eligió el anterior, «Continuar» se habilita
 //   con todo lo del paso elegido y las fotos se suman a medida que se elige.
 // - Al terminar el último paso queda el armado completo: fotos, especificaciones,
-//   piezas y «Imprimir configuración» (emite arq:print; PDF: TODO, hoy abre una
+//   piezas y «Descargar configuración» (emite arq:print; PDF: TODO, hoy abre una
 //   hoja imprimible simple).
 // - Diálogo modal nativo, como compare-picker: foco adentro, Esc cierra, el foco
 //   vuelve a quien lo abrió y la página de atrás no se desplaza. Siempre en Light.
@@ -48,7 +48,7 @@ const TEXT = {
   change: 'Cambiar',
   back: 'Ver resumen',
   parts: 'Piezas para este armado',
-  print: 'Imprimir configuración',
+  print: 'Descargar configuración',
 };
 
 const STEP_NAME = { ring: 'Aro', head: 'Cabezal', lamp: 'Lámpara' };

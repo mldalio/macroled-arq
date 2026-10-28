@@ -10070,7 +10070,7 @@ var nl = ":host{--panel-slow:var(--arq-motion-duration-panel);display:contents}.
 	change: "Cambiar",
 	back: "Ver resumen",
 	parts: "Piezas para este armado",
-	print: "Imprimir configuración"
+	print: "Descargar configuración"
 }, il = {
 	ring: "Aro",
 	head: "Cabezal",
