@@ -448,6 +448,7 @@
 /* Tablet: 768–1023 px */
 @media (min-width: 768px) and (max-width: 1023px) {
   :root {
+    --arq-layout-compare-label: 200px; /** Columna de etiquetas de la comparativa (compare-row, compare-group y la columna de controles de compare-header). En Mobile queda fija al desplazar. */
     --arq-layout-gutter: var(--arq-space-32); /** Margen lateral de la página. Mobile 20 · Tablet (768–1023) 32 · Desktop (1024–1439) 40 · Large (desde 1440) 64. Desde 1920 el margen crece para que el contenido no pase de layout/max-width; los fondos siguen a todo el ancho. */
   }
 }

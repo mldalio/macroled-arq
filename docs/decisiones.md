@@ -1856,7 +1856,7 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 ## 2026-10-28 · Comparativa: foto a todo el ancho
 
 - Pedido de Lau: la foto de compare-product deja de tener ancho máximo y ocupa todo el ancho de la columna (cuadrado en `color/surface/soft`, foto entera a `space/padding/md`); reemplaza el tope de `layout/card-min` de la entrada anterior (y su `TODO` de token). Nombre y SKU vuelven a la izquierda; los valores de compare-table siguen centrados. La impresión no cambia.
-- La columna de características (`layout/compare-label`) pasa en Figma de 200 a 320 en Desktop, Tablet y Large; Mobile queda en 120. La columna de controles de compare-header la sigue.
+- La columna de características (`layout/compare-label`) pasa en Figma de 200 a 320 en Desktop y Large; Tablet queda en 200 (con 320 las columnas de producto quedaban de unos 110 px) y Mobile en 120. La columna de controles de compare-header la sigue. En columnas angostas los selects de compare-product ya no se salen de la columna (`min-width: 0`, el select Filter mide al menos `layout/select-filter`) y «Agregar producto» va centrado si se parte en dos líneas. Entre 768 y 1439 px las columnas llevan menos aire, en compare-header (también Compact) y compare-table: `space/padding/sm-md` · `space/padding/md` en cada producto o valor (era `space/padding/lg` · `xl` en la cabecera y `space/padding/md` · `space/gap/lg` en la tabla) y `space/gap/md` después de la columna de etiquetas (era `lg`).
 
 ## 2026-10-28 · Hover de product-card, orden de Productos y nombre del PDF
 
