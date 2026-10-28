@@ -18,7 +18,7 @@ configurator.close();
 - **Tres pasos numerados:** 1 Aro (modelo, módulos y color), 2 Cabezal (modelo y color, solo si el aro lleva cabezal) y 3 Lámpara (modelo y, si lo trae, color del frente). La palabra es siempre «Color».
 - **Un paso abierto a la vez.** Dentro de un paso, cada grupo aparece cuando se eligió el anterior; un grupo con una sola opción se elige solo. «Continuar» está deshabilitado hasta que todo lo del paso esté elegido. Los pasos hechos se pliegan en una línea de resumen con «Cambiar»; los pendientes muestran solo el título, atenuado.
 - Si un cambio arrastra lo elegido en un paso posterior (otro aro, otro cabezal), ese paso se vuelve a elegir o confirmar.
-- **Al terminar:** los tres pasos se condensan arriba en un bloque chico con un «Cambiar»; debajo aparecen el nombre del armado, las especificaciones, las piezas (cantidad, nombre con link a su ficha y SKU) y «Imprimir configuración» (button Filled). «Cambiar» vuelve a desplegar los tres pasos (cada uno con su «Cambiar») y esconde el armado; «Ver resumen» o confirmar un paso vuelve al resumen.
+- **Al terminar:** los tres pasos se condensan arriba en un bloque chico con un «Cambiar»; debajo aparecen el nombre del armado, las especificaciones, las piezas (cantidad, nombre con link a su ficha y SKU) y «Descargar configuración» (button Filled). «Cambiar» vuelve a desplegar los tres pasos (cada uno con su «Cambiar») y esconde el armado; «Ver resumen» o confirmar un paso vuelve al resumen.
 - **Panel de la derecha:** solo las fotos de las piezas, fijo y sin scroll. Empieza vacío (cuadro en blanco) y suma una foto por pieza a medida que se elige (aro, cabezal, lámpara y frente). Cada pieza va en una tarjeta de `color/surface/subtle`. Las tarjetas se reparten el alto: 1 foto ocupa todo, 2 van en fila y 3 o 4 en 2 × 2. En Mobile las fotos van arriba de los pasos, en 5:4.
 - La columna de pasos se desplaza sin barra a la vista (rueda, touch y teclado).
 - **Animación:** un paso que se abre y el resumen entran con un fundido y un leve ascenso (`motion/duration/base`, `motion/easing/out`; con movimiento reducido, solo el fundido). La hoja del modal entra y sale como compare-picker (`motion/duration/panel`).
@@ -42,6 +42,6 @@ option-group Type=Cards y option-tile Type=Card (ver sus README): caja de 1 px e
 ## Pendientes
 
 - `TODO` (diseño): el modal, el paso plegado y condensado, el panel de fotos y la hoja del PDF no están en Figma.
-- `TODO`: «Imprimir configuración» abre hoy una hoja simple para imprimir o guardar como PDF (con `window.open`). Falta el PDF real con pdfmake y los estilos de la ficha técnica (`src/pdf/`).
+- `TODO`: «Descargar configuración» abre hoy una hoja simple para imprimir o guardar como PDF (con `window.open`). Falta el PDF real con pdfmake y los estilos de la ficha técnica (`src/pdf/`).
 - `TODO` (datos): la imagen final del producto armado (hoy se muestran las fotos de las piezas); las fotos de la lámpara y del frente de PAR11 salen rotas en los datos.
 - `TODO` (diseño): las fotos usan 5:4 (`ratio/landscape`).
