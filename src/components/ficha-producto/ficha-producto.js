@@ -187,6 +187,8 @@ class ArqFichaProducto extends ArqElement {
     `<arq-compatible-products class="compatible needs-data">` +
     `<span slot="title" class="compatible-title"><slot name="compatible-title"></slot></span>` +
     `<span slot="title" class="accessory-title" hidden><slot name="accessory-title"></slot></span>` +
+    `<span slot="title" class="accessory-compatible-title" hidden><slot name="accessory-compatible-title"></slot></span>` +
+    `<span slot="title" class="product-compatible-title" hidden><slot name="product-compatible-title"></slot></span>` +
     `<button type="button" class="config-cta config-cta-inline role-label" slot="action" hidden>${TEXT.configure}</button>` +
     `</arq-compatible-products>` +
     // Galería de ambiente
@@ -225,7 +227,7 @@ class ArqFichaProducto extends ArqElement {
     // Explora la colección (Light, sobre color/surface/subtle: Figma V1 y V2)
     `<div class="collection needs-data" hidden>` +
     `<div class="collection-intro">` +
-    `<div class="collection-title role-heading-2"><slot name="collection-title"></slot></div>` +
+    `<div class="collection-title role-heading-1"><slot name="collection-title"></slot></div>` +
     `<arq-button class="collection-link" type="underline" show-underline show-icon icon="arrow-up-right"></arq-button>` +
     `</div>` +
     `<div class="collection-rail">` +
@@ -243,6 +245,7 @@ class ArqFichaProducto extends ArqElement {
   #product = null;
   #ambientRail = null;
   #collectionRail = null;
+  #collectionResize = null;
   #viewer = null;
 
   connectedCallback() {
@@ -277,6 +280,10 @@ class ArqFichaProducto extends ArqElement {
     // Explora la colección: se arrastra con el mouse (cursor grab) además de las flechas
     this.#collectionRail = new HorizontalRail(this, root.querySelector('.cards'));
     this.#collectionRail.connect();
+    // Las flechas de Explora la colección solo van si hay algo para desplazar (con las cards a la vista,
+    // sin scroll, se sacan en lugar de dejarlas deshabilitadas)
+    this.#collectionResize = new ResizeObserver(() => this.#syncCollectionControls());
+    this.#collectionResize.observe(root.querySelector('.cards'));
 
     // Hasta 1023 px (Tablet y Mobile) Iluminar es solo el interruptor; la palabra queda
     // oculta para lectores de pantalla (show-label apagado)
@@ -752,7 +759,6 @@ class ArqFichaProducto extends ArqElement {
     const tabs = [
       technical.length && { id: 'specs', label: 'Especificaciones', content: accordion },
       commercial && { id: 'commercial', label: commercial.label, content: accordionOf([commercial], () => !previous.length || open.has('comercial')) },
-      cota && { id: 'cotas', label: 'Cotas', content: this.#cotaImage(cota, name) },
     ].filter(Boolean);
     if (!tabs.some((tab) => tab.id === this.#specTab)) this.#specTab = tabs[0]?.id;
 
@@ -790,12 +796,23 @@ class ArqFichaProducto extends ArqElement {
   // configurador (src/data/dao-config.js). Si no se pueden traer, no se muestra.
   #compatibleRequest = 0;
 
+  // Muestra uno de los títulos de la sección (clase del <span>) y oculta los demás
+  #compatibleTitle(section, shown) {
+    for (const name of ['compatible-title', 'accessory-title', 'accessory-compatible-title', 'product-compatible-title']) {
+      section.querySelector(`.${name}`).hidden = name !== shown;
+    }
+  }
+
   async #renderCompatibles() {
     const section = this.shadowRoot.querySelector('.compatible');
     const request = ++this.#compatibleRequest;
     const inline = this.shadowRoot.querySelector('.config-cta-inline');
     if (this.#product.collection?.id !== 'dao' && !this.#sku?.startsWith('PAR11-')) {
-      section.items = [];
+      // Fuera de Daö y PAR11 (catalog.js · ACCESSORIES): «Accesorio compatible» si el producto tiene
+      // accesorios, o «Producto compatible» si es el accesorio de otro
+      const { accessories = [], related = [] } = this.#product;
+      this.#compatibleTitle(section, accessories.length ? 'accessory-compatible-title' : related.length ? 'product-compatible-title' : null);
+      section.items = accessories.length ? accessories : related;
       inline.hidden = true;
       return;
     }
@@ -803,8 +820,7 @@ class ArqFichaProducto extends ArqElement {
       const { model, hrefs } = await getDaoConfigurator();
       if (request !== this.#compatibleRequest) return;
       const { kind, items } = compatibleProducts(model, hrefs, this.#sku);
-      section.querySelector('.compatible-title').hidden = kind === 'accessory';
-      section.querySelector('.accessory-title').hidden = kind !== 'accessory';
+      this.#compatibleTitle(section, { accessory: 'accessory-title', product: 'product-compatible-title' }[kind] ?? 'compatible-title');
       inline.hidden = kind !== 'compatible';
       section.items = items;
     } catch (error) {
@@ -1065,12 +1081,23 @@ class ArqFichaProducto extends ArqElement {
 
   // ── Explora la colección ──────────────────────────────────────────
   #renderCollection() {
-    const { collection, family } = this.#product;
+    const { family } = this.#product;
     const section = this.shadowRoot.querySelector('.collection');
-    section.hidden = !collection || !family.length;
-    section.querySelector('.cards').replaceChildren(...family.map(productCard));
-    // Con una sola card no hay nada que recorrer
-    section.querySelector('.collection-controls').hidden = family.length < 2;
+    section.hidden = !family.length;
+    const cards = section.querySelector('.cards');
+    cards.replaceChildren(...family.map(productCard));
+    // El tamaño de cada card también cambia lo que hay para desplazar
+    this.#collectionResize?.disconnect();
+    this.#collectionResize?.observe(cards);
+    for (const card of cards.children) this.#collectionResize?.observe(card);
+    this.#syncCollectionControls();
+  }
+
+  // Las flechas solo si el carrusel desborda: con todas las cards a la vista no hay nada que recorrer
+  #syncCollectionControls() {
+    const root = this.shadowRoot;
+    const cards = root.querySelector('.cards');
+    root.querySelector('.collection-controls').hidden = cards.scrollWidth <= cards.clientWidth + 1;
   }
 }
 

@@ -381,7 +381,8 @@ async function loadRows() {
  * sale de quién la lista, no de `categoria` (las filas de PAR11 la traen vacía):
  * - Lámpara (la lista un cabezal o un aro): solo sus frentes, que son accesorios
  *   requeridos (kind 'accessory'). Sin frentes, nada.
- * - Frente (la lista una lámpara): nada, es de su lámpara.
+ * - Frente (la lista una lámpara): las lámparas que lo piden (kind 'product',
+ *   «Producto compatible»: la relación de la lámpara, vista desde el otro lado).
  * - Aro o cabezal: los demás aros, cabezales y lámparas con los que se arma, hacia
  *   arriba y hacia abajo, sin los frentes (kind 'compatible').
  * Una tarjeta por grupo (los colores y módulos de un grupo son variantes de su
@@ -416,16 +417,18 @@ export function compatibleProducts(model, hrefs, sku) {
   const key = (row) => row.grupo || row.sku;
 
   const accessory = role(start) === 2;
+  const front = role(start) === 3;
   let rows = [];
   if (accessory) rows = start.frentes.map((id) => model.bySku[id]).filter(Boolean);
-  else if (role(start) !== 3) rows = [...reach(children), ...reach(parents)].filter((row) => role(row) !== 3);
+  else if (front) rows = parents(start).filter((row) => role(row) === 2); // las lámparas que lo piden
+  else rows = [...reach(children), ...reach(parents)].filter((row) => role(row) !== 3);
   rows = rows.filter((row) => key(row) !== key(start));
   rows.sort((a, b) => role(a) - role(b) || orderOf(GROUP_ORDER, a.grupo) - orderOf(GROUP_ORDER, b.grupo));
 
   const byGroup = new Map();
   for (const row of rows) if (!byGroup.has(key(row))) byGroup.set(key(row), row);
   return {
-    kind: accessory ? 'accessory' : 'compatible',
+    kind: accessory ? 'accessory' : front ? 'product' : 'compatible',
     items: [...byGroup.values()].map((row) => {
       const members = all.filter((item) => key(item) === key(row));
       const colors = [...new Set(members.map((item) => item.color).filter(Boolean))].sort((a, b) => orderOf(COLOR_ORDER, a) - orderOf(COLOR_ORDER, b));

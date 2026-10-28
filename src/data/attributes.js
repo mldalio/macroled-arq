@@ -61,7 +61,7 @@ export const ATTRIBUTES = Object.freeze({
   dimensiones: a('Dimensiones', 'materiales', { filter: false }),
   calado: a('Calado', 'materiales', { filter: false }),
   medidas_cabezal: a('Medidas del cabezal', 'materiales', { filter: false }),
-  color_lente: a('Color de la lente', 'materiales', { filter: false }),
+  color_lente: a('Color del lente', 'materiales', { filter: false }),
   material_cuerpo: a('Material del cuerpo', 'materiales'),
   material_lente: a('Material de la lente', 'materiales'),
   largo_cable: a('Largo de cable', 'materiales', { filter: false }),

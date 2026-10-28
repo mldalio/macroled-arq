@@ -142,7 +142,7 @@ export const LIGHT_FIELDS = Object.freeze([
 export const DETAIL_FIELDS = Object.freeze([
   'sku', FIELDS.name, FIELDS.isDefault, FIELDS.description, FIELDS.story, FIELDS.inspiration, FIELDS.video,
   'multimagen_vistas', 'multimagen_perspectivas', 'multimagen_detalles',
-  ...DOWNLOADS, 'cotas_img',
+  ...DOWNLOADS,
 ]);
 
 const text = (value) => (value === undefined || value === null ? '' : String(value).trim());
@@ -347,8 +347,6 @@ export function fromDocuments(rawDocs) {
         // Dibujo con cotas de la ficha técnica en PDF: URL del PNG o null.
         cota: text(doc.cotas_img) || null,
         downloads: Object.fromEntries(DOWNLOADS.map((field) => [field, text(doc[field])]).filter(([, v]) => v)),
-        // Dibujo con cotas (cotas_img): una URL, o una lista cuya primera es el dibujo
-        cota: text(Array.isArray(doc.cotas_img) ? doc.cotas_img[0] : doc.cotas_img),
       })),
     };
   };

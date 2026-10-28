@@ -105,8 +105,9 @@ export const LAMPS_ENVIRONMENT = 'Lámparas y Artefactos';
 // predeterminado marcado en la base (is_group_default), una card por grupo. Sin
 // product_type en la categoría, solo Luminarias: las colecciones no son productos
 // y los accesorios quedan afuera. Lámparas y artefactos se listan en su
-// macrofamilia, no en el listado general. La búsqueda (?q=) y las fichas no usan
-// esta regla: encuentran todo. category: { productType, environment }.
+// macrofamilia, no en el listado general. La búsqueda (?q=) y «Explora la
+// colección» piden solo el SKU predeterminado; las fichas abiertas por URL no usan
+// esta regla. category: { productType, environment }.
 const isListed = (group, category = {}) => {
   if (!group.hasDefault) return false;
   if (category.productType) return true;
@@ -379,6 +380,23 @@ export async function countProducts(options) {
 }
 
 // ── Ficha de producto ────────────────────────────────────────────────
+// Accesorios compatibles de un producto (id de grupo → ids de grupo): la sección «Accesorio
+// compatible» de su ficha. Töri Visera es más un accesorio de Töri Jardín que parte de la colección.
+// TODO (datos): hoy está escrito acá; la relación tiene que salir de la base (columna en Sheets), como
+// las piezas compatibles del configurador de Daö.
+const ACCESSORIES = { 'tori-jardin': ['tori-visera'] };
+
+// Tarjetas de search-card (compatible-products) de los grupos con ese id; los que no existen o no
+// tienen SKU predeterminado no se muestran.
+const compatibleCards = (ids, groupById) =>
+  ids
+    .map((id) => groupById.get(id))
+    .filter((target) => target?.hasDefault)
+    .map((target) => {
+      const card = productCard(target);
+      return { name: card.name, href: card.href, image: card.image, finishes: finishes(target).map(({ name, src }) => ({ name, src })), meta: '' };
+    });
+
 /**
  * Ficha de un grupo: { group, collection, variants, variantAttributes,
  * family: cards de las otras familias de la colección, images: { ambient[],
@@ -391,8 +409,11 @@ export async function getProduct(groupId) {
   const group = groupById.get(groupId);
   if (!group) return null;
   await ensureDetails(group);
-  const family = group.collection
-    ? groups.filter((g) => g.collection === group.collection && g !== group).map((g) => productCard(g))
+  // Explora la colección: los demás productos de su familia (la familia es quien los agrupa, haya o no una
+  // fila de colección en la base), con el mismo criterio que los listados
+  const familyKey = normalize(group.family ?? '');
+  const family = familyKey
+    ? groups.filter((g) => g !== group && normalize(g.family ?? '') === familyKey && isListed(g)).map((g) => productCard(g))
     : [];
   const images = group.images ?? {};
   return {
@@ -403,6 +424,10 @@ export async function getProduct(groupId) {
     // Imagen de cada acabado del grupo por su nombre, para las muestras del
     // configurador: { Negro: 'https://…/acabado-negro-mate.png' }. Sin imagen, no está.
     finishImages: Object.fromEntries(finishes(group).filter((finish) => finish.src).map((finish) => [finish.name, finish.src])),
+    // «Accesorio compatible»: tarjetas de search-card (compatible-products) con los grupos de ACCESSORIES
+    accessories: compatibleCards(ACCESSORIES[group.id] ?? [], groupById),
+    // «Producto compatible»: la relación vista desde el accesorio (Töri Visera → Töri Jardín)
+    related: compatibleCards(Object.keys(ACCESSORIES).filter((id) => ACCESSORIES[id].includes(group.id)), groupById),
     family,
     // Solo las imágenes que existen, sin repetidas (decisión 2026-10-02 · Galerías)
     images: {
@@ -597,11 +622,8 @@ function productKind(group) {
 // En el orden de Descargas de la Ficha de Final (1218:10596)
 const DOWNLOAD_LABELS = { cad: 'CAD 2D/3D', manual: 'Manual', ies: 'IES', fotometria: 'Fotometría', cotas: 'Cotas' };
 
-/**
- * Dibujo con cotas de una variante: cotas_img de la base o, mientras no esté
- * cargado, el de cotas.js (patrones sobre el SKU). null si no tiene.
- */
-const cotaOf = (variant) => variant.cota || cotaUrl(variant.sku);
+// Dibujo con cotas de una variante (cotas_img de la base); null si no tiene.
+const cotaOf = (variant) => variant.cota ?? null;
 
 /** Archivos de un SKU: [{ type, label, href }], solo los que existen. */
 function downloads(variant) {
@@ -809,6 +831,8 @@ export async function searchProducts(query, { limit = 5, collectionLimit = 3 } =
   const { groups } = await loadCatalog();
   const products = exactFirst(
     groups.flatMap((group) => {
+      // Un grupo sin SKU predeterminado marcado (is_group_default) no se publica: tampoco se busca
+      if (!group.hasDefault) return [];
       const match = searchMatch(group, words);
       if (!match) return [];
       const card = productCard(group, match.variant);
