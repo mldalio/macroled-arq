@@ -133,7 +133,7 @@
   }
 }
 
-/* Fundido entre estudio y contexto. El doble de motion/duration/slow, con la
+/* Fundido entre estudio y contexto. motion/duration/slow, con la
    curva de fundido de fotos (entrada y salida suaves), igual que el fondo.
    Repite la lista de la hoja base porque transition-property no se suma.
    Con prefers-reduced-motion queda un fundido corto (motion/duration/fade),
@@ -141,7 +141,7 @@
 .hover {
   opacity: 0;
   transition-property: opacity, color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
-  transition-duration: calc(var(--arq-motion-duration-slow) * 2);
+  transition-duration: var(--arq-motion-duration-slow);
   transition-timing-function: var(--arq-motion-easing-illumination-image);
 }
 

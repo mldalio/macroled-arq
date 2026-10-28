@@ -239,7 +239,7 @@ function finishOptions(group, shown, active = {}) {
       image: images.studio ?? null,
       imageHover: images.studioOn ?? images.context ?? null,
       imageLit: images.studioOn ?? null,
-      imageHoverLit: images.contextOn ?? null,
+      imageHoverLit: images.contextOn ?? images.context ?? images.studio ?? null,
     };
   });
 }
@@ -262,13 +262,33 @@ function productCard(group, variant = firstFinishVariant(group) ?? group.default
     image: images.studio ?? null,
     imageHover: images.studioOn ?? images.context ?? null,
     imageLit: images.studioOn ?? null,
-    imageHoverLit: images.contextOn ?? null,
+    // Con Iluminar: contexto encendido; sin él, el contexto apagado y, si no hay
+    // ninguno, la contraria: la principal apagada.
+    imageHoverLit: images.contextOn ?? images.context ?? images.studio ?? null,
   };
 }
 
 const pick = (object = {}) => Object.fromEntries(Object.entries(object).filter(([, v]) => hasValue(v) && (!Array.isArray(v) || v.length)));
 
 // ── Listados ─────────────────────────────────────────────────────────
+// Orden del listado sin búsqueda: los grupos de una misma colección (o, sin ella,
+// de la misma familia) juntos, en el orden en que aparece cada una en los datos.
+// Daö va casi al final, y después Tori Jardín y Tori Visera (esta, la última).
+const LAST_FAMILY = 'dao';
+const LAST_GROUPS = ['tori jardin', 'tori visera'];
+
+function byCollection(groups) {
+  const key = (group) => normalize(group.collection || group.family || group.name);
+  const tail = (group) => {
+    const own = LAST_GROUPS.indexOf(normalize(group.name));
+    if (own >= 0) return 2 + own;
+    return normalize(group.family) === LAST_FAMILY || normalize(group.collection) === LAST_FAMILY ? 1 : 0;
+  };
+  const order = new Map();
+  for (const group of groups) if (!order.has(key(group))) order.set(key(group), order.size);
+  return [...groups].sort((a, b) => tail(a) - tail(b) || order.get(key(a)) - order.get(key(b)));
+}
+
 /**
  * Listado de Productos: una card por grupo. category: { environment,
  * application, productType, collection, family }. filters: { campo: [valores] }.
@@ -289,6 +309,7 @@ export async function listProducts({ filters, query, ...category } = {}) {
   }
   // Con búsqueda, primero los que coinciden tal cual y después los con errores de tipeo
   const scope = [...found.keys()].sort((a, b) => Number(found.get(a).typo) - Number(found.get(b).typo));
+  if (!words.length) scope.splice(0, scope.length, ...byCollection(scope));
   const active = activeFilters(filters);
   const withFilters = Object.keys(active).length > 0;
   const cards = scope.flatMap((group) => {
