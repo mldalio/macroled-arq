@@ -1851,3 +1851,37 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 - Decisión de Lau (probado en la rama `feat/comparativa-foto-sin-fondo`): en la cabecera de la comparativa, la foto de compare-product va más grande, en un cuadrado de `layout/card-min` como máximo (280 en Desktop; en Mobile, 160, ocupa la columna) con un fondo más claro, `color/surface/soft` (#F4F4F4), y la foto entera a `space/padding/md` del borde. Antes: cuadrado de 160 en `color/surface/subtle` (#F0F0F0) con la foto a 128. Se probó también sin fondo (las fotos de estudio son PNG transparentes: el producto sobre el blanco de la página).
 - `TODO` (diseño): si se queda, falta un token propio para el tamaño (hoy usa `layout/card-min`, el ancho mínimo de las cards del catálogo).
 - La impresión no cambia: cuadrado de `layout/compare-column` en `color/surface/strong` con la foto a 128.
+
+## 2026-10-28 · Hover de product-card, orden de Productos y nombre del PDF
+
+- Pedido de Lau. **Hover de product-card** (reglas completas en DESIGN.md §8 · Imágenes de product-card y en el README del componente):
+  - El hover es uno solo para toda la tarjeta (imagen, nombre y acabados con el mouse): cambian a la vez imagen y fondo. Antes el nombre cambiaba el fondo y solo la imagen cambiaba la foto. Se anula el borde de hover de `card-link.css`.
+  - Fundido de la imagen en `motion/duration/slow` (era el doble).
+  - Sin Iluminar: hover = estudio encendido → ambiente 1 apagado → ambiente 1 encendido. Con Iluminar: ambiente 1 encendido → estudio apagado (la «contraria»); el ambiente 1 apagado no se usa con Iluminar.
+  - Excepción con Iluminar cuando el hover es el estudio apagado (Afo, Daö, Tori Visera y todo producto sin ambiente 1 encendido): la foto encendida de reposo se retira (el PNG apagado es transparente) y el fondo pasa al `color/surface/subtle` claro (Light local en `.card-media`). Si no hay otra imagen, la imagen no cambia y solo cambia el fondo.
+- **Orden de Productos** (`byCollection`, `src/data/catalog.js`; solo sin búsqueda): primero Interior y después Exterior; adentro, las colecciones (o familias) juntas en el orden de los datos; Daö casi al final de su ambiente, y Tori Jardín y Tori Visera últimos (Visera, lo último). Con búsqueda manda la coincidencia.
+- **Nombre del PDF de la ficha técnica:** el título del PDF es el SKU (el visor de Chrome lo usa para el nombre al guardar) y la descarga de respaldo se llama `<sku>.pdf`. Sigue pendiente servirla desde una URL propia (DESIGN.md §12).
+- **Configurador Daö:** el botón final dice «Descargar configuración» (era «Imprimir configuración»); entre el nombre del armado y sus características hay `space/gap/lg` y entre las características y las piezas, `space/gap/lg` + `space/gap/md`.
+- `TODO` (Figma): copiar la sección nueva de DESIGN.md §8 al frame DESIGN.md de la página Plan del proyecto (AGENTS.md pide una rama `docs/`); la variante `State=Hover` de product-card sigue siendo una referencia estática.
+
+## 2026-10-28 · Fotos con aire en la ficha, Mini Kai y orden de variantes
+
+- Pedido de Lau: las fotos de estudio tenían tamaños muy distintos (algunas simulan el tamaño real) y en la galería de la ficha `object-fit: cover` recortaba el producto (Nami, Afo) o lo dejaba sin aire (Mini Kai). Prioridad: la ficha; las cards, después.
+- **Galería (`arq-product-gallery`):** las fotos de estudio se ven enteras (`contain`) con `space/padding/3xl` alrededor (`data-fit="air"`, que pone el JS según el nombre del archivo). Las de ambiente y detalle (`ambient`, `detail`, `detalle`, `inspira` en el nombre) siguen llenando el recuadro. El atributo `zoom` (solo de código) quita el aire.
+- **Excepción:** la ficha pone `zoom` en los productos de Exterior, cuyas fotos de estudio son un corte en zoom por diseño, salvo Tori Visera (`ZOOM_EXCEPTIONS` en `ficha-producto.js`), que sí se ve entera con aire. `TODO` (datos): marcarlo en la base (Lau pidió que sea una excepción puntual) en vez de por ambiente; ver con Lau qué productos exteriores conservan el zoom.
+- **product-card:** las fotos «enteras» (`is-contain`) suman `space/padding/2xl` a los lados, y Mini Kai (todos los productos que empiezan con «Mini Kai») entra en esa regla: una foto ancha ya no llega de borde a borde. Falta nivelar el tamaño del resto de las cards (pendiente).
+- **Orden de variantes** de una misma familia, en el listado, en `?family=` y en «Explora la colección»: embutir, aplicar, redondo y redondo de aplicar (Mini Kai, Mini Kai Aplicar, Mini Kai Round, Mini Kai Round Aplicar). Se lee del nombre (`variantRank`, `catalog.js`); «Mini Kai Round» va con Mini Kai aunque su colección o familia sea otra.
+
+## 2026-10-28 · Misma foto, mismo tratamiento en la ficha
+
+- Lau probó medir y escalar el producto en cada card (para igualar tamaños) y prefirió las cards como estaban: no está en el código. Solo cambia Fuji: sin el aire a los lados que se había sumado (queda como antes). El aire lateral queda solo para Mini Kai (`is-wide`).
+- **Ficha:** la foto apagada y la encendida llevan el mismo tratamiento (las dos con aire, o las dos llenando el recuadro): si no, al iluminar se superponen las diferencias de tamaño. La única que llena el recuadro siempre es Afo, por su foto vertical (`ZOOM_ALWAYS` en `ficha-producto.js`); los de Exterior, salvo Tori Visera, siguen sin aire.
+
+## 2026-10-28 · Fotos de producto por el CloudFront
+
+- Problema (Lau): las fotos tardaban mucho en cargar. Medido: las cards bajaban el original del S3 (Hoshi, PNG de 1,9 MB; Sento, webp de 327 KB) para mostrarlo a 350 px.
+- `src/base/image-size.js` (`sizedImage`) pide la foto al CloudFront `fit-in/<ancho>x<2 × ancho>/filters:format(webp):quality(85)/<ruta>`: Hoshi a 800 px pesa 37 KB. El webp conserva la transparencia de los PNG de estudio. Una URL que no es del servidor de imágenes ni del CloudFront queda como viene.
+- **Tamaños:** 800 px para las fotos de producto (`CARD_WIDTH`, el adaptador `typesense-adapter.js · slots`: cards, miniaturas, buscador, PDF), 1600 px en la galería de la ficha (`GALLERY_WIDTH`, `product-gallery.js`) y 2400 px en el visor de fotos ampliadas. No se tocan las cotas, descargas, catálogos ni acabados.
+- Para revertir: `sizedImage` devuelve la URL tal cual (un solo lugar).
+- `TODO`: la primera vez que se pide un tamaño, el CloudFront tarda cerca de 1 s en generarlo y después queda en caché (`max-age` de un año). Pendiente medir con el sitio real: precargar la primera fila de cards (`loading="eager"`) y `fetchpriority`. En localhost el adaptador sigue sumando `?arq=<hora>` a cada foto (no se cachea entre recargas): no es lo que pasa en producción.
+- **Cambio de variante en la ficha:** la primera foto de cada variante (apagada y encendida, al tamaño de la galería) se pide de a una cuando la página está quieta (`#warmVariantPhotos`, `ficha-producto.js`, hasta 40 variantes, no con «ahorrar datos»). Así, al cambiar de módulos o potencia la foto ya está en la caché y no espera al CloudFront.

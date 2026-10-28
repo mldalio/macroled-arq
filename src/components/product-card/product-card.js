@@ -15,7 +15,8 @@
 // - Link estirado (src/base/card-link.css): el <a> envuelve solo el nombre.
 // - Imágenes (DESIGN.md §8): reposo = principal apagada; hover sobre la imagen
 //   y foco = principal encendida (Iluminar: reposo = principal encendida, hover =
-//   ambiente 1 encendido), con un
+//   ambiente 1 encendido; sin él, el estudio apagado sobre fondo gris claro:
+//   hover-unlit / hover-ground, ver DESIGN.md §8 · Imágenes de product-card), con un
 //   fundido entre dos <img> (motion/duration/slow). Iluminar (data-arq-theme=
 //   "dark" en un ancestro, src/base/theme.js) pasa a las versiones encendidas.
 //   Sin imagen de hover no hay cambio; sin encendida queda la apagada; sin principal, un
@@ -141,9 +142,8 @@ class ArqProductCard extends ArqElement {
     const card = root.querySelector('.card');
     card.addEventListener('pointerenter', wantHover);
     root.querySelector('.card-link').addEventListener('focus', wantHover);
-    // El cambio de imagen es solo con el mouse sobre la imagen. El ::after del
-    // link tapa .card-media (no recibe :hover), así que se mide la posición.
-    const media = root.querySelector('.card-media');
+    // Hover con mouse sobre cualquier parte de la card (imagen, nombre,
+    // acabados): un solo estado para el fondo y la imagen.
     const setMediaHover = (on) => {
       card.classList.toggle('is-media-hover', on);
       this.#syncHoverGround();
@@ -151,10 +151,9 @@ class ArqProductCard extends ArqElement {
     const link = root.querySelector('.card-link');
     link.addEventListener('focus', () => this.#syncHoverGround());
     link.addEventListener('blur', () => this.#syncHoverGround());
+    card.addEventListener('pointerenter', (event) => event.pointerType === 'mouse' && setMediaHover(true));
     card.addEventListener('pointermove', (event) => {
-      if (event.pointerType !== 'mouse') return;
-      const r = media.getBoundingClientRect();
-      setMediaHover(event.clientX >= r.left && event.clientX < r.right && event.clientY >= r.top && event.clientY < r.bottom);
+      if (event.pointerType === 'mouse' && !card.classList.contains('is-media-hover')) setMediaHover(true);
     });
     card.addEventListener('pointerleave', () => setMediaHover(false));
     for (const name of ['name', 'meta', 'finishes']) {
@@ -343,7 +342,7 @@ class ArqProductCard extends ArqElement {
   #syncHoverGround() {
     const root = this.shadowRoot;
     const card = root.querySelector('.card');
-    const on = card.classList.contains('hover-unlit') &&
+    const on = (card.classList.contains('hover-unlit') || card.classList.contains('hover-ground')) &&
       (card.classList.contains('is-media-hover') || Boolean(root.querySelector('.card-link:focus-visible')));
     const media = root.querySelector('.card-media');
     if (on) media.setAttribute('data-arq-theme', 'light');
@@ -356,13 +355,19 @@ class ArqProductCard extends ArqElement {
     const hover = root.querySelector('.hover');
     const usable = (src) => (src && !this.#failed.has(src) ? src : null);
     const baseSrc = (this.#dark && usable(this.imageLit)) || usable(this.image);
-    const hoverSrc = (this.#dark && usable(this.imageHoverLit)) || usable(this.imageHover);
+    // Un hover igual a la imagen de reposo no cambia nada: con Iluminar, la
+    // contraria (estudio apagado) ocupa su lugar.
+    const hoverCandidates = this.#dark ? [this.imageHoverLit, this.image] : [this.imageHover];
+    const hoverSrc = hoverCandidates.map(usable).find((src) => src && src !== baseSrc) ?? null;
     this.#setSrc(base, baseSrc);
     this.#renderFallback(!baseSrc);
     root.querySelector('.card').classList.toggle('has-hover', Boolean(baseSrc && hoverSrc));
     // Con Iluminar y sin foto de contexto, el hover muestra el estudio apagado:
     // con el fondo gris claro de Light, no el oscuro de la página.
     root.querySelector('.card').classList.toggle('hover-unlit', Boolean(this.#dark && hoverSrc && hoverSrc === usable(this.image)));
+    // Sin foto encendida ni de contexto (la de reposo ya es el estudio apagado):
+    // la imagen no cambia, pero el fondo sí pasa al gris claro.
+    root.querySelector('.card').classList.toggle('hover-ground', Boolean(this.#dark && baseSrc && !hoverSrc && baseSrc === usable(this.image)));
     this.#syncHoverGround();
     this.#setSrc(hover, this.#hoverWanted ? hoverSrc : null);
     // Iluminar: la imagen de estudio del otro modo queda en caché, así el fundido
@@ -378,8 +383,10 @@ class ArqProductCard extends ArqElement {
     const key = (value) => String(value ?? '').normalize('NFD').replace(/\p{M}/gu, '').trim().toLowerCase();
     const family = key(this.family);
     const name = key(this.querySelector('[slot="name"]')?.textContent);
-    const contain = family === 'fuji' || family === 'mini kai' || family === 'mini kai round' || family === 'sen' || name === 'tori visera';
+    const contain = family === 'fuji' || family === 'mini kai' || family === 'mini kai round' || family === 'sen' || name === 'tori visera' || name.startsWith('mini kai');
     card?.classList.toggle('is-contain', contain);
+    // Foto ancha: con aire a los lados (product-card.css)
+    card?.classList.toggle('is-wide', name.startsWith('mini kai'));
   }
 
   #setSrc(img, src) {

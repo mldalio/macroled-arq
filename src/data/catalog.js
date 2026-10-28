@@ -239,7 +239,7 @@ function finishOptions(group, shown, active = {}) {
       image: images.studio ?? null,
       imageHover: images.studioOn ?? images.context ?? images.contextOn ?? null,
       imageLit: images.studioOn ?? null,
-      imageHoverLit: images.contextOn ?? images.context ?? images.studio ?? null,
+      imageHoverLit: images.contextOn ?? images.studio ?? null,
     };
   });
 }
@@ -262,9 +262,8 @@ function productCard(group, variant = firstFinishVariant(group) ?? group.default
     image: images.studio ?? null,
     imageHover: images.studioOn ?? images.context ?? images.contextOn ?? null,
     imageLit: images.studioOn ?? null,
-    // Con Iluminar: contexto encendido; sin él, el contexto apagado y, si no hay
-    // ninguno, la contraria: la principal apagada.
-    imageHoverLit: images.contextOn ?? images.context ?? images.studio ?? null,
+    // Con Iluminar: contexto encendido; sin él, la contraria: la principal apagada.
+    imageHoverLit: images.contextOn ?? images.studio ?? null,
   };
 }
 
@@ -277,8 +276,18 @@ const pick = (object = {}) => Object.fromEntries(Object.entries(object).filter((
 const LAST_FAMILY = 'dao';
 const LAST_GROUPS = ['tori jardin', 'tori visera'];
 
+// Orden de los productos de una misma familia (listado, ?family= y «Explora la
+// colección»): el de embutir, el de aplicar, el redondo y el redondo de aplicar
+// (Mini Kai, Mini Kai Aplicar, Mini Kai Round, Mini Kai Round Aplicar). Se lee del
+// nombre; los demás empatan en 0 y siguen el orden de los datos.
+const variantRank = (group) => {
+  const name = normalize(group.name);
+  return (/\bround/.test(name) ? 2 : 0) + (/\bapli(car|que)\b/.test(name) ? 1 : 0);
+};
+
 function byCollection(groups) {
-  const key = (group) => normalize(group.collection || group.family || group.name);
+  // «Mini Kai Round» va con Mini Kai: la clave ignora el «Round» final
+  const key = (group) => normalize(group.collection || group.family || group.name).replace(/\s+round(ed)?$/, '');
   const tail = (group) => {
     const own = LAST_GROUPS.indexOf(normalize(group.name));
     if (own >= 0) return 2 + own;
@@ -288,7 +297,7 @@ function byCollection(groups) {
   for (const group of groups) if (!order.has(key(group))) order.set(key(group), order.size);
   // Primero Interior y después Exterior (un grupo en los dos va con Interior)
   const space = (group) => (group.environment.includes('Interior') ? 0 : group.environment.includes('Exterior') ? 1 : 2);
-  return [...groups].sort((a, b) => space(a) - space(b) || tail(a) - tail(b) || order.get(key(a)) - order.get(key(b)));
+  return [...groups].sort((a, b) => space(a) - space(b) || tail(a) - tail(b) || order.get(key(a)) - order.get(key(b)) || variantRank(a) - variantRank(b));
 }
 
 /**
@@ -436,7 +445,7 @@ export async function getProduct(groupId) {
   // fila de colección en la base), con el mismo criterio que los listados
   const familyKey = normalize(group.family ?? '');
   const family = familyKey
-    ? groups.filter((g) => g !== group && normalize(g.family ?? '') === familyKey && isListed(g)).map((g) => productCard(g))
+    ? groups.filter((g) => g !== group && normalize(g.family ?? '') === familyKey && isListed(g)).sort((a, b) => variantRank(a) - variantRank(b)).map((g) => productCard(g))
     : [];
   const images = group.images ?? {};
   return {

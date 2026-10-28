@@ -55,13 +55,17 @@
    neutral/750). En Light ese valor es color/surface/inverse-hover. Con
    Iluminar el fondo ya es ese negro, así que el hover no lo aclara. */
 @media (hover: hover) and (pointer: fine) {
+  .card.is-media-hover .card-media {
+    background-color: var(--arq-color-surface-inverse-hover);
+  }
+
+  /* Sin el borde de hover de card-link.css (mismo selector, para ganarle) */
   .card:has(.card-link:hover) .card-media {
     outline: none;
-    background-color: var(--arq-color-surface-inverse-hover);
   }
 }
 
-.card.is-dark:has(.card-link:hover) .card-media,
+.card.is-dark.is-media-hover .card-media,
 .card.is-dark:has(.card-link:focus-visible) .card-media {
   background-color: var(--arq-color-surface-subtle);
 }
@@ -84,7 +88,16 @@
    producto Tori Visera se ven enteros; el resto llena el recuadro. */
 .card.is-contain .img,
 .card.is-contain .theme-transition {
+  box-sizing: border-box;
   object-fit: contain;
+}
+
+/* Aire a los lados: una foto ancha (Mini Kai) no llega de borde a borde y se ve
+   de un tamaño parecido al de las demás cards. Solo Mini Kai: Fuji queda como estaba. */
+.card.is-wide .img,
+.card.is-wide .theme-transition {
+  box-sizing: border-box;
+  padding-inline: var(--arq-space-padding-2xl);
 }
 
 .theme-transition {
@@ -155,14 +168,33 @@
   opacity: 1;
 }
 
-/* Hover solo sobre la imagen (.is-media-hover lo pone el JS): sobre el
-   nombre o "Comparar" la imagen no cambia. Solo con la foto ya cargada
-   (.loaded): la de hover se pide al primer hover y, si el fundido arrancaba
-   antes, terminaba sin foto y la foto aparecía de golpe al llegar. */
+/* Hover sobre toda la tarjeta (.is-media-hover lo pone el JS con el mouse
+   sobre la card: imagen, nombre o acabados dan el mismo estado). Solo con la
+   foto ya cargada (.loaded): la de hover se pide al primer hover y, si el
+   fundido arrancaba antes, terminaba sin foto y la foto aparecía de golpe al llegar. */
 @media (hover: hover) and (pointer: fine) {
   .card.has-hover.is-media-hover .hover.loaded {
     opacity: 1;
   }
+}
+
+/* Con Iluminar, el hover es el estudio apagado (suele tener transparencia):
+   la foto encendida de reposo se retira para que no se vea por debajo. */
+.base {
+  transition-property: opacity;
+  transition-duration: var(--arq-motion-duration-slow);
+  transition-timing-function: var(--arq-motion-easing-illumination-image);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .base {
+    transition-duration: var(--arq-motion-duration-fade);
+  }
+}
+
+.card.hover-unlit:has(.card-link:focus-visible) .base,
+.card.hover-unlit.is-media-hover .base {
+  opacity: 0;
 }
 
 /* Sin imagen de estudio: la textura con el nombre, en

@@ -596,18 +596,30 @@ El inventario completo con links a Figma está en el [Anexo A](#anexo-a-inventar
 
 ### Imágenes de product-card (hover e Iluminar)
 
-Aplica a product-card en el listado de Productos. Cada producto trae **tres imágenes** que se usan acá, todas en `ratio/portrait` (7:10) y con el mismo encuadre: la principal apagada (`img_main`), la principal encendida (`img_main_on`) y el ambiente 1 encendido (`img_ambient_1_on`):
+Aplica a product-card en el listado de Productos. Cada producto trae **hasta cuatro imágenes** que se usan acá, todas en `ratio/portrait` (7:10) y con el mismo encuadre: la principal apagada (`img_main`), la principal encendida (`img_main_on`), el ambiente 1 apagado (`img_ambient_1`) y el ambiente 1 encendido (`img_ambient_1_on`). Pueden faltar; para eso están las excepciones de abajo.
 
 | | Reposo | Hover / Focus |
 | --- | --- | --- |
-| **Light** (Iluminar apagado) | `img_main` (hero apagado) | `img_main_on` (hero encendido) |
-| **Dark** (Iluminar encendido) | `img_main_on` (hero encendido) | `img_ambient_1_on` (ambiente 1 encendido) |
+| **Light** (Iluminar apagado) | `img_main` (hero apagado) | `img_main_on` (hero encendido); si falta, `img_ambient_1`; si falta, `img_ambient_1_on` |
+| **Dark** (Iluminar encendido) | `img_main_on` (hero encendido); si falta, `img_main` | `img_ambient_1_on` (ambiente 1 encendido); si falta, `img_main` (la contraria: el hero apagado) |
+
+**Hover en toda la tarjeta.** El estado de hover es uno solo: con el mouse sobre cualquier parte de la card (imagen, nombre, acabados) cambian a la vez la imagen y el fondo. No hay un hover distinto para el texto y otro para la imagen. No lleva el borde de hover de las demás tarjetas (`src/base/card-link.css`): la card de producto lo anula. En código lo pone `product-card.js` con la clase `is-media-hover` (solo `pointerType: mouse`); el foco de teclado (`:focus-visible`) da el mismo resultado.
+
+**Fondo.** Detrás de la foto va `color/surface/subtle`. En hover, con Iluminar apagado, pasa a `color/surface/inverse-hover` (negro suave, para la foto encendida). Con Iluminar encendido, el hover mantiene el `color/surface/subtle` oscuro.
+
+**Excepciones con Iluminar encendido** (el hover muestra el hero apagado, que no es una foto «de página oscura»):
+1. **Sin ambiente 1 encendido** (`img_ambient_1_on`): el hover muestra el hero apagado (`img_main`) y **la foto encendida de reposo se retira** durante el hover (opacity 0): el hero apagado suele ser un PNG con transparencia y, si no, se vería la encendida por debajo. El ambiente 1 **apagado nunca se usa** con Iluminar. Clase `hover-unlit`.
+2. **El hover coincidiría con el reposo** (misma URL): se salta a la siguiente opción de la tabla; la comparación se hace en `#renderImages` de `product-card.js`.
+3. **Fondo gris claro.** En los dos casos anteriores el fondo del recuadro pasa al `color/surface/subtle` **claro** (Light local, `data-arq-theme="light"` puesto en `.card-media` por `#syncHoverGround`): la imagen apagada se ve sobre su gris de siempre, no sobre el negro de Iluminar.
+4. **Sin foto encendida ni ambiente** (el reposo ya es el hero apagado y no hay otra imagen distinta): la imagen no cambia, pero igual el fondo pasa al gris claro del punto 3 durante el hover. Clase `hover-ground`.
+
+Si falta la imagen de hover, la regla de más abajo («no hay cambio») sigue valiendo en Light.
 
 La regla vale **donde se use la card**, no solo en los listados: en la sección de productos destacados de la Home las cards aparecen apagadas (Iluminar no existe ahí), así que su hover es el hero encendido (`docs/decisiones.md`, 2026-10-16 · Hover de product-card).
 
 - **Las cuatro imágenes son las del acabado elegido** en la card (por defecto el negro): al elegir otro acabado, la card pasa a las imágenes de ese SKU (`docs/decisiones.md`, 2026-10-19 · Elegir acabado en la card).
 - El hover **no** usa borde: cambia la imagen. El foco de teclado muestra la misma imagen que el hover, además del anillo `color/border/focus`.
-- El cambio es un fundido entre dos `<img>` apiladas (sin mover el layout), que arranca recién cuando la foto de hover cargó. Usa `motion/duration/slow` con `motion/easing/standard`. Con `prefers-reduced-motion: reduce`, un fundido corto (`motion/duration/fade`).
+- El cambio es un fundido entre dos `<img>` apiladas (sin mover el layout), que arranca recién cuando la foto de hover cargó. Usa `motion/duration/slow` (320 ms; antes era el doble, se bajó por lento) con la curva de fundido de fotos (`motion/easing/illumination-image`). Con `prefers-reduced-motion: reduce`, un fundido corto (`motion/duration/fade`).
 - La imagen que se muestra depende de `data-arq-theme` del ancestro: al activar Iluminar en `catalog-toolbar`, todas las tarjetas pasan a su reposo y su hover encendidos (tabla de arriba).
 - En pantallas táctiles no hay hover: se ve solo la imagen de reposo.
 - Aplica también a `Size=Small`. Una tarjeta Large pasa sola al aspecto Small hasta 767 px (grilla mobile).

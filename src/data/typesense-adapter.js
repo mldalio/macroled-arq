@@ -73,6 +73,7 @@
 import { ATTRIBUTES, variantFields } from './attributes.js';
 import { normalize } from './text.js';
 import { applyModels } from './models.js';
+import { sizedImage } from '../base/image-size.js';
 
 const FIELDS = {
   name: 'product_name',
@@ -180,7 +181,8 @@ function slots(doc) {
   // vacía: si el archivo de la posición 0 es «_ON» y falta la posición 1, es el encendido.
   // TODO (datos): cuando la base respete 0 = apagado y 1 = encendido, esto no hace falta.
   if (out.ambient1 && !out.ambient1On && /_on\.\w+$/i.test(out.ambient1.split(/[?#]/)[0])) out.ambient1On = out.ambient1;
-  for (const name of Object.keys(out)) out[name] = imageUrl(out[name]);
+  // Fotos al tamaño de una card por el CloudFront, en webp (base/image-size.js); la ficha las pide más grandes
+  for (const name of Object.keys(out)) out[name] = imageUrl(sizedImage(out[name]));
   return out;
 }
 

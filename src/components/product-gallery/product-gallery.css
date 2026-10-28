@@ -164,6 +164,20 @@
   scroll-snap-stop: always;
 }
 
+/* Foto de estudio con aire (data-fit="air", product-gallery.js): entera y con
+   margen space/padding/3xl alrededor. !important por lo mismo que arriba. */
+::slotted(img[data-fit='air']) {
+  box-sizing: border-box !important;
+  padding: var(--arq-space-padding-3xl) !important;
+  object-fit: contain !important;
+}
+
+.theme-transition[data-fit='air'] {
+  box-sizing: border-box;
+  padding: var(--arq-space-padding-3xl);
+  object-fit: contain;
+}
+
 /* Sin foto: se ve el fondo del marco (product-gallery.js) */
 ::slotted(img[hidden]) {
   display: none !important;
