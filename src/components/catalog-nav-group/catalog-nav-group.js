@@ -25,7 +25,7 @@
 // - Abrir y cerrar se desliza como compare-bar (decisión 2026-10-19 · Sidebar
 //   de catálogo como compare-bar): la lista cambia de golpe y la línea del
 //   grupo y los grupos de abajo vuelven con transform desde donde estaban
-//   (motion/duration/expand + motion/easing/standard). Al abrir, la lista se
+//   (duración según el recorrido + motion/easing/in-out). Al abrir, la lista se
 //   descubre con clip-path al mismo ritmo. No se anima el alto.
 // - Selected: el grupo de la categoría actual. Sin cambio visual; lo pone
 //   catalog-nav en el grupo que tiene el catalog-nav-item elegido.
@@ -87,7 +87,7 @@ class ArqCatalogNavGroup extends ArqElement {
 
   // Como #slide de compare-bar: lo de abajo arranca donde estaba y llega a su
   // lugar nuevo con transform. La duración sale del recorrido: al abrir, de
-  // motion/duration/slow (hasta 4 ítems) a motion/duration/fold (desde 15);
+  // motion/duration/panel (hasta 4 ítems) a motion/duration/fold (desde 15);
   // al cerrar, más corta, de motion/duration/expand a motion/duration/panel;
   // en el medio, lineal. Así una lista larga (Colecciones) no se descubre de
   // un salto. Con reduced motion las duraciones valen 0: cambia de golpe y
@@ -96,7 +96,7 @@ class ArqCatalogNavGroup extends ArqElement {
     if (before === null) return;
     const styles = getComputedStyle(this);
     const ms = (name) => Number.parseFloat(styles.getPropertyValue(name)) || 0;
-    const short = ms(this.open ? '--arq-motion-duration-slow' : '--arq-motion-duration-expand');
+    const short = ms(this.open ? '--arq-motion-duration-panel' : '--arq-motion-duration-expand');
     if (!short) return;
     const group = this.shadowRoot.querySelector('.group');
     const items = this.shadowRoot.querySelector('.items');
@@ -114,7 +114,9 @@ class ArqCatalogNavGroup extends ArqElement {
     const progress = Math.min(Math.max((Math.abs(delta) / itemHeight - 4) / (15 - 4), 0), 1);
     const long = ms(this.open ? '--arq-motion-duration-fold' : '--arq-motion-duration-panel');
     const duration = Math.round(short + (long - short) * progress);
-    const options = { duration, easing: styles.getPropertyValue('--arq-motion-easing-standard').trim() || 'ease-out' };
+    // motion/easing/in-out reparte el recorrido parejo: con standard casi todo
+    // el desplazamiento pasa en el primer tercio y se ve como un salto.
+    const options = { duration, easing: styles.getPropertyValue('--arq-motion-easing-in-out').trim() || 'ease-in-out' };
     const from = [{ transform: `translateY(${delta}px)` }, { transform: 'none' }];
     group.animate(from, { ...options, pseudoElement: '::after' });
     for (const element of below) element.animate(from, options);
