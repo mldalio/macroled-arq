@@ -98,6 +98,18 @@ thead th {
   text-align: center;
 }
 
+/* Pantallas chicas (Tablet y Desktop hasta 1439): menos aire en cada
+   columna, igual que compare-header. */
+@media screen and (min-width: 768px) and (max-width: 1439px) {
+  .label-cell {
+    padding-inline-end: var(--arq-space-gap-md);
+  }
+
+  .value {
+    padding-inline: var(--arq-space-padding-sm-md) var(--arq-space-padding-md);
+  }
+}
+
 @media (max-width: 767px) {
   /* Columnas de layout/compare-column (160), igual que compare-header
      (como macroled.com.ar/comparativa: entran dos y asoma la tercera). El

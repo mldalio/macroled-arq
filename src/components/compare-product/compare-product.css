@@ -83,6 +83,7 @@
   box-sizing: border-box;
   cursor: pointer;
   color: var(--arq-color-text-secondary);
+  text-align: center;
 }
 
 :host([empty]) .add {
@@ -166,7 +167,10 @@
   flex-direction: column;
 }
 
+/* min-width 0: el select Filter mide al menos layout/select-filter (160) y
+   en una columna angosta (Tablet) se saldría de la suya. */
 .selects > * {
+  min-width: 0;
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-default);
 }
 

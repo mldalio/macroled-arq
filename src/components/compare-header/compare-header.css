@@ -87,6 +87,18 @@
   }
 }
 
+/* Pantallas chicas (Tablet y Desktop hasta 1439): menos aire en cada
+   columna, igual que compare-table, así la card de producto gana ancho. */
+@media screen and (min-width: 768px) and (max-width: 1439px) {
+  .default .controls {
+    padding-inline-end: var(--arq-space-gap-md);
+  }
+
+  .products > * {
+    padding-inline: var(--arq-space-padding-sm-md) var(--arq-space-padding-md);
+  }
+}
+
 /* Compact: fijo bajo el navbar (alto medido en JS; antes de medir,
    layout/navbar-height). */
 .compact {
@@ -144,6 +156,17 @@
   min-width: 0;
   padding-inline: var(--arq-space-padding-md) var(--arq-space-gap-lg);
   border-left: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+/* Pantallas chicas: el mismo padding que compare-table */
+@media screen and (min-width: 768px) and (max-width: 1439px) {
+  .compact .controls {
+    padding-inline-end: var(--arq-space-gap-md);
+  }
+
+  .slots > * {
+    padding-inline: var(--arq-space-padding-sm-md) var(--arq-space-padding-md);
+  }
 }
 
 @media (max-width: 767px) {

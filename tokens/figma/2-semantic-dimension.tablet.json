@@ -174,7 +174,7 @@
     },
     "compare-label": {
       "$type": "number",
-      "$value": 320,
+      "$value": 200,
       "$description": "Columna de etiquetas de la comparativa (compare-row, compare-group y la columna de controles de compare-header). En Mobile queda fija al desplazar.",
       "$extensions": {
         "com.figma": {
