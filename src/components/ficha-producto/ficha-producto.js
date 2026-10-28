@@ -94,8 +94,10 @@ import css from './ficha-producto.css?inline';
 // - Galería de ambiente que se desplaza: no hay tantas fotos; queda la de
 //   ambiente encendido en la galería del hero.
 // - Descripción (STORY) con foto fija (parallax).
+// - Inspiración (2026-10-28): el texto de inspiración con su video y su foto vertical.
 const SHOW_AMBIENT_GALLERY = false;
 const SHOW_STORY_PARALLAX = false;
+const SHOW_INSPIRATION = false;
 
 const TEXT = {
   loading: 'Cargando producto…',
@@ -1031,7 +1033,7 @@ class ArqFichaProducto extends ArqElement {
   // Solo el texto de los datos: si falta, se quita el del HTML.
   #renderInspirationText(text) {
     let element = this.querySelector(':scope > [slot="inspiration"]');
-    if (!text) {
+    if (!text || !SHOW_INSPIRATION) {
       element?.remove();
       return;
     }
@@ -1047,7 +1049,7 @@ class ArqFichaProducto extends ArqElement {
     const root = this.shadowRoot;
     const text = root.querySelector('slot[name="inspiration"]').assignedElements().length > 0;
     const images = root.querySelector('.inspiration-images').children.length > 0;
-    root.querySelector('.inspiration').hidden = !text && !images;
+    root.querySelector('.inspiration').hidden = !SHOW_INSPIRATION || (!text && !images);
   }
 
   // Fotos de ambiente del grupo, sin la del parallax (ambient_6): ambient_2_on, 3_on, 4, 5 y 7.
@@ -1072,6 +1074,7 @@ class ArqFichaProducto extends ArqElement {
   }
 
   #renderInspirationImages() {
+    if (!SHOW_INSPIRATION) return;
     const { group } = this.#product;
     const [, , , d, e] = this.#pool();
     const nodes = [d && this.#video(d, `${group.name}, video`), e && image(e, `${group.name}, inspiración`, 'media-portrait')];
