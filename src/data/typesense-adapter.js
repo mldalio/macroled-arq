@@ -91,6 +91,7 @@ const FIELDS = {
   variantAttributes: 'variant_attributes',
   compatibleWith: 'compatible_with',
   description: 'description',
+  category: 'categoria',
   story: 'product_story_text',
   inspiration: 'product_inspiration_text',
   video: 'video_inspiration',
@@ -135,6 +136,7 @@ const DOWNLOADS = ['ies', 'cad', 'manual', 'fotometria'];
 export const LIGHT_FIELDS = Object.freeze([
   'sku', FIELDS.name, FIELDS.variantGroup, FIELDS.productGroup, 'modelo', FIELDS.family, FIELDS.productType, FIELDS.environment, FIELDS.application,
   FIELDS.isDefault, FIELDS.isMenuDefault, FIELDS.isNew, FIELDS.variantAttributes, FIELDS.compatibleWith,
+  FIELDS.category, // el buscador mira la categoría
   FIELDS.collectionIntro, FIELDS.collectionDescription, FIELDS.collectionGallery, FIELDS.collectionInspiration,
   'multimagen_producto', 'multimagen_ambiente', 'multimagen_coleccion', 'cotas_img',
   ...Object.keys(ATTRIBUTES),
@@ -344,6 +346,8 @@ export function fromDocuments(rawDocs) {
         // recomendado del buscador, con sus propias fotos (catalog.js · getRecommendedProducts).
         isNew: doc[FIELDS.isNew] === true,
         description: text(doc[FIELDS.description]),
+        // Categoría del SKU («Bolardo»…): la usa el buscador (catalog.js · searchMatch)
+        category: text(doc[FIELDS.category]),
         attributes: Object.fromEntries(Object.keys(ATTRIBUTES).map((field) => [field, attributeText(field, doc[field], gridModules)]).filter(([, v]) => v && v !== '-')),
         images: variantImages(doc),
         // Dibujo con cotas de la ficha técnica en PDF: URL del PNG o null.

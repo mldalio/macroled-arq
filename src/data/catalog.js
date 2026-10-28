@@ -20,6 +20,7 @@ import { ATTRIBUTES, DOWNLOAD_FILTERS, TABLE_COLUMNS, attributeInfo, specSection
 import { variantOptions, findVariant, choose } from './variants.js';
 import { normalize, queryWords, matchWords } from './text.js';
 import { finishImage } from './finishes.js';
+import { recommendedRank } from './recommended.js';
 
 let pending = null;
 
@@ -641,7 +642,9 @@ export async function getProductCards(groupIds) {
  */
 export async function getRecommendedProducts() {
   const { groups } = await loadCatalog();
-  return groups.flatMap((group) => group.variants.filter((variant) => variant.isNew).map((variant) => ({ ...productCard(group, variant), name: variantName(group, variant), meta: productKind(group) })));
+  const cards = groups.flatMap((group) => group.variants.filter((variant) => variant.isNew).map((variant) => ({ ...productCard(group, variant), name: variantName(group, variant), meta: productKind(group) })));
+  // El orden lo da src/data/recommended.js; sort es estable: lo que no está en la lista sigue el orden de la base
+  return cards.sort((a, b) => recommendedRank(a.name) - recommendedRank(b.name));
 }
 
 // Tipo de producto: la aplicación de una luminaria («Jardín», «Colgante») o
@@ -825,7 +828,9 @@ export async function getCompare(skus) {
 // mayúsculas ni plural, y con errores de tipeo salvo en el SKU (src/data/text.js).
 // Los que coinciden tal cual van antes que los con errores de tipeo.
 
-const groupText = (group) => [group.name, group.collectionData?.name, group.application, group.productType, ...group.environment].join(' ');
+// categoria (campo de cada SKU: «Bolardo»…) entra en el texto del grupo, como el nombre y la aplicación (subfamilia).
+const categories = (group) => [...new Set(group.variants.map((v) => v.category).filter(Boolean))];
+const groupText = (group) => [group.name, group.collectionData?.name, group.application, group.productType, ...group.environment, ...categories(group)].join(' ');
 
 /**
  * ¿El grupo coincide con la búsqueda? { variant, bySku, typo } o null. Si

@@ -1893,3 +1893,21 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 - **Sin superposición (corrige lo de arriba):** el fundido dejaba ver una foto sin fondo (PNG de estudio) sobre la anterior porque esa no se retiraba. Ahora son dos capas con fondo propio (`color/surface/subtle`): la nueva se funde (`slow`, curva de fundido de fotos; con reduced motion, `fade`) y al terminar queda opaca y tapa la anterior; nunca se ve solo el gris. Se probó una persiana (`clip-path`) y se descartó por brusca.
 - **Foto al abrir:** Por espacio, Interior · Embutir; Colecciones, Koen; Lámparas y artefactos, el primer link que sea lámpara. Si no están, el primero. Reemplaza a Colgante (2026-10-21 · Foto inicial del mega-menú).
 - **Texto del preview en Por espacio y Lámparas y artefactos:** el eyebrow es solo el espacio («Exterior», «Interior»), sin repetir el nombre («Exterior · Pared»); abajo va el nombre del link. Colecciones sigue con «Línea Interior».
+
+## 2026-10-28 · Orden de los recomendados del buscador
+
+- Pedido de Gabriela. Qué entra lo sigue decidiendo la columna `new` de la base; el **orden** se define en código, en `src/data/recommended.js` (`RECOMMENDED_ORDER`): Hoshi, Fuji, Douli, Daö, Mini Kai, Sento, Nobu.
+- Cada nombre abarca al producto y a sus variantes por el nombre que se muestra (sin tildes ni mayúsculas): «Mini Kai» incluye «Mini Kai Aplicar»; «Daö» no incluye «Mini Daö». Los marcados con `new` que no están en la lista van después, en el orden de la base. Un nombre de la lista sin `new` en la base no se muestra.
+- Para cambiar el orden o sumar un destacado se edita la lista y se publica. Si más adelante se quiere manejar desde la hoja, pasa a una columna de orden.
+
+## 2026-10-28 · Búsqueda: sin errores de tipeo en palabras de 3 letras
+
+- Escribir «kai» (Mini Kai) traía Kanu: la palabra se compara con el comienzo de cada palabra del nombre («kai» contra «kan»), y con 3 letras se aceptaba un error. Ahora las palabras de hasta 3 letras se buscan solo tal cual; de 4 a 5 se acepta un error y desde 6, dos (`typosFor`, `src/data/text.js`).
+- Efecto: «dai» ya no encuentra Daö (el ejemplo de 2026-10-21); «kani» sigue encontrando Kanu.
+
+## 2026-10-28 · Búsqueda por categoría
+
+- Pedido de Gabriela: buscar «bolardo» tiene que traer el bolardo Kanu. «Bolardo» es una categoría de la base (campo `categoria`, por SKU).
+- **Categoría:** entra al texto del grupo junto con el nombre, la colección, la aplicación (`subfamilia`), el tipo y el ambiente (`groupText`, `catalog.js`), con la misma tolerancia (plural y errores de tipeo según el largo). `categoria` pasa a `LIGHT_FIELDS` y a `variant.category`.
+- **Descripción:** se probó y se descartó (trae palabras comunes y suma peso al catálogo liviano): la búsqueda no la mira.
+- Vale para el buscador del navbar, el listado con `?q=` y el selector de la comparativa (mismo `searchMatch`).

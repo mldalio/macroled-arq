@@ -1,6 +1,6 @@
 // Comparación de textos de búsqueda (Productos, navbar y Descargas): cada
 // palabra tiene que aparecer, sin importar tildes, mayúsculas ni plural, y se
-// toleran errores de tipeo ("kani" → Kanu, "dai" → Dao). decisiones.md,
+// toleran errores de tipeo ("kani" → Kanu). decisiones.md,
 // 2026-10-21 · Búsqueda con errores de tipeo.
 // TODO (búsqueda): sinónimos ("jardín" → parque, patio…): falta decidir si van
 // en el front o en Typesense (decisiones.md, Pendientes).
@@ -21,8 +21,9 @@ export function queryWords(query) {
 }
 
 // Errores de tipeo que se aceptan según el largo de la palabra buscada:
-// hasta 2 letras, ninguno; de 3 a 5, uno; desde 6, dos.
-const typosFor = (word) => (word.length >= 6 ? 2 : word.length >= 3 ? 1 : 0);
+// hasta 3 letras, ninguno ("kai" es Mini Kai, no Kanu: con 3 letras un error es
+// una letra de cada tres); de 4 a 5, uno; desde 6, dos.
+const typosFor = (word) => (word.length >= 6 ? 2 : word.length >= 4 ? 1 : 0);
 
 // Distancia entre dos palabras: letras cambiadas, de más, de menos o dos
 // vecinas invertidas ("kanu" / "knau"). Corta apenas pasa de max.
