@@ -21,13 +21,16 @@
   height: 100%;
 }
 
-/* Media 1:1 (Filled): cuadrado de layout/compare-column (el de Mobile; en
-   Mobile ocupa la columna) en color/surface/subtle, centrado. La foto va
-   entera y centrada, a space/padding/md del borde (128 px, como Macroled). */
+/* Media 1:1 (Filled): cuadrado de layout/card-min como máximo (280 Desktop ·
+   160 Mobile, donde ocupa la columna) en color/surface/soft, un gris más
+   claro que color/surface/subtle; la foto entera (contain) y centrada, a
+   space/padding/md del borde. docs/decisiones.md, 2026-10-28 · Comparativa: foto
+   más grande con fondo claro. TODO (diseño): no hay un token propio para
+   este tamaño. */
 .media {
   box-sizing: border-box;
   width: 100%;
-  max-width: var(--arq-layout-compare-column);
+  max-width: var(--arq-layout-card-min);
   align-self: center;
   aspect-ratio: 1 / 1;
   display: flex;
@@ -35,7 +38,7 @@
   justify-content: center;
   padding: var(--arq-space-padding-md);
   overflow: hidden;
-  background: var(--arq-color-surface-subtle);
+  background: var(--arq-color-surface-soft);
 }
 
 .media img {
@@ -188,12 +191,15 @@
     display: none;
   }
 
-  /* Mismo cuadrado que en pantalla. TODO (diseño): falta el diseño del PDF
-     de la comparación (DESIGN.md §12). Fondo color/surface/strong:
-     color/surface/subtle (6 %) no sale impreso, como en la ficha técnica
-     (docs/decisiones.md, 2026-10-27 · Ficha técnica: ajuste de impresión).
-     exact: el navegador no omite el fondo. */
+  /* Cuadrado de layout/compare-column con la foto a space/padding/md del
+     borde (128 px). TODO (diseño): falta el diseño del PDF de la comparación
+     (DESIGN.md §12). Fondo color/surface/strong: color/surface/subtle (6 %)
+     no sale impreso, como en la ficha técnica (docs/decisiones.md,
+     2026-10-27 · Ficha técnica: ajuste de impresión). exact: el navegador no
+     omite el fondo. */
   .media {
+    max-width: var(--arq-layout-compare-column);
+    padding: var(--arq-space-padding-md);
     background: var(--arq-color-surface-strong);
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
