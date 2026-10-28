@@ -239,7 +239,7 @@ function finishOptions(group, shown, active = {}) {
       image: images.studio ?? null,
       imageHover: images.studioOn ?? images.context ?? images.contextOn ?? null,
       imageLit: images.studioOn ?? null,
-      imageHoverLit: images.contextOn ?? images.context ?? images.studio ?? null,
+      imageHoverLit: images.contextOn ?? images.studio ?? null,
     };
   });
 }
@@ -262,9 +262,8 @@ function productCard(group, variant = firstFinishVariant(group) ?? group.default
     image: images.studio ?? null,
     imageHover: images.studioOn ?? images.context ?? images.contextOn ?? null,
     imageLit: images.studioOn ?? null,
-    // Con Iluminar: contexto encendido; sin él, el contexto apagado y, si no hay
-    // ninguno, la contraria: la principal apagada.
-    imageHoverLit: images.contextOn ?? images.context ?? images.studio ?? null,
+    // Con Iluminar: contexto encendido; sin él, la contraria: la principal apagada.
+    imageHoverLit: images.contextOn ?? images.studio ?? null,
   };
 }
 
