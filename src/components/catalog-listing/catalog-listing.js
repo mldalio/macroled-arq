@@ -33,6 +33,7 @@
 
 import { ArqElement } from '../../base/arq-element.js';
 import { listProducts, listCompareCandidates, getCatalogNav } from '../../data/catalog.js';
+import { subcategoryDescription, collectionDescription } from '../../data/category-descriptions.js';
 import { handOffTheme, setBrowserBar, withoutThemeTransition } from '../../base/theme.js';
 import '../catalog-toolbar/catalog-toolbar.js';
 import '../carousel-controls/carousel-controls.js';
@@ -577,7 +578,7 @@ class ArqCatalogListing extends ArqElement {
       const description = document.querySelector('arq-page-header > [slot="description"]');
       if (description) {
         this.#htmlDescription ??= description.textContent;
-        description.textContent = this.#htmlDescription;
+        description.textContent = collectionDescription(label) || this.#htmlDescription;
       }
       this.#syncBreadcrumb([
         { label: 'Productos', href: location.pathname },
@@ -602,7 +603,8 @@ class ArqCatalogListing extends ArqElement {
     const description = document.querySelector('arq-page-header > [slot="description"]');
     if (description) {
       this.#htmlDescription ??= description.textContent;
-      description.textContent = (label && group.dataset.arqDescription) || this.#htmlDescription;
+      const own = sub ? (group.dataset.arqNav === 'colecciones' ? collectionDescription(label) : subcategoryDescription(group.dataset.arqNav, label)) : '';
+      description.textContent = own || (label && group.dataset.arqDescription) || this.#htmlDescription;
     }
     if (!label && this.#query) return this.#titleFromQuery();
     if (title) {
