@@ -347,18 +347,25 @@
   }
 }
 
-/* ── Menú mobile (Mode=Menu y Products): diálogo a pantalla completa ── */
-/* Menú mobile: desde la barra (--bar-top) hasta el pie de la pantalla, así
-   announcement-bar sigue a la vista arriba, como con el top sheet */
+/* ── Menú mobile (Mode=Menu y Products): panel como el top sheet ── */
+/* Menú mobile: un panel que baja desde la barra (--bar-top), de un alto fijo
+   (el 55 % de la pantalla) y aire abajo (el mismo del sheet: space/gap/xl ×
+   2). Solo Colecciones, que es una lista larga, lo agranda a toda la pantalla
+   (.is-tall, lo pone el navbar). Si un nivel no entra, se desplaza adentro.
+   Detrás, el scrim, y la página se ve. announcement-bar sigue a la vista
+   arriba, como con el top sheet. Cada nivel arranca a space/gap/xl del borde de
+   arriba (24 en mobile). TODO (diseño): el 55 % no es un token (como el 70svh
+   del hero). */
 .menu {
   box-sizing: border-box;
   inset: var(--bar-top, 0dvh) 0 auto 0;
   width: 100%;
   max-width: none;
-  height: calc(100dvh - var(--bar-top, 0dvh));
-  max-height: none;
+  --menu-full: calc(100dvh - var(--bar-top, 0dvh));
+  height: min(55dvh, var(--menu-full));
+  max-height: var(--menu-full);
   margin: 0;
-  padding: 0;
+  padding: 0 0 calc(var(--arq-space-gap-xl) * 2);
   border: 0;
   border-radius: var(--arq-radius-control);
   background: var(--arq-color-surface-default);
@@ -366,9 +373,18 @@
   overscroll-behavior: contain;
 }
 
-/* Sin el velo del navegador: el menú tapa la página y announcement-bar queda limpia */
+/* Scrim detrás del panel (color/overlay/scrim, el mismo del sheet y de
+   filter-panel), que se funde al abrir. Arranca debajo de announcement-bar.
+   ::backdrop hereda las variables del <dialog>. */
 .menu::backdrop {
-  background: var(--arq-color-surface-transparent);
+  top: var(--bar-top, 0dvh);
+  background: var(--arq-color-overlay-scrim);
+  opacity: 0;
+  transition: opacity var(--arq-motion-duration-panel) var(--arq-motion-easing-standard);
+}
+
+.menu.is-open::backdrop {
+  opacity: 1;
 }
 
 /* Columna: barra arriba y el nivel abierto debajo (un submenú largo se
@@ -394,6 +410,11 @@
   clip-path: inset(0);
 }
 
+/* Colecciones: toda la pantalla (el único salto de alto) */
+.menu.is-tall {
+  height: var(--menu-full);
+}
+
 .menu:not(.is-open) {
   pointer-events: none;
 }
@@ -403,6 +424,10 @@
     clip-path: none;
     opacity: 0;
     transition: opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-standard);
+  }
+
+  .menu::backdrop {
+    transition-duration: var(--arq-motion-duration-fade);
   }
 
   .menu.is-open {
@@ -424,19 +449,31 @@
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
 }
 
-/* Mode=Menu: nav-link Mobile apilados, padding vertical space/gap/sm */
+/* Los niveles se desplazan adentro si no entran (el panel llega hasta el pie
+   de la pantalla como máximo) */
+.menu-main,
+.menu-products,
+.menu-recursos {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* Mode=Menu: nav-link Mobile apilados. Arriba space/gap/xl, como todos los
+   niveles; abajo space/gap/sm */
 .menu-main {
   display: flex;
   flex-direction: column;
-  padding-block: var(--arq-space-gap-sm);
+  padding-block: var(--arq-space-gap-xl) var(--arq-space-gap-sm);
 }
 
-/* Mode=Products: arriba space/gap/sm, abajo space/gap/xl */
+/* Mode=Products: arriba y abajo space/gap/xl */
 .menu-products,
 .menu-recursos {
   display: flex;
   flex-direction: column;
-  padding: var(--arq-space-gap-sm) 0 var(--arq-space-gap-xl);
+  padding: var(--arq-space-gap-xl) 0;
 }
 
 .menu-products[hidden],
@@ -488,15 +525,15 @@
   padding: var(--arq-space-gap-md) var(--page-gutter) var(--arq-space-padding-md);
 }
 
-/* Submenú (Mode Interior · Exterior · Colecciones): arriba space/gap/sm,
-   abajo space/gap/xl. Si la lista no entra, se desplaza y "Ver todo…" queda
+/* Submenú (Mode Interior · Exterior · Colecciones): arriba y abajo
+   space/gap/xl. Si la lista no entra, se desplaza y "Ver todo…" queda
    fijo abajo. */
 .menu-sub {
   display: flex;
   flex: 1;
   flex-direction: column;
   min-height: 0;
-  padding: var(--arq-space-gap-sm) 0 var(--arq-space-gap-xl);
+  padding: var(--arq-space-gap-xl) 0;
 }
 
 .menu-sub[hidden] {

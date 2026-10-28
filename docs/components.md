@@ -598,7 +598,7 @@ Logo de Macroled Arq. Default en desktop, Small en mobile.
 - Figma: [840-2070](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=840-2070)
 - Propiedades: Name; Meta; Show meta; Show image; Show arrow; Type: Link · Group; State: Default · Hover · Focus; Open: False · True; Size: Default · Large (2026-10-13: se quitaron XL y Small)
 
-Link del mega menú y del submenú mobile: nombre, bajada opcional (Show meta, para colecciones) y flecha. Type: Link (link simple; Size Default o Large) · Group (grupo desplegable con icon/plus / icon/minus, Open False · True). State: Default, Hover y Focus. Size: solo Default y Large. Show image: miniatura de 60 × 60 al final de la fila (submenús mobile de Lámparas y artefactos y Colecciones). La flecha es arrow-right en el mega menú y chevron-right en la lista de Productos mobile (entra a un submenú).
+Link del mega menú y del submenú mobile: nombre, bajada opcional (Show meta, para colecciones) y flecha. Type: Link (link simple; Size Default o Large) · Group (grupo desplegable con icon/plus / icon/minus, Open False · True). State: Default, Hover y Focus. Size: solo Default y Large. Show image: miniatura de 80 × 80 al final de la fila (submenús mobile de Lámparas y artefactos y Colecciones). La flecha es arrow-right en el mega menú y chevron-right en la lista de Productos mobile (entra a un submenú). La bajada es role/body-compact-regular (14 px) en Default y en Large.
 
 ## mega-menu
 
@@ -613,7 +613,7 @@ Mega menú de Productos (desktop). Se abre desde nav-link "Productos" (Open=True
 - Figma: [752-2866](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=752-2866)
 - Propiedades: Label; Has dropdown; Breakpoint: Desktop · Mobile; State: Default · Hover · Pressed · Focus · Current; Open: False · True; Theme: Default · Inverse
 
-Link del navbar. State: Default, Hover, Pressed, Current (página actual) y Focus. Open=True: desplegable abierto (aria-expanded="true"). En desktop, Has dropdown no lleva flecha. En mobile la flecha es hacia la derecha (entra al submenú).
+Link del navbar. State: Default, Hover, Pressed, Current (página actual) y Focus. Open=True: desplegable abierto (aria-expanded="true"). En desktop, Has dropdown no lleva flecha. En mobile la flecha es hacia la derecha (entra al submenú) y solo la llevan las filas con Has dropdown; un link directo (Nosotros, Contacto) no lleva flecha. TODO (Figma): el set todavía dibuja la flecha en todas las filas Mobile (arrow-right en Current).
 
 State=Current: sección activa (indicador visible); en Desktop el label pasa a role/body-medium. En código: aria-current="page".
 

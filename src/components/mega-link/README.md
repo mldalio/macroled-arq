@@ -20,7 +20,8 @@ Link del mega-menu (Desktop) y del submenú de Productos (navbar Mobile).
 | Name | slot por defecto | — | Nombre del destino |
 | Meta · Show meta | slot `meta` | — | Bajada (colecciones). Sin contenido no se muestra |
 | Show arrow | `show-arrow` | `showArrow` | booleano. **En Figma viene en `true`; en código hay que escribirlo.** La flecha se ve solo en Hover y Focus |
-| Show image | `show-image` | `showImage` | booleano: miniatura de 60 × 60 al final de la fila (submenú mobile de Colecciones) |
+| Show image | `show-image` | `showImage` | booleano: miniatura de 80 × 80 al final de la fila (submenú mobile de Colecciones) |
+| — | `fallbacks` | `fallbacks` | solo de código: JSON con las fotos que la miniatura prueba, en orden, si `image` no carga (el submenú Colecciones pasa las de los productos de la familia, como el preview del mega-menu) |
 | — | `image` | `image` | URL de la miniatura. Sin imagen: `color/surface/subtle` |
 | — | `submenu` | `submenu` | booleano, solo de código: la fila abre un submenú del menú mobile (`<button>` con chevron-right siempre visible). Se lee al conectarse |
 | Type | `type` | `type` | `link` · `group` (def. `link`). Se lee al conectarse |
@@ -38,8 +39,9 @@ Link del mega-menu (Desktop) y del submenú de Productos (navbar Mobile).
 | Parte | Token |
 | --- | --- |
 | Fila Link | Default: padding vertical `space/gap/sm-md` (con bajada `space/gap/sm`), gap `space/gap/md` · Large y submenu: padding vertical `space/gap/md`, gap `space/gap/sm` · línea inferior `color/border/subtle` |
-| Nombre · bajada | `role/body-xl` · `role/body-compact-regular` pegada (Large y submenu: `role/heading-3` · `role/caption` a `space/gap/xs`); nombre en `color/text/primary`, bajada en `color/text/tertiary` |
-| Miniatura | 60 × 60 (`layout/search-thumb` + `space/gap/sm-md`), fondo `color/surface/subtle` |
+| Nombre · bajada | `role/body-xl` · `role/body-compact-regular` pegada (Large y submenu: nombre `role/heading-3`, bajada también `role/body-compact-regular`, 14 px, a `space/gap/xs`); nombre en `color/text/primary`, bajada en `color/text/tertiary` |
+| Padding vertical (Large con miniatura) | `space/gap/sm-md` (12; Large sin miniatura, `space/gap/md`) |
+| Miniatura | 80 × 80 (`layout/mega-link-thumb`), fondo `color/surface/subtle` |
 | Flecha · + / – | `icon/md` en `color/icon/primary` |
 | Group | padding vertical `space/gap/md`, nombre `role/body-xl` |
 

@@ -132,9 +132,9 @@
     white-space: normal;
   }
 
-  /* Flecha final en todas las filas: chevron-right; Current: arrow-right.
-     Has dropdown no lleva la flecha hacia abajo de desktop. */
-  .trailing {
+  /* Flecha final solo en las filas que abren otro nivel (Has dropdown): chevron-right.
+     Un link directo (Nosotros, Contacto, también Current) no lleva flecha: va a la página. */
+  :host([has-dropdown]) .trailing {
     display: inline-flex;
     flex: none;
   }
@@ -144,13 +144,8 @@
     height: var(--arq-icon-md);
   }
 
-  .trailing [data-icon='arrow-right'],
-  .current .trailing [data-icon='chevron-right'] {
+  .trailing [data-icon='arrow-right'] {
     display: none;
-  }
-
-  .current .trailing [data-icon='arrow-right'] {
-    display: block;
   }
 
   /* Sin subrayado en mobile */

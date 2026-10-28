@@ -40,6 +40,12 @@ button.link {
   padding-block: var(--arq-space-gap-md);
 }
 
+/* Large con miniatura (submenú Colecciones): padding vertical space/gap/sm-md
+   (12), la fila ya tiene el alto de la miniatura */
+:host([size='large'][show-image]) .link {
+  padding-block: var(--arq-space-gap-sm-md);
+}
+
 /* Hover solo con mouse: en táctil quedaría pegado después del toque */
 @media (hover: hover) and (pointer: fine) {
   .link[href]:hover,
@@ -80,7 +86,7 @@ button.link {
   color: var(--arq-color-text-tertiary);
 }
 
-/* Miniatura (Show image): cuadrada de layout/mega-link-thumb (60), fondo
+/* Miniatura (Show image): cuadrada de layout/mega-link-thumb (80), fondo
    color/surface/subtle sin imagen. */
 .thumb {
   position: relative;
