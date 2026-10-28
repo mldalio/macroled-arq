@@ -141,7 +141,7 @@
   --arq-layout-table-thumb: 100px; /** Miniatura cuadrada de cada fila de variants-table (ficha y Descargas) (100). */
   --arq-layout-compare-thumb: 48px; /** Foto cuadrada de compare-slot Size=Default (compare-bar y compare-header Compact en Desktop). */
   --arq-layout-compare-slot: 400px; /** Ancho máximo de compare-slot Size=Default, para que no se estire en pantallas anchas. */
-  --arq-layout-compare-label: 200px; /** Columna de etiquetas de la comparativa (compare-row, compare-group y la columna de controles de compare-header). En Mobile queda fija al desplazar. */
+  --arq-layout-compare-label: 320px; /** Columna de etiquetas de la comparativa (compare-row, compare-group y la columna de controles de compare-header). En Mobile queda fija al desplazar. */
   --arq-layout-compare-column: 160px; /** Ancho de cada columna de producto de la comparativa en Mobile (con scroll horizontal). En Desktop las columnas se reparten el ancho. */
   --arq-layout-mega-menu-image: 420px; /** Ancho de la imagen del mega-menu (a la derecha de las columnas). El alto sale de ratio/portrait-soft (4:5). */
   --arq-layout-search-field: 360px; /** Ancho de search-field en el navbar Desktop. search-dropdown toma el mismo ancho. En Mobile (search-screen) el campo ocupa el ancho disponible. */
