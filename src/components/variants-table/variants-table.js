@@ -472,7 +472,7 @@ class ArqVariantsTable extends ArqElement {
       )
       .join('');
     // Mobile: una tarjeta por variante
-    const cardColumns = CARD_COLUMNS.map((key) => columns.find((c) => c.key === key)).filter(Boolean);
+    const cardColumns = [...CARD_COLUMNS.map((key) => columns.find((c) => c.key === key)).filter(Boolean), ...columns.filter((c) => c.card)];
     root.querySelector('.cards').innerHTML = page
       .map((row) => {
         // En catalog, cada tarjeta muestra solo los datos que su SKU tiene cargados

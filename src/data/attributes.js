@@ -70,6 +70,9 @@ export const ATTRIBUTES = Object.freeze({
   proteccion_ik: a('Resistencia al impacto', 'materiales', { prefix: 'IK', digits: 2 }),
   tipo_montaje: a('Montaje', 'materiales'),
   temperatura_operacion: a('Temperatura de operación', 'materiales', { filter: false }),
+  // Texto de recomendación de dónde usar el producto: última fila de la sección (2026-10-28).
+  // No es selector ni filtro ni va en el resumen de las cards.
+  escena_uso_sugerido: a('Uso sugerido', 'materiales', { filter: false, summary: false }),
   // Comercial
   garantia_proveedor: a('Garantía', 'comercial', { filter: false }),
 });

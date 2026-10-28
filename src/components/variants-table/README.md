@@ -19,6 +19,7 @@ Tabla de variantes: **un solo componente** para la ficha (Glosario) y para la p�
 ```js
 tabla.data = {
   columns: [{ key: 'potencia', label: 'Potencia' }, …],                    // TABLE_COLUMNS, src/data/attributes.js
+                                                                           // + en la ficha, los campos de variant_attributes que falten, con `card: true` (también en las tarjetas Mobile)
   filters: [{ key: 'color_carcasa', label: 'Acabado', swatches: true }, …],  // swatches: opciones con muestra (acabados)
   rows: [{ sku, name, href, meta, thumb, search, attributes: { … }, values: { … } }],
 };

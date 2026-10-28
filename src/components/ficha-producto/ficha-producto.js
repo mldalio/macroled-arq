@@ -201,7 +201,7 @@ class ArqFichaProducto extends ArqElement {
     `<span slot="title" class="accessory-title" hidden><slot name="accessory-title"></slot></span>` +
     `<span slot="title" class="accessory-compatible-title" hidden><slot name="accessory-compatible-title"></slot></span>` +
     `<span slot="title" class="product-compatible-title" hidden><slot name="product-compatible-title"></slot></span>` +
-    `<button type="button" class="config-cta config-cta-inline role-label" slot="action" hidden>${TEXT.configure}</button>` +
+    `<arq-button class="config-cta config-cta-inline" slot="action" hidden>${TEXT.configure}</arq-button>` +
     `</arq-compatible-products>` +
     // Galería de ambiente
     `<div class="ambient-block needs-data" hidden>` +

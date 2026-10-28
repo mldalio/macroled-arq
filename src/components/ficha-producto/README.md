@@ -45,6 +45,7 @@ El HTML del embed completo está en [src/pages/ficha.html](../../pages/ficha.htm
 - **Ver glosario:** desplaza hasta el glosario y le pasa el foco a su título.
 - **Secciones apagadas** (`SHOW_AMBIENT_GALLERY`, `SHOW_STORY_PARALLAX` y `SHOW_INSPIRATION` en `ficha-producto.js`, en `false`): la galería de ambiente que se desplaza, la descripción con foto fija (STORY) y la inspiración (texto, video y foto vertical). Siguen en el código; para volver, se ponen en `true`.
 - **Cotas:** el dibujo del SKU (campo `cotas_img`; sin él, no se muestra) se muestra en Materiales e instalación (filas en una columna a la izquierda y el dibujo a la derecha) y como fila «Cotas» del modal de descargas. No hay pestaña «Cotas». `TODO` (diseño): tamaño del dibujo.
+- **Uso sugerido:** el campo `escena_uso_sugerido` es la última fila de Materiales e instalación («Uso sugerido»); sin dato, no se muestra. Sale también en la comparativa y en la ficha técnica en PDF.
 - **Ver descargas:** abre el modal de descargas de la variante elegida (el mismo que el ícono de cada fila del glosario).
 - **Descargas:** "Ficha técnica" (se genera) y los archivos del SKU elegido, en el orden de Final (CAD 2D/3D, Manual, IES, Fotometría). Un archivo que falta no se muestra.
 - **Acordeón:** una sección por grupo de especificaciones. Todas abren abiertas; al cambiar de variante quedan abiertas las mismas (si se cerró una, sigue cerrada).
@@ -85,7 +86,7 @@ Tablet (768–1023 px) usa la columna Desktop salvo en los bloques marcados: ah�
 
 ## Configurador (2026-10-21)
 
-> En la colección Daö, el «Configurar» de Daö ya no es una pestaña: «Configura tu Daö» (texto en mayúsculas, 12 px, fondo `color/surface/inverse`) va en «Accesorios y lámparas compatibles», en la punta opuesta al título, y abre `<arq-dao-configurator>` en un modal a pantalla completa ([README](../dao-configurator/README.md)). El resto de esta sección es el configurador de variantes de la ficha.
+> En la colección Daö, el «Configurar» de Daö ya no es una pestaña: «Configura tu Daö» (un `arq-button` Filled: sus paddings y `role/body-regular`, en caja normal) va en «Accesorios y lámparas compatibles», en la punta opuesta al título, y abre `<arq-dao-configurator>` en un modal a pantalla completa ([README](../dao-configurator/README.md)). El resto de esta sección es el configurador de variantes de la ficha.
 
 - **Característica madre:** el color, o la primera de `variant_attributes` si no hay color. Va primera y nunca se apaga; las demás dependen solo de las de arriba y una apagada no se puede elegir. Al elegir, las de abajo se acomodan solas (`src/data/variants.js`; `docs/decisiones.md`, 2026-10-21 · Característica madre).
 - **Descripción** de la variante: debajo del nombre y arriba del sku, en `role/body-compact` (14 px; 16/24 desde 1920 px, mismo peso) y `color/text/tertiary`.

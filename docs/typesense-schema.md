@@ -58,6 +58,7 @@ Dónde se usa cada foto:
 ### Otros campos
 
 - Textos: `description` (por SKU), `product_story_text`, `product_inspiration_text`, `escena_uso_sugerido`, `collection_intro_text`, `collection_description_text`. `video_inspiration`.
+- `escena_uso_sugerido` se muestra como la última fila de Materiales e instalación, «Uso sugerido» (`ATTRIBUTES`, `src/data/attributes.js`).
 - Descargas: `ies`, `cad`, `manual`, `fotometria`.
 - `cotas_img`: URL del dibujo con cotas (PNG en `MACROLED/ARQ/cotas/`), por SKU. Lo usa solo la ficha técnica en PDF; vacío, la ficha sale sin cotas.
 - `new` (bool) marca las novedades: son los productos recomendados del buscador (una card por cada SKU marcado, con sus fotos). Sin uso en el sitio todavía: `nombre_origen`. `categoria` (por SKU: «Bolardo», Aro, Cabezal…) la lee el buscador y el configurador de Daö.

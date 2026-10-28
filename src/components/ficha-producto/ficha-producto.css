@@ -50,38 +50,14 @@
   overflow: hidden;
 }
 
-/* «Configura tu Daö», en la fila de compatibles. Fondo color/surface/inverse
-   con texto inverso; role/label (12 px en mayúsculas). */
-.config-cta {
-  box-sizing: border-box;
-  width: max-content;
-  max-width: 100%;
-  padding: var(--arq-space-padding-sm-md) var(--arq-space-padding-xl);
-  border: 0;
-  border-radius: var(--arq-radius-control);
-  background: var(--arq-color-surface-inverse);
-  color: var(--arq-color-text-inverse);
-  cursor: pointer;
-  transition: background-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);
-}
-
+/* «Configura tu Daö», en la fila de compatibles: el button Filled del sistema
+   (padding, role/body-regular, hover, foco y presionado los trae el componente). */
 .config-cta-inline {
   flex: none;
 }
 
 .config-cta[hidden] {
   display: none;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .config-cta:hover {
-    background: var(--arq-color-surface-inverse-hover);
-  }
-}
-
-.config-cta:focus-visible {
-  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
-  outline-offset: 2px;
 }
 
 .gallery {
