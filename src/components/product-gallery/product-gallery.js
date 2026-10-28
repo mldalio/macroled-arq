@@ -62,6 +62,18 @@ class ArqProductGallery extends ArqElement {
 
   #images = [];
   #index = 0;
+
+  // Foto de estudio con aire: el producto se ve entero y a su escala, con margen
+  // alrededor, en vez de recortado para llenar el recuadro. Las de ambiente y de
+  // detalle (escenas y primeros planos) llenan el recuadro. Con el atributo
+  // `zoom` (solo de código) ninguna lleva aire: los productos cuyas fotos de
+  // estudio ya son un corte en zoom por diseño (los de Exterior; la ficha lo pone).
+  #fit(src) {
+    if (this.hasAttribute('zoom') || !src) return 'fill';
+    const file = String(src).split(/[?#]/)[0].split('/').pop();
+    return /ambient|detail|detalle|inspira/i.test(file) ? 'fill' : 'air';
+  }
+
   #dark = false;
   #received = false; // ya llegaron los datos: antes no se oculta la imagen del HTML
   #transitionImage = null;
@@ -223,6 +235,8 @@ class ArqProductGallery extends ArqElement {
     const firstSrc = this.#src(images[0]);
     if (before.getAttribute('src') !== lastSrc) before.src = lastSrc;
     if (after.getAttribute('src') !== firstSrc) after.src = firstSrc;
+    before.dataset.fit = this.#fit(lastSrc);
+    after.dataset.fit = this.#fit(firstSrc);
   }
 
   // previousSrc: la foto que se ve ahora, para fundir de ella a la nueva.
@@ -246,6 +260,7 @@ class ArqProductGallery extends ArqElement {
       if (!image) return;
       const src = this.#src(image);
       if (!(fading && i === this.#index) && img.getAttribute('src') !== src) img.src = src;
+      img.dataset.fit = this.#fit(src);
       img.alt = image.alt ?? '';
       img.draggable = false;
       if (i > 0) img.loading = 'lazy';
@@ -444,6 +459,7 @@ class ArqProductGallery extends ArqElement {
     const previous = document.createElement('img');
     previous.className = quick ? 'theme-transition quick' : 'theme-transition';
     previous.src = previousSrc;
+    previous.dataset.fit = this.#fit(previousSrc);
     previous.alt = '';
     previous.setAttribute('aria-hidden', 'true');
     const image = this.shadowRoot.querySelector('.image');

@@ -119,6 +119,13 @@ const TEXT = {
 const BACKDROP_LIGHT = 0.16;
 const BACKDROP_SAMPLE = 16; // lado de la muestra reducida, en píxeles de canvas
 
+// Productos con las fotos de estudio recortadas en zoom por diseño (no llevan
+// aire en la galería): los de Exterior, salvo los de ZOOM_EXCEPTIONS, que sí
+// necesitan verse enteros. TODO (datos): marcarlo en la base en vez de acá.
+const ZOOM_EXCEPTIONS = ['tori visera'];
+const plain = (text) => String(text ?? '').normalize('NFD').replace(/p{M}/gu, '').trim().toLowerCase();
+const hasZoomPhotos = (group) => group.environment?.includes('Exterior') && !ZOOM_EXCEPTIONS.includes(plain(group.name));
+
 // Copia chica de la foto que se puede leer con CORS (config.images); null si
 // la foto viene de otro servidor (no se intenta: dejaría un error en consola).
 const sampleSrc = (src) => {
@@ -668,6 +675,8 @@ class ArqFichaProducto extends ArqElement {
     const description = root.querySelector('.variant-description');
     description.textContent = details.description ?? '';
     description.hidden = !details.description;
+    // Fotos de estudio con aire, salvo los cortes en zoom (ver ZOOM_PHOTOS)
+    root.querySelector('.gallery').toggleAttribute('zoom', hasZoomPhotos(group));
     root.querySelector('.gallery').images = details.images;
     // Copias para medir el brillo de la primera foto, apagada y encendida: así
     // el toggle cambia junto con la foto al iluminar

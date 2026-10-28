@@ -383,7 +383,7 @@ class ArqProductCard extends ArqElement {
     const key = (value) => String(value ?? '').normalize('NFD').replace(/\p{M}/gu, '').trim().toLowerCase();
     const family = key(this.family);
     const name = key(this.querySelector('[slot="name"]')?.textContent);
-    const contain = family === 'fuji' || family === 'mini kai' || family === 'mini kai round' || family === 'sen' || name === 'tori visera';
+    const contain = family === 'fuji' || family === 'mini kai' || family === 'mini kai round' || family === 'sen' || name === 'tori visera' || name.startsWith('mini kai');
     card?.classList.toggle('is-contain', contain);
   }
 
