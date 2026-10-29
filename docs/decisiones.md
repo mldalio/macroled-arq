@@ -2079,3 +2079,9 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 - Pedido: estudio o empresa, teléfono y provincia dejan de ser opcionales. Ciudad y «Planos o imágenes» siguen opcionales.
 - Obligatorios: nombre, empresa, email, teléfono, provincia y detalles. Sin la marca «(opcional)» en la etiqueta. Si faltan, el envío no sale: «Completá el estudio o la empresa.», «Completá tu teléfono.» y «Elegí una provincia.»
 - **`tipo` hacia n8n:** el chip sigue mostrando el texto de la pantalla y el POST manda un slug: Asesoramiento lumínico → `asesoramiento`, Cotización de proyecto → `cotizacion`, Consulta técnica → `consultas-tecnicas`, Garantía → `garantia`. El Switch del workflow compara contra esos cuatro.
+
+## 2026-10-29 · Fotos de Höshi desde S3
+
+- Las fotos cuyo archivo empieza con `HOSHI` no pasan por el CloudFront achicado (`sizedImage`). Se piden al S3 con el enlace de Typesense. Vale para todos los SKU de Höshi (card, ficha y vistas). El resto de los productos sigue por CloudFront. La copia achicada queda un año en caché y Höshi seguía mostrando la foto anterior.
+- **Vistas en la ficha:** frente, atrás e izquierda están solo en la versión encendida (`img_front_on`, `img_back_on`, `img_left_on`) y la galería las salteaba porque exige la apagada. En Höshi entran igual, con esa foto.
+- **Home, Lámparas y artefactos:** la card de Explorar por espacio usa el CloudFront de `imagenes/home/lamparasyart.png` (el archivo de S3 se actualizó el 2026-10-29). La URL lleva `?v=20261029` para que el navegador no siga con la copia anterior, que CloudFront deja un año.

@@ -29,6 +29,12 @@ export function sizedImage(url, width = CARD_WIDTH) {
   const [file, query = ''] = path.split('?');
   const segments = file.split('/');
   while (segments.length > 1 && isStep(segments[0])) segments.shift();
+  const fileName = segments[segments.length - 1] ?? '';
+  // Höshi: la card usa el archivo de S3 tal cual. CloudFront guarda la copia
+  // achicada un año y seguía mostrando la foto anterior (2026-10-29).
+  if (/^hoshi/i.test(fileName)) {
+    return `${sampleFrom}${segments.join('/')}${query ? `?${query}` : ''}`;
+  }
   // La altura no limita: fit-in entra en width × (2 × width) y conserva la proporción
   return `${cdn}fit-in/${width}x${width * 2}/filters:format(webp):quality(${QUALITY})/${segments.join('/')}${query ? `?${query}` : ''}`;
 }

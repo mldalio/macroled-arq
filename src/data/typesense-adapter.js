@@ -188,16 +188,21 @@ function slots(doc) {
   return out;
 }
 
+const fileName = (url) => decodeURIComponent(String(url).split('/').pop().split('?')[0]);
+// Höshi trae frente, atrás e izquierda solo en la versión encendida (la apagada
+// está vacía). Sin esto la galería las saltea, porque exige la apagada.
+const hoshiOn = (slots, name) => slots[`${name}On`] && /^hoshi/i.test(fileName(slots[`${name}On`]));
+
 function variantImages(doc) {
   const s = slots(doc);
-  const gallery = GALLERY.filter((name) => s[name]);
+  const gallery = GALLERY.filter((name) => s[name] || hoshiOn(s, name));
   const images = {
     main: s.main,
     studio: s.main,
     studioOn: s.mainOn,
     context: s.ambient1,
     contextOn: s.ambient1On,
-    gallery: gallery.map((name) => s[name]),
+    gallery: gallery.map((name) => s[name] ?? s[`${name}On`]),
     galleryOn: gallery.map((name) => s[`${name}On`] ?? null),
   };
   return Object.fromEntries(Object.entries(images).filter(([, v]) => (Array.isArray(v) ? v.length : v)));
