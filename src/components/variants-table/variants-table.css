@@ -230,6 +230,47 @@ thead th {
   font-weight: inherit;
 }
 
+/* Orden por columna (catalog): el texto del encabezado con un chevron icon/sm
+   a space/gap/xs. La columna ordenada, texto e ícono en color/text/primary.
+   TODO (diseño): el encabezado con orden no está en el set de variants-table-row;
+   se armó con el estilo del encabezado y el chevron del set de íconos. */
+.sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--arq-space-gap-xs);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: inherit;
+  cursor: pointer;
+  transition: color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);
+}
+
+.sort .icon {
+  flex: none;
+  width: var(--arq-icon-sm);
+  height: var(--arq-icon-sm);
+}
+
+.sort.sorted {
+  color: var(--arq-color-text-primary);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sort:hover {
+    color: var(--arq-color-text-primary);
+  }
+}
+
+.sort:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
 /* Filas: valores role/body-lg-regular en color/text/primary, padding vertical
    space/padding/sm; Hover color/surface/faint */
 tbody th,

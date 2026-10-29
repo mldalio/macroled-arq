@@ -17,7 +17,7 @@
 
 import { loadSource, loadGroupDetails } from './source.js';
 import { ATTRIBUTES, DOWNLOAD_FILTERS, TABLE_COLUMNS, attributeInfo, specSections, tableValues } from './attributes.js';
-import { variantOptions, findVariant, choose } from './variants.js';
+import { variantOptions, findVariant, choose, compareValues } from './variants.js';
 import { normalize, queryWords, matchWords } from './text.js';
 import { finishImage } from './finishes.js';
 import { recommendedRank } from './recommended.js';
@@ -479,6 +479,20 @@ export async function getProduct(groupId) {
 
 const unique = (value) => [...new Set([value ?? []].flat().filter(hasValue))];
 
+// Orden de las filas de variants-table: potencia, después temperatura y después
+// acabado (negro primero, como en la card); a igual valor, el orden de la base
+// (decisiones.md, 2026-10-29 · Descargas: ordenar por columna).
+const compareVariants = (a, b) =>
+  compareValues(a.values.potencia, b.values.potencia) ||
+  compareValues(a.values.temperatura_color, b.values.temperatura_color) ||
+  finishRank(finishOf(a) ?? '') - finishRank(finishOf(b) ?? '');
+
+const byTableOrder = (variants) =>
+  variants
+    .map((v, i) => [v, i])
+    .sort(([a, i], [b, j]) => compareVariants(a, b) || i - j)
+    .map(([v]) => v);
+
 /**
  * Columnas de variants-table (TABLE_COLUMNS, en orden): las mismas en la ficha
  * y en Descargas; solo las que algún SKU tiene cargadas.
@@ -514,7 +528,7 @@ function glossary(group) {
   return {
     columns: glossaryColumns(group),
     filters: group.variantAttributes.map((key) => ({ key, label: attributeInfo(key).label, swatches: attributeInfo(key).control === 'swatches' })),
-    rows: group.variants.map((v) => ({ sku: v.sku, thumb: v.images?.studio ?? null, attributes: v.values, values: tableValues(v.values) })),
+    rows: byTableOrder(group.variants).map((v) => ({ sku: v.sku, thumb: v.images?.studio ?? null, attributes: v.values, values: tableValues(v.values) })),
   };
 }
 
@@ -531,12 +545,13 @@ function glossary(group) {
  * («Nobu»). Si la colección tiene varios grupos, se suma la aplicación
  * («Kanu Pared», «Kanu Jardín»); si la aplicación no alcanza para
  * distinguirlos (Tori Jardín, Mini Tori Jardín y Tori Visera son los tres
- * Jardín), queda el nombre del grupo. Sin colección, la primera palabra del
- * nombre («Skyline»): el SKU de debajo identifica la variante.
+ * Jardín), queda el nombre del grupo. Sin colección (accesorios incluidos),
+ * su familia («Mini Kai», «Par 11»); sin familia, el nombre del grupo. El SKU
+ * de debajo identifica la variante.
  */
 function shortName(group, groups) {
   const collection = group.collectionData?.name;
-  if (!collection) return group.name.split(/\s+/)[0];
+  if (!collection) return group.family || group.name;
   const siblings = groups.filter((g) => g.collection === group.collection);
   if (siblings.length === 1) return collection;
   const sameApplication = siblings.filter((g) => g.application === group.application);
@@ -571,7 +586,28 @@ export async function getDownloadsTable() {
 
 async function downloadsTable() {
   const { groups } = await loadCatalog();
-  const variants = groups.flatMap((group) => group.variants.map((variant) => ({ group, variant })));
+  // Orden de entrada: alfabético por colección (sin colección, por su familia,
+  // que es el nombre que muestra la fila) y, dentro de cada una, por potencia,
+  // aunque sean de productos distintos. A igual potencia, juntas las del mismo
+  // producto (en el orden de los grupos) y después temperatura y acabado
+  // (decisiones.md, 2026-10-29 · Descargas: ordenar por columna).
+  const collectionKey = (group) => group.collectionData?.name || group.family || group.name;
+  const byName = new Intl.Collator('es', { sensitivity: 'base', numeric: true });
+  const groupIndex = new Map(groups.map((group, i) => [group, i]));
+  // Un grupo con varios product_name (Daö Simple, Daö Doble…): juntas las de cada nombre,
+  // en el orden en que aparecen
+  const nameIndex = (group, variant) => group.variants.findIndex((v) => v.name === variant.name);
+  const variants = groups
+    .flatMap((group) => group.variants.map((variant) => ({ group, variant })))
+    .map((item, i) => [item, i])
+    .sort(([a, i], [b, j]) =>
+      byName.compare(collectionKey(a.group), collectionKey(b.group)) ||
+      compareValues(a.variant.values.potencia, b.variant.values.potencia) ||
+      groupIndex.get(a.group) - groupIndex.get(b.group) ||
+      nameIndex(a.group, a.variant) - nameIndex(b.group, b.variant) ||
+      compareVariants(a.variant, b.variant) ||
+      i - j)
+    .map(([item]) => item);
   const varies = (field) => new Set(variants.map(({ variant }) => variant.values[field]).filter(hasValue)).size > 1;
   return {
     // Columnas: las mismas que las de la ficha (TABLE_COLUMNS)

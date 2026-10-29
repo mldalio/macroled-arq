@@ -169,17 +169,36 @@ export function searchVariants(variants, query) {
   return [...exact, ...typo];
 }
 
-// Órdenes del select «Ordenar por»: por SKU (decisiones.md, 2026-10-06 · Descargas).
-export const SORT_ORDERS = Object.freeze([
-  { value: 'sku-asc', label: 'SKU (A–Z)' },
-  { value: 'sku-desc', label: 'SKU (Z–A)' },
-]);
-
 const collator = new Intl.Collator('es', { numeric: true, sensitivity: 'base' });
 
-/** Copia ordenada por SKU (`sku-asc` · `sku-desc`). Otro valor deja el orden como está. */
-export function sortVariants(variants, order) {
-  if (order !== 'sku-asc' && order !== 'sku-desc') return variants;
-  const sign = order === 'sku-desc' ? -1 : 1;
-  return [...variants].sort((a, b) => sign * collator.compare(a.sku, b.sku));
+/**
+ * Compara dos valores de una columna: números de menor a mayor («6 W» antes que
+ * «12 W»), el resto alfabético. Sin valor (vacío o «-»), al final.
+ */
+export function compareValues(a, b) {
+  const emptyA = !hasValue(a) || a === '-';
+  const emptyB = !hasValue(b) || b === '-';
+  if (emptyA || emptyB) return Number(emptyA) - Number(emptyB);
+  return collator.compare(String(a), String(b));
+}
+
+/**
+ * Copia de las filas de variants-table ordenada por una columna (`sku` o una
+ * clave de `values`), ascendente o descendente (`desc`). Las filas sin valor
+ * quedan al final en los dos sentidos; a igual valor, el orden que traían.
+ * Sin columna, el orden que traían (decisiones.md, 2026-10-29 · Descargas: ordenar por columna).
+ */
+export function sortRows(rows, key, desc = false) {
+  if (!key) return rows;
+  const value = (row) => (key === 'sku' ? row.sku : row.values?.[key]);
+  const sign = desc ? -1 : 1;
+  return rows
+    .map((row, i) => [row, i])
+    .sort(([a, i], [b, j]) => {
+      const va = value(a);
+      const vb = value(b);
+      const empty = Number(!hasValue(va) || va === '-') - Number(!hasValue(vb) || vb === '-');
+      return empty || sign * compareValues(va, vb) || i - j;
+    })
+    .map(([row]) => row);
 }

@@ -31,7 +31,9 @@
 //   debajo de Filtros, a la derecha, los chips de lo aplicado y «Limpiar
 //   filtros». Las filas muestran el nombre
 //   sobre el sku. Búsqueda y filtros en la URL (?q=…&tipo_montaje=Pared…, con
-//   history.replaceState); de a 100 filas con «Ver más productos».
+//   history.replaceState); de a 100 filas con «Ver más productos». El SKU y
+//   cada columna de datos ordenan al hacer clic en su encabezado (de menor a
+//   mayor y, con otro clic, de mayor a menor), también en la URL (?orden=-potencia).
 //
 // En los dos
 // - Filtros: el botón abre filter-panel (panel lateral derecho en Desktop,
@@ -62,7 +64,8 @@
 
 import { ArqElement } from '../../base/arq-element.js';
 import '../text-link/text-link.js';
-import { filterOptions, filterVariants, searchVariants } from '../../data/variants.js';
+import { filterOptions, filterVariants, searchVariants, sortRows } from '../../data/variants.js';
+import { icon } from '../../base/icons.js';
 import '../button/button.js';
 import '../icon-button/icon-button.js';
 import '../sku/sku.js';
@@ -105,7 +108,12 @@ const TEXT = {
   shown: (n, total) => `Se muestran ${NUMBER.format(n)} de ${NUMBER.format(total)} productos`,
   count: (n) => (n === 1 ? '1 producto' : `${NUMBER.format(n)} productos`),
   countVariants: (n) => (n === 1 ? '1 variante' : `${NUMBER.format(n)} variantes`),
+  sorted: (column, desc) => `Ordenado por ${column}, de ${desc ? 'mayor a menor' : 'menor a mayor'}`,
 };
+
+// Orden por columna en la URL (solo catalog): ?orden=potencia (de menor a
+// mayor) u ?orden=-potencia (de mayor a menor).
+const SORT_PARAM = 'orden';
 
 // Filas que se muestran de entrada y por cada «Ver más» (solo catalog): con todo
 // el catálogo (cientos de SKU) rearmar todas las filas en cada tecla tardaba más
@@ -180,6 +188,7 @@ class ArqVariantsTable extends ArqElement {
   #data = { columns: [], filters: [], rows: [] };
   #values = {}; // filtro → [valores]
   #query = '';
+  #sort = { key: '', desc: false }; // columna por la que se ordena (solo catalog); sin key, el orden base
   #revealed = false; // ya se hizo el fundido de la primera carga
   #shown = PAGE; // filas a la vista (Ver más suma PAGE)
   #announceTimer = null;
@@ -216,6 +225,10 @@ class ArqVariantsTable extends ArqElement {
       if (list.length) values[key] = list;
     }
     this.#values = values;
+    const order = params.get(SORT_PARAM) ?? '';
+    const key = order.replace(/^-/, '');
+    const known = key === 'sku' || this.#data.columns.some((c) => c.key === key);
+    this.#sort = known ? { key, desc: order.startsWith('-') } : { key: '', desc: false };
     const search = this.shadowRoot?.querySelector('.search');
     if (search) search.value = this.#query;
   }
@@ -227,6 +240,8 @@ class ArqVariantsTable extends ArqElement {
     for (const { key } of this.#data.filters) url.searchParams.delete(key);
     if (this.#query.trim()) url.searchParams.set('q', this.#query.trim());
     for (const { key } of this.#data.filters) for (const value of this.#values[key] ?? []) url.searchParams.append(key, value);
+    url.searchParams.delete(SORT_PARAM);
+    if (this.#sort.key) url.searchParams.set(SORT_PARAM, `${this.#sort.desc ? '-' : ''}${this.#sort.key}`);
     if (url.href !== location.href) history.replaceState(history.state, '', url);
   }
 
@@ -307,6 +322,9 @@ class ArqVariantsTable extends ArqElement {
       this.#changed();
     });
     root.addEventListener('click', (event) => {
+      const sort = event.target.closest('[data-sort]');
+      // La copia fija del encabezado también ordena (con el mouse: no recibe foco)
+      if (sort) return this.#toggleSort(sort.dataset.sort, !sort.closest('.head'));
       const button = event.target.closest('[data-sku]');
       if (!button) return;
       const sku = button.dataset.sku;
@@ -383,13 +401,39 @@ class ArqVariantsTable extends ArqElement {
     this.#refresh();
   }
 
-  // Encabezado: imagen · SKU · columnas · descarga
+  // Encabezado: imagen · SKU · columnas · descarga. En catalog, el SKU y cada
+  // columna de datos son un botón que ordena (chevron abajo: de menor a mayor;
+  // arriba: de mayor a menor); la columna ordenada lleva aria-sort.
   #renderHead(columns) {
+    const sortable = this.#catalog;
+    const { key: sorted, desc } = this.#sort;
+    const label = (key, text) => {
+      if (!sortable) return esc(text);
+      const active = key === sorted;
+      return `<button type="button" class="sort${active ? ' sorted' : ''}" data-sort="${esc(key)}">${esc(text)}${icon(active && desc ? 'chevron-up' : 'chevron-down')}</button>`;
+    };
+    const ariaSort = (key) => (sortable && key === sorted ? ` aria-sort="${desc ? 'descending' : 'ascending'}"` : '');
     this.shadowRoot.querySelector('.table thead').innerHTML =
       `<tr><th scope="col" class="start"><span class="visually-hidden">${TEXT.image}</span></th>` +
-      `<th scope="col" class="sku-col role-body-compact-regular">${TEXT.sku}</th>` +
-      columns.map((c) => `<th scope="col" class="role-body-compact-regular${c.wide ? ' wide' : ' data'}"><span class="cell">${esc(c.label)}</span></th>`).join('') +
+      `<th scope="col" class="sku-col role-body-compact-regular"${ariaSort('sku')}>${label('sku', TEXT.sku)}</th>` +
+      columns.map((c) => `<th scope="col" class="role-body-compact-regular${c.wide ? ' wide' : ' data'}"${ariaSort(c.key)}><span class="cell">${label(c.key, c.label)}</span></th>`).join('') +
       `<th scope="col" class="end role-body-compact-regular">${TEXT.downloads}</th></tr>`;
+  }
+
+  // Clic en un encabezado (catalog): una columna nueva ordena de menor a mayor;
+  // la misma otra vez, alterna entre de menor a mayor y de mayor a menor. Sin
+  // columna elegida, el orden base (por producto y, dentro de cada uno, potencia,
+  // temperatura y acabado: src/data/catalog.js). El foco vuelve al mismo
+  // encabezado, que se rearmó.
+  #toggleSort(key, refocus) {
+    const { key: sorted, desc } = this.#sort;
+    this.#sort = { key, desc: key === sorted && !desc };
+    this.#shown = PAGE;
+    this.#refresh();
+    this.#syncUrl();
+    const column = key === 'sku' ? TEXT.sku : this.#data.columns.find((c) => c.key === key)?.label ?? key;
+    this.#announce(TEXT.sorted(column, this.#sort.desc));
+    if (refocus) this.shadowRoot.querySelector(`.table thead [data-sort="${CSS.escape(key)}"]`)?.focus();
   }
 
   // Columnas con algún dato en las filas que cumplen la búsqueda y los filtros
@@ -446,7 +490,7 @@ class ArqVariantsTable extends ArqElement {
     const root = this.shadowRoot;
     const catalog = this.#catalog;
     const { filters } = this.#data;
-    const visible = this.#visible();
+    const visible = catalog ? sortRows(this.#visible(), this.#sort.key, this.#sort.desc) : this.#visible();
     const page = catalog ? visible.slice(0, this.#shown) : visible;
     const active = this.#filterCount();
     const columns = this.#shownColumns(visible);
@@ -585,6 +629,8 @@ class ArqVariantsTable extends ArqElement {
     const widths = real.map((th) => th.getBoundingClientRect().width);
     if (!widths.some(Boolean)) return;
     head.querySelector('thead').innerHTML = root.querySelector('.table thead').innerHTML;
+    // La copia es aria-hidden: sus botones de orden no entran en el tabulado
+    for (const button of head.querySelectorAll('button')) button.tabIndex = -1;
     head.querySelector('colgroup').innerHTML = widths.map((width) => `<col style="width:${width}px">`).join('');
     head.style.width = `${widths.reduce((sum, width) => sum + width, 0)}px`;
     root.querySelector('.head').scrollLeft = root.querySelector('.scroll').scrollLeft;
