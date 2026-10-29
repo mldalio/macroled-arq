@@ -70,7 +70,7 @@ Tablet (768–1023 px) usa la columna Desktop salvo en los bloques marcados: ah�
 | Hero · configurador | galería y configurador 60/40 (`3fr` · `2fr`, el configurador con `layout/measure` de mínimo), a `space/gap/5xl` | apilado a `space/gap/2xl` (también Tablet) |
 | Columna del configurador | info (`space/gap/xl`: sku y descripción a `space/gap/lg`, opciones a `space/gap/xl-2xl`) y acciones abajo (`space/gap/md`) | acciones a todo el ancho, una debajo de la otra |
 | Descargas + acordeón | columna de `layout/measure` + acordeón, a `space/gap/3xl` | apilado a `space/gap/2xl`, acordeón a todo el ancho (también Tablet) |
-| Galería de ambiente | fila con scroll hasta el borde derecho, gap `space/gap/md`; sin scroll-snap y `overscroll-behavior-x: contain` para no pelear con el scroll vertical; la última foto deja el margen de página a la derecha | gap `space/gap/sm-md` |
+| Galería de ambiente | fila con scroll hasta el borde derecho (desde 1920 px, el borde de esos 1920), gap `space/gap/md`; sin scroll-snap y `overscroll-behavior-x: contain` para no pelear con el scroll vertical; la última foto deja el margen de página a la derecha | gap `space/gap/sm-md` |
 | Descripción | foto a todo el ancho; título a la izquierda y texto a la derecha, con `space/section/lg` alrededor; abajo `space/section/sm` | título arriba y texto abajo, con el margen de página |
 | Glosario | título a `space/gap/md` de la tabla | ídem |
 | Inspiración | foto ancha o video y una vertical, con la proporción de Figma, y el texto a la derecha | apilado a `space/gap/xl` (también Tablet) |
