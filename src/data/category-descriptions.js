@@ -30,14 +30,14 @@ const COLLECTIONS = {
   fuji: 'Spot de aplicar sobre el cielorraso, de presencia discreta, para acentuar un objeto o una zona del ambiente.',
   ugoki: 'Spot de aplicar sobre el cielorraso, de presencia discreta, para acentuar un objeto o una zona del ambiente.',
   sen: 'Downlight de embutir que ilumina el ambiente con una luz cálida y pareja, sin llamar la atención.',
-  afo: 'Luminaria de piso con un corte de luz lateral que dibuja una línea luminosa sobre el suelo y las paredes.',
+  afo: 'Una línea de luz que dibuja el espacio. Diseño minimalista para destacar muros, pasillos y detalles arquitectónicos.',
   yoru: 'Bolardo que marca un punto de luz en un camino o sendero, con una presencia vertical y precisa.',
   nobu: 'Bolardo con un hueco transversal que deja pasar la luz y la dibuja sobre el recorrido del jardín.',
   nami: 'Luminaria de embutir regulable, con luz cálida y un haz concentrado para destacar lo que importa.',
   koen: 'Luminaria de pared de gran escala, pensada para la fachada, junto a una doble puerta de entrada o un ventanal.',
   sento: 'Bolardo decorativo para rodear de plantas, que suma una luz cálida y suave al jardín.',
   hoshi: 'Luminaria de embutir de efecto de punto de luz: no ilumina grandes superficies, acompaña como un detalle.',
-  douli: 'Una luz que cuelga sobre la mesa y reúne: crea un círculo cálido de intimidad para compartir entre dos o cuatro personas.',
+  douli: 'Una luz que cuelga sobre la mesa y reúne: crea un círculo cálido de intimidad en comedores, islas de cocina, restaurantes y salas de reunión.',
 };
 
 export const subcategoryDescription = (group, label) => SUBCATEGORIES[`${group}/${key(label)}`] ?? '';

@@ -35,6 +35,7 @@ gallery.images = [
 - **Desktop:** las miniaturas van sobre la imagen, abajo a la izquierda, a `space/padding/lg` del borde. **Mobile:** debajo, separadas por `space/gap/sm`.
 - **Si no entran,** la fila se desliza (scroll-snap, sin barra visible; decisión 2026-10-02 · Galerías). Con Tab, la miniatura con foco entra sola en la vista.
 - **Iluminar:** dentro de un bloque con `data-arq-theme="dark"` (en la ficha, la sección hero), la imagen grande y las miniaturas usan `srcOn`; si falta, la apagada. Lo detecta `src/base/theme.js` cuando cambia el atributo; la página no tiene que avisar.
+- **Modo de flechas y miniaturas:** `setOverlayTone(name, tone)` (`name`: `prev`, `next` o `thumbs`; `tone`: `'dark'`, `'light'` o `null`) pone `data-arq-theme` en cada una. La ficha lo elige según el brillo de la foto debajo, como el del breadcrumb y el toggle Iluminar; `frame` (el recuadro de la foto) y `overlays` (los tres elementos) son para medirlo.
 - **Sin imagen:** queda el fondo `color/surface/subtle`.
 
 ## Tokens

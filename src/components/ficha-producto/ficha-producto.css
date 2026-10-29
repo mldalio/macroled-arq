@@ -268,6 +268,23 @@
   gap: var(--arq-space-gap-xl);
 }
 
+/* Mobile: el dibujo a space/gap/2xl (40) de las filas; se toca para verlo
+   en grande (visor de fotos, #cotaImage) */
+@media (max-width: 767px) {
+  .with-cota {
+    gap: var(--arq-space-gap-2xl);
+  }
+
+  .cota.is-expandable {
+    cursor: zoom-in;
+  }
+
+  .cota.is-expandable:focus-visible {
+    outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+    outline-offset: 2px;
+  }
+}
+
 @media (min-width: 1024px) {
   .with-cota {
     grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -293,10 +293,12 @@ class ArqCatalogListing extends ArqElement {
   }
 
   // La colección Daö no tiene Iluminar: sin toggle, y si se llegó iluminado
-  // (otra categoría) la página vuelve a Light.
+  // (otra categoría) la página vuelve a Light. Llega como ?collection= o como
+  // ?family= (los links del menú Colecciones y del breadcrumb de la ficha).
   #syncIlluminate() {
-    const collection = (this.#category.collection ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-    const off = collection === NO_ILLUMINATION_COLLECTION;
+    const plain = (text) => (text ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').trim().toLowerCase();
+    const { collection, family } = this.#category;
+    const off = [collection, family].some((name) => plain(name) === NO_ILLUMINATION_COLLECTION);
     this.shadowRoot.querySelector('.toolbar').showIluminar = !off;
     const html = document.documentElement;
     if (off && html.getAttribute('data-arq-theme') === 'dark') {
@@ -578,7 +580,7 @@ class ArqCatalogListing extends ArqElement {
       const description = document.querySelector('arq-page-header > [slot="description"]');
       if (description) {
         this.#htmlDescription ??= description.textContent;
-        description.textContent = collectionDescription(label) || this.#htmlDescription;
+        this.#setDescription(description, collectionDescription(label) || this.#htmlDescription);
       }
       this.#syncBreadcrumb([
         { label: 'Productos', href: location.pathname },
@@ -604,7 +606,7 @@ class ArqCatalogListing extends ArqElement {
     if (description) {
       this.#htmlDescription ??= description.textContent;
       const own = sub ? (group.dataset.arqNav === 'colecciones' ? collectionDescription(label) : subcategoryDescription(group.dataset.arqNav, label)) : '';
-      description.textContent = own || (label && group.dataset.arqDescription) || this.#htmlDescription;
+      this.#setDescription(description, own || (label && group.dataset.arqDescription) || this.#htmlDescription);
     }
     if (!label && this.#query) return this.#titleFromQuery();
     if (title) {
@@ -624,25 +626,71 @@ class ArqCatalogListing extends ArqElement {
     else this.#syncBreadcrumb([products, { label }]);
   }
 
-  // Cambia el texto del <h1> y, si ya había uno puesto y cambió, lo anima como
-  // la entrada de las cards (reveal.css) pero más sutil, porque el título es
-  // grande: sube space/gap/md y aparece, en motion/duration/slow con
-  // easing/standard. Va con la Web Animations API
-  // porque el <h1> está en el DOM de la página (slot) y no se estila desde acá.
-  // Sin movimiento con prefers-reduced-motion.
+  // Título y bajada: si ya había uno puesto y cambia el texto, el viejo se
+  // desvanece (motion/duration/fade) y entra el nuevo. El título, con la misma
+  // entrada que las cards (reveal.css: sube space/gap/2xl y aparece con
+  // easing/standard), algo más rápida: motion/duration/slow × 1,5 (con × 2,
+  // como las cards, se sentía lenta); la bajada solo funde, en
+  // motion/duration/slow (con × 2 se sentía lento). La bajada, motion/duration/fast después
+  // del título. Las subcategorías que comparten la bajada del grupo no la
+  // animan. Va con la Web Animations API porque los dos están en el DOM de la
+  // página (slot). Sin animación con prefers-reduced-motion (2026-10-29).
   #titleShown = false;
   #setTitle(title, text) {
-    const changed = title.textContent !== text;
-    title.textContent = text;
-    const animate = this.#titleShown && changed && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const animate = this.#titleShown;
     this.#titleShown = true;
-    if (!animate) return;
+    this.#replaceText(title, text, animate, { rise: true });
+  }
+
+  #descriptionShown = false;
+  #setDescription(description, text) {
+    const animate = this.#descriptionShown;
+    this.#descriptionShown = true;
+    this.#replaceText(description, text, animate, { delay: 'motion-duration-fast' });
+  }
+
+  #pendingText = new WeakMap(); // texto que espera a que termine de irse el anterior
+
+  #replaceText(element, text, animate, { rise = false, delay = null } = {}) {
+    const current = this.#pendingText.get(element) ?? element.textContent;
+    if (current === text) return;
+    for (const animation of element.getAnimations()) animation.cancel();
+    if (!animate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      this.#pendingText.delete(element);
+      element.textContent = text;
+      return;
+    }
     const style = getComputedStyle(document.documentElement);
     const token = (name) => style.getPropertyValue(`--arq-${name}`).trim();
-    title.animate(
-      [{ opacity: 0, transform: `translateY(${token('space-gap-md')})` }, { opacity: 1, transform: 'none' }],
-      { duration: parseFloat(token('motion-duration-slow')), easing: token('motion-easing-standard') },
-    );
+    this.#pendingText.set(element, text);
+    const leave = element.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration: parseFloat(token('motion-duration-fade')),
+      easing: token('motion-easing-standard'),
+      delay: delay ? parseFloat(token(delay)) : 0,
+      fill: 'forwards',
+    });
+    leave.finished.then(() => {
+      if (this.#pendingText.get(element) !== text) return; // llegó otro texto mientras se iba
+      this.#pendingText.delete(element);
+      element.textContent = text;
+      leave.cancel();
+      if (rise) {
+        element.animate([{ opacity: 0, transform: `translateY(${token('space-gap-2xl')})` }, { opacity: 1, transform: 'none' }], {
+          duration: parseFloat(token('motion-duration-slow')) * 1.5,
+          easing: token('motion-easing-standard'),
+          fill: 'backwards',
+        });
+        return;
+      }
+      // Curva pareja: con easing/standard el texto llegaba casi entero en el
+      // primer tercio y se sentía rápido. TODO (token): no hay una curva de
+      // fundido general; se usa la del fundido de fotos de Iluminar.
+      element.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: parseFloat(token('motion-duration-slow')),
+        easing: token('motion-easing-illumination-image'),
+        fill: 'backwards',
+      });
+    }, () => {}); // cancelada: otro cambio ya tomó su lugar
   }
 
   // Reemplaza los niveles del breadcrumb del page-header que siguen al

@@ -31,6 +31,7 @@
 
 import { ArqElement } from '../../base/arq-element.js';
 import { SingleSelect } from '../../base/single-select.js';
+import { normalize } from '../../data/text.js';
 import '../tab/tab.js';
 import '../mega-link/mega-link.js';
 import '../button/button.js';
@@ -46,9 +47,10 @@ const COLLECTION_COLUMNS = 4;
 // Link cuya foto se ve al abrir cada pestaña; si no está, el primero.
 // Por espacio: Interior > Embutir; Colecciones: Koen; Lámparas y artefactos: el
 // primero que sea una lámpara (pedido de Lau, 2026-10-28; antes Colgante, 2026-10-21).
+// Sin tildes ni mayúsculas: en la base la familia es «Köen».
 const OPENING = {
-  'por-espacio': (l) => l.dataset.eyebrow === 'Interior' && l.dataset.title === 'Embutir',
-  colecciones: (l) => l.dataset.title === 'Koen',
+  'por-espacio': (l) => normalize(l.dataset.eyebrow) === 'interior' && normalize(l.dataset.title) === 'embutir',
+  colecciones: (l) => normalize(l.dataset.title) === 'koen',
   'lamparas-y-artefactos': (l) => /l[aá]mpara/i.test(l.dataset.title),
 };
 let uid = 0;

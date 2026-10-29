@@ -33,7 +33,10 @@
 //   debajo de cada uno y se usa la versión con más contraste, con Iluminar
 //   prendido o apagado. Foto clara: data-arq-theme="light" (el toggle negro de
 //   siempre). Foto oscura: toggle Theme=Inverse (blanco apagado) y breadcrumb
-//   en Dark. Se vuelve a medir al cambiar la foto o el tamaño. La foto se lee
+//   en Dark. Lo mismo con las flechas y las miniaturas de la galería
+//   (setOverlayTone). Se mide sobre el recuadro de la galería, así con las
+//   flechas cambian apenas arranca el deslizamiento. Se vuelve a medir al
+//   cambiar la foto o el tamaño. La foto se lee
 //   de una copia chica con CORS (config.images.sampleBase); si no se puede, el
 //   toggle sigue el modo del hero.
 // - STORY (Markdown limitado): el componente arma con el texto, en el DOM de
@@ -118,7 +121,23 @@ const TEXT = {
 // breadcrumb a partir del cual la versión oscura (neutral/900) contrasta más
 // que la clara (neutral/200): (L + 0,05)² = (0,0052 + 0,05) × (0,745 + 0,05) → L ≈ 0,16.
 const BACKDROP_LIGHT = 0.16;
-const BACKDROP_SAMPLE = 16; // lado de la muestra reducida, en píxeles de canvas
+const BACKDROP_SAMPLE = 16;
+// La cota se amplía al tocarla solo en Mobile
+const COTA_EXPANDS = matchMedia('(max-width: 767px)');
+// Botón (rol, foco y nombre) solo mientras se puede ampliar
+const cotaExpandable = (img) => {
+  const on = COTA_EXPANDS.matches;
+  img.classList.toggle('is-expandable', on);
+  if (on) {
+    img.tabIndex = 0;
+    img.setAttribute('role', 'button');
+    img.setAttribute('aria-label', `Ampliar ${img.alt}`);
+  } else {
+    img.removeAttribute('tabindex');
+    img.removeAttribute('role');
+    img.removeAttribute('aria-label');
+  }
+}; // lado de la muestra reducida, en píxeles de canvas
 
 // Productos con las fotos de estudio recortadas en zoom por diseño (no llevan
 // aire en la galería): los de Exterior, salvo los de ZOOM_EXCEPTIONS, que sí
@@ -259,14 +278,17 @@ class ArqFichaProducto extends ArqElement {
   #collectionRail = null;
   #collectionResize = null;
   #viewer = null;
+  #syncCotas = () => this.shadowRoot.querySelectorAll('.cota').forEach(cotaExpandable);
 
   connectedCallback() {
     super.connectedCallback();
+    COTA_EXPANDS.addEventListener('change', this.#syncCotas);
     this.#ambientRail?.connect();
     this.#collectionRail?.connect();
   }
 
   disconnectedCallback() {
+    COTA_EXPANDS.removeEventListener('change', this.#syncCotas);
     this.#ambientRail?.disconnect();
     this.#collectionRail?.disconnect();
     this.#viewer?.close();
@@ -507,7 +529,12 @@ class ArqFichaProducto extends ArqElement {
         return null; // la foto no se puede leer (sin CORS): queda el modo del hero
       }
     };
-    const [toggleLuminance, breadcrumbLuminance] = await Promise.all([measure(toggle), measure(breadcrumb)]);
+    const overlays = Object.entries(gallery.overlays);
+    const [toggleLuminance, breadcrumbLuminance, ...overlayLuminances] = await Promise.all([
+      measure(toggle),
+      measure(breadcrumb),
+      ...overlays.map(([, element]) => measure(element)),
+    ]);
     if (src && (img.src !== src || gallery.currentImage !== img)) return; // cambió la foto mientras se medía
     // La otra versión (apagada o encendida) de esta foto, lista para Iluminar
     const shown = root.querySelector('.gallery').images.find((image) => [image.src, image.srcOn].some((url) => url && new URL(sizedImage(url, GALLERY_WIDTH), location.href).href === src));
@@ -518,18 +545,33 @@ class ArqFichaProducto extends ArqElement {
     else toggle.setAttribute('data-arq-theme', 'light');
     if (breadcrumbLuminance === null) breadcrumb.removeAttribute('data-arq-theme');
     else breadcrumb.setAttribute('data-arq-theme', dark(breadcrumbLuminance) ? 'dark' : 'light');
+    // Flechas y miniaturas (la elegida lleva el borde color/border/strong)
+    overlays.forEach(([name], i) => {
+      const luminance = overlayLuminances[i];
+      gallery.setOverlayTone(name, luminance === null ? null : dark(luminance) ? 'dark' : 'light');
+    });
   }
 
-  // Luminancia media de la parte de la foto que tapa el toggle, con el recorte
-  // de object-fit: cover. Se lee una copia chica de la foto pedida con CORS
-  // (sampleSrc): la del <img> no se puede leer.
-  async #backdropLuminance(src, img, toggle) {
+  // Luminancia media de la parte de la foto que tapa el elemento, con el
+  // recorte de object-fit (cover, o contain con aire). Se mide sobre el
+  // recuadro de la galería y no sobre el <img>: con las flechas, la foto nueva
+  // todavía se está deslizando cuando se mide. null si el elemento no está
+  // sobre la foto (miniaturas en Mobile, flechas ocultas). Se lee una copia
+  // chica de la foto pedida con CORS (sampleSrc): la del <img> no se puede leer.
+  async #backdropLuminance(src, img, element) {
+    const frame = this.shadowRoot.querySelector('.gallery').frame.getBoundingClientRect();
+    const area = element.getBoundingClientRect();
+    if (!frame.width || !frame.height || !area.width || !area.height) return null;
+    if (area.right <= frame.left || area.left >= frame.right || area.bottom <= frame.top || area.top >= frame.bottom) return null;
     const image = await this.#backdropImage(src);
     if (!image) return null;
-    const box = img.getBoundingClientRect();
-    const area = toggle.getBoundingClientRect();
-    if (!box.width || !box.height || !area.width || !area.height) return null;
-    const scale = Math.max(box.width / image.naturalWidth, box.height / image.naturalHeight);
+    const style = getComputedStyle(img);
+    const pad = (side) => parseFloat(style.getPropertyValue(`padding-${side}`)) || 0;
+    const air = img.dataset.fit === 'air';
+    const box = air
+      ? { left: frame.left + pad('left'), top: frame.top + pad('top'), width: frame.width - pad('left') - pad('right'), height: frame.height - pad('top') - pad('bottom') }
+      : frame;
+    const scale = (air ? Math.min : Math.max)(box.width / image.naturalWidth, box.height / image.naturalHeight);
     const left = box.left + (box.width - image.naturalWidth * scale) / 2;
     const top = box.top + (box.height - image.naturalHeight * scale) / 2;
     const canvas = document.createElement('canvas');
@@ -587,7 +629,7 @@ class ArqFichaProducto extends ArqElement {
 
   #followPhoto() {
     const root = this.shadowRoot;
-    const elements = [root.querySelector('.breadcrumb'), root.querySelector('.iluminar')];
+    const elements = [root.querySelector('.breadcrumb'), root.querySelector('.iluminar'), ...Object.values(root.querySelector('.gallery').overlays)];
     const vars = {
       '--arq-theme-text-delay': '0s',
       '--arq-theme-text-duration': 'var(--arq-illumination-image-duration)',
@@ -742,10 +784,23 @@ class ArqFichaProducto extends ArqElement {
     return list;
   }
 
-  // Dibujo con cotas (cotas_img). Si no carga, no queda un hueco.
+  // Dibujo con cotas (cotas_img). Si no carga, no queda un hueco. En Mobile se
+  // toca para verlo en grande, en el visor de fotos (2026-10-29).
   #cotaImage(src, name) {
     const img = image(src, `Cotas de ${name}`, 'cota');
     img.addEventListener('error', () => (img.hidden = true));
+    img.draggable = false;
+    cotaExpandable(img);
+    const open = () => {
+      if (COTA_EXPANDS.matches) this.#photoViewer().open(0, img, [{ src: img.currentSrc || img.src, alt: img.alt, original: true }]);
+    };
+    img.addEventListener('click', open);
+    img.addEventListener('keydown', (event) => {
+      if ((event.key === 'Enter' || event.key === ' ') && COTA_EXPANDS.matches) {
+        event.preventDefault();
+        open();
+      }
+    });
     // Los dibujos tienen medidas y textos a escalas distintas: con el mismo alto o el mismo ancho,
     // unos se leen enormes y otros diminutos. Todos con la misma superficie (el cuadrado de
     // layout/pdf-cover-image): el ancho sale de su proporción, y el tamaño de los textos queda parejo.
@@ -920,6 +975,13 @@ class ArqFichaProducto extends ArqElement {
     detail.pending.then(done, done);
   }
 
+  // Un solo visor por ficha (un solo <dialog>): lo arma la galería de ambiente
+  // o, si está apagada, la primera vez que se amplía la cota.
+  #photoViewer() {
+    this.#viewer ??= new PhotoViewer(this.shadowRoot, () => []);
+    return this.#viewer;
+  }
+
   // ── Galería de ambiente ───────────────────────────────────────────
   #renderAmbient() {
     const { group, images } = this.#product;
@@ -944,7 +1006,7 @@ class ArqFichaProducto extends ArqElement {
     const root = this.shadowRoot;
     const scroller = root.querySelector('.ambient');
     const photos = () => [...scroller.querySelectorAll('img')].map(img => ({ src: img.currentSrc || img.src, alt: img.alt }));
-    this.#viewer = new PhotoViewer(root, photos, open => { this.#ambientRail.blocked = open; });
+    this.#viewer = new PhotoViewer(root, photos, open => { if (this.#ambientRail) this.#ambientRail.blocked = open; });
     this.#ambientRail = new HorizontalRail(this, scroller, {
       autoplay: true,
       open: event => {
