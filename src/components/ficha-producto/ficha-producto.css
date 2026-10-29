@@ -20,7 +20,8 @@
    izquierdo y el configurador deja el margen de página a la derecha. Sin
    padding inferior: con Iluminar quedaría una franja oscura bajo la foto. */
 .hero {
-  padding: 0;
+  /* Desde 1920 la galería llega al borde de esos 1920 (--page-extra, ArqElement). */
+  padding: 0 0 0 var(--page-extra);
   background: var(--arq-color-surface-default);
   color: var(--arq-color-text-primary);
   transition-property: background-color, color;
@@ -217,12 +218,12 @@
 }
 
 /* ── Especificaciones ───────────────────────────────────────────── */
-/* Ficha v2 (2118:33571): el acordeón ocupa todo el ancho, con space/section/lg
-   a la izquierda y el margen de página a la derecha; la línea de arriba la
+/* Ficha v2 (2118:33571): el acordeón ocupa todo el ancho del contenido, con el
+   margen de página a los dos lados (hasta layout/max-width); la línea de arriba la
    pone el acordeón. Descargas ya no tiene bloque propio (están en el glosario
    y en "Ver descargas"). */
 .details {
-  padding: var(--arq-space-section-md) var(--page-gutter) var(--arq-space-gap-4xl) var(--arq-space-section-lg);
+  padding: var(--arq-space-section-md) var(--page-gutter) var(--arq-space-gap-4xl);
 }
 
 /* Pestañas de la información técnica: las del mega-menu (separación gap/xl,
@@ -330,7 +331,9 @@
   --ambient-gap: var(--arq-space-gap-md);
   display: flex;
   gap: var(--ambient-gap);
-  padding-left: var(--page-gutter);
+  /* Desde 1920 las fotos se desplazan dentro de esos 1920 (--page-extra). */
+  margin-inline: var(--page-extra);
+  padding-left: var(--arq-layout-gutter);
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
@@ -359,7 +362,7 @@
 .ambient::after {
   content: '';
   flex: none;
-  width: calc(var(--page-gutter) - var(--ambient-gap));
+  width: calc(var(--arq-layout-gutter) - var(--ambient-gap));
 }
 
 .ambient-controls { display: none; }
@@ -416,7 +419,8 @@
   align-items: start;
   box-sizing: border-box;
   min-height: 100svh;
-  padding: var(--arq-space-section-lg);
+  /* La foto sigue a todo el ancho; desde 1920 el texto queda como a 1920. */
+  padding: var(--arq-space-section-lg) calc(var(--arq-space-section-lg) + var(--page-extra));
   background: var(--arq-color-surface-default);
   color: var(--arq-color-text-primary);
 }
@@ -592,7 +596,7 @@
   display: flex;
   align-items: flex-start;
   gap: var(--arq-space-gap-lg);
-  padding: var(--arq-space-section-md) var(--arq-space-section-lg) var(--arq-space-section-xl);
+  padding: var(--arq-space-section-md) calc(var(--arq-space-section-lg) + var(--page-extra)) var(--arq-space-section-xl);
 }
 
 .inspiration-copy {
@@ -650,8 +654,9 @@
 .collection {
   display: flex;
   align-items: flex-start;
-  --collection-inline: var(--page-gutter);
-  padding: var(--arq-space-padding-5xl) 0 var(--arq-space-padding-5xl) var(--collection-inline);
+  --collection-inline: var(--arq-layout-gutter);
+  /* Desde 1920 el carrusel queda dentro de esos 1920 (--page-extra); la banda sigue al borde. */
+  padding: var(--arq-space-padding-5xl) var(--page-extra) var(--arq-space-padding-5xl) calc(var(--collection-inline) + var(--page-extra));
   background: var(--arq-neutral-700);
   color: var(--arq-color-text-inverse);
 }

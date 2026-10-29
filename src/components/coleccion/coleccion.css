@@ -34,7 +34,8 @@
    más cercano. */
 .gallery {
   display: flex;
-  padding-bottom: var(--arq-space-section-xl);
+  /* Desde 1920, a sangre hasta el borde de esos 1920 (--page-extra, ArqElement). */
+  padding: 0 var(--page-extra) var(--arq-space-section-xl);
 }
 
 .gallery img {
@@ -53,7 +54,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   align-items: center;
-  padding: 0 0 var(--arq-space-section-xl) var(--page-gutter);
+  padding: 0 var(--page-extra) var(--arq-space-section-xl) var(--page-gutter);
 }
 
 .feature-text {
@@ -100,10 +101,12 @@
 .track {
   display: flex;
   gap: var(--arq-space-gap-md);
-  padding-left: var(--page-gutter);
+  /* Desde 1920 el carrusel se desplaza dentro de esos 1920 (--page-extra). */
+  margin-inline: var(--page-extra);
+  padding-left: var(--arq-layout-gutter);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  scroll-padding-inline-start: var(--page-gutter);
+  scroll-padding-inline-start: var(--arq-layout-gutter);
   scrollbar-width: none;
 }
 

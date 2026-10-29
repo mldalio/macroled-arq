@@ -20,8 +20,9 @@
   /* Alto del Activo (500). TODO (diseño): no hay token; sale de
      layout/measure × ratio/portrait-soft (4:5). */
   height: calc(var(--arq-layout-measure) * 5 / 4);
-  margin-inline: calc(var(--section-inline, var(--arq-space-padding-4xl)) * -1);
-  width: calc(100% + var(--section-inline, var(--arq-space-padding-4xl)) * 2);
+  /* A todo el ancho también desde 1920: sangra además --page-extra (ArqElement). */
+  margin-inline: calc((var(--section-inline, var(--arq-space-padding-4xl)) + var(--page-extra)) * -1);
+  width: calc(100% + (var(--section-inline, var(--arq-space-padding-4xl)) + var(--page-extra)) * 2);
   cursor: grab;
   user-select: none;
   touch-action: pan-y;
