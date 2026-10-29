@@ -136,11 +136,13 @@
 
 /* ── Background=Outline (acompaña a un button Outline: descarga de cada fila
    de variants-table). Borde border/default en color/border/strong, sin fondo.
-   El borde no suma al tamaño (24 / 48, como el set): se descuenta del padding. */
+   El borde no suma al tamaño (24 / 48, como el set): se descuenta del padding.
+   --arq-icon-button-border (opcional) baja el borde donde compite con otra
+   selección (− / + del configurador de Daö: color/border/default). */
 
 :host([background='outline']) .control {
   padding: calc(var(--arq-space-padding-xs) - var(--arq-border-default));
-  border: var(--arq-border-default) solid var(--arq-color-border-strong);
+  border: var(--arq-border-default) solid var(--arq-icon-button-border, var(--arq-color-border-strong));
 }
 
 /* Size=Large (descarga de cada fila del glosario y de Descargas): el set

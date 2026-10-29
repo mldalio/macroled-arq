@@ -15,6 +15,11 @@
 //
 //   <arq-option-tile value="dim24">Dim to warm 24°<span slot="meta">1800–2700K</span></arq-option-tile>
 //
+// Con una foto (slot media, solo Type=Card): la foto a la izquierda, en un
+// cuadrado de layout/search-thumb sobre color/surface/subtle; a su derecha,
+// título y subtítulo.
+// La usa el frente de PAR11 (se elige por cómo se ve, no por un swatch).
+//
 // Type=Value (solo la pone option-group): cuando el grupo tiene una sola
 // opción no hay nada que elegir, así que se muestra como dato: sin línea, sin
 // role ni foco, sin cursor de click. Con más opciones vuelve a Type=Option.
@@ -34,6 +39,7 @@ class ArqOptionTile extends ArqElement {
   };
   static template =
     `<span class="tile">` +
+    `<span class="media" hidden><slot name="media"></slot></span>` +
     `<span class="title role-body-regular"><slot name="swatch"></slot><slot></slot></span>` +
     `<span class="meta role-body-compact" hidden><slot name="meta"></slot></span>` +
     `</span>`;
@@ -45,6 +51,10 @@ class ArqOptionTile extends ArqElement {
     const sync = () => (slot.parentElement.hidden = !slot.assignedNodes().some((node) => node.nodeType === 1 || node.textContent.trim()));
     slot.addEventListener('slotchange', sync);
     sync();
+    const media = this.shadowRoot.querySelector('slot[name="media"]');
+    const syncMedia = () => (media.parentElement.hidden = !media.assignedElements().length);
+    media.addEventListener('slotchange', syncMedia);
+    syncMedia();
   }
 }
 

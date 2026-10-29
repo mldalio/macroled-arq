@@ -10,8 +10,11 @@
 .section {
   display: flex;
   flex-direction: column;
-  gap: var(--arq-space-gap-xl);
-  padding: var(--arq-space-section-sm) var(--page-gutter) var(--arq-space-section-xl);
+  /* Título y acción → grilla (2026-10-29: con gap/xl quedaba pegado) */
+  gap: var(--arq-space-gap-2xl);
+  /* Mismo aire arriba y abajo (2026-10-29: con section/sm arriba y section/xl abajo
+     el título quedaba pegado a lo anterior) */
+  padding: var(--arq-space-section-md) var(--page-gutter);
 }
 
 .section[hidden] {

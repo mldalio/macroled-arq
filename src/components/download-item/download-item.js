@@ -1,14 +1,17 @@
 // download-item · Figma 1101:5542 · ficha doc/download-item
 //
-// Opción del modal de descargas: texto (role/body-xl) + icon/download. Cada
-// opción descarga su archivo directamente.
+// Opción del modal de descargas: texto (role/body-xl) + ícono. Los archivos de
+// la base se abren en una pestaña nueva (icon/arrow-up-right); la ficha técnica
+// se genera y lleva icon/download.
 //
 //   <arq-download-item href="…/kanu.ies">IES</arq-download-item>
 //   <arq-download-item emphasis="featured">Ficha técnica</arq-download-item>
 //
-// - Con href es un <a download> (archivo de la base: IES, CAD, MANUAL,
-//   FOTOMETRIA). Sin href es un <button> que emite arq:download: la ficha
-//   técnica se genera al hacer clic (decisión 2026-10-02 · Ficha técnica en PDF).
+// - Con href es un <a target="_blank"> con icon/arrow-up-right (archivo de la
+//   base: IES, CAD, Manual, Fotometría, Cotas): son PDF que el navegador abre,
+//   no descarga (decisión 2026-10-29 · Archivos que se abren). Sin href es un
+//   <button> con icon/download que emite arq:download: la ficha técnica se
+//   genera al hacer clic (decisión 2026-10-02 · Ficha técnica en PDF).
 // - loading (solo sin href): mientras se genera la ficha técnica el nombre pasa a
 //   «Generando…» (como button Loading), con aria-busy; otro clic no hace nada.
 // - show-format (variante, apagada por defecto): muestra el formato (slot meta,
@@ -41,12 +44,12 @@ class ArqDownloadItem extends ArqElement {
     else this.setAttribute('role', 'listitem');
     if (changed.has('loading') || changed.has('showFormat') || this.#control) this.#busy();
     if (!changed.has('href') && this.#control) return;
-    // <a download> con href; <button> sin href. Se rehace solo si cambia el tipo.
+    // <a> (pestaña nueva) con href; <button> sin href. Se rehace solo si cambia el tipo.
     const tag = this.href ? 'a' : 'button';
     if (this.#control?.localName !== tag) {
       const control = document.createElement(tag);
       control.className = 'row';
-      control.innerHTML = `<span class="info"><span class="label role-body-xl"><span class="name"><slot></slot></span><span class="busy" hidden>Generando…</span></span><span class="meta role-body-compact-regular" hidden><slot name="meta"></slot></span></span>${icon('download')}`;
+      control.innerHTML = `<span class="info"><span class="label role-body-xl"><span class="name"><slot></slot></span><span class="busy" hidden>Generando…</span></span><span class="meta role-body-compact-regular" hidden><slot name="meta"></slot></span></span>${icon(tag === 'a' ? 'arrow-up-right' : 'download')}`;
       if (tag === 'button') {
         control.type = 'button';
         control.addEventListener('click', () => {
@@ -59,7 +62,8 @@ class ArqDownloadItem extends ArqElement {
     }
     if (this.href) {
       this.#control.setAttribute('href', this.href);
-      this.#control.setAttribute('download', '');
+      this.#control.setAttribute('target', '_blank');
+      this.#control.setAttribute('rel', 'noopener');
     }
   }
 

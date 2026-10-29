@@ -289,13 +289,30 @@ export function resolveDao(model, selection, hrefs, fixed = { step: null }) {
 
   let heads = uniqueByGroup(model.cabezales(ring), ring.color);
   if (fixed.step === 'lamp') heads = heads.filter((item) => model.cabezales(ring).some((row) => row.grupo === item.grupo && row.lamparas.includes(fixed.lamp)));
-  const headGroup = heads.find((item) => item.grupo === selection.head) ?? heads[0] ?? null;
+  // Cabezales por módulo: un aro de 2 o 3 módulos puede combinar cabezales
+  // (1 común + 1 direccionable). headCounts { grupo: cantidad } suma a lo sumo
+  // los módulos del aro; sin cantidades, todos los módulos con el cabezal elegido.
+  const headCounts = countHeads(selection, heads, qty);
+  const headGroup = heads.find((item) => headCounts[item.grupo] > 0) ?? heads.find((item) => item.grupo === selection.head) ?? heads[0] ?? null;
   // Colores del cabezal: cada aro lista el cabezal de su propio color, así que se
-  // juntan los de todos los colores de ese aro (mismo grupo y módulos). Sin elección, el del aro.
+  // juntan los de todos los colores de ese aro (mismo grupo y módulos). Sin
+  // elección, el del aro. El color es uno para todos los cabezales del armado:
+  // solo los que tienen todos los cabezales elegidos.
   const sameRings = colors.map((item) => model.ring(group.id, qty, item)).filter(Boolean);
-  const headRows = headGroup ? [...new Set(sameRings.flatMap((item) => model.cabezales(item)))].filter((item) => item.grupo === headGroup.grupo) : [];
-  const headColors = [...new Set(headRows.map((item) => item.color).filter(Boolean))].sort((a, b) => orderOf(COLOR_ORDER, a) - orderOf(COLOR_ORDER, b));
-  const head = headRows.find((item) => item.color === selection.headColor) ?? headRows.find((item) => item.color === ring.color) ?? headGroup;
+  const allHeadRows = [...new Set(sameRings.flatMap((item) => model.cabezales(item)))];
+  const rowsOf = (grupo) => allHeadRows.filter((item) => item.grupo === grupo);
+  const chosenGroups = heads.filter((item) => headCounts[item.grupo] > 0).map((item) => item.grupo);
+  const colorSets = (chosenGroups.length ? chosenGroups : headGroup ? [headGroup.grupo] : []).map((grupo) => new Set(rowsOf(grupo).map((item) => item.color).filter(Boolean)));
+  const headColors = colorSets.length ? [...colorSets[0]].filter((color) => colorSets.every((set) => set.has(color))).sort((a, b) => orderOf(COLOR_ORDER, a) - orderOf(COLOR_ORDER, b)) : [];
+  const headColor = headColors.includes(selection.headColor) ? selection.headColor : headColors.includes(ring.color) ? ring.color : headColors[0] ?? null;
+  // Color de cada cabezal (headColorBy { grupo: color }, aro de varios módulos): si no se eligió, el común
+  const colorOf = (grupo) => selection.headColorBy?.[grupo] ?? headColor;
+  const headRow = (grupo) => rowsOf(grupo).find((item) => item.color === colorOf(grupo)) ?? rowsOf(grupo).find((item) => item.color === headColor) ?? rowsOf(grupo)[0] ?? heads.find((item) => item.grupo === grupo) ?? null;
+  // Colores de cada cabezal, para elegirlos por separado
+  const headColorsBy = Object.fromEntries(heads.map((item) => [item.grupo, [...new Set(rowsOf(item.grupo).map((row) => row.color).filter(Boolean))].sort((a, b) => orderOf(COLOR_ORDER, a) - orderOf(COLOR_ORDER, b))]));
+  const head = headGroup ? headRow(headGroup.grupo) : null;
+  // Los cabezales del armado, cada uno con su cantidad (en el orden de la base)
+  const headParts = chosenGroups.map((grupo) => ({ row: headRow(grupo), qty: headCounts[grupo] })).filter((item) => item.row);
   let lamps = model.lamparas(head || ring);
   if (fixed.step === 'lamp') lamps = lamps.filter((item) => item.sku === fixed.lamp);
   const lamp = lamps.find((item) => item.sku === selection.lamp) ?? lamps[0] ?? null;
@@ -305,10 +322,10 @@ export function resolveDao(model, selection, hrefs, fixed = { step: null }) {
   const qtyName = modulos.length > 1 ? `${model.moduleName(qty).toLowerCase()} ` : '';
   const ringName = `${group.name} ${qtyName}${ring.color.toLowerCase()}`.replace(/\s+/g, ' ').trim();
   const parts = [{ qty: 1, name: ringName, sku: ring.sku }];
-  if (head) {
+  if (headParts.length) {
     const terminal = model.extra('bornera');
     if (terminal) parts.push({ qty: ring.modulos, name: terminal.nombre, sku: terminal.sku });
-    parts.push({ qty: ring.modulos, name: `${head.nombre || head.sku} ${(head.color || ring.color).toLowerCase()}`.trim(), sku: head.sku });
+    for (const { row, qty: count } of headParts) parts.push({ qty: count, name: `${row.nombre || row.sku} ${(row.color || ring.color).toLowerCase()}`.trim(), sku: row.sku });
   }
   if (lamp) parts.push({ qty: ring.modulos, name: lamp.nombre || lamp.sku, sku: lamp.sku });
   if (front) parts.push({ qty: ring.modulos, name: `${front.nombre || 'Frente'} ${(front.color || ring.color).toLowerCase()}`.trim(), sku: front.sku });
@@ -320,7 +337,7 @@ export function resolveDao(model, selection, hrefs, fixed = { step: null }) {
   const specs = [
     ['Haz', lamp?.haz],
     ['Color de luz', lamp?.luz],
-    ['Orientación', head?.orientacion],
+    ['Orientación', [...new Set(headParts.map(({ row }) => row.orientacion).filter(Boolean))].join(' · ')],
     ['En el cielorraso', ring.visto],
     ['Medida del aro', model.formatSize(ring.dim)],
   ].filter(([, value]) => value);
@@ -336,7 +353,11 @@ export function resolveDao(model, selection, hrefs, fixed = { step: null }) {
     ring,
     heads,
     head,
+    headCounts,
+    headParts,
+    headColor,
     headColors,
+    headColorsBy,
     lamps,
     lamp,
     fronts,
@@ -347,12 +368,34 @@ export function resolveDao(model, selection, hrefs, fixed = { step: null }) {
     pieces: {
       ring: ring.img ? { src: ring.img, label: ringName } : null,
       head: head?.img ? { src: head.img, label: named(head) } : null,
+      // Una foto por cabezal elegido, con su cantidad (no se repite la foto)
+      heads: headParts.filter(({ row }) => row.img).map(({ row, qty: count }) => ({ key: row.grupo, src: row.img, label: named(row), qty: count })),
       lamp: lamp?.img ? { src: lamp.img, label: [lamp.nombre || lamp.sku, lamp.haz].filter(Boolean).join(' · ') } : null,
       front: front?.img ? { src: front.img, label: named(front) } : null,
     },
     specs,
     parts: parts.map((part) => ({ ...part, href: hrefs.get(part.sku) ?? null })),
   };
+}
+
+// Cantidad de cada cabezal: solo los compatibles con el aro, sin pasar de los
+// módulos (si sobran, se quitan del último). Sin cantidades, todos los módulos
+// con selection.head (o el primero).
+function countHeads(selection, heads, qty) {
+  const valid = new Set(heads.map((item) => item.grupo));
+  const entries = Object.entries(selection.headCounts ?? {}).filter(([grupo, count]) => valid.has(grupo) && count > 0);
+  if (!entries.length) {
+    const first = heads.find((item) => item.grupo === selection.head) ?? heads[0];
+    return first ? { [first.grupo]: qty } : {};
+  }
+  const counts = {};
+  let left = qty;
+  for (const [grupo, count] of entries) {
+    const taken = Math.min(count, left);
+    if (taken > 0) counts[grupo] = taken;
+    left -= taken;
+  }
+  return counts;
 }
 
 async function loadRows() {

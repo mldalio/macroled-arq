@@ -45,3 +45,5 @@ Botón de solo ícono. Size Default (24 × 24) para navbar, tablas y controles c
 - `TODO` `aria-expanded` y `aria-controls` cuando el botón abre algo (menú, búsqueda, acordeón): se definen al construir esos componentes.
 - En Figma, Size=Default es una caja fija de 24 sin padding y no hay token para 24. En código es ícono de 16 + `space/padding/xs`, que da 24 en Desktop y Mobile.
 - En Figma el ícono está enlazado a `color/text/primary`; en código usa `color/icon/primary` (mismo valor en Light y Dark).
+
+- **`--arq-icon-button-border`** (opcional, Background=Outline Size=Default): color del borde; por defecto `color/border/strong`. El configurador de Daö lo baja a `color/border/default` en los − / + de los cabezales, donde compite con otra selección.

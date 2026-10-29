@@ -72,3 +72,7 @@ La ficha de producto y la página Descargas usan el mismo modal: producto (minia
 ```
 
 El formato es una variante de download-item (`show-format` + slot `meta`), apagada por ahora. Los archivos salen de la base (IES, Manual, CAD 2D/3D, Fotometría); la ficha técnica se genera siempre.
+
+## Archivos generales (ficha, Mobile)
+
+En Mobile, el botón «Descargas» de la barra del glosario (variants-table) abre el mismo modal `show-product` (la misma hoja: a todo el ancho en Mobile, gap `space/gap/xl`) **sin** `sku`: sin `sku` no se muestra el bloque de producto, solo el título y los archivos generales del grupo (CAD 2D/3D y Manual) como `download-item` Default, sin la ficha técnica (decisiones.md, 2026-10-29 · Archivos generales en Mobile).

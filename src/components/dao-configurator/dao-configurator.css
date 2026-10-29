@@ -99,6 +99,10 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  /* Lugar para que el hover de un paso hecho se asome a los lados (la
+     columna se desplaza y recorta lo que sale de su caja): el contenido no se mueve */
+  margin-inline: calc(-1 * var(--arq-space-padding-sm-md));
+  padding-inline: var(--arq-space-padding-sm-md);
   padding-bottom: var(--arq-space-padding-3xl);
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -155,7 +159,92 @@
 
 .step-title,
 .summary {
+  display: block;
   margin: 0;
+}
+
+/* Paso hecho: toda la fila es un botón (como el título de un desplegable). El
+   padding vertical pasa del paso al botón, así el hover cubre la fila; se
+   asoma space/padding/sm-md a los lados (como las opciones de filter-row) y el
+   texto queda alineado con el resto. Hover color/surface/faint, el mismo de
+   accordion-item (desplegables de especificaciones), y el subrayado de «Cambiar» se dibuja de izquierda a
+   derecha (DESIGN.md §6 · Subrayado de hover). */
+.step.is-done {
+  padding-block: 0;
+}
+
+.step-toggle {
+  box-sizing: border-box;
+  width: calc(100% + 2 * var(--arq-space-padding-sm-md));
+  margin: 0 calc(-1 * var(--arq-space-padding-sm-md));
+  padding: var(--arq-space-padding-xl) var(--arq-space-padding-sm-md);
+  border: 0;
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-transparent);
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: background-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);
+}
+
+.step.is-done:first-child .step-toggle {
+  padding-top: var(--arq-space-padding-sm-md);
+}
+
+.step-toggle:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+.step-toggle:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* «Cambiar»: línea de 1 px (border/default en color/border/strong) y, en
+   hover, la de 2 px (border/strong) que se dibuja encima, como button
+   Underline con Show underline */
+.change {
+  position: relative;
+  flex: none;
+  padding-bottom: var(--arq-space-padding-2xs);
+  color: var(--arq-color-text-primary);
+}
+
+.change::before,
+.change::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  background: var(--arq-color-border-strong);
+}
+
+.change::before {
+  height: var(--arq-border-default);
+}
+
+.change::after {
+  height: var(--arq-border-strong);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .step-toggle:hover {
+    background: var(--arq-color-surface-faint);
+  }
+
+  .step-toggle:hover .change::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .change::after {
+    transition: none;
+  }
 }
 
 .summary {
@@ -185,6 +274,123 @@
 .note {
   margin: 0;
   color: var(--arq-color-text-secondary);
+}
+
+/* Cabezales de un aro de 2 o 3 módulos: la ayuda a la izquierda y la cuenta
+   («1 de 2 elegidos») en la punta opuesta; una caja por cabezal, como
+   option-tile Type=Card, con su cantidad entre − y + (icon-button Outline).
+   Acá lo elegido es la cantidad y el color, no la caja: la caja con cantidad
+   baja a color/border/default (en vez de color/border/strong) y los − / +
+   también, para que el negro quede solo en el
+   color elegido y en el número. TODO (diseño): no está en Figma. */
+.counter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-sm);
+  align-self: stretch;
+}
+
+.counter-hint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-xs) var(--arq-space-gap-md);
+  margin-bottom: var(--arq-space-gap-xs);
+  color: var(--arq-color-text-secondary);
+}
+
+.counter-hint p {
+  margin: 0;
+}
+
+/* La cuenta pasa a color/text/primary cuando están todos los módulos */
+.counter-tally {
+  color: var(--arq-color-text-tertiary);
+  white-space: nowrap;
+}
+
+.counter-tally.is-complete {
+  color: var(--arq-color-text-primary);
+}
+
+.count-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--arq-space-gap-md);
+  padding: var(--arq-space-padding-sm-md) var(--arq-space-padding-md);
+  border: var(--arq-border-default) solid var(--arq-color-border-subtle);
+  transition: border-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);
+}
+
+.count-row.is-selected {
+  border-color: var(--arq-color-border-default);
+}
+
+.count-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xs);
+  min-width: 0;
+}
+
+.count-meta {
+  color: var(--arq-color-text-secondary);
+}
+
+.stepper {
+  --arq-icon-button-border: var(--arq-color-border-default);
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
+}
+
+/* El número, con el ancho de un ícono para que no salte de 1 a 2 */
+.count-value {
+  min-width: var(--arq-icon-md);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.count-row:not(.is-selected) .count-value {
+  color: var(--arq-color-text-tertiary);
+}
+
+/* Color del cabezal elegido: toda la fila de la caja, debajo del nombre */
+.count-colors {
+  flex-basis: 100%;
+  padding-top: var(--arq-space-padding-xs);
+}
+
+/* Aviso de accesorios requeridos (frente y panal de PAR11): una caja en un
+   gris claro (color/surface/soft: color/surface/faint no se distingue del blanco), con el ícono alert en color/text/warning (no hay color/icon/warning:
+   TODO token), «Accesorios requeridos:» en role/body-compact-medium y el texto
+   en role/body-compact, color/text/secondary. TODO (diseño): no está en Figma. */
+.notice {
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+  gap: var(--arq-space-gap-sm);
+  margin: 0;
+  padding: var(--arq-space-padding-sm-md) var(--arq-space-padding-md);
+  background: var(--arq-color-surface-soft);
+  color: var(--arq-color-text-secondary);
+}
+
+.notice .icon {
+  flex: none;
+  width: var(--arq-icon-md);
+  height: var(--arq-icon-md);
+  /* centrado con la primera línea (role/body-compact: 24 de interlineado) */
+  margin-top: calc((var(--arq-type-body-compact-leading) - var(--arq-icon-md)) / 2);
+  color: var(--arq-color-text-warning);
+}
+
+.notice-title {
+  color: var(--arq-color-text-primary);
 }
 
 /* Un paso que se abre: fundido y un leve ascenso (solo opacity y transform,
@@ -218,7 +424,7 @@
   color: var(--arq-color-text-secondary);
 }
 
-/* Las fotos de las piezas se suman de a una: la nueva aparece con un fundido */
+/* Las fotos de las piezas se suman de a una */
 .photos {
   display: grid;
   flex: 1;
@@ -230,7 +436,10 @@
 }
 
 /* Tarjeta de cada pieza: fondo color/surface/subtle; la foto (de fondo blanco)
-   se funde con él (multiply) y se ve entera */
+   se funde con él (multiply) y se ve entera. Una tarjeta nueva entra cuando su
+   foto cargó: aparece y crece desde motion/scale/enter (motion/duration/slow,
+   motion/easing/out). Las que cambian de lugar se deslizan (FLIP en el JS,
+   motion/duration/panel). */
 .photos figure {
   display: flex;
   flex-direction: column;
@@ -238,61 +447,68 @@
   min-width: 0;
   min-height: 0;
   margin: 0;
-  padding: var(--arq-space-padding-sm) var(--arq-space-padding-sm) var(--arq-space-padding-sm);
+  padding: var(--arq-space-padding-sm);
   background: var(--arq-color-surface-subtle);
-  animation: arq-photo-in var(--arq-motion-duration-slow) var(--arq-motion-easing-standard) both;
+  transition-property: opacity, transform;
+  transition-duration: var(--arq-motion-duration-slow);
+  transition-timing-function: var(--arq-motion-easing-out);
 }
 
-@keyframes arq-photo-in {
-  from {
-    opacity: 0;
-  }
+.photos figure.is-new {
+  opacity: 0;
+  transform: scale(var(--arq-motion-scale-enter));
 }
 
-.photos img {
-  display: block;
+/* Fotos apiladas: la nueva se funde sobre la anterior (otro color), con la
+   curva del fundido de fotos (motion/easing/illumination-image) */
+.media {
+  position: relative;
   flex: 1;
-  width: 100%;
   min-height: 0;
+}
+
+.media img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   mix-blend-mode: multiply;
+  opacity: 0;
+  transition: opacity var(--arq-motion-duration-slow) var(--arq-motion-easing-illumination-image);
 }
 
+.media img.is-loaded {
+  opacity: 1;
+}
+
+.media img.is-leaving {
+  opacity: 0;
+}
+
+/* Epígrafe: con cantidad (cabezal de un aro de varios módulos), el
+   count-badge abre el texto: «[2] × Daö Cabezal negro» */
 .photos figcaption {
+  display: flex;
   flex: none;
+  align-items: center;
+  gap: var(--arq-space-gap-xs);
   color: var(--arq-color-text-secondary);
 }
 
-/* Pasos condensados (todo elegido): una lista chica con «Cambiar» a la derecha */
-.condensed {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--arq-space-gap-lg);
-  padding-bottom: var(--arq-space-padding-xl);
-  border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
-}
+@media (prefers-reduced-motion: reduce) {
+  .photos figure {
+    transition-duration: var(--arq-motion-duration-fade);
+  }
 
-.condensed-rows {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: var(--arq-space-gap-xs) var(--arq-space-gap-lg);
-  min-width: 0;
-  margin: 0;
-}
+  .photos figure.is-new {
+    transform: none;
+  }
 
-.condensed-rows dt {
-  color: var(--arq-color-text-tertiary);
-}
-
-.condensed-rows dd {
-  min-width: 0;
-  margin: 0;
-  color: var(--arq-color-text-primary);
-}
-
-.condensed.is-entering {
-  animation: arq-step-in var(--arq-motion-duration-base) var(--arq-motion-easing-out) both;
+  .media img {
+    transition-duration: var(--arq-motion-duration-fade);
+  }
 }
 
 .back {
@@ -300,22 +516,58 @@
   margin-top: var(--arq-space-gap-lg);
 }
 
+/* Armado completo, en lugar de los pasos (columna izquierda): entra como un
+   paso que se abre. Tres bloques a space/gap/2xl: el armado (título y
+   especificaciones a space/gap/lg), las piezas (título y lista a
+   space/gap/sm: menos que entre piezas, space/gap/md, así el título va con su
+   lista) y la descarga. */
+.final {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-2xl);
+  padding-bottom: var(--arq-space-padding-xl);
+}
+
+.result-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.result-summary {
+  gap: var(--arq-space-gap-lg);
+}
+
+.result-parts {
+  gap: var(--arq-space-gap-sm);
+}
+
+.final.is-entering {
+  animation: arq-step-in var(--arq-motion-duration-base) var(--arq-motion-easing-out) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .condensed.is-entering {
+  .final.is-entering {
     animation: arq-step-fade var(--arq-motion-duration-fade) var(--arq-motion-easing-standard) both;
   }
 }
 
-/* Armado completo, debajo de los pasos (columna izquierda) */
-.final {
+/* Título compuesto y «Cambiar» en la punta opuesta. El botón no se achica (en
+   Mobile se cortaba en «Cambi…»): el título se reparte el resto. */
+.result-head {
   display: flex;
-  flex-direction: column;
+  align-items: baseline;
+  justify-content: space-between;
   gap: var(--arq-space-gap-lg);
-  padding-block: var(--arq-space-padding-xl);
 }
 
 .result-title {
+  flex: 1;
+  min-width: 0;
   margin: 0;
+}
+
+.change-all {
+  flex: none;
 }
 
 .specs {
@@ -334,8 +586,7 @@
 }
 
 .parts-title {
-  /* Más aire entre las características y las piezas: gap/lg + gap/md */
-  margin: var(--arq-space-gap-md) 0 0;
+  margin: 0;
 }
 
 .parts {
@@ -379,6 +630,9 @@
   .body {
     display: flex;
     flex-direction: column;
+    /* El hover de un paso hecho se asoma a los lados (ver .steps) */
+    margin-inline: calc(-1 * var(--arq-space-padding-sm-md));
+    padding-inline: var(--arq-space-padding-sm-md);
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-width: none;
@@ -392,23 +646,37 @@
     overflow-y: visible;
   }
 
-  /* Las fotos van arriba de los pasos, en tarjetas con su proporción (5:4) */
+  /* Las fotos van arriba de los pasos. El recuadro mide al menos 5:4 del ancho
+     (con 1 a 4 fotos no cambia de alto: sumar una no corre los pasos) y cada
+     tarjeta, al menos 5:4 de su columna, para que no se achate: con 5 o 6
+     fotos crece una fila. */
   .panel {
     order: -1;
     flex: none;
     margin-bottom: var(--arq-space-padding-xl);
   }
 
+  /* Vacío no se muestra (como en Desktop): aparece al elegir el aro */
   .panel:empty {
     display: none;
   }
 
-  .photos {
-    grid-template-rows: none;
+  /* La descarga sube debajo de las especificaciones: se ve sin desplazar */
+  .result-summary {
+    order: 1;
   }
 
-  .photos img {
-    flex: none;
-    aspect-ratio: 5 / 4;
+  .print {
+    order: 2;
+  }
+
+  .result-parts {
+    order: 3;
+  }
+
+  .photos {
+    --photo-col: calc((100vw - 2 * var(--arq-layout-gutter) - var(--arq-space-gap-sm)) / 2);
+    min-height: calc((100vw - 2 * var(--arq-layout-gutter)) * 4 / 5);
+    grid-template-rows: repeat(var(--rows, 1), minmax(calc(var(--photo-col) * 4 / 5), 1fr));
   }
 }

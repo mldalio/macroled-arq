@@ -28,6 +28,8 @@
 //   thumb, sku Compact y meta «Negro, 6 W, luz cálida») y los archivos como
 //   download-file-row, a space/gap/xl. En Mobile es una hoja pegada al borde
 //   inferior, a todo el ancho.
+//   Sin sku, la misma hoja sin el bloque de producto: título y archivos
+//   (archivos generales de la ficha, decisión 2026-10-29).
 // - Entrada y salida (decisiones.md, 2026-10-15 · Descargas): el scrim funde
 //   y el panel sube desde abajo (Mobile, hoja: translateY(100%); Desktop:
 //   funde y sube un 2 %), y cierra por el mismo camino. Duración como
@@ -113,7 +115,8 @@ class ArqDownloadModal extends ArqElement {
       sku.textContent = this.sku ?? '';
       sku.hidden = !this.sku || this.showProduct;
       this.shadowRoot.querySelector('.product-sku').textContent = this.sku ?? '';
-      this.shadowRoot.querySelector('.product').hidden = !this.showProduct;
+      // Sin sku (archivos generales de la ficha), la misma hoja sin el producto
+      this.shadowRoot.querySelector('.product').hidden = !this.showProduct || !this.sku;
     }
     if (changed.has('meta')) {
       const meta = this.shadowRoot.querySelector('.meta');
