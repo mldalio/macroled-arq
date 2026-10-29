@@ -1618,6 +1618,8 @@ Pedido de Lau, con los skills emil-design-eng, find-animation-opportunities, app
 
 ## 2026-10-26 · Home en /arq/inicio
 
+> Reemplazada por 2026-10-28 · Home en /arq.
+
 - Webflow no deja crear una página en la URL de una carpeta: toda página de la carpeta Arq necesita su slug (`index` está reservado) y una página `arq` en la raíz chocaría con la carpeta.
 - La Home va en `/arq/inicio`. En Webflow, redirección 301 de `/arq` a `/arq/inicio` (Site settings → Publishing): quien entra a `/arq` llega a la Home, también con `#newsletter`.
 - Los links internos apuntan directo a `/arq/inicio`, sin pasar por la redirección: el `href` por defecto de `<arq-logo>` (navbar y footer), el breadcrumb «Inicio» de Productos y los ejemplos del link al newsletter (`/arq/inicio#newsletter`).
@@ -1983,3 +1985,9 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 - **Ajuste 5 (mismo día):** se prueba con `motion/duration/slow` (320 ms), sin multiplicar: unos 470 ms desde el clic (más 120 de la bajada).
 - **Ajuste 6 (mismo día):** el título vuelve a subir, ahora con la misma entrada que las cards (`arq-reveal`: sube `space/gap/2xl` y aparece, `motion/duration/slow` × 2 con `easing/standard`), después de que se va el anterior. La bajada sigue con el fundido parejo de 320 ms.
 - **Ajuste 7 (mismo día):** con 640 ms el título se sentía lento: sube en `motion/duration/slow` × 1,5 (480 ms), con la misma distancia y curva que las cards.
+
+## 2026-10-28 · Home en /arq
+
+- Reemplaza 2026-10-26 · Home en /arq/inicio. Para que la Home esté en `macroled.com.ar/arq`, en Webflow va como página suelta en la raíz con slug `arq`; el resto de las páginas (estáticas y templates del CMS) sigue en la carpeta `arq`.
+- Los links a la Home van a `/arq`: el `href` por defecto de `<arq-logo>` (navbar y footer), el breadcrumb «Inicio» de Productos y Colección, y los ejemplos del link al newsletter (`/arq#newsletter`).
+- En Webflow se saca la redirección 301 de `/arq` a `/arq/inicio`. Si `/arq/inicio` llegó a publicarse, queda la inversa: 301 de `/arq/inicio` a `/arq`.

@@ -8,7 +8,7 @@ Encabezado de la página: breadcrumb, título (el único `<h1>`) y bajada. Type=
 <!-- Type=List -->
 <arq-page-header show-breadcrumb show-description>
   <arq-breadcrumb slot="breadcrumb">
-    <arq-breadcrumb-item href="/arq/inicio" show-separator>Inicio</arq-breadcrumb-item>
+    <arq-breadcrumb-item href="/arq" show-separator>Inicio</arq-breadcrumb-item>
     <arq-breadcrumb-item current>Productos</arq-breadcrumb-item>
   </arq-breadcrumb>
   <h1 slot="title">Productos</h1>

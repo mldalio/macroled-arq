@@ -10,7 +10,7 @@ Reglas para todas las IAs que trabajan en este repo (Claude, Codex, Cursor u otr
 ## Contexto
 
 - Sitio en `macroled.com.ar/arq`. Se desarrolla en este repo y se carga dentro de páginas de Webflow que comparten sitio y dominio con el e-commerce de Macroled.
-- Las páginas de colección del CMS se anidan en la carpeta `/arq` de Webflow. La Home va en `/arq/inicio` (`/arq` redirige con 301): los links internos van directo ahí.
+- Las páginas de colección del CMS y las demás páginas se anidan en la carpeta `/arq` de Webflow. La Home es una página suelta en la raíz con slug `arq` (`/arq`): los links a la Home van a `/arq`.
 - **Datos:** Google Sheets es la fuente maestra y alimenta Typesense, con un documento por SKU (campos e imágenes en `docs/typesense-schema.md`). Webflow CMS tiene dos colecciones, Productos y Colecciones, cargadas a mano, **solo con nombre y slug**: el ítem existe para que exista la URL. **Productos tiene un ítem por grupo** y Colecciones uno por colección. Todo el resto, textos incluidos, lo trae el componente desde Typesense. URLs en `docs/urls.md`; decisiones en `docs/decisiones.md` (2026-10-07 · Base de datos sin IDs).
 - **Formulario de contacto:** webhook de n8n.
 

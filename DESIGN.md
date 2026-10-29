@@ -78,7 +78,7 @@ Arq vive en `macroled.com.ar/arq`, dentro del mismo sitio de Webflow que el e-co
 - **Slots:** el contenido que se pasa por slot vive en el DOM de Webflow y hereda sus estilos. Lo que tiene que verse igual en cualquier sitio va dentro del componente, no por slot.
 - **Tipografía:** Albert Sans se carga a nivel página (el `@font-face` no funciona dentro del Shadow DOM). Cada componente la pone en su `:host` (`font-family: var(--arq-font-family-sans)`, en `ArqElement`), así lo que hereda la fuente no toma la del `body` de Webflow. `docs/decisiones.md`, 2026-10-26 · Albert Sans en cada componente.
 - **SEO:** el template del CMS imprime el `<h1>` (nombre) en el HTML y lo pasa por slot; el resto, textos incluidos, lo trae el componente desde Typesense y lo escribe en el DOM de la página.
-- **URLs:** las páginas de colección del CMS se anidan en la carpeta `/arq` (CMS Folders de Webflow). Una carpeta y una colección no pueden compartir slug en el mismo nivel. Webflow no deja una página en la URL de la carpeta: la Home va en `/arq/inicio` y `/arq` redirige (301); los links internos apuntan directo a `/arq/inicio` (`docs/urls.md`; `docs/decisiones.md`, 2026-10-26 · Home en /arq/inicio).
+- **URLs:** las páginas de colección del CMS y las demás páginas se anidan en la carpeta `/arq` (CMS Folders de Webflow). Una carpeta y una colección no pueden compartir slug en el mismo nivel. La Home es una página suelta en la raíz con slug `arq` (`/arq`); los links a la Home apuntan a `/arq` (`docs/urls.md`; `docs/decisiones.md`, 2026-10-28 · Home en /arq).
 - En Figma no se usa el prefijo: componentes, variantes, props y variables mantienen su nombre. El prefijo se agrega en código; el code syntax de cada variable ya lo trae (`var(--arq-…)`).
 
 ### Capas (z-index)

@@ -3,7 +3,7 @@
 //
 //   <body data-demo-page="home"></body>   →   src/pages/home.html
 //
-// Los links a una página de Arq que tiene demo (/arq/inicio → home, /arq/productos →
+// Los links a una página de Arq que tiene demo (/arq → home, /arq/productos →
 // productos, /arq/producto/<grupo> → ficha, /arq/coleccion/<id> → coleccion)
 // se cambian a su demo, con el mismo
 // ?query, para poder navegar. Los del HTML se cambian al insertarlo; los que
