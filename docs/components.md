@@ -99,7 +99,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [text-link](#text-link) | `<arq-text-link>` | En código ([README](../src/components/text-link/README.md)) |
 | ✅ [toggle](#toggle) | `<arq-toggle>` | En código ([README](../src/components/toggle/README.md)) |
 | ✅ [toggle-switch](#toggle-switch) | — | Dentro de toggle ([README](../src/components/toggle/README.md)) |
-| ✅ [variants-table](#variants-table) | `<arq-variants-table>` | En código ([README](../src/components/variants-table/README.md)) · Un solo componente para la ficha (`type="product"`) y Descargas (`type="catalog"`, propuesta 2575:22875); reemplaza a `<arq-downloads-table>` (2026-10-20). El set de Figma ya tiene Type (Product · Catalog) y Breakpoint (2026-10-20) |
+| ✅ [variants-table](#variants-table) | `<arq-variants-table>` | En código ([README](../src/components/variants-table/README.md)) · Un solo componente para la ficha (`type="product"`) y Descargas (`type="catalog"`, propuesta 2575:22875); reemplaza a `<arq-downloads-table>` (2026-10-20). El set de Figma ya tiene Type (Product · Catalog) y Breakpoint (2026-10-20). En Descargas, ordenar por columna desde el encabezado (2026-10-29; `TODO` diseño en Figma) |
 | ✅ [variants-table-card](#variants-table-card) | dentro de `<arq-variants-table>` | En código, como parte de variants-table (Mobile) ([README](../src/components/variants-table/README.md)) |
 | ✅ [variants-table-row](#variants-table-row) | — | Dentro de variants-table ([README](../src/components/variants-table/README.md)) · Ficha v2 |
 

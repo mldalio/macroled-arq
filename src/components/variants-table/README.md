@@ -54,7 +54,11 @@ Se quitaron `show-search` (ahora es `type="catalog"`) y `show-sort` (solo de có
 | Link al producto | No | Nombre y miniatura (con `href`) |
 | Búsqueda | No | Por nombre, SKU y `row.search` (`searchVariants`) |
 | «Ver más» | No (todas las filas, decisión 2026-10-26) | De a 100 filas |
-| URL | No (la ficha ya usa `?sku=`) | `?q=…&filtro=valor`, con `history.replaceState` |
+| Ordenar por columna | No | Clic en el encabezado del SKU o de una columna de datos: de menor a mayor y, con otro clic, de mayor a menor (alterna; para volver al orden base se recarga sin `?orden`). Solo en la tabla (Desktop); las tarjetas Mobile siguen el orden elegido |
+| URL | No (la ficha ya usa `?sku=`) | `?q=…&filtro=valor&orden=-potencia`, con `history.replaceState` |
+
+- **Orden de entrada:** lo arman los datos (`src/data/catalog.js`), el componente no lo cambia. Ficha: potencia, temperatura y acabado (negro primero). Descargas: alfabético por colección (o familia) y, dentro de cada una, potencia; a igual potencia, juntas las del mismo producto, y después temperatura y acabado.
+- **Ordenar por columna** (`catalog`): cada encabezado ordenable es un `<button>` con el texto y un chevron `icon/sm` a `space/gap/xs`: abajo, de menor a mayor; arriba, de mayor a menor. La columna ordenada va en `color/text/primary` (las demás en `color/text/tertiary`, `color/text/primary` en hover) y lleva `aria-sort`; el cambio se anuncia («Ordenado por Potencia, de menor a mayor»). Números de menor a mayor («6 W» antes que «12 W»), el resto alfabético; las filas sin valor, siempre al final (`sortRows`, `src/data/variants.js`). La copia fija del encabezado también ordena. `TODO` (diseño): el encabezado con orden no está en Figma.
 
 ## En los dos
 
