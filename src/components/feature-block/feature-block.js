@@ -16,6 +16,8 @@
 //   Mobile se apila: imagen, textos y, al final, la secundaria.
 // - Show secondary image no es atributo: la secundaria se muestra si su slot
 //   tiene contenido.
+// - Con dos <img slot="image">, las dos fotos van una al lado de la otra en
+//   el lugar de la principal (solo código, Nosotros).
 // - Imagen principal en ratio/portrait-soft (4:5). La secundaria en
 //   ratio/wide (TODO: en el set tiene alto fijo, sin ratio).
 
@@ -49,7 +51,7 @@ class ArqFeatureBlock extends ArqElement {
   #reveal = null;
 
   setup() {
-    for (const name of OPTIONAL) {
+    for (const name of [...OPTIONAL, 'image']) {
       this.shadowRoot.querySelector(`slot[name="${name}"]`).addEventListener('slotchange', () => this.update());
     }
   }
@@ -76,6 +78,9 @@ class ArqFeatureBlock extends ArqElement {
     const description = root.querySelector('.description');
     description.classList.toggle('role-body-lg', !compact);
     description.classList.toggle('role-body', compact);
+    // Dos fotos en el slot image: van una al lado de la otra (Nosotros).
+    const images = root.querySelector('slot[name="image"]').assignedElements({ flatten: true });
+    root.querySelector('.image').classList.toggle('pair', images.length > 1);
     if (changed?.has('reveal')) this.#armReveal();
   }
 

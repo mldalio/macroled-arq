@@ -454,7 +454,7 @@ Sin respuesta, la pregunta no se muestra (en código: si falta un dato, esa part
 
 Bloque editorial destacado: imagen grande (y secundaria opcional) + eyebrow, título role/display-sm, bajada y button. Layout: Image left e Image right (se alternan); Breakpoint=Mobile apila. Props: Label, Title, Description, Show secondary image.
 
-En código, `size` (`large` · `medium` · `small`) achica la foto y el texto. No está en el set de Figma. En Nosotros, las dos fotos de Oficio usan `medium`: 44 % y 4:3, título `role/heading-3-light`, alineadas a la grilla y con aire entre ellas (2026-10-28). `reveal` hace entrar la foto y el texto juntos al hacer scroll (misma entrada que el Home).
+En código, `size` (`large` · `medium` · `small`) achica la foto y el texto. No está en el set de Figma. En Nosotros, las dos fotos de Oficio usan `medium`: 44 % y 4:3, título `role/heading-3-light`, alineadas a la grilla y con aire entre ellas (2026-10-28). `reveal` hace entrar la foto y el texto juntos al hacer scroll (misma entrada que el Home). Con dos `<img slot="image">`, las dos fotos van una al lado de la otra en el lugar de la principal (Nosotros: Cómo pensamos el producto y De profesional a profesional; 2026-10-29).
 
 ## file-upload
 

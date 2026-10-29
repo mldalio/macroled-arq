@@ -56,8 +56,10 @@
   grid-template-columns: 44% minmax(0, 1fr);
 }
 
+/* Image right: la foto arranca donde arranca el texto de un medium Image
+   left (44 % + space/gap/6xl), así los bloques alternados quedan alineados. */
 :host([size='medium'][layout='image-right']) .block {
-  grid-template-columns: minmax(0, 1fr) 44%;
+  grid-template-columns: minmax(0, 1fr) calc(56% - var(--arq-space-gap-6xl));
 }
 
 :host([size='small']) .block {
@@ -116,6 +118,21 @@
   max-width: none !important;
   height: 100% !important;
   object-fit: cover;
+}
+
+/* Dos fotos en el slot image (solo código, Nosotros): una al lado de la
+   otra, en el mismo lugar y proporción que la principal. TODO (diseño): no
+   está en el set; separación space/gap/sm. */
+.image.pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--arq-space-gap-sm);
+  background: none;
+}
+
+.image.pair ::slotted(*) {
+  min-width: 0;
+  background: var(--arq-color-surface-subtle);
 }
 
 /* Textos a space/gap/xl. Image left arranca a space/padding/xl-2xl; Image
