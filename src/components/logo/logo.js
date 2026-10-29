@@ -26,7 +26,7 @@ class ArqLogo extends ArqElement {
   static styles = css;
   static properties = {
     size: { type: String, values: ['default', 'small', 'compact'], default: 'default' }, // Size
-    href: { type: String, default: '/arq/inicio' },
+    href: { type: String, default: '/arq' },
   };
   static template = `<a class="link" aria-label="${ACCESSIBLE_NAME}">${svg}</a>`;
 

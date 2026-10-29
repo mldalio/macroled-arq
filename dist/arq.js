@@ -2554,7 +2554,7 @@ var ni = ":host{vertical-align:middle;color:var(--arq-color-text-primary);flex:n
 		},
 		href: {
 			type: String,
-			default: "/arq/inicio"
+			default: "/arq"
 		}
 	};
 	static template = `<a class="link" aria-label="${ri}">${ii}</a>`;
