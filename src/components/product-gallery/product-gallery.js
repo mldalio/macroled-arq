@@ -27,6 +27,8 @@
 // - Iluminar: dentro de un bloque con data-arq-theme="dark", cada foto usa
 //   srcOn; si falta, la apagada (src/base/theme.js). El cambio de variante y
 //   de Iluminar funde; pasar de foto se desliza.
+// - Flechas y miniaturas sobre la foto: su modo lo pone la ficha según el
+//   brillo de la foto debajo (setOverlayTone), como el breadcrumb y el toggle.
 // - Desktop: miniaturas sobre la imagen, abajo a la izquierda. Mobile: debajo.
 //   Si no entran, la fila se desliza (decisión 2026-10-02 · Galerías).
 // - Miniaturas: un <button> cada una (Tab), la elegida con aria-current.
@@ -86,6 +88,25 @@ class ArqProductGallery extends ArqElement {
   get currentImage() {
     const reals = this.#reals();
     return reals[this.#index] ?? reals[0] ?? null;
+  }
+
+  /** Recuadro de la foto: la ficha mide ahí la foto que llega, aunque todavía se esté deslizando. */
+  get frame() {
+    return this.shadowRoot.querySelector('.image');
+  }
+
+  /** Flechas y miniaturas, que van sobre la foto: la ficha elige su modo según la foto (setOverlayTone). */
+  get overlays() {
+    const root = this.shadowRoot;
+    return { prev: root.querySelector('.prev'), next: root.querySelector('.next'), thumbs: root.querySelector('.thumbs-row') };
+  }
+
+  /** tone: 'dark', 'light' o null (sigue el modo del bloque). */
+  setOverlayTone(name, tone) {
+    const element = this.overlays[name];
+    if (!element) return;
+    if (tone) element.setAttribute('data-arq-theme', tone);
+    else element.removeAttribute('data-arq-theme');
   }
 
   get images() {

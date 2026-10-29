@@ -183,6 +183,13 @@
   display: none !important;
 }
 
+/* Fondo de las miniaturas con el modo del bloque (hero), no con el de la
+   foto que pone la ficha en .thumbs-row: la de estudio, transparente, se ve
+   igual que la foto grande. Variable local; se resuelve acá. */
+.gallery {
+  --thumb-surface: var(--arq-color-surface-subtle);
+}
+
 /* Miniaturas y la flecha izquierda, en la misma línea. */
 .thumbs-row {
   display: flex;

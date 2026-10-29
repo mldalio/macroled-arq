@@ -16,7 +16,9 @@
   overflow: hidden;
   border: 0;
   border-radius: var(--arq-radius-control);
-  background: var(--arq-color-surface-subtle);
+  /* --thumb-surface: lo pone product-gallery con el modo del bloque, así el
+     modo según la foto (setOverlayTone) cambia el borde y no el fondo */
+  background: var(--thumb-surface, var(--arq-color-surface-subtle));
   cursor: pointer;
   -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
 }

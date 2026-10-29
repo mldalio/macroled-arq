@@ -1952,3 +1952,34 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 - **Ordenar por columna** (solo Descargas, variants-table `type="catalog"`): el encabezado del SKU y el de cada columna de datos son un botón con un chevron. El primer clic ordena de menor a mayor, el segundo de mayor a menor y los siguientes alternan entre los dos (no vuelve al orden base). Números de menor a mayor, texto alfabético; las filas sin valor, siempre al final. Va en la URL (`?orden=potencia`, `?orden=-potencia`). En la ficha no se ordena.
 - Reemplaza al select «Ordenar por» de 2026-10-06 · Descargas, que no se llegó a usar (se quitaron `SORT_ORDERS` y `sortVariants`).
 - `TODO` (diseño): el encabezado con orden no está en el set de variants-table-row. Se armó con el estilo del encabezado (`role/body-compact-regular`, `color/text/tertiary`), el chevron `icon/sm` y la columna ordenada en `color/text/primary`.
+
+## 2026-10-29 · Flechas y miniaturas de la galería según la foto
+
+- Pedido: breadcrumb, toggle Iluminar, flechas de la galería y miniatura elegida tienen que pasar a claro u oscuro según la foto que tienen debajo, con Iluminar prendido o apagado.
+- Antes se medía solo el breadcrumb y el toggle, y sobre el `<img>`: al pasar de foto con las flechas, la nueva todavía se estaba deslizando (fuera del recuadro) y la medida caía sobre el fondo gris. Quedaban negros sobre una foto oscura hasta que Iluminar volvía a medir. Ahora se mide sobre el recuadro de la galería (`frame`), así cambian apenas arranca el deslizamiento.
+- Flechas y fila de miniaturas usan el mismo corte (L ≈ 0,16) y llevan `data-arq-theme="dark"` o `"light"` (product-gallery `setOverlayTone`). Si un elemento no está sobre la foto (miniaturas en Mobile, flechas en táctil), no se toca y sigue el modo del hero.
+- Las fotos de estudio con aire (`object-fit: contain` con padding) se miden con ese encuadre; antes se calculaba como `cover`.
+
+## 2026-10-29 · Cota ampliable en Mobile
+
+- Pedido: en Materiales e instalación (Mobile), el dibujo con cotas a 2,5 rem de las filas y que se pueda tocar para verlo en grande.
+- Separación: `space/gap/2xl` (40 en Mobile) hasta 767 px; Tablet y Desktop siguen igual.
+- Ampliar: se reusa el visor de fotos de las galerías (`PhotoViewer`, fondo `color/overlay/scrim-gallery`). Un solo visor por ficha; `open()` acepta una lista de fotos para esa vez, así la cota se abre sola, sin contador ni flechas (con una sola foto el contador queda vacío). Solo en Mobile la cota es un botón (rol, foco y nombre «Ampliar cotas de …»); en Desktop sigue siendo una imagen.
+- **Ajuste (mismo día):** la cota se abre con el PNG original, el mismo que ya cargó la página (sale de la caché, abre al instante), y no con la copia de 2400 px de CloudFront, que se genera en el momento (tardaba unos segundos y agrandaba un dibujo de ~560 px). Se ve a su tamaño, centrada, como mucho del ancho y alto del visor (`photo.original` en `PhotoViewer`). Con una sola foto, el visor no reserva lugar para las flechas.
+- **Ajuste 2 (mismo día):** la entrada era brusca (`motion/duration/base` con `easing/out`: al 60 % a los 40 ms). La cota entra como los paneles que se abren por encima: fondo y dibujo funden en `motion/duration/panel` con `motion/easing/standard` y el dibujo crece desde `motion/scale/enter` con `easing/out`; con movimiento reducido, solo el fundido (`motion/duration/fade`). Tamaño: como mucho el 70 % del ancho y del alto de la pantalla (`70vw` · `70svh`; `TODO`: sin token, como el 70svh del hero). El visor de las galerías no cambia.
+- **Ajuste 3 (mismo día):** el fondo de la cota pasa a `color/overlay/scrim` (negro al 70 %, el de los paneles; DESIGN.md §4 todavía dice 60 %) en vez de `color/overlay/scrim-gallery` (90 %), que la dejaba sobre un negro casi pleno. Las galerías siguen en 90 %.
+
+## 2026-10-29 · Daö sin Iluminar también por familia
+
+- El listado ya apagaba Iluminar en la colección Daö (2026-10-23), pero solo con `?collection=dao`. Los links del menú Colecciones y del breadcrumb de la ficha llegan con `?family=Daö`, y ahí el toggle seguía. Ahora se mira `collection` y `family` (sin tildes ni mayúsculas): sin toggle, y si se llegó iluminado, la página vuelve a Light.
+
+## 2026-10-29 · Bajada del listado animada como el título
+
+- Al cambiar de categoría o colección sin recargar, el título subía y aparecía pero la bajada cambiaba de golpe. Ahora entra igual (sube `space/gap/md` y aparece, `motion/duration/slow` con `motion/easing/standard`), `motion/duration/fast` después del título: título, bajada y cards en cascada. Solo si el texto cambia y nunca en la primera carga; sin movimiento con `prefers-reduced-motion`.
+- **Ajuste (mismo día):** subiendo se sentía pesada en un texto de lectura. La bajada solo funde, con la duración de la entrada de las cards (`motion/duration/slow` × 2, 640 ms; con 320 se sentía rápido) y `motion/easing/standard`, `motion/duration/fast` después del título; el título sigue subiendo.
+- **Ajuste 2 (mismo día):** el título tampoco sube: título y bajada entran con el mismo fundido (`motion/duration/slow` × 2, `motion/easing/standard`; la bajada, `motion/duration/fast` después). La entrada vertical queda solo en las cards.
+- **Ajuste 3 (mismo día):** seguía sintiéndose rápido y duro. Medido: el texto viejo se reemplazaba de golpe y, con `easing/standard`, el nuevo llegaba al 63 % a los 200 ms de 640. Ahora el viejo se desvanece primero (`motion/duration/fade`) y el nuevo aparece en `motion/duration/slow` × 2 con una curva pareja: la del fundido de fotos de Iluminar (`motion/easing/illumination-image`), porque no hay una curva de fundido general. `TODO` (token): si se usa en más lugares, proponer un `motion/easing/fade` en Figma.
+- **Ajuste 4 (mismo día):** con 640 ms se sentía lento. El texto nuevo aparece en `motion/duration/slow` × 1,5 (480 ms); en total, unos 630 ms desde el clic (más 120 de la bajada).
+- **Ajuste 5 (mismo día):** se prueba con `motion/duration/slow` (320 ms), sin multiplicar: unos 470 ms desde el clic (más 120 de la bajada).
+- **Ajuste 6 (mismo día):** el título vuelve a subir, ahora con la misma entrada que las cards (`arq-reveal`: sube `space/gap/2xl` y aparece, `motion/duration/slow` × 2 con `easing/standard`), después de que se va el anterior. La bajada sigue con el fundido parejo de 320 ms.
+- **Ajuste 7 (mismo día):** con 640 ms el título se sentía lento: sube en `motion/duration/slow` × 1,5 (480 ms), con la misma distancia y curva que las cards.
