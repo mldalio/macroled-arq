@@ -64,6 +64,10 @@
   gap: var(--arq-space-gap-sm);
 }
 
+.downloads-menu {
+  display: none;
+}
+
 .search {
   grid-column: 1 / 3;
   grid-row: 1;
@@ -560,8 +564,8 @@ td.end {
     padding-inline: var(--page-gutter);
   }
 
-  /* Mobile. Ficha: Filtros con la cantidad en la primera fila, los archivos
-     generales debajo y lo aplicado abajo de todo. Descargas: el buscador
+  /* Mobile. Ficha: Filtros y Descargas en la primera fila, la cantidad
+     debajo y lo aplicado abajo de todo. Descargas: el buscador
      arriba, a todo el ancho; Filtros con la cantidad debajo (2558:20156) y lo
      aplicado abajo de todo */
   .controls,
@@ -569,10 +573,22 @@ td.end {
     grid-template-columns: auto minmax(0, 1fr);
   }
 
+  /* Ficha: Filtros y, a la derecha, «Descargas» (abre el download-modal con
+     los archivos generales); la cantidad debajo (2026-10-29) */
   .downloads {
+    display: none;
+  }
+
+  .downloads-menu:not([hidden]) {
+    display: inline-flex;
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  :host(:not([type='catalog'])) .total {
     grid-column: 1 / -1;
     grid-row: 2;
-    justify-content: flex-start;
   }
 
   .applied,

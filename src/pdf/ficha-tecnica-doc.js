@@ -28,7 +28,7 @@ export const TEXT = Object.freeze({
 });
 
 const PT_PER_PX = 0.75;
-const pt = (px) => px * PT_PER_PX;
+export const pt = (px) => px * PT_PER_PX;
 
 // A4 en puntos (el tamaño A4 de pdfmake); en px es el frame de Figma, 794 × 1123.
 export const PAGE = Object.freeze({ width: 595.28, height: 841.89 });
@@ -38,7 +38,7 @@ export const PAGE = Object.freeze({ width: 595.28, height: 841.89 });
 // a su multiplicador.
 const FONT_BOX = 1.2;
 
-const page = {
+export const page = {
   top: T['space/padding/xl'],
   side: T['space/padding/xl-2xl'],
   bottom: T['space/padding/lg'],
@@ -48,7 +48,7 @@ const ruled = T['border/default'];
 // Color de las líneas finas (filas, encabezado, pie, pdf-cover). En pantalla
 // es color/border/subtle, pero impreso (tinta al 10 %) no se ve: en papel va
 // color/border/default (22 %). Las de título siguen en color/border/strong.
-const RULE = 'border/default';
+export const RULE = 'border/default';
 
 /**
  * Fondo de la foto de pdf-cover. En pantalla es color/surface/subtle, pero
@@ -76,7 +76,7 @@ function solid(hex, background = T['color/surface/default']) {
   const mixed = channels(match[1]).map((c, i) => Math.round(c * alpha + bg[i] * (1 - alpha)));
   return `#${mixed.map((c) => c.toString(16).padStart(2, '0')).join('')}`;
 }
-const color = (name) => solid(T[`color/${name}`]);
+export const color = (name) => solid(T[`color/${name}`]);
 
 /**
  * Texto con un estilo role/*. pdfmake dibuja el texto arriba de su línea y deja
@@ -101,7 +101,7 @@ export function roleText(text, role, colorName, { above = 0 } = {}) {
 // Bloque con una sola regla horizontal, debajo (header, pdf-cover) o arriba
 // (footer) de su contenido. padding: el aire entre la regla y el
 // contenido.
-function ruledBlock(content, { lineAt, lineColor, padding, widths = ['*'] }) {
+export function ruledBlock(content, { lineAt, lineColor, padding, widths = ['*'] }) {
   return {
     table: { widths, body: [Array.isArray(content) ? content : [content]] },
     layout: {
@@ -131,17 +131,18 @@ function logo() {
 // alto que el de la hoja 1.
 const logoHeight = (LOGO_WIDTHS.small * LOGO_VIEWBOX.height) / LOGO_VIEWBOX.width;
 const productLines = ROLES['body-sm-medium'].lineHeight + ROLES['body-sm'].lineHeight;
-const headerHeight = (textHeight) => Math.max(textHeight, logoHeight) + T['space/padding/sm-md'] + ruled;
-const footerHeight = ROLES.label.lineHeight + T['space/padding/sm-md'] + ruled;
+export const headerHeight = (textHeight) => Math.max(textHeight, logoHeight) + T['space/padding/sm-md'] + ruled;
+export const footerHeight = ROLES.label.lineHeight + T['space/padding/sm-md'] + ruled;
 
 // pdf-header: logo (Size=Small) a la izquierda y, a la derecha, centrado en
-// alto con el logo, Type=Default («Ficha técnica» en role/label, hoja 1) o
-// Type=Product (nombre en role/body-sm-medium sobre el SKU en role/body-sm,
-// alineados a la derecha, hoja 2 en adelante).
-function header(product) {
+// alto con el logo, Type=Default (label en role/label: «Ficha técnica» en la
+// hoja 1; la configuración de Daö pasa el suyo) o Type=Product (nombre en
+// role/body-sm-medium sobre el SKU en role/body-sm, alineados a la derecha,
+// hoja 2 en adelante).
+export function header(product, label = TEXT.label) {
   const meta = product
     ? { stack: [roleText(product.name, 'body-sm-medium', 'text/primary'), roleText(product.sku, 'body-sm', 'text/tertiary')] }
-    : roleText(TEXT.label, 'label', 'text/tertiary');
+    : roleText(label, 'label', 'text/tertiary');
   const textHeight = product ? productLines : ROLES.label.lineHeight;
   return ruledBlock(
     {
@@ -156,7 +157,7 @@ function header(product) {
 }
 
 // pdf-footer: paginado role/label al borde derecho.
-function footer(current, total) {
+export function footer(current, total) {
   return ruledBlock(
     { ...roleText(`${current} / ${total}`, 'label', 'text/tertiary'), alignment: 'right' },
     { lineAt: 'top', lineColor: color(RULE), padding: T['space/padding/sm-md'] },
@@ -244,7 +245,7 @@ const specCell = (text, role, colorName) => ({ ...roleText(text, role, colorName
 // leer de arriba abajo. Es una sola tabla de cinco columnas (etiqueta, valor,
 // separación, etiqueta, valor), así las reglas de las dos columnas quedan a la
 // misma altura aunque un valor ocupe dos líneas.
-function specGroup(section, index, isLast) {
+export function specGroup(section, index, isLast) {
   const rowPadding = pt(T['space/padding/sm']);
   const label = T['layout/pdf-spec-label-compact'];
   const valueWidth = SPEC_COLUMN - label - T['space/gap/lg'];

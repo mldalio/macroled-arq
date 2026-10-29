@@ -63,6 +63,7 @@ import { getProduct, variantDetails, categoryHref, listCompareCandidates, LAMPS_
 import { attributeInfo } from '../../data/attributes.js';
 import { config } from '../../config.js';
 import { GALLERY_WIDTH, sizedImage } from '../../base/image-size.js';
+import { reveal, revealCss } from '../../base/reveal.js';
 import { variantOptions, initialSelection, findVariant, choose } from '../../data/variants.js';
 import '../breadcrumb/breadcrumb.js';
 import '../breadcrumb-item/breadcrumb-item.js';
@@ -170,7 +171,7 @@ const NO_ILLUMINATION_VARIANT_GROUP = /^PAR11-.*FRENTE/i;
 
 class ArqFichaProducto extends ArqElement {
   static tag = 'arq-ficha-producto';
-  static styles = css + viewerCss;
+  static styles = revealCss + css + viewerCss;
   static template =
     `<div class="page">` +
     // Hero (Ficha v2, 2085:27570): galería a sangre a la izquierda y configurador
@@ -277,6 +278,7 @@ class ArqFichaProducto extends ArqElement {
   #ambientRail = null;
   #collectionRail = null;
   #collectionResize = null;
+  #collectionReveal = null;
   #viewer = null;
   #syncCotas = () => this.shadowRoot.querySelectorAll('.cota').forEach(cotaExpandable);
 
@@ -383,7 +385,8 @@ class ArqFichaProducto extends ArqElement {
 
     // Glosario: el ícono de cada fila abre el modal con los archivos de ese SKU
     const table = root.querySelector('.table');
-    table.addEventListener('arq:downloads', (event) => this.#fillModal(event.detail.sku));
+    // y, sin sku, el botón Descargas de Mobile con los archivos generales del grupo
+    table.addEventListener('arq:downloads', (event) => (event.detail.sku ? this.#fillModal(event.detail.sku) : this.#fillGeneralModal()));
     root.querySelector('arq-download-modal').addEventListener('arq:download', (event) => {
       event.stopPropagation();
       this.#datasheet(event.currentTarget.dataset.sku, event.target.closest('arq-download-item'));
@@ -1092,8 +1095,10 @@ class ArqFichaProducto extends ArqElement {
         button.slot = 'downloads';
         button.type = 'outline';
         button.showIcon = true;
-        button.icon = 'download';
+        // Se abren en otra pestaña (son PDF), como download-item
+        button.icon = 'arrow-up-right';
         button.href = file.href;
+        button.target = '_blank';
         button.textContent = file.label;
         return button;
       }),
@@ -1122,6 +1127,25 @@ class ArqFichaProducto extends ArqElement {
     for (const item of modal.querySelectorAll(':scope > arq-download-item')) item.remove();
     modal.querySelector('.datasheet-error').textContent = '';
     modal.append(featured, ...items);
+  }
+
+  // Archivos generales del grupo (los de la barra del glosario en Desktop): la
+  // misma hoja sin sku (download-modal oculta el producto) y sin ficha técnica.
+  #fillGeneralModal() {
+    const modal = this.shadowRoot.querySelector('arq-download-modal');
+    delete modal.dataset.sku;
+    modal.sku = null;
+    modal.thumb = null;
+    modal.meta = null;
+    const items = this.#product.files.map((file) => {
+      const item = document.createElement('arq-download-item');
+      item.href = file.href;
+      item.textContent = file.label;
+      return item;
+    });
+    for (const item of modal.querySelectorAll(':scope > arq-download-item')) item.remove();
+    modal.querySelector('.datasheet-error').textContent = '';
+    modal.append(...items);
   }
 
   // ── Inspiración ───────────────────────────────────────────────────
@@ -1183,7 +1207,11 @@ class ArqFichaProducto extends ArqElement {
     const section = this.shadowRoot.querySelector('.collection');
     section.hidden = !family.length;
     const cards = section.querySelector('.cards');
-    cards.replaceChildren(...family.map(productCard));
+    const elements = family.map(productCard);
+    this.#collectionReveal?.disconnect();
+    cards.replaceChildren(...elements);
+    // Las cards entran al hacer scroll como las de Productos (src/base/reveal.js)
+    this.#collectionReveal = reveal(elements);
     // El tamaño de cada card también cambia lo que hay para desplazar
     this.#collectionResize?.disconnect();
     this.#collectionResize?.observe(cards);

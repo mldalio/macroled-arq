@@ -64,7 +64,8 @@
   color: var(--arq-color-text-tertiary);
 }
 
-/* icon/download en icon/md, color/icon/primary */
+/* icon/arrow-up-right (con href) o icon/download (ficha técnica) en icon/md,
+   color/icon/primary */
 .icon {
   flex: none;
   width: var(--arq-icon-md);

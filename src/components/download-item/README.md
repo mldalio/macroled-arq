@@ -1,6 +1,6 @@
 # download-item · `<arq-download-item>`
 
-Opción del modal de descargas: texto + `icon/download`. Cada opción descarga su archivo directamente.
+Opción del modal de descargas: texto + ícono. Los archivos de la base (IES, CAD, Manual, Fotometría, Cotas) se abren en una pestaña nueva con `icon/arrow-up-right`; la ficha técnica se genera y lleva `icon/download`.
 
 - Figma: [1101-5542](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1101-5542) · ficha `doc/download-item`
 
@@ -19,7 +19,7 @@ Opción del modal de descargas: texto + `icon/download`. Cada opción descarga s
 | Show format · Format | `show-format` + slot `meta` | `showFormat` | Formato del archivo («PDF», «DWG») debajo del nombre, `role/body-compact-regular` en `color/text/tertiary`. Apagado por defecto; por ahora ninguna página lo usa |
 | — | `loading` | `loading` | Solo sin `href`: «Generando…» con `aria-busy` mientras se genera la ficha técnica |
 
-- **Con `href`** es un `<a download>`. **Sin `href`** es un `<button>` que emite `arq:download`: la ficha técnica se genera al hacer clic (decisión 2026-10-02 · Ficha técnica en PDF).
+- **Con `href`** es un `<a target="_blank">` con `icon/arrow-up-right`: son PDF que el navegador abre, no descarga (decisión 2026-10-29 · Archivos que se abren). **Sin `href`** es un `<button>` con `icon/download` que emite `arq:download`: la ficha técnica se genera al hacer clic (decisión 2026-10-02 · Ficha técnica en PDF).
 - **Si un archivo falta,** la página no pone la opción.
 - **No son props:** State=Hover y State=Focus (CSS). Default: Hover subraya el texto (como dice la descripción; la variante del set se corrigió). Featured: Hover `color/surface/faint`.
 - Default lleva `role="listitem"` (va en la lista del modal); Featured no.

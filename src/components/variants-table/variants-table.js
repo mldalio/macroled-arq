@@ -61,6 +61,10 @@
 //   escribir: 500 ms, no con cada tecla).
 // - Descarga de cada fila: emite arq:downloads { sku } y, con
 //   downloads="<id>", abre ese download-modal.
+// - Archivos generales en Mobile (product): en lugar de un botón por archivo,
+//   un button Outline «Descargas» a la derecha de Filtros, con la cantidad
+//   debajo. Emite arq:downloads { sku: null } y abre el mismo download-modal,
+//   que la página llena solo con esos archivos (sin producto ni sku).
 
 import { ArqElement } from '../../base/arq-element.js';
 import '../text-link/text-link.js';
@@ -168,6 +172,7 @@ class ArqVariantsTable extends ArqElement {
     `<arq-button class="toggle-filters" show-icon icon="filter">${TEXT.filters}</arq-button>` +
     `<span class="total role-body" aria-hidden="true"></span>` +
     `<div class="downloads"><slot name="downloads"></slot></div>` +
+    `<arq-button class="downloads-menu" type="outline" show-icon icon="download" hidden>${TEXT.downloads}</arq-button>` +
     `<div class="applied" hidden>` +
     `<div class="chips" role="list" aria-label="Filtros aplicados"></div>` +
     `<arq-button class="clear" type="underline" show-underline>${TEXT.clear}</arq-button>` +
@@ -304,11 +309,23 @@ class ArqVariantsTable extends ArqElement {
       root.querySelector('.toggle-filters').focus();
     });
     root.querySelector('.more-button').addEventListener('click', () => this.#showMore());
-    // Sin archivos generales en la barra, el slot no ocupa lugar
+    // Sin archivos generales en la barra, el slot no ocupa lugar (ni el botón
+    // Descargas de Mobile)
     const downloads = root.querySelector('slot[name="downloads"]');
-    const toggleDownloads = () => (downloads.parentElement.hidden = !downloads.assignedElements().length);
+    const menu = root.querySelector('.downloads-menu');
+    const toggleDownloads = () => {
+      const empty = !downloads.assignedElements().length;
+      downloads.parentElement.hidden = empty;
+      menu.hidden = empty;
+    };
     downloads.addEventListener('slotchange', toggleDownloads);
     toggleDownloads();
+    // Mobile: los archivos generales van en el download-modal (sin sku)
+    menu.addEventListener('click', () => {
+      this.emit('downloads', { sku: null });
+      const modal = this.downloads ? this.getRootNode().getElementById?.(this.downloads) : null;
+      modal?.show?.(menu);
+    });
     // Panel lateral: «Ver N …» se calcula con lo marcado; se aplica al
     // confirmar (cerrar descarta).
     const panel = root.querySelector('.panel');

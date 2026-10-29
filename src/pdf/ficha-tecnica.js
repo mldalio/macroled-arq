@@ -28,8 +28,9 @@ const IMAGE_QUALITY = 0.9;
 
 let library = null;
 
-// pdfmake con Albert Sans, una sola vez por página.
-function loadLibrary() {
+// pdfmake con Albert Sans, una sola vez por página. También lo usa la
+// configuración de Daö (configuracion.js).
+export function loadLibrary() {
   library ??= import(/* @vite-ignore */ config.pdf.pdfmakeUrl).then(({ default: pdfMake }) => {
     const fonts = {};
     for (const weight of FONT_WEIGHTS) {
@@ -67,7 +68,7 @@ function corsSrc(src, sizePx, format) {
  *     conserva la transparencia de los PNG de estudio, que en jpeg el
  *     CloudFront pinta de negro antes de que el canvas ponga el fondo.
  */
-function fitImage(src, widthPx, heightPx, { maxPx = Math.max(Number(widthPx) || 0, heightPx), fit = 'contain', background, scale: density = IMAGE_SCALE, type = 'image/jpeg', request = 'webp' } = {}) {
+export function fitImage(src, widthPx, heightPx, { maxPx = Math.max(Number(widthPx) || 0, heightPx), fit = 'contain', background, scale: density = IMAGE_SCALE, type = 'image/jpeg', request = 'webp' } = {}) {
   if (!src) return Promise.resolve(null);
   src = corsSrc(src, maxPx * density, request);
   return new Promise((resolve) => {

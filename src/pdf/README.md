@@ -56,3 +56,20 @@ pdfmake no lee variables CSS: los valores salen de `src/styles/print-tokens.js`,
 - (datos) `FUJI_12W.png` dibuja la Fuji de 7 W (Ø7 × 10 cm) y es el `cotas_img` de `FUJI-A-7W`: conviene renombrarlo y cambiar la celda.
 - (datos) PAR11 tiene dibujo (`PAR11.png`) pero sus 5 SKU no lo tienen cargado en `cotas_img`.
 - (diseño) El código se apartó de la hoja de Figma (2992:45969) por pedido de Lau: nombre arriba, imágenes cuadradas, cotas sin borde que se ensanchan hasta 1,5 veces la foto y textos de impresión. En Figma ya están la variable (`layout/pdf-cover-image` = 240), los componentes pdf-cover, pdf-cover-title y pdf-spec-row · 2 col y la hoja de ejemplo.
+
+## Configuración de Daö
+
+`configuracion.js` y `configuracion-doc.js`: la hoja del armado que sale del configurador de Daö («Descargar configuración»). Se abre igual que la ficha técnica (pestaña nueva, visor del navegador; si el navegador la bloquea, se descarga como `configuracion-dao.pdf`) y reutiliza de ella pdfmake, la fuente, la preparación de imágenes (`loadLibrary`, `fitImage`), el encabezado, el pie, las reglas y pdf-spec-group.
+
+```js
+// main.js ya lo engancha: arq:configuration { title, pieces, specs, parts }
+this.emit('configuration', detail);
+detail.pending?.then(listo, listo);
+```
+
+- **Encabezado:** logo + «Configuración Daö» (pdf-header Type=Default) en todas las hojas. **Pie:** el paginado. Sin fecha ni otros datos.
+- **Arriba:** el título del armado (`role/heading-2`, el mismo del configurador: «Daö x2 negro con cabezal negro y cabezal direccionable blanco») y una fila con la foto de cada pieza en un cuadrado sobre `color/surface/strong`, que se reparten el ancho a `space/gap/sm` (hasta `layout/pdf-cover-image`), con su nombre en `role/body-sm` debajo («1 × …» si el aro lleva cabezales combinados). Sin regla debajo: la sección siguiente ya lleva la suya. El título arranca a `space/padding/xl` del encabezado.
+- **Características:** pdf-spec-group en dos columnas (Haz, Color de luz, Orientación, En el cielorraso, Medida del aro).
+- **Piezas para este armado:** título como pdf-spec-group y una fila por pieza: cantidad («2×», `role/body-sm`), nombre (`role/body-sm-medium`) y SKU (`role/body-sm`, a la derecha, sin cortar).
+- `TODO` (diseño): la hoja de la configuración no está en Figma.
+

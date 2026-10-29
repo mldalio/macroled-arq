@@ -4,6 +4,7 @@
 import './styles/global.css';
 import { version } from '../package.json';
 import { openDatasheet } from './pdf/ficha-tecnica.js';
+import { openConfiguration } from './pdf/configuracion.js';
 
 // Registro de componentes (uno por línea, cuando existan):
 // import './components/<nombre>/<nombre>.js';
@@ -116,6 +117,17 @@ document.addEventListener('arq:datasheet', (event) => {
   const pending = openDatasheet(sku);
   event.detail.pending = pending;
   pending.catch((error) => console.error('[arq] ficha técnica:', error));
+});
+
+// Configuración de Daö en PDF: la pide el configurador («Descargar
+// configuración») con arq:configuration { title, pieces, specs, parts }. Se
+// abre en una pestaña nueva, como la ficha técnica; la promesa queda en
+// event.detail.pending (el botón queda en Loading mientras se genera).
+document.addEventListener('arq:configuration', (event) => {
+  if (!event.detail?.parts) return;
+  const pending = openConfiguration(event.detail);
+  event.detail.pending = pending;
+  pending.catch((error) => console.error('[arq] configuración Daö:', error));
 });
 
 // Imprimir la página (comparativa: "Descargar comparación", como

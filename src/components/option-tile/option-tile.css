@@ -78,6 +78,41 @@
   color: var(--arq-color-text-secondary);
 }
 
+/* Foto de la opción (slot media, Type=Card): a la izquierda del título, como
+   las demás cards (horizontales), en un cuadrado de layout/search-thumb sobre
+   color/surface/subtle; la foto (fondo blanco) se funde con él (multiply) y se
+   ve entera. Título y subtítulo, a su derecha. */
+:host([type='card']) .tile:has(> .media:not([hidden])) {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--arq-space-gap-sm-md);
+}
+
+/* Con subtítulo, la foto ocupa las dos líneas; sin él, queda centrada con el título */
+:host([type='card']) .tile:has(> .meta:not([hidden])) > .media {
+  grid-row: 1 / span 2;
+}
+
+.media {
+  display: block;
+  width: var(--arq-layout-search-thumb);
+  height: var(--arq-layout-search-thumb);
+  background: var(--arq-color-surface-subtle);
+}
+
+.media[hidden] {
+  display: none;
+}
+
+::slotted([slot='media']) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
 .meta[hidden] {
   display: none;
 }

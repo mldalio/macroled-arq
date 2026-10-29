@@ -42,3 +42,5 @@ Opción de configuración de la ficha (altura, potencia, temperatura). Funciona 
 | Foco | `border/strong` en `color/border/focus`, separado 2 px (DESIGN.md §7) |
 
 - **2026-10-21 · sin caja** (`docs/decisiones.md`, Configurador de la ficha): se sacaron el padding lateral y superior y los fondos; la línea pasó a ser el indicador de selección (2 px solo en la elegida). TODO (Figma): actualizar el set 921:2487, que todavía tiene caja, línea de 1 px en todas y fondo en Hover y Selected.
+
+- **Slot `media` (solo Type=Card, configurador de Daö):** una foto a la izquierda del título (card horizontal, como las demás), en un cuadrado de `layout/search-thumb` sobre `color/surface/subtle` (multiply, entera); con subtítulo ocupa las dos líneas. La usa el frente de PAR11.

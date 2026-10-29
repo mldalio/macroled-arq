@@ -34,7 +34,7 @@ Los datos los arman `getProduct().glossary` (ficha) y `getDownloadsTable()` (Des
 | --- | --- | --- | --- |
 | Type | `type` | `type` | `product` (ficha) · `catalog` (Descargas). Por defecto `product`. En Figma, Type: Product · Catalog (el set ya lo tiene) |
 | — (datos) | — | `data` | `{ columns, filters, rows }` (solo JS) |
-| — (archivos de la barra) | slot `downloads` | — | `arq-button` Outline con `icon/download` (CAD 2D/3D y Manual del grupo, campos `cad` y `manual` de Typesense). Solo `product`; sin botones, no ocupa lugar |
+| — (archivos de la barra) | slot `downloads` | — | `arq-button` Outline con `icon/arrow-up-right` y `target="_blank"` (se abren en otra pestaña; CAD 2D/3D y Manual del grupo, campos `cad` y `manual` de Typesense). Solo `product`; sin botones, no ocupa lugar. En Mobile no se muestran: en su lugar, un button Outline «Descargas» (`icon/download`) a la derecha de Filtros, con la cantidad debajo, que emite `arq:downloads { sku: null }` y abre el modal de `downloads` |
 | — | `downloads` | `downloads` | `id` del `arq-download-modal` que abre el ícono de cada fila |
 | — | `label` | `label` | Nombre de la región con scroll (único en la página). Por defecto «Variantes» |
 | — | `loading` | `loading` | booleano. Filas (Mobile: tarjetas) de carga y «Buscando…» en la cantidad |

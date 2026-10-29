@@ -559,8 +559,8 @@
   display: flex;
   flex-direction: column;
   gap: var(--arq-space-gap-md);
-  padding-top: var(--arq-space-section-sm);
-  padding-bottom: var(--arq-space-section-xl);
+  /* Mismo aire arriba y abajo, como compatible-products (2026-10-29) */
+  padding-block: var(--arq-space-section-md);
   scroll-margin-top: var(--arq-layout-navbar-height);
 }
 
@@ -644,14 +644,13 @@
 /* ── Explora la colección ─────────────────────────────────────────── */
 /* Banda oscura: neutral/700 (#454545) con texto color/text/inverse (blanco).
    TODO: en Light no hay un color/surface que sea neutral/700.
-   El margen de página a los lados (space/section/lg desde 1440 px) y space/padding/5xl
-   arriba y abajo. La introducción (role/heading-2) a la izquierda y la card a su derecha.
-   TODO (diseño): la introducción mide 440 en Final; layout/measure + space/gap/xl-2xl. */
+   El margen de página a la izquierda, como el resto de la ficha, en todos los anchos
+   (2026-10-29: con space/section/lg desde 1440 px quedaba desconectada de lo de arriba),
+   y space/padding/5xl arriba y abajo. La introducción a la izquierda y las cards a su derecha. */
 .collection {
   display: flex;
   align-items: flex-start;
-  --collection-inline: var(--page-gutter);
-  padding: var(--arq-space-padding-5xl) 0 var(--arq-space-padding-5xl) var(--collection-inline);
+  padding: var(--arq-space-padding-5xl) 0 var(--arq-space-padding-5xl) var(--page-gutter);
   background: var(--arq-neutral-700);
   color: var(--arq-color-text-inverse);
 }
@@ -672,7 +671,6 @@
   flex-direction: column;
   align-items: flex-start;
   gap: var(--arq-space-gap-md);
-  width: calc(var(--arq-layout-measure) + var(--arq-space-gap-xl-2xl));
   max-width: 100%;
 }
 
@@ -704,12 +702,15 @@
 .collection-rail > .cards::after {
   content: '';
   flex: none;
-  width: calc(var(--collection-inline) - var(--arq-space-gap-sm));
+  width: calc(var(--page-gutter) - var(--arq-space-gap-sm));
 }
 
 .collection-controls {
+  /* Deshabilitado (al principio o al final), el borde va del color del chevron: con
+     color/border/disabled quedaba casi blanco sobre la banda y parecía habilitado */
+  --arq-color-border-disabled: var(--arq-color-icon-disabled);
   align-self: flex-end;
-  margin-inline-end: var(--collection-inline);
+  margin-inline-end: var(--page-gutter);
   margin-bottom: var(--arq-space-gap-lg);
 }
 
@@ -719,11 +720,15 @@
 
 /* Desktop (desde 1024 px): dos filas. Arriba, a la derecha, las flechas y el contador; debajo, el título
    a la izquierda y las tarjetas, con el borde superior del título alineado con el de las fotos. Sin flechas
-   (una sola tarjeta) la primera fila no ocupa lugar. */
+   (una sola tarjeta) la primera fila no ocupa lugar. La introducción mide lo que su texto (hasta
+   layout/measure) y la separa de las cards space/gap/4xl, siempre igual (2026-10-29: antes la columna
+   medía 440 fijos y el aire dependía del largo del título).
+   TODO (diseño): Final no tiene este gap; space/gap/4xl es el aire que quedaba con el título actual. */
 @media (min-width: 1024px) {
   .collection {
     display: grid;
-    grid-template-columns: calc(var(--arq-layout-measure) + var(--arq-space-gap-xl-2xl)) minmax(0, 1fr);
+    grid-template-columns: fit-content(var(--arq-layout-measure)) minmax(0, 1fr);
+    column-gap: var(--arq-space-gap-4xl);
     align-items: start;
   }
 
@@ -756,23 +761,14 @@
   }
 }
 
-/* Pantallas grandes (desde 1440 px): el margen lateral de la sección es space/section/lg.
-   En laptops más chicas queda el de página (layout/gutter), como el resto de las secciones. */
-@media (min-width: 1440px) {
-  .collection {
-    --collection-inline: var(--arq-space-section-lg);
-  }
-}
-
 /* ── Tablet y Mobile (hasta 1023 px) ────────────────────────────── */
 /* TODO (diseño): la Ficha v2 solo tiene Desktop; Mobile sigue siendo la v1
    (1220:11334) con los componentes nuevos. Hasta 1023 px se apilan los bloques
    de dos columnas como en Mobile: encabezado, galería, datos y acciones (el
    configurador deja de ser una columna y sus partes pasan a la fila del hero),
    texto e imágenes de inspiración, introducción y tarjetas de la colección,
-   con la tipografía y los espaciados de Desktop, y el margen lateral de
-   página en lugar de space/section/lg (docs/decisiones.md, 2026-10-05 · Ficha
-   en Tablet). */
+   con la tipografía y los espaciados de Desktop (docs/decisiones.md,
+   2026-10-05 · Ficha en Tablet). */
 @media (max-width: 1023px) {
   .hero {
     padding-top: 0;
@@ -867,23 +863,10 @@
   .collection {
     flex-direction: column;
     gap: var(--arq-space-gap-4xl);
-    padding-inline: var(--page-gutter) 0;
   }
 
   .collection-rail {
     align-self: stretch;
-  }
-
-  .collection-controls {
-    margin-inline-end: var(--page-gutter);
-  }
-
-  .collection-rail > .cards::after {
-    width: calc(var(--page-gutter) - var(--arq-space-gap-sm));
-  }
-
-  .collection-intro {
-    width: auto;
   }
 }
 
@@ -926,9 +909,5 @@
   .inspiration-images > * {
     flex: none;
     width: 100%;
-  }
-
-  .glossary {
-    padding-top: var(--arq-space-section-xs);
   }
 }
