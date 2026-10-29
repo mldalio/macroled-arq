@@ -165,6 +165,18 @@
   transition: transform var(--arq-motion-duration-slow) var(--arq-motion-easing-out);
 }
 
+/* Link estirado con overlay: el .caption (absoluto y con transform) es el
+   bloque contenedor del ::after y no deja pasar el puntero. El link lo vuelve
+   a recibir y su ::after se agranda más allá del caption; el overflow: hidden
+   de .card lo recorta a la tarjeta, así toda la tarjeta es clickeable. */
+:host([overlay]) .card-link {
+  pointer-events: auto;
+}
+
+:host([overlay]) .card-link::after {
+  inset: -100vmax;
+}
+
 :host([overlay]) .title-row {
   justify-content: space-between;
   gap: var(--arq-space-gap-md);
