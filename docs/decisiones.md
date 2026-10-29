@@ -1991,3 +1991,16 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 - Reemplaza 2026-10-26 · Home en /arq/inicio. Para que la Home esté en `macroled.com.ar/arq`, en Webflow va como página suelta en la raíz con slug `arq`; el resto de las páginas (estáticas y templates del CMS) sigue en la carpeta `arq`.
 - Los links a la Home van a `/arq`: el `href` por defecto de `<arq-logo>` (navbar y footer), el breadcrumb «Inicio» de Productos y Colección, y los ejemplos del link al newsletter (`/arq#newsletter`).
 - En Webflow se saca la redirección 301 de `/arq` a `/arq/inicio`. Si `/arq/inicio` llegó a publicarse, queda la inversa: 301 de `/arq/inicio` a `/arq`.
+
+## 2026-10-29 · Límite de 1920 en pantallas anchas
+
+- Pedido de Lau. Desde 1920 px algunas partes seguían creciendo hasta el borde de la pantalla: los textos del hero y las secciones `padding="wide"` de la Home (margen fijo de `space/padding/4xl`), las fotos a sangre (Explorar por espacio, galería de la ficha, galería y foto de Colección) y los carruseles que llegan al borde (Productos destacados, ambiente y Explora la colección de la ficha, mosaico de Colección). Ahora, **desde 1920 la página se ve como a 1920, centrada**; hasta 1920 no cambia nada.
+- En código, `ArqElement` suma `--page-extra` (lo que el viewport pasa de 1920 de cada lado: `--page-gutter` menos `layout/gutter`). Los márgenes propios le suman `--page-extra`, las fotos a sangre lo llevan del lado del borde y los carruseles con scroll, como `margin-inline`. En section, `--section-inline` es el margen base y `--section-pad` el que se aplica, así las filas de imagen sangran solo hasta el borde de los 1920 (DESIGN.md §2 · Ancho máximo).
+- **Siguen a todo el ancho:** los fondos y las barras (como antes), la foto o el video de fondo de los heroes (Home, Nosotros, Contacto; sus textos quedan dentro), la foto fija de la STORY de la ficha y la galería de Casa FOA de la Home (project-slider: sangra también `--page-extra`, decisión de Lau).
+- **Especificaciones de la ficha al ancho del contenido (decisión de Lau):** `.details` deja el `space/section/lg` de la izquierda (Ficha v2, 2118:33571) y lleva el margen de página a los dos lados, alineada con el logo, el configurador y el glosario, en todos los anchos de Desktop. En Figma, el frame `detalles` de Ficha v2 1920 (2118:33571) y Ficha v2 1440 (2280:32407), en la página PRUEBA, pasa de `space/section/lg` a `layout/gutter` a la izquierda (la página Final ya lo tenía).
+- **A confirmar con el equipo:** si las fotos de Explorar por espacio van a todo el ancho (hoy quedan dentro de los 1920) y si los heroes fuera de la Home siguen a todo el ancho.
+
+## 2026-10-29 · Comparativa impresa: sin línea entre productos y líneas finas
+
+- Pedido de Lau. Al imprimir la comparativa, la cabecera de productos (compare-header) ya no lleva la línea vertical entre los productos: solo la foto, el nombre y el SKU de cada uno.
+- Las líneas impresas de compare-table (horizontales, verticales entre valores y la del título de cada grupo) pasan a la mitad de `border/default` (0,5 px): con 1 px se veían gruesas y algunas más que otras. En pantalla no cambia nada. `TODO` (diseño): no hay token de línea fina de impresión.

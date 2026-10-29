@@ -165,14 +165,19 @@ Medido en Productos (con `catalog-nav` desde 1024 px):
 
 - El **contenido** de la página llega hasta `layout/max-width` (1792 = 1920 − 2 × 64). Hasta 1920 px manda `layout/gutter`; desde ahí el margen lateral crece y el contenido queda centrado.
 - **variants-table** no va de borde a borde: en todos los breakpoints ocupa el ancho del contenido, y sus líneas van de la miniatura al ícono de descarga. Si no entra, se desplaza dentro de los márgenes **sin barra de scroll nativa**: la reemplaza una barra de scroll propia (carousel-controls con `scrub`) abajo de la tabla, de todo el ancho: pista de `color/surface/subtle` y trazo de `color/border/hover` de `space/padding/xs` (4 px) que mide la parte visible de la tabla y sigue el scroll. Se arrastra, el clic en la pista lo lleva hasta ahí, y un chevron chico (icon-button Default) a cada lado avanza media página. En hover y al arrastrar el trazo pasa a `color/text/tertiary` y suma `border/strong` de grosor (6 px), con fundido de `motion/duration/base`. La barra es solo para puntero; con teclado se desplaza la tabla enfocada. No se muestra en Mobile (tarjetas). Aparece solo si la tabla no entra en el ancho, en la ficha y en Descargas, y queda pegada al borde inferior de la pantalla mientras la tabla está a la vista. Además, mientras queda tabla por ver de un lado, un difuminado de `space/gap/3xl` (del transparente al fondo de la fila) junto a la columna fija de ese lado. Si la tabla no entra en la pantalla, la barra (buscador y Filtros, o Filtros y los archivos generales) queda fija debajo del navbar, con la fila de encabezados.
-- Los **fondos**, fotos y barras siguen a todo el ancho (announcement-bar, hero, navbar, footer, cta-block, la sección Dark de la ficha, compare-bar): el tope se aplica como padding, no como un contenedor con `max-width`.
-- En código, los componentes usan `--page-gutter` en lugar de `--arq-layout-gutter` para el margen de página. Es una variable local que `ArqElement` declara en cada `:host`:
+- Los **fondos** y barras siguen a todo el ancho (announcement-bar, navbar, footer, cta-block, las bandas de color de section, la sección Dark de la ficha, compare-bar): el tope se aplica como padding, no como un contenedor con `max-width`.
+- **Desde 1920 px la página se ve como a 1920, centrada.** Lo que hasta 1920 llega al borde de la pantalla (fotos a sangre de Explorar por espacio, carruseles de Productos destacados y de Colección, galería de la ficha) desde ahí llega al borde de esos 1920; los márgenes que no son de página (`space/padding/4xl` de la Home, `space/section/lg` de la ficha) se mantienen y el sobrante se suma afuera.
+- **Excepciones, siempre a todo el ancho:** la foto o el video de fondo del hero (Home, Nosotros, Contacto; sus textos sí quedan dentro de los 1920), la foto fija con texto de la ficha (STORY) y la galería de Casa FOA (project-slider) de la Home (`docs/decisiones.md`, 2026-10-29 · Límite de 1920 en pantallas anchas).
+- En código, los componentes usan `--page-gutter` en lugar de `--arq-layout-gutter` para el margen de página, y `--page-extra` para lo que el viewport pasa de 1920 de cada lado (0 hasta ahí). Son variables locales que `ArqElement` declara en cada `:host`:
 
 ```css
 :host {
   --page-gutter: max(var(--arq-layout-gutter), (100vw - var(--arq-layout-max-width)) / 2);
+  --page-extra: calc(var(--page-gutter) - var(--arq-layout-gutter));
 }
 ```
+
+- Un margen propio se escribe `calc(<token> + var(--page-extra))`; una foto a sangre lleva `var(--page-extra)` del lado del borde, y un carrusel que se desplaza hasta el borde, `margin-inline: var(--page-extra)`.
 
 - Los overlays (download-modal, select-menu) y las pantallas Mobile (search-screen, menú, filter-panel Mobile) siguen con `layout/gutter`: se ubican respecto del viewport, no del contenido.
 
