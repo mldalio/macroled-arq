@@ -209,7 +209,8 @@
 }
 
 :host([full-height]) .content {
-  padding: 0 var(--arq-space-padding-4xl) var(--arq-space-padding-4xl);
+  /* Desde 1920 el texto queda como a 1920 (--page-extra); el video sigue al borde. */
+  padding: 0 calc(var(--arq-space-padding-4xl) + var(--page-extra)) var(--arq-space-padding-4xl);
 }
 
 @media (max-width: 767px) {

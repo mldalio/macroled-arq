@@ -7,12 +7,16 @@
   --section-gap: var(--arq-space-gap-2xl);
   /* Margen lateral. Lo heredan las filas de imagen que no lo siguen
      (Explorar, mosaico, carrusel de proyectos): solo títulos y textos. */
-  --section-inline: var(--page-gutter);
+  --section-inline: var(--arq-layout-gutter);
+  /* Desde 1920 se suma --page-extra (ArqElement): textos y fotos a sangre
+     quedan como a 1920, centrados; el fondo sigue a todo el ancho. Las filas
+     de imagen sangran solo --section-inline, hasta el borde de esos 1920. */
+  --section-pad: calc(var(--section-inline) + var(--page-extra));
 
   display: block;
   box-sizing: border-box;
   min-width: 0;
-  padding: 0 var(--section-inline) var(--arq-space-section-xl);
+  padding: 0 var(--section-pad) var(--arq-space-section-xl);
   background: var(--arq-color-surface-default);
 }
 
@@ -45,23 +49,23 @@
    wide: space/section/md arriba y abajo, space/padding/4xl a los lados.
    bleed=end deja el carrusel llegar al borde derecho. */
 :host([padding='section']) {
-  --section-inline: var(--page-gutter);
-  padding: var(--arq-space-section-lg) var(--section-inline);
+  --section-inline: var(--arq-layout-gutter);
+  padding: var(--arq-space-section-lg) var(--section-pad);
 }
 
 :host([padding='wide']) {
   --section-inline: var(--arq-space-padding-4xl);
-  padding: var(--arq-space-section-md) var(--section-inline);
+  padding: var(--arq-space-section-md) var(--section-pad);
 }
 
 /* FAQ (layout=split): el margen lateral es el de la página, el mismo de
    newsletter y footer, y cambia con el viewport. */
 :host([layout='split']) {
-  --section-inline: var(--page-gutter);
+  --section-inline: var(--arq-layout-gutter);
 }
 
 :host([bleed='end']) {
-  padding-inline-end: 0;
+  padding-inline-end: var(--page-extra);
 }
 
 .section {
@@ -146,7 +150,7 @@
   }
 
   :host([layout='split']) {
-    --section-inline: var(--page-gutter);
+    --section-inline: var(--arq-layout-gutter);
   }
 
   /* Herramientas: las tres tarjetas en fila. Se deslizan con el dedo y la

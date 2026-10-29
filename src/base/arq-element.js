@@ -58,14 +58,21 @@ const templates = new WeakMap();
 // (celdas sticky, carruseles). Variable local: no se declara en :root.
 // Al imprimir, la hoja no tiene margen (comparativa: @page en su embed) y el
 // margen lateral es el mismo aire que arriba y abajo de cada hoja.
+// --page-extra: lo que el viewport pasa de 1920 px, de cada lado (0 hasta ahí).
+// Desde 1920 la página queda como a 1920 y centrada: los márgenes que no son
+// --page-gutter (space/padding/4xl de la Home, fotos que llegan al borde) le
+// suman esto, y las fotos a sangre llegan hasta el borde de esos 1920. Los
+// fondos y las fotos de fondo del hero siguen a todo el ancho.
 const baseCss = `
 :host {
   --page-gutter: max(var(--arq-layout-gutter), (100vw - var(--arq-layout-max-width)) / 2);
+  --page-extra: calc(var(--page-gutter) - var(--arq-layout-gutter));
 }
 
 @media print {
   :host {
     --page-gutter: var(--arq-space-padding-2xl);
+    --page-extra: 0px;
   }
 }
 

@@ -301,13 +301,13 @@
     overflow: visible;
   }
 
-  /* Línea divisoria de cada columna en color/border/default, como las de
-     compare-table impresa (color/border/subtle no sale impreso) */
+  /* Sin línea divisoria entre los productos (2026-10-29): solo la foto, el
+     nombre y el SKU de cada columna */
   .products > * {
     flex: 1 1 0;
     width: auto;
     padding-inline: var(--arq-space-padding-md) var(--arq-space-gap-lg);
-    border-left: var(--arq-border-default) solid var(--arq-color-border-default);
+    border-left: none;
   }
 }
 

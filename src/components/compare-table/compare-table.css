@@ -341,6 +341,16 @@ thead th {
     border-color: var(--arq-color-border-default);
   }
 
+  /* Impresas, las líneas de border/default (1 px) se ven gruesas: la mitad,
+     también la del título de cada grupo. TODO (diseño): no hay token de
+     línea fina de impresión. */
+  .group th,
+  .row > *,
+  .row .value,
+  .row .value:first-of-type {
+    border-width: calc(var(--arq-border-default) / 2);
+  }
+
   /* Textos como la ficha técnica (src/pdf/README.md): etiqueta role/body-sm,
      valor role/body-sm-medium (12 px = 9 pt) y título de grupo
      role/body-compact-medium (10,5 pt). Fijos acá y no por las clases role-*:
