@@ -12,9 +12,10 @@
 // - El logo no es link: es el mismo dibujo de src/base/logo-paths.js.
 // - Sin page: al terminar la línea espera motion/duration/panel y emite
 //   arq:done. Quién lo muestra saca open.
-// - Con page: la línea es la parte ya cargada (src/base/page-ready.js). Se va
-//   cuando no queda nada pendiente. Tope de 20 s para no trabar la página si
-//   un recurso no responde.
+// - Con page: la línea es la parte ya cargada (src/base/page-ready.js). No espera
+//   las imágenes lazy, el video decorativo ni los destacados. Se va cuando no
+//   queda nada pendiente. Tope de 20 s para no trabar la página si un recurso
+//   no responde.
 //   TODO (diseño): no hay token para ese tope.
 
 import { ArqElement } from '../../base/arq-element.js';

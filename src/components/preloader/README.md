@@ -19,7 +19,7 @@ En las páginas tapa el sitio hasta que cargaron las imágenes, los videos y los
 - **Fondo:** siempre blanco. El componente se marca `data-arq-theme="light"`, así sigue en blanco si la página está en Dark.
 - **Logo:** el mismo dibujo que `<arq-logo>` Size=Default (181 × 16). No es link.
 - **Línea:** debajo del logo, a `space/gap/lg`, del mismo ancho y de `border/default` en el color del texto. Crece con `transform: scaleX`.
-- **`page`:** la línea marca la parte ya cargada. Espera las imágenes (también las `loading="lazy"`, que se piden en ese momento), los videos hasta tener un frame, la fuente y los componentes con `aria-busy` (listado, ficha, destacados, colección, comparativa, descargas). Después funde. Si un recurso no responde, a los 20 s se muestra la página igual.
+- **`page`:** la línea marca la parte ya cargada. Espera las imágenes que no son `loading="lazy"`, los videos con contenido (un banner `aria-hidden` no) hasta tener un frame, la fuente y los componentes con `aria-busy` (listado, ficha, colección, comparativa, descargas). Los destacados de la Home no traban: se ven sus cards de carga. Después funde. Si un recurso no responde, a los 20 s se muestra la página igual.
 - **Sin `page`:** la línea se recorre en `motion/duration/shimmer` con `motion/easing/out`, espera `motion/duration/panel` y emite `arq:done`.
 - Con `prefers-reduced-motion` la línea no se anima. En `page` igual se espera a que cargue.
 - «Cargando» queda solo para lectores de pantalla. Mientras está, el resto de la página no se puede usar.

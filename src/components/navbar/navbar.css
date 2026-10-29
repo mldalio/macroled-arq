@@ -307,6 +307,10 @@
   object-fit: cover;
 }
 
+.recursos-media img[hidden] {
+  display: none;
+}
+
 /* Los lomos están en la parte baja de la foto. TODO (diseño): object-position no tiene token. */
 .recursos-media img.catalogs {
   object-position: center 72%;

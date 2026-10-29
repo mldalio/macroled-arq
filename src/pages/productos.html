@@ -4,7 +4,7 @@
   Se edita acá y se pega en Webflow. dist/arq.js, dist/arq.css y Albert Sans se cargan a nivel sitio.
 
   Las cards, los filtros y la compare-bar salen de Typesense (arq-catalog-listing).
-  La categoría va en la URL: ?environment=, ?application=, ?product_type= y ?collection= (las cards de producto de una colección, en este mismo listado; las URLs de categoría están PENDIENTES, docs/urls.md).
+  La categoría va en la ruta: /arq/interior, /arq/exterior y /arq/lamparas-y-artefactos. Una subcategoría sigue en ?environment=, ?application= y ?product_type=. ?collection= lista las cards de esa colección.
   La búsqueda también: ?q= ("Ver todos los resultados" del buscador; decisiones.md, 2026-10-05 · Búsqueda en Productos).
   catalog-nav: los grupos y su "Todo…" son fijos; los demás links los completa arq-catalog-listing desde Typesense
   (data-arq-nav, getCatalogNav de src/data/catalog.js; solo categorías con productos).
@@ -35,15 +35,15 @@
     <arq-catalog-nav slot="nav" label="Categorías">
       <arq-catalog-nav-group data-arq-nav="interior" data-arq-description="Luminarias para casas, oficinas y locales. Cada modelo cuenta con ficha técnica y archivos IES para especificar.">
         <span slot="label">Interior</span>
-        <arq-catalog-nav-item href="/arq/productos?environment=Interior">Todo interior</arq-catalog-nav-item>
+        <arq-catalog-nav-item href="/arq/interior">Todo interior</arq-catalog-nav-item>
       </arq-catalog-nav-group>
       <arq-catalog-nav-group data-arq-nav="exterior" data-arq-description="Luminarias para fachadas, jardines y caminos. Cada modelo cuenta con ficha técnica y archivos IES para especificar.">
         <span slot="label">Exterior</span>
-        <arq-catalog-nav-item href="/arq/productos?environment=Exterior">Todo exterior</arq-catalog-nav-item>
+        <arq-catalog-nav-item href="/arq/exterior">Todo exterior</arq-catalog-nav-item>
       </arq-catalog-nav-group>
       <arq-catalog-nav-group data-arq-nav="lamparas-artefactos" data-arq-description="Lámparas y artefactos para completar cada proyecto. Cada modelo cuenta con ficha técnica para especificar.">
         <span slot="label">Lámparas y artefactos</span>
-        <arq-catalog-nav-item href="/arq/productos?environment=L%C3%A1mparas%20y%20Artefactos">Todo lámparas y artefactos</arq-catalog-nav-item>
+        <arq-catalog-nav-item href="/arq/lamparas-y-artefactos">Todo lámparas y artefactos</arq-catalog-nav-item>
       </arq-catalog-nav-group>
       <arq-catalog-nav-group data-arq-nav="colecciones">
         <span slot="label">Colecciones</span>
@@ -56,9 +56,9 @@
 <arq-footer>
   <span slot="tagline">Diseño lumínico para la arquitectura contemporánea.</span>
   <h2 slot="productos-title">Productos</h2>
-  <arq-footer-link slot="productos" href="/arq/productos?environment=Interior">Interior</arq-footer-link>
-  <arq-footer-link slot="productos" href="/arq/productos?environment=Exterior">Exterior</arq-footer-link>
-  <arq-footer-link slot="productos" href="/arq/productos?environment=L%C3%A1mparas%20y%20Artefactos">Lámparas y artefactos</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/interior">Interior</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/exterior">Exterior</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/lamparas-y-artefactos">Lámparas y artefactos</arq-footer-link>
   <arq-footer-link slot="productos" href="/arq/productos" data-arq-menu="colecciones">Colecciones</arq-footer-link>
   <h2 slot="informacion-title">Información</h2>
   <arq-footer-link slot="informacion" href="/arq/nosotros">Nosotros</arq-footer-link>

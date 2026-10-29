@@ -36,8 +36,8 @@ El HTML del embed completo está en [src/pages/contacto.html](../../pages/contac
 ## Formulario
 
 - **Vive en el Shadow DOM** del componente: así el `<form>` es dueño de sus campos (todos son form-associated, con ElementInternals) y su `FormData` lleva todo, incluido el archivo.
-- **Campos** (v3): Tipo de consulta (`tipo`: choice-chip, Asesoramiento lumínico elegido), Tus datos (`nombre`, `empresa`, `email`, `telefono`, `provincia` con input Type=Select y las 24 jurisdicciones, `ciudad`), Tu proyecto (`detalles`, textarea de 6 filas, y `adjunto`, hasta 25 MB), `novedades` (checkbox) y Enviar consulta (`arq-button submit`).
-- **Validación** al enviar (`novalidate`: sin los globos del navegador): cada campo inválido muestra su mensaje con la prop `error` de arq-input y el foco va al primero. Después del primer intento, cada campo se revalida al salir de él. Obligatorios: nombre, email y detalles.
+- **Campos** (v3): Tipo de consulta (`tipo`: choice-chip, Asesoramiento lumínico elegido). El texto que se ve es el de la pantalla; al webhook va el slug: `asesoramiento`, `cotizacion`, `consultas-tecnicas`, `garantia`. Tus datos (`nombre`, `empresa`, `email`, `telefono`, `provincia` con input Type=Select y las 24 jurisdicciones, `ciudad`), Tu proyecto (`detalles`, textarea de 6 filas, y `adjunto`, hasta 25 MB), `novedades` (checkbox) y Enviar consulta (`arq-button submit`).
+- **Validación** al enviar (`novalidate`: sin los globos del navegador): cada campo inválido muestra su mensaje con la prop `error` de arq-input y el foco va al primero. Después del primer intento, cada campo se revalida al salir de él. Obligatorios: nombre, empresa, email, teléfono, provincia y detalles. Ciudad y el adjunto siguen opcionales.
 - **Honeypot:** un campo `website` fuera de la vista y del orden de Tab. Si llega con texto, se muestra la confirmación y no se envía nada. No viaja en el `FormData`.
 - **Envío:** `POST` con `multipart/form-data` (por el adjunto) a `config.n8n.webhookUrl` (`VITE_N8N_WEBHOOK_URL`). Sin URL, en `npm run dev` el envío se simula (para probar los estados) y en el build es un error.
 - **Estados:** enviando (button Loading, "Enviando…"), enviado (form-message Success "Recibimos tu consulta. Te respondemos a la brevedad."; el formulario se vacía) y error (form-message Error "No pudimos enviar tu consulta. Probá de nuevo en unos minutos."; los datos quedan).
@@ -57,7 +57,7 @@ El HTML del embed completo está en [src/pages/contacto.html](../../pages/contac
 
 ## Pendientes
 
-- `TODO` (n8n): falta `VITE_N8N_WEBHOOK_URL` y confirmar el formato que espera el webhook.
+- `TODO` (n8n): confirmar que el webhook lea `multipart/form-data` (por el adjunto).
 - `TODO` (diseño): textos de error por caso e indicador de campo obligatorio (README de input).
 - `TODO` (diseño): revisar el Mobile de v3, que se armó en Figma desde el Desktop con las columnas apiladas, como el código.
 - `TODO` (diseño): distancia del sticky al navbar. Hoy `space/section/md`; con `layout/navbar-height` (2026-10-20) quedaría pegado al navbar.

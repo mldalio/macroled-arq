@@ -686,8 +686,10 @@ class ArqFichaProducto extends ArqElement {
         // Imagen del acabado (data/finishes.js); sin imagen, el swatch muestra el neutro.
         const src = swatches ? this.#product.finishImages?.[option.value] : null;
         if (src) item.src = src;
+        item.hidden = option.disabled;
         parent.append(item);
       }
+      group.hidden = options.every((option) => option.disabled);
       return group;
     });
     this.shadowRoot.querySelector('.options').replaceChildren(...groups);
@@ -701,9 +703,11 @@ class ArqFichaProducto extends ArqElement {
       items.forEach((item, i) => {
         item.selected = options[i].selected;
         item.disabled = options[i].disabled;
+        item.hidden = options[i].disabled;
       });
-      // Color: el acabado elegido junto a la etiqueta (la muestra no tiene texto)
       const group = root.querySelector(`.options [data-attribute="${CSS.escape(attribute)}"]`);
+      group.hidden = options.every((option) => option.disabled);
+      // Color: el acabado elegido junto a la etiqueta (la muestra no tiene texto)
       if (group?.type === 'swatches') group.value = options.find((option) => option.selected)?.value ?? '';
     }
   }

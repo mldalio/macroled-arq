@@ -73,9 +73,11 @@ export default defineConfig({
         server.middlewares.use(serveBannerLoop);
         server.middlewares.use((req, res, next) => {
           const url = new URL(req.url, 'http://localhost');
-          if (url.pathname.replace(/\/$/, '') !== '/arq/productos') return next();
-          res.writeHead(302, { Location: `/demo/productos.html${url.search}` });
-          res.end();
+          const path = url.pathname.replace(/\/$/, '');
+          const listing = path === '/arq/productos' || /^\/arq\/(interior|exterior|lamparas-y-artefactos)$/.test(path);
+          if (!listing) return next();
+          req.url = `/demo/productos.html${url.search}`;
+          next();
         });
       },
     },

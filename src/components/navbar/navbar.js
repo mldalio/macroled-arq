@@ -139,7 +139,10 @@ class ArqNavbar extends ArqElement {
     `<arq-mega-link href="/arq/descargas" show-arrow>Descargas</arq-mega-link>` +
     `</div>` +
     `</nav>` +
-    `<div class="recursos-media" aria-hidden="true"><slot name="recursos-media"><img class="catalogs" src="https://d1zltvqju4u8ql.cloudfront.net/fit-in/filters:format(webp)/MACROLED/ARQ/imagenes/home/catalogos_todos.png" alt=""></slot></div>` +
+    `<div class="recursos-media" aria-hidden="true"><slot name="recursos-media">` +
+    `<img class="catalogs" src="https://d1zltvqju4u8ql.cloudfront.net/fit-in/filters:format(webp)/MACROLED/ARQ/imagenes/home/catalogos_todos.png" alt="" loading="lazy">` +
+    `<img class="downloads" src="/Fichas%20t%C3%A9cnicas%20Macroled%20Arq%20sobre%20madera.png" alt="" loading="lazy" hidden>` +
+    `</slot></div>` +
     `</div>` +
     `</div></div>` +
     `</header>` +
@@ -371,6 +374,13 @@ class ArqNavbar extends ArqElement {
     this.shadowRoot.querySelector('slot[name="links"]').addEventListener('slotchange', () => this.#syncLinks());
     this.#syncLinks();
     this.#markRecursosCurrent();
+    const recursosLinks = root.querySelector('.recursos-links');
+    const onRecursosLink = (event) => {
+      const link = event.target.closest?.('arq-mega-link');
+      if (link) this.#showRecursosPhoto(link);
+    };
+    recursosLinks.addEventListener('pointerover', onRecursosLink);
+    recursosLinks.addEventListener('focusin', onRecursosLink);
   }
 
   update(changed) {
@@ -385,6 +395,17 @@ class ArqNavbar extends ArqElement {
 
   #productsLink() {
     return this.#dropdown('products');
+  }
+
+  // Catálogos muestra los lomos; Descargas, las fichas. Al abrir vuelve a la de la página, o a catálogos.
+  #showRecursosPhoto(link) {
+    const downloads = (link?.getAttribute?.('href') || link || '').includes('/descargas');
+    const media = this.shadowRoot.querySelector('.recursos-media');
+    const catalogs = media.querySelector('img.catalogs');
+    const sheets = media.querySelector('img.downloads');
+    if (!catalogs || !sheets) return;
+    catalogs.hidden = downloads;
+    sheets.hidden = !downloads;
   }
 
   // El link del panel que coincide con la página (Descargas o, cuando exista, Catálogos).
@@ -762,6 +783,7 @@ class ArqNavbar extends ArqElement {
       this.#finishSwap();
     }
     if (next && kind === 'products') root.querySelector('.mega').reset(tab); // la pestaña pedida o la primera, con su preview inicial (Colgante)
+    if (next && kind === 'recursos') this.#showRecursosPhoto(location.pathname.includes('/descargas') ? '/descargas' : '/catalogos');
     if (next !== this.#megaOpen) {
       clearTimeout(this.#megaTimer);
       if (next) {

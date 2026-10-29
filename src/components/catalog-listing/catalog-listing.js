@@ -11,11 +11,9 @@
 //     <h2 slot="filter-title">Filtrar</h2>
 //   </arq-catalog-listing>
 //
-// - Categoría: sale de la URL (?environment=, ?application=, ?product_type=,
-//   ?collection= para las cards de producto de una colección;
-//   ?family= para las de una familia (Home, collection-index);
-//   las URLs de categoría están PENDIENTES, docs/urls.md). Se marca sola el
-//   catalog-nav-item cuyo href coincide con la página, y el <h1> del
+// - Categoría: /arq/interior, /arq/exterior y /arq/lamparas-y-artefactos, o
+//   ?environment=, ?application=, ?product_type=, ?collection= y ?family=.
+//   Se marca el catalog-nav-item cuyo href coincide con la página, y el <h1> del
 //   page-header pasa a ser el nombre de su grupo (Interior, Exterior…).
 // - Búsqueda: ?q= filtra el listado con el criterio del buscador del navbar
 //   ("Ver todos los resultados" y Enter llegan acá; decisiones.md,
@@ -32,7 +30,7 @@
 //   (?collection=) y desde el mega-menu.
 
 import { ArqElement } from '../../base/arq-element.js';
-import { listProducts, listCompareCandidates, getCatalogNav } from '../../data/catalog.js';
+import { listProducts, listCompareCandidates, getCatalogNav, categoryFromPath } from '../../data/catalog.js';
 import { subcategoryDescription, collectionDescription } from '../../data/category-descriptions.js';
 import { handOffTheme, setBrowserBar, withoutThemeTransition } from '../../base/theme.js';
 import '../catalog-toolbar/catalog-toolbar.js';
@@ -247,8 +245,10 @@ class ArqCatalogListing extends ArqElement {
     const href = item?.getAttribute('href') ?? item?.href;
     if (!href) return;
     const url = new URL(href, location.href);
-    // Otra página u otro origen: navegación normal
-    if (url.origin !== location.origin || url.pathname.replace(/\/$/, '') !== location.pathname.replace(/\/$/, '')) return;
+    // Otra página u otro origen: navegación normal. Las tres categorías
+    // (/arq/interior, /exterior, /lamparas-y-artefactos) son este listado.
+    const sameListing = listingPath(url.pathname) && listingPath(location.pathname);
+    if (!sameListing && (url.origin !== location.origin || url.pathname.replace(/\/$/, '') !== location.pathname.replace(/\/$/, ''))) return;
     event.preventDefault();
     if (url.pathname + url.search === location.pathname + location.search) return;
     history.pushState(null, '', url.pathname + url.search);
@@ -269,7 +269,7 @@ class ArqCatalogListing extends ArqElement {
     const selected = bar.items.map((item) => item.sku);
     const request = ++this.#pickerRequest;
     picker.count = selected.length;
-    picker.href = location.pathname; // «Ver todos los productos»: este listado, sin categoría
+    picker.href = '/arq/productos'; // «Ver todos los productos»: el listado, sin categoría
     try {
       const { items } = await listCompareCandidates({ ...picker.search, selected });
       if (request === this.#pickerRequest) picker.items = items;
@@ -559,7 +559,7 @@ class ArqCatalogListing extends ArqElement {
     if (title) title.textContent = `Resultados para «${this.#query}»`;
     // El título de búsqueda va en role/display (no display-lg).
     title?.parentElement.setAttribute('search-title', '');
-    this.#syncBreadcrumb([{ label: 'Productos', href: location.pathname }], true);
+    this.#syncBreadcrumb([{ label: 'Productos', href: '/arq/productos' }], true);
   }
 
   // El <h1> del page-header pasa a ser el grupo del ítem actual (Interior,
@@ -583,7 +583,7 @@ class ArqCatalogListing extends ArqElement {
         this.#setDescription(description, collectionDescription(label) || this.#htmlDescription);
       }
       this.#syncBreadcrumb([
-        { label: 'Productos', href: location.pathname },
+        { label: 'Productos', href: '/arq/productos' },
         COLLECTIONS_CRUMB,
         { label },
       ]);
@@ -616,7 +616,7 @@ class ArqCatalogListing extends ArqElement {
     }
     // Breadcrumb: Inicio / Productos sin categoría; Inicio / Productos / grupo
     // en su vista completa; Inicio / Productos / grupo / subcategoría.
-    const products = { label: 'Productos', href: location.pathname };
+    const products = { label: 'Productos', href: '/arq/productos' };
     if (!label) this.#syncBreadcrumb([]);
     else if (sub) {
       // Colecciones no tiene página propia: su nivel abre el mega-menu en esa pestaña.
@@ -723,11 +723,18 @@ class ArqCatalogListing extends ArqElement {
 function categoryFromUrl() {
   const params = new URLSearchParams(location.search);
   const category = {};
+  const fromPath = categoryFromPath(location.pathname);
+  if (fromPath) category.environment = fromPath;
   for (const [param, key] of Object.entries(CATEGORY_PARAMS)) {
     const value = params.get(param);
     if (value) category[key] = value;
   }
   return category;
+}
+
+function listingPath(pathname) {
+  const path = decodeURIComponent(pathname).replace(/\/$/, '');
+  return path === '/arq/productos' || categoryFromPath(path) !== null;
 }
 
 function samePage(href, here) {

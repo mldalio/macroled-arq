@@ -72,17 +72,6 @@ export const productHref = (groupId, sku) => `/arq/producto/${encodeURIComponent
 // La página de la colección (sin links entrantes desde 2026-10-23: docs/archivo/todas-las-colecciones.md)
 export const collectionHref = (id) => `/arq/coleccion/${encodeURIComponent(id)}`;
 export const compareHref = (skus) => `/arq/comparativa?sku=${skus.map(encodeURIComponent).join(',')}`;
-// TODO (urls): las URLs de categoría están PENDIENTES (docs/urls.md). Por ahora, parámetros del listado.
-export function categoryHref({ environment, application, productType, collection, family } = {}) {
-  const params = new URLSearchParams();
-  if (environment) params.set('environment', environment);
-  if (application) params.set('application', application);
-  if (productType) params.set('product_type', productType);
-  if (collection) params.set('collection', collection);
-  if (family) params.set('family', family);
-  const query = params.toString();
-  return `/arq/productos${query ? `?${query}` : ''}`;
-}
 
 // ── Filtros ──────────────────────────────────────────────────────────
 const hasValue = (value) => value !== undefined && value !== null && String(value).trim() !== '';
@@ -101,6 +90,35 @@ function matchingVariant(group, filters, first = group.defaultVariant) {
 // Macrofamilia de la hoja (mismo criterio que Interior y Exterior). Sus links
 // son las subfamilias. product_type en esas filas suele venir vacío.
 export const LAMPS_ENVIRONMENT = 'Lámparas y Artefactos';
+
+// Las tres categorías, páginas hermanas de Productos. /arq/productos ya es una
+// página estática: Webflow no deja anidar otra debajo (docs/urls.md).
+export const CATEGORY_PATHS = [
+  ['interior', 'Interior'],
+  ['exterior', 'Exterior'],
+  ['lamparas-y-artefactos', LAMPS_ENVIRONMENT],
+];
+
+export const categoryHref = ({ environment, application, productType, collection, family } = {}) => {
+  if (environment && !application && !productType && !collection && !family) {
+    const slug = CATEGORY_PATHS.find(([, name]) => name === environment)?.[0];
+    if (slug) return `/arq/${slug}`;
+  }
+  const params = new URLSearchParams();
+  if (environment) params.set('environment', environment);
+  if (application) params.set('application', application);
+  if (productType) params.set('product_type', productType);
+  if (collection) params.set('collection', collection);
+  if (family) params.set('family', family);
+  const query = params.toString();
+  return `/arq/productos${query ? `?${query}` : ''}`;
+};
+
+/** Nombre de categoría si la URL es /arq/interior, /exterior o /lamparas-y-artefactos. */
+export function categoryFromPath(pathname) {
+  const slug = decodeURIComponent(pathname).replace(/\/$/, '').match(/^\/arq\/([^/]+)$/)?.[1];
+  return CATEGORY_PATHS.find(([id]) => id === slug)?.[1] ?? null;
+}
 
 // Qué productos se listan (Productos, categorías y navegación): los que tienen SKU
 // predeterminado marcado en la base (is_group_default), una card por grupo. Sin
@@ -355,6 +373,9 @@ function listedFamilies(groups) {
 // La comparación ignora tildes: Dao encuentra «Daö».
 const FEATURED_FAMILIES = ['Yoru', 'Afo', 'Sento', 'Hoshi', 'Kanu', 'Koen'];
 
+// Cómo se escriben en la tira. El link sigue usando el nombre de la base.
+const FEATURED_LABELS = { hoshi: 'Höshi', koen: 'Köen' };
+
 // Foto elegida para la tira. El resto usa el ambiente 1 del primer grupo.
 const FEATURED_IMAGES = {
   yoru: 'https://d1zltvqju4u8ql.cloudfront.net/fit-in/1000x1000/MACROLED/ARQ/imagenes/productos/YORU%20WEB_0002s_0001_YORU-J-8W-N-WW_AMBIENT_1_ON.webp',
@@ -396,14 +417,15 @@ export async function getFamilies() {
         console.warn(`[arq] collection-index: no hay familia «${wanted}»`);
         return [];
       }
-      return [{ name: wanted, href: categoryHref({ family: wanted }), image: chosen, focus: FEATURED_FOCUS[key] ?? null }];
+      return [{ name: FEATURED_LABELS[key] ?? wanted, href: categoryHref({ family: wanted }), image: chosen, focus: FEATURED_FOCUS[key] ?? null }];
     }
-    // Si la misma familia está escrita de dos formas (Dao y Daö), se muestra la más usada.
-    const name = usualName(family.groups);
+    // Si la misma familia está escrita de dos formas (Dao y Daö), el link usa la más usada.
+    const dataName = usualName(family.groups);
+    const name = FEATURED_LABELS[key] ?? dataName;
     const images = pick(family.groups[0].defaultVariant.images);
     const image = FEATURED_IMAGES[normalize(wanted)] ?? images.context ?? images.studio ?? null;
     const focus = FEATURED_FOCUS[normalize(wanted)] ?? null;
-    return [{ name, href: categoryHref({ family: name }), image, focus }];
+    return [{ name, href: categoryHref({ family: dataName }), image, focus }];
   });
 }
 

@@ -6,7 +6,7 @@
 //     <arq-button slot="action" type="outline" href="/arq/productos" data-arq-menu="colecciones">Ver todas las colecciones</arq-button>
 //   </arq-collection-index>
 //
-// Los nombres son las familias destacadas (Yoru, Afo, Sento, Hoshi, Kanu, Koen),
+// Los nombres son las familias destacadas (Yoru, Afo, Sento, Höshi, Kanu, Köen),
 // en ese orden (getFamilies). Cada link abre /arq/productos?family=.
 //
 // Pasar el mouse (o enfocar) un nombre muestra su foto. El primero arranca

@@ -46,8 +46,14 @@ import '../button/button.js';
 import '../form-message/form-message.js';
 import css from './form-contacto.css?inline';
 
-// Opciones de la pantalla Contacto de Final (1278:27940)
-const TOPICS = ['Asesoramiento lumínico', 'Cotización de proyecto', 'Consulta técnica', 'Garantía'];
+// Lo que se ve es el texto de Final (1278:27940). `value` es lo que viaja en
+// `tipo` hacia n8n (el Switch del workflow compara contra estos slugs).
+const TOPICS = [
+  { label: 'Asesoramiento lumínico', value: 'asesoramiento' },
+  { label: 'Cotización de proyecto', value: 'cotizacion' },
+  { label: 'Consulta técnica', value: 'consultas-tecnicas' },
+  { label: 'Garantía', value: 'garantia' },
+];
 
 const PROVINCES = [
   'Buenos Aires', 'Ciudad Autónoma de Buenos Aires', 'Catamarca', 'Chaco', 'Chubut', 'Córdoba', 'Corrientes',
@@ -57,11 +63,14 @@ const PROVINCES = [
 
 // TODO (código): pasar los textos de error diseñados en Figma (Final › Contacto,
 // «Textos de error · formulario de contacto», 2805:26390; decisiones.md,
-// 2026-10-20). Obligatorios: nombre, email y detalles (sin marca; los demás
-// dicen «(opcional)»).
+// 2026-10-20). Obligatorios sin marca «(opcional)»: nombre, empresa, email,
+// teléfono, provincia y detalles. Ciudad y el adjunto siguen opcionales.
 const ERRORS = {
   nombre: 'Completá tu nombre.',
+  empresa: 'Completá el estudio o la empresa.',
   email: { valueMissing: 'Completá tu email.', typeMismatch: 'Revisá el formato del email.' },
+  telefono: 'Completá tu teléfono.',
+  provincia: 'Elegí una provincia.',
   detalles: 'Contanos un poco sobre tu proyecto.',
 };
 
@@ -100,17 +109,17 @@ class ArqFormContacto extends ArqElement {
     `<fieldset class="section topics">` +
     `<legend class="role-heading-3">Tipo de consulta</legend>` +
     `<div class="choices" role="radiogroup" aria-label="Tipo de consulta">` +
-    TOPICS.map((topic, i) => `<arq-choice-chip name="tipo" value="${esc(topic)}"${i ? '' : ' selected'}>${esc(topic)}</arq-choice-chip>`).join('') +
+    TOPICS.map((topic, i) => `<arq-choice-chip name="tipo" value="${esc(topic.value)}"${i ? '' : ' selected'}>${esc(topic.label)}</arq-choice-chip>`).join('') +
     `</div>` +
     `</fieldset>` +
     `<fieldset class="section">` +
     `<legend class="role-heading-3">Tus datos</legend>` +
     `<div class="fields">` +
     `<arq-input name="nombre" placeholder="Tu nombre y apellido" autocomplete="name" autocapitalize="words" enterkeyhint="next" required show-label>Nombre completo</arq-input>` +
-    `<arq-input name="empresa" placeholder="Nombre del estudio" autocomplete="organization" autocapitalize="words" enterkeyhint="next" show-label>Estudio o empresa (opcional)</arq-input>` +
+    `<arq-input name="empresa" placeholder="Nombre del estudio" autocomplete="organization" autocapitalize="words" enterkeyhint="next" required show-label>Estudio o empresa</arq-input>` +
     `<arq-input name="email" input-type="email" placeholder="nombre@estudio.com" autocomplete="email" enterkeyhint="next" required show-label>Email</arq-input>` +
-    `<arq-input name="telefono" input-type="tel" placeholder="+54 11 0000-0000" autocomplete="tel" enterkeyhint="next" show-label>Teléfono (opcional)</arq-input>` +
-    `<arq-input name="provincia" type="select" placeholder="Seleccioná una provincia" show-label>Provincia (opcional)</arq-input>` +
+    `<arq-input name="telefono" input-type="tel" placeholder="+54 11 0000-0000" autocomplete="tel" enterkeyhint="next" required show-label>Teléfono</arq-input>` +
+    `<arq-input name="provincia" type="select" placeholder="Seleccioná una provincia" required show-label>Provincia</arq-input>` +
     `<arq-input name="ciudad" placeholder="Tu ciudad" autocomplete="address-level2" autocapitalize="words" enterkeyhint="next" show-label>Ciudad (opcional)</arq-input>` +
     `</div>` +
     `</fieldset>` +
@@ -237,8 +246,7 @@ class ArqFormContacto extends ArqElement {
 
 // Envío al webhook de n8n (src/config.js). Sin URL: en `npm run dev` se simula
 // el envío para poder probar los estados; en el build es un error.
-// TODO (n8n): falta VITE_N8N_WEBHOOK_URL y confirmar el formato que espera el
-// webhook (hoy multipart/form-data, por el archivo adjunto).
+// TODO (n8n): confirmar que el webhook lea multipart/form-data (por el adjunto).
 async function send(data) {
   const url = config.n8n.webhookUrl;
   if (!url) {

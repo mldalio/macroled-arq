@@ -1814,7 +1814,7 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 
 ## 2026-10-28 · Explora la colección en gris oscuro
 
-- La banda de «Explora la colección» usa `neutral/700` (`#454545`), con el título, «Ver colección», la línea de progreso y el nombre de cada card en `color/text/inverse`. El resto de la card sigue en Light. En Light no hay un `color/surface` de ese gris.
+- La banda de «Explora la colección» usa `neutral/700` (`#454545`), con el título, «Ver colección», la línea de progreso y el nombre de cada card en `color/text/inverse`. El resto de la card sigue en Light. En Light no hay un `color/surface` de ese gris. Con menos de tres cards no hay flechas ni línea de progreso.
 
 ## 2026-10-28 · Configura tu Daö junto a los compatibles
 
@@ -2053,3 +2053,29 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 - La hoja sigue a la ficha técnica (logo, encabezado, reglas, pdf-spec-group, paginado) con lo de una configuración: encabezado «Configuración Daö», el título del armado, una fila con la foto de cada pieza y su nombre (con la cantidad si hay cabezales combinados), «Características» en dos columnas y «Piezas para este armado» (cantidad, nombre y SKU). Sin fecha ni otros datos. `TODO` (diseño): no está en Figma.
 - **Ajuste (mismo día):** en el PDF el título arranca a `space/padding/xl` del encabezado (estaba pegado a la regla) y se quita la regla gris debajo de las fotos: la sección «Características» ya lleva la suya.
 
+## 2026-10-28 · Opciones no disponibles ocultas
+
+- En el configurador de la ficha, una opción que no forma SKU con lo elegido no se muestra. Si ninguna opción de un grupo está disponible, el grupo tampoco. Al cambiar lo de arriba, las que pasan a estar disponibles vuelven a verse.
+
+## 2026-10-28 · Preloader de la Home más corto
+
+- La pantalla de carga esperaba el video del hero (3 MB), el catálogo entero de Typesense y todas las fotos de la página, también las `loading="lazy"` de más abajo (las pedía en el acto).
+- Ahora no espera las imágenes lazy, ni el video decorativo del banner (`aria-hidden`: el hero ya tiene fondo oscuro y el texto), ni los destacados (tienen cards de carga). Sigue esperando la fuente y, en Productos y la ficha, los datos y las fotos que no son lazy.
+
+## 2026-10-28 · Categorías de Productos en la ruta
+
+- Interior, Exterior y Lámparas y artefactos abren `/arq/interior`, `/arq/exterior` y `/arq/lamparas-y-artefactos`. Es el mismo listado que Productos. Van al lado de `/arq/productos`, no debajo: esa URL ya es una página estática y Webflow no deja anidar otra. El slug de lámparas es el del menú (`lamparas-y-artefactos`). Una subcategoría sigue con `?environment=` y `?application=`.
+
+## 2026-10-28 · Foto de Descargas
+
+- En «Herramientas para proyectar» y en el panel Recursos, Descargas usa la foto de las fichas sobre madera. En el menú, Catálogos sigue con los lomos; la foto cambia al pasar por Descargas. En la página Descargas, el panel abre con esa foto.
+
+## 2026-10-28 · Höshi y Köen en la Home
+
+- En «Colecciones que inspiran», esas dos familias se escriben Höshi y Köen. El link sigue buscando por el nombre de la base.
+
+## 2026-10-29 · Campos obligatorios del formulario de contacto
+
+- Pedido: estudio o empresa, teléfono y provincia dejan de ser opcionales. Ciudad y «Planos o imágenes» siguen opcionales.
+- Obligatorios: nombre, empresa, email, teléfono, provincia y detalles. Sin la marca «(opcional)» en la etiqueta. Si faltan, el envío no sale: «Completá el estudio o la empresa.», «Completá tu teléfono.» y «Elegí una provincia.»
+- **`tipo` hacia n8n:** el chip sigue mostrando el texto de la pantalla y el POST manda un slug: Asesoramiento lumínico → `asesoramiento`, Cotización de proyecto → `cotizacion`, Consulta técnica → `consultas-tecnicas`, Garantía → `garantia`. El Switch del workflow compara contra esos cuatro.

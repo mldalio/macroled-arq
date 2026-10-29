@@ -188,6 +188,10 @@
   color: inherit !important;
 }
 
+.options :is(arq-option-tile, arq-swatch, arq-option-group)[hidden] {
+  display: none;
+}
+
 /* Entre características, space/gap/xl-2xl (antes lg: quedaban pegadas) */
 .options {
   display: flex;
