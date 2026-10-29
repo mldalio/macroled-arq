@@ -1,5 +1,5 @@
 //#region package.json
-var e = "0.3.5", t = {
+var e = "0.3.6", t = {
 	BASE_URL: "/",
 	DEV: !1,
 	MODE: "production",
