@@ -41,7 +41,7 @@ import '../checkbox/checkbox.js';
 import '../compare-bar/compare-bar.js';
 import '../compare-picker/compare-picker.js';
 import '../grid/grid.js';
-import { appendFinishes } from '../product-card/product-card.js';
+import { appendFinishes, appendSpecs } from '../product-card/product-card.js';
 import '../swatch/swatch.js';
 import { covered, reveal, revealCss } from '../../base/reveal.js';
 import { toMs } from '../../base/motion.js';
@@ -455,6 +455,7 @@ class ArqCatalogListing extends ArqElement {
     title.slot = 'name';
     title.textContent = data.name;
     card.append(title);
+    appendSpecs(card, data.specs);
     appendFinishes(card, data.finishes);
     return card;
   }

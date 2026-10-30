@@ -35,7 +35,7 @@
 import { ArqElement } from '../../base/arq-element.js';
 import { covered, reveal, revealCss } from '../../base/reveal.js';
 import { getProductCards } from '../../data/catalog.js';
-import '../product-card/product-card.js';
+import { appendSpecs } from '../product-card/product-card.js';
 import '../carousel-controls/carousel-controls.js';
 import { toMs } from '../../base/motion.js';
 import css from './featured-products.css?inline';
@@ -347,7 +347,7 @@ class ArqFeaturedProducts extends ArqElement {
     this.shadowRoot.querySelector('.controls').go(1);
   }
 
-  #card({ name, meta, href, family, image, imageHover, imageLit, imageHoverLit }) {
+  #card({ name, specs, href, family, image, imageHover, imageLit, imageHoverLit }) {
     const card = document.createElement('arq-product-card');
     card.href = href;
     card.family = family;
@@ -360,12 +360,7 @@ class ArqFeaturedProducts extends ArqElement {
     title.slot = 'name';
     title.textContent = name;
     card.append(title);
-    if (meta) {
-      const text = document.createElement('span');
-      text.slot = 'meta';
-      text.textContent = meta;
-      card.append(text);
-    }
+    appendSpecs(card, specs);
     return card;
   }
 }

@@ -156,13 +156,12 @@ const text = (value) => (value === undefined || value === null ? '' : String(val
 const IMAGE_BUST = import.meta.env.DEV ? String(Date.now()) : '';
 const imageUrl = (url) => (IMAGE_BUST && url ? `${url}${url.includes('?') ? '&' : '?'}arq=${IMAGE_BUST}` : url);
 
-// Módulos de Daö: la base trae «1», «2», «3» (o «1x», «X1»); se muestran siempre «x1», «x2», «x3».
-// Un grupo que ya trae medidas «2x2», «3x3» no se toca: sus números sueltos («5», «10») se dejan
-// como vienen, sin la x delante.
-const GRID = /^\d+\s*x\s*\d+$/i;
-const attributeText = (field, value, asIs = false) => {
+// Módulos (Daö, Sen Downlight, Mini Kai): la base trae «1», «5», «10» (o «1x», «X1»); se muestran
+// siempre «x1», «x5», «x10». Las medidas «2x2», «3x3» (Mini Kai) son la excepción: no coinciden con
+// el patrón y quedan como vienen.
+const attributeText = (field, value) => {
   const shown = text(value);
-  return field === 'modulos' && !asIs ? shown.replace(/^(?:x\s*(\d+)|(\d+)\s*x?)$/i, (_, a, b) => `x${a ?? b}`) : shown;
+  return field === 'modulos' ? shown.replace(/^(?:x\s*(\d+)|(\d+)\s*x?)$/i, (_, a, b) => `x${a ?? b}`) : shown;
 };
 const list = (value) => (Array.isArray(value) ? value.map(text).filter(Boolean) : text(value) ? text(value).split(',').map((v) => v.trim()).filter(Boolean) : []);
 
@@ -310,7 +309,6 @@ export function fromDocuments(rawDocs) {
   const groupFromRows = (id, rows) => {
     const first = defaultRow(rows);
     const names = new Set(rows.map((doc) => text(doc[FIELDS.name])));
-    const gridModules = rows.some((doc) => GRID.test(text(doc.modulos)));
     const productType = text(first[FIELDS.productType]) || DEFAULT_TYPE;
     const compatible = list(first[FIELDS.compatibleWith]).map((name) => idByName.get(normalize(name))).filter(Boolean);
     return {
@@ -353,7 +351,7 @@ export function fromDocuments(rawDocs) {
         description: text(doc[FIELDS.description]),
         // Categoría del SKU («Bolardo»…): la usa el buscador (catalog.js · searchMatch)
         category: text(doc[FIELDS.category]),
-        attributes: Object.fromEntries(Object.keys(ATTRIBUTES).map((field) => [field, attributeText(field, doc[field], gridModules)]).filter(([, v]) => v && v !== '-')),
+        attributes: Object.fromEntries(Object.keys(ATTRIBUTES).map((field) => [field, attributeText(field, doc[field])]).filter(([, v]) => v && v !== '-')),
         images: variantImages(doc),
         // Dibujo con cotas de la ficha técnica en PDF: URL del PNG o null.
         cota: text(doc.cotas_img) || null,

@@ -28,6 +28,12 @@
   height: var(--arq-swatch-lg);
 }
 
+/* Size=XSmall (solo de código, 2026-10-30): acabados de la product-card, swatch/xs (14) */
+:host([size='xsmall']) .swatch {
+  width: var(--arq-swatch-xs);
+  height: var(--arq-swatch-xs);
+}
+
 /* Size=XLarge (solo de código, 2026-10-21): swatch-picker de la ficha, swatch/xl */
 :host([size='xlarge']) .swatch {
   width: var(--arq-swatch-xl);
@@ -78,7 +84,7 @@
    una muestra a otra en motion/duration/base (2026-10-21). La opacidad de
    Disabled funde con el mismo tiempo: al elegir otra opción, las muestras que
    quedan sin combinación se apagan junto con el cambio del aro. */
-:host([size='xlarge']) .swatch {
+:host(:is([size='xlarge'], [ring])) .swatch {
   outline: var(--arq-border-default) solid var(--arq-color-surface-transparent);
   outline-offset: var(--arq-space-padding-2xs);
   transition-property: outline-color, opacity;
@@ -86,24 +92,30 @@
   transition-timing-function: var(--arq-motion-easing-standard);
 }
 
+/* Aro de las cards (ring en un swatch que no es XLarge): más pegado a la muestra,
+   a border/strong (2) en lugar de space/padding/2xs (3). La ficha no cambia. */
+:host([ring]:not([size='xlarge'])) .swatch {
+  outline-offset: var(--arq-border-strong);
+}
+
 /* El borde interno queda fino también en Hover y Selected: el aro lo reemplaza */
-:host([size='xlarge']) .swatch::after {
+:host(:is([size='xlarge'], [ring])) .swatch::after {
   border-width: var(--arq-border-default);
   border-color: var(--arq-color-border-subtle);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  :host([size='xlarge'][role='radio']:not([disabled]):hover) .swatch::after {
+  :host(:is([size='xlarge'], [ring])[role='radio']:not([disabled]):hover) .swatch::after {
     border-width: var(--arq-border-default);
     border-color: var(--arq-color-border-subtle);
   }
 
-  :host([size='xlarge'][role='radio']:not([disabled]):not([selected]):hover) .swatch {
+  :host(:is([size='xlarge'], [ring])[role='radio']:not([disabled]):not([selected]):hover) .swatch {
     outline-color: var(--arq-color-border-hover);
   }
 }
 
-:host([size='xlarge'][selected]) .swatch {
+:host(:is([size='xlarge'], [ring])[selected]) .swatch {
   outline-color: var(--arq-color-border-strong);
 }
 
@@ -142,9 +154,9 @@
   }
 
   .swatch::after,
-  :host([size='xlarge']) .swatch::after,
+  :host(:is([size='xlarge'], [ring])) .swatch::after,
   :host([role='radio']:not([disabled]):hover) .swatch::after,
-  :host([size='xlarge'][role='radio']:not([disabled]):hover) .swatch::after {
+  :host(:is([size='xlarge'], [ring])[role='radio']:not([disabled]):hover) .swatch::after {
     border-color: CanvasText;
   }
 
@@ -153,7 +165,7 @@
     border-color: Highlight;
   }
 
-  :host([size='xlarge'][selected]) .swatch {
+  :host(:is([size='xlarge'], [ring])[selected]) .swatch {
     outline-color: Highlight;
   }
 

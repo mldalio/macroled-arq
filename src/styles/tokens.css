@@ -10,6 +10,7 @@
   --arq-space-6: 0.375rem;
   --arq-space-8: 0.5rem;
   --arq-space-12: 0.75rem;
+  --arq-space-14: 0.875rem;
   --arq-space-16: 1rem;
   --arq-space-20: 1.25rem;
   --arq-space-24: 1.5rem;
@@ -281,6 +282,7 @@
   --arq-swatch-md: var(--arq-space-20); /** Muestra de acabado del selector de muestras (20). */
   --arq-swatch-lg: var(--arq-space-24); /** Muestra grande (24): campo select y muestra seleccionada. */
   --arq-swatch-xl: var(--arq-space-32); /** Muestra de acabado elegible de la ficha (32): swatch-picker, todas del mismo tamaño (la elegida no crece). Se ve el acabado y el área para tocar llega a 32. */
+  --arq-swatch-xs: var(--arq-space-14); /** Muestra de acabado elegible de las cards de producto (14): product-card. El aro de Selected se separa border/strong (2) de la muestra. */
   --arq-type-display-size: var(--arq-font-size-64); /** Tamaño del estilo role/display. Lo usa el estilo de texto: no aplicar directo. */
   --arq-type-display-leading: var(--arq-font-leading-72); /** Interlineado del estilo role/display. Lo usa el estilo de texto: no aplicar directo. */
   --arq-type-display-sm-size: var(--arq-font-size-48); /** Tamaño del estilo role/display-sm. Lo usa el estilo de texto: no aplicar directo. */

@@ -222,11 +222,10 @@
   padding-bottom: var(--arq-space-gap-sm);
 }
 
-/* Nombre + acabados a la derecha, gap space/gap/sm */
+/* Nombre; debajo, los datos y los acabados (todos en columna) */
 .title {
   display: flex;
   align-items: center;
-  gap: var(--arq-space-gap-sm);
   align-self: stretch;
 }
 
@@ -237,74 +236,81 @@
   overflow-wrap: break-word;
 }
 
-/* Small (y Large hasta 767 px): info a space/gap/md, y el nombre y los acabados
-   uno debajo del otro (columna) a space/gap/sm, con los acabados también a
-   space/gap/sm (el set, Size=Small) */
+/* Small (y Large hasta 767 px): info a space/gap/md */
 .is-small .info {
   gap: var(--arq-space-gap-md);
 }
 
-/* Mobile: el meta queda más cerca del nombre (space/gap/sm) */
+/* Mobile (pedido de Lau, 2026-10-30): el texto queda más cerca del nombre
+   (space/gap/sm). Los acabados y «Comparar» conservan su distancia de
+   space/gap/md con un margen de space/gap/sm más. */
 @media (max-width: 767px) {
   .is-small .info {
     gap: var(--arq-space-gap-sm);
   }
+
+  .is-small .finishes,
+  .is-small .compare {
+    margin-top: var(--arq-space-gap-sm);
+  }
 }
 
-.is-small .title {
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.is-small .finishes {
-  gap: var(--arq-space-gap-sm);
-  justify-content: flex-start;
-  max-width: 100%;
-}
-
-/* Acabados: gap space/gap/xs; swatch Small (16) en Large y en Small. Elegible
-   (role="radiogroup"): el swatch trae Hover y Selected; por encima del ::after
-   del link estirado para recibir el clic.
-   Muchos acabados (8 o más en una card de 167 px): bajan a otra línea en vez de
-   salirse de la card (decisión 2026-10-26). En Large ocupan como mucho la mitad
-   de la fila, así el nombre no queda cortado a mitad de palabra.
+/* Acabados debajo de los datos: swatch XSmall (swatch/xs, 14) en Large y en Small, a
+   space/gap/md entre muestras. Con 16 de separación, cada muestra queda a 30
+   de la siguiente: cumple el espaciado de WCAG 2.5.8 (objetivo de 24 px). El
+   aro de Selected (ring del swatch: 1 px a border/strong, 2 px) entra en ese espacio.
+   Elegible (role="radiogroup"): el swatch trae Hover y Selected; por encima
+   del ::after del link estirado para recibir el clic.
+   Muchos acabados: bajan a otra línea en vez de salirse de la card (decisión
+   2026-10-26).
    Área táctil: la fila suma space/padding/xs arriba y abajo (con margen
-   negativo, no cambia el dibujo), así un toque al lado de una muestra de 16
+   inferior negativo, no cambia el dibujo), así un toque al lado de una muestra
    cae en la fila y no abre la ficha por el link estirado. */
 .finishes {
   position: relative;
   z-index: var(--card-above);
   display: flex;
-  flex: none; /* no se achica con el nombre: baja de línea recién al pasar la mitad (max-width) */
+  flex: none;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
-  gap: var(--arq-space-gap-xs);
-  max-width: 50%;
+  gap: var(--arq-space-gap-md);
+  max-width: 100%;
   min-width: 0;
   padding-block: var(--arq-space-padding-xs);
-  margin-block: calc(var(--arq-space-padding-xs) * -1);
+  margin-bottom: calc(var(--arq-space-padding-xs) * -1);
 }
 
-/* Meta: color/text/secondary, hasta dos líneas (más texto va en la ficha) */
-.meta {
-  display: -webkit-box;
+.finishes[hidden] {
+  display: none;
+}
+
+/* Datos: dos líneas cortas, una debajo de la otra, en color/text/secondary.
+   Cada línea es un texto corto («1 – 3 módulos»): si no entra, baja de línea
+   (más datos van en la ficha). TODO (diseño): estilo de los datos destacados. */
+.specs {
   margin: 0;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
   color: var(--arq-color-text-secondary);
   overflow-wrap: break-word;
 }
 
-.meta[hidden] {
+.specs[hidden] {
   display: none;
 }
 
-/* Comparar: por encima del ::after del link estirado */
+.specs ::slotted([slot='specs']) {
+  display: block;
+}
+
+/* Comparar: por encima del ::after del link estirado. En Large (Desktop) se separa
+   de la info con space/gap/sm más; en Small el gap de .info ya lo separa. */
 .compare {
   position: relative;
   z-index: var(--card-above);
+}
+
+.card:not(.is-small) .compare {
+  margin-top: var(--arq-space-gap-sm);
 }
 
 /* ── Cargando (loading) ───────────────────────────────────────────
@@ -371,7 +377,8 @@
 .is-loading .img,
 .is-loading .fallback,
 .is-loading .title,
-.is-loading .meta,
+.is-loading .specs,
+.is-loading .finishes,
 .is-loading .compare {
   display: none;
 }
@@ -380,16 +387,6 @@
   display: flex;
   align-items: center;
   align-self: stretch;
-}
-
-/* Nombre + acabados: en fila como .title (Small: en columna) */
-.sk-title {
-  gap: var(--arq-space-gap-sm);
-}
-
-.is-small .sk-title {
-  flex-direction: column;
-  align-items: flex-start;
 }
 
 .sk-name {
@@ -413,28 +410,24 @@
   height: var(--arq-space-gap-sm-md);
 }
 
-/* Acabados: tres muestras de swatch/sm, como los swatch Small de la card */
+/* Acabados: tres muestras de swatch/xs a space/gap/md, como los de la card */
 .sk-swatches {
-  display: flex;
   flex: none;
-  gap: var(--arq-space-gap-xs);
-}
-
-.is-small .sk-swatches {
-  gap: var(--arq-space-gap-sm);
+  gap: var(--arq-space-gap-md);
+  padding-block: var(--arq-space-padding-xs);
 }
 
 .sk-swatches > span {
-  width: var(--arq-swatch-sm);
-  height: var(--arq-swatch-sm);
+  width: var(--arq-swatch-xs);
+  height: var(--arq-swatch-xs);
   background: var(--arq-color-surface-subtle);
 }
 
-/* Comparar (checkbox: padding space/gap/xs arriba y abajo) o meta */
+/* Datos: dos barras, una por línea (role/body-compact: 24 de alto de línea) */
 .sk-detail {
-  height: 1lh;
-}
-
-.has-compare .sk-detail {
-  padding-block: var(--arq-space-gap-xs);
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--arq-space-gap-sm);
+  height: 2lh;
 }

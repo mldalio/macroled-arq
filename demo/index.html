@@ -970,6 +970,8 @@
               image="/demo/fixtures/img/card-estudio.svg" image-hover="/demo/fixtures/img/card-contexto.svg"
               image-lit="/demo/fixtures/img/card-estudio-on.svg" image-hover-lit="/demo/fixtures/img/card-contexto-on.svg">
               <h3 slot="name">Kanu Jardín</h3>
+              <span slot="specs">35 – 50 cm</span>
+              <span slot="specs">12 W</span>
               <!-- Acabados elegibles: el elegido (selected) y lo que cambia al elegir, en data-* -->
               <arq-swatch slot="finishes" selected src="/demo/fixtures/img/acabado-negro.svg" data-sku="KANU-N" data-href="#kanu-negro"
                 data-image="/demo/fixtures/img/card-estudio.svg" data-image-hover="/demo/fixtures/img/card-contexto.svg"
@@ -995,14 +997,16 @@
               image="/demo/fixtures/img/card-estudio.svg" image-hover="/demo/fixtures/img/card-contexto.svg"
               image-lit="/demo/fixtures/img/card-estudio-on.svg" image-hover-lit="/demo/fixtures/img/card-contexto-on.svg">
               <h3 slot="name">Kanu</h3>
-              <span slot="meta">Exterior · Jardín · Pared</span>
+              <span slot="specs">2700K · 3000K · 4000K</span>
+              <span slot="specs">6 – 12 W</span>
               <arq-swatch slot="finishes" src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
               <arq-swatch slot="finishes">Verde</arq-swatch>
             </arq-product-card>
             <arq-product-card href="#demo-product-card"
               image="/demo/fixtures/img/card-estudio.svg" image-hover="/demo/fixtures/img/card-contexto.svg">
               <h3 slot="name">Colección con un nombre muy largo que ocupa más de una línea</h3>
-              <span slot="meta">35 cm – 70 cm · 12 W – 15 W · Meta larga que se corta en la segunda línea porque el resto va en la ficha</span>
+              <span slot="specs">35 – 70 cm · tamaño con un texto largo que baja de línea</span>
+              <span slot="specs">12 – 15 W</span>
             </arq-product-card>
           </div>
         </div>
@@ -1011,7 +1015,8 @@
         <div class="demo-card-grid demo-card-grid--small">
           <arq-product-card href="#demo-product-card" size="small" image="/demo/fixtures/img/card-estudio.svg" image-hover="/demo/fixtures/img/card-contexto.svg">
             <h3 slot="name">Kanu Pared</h3>
-            <span slot="meta">Jardín · Pared</span>
+            <span slot="specs">1 – 3 módulos</span>
+            <span slot="specs">6 – 12 W</span>
             <arq-swatch slot="finishes" src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
             <arq-swatch slot="finishes">Verde</arq-swatch>
           </arq-product-card>
@@ -1030,14 +1035,16 @@
           <arq-product-card loading></arq-product-card>
           <arq-product-card href="#demo-product-card" image="/demo/fixtures/img/card-estudio.svg">
             <h3 slot="name">Kanu</h3>
-            <span slot="meta">Exterior · Jardín · Pared</span>
+            <span slot="specs">3000K · 4000K</span>
+            <span slot="specs">8 – 17 W</span>
           </arq-product-card>
         </div>
         <div class="demo-card-grid demo-card-grid--small">
           <arq-product-card loading size="small"></arq-product-card>
           <arq-product-card href="#demo-product-card" size="small" image="/demo/fixtures/img/card-estudio.svg">
             <h3 slot="name">Kanu Pared</h3>
-            <span slot="meta">Jardín · Pared</span>
+            <span slot="specs">1 – 3 módulos</span>
+            <span slot="specs">6 – 12 W</span>
             <arq-swatch slot="finishes" src="/demo/fixtures/img/acabado-negro.svg">Negro</arq-swatch>
           </arq-product-card>
         </div>
@@ -1053,7 +1060,8 @@
             <arq-product-card loading show-compare></arq-product-card>
             <arq-product-card href="#demo-product-card">
               <h3 slot="name">Sin imagen (Dark)</h3>
-              <span slot="meta">Exterior · Jardín</span>
+              <span slot="specs">3000K</span>
+              <span slot="specs">6 – 8 W</span>
             </arq-product-card>
           </div>
         </div>

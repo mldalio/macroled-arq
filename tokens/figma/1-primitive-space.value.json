@@ -126,6 +126,21 @@
         }
       }
     },
+    "14": {
+      "$type": "number",
+      "$value": 14,
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT",
+            "GAP"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-space-14)"
+          }
+        }
+      }
+    },
     "16": {
       "$type": "number",
       "$value": 16,
@@ -302,21 +317,6 @@
           ],
           "codeSyntax": {
             "WEB": "var(--arq-space-160)"
-          }
-        }
-      }
-    },
-    "5": {
-      "$type": "number",
-      "$value": 5,
-      "$extensions": {
-        "com.figma": {
-          "scopes": [
-            "WIDTH_HEIGHT",
-            "GAP"
-          ],
-          "codeSyntax": {
-            "WEB": "var(--arq-space-5)"
           }
         }
       }

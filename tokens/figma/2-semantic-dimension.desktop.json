@@ -1215,6 +1215,21 @@
           }
         }
       }
+    },
+    "xs": {
+      "$type": "number",
+      "$value": "{space.14}",
+      "$description": "Muestra de acabado elegible de las cards de producto (14): product-card. El aro de Selected se separa border/strong (2) de la muestra.",
+      "$extensions": {
+        "com.figma": {
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "codeSyntax": {
+            "WEB": "var(--arq-swatch-xs)"
+          }
+        }
+      }
     }
   },
   "blur": {

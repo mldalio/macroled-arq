@@ -19,7 +19,8 @@ class ArqSwatch extends ArqElement {
   static tag = 'arq-swatch';
   static styles = css;
   static properties = {
-    size: { type: String, values: ['small', 'default', 'large', 'xlarge'], default: 'small' }, // Size (def. Small; XLarge solo de código, swatch-picker)
+    size: { type: String, values: ['xsmall', 'small', 'default', 'large', 'xlarge'], default: 'small' }, // Size (def. Small; XSmall y XLarge solo de código: product-card y swatch-picker)
+    ring: { type: Boolean }, // solo de código: Selected y Hover con el aro separado de la ficha (swatch-picker, Size=XLarge), en cualquier tamaño (product-card)
     selected: { type: Boolean }, // State=Selected
     disabled: { type: Boolean }, // State=Disabled: acabado sin combinación con lo ya elegido
     src: { type: String },

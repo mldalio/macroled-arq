@@ -85,7 +85,7 @@ import '../accordion-item/accordion-item.js';
 import '../spec-list/spec-list.js';
 import '../spec-row/spec-row.js';
 import '../variants-table/variants-table.js';
-import { appendFinishes } from '../product-card/product-card.js';
+import { appendFinishes, appendSpecs } from '../product-card/product-card.js';
 import '../carousel-controls/carousel-controls.js';
 import '../icon-button/icon-button.js';
 import '../download-modal/download-modal.js';
@@ -1284,6 +1284,7 @@ function productCard(data) {
   name.slot = 'name';
   name.textContent = data.name;
   card.append(name);
+  appendSpecs(card, data.specs);
   appendFinishes(card, data.finishes);
   return card;
 }
