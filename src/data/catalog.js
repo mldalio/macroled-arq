@@ -91,8 +91,9 @@ function matchingVariant(group, filters, first = group.defaultVariant) {
 // son las subfamilias. product_type en esas filas suele venir vacío.
 export const LAMPS_ENVIRONMENT = 'Lámparas y Artefactos';
 
-// Las tres categorías, páginas hermanas de Productos. /arq/productos ya es una
-// página estática: Webflow no deja anidar otra debajo (docs/urls.md).
+// Rutas viejas de las tres categorías (/arq/interior…). Los links van a
+// /arq/productos?environment= (docs/urls.md); si una de estas páginas existe en
+// Webflow con el embed de Productos, igual lista su categoría.
 export const CATEGORY_PATHS = [
   ['interior', 'Interior'],
   ['exterior', 'Exterior'],
@@ -100,10 +101,6 @@ export const CATEGORY_PATHS = [
 ];
 
 export const categoryHref = ({ environment, application, productType, collection, family } = {}) => {
-  if (environment && !application && !productType && !collection && !family) {
-    const slug = CATEGORY_PATHS.find(([, name]) => name === environment)?.[0];
-    if (slug) return `/arq/${slug}`;
-  }
   const params = new URLSearchParams();
   if (environment) params.set('environment', environment);
   if (application) params.set('application', application);

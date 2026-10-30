@@ -9,9 +9,9 @@ Footer de Macroled Arq, último elemento de todas las páginas, full width. Marc
   <span slot="tagline">Diseño lumínico para la arquitectura contemporánea.</span>
 
   <h2 slot="productos-title">Productos</h2>
-  <arq-footer-link slot="productos" href="/arq/interior">Interior</arq-footer-link>
-  <arq-footer-link slot="productos" href="/arq/exterior">Exterior</arq-footer-link>
-  <arq-footer-link slot="productos" href="/arq/lamparas-y-artefactos">Lámparas y artefactos</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?environment=Interior">Interior</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?environment=Exterior">Exterior</arq-footer-link>
+  <arq-footer-link slot="productos" href="/arq/productos?environment=L%C3%A1mparas%20y%20Artefactos">Lámparas y artefactos</arq-footer-link>
   <arq-footer-link slot="productos" href="/arq/productos" data-arq-menu="colecciones">Colecciones</arq-footer-link>
 
   <h2 slot="informacion-title">Información</h2>

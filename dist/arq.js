@@ -892,31 +892,27 @@ function At(e, t, n = e.defaultVariant) {
 		...e.variants
 	].filter((e, t, n) => n.indexOf(e) === t).find((e) => kt(e, t)) ?? null;
 }
-var D = "Lámparas y Artefactos", jt = [
+var jt = "Lámparas y Artefactos", Mt = [
 	["interior", "Interior"],
 	["exterior", "Exterior"],
-	["lamparas-y-artefactos", D]
-], O = ({ environment: e, application: t, productType: n, collection: r, family: i } = {}) => {
-	if (e && !t && !n && !r && !i) {
-		let t = jt.find(([, t]) => t === e)?.[0];
-		if (t) return `/arq/${t}`;
-	}
+	["lamparas-y-artefactos", jt]
+], D = ({ environment: e, application: t, productType: n, collection: r, family: i } = {}) => {
 	let a = new URLSearchParams();
 	e && a.set("environment", e), t && a.set("application", t), n && a.set("product_type", n), r && a.set("collection", r), i && a.set("family", i);
 	let o = a.toString();
 	return `/arq/productos${o ? `?${o}` : ""}`;
 };
-function Mt(e) {
+function Nt(e) {
 	let t = decodeURIComponent(e).replace(/\/$/, "").match(/^\/arq\/([^/]+)$/)?.[1];
-	return jt.find(([e]) => e === t)?.[1] ?? null;
+	return Mt.find(([e]) => e === t)?.[1] ?? null;
 }
-var Nt = (e, t = {}) => e.hasDefault ? t.productType ? !0 : e.environment.includes("Lámparas y Artefactos") ? t.environment === D : e.productType === "Luminaria" : !1;
-function Pt(e, { environment: t, application: n, productType: r, collection: i, family: a } = {}) {
+var Pt = (e, t = {}) => e.hasDefault ? t.productType ? !0 : e.environment.includes("Lámparas y Artefactos") ? t.environment === jt : e.productType === "Luminaria" : !1;
+function Ft(e, { environment: t, application: n, productType: r, collection: i, family: a } = {}) {
 	return !(t && !e.environment.includes(t) || n && e.application !== n || r && e.productType !== r || i && e.collection !== i || a && y(e.family) !== y(a));
 }
-var Ft = (e = {}) => Object.fromEntries(Object.entries(e).filter(([, e]) => e?.length)), It = Object.keys(h).filter((e) => h[e].filter !== !1);
-function Lt(e) {
-	return It.map((t) => {
+var It = (e = {}) => Object.fromEntries(Object.entries(e).filter(([, e]) => e?.length)), Lt = Object.keys(h).filter((e) => h[e].filter !== !1);
+function Rt(e) {
+	return Lt.map((t) => {
 		let n = /* @__PURE__ */ new Map();
 		for (let r of e) for (let e of new Set(r.variants.map((e) => e.values[t]).filter(E))) n.set(e, (n.get(e) ?? 0) + 1);
 		let r = [...n].map(([e, t]) => ({
@@ -930,9 +926,9 @@ function Lt(e) {
 		};
 	}).filter((e) => e.options.length > 1);
 }
-function Rt(e, t) {
+function zt(e, t) {
 	let n = {};
-	for (let r of It) {
+	for (let r of Lt) {
 		let i = { ...t };
 		delete i[r];
 		let a = /* @__PURE__ */ new Map();
@@ -944,36 +940,36 @@ function Rt(e, t) {
 	}
 	return n;
 }
-function zt(e) {
+function Bt(e) {
 	return e.productType && e.productType !== "Luminaria" ? e.productType : [e.environment.join(" · "), e.application].filter(Boolean).join(" · ");
 }
-var Bt = Object.keys(h).filter((e) => h[e].control === "swatches"), Vt = (e) => [...new Set(e.variants.flatMap((e) => Bt.map((t) => e.values[t])).filter(E))], Ht = [
+var Vt = Object.keys(h).filter((e) => h[e].control === "swatches"), Ht = (e) => [...new Set(e.variants.flatMap((e) => Vt.map((t) => e.values[t])).filter(E))], Ut = [
 	"negro",
 	"blanco",
 	"terracota",
 	"verde"
-], Ut = (e) => {
-	let t = String(e).normalize("NFD").replace(/[̀-ͯ]/g, "").trim().toLowerCase().split(/\s+/)[0], n = Ht.indexOf(t);
-	return n === -1 ? Ht.length : n;
-}, Wt = (e) => e.map((e, t) => [e, t]).sort((e, t) => Ut(e[0].name) - Ut(t[0].name) || e[1] - t[1]).map(([e]) => e), Gt = (e) => Wt(Vt(e).map((t) => ({
+], Wt = (e) => {
+	let t = String(e).normalize("NFD").replace(/[̀-ͯ]/g, "").trim().toLowerCase().split(/\s+/)[0], n = Ut.indexOf(t);
+	return n === -1 ? Ut.length : n;
+}, Gt = (e) => e.map((e, t) => [e, t]).sort((e, t) => Wt(e[0].name) - Wt(t[0].name) || e[1] - t[1]).map(([e]) => e), Kt = (e) => Gt(Ht(e).map((t) => ({
 	name: t,
 	src: yt(t, e.family)
-}))), Kt = (e) => Bt.map((t) => e.values[t]).find(E);
-function qt(e, t = {}) {
-	let n = (e) => Ut(Kt(e) ?? "");
+}))), qt = (e) => Vt.map((t) => e.values[t]).find(E);
+function Jt(e, t = {}) {
+	let n = (e) => Wt(qt(e) ?? "");
 	return [e.defaultVariant, ...e.variants].filter((e, t, n) => n.indexOf(e) === t).map((e, t) => [e, t]).sort((e, t) => n(e[0]) - n(t[0]) || e[1] - t[1]).map(([e]) => e).find((e) => kt(e, t)) ?? null;
 }
-function Jt(e, t, n = {}) {
-	let r = Gt(e);
+function Yt(e, t, n = {}) {
+	let r = Kt(e);
 	return r.length < 2 ? r : r.map((r) => {
 		let i = [
 			t,
 			e.defaultVariant,
 			...e.variants
-		].filter((e, t, n) => n.indexOf(e) === t && Kt(e) === r.name), a = (n) => e.variantAttributes.filter((e) => !Bt.includes(e) && n.values[e] === t.values[e]).length, o = i.map((e, t) => [e, t]).sort((e, t) => a(t[0]) - a(e[0]) || e[1] - t[1]).map(([e]) => e), s = o.find((e) => kt(e, n)) ?? o[0], c = A(s.images);
+		].filter((e, t, n) => n.indexOf(e) === t && qt(e) === r.name), a = (n) => e.variantAttributes.filter((e) => !Vt.includes(e) && n.values[e] === t.values[e]).length, o = i.map((e, t) => [e, t]).sort((e, t) => a(t[0]) - a(e[0]) || e[1] - t[1]).map(([e]) => e), s = o.find((e) => kt(e, n)) ?? o[0], c = k(s.images);
 		return {
 			...r,
-			selected: Kt(t) === r.name,
+			selected: qt(t) === r.name,
 			sku: s.sku,
 			href: Ot(e.id, s.sku),
 			image: c.studio ?? null,
@@ -983,14 +979,14 @@ function Jt(e, t, n = {}) {
 		};
 	});
 }
-function k(e, t = qt(e) ?? e.defaultVariant, n = {}) {
-	let r = A(t.images);
+function O(e, t = Jt(e) ?? e.defaultVariant, n = {}) {
+	let r = k(t.images);
 	return {
 		id: e.id,
 		sku: t.sku,
 		name: e.name,
-		meta: zt(e),
-		finishes: Jt(e, t, n),
+		meta: Bt(e),
+		finishes: Yt(e, t, n),
 		href: Ot(e.id, t.sku),
 		family: e.family,
 		image: r.studio ?? null,
@@ -999,48 +995,48 @@ function k(e, t = qt(e) ?? e.defaultVariant, n = {}) {
 		imageHoverLit: r.contextOn ?? r.studio ?? null
 	};
 }
-var A = (e = {}) => Object.fromEntries(Object.entries(e).filter(([, e]) => E(e) && (!Array.isArray(e) || e.length))), Yt = "dao", Xt = ["tori jardin", "tori visera"], Zt = (e) => {
+var k = (e = {}) => Object.fromEntries(Object.entries(e).filter(([, e]) => E(e) && (!Array.isArray(e) || e.length))), Xt = "dao", Zt = ["tori jardin", "tori visera"], Qt = (e) => {
 	let t = y(e.name);
 	return (/\bround/.test(t) ? 2 : 0) + +!!/\bapli(car|que)\b/.test(t);
 };
-function Qt(e) {
+function $t(e) {
 	let t = (e) => y(e.collection || e.family || e.name).replace(/\s+round(ed)?$/, ""), n = (e) => {
-		let t = Xt.indexOf(y(e.name));
-		return t >= 0 ? 2 + t : +(y(e.family) === Yt || y(e.collection) === Yt);
+		let t = Zt.indexOf(y(e.name));
+		return t >= 0 ? 2 + t : +(y(e.family) === Xt || y(e.collection) === Xt);
 	}, r = /* @__PURE__ */ new Map();
 	for (let n of e) r.has(t(n)) || r.set(t(n), r.size);
 	let i = (e) => e.environment.includes("Interior") ? 0 : e.environment.includes("Exterior") ? 1 : 2;
-	return [...e].sort((e, a) => i(e) - i(a) || n(e) - n(a) || r.get(t(e)) - r.get(t(a)) || Zt(e) - Zt(a));
+	return [...e].sort((e, a) => i(e) - i(a) || n(e) - n(a) || r.get(t(e)) - r.get(t(a)) || Qt(e) - Qt(a));
 }
-async function $t({ filters: e, query: t, ...n } = {}) {
+async function en({ filters: e, query: t, ...n } = {}) {
 	let { groups: r } = await T(), i = ce(t ?? ""), a = /* @__PURE__ */ new Map();
 	for (let e of r) {
-		if (!Pt(e, n) || !i.length && !Nt(e, n)) continue;
-		let t = i.length ? Bn(e, i) : {
+		if (!Ft(e, n) || !i.length && !Pt(e, n)) continue;
+		let t = i.length ? Vn(e, i) : {
 			variant: e.defaultVariant,
 			bySku: !1
 		};
 		t && a.set(e, t);
 	}
 	let o = [...a.keys()].sort((e, t) => Number(a.get(e).typo) - Number(a.get(t).typo));
-	i.length || o.splice(0, o.length, ...Qt(o));
-	let s = Ft(e);
+	i.length || o.splice(0, o.length, ...$t(o));
+	let s = It(e);
 	Object.keys(s).length;
 	let c = o.flatMap((e) => {
-		let t = a.get(e), n = t.bySku ? At(e, s, t.variant) : qt(e, s);
-		return n ? [k(e, n, s)] : [];
+		let t = a.get(e), n = t.bySku ? At(e, s, t.variant) : Jt(e, s);
+		return n ? [O(e, n, s)] : [];
 	});
-	return yn({
+	return bn({
 		cards: c,
 		count: c.length,
-		filters: Lt(o),
-		available: Rt(o, s)
+		filters: Rt(o),
+		available: zt(o, s)
 	});
 }
-function en(e) {
+function tn(e) {
 	let t = /* @__PURE__ */ new Map();
 	for (let n of e) {
-		if (!Nt(n)) continue;
+		if (!Pt(n)) continue;
 		let e = n.family.trim();
 		if (!e) continue;
 		let r = y(e);
@@ -1054,28 +1050,28 @@ function en(e) {
 		numeric: !0
 	}));
 }
-var tn = [
+var nn = [
 	"Yoru",
 	"Afo",
 	"Sento",
 	"Hoshi",
 	"Kanu",
 	"Koen"
-], nn = {
+], rn = {
 	hoshi: "Höshi",
 	koen: "Köen"
-}, rn = {
+}, an = {
 	yoru: "https://d1zltvqju4u8ql.cloudfront.net/fit-in/1000x1000/MACROLED/ARQ/imagenes/productos/YORU%20WEB_0002s_0001_YORU-J-8W-N-WW_AMBIENT_1_ON.webp",
 	afo: "https://d1zltvqju4u8ql.cloudfront.net/fit-in/1000x1000/MACROLED/ARQ/imagenes/productos/afo.jpg",
 	sento: "https://d1zltvqju4u8ql.cloudfront.net/fit-in/1000x1000/MACROLED/ARQ/imagenes/productos/SENTO-J-520-12W-N-WW_AMBIENT_ON.webp",
 	hoshi: "https://d1zltvqju4u8ql.cloudfront.net/fit-in/filters:format(webp)/MACROLED/ARQ/imagenes/productos/HOSHI-E-7W-15G-B_AMBIENT_1_ON.png",
 	kanu: "https://d1zltvqju4u8ql.cloudfront.net/fit-in/MACROLED/ARQ/imagenes/productos/KANU-J-500-12W-N-WW_AMBIENT_3_ON.webp",
 	koen: "https://d1zltvqju4u8ql.cloudfront.net/fit-in/1000x1000/MACROLED/ARQ/imagenes/productos/KOEN-P-20W-N-WW_HERO_AMBIENT_3_ON.webp"
-}, an = {
+}, on = {
 	hoshi: "top",
 	afo: "bottom"
 };
-function on(e) {
+function sn(e) {
 	let t = /* @__PURE__ */ new Map();
 	for (let n of e) {
 		let e = n.family.trim();
@@ -1083,43 +1079,43 @@ function on(e) {
 	}
 	return [...t.entries()].sort((e, t) => t[1] - e[1])[0][0];
 }
-async function sn() {
-	let { groups: e } = await T(), t = new Map(en(e).map((e) => [y(e.name), e]));
-	return tn.flatMap((e) => {
-		let n = y(e), r = t.get(n), i = rn[n] ?? null;
+async function cn() {
+	let { groups: e } = await T(), t = new Map(tn(e).map((e) => [y(e.name), e]));
+	return nn.flatMap((e) => {
+		let n = y(e), r = t.get(n), i = an[n] ?? null;
 		if (!r) return i ? [{
-			name: nn[n] ?? e,
-			href: O({ family: e }),
+			name: rn[n] ?? e,
+			href: D({ family: e }),
 			image: i,
-			focus: an[n] ?? null
+			focus: on[n] ?? null
 		}] : (console.warn(`[arq] collection-index: no hay familia «${e}»`), []);
-		let a = on(r.groups), o = nn[n] ?? a, s = A(r.groups[0].defaultVariant.images), c = rn[y(e)] ?? s.context ?? s.studio ?? null, l = an[y(e)] ?? null;
+		let a = sn(r.groups), o = rn[n] ?? a, s = k(r.groups[0].defaultVariant.images), c = an[y(e)] ?? s.context ?? s.studio ?? null, l = on[y(e)] ?? null;
 		return [{
 			name: o,
-			href: O({ family: a }),
+			href: D({ family: a }),
 			image: c,
 			focus: l
 		}];
 	});
 }
-var cn = { "tori-jardin": ["tori-visera"] }, ln = (e, t) => e.map((e) => t.get(e)).filter((e) => e?.hasDefault).map((e) => {
-	let t = k(e);
+var ln = { "tori-jardin": ["tori-visera"] }, un = (e, t) => e.map((e) => t.get(e)).filter((e) => e?.hasDefault).map((e) => {
+	let t = O(e);
 	return {
 		name: t.name,
 		href: t.href,
 		image: t.image,
-		finishes: Gt(e).map(({ name: e, src: t }) => ({
+		finishes: Kt(e).map(({ name: e, src: t }) => ({
 			name: e,
 			src: t
 		})),
 		meta: ""
 	};
 });
-async function un(e) {
+async function dn(e) {
 	let { groups: t, groupById: n } = await T(), r = n.get(e);
 	if (!r) return null;
 	await Et(r);
-	let i = y(r.family ?? ""), a = i ? t.filter((e) => e !== r && y(e.family ?? "") === i && Nt(e)).sort((e, t) => Zt(e) - Zt(t)).map((e) => k(e)) : [], o = r.images ?? {};
+	let i = y(r.family ?? ""), a = i ? t.filter((e) => e !== r && y(e.family ?? "") === i && Pt(e)).sort((e, t) => Qt(e) - Qt(t)).map((e) => O(e)) : [], o = r.images ?? {};
 	return {
 		group: r,
 		collection: r.collectionData,
@@ -1129,41 +1125,41 @@ async function un(e) {
 			attributes: e.values
 		})),
 		variantAttributes: r.variantAttributes,
-		finishImages: Object.fromEntries(Gt(r).filter((e) => e.src).map((e) => [e.name, e.src])),
-		accessories: ln(cn[r.id] ?? [], n),
-		related: ln(Object.keys(cn).filter((e) => cn[e].includes(r.id)), n),
+		finishImages: Object.fromEntries(Kt(r).filter((e) => e.src).map((e) => [e.name, e.src])),
+		accessories: un(ln[r.id] ?? [], n),
+		related: un(Object.keys(ln).filter((e) => ln[e].includes(r.id)), n),
 		family: a,
 		images: {
-			ambient: dn(o.ambient),
+			ambient: fn(o.ambient),
 			description: E(o.description) ? o.description : null,
-			inspiration: dn(o.inspiration)
+			inspiration: fn(o.inspiration)
 		},
-		glossary: gn(r),
-		files: kn(r.defaultVariant).filter((e) => e.type === "cad" || e.type === "manual")
+		glossary: _n(r),
+		files: An(r.defaultVariant).filter((e) => e.type === "cad" || e.type === "manual")
 	};
 }
-var dn = (e) => [...new Set([e ?? []].flat().filter(E))], fn = (e, t) => pt(e.values.potencia, t.values.potencia) || pt(e.values.temperatura_color, t.values.temperatura_color) || Ut(Kt(e) ?? "") - Ut(Kt(t) ?? ""), pn = (e) => e.map((e, t) => [e, t]).sort(([e, t], [n, r]) => fn(e, n) || t - r).map(([e]) => e), mn = (e) => g.filter(({ field: t }) => e.some((e) => E(e.values[t]))).map(({ field: e, label: t, wide: n }) => ({
+var fn = (e) => [...new Set([e ?? []].flat().filter(E))], pn = (e, t) => pt(e.values.potencia, t.values.potencia) || pt(e.values.temperatura_color, t.values.temperatura_color) || Wt(qt(e) ?? "") - Wt(qt(t) ?? ""), mn = (e) => e.map((e, t) => [e, t]).sort(([e, t], [n, r]) => pn(e, n) || t - r).map(([e]) => e), hn = (e) => g.filter(({ field: t }) => e.some((e) => E(e.values[t]))).map(({ field: e, label: t, wide: n }) => ({
 	key: e,
 	label: t,
 	wide: n
 }));
-function hn(e) {
-	let t = mn(e.variants), n = e.variantAttributes.filter((e) => !t.some((t) => t.key === e) && !g.some((t) => t.field === e)).filter((t) => e.variants.some((e) => E(e.values[t]))).map((e) => ({
+function gn(e) {
+	let t = hn(e.variants), n = e.variantAttributes.filter((e) => !t.some((t) => t.key === e) && !g.some((t) => t.field === e)).filter((t) => e.variants.some((e) => E(e.values[t]))).map((e) => ({
 		key: e,
 		label: v(e).label,
 		card: !0
 	})), r = t.findIndex((e) => e.key === "color_carcasa") + 1;
 	return t.splice(r, 0, ...n), t;
 }
-function gn(e) {
+function _n(e) {
 	return {
-		columns: hn(e),
+		columns: gn(e),
 		filters: e.variantAttributes.map((e) => ({
 			key: e,
 			label: v(e).label,
 			swatches: v(e).control === "swatches"
 		})),
-		rows: pn(e.variants).map((e) => ({
+		rows: mn(e.variants).map((e) => ({
 			sku: e.sku,
 			thumb: e.images?.studio ?? null,
 			attributes: e.values,
@@ -1171,7 +1167,7 @@ function gn(e) {
 		}))
 	};
 }
-function _n(e, t) {
+function vn(e, t) {
 	let n = e.collectionData?.name;
 	if (!n) return e.family || e.name;
 	let r = t.filter((t) => t.collection === e.collection);
@@ -1179,27 +1175,27 @@ function _n(e, t) {
 	let i = r.filter((t) => t.application === e.application);
 	return e.application && i.length === 1 ? `${n} ${e.application}` : e.name;
 }
-async function vn() {
+async function yn() {
 	return null;
 }
-async function yn(e) {
-	let t = await vn();
+async function bn(e) {
+	let t = await yn();
 	return t ? t.fixtures.catalogListing(t.mode, e) : e;
 }
-async function bn() {
-	let e = await xn(), t = await vn();
+async function xn() {
+	let e = await Sn(), t = await yn();
 	return t ? t.fixtures.downloadsTable(t.mode, e) : e;
 }
-async function xn() {
+async function Sn() {
 	let { groups: e } = await T(), t = (e) => e.collectionData?.name || e.family || e.name, n = new Intl.Collator("es", {
 		sensitivity: "base",
 		numeric: !0
 	}), r = new Map(e.map((e, t) => [e, t])), i = (e, t) => e.variants.findIndex((e) => e.name === t.name), a = e.flatMap((e) => e.variants.map((t) => ({
 		group: e,
 		variant: t
-	}))).map((e, t) => [e, t]).sort(([e, a], [o, s]) => n.compare(t(e.group), t(o.group)) || pt(e.variant.values.potencia, o.variant.values.potencia) || r.get(e.group) - r.get(o.group) || i(e.group, e.variant) - i(o.group, o.variant) || fn(e.variant, o.variant) || a - s).map(([e]) => e), o = (e) => new Set(a.map(({ variant: t }) => t.values[e]).filter(E)).size > 1;
+	}))).map((e, t) => [e, t]).sort(([e, a], [o, s]) => n.compare(t(e.group), t(o.group)) || pt(e.variant.values.potencia, o.variant.values.potencia) || r.get(e.group) - r.get(o.group) || i(e.group, e.variant) - i(o.group, o.variant) || pn(e.variant, o.variant) || a - s).map(([e]) => e), o = (e) => new Set(a.map(({ variant: t }) => t.values[e]).filter(E)).size > 1;
 	return {
-		columns: mn(a.map(({ variant: e }) => e)),
+		columns: hn(a.map(({ variant: e }) => e)),
 		filters: re.filter(({ field: e }) => o(e)).map(({ field: e, label: t }) => ({
 			key: e,
 			label: t,
@@ -1207,7 +1203,7 @@ async function xn() {
 		})),
 		rows: a.map(({ group: t, variant: n }) => ({
 			sku: n.sku,
-			name: t.variantNames ? n.name : _n(t, e),
+			name: t.variantNames ? n.name : vn(t, e),
 			href: Ot(t.id, n.sku),
 			meta: t.variantAttributes.map((e) => n.values[e]).filter(E).join(", "),
 			thumb: n.images?.studio ?? null,
@@ -1221,66 +1217,66 @@ async function xn() {
 		}))
 	};
 }
-async function Sn(e) {
-	let t = await vn(), n = t?.fixtures.skuFiles(t.mode, e);
+async function Cn(e) {
+	let t = await yn(), n = t?.fixtures.skuFiles(t.mode, e);
 	if (n) return n;
 	let { groups: r } = await T(), i = r.find((t) => t.variants.some((t) => t.sku === e));
-	return i ? (await Et(i), kn(i.variants.find((t) => t.sku === e))) : [];
+	return i ? (await Et(i), An(i.variants.find((t) => t.sku === e))) : [];
 }
-async function Cn(e) {
+async function wn(e) {
 	let { groups: t } = await T(), n = t.find((t) => t.variants.some((t) => t.sku === e));
 	if (!n) return null;
-	let r = n.variants.find((t) => t.sku === e), i = A(r.images), a = A(n.defaultVariant.images), o = {
+	let r = n.variants.find((t) => t.sku === e), i = k(r.images), a = k(n.defaultVariant.images), o = {
 		name: Dt(n, r),
 		sku: r.sku,
 		image: i.main ?? i.studio ?? a.main ?? a.studio ?? null,
 		cota: r.cota ?? null,
 		sections: ie(r.values)
-	}, s = await vn();
+	}, s = await yn();
 	return s ? s.fixtures.datasheet(s.mode, o) : o;
 }
-async function wn(e) {
+async function Tn(e) {
 	let { groupById: t } = await T(), n = e.map((e) => t.get(e)).filter(Boolean).map((e) => ({
-		...k(e),
-		meta: En(e)
-	})), r = await vn();
+		...O(e),
+		meta: Dn(e)
+	})), r = await yn();
 	return r?.mode.startsWith("loading") ? (await r.fixtures.catalogListing(r.mode, {
 		cards: n,
 		count: n.length,
 		filters: []
 	})).cards : n;
 }
-async function Tn() {
+async function En() {
 	let { groups: e } = await T();
 	return e.flatMap((e) => e.variants.filter((e) => e.isNew).map((t) => ({
-		...k(e, t),
+		...O(e, t),
 		name: Dt(e, t),
-		meta: En(e)
+		meta: Dn(e)
 	}))).sort((e, t) => xt(e.name) - xt(t.name));
 }
-function En(e) {
+function Dn(e) {
 	return e.productType && e.productType !== "Luminaria" ? e.productType : e.application ?? e.productType ?? "";
 }
-var Dn = {
+var On = {
 	cad: "CAD 2D/3D",
 	manual: "Manual",
 	ies: "IES",
 	fotometria: "Fotometría",
 	cotas: "Cotas"
-}, On = (e) => e.cota ?? null;
-function kn(e) {
+}, kn = (e) => e.cota ?? null;
+function An(e) {
 	let t = {
-		...A(e.downloads),
-		cotas: On(e)
+		...k(e.downloads),
+		cotas: kn(e)
 	};
-	return Object.keys(Dn).filter((e) => t[e]).map((e) => ({
+	return Object.keys(On).filter((e) => t[e]).map((e) => ({
 		type: e,
-		label: Dn[e],
+		label: On[e],
 		href: t[e]
 	}));
 }
-function An(e, t) {
-	let n = e.variants.find((e) => e.sku === t) ?? e.defaultVariant, r = A(n.images), i = [...r.gallery ?? [r.studio].filter(Boolean)], a = [...r.galleryOn ?? [r.studioOn ?? null]], o = (e.images?.heroExtra ?? []).filter((e) => !i.includes(e));
+function jn(e, t) {
+	let n = e.variants.find((e) => e.sku === t) ?? e.defaultVariant, r = k(n.images), i = [...r.gallery ?? [r.studio].filter(Boolean)], a = [...r.galleryOn ?? [r.studioOn ?? null]], o = (e.images?.heroExtra ?? []).filter((e) => !i.includes(e));
 	if (o.length) {
 		let e = i.includes(r.context) ? i.indexOf(r.context) + 1 : i.length;
 		i.splice(e, 0, ...o), a.splice(e, 0, ...o.map(() => null));
@@ -1296,28 +1292,28 @@ function An(e, t) {
 			alt: `${e.name}, imagen ${n + 1}`
 		})),
 		sections: ie(n.values),
-		downloads: kn(n),
-		cota: On(n)
+		downloads: An(n),
+		cota: kn(n)
 	};
 }
-async function jn(e) {
+async function Mn(e) {
 	let { collectionById: t, groups: n } = await T(), r = t.get(e);
 	if (!r) return null;
 	let i = r.images ?? {};
 	return {
 		collection: r,
 		cards: n.filter((t) => t.collection === e).map((e) => ({
-			...k(e),
-			meta: Mn(e)
+			...O(e),
+			meta: Nn(e)
 		})),
 		images: {
-			gallery: dn(i.gallery),
+			gallery: fn(i.gallery),
 			description: E(i.description) ? i.description : null,
-			inspiration: dn(i.inspiration)
+			inspiration: fn(i.inspiration)
 		}
 	};
 }
-function Mn(e) {
+function Nn(e) {
 	let t = (e) => Number.parseFloat(String(e).replace(/^x/i, "").replace(",", "."));
 	return e.variantAttributes.filter((e) => v(e).control !== "swatches" && v(e).summary !== !1).map((n) => {
 		let r = [...new Set(e.variants.map((e) => e.values[n]).filter(E))];
@@ -1326,14 +1322,14 @@ function Mn(e) {
 		return a && i ? `${i} ${r.length === 1 && t(r[0]) === 1 ? a[0] : a[1]}` : i;
 	}).filter(Boolean).join(" · ");
 }
-var Nn = (e) => e.variants.map((t) => ({
+var Pn = (e) => e.variants.map((t) => ({
 	sku: t.sku,
 	isDefault: t === e.defaultVariant,
 	attributes: t.values
-})), Pn = (e, t) => Object.fromEntries(e.variantAttributes.map((e) => [e, t.values[e]]));
-function Fn(e, t) {
-	let n = Pn(e, t);
-	return at(Nn(e), e.variantAttributes, n).map(({ attribute: t, options: r }) => {
+})), Fn = (e, t) => Object.fromEntries(e.variantAttributes.map((e) => [e, t.values[e]]));
+function In(e, t) {
+	let n = Fn(e, t);
+	return at(Pn(e), e.variantAttributes, n).map(({ attribute: t, options: r }) => {
 		let i = v(t);
 		return {
 			field: t,
@@ -1349,13 +1345,13 @@ function Fn(e, t) {
 		};
 	});
 }
-async function In(e, t, n) {
+async function Ln(e, t, n) {
 	let { groups: r } = await T(), i = r.find((t) => t.variants.some((t) => t.sku === e)), a = i?.variants.find((t) => t.sku === e);
 	if (!i || !a) return null;
-	let o = ut(Nn(i), i.variantAttributes, Pn(i, a), t, n);
-	return tt(Nn(i), o)?.sku ?? null;
+	let o = ut(Pn(i), i.variantAttributes, Fn(i, a), t, n);
+	return tt(Pn(i), o)?.sku ?? null;
 }
-async function Ln(e) {
+async function Rn(e) {
 	let { groups: t } = await T(), n = e.slice(0, 3).flatMap((e) => {
 		let n = t.find((t) => t.variants.some((t) => t.sku === e));
 		return n ? [{
@@ -1363,14 +1359,14 @@ async function Ln(e) {
 			variant: n.variants.find((t) => t.sku === e)
 		}] : [];
 	}), r = n.map(({ group: e, variant: t }) => {
-		let n = k(e, t);
+		let n = O(e, t);
 		return {
 			sku: t.sku,
 			name: Dt(e, t),
 			meta: t.sku,
 			image: n.image,
 			href: n.href,
-			attributes: Fn(e, t)
+			attributes: In(e, t)
 		};
 	}), i = ie(Object.assign({}, ...n.map(({ variant: e }) => e.values))).map((e) => ({
 		label: e.label,
@@ -1390,16 +1386,16 @@ async function Ln(e) {
 		groups: i
 	};
 }
-var Rn = (e) => [...new Set(e.variants.map((e) => e.category).filter(Boolean))], zn = (e) => [
+var zn = (e) => [...new Set(e.variants.map((e) => e.category).filter(Boolean))], Bn = (e) => [
 	e.name,
 	e.collectionData?.name,
 	e.application,
 	e.productType,
 	...e.environment,
-	...Rn(e)
+	...zn(e)
 ].join(" ");
-function Bn(e, t) {
-	let n = fe(zn(e), t);
+function Vn(e, t) {
+	let n = fe(Bn(e), t);
 	if (n === "exact") return {
 		variant: e.defaultVariant,
 		bySku: !1,
@@ -1422,18 +1418,18 @@ function Bn(e, t) {
 		typo: !0
 	} : null;
 }
-var Vn = (e) => e.sort((e, t) => Number(e.typo) - Number(t.typo));
-async function Hn(e, { limit: t = 5, collectionLimit: n = 3 } = {}) {
+var Hn = (e) => e.sort((e, t) => Number(e.typo) - Number(t.typo));
+async function Un(e, { limit: t = 5, collectionLimit: n = 3 } = {}) {
 	let r = ce(e);
 	if (!r.length) return {
 		results: [],
 		total: 0
 	};
-	let { groups: i } = await T(), a = Vn(i.flatMap((e) => {
+	let { groups: i } = await T(), a = Hn(i.flatMap((e) => {
 		if (!e.hasDefault) return [];
-		let t = Bn(e, r);
+		let t = Vn(e, r);
 		if (!t) return [];
-		let n = k(e, t.variant);
+		let n = O(e, t.variant);
 		return [{
 			kind: "product",
 			name: t.bySku ? Dt(e, t.variant) : e.name,
@@ -1442,13 +1438,13 @@ async function Hn(e, { limit: t = 5, collectionLimit: n = 3 } = {}) {
 			image: n.image,
 			typo: t.typo
 		}];
-	})), o = Vn(en(i).flatMap((e) => {
-		let t = fe(e.name, r), n = A(e.groups[0].defaultVariant.images);
+	})), o = Hn(tn(i).flatMap((e) => {
+		let t = fe(e.name, r), n = k(e.groups[0].defaultVariant.images);
 		return t ? [{
 			kind: "collection",
 			name: e.name,
 			meta: "Colección",
-			href: O({ family: e.name }),
+			href: D({ family: e.name }),
 			image: n.studio ?? n.context ?? null,
 			typo: t === "typo"
 		}] : [];
@@ -1458,35 +1454,35 @@ async function Hn(e, { limit: t = 5, collectionLimit: n = 3 } = {}) {
 		total: a.length
 	};
 }
-var Un = (e) => `/arq/productos?q=${encodeURIComponent(e)}`, Wn = "Lámparas y artefactos", Gn = (e) => !e.productType || e.productType === "Luminaria";
-function Kn(e) {
-	return Gn(e) ? zt(e) : [Wn, e.application ?? e.productType].filter(Boolean).join(" · ");
+var Wn = (e) => `/arq/productos?q=${encodeURIComponent(e)}`, Gn = "Lámparas y artefactos", Kn = (e) => !e.productType || e.productType === "Luminaria";
+function qn(e) {
+	return Kn(e) ? Bt(e) : [Gn, e.application ?? e.productType].filter(Boolean).join(" · ");
 }
-async function qn({ query: e = "", selected: t = [] } = {}) {
+async function Jn({ query: e = "", selected: t = [] } = {}) {
 	let { groups: n } = await T(), r = ce(e), i = new Set(t);
 	return { items: n.flatMap((e) => {
 		if (!e.hasDefault) return [];
-		let t = r.length ? Bn(e, r) : { variant: e.defaultVariant };
+		let t = r.length ? Vn(e, r) : { variant: e.defaultVariant };
 		return t ? [{
 			id: e.id,
 			sku: t.variant.sku,
 			name: e.name,
-			meta: Kn(e),
-			cardMeta: zt(e),
-			image: k(e, t.variant).image,
+			meta: qn(e),
+			cardMeta: Bt(e),
+			image: O(e, t.variant).image,
 			added: e.variants.some((e) => i.has(e.sku))
 		}] : [];
 	}) };
 }
-async function Jn() {
-	let { groups: e } = await T(), t = e.filter((e) => e.hasDefault), n = (e) => t.filter((t) => Pt(t, e) && Nt(t, e)).length, r = (e) => {
-		let t = A(e.defaultVariant.images);
+async function Yn() {
+	let { groups: e } = await T(), t = e.filter((e) => e.hasDefault), n = (e) => t.filter((t) => Ft(t, e) && Pt(t, e)).length, r = (e) => {
+		let t = k(e.defaultVariant.images);
 		return {
 			image: t.context ?? t.studio ?? null,
 			thumb: t.studio ?? null
 		};
 	}, i = (e, { studio: t = !0 } = {}) => {
-		let n = e.map((e) => A(e.defaultVariant.images));
+		let n = e.map((e) => k(e.defaultVariant.images));
 		return [...n.map((e) => e.contextOn ?? e.context), ...t ? n.map((e) => e.studio) : []];
 	}, a = (e) => {
 		let [t = null, ...n] = [...new Set(e.filter(Boolean))];
@@ -1495,16 +1491,16 @@ async function Jn() {
 			fallbacks: n
 		};
 	}, o = (e, o) => {
-		let s = t.filter((e) => Pt(e, o));
+		let s = t.filter((e) => Ft(e, o));
 		return {
 			label: e,
-			href: O(o),
+			href: D(o),
 			count: n(o),
 			...a([s.find((e) => e.menuImage)?.menuImage, ...i(s)]),
 			thumb: s.map(r).find((e) => e.image)?.thumb ?? null
 		};
 	}, s = (e, n) => {
-		let r = e === D, i = [...[...new Set(t.filter((t) => t.environment.includes(e) && (r ? Nt(t, { environment: e }) : t.productType === "Luminaria")).map((e) => e.application).filter(Boolean))].map((t) => o(t, r ? {
+		let r = e === jt, i = [...[...new Set(t.filter((t) => t.environment.includes(e) && (r ? Pt(t, { environment: e }) : t.productType === "Luminaria")).map((e) => e.application).filter(Boolean))].map((t) => o(t, r ? {
 			environment: e,
 			application: t
 		} : {
@@ -1521,10 +1517,10 @@ async function Jn() {
 		return i.length ? {
 			id: y(e),
 			label: e,
-			href: O({ environment: e }),
+			href: D({ environment: e }),
 			all: {
 				label: n,
-				href: O({ environment: e })
+				href: D({ environment: e })
 			},
 			links: i
 		} : null;
@@ -1533,14 +1529,14 @@ async function Jn() {
 		sections: {
 			interior: s("Interior", "Ver todo interior"),
 			exterior: s("Exterior", "Ver todo exterior"),
-			"lamparas-y-artefactos": s(D, "Ver todo lámparas y artefactos")
+			"lamparas-y-artefactos": s(jt, "Ver todo lámparas y artefactos")
 		},
-		collections: en(t).map((e) => {
+		collections: tn(t).map((e) => {
 			let t = e.groups, n = [...new Set(t.flatMap((e) => e.environment))];
 			return {
 				label: e.name,
 				meta: [...new Set(t.map((e) => e.application).filter(Boolean))].join(" · "),
-				href: O({ family: e.name }),
+				href: D({ family: e.name }),
 				eyebrow: n.length ? `Línea ${n.join(" · ")}` : "",
 				...a(i(t)),
 				thumb: t.map(r).find((e) => e.thumb)?.thumb ?? null
@@ -1548,14 +1544,14 @@ async function Jn() {
 		})
 	};
 }
-async function Yn() {
-	let { groups: e } = await T(), t = e.filter((e) => e.hasDefault), n = (e) => t.filter((t) => Pt(t, e) && Nt(t, e)).length, r = (e, t) => ({
+async function Xn() {
+	let { groups: e } = await T(), t = e.filter((e) => e.hasDefault), n = (e) => t.filter((t) => Ft(t, e) && Pt(t, e)).length, r = (e, t) => ({
 		label: e,
-		href: O(t),
+		href: D(t),
 		count: n(t)
 	}), i = (e) => {
-		let n = e === D;
-		return [...[...new Set(t.filter((t) => t.environment.includes(e) && (n ? Nt(t, { environment: e }) : t.productType === "Luminaria")).map((e) => e.application).filter(Boolean))].map((t) => r(t, n ? {
+		let n = e === jt;
+		return [...[...new Set(t.filter((t) => t.environment.includes(e) && (n ? Pt(t, { environment: e }) : t.productType === "Luminaria")).map((e) => e.application).filter(Boolean))].map((t) => r(t, n ? {
 			environment: e,
 			application: t
 		} : {
@@ -1573,16 +1569,16 @@ async function Yn() {
 	return {
 		interior: i("Interior"),
 		exterior: i("Exterior"),
-		"lamparas-artefactos": i(D),
-		colecciones: en(t).map((e) => ({
+		"lamparas-artefactos": i(jt),
+		colecciones: tn(t).map((e) => ({
 			label: e.name,
-			href: O({ family: e.name })
+			href: D({ family: e.name })
 		}))
 	};
 }
 //#endregion
 //#region src/styles/print-tokens.js
-var j = Object.freeze({
+var A = Object.freeze({
 	"space/section/2xs": 32,
 	"space/section/xs": 48,
 	"space/section/sm": 64,
@@ -1726,7 +1722,7 @@ var j = Object.freeze({
 	"type/display-lg/leading": 56,
 	"type/label-lg/size": 14,
 	"type/label-lg/leading": 16
-}), M = Object.freeze({
+}), j = Object.freeze({
 	"display-lg": {
 		fontFamily: "Albert Sans",
 		fontWeight: 300,
@@ -1919,37 +1915,37 @@ var j = Object.freeze({
 		lineHeight: 14,
 		letterSpacing: .4
 	}
-}), Xn = [
+}), Zn = [
 	"M13.2112 1.03819C13.5552 0.538809 14.1401 0.243121 14.7662 0.243121H16.9337V15.6977H13.452V7.16879C13.452 6.99138 13.2112 6.92567 13.108 7.07023L8.62167 13.4637C8.54598 13.5688 8.38772 13.5688 8.31203 13.4637L3.80509 7.07023C3.70188 6.92567 3.46793 6.99138 3.46793 7.16879V15.6977H0V0.243121H2.16746C2.79361 0.243121 3.37848 0.538809 3.72252 1.03819L8.31203 7.76674C8.38772 7.87187 8.55286 7.87187 8.62855 7.76674L13.2112 1.03819ZM35.0922 15.6977H31.1564L30.5233 14.1799C30.5233 14.1799 30.5233 14.1667 30.5164 14.1602C30.1518 13.306 29.4362 13.1351 28.5623 13.1351H23.5943L22.5209 15.6977H18.592L24.8604 1.07105C25.0806 0.571663 25.5898 0.243121 26.1609 0.243121H28.4591L28.4797 0.295688L35.0853 15.6977H35.0922ZM29.0095 10.2571L27.021 5.46037C26.9591 5.30924 26.7389 5.30924 26.6769 5.46037L24.6677 10.2637H29.0164L29.0095 10.2571ZM47.6703 10.7828C47.6703 10.7828 46.2873 12.6949 43.5487 12.6949C42.1657 12.6949 41.0235 12.2546 40.0533 11.361C39.1175 10.4476 38.6633 9.34374 38.6633 7.98357C38.6633 6.62341 39.1175 5.51951 40.0533 4.60616C41.0166 3.71253 42.1657 3.27228 43.5487 3.27228C45.1244 3.27228 46.4455 3.85051 47.4914 4.99384L47.5534 5.05955L49.191 2.51663C49.2804 2.37207 49.2529 2.18152 49.1222 2.06324C47.574 0.742505 45.6405 0.0197125 43.5487 0.0197125C41.1542 0.0197125 39.1725 0.755647 37.4936 2.28008C36.0073 3.64682 35.0096 5.85462 35.0096 7.977C35.0096 10.2702 35.8216 12.1363 37.4936 13.6739C39.1725 15.1918 41.1542 15.9343 43.5487 15.9343C45.7024 15.9343 47.6979 15.1721 49.2598 13.7725C49.3905 13.6542 49.4181 13.4702 49.3217 13.3257L47.6703 10.7828ZM60.9985 9.66571C60.9022 9.7117 60.8677 9.82998 60.9297 9.9154L64.9068 15.6912H61.4113C60.9297 15.6912 60.4755 15.4481 60.2209 15.0604L57.331 10.6053H55.1291V15.6912H51.4617V3.48912V0.243121H58.198C59.7118 0.243121 61.0122 0.742505 62.065 1.7347C63.1522 2.72033 63.682 3.90965 63.682 5.36838C63.682 7.22793 62.5811 8.88378 60.9916 9.66571M55.1291 7.27392C55.1291 7.37248 55.2117 7.45134 55.3149 7.45134H57.8127C59.1407 7.45134 59.9939 6.64969 59.9939 5.41437C59.9939 4.31704 59.1819 3.48912 58.1085 3.48912H55.1291V7.27392ZM79.7281 2.32608C81.3795 3.86366 82.2121 5.77577 82.2121 8.00329C82.2121 10.2374 81.3864 12.1561 79.7487 13.7002C78.1042 15.2312 76.0881 16.0066 73.7349 16.0066C71.4092 16.0066 69.3862 15.2312 67.7279 13.7002C66.0903 12.1561 65.2646 10.2374 65.2646 8.00329C65.2646 5.78234 66.0903 3.87023 67.7279 2.32608C69.3862 0.78193 71.4092 0 73.7418 0C76.0881 0 78.0973 0.78193 79.735 2.32608M68.9665 8.00329C68.9665 9.34374 69.4206 10.4476 70.3495 11.3676C71.2647 12.2546 72.4069 12.708 73.7418 12.708C75.0904 12.708 76.1913 12.2612 77.1134 11.3478C78.0423 10.4411 78.5171 9.31745 78.5171 8.00329C78.5171 6.70883 78.056 5.59179 77.1409 4.67844C76.2189 3.75852 75.0766 3.29199 73.7486 3.29199C72.4206 3.29199 71.2784 3.75852 70.3564 4.67844C69.4413 5.58522 68.9734 6.70883 68.9734 8.00329M86.6433 0.243121H84.2832V3.48912V15.6977H94.164V12.3598H88.2328C88.1296 12.3598 88.047 12.2809 88.047 12.1823V1.577C88.047 0.841068 87.4208 0.243121 86.6433 0.243121ZM100.185 12.4517C100.082 12.4517 99.999 12.3729 99.999 12.2743V9.37659H105.951V6.16345H100.192C100.088 6.16345 100.006 6.0846 100.006 5.98604V3.48912H105.779C106.55 3.48912 107.183 2.89117 107.183 2.15524V0.243121H96.3177V15.6977H107.492V12.4517H100.192H100.185ZM124.364 8.00329C124.364 10.3359 123.621 12.2218 122.148 13.6148C120.71 15.0012 118.598 15.7043 115.866 15.7043H109.928V0.243121H115.846C118.557 0.243121 120.669 0.965914 122.128 2.39836C123.614 3.80452 124.364 5.69035 124.364 8.00329ZM113.623 12.2678C113.623 12.3663 113.706 12.4452 113.809 12.4452H115.639C119.052 12.4452 120.641 11.0324 120.641 7.99672C120.641 6.59055 120.256 5.47351 119.506 4.68501C118.77 3.88994 117.463 3.48912 115.612 3.48912H113.616V12.2743L113.623 12.2678Z",
 	"M141.655 1.64271H140.912L135.532 15.5006H134.142L139.977 0.512526H142.578L148.385 15.5072H147.016L141.655 1.64928V1.64271ZM136.722 10.2374H145.873V11.3741H136.722V10.2374Z",
 	"M156.89 0.512526C158.128 0.512526 159.133 0.70308 159.903 1.09076C160.674 1.47844 161.245 1.99754 161.617 2.65462C161.988 3.3117 162.174 4.05421 162.174 4.88214C162.174 5.49322 162.071 6.06489 161.858 6.59713C161.651 7.12279 161.328 7.58932 160.894 7.977C160.461 8.37125 159.917 8.68008 159.257 8.91006C158.596 9.14004 157.819 9.25175 156.924 9.25175H153.023V15.5072H151.653V0.512526H156.883H156.89ZM160.791 4.88214C160.791 3.89651 160.495 3.11458 159.897 2.5232C159.298 1.9384 158.293 1.64271 156.89 1.64271H153.029V8.08871H156.931C157.825 8.08871 158.562 7.95072 159.126 7.68131C159.69 7.41191 160.11 7.0308 160.385 6.54456C160.653 6.05832 160.791 5.4998 160.791 4.87557V4.88214ZM158.073 8.75893L162.449 15.5072H160.901L156.594 8.75893H158.073Z",
 	"M180.415 4.91499C180.023 3.98193 179.486 3.17372 178.791 2.49692C178.096 1.82012 177.277 1.29446 176.349 0.919918C175.413 0.551951 174.401 0.361396 173.307 0.361396C172.213 0.361396 171.174 0.54538 170.232 0.919918C169.289 1.29446 168.47 1.81355 167.761 2.49692C167.059 3.17372 166.516 3.98193 166.137 4.91499C165.759 5.84805 165.566 6.87967 165.566 8.00986C165.566 9.14004 165.759 10.1717 166.137 11.1047C166.516 12.0378 167.059 12.846 167.761 13.5228C168.463 14.1996 169.289 14.7253 170.232 15.0998C171.174 15.4743 172.199 15.6583 173.307 15.6583C174.415 15.6583 175.413 15.4743 176.349 15.0998C177.284 14.7318 178.096 14.2062 178.791 13.5228C179.486 12.846 180.03 12.0378 180.415 11.1047C180.8 10.1717 181 9.14004 181 8.00986C181 6.87967 180.807 5.84805 180.415 4.91499ZM178.771 11.4793C178.206 12.4517 177.456 13.2008 176.507 13.7265C175.557 14.2522 174.491 14.5216 173.307 14.5216C172.124 14.5216 171.037 14.2587 170.08 13.7265C169.124 13.2008 168.367 12.4517 167.803 11.4793C167.238 10.5068 166.963 9.35031 166.963 8.00986C166.963 6.6694 167.245 5.50637 167.803 4.52731C168.367 3.54825 169.124 2.79918 170.08 2.28008C171.037 1.76099 172.117 1.49815 173.307 1.49815C174.498 1.49815 175.55 1.76099 176.507 2.28008C177.456 2.79918 178.213 3.54825 178.771 4.52731C179.335 5.50637 179.61 6.66283 179.61 8.00986C179.61 9.35688 179.328 10.5068 178.771 11.4793Z",
 	"M176.698 10.9485L175.745 11.8591L179.598 15.539L180.552 14.6283L176.698 10.9485Z"
-], Zn = Object.freeze({
+], Qn = Object.freeze({
 	width: 181,
 	height: 16
-}), Qn = Object.freeze({
+}), $n = Object.freeze({
 	default: 181,
 	small: 158,
 	compact: 117
-}), $n = Object.freeze({
+}), er = Object.freeze({
 	label: "Ficha técnica",
 	brand: "Macroled Arq"
-}), er = .75, N = (e) => e * er, tr = Object.freeze({
+}), tr = .75, M = (e) => e * tr, nr = Object.freeze({
 	width: 595.28,
 	height: 841.89
-}), nr = 1.2, P = {
-	top: j["space/padding/xl"],
-	side: j["space/padding/xl-2xl"],
-	bottom: j["space/padding/lg"]
-}, rr = j["border/default"], ir = "border/default", ar = "surface/strong", or = (e) => `${j["font/family/sans"].replace(/\s+/g, "")}-${e}`, sr = Object.freeze([...new Set([
+}), rr = 1.2, N = {
+	top: A["space/padding/xl"],
+	side: A["space/padding/xl-2xl"],
+	bottom: A["space/padding/lg"]
+}, ir = A["border/default"], ar = "border/default", or = "surface/strong", sr = (e) => `${A["font/family/sans"].replace(/\s+/g, "")}-${e}`, cr = Object.freeze([...new Set([
 	"label",
 	"heading-2",
 	"body-compact-medium",
 	"body-sm",
 	"body-sm-medium"
-].map((e) => M[e].fontWeight))]);
-function cr(e, t = j["color/surface/default"]) {
+].map((e) => j[e].fontWeight))]);
+function lr(e, t = A["color/surface/default"]) {
 	let n = e.match(/^#([0-9a-f]{6})([0-9a-f]{2})?$/i);
 	if (!n?.[2]) return e;
 	let r = parseInt(n[2], 16) / 255, i = (e) => [
@@ -1959,58 +1955,58 @@ function cr(e, t = j["color/surface/default"]) {
 	].map((t) => parseInt(e.slice(t, t + 2), 16)), a = i(t.replace("#", ""));
 	return `#${i(n[1]).map((e, t) => Math.round(e * r + a[t] * (1 - r))).map((e) => e.toString(16).padStart(2, "0")).join("")}`;
 }
-var F = (e) => cr(j[`color/${e}`]);
-function I(e, t, n, { above: r = 0 } = {}) {
-	let i = M[t], a = N((i.lineHeight - nr * i.fontSize) / 2);
+var P = (e) => lr(A[`color/${e}`]);
+function F(e, t, n, { above: r = 0 } = {}) {
+	let i = j[t], a = M((i.lineHeight - rr * i.fontSize) / 2);
 	return {
 		text: i.textTransform === "uppercase" ? String(e).toLocaleUpperCase("es") : String(e),
-		font: or(i.fontWeight),
-		fontSize: N(i.fontSize),
-		lineHeight: i.lineHeight / (nr * i.fontSize),
-		characterSpacing: N(i.letterSpacing),
-		color: F(n),
+		font: sr(i.fontWeight),
+		fontSize: M(i.fontSize),
+		lineHeight: i.lineHeight / (rr * i.fontSize),
+		characterSpacing: M(i.letterSpacing),
+		color: P(n),
 		margin: [
 			0,
-			N(r) + a,
+			M(r) + a,
 			0,
 			-a
 		]
 	};
 }
-function lr(e, { lineAt: t, lineColor: n, padding: r, widths: i = ["*"] }) {
+function ur(e, { lineAt: t, lineColor: n, padding: r, widths: i = ["*"] }) {
 	return {
 		table: {
 			widths: i,
 			body: [Array.isArray(e) ? e : [e]]
 		},
 		layout: {
-			hLineWidth: (e) => e === +(t === "bottom") ? N(rr) : 0,
+			hLineWidth: (e) => e === +(t === "bottom") ? M(ir) : 0,
 			vLineWidth: () => 0,
 			hLineColor: () => n,
 			paddingLeft: () => 0,
 			paddingRight: () => 0,
-			paddingTop: () => t === "top" ? N(r) : 0,
-			paddingBottom: () => t === "bottom" ? N(r) : 0
+			paddingTop: () => t === "top" ? M(r) : 0,
+			paddingBottom: () => t === "bottom" ? M(r) : 0
 		}
 	};
 }
-function ur() {
-	let e = Qn.small, t = Xn.map((e) => `<path d="${e}"/>`).join("");
+function dr() {
+	let e = $n.small, t = Zn.map((e) => `<path d="${e}"/>`).join("");
 	return {
-		svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${Zn.width} ${Zn.height}" fill="${F("text/primary")}">${t}</svg>`,
-		width: N(e),
-		height: N(e * Zn.height / Zn.width)
+		svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${Qn.width} ${Qn.height}" fill="${P("text/primary")}">${t}</svg>`,
+		width: M(e),
+		height: M(e * Qn.height / Qn.width)
 	};
 }
-var dr = Qn.small * Zn.height / Zn.width, fr = M["body-sm-medium"].lineHeight + M["body-sm"].lineHeight, pr = (e) => Math.max(e, dr) + j["space/padding/sm-md"] + rr, mr = M.label.lineHeight + j["space/padding/sm-md"] + rr;
-function hr(e, t = $n.label) {
-	let n = e ? { stack: [I(e.name, "body-sm-medium", "text/primary"), I(e.sku, "body-sm", "text/tertiary")] } : I(t, "label", "text/tertiary"), r = e ? fr : M.label.lineHeight;
-	return lr({
+var fr = $n.small * Qn.height / Qn.width, pr = j["body-sm-medium"].lineHeight + j["body-sm"].lineHeight, mr = (e) => Math.max(e, fr) + A["space/padding/sm-md"] + ir, hr = j.label.lineHeight + A["space/padding/sm-md"] + ir;
+function gr(e, t = er.label) {
+	let n = e ? { stack: [F(e.name, "body-sm-medium", "text/primary"), F(e.sku, "body-sm", "text/tertiary")] } : F(t, "label", "text/tertiary"), r = e ? pr : j.label.lineHeight;
+	return ur({
 		columns: [{
-			...ur(),
+			...dr(),
 			margin: [
 				0,
-				N((r - dr) / 2),
+				M((r - fr) / 2),
 				0,
 				0
 			]
@@ -2019,30 +2015,30 @@ function hr(e, t = $n.label) {
 			width: "*",
 			alignment: "right"
 		}],
-		columnGap: N(j["space/gap/md"])
+		columnGap: M(A["space/gap/md"])
 	}, {
 		lineAt: "bottom",
-		lineColor: F(ir),
-		padding: j["space/padding/sm-md"]
+		lineColor: P(ar),
+		padding: A["space/padding/sm-md"]
 	});
 }
-function gr(e, t) {
-	return lr({
-		...I(`${e} / ${t}`, "label", "text/tertiary"),
+function _r(e, t) {
+	return ur({
+		...F(`${e} / ${t}`, "label", "text/tertiary"),
 		alignment: "right"
 	}, {
 		lineAt: "top",
-		lineColor: F(ir),
-		padding: j["space/padding/sm-md"]
+		lineColor: P(ar),
+		padding: A["space/padding/sm-md"]
 	});
 }
-var _r = tr.width / er - 2 * P.side, vr = (_r - j["space/gap/xl"]) / 2, yr = j["layout/pdf-cover-image"], br = 1.5;
-function xr(e) {
-	return yr * Math.min(Math.max(e, 1), br);
+var vr = nr.width / tr - 2 * N.side, yr = (vr - A["space/gap/xl"]) / 2, br = A["layout/pdf-cover-image"], xr = 1.5;
+function Sr(e) {
+	return br * Math.min(Math.max(e, 1), xr);
 }
-var Sr = j["space/padding/lg"];
+var I = A["space/padding/lg"];
 function Cr(e, { image: t, cota: n }) {
-	let r = N(yr), i = [I(e.name, "heading-2", "text/primary"), I(e.sku, "body-sm", "text/secondary", { above: j["space/gap/xs"] })], a = [t ? {
+	let r = M(br), i = [F(e.name, "heading-2", "text/primary"), F(e.sku, "body-sm", "text/secondary", { above: A["space/gap/xs"] })], a = [t ? {
 		image: t,
 		width: r,
 		height: r
@@ -2052,20 +2048,20 @@ function Cr(e, { image: t, cota: n }) {
 		y: 0,
 		w: r,
 		h: r,
-		color: F(ar)
+		color: P(or)
 	}] }, ...n ? [{
 		image: n.image,
-		width: N(n.width),
-		height: r - 2 * N(Sr),
+		width: M(n.width),
+		height: r - 2 * M(I),
 		margin: [
-			N(j["space/gap/md"] + Sr),
-			N(Sr),
-			N(Sr),
-			N(Sr)
+			M(A["space/gap/md"] + I),
+			M(I),
+			M(I),
+			M(I)
 		]
 	}] : []];
 	return {
-		...lr({ stack: [{ stack: i }, {
+		...ur({ stack: [{ stack: i }, {
 			columns: [...a.map((e) => ({
 				...e,
 				width: "auto"
@@ -2076,20 +2072,20 @@ function Cr(e, { image: t, cota: n }) {
 			columnGap: 0,
 			margin: [
 				0,
-				N(j["space/gap/md"]),
+				M(A["space/gap/md"]),
 				0,
 				0
 			]
 		}] }, {
 			lineAt: "bottom",
-			lineColor: F(ir),
-			padding: j["space/padding/md"]
+			lineColor: P(ar),
+			padding: A["space/padding/md"]
 		}),
 		unbreakable: !0
 	};
 }
 var wr = (e, t, n) => ({
-	...I(e, t, n),
+	...F(e, t, n),
 	border: [
 		!1,
 		!1,
@@ -2098,14 +2094,14 @@ var wr = (e, t, n) => ({
 	]
 });
 function Tr(e, t, n) {
-	let r = N(j["space/padding/sm"]), i = j["layout/pdf-spec-label-compact"], a = vr - i - j["space/gap/lg"], o = Math.ceil(e.rows.length / 2), s = e.rows.slice(0, o), c = e.rows.slice(o), l = (e) => e ? [wr(e.label, "body-sm", "text/secondary"), wr(e.value, "body-sm-medium", "text/primary")] : [{}, {}];
+	let r = M(A["space/padding/sm"]), i = A["layout/pdf-spec-label-compact"], a = yr - i - A["space/gap/lg"], o = Math.ceil(e.rows.length / 2), s = e.rows.slice(0, o), c = e.rows.slice(o), l = (e) => e ? [wr(e.label, "body-sm", "text/secondary"), wr(e.value, "body-sm-medium", "text/primary")] : [{}, {}];
 	return {
 		table: {
 			widths: [
-				N(i),
-				N(a),
-				N(j["space/gap/xl"]),
-				N(i),
+				M(i),
+				M(a),
+				M(A["space/gap/xl"]),
+				M(i),
 				"*"
 			],
 			headerRows: 1,
@@ -2113,7 +2109,7 @@ function Tr(e, t, n) {
 			dontBreakRows: !0,
 			body: [[
 				{
-					...I(e.label, "body-compact-medium", "text/primary"),
+					...F(e.label, "body-compact-medium", "text/primary"),
 					colSpan: 5,
 					border: [
 						!1,
@@ -2134,55 +2130,55 @@ function Tr(e, t, n) {
 		},
 		layout: {
 			defaultBorder: !1,
-			hLineWidth: () => N(rr),
+			hLineWidth: () => M(ir),
 			vLineWidth: () => 0,
-			hLineColor: (e) => F(e === 1 ? "border/strong" : ir),
-			paddingLeft: (e) => e === 1 || e === 4 ? N(j["space/gap/lg"]) : 0,
+			hLineColor: (e) => P(e === 1 ? "border/strong" : ar),
+			paddingLeft: (e) => e === 1 || e === 4 ? M(A["space/gap/lg"]) : 0,
 			paddingRight: () => 0,
 			paddingTop: (e) => e === 0 ? 0 : r,
 			paddingBottom: () => r
 		},
 		margin: [
 			0,
-			t === 0 ? N(j["space/padding/md"]) : 0,
+			t === 0 ? M(A["space/padding/md"]) : 0,
 			0,
-			n ? 0 : N(j["space/gap/sm-md"])
+			n ? 0 : M(A["space/gap/sm-md"])
 		]
 	};
 }
 function Er(e, { image: t = null, cota: n = null } = {}) {
-	let r = P.top + pr(fr) + j["space/padding/xl"], i = P.top + pr(M.label.lineHeight) + j["space/padding/md"] - r, a = e.sections ?? [];
+	let r = N.top + mr(pr) + A["space/padding/xl"], i = N.top + mr(j.label.lineHeight) + A["space/padding/md"] - r, a = e.sections ?? [];
 	return {
 		pageSize: "A4",
 		pageMargins: [
-			N(P.side),
-			N(r),
-			N(P.side),
-			N(mr + P.bottom)
+			M(N.side),
+			M(r),
+			M(N.side),
+			M(hr + N.bottom)
 		],
 		info: {
-			title: `${$n.label} · ${e.name} · ${e.sku}`,
-			author: $n.brand
+			title: `${er.label} · ${e.name} · ${e.sku}`,
+			author: er.brand
 		},
 		header: (t) => ({
-			...hr(t === 1 ? null : e),
+			...gr(t === 1 ? null : e),
 			margin: [
-				N(P.side),
-				N(P.top),
-				N(P.side),
+				M(N.side),
+				M(N.top),
+				M(N.side),
 				0
 			]
 		}),
 		footer: (e, t) => ({
-			...gr(e, t),
+			..._r(e, t),
 			margin: [
-				N(P.side),
+				M(N.side),
 				0,
-				N(P.side),
+				M(N.side),
 				0
 			]
 		}),
-		defaultStyle: { font: or(M.body.fontWeight) },
+		defaultStyle: { font: sr(j.body.fontWeight) },
 		content: [{
 			...Cr(e, {
 				image: t,
@@ -2190,7 +2186,7 @@ function Er(e, { image: t = null, cota: n = null } = {}) {
 			}),
 			margin: [
 				0,
-				N(i),
+				M(i),
 				0,
 				0
 			]
@@ -2206,9 +2202,9 @@ function jr() {
 		n.pdf.pdfmakeUrl
 ).then(({ default: e }) => {
 		let t = {};
-		for (let e of sr) {
+		for (let e of cr) {
 			let r = n.pdf.fontUrl.replace("{weight}", e);
-			t[or(e)] = {
+			t[sr(e)] = {
 				normal: r,
 				bold: r,
 				italics: r,
@@ -2246,11 +2242,11 @@ function Nr(e, t, n, { maxPx: r = Math.max(Number(t) || 0, n), fit: i = "contain
 }
 var Pr = (e) => String(e).replace(/[^\w-]+/g, "-").replace(/^-+|-+$/g, ""), Fr = (e) => `${Pr(e)}.pdf`;
 async function Ir(e) {
-	let t = await Cn(e);
+	let t = await wn(e);
 	if (!t) return null;
-	let [n, r] = await Promise.all([Nr(t.image, yr, yr, { background: j[`color/${ar}`] }), Nr(t.cota, (e) => xr(e) - 2 * Sr, yr - 2 * Sr, {
-		maxPx: xr(Infinity) - 2 * Sr,
-		background: j["color/surface/default"],
+	let [n, r] = await Promise.all([Nr(t.image, br, br, { background: A[`color/${or}`] }), Nr(t.cota, (e) => Sr(e) - 2 * I, br - 2 * I, {
+		maxPx: Sr(Infinity) - 2 * I,
+		background: A["color/surface/default"],
 		scale: Or,
 		type: "image/png",
 		request: "png"
@@ -2287,35 +2283,35 @@ var zr = Object.freeze({
 	parts: "Piezas para este armado"
 });
 function Br(e) {
-	let t = j["space/gap/sm"];
-	return Math.min(yr, (_r - t * (e - 1)) / Math.max(e, 1));
+	let t = A["space/gap/sm"];
+	return Math.min(br, (vr - t * (e - 1)) / Math.max(e, 1));
 }
 function Vr(e, t) {
-	let n = Br(e.pieces.length), r = _r - (e.pieces.length * n + (e.pieces.length - 1) * j["space/gap/sm"]) > 1 ? [{
+	let n = Br(e.pieces.length), r = vr - (e.pieces.length * n + (e.pieces.length - 1) * A["space/gap/sm"]) > 1 ? [{
 		text: "",
 		width: "*"
 	}] : [];
 	return {
-		stack: [I(e.title, "heading-2", "text/primary"), {
+		stack: [F(e.title, "heading-2", "text/primary"), {
 			columns: [...e.pieces.map((e, r) => ({
-				width: N(n),
+				width: M(n),
 				stack: [t[r] ? {
 					image: t[r],
-					width: N(n),
-					height: N(n)
+					width: M(n),
+					height: M(n)
 				} : { canvas: [{
 					type: "rect",
 					x: 0,
 					y: 0,
-					w: N(n),
-					h: N(n),
-					color: F(ar)
-				}] }, I(e.qty ? `${e.qty} × ${e.label}` : e.label, "body-sm", "text/secondary", { above: j["space/gap/xs"] })]
+					w: M(n),
+					h: M(n),
+					color: P(or)
+				}] }, F(e.qty ? `${e.qty} × ${e.label}` : e.label, "body-sm", "text/secondary", { above: A["space/gap/xs"] })]
 			})), ...r],
-			columnGap: N(j["space/gap/sm"]),
+			columnGap: M(A["space/gap/sm"]),
 			margin: [
 				0,
-				N(j["space/gap/md"]),
+				M(A["space/gap/md"]),
 				0,
 				0
 			]
@@ -2324,14 +2320,14 @@ function Vr(e, t) {
 			0,
 			0,
 			0,
-			N(j["space/padding/md"])
+			M(A["space/padding/md"])
 		],
 		unbreakable: !0
 	};
 }
 function Hr(e) {
 	let t = (e, t, n, r = {}) => ({
-		...I(e, t, n),
+		...F(e, t, n),
 		border: [
 			!1,
 			!1,
@@ -2352,7 +2348,7 @@ function Hr(e) {
 			dontBreakRows: !0,
 			body: [[
 				{
-					...I(zr.parts, "body-compact-medium", "text/primary"),
+					...F(zr.parts, "body-compact-medium", "text/primary"),
 					colSpan: 3,
 					border: [
 						!1,
@@ -2374,18 +2370,18 @@ function Hr(e) {
 		},
 		layout: {
 			defaultBorder: !1,
-			hLineWidth: () => N(j["border/default"]),
+			hLineWidth: () => M(A["border/default"]),
 			vLineWidth: () => 0,
-			hLineColor: (e) => F(e === 1 ? "border/strong" : ir),
-			paddingLeft: (e) => e === 0 ? 0 : N(j["space/gap/lg"]),
+			hLineColor: (e) => P(e === 1 ? "border/strong" : ar),
+			paddingLeft: (e) => e === 0 ? 0 : M(A["space/gap/lg"]),
 			paddingRight: () => 0,
-			paddingTop: (e) => e === 0 ? 0 : N(j["space/padding/sm"]),
-			paddingBottom: () => N(j["space/padding/sm"])
+			paddingTop: (e) => e === 0 ? 0 : M(A["space/padding/sm"]),
+			paddingBottom: () => M(A["space/padding/sm"])
 		}
 	};
 }
 function Ur(e, { images: t = [] } = {}) {
-	let n = P.top + pr(M.label.lineHeight) + j["space/padding/xl"], r = e.specs.length ? [Tr({
+	let n = N.top + mr(j.label.lineHeight) + A["space/padding/xl"], r = e.specs.length ? [Tr({
 		label: zr.specs,
 		rows: e.specs.map(([e, t]) => ({
 			label: e,
@@ -2395,34 +2391,34 @@ function Ur(e, { images: t = [] } = {}) {
 	return {
 		pageSize: "A4",
 		pageMargins: [
-			N(P.side),
-			N(n),
-			N(P.side),
-			N(mr + P.bottom)
+			M(N.side),
+			M(n),
+			M(N.side),
+			M(hr + N.bottom)
 		],
 		info: {
 			title: `${zr.label} · ${e.title}`,
-			author: $n.brand
+			author: er.brand
 		},
 		header: () => ({
-			...hr(null, zr.label),
+			...gr(null, zr.label),
 			margin: [
-				N(P.side),
-				N(P.top),
-				N(P.side),
+				M(N.side),
+				M(N.top),
+				M(N.side),
 				0
 			]
 		}),
 		footer: (e, t) => ({
-			...gr(e, t),
+			..._r(e, t),
 			margin: [
-				N(P.side),
+				M(N.side),
 				0,
-				N(P.side),
+				M(N.side),
 				0
 			]
 		}),
-		defaultStyle: { font: or(M.body.fontWeight) },
+		defaultStyle: { font: sr(j.body.fontWeight) },
 		content: [
 			Vr(e, t),
 			...r,
@@ -2430,7 +2426,7 @@ function Ur(e, { images: t = [] } = {}) {
 				...Hr(e.parts),
 				margin: [
 					0,
-					r.length ? 0 : N(j["space/padding/md"]),
+					r.length ? 0 : M(A["space/padding/md"]),
 					0,
 					0
 				]
@@ -2446,7 +2442,7 @@ function Kr(e) {
 	let t = window.open("", "_blank");
 	return Gr = (async () => {
 		try {
-			let n = Br(e.pieces.length), [r, ...i] = await Promise.all([jr(), ...e.pieces.map((e) => Nr(e.src, n, n, { background: j[`color/${ar}`] }))]), a = Ur(e, { images: i.map((e) => e?.image ?? null) });
+			let n = Br(e.pieces.length), [r, ...i] = await Promise.all([jr(), ...e.pieces.map((e) => Nr(e.src, n, n, { background: A[`color/${or}`] }))]), a = Ur(e, { images: i.map((e) => e?.image ?? null) });
 			a.info.title = Wr;
 			let o = r.createPdf(a);
 			t && !t.closed ? await o.open(t) : await o.download(`${Wr}.pdf`);
@@ -2732,7 +2728,7 @@ var hi = ":host{box-sizing:border-box;width:100%;height:var(--arq-border-default
 }).define();
 //#endregion
 //#region src/components/logo/logo.css?inline
-var gi = ":host{vertical-align:middle;color:var(--arq-color-text-primary);flex:none;display:inline-flex}.link{color:inherit;transition:none;display:inline-flex}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}.mark{aspect-ratio:181/16;width:181px;height:auto;display:block}:host([size=small]) .mark{width:158px}:host([size=compact]) .mark{width:117px}", _i = "Macroled Arq, inicio", vi = "<svg class=\"mark\" viewBox=\"0 0 181 16\" fill=\"currentColor\" aria-hidden=\"true\" focusable=\"false\">" + Xn.map((e) => `<path d="${e}"/>`).join("") + "</svg>";
+var gi = ":host{vertical-align:middle;color:var(--arq-color-text-primary);flex:none;display:inline-flex}.link{color:inherit;transition:none;display:inline-flex}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}.mark{aspect-ratio:181/16;width:181px;height:auto;display:block}:host([size=small]) .mark{width:158px}:host([size=compact]) .mark{width:117px}", _i = "Macroled Arq, inicio", vi = "<svg class=\"mark\" viewBox=\"0 0 181 16\" fill=\"currentColor\" aria-hidden=\"true\" focusable=\"false\">" + Zn.map((e) => `<path d="${e}"/>`).join("") + "</svg>";
 (class extends L {
 	static tag = "arq-logo";
 	static styles = gi;
@@ -2795,7 +2791,7 @@ function z(e) {
 }
 //#endregion
 //#region src/components/preloader/preloader.css?inline
-var Ti = ":host{z-index:5;background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);visibility:hidden;opacity:0;pointer-events:none;transition-property:opacity,visibility;transition-duration:var(--arq-motion-duration-fade), 0s;transition-timing-function:var(--arq-motion-easing-standard), linear;transition-delay:0s, var(--arq-motion-duration-fade);place-items:center;margin:0;display:grid;position:fixed;inset:0}:host([open]){visibility:visible;opacity:1;pointer-events:auto;transition-delay:0s,0s}.cluster{align-items:stretch;gap:var(--arq-space-gap-lg);flex-direction:column;width:max-content;display:flex}.mark{aspect-ratio:181/16;width:181px;height:auto;display:block}.track{height:var(--arq-border-default);overflow:hidden}.line{height:100%;transform:scaleX(var(--progress,0));transform-origin:0;transition-property:transform;transition-duration:var(--arq-motion-duration-base);transition-timing-function:var(--arq-motion-easing-out);background:currentColor;display:block}:host([open]:not([page])) .line.run{animation:arq-preloader-line var(--arq-motion-duration-shimmer) var(--arq-motion-easing-out) forwards;transition:none}@keyframes arq-preloader-line{to{transform:scaleX(1)}}@media (prefers-reduced-motion:reduce){:host([open]) .line.run{animation:none;transform:scaleX(1)}}@media print{:host{display:none!important}}", Ei = window.matchMedia("(prefers-reduced-motion: reduce)"), Di = 2e4, Oi = 2, ki = "<svg class=\"mark\" viewBox=\"0 0 181 16\" fill=\"currentColor\" aria-hidden=\"true\" focusable=\"false\">" + Xn.map((e) => `<path d="${e}"/>`).join("") + "</svg>";
+var Ti = ":host{z-index:5;background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);visibility:hidden;opacity:0;pointer-events:none;transition-property:opacity,visibility;transition-duration:var(--arq-motion-duration-fade), 0s;transition-timing-function:var(--arq-motion-easing-standard), linear;transition-delay:0s, var(--arq-motion-duration-fade);place-items:center;margin:0;display:grid;position:fixed;inset:0}:host([open]){visibility:visible;opacity:1;pointer-events:auto;transition-delay:0s,0s}.cluster{align-items:stretch;gap:var(--arq-space-gap-lg);flex-direction:column;width:max-content;display:flex}.mark{aspect-ratio:181/16;width:181px;height:auto;display:block}.track{height:var(--arq-border-default);overflow:hidden}.line{height:100%;transform:scaleX(var(--progress,0));transform-origin:0;transition-property:transform;transition-duration:var(--arq-motion-duration-base);transition-timing-function:var(--arq-motion-easing-out);background:currentColor;display:block}:host([open]:not([page])) .line.run{animation:arq-preloader-line var(--arq-motion-duration-shimmer) var(--arq-motion-easing-out) forwards;transition:none}@keyframes arq-preloader-line{to{transform:scaleX(1)}}@media (prefers-reduced-motion:reduce){:host([open]) .line.run{animation:none;transform:scaleX(1)}}@media print{:host{display:none!important}}", Ei = window.matchMedia("(prefers-reduced-motion: reduce)"), Di = 2e4, Oi = 2, ki = "<svg class=\"mark\" viewBox=\"0 0 181 16\" fill=\"currentColor\" aria-hidden=\"true\" focusable=\"false\">" + Zn.map((e) => `<path d="${e}"/>`).join("") + "</svg>";
 (class extends L {
 	static tag = "arq-preloader";
 	static styles = Ti;
@@ -6554,7 +6550,7 @@ function ss(e) {
 		let e = this.shadowRoot.querySelector(".picker"), t = [...this.#e], n = ++this.#t;
 		e.count = t.length;
 		try {
-			let { items: r } = await qn({
+			let { items: r } = await Jn({
 				...e.search,
 				selected: t
 			});
@@ -6566,7 +6562,7 @@ function ss(e) {
 	async #l({ index: e, field: t, value: n }) {
 		let r = this.#e[e];
 		if (!n || !r) return;
-		let i = await In(r, t, n);
+		let i = await Ln(r, t, n);
 		i && i !== r && (this.#e[e] = i, this.#e = this.#e.slice(0, rs), this.#u());
 	}
 	async #u() {
@@ -6574,7 +6570,7 @@ function ss(e) {
 		this.setAttribute("aria-busy", "true");
 		let a = null, o = !1;
 		try {
-			a = this.#e.length ? await Ln(this.#e) : {
+			a = this.#e.length ? await Rn(this.#e) : {
 				products: [],
 				groups: []
 			};
@@ -6932,7 +6928,7 @@ var Cs = ":host{min-width:0;display:block}.dropdown{background:var(--arq-color-s
 	errorHelp: "Probá de nuevo en unos minutos."
 }, Ts = [{
 	label: "Todos los productos",
-	href: O()
+	href: D()
 }];
 (class extends L {
 	static tag = "arq-search-dropdown";
@@ -7718,7 +7714,7 @@ var Bs = ":host{--mega-in:var(--arq-motion-duration-panel);--mega-out:var(--arq-
 		this.#z(), q.matches ? Gs.includes(e) && this.#f(e) : this.#L(!0, "products", e);
 	}
 	#z() {
-		this.#e || this.#t || (this.#t = Jn().then((e) => this.navigation = e).catch((e) => console.error("[arq] navbar: no se pudo cargar la navegación", e)).finally(() => this.#t = null));
+		this.#e || this.#t || (this.#t = Yn().then((e) => this.navigation = e).catch((e) => console.error("[arq] navbar: no se pudo cargar la navegación", e)).finally(() => this.#t = null));
 	}
 	#B() {
 		let e = this.shadowRoot, t = this.#e;
@@ -7757,7 +7753,7 @@ var Bs = ":host{--mega-in:var(--arq-motion-duration-panel);--mega-out:var(--arq-
 		this.#a = setTimeout(async () => {
 			let e = this.#o;
 			try {
-				let { results: t, total: n } = await Hn(e, { limit: Hs });
+				let { results: t, total: n } = await Un(e, { limit: Hs });
 				e === this.#o && this.#W(t, n);
 			} catch (t) {
 				console.error("[arq] navbar: no se pudo buscar", t), e === this.#o && this.#W([], 0, !0);
@@ -7767,14 +7763,14 @@ var Bs = ":host{--mega-in:var(--arq-motion-duration-panel);--mega-out:var(--arq-
 	#W(e, t, n = !1) {
 		let r = this.shadowRoot;
 		this.#r = e, this.#i = -1;
-		let i = this.#o, a = e.map((e) => `<arq-search-result href="${J(e.href)}"${e.image ? ` image="${J(e.image)}"` : ""}>${J(e.name)}<span slot="meta">${J(e.meta)}</span></arq-search-result>`).join("") + (e.length ? `<arq-search-see-all href="${J(Un(i))}" term="${J(i)}" count="${t}"></arq-search-see-all>` : ""), o = i && !e.length, s = n ? "error" : "no-results", c = r.querySelector(".search-dropdown");
+		let i = this.#o, a = e.map((e) => `<arq-search-result href="${J(e.href)}"${e.image ? ` image="${J(e.image)}"` : ""}>${J(e.name)}<span slot="meta">${J(e.meta)}</span></arq-search-result>`).join("") + (e.length ? `<arq-search-see-all href="${J(Wn(i))}" term="${J(i)}" count="${t}"></arq-search-see-all>` : ""), o = i && !e.length, s = n ? "error" : "no-results", c = r.querySelector(".search-dropdown");
 		c.state = o ? s : "results", c.term = i, c.innerHTML = a, this.#J(!!i);
 		let l = r.querySelector(".search-screen");
 		l.innerHTML = o ? `<arq-search-dropdown state="${s}" term="${J(i)}"></arq-search-dropdown>` : a, r.querySelector(".search-sheet").results = {
 			query: i,
 			items: e,
 			total: t,
-			href: Un(i),
+			href: Wn(i),
 			error: n
 		}, this.#Q();
 		let u = t + e.filter((e) => e.kind === "collection").length, d = i ? n ? "No se pudo completar la búsqueda." : e.length ? `${u.toLocaleString("es-AR")} ${u === 1 ? "resultado" : "resultados"}` : `No encontramos resultados para «${i}»` : "";
@@ -7792,7 +7788,7 @@ var Bs = ":host{--mega-in:var(--arq-motion-duration-panel);--mega-out:var(--arq-
 	#K() {
 		if (this.#n || this.search !== "sheet") return;
 		let e = this.shadowRoot.querySelector(".search-sheet");
-		this.#n = Tn().then((t) => e.recommended = t).catch((e) => {
+		this.#n = En().then((t) => e.recommended = t).catch((e) => {
 			this.#n = null, console.error("[arq] navbar: no se pudieron cargar los recomendados", e);
 		});
 	}
@@ -7823,7 +7819,7 @@ var Bs = ":host{--mega-in:var(--arq-motion-duration-panel);--mega-out:var(--arq-
 	}
 	#$(e) {
 		let t = this.#X()[this.#i];
-		t ? t.click() : e.trim() && location.assign(Un(e.trim()));
+		t ? t.click() : e.trim() && location.assign(Wn(e.trim()));
 	}
 }).define();
 //#endregion
@@ -9000,7 +8996,7 @@ var Bc = ":host{isolation:isolate;min-width:0;display:block}.layout{align-items:
 	async #r() {
 		let e = [];
 		try {
-			e = await sn();
+			e = await cn();
 		} catch (e) {
 			console.error("[arq] collection-index: no se pudieron cargar las familias", e);
 			return;
@@ -9456,7 +9452,7 @@ var Qc = ":host{min-width:0;display:block}.layout{align-items:flex-start;gap:var
 		this.setAttribute("aria-busy", "true"), e.length && this.#m(e.length), this.#h(e.length ? "Cargando productos…" : "");
 		let r = [];
 		try {
-			r = e.length ? await wn(e) : [];
+			r = e.length ? await Tn(e) : [];
 		} catch (e) {
 			console.error("[arq] featured-products: no se pudo cargar el catálogo", e);
 		}
@@ -9743,7 +9739,7 @@ var el = (e) => String(e ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").trim().
 		let e = this.shadowRoot, t = e.querySelector(".compare"), n = e.querySelector(".picker"), r = t.items.map((e) => e.sku), i = ++this.#f;
 		n.count = r.length, n.href = "/arq/productos";
 		try {
-			let { items: e } = await qn({
+			let { items: e } = await Jn({
 				...n.search,
 				selected: r
 			});
@@ -9786,7 +9782,7 @@ var el = (e) => String(e ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").trim().
 		e && this.#T(r.filters), i.count = r.count, this.#S(r.cards), this.#y(r.count ? "" : this.#t ? `No encontramos productos para «${this.#t}».` : n.empty);
 	}
 	#_(e) {
-		return $t({
+		return en({
 			...this.#e,
 			query: this.#t,
 			filters: e
@@ -9860,7 +9856,7 @@ var el = (e) => String(e ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").trim().
 		if (!e?.length) return;
 		let t;
 		try {
-			t = await Yn();
+			t = await Xn();
 		} catch (e) {
 			console.error("[arq] catalog-listing: no se pudieron cargar las categorías", e);
 			return;
@@ -10006,7 +10002,7 @@ var el = (e) => String(e ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").trim().
 	}
 };
 function pl() {
-	let e = new URLSearchParams(location.search), t = {}, n = Mt(location.pathname);
+	let e = new URLSearchParams(location.search), t = {}, n = Nt(location.pathname);
 	n && (t.environment = n);
 	for (let [n, r] of Object.entries(sl)) {
 		let i = e.get(n);
@@ -10016,7 +10012,7 @@ function pl() {
 }
 function ml(e) {
 	let t = decodeURIComponent(e).replace(/\/$/, "");
-	return t === "/arq/productos" || Mt(t) !== null;
+	return t === "/arq/productos" || Nt(t) !== null;
 }
 function hl(e, t) {
 	let n = new URL(e, location.href), r = (e) => [...new URLSearchParams(e)].sort().join("&"), i = new URL(t, location.href);
@@ -11252,7 +11248,7 @@ var Xl = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		this.setAttribute("aria-busy", "true"), this.#u($.loading);
 		let t = null, n = !1;
 		try {
-			t = e ? await un(e) : null;
+			t = e ? await dn(e) : null;
 		} catch (e) {
 			n = !0, console.error("[arq] ficha-producto: no se pudo cargar el catálogo", e);
 		}
@@ -11427,7 +11423,7 @@ var Xl = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		let { group: n, variants: r } = this.#e, i = Object.keys(this.#s).length ? tt(r, this.#s) : null, a = r.find((e) => e.sku === t) ?? i ?? r.find((e) => e.isDefault) ?? r[0];
 		if (!a || a.sku === this.#c) return;
 		this.#c = a.sku;
-		let o = An(n, a.sku), s = this.shadowRoot;
+		let o = jn(n, a.sku), s = this.shadowRoot;
 		s.querySelector(".sku").textContent = o.sku, this.#p(o.name);
 		let c = s.querySelector(".variant-description");
 		c.textContent = o.description ?? "", c.hidden = !o.description, s.querySelector(".gallery").toggleAttribute("zoom", iu(n)), s.querySelector(".gallery").images = o.images;
@@ -11538,7 +11534,7 @@ var Xl = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		let e = this.shadowRoot, t = e.querySelector(".picker"), n = e.querySelector(".compare-bar").items.map((e) => e.sku), r = ++this.#I;
 		t.count = n.length;
 		try {
-			let { items: e } = await qn({
+			let { items: e } = await Jn({
 				...t.search,
 				selected: n
 			});
@@ -11548,7 +11544,7 @@ var Xl = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		}
 	}
 	#R() {
-		let { group: e } = this.#e, t = An(e, this.#c);
+		let { group: e } = this.#e, t = jn(e, this.#c);
 		return {
 			sku: this.#c,
 			name: t.name || e.name,
@@ -11585,7 +11581,7 @@ var Xl = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		}));
 	}
 	#G(e) {
-		let { group: t, variantAttributes: n } = this.#e, r = this.shadowRoot.querySelector("arq-download-modal"), i = An(t, e);
+		let { group: t, variantAttributes: n } = this.#e, r = this.shadowRoot.querySelector("arq-download-modal"), i = jn(t, e);
 		r.dataset.sku = e, r.sku = e, r.thumb = i.images[0]?.src ?? null, r.meta = n.map((e) => i.values[e]).filter(Boolean).join(", ");
 		let a = document.createElement("arq-download-item");
 		a.emphasis = "featured", a.textContent = $.datasheet;
@@ -11634,19 +11630,19 @@ function fu(e, t) {
 	if (e.environment?.includes("Lámparas y Artefactos") && !e.environment.some((e) => e === "Interior" || e === "Exterior")) {
 		let t = [du, {
 			label: "Lámparas y artefactos",
-			href: O({ environment: D })
+			href: D({ environment: jt })
 		}];
 		return e.application && t.push({
 			label: e.application,
-			href: O({
-				environment: D,
+			href: D({
+				environment: jt,
 				application: e.application
 			})
 		}), { crumbs: t };
 	}
 	let n = e.family?.trim();
 	if (n) {
-		let e = O({ family: n });
+		let e = D({ family: n });
 		return {
 			crumbs: [du, {
 				label: n,
@@ -11659,7 +11655,7 @@ function fu(e, t) {
 		};
 	}
 	if (t) {
-		let e = O({ collection: t.id });
+		let e = D({ collection: t.id });
 		return {
 			crumbs: [du, {
 				label: t.name,
@@ -11704,7 +11700,7 @@ var hu = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		this.setAttribute("aria-busy", "true"), this.#t(gu.loading);
 		let t = null, n = !1;
 		try {
-			t = e ? await jn(e) : null;
+			t = e ? await Mn(e) : null;
 		} catch (e) {
 			n = !0, console.error("[arq] coleccion: no se pudo cargar el catálogo", e);
 		}
@@ -11809,7 +11805,7 @@ var bu = ":host{min-width:0;padding-bottom:var(--arq-space-section-xl);color:var
 		t.hidden = !0, e.hidden = !1, this.setAttribute("aria-busy", "true"), e.loading = !0, this.#r("");
 		let r = null;
 		try {
-			r = await bn();
+			r = await xn();
 		} catch (e) {
 			console.error("[arq] descargas: no se pudo cargar el catálogo", e);
 		}
@@ -11830,7 +11826,7 @@ var bu = ":host{min-width:0;padding-bottom:var(--arq-space-section-xl);color:var
 		t.querySelector(".datasheet-error").textContent = "";
 		let r = this.#a(xu.datasheet);
 		r.emphasis = "featured", t.append(r);
-		let i = await Sn(e);
+		let i = await Cn(e);
 		t.sku === e && t.append(...i.map((e) => this.#a(e.label, e.href)));
 	}
 	#a(e, t) {

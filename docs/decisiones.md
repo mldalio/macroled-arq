@@ -2090,3 +2090,8 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 
 - El webhook de n8n recibe el archivo como binario y, por ahora, solo admite menos de 1 MB. El formulario lo dice en la ayuda («PDF, DWG, JPG o PNG · menos de 1 MB») y no deja adjuntar un archivo de 1 MB o más: «El archivo tiene que pesar menos de 1 MB.»
 - Si pesa más, la ayuda sigue pidiendo un link de Drive o WeTransfer en el detalle. Cuando n8n acepte archivos más grandes, Contacto vuelve a 25 MB (2026-10-14 · Contacto v3).
+
+## 2026-10-30 · Categorías con ?environment=
+
+- Las páginas `/arq/interior`, `/arq/exterior` y `/arq/lamparas-y-artefactos` no existen en Webflow (daban 404). Se vuelve a `?environment=`: Interior, Exterior y Lámparas y artefactos abren `/arq/productos?environment=Interior`, `?environment=Exterior` y `?environment=Lámparas y Artefactos`, en el mega-menú, el menú Mobile, el sidebar, el footer y la Home. Reemplaza a 2026-10-28 · Categorías de Productos en la ruta.
+- Si alguna de esas rutas se crea en Webflow con el embed de Productos, el listado igual muestra su categoría.
