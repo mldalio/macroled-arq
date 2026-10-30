@@ -126,11 +126,11 @@
   transition-timing-function: var(--arq-motion-easing-out);
 }
 
-:host(:focus-within) .info {
+.card:has(.card-link:focus-visible) .info {
   transform: none;
 }
 
-:host(:focus-within) .description {
+.card:has(.card-link:focus-visible) .description {
   opacity: 1;
 }
 
@@ -150,7 +150,7 @@
   /* Con movimiento reducido no hay zoom (DESIGN.md §6). */
   @media (prefers-reduced-motion: no-preference) {
     :host(:hover) ::slotted([slot='image']),
-    :host(:focus-within) ::slotted([slot='image']) {
+    .card:has(.card-link:focus-visible) ::slotted([slot='image']) {
       transform: scale(var(--arq-motion-scale-hover)) !important;
     }
   }

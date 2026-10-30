@@ -205,11 +205,11 @@
   transition-timing-function: var(--arq-motion-easing-out);
 }
 
-:host([overlay]:focus-within) .caption {
+:host([overlay]) .card:has(.card-link:focus-visible) .caption {
   transform: none;
 }
 
-:host([overlay]:focus-within) .description {
+:host([overlay]) .card:has(.card-link:focus-visible) .description {
   opacity: 1;
 }
 
@@ -234,7 +234,7 @@
 
   @media (prefers-reduced-motion: no-preference) {
     :host([overlay]:hover) .card-media ::slotted(*),
-    :host([overlay]:focus-within) .card-media ::slotted(*) {
+    :host([overlay]) .card:has(.card-link:focus-visible) .card-media ::slotted(*) {
       transform: scale(var(--arq-motion-scale-hover)) !important;
     }
   }
