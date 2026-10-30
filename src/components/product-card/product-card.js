@@ -8,7 +8,8 @@
 //     image="…/principal.jpg" image-hover="…/principal-on.jpg"
 //     image-lit="…/principal-on.jpg" image-hover-lit="…/ambiente-1-on.jpg">
 //     <h3 slot="name">Kanu Jardín</h3>
-//     <span slot="meta">35 cm – 50 cm · 12 W</span>
+//     <span slot="specs">35 – 50 cm</span>
+//     <span slot="specs">6 – 12 W</span>
 //     <arq-swatch slot="finishes" src="…">Negro</arq-swatch>
 //   </arq-product-card>
 //
@@ -25,16 +26,19 @@
 //   foco; las encendidas cuando se activa Iluminar.
 // - Size: Large (listados) o Small. Large pasa sola al aspecto Small hasta
 //   767 px (grilla mobile; decisión 2026-10-02 · product-card).
-// - Show meta y Show finishes: se muestran si su slot tiene contenido.
+// - Orden: nombre, datos (slot specs: dos líneas cortas, ver appendSpecs y
+//   specs en src/data/catalog.js) y acabados debajo. Los datos y los acabados
+//   se muestran si su slot tiene contenido. Reemplaza al slot meta.
 // - Show compare: checkbox "Comparar"; emite arq:compare { checked }.
 // - Acabados elegibles: con más de un acabado y datos por acabado (data-* de
 //   cada swatch, ver appendFinishes) los swatches son un radiogroup: el elegido
-//   (selected) lleva el borde de Selected y todos el de Hover del swatch, sin
-//   crecer (siempre Small, 16). Elegir uno cambia las imágenes y el link a las de
+//   (selected) lleva el aro de Selected de la ficha y todos el de Hover (atributo
+//   ring del swatch), sin crecer (siempre XSmall, 14, a space/gap/md entre
+//   muestras). Elegir uno cambia las imágenes y el link a las de
 //   ese acabado y emite arq:finish { name, sku, href, image }. Con un solo
 //   acabado no hay elegido ni se puede elegir.
 // - loading: card de carga (skeleton) con la misma geometría (bloque 7:10,
-//   nombre, acabados y Comparar o meta) en color/surface/subtle, como las
+//   nombre, dos líneas de datos y acabados) en color/surface/subtle, como las
 //   filas de carga de Descargas, con una franja de brillo que la cruza
 //   (shimmer; fija con reduced motion). Fuera del árbol de accesibilidad. Figma: State=Loading.
 // - La foto principal funde al cargar la primera vez (motion/duration/slow);
@@ -59,11 +63,25 @@ export function appendFinishes(card, finishes = []) {
   for (const finish of finishes) {
     const swatch = document.createElement('arq-swatch');
     swatch.slot = 'finishes';
+    swatch.setAttribute('ring', '');
     swatch.textContent = finish.name;
     if (finish.src) swatch.src = finish.src;
     if (finish.selected) swatch.setAttribute('selected', '');
     for (const key of FINISH_DATA) if (finish[key]) swatch.dataset[key] = finish[key];
     card.append(swatch);
+  }
+}
+
+/**
+ * Agrega los datos de una card como líneas del slot specs: specs es una lista
+ * de textos cortos, cada uno en su línea («1 – 3 módulos», «6 – 12 W»).
+ */
+export function appendSpecs(card, specs = []) {
+  for (const text of specs) {
+    const line = document.createElement('span');
+    line.slot = 'specs';
+    line.textContent = text;
+    card.append(line);
   }
 }
 
@@ -93,16 +111,17 @@ class ArqProductCard extends ArqElement {
     `<span class="fallback role-body-sm" aria-hidden="true"></span>` +
     `</div>` +
     `<div class="info">` +
-    `<div class="title"><a class="card-link name"><slot name="name"></slot></a><span class="finishes" hidden><slot name="finishes"></slot></span></div>` +
-    `<p class="meta" hidden><slot name="meta"></slot></p>` +
+    `<div class="title"><a class="card-link name"><slot name="name"></slot></a></div>` +
+    `<p class="specs role-body-compact-regular" hidden><slot name="specs"></slot></p>` +
+    `<span class="finishes" hidden><slot name="finishes"></slot></span>` +
     // «Comparar» + el nombre del producto solo para lectores: en un listado
     // cada checkbox se distingue (WCAG 2.4.6). Se ve igual que en Figma.
     `<arq-checkbox class="compare" show-label hidden>Comparar<span class="compare-name visually-hidden"></span></arq-checkbox>` +
     // Cargando: barras con el alto de línea de cada texto, así la card de
     // carga mide lo mismo que la card que la reemplaza
-    `<span class="sk sk-title"><span class="sk-name"><span class="sk-bar"></span></span>` +
-    `<span class="sk-swatches"><span></span><span></span><span></span></span></span>` +
-    `<span class="sk sk-detail"><span class="sk-bar sk-short"></span></span>` +
+    `<span class="sk sk-title"><span class="sk-name"><span class="sk-bar"></span></span></span>` +
+    `<span class="sk sk-detail role-body-compact-regular"><span class="sk-bar sk-short"></span><span class="sk-bar sk-short"></span></span>` +
+    `<span class="sk sk-swatches"><span></span><span></span><span></span></span>` +
     `</div>` +
     `</div>`;
 
@@ -156,7 +175,7 @@ class ArqProductCard extends ArqElement {
       if (event.pointerType === 'mouse' && !card.classList.contains('is-media-hover')) setMediaHover(true);
     });
     card.addEventListener('pointerleave', () => setMediaHover(false));
-    for (const name of ['name', 'meta', 'finishes']) {
+    for (const name of ['name', 'specs', 'finishes']) {
       root.querySelector(`slot[name="${name}"]`).addEventListener('slotchange', () => this.#renderSlots());
     }
     const finishes = root.querySelector('.finishes');
@@ -238,15 +257,13 @@ class ArqProductCard extends ArqElement {
     // TODO (diseño): que el nombre de Small tenga un rol que valga 20/28 en los dos modos.
     const nameRole = !small ? 'role-heading-3' : MOBILE.matches ? 'role-heading-3' : 'role-body-xl';
     root.querySelector('.name').className = `card-link name ${nameRole}`;
-    const metaRole = small ? 'role-body-sm' : 'role-body';
-    root.querySelector('.meta').className = `meta ${metaRole}`;
     // Cargando: cada barra en el alto de línea del texto que reemplaza
-    // (Comparar va en role/body, como el label del checkbox)
     root.querySelector('.sk-name').className = `sk-name ${nameRole}`;
-    root.querySelector('.sk-detail').className = `sk sk-detail ${this.showCompare ? 'role-body' : metaRole}`;
-    // Los acabados van siempre en Size=Small (16 × 16), en Large y en Small: a 20 se veían grandes.
+    // Los acabados van siempre en Size=XSmall (swatch/xs, 14 × 14), en Large y en Small, con el aro de
+    // Selected de la ficha (atributo ring del swatch).
     for (const swatch of this.querySelectorAll(':scope > arq-swatch[slot="finishes"]')) {
-      swatch.setAttribute('size', 'small');
+      swatch.setAttribute('size', 'xsmall');
+      swatch.setAttribute('ring', '');
     }
   }
 
@@ -254,7 +271,7 @@ class ArqProductCard extends ArqElement {
     const root = this.shadowRoot;
     const filled = (name) =>
       root.querySelector(`slot[name="${name}"]`).assignedNodes({ flatten: true }).some((node) => node.nodeType === Node.ELEMENT_NODE || node.textContent.trim());
-    root.querySelector('.meta').hidden = !filled('meta');
+    root.querySelector('.specs').hidden = !filled('specs');
     root.querySelector('.finishes').hidden = !filled('finishes');
     this.#renderFinishes();
     const name = this.querySelector('[slot="name"]')?.textContent.trim() ?? '';

@@ -21,7 +21,7 @@
 import { ArqElement } from '../../base/arq-element.js';
 import { getCollection } from '../../data/catalog.js';
 import '../grid/grid.js';
-import { appendFinishes } from '../product-card/product-card.js';
+import { appendFinishes, appendSpecs } from '../product-card/product-card.js';
 import '../swatch/swatch.js';
 import '../carousel-controls/carousel-controls.js';
 import { reveal, revealCss } from '../../base/reveal.js';
@@ -112,13 +112,8 @@ class ArqColeccion extends ArqElement {
       title.slot = 'name';
       title.textContent = data.name;
       card.append(title);
+      appendSpecs(card, data.specs);
       appendFinishes(card, data.finishes);
-      if (data.meta) {
-        const meta = document.createElement('span');
-        meta.slot = 'meta';
-        meta.textContent = data.meta;
-        card.append(meta);
-      }
       return card;
     });
     this.#reveal?.disconnect();

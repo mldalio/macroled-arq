@@ -2103,3 +2103,11 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 
 - Las páginas `/arq/interior`, `/arq/exterior` y `/arq/lamparas-y-artefactos` no existen en Webflow (daban 404). Se vuelve a `?environment=`: Interior, Exterior y Lámparas y artefactos abren `/arq/productos?environment=Interior`, `?environment=Exterior` y `?environment=Lámparas y Artefactos`, en el mega-menú, el menú Mobile, el sidebar, el footer y la Home. Reemplaza a 2026-10-28 · Categorías de Productos en la ruta.
 - Si alguna de esas rutas se crea en Webflow con el embed de Productos, el listado igual muestra su categoría.
+
+## 2026-10-30 · Datos y acabados de la product-card
+
+- **Datos:** la product-card muestra dos líneas cortas bajo el nombre (slot `specs`), como las cards de LEDS C4: primero lo que diferencia al grupo (el primer atributo de variante que no es acabado ni potencia: «1 – 3 módulos»; sin ninguno, las temperaturas de color) y después la potencia («6 – 12 W»). Reemplazan a la meta (tipo y aplicación) en Productos, Colección, Home y Accesorios compatibles. CRI e IP/IK quedan para la ficha. `specs` sale de `src/data/catalog.js` (`productCard`). `TODO` (diseño): confirmar el par de datos y su estilo en Figma.
+- **Acabados:** debajo de los datos en todas las cards (también Large en Desktop). Pasan a 14 px (swatch XSmall, token nuevo `swatch/xs` = `space/14`, creado en Figma 2026-10-30), con un gap de space/gap/md y el aro de Selected de la ficha (atributo `ring` del swatch: `outline` de 1 px a border/strong, 2 px; la ficha sigue a space/padding/2xs, 3 px). A 32 px entre muestras se cumple el espaciado de WCAG 2.5.8.
+- **Accesorios compatibles:** pasan de search-card a product-card; search-card queda solo para el buscador. `family-card` no se usa (la ficha usa product-card): se elimina aparte.
+- **Comparar:** en Large (Desktop) se separa de la info con space/gap/sm más (en Small ya tenía buena separación).
+- **Grilla mobile:** el gap de las columnas baja a space/gap/sm (8); las filas siguen en space/gap/xl (24).

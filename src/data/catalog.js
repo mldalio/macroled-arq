@@ -269,6 +269,7 @@ function productCard(group, variant = firstFinishVariant(group) ?? group.default
     sku: variant.sku,
     name: group.name,
     meta: meta(group),
+    specs: specs(group),
     finishes: finishOptions(group, variant, active),
     href: productHref(group.id, variant.sku), // la URL siempre lleva el SKU, también el predeterminado
     // Reposo: hero (img_main). Hover sin Iluminar: hero encendido (img_main_on); con Iluminar:
@@ -438,16 +439,13 @@ export async function countProducts(options) {
 // las piezas compatibles del configurador de Daö.
 const ACCESSORIES = { 'tori-jardin': ['tori-visera'] };
 
-// Tarjetas de search-card (compatible-products) de los grupos con ese id; los que no existen o no
+// Tarjetas de product-card (compatible-products) de los grupos con ese id; los que no existen o no
 // tienen SKU predeterminado no se muestran.
 const compatibleCards = (ids, groupById) =>
   ids
     .map((id) => groupById.get(id))
     .filter((target) => target?.hasDefault)
-    .map((target) => {
-      const card = productCard(target);
-      return { name: card.name, href: card.href, image: card.image, finishes: finishes(target).map(({ name, src }) => ({ name, src })), meta: '' };
-    });
+    .map((target) => productCard(target));
 
 /**
  * Ficha de un grupo: { group, collection, variants, variantAttributes,
@@ -692,12 +690,12 @@ export async function getDatasheet(sku) {
 
 /**
  * Cards de grupos elegidos a mano (Productos destacados del Home), en el
- * mismo orden. Un grupo que no existe se saltea. La meta es el tipo de
- * producto (decisiones.md, 2026-10-05 · Home: alturas y meta).
+ * mismo orden. Un grupo que no existe se saltea. Los datos de cada
+ * card son los de las demás (specs).
  */
 export async function getProductCards(groupIds) {
   const { groupById } = await loadCatalog();
-  const cards = groupIds.map((id) => groupById.get(id)).filter(Boolean).map((group) => ({ ...productCard(group), meta: productKind(group) }));
+  const cards = groupIds.map((id) => groupById.get(id)).filter(Boolean).map((group) => productCard(group));
   // Demo: ?data=loading… demora igual que el listado, para ver las cards de carga del Home.
   const demo = await demoData();
   if (!demo?.mode.startsWith('loading')) return cards;
@@ -775,9 +773,7 @@ export function variantDetails(group, sku) {
 // ── Colección ────────────────────────────────────────────────────────
 /**
  * Página de colección: { collection, cards: una por grupo, images: { gallery[],
- * description, inspiration[] } }. null si no existe. La meta de cada card es
- * el resumen de sus variantes (variantSummary).
- */
+ * description, inspiration[] } }. null si no existe. */
 export async function getCollection(id) {
   const { collectionById, groups } = await loadCatalog();
   const collection = collectionById.get(id);
@@ -785,7 +781,7 @@ export async function getCollection(id) {
   const images = collection.images ?? {};
   return {
     collection,
-    cards: groups.filter((g) => g.collection === id).map((g) => ({ ...productCard(g), meta: variantSummary(g) })),
+    cards: groups.filter((g) => g.collection === id).map((g) => productCard(g)),
     images: {
       gallery: unique(images.gallery),
       description: hasValue(images.description) ? images.description : null,
@@ -794,26 +790,40 @@ export async function getCollection(id) {
   };
 }
 
-/**
- * Resumen de la card (decisión 2026-10-02 · Cards): el rango de cada atributo
- * de variante que no es acabado («50 cm – 90 cm»), separados por « · ».
- * TODO (diseño): faltan las una o dos características fijas que suma Final
- * (p. ej. la potencia) y si van en una segunda línea.
- */
-function variantSummary(group) {
-  // Ignora un prefijo no numérico («x1» de los módulos)
-  const number = (value) => Number.parseFloat(String(value).replace(/^x/i, '').replace(',', '.'));
-  return group.variantAttributes
-    .filter((field) => attributeInfo(field).control !== 'swatches' && attributeInfo(field).summary !== false)
-    .map((field) => {
-      const values = [...new Set(group.variants.map((v) => v.values[field]).filter(hasValue))];
-      values.sort((a, b) => number(a) - number(b) || String(a).localeCompare(String(b), 'es'));
-      const range = values.length > 1 ? `${values[0]} – ${values.at(-1)}` : values[0];
-      const unit = attributeInfo(field).unit;
-      return unit && range ? `${range} ${values.length === 1 && number(values[0]) === 1 ? unit[0] : unit[1]}` : range;
-    })
-    .filter(Boolean)
-    .join(' · ');
+// Datos de la card: dos líneas cortas, como las de LEDS C4. Primero lo que
+// diferencia al grupo (el primer atributo de variante que no es acabado ni
+// potencia: «1 – 3 módulos»; sin ninguno, la temperatura de color) y después la
+// potencia. CRI e IP/IK quedan para la ficha.
+// TODO (diseño): confirmar el par de datos y su estilo.
+const numberOf = (value) => Number.parseFloat(String(value).replace(/^x/i, '').replace(',', '.')); // ignora el «x1» de los módulos
+
+function fieldValues(group, field) {
+  const values = [...new Set(group.variants.map((v) => v.values[field]).filter(hasValue))];
+  return values.sort((a, b) => numberOf(a) - numberOf(b) || String(a).localeCompare(String(b), 'es'));
+}
+
+// «6W» y «12W» → «6 – 12 W»; sin unidad en común, los valores completos
+function valueRange(values) {
+  if (values.length < 2) return values[0] ?? '';
+  const parts = [values[0], values.at(-1)].map((value) => String(value).trim().match(/^([\d.,]+)\s*(\D*)$/));
+  if (parts.every(Boolean) && parts[0][2] && parts[0][2] === parts[1][2]) return `${parts[0][1]} – ${parts[1][1]} ${parts[0][2]}`;
+  return `${values[0]} – ${values.at(-1)}`;
+}
+
+function fieldSummary(group, field) {
+  const values = fieldValues(group, field);
+  if (!values.length) return '';
+  if (field === 'temperatura_color') return values.join(' · ');
+  if (field === 'potencia') return valueRange(values);
+  const range = values.length > 1 ? `${values[0]} – ${values.at(-1)}` : values[0];
+  const unit = attributeInfo(field).unit;
+  return unit ? `${range} ${values.length === 1 && numberOf(values[0]) === 1 ? unit[0] : unit[1]}` : range;
+}
+
+function specs(group) {
+  const differs = group.variantAttributes.find((field) => !['potencia', 'modelo'].includes(field) && attributeInfo(field).control !== 'swatches' && attributeInfo(field).summary !== false);
+  const first = (differs && fieldSummary(group, differs)) || fieldSummary(group, 'temperatura_color');
+  return [first, fieldSummary(group, 'potencia')].filter(Boolean);
 }
 
 // ── Comparativa ──────────────────────────────────────────────────────
