@@ -21,6 +21,7 @@
 import { ArqElement } from '../../base/arq-element.js';
 import { LOGO_PATHS } from '../../base/logo-paths.js';
 import { pageProgress } from '../../base/page-ready.js';
+import { toMs } from '../../base/motion.js';
 import css from './preloader.css?inline';
 
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -196,7 +197,7 @@ class ArqPreloader extends ArqElement {
   }
 
   #finish(run) {
-    const hold = Number.parseFloat(getComputedStyle(this).getPropertyValue('--arq-motion-duration-panel')) || 0;
+    const hold = toMs(getComputedStyle(this).getPropertyValue('--arq-motion-duration-panel')) || 0;
     this.#hold = window.setTimeout(() => {
       if (run !== this.#run || !this.open) return;
       this.emit('done', {});

@@ -20,6 +20,8 @@
 //   por su nombre, para no guardar una función que lo retenga): si sale de la
 //   página y se descarta, deja de recibir avisos sin tener que desregistrarlo.
 
+import { toMs } from './motion.js';
+
 const watchers = new Set();
 let observer = null;
 
@@ -211,7 +213,7 @@ export function takeThemeHandoff() {
  * ahí: en <html> invalidaban el estilo de toda la página (unos 2.000 nodos)
  * para cambiar dos bloques. Sin targets, en <html>.
  */
-export function animateThemeChange(bgMs = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--arq-illumination-bg-duration')) || 0, targets = [document.documentElement]) {
+export function animateThemeChange(bgMs = toMs(getComputedStyle(document.documentElement).getPropertyValue('--arq-illumination-bg-duration')) || 0, targets = [document.documentElement]) {
   const styles = targets.map((element) => element.style);
   const style = {
     setProperty: (name, value) => styles.forEach((s) => s.setProperty(name, value)),
@@ -337,7 +339,7 @@ function spreadFrom(origin, duration, easing) {
 export async function switchTheme(dark, apply, origin) {
   const html = document.documentElement;
   const styles = getComputedStyle(html);
-  const duration = Number.parseFloat(styles.getPropertyValue('--arq-illumination-bg-duration')) || 0;
+  const duration = toMs(styles.getPropertyValue('--arq-illumination-bg-duration')) || 0;
   if (!document.startViewTransition || !duration) {
     animateThemeChange();
     apply();
@@ -352,7 +354,7 @@ export async function switchTheme(dark, apply, origin) {
   const spread = !reduced && origin && styles.getPropertyValue('--arq-illumination-style').trim() === 'spread';
   // Reduced motion: todo funde junto (DESIGN.md §6), sin adelantar las fotos
   if (!reduced) {
-    const lead = Number.parseFloat(styles.getPropertyValue('--arq-illumination-lead')) || 0;
+    const lead = toMs(styles.getPropertyValue('--arq-illumination-lead')) || 0;
     checkAll(dark); // las cards cambian de foto ya, con su propio fundido
     await Promise.race([Promise.all(pendingImages), wait(THEME_WAIT_MS)]);
     await wait(lead);

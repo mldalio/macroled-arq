@@ -3,6 +3,8 @@
 // está adentro del bloque (el riel y sus flechas: su contenedor), y no vuelve
 // mientras siga así (WCAG 2.2.2).
 // TODO (diseño): falta un botón de pausa visible (no hay ícono de pausa en el set).
+import { toMs } from './motion.js';
+
 const VELOCITY_WINDOW = 100; // ms de arrastre que cuentan para la velocidad al soltar
 const DECELERATION = 0.998; // ritmo de frenado del scroll nativo (apple-design §6)
 
@@ -104,7 +106,7 @@ export class HorizontalRail {
   #scrollable() { return this.#rail.scrollWidth - this.#rail.clientWidth > 1; }
   #interval() {
     const raw = getComputedStyle(this.#host).getPropertyValue('--arq-motion-duration-feedback').trim();
-    return parseFloat(raw) * (raw.endsWith('ms') ? 1 : 1000) * 1.5;
+    return toMs(raw) * 1.5;
   }
   refresh() {
     this.#rail.toggleAttribute('data-arq-scrollable', this.#scrollable());
@@ -154,7 +156,7 @@ export class HorizontalRail {
     this.#settle = release;
     rail.addEventListener('scrollend', release);
     // Por si scrollend no llega: tope de motion/duration/panel × 2
-    timer = setTimeout(release, (parseFloat(getComputedStyle(this.#host).getPropertyValue('--arq-motion-duration-panel')) || 400) * 2);
+    timer = setTimeout(release, (toMs(getComputedStyle(this.#host).getPropertyValue('--arq-motion-duration-panel')) || 400) * 2);
     rail.scrollTo({ left: target, behavior: 'smooth' });
   }
   #stop() { clearInterval(this.#timer); this.#timer = 0; }

@@ -14,8 +14,9 @@
 //   el catálogo no carga o ningún grupo existe, se muestran como lista.
 // - Mientras carga, una product-card loading por link (el mismo skeleton del
 //   listado de Productos). Aparecen con un fundido corto y demorado: con el
-//   catálogo en caché no llegan a verse. Si ya se veían, las cards ocupan su
-//   lugar sin la entrada al hacer scroll (lo que aparece es la foto).
+//   catálogo en caché no llegan a verse. Si ya se veían (en pantalla, sin el
+//   preloader encima), las cards ocupan su lugar sin la entrada al hacer
+//   scroll (lo que aparece es la foto).
 // - Como el navbar, es un contenedor que consulta por src/data/ (decisiones.md,
 //   2026-10-02 · Home); las product-card que muestra reciben datos.
 // - Home v2: el slot intro (texto) queda a la izquierda y las tarjetas van en
@@ -36,6 +37,7 @@ import { covered, reveal, revealCss } from '../../base/reveal.js';
 import { getProductCards } from '../../data/catalog.js';
 import '../product-card/product-card.js';
 import '../carousel-controls/carousel-controls.js';
+import { toMs } from '../../base/motion.js';
 import css from './featured-products.css?inline';
 
 const VELOCITY_WINDOW = 100; // ms de arrastre que cuentan para la velocidad al soltar
@@ -170,9 +172,12 @@ class ArqFeaturedProducts extends ArqElement {
     const rail = root.querySelector('.rail');
     // Si las cards de carga ya se ven, las cards ocupan su lugar sin la
     // entrada (con el fundido desde 0 el gris bajaba a blanco y volvía).
-    // Con el preloader encima no se vieron: entrada normal.
+    // Con el preloader encima o fuera de pantalla (debajo del hero, en la
+    // primera carga) no se vieron: entrada normal.
     const skeleton = rail.querySelector('[loading]');
-    const settled = !covered() && Boolean(skeleton) && Number.parseFloat(getComputedStyle(skeleton).opacity) > 0;
+    const box = rail.getBoundingClientRect();
+    const onScreen = box.top < window.innerHeight && box.bottom > 0;
+    const settled = !covered() && onScreen && Boolean(skeleton) && Number.parseFloat(getComputedStyle(skeleton).opacity) > 0;
     const elements = cards.map((card) => this.#card(card));
     rail.replaceChildren(...elements);
     this.#reveal?.disconnect();
@@ -313,7 +318,7 @@ class ArqFeaturedProducts extends ArqElement {
     this.#settle = release;
     rail.addEventListener('scrollend', release);
     // Por si scrollend no llega (navegador sin soporte): tope de motion/duration/panel × 2
-    const panel = Number.parseFloat(getComputedStyle(this).getPropertyValue('--arq-motion-duration-panel')) || 400;
+    const panel = toMs(getComputedStyle(this).getPropertyValue('--arq-motion-duration-panel')) || 400;
     timer = window.setTimeout(release, panel * 2);
     this.shadowRoot.querySelector('.controls').glideTo(target);
   }
@@ -328,7 +333,7 @@ class ArqFeaturedProducts extends ArqElement {
     if (rail.scrollLeft >= max - 1) {
       const styles = getComputedStyle(this);
       const options = {
-        duration: Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-fade')) || 0,
+        duration: toMs(styles.getPropertyValue('--arq-motion-duration-fade')) || 0,
         easing: styles.getPropertyValue('--arq-motion-easing-standard').trim() || 'ease',
       };
       const out = rail.animate([{ opacity: 1 }, { opacity: 0 }], { ...options, fill: 'forwards' });

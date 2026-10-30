@@ -86,6 +86,7 @@ import '../search-sheet/search-sheet.js';
 import { sizedImage } from '../../base/image-size.js';
 import { containScroll } from '../../base/scroll-lock.js';
 import { setPanelBar } from '../../base/theme.js';
+import { toMs } from '../../base/motion.js';
 import css from './navbar.css?inline';
 
 const MOBILE = matchMedia('(max-width: 767px)');
@@ -646,9 +647,9 @@ class ArqNavbar extends ArqElement {
     this.#levelPair = { from, to };
     const styles = getComputedStyle(this);
     const easing = styles.getPropertyValue('--arq-motion-easing-standard').trim() || 'ease';
-    const duration = Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-panel')) || 0;
+    const duration = toMs(styles.getPropertyValue('--arq-motion-duration-panel')) || 0;
     if (!duration) {
-      const fade = Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-fade')) || 0;
+      const fade = toMs(styles.getPropertyValue('--arq-motion-duration-fade')) || 0;
       this.#levelAnimations = [to.animate([{ opacity: 0 }, { opacity: 1 }], { duration: fade, easing })];
       return;
     }
@@ -701,7 +702,7 @@ class ArqNavbar extends ArqElement {
   // Duración de un token motion/duration/<name>, en ms
   #ms(name) {
     const value = getComputedStyle(this).getPropertyValue(`--arq-motion-duration-${name}`).trim();
-    return (parseFloat(value) || 0) * (value.endsWith('ms') ? 1 : 1000);
+    return toMs(value) || 0;
   }
 
   #swapTimer = 0;

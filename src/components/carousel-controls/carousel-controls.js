@@ -35,6 +35,7 @@
 import { ArqElement } from '../../base/arq-element.js';
 import '../icon-button/icon-button.js';
 import '../carousel-button/carousel-button.js';
+import { toMs } from '../../base/motion.js';
 import css from './carousel-controls.css?inline';
 
 const POSITIONS = ['start', 'middle', 'end'];
@@ -408,7 +409,7 @@ class ArqCarouselControls extends ArqElement {
     target.scrollLeft = from;
     target.removeAttribute('data-gliding');
     const styles = getComputedStyle(this);
-    const duration = this.#reducedMotion.matches ? 0 : Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-fold')) || 0;
+    const duration = this.#reducedMotion.matches ? 0 : toMs(styles.getPropertyValue('--arq-motion-duration-fold')) || 0;
     const easing = easingOf(styles.getPropertyValue('--arq-motion-easing-in-out'));
     if (!duration || Math.abs(left - from) < 1) {
       target.scrollLeft = left;
