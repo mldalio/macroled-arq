@@ -897,10 +897,6 @@ var At = "Lámparas y Artefactos", jt = [
 	["exterior", "Exterior"],
 	["lamparas-y-artefactos", At]
 ], O = ({ environment: e, application: t, productType: n, collection: r, family: i } = {}) => {
-	if (e && !t && !n && !r && !i) {
-		let t = jt.find(([, t]) => t === e)?.[0];
-		if (t) return `/arq/${t}`;
-	}
 	let a = new URLSearchParams();
 	e && a.set("environment", e), t && a.set("application", t), n && a.set("product_type", n), r && a.set("collection", r), i && a.set("family", i);
 	let o = a.toString();

@@ -11,7 +11,7 @@
 //     <h2 slot="filter-title">Filtrar</h2>
 //   </arq-catalog-listing>
 //
-// - Categoría: /arq/interior, /arq/exterior y /arq/lamparas-y-artefactos, o
+// - Categoría: ?environment= (también las rutas viejas /arq/interior…),
 //   ?environment=, ?application=, ?product_type=, ?collection= y ?family=.
 //   Se marca el catalog-nav-item cuyo href coincide con la página, y el <h1> del
 //   page-header pasa a ser el nombre de su grupo (Interior, Exterior…).

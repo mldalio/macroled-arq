@@ -7,7 +7,7 @@
 //   <arq-footer>
 //     <span slot="tagline">Diseño lumínico para la arquitectura contemporánea.</span>
 //     <h2 slot="productos-title">Productos</h2>
-//     <arq-footer-link slot="productos" href="/arq/interior">Interior</arq-footer-link>
+//     <arq-footer-link slot="productos" href="/arq/productos?environment=Interior">Interior</arq-footer-link>
 //     <arq-footer-link slot="informacion" href="/arq/contacto">Contacto</arq-footer-link>
 //     <arq-footer-link slot="redes" href="https://www.instagram.com/…" target="_blank"
 //       show-icon icon="instagram" label="Macroled Arq en Instagram">Instagram</arq-footer-link>

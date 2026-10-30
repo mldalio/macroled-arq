@@ -2098,3 +2098,8 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 - Cómo: `src/base/input-modality.js` crea una sola hoja con `outline: none !important` sobre `:focus-visible`; `adoptStyles` (`src/styles/roles.js`) la agrega al final de cada Shadow DOM. La hoja arranca activa; la primera tecla que no sea un modificador la desactiva (`disabled`) y el siguiente `pointerdown` la vuelve a activar. Un solo interruptor para todos los componentes: no se oculta el foco componente por componente.
 - El foco se mueve igual (teclado y lectores de pantalla). Quedan fuera `input`, `textarea` y `select` (el cursor y su borde son parte de escribir) y el contenido por slot del DOM de la página.
 - Aparte: collection-tile y category-card (`overlay`) mostraban su descripción y el zoom con `:focus-within`, que en táctil queda pegado tras el toque. Pasan a `:focus-visible` sobre el link.
+
+## 2026-10-30 · Categorías con ?environment=
+
+- Las páginas `/arq/interior`, `/arq/exterior` y `/arq/lamparas-y-artefactos` no existen en Webflow (daban 404). Se vuelve a `?environment=`: Interior, Exterior y Lámparas y artefactos abren `/arq/productos?environment=Interior`, `?environment=Exterior` y `?environment=Lámparas y Artefactos`, en el mega-menú, el menú Mobile, el sidebar, el footer y la Home. Reemplaza a 2026-10-28 · Categorías de Productos en la ruta.
+- Si alguna de esas rutas se crea en Webflow con el embed de Productos, el listado igual muestra su categoría.
