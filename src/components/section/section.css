@@ -140,15 +140,12 @@
     overflow-x: clip;
   }
 
-  /* Títulos y textos: space/padding/sm. Las fotos que no siguen este margen
-     (Explorar, carrusel de proyectos) siguen llegando al borde.
-     El FAQ queda con --page-gutter, como newsletter y footer. */
+  /* Títulos y textos: layout/gutter, el mismo margen lateral que el resto de
+     las páginas. Las fotos que no siguen este margen (Explorar, carrusel de
+     proyectos) siguen llegando al borde. */
   :host,
   :host([padding='section']),
-  :host([padding='wide']) {
-    --section-inline: var(--arq-space-padding-sm);
-  }
-
+  :host([padding='wide']),
   :host([layout='split']) {
     --section-inline: var(--arq-layout-gutter);
   }
