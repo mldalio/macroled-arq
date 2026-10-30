@@ -34,6 +34,10 @@
   width: 181px;
   height: auto;
   aspect-ratio: 181 / 16;
+  /* El dibujo llega justo al borde inferior del viewBox (16,007): con el alto
+     redondeado hacia abajo, en pantallas de 3x (iPhone) se recortaba la base
+     de las letras. */
+  overflow: visible;
 }
 
 :host([size='small']) .mark {

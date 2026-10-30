@@ -166,6 +166,12 @@
     align-self: stretch;
     scroll-snap-align: start;
   }
+
+  /* La última termina en el borde derecho, como la primera arranca en el
+     izquierdo: sin franja vacía al final de la fila. */
+  :host([layout='editorial']) ::slotted(:last-child) {
+    scroll-snap-align: end;
+  }
 }
 
 /* gap="sm": space/gap/sm entre tarjetas en Desktop y Mobile (también en el

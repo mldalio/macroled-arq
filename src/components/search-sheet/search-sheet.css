@@ -142,10 +142,15 @@
   clip-path: inset(0 0 0 0);
 }
 
+/* Teclado del teléfono (search-sheet.js): su alto va al pie del panel, debajo
+   de «Ver todos». Así el link sigue a las tarjetas con el mismo aire que el
+   campo arriba, y si el contenido no entra, scrollea por encima del teclado. */
 .drawer-inner {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   max-height: calc(var(--sheet-height) - var(--bar-height));
+  padding-bottom: var(--keyboard-inset, 0dvh);
   opacity: 0;
   transition-property: opacity;
   transition-duration: var(--arq-motion-duration-slow);
@@ -188,8 +193,6 @@
   flex: 1;
   min-height: 0;
   padding: calc(var(--arq-space-gap-xl) * 2) var(--page-gutter);
-  /* Con el teclado abierto (search-sheet.js), lo de abajo se puede subir por encima */
-  padding-bottom: calc(var(--arq-space-gap-xl) * 2 + var(--keyboard-inset, 0dvh));
   overflow-y: auto;
   overscroll-behavior: contain;
   /* Las filas de resultado no llevan padding lateral: se alinean con el campo */
@@ -479,13 +482,13 @@
    imagen (search-sheet.js) se saca primero el aire. */
 @media (max-height: 760px) {
   .content {
-    padding-block: var(--arq-space-gap-xl) calc(var(--arq-space-gap-xl) + var(--keyboard-inset, 0dvh));
+    padding-block: var(--arq-space-gap-xl);
   }
 }
 
 @media (max-height: 600px) {
   .content {
-    padding-block: var(--arq-space-gap-md) calc(var(--arq-space-gap-md) + var(--keyboard-inset, 0dvh));
+    padding-block: var(--arq-space-gap-md);
   }
 
   .field-row {
