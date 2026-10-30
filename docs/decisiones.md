@@ -2090,3 +2090,11 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 
 - El webhook de n8n recibe el archivo como binario y, por ahora, solo admite menos de 1 MB. El formulario lo dice en la ayuda («PDF, DWG, JPG o PNG · menos de 1 MB») y no deja adjuntar un archivo de 1 MB o más: «El archivo tiene que pesar menos de 1 MB.»
 - Si pesa más, la ayuda sigue pidiendo un link de Drive o WeTransfer en el detalle. Cuando n8n acepte archivos más grandes, Contacto vuelve a 25 MB (2026-10-14 · Contacto v3).
+
+## 2026-10-30 · Foco solo con teclado
+
+- **Regla:** el anillo de foco se dibuja solo con navegación por teclado, en mobile y en desktop. Con toque o mouse, nunca (DESIGN.md §7 · Foco).
+- Por qué: un foco que mueve un script (abrir el menú Mobile del navbar, volver de un nivel, `showModal()` de filter-panel) matchea `:focus-visible` en iOS y Android aunque se haya tocado, y el anillo quedaba pegado en el botón cerrar, en «volver» y en la primera pestaña.
+- Cómo: `src/base/input-modality.js` crea una sola hoja con `outline: none !important` sobre `:focus-visible`; `adoptStyles` (`src/styles/roles.js`) la agrega al final de cada Shadow DOM. La hoja arranca activa; la primera tecla que no sea un modificador la desactiva (`disabled`) y el siguiente `pointerdown` la vuelve a activar. Un solo interruptor para todos los componentes: no se oculta el foco componente por componente.
+- El foco se mueve igual (teclado y lectores de pantalla). Quedan fuera `input`, `textarea` y `select` (el cursor y su borde son parte de escribir) y el contenido por slot del DOM de la página.
+- Aparte: collection-tile y category-card (`overlay`) mostraban su descripción y el zoom con `:focus-within`, que en táctil queda pegado tras el toque. Pasan a `:focus-visible` sobre el link.
