@@ -501,6 +501,8 @@ Los ratios no son variables (Figma no puede ligar una proporción). En código s
 
 **Foco:** anillo separado del componente: `outline: var(--arq-border-strong) solid var(--arq-color-border-focus)` con `outline-offset: 2px` (en Figma, la capa `focus-ring` de button). Así se ve también sobre fondos del mismo color que el foco. El estado Focus **nunca cambia el tamaño** del componente. Excepción: search-field marca el foco solo con su borde o su línea (`color/border/focus`), como el set, sin anillo separado.
 
+**Cuándo se ve el foco:** solo con navegación por teclado, en mobile y en desktop. Con toque o mouse no se dibuja ningún anillo, aunque un script mueva el foco (abrir un menú, `showModal()`): en iOS y Android `:focus-visible` lo mostraría y quedaría pegado. Es una regla global: una hoja compartida (`src/base/input-modality.js`, adoptada por `ArqElement`) apaga el `outline` hasta la primera tecla que no sea un modificador y vuelve a apagarlo con el siguiente toque o clic. El foco se mueve igual (teclado y lectores de pantalla); solo no se dibuja. Quedan fuera los campos de texto (`input`, `textarea`, `select`) y el contenido por slot del DOM de la página. Los componentes no ocultan el foco por su cuenta ni lo gestionan según el dispositivo. `docs/decisiones.md`, 2026-10-30 · Foco solo con teclado.
+
 ---
 
 ## 8. Componentes

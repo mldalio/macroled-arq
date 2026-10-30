@@ -2085,3 +2085,11 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 - Las fotos cuyo archivo empieza con `HOSHI` no pasan por el CloudFront achicado (`sizedImage`). Se piden al S3 con el enlace de Typesense. Vale para todos los SKU de Höshi (card, ficha y vistas). El resto de los productos sigue por CloudFront. La copia achicada queda un año en caché y Höshi seguía mostrando la foto anterior.
 - **Vistas en la ficha:** frente, atrás e izquierda están solo en la versión encendida (`img_front_on`, `img_back_on`, `img_left_on`) y la galería las salteaba porque exige la apagada. En Höshi entran igual, con esa foto.
 - **Home, Lámparas y artefactos:** la card de Explorar por espacio usa el CloudFront de `imagenes/home/lamparasyart.png` (el archivo de S3 se actualizó el 2026-10-29). La URL lleva `?v=20261029` para que el navegador no siga con la copia anterior, que CloudFront deja un año.
+
+## 2026-10-30 · Foco solo con teclado
+
+- **Regla:** el anillo de foco se dibuja solo con navegación por teclado, en mobile y en desktop. Con toque o mouse, nunca (DESIGN.md §7 · Foco).
+- Por qué: un foco que mueve un script (abrir el menú Mobile del navbar, volver de un nivel, `showModal()` de filter-panel) matchea `:focus-visible` en iOS y Android aunque se haya tocado, y el anillo quedaba pegado en el botón cerrar, en «volver» y en la primera pestaña.
+- Cómo: `src/base/input-modality.js` crea una sola hoja con `outline: none !important` sobre `:focus-visible`; `adoptStyles` (`src/styles/roles.js`) la agrega al final de cada Shadow DOM. La hoja arranca activa; la primera tecla que no sea un modificador la desactiva (`disabled`) y el siguiente `pointerdown` la vuelve a activar. Un solo interruptor para todos los componentes: no se oculta el foco componente por componente.
+- El foco se mueve igual (teclado y lectores de pantalla). Quedan fuera `input`, `textarea` y `select` (el cursor y su borde son parte de escribir) y el contenido por slot del DOM de la página.
+- Aparte: collection-tile y category-card (`overlay`) mostraban su descripción y el zoom con `:focus-within`, que en táctil queda pegado tras el toque. Pasan a `:focus-visible` sobre el link.
