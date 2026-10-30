@@ -2085,3 +2085,8 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 - Las fotos cuyo archivo empieza con `HOSHI` no pasan por el CloudFront achicado (`sizedImage`). Se piden al S3 con el enlace de Typesense. Vale para todos los SKU de Höshi (card, ficha y vistas). El resto de los productos sigue por CloudFront. La copia achicada queda un año en caché y Höshi seguía mostrando la foto anterior.
 - **Vistas en la ficha:** frente, atrás e izquierda están solo en la versión encendida (`img_front_on`, `img_back_on`, `img_left_on`) y la galería las salteaba porque exige la apagada. En Höshi entran igual, con esa foto.
 - **Home, Lámparas y artefactos:** la card de Explorar por espacio usa el CloudFront de `imagenes/home/lamparasyart.png` (el archivo de S3 se actualizó el 2026-10-29). La URL lleva `?v=20261029` para que el navegador no siga con la copia anterior, que CloudFront deja un año.
+
+## 2026-10-30 · Adjunto de Contacto: menos de 1 MB
+
+- El webhook de n8n recibe el archivo como binario y, por ahora, solo admite menos de 1 MB. El formulario lo dice en la ayuda («PDF, DWG, JPG o PNG · menos de 1 MB») y no deja adjuntar un archivo de 1 MB o más: «El archivo tiene que pesar menos de 1 MB.»
+- Si pesa más, la ayuda sigue pidiendo un link de Drive o WeTransfer en el detalle. Cuando n8n acepte archivos más grandes, Contacto vuelve a 25 MB (2026-10-14 · Contacto v3).

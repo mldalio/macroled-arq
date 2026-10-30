@@ -74,9 +74,10 @@ const ERRORS = {
   detalles: 'Contanos un poco sobre tu proyecto.',
 };
 
-// Tamaño máximo del adjunto (Contacto v3; el set file-upload dice 10 MB).
-// TODO (n8n): confirmar que el webhook acepte 25 MB.
-const MAX_FILE_MB = 25;
+// Menos de 1 MB: el webhook de n8n recibe el archivo como binario y, por ahora,
+// no admite 1 MB o más. El set file-upload dice 10 MB; Contacto v3 pedía 25.
+// decisiones.md, 2026-10-30 · Adjunto de Contacto: menos de 1 MB.
+const MAX_FILE_MB = 1;
 
 // Slots opcionales: el contenedor de cada uno no se muestra si está vacío
 const OPTIONAL = { 'channels-title': '.channels-title', faq: '.faq' };
@@ -127,7 +128,7 @@ class ArqFormContacto extends ArqElement {
     `<legend class="role-heading-3">Tu proyecto</legend>` +
     // 6 filas: el campo de Contacto v3 es más alto que las 4 del set de input
     `<arq-input name="detalles" type="textarea" rows="6" placeholder="Contanos el tipo de espacio, etapa del proyecto y qué necesitás…" required show-label>Detalles del proyecto</arq-input>` +
-    `<arq-file-upload name="adjunto" max-size="${MAX_FILE_MB}">Planos o imágenes (opcional)<span slot="helper">PDF, DWG, JPG o PNG · hasta ${MAX_FILE_MB} MB. ¿Pesa más? Pegá un link de Drive o WeTransfer en el detalle.</span></arq-file-upload>` +
+    `<arq-file-upload name="adjunto" max-size="${MAX_FILE_MB}">Planos o imágenes (opcional)<span slot="helper">PDF, DWG, JPG o PNG · menos de ${MAX_FILE_MB} MB. ¿Pesa más? Pegá un link de Drive o WeTransfer en el detalle.</span></arq-file-upload>` +
     `</fieldset>` +
     // Honeypot: fuera de la vista y del orden de Tab; una persona no lo completa
     `<div class="honeypot" aria-hidden="true"><label>No completar este campo <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>` +

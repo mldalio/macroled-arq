@@ -463,7 +463,7 @@ En código, `size` (`large` · `medium` · `small`) achica la foto y el texto. N
 
 Zona para adjuntar un archivo al formulario (planos, planillas). Empty: zona con icon/plus y ayuda; Attached: nombre del archivo + quitar. Props: Label y Helper (formatos y tamaño máximo). En código: <input type="file"> real con drag & drop.
 
-Un solo archivo. State: Empty, Attached, Drag over (archivo arrastrado encima: borde color/border/strong y fondo color/surface/hover), Error (borde color/border/error; el mensaje reemplaza a la ayuda, en color/text/error: "El archivo supera los 25 MB. Formatos: …" o "El formato no está admitido. Formatos: …") y Disabled. Formatos: PDF, DWG, JPG o PNG. Tamaño máximo según el formulario: en Contacto, 25 MB (en código, max-size; 10 por defecto).
+Un solo archivo. State: Empty, Attached, Drag over (archivo arrastrado encima: borde color/border/strong y fondo color/surface/hover), Error (borde color/border/error; el mensaje reemplaza a la ayuda, en color/text/error: "El archivo supera los 10 MB. Formatos: …" o, en Contacto, "El archivo tiene que pesar menos de 1 MB. Formatos: …"; también "El formato no está admitido. Formatos: …") y Disabled. Formatos: PDF, DWG, JPG o PNG. Tamaño máximo según el formulario: en Contacto, menos de 1 MB (en código, max-size; 10 por defecto). Con max-size 1, un archivo de 1 MB justo tampoco se adjunta.
 
 Con prefers-contrast: more, el borde pasa a color/border/strong, como input.
 

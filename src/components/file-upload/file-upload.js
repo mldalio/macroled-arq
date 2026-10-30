@@ -25,7 +25,8 @@ const DEFAULT_MAX_MB = 10;
 // Formatos: …" o "El formato no está admitido. Formatos: …".
 const ERRORS = {
   type: 'El formato no está admitido.',
-  size: (mb) => `El archivo supera los ${mb} MB.`,
+  // 1 MB es «menos de 1 MB» (Contacto: n8n no admite el archivo si llega a 1 MB).
+  size: (mb) => (mb === 1 ? 'El archivo tiene que pesar menos de 1 MB.' : `El archivo supera los ${mb} MB.`),
 };
 
 // ".pdf,.dwg,.jpg,.jpeg,.png" → "PDF, DWG, JPG o PNG" (JPEG se muestra como JPG).
@@ -167,7 +168,12 @@ class ArqFileUpload extends ArqElement {
     const ext = `.${file.name.split('.').pop()?.toLowerCase()}`;
     const formats = accepted.length ? ` Formatos: ${formatList(this.accept)}.` : '';
     if (accepted.length && !accepted.includes(ext)) return ERRORS.type + formats;
-    if (this.maxSize && file.size > this.maxSize * 1024 * 1024) return ERRORS.size(this.maxSize) + formats;
+    if (this.maxSize) {
+      const limit = this.maxSize * 1024 * 1024;
+      // Con 1 MB el límite es estricto: 1 MB justo tampoco pasa.
+      const tooBig = this.maxSize === 1 ? file.size >= limit : file.size > limit;
+      if (tooBig) return ERRORS.size(this.maxSize) + formats;
+    }
     return '';
   }
 
