@@ -13,6 +13,7 @@
 import rolesCss from './roles.css?inline';
 import darkCss from './dark.css?inline';
 import lightCss from './light.css?inline';
+import { getFocusModalitySheet } from '../base/input-modality.js';
 
 let rolesSheet;
 let darkSheet;
@@ -58,5 +59,6 @@ export function adoptStyles(root, ...cssTexts) {
     if (!componentSheets.has(cssText)) componentSheets.set(cssText, toSheet(cssText));
     sheets.push(componentSheets.get(cssText));
   }
+  sheets.push(getFocusModalitySheet()); // última: apaga el anillo de foco si no se usa el teclado
   root.adoptedStyleSheets = [...sheets, ...root.adoptedStyleSheets.filter((s) => !sheets.includes(s))];
 }
