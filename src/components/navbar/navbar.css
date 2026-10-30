@@ -352,9 +352,10 @@
 }
 
 /* ── Menú mobile (Mode=Menu y Products): panel como el top sheet ── */
-/* Menú mobile: un panel que baja desde la barra (--bar-top), de un alto fijo
-   (el 55 % de la pantalla) y aire abajo (el mismo del sheet: space/gap/xl ×
-   2). Solo Colecciones, que es una lista larga, lo agranda a toda la pantalla
+/* Menú mobile: un panel que baja desde la barra (--bar-top), de al menos el
+   55 % de la pantalla y crece con el nivel abierto (Productos entra entero,
+   sin scroll), con aire abajo (el mismo del sheet: space/gap/xl × 2). Solo
+   Colecciones, que es una lista larga, lo agranda a toda la pantalla
    (.is-tall, lo pone el navbar). Si un nivel no entra, se desplaza adentro.
    Detrás, el scrim, y la página se ve. announcement-bar sigue a la vista
    arriba, como con el top sheet. Cada nivel arranca a space/gap/xl del borde de
@@ -366,7 +367,8 @@
   width: 100%;
   max-width: none;
   --menu-full: calc(100dvh - var(--bar-top, 0dvh));
-  height: min(55dvh, var(--menu-full));
+  height: auto;
+  min-height: min(55dvh, var(--menu-full));
   max-height: var(--menu-full);
   margin: 0;
   padding: 0 0 calc(var(--arq-space-gap-xl) * 2);
