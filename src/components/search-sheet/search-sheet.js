@@ -315,6 +315,9 @@ class ArqSearchSheet extends ArqElement {
   // pantalla, se suman columnas (--cols de search-sheet.css): las tarjetas se
   // achican y siguen cuadradas. Se mide con el panel abierto. Si todas las
   // tarjetas entran en las columnas, no hay scroll ni tarjeta asomando.
+  // Se mide sin el teclado (--keyboard-inset en 0): si no, al abrirlo las
+  // tarjetas se achicaban hasta cortar los nombres. En Mobile quedan siempre
+  // las 2 columnas de search-sheet.css: si no entran, el contenido scrollea.
   #fit() {
     if (!this.#dialog?.open) return;
     const root = this.shadowRoot;
@@ -323,11 +326,15 @@ class ArqSearchSheet extends ArqElement {
     cards.style.removeProperty('--cols');
     const base = parseInt(getComputedStyle(cards).getPropertyValue('--cols'), 10) || 4;
     const count = cards.children.length;
-    for (let cols = base; cols <= base + 3; cols++) {
+    const inset = this.style.getPropertyValue('--keyboard-inset');
+    this.style.setProperty('--keyboard-inset', '0px');
+    for (let cols = base; cols <= (MOBILE.matches ? base : base + 3); cols++) {
       cards.style.setProperty('--cols', String(cols));
       cards.dataset.scroll = String(count > cols);
       if (content.scrollHeight - content.clientHeight <= 0) break;
     }
+    if (inset) this.style.setProperty('--keyboard-inset', inset);
+    else this.style.removeProperty('--keyboard-inset');
   }
 
   // "Ver todos los productos" va fuera del scroll, al pie: solo con recomendados
