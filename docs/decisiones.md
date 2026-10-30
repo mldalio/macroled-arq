@@ -2103,3 +2103,19 @@ Prueba impresa de Lau: textos grandes, espacios amplios, cotas grandes, líneas 
 
 - Las páginas `/arq/interior`, `/arq/exterior` y `/arq/lamparas-y-artefactos` no existen en Webflow (daban 404). Se vuelve a `?environment=`: Interior, Exterior y Lámparas y artefactos abren `/arq/productos?environment=Interior`, `?environment=Exterior` y `?environment=Lámparas y Artefactos`, en el mega-menú, el menú Mobile, el sidebar, el footer y la Home. Reemplaza a 2026-10-28 · Categorías de Productos en la ruta.
 - Si alguna de esas rutas se crea en Webflow con el embed de Productos, el listado igual muestra su categoría.
+
+## 2026-10-30 · Menú Mobile: alto mínimo y crece con el nivel
+
+- Pedido de Lau. El nivel Productos del menú Mobile no entraba en el 55 % fijo y se desplazaba adentro. El panel pasa a medir **al menos** el 55 % de la pantalla (`min-height: 55dvh`) y crece hasta el alto del nivel abierto, con tope en el pie de la pantalla: Productos entra entero, sin scroll. Los niveles cortos (Menú, Recursos) siguen en el 55 %. Colecciones sigue a toda la pantalla (`.is-tall`) y un nivel que no entra se sigue desplazando adentro.
+- El cambio de alto entre niveles lo anima `#resizeMenu` (recorte de la persiana, sin animar `height`), como en 2026-10-28 · Menú mobile como panel. Reemplaza al «Alto 55 %» fijo de esa entrada. `navbar.css · .menu`.
+
+## 2026-10-30 · Home Mobile: la última foto de Explorar por espacio llega al borde
+
+- En Mobile la fila de Explorar por espacio (`arq-grid layout="editorial"`) dejaba un 20 % vacío a la derecha al llegar al final: un `::after` hacía que la última foto se alineara a la izquierda. Se saca, y la última foto se ancla al borde derecho (`scroll-snap-align: end`), como la primera arranca en el izquierdo. `grid.css`.
+
+## 2026-10-30 · Cards de la Home Mobile: textos más grandes
+
+- Pedido de Lau. En Mobile los textos chicos de las cards se leían muy chicos junto al nombre de 20/28.
+- **product-card** (Small, y Large hasta 767 px): el meta (aplicación) pasa de `role/body-sm` (12/16) a `role/body` (16/24) y queda a `space/gap/sm` del nombre (antes `space/gap/md`). Desktop no cambia.
+- **tool-card** (Herramientas para proyectar, `type="media"`): el título pasa de `role/body-medium` (16/24) a `role/heading-3` (20/28 en Mobile; Regular, porque no hay un rol Medium de 20 en Mobile) y la bajada de `role/caption` (12/14) a `role/body` (16/24). Desktop no cambia.
+- TODO (diseño): pasar estos tamaños Mobile a los sets de product-card y tool-card en Figma.

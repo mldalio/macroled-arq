@@ -238,7 +238,10 @@ class ArqProductCard extends ArqElement {
     // TODO (diseño): que el nombre de Small tenga un rol que valga 20/28 en los dos modos.
     const nameRole = !small ? 'role-heading-3' : MOBILE.matches ? 'role-heading-3' : 'role-body-xl';
     root.querySelector('.name').className = `card-link name ${nameRole}`;
-    const metaRole = small ? 'role-body-sm' : 'role-body';
+    // Meta: role/body-sm en Small Desktop; en Mobile se leía muy chico junto al
+    // nombre de 20/28, así que sube a role/body (16/24), como en Large.
+    // TODO (diseño): pasar el meta Mobile y su distancia al nombre al set de Figma.
+    const metaRole = !small || MOBILE.matches ? 'role-body' : 'role-body-sm';
     root.querySelector('.meta').className = `meta ${metaRole}`;
     // Cargando: cada barra en el alto de línea del texto que reemplaza
     // (Comparar va en role/body, como el label del checkbox)

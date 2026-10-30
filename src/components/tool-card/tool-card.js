@@ -23,6 +23,8 @@ import { ArqElement } from '../../base/arq-element.js';
 import { icon } from '../../base/icons.js';
 import css from './tool-card.css?inline';
 
+const MOBILE = matchMedia('(max-width: 767px)');
+
 class ArqToolCard extends ArqElement {
   static tag = 'arq-tool-card';
   static styles = css;
@@ -50,6 +52,7 @@ class ArqToolCard extends ArqElement {
 
   setup() {
     this.shadowRoot.querySelector('slot[name="image"]').addEventListener('slotchange', () => this.update());
+    MOBILE.addEventListener('change', () => this.update());
   }
 
   update() {
@@ -64,8 +67,16 @@ class ArqToolCard extends ArqElement {
     const index = this.type === 'index';
     root.querySelector('.media').hidden = index;
     root.querySelector('.index').hidden = !index;
-    root.querySelector('.title').className = `title ${index ? 'role-heading-3-light' : 'role-body-medium'}`;
-    root.querySelector('.subtitle').className = `subtitle ${index ? 'role-body' : 'role-caption'}`;
+    // Título de media: role/body-medium en Desktop; en Mobile, 20/28 como el nombre
+    // de product-card (role/heading-3, que en Mobile vale 20/28).
+    // TODO (diseño): pasar el título Mobile al set de Figma.
+    const titleRole = index ? 'role-heading-3-light' : MOBILE.matches ? 'role-heading-3' : 'role-body-medium';
+    root.querySelector('.title').className = `title ${titleRole}`;
+    // Bajada de media: role/caption en Desktop; en Mobile se leía muy chica,
+    // así que sube a role/body (16/24), como el meta de product-card.
+    // TODO (diseño): pasar la bajada Mobile al set de Figma.
+    const subtitleRole = index || MOBILE.matches ? 'role-body' : 'role-caption';
+    root.querySelector('.subtitle').className = `subtitle ${subtitleRole}`;
     const hasImage = root.querySelector('slot[name="image"]').assignedElements({ flatten: true }).length > 0;
     root.querySelector('.placeholder').hidden = hasImage;
   }
