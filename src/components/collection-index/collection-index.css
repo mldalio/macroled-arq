@@ -73,6 +73,12 @@
   background: var(--arq-color-surface-subtle);
 }
 
+.stage-link {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
 .photo {
   position: absolute;
   inset: 0;

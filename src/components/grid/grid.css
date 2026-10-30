@@ -131,8 +131,7 @@
 
   /* editorial · Explorar por espacio. La fila se desliza adentro de esta
      caja: el host recorta (clip) para que el ancho de las fotos no ensanche
-     la página. La siguiente asoma. El ::after deja llegar la última al mismo
-     borde izquierdo que la primera, sin un margen de más.
+     la página. La siguiente asoma. La última termina pegada al borde derecho.
      TODO (diseño): Home v2 no tiene frame Mobile. El 80 % no tiene token. */
   :host([layout='editorial']) {
     min-width: 0;
@@ -159,13 +158,6 @@
 
   :host([layout='editorial']) .grid.editorial::-webkit-scrollbar {
     display: none;
-  }
-
-  :host([layout='editorial']) .grid.editorial::after {
-    content: '';
-    flex: none;
-    width: calc(20% - var(--arq-space-5));
-    scroll-snap-align: none;
   }
 
   :host([layout='editorial']) ::slotted(*) {
