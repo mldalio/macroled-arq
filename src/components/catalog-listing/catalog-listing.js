@@ -44,6 +44,7 @@ import '../grid/grid.js';
 import { appendFinishes } from '../product-card/product-card.js';
 import '../swatch/swatch.js';
 import { covered, reveal, revealCss } from '../../base/reveal.js';
+import { toMs } from '../../base/motion.js';
 import css from './catalog-listing.css?inline';
 
 // Nivel «Colecciones» del breadcrumb: abre el mega-menu en esa pestaña (no hay vista de todas)
@@ -664,9 +665,9 @@ class ArqCatalogListing extends ArqElement {
     const token = (name) => style.getPropertyValue(`--arq-${name}`).trim();
     this.#pendingText.set(element, text);
     const leave = element.animate([{ opacity: 1 }, { opacity: 0 }], {
-      duration: parseFloat(token('motion-duration-fade')),
+      duration: toMs(token('motion-duration-fade')),
       easing: token('motion-easing-standard'),
-      delay: delay ? parseFloat(token(delay)) : 0,
+      delay: delay ? toMs(token(delay)) : 0,
       fill: 'forwards',
     });
     leave.finished.then(() => {
@@ -676,7 +677,7 @@ class ArqCatalogListing extends ArqElement {
       leave.cancel();
       if (rise) {
         element.animate([{ opacity: 0, transform: `translateY(${token('space-gap-2xl')})` }, { opacity: 1, transform: 'none' }], {
-          duration: parseFloat(token('motion-duration-slow')) * 1.5,
+          duration: toMs(token('motion-duration-slow')) * 1.5,
           easing: token('motion-easing-standard'),
           fill: 'backwards',
         });
@@ -686,7 +687,7 @@ class ArqCatalogListing extends ArqElement {
       // primer tercio y se sentía rápido. TODO (token): no hay una curva de
       // fundido general; se usa la del fundido de fotos de Iluminar.
       element.animate([{ opacity: 0 }, { opacity: 1 }], {
-        duration: parseFloat(token('motion-duration-slow')),
+        duration: toMs(token('motion-duration-slow')),
         easing: token('motion-easing-illumination-image'),
         fill: 'backwards',
       });

@@ -38,6 +38,7 @@ import '../button/button.js';
 import '../count-badge/count-badge.js';
 import '../divider/divider.js';
 import '../compare-slot/compare-slot.js';
+import { toMs } from '../../base/motion.js';
 import css from './compare-bar.css?inline';
 
 const KEY = 'arq:compare';
@@ -186,7 +187,7 @@ class ArqCompareBar extends ArqElement {
     const bar = this.shadowRoot.querySelector('.bar');
     if (before === null || bar.hidden || !bar.classList.contains('animate')) return;
     const styles = getComputedStyle(bar);
-    const duration = Number.parseFloat(styles.getPropertyValue('--arq-motion-duration-panel')) || 0;
+    const duration = toMs(styles.getPropertyValue('--arq-motion-duration-panel')) || 0;
     if (!duration) return;
     bar.getAnimations().forEach((animation) => animation.cancel());
     bar.classList.remove('sliding');
