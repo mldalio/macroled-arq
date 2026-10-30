@@ -131,7 +131,7 @@
 
   /* editorial · Explorar por espacio. La fila se desliza adentro de esta
      caja: el host recorta (clip) para que el ancho de las fotos no ensanche
-     la página. La siguiente asoma.
+     la página. La siguiente asoma. La última termina pegada al borde derecho.
      TODO (diseño): Home v2 no tiene frame Mobile. El 80 % no tiene token. */
   :host([layout='editorial']) {
     min-width: 0;
