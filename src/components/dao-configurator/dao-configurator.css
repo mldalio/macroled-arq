@@ -95,6 +95,11 @@
   display: none;
 }
 
+/* Indicador de pasos: solo Mobile (en Desktop se ven los tres pasos) */
+.progress {
+  display: none;
+}
+
 .steps {
   display: flex;
   flex-direction: column;
@@ -459,6 +464,11 @@
   transform: scale(var(--arq-motion-scale-enter));
 }
 
+/* La primera foto (única tarjeta) solo se funde, sin escala: más sutil */
+.photos figure.is-new:only-child {
+  transform: none;
+}
+
 /* Fotos apiladas: la nueva se funde sobre la anterior (otro color), con la
    curva del fundido de fotos (motion/easing/illumination-image) */
 .media {
@@ -630,6 +640,8 @@
   .body {
     display: flex;
     flex-direction: column;
+    /* 1 rem entre las fotos y el primer paso */
+    gap: var(--arq-space-gap-md);
     /* El hover de un paso hecho se asoma a los lados (ver .steps) */
     margin-inline: calc(-1 * var(--arq-space-padding-sm-md));
     padding-inline: var(--arq-space-padding-sm-md);
@@ -643,17 +655,136 @@
   }
 
   .steps {
+    padding-bottom: 0;
     overflow-y: visible;
   }
 
-  /* Las fotos van arriba de los pasos. El recuadro mide al menos 5:4 del ancho
-     (con 1 a 4 fotos no cambia de alto: sumar una no corre los pasos) y cada
-     tarjeta, al menos 5:4 de su columna, para que no se achate: con 5 o 6
-     fotos crece una fila. */
-  .panel {
-    order: -1;
+  /* Un paso a la vez: con uno abierto, los hechos y los pendientes se ocultan
+     (el indicador de arriba lleva a los hechos). Sin ninguno abierto (el
+     armado con «Cambiar»), los hechos quedan como filas de resumen. Entra
+     desde la derecha: solo opacity y transform. */
+  .steps:has(.is-active) .step:not(.is-active) {
+    display: none;
+  }
+
+  /* El título del paso abierto lo dice el indicador («Paso 1 de 3 · Aro») */
+  .step.is-active .step-head {
+    display: none;
+  }
+
+  /* Cambio de paso: el que se va sale hacia la izquierda con un fundido
+     (motion/duration/fade) y el nuevo entra desde la derecha (slow, easing/out),
+     un corrimiento corto (space/gap/xl) en vez de cruzar la pantalla. */
+  .step.is-leaving {
+    pointer-events: none;
+    animation: arq-step-out var(--arq-motion-duration-fade) var(--arq-motion-easing-standard) both;
+  }
+
+  .step.is-entering {
+    animation-name: arq-step-slide;
+    animation-duration: var(--arq-motion-duration-slow);
+  }
+
+  @keyframes arq-step-out {
+    to {
+      opacity: 0;
+      transform: translateX(calc(-1 * var(--arq-space-gap-xl)));
+    }
+  }
+
+  @keyframes arq-step-slide {
+    from {
+      opacity: 0;
+      transform: translateX(var(--arq-space-gap-xl));
+    }
+  }
+
+  /* La barra del paso actual se llena de izquierda a derecha al llegar */
+  .progress-bar[aria-current] {
+    transform-origin: left;
+    animation: arq-progress-fill var(--arq-motion-duration-slow) var(--arq-motion-easing-out) both;
+  }
+
+  @keyframes arq-progress-fill {
+    from {
+      transform: scaleX(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .step.is-entering {
+      animation-name: arq-step-fade;
+      animation-duration: var(--arq-motion-duration-fade);
+    }
+
+    .progress-bar[aria-current] {
+      animation: none;
+    }
+  }
+
+  .body {
+    overflow-x: hidden;
+  }
+
+  .progress {
+    display: flex;
     flex: none;
-    margin-bottom: var(--arq-space-padding-xl);
+    flex-direction: column;
+    gap: var(--arq-space-gap-sm);
+  }
+
+  .progress:empty {
+    display: none;
+  }
+
+  .progress-label {
+    margin: 0;
+    color: var(--arq-color-text-secondary);
+  }
+
+  .progress-bars {
+    display: flex;
+    gap: var(--arq-space-gap-xs);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .progress-bars li {
+    flex: 1;
+  }
+
+  /* Hecho o actual: color/border/strong; pendiente: color/border/default. Los
+     hechos son botones con el alto del trazo y un área táctil más alta. */
+  .progress-bar {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: var(--arq-space-padding-xs);
+    padding: 0;
+    border: 0;
+    background: var(--arq-color-border-default);
+  }
+
+  .progress-bar.is-reached {
+    background: var(--arq-color-border-strong);
+  }
+
+  button.progress-bar {
+    cursor: pointer;
+  }
+
+  button.progress-bar:focus-visible {
+    outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+    outline-offset: 2px;
+  }
+
+  /* Las fotos van debajo de las opciones. El recuadro mide al menos 5:4 del
+     ancho (con 1 a 4 fotos no cambia de alto) y cada tarjeta, al menos 5:4 de
+     su columna, para que no se achate: con 5 o 6 fotos crece una fila. */
+  .panel {
+    flex: none;
+    margin-bottom: 0;
   }
 
   /* Vacío no se muestra (como en Desktop): aparece al elegir el aro */
@@ -670,8 +801,32 @@
     order: 2;
   }
 
-  .result-parts {
+  /* Armado: las fotos entre la descarga y «Piezas para este armado». El
+     contenedor del armado no dibuja caja: sus bloques se ordenan junto al panel. */
+  .steps:has(.final),
+  .final {
+    display: contents;
+  }
+
+  .body:has(.final) {
+    gap: var(--arq-space-gap-2xl);
+  }
+
+  .final.is-entering {
+    animation: none;
+  }
+
+  .final.is-entering > * {
+    animation: arq-step-in var(--arq-motion-duration-base) var(--arq-motion-easing-out) both;
+  }
+
+  .panel {
     order: 3;
+  }
+
+  .result-parts {
+    order: 4;
+    padding-bottom: var(--arq-space-padding-xl);
   }
 
   .photos {
