@@ -33,6 +33,7 @@
 import { ArqElement } from '../../base/arq-element.js';
 import { Disclosure } from '../../base/disclosure.js';
 import { icon } from '../../base/icons.js';
+import { toMs } from '../../base/motion.js';
 import css from './catalog-nav-group.css?inline';
 
 class ArqCatalogNavGroup extends ArqElement {
@@ -95,7 +96,7 @@ class ArqCatalogNavGroup extends ArqElement {
   #slide(before) {
     if (before === null) return;
     const styles = getComputedStyle(this);
-    const ms = (name) => Number.parseFloat(styles.getPropertyValue(name)) || 0;
+    const ms = (name) => toMs(styles.getPropertyValue(name)) || 0;
     const short = ms(this.open ? '--arq-motion-duration-panel' : '--arq-motion-duration-expand');
     if (!short) return;
     const group = this.shadowRoot.querySelector('.group');

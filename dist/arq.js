@@ -5522,7 +5522,7 @@ var Vo = ":host{min-width:0;display:block}.group:after{content:\"\";border-botto
 	}
 	#r(e) {
 		if (e === null) return;
-		let t = getComputedStyle(this), n = (e) => Number.parseFloat(t.getPropertyValue(e)) || 0, r = n(this.open ? "--arq-motion-duration-panel" : "--arq-motion-duration-expand");
+		let t = getComputedStyle(this), n = (e) => R(t.getPropertyValue(e)) || 0, r = n(this.open ? "--arq-motion-duration-panel" : "--arq-motion-duration-expand");
 		if (!r) return;
 		let i = this.shadowRoot.querySelector(".group"), a = this.shadowRoot.querySelector(".items"), o = this.shadowRoot.querySelector(".icon"), s = [];
 		for (let e = this.nextElementSibling; e; e = e.nextElementSibling) s.push(e);
