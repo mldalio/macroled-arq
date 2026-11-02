@@ -64,6 +64,9 @@ const TEXT = {
   back: 'Ver resumen',
   parts: 'Piezas para este armado',
   print: 'Descargar configuración',
+  progress: 'Pasos del armado',
+  stepOf: (index, total, name) => `Paso ${index} de ${total} · ${name}`,
+  backTo: (name) => `Volver a ${name}`,
   generating: 'Generando…',
 };
 
@@ -106,6 +109,7 @@ class ArqDaoConfigurator extends ArqElement {
     `</div>` +
     `<p class="status role-body" role="status"></p>` +
     `<div class="body" hidden>` +
+    `<nav class="progress" aria-label="${TEXT.progress}"></nav>` +
     `<div class="steps"></div>` +
     `<aside class="panel" aria-live="polite"></aside>` +
     `</div>` +
@@ -182,6 +186,15 @@ class ArqDaoConfigurator extends ArqElement {
       this.#choose(key);
       this.#render(`[data-step="${CSS.escape(key)}"] [value="${CSS.escape(String(value))}"]`);
     });
+    root.querySelector('.progress').addEventListener('click', (event) => {
+      const bar = event.target.closest?.('[data-section]');
+      if (!bar) return;
+      this.#leave(() => {
+        this.#active = bar.dataset.section;
+        this.#entering = this.#active;
+        this.#render();
+      });
+    });
     steps.addEventListener('click', (event) => {
       const print = event.target.closest?.('.print');
       if (print) return this.#print(print);
@@ -203,7 +216,7 @@ class ArqDaoConfigurator extends ArqElement {
       if (counter) return this.#count(counter.dataset.head, counter.dataset.count === 'add');
       const next = event.target.closest?.('.next');
       const change = event.target.closest?.('.step-toggle');
-      if (next) this.#advance();
+      if (next) this.#leave(() => this.#advance());
       else if (change) {
         this.#active = change.closest('.step').dataset.section;
         this.#entering = this.#active;
@@ -288,6 +301,7 @@ class ArqDaoConfigurator extends ArqElement {
     this.#entering = null;
     this.#skus = {};
     this.#finalShown = false;
+    this.#progressKey = '';
     this.shadowRoot.querySelector('.panel').replaceChildren();
     this.#render();
     root.querySelector('.steps').scrollTop = 0;
@@ -304,6 +318,23 @@ class ArqDaoConfigurator extends ArqElement {
   // ── Flujo ────────────────────────────────────────────────────────────
   #isDone(id) {
     return this.#done.has(id);
+  }
+
+  // Mobile (un paso a la vez): el paso que se va sale hacia la izquierda con un
+  // fundido y recién entonces entra el siguiente desde la derecha. Sin
+  // movimiento, o con pasos plegados, el cambio es directo.
+  #leaving = false;
+
+  #leave(change) {
+    if (this.#leaving) return;
+    const step = this.shadowRoot.querySelector('.steps .step.is-active');
+    if (!step || reducedMotion() || !matchMedia('(max-width: 767px)').matches) return change();
+    this.#leaving = true;
+    step.classList.add('is-leaving');
+    setTimeout(() => {
+      this.#leaving = false;
+      change();
+    }, durationOf(this, '--arq-motion-duration-fade'));
   }
 
   #advance() {
@@ -365,13 +396,51 @@ class ArqDaoConfigurator extends ArqElement {
       if (finished) nodes.push(this.#backToSummary());
     }
     root.querySelector('.steps').replaceChildren(...nodes);
+    this.#progress(order, finished && !this.#editing);
     this.#panel(view, order);
     const entering = root.querySelector('.is-entering');
     if (entering) {
-      entering.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'nearest' });
+      // Mobile: el paso nuevo arranca arriba (la columna que se desplaza es el cuerpo)
+      if (matchMedia('(max-width: 767px)').matches) root.querySelector('.body').scrollTo({ top: 0, behavior: reducedMotion() ? 'auto' : 'smooth' });
+      else entering.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'nearest' });
       this.#entering = null;
     }
     if (focus) root.querySelector(focus)?.focus({ preventScroll: true });
+  }
+
+  // ── Indicador de pasos (solo Mobile: ahí se ve un paso a la vez) ───────
+  // Una barra por paso y «Paso 1 de 3 · Aro»; las de los pasos hechos vuelven a ellos.
+  #progressKey = '';
+
+  #progress(order, summary) {
+    const nav = this.shadowRoot.querySelector('.progress');
+    // Solo se rearma cuando cambia el paso o lo hecho: así la barra que se llena
+    // anima una vez y no con cada opción que se toca
+    const key = summary || !this.#active ? '' : `${this.#active}|${order.map((id) => (this.#isDone(id) ? 1 : 0)).join('')}`;
+    if (key === this.#progressKey) return;
+    this.#progressKey = key;
+    if (!key) return nav.replaceChildren();
+    const current = order.indexOf(this.#active);
+    const label = document.createElement('p');
+    label.className = 'progress-label role-body-compact-medium';
+    label.textContent = TEXT.stepOf(current + 1, order.length, STEP_NAME[this.#active]);
+    const bars = document.createElement('ol');
+    bars.className = 'progress-bars';
+    order.forEach((id, index) => {
+      const item = document.createElement('li');
+      const reachable = this.#isDone(id) && id !== this.#active;
+      const bar = document.createElement(reachable ? 'button' : 'span');
+      bar.className = 'progress-bar';
+      bar.classList.toggle('is-reached', index <= current || this.#isDone(id));
+      if (reachable) {
+        bar.type = 'button';
+        bar.dataset.section = id;
+        bar.setAttribute('aria-label', TEXT.backTo(STEP_NAME[id]));
+      } else if (index === current) bar.setAttribute('aria-current', 'step');
+      item.append(bar);
+      bars.append(item);
+    });
+    nav.replaceChildren(label, bars);
   }
 
   // ── Pasos ────────────────────────────────────────────────────────────
