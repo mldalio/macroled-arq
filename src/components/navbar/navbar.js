@@ -142,7 +142,7 @@ class ArqNavbar extends ArqElement {
     `</nav>` +
     `<div class="recursos-media" aria-hidden="true"><slot name="recursos-media">` +
     `<img class="catalogs" src="https://d1zltvqju4u8ql.cloudfront.net/fit-in/filters:format(webp)/MACROLED/ARQ/imagenes/home/catalogos_todos.png" alt="" loading="lazy">` +
-    `<img class="downloads" src="/Fichas%20t%C3%A9cnicas%20Macroled%20Arq%20sobre%20madera.png" alt="" loading="lazy" hidden>` +
+    `<img class="downloads" src="https://d1zltvqju4u8ql.cloudfront.net/fit-in/filters:format(webp)/MACROLED/ARQ/imagenes/home/Fichas%20t%C3%A9cnicas%20Macroled%20Arq%20sobre%20madera.png" alt="" loading="lazy" hidden>` +
     `</slot></div>` +
     `</div>` +
     `</div></div>` +
