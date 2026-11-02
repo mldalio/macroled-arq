@@ -46,7 +46,7 @@
   top: var(--arq-layout-navbar-height);
   display: flex;
   flex-direction: column;
-  height: calc(100svh - var(--arq-layout-navbar-height));
+  height: calc(100svh - var(--arq-layout-navbar-height) - var(--compare-space, var(--arq-space-0)));
   min-width: 0;
   overflow: hidden;
 }
@@ -100,7 +100,7 @@
   box-sizing: border-box;
   min-width: 0;
   /* Al menos el alto de la foto: con poco contenido, las acciones quedan abajo */
-  min-height: calc(100svh - var(--arq-layout-navbar-height));
+  min-height: calc(100svh - var(--arq-layout-navbar-height) - var(--compare-space, var(--arq-space-0)));
   padding-right: var(--page-gutter);
   /* el hero ya no lleva padding inferior: el aire de los botones va acá (Figma 2612:12210) */
   padding-bottom: var(--arq-space-padding-xl);
@@ -771,6 +771,52 @@
   }
 }
 
+/* Hero en pantallas bajas (laptops): el configurador entra en la pantalla
+   entre el navbar y compare-bar plegada (--compare-space, local: el alto de la
+   barra si se ve; lo pone ficha-producto.js), con los botones a la vista
+   (2026-11-02). data-size lo elige ficha-producto.js según el alto de la
+   pantalla más el de la barra (HERO_SIZES): compact hasta 799 px, tight hasta
+   649. compact: título en role/display-sm en lugar de role/display (mismo
+   peso) y un escalón menos de aire arriba, abajo, entre bloques y entre
+   características. tight: un escalón más. */
+@media (min-width: 1024px) {
+  .hero[data-size] .configurator-column {
+    gap: var(--arq-space-gap-xl);
+    padding-bottom: var(--arq-space-padding-lg);
+  }
+
+  .hero[data-size] .header {
+    padding-top: var(--arq-space-padding-lg);
+  }
+
+  .hero[data-size] .title {
+    font-size: var(--arq-type-display-sm-size);
+    line-height: var(--arq-type-display-sm-leading);
+  }
+
+  .hero[data-size] .options {
+    gap: var(--arq-space-gap-lg);
+  }
+
+  .hero[data-size='tight'] .configurator-column {
+    gap: var(--arq-space-gap-lg);
+    padding-bottom: var(--arq-space-padding-md);
+  }
+
+  .hero[data-size='tight'] .header {
+    padding-top: var(--arq-space-padding-md);
+  }
+
+  .hero[data-size='tight'] .title {
+    font-size: var(--arq-type-heading-1-size);
+    line-height: var(--arq-type-heading-1-leading);
+  }
+
+  .hero[data-size='tight'] .options {
+    gap: var(--arq-space-gap-md);
+  }
+}
+
 /* ── Tablet y Mobile (hasta 1023 px) ────────────────────────────── */
 /* TODO (diseño): la Ficha v2 solo tiene Desktop; Mobile sigue siendo la v1
    (1220:11334) con los componentes nuevos. Hasta 1023 px se apilan los bloques
@@ -889,10 +935,11 @@
     width: var(--arq-layout-card-min);
   }
 
-  /* Foto principal más alta que ancha: ratio/portrait-soft (4:5) en lugar de
-     ratio/landscape, para que se sienta vertical (2026-10-21) */
+  /* Foto principal cuadrada: ratio/square (1:1) en lugar de ratio/landscape.
+     Era 4:5 (2026-10-21); en 1:1 el nombre y el sku entran en la primera
+     pantalla debajo de la foto (2026-11-02) */
   .gallery {
-    --gallery-ratio: 4 / 5;
+    --gallery-ratio: 1 / 1;
   }
 
   .header {

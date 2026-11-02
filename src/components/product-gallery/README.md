@@ -29,8 +29,9 @@ gallery.images = [
 | Breakpoint | — | — | Media query: hasta 767 px es Mobile |
 | — (solo de código) | `inset-thumbs` | `insetThumbs` | booleano. En Mobile la foto va a todo el ancho y la fila de miniaturas lleva el margen de página (`--page-gutter`), deslizándose de borde a borde. Lo usa la ficha (2026-10-21) |
 
-- **Métodos:** `select(index)` muestra la imagen `index` (la misma que una flecha o un deslizamiento). `currentImage` es la foto visible.
-- **Slider:** la foto principal se recorre de a una, en loop (después de la última sigue la primera). Las flechas son solo el chevron, sin caja, a la misma altura (al centro de la foto), y aparecen al pasar el mouse o con el foco del teclado. Con el dedo se desliza (scroll nativo y snap, una foto por gesto); con mouse, se arrastra. ← → con el foco en la foto, una flecha o una miniatura. Con menos de dos fotos no hay flechas.
+- **Métodos:** `select(index)` muestra la imagen `index` (la misma que una flecha o un deslizamiento). `currentImage` es la foto visible. `photos` es la lista como se ve (apagada o encendida): `{ src, alt, ground }`, con `ground` `'light'` o `'dark'` en las fotos de estudio (el fondo de la galería) y `null` en las demás.
+- **Evento:** `arq:open` con `{ index, photos, opener }` al hacer clic o tocar la foto, o con Enter / Espacio con el foco en ella. La ficha la abre en el visor de fotos (`src/base/photo-viewer.js`). El cursor sobre la foto es `zoom-in`.
+- **Slider:** la foto principal se recorre de a una, en loop (después de la última sigue la primera). Las flechas son solo el chevron, sin caja, a la misma altura (al centro de la foto): con mouse aparecen al pasar por encima o con el foco del teclado; en táctil se ven siempre. Con el dedo se desliza (scroll nativo y snap, una foto por gesto); con mouse no se arrastra ni se desliza con el trackpad: solo las flechas (2026-11-02). ← → con el foco en la foto, una flecha o una miniatura. Con menos de dos fotos no hay flechas.
 - **Miniaturas:** un `<button>` cada una; se recorren con Tab y la elegida lleva `aria-current="true"` (cierra el TODO de gallery-thumb). El nombre de cada una es su `alt`. Siguen a la foto visible.
 - **Desktop:** las miniaturas van sobre la imagen, abajo a la izquierda, a `space/padding/lg` del borde. **Mobile:** debajo, separadas por `space/gap/sm`.
 - **Si no entran,** la fila se desliza (scroll-snap, sin barra visible; decisión 2026-10-02 · Galerías). Con Tab, la miniatura con foco entra sola en la vista.
@@ -42,7 +43,7 @@ gallery.images = [
 
 | Parte | Token |
 | --- | --- |
-| Imagen principal | `ratio/landscape` (5:4; la página puede pisarlo con la variable local `--gallery-ratio`, la ficha usa 4:5 en Mobile), fondo `color/surface/subtle`, `radius/control` |
+| Imagen principal | `ratio/landscape` (5:4; la página puede pisarlo con la variable local `--gallery-ratio`, la ficha usa 1:1 en Mobile), fondo `color/surface/subtle`, `radius/control` |
 | Gap imagen–miniaturas (Mobile) · entre miniaturas | `space/gap/sm` |
 | Ancho de miniatura | `layout/gallery-thumb` (105 Desktop · 76 Mobile); el alto sale de 5:4 |
 | Separación de las miniaturas al borde (Desktop) | `space/padding/lg` |

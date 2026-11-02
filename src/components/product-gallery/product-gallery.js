@@ -20,10 +20,13 @@
 //   (otra variante) vuelve a la primera. Con menos de dos no hay flechas ni
 //   miniaturas.
 // - Recorrido en loop: después de la última foto sigue la primera, y antes de
-//   la primera está la última. Flechas solo con el chevron (sin caja): aparecen
-//   al pasar el mouse o con el foco. Las dos van a la misma altura, al centro
-//   de la foto. Con el dedo se desliza (scroll nativo con snap) y con mouse se
-//   arrastra. ← → con el foco en la foto, una flecha o una miniatura.
+//   la primera está la última. Flechas solo con el chevron (sin caja): con
+//   mouse aparecen al pasar por encima o con el foco; en táctil están siempre.
+//   Las dos van a la misma altura, al centro de la foto. Con el dedo se desliza
+//   (scroll nativo con snap); con mouse no se arrastra, solo las flechas
+//   (2026-11-02). ← → con el foco en la foto, una flecha o una miniatura.
+// - Clic o toque en la foto (o Enter con el foco en ella): arq:open con
+//   { index, photos, opener }. La ficha la abre en el visor de fotos.
 // - Iluminar: dentro de un bloque con data-arq-theme="dark", cada foto usa
 //   srcOn; si falta, la apagada (src/base/theme.js). El cambio de variante y
 //   de Iluminar funde; pasar de foto se desliza.
@@ -39,9 +42,6 @@ import { icon } from '../../base/icons.js';
 import { GALLERY_WIDTH, sizedImage } from '../../base/image-size.js';
 import '../gallery-thumb/gallery-thumb.js';
 import css from './product-gallery.css?inline';
-
-const DRAG_START = 6;
-const FLICK_VELOCITY = 0.4; // px/ms: un deslizamiento más rápido pasa de foto
 
 class ArqProductGallery extends ArqElement {
   static tag = 'arq-product-gallery';
@@ -73,14 +73,19 @@ class ArqProductGallery extends ArqElement {
   // estudio ya son un corte en zoom por diseño (los de Exterior; la ficha lo pone).
   #fit(src) {
     if (this.hasAttribute('zoom') || !src) return 'fill';
-    const file = String(src).split(/[?#]/)[0].split('/').pop();
-    return /ambient|detail|detalle|inspira/i.test(file) ? 'fill' : 'air';
+    return this.#studio(src) ? 'air' : 'fill';
+  }
+
+  // Foto de estudio (PNG, puede tener transparencia): en el visor va sobre el
+  // fondo de la galería, no sobre el negro del scrim.
+  #studio(src) {
+    const file = String(src ?? '').split(/[?#]/)[0].split('/').pop();
+    return !/ambient|detail|detalle|inspira/i.test(file);
   }
 
   #dark = false;
   #received = false; // ya llegaron los datos: antes no se oculta la imagen del HTML
   #transitionImage = null;
-  #drag = null;
   #width = 0;
   #resize = new ResizeObserver(() => this.#realign());
 
@@ -113,6 +118,17 @@ class ArqProductGallery extends ArqElement {
     return this.#images;
   }
 
+  /** Las fotos como se ven (apagadas o encendidas), para el visor: { src, alt, ground, width }.
+   *  ground: 'light' o 'dark' en las de estudio (el fondo de la galería), null en las demás.
+   *  width: el de la galería (GALLERY_WIDTH), la copia que ya está cargada. */
+  get photos() {
+    const ground = this.#dark ? 'dark' : 'light';
+    return this.#images.map((image) => {
+      const src = (this.#dark && image.srcOn) || image.src;
+      return { src, alt: image.alt ?? '', ground: this.#studio(src) ? ground : null, width: GALLERY_WIDTH };
+    });
+  }
+
   set images(list) {
     // Otra variante (acabado, módulos): la foto nueva funde sobre la anterior.
     // La primera vez no: reemplaza a la del HTML.
@@ -136,12 +152,10 @@ class ArqProductGallery extends ArqElement {
     root.querySelector('.next').addEventListener('click', () => this.#go(this.#index + 1, true));
     track.addEventListener('scroll', () => this.#onScroll(), { passive: true });
     track.addEventListener('scrollend', () => {
-      if (!this.#programmatic && !this.#drag) this.#settleLoop();
+      if (!this.#programmatic) this.#settleLoop();
     });
-    track.addEventListener('pointerdown', (event) => this.#dragStart(event));
-    track.addEventListener('pointermove', (event) => this.#dragMove(event));
-    track.addEventListener('pointerup', (event) => this.#dragEnd(event));
-    track.addEventListener('pointercancel', (event) => this.#dragEnd(event));
+    // Un deslizamiento con el dedo no dispara click: solo el toque abre el visor
+    track.addEventListener('click', () => this.#open());
     track.addEventListener('dragstart', (event) => event.preventDefault());
     root.addEventListener('keydown', (event) => this.#onKey(event));
     this.#resize.observe(track);
@@ -164,6 +178,11 @@ class ArqProductGallery extends ArqElement {
   /** Muestra la imagen `index` de images. En los extremos sigue de largo (loop). */
   select(index) {
     this.#go(index, false);
+  }
+
+  #open() {
+    if (!this.#images.length) return;
+    this.emit('open', { index: this.#index, photos: this.photos, opener: this.#track() });
   }
 
   #src(image) {
@@ -358,7 +377,7 @@ class ArqProductGallery extends ArqElement {
   }
 
   #onScroll() {
-    if (this.#rendering || this.#drag || this.#programmatic) return;
+    if (this.#rendering || this.#programmatic) return;
     const track = this.#track();
     const width = track.clientWidth;
     if (!width || this.#images.length < 2) return;
@@ -376,7 +395,7 @@ class ArqProductGallery extends ArqElement {
     const count = this.#images.length;
     const track = this.#track();
     const width = track.clientWidth;
-    if (count < 2 || !width || this.#drag) return;
+    if (count < 2 || !width) return;
     const pos = Math.round(track.scrollLeft / width);
     let jumped = false;
     if (pos <= 0) {
@@ -395,8 +414,7 @@ class ArqProductGallery extends ArqElement {
 
   #realign() {
     const width = this.#fitSlides();
-    if (!width || this.#drag) return;
-    if (width === this.#width) return;
+    if (!width || width === this.#width) return;
     this.#width = width;
     this.#track().scrollTo({ left: this.#trackPos() * width, behavior: 'auto' });
   }
@@ -417,61 +435,19 @@ class ArqProductGallery extends ArqElement {
   }
 
   #onKey(event) {
-    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
     const path = event.composedPath();
     const track = this.#track();
+    if ((event.key === 'Enter' || event.key === ' ') && path[0] === track) {
+      event.preventDefault();
+      this.#open();
+      return;
+    }
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
     const thumbs = this.shadowRoot.querySelector('.thumbs');
     const onNav = path.some((node) => node.classList?.contains?.('nav'));
     if (!path.includes(track) && !path.includes(thumbs) && !onNav) return;
     event.preventDefault();
     this.#go(this.#index + (event.key === 'ArrowRight' ? 1 : -1), true);
-  }
-
-  #dragStart(event) {
-    if (event.pointerType !== 'mouse' || event.button !== 0 || this.#images.length < 2) return;
-    const track = this.#track();
-    this.#drag = {
-      id: event.pointerId,
-      x: event.clientX,
-      left: track.scrollLeft,
-      index: this.#index,
-      moved: false,
-      t: event.timeStamp,
-    };
-  }
-
-  #dragMove(event) {
-    const drag = this.#drag;
-    if (!drag || event.pointerId !== drag.id) return;
-    const dx = event.clientX - drag.x;
-    if (!drag.moved && Math.abs(dx) < DRAG_START) return;
-    const track = this.#track();
-    drag.moved = true;
-    track.setPointerCapture(event.pointerId);
-    track.toggleAttribute('data-dragging', true);
-    event.preventDefault();
-    track.scrollLeft = drag.left - dx;
-  }
-
-  #dragEnd(event) {
-    const drag = this.#drag;
-    if (!drag || event.pointerId !== drag.id) return;
-    this.#drag = null;
-    const track = this.#track();
-    track.removeAttribute('data-dragging');
-    if (track.hasPointerCapture(event.pointerId)) track.releasePointerCapture(event.pointerId);
-    if (!drag.moved) return;
-    const dx = event.clientX - drag.x;
-    const velocity = dx / Math.max(event.timeStamp - drag.t, 1);
-    const width = track.clientWidth || 1;
-    let index = drag.index;
-    if (velocity > FLICK_VELOCITY || dx > width * 0.2) index -= 1;
-    else if (velocity < -FLICK_VELOCITY || dx < -width * 0.2) index += 1;
-    if (index === drag.index) {
-      this.#scrollTo(this.#trackPos());
-      return;
-    }
-    this.#go(index, true);
   }
 
   // La foto anterior queda encima (.theme-transition) y se desvanece. Si había

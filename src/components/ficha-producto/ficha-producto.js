@@ -125,6 +125,11 @@ const BACKDROP_LIGHT = 0.16;
 const BACKDROP_SAMPLE = 16;
 // La cota se amplía al tocarla solo en Mobile
 const COTA_EXPANDS = matchMedia('(max-width: 767px)');
+// Hero desde 1024 px: hasta qué alto de pantalla (más el de compare-bar
+// plegada, si se ve) el configurador se achica para entrar con los botones a
+// la vista (data-size en .hero, ficha-producto.css). Medido con Daö, tres
+// selectores (decisiones.md, 2026-11-02 · Ficha: hero en la pantalla).
+const HERO_SIZES = [['tight', 649], ['compact', 799]];
 // Botón (rol, foco y nombre) solo mientras se puede ampliar
 const cotaExpandable = (img) => {
   const on = COTA_EXPANDS.matches;
@@ -285,16 +290,36 @@ class ArqFichaProducto extends ArqElement {
   connectedCallback() {
     super.connectedCallback();
     COTA_EXPANDS.addEventListener('change', this.#syncCotas);
+    addEventListener('resize', this.#syncHeroSize);
     this.#ambientRail?.connect();
     this.#collectionRail?.connect();
   }
 
   disconnectedCallback() {
     COTA_EXPANDS.removeEventListener('change', this.#syncCotas);
+    removeEventListener('resize', this.#syncHeroSize);
     this.#ambientRail?.disconnect();
     this.#collectionRail?.disconnect();
     this.#viewer?.close();
   }
+
+  #compareSpace = 0;
+
+  #setCompareSpace(height) {
+    this.#compareSpace = height;
+    this.shadowRoot.querySelector('.hero').style.setProperty('--compare-space', `${height}px`);
+    this.#syncHeroSize();
+  }
+
+  // Tamaño del configurador según el alto libre (HERO_SIZES)
+  #syncHeroSize = () => {
+    const hero = this.shadowRoot?.querySelector('.hero');
+    if (!hero) return;
+    const extra = this.#compareSpace;
+    const size = HERO_SIZES.find(([, height]) => matchMedia(`(min-width: 1024px) and (max-height: ${height + extra}px)`).matches)?.[0];
+    if (size) hero.dataset.size = size;
+    else delete hero.dataset.size;
+  };
 
   #selection = {};
   #storyHasText = false;
@@ -329,6 +354,18 @@ class ArqFichaProducto extends ArqElement {
     syncLabel();
 
     root.querySelector('.iluminar').addEventListener('arq:change', (event) => this.#iluminar(event.detail.checked));
+    // Clic o toque en la foto del hero: la galería ampliada, en el mismo visor
+    // que la galería de ambiente y la cota (2026-11-02)
+    root.querySelector('.gallery').addEventListener('arq:open', (event) => {
+      const { index, photos, opener } = event.detail;
+      this.#photoViewer().open(index, opener, photos);
+    });
+    // compare-bar plegada ocupa el pie de la pantalla: el hero la descuenta.
+    // Si la página carga con productos elegidos, la barra ya avisó antes de
+    // este listener: se lee su alto también ahora.
+    const compareBar = root.querySelector('.compare-bar');
+    compareBar.addEventListener('arq:compare-space', (event) => this.#setCompareSpace(event.detail.height));
+    this.#setCompareSpace(compareBar.foldedHeight ?? 0);
     this.#watchToggleBackdrop();
     // Viene de Productos o Colecciones iluminado: la ficha arranca iluminada, sin fundido
     if (takeThemeHandoff()) {
