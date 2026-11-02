@@ -29,7 +29,9 @@
 /* Count: role/body en color/text/secondary */
 .count {
   margin: 0;
-  flex: none; /* no se achica debajo de las acciones: si no entra, bajan ellas */
+  /* No se achica debajo de las acciones: si no entra, bajan ellas. Crece mucho
+     más que .actions, así en una sola línea se queda con todo el sobrante. */
+  flex: 1000 0 auto;
   color: var(--arq-color-text-secondary);
   white-space: nowrap; /* "11 productos" en una línea, aunque Filtrar muestre la cantidad */
 }
@@ -38,9 +40,12 @@
 .actions {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--arq-space-gap-xl);
-  flex: none;
-  margin-inline-start: auto; /* abajo, siguen a la derecha */
+  /* En la línea de la cantidad casi no crece (ver .count) y queda a la derecha;
+     si baja a su propia línea, ocupa todo el ancho: Iluminar a la izquierda y
+     Filtrar a la derecha. */
+  flex: 1 0 auto;
 }
 
 /* Toggle + divider en su propia fila: el divider toma el alto del toggle (20
@@ -48,7 +53,9 @@
 .lead {
   display: flex;
   align-items: stretch;
+  justify-content: space-between;
   gap: var(--arq-space-gap-xl);
+  flex: 1 0 auto; /* con las acciones en su propia línea, el divider queda junto a Filtrar */
 }
 
 @media (max-width: 767px) {

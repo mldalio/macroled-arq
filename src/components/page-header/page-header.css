@@ -62,9 +62,22 @@
   display: contents;
 }
 
+/* Si el título no entra al lado de la bajada sin cortar una palabra (Tablet:
+   "Productos" en role/display-lg), la bajada baja a su propia línea, debajo
+   del título y a todo el ancho, como en Mobile. El título nunca es más angosto
+   que su palabra más larga. En la misma línea, el título crece mucho más que
+   la bajada, que se queda en layout/measure (unos px de más, a lo sumo). */
+:host(:not([type='detail'])) .row {
+  flex-wrap: wrap;
+}
+
+:host(:not([type='detail'])) .heading {
+  flex: 1000 1 0;
+  min-width: min-content;
+}
+
 :host(:not([type='detail'])) .description {
-  flex: 0 1 var(--arq-layout-measure);
-  max-width: var(--arq-layout-measure);
+  flex: 1 1 var(--arq-layout-measure);
 }
 
 /* Type=Detail: arriba space/section/xs, abajo space/section/sm. Volver arriba
@@ -103,6 +116,11 @@
   :host([type='detail']) .main {
     flex: none;
     max-width: none;
+  }
+
+  :host(:not([type='detail'])) .heading {
+    flex: none;
+    min-width: 0;
   }
 
   :host([type='detail']) .row {

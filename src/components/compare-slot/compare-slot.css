@@ -24,6 +24,14 @@
 /* Foto cuadrada layout/compare-thumb, fondo color/surface/subtle. Filled: en
    Light local (data-arq-theme="light", lo pone el JS), así el fondo es claro
    también en compare-bar (Dark). Empty: icon/plus centrado */
+/* Mobile: en compare-bar los lugares van uno arriba de otro, a todo el
+   ancho; con el tope de layout/compare-slot la X quedaba lejos del borde. */
+@media (max-width: 767px) {
+  .slot {
+    max-width: none;
+  }
+}
+
 .thumb {
   position: relative;
   display: flex;
