@@ -17,6 +17,7 @@ Footer de Macroled Arq, último elemento de todas las páginas, full width. Marc
   <h2 slot="informacion-title">Información</h2>
   <arq-footer-link slot="informacion" href="/arq/contacto">Contacto</arq-footer-link>
   <arq-footer-link slot="informacion" href="/arq/descargas">Descargas</arq-footer-link>
+  <arq-footer-link slot="informacion" href="/arq/catalogos">Catálogos</arq-footer-link>
 
   <h2 slot="redes-title">Redes</h2>
   <arq-footer-link slot="redes" href="https://www.instagram.com/…" target="_blank"

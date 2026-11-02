@@ -25,14 +25,14 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [category-card](#category-card) | `<arq-category-card>` | En código ([README](../src/components/category-card/README.md)) |
 | ✅ [checkbox](#checkbox) | `<arq-checkbox>` | En código ([README](../src/components/checkbox/README.md)) |
 | ✅ [choice-chip](#choice-chip) | `<arq-choice-chip>` | En código ([README](../src/components/choice-chip/README.md)) · Selected en `color/surface/inverse` |
-| ✅ [compare-bar](#compare-bar) | `<arq-compare-bar>` | En código ([README](../src/components/compare-bar/README.md)) · vacía con X para cerrarla y cambiar un producto tocándolo (2026-11-02). `TODO` (Figma): estado vacío en el set |
+| ✅ [compare-bar](#compare-bar) | `<arq-compare-bar>` | En código ([README](../src/components/compare-bar/README.md)) · State=Empty (vacía con X) y cambiar un producto tocándolo (2026-11-02) |
 | ✅ [compare-group](#compare-group) | dentro de `<arq-compare-table>` | En código, como parte de compare-table ([README](../src/components/compare-table/README.md)) |
 | ✅ [compare-header](#compare-header) | `<arq-compare-header>` | En código ([README](../src/components/compare-header/README.md)) |
 | ✅ [compare-picker](#compare-picker) | `<arq-compare-picker>` | En código ([README](../src/components/compare-picker/README.md)) · Productos (compare-bar, también Mobile) y Comparativa · sin los chips de categoría del set y con «Ver todos los productos» (Underline) en lugar de «Comparar» · se cierra al elegir; modo «Cambiar producto» (2026-11-02) |
-| ✅ [compare-picker-item](#compare-picker-item) | `<arq-compare-picker-item>` | En código ([README](../src/components/compare-picker-item/README.md)) · Added con «Quitar» y «Elegir» en Cambiar producto (2026-11-02). `TODO` (Figma): pasar los dos estados al set |
+| ✅ [compare-picker-item](#compare-picker-item) | `<arq-compare-picker-item>` | En código ([README](../src/components/compare-picker-item/README.md)) · Added con «Quitar» y State=Choose («Elegir», 2026-11-02) |
 | ✅ [compare-product](#compare-product) | `<arq-compare-product>` | En código ([README](../src/components/compare-product/README.md)) |
 | ✅ [compare-row](#compare-row) | dentro de `<arq-compare-table>` | En código, como parte de compare-table ([README](../src/components/compare-table/README.md)) |
-| ✅ [compare-slot](#compare-slot) | `<arq-compare-slot>` | En código ([README](../src/components/compare-slot/README.md)) · Filled clickeable («Cambiar», arq:replace) con hover (2026-11-02). `TODO` (Figma): State=filled-hover en el set |
+| ✅ [compare-slot](#compare-slot) | `<arq-compare-slot>` | En código ([README](../src/components/compare-slot/README.md)) · Filled clickeable («Cambiar», arq:replace) con State=filled-hover (2026-11-02) |
 | ✅ [contact-item](#contact-item) | `<arq-contact-item>` | En código ([README](../src/components/contact-item/README.md)) |
 | ✅ [count-badge](#count-badge) | `<arq-count-badge>` | En código ([README](../src/components/count-badge/README.md)) |
 | ✅ [cta-block](#cta-block) | `<arq-cta-block>` | En código ([README](../src/components/cta-block/README.md)) |
@@ -309,9 +309,11 @@ Opción seleccionable en forma de chip para elegir entre pocas opciones visibles
 ## compare-bar
 
 - Figma: [1233-3963](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1233-3963)
-- Propiedades: Title; Breakpoint: Desktop · Mobile; Open: True · False
+- Propiedades: Title; Breakpoint: Desktop · Mobile; Open: True · False; State: Default · Empty
 
 Barra fija inferior para comparar productos (hasta 3). Título + count-badge con la cantidad seleccionada, compare-slot (Filled/Empty) y acciones: button Underline «Borrar todo» y Filled «Comparar». Usa el tema oscuro (modo Dark de Color) fijado en cada variante. Desktop: slots Size=Default separados por divider Vertical. Mobile (como macroled.com.ar): los productos elegidos, uno arriba de otro (compare-slot Default con divider Horizontal Subtle), más un solo lugar vacío (compare-slot Empty) para agregar mientras haya menos de 3, y «Comparar» debajo a todo el ancho, con «Borrar todo» debajo, centrado (código; el set lo tiene junto al título). Tablet (768–1023, solo código): los tres lugares en una línea y «Borrar todo» y «Comparar» debajo, a la derecha. El lugar vacío abre compare-picker. Se ve también en «Todas las colecciones». Open (Desktop y Mobile): el título lleva un chevron que pliega la lista (chevron-down abierta, chevron-up plegada); plegada queda solo el título con el chevron (código; el set muestra también «Borrar todo» y «Comparar»). Arranca abierta y se vuelve a abrir al agregar un producto; en Mobile, con 2 o más productos arranca plegada y no se abre sola (código, 2026-10-26).
+Cambiar: tocar un producto (compare-slot Filled, filled-hover) abre compare-picker en «Cambiar producto» y lo elegido queda en el mismo lugar. Agregar desde el lugar vacío cierra el modal y el producto aparece en su lugar. El orden es fijo: el de cómo se agregaron.
+State=Empty: si se quitan todos los productos (X o «Borrar todo»), la barra no se va: quedan los lugares vacíos (Mobile: uno), sin count-badge ni «Borrar todo», «Comparar» Disabled y una X (icon-button, «Cerrar comparador») al final de la línea del título, que oculta la barra. Al recargar sin productos, la barra no aparece.
 Movimiento (código): entra desde el borde de abajo al elegir el primer producto y sale por el mismo borde, como un panel: motion/duration/panel con motion/easing/standard, como filter-panel. Es sticky: pegada abajo mientras se recorre el listado y, al final, apoyada sobre el footer, sin espacio reservado. Al plegar y desplegar con el chevron (Open), la barra se desliza igual: el borde de arriba baja o sube a su lugar nuevo con motion/duration/panel y motion/easing/standard. Con reduced motion, solo el fundido (motion/duration/fade).
 
 ## compare-group
@@ -338,9 +340,9 @@ Modal «Agregar producto» de la comparativa. Se abre desde el lugar vacío (+) 
 ## compare-picker-item
 
 - Figma: [2723-8420](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=2723-8420)
-- Propiedades: State: Default · Hover · Added · Disabled
+- Propiedades: State: Default · Hover · Added · Disabled · Choose
 
-Fila del modal «Agregar producto» de la comparativa. Default/Hover: botón Agregar (Hover: fondo color/surface/hover). Added: el producto ya está en la comparativa («Agregado»). Disabled: se alcanzó el máximo de 3 productos; textos en color/text/disabled y la miniatura con opacity/disabled (50 %). Miniatura layout/search-thumb. En código: <arq-compare-picker-item>.
+Fila del modal «Agregar producto» de la comparativa. Default/Hover: botón «+ Agregar» (Hover: fondo color/surface/hover). Added: el producto ya está en la comparativa: «− Quitar» (button Outline con icon/minus), que lo saca sin cerrar el modal; antes era «Agregado» deshabilitado. Choose: el modal en «Cambiar producto» (se abre tocando un producto de compare-bar): «Elegir», sin ícono; lo elegido reemplaza al producto de ese lugar y el modal se cierra. Disabled: se alcanzó el máximo de 3 productos; textos en color/text/disabled y la miniatura con opacity/disabled (50 %); una fila Added nunca queda deshabilitada. Miniatura layout/search-thumb. En código: <arq-compare-picker-item> (added, replace, disabled).
 
 ## compare-product
 
@@ -359,9 +361,9 @@ Fila de la tabla comparativa: etiqueta + un valor por producto (hasta 3; Show va
 ## compare-slot
 
 - Figma: [1233-3656](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=1233-3656)
-- Propiedades: Name; Meta; State: Filled · Empty · empty-hover
+- Propiedades: Name; Meta; State: Filled · Empty · empty-hover · filled-hover
 
-Lugar de producto en compare-bar (compare-header Compact usa compare-product Size=Compact). State=Filled (foto en "thumb": reemplazá el relleno por la imagen del producto, nombre, meta e icon-button para quitar) / Empty (agregar producto): la foto en color/surface/subtle con el «+» resaltado y «Agregar producto», dentro de una caja punteada (border/default dashed en color/border/default, padding derecho space/padding/md), como el lugar vacío de compare-product Compact. Todo el lugar es un botón (cursor pointer) que abre compare-picker. State=empty-hover (como empty-hover de compare-product): fondo color/surface/faint y borde punteado color/border/strong; en código es :hover. Un solo tamaño, en Desktop y en la lista apilada de Mobile (Size=Compact se quitó: ya no se usaba). Ancho máximo 400 para que no se estire en pantallas anchas.
+Lugar de producto en compare-bar (compare-header Compact usa compare-product Size=Compact). State=Filled (foto en "thumb": reemplazá el relleno por la imagen del producto, nombre, meta e icon-button para quitar) / Empty (agregar producto): la foto en color/surface/subtle con el «+» resaltado y «Agregar producto», dentro de una caja punteada (border/default dashed en color/border/default, padding derecho space/padding/md), como el lugar vacío de compare-product Compact. Todo el lugar es un botón (cursor pointer) que abre compare-picker. Filled también es un botón: todo el lugar es «Cambiar <nombre>» y abre compare-picker en «Cambiar producto» para elegir otro producto en ese lugar; la X (quitar) va encima, como un botón aparte. State=filled-hover: fondo color/surface/faint y borde border/default continuo en color/border/default (en código, :hover). Filled y Empty miden lo mismo: Filled lleva el borde transparente (color/surface/transparent) y el padding derecho space/padding/md. State=empty-hover (como empty-hover de compare-product): fondo color/surface/faint y borde punteado color/border/strong; en código es :hover. Un solo tamaño, en Desktop y en la lista apilada de Mobile (Size=Compact se quitó: ya no se usaba). Ancho máximo 400 para que no se estire en pantallas anchas.
 
 ## contact-item
 
