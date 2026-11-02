@@ -52,7 +52,7 @@ gallery.images = [
 ## Pendientes
 
 - `TODO` (diseño) En Figma las miniaturas están a 20 del borde de la imagen y no hay token: se usa `space/padding/lg` (decisión 2026-10-02).
-- `TODO` (diseño) Las flechas del slider no están en el set: son solo el chevron (`icon/xl`), sin caja, y aparecen al pasar el mouse (decisión 2026-10-28 · Galería de la ficha: slider).
+- Las flechas del slider están en el set (2026-11-02): solo el chevron (`icon/xl`), sin caja, al centro de la foto. Con mouse aparecen al pasar por encima o con el foco; en táctil se ven siempre (decisión 2026-11-02 · Ficha: hero en la pantalla y fotos ampliadas).
 - Orden de `images`: main, ambient_1, front, back, left, right, pers_1, pers_2, detail_1, detail_2 (las que existen), con `srcOn` desde su versión `_on` (`docs/typesense-schema.md`). Con `images` vacía (variante sin fotos), la imagen grande se oculta y se ve el fondo del marco; antes de recibir `images` no se oculta la del HTML.
 - `TODO` (datos) Los `alt` todavía no tienen campo.
 - En Mobile el alto de la miniatura sale 61 (76 × 4/5); en Figma es 60.
