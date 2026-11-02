@@ -347,11 +347,12 @@ class ArqFeaturedProducts extends ArqElement {
     this.shadowRoot.querySelector('.controls').go(1);
   }
 
-  #card({ name, specs, href, family, image, imageHover, imageLit, imageHoverLit }) {
+  #card({ name, specs, temperature, href, family, image, imageHover, imageLit, imageHoverLit }) {
     const card = document.createElement('arq-product-card');
     card.href = href;
     card.family = family;
     card.showCursor = true;
+    card.temperature = temperature;
     card.image = image;
     card.imageHover = imageHover;
     card.imageLit = imageLit;

@@ -33,7 +33,7 @@
 // - Acabados elegibles: con más de un acabado y datos por acabado (data-* de
 //   cada swatch, ver appendFinishes) los swatches son un radiogroup: el elegido
 //   (selected) lleva el aro de Selected de la ficha y todos el de Hover (atributo
-//   ring del swatch), sin crecer (siempre XSmall, 14, a space/gap/md entre
+//   ring del swatch), sin crecer (siempre Small, 16, a space/gap/md entre
 //   muestras). Elegir uno cambia las imágenes y el link a las de
 //   ese acabado y emite arq:finish { name, sku, href, image }. Con un solo
 //   acabado no hay elegido ni se puede elegir.
@@ -52,6 +52,9 @@ import cardLinkCss from '../../base/card-link.css?inline';
 import css from './product-card.css?inline';
 
 const MOBILE = matchMedia('(max-width: 767px)');
+
+// muestras de acabado que se ven; el resto se resume en «+N»
+const MAX_FINISHES = 5;
 
 /**
  * Agrega los acabados de una card como swatches del slot finishes. finishes:
@@ -77,16 +80,21 @@ export function appendFinishes(card, finishes = []) {
  * de textos cortos, cada uno en su línea («1 – 3 módulos», «6 – 12 W»).
  */
 export function appendSpecs(card, specs = []) {
-  for (const text of specs) {
-    const line = document.createElement('span');
-    line.slot = 'specs';
-    line.textContent = text;
-    card.append(line);
+  for (const item of specs) {
+    // una línea de varios datos ([ángulo, IP, CRI, UGR]): cada dato va en su span y los
+    // que siguen al primero llevan `divided`, la línea vertical que los separa (product-card.css)
+    [].concat(item).forEach((text, index) => {
+      const line = document.createElement('span');
+      line.slot = 'specs';
+      line.textContent = text;
+      if (index) line.toggleAttribute('divided', true);
+      card.append(line);
+    });
   }
 }
 
 // Qué lleva cada swatch elegible (data-sku, data-href, data-image, …)
-const FINISH_DATA = ['sku', 'href', 'image', 'imageHover', 'imageLit', 'imageHoverLit'];
+const FINISH_DATA = ['sku', 'href', 'temperature', 'image', 'imageHover', 'imageLit', 'imageHoverLit'];
 
 class ArqProductCard extends ArqElement {
   static tag = 'arq-product-card';
@@ -101,6 +109,7 @@ class ArqProductCard extends ArqElement {
     imageLit: { type: String }, // principal (hero), luz encendida
     imageHoverLit: { type: String }, // hover con Iluminar: ambiente 1 encendido
     loading: { type: Boolean }, // card de carga (skeleton)
+    temperature: { type: String }, // temperatura de color, dentro de la imagen abajo a la derecha
     family: { type: String }, // familia de la base; Fuji, Mini Kai, Mini Kai Round y Sen no recortan la foto. Tori Visera, por el nombre del producto.
   };
   static template =
@@ -109,11 +118,13 @@ class ArqProductCard extends ArqElement {
     `<img class="img base" alt="" loading="lazy" decoding="async">` +
     `<img class="img hover" alt="" decoding="async">` +
     `<span class="fallback role-body-sm" aria-hidden="true"></span>` +
+    // velo claro sobre la foto; con Iluminar, fondo oscuro y texto claro (.is-dark)
+    `<span class="temp role-body-sm" hidden></span>` +
     `</div>` +
     `<div class="info">` +
     `<div class="title"><a class="card-link name"><slot name="name"></slot></a></div>` +
-    `<p class="specs role-body-compact-regular" hidden><slot name="specs"></slot></p>` +
-    `<span class="finishes" hidden><slot name="finishes"></slot></span>` +
+    `<p class="specs role-body" hidden><slot name="specs"></slot></p>` +
+    `<span class="finishes" hidden><slot name="finishes"></slot><span class="more role-body-sm" hidden></span></span>` +
     // «Comparar» + el nombre del producto solo para lectores: en un listado
     // cada checkbox se distingue (WCAG 2.4.6). Se ve igual que en Figma.
     `<arq-checkbox class="compare" show-label hidden>Comparar<span class="compare-name visually-hidden"></span></arq-checkbox>` +
@@ -234,6 +245,9 @@ class ArqProductCard extends ArqElement {
       if (this.href) link.setAttribute('href', this.href);
       else link.removeAttribute('href');
     }
+    const temp = root.querySelector('.temp');
+    temp.textContent = this.temperature ?? '';
+    temp.hidden = !this.temperature;
     const compare = root.querySelector('.compare');
     compare.hidden = !this.showCompare;
     compare.checked = this.compared;
@@ -265,10 +279,10 @@ class ArqProductCard extends ArqElement {
     root.querySelector('.name').className = `card-link name ${nameRole}`;
     // Cargando: cada barra en el alto de línea del texto que reemplaza
     root.querySelector('.sk-name').className = `sk-name ${nameRole}`;
-    // Los acabados van siempre en Size=XSmall (swatch/xs, 14 × 14), en Large y en Small, con el aro de
+    // Los acabados van siempre en Size=Small (swatch/sm, 16 × 16), en Large y en Small, con el aro de
     // Selected de la ficha (atributo ring del swatch).
     for (const swatch of this.querySelectorAll(':scope > arq-swatch[slot="finishes"]')) {
-      swatch.setAttribute('size', 'xsmall');
+      swatch.setAttribute('size', 'small');
       swatch.setAttribute('ring', '');
     }
   }
@@ -299,6 +313,7 @@ class ArqProductCard extends ArqElement {
     const choosable = swatches.length > 1 && swatches.some((swatch) => swatch.dataset.sku || swatch.dataset.image);
     if (!choosable) {
       group.removeAttribute('role');
+      this.#limitFinishes(swatches);
       return;
     }
     group.setAttribute('role', 'radiogroup');
@@ -311,11 +326,32 @@ class ArqProductCard extends ArqElement {
       swatch.setAttribute('aria-checked', String(on));
       swatch.setAttribute('tabindex', on ? '0' : '-1');
     }
+    this.#limitFinishes(swatches);
+  }
+
+  // con más de MAX_FINISHES acabados se ven los primeros y «+N» con los que siguen. El elegido
+  // siempre se ve: si está más allá, ocupa el último lugar. Los ocultos (data-overflow) no se pueden
+  // elegir en la card (ni con las flechas): se eligen en la ficha. TODO (diseño): no está en Figma.
+  #limitFinishes(swatches) {
+    const more = this.shadowRoot.querySelector('.more');
+    for (const swatch of swatches) swatch.removeAttribute('data-overflow');
+    const hidden = swatches.length - MAX_FINISHES;
+    more.hidden = hidden <= 0;
+    if (hidden <= 0) return;
+    const chosen = swatches.findIndex((swatch) => swatch.hasAttribute('selected'));
+    const visible = new Set(swatches.slice(0, MAX_FINISHES));
+    if (chosen >= MAX_FINISHES) {
+      visible.delete(swatches[MAX_FINISHES - 1]);
+      visible.add(swatches[chosen]);
+    }
+    for (const swatch of swatches) if (!visible.has(swatch)) swatch.setAttribute('data-overflow', '');
+    more.textContent = `+${hidden}`;
+    more.setAttribute('aria-label', `${hidden} acabados más`);
   }
 
   #finishKey(event) {
     const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
-    const swatches = this.#swatches();
+    const swatches = this.#swatches().filter((swatch) => !swatch.hasAttribute('data-overflow'));
     const index = swatches.indexOf(event.target.closest?.('arq-swatch'));
     if (index === -1) return;
     if (event.key === 'Enter' || event.key === ' ') {
@@ -342,6 +378,7 @@ class ArqProductCard extends ArqElement {
     const data = swatch.dataset;
     const next = {
       href: data.href ?? this.href,
+      temperature: data.temperature ?? this.temperature,
       image: data.image ?? null,
       imageHover: data.imageHover ?? null,
       imageLit: data.imageLit ?? null,

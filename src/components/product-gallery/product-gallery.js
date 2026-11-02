@@ -159,6 +159,17 @@ class ArqProductGallery extends ArqElement {
     track.addEventListener('dragstart', (event) => event.preventDefault());
     root.addEventListener('keydown', (event) => this.#onKey(event));
     this.#resize.observe(track);
+    // Una foto que no existe en el servidor no deja una imagen rota: se quita de la galería.
+    // La primera (la del HTML) no se toca: sin ella no hay nada que mostrar.
+    this.addEventListener('error', (event) => {
+      const slot = this.#reals().indexOf(event.target);
+      if (slot < 1 || this.#images.length < 2 || !this.#images[slot]) return;
+      const failed = this.#images[slot];
+      const current = this.#images[this.#index];
+      this.#images = this.#images.filter((image) => image !== failed);
+      this.#index = Math.max(0, this.#images.indexOf(current));
+      this.#render(null, { quick: true });
+    }, true);
     watchTheme(this, 'themeChanged');
     this.#render();
   }

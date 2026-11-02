@@ -194,15 +194,20 @@ class ArqFichaProducto extends ArqElement {
     `<div class="header">` +
     `<div class="title-row">` +
     `<div class="title role-display"><slot name="title"></slot></div>` +
-    // Descripción de la variante: debajo del nombre, en 14 px y discreta
+    `</div>` +
+    // debajo del nombre, descripción y SKU (14 px); después los atributos por los que
+    // cambia (se eligen acá), el resumen de características y el uso sugerido
+    `<div class="fineprint">` +
+    // Descripción de la variante: en 14 px y discreta
     // (decisiones.md, 2026-10-21 · Configurador de la ficha)
-    `<div class="description role-body-compact"><span class="variant-description" hidden></span></div>` +
+    `<div class="description role-body"><span class="variant-description" hidden></span></div>` +
     `<arq-sku class="sku needs-data" size="compact" data-arq-copy-motion></arq-sku>` +
     `</div>` +
+    `<div class="options needs-data"></div>` +
+    `<div class="keyinfo"><dl class="keydata" hidden></dl><p class="usage role-body-compact" hidden><span class="usage-label role-label">Uso sugerido</span><span class="usage-text role-body-compact-regular"></span></p></div>` +
     `</div>` +
     `<div class="info">` +
     `<p class="status role-body" role="status"></p>` +
-    `<div class="options needs-data"></div>` +
     `</div>` +
     `<div class="buy needs-data">` +
     `<arq-checkbox class="compare" show-label>Comparar</arq-checkbox>` +
@@ -732,6 +737,7 @@ class ArqFichaProducto extends ArqElement {
         const item = document.createElement(swatches ? 'arq-swatch' : 'arq-option-tile');
         item.value = option.value;
         item.textContent = option.value;
+        if (!swatches) item.toggleAttribute('compact', true); // 14 px Medium
         // Imagen del acabado (data/finishes.js); sin imagen, el swatch muestra el neutro.
         const src = swatches ? this.#product.finishImages?.[option.value] : null;
         if (src) item.src = src;
@@ -797,6 +803,7 @@ class ArqFichaProducto extends ArqElement {
     const description = root.querySelector('.variant-description');
     description.textContent = details.description ?? '';
     description.hidden = !details.description;
+    this.#renderKeyData(details.keyData);
     // Fotos de estudio con aire, salvo los cortes en zoom (ver ZOOM_PHOTOS)
     root.querySelector('.gallery').toggleAttribute('zoom', hasZoomPhotos(group));
     root.querySelector('.gallery').images = details.images;
@@ -814,6 +821,28 @@ class ArqFichaProducto extends ArqElement {
       history.replaceState(history.state, '', url);
     }
     this.emit('variant', { sku: variant.sku });
+  }
+
+  // banda de datos clave (valor grande, etiqueta chica) y, debajo, el uso sugerido
+  #renderKeyData({ items, usage }) {
+    const root = this.shadowRoot;
+    const list = root.querySelector('.keydata');
+    list.hidden = !items.length;
+    list.replaceChildren(...items.map(({ field, label, value }) => {
+      const cell = document.createElement('div');
+      cell.className = 'keydata-item';
+            const term = document.createElement('dt');
+      term.className = 'keydata-label role-label';
+      term.textContent = label;
+      const detail = document.createElement('dd');
+      detail.className = 'keydata-value role-body-compact-regular';
+      detail.textContent = value;
+      cell.append(term, detail);
+      return cell;
+    }));
+    const line = root.querySelector('.usage');
+    line.hidden = !usage;
+    line.querySelector('.usage-text').textContent = usage;
   }
 
   // Pestañas (tab, como el mega-menu): «Especificaciones» con un acordeón por
@@ -1050,6 +1079,13 @@ class ArqFichaProducto extends ArqElement {
       const img = image(src, `${group.name}, ambiente ${i + 1}`);
       img.tabIndex = 0; img.draggable = false; img.setAttribute('role', 'button');
       img.setAttribute('aria-label', `Ampliar ${img.alt}`);
+      // Si la foto no existe en el servidor, no queda una imagen rota: se quita y,
+      // si no queda ninguna, se oculta el bloque.
+      img.addEventListener('error', () => {
+        img.remove();
+        ambient.dispatchEvent(new Event('scroll'));
+        if (!ambient.querySelector('img')) root.querySelector('.ambient-block').hidden = true;
+      });
       return img;
     }));
     ambient.scrollLeft = 0;
@@ -1127,7 +1163,11 @@ class ArqFichaProducto extends ArqElement {
     story.hidden = !this.#storyHasText;
     const bg = root.querySelector('.story-bg');
     bg.hidden = !images?.description;
-    if (images?.description) bg.querySelector('img').src = images.description;
+    if (images?.description) {
+      const img = bg.querySelector('img');
+      img.onerror = () => { bg.hidden = true; }; // foto inexistente: la sección queda sin fondo
+      img.src = images.description;
+    }
     const link = root.querySelector('.story-link');
     link.hidden = !collection;
     if (collection) {
