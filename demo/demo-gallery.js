@@ -5,6 +5,8 @@
 //   <arq-product-gallery data-demo-images="5">…</arq-product-gallery>
 //   <div data-demo-iluminar> <arq-toggle>Iluminar</arq-toggle> … </div>
 
+import { listCompareCandidates } from '/src/data/catalog.js';
+
 const IMG = '/demo/fixtures/img/';
 const BASE = [
   { src: `${IMG}producto-1.svg`, srcOn: `${IMG}producto-1-on.svg`, alt: 'Kanu Jardín, estudio' },
@@ -48,6 +50,40 @@ document.querySelector('[data-demo-compare-add]')?.addEventListener('click', () 
   bar.add({ sku: 'Hoshi', name: 'Hoshi', meta: 'Interior · Embutir', image: '/demo/fixtures/img/card-estudio.svg' });
   bar.add({ sku: 'Kanu Jardín', name: 'Kanu Jardín', meta: 'Exterior · Jardín', image: '/demo/fixtures/img/card-contexto.svg' });
 });
+
+// El lugar vacío (+) y un lugar con producto abren compare-picker, como en
+// catalog-listing: agregar, cambiar y quitar desde el modal.
+const barPicker = document.querySelector('[data-demo-bar-picker]');
+if (bar && barPicker) {
+  const loadBarPicker = async () => {
+    const selected = bar.items.map((item) => item.sku);
+    barPicker.count = selected.length;
+    barPicker.items = (await listCompareCandidates({ ...barPicker.search, selected })).items;
+  };
+  bar.addEventListener('arq:add', (event) => {
+    event.stopPropagation();
+    barPicker.show();
+  });
+  bar.addEventListener('arq:replace', (event) => {
+    event.stopPropagation();
+    barPicker.show(null, { replace: event.detail.sku });
+  });
+  bar.addEventListener('arq:dismiss', () => barLog && (barLog.textContent = 'arq:dismiss → barra cerrada'));
+  bar.addEventListener('arq:compare-change', () => barPicker.open && loadBarPicker());
+  barPicker.addEventListener('arq:search', loadBarPicker);
+  barPicker.addEventListener('arq:close', (event) => {
+    if (event.detail.restored) return;
+    if (event.detail.item) bar.focusItem(event.detail.item.sku);
+    else bar.focusAdd();
+  });
+  barPicker.addEventListener('arq:add', (event) => {
+    const { sku, name, cardMeta, meta, image } = event.detail.item;
+    const item = { sku, name, meta: cardMeta ?? meta, image };
+    if (event.detail.replace) bar.replace(event.detail.replace, item);
+    else bar.add(item);
+  });
+  barPicker.addEventListener('arq:remove', (event) => bar.remove(event.detail.sku));
+}
 
 for (const block of document.querySelectorAll('[data-demo-iluminar]')) {
   block.querySelector('arq-toggle')?.addEventListener('arq:change', (event) => {

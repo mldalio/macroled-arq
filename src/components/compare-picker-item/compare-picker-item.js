@@ -9,14 +9,19 @@
 //   </arq-compare-picker-item>
 //
 // - State: Default y Hover (:hover de la fila) con «+ Agregar»; Added (atributo
-//   added: el producto ya está en la comparativa, «Agregado» deshabilitado,
-//   sin ícono); Disabled (atributo disabled: ya hay 3 productos; «+ Agregar»
+//   added: el producto ya está en la comparativa, «− Quitar», que emite
+//   arq:remove { sku }: se corrige desde el modal, sin volver a la barra);
+//   Disabled (atributo disabled: ya hay 3 productos; «+ Agregar»
 //   deshabilitado, texto en color/text/disabled y la miniatura con
-//   opacity/disabled).
-// - «Agregar» emite arq:add { sku }. El nombre accesible del botón suma el
-//   nombre del producto («Agregar Kanu Jardín»).
+//   opacity/disabled). Antes Added era «Agregado» deshabilitado
+//   (decisiones.md, 2026-11-02 · compare-bar: cambiar, quitar y ordenar).
+// - replace (lo pone compare-picker en «Cambiar producto»): el botón de las
+//   filas que no están en la comparativa dice «Elegir», sin ícono (reemplaza
+//   al producto del lugar, no suma uno).
+// - «Agregar» / «Elegir» emiten arq:add { sku }. El nombre accesible del botón
+//   suma el nombre del producto («Agregar Kanu Jardín», «Quitar Kanu Jardín»).
 // - Sin imagen (o si no carga): queda el fondo color/surface/subtle.
-// - focus() va a «Agregar».
+// - focus() va al botón.
 
 import { ArqElement } from '../../base/arq-element.js';
 import '../button/button.js';
@@ -28,6 +33,7 @@ class ArqComparePickerItem extends ArqElement {
   static properties = {
     added: { type: Boolean }, // State=Added
     disabled: { type: Boolean }, // State=Disabled
+    replace: { type: Boolean }, // «Elegir» en lugar de «Agregar» (Cambiar producto)
     image: { type: String }, // miniatura del producto
     sku: { type: String }, // SKU que se agrega (arq:add)
   };
@@ -49,8 +55,8 @@ class ArqComparePickerItem extends ArqElement {
     img.addEventListener('load', () => (img.hidden = false));
     img.addEventListener('error', () => (img.hidden = true));
     root.querySelector('.action').addEventListener('click', () => {
-      if (this.added || this.disabled) return;
-      this.emit('add', { sku: this.sku ?? null });
+      if (this.added) this.emit('remove', { sku: this.sku ?? null });
+      else if (!this.disabled) this.emit('add', { sku: this.sku ?? null });
     });
     root.querySelector('slot[name="name"]').addEventListener('slotchange', () => this.#name());
     root.querySelector('slot[name="meta"]').addEventListener('slotchange', () => this.#name());
@@ -68,13 +74,15 @@ class ArqComparePickerItem extends ArqElement {
       }
     }
     const action = root.querySelector('.action');
-    action.disabled = this.added || this.disabled;
-    action.showLeadingIcon = !this.added;
-    root.querySelector('.label').textContent = this.added ? 'Agregado' : 'Agregar';
+    const choose = this.replace && !this.added;
+    action.disabled = !this.added && this.disabled;
+    action.showLeadingIcon = !choose;
+    action.leadingIcon = this.added ? 'minus' : 'plus';
+    root.querySelector('.label').textContent = this.added ? 'Quitar' : choose ? 'Elegir' : 'Agregar';
     this.#name();
   }
 
-  /** El foco va a «Agregar». */
+  /** El foco va al botón. */
   focus(options) {
     const action = this.shadowRoot?.querySelector('.action');
     if (action) action.focus(options);

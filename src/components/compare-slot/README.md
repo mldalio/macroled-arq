@@ -18,13 +18,15 @@ Lugar de producto en compare-bar, en Desktop y en la lista apilada de Mobile. co
 | --- | --- | --- | --- |
 | Name | slot `name` | — | Nombre del producto (`role/label`) |
 | Meta | slot `meta` | — | Tipo o aplicación (`role/body-sm`) |
-| State | `filled` | `filled` | Lo pone el componente: Filled si tiene nombre, Empty si no. empty-hover del set es `:hover` |
+| State | `filled` | `filled` | Lo pone el componente: Filled si tiene nombre, Empty si no. empty-hover y filled-hover del set son `:hover` |
 | — (foto) | `image` | `image` | URL de la imagen del producto |
-| — | `sku` | `sku` | Identifica el producto en `arq:remove` |
+| — | `sku` | `sku` | Identifica el producto en `arq:remove` y `arq:replace` |
 | — | `empty-label` | `emptyLabel` | Texto de Empty. Por defecto "Agregar producto" |
 
 - **Empty es clickeable:** todo el lugar es un botón «Agregar producto» (`empty-label`) que emite `arq:add`; en Productos, Colecciones y la ficha abre `compare-picker`. Mantiene el dibujo del set (la foto en `color/surface/subtle` con el «+» en `color/icon/primary`, y el texto) dentro de una caja punteada (`border/default` dashed en `color/border/default`), como el lugar vacío de compare-product Compact (Comparativa): la foto contra el borde izquierdo y padding derecho `space/padding/md`, cursor pointer; Hover con fondo `color/surface/faint` y borde `color/border/strong`. Foco: anillo `color/border/focus` por dentro de la caja. En el set: State=Empty y State=empty-hover, como compare-product.
+- **Filled es clickeable:** todo el lugar es un botón «Cambiar Kanu Jardín» que emite `arq:replace { sku }`; la página abre `compare-picker` en «Cambiar producto» y pone lo elegido en ese lugar. La X va encima, como un botón aparte (un botón no puede tener otro adentro). Hover (State=filled-hover): fondo `color/surface/faint` y borde `border/default` continuo en `color/border/default`. Filled y Empty miden lo mismo: los dos llevan el borde (en Filled, transparente hasta el hover) y padding derecho `space/padding/md` (`docs/decisiones.md`, 2026-11-02 · compare-bar: cambiar y quitar).
 - **Quitar** (icon-button con `icon/close`, "Quitar Kanu Jardín") emite `arq:remove { sku }`.
+- `focus()` va a «Cambiar» (Filled) o a «Agregar producto» (Empty).
 - Toma el ancho de su columna, hasta `layout/compare-slot`.
 
 ## Tokens

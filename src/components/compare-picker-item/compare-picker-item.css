@@ -18,9 +18,10 @@
   border-bottom: var(--arq-border-default) solid var(--arq-color-border-subtle);
 }
 
-/* State=Hover: fondo color/surface/hover (solo si se puede agregar) */
+/* State=Hover: fondo color/surface/hover (si se puede agregar o quitar) */
 @media (hover: hover) and (pointer: fine) {
-  :host(:not([added]):not([disabled])) .item:hover {
+  :host(:not([disabled])) .item:hover,
+  :host([added]) .item:hover {
     background: var(--arq-color-surface-hover);
   }
 }

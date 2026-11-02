@@ -18,6 +18,9 @@ grilla.addEventListener('arq:compare', (e) => {
   else if (!bar.add({ sku, name, meta, image })) card.compared = false; // ya hay 3
 });
 bar.addEventListener('arq:compare-change', (e) => marcarCards(e.detail.items));
+bar.addEventListener('arq:add', () => picker.show());                                   // lugar vacío
+bar.addEventListener('arq:replace', (e) => picker.show(null, { replace: e.detail.sku })); // lugar con producto
+bar.addEventListener('arq:dismiss', () => focusHeading(contenedor));                    // X de la barra vacía
 ```
 
 ## Props y métodos
@@ -30,7 +33,11 @@ bar.addEventListener('arq:compare-change', (e) => marcarCards(e.detail.items));
 | Open | `open` | `open` | Booleano. Lista de productos desplegada. La pone el componente: arranca abierta, el título (botón con chevron-down / chevron-up) la pliega y despliega, y se vuelve a abrir al agregar un producto. En Mobile, con 2 o más productos arranca plegada y no se abre sola al agregar (abierta con 3 ocupaba más de la mitad de la pantalla; decisión 2026-10-26). Plegada queda solo el título con el chevron (en Desktop, el chevron en la punta derecha de la barra): «Borrar todo» y «Comparar» se ocultan con la lista. `TODO` (diseño): el set los muestra plegada. Usa el disclosure base (`arq:toggle { open }`) |
 | Breakpoint | — | — | Media query: hasta 767 px, como macroled.com.ar, los productos elegidos, uno arriba de otro (compare-slot Default, con divider Horizontal Subtle), más un lugar vacío «+ Agregar producto» mientras haya menos de 3, y «Comparar» debajo a todo el ancho. En Tablet (768–1023 px) los tres lugares van en una línea y «Borrar todo» y «Comparar» debajo, a la derecha |
 
-- **Métodos:** `add(item)` (devuelve `false` si ya hay 3 o si ya estaba), `remove(sku)`, `clear()` ("Borrar todo"), `has(sku)`, `focusAdd()` (foco en el primer lugar vacío o en «Comparar») y `compareUrl` (solo lectura: la URL de «Comparar»).
+- **Métodos:** `add(item)` (devuelve `false` si ya hay 3 o si ya estaba), `remove(sku)`, `replace(sku, item)` (otro producto en el mismo lugar; `false` si `item` ya estaba), `clear()` ("Borrar todo"), `dismiss()` (la X de la barra vacía), `has(sku)`, `focusAdd()` (foco en el primer lugar vacío o en «Comparar»), `focusItem(sku)` (foco en ese producto; abre la lista si estaba plegada) y `compareUrl` (solo lectura: la URL de «Comparar»).
+- **`focusHeading(host)`** (export del módulo): después de `arq:dismiss`, el foco va al `<h1>` del contenedor o de la página, sin desplazarla. Lo usan catalog-listing y ficha-producto.
+- **Lugar con producto:** tocarlo emite `arq:replace { sku }` (de compare-slot): la página abre `compare-picker` en «Cambiar producto» y llama a `replace()`. Cuando el modal se cierra, el foco va al producto elegido (`focusItem`). El orden es fijo: el de cómo se agregaron. Se probó reordenar arrastrando y quedó para más adelante (`docs/decisiones.md`, 2026-11-02 · compare-bar: cambiar y quitar).
+- **Vacía:** al quitar todos los productos (X o «Borrar todo») la barra sigue a la vista con los lugares vacíos (Mobile: uno), sin cantidad ni «Borrar todo», «Comparar» deshabilitado y una X («Cerrar comparador», icon-button) a la derecha del título. La X oculta la barra y emite `arq:dismiss`. Al recargar sin productos, la barra no aparece. Foco: después de «Borrar todo», al primer lugar vacío; después de la X de un producto, al lugar que queda en esa posición.
+- **Avisos:** una región `aria-live` (fuera de la barra, para que se escuche también al cerrarla) anuncia lo que se agrega («… 2 de 3.»), se quita, se cambia, «Borrar todo» y el cierre.
 - **Lugar vacío (+):** emite `arq:add` (de compare-slot). En Productos (`catalog-listing`) y en la ficha (`ficha-producto`), la página abre `compare-picker` («Agregar producto») y lo elegido se suma a la barra. Caja punteada con la foto resaltada y «+ Agregar producto» (ver compare-slot). En Mobile hay un solo lugar vacío, debajo de los elegidos. `TODO` (diseño): el set de compare-bar Mobile no lo muestra; pasarlo a Figma.
 - **Evento:** `arq:compare-change { items }` cuando cambia la selección (también si cambia en otra pestaña).
 - **"Comparar"** lleva a `/arq/comparativa?sku=SKU1,SKU2,SKU3` (decisión 2026-10-02 · Comparativa); cada SKU va con `encodeURIComponent`.

@@ -98,9 +98,11 @@ for (const header of document.querySelectorAll('[data-demo-compare-header]')) {
 // comparativa: la demo hace de página (guarda los elegidos y responde a
 // arq:search con listCompareCandidates).
 const itemLog = document.querySelector('[data-demo-picker-item-log]');
-document.querySelector('[data-demo-picker-items]')?.addEventListener('arq:add', (event) => {
-  if (itemLog) itemLog.textContent = `arq:add → «${event.detail.sku}»`;
-});
+for (const type of ['add', 'remove']) {
+  document.querySelector('[data-demo-picker-items]')?.addEventListener(`arq:${type}`, (event) => {
+    if (itemLog) itemLog.textContent = `arq:${type} → «${event.detail.sku}»`;
+  });
+}
 
 const picker = document.querySelector('[data-demo-picker]');
 const pickerLog = document.querySelector('[data-demo-picker-log]');
@@ -116,7 +118,12 @@ async function loadPicker() {
 if (picker) {
   picker.addEventListener('arq:search', loadPicker);
   picker.addEventListener('arq:add', (event) => {
-    chosen = [...chosen, event.detail.item].slice(0, 3);
+    const { item, replace } = event.detail;
+    chosen = replace ? chosen.map((c) => (c.sku === replace ? item : c)) : [...chosen, item].slice(0, 3);
+    if (pickerLog) pickerLog.textContent = `arq:add → «${item.name}»${replace ? ` en lugar de ${replace}` : ''} (el modal se cierra)`;
+  });
+  picker.addEventListener('arq:remove', (event) => {
+    chosen = chosen.filter((c) => c.sku !== event.detail.sku);
     loadPicker();
   });
   for (const button of document.querySelectorAll('[data-demo-picker-open]')) {
@@ -124,7 +131,8 @@ if (picker) {
       const count = Number(button.dataset.demoPickerOpen);
       const { items } = await listCompareCandidates();
       chosen = items.slice(0, count);
-      picker.show(button); // emite arq:search → loadPicker
+      // data-demo-picker-replace: «Cambiar producto» sobre el primero
+      picker.show(button, { replace: 'demoPickerReplace' in button.dataset ? chosen[0]?.sku : null }); // emite arq:search → loadPicker
     });
   }
 }

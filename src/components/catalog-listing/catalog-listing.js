@@ -22,7 +22,8 @@
 //   categoría. "Ver N" aplica (arq:apply) y la grilla se vuelve a armar.
 // - Comparar: "Comparar" de cada card suma o saca el producto
 //   de la compare-bar (hasta 3; la selección se guarda en arq:compare). El
-//   lugar vacío (+) de la barra abre compare-picker para agregar desde ahí.
+//   lugar vacío (+) de la barra abre compare-picker para agregar desde ahí;
+//   un lugar con producto, para cambiarlo por otro.
 // - Iluminar: lo resuelve catalog-toolbar (data-arq-theme en <html>). En la
 //   colección Daö (?collection=dao) no existe: sin toggle y la página en Light.
 // - No hay vista «Todas las colecciones» (se sacó el 2026-10-23: docs/archivo/
@@ -38,7 +39,7 @@ import '../carousel-controls/carousel-controls.js';
 import '../filter-panel/filter-panel.js';
 import '../filter-row/filter-row.js';
 import '../checkbox/checkbox.js';
-import '../compare-bar/compare-bar.js';
+import { focusHeading } from '../compare-bar/compare-bar.js';
 import '../compare-picker/compare-picker.js';
 import '../grid/grid.js';
 import { appendFinishes, appendSpecs } from '../product-card/product-card.js';
@@ -226,16 +227,28 @@ class ArqCatalogListing extends ArqElement {
       event.stopPropagation();
       picker.show(); // emite arq:search: carga la lista
     });
+    // Un lugar con producto: «Cambiar producto»
+    bar.addEventListener('arq:replace', (event) => {
+      event.stopPropagation();
+      picker.show(null, { replace: event.detail.sku });
+    });
+    // La barra vacía se cerró: el foco va al título de la página
+    bar.addEventListener('arq:dismiss', () => focusHeading(this));
     picker.addEventListener('arq:search', () => this.#loadPicker());
-    // El lugar vacío que lo abrió ya tiene producto: el foco vuelve a la barra
+    // El lugar que lo abrió cambió: el foco va al producto elegido
     picker.addEventListener('arq:close', (event) => {
-      if (!event.detail.restored) bar.focusAdd();
+      if (event.detail.restored) return;
+      if (event.detail.item) bar.focusItem(event.detail.item.sku);
+      else bar.focusAdd();
     });
     picker.addEventListener('arq:add', (event) => {
       // En la barra, la misma meta que las cards (no la del modal)
       const { sku, name, cardMeta, meta, image } = event.detail.item;
-      bar.add({ sku, name, meta: cardMeta ?? meta, image });
+      const item = { sku, name, meta: cardMeta ?? meta, image };
+      if (event.detail.replace) bar.replace(event.detail.replace, item);
+      else bar.add(item);
     });
+    picker.addEventListener('arq:remove', (event) => bar.remove(event.detail.sku));
   }
 
   #onNavClick = (event) => {

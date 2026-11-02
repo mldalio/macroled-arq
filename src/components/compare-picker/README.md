@@ -15,8 +15,10 @@ picker.addEventListener('arq:search', async () => {
   picker.count = elegidos.length;
   picker.items = (await listCompareCandidates({ ...picker.search, selected: elegidos })).items;
 });
-picker.addEventListener('arq:add', (e) => agregar(e.detail.item)); // { id, sku, name, meta, image }
+picker.addEventListener('arq:add', (e) => agregar(e.detail.item, e.detail.replace)); // { id, sku, name, meta, image }
+picker.addEventListener('arq:remove', (e) => quitar(e.detail.sku));
 boton.addEventListener('click', () => picker.show(boton));         // emite arq:search
+picker.show(null, { replace: sku });                               // «Cambiar producto»
 ```
 
 Lo usan `catalog-listing` (Productos: agrega a la compare-bar) y `comparativa` (suma el SKU a `?sku=` y rearma la comparación detrás del modal).
@@ -26,21 +28,22 @@ Lo usan `catalog-listing` (Productos: agrega a la compare-bar) y `comparativa` (
 | Figma | Atributo / slot | Prop JS | Valores |
 | --- | --- | --- | --- |
 | Breakpoint | — | — | Media query: Desktop centrado sobre el scrim; Mobile (hasta 767 px) pantalla completa |
-| State=Results / No results | — | `items` | `[{ id, sku, name, meta, image, added }]` (otros campos, como `cardMeta`, vuelven tal cual en `arq:add`). Sin ítems: «No encontramos productos para «…».» + «Probá con otro nombre, SKU o familia.», sin CTA |
+| State=Results / No results | — | `items` | `[{ id, sku, name, meta, image, added, selectedSku }]` (`selectedSku`: el SKU del grupo que está en la comparativa, el que se quita; otros campos, como `cardMeta`, vuelven tal cual en `arq:add`). Sin ítems: «No encontramos productos para «…».» + «Probá con otro nombre, SKU o familia.», sin CTA |
 | — | — | `count` | Productos ya elegidos. Con 3, las filas no agregadas pasan a Disabled |
 | — | `href` | `href` | URL de «Ver todos los productos». Por defecto `/arq/productos` (en Productos, el listado sin categoría) |
 | — | `open` | `open` | Booleano. Abierto |
-| — | slot `title` | — | Título. Por defecto «Agregar producto» |
+| — | slot `title` | — | Título. Por defecto «Agregar producto» («Cambiar producto» con `replace`) |
 | — | — | `search` | Solo lectura: `{ query }` actual |
 
-- **`show(opener)`** abre el modal sin búsqueda y en «Todos» y emite `arq:search`. **`close()`** lo cierra.
+- **`show(opener, { replace })`** abre el modal sin búsqueda y emite `arq:search`. Con `replace` (un SKU), «Cambiar producto»: las filas que no están dicen «Elegir» (ninguna queda Disabled) y lo elegido reemplaza a ese SKU. **`close()`** lo cierra.
 - **`arq:search { query }`**: al abrir y al escribir en el buscador.
 - **Sin filtros de categoría:** el set trae choice-chip Todos · Interior · Exterior · Lámparas y artefactos; se sacaron a pedido (`docs/decisiones.md`, 2026-10-19 · compare-picker). Se busca solo con el buscador.
-- **`arq:add { item }`**: «Agregar» en una fila. El modal sigue abierto y anuncia «Kanu Jardín agregado a la comparación.».
-- **`arq:close { restored }`**: al cerrar. `restored` es `false` si el foco no pudo volver a quien lo abrió (el lugar vacío pasó a tener producto); la página lo mueve (Productos: al próximo lugar vacío de la barra o a su «Comparar»; Comparativa: al próximo compare-product vacío o al nombre del último producto).
+- **`arq:add { item, replace }`**: «Agregar» o «Elegir» en una fila. **El modal se cierra**: el producto aparece en su lugar y la página lo anuncia (compare-bar) y le pasa el foco. `replace` es el SKU que se cambia, o `null`.
+- **`arq:remove { sku, item }`**: «Quitar» en una fila ya agregada. `sku` es el que está en la comparativa (`selectedSku`). El modal sigue abierto, anuncia «Kanu Jardín quitado de la comparación.» y el foco queda en la fila. Si era el producto que se cambiaba, vuelve a «Agregar producto».
+- **`arq:close { restored, item }`**: al cerrar. `restored` es `false` si el foco no pudo volver a quien lo abrió (el lugar cambió); la página lo mueve: al producto elegido (`item`) o, si no se eligió nada, al próximo lugar vacío (Productos y la ficha: `focusItem` / `focusAdd` de la barra; Comparativa: el nombre del agregado o el próximo compare-product vacío).
 - **Diálogo modal nativo** (`<dialog>` + `showModal`), como download-modal: el foco queda adentro, Esc (también con texto en el buscador), el scrim o la X lo cierran, y la página de atrás no se desplaza (`containScroll`). Con mouse el foco entra al buscador; en táctil, a la X (no abre el teclado).
 - **Siempre en Light** (`data-arq-theme="light"` en el `<dialog>`, DESIGN.md §2 · Light local).
-- **Lectores de pantalla:** una región `aria-live` (siempre presente y vacía) anuncia la cantidad de resultados después de buscar o filtrar, «no encontramos…» y lo que se agrega.
+- **Lectores de pantalla:** una región `aria-live` (siempre presente y vacía) anuncia la cantidad de resultados después de buscar o filtrar, «no encontramos…» y lo que se quita (lo que se agrega lo anuncia la página, porque el modal se cierra).
 - **Movimiento:** el scrim funde y el panel funde y sube un 2 %, con `motion/duration/panel` y `motion/easing/standard`; cierra por el mismo camino. Con movimiento reducido, solo el fundido (`motion/duration/fade`).
 
 ## Datos

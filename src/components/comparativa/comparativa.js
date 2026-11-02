@@ -112,14 +112,25 @@ class ArqComparativa extends ArqElement {
       picker.show(); // emite arq:search: carga la lista
     });
     picker.addEventListener('arq:search', () => this.#loadPicker());
-    // El lugar vacío que lo abrió ya tiene producto: el foco va al próximo
-    // lugar vacío o, si no hay, al nombre del último producto.
+    // El lugar vacío que lo abrió ya tiene producto: el foco va al nombre del
+    // producto agregado; si no se agregó nada, al próximo lugar vacío o, si no
+    // hay, al nombre del último producto.
     picker.addEventListener('arq:close', (event) => {
       if (event.detail.restored) return;
       const products = [...header.shadowRoot.querySelectorAll('.products arq-compare-product')];
+      const added = event.detail.item ? products[this.#skus.indexOf(event.detail.item.sku)] : null;
       const empty = products.find((product) => product.hasAttribute('empty'));
-      const target = empty ? empty.shadowRoot.querySelector('.add') : products.at(-1)?.shadowRoot.querySelector('.title');
+      const target = added
+        ? added.shadowRoot.querySelector('.title')
+        : empty
+          ? empty.shadowRoot.querySelector('.add')
+          : products.at(-1)?.shadowRoot.querySelector('.title');
       target?.focus();
+    });
+    // «Quitar» desde el modal: sale de la comparación (el modal sigue abierto)
+    picker.addEventListener('arq:remove', (event) => {
+      this.#skus = this.#skus.filter((sku) => sku !== event.detail.sku);
+      this.#load();
     });
     picker.addEventListener('arq:add', (event) => {
       const { sku } = event.detail.item;
