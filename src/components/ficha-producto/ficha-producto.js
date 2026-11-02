@@ -74,6 +74,7 @@ import { focusHeading } from '../compare-bar/compare-bar.js';
 import '../compare-picker/compare-picker.js';
 import '../product-gallery/product-gallery.js';
 import '../sku/sku.js';
+import { temperatureColor } from '../../base/color-temperature.js';
 import '../option-group/option-group.js';
 import '../option-tile/option-tile.js';
 import '../swatch-picker/swatch-picker.js';
@@ -196,15 +197,15 @@ class ArqFichaProducto extends ArqElement {
     `<div class="title role-display"><slot name="title"></slot></div>` +
     `</div>` +
     // debajo del nombre, descripción y SKU (14 px); después los atributos por los que
-    // cambia (se eligen acá), el resumen de características y el uso sugerido
+    // cambia (se eligen acá), el resumen de características
     `<div class="fineprint">` +
     // Descripción de la variante: en 14 px y discreta
     // (decisiones.md, 2026-10-21 · Configurador de la ficha)
-    `<div class="description role-body"><span class="variant-description" hidden></span></div>` +
     `<arq-sku class="sku needs-data" size="compact" data-arq-copy-motion></arq-sku>` +
+    `<div class="description role-body"><span class="variant-description" hidden></span></div>` +
     `</div>` +
     `<div class="options needs-data"></div>` +
-    `<div class="keyinfo"><dl class="keydata" hidden></dl><p class="usage role-body-compact" hidden><span class="usage-label role-label">Uso sugerido</span><span class="usage-text role-body-compact-regular"></span></p></div>` +
+    `<div class="keyinfo"><dl class="keydata" hidden></dl></div>` +
     `</div>` +
     `<div class="info">` +
     `<p class="status role-body" role="status"></p>` +
@@ -823,26 +824,32 @@ class ArqFichaProducto extends ArqElement {
     this.emit('variant', { sku: variant.sku });
   }
 
-  // banda de datos clave (valor grande, etiqueta chica) y, debajo, el uso sugerido
-  #renderKeyData({ items, usage }) {
+  // banda de datos clave (valor grande, etiqueta chica)
+  #renderKeyData({ items }) {
     const root = this.shadowRoot;
     const list = root.querySelector('.keydata');
     list.hidden = !items.length;
     list.replaceChildren(...items.map(({ field, label, value }) => {
       const cell = document.createElement('div');
       cell.className = 'keydata-item';
-            const term = document.createElement('dt');
+      const term = document.createElement('dt');
       term.className = 'keydata-label role-label';
       term.textContent = label;
       const detail = document.createElement('dd');
-      detail.className = 'keydata-value role-body-compact-regular';
-      detail.textContent = value;
+      detail.className = 'keydata-value role-body-xl-light';
+      // temperatura de color: puntito del color de la luz antes del valor
+      const dotColor = field === 'temperatura_color' ? temperatureColor(value) : null;
+      if (dotColor) {
+        const dot = document.createElement('span');
+        dot.className = 'keydata-dot';
+        dot.style.backgroundColor = dotColor;
+        dot.setAttribute('aria-hidden', 'true');
+        detail.append(dot);
+      }
+      detail.append(value);
       cell.append(term, detail);
       return cell;
     }));
-    const line = root.querySelector('.usage');
-    line.hidden = !usage;
-    line.querySelector('.usage-text').textContent = usage;
   }
 
   // Pestañas (tab, como el mega-menu): «Especificaciones» con un acordeón por

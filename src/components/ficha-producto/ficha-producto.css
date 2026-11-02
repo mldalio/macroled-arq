@@ -153,8 +153,7 @@
   margin: 0;
 }
 
-.keydata[hidden],
-.usage[hidden] {
+.keydata[hidden] {
   display: none;
 }
 
@@ -169,34 +168,30 @@
   color: var(--arq-color-text-tertiary);
 }
 
+/* Valor en role/body-xl-light (20/28; 16/24 en Mobile) y color/text/primary.
+   La temperatura de color lleva un puntito del color de la luz antes del valor (src/base/color-temperature.js). */
 .keydata-value {
-  margin: 0;
-  color: var(--arq-color-text-primary);
-}
-
-.usage {
   display: flex;
-  flex-direction: column;
-  gap: var(--arq-space-gap-xs);
+  align-items: center;
+  gap: var(--arq-space-gap-sm);
   margin: 0;
   color: var(--arq-color-text-primary);
 }
 
-/* Sin línea entre las características y el uso sugerido: es un solo grupo */
-.keydata:not([hidden]) + .usage {
-  margin-top: var(--arq-space-gap-lg);
+.keydata-dot {
+  flex: none;
+  box-sizing: border-box;
+  width: var(--arq-space-gap-sm);
+  height: var(--arq-space-gap-sm);
+  border-radius: var(--arq-radius-pill);
 }
 
-.usage-label {
-  color: var(--arq-color-text-tertiary);
-}
-
-/* Descripción y SKU, space/gap/sm entre los dos */
+/* SKU y, debajo, la descripción, space/gap/md entre los dos */
 .fineprint {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--arq-space-gap-sm);
+  gap: var(--arq-space-gap-md);
   align-self: stretch;
   min-width: 0;
 }
@@ -231,7 +226,7 @@
    Desde 1920 px (Wide, como sku Dense) pasa a 16/24 con el mismo peso y color. */
 .description {
   max-width: 100%;
-  color: var(--arq-color-text-secondary);
+  color: var(--arq-color-text-tertiary);
   overflow-wrap: break-word;
   /* En minúscula, salvo la primera letra, como llegue de la base (2026-10-22) */
   text-transform: lowercase;
@@ -1042,11 +1037,11 @@
   }
 }
 
-/* el SKU del mismo color que la descripción */
+/* el SKU va primero y en color/text/primary: la descripción (tertiary) queda por debajo */
 .sku {
-  --arq-sku-color: var(--arq-color-text-secondary);
+  --arq-sku-color: var(--arq-color-text-primary);
 }
 
-.keyinfo:has(> .keydata[hidden]):has(> .usage[hidden]) {
+.keyinfo:has(> .keydata[hidden]) {
   display: none;
 }

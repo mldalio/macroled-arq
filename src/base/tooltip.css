@@ -1,0 +1,43 @@
+/* Tooltip de los datos (src/base/tooltip.js). Sutil: superficie clara con borde, texto en
+   secondary y role/body-sm Regular; sin sombra. Va sobre el dato con space/gap/sm de aire.
+   Aparece con un fundido (motion/duration/fade) y, al pasar de un dato a otro, se desliza hasta
+   el nuevo (motion/duration/base) en vez de saltar. Con reduced motion queda solo el fundido.
+   TODO (diseño): no está en Figma. */
+.tooltip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: var(--card-above, 1);
+  box-sizing: border-box;
+  width: max-content;
+  max-width: var(--arq-layout-footer-tagline);
+  padding: var(--arq-space-padding-xs) var(--arq-space-padding-sm);
+  border: var(--arq-border-default) solid var(--arq-color-border-default);
+  background-color: var(--arq-color-surface-default);
+  color: var(--arq-color-text-secondary);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(var(--tip-x, 0), calc(var(--tip-y, 0) - 100% - var(--arq-space-gap-sm)));
+  transition-property: opacity, transform, visibility;
+  transition-duration: var(--arq-motion-duration-fade), var(--arq-motion-duration-base), 0s;
+  transition-delay: 0s, 0s, var(--arq-motion-duration-fade);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+.tooltip[data-open] {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+/* Primera aparición: se ubica sin deslizarse desde donde estaba */
+.tooltip[data-jump] {
+  transition-property: opacity, visibility;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tooltip {
+    transition-property: opacity, visibility;
+  }
+}
