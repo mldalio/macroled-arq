@@ -697,10 +697,12 @@
   margin-inline-end: 0;
 }
 
-/* El nombre de cada card (Kanu Pared, etc.) va en blanco sobre la banda.
+/* El nombre y los datos de cada card (Kanu Pared, medidas, potencia) van en
+   blanco sobre la banda: con color/text/secondary de Light no se leían.
    El resto de la card sigue en Light. */
 .collection-rail > .cards arq-product-card {
   --arq-color-text-primary: var(--arq-color-text-inverse);
+  --arq-color-text-secondary: var(--arq-color-text-inverse);
 }
 
 .collection-rail > .cards arq-product-card [slot='name'] {
