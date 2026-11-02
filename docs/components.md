@@ -76,7 +76,7 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [pdf-spec-row](#pdf-spec-row) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-spec-row · 2 col](#pdf-spec-row--2-col) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [product-card](#product-card) | `<arq-product-card>` | En código ([README](../src/components/product-card/README.md)); imágenes reales con TODO |
-| ✅ [product-gallery](#product-gallery) | `<arq-product-gallery>` | En código ([README](../src/components/product-gallery/README.md)) · sin arrastre con mouse, flechas también en táctil y clic en la foto para ampliarla (`arq:open`, 2026-11-02). `TODO` (Figma): flechas en el set |
+| ✅ [product-gallery](#product-gallery) | `<arq-product-gallery>` | En código ([README](../src/components/product-gallery/README.md)) · sin arrastre con mouse, flechas también en táctil y clic en la foto para ampliarla (`arq:open`, 2026-11-02) |
 | ✅ [search-dropdown](#search-dropdown) | `<arq-search-dropdown>` | En código ([README](../src/components/search-dropdown/README.md)) |
 | ✅ [search-field](#search-field) | `<arq-search-field>` | En código ([README](../src/components/search-field/README.md)) |
 | ✅ [search-result](#search-result) | `<arq-search-result>` | En código ([README](../src/components/search-result/README.md)) |
@@ -734,7 +734,9 @@ En grillas de listado: ancho mínimo layout/card-min (280); la grilla suma colum
 - Figma: [920-2490](https://www.figma.com/design/djAb2r3otXYOjEJjHiuKnF/Macroled-ARQ?node-id=920-2490)
 - Propiedades: Breakpoint: Desktop · Mobile
 
-Galería de la ficha: la foto principal es un slider en loop (flechas de chevron al centro, al pasar el mouse, deslizamiento y miniaturas muestran la misma foto) + fila de gallery-thumb (la visible en Selected). Con Iluminar en On, las fotos cambian por la luminaria encendida. Desktop: miniaturas sobre la imagen. Mobile: debajo, con scroll horizontal si no entran.
+Galería de la ficha: imagen principal + fila de gallery-thumb (la primera en Selected) y flechas (nav-prev / nav-next: icon/chevron-left y chevron-right en icon/xl, sin caja, al centro de la foto a space/padding/md del borde). Con Iluminar en On, la imagen principal cambia por la luminaria encendida. Desktop 5 miniaturas, Mobile 4 con scroll horizontal.
+Código (2026-11-02): la foto se recorre en loop. Con mouse no se arrastra: flechas (aparecen al pasar el mouse o con el foco), miniaturas y ← →. En táctil se desliza con el dedo y las flechas se ven siempre. Clic o toque en la foto la abre en el visor de fotos (fondo color/overlay/scrim-gallery): zoom con clic o doble toque, rueda o pellizco (de 1 a 4), arrastre de la foto acercada, + / −, y una fila de gallery-thumb abajo con la foto que se ve en Selected. En la ficha Mobile la foto va en ratio/square (1:1).
+La galería de ambiente de la ficha (fila de fotos más abajo, sin set propio en Figma) avanza sola cada 3 s como Destacados, con cursor grab/grabbing y arrastre; clic o Enter/Espacio abre la foto en el mismo visor.
 
 ## search-dropdown
 
