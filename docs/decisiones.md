@@ -2159,3 +2159,7 @@ Pedido de Lau. Reemplaza, en lo que se contradice, a 2026-10-28 · Galería de l
 - Pedido de Lau: el hover de product-card (cambio de imagen y de fondo) se activa solo con el mouse sobre la imagen, en todos los usos (Productos destacados de la Home, Productos, Colección, compatibles). Sobre el nombre, los datos o los acabados no cambia nada. Reemplaza el «hover uno solo para toda la tarjeta» de 2026-10-28 · Hover de product-card.
 - En código: el `::after` del link estirado tapa la imagen, así que `product-card.js` compara la posición del puntero con la caja de `.card-media` (en `pointerenter` y `pointermove` de la card) y pone `is-media-hover`. El foco de teclado sigue mostrando la imagen de hover.
 - El clic, la mano (`cursor: pointer`) y la URL en la barra del navegador siguen la misma regla: solo la imagen es link. El `::after` del link estirado cubre solo la caja de `.card-media` (arriba, todo el ancho, con su `aspect-ratio`) y el texto del nombre lleva `pointer-events: none` (el `::after` lo vuelve a `auto`). El `<a>` sigue recibiendo el foco: con teclado, Enter abre la ficha y el anillo rodea la card.
+
+## 2026-11-02 · Adjunto de Contacto: sin pedir un link
+
+- La ayuda del adjunto queda «PDF, DWG, JPG o PNG · menos de 1 MB.»: sale «¿Pesa más? Pegá un link de Drive o WeTransfer en el detalle.», porque el formulario no tiene un campo para el link. El límite sigue en menos de 1 MB (2026-10-30 · Adjunto de Contacto: menos de 1 MB) hasta que n8n acepte archivos más grandes.
