@@ -5,13 +5,20 @@
   min-width: 0;
 }
 
-/* Foto + info + quitar, gap space/gap/sm-md; ancho máximo layout/compare-slot */
+/* Foto + info + quitar, gap space/gap/sm-md; ancho máximo layout/compare-slot.
+   Filled y Empty miden lo mismo: los dos llevan el borde border/default (en
+   Filled, transparente hasta el hover) y padding space/padding/md a la
+   derecha. isolation: la X va sobre el botón «Cambiar» (z-index 1) sin
+   competir con la página (DESIGN.md §2 · Capas). */
 .slot {
   position: relative;
+  isolation: isolate;
   display: flex;
   align-items: center;
   gap: var(--arq-space-gap-sm-md);
   max-width: var(--arq-layout-compare-slot);
+  padding-inline-end: var(--arq-space-padding-md);
+  border: var(--arq-border-default) solid var(--arq-color-surface-transparent);
 }
 
 /* Foto cuadrada layout/compare-thumb, fondo color/surface/subtle. Filled: en
@@ -75,11 +82,15 @@
 }
 
 .remove {
+  position: relative;
+  z-index: 1;
   flex: none;
 }
 
-/* Empty: todo el lugar es el botón «Agregar producto» (arq:add). Cubre la
-   miniatura y el texto; foco con el anillo separado (DESIGN.md §7). */
+/* Empty: todo el lugar es el botón «Agregar producto» (arq:add); Filled, el
+   botón «Cambiar <nombre>» (arq:replace). Cubren la miniatura y el texto;
+   foco con el anillo separado (DESIGN.md §7). */
+.change,
 .add {
   position: absolute;
   inset: 0;
@@ -91,11 +102,13 @@
   cursor: pointer;
 }
 
+.change:focus-visible,
 .add:focus-visible {
   outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
   outline-offset: 2px;
 }
 
+.change:focus:not(:focus-visible),
 .add:focus:not(:focus-visible) {
   outline: none;
 }
@@ -108,15 +121,24 @@
    color/surface/faint y borde color/border/strong. El botón cubre toda la
    caja (cursor pointer). */
 :host(:not([filled])) .slot {
-  padding-inline-end: var(--arq-space-padding-md);
-  border: var(--arq-border-default) dashed var(--arq-color-border-default);
+  border-style: dashed;
+  border-color: var(--arq-color-border-default);
 }
 
-:host(:not([filled])) .add:focus-visible {
+.change:focus-visible,
+.add:focus-visible {
   outline-offset: calc(-1 * var(--arq-border-strong));
 }
 
+/* Filled (State=filled-hover): fondo color/surface/faint y borde
+   border/default en color/border/default: el dibujo del lugar vacío con
+   línea continua, para mostrar que se puede tocar para cambiar el producto. */
 @media (hover: hover) and (pointer: fine) {
+  :host([filled]) .slot:hover {
+    background: var(--arq-color-surface-faint);
+    border-color: var(--arq-color-border-default);
+  }
+
   :host(:not([filled])) .slot:hover {
     background: var(--arq-color-surface-faint);
     border-color: var(--arq-color-border-strong);

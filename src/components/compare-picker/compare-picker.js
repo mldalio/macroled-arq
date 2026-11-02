@@ -22,9 +22,16 @@
 //   emite arq:search { query }; la página responde con items. Sin los
 //   choice-chip de categoría del set (Todos · Interior · Exterior · Lámparas y
 //   artefactos): se sacaron a pedido (decisiones.md, 2026-10-19 · compare-picker).
-// - Lista de compare-picker-item: Added si ya está en la comparativa; Disabled
-//   si ya hay 3 (count). «Agregar» emite arq:add { item } y se anuncia
-//   («Kanu Jardín agregado a la comparación»).
+// - Lista de compare-picker-item: Added si ya está en la comparativa, con
+//   «Quitar» (emite arq:remove { sku, item }; sku es el SKU que está en la
+//   comparativa, item.selectedSku, que puede ser otro acabado del grupo; el
+//   modal sigue abierto); Disabled si ya hay 3 (count). «Agregar» emite
+//   arq:add { item, replace: null } y cierra el modal: la página muestra el
+//   producto en su lugar y lo anuncia.
+// - show(opener, { replace: sku }) abre «Cambiar producto»: las filas dicen
+//   «Elegir» (ninguna queda Disabled) y lo elegido llega en
+//   arq:add { item, replace: sku } para ponerlo en ese lugar. Si se quita ese
+//   producto desde el modal, vuelve a «Agregar producto».
 // - State=No results: solo el mensaje, sin CTA; se sigue buscando en el mismo
 //   modal.
 // - Al final, «Ver todos los productos» (button Underline con subrayado y
@@ -32,9 +39,9 @@
 //   /arq/productos). En el set es «Comparar» (Filled).
 // - Diálogo modal nativo, como download-modal: el foco queda adentro, Esc y el
 //   scrim lo cierran, el foco vuelve a quien lo abrió y la página de atrás no
-//   se desplaza. Al cerrar emite arq:close { restored }: restored es false si
-//   el foco no pudo volver a quien lo abrió (ya no está o quedó oculto); la
-//   página lo mueve.
+//   se desplaza. Al cerrar emite arq:close { restored, item }: restored es
+//   false si el foco no pudo volver a quien lo abrió (ya no está o quedó
+//   oculto); la página lo mueve (al producto elegido, item, si hay).
 //   Desktop: centrado sobre el scrim, ancho layout/filter-panel.
 //   Mobile: pantalla completa. Siempre en Light (DESIGN.md §2 · Light local).
 
@@ -54,7 +61,8 @@ const TEXT = {
   noResults: (query) => (query ? `No encontramos productos para «${query}».` : 'No encontramos productos.'),
   hint: 'Probá con otro nombre, SKU o familia.',
   count: (n) => (n === 1 ? '1 producto' : `${n.toLocaleString('es-AR')} productos`),
-  added: (name) => `${name} agregado a la comparación.`,
+  removed: (name) => `${name} quitado de la comparación.`,
+  title: (replace) => (replace ? 'Cambiar producto' : 'Agregar producto'),
   // Mismo texto que el error de los listados (catalog-listing) y «Reintentar»
   // como en Descargas (State=Error del set 2724:8761).
   error: 'No se pudieron cargar los productos.',
@@ -96,6 +104,9 @@ class ArqComparePicker extends ArqElement {
   #query = '';
   #searched = false;
   #failed = false;
+  #replace = null; // SKU del lugar que se cambia (Cambiar producto)
+  #chosen = null; // lo elegido antes de cerrar (va en arq:close)
+  #refocus = null; // fila que tenía el foco mientras se rearma la lista
 
   /** Productos de la lista: [{ id, sku, name, meta, image, added }]. */
   get items() {
@@ -150,12 +161,26 @@ class ArqComparePicker extends ArqElement {
     search.addEventListener('arq:submit', (event) => event.stopPropagation());
     search.addEventListener('arq:navigate', (event) => event.stopPropagation());
     search.addEventListener('arq:close', (event) => event.stopPropagation());
-    root.querySelector('.list').addEventListener('arq:add', (event) => {
+    const list = root.querySelector('.list');
+    // Elegir cierra el modal: el producto aparece en su lugar (la página lo
+    // anuncia y le pasa el foco).
+    list.addEventListener('arq:add', (event) => {
       event.stopPropagation();
       const item = this.#items.find((i) => i.sku === event.detail.sku);
-      if (!item || item.added || this.count >= MAX) return;
-      this.emit('add', { item: { ...item } });
-      this.#announce(TEXT.added(item.name));
+      if (!item || item.added || (!this.#replace && this.count >= MAX)) return;
+      this.#chosen = { ...item };
+      this.emit('add', { item: { ...item }, replace: this.#replace });
+      this.close();
+    });
+    // Quitar: el modal sigue abierto (la página rearma la lista)
+    list.addEventListener('arq:remove', (event) => {
+      event.stopPropagation();
+      const item = this.#items.find((i) => i.sku === event.detail.sku);
+      if (!item?.added) return;
+      const sku = item.selectedSku ?? item.sku;
+      if (this.#replace === sku) this.#setReplace(null);
+      this.emit('remove', { sku, item: { ...item } });
+      this.#announce(TEXT.removed(item.name));
     });
     root.querySelector('.retry').addEventListener('click', () => {
       root.querySelector('.search').focus();
@@ -176,10 +201,13 @@ class ArqComparePicker extends ArqElement {
   /**
    * Abre el modal sin búsqueda y emite arq:search para que la página cargue
    * la lista. El foco vuelve a `opener` (o al elemento con foco) al cerrar.
+   * Con `replace` (SKU), «Cambiar producto»: lo elegido reemplaza a ese SKU.
    */
-  show(opener) {
+  show(opener, { replace = null } = {}) {
     this.#opener = opener ?? this.#activeElement();
     if (!this.open) {
+      this.#chosen = null;
+      this.#setReplace(replace);
       const root = this.shadowRoot;
       this.#query = '';
       root.querySelector('.search').value = '';
@@ -191,6 +219,15 @@ class ArqComparePicker extends ArqElement {
 
   close() {
     this.open = false;
+  }
+
+  // Modo del modal: el título por defecto (si la página no pasa uno por el
+  // slot) y el botón de las filas.
+  #setReplace(sku) {
+    this.#replace = sku ?? null;
+    this.shadowRoot.querySelector('slot[name="title"]').textContent = TEXT.title(this.#replace);
+    this.#name();
+    this.#render();
   }
 
   #emitSearch({ announce = true } = {}) {
@@ -207,7 +244,8 @@ class ArqComparePicker extends ArqElement {
       const row = document.createElement('arq-compare-picker-item');
       row.sku = item.sku;
       row.added = Boolean(item.added);
-      row.disabled = full && !item.added;
+      row.replace = Boolean(this.#replace);
+      row.disabled = full && !item.added && !this.#replace;
       if (item.image) row.image = item.image;
       const name = document.createElement('span');
       name.slot = 'name';
@@ -222,20 +260,27 @@ class ArqComparePicker extends ArqElement {
       return row;
     });
     // Si la lista se vuelve a armar con el foco en una fila (después de
-    // «Agregar» esa fila pasa a Added y su botón queda deshabilitado), el foco
-    // va a la próxima fila que se pueda agregar; si no hay, a «Ver todos los
-    // productos».
-    const focused = root.activeElement?.closest?.('arq-compare-picker-item')?.sku ?? null;
+    // «Quitar» esa fila vuelve a «Agregar»), el foco queda en la misma fila;
+    // si ya no está o quedó deshabilitada, en la próxima que se pueda usar y,
+    // si no hay, en «Ver todos los productos».
+    // La página cambia count y después items: la lista se arma dos veces
+    // seguidas y en la segunda el foco ya no está en ninguna fila. #refocus
+    // guarda la fila hasta el cuadro siguiente, que busca en la lista final.
+    const focused = root.activeElement?.closest?.('arq-compare-picker-item')?.sku ?? this.#refocus;
     list.replaceChildren(...nodes);
-    if (focused) {
-      const index = Math.max(0, nodes.findIndex((node) => node.sku === focused));
-      const enabled = (node) => !node.added && !node.disabled;
-      const next = nodes.slice(index).find(enabled) ?? nodes.slice(0, index).reverse().find(enabled);
+    if (focused && !this.#refocus) {
       requestAnimationFrame(() => {
+        const sku = this.#refocus;
+        this.#refocus = null;
+        const rows = [...list.children];
+        const index = Math.max(0, rows.findIndex((node) => node.sku === sku));
+        const enabled = (node) => node.added || !node.disabled;
+        const next = rows.slice(index).find(enabled) ?? rows.slice(0, index).reverse().find(enabled);
         if (next) next.focus();
         else root.querySelector('.go').focus();
       });
     }
+    if (focused) this.#refocus = focused;
     const empty = !nodes.length;
     list.hidden = empty;
     root.querySelector('.empty').hidden = !empty;
@@ -292,7 +337,9 @@ class ArqComparePicker extends ArqElement {
       const opener = this.#opener;
       this.#opener = null;
       opener?.focus?.();
-      this.emit('close', { restored: Boolean(opener) && this.#activeElement() === opener });
+      const item = this.#chosen;
+      this.#chosen = null;
+      this.emit('close', { restored: Boolean(opener) && this.#activeElement() === opener, item });
     }, ms);
   }
 
@@ -308,7 +355,7 @@ class ArqComparePicker extends ArqElement {
     const slot = this.shadowRoot.querySelector('slot[name="title"]');
     const nodes = slot.assignedNodes({ flatten: true });
     const title = (nodes.length ? nodes : [...slot.childNodes]).map((node) => node.textContent).join('').trim();
-    this.#dialog.setAttribute('aria-label', title || 'Agregar producto');
+    this.#dialog.setAttribute('aria-label', title || TEXT.title(this.#replace));
   }
 }
 

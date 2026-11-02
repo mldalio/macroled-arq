@@ -9,7 +9,8 @@ Fila del modal «Agregar producto» de la comparativa (`compare-picker`): miniat
   <span slot="name">Kanu Jardín</span>
   <span slot="meta">Exterior · Jardín</span>
 </arq-compare-picker-item>
-<arq-compare-picker-item added>…</arq-compare-picker-item>      <!-- Agregado -->
+<arq-compare-picker-item added>…</arq-compare-picker-item>      <!-- ya está: «Quitar» -->
+<arq-compare-picker-item replace>…</arq-compare-picker-item>    <!-- Cambiar producto: «Elegir» -->
 <arq-compare-picker-item disabled>…</arq-compare-picker-item>   <!-- ya hay 3 -->
 ```
 
@@ -20,14 +21,15 @@ Fila del modal «Agregar producto» de la comparativa (`compare-picker`): miniat
 | Name | slot `name` | — | Nombre del producto |
 | Meta | slot `meta` | — | «Exterior · Jardín», «Lámparas y artefactos · Colgante». Opcional |
 | State=Default / Hover | — | — | Hover es `:hover` de la fila (solo con mouse) |
-| State=Added | `added` | `added` | Booleano. Ya está en la comparativa: «Agregado», sin ícono, deshabilitado |
-| State=Disabled | `disabled` | `disabled` | Booleano. Ya hay 3 productos: «+ Agregar» deshabilitado, textos en `color/text/disabled` y miniatura atenuada |
+| State=Added | `added` | `added` | Booleano. Ya está en la comparativa: «− Quitar» (`icon/minus`), que emite `arq:remove { sku }`. Antes era «Agregado» deshabilitado (`docs/decisiones.md`, 2026-11-02 · compare-bar: cambiar y quitar) |
+| State=Choose | `replace` | `replace` | Booleano (lo pone compare-picker en «Cambiar producto»). El botón de las filas que no están dice «Elegir», sin ícono |
+| State=Disabled | `disabled` | `disabled` | Booleano. Ya hay 3 productos: «+ Agregar» deshabilitado, textos en `color/text/disabled` y miniatura atenuada. Una fila Added nunca queda deshabilitada |
 | — (foto) | `image` | `image` | URL de la miniatura. Sin imagen (o si no carga): fondo `color/surface/subtle` |
 | — | `sku` | `sku` | SKU que se agrega |
 
-- **«Agregar»** (button Outline con `icon/plus` adelante) emite `arq:add { sku }`. Su nombre accesible suma el producto: «Agregar Kanu Jardín».
+- **«Agregar» / «Elegir»** (button Outline; «Agregar» con `icon/plus` adelante) emiten `arq:add { sku }`; **«Quitar»** emite `arq:remove { sku }`. El nombre accesible suma el producto: «Agregar Kanu Jardín», «Quitar Kanu Jardín». Hover de la fila también en Added.
 - Nombre y meta en una línea; si no entran, terminan en «…».
-- `focus()` va a «Agregar».
+- `focus()` va al botón.
 - Lleva `role="listitem"` (la lista del modal es `role="list"`).
 
 ## Tokens

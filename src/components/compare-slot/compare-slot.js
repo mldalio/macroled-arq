@@ -14,6 +14,12 @@
 //   (icon-button); ancho máximo layout/compare-slot. Un solo tamaño: Size=Compact
 //   se quitó del set y del código (decisiones.md, 2026-10-19).
 // - Quitar emite arq:remove { sku }.
+// - Filled es clickeable: todo el lugar es un botón «Cambiar <nombre>» que
+//   emite arq:replace { sku } (la página abre compare-picker para elegir otro
+//   producto en ese lugar). La X queda encima, como un botón aparte (un botón
+//   no puede tener otro adentro). Hover (State=filled-hover): fondo
+//   color/surface/faint y borde color/border/default (decisiones.md,
+//   2026-11-02 · compare-bar: cambiar y quitar).
 // - Empty es clickeable: todo el lugar es un botón «Agregar producto» que
 //   emite arq:add (en los listados y la ficha abre compare-picker). Mantiene el dibujo del
 //   set (foto en color/surface/subtle con el «+» resaltado y el texto) dentro
@@ -43,6 +49,7 @@ class ArqCompareSlot extends ArqElement {
     `<span class="meta role-body-sm"><slot name="meta"></slot></span>` +
     `<span class="empty role-body-sm"></span>` +
     `</span>` +
+    `<button type="button" class="change" hidden></button>` +
     `<arq-icon-button icon="close" class="remove"></arq-icon-button>` +
     `<button type="button" class="add" hidden></button>` +
     `</div>`;
@@ -54,6 +61,7 @@ class ArqCompareSlot extends ArqElement {
     img.addEventListener('error', () => (img.hidden = true));
     root.querySelector('.remove').addEventListener('click', () => this.emit('remove', { sku: this.sku ?? null }));
     root.querySelector('.add').addEventListener('click', () => this.emit('add'));
+    root.querySelector('.change').addEventListener('click', () => this.emit('replace', { sku: this.sku ?? null }));
     for (const slot of root.querySelectorAll('slot')) slot.addEventListener('slotchange', () => this.#sync());
   }
 
@@ -69,6 +77,13 @@ class ArqCompareSlot extends ArqElement {
     this.#sync();
   }
 
+  /** El foco va a «Cambiar» (Filled) o a «Agregar producto» (Empty). */
+  focus(options) {
+    const target = this.shadowRoot?.querySelector(this.filled ? '.change' : '.add');
+    if (target) target.focus(options);
+    else super.focus(options);
+  }
+
   #sync() {
     const root = this.shadowRoot;
     const name = this.querySelector('[slot="name"]')?.textContent.trim() ?? '';
@@ -78,6 +93,9 @@ class ArqCompareSlot extends ArqElement {
     const remove = root.querySelector('.remove');
     remove.textContent = `Quitar ${name}`;
     remove.hidden = !filled;
+    const change = root.querySelector('.change');
+    change.hidden = !filled;
+    change.setAttribute('aria-label', `Cambiar ${name}`);
     const add = root.querySelector('.add');
     add.hidden = filled;
     add.setAttribute('aria-label', this.emptyLabel ?? '');

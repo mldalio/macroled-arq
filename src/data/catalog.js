@@ -1007,6 +1007,9 @@ export async function listCompareCandidates({ query = '', selected = [] } = {}) 
     if (!group.hasDefault) return [];
     const found = words.length ? searchMatch(group, words) : { variant: group.defaultVariant };
     if (!found) return [];
+    // El SKU del grupo que ya está en la comparativa (puede ser otro acabado):
+    // es el que se quita con «Quitar» en compare-picker.
+    const selectedSku = group.variants.find((v) => chosen.has(v.sku))?.sku ?? null;
     return [
       {
         id: group.id,
@@ -1015,7 +1018,8 @@ export async function listCompareCandidates({ query = '', selected = [] } = {}) 
         meta: pickerMeta(group),
         cardMeta: meta(group), // la de la product-card: la que guarda la compare-bar
         image: productCard(group, found.variant).image,
-        added: group.variants.some((v) => chosen.has(v.sku)),
+        added: Boolean(selectedSku),
+        selectedSku,
       },
     ];
   });

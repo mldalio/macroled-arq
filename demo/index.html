@@ -1085,6 +1085,7 @@
         <div class="demo-picker-items" role="list" data-demo-picker-items>
           <arq-compare-picker-item sku="KANU-J" image="/demo/fixtures/img/card-estudio.svg"><span slot="name">Kanu Jardín</span><span slot="meta">Exterior · Jardín</span></arq-compare-picker-item>
           <arq-compare-picker-item sku="HOSHI" added><span slot="name">Hoshi</span><span slot="meta">Interior · Embutir</span></arq-compare-picker-item>
+          <arq-compare-picker-item sku="KOEN" replace image="/demo/fixtures/img/card-estudio.svg"><span slot="name">Koen (Cambiar producto: «Elegir»)</span><span slot="meta">Interior · Pared</span></arq-compare-picker-item>
           <arq-compare-picker-item sku="NOBU" disabled image="/demo/fixtures/img/card-estudio.svg"><span slot="name">Nobu Jardín</span><span slot="meta">Exterior · Jardín</span></arq-compare-picker-item>
           <arq-compare-picker-item sku="LARGO"><span slot="name">Producto con un nombre muy largo que no entra en una sola línea de la fila</span><span slot="meta">Lámparas y artefactos · Colgantes · Pared · Techo</span></arq-compare-picker-item>
           <arq-compare-picker-item sku="SIN-META"><span slot="name">Sin meta</span></arq-compare-picker-item>
@@ -1094,11 +1095,12 @@
 
       <section class="demo-section" aria-labelledby="demo-compare-picker">
         <h2 id="demo-compare-picker" class="demo-heading role-label">compare-picker · &lt;arq-compare-picker&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 2724:8761. Modal «Agregar producto» de la comparativa, con los datos del catálogo (listCompareCandidates). Desktop: centrado sobre el scrim, ancho layout/filter-panel y la lista con el alto de 5 filas. Mobile (390): pantalla completa. Sin chips de categoría (se sacaron). Al pie, «Ver todos los productos» (Underline). Buscá «Dalí 40W» para ver State=No results. Esc, el scrim o la X lo cierran y el foco vuelve al botón. Siempre en Light, también con el switch en Dark. En Productos lo abre el lugar vacío (+) de compare-bar; en Comparativa, compare-product vacío.</p>
+        <p class="demo-note role-body-sm">Figma 2724:8761. Modal «Agregar producto» de la comparativa, con los datos del catálogo (listCompareCandidates). Desktop: centrado sobre el scrim, ancho layout/filter-panel y la lista con el alto de 5 filas. Mobile (390): pantalla completa. Sin chips de categoría (se sacaron). Al pie, «Ver todos los productos» (Underline). Buscá «Dalí 40W» para ver State=No results. «Agregar» cierra el modal; los ya elegidos dicen «Quitar» (el modal sigue abierto). «Cambiar producto»: las filas dicen «Elegir» y lo elegido reemplaza al primero. Esc, el scrim o la X lo cierran y el foco vuelve al botón. Siempre en Light, también con el switch en Dark. En Productos lo abre el lugar vacío (+) de compare-bar; en Comparativa, compare-product vacío.</p>
         <div class="demo-row">
           <arq-button type="outline" data-demo-picker-open="1">Abrir (1 elegido)</arq-button>
           <arq-button type="outline" data-demo-picker-open="3">Abrir (3 elegidos: el resto Disabled)</arq-button>
           <arq-button type="outline" data-demo-picker-open="0">Abrir (sin elegidos)</arq-button>
+          <arq-button type="outline" data-demo-picker-open="3" data-demo-picker-replace>Cambiar producto (3 elegidos)</arq-button>
         </div>
         <p class="demo-note role-body-sm" data-demo-picker-log>Elegidos: —</p>
         <arq-compare-picker data-demo-picker href="#demo-compare-picker"></arq-compare-picker>
@@ -1147,12 +1149,13 @@
 
       <section class="demo-section" aria-labelledby="demo-compare-bar">
         <h2 id="demo-compare-bar" class="demo-heading role-label">compare-bar · &lt;arq-compare-bar&gt;</h2>
-        <p class="demo-note role-body-sm">Figma 1233:3963. Barra fija abajo, en Dark local. Aparece al marcar «Comparar» en las product-card de esta demo (hasta 3) y recuerda la selección (arq:compare). «Comparar» lleva a /arq/comparativa?sku=…</p>
+        <p class="demo-note role-body-sm">Figma 1233:3963. Barra fija abajo, en Dark local. Aparece al marcar «Comparar» en las product-card de esta demo (hasta 3) y recuerda la selección (arq:compare). «Comparar» lleva a /arq/comparativa?sku=… El + abre compare-picker y, al elegir, el modal se cierra con el foco en el producto agregado. Tocar un producto lo cambia por otro («Cambiar producto»), en el mismo lugar: el orden es fijo. Al quitar todos, la barra queda vacía con una X para cerrarla.</p>
         <div class="demo-row">
           <arq-button type="outline" data-demo-compare-add>Agregar 2 de ejemplo</arq-button>
         </div>
         <p class="demo-note role-body-sm" data-demo-compare-bar-log>arq:compare-change → (todavía nada)</p>
         <arq-compare-bar></arq-compare-bar>
+        <arq-compare-picker data-demo-bar-picker></arq-compare-picker>
       </section>
 
       <section class="demo-section" aria-labelledby="demo-compare-table">

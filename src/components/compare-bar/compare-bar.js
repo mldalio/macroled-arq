@@ -7,6 +7,7 @@
 //
 //   bar.add({ sku, name, meta, image });   // al marcar "Comparar" en una product-card
 //   bar.remove(sku);                       // al desmarcarlo
+//   bar.replace(sku, { sku, name, … });    // otro producto en el mismo lugar
 //   bar.addEventListener('arq:compare-change', (e) => sincronizarCards(e.detail.items));
 //
 // - Dark local (DESIGN.md §2): el contenedor interno lleva data-arq-theme="dark";
@@ -30,11 +31,23 @@
 // - Un lugar vacío (+, compare-slot Empty) emite arq:add: la página abre
 //   compare-picker («Agregar producto»). En Mobile, un solo lugar vacío
 //   debajo de los elegidos, mientras haya menos de 3.
+// - Un lugar con producto emite arq:replace { sku } (de compare-slot): la
+//   página abre compare-picker en modo «Cambiar producto» y llama a replace().
+//   El orden es fijo: el de cómo se agregaron (el de las columnas de la
+//   comparativa). Reordenar arrastrando quedó para más adelante.
+// - Vacía: si la persona quita todos los productos, la barra queda con los
+//   lugares vacíos y una X para cerrarla («Comparar» deshabilitado, sin
+//   «Borrar todo» ni cantidad). La X emite arq:dismiss. Al recargar, sin
+//   productos, la barra no aparece (decisiones.md, 2026-11-02 · compare-bar:
+//   cambiar y quitar).
+// - Lo que cambia se anuncia a lectores de pantalla (región aria-live, fuera
+//   de la barra para que se escuche también al cerrarla).
 
 import { ArqElement } from '../../base/arq-element.js';
 import { Disclosure } from '../../base/disclosure.js';
 import { icon } from '../../base/icons.js';
 import '../button/button.js';
+import '../icon-button/icon-button.js';
 import '../count-badge/count-badge.js';
 import '../divider/divider.js';
 import '../compare-slot/compare-slot.js';
@@ -44,6 +57,14 @@ import css from './compare-bar.css?inline';
 const KEY = 'arq:compare';
 const MAX = 3;
 const MOBILE = matchMedia('(max-width: 767px)');
+
+const TEXT = {
+  added: (name, count) => `${name} agregado a la comparación. ${count} de ${MAX}.`,
+  removed: (name) => `${name} quitado de la comparación.`,
+  replaced: (from, to) => `${from} cambiado por ${to}.`,
+  cleared: 'Se quitaron todos los productos de la comparación.',
+  closed: 'Comparador cerrado.',
+};
 
 function read() {
   try {
@@ -60,6 +81,8 @@ function write(items) {
   } catch {}
 }
 
+const entry = (item) => ({ sku: item.sku, name: item.name ?? '', meta: item.meta ?? '', image: item.image ?? '' });
+
 class ArqCompareBar extends ArqElement {
   static tag = 'arq-compare-bar';
   static styles = css;
@@ -72,6 +95,7 @@ class ArqCompareBar extends ArqElement {
     `<div class="head">` +
     `<button class="title toggle"><span class="role-body-lg">Productos seleccionados</span><arq-count-badge class="count"></arq-count-badge>` +
     `<span class="icon-box">${icon('chevron-down')}${icon('chevron-up')}</span></button>` +
+    `<arq-icon-button icon="close" class="dismiss" hidden>Cerrar comparador</arq-icon-button>` +
     `</div>` +
     `<div class="row">` +
     `<div class="slots"></div>` +
@@ -80,9 +104,13 @@ class ArqCompareBar extends ArqElement {
     `<arq-button class="go" show-icon icon="arrow-right">Comparar</arq-button>` +
     `</div>` +
     `</div>` +
-    `</section>`;
+    `</section>` +
+    `<span class="visually-hidden" aria-live="polite"></span>`;
 
   #items = read();
+  // La persona quitó todos los productos: la barra sigue a la vista, vacía,
+  // hasta que la cierra con la X (o recarga la página).
+  #keep = false;
 
   /** Productos elegidos: [{ sku, name, meta, image }]. */
   get items() {
@@ -109,10 +137,21 @@ class ArqCompareBar extends ArqElement {
       before = root.querySelector('.bar').getBoundingClientRect().top;
     }, { capture: true });
     this.addEventListener('arq:toggle', () => this.#slide(before));
-    for (const button of root.querySelectorAll('.clear')) button.addEventListener('click', () => this.clear());
-    root.querySelector('.slots').addEventListener('arq:remove', (event) => {
+    root.querySelector('.clear').addEventListener('click', () => {
+      this.clear();
+      this.focusAdd();
+    });
+    root.querySelector('.dismiss').addEventListener('click', () => this.dismiss());
+    const slots = root.querySelector('.slots');
+    // Quitar con la X: el foco pasa al lugar que queda en esa posición (el
+    // producto siguiente o el lugar vacío), así no se pierde.
+    slots.addEventListener('arq:remove', (event) => {
       event.stopPropagation();
+      const index = this.#items.findIndex((item) => item.sku === event.detail.sku);
       this.remove(event.detail.sku);
+      const target = root.querySelectorAll('arq-compare-slot')[index];
+      if (target) target.focus();
+      else this.focusAdd();
     });
     MOBILE.addEventListener('change', () => this.#render());
     // Otra pestaña cambió la selección
@@ -135,8 +174,9 @@ class ArqCompareBar extends ArqElement {
   /** Agrega un producto. Devuelve false si ya hay 3 (o si ya estaba). */
   add(item) {
     if (!item?.sku || this.has(item.sku) || this.#items.length >= MAX) return false;
-    this.#items.push({ sku: item.sku, name: item.name ?? '', meta: item.meta ?? '', image: item.image ?? '' });
+    this.#items.push(entry(item));
     if (!this.#folds()) this.open = true;
+    this.#announce(TEXT.added(item.name ?? '', this.#items.length));
     this.#changed();
     return true;
   }
@@ -146,18 +186,43 @@ class ArqCompareBar extends ArqElement {
     return MOBILE.matches && this.#items.length >= 2;
   }
 
-  /** Quita un producto por SKU. */
+  /** Quita un producto por SKU. Si era el último, la barra queda vacía a la vista. */
   remove(sku) {
-    const before = this.#items.length;
-    this.#items = this.#items.filter((item) => item.sku !== sku);
-    if (this.#items.length !== before) this.#changed();
+    const item = this.#items.find((i) => i.sku === sku);
+    if (!item) return;
+    this.#items = this.#items.filter((i) => i.sku !== sku);
+    if (!this.#items.length) this.#empty();
+    this.#announce(TEXT.removed(item.name));
+    this.#changed();
   }
 
-  /** "Borrar todo". */
+  /** Cambia el producto `sku` por `item`, en el mismo lugar. Devuelve false si no se pudo. */
+  replace(sku, item) {
+    const index = this.#items.findIndex((i) => i.sku === sku);
+    if (index < 0 || !item?.sku || (item.sku !== sku && this.has(item.sku))) return false;
+    const before = this.#items[index];
+    this.#items[index] = entry(item);
+    this.#announce(TEXT.replaced(before.name, item.name ?? ''));
+    this.#changed();
+    return true;
+  }
+
+  /** "Borrar todo": la barra queda vacía a la vista. */
   clear() {
     if (!this.#items.length) return;
     this.#items = [];
+    this.#empty();
+    this.#announce(TEXT.cleared);
     this.#changed();
+  }
+
+  /** La X de la barra vacía: la oculta. Emite arq:dismiss (la página mueve el foco). */
+  dismiss() {
+    if (this.#items.length || !this.#keep) return;
+    this.#keep = false;
+    this.#render();
+    this.#announce(TEXT.closed);
+    this.emit('dismiss');
   }
 
   has(sku) {
@@ -168,14 +233,28 @@ class ArqCompareBar extends ArqElement {
   focusAdd() {
     const root = this.shadowRoot;
     const empty = [...root.querySelectorAll('arq-compare-slot')].find((slot) => !slot.filled);
-    const target = empty?.shadowRoot.querySelector('.add') ?? root.querySelector('.go');
-    target?.focus();
+    if (empty) empty.focus();
+    else root.querySelector('.go')?.focus();
+  }
+
+  /** Foco en el lugar del producto `sku` (abre la lista si estaba plegada). */
+  focusItem(sku) {
+    const slot = this.#filledSlots().find((s) => s.sku === sku);
+    if (!slot) return this.focusAdd();
+    if (!this.open) this.open = true;
+    slot.focus();
   }
 
   /** URL de «Comparar»: la comparativa con los SKU elegidos. */
   get compareUrl() {
     const query = this.#items.map((item) => encodeURIComponent(item.sku)).join(',');
     return `${this.href ?? '/arq/comparativa'}?sku=${query}`;
+  }
+
+  // Sin productos, la barra sigue a la vista y abierta (los lugares vacíos)
+  #empty() {
+    this.#keep = true;
+    this.open = true;
   }
 
   // Al plegar o desplegar, la barra cambia de alto de golpe. Como está pegada
@@ -201,6 +280,17 @@ class ArqCompareBar extends ArqElement {
     animation.onfinish = () => bar.classList.remove('sliding');
   }
 
+  #filledSlots() {
+    return [...this.shadowRoot.querySelectorAll('arq-compare-slot')].filter((slot) => slot.filled);
+  }
+
+  #announce(message) {
+    const live = this.shadowRoot.querySelector('[aria-live]');
+    if (!live) return;
+    live.textContent = '';
+    requestAnimationFrame(() => (live.textContent = message));
+  }
+
   #changed() {
     write(this.#items);
     this.#render();
@@ -211,15 +301,21 @@ class ArqCompareBar extends ArqElement {
     const root = this.shadowRoot;
     if (!root.querySelector('.bar')) return;
     const items = this.#items;
-    root.querySelector('.bar').hidden = items.length === 0;
-    root.querySelector('.count').count = items.length;
+    const empty = items.length === 0;
+    if (!empty) this.#keep = false;
+    root.querySelector('.bar').hidden = empty && !this.#keep;
+    const count = root.querySelector('.count');
+    count.count = items.length;
+    count.hidden = empty;
+    root.querySelector('.dismiss').hidden = !empty;
+    root.querySelector('.clear').hidden = empty;
     const mobile = MOBILE.matches;
     const slots = root.querySelector('.slots');
     const nodes = [];
     // Mobile: los elegidos, apilados, y debajo un solo lugar vacío para
     // agregar (abre compare-picker) mientras haya menos de 3
-    const count = mobile ? Math.min(items.length + 1, MAX) : MAX;
-    for (let i = 0; i < count; i++) {
+    const places = mobile ? Math.min(items.length + 1, MAX) : MAX;
+    for (let i = 0; i < places; i++) {
       if (i > 0) {
         const divider = document.createElement('arq-divider');
         divider.setAttribute('orientation', mobile ? 'horizontal' : 'vertical');
@@ -242,10 +338,25 @@ class ArqCompareBar extends ArqElement {
       nodes.push(slot);
     }
     slots.replaceChildren(...nodes);
-    root.querySelector('.go').href = this.compareUrl;
+    const go = root.querySelector('.go');
+    go.href = this.compareUrl;
+    go.disabled = empty;
   }
 }
 
 ArqCompareBar.define();
 
-export { ArqCompareBar };
+/**
+ * Después de cerrar la barra vacía (arq:dismiss), el foco va al título de la
+ * página (el <h1> que llega por slot al contenedor `host`, como en la ficha, o
+ * el de la página, como el page-header de Productos), sin desplazarla: la
+ * barra ya no está y el foco no queda perdido en el <body>.
+ */
+function focusHeading(host) {
+  const heading = host.querySelector('h1') ?? document.querySelector('h1');
+  if (!heading) return;
+  if (!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex', '-1');
+  heading.focus({ preventScroll: true });
+}
+
+export { ArqCompareBar, focusHeading };

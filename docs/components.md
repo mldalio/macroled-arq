@@ -25,14 +25,14 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [category-card](#category-card) | `<arq-category-card>` | En código ([README](../src/components/category-card/README.md)) |
 | ✅ [checkbox](#checkbox) | `<arq-checkbox>` | En código ([README](../src/components/checkbox/README.md)) |
 | ✅ [choice-chip](#choice-chip) | `<arq-choice-chip>` | En código ([README](../src/components/choice-chip/README.md)) · Selected en `color/surface/inverse` |
-| ✅ [compare-bar](#compare-bar) | `<arq-compare-bar>` | En código ([README](../src/components/compare-bar/README.md)) |
+| ✅ [compare-bar](#compare-bar) | `<arq-compare-bar>` | En código ([README](../src/components/compare-bar/README.md)) · vacía con X para cerrarla y cambiar un producto tocándolo (2026-11-02). `TODO` (Figma): estado vacío en el set |
 | ✅ [compare-group](#compare-group) | dentro de `<arq-compare-table>` | En código, como parte de compare-table ([README](../src/components/compare-table/README.md)) |
 | ✅ [compare-header](#compare-header) | `<arq-compare-header>` | En código ([README](../src/components/compare-header/README.md)) |
-| ✅ [compare-picker](#compare-picker) | `<arq-compare-picker>` | En código ([README](../src/components/compare-picker/README.md)) · Productos (compare-bar, también Mobile) y Comparativa · sin los chips de categoría del set y con «Ver todos los productos» (Underline) en lugar de «Comparar» |
-| ✅ [compare-picker-item](#compare-picker-item) | `<arq-compare-picker-item>` | En código ([README](../src/components/compare-picker-item/README.md)) |
+| ✅ [compare-picker](#compare-picker) | `<arq-compare-picker>` | En código ([README](../src/components/compare-picker/README.md)) · Productos (compare-bar, también Mobile) y Comparativa · sin los chips de categoría del set y con «Ver todos los productos» (Underline) en lugar de «Comparar» · se cierra al elegir; modo «Cambiar producto» (2026-11-02) |
+| ✅ [compare-picker-item](#compare-picker-item) | `<arq-compare-picker-item>` | En código ([README](../src/components/compare-picker-item/README.md)) · Added con «Quitar» y «Elegir» en Cambiar producto (2026-11-02). `TODO` (Figma): pasar los dos estados al set |
 | ✅ [compare-product](#compare-product) | `<arq-compare-product>` | En código ([README](../src/components/compare-product/README.md)) |
 | ✅ [compare-row](#compare-row) | dentro de `<arq-compare-table>` | En código, como parte de compare-table ([README](../src/components/compare-table/README.md)) |
-| ✅ [compare-slot](#compare-slot) | `<arq-compare-slot>` | En código ([README](../src/components/compare-slot/README.md)) |
+| ✅ [compare-slot](#compare-slot) | `<arq-compare-slot>` | En código ([README](../src/components/compare-slot/README.md)) · Filled clickeable («Cambiar», arq:replace) con hover (2026-11-02). `TODO` (Figma): State=filled-hover en el set |
 | ✅ [contact-item](#contact-item) | `<arq-contact-item>` | En código ([README](../src/components/contact-item/README.md)) |
 | ✅ [count-badge](#count-badge) | `<arq-count-badge>` | En código ([README](../src/components/count-badge/README.md)) |
 | ✅ [cta-block](#cta-block) | `<arq-cta-block>` | En código ([README](../src/components/cta-block/README.md)) |

@@ -129,6 +129,11 @@
   min-width: 0;
 }
 
+/* Barra vacía: la X para cerrarla, al final de la línea del título */
+.dismiss {
+  flex: none;
+}
+
 .actions {
   display: flex;
   flex: none;

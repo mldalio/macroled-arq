@@ -70,7 +70,7 @@ import '../breadcrumb-item/breadcrumb-item.js';
 import '../button/button.js';
 import '../toggle/toggle.js';
 import '../checkbox/checkbox.js';
-import '../compare-bar/compare-bar.js';
+import { focusHeading } from '../compare-bar/compare-bar.js';
 import '../compare-picker/compare-picker.js';
 import '../product-gallery/product-gallery.js';
 import '../sku/sku.js';
@@ -372,16 +372,28 @@ class ArqFichaProducto extends ArqElement {
       event.stopPropagation();
       picker.show(); // emite arq:search: carga la lista
     });
+    // Un lugar con producto: «Cambiar producto»
+    bar.addEventListener('arq:replace', (event) => {
+      event.stopPropagation();
+      picker.show(null, { replace: event.detail.sku });
+    });
+    // La barra vacía se cerró: el foco va al título de la ficha
+    bar.addEventListener('arq:dismiss', () => focusHeading(this));
     picker.addEventListener('arq:search', () => this.#loadPicker());
-    // El lugar vacío que lo abrió ya tiene producto: el foco vuelve a la barra
+    // El lugar que lo abrió cambió: el foco va al producto elegido
     picker.addEventListener('arq:close', (event) => {
-      if (!event.detail.restored) bar.focusAdd();
+      if (event.detail.restored) return;
+      if (event.detail.item) bar.focusItem(event.detail.item.sku);
+      else bar.focusAdd();
     });
     picker.addEventListener('arq:add', (event) => {
       // En la barra, la misma meta que las cards (no la del modal)
       const { sku, name, cardMeta, meta, image } = event.detail.item;
-      bar.add({ sku, name, meta: cardMeta ?? meta, image });
+      const item = { sku, name, meta: cardMeta ?? meta, image };
+      if (event.detail.replace) bar.replace(event.detail.replace, item);
+      else bar.add(item);
     });
+    picker.addEventListener('arq:remove', (event) => bar.remove(event.detail.sku));
 
     // Glosario: el ícono de cada fila abre el modal con los archivos de ese SKU
     const table = root.querySelector('.table');
