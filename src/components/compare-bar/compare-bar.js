@@ -108,6 +108,8 @@ class ArqCompareBar extends ArqElement {
     `<span class="visually-hidden" aria-live="polite"></span>`;
 
   #items = read();
+  #space = -1;
+  #resize = new ResizeObserver(() => this.#syncSpace());
   // La persona quitó todos los productos: la barra sigue a la vista, vacía,
   // hasta que la cierra con la X (o recarga la página).
   #keep = false;
@@ -154,6 +156,8 @@ class ArqCompareBar extends ArqElement {
       else this.focusAdd();
     });
     MOBILE.addEventListener('change', () => this.#render());
+    // Se muestra, se oculta o cambia el alto del título: arq:compare-space
+    this.#resize.observe(root.querySelector('.bar'));
     // Otra pestaña cambió la selección
     addEventListener('storage', (event) => {
       if (event.key !== KEY) return;
@@ -243,6 +247,23 @@ class ArqCompareBar extends ArqElement {
     if (!slot) return this.focusAdd();
     if (!this.open) this.open = true;
     slot.focus();
+  }
+
+  /** Alto de la barra plegada (solo el título), en px; 0 si no se ve. La ficha lo
+   *  descuenta del alto del hero para que la barra no tape los botones. */
+  get foldedHeight() {
+    const bar = this.shadowRoot?.querySelector('.bar');
+    if (!bar || bar.hidden) return 0;
+    const styles = getComputedStyle(bar);
+    const head = bar.querySelector('.head').getBoundingClientRect().height;
+    return Math.ceil(head + parseFloat(styles.paddingTop) + parseFloat(styles.paddingBottom) + parseFloat(styles.borderTopWidth));
+  }
+
+  #syncSpace() {
+    const height = this.foldedHeight;
+    if (height === this.#space) return;
+    this.#space = height;
+    this.emit('compare-space', { height });
   }
 
   /** URL de «Comparar»: la comparativa con los SKU elegidos. */
@@ -341,6 +362,7 @@ class ArqCompareBar extends ArqElement {
     const go = root.querySelector('.go');
     go.href = this.compareUrl;
     go.disabled = empty;
+    this.#syncSpace();
   }
 }
 

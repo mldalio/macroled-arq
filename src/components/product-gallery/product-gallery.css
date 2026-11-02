@@ -42,8 +42,17 @@
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
-  cursor: grab;
+  /* Clic o toque: abre la foto en el visor (arq:open) */
+  cursor: zoom-in;
   touch-action: pan-x pan-y;
+}
+
+/* Con mouse la foto no se arrastra ni se desliza con el trackpad: solo las
+   flechas, las miniaturas y el teclado (2026-11-02). Con el dedo, sí. */
+@media (hover: hover) and (pointer: fine) {
+  .track {
+    overflow-x: hidden;
+  }
 }
 
 .track:focus {
@@ -54,13 +63,9 @@
   display: none;
 }
 
-.track[data-dragging] {
-  scroll-snap-type: none;
-  cursor: grabbing;
-}
-
-/* Flechas: solo el chevron, sin caja. Aparecen al pasar el mouse o con el
-   foco. Las dos a la misma altura, al centro de la foto. */
+/* Flechas: solo el chevron, sin caja. Con mouse aparecen al pasar por encima
+   o con el foco; en táctil están siempre (2026-11-02). Las dos a la misma
+   altura, al centro de la foto. */
 .nav {
   display: inline-flex;
   flex: none;
@@ -119,12 +124,6 @@
   .gallery:focus-within .nav {
     opacity: 1;
     pointer-events: auto;
-  }
-}
-
-@media (hover: none), (pointer: coarse) {
-  .nav {
-    display: none;
   }
 }
 

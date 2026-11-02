@@ -48,6 +48,19 @@
   min-height: 0;
 }
 
+/* Recuadro de la foto: recorta la foto acercada (photo-zoom.js), así no tapa
+   las flechas ni la barra. Es el offsetParent de la foto. */
+.lightbox-frame {
+  position: relative;
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  justify-self: stretch;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .lightbox-image {
   display: block;
   width: 100%;
@@ -57,12 +70,79 @@
   object-fit: contain;
 }
 
+/* Zoom (PhotoViewer, la ficha): clic acerca y la foto acercada se arrastra.
+   Los gestos los maneja photo-zoom.js (touch-action: none para el pellizco).
+   El clic y + / − se animan con motion/duration/base y motion/easing/out
+   (con reduced motion, base vale 0); rueda, arrastre y pellizco siguen al
+   gesto, sin transición. */
+.lightbox.can-zoom .lightbox-frame {
+  touch-action: none;
+}
+
+.lightbox.can-zoom .lightbox-image {
+  transform-origin: 0 0;
+  cursor: zoom-in;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.lightbox.can-zoom .lightbox-image.is-animating {
+  transition:
+    scale var(--arq-motion-duration-base) var(--arq-motion-easing-out),
+    transform var(--arq-motion-duration-base) var(--arq-motion-easing-out);
+}
+
+.lightbox-frame.is-zoomed .lightbox-image {
+  cursor: grab;
+}
+
+.lightbox-frame.is-dragging .lightbox-image {
+  cursor: grabbing;
+}
+
 .lightbox-prev,
 .lightbox-next,
 .lightbox-close {
   flex: none;
 }
 
+
+/* Miniaturas (PhotoViewer, con dos fotos o más): una fila abajo, centrada,
+   de layout/gallery-thumb (105 Desktop · 76 Mobile, 5:4) a space/gap/sm. Si
+   no entran, se desliza sin barra visible. El padding space/padding/xs deja
+   lugar al anillo de foco, como en product-gallery. */
+.lightbox.has-thumbs[open] {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.lightbox-thumbs {
+  display: flex;
+  justify-content: safe center;
+  gap: var(--arq-space-gap-sm);
+  min-width: 0;
+  padding: var(--arq-space-padding-xs);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  /* Foco del visor (Dark), resuelto acá: una miniatura de estudio lleva
+     data-arq-theme="light" para su fondo y su anillo quedaría negro sobre el
+     scrim. Variable local. */
+  --viewer-focus: var(--arq-color-border-focus);
+}
+
+.lightbox-thumbs[hidden] {
+  display: none;
+}
+
+.lightbox-thumbs::-webkit-scrollbar {
+  display: none;
+}
+
+.lightbox-thumbs arq-gallery-thumb {
+  flex: none;
+  width: var(--arq-layout-gallery-thumb);
+  --arq-color-border-focus: var(--viewer-focus);
+}
 
 /* Una sola foto: sin columnas de flechas, la foto al centro */
 .lightbox.is-single .lightbox-stage {
@@ -81,6 +161,18 @@
   height: auto;
   max-width: min(100%, 70vw);
   max-height: min(100%, 70svh);
+}
+
+/* Foto de estudio (galería del hero de la ficha): PNG que puede tener
+   transparencia. Va entera, sobre color/surface/subtle del modo de la galería
+   (data-arq-theme en la imagen), en vez de sobre el negro del scrim. El fondo
+   mide lo que la foto: hasta que carga no se ve. */
+.lightbox.has-ground .lightbox-image {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  background: var(--arq-color-surface-subtle);
 }
 
 /* Al abrir, el visor y su scrim funden y la foto crece de motion/scale/enter
