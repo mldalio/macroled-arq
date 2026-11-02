@@ -128,7 +128,7 @@ class ArqFormContacto extends ArqElement {
     `<legend class="role-heading-3">Tu proyecto</legend>` +
     // 6 filas: el campo de Contacto v3 es más alto que las 4 del set de input
     `<arq-input name="detalles" type="textarea" rows="6" placeholder="Contanos el tipo de espacio, etapa del proyecto y qué necesitás…" required show-label>Detalles del proyecto</arq-input>` +
-    `<arq-file-upload name="adjunto" max-size="${MAX_FILE_MB}">Planos o imágenes (opcional)<span slot="helper">PDF, DWG, JPG o PNG · menos de ${MAX_FILE_MB} MB. ¿Pesa más? Pegá un link de Drive o WeTransfer en el detalle.</span></arq-file-upload>` +
+    `<arq-file-upload name="adjunto" max-size="${MAX_FILE_MB}">Planos o imágenes (opcional)<span slot="helper">PDF, DWG, JPG o PNG · menos de ${MAX_FILE_MB} MB.</span></arq-file-upload>` +
     `</fieldset>` +
     // Honeypot: fuera de la vista y del orden de Tab; una persona no lo completa
     `<div class="honeypot" aria-hidden="true"><label>No completar este campo <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>` +
