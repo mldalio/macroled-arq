@@ -59,8 +59,11 @@
 }
 
 @media (max-width: 767px) {
+  /* En un iPhone de 390 px con 20 de gutter, «45 productos» + Iluminar + Filtrar
+     (con gap lg) pasan por ~8 px y las acciones bajan de fila. Con sm-md entran
+     en una sola; a 320 px siguen bajando (flex-wrap de .bar). */
   .actions,
   .lead {
-    gap: var(--arq-space-gap-lg);
+    gap: var(--arq-space-gap-sm-md);
   }
 }

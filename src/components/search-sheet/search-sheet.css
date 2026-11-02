@@ -479,8 +479,11 @@
 
 /* Pantallas bajas (laptop, celular horizontal): menos aire arriba y abajo para
    que los recomendados entren sin scroll y sigan cuadrados. Antes de achatar la
-   imagen (search-sheet.js) se saca primero el aire. */
-@media (max-height: 760px) {
+   imagen (search-sheet.js) se saca primero el aire. Solo desde 768 px: en
+   Mobile vertical el contenido scrollea, y un iPhone con la barra de Safari
+   (~660 px de alto útil) caía acá y perdía el aire que Android (más alto)
+   conserva. */
+@media (max-height: 760px) and (min-width: 768px) {
   .content {
     padding-block: var(--arq-space-gap-xl);
   }
