@@ -345,6 +345,9 @@ export function fromDocuments(rawDocs) {
         // Nombre de esta variante (product_name de su fila): «Daö Doble» dentro del grupo «Daö»
         name: text(doc[FIELDS.name]),
         isDefault: doc === first,
+        // Card propia en el listado: cada SKU marcado con is_group_default (el producto «viene en»
+        // otros tamaños o potencias). Un producto con modelos (grupo_producto: Daö) sigue en una sola.
+        listed: text(first[FIELDS.productGroup]) ? doc === first : doc[FIELDS.isDefault] === true,
         // Novedad: la columna «new» de Sheets (bool), por SKU. Cada SKU marcado es un producto
         // recomendado del buscador, con sus propias fotos (catalog.js · getRecommendedProducts).
         isNew: doc[FIELDS.isNew] === true,

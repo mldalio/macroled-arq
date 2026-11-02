@@ -236,26 +236,14 @@
   overflow-wrap: break-word;
 }
 
-/* Small (y Large hasta 767 px): info a space/gap/md */
-.is-small .info {
-  gap: var(--arq-space-gap-md);
+/* en todos los tamaños y dispositivos, space/gap/sm (8 px) entre el título y los datos y entre
+   los datos y los acabados, y 16 px hasta «Comparar». Los acabados conservan su área táctil
+   (space/padding/xs arriba y abajo): sin compensarla, entre los datos y las muestras se ven 12 px. */
+.info {
+  gap: var(--arq-space-gap-sm);
 }
 
-/* Mobile (pedido de Lau, 2026-10-30): el texto queda más cerca del nombre
-   (space/gap/sm). Los acabados y «Comparar» conservan su distancia de
-   space/gap/md con un margen de space/gap/sm más. */
-@media (max-width: 767px) {
-  .is-small .info {
-    gap: var(--arq-space-gap-sm);
-  }
-
-  .is-small .finishes,
-  .is-small .compare {
-    margin-top: var(--arq-space-gap-sm);
-  }
-}
-
-/* Acabados debajo de los datos: swatch XSmall (swatch/xs, 14) en Large y en Small, a
+/* Acabados debajo de los datos: swatch Small (swatch/sm, 16) en Large y en Small, a
    space/gap/md entre muestras. Con 16 de separación, cada muestra queda a 30
    de la siguiente: cumple el espaciado de WCAG 2.5.8 (objetivo de 24 px). El
    aro de Selected (ring del swatch: 1 px a border/strong, 2 px) entra en ese espacio.
@@ -307,9 +295,14 @@
 .compare {
   position: relative;
   z-index: var(--card-above);
+  /* el texto de Comparar en 14/24 (role/body-compact) solo en la card: el checkbox usa
+     role/body y esas variables, así que no se toca el componente */
+  --arq-type-body-size: var(--arq-type-body-compact-size);
+  --arq-type-body-leading: var(--arq-type-body-compact-leading);
 }
 
-.card:not(.is-small) .compare {
+/* 8 del gap + space/gap/sm de margen = 16 px hasta «Comparar» (con o sin acabados) */
+.compare {
   margin-top: var(--arq-space-gap-sm);
 }
 
@@ -430,4 +423,139 @@
   justify-content: center;
   gap: var(--arq-space-gap-sm);
   height: 2lh;
+}
+
+/* temperatura de color dentro de la imagen, abajo a la
+   derecha. Velo claro (color/overlay/frosted + blur/backdrop-soft, como carousel-button Frosted) con
+   texto en color/text/primary; con Iluminar (.is-dark) el fondo pasa a color/surface/default y el
+   texto queda claro (color/text/primary en Dark).
+   Por encima de las fotos y por debajo del link estirado (el clic abre la ficha).
+   TODO (diseño): no está en Figma. */
+.temp {
+  position: absolute;
+  z-index: 2;
+  inset-block-end: var(--arq-space-padding-sm);
+  inset-inline-end: var(--arq-space-padding-sm);
+  padding: var(--arq-space-padding-2xs) var(--arq-space-padding-sm);
+  background-color: var(--arq-color-overlay-frosted);
+  -webkit-backdrop-filter: blur(var(--arq-blur-backdrop-soft));
+  backdrop-filter: blur(var(--arq-blur-backdrop-soft));
+  color: var(--arq-color-text-primary);
+  pointer-events: none;
+  transition-property: background-color, color;
+  transition-duration: var(--arq-motion-duration-slow);
+  transition-timing-function: var(--arq-motion-easing-standard);
+}
+
+/* Hover o foco sobre la imagen sin Iluminar: la imagen pasa a su versión encendida sobre fondo oscuro
+   (color/surface/inverse-hover) y el chip la acompaña: fondo inverso y texto inverso */
+.card:not(.is-dark).is-media-hover .temp,
+.card:not(.is-dark):has(.card-link:focus-visible) .temp {
+  background-color: var(--arq-color-surface-inverse);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  color: var(--arq-color-text-inverse);
+}
+
+.is-dark .temp {
+  background-color: var(--arq-color-surface-default);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.temp[hidden],
+.is-loading .temp {
+  display: none;
+}
+
+/* Datos en una sola línea: cada dato aparte, separados por una línea vertical (color/border/default,
+   border/default). Lo que no entra se corta (el resto va en la ficha). */
+.specs {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.specs ::slotted([slot='specs']) {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.specs ::slotted([slot='specs'][divided]) {
+  margin-inline-start: var(--arq-space-gap-sm);
+  padding-inline-start: var(--arq-space-gap-sm);
+  border-inline-start: var(--arq-border-default) solid var(--arq-color-border-default);
+}
+
+/* Mobile: los datos no se condensan ni se cortan; si no entran, siguen en la línea de abajo.
+   Cada dato lleva su línea vertical a la izquierda; el primero de cada línea la esconde: el margen
+   negativo la saca del recuadro y .specs (overflow: hidden) la recorta, y el margen negativo de
+   .specs devuelve el texto a la alineación del nombre. */
+@media (max-width: 767px) {
+  .specs {
+    /* 14/24 en Mobile (role/body-compact): el nombre es más chico que en Desktop. Se cambian las
+       variables del role/body del elemento, no el componente. */
+    --arq-type-body-size: var(--arq-type-body-compact-size);
+    --arq-type-body-leading: var(--arq-type-body-compact-leading);
+    flex-wrap: wrap;
+    align-items: flex-start;
+    white-space: normal;
+    margin-inline-start: calc(var(--arq-space-gap-sm) * -1);
+  }
+
+  .specs ::slotted([slot='specs']),
+  .specs ::slotted([slot='specs'][divided]) {
+    flex: none;
+    max-width: 100%;
+    overflow: visible;
+    margin-inline: calc(var(--arq-border-default) * -1) var(--arq-space-gap-sm);
+    padding-inline-start: var(--arq-space-gap-sm);
+    border-inline-start: var(--arq-border-default) solid var(--arq-color-border-default);
+    text-overflow: clip;
+  }
+}
+
+/* orden de la info: nombre, acabados y, debajo, los datos (antes: nombre, datos, acabados).
+   Solo CSS: el DOM y los slots no cambian. */
+.title {
+  order: 0;
+}
+
+.finishes {
+  order: 1;
+}
+
+.specs {
+  order: 2;
+}
+
+.compare {
+  order: 3;
+}
+
+/* entre las muestras y los datos, 16 px: space/gap/sm del gap más space/gap/sm de margen
+   (con acabados a la vista; sin ellos los datos quedan a space/gap/sm del nombre). Con 12 se veían
+   pegados: el aro de la muestra elegida se come parte del espacio. */
+.info:has(.finishes:not([hidden])) .specs {
+  margin-top: var(--arq-space-gap-sm);
+}
+
+/* acabados de más: se ven MAX_FINISHES y «+N» (product-card.js · #limitFinishes). El «+N» no es
+   interactivo: el clic pasa al link de la card. */
+.finishes ::slotted([data-overflow]) {
+  display: none !important;
+}
+
+.more {
+  color: var(--arq-color-text-tertiary);
+  pointer-events: none;
+}
+
+.more[hidden] {
+  display: none;
 }

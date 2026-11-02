@@ -35,7 +35,7 @@
   padding: 0;
   border: 0;
   background: var(--arq-color-surface-transparent);
-  color: var(--arq-color-text-primary);
+  color: var(--arq-sku-color, var(--arq-color-text-primary));
   text-align: start;
   cursor: pointer;
   -webkit-tap-highlight-color: var(--arq-color-surface-transparent);
@@ -46,7 +46,7 @@
    corta; también un SKU sin espacios. */
 .code {
   min-width: 0;
-  color: var(--arq-color-text-primary);
+  color: var(--arq-sku-color, var(--arq-color-text-primary));
   overflow-wrap: anywhere;
 }
 

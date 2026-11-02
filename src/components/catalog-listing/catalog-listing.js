@@ -444,6 +444,7 @@ class ArqCatalogListing extends ArqElement {
     const card = document.createElement('arq-product-card');
     card.href = data.href;
     card.family = data.family;
+    card.temperature = data.temperature;
     card.image = data.image;
     card.imageHover = data.imageHover;
     card.imageLit = data.imageLit;

@@ -135,6 +135,77 @@
   hyphens: auto;
 }
 
+/* tres grupos separados por una línea: título + descripción + sku / atributos que se
+   eligen / datos fijos (solo lectura). La línea va arriba de cada uno de los dos últimos, con
+   space/gap/xl del grupo anterior (el del encabezado) y space/padding/xl hasta su contenido. */
+.keyinfo {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  padding-top: var(--arq-space-padding-xl);
+  border-top: var(--arq-border-default) solid var(--arq-color-border-subtle);
+}
+
+.keydata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--arq-space-gap-md) var(--arq-space-gap-xl);
+  margin: 0;
+}
+
+.keydata[hidden],
+.usage[hidden] {
+  display: none;
+}
+
+.keydata-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xs);
+}
+
+.keydata-label {
+  margin: 0;
+  color: var(--arq-color-text-tertiary);
+}
+
+.keydata-value {
+  margin: 0;
+  color: var(--arq-color-text-primary);
+}
+
+.usage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xs);
+  margin: 0;
+  color: var(--arq-color-text-primary);
+}
+
+/* Sin línea entre las características y el uso sugerido: es un solo grupo */
+.keydata:not([hidden]) + .usage {
+  margin-top: var(--arq-space-gap-lg);
+}
+
+.usage-label {
+  color: var(--arq-color-text-tertiary);
+}
+
+/* Descripción y SKU, space/gap/sm entre los dos */
+.fineprint {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--arq-space-gap-sm);
+  align-self: stretch;
+  min-width: 0;
+}
+
+/* Pegados al título: space/gap/sm en lugar del gap del encabezado */
+.title-row + .fineprint {
+  margin-top: calc(var(--arq-space-gap-sm) - var(--arq-space-gap-xl));
+}
+
 .info {
   display: flex;
   flex: 1 1 auto;
@@ -160,7 +231,7 @@
    Desde 1920 px (Wide, como sku Dense) pasa a 16/24 con el mismo peso y color. */
 .description {
   max-width: 100%;
-  color: var(--arq-color-text-tertiary);
+  color: var(--arq-color-text-secondary);
   overflow-wrap: break-word;
   /* En minúscula, salvo la primera letra, como llegue de la base (2026-10-22) */
   text-transform: lowercase;
@@ -168,13 +239,6 @@
 
 .description::first-letter {
   text-transform: uppercase;
-}
-
-@media (min-width: 1920px) {
-  .description {
-    font-size: var(--arq-type-body-size);
-    line-height: var(--arq-type-body-leading);
-  }
 }
 
 /* Variante sin descripción: no queda el espacio */
@@ -192,11 +256,18 @@
   display: none;
 }
 
-/* Entre características, space/gap/xl-2xl (antes lg: quedaban pegadas) */
+/* entre atributos que se eligen, space/gap/lg (antes xl-2xl); línea arriba, que los
+   separa del título + descripción + sku */
 .options {
   display: flex;
   flex-direction: column;
-  gap: var(--arq-space-gap-xl-2xl);
+  gap: var(--arq-space-gap-lg);
+}
+
+.options:not(:empty) {
+  align-self: stretch;
+  padding-top: var(--arq-space-padding-xl);
+  border-top: var(--arq-border-default) solid var(--arq-color-border-subtle);
 }
 
 .buy {
@@ -920,4 +991,13 @@
     flex: none;
     width: 100%;
   }
+}
+
+/* el SKU del mismo color que la descripción */
+.sku {
+  --arq-sku-color: var(--arq-color-text-secondary);
+}
+
+.keyinfo:has(> .keydata[hidden]):has(> .usage[hidden]) {
+  display: none;
 }

@@ -166,3 +166,11 @@
 :host(:focus:not(:focus-visible)) {
   outline: none;
 }
+
+/* compact (solo de código: configurador de la ficha bajo el nombre): el dato en
+   14 px y Medium en lugar de role/body-regular */
+:host([compact]) .title {
+  font-weight: var(--arq-font-weight-medium);
+  font-size: var(--arq-type-body-compact-size);
+  line-height: calc(1em + var(--arq-border-strong));
+}

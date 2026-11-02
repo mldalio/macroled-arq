@@ -61,7 +61,8 @@ export const ATTRIBUTES = Object.freeze({
   dimensiones: a('Dimensiones', 'materiales', { filter: false }),
   calado: a('Calado', 'materiales', { filter: false }),
   medidas_cabezal: a('Medidas del cabezal', 'materiales', { filter: false }),
-  color_lente: a('Color del lente', 'materiales', { filter: false }),
+  // Texto largo («Blanco brillante - Negro brillante»): no va en el resumen de las cards
+  color_lente: a('Color del lente', 'materiales', { filter: false, summary: false }),
   material_cuerpo: a('Material del cuerpo', 'materiales'),
   material_lente: a('Material de la lente', 'materiales'),
   largo_cable: a('Largo de cable', 'materiales', { filter: false }),
@@ -163,7 +164,7 @@ export function specSections(values) {
 // prefix: un valor que es solo un número («65», «6») se muestra con su sigla
 // («IP65», «IK06»); digits rellena con ceros. «IP65» o «IP 65» no duplican el prefijo
 // y cualquier otro texto se muestra como llega.
-function specValue({ prefix, digits = 0 }, value) {
+export function specValue({ prefix, digits = 0 }, value) {
   if (!prefix) return value;
   const match = String(value).match(new RegExp(`^\\s*(?:${prefix}\\s*)?(\\d+)\\s*$`, 'i'));
   return match ? `${prefix}${match[1].padStart(digits, '0')}` : value;

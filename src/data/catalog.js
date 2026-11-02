@@ -16,7 +16,7 @@
 // specs vale para todas las variantes del grupo; attributes de la variante pisa o completa.
 
 import { loadSource, loadGroupDetails } from './source.js';
-import { ATTRIBUTES, DOWNLOAD_FILTERS, TABLE_COLUMNS, attributeInfo, specSections, tableValues } from './attributes.js';
+import { ATTRIBUTES, DOWNLOAD_FILTERS, TABLE_COLUMNS, attributeInfo, specSections, specValue, tableValues } from './attributes.js';
 import { variantOptions, findVariant, choose, compareValues } from './variants.js';
 import { normalize, queryWords, matchWords } from './text.js';
 import { finishImage } from './finishes.js';
@@ -252,6 +252,7 @@ function finishOptions(group, shown, active = {}) {
       selected: finishOf(shown) === finish.name,
       sku: variant.sku,
       href: productHref(group.id, variant.sku),
+      temperature: temperatureOf(variant),
       image: images.studio ?? null,
       imageHover: images.studioOn ?? images.context ?? images.contextOn ?? null,
       imageLit: images.studioOn ?? null,
@@ -269,7 +270,8 @@ function productCard(group, variant = firstFinishVariant(group) ?? group.default
     sku: variant.sku,
     name: group.name,
     meta: meta(group),
-    specs: specs(group),
+    specs: specs(group, variant),
+    temperature: temperatureOf(variant),
     finishes: finishOptions(group, variant, active),
     href: productHref(group.id, variant.sku), // la URL siempre lleva el SKU, también el predeterminado
     // Reposo: hero (img_main). Hover sin Iluminar: hero encendido (img_main_on); con Iluminar:
@@ -282,6 +284,36 @@ function productCard(group, variant = firstFinishVariant(group) ?? group.default
     // Con Iluminar: contexto encendido; sin él, la contraria: la principal apagada.
     imageHoverLit: images.contextOn ?? images.studio ?? null,
   };
+}
+
+// Cards de un grupo en un listado o colección: una por cada SKU marcado con is_group_default (el producto
+// «viene en» otros tamaños o potencias). Con varios product_name en el grupo, cada card lleva el
+// de su SKU («Hoshi Mesa»). Con un solo marcado, o ninguno, la card de siempre.
+function markedCards(group, active = {}) {
+  const marked = group.variants.filter((v) => v.listed);
+  if (marked.length < 2) {
+    const variant = firstFinishVariant(group, active);
+    return variant ? [productCard(group, variant, active)] : [];
+  }
+  const shown = [...new Set(marked.map((v) => matchingVariant(group, active, v)).filter(Boolean))];
+  // Lo que distingue a las cards (sin acabados): la potencia, si cambia entre ellas, va en el
+  // nombre («Hoshi 7W»). Debajo, los demás atributos por los que ese producto cambia (ángulo…),
+  // como rango entre las variantes que comparten su potencia: «24° – 60°».
+  const fields = [...new Set([...group.variantAttributes, 'potencia', 'angulo_apertura'])].filter((field) => !FINISH_FIELDS.includes(field) && field !== 'modelo');
+  const differs = (field, variants) => new Set(variants.map((v) => v.values[field]).filter(hasValue)).size > 1;
+  const lead = fields.includes('potencia') && differs('potencia', shown) ? 'potencia' : fields.find((field) => differs(field, shown));
+  // De menor a mayor por lo que lleva el nombre (potencia…); sin número, por el texto
+  if (lead) shown.sort((a, b) => numberOf(a.values[lead]) - numberOf(b.values[lead]) || String(a.values[lead]).localeCompare(String(b.values[lead]), 'es', { numeric: true }));
+  return shown.map((variant) => {
+    const card = productCard(group, variant, active);
+    const named = group.variantNames && variant.name;
+    const siblings = lead ? group.variants.filter((v) => v.values[lead] === variant.values[lead]) : group.variants;
+    return {
+      ...card,
+      name: named ? variant.name : [group.name, lead && variant.values[lead]].filter(hasValue).join(' '),
+      specs: cardSpecs(siblings, variant, lead ? [lead] : []),
+    };
+  });
 }
 
 const pick = (object = {}) => Object.fromEntries(Object.entries(object).filter(([, v]) => hasValue(v) && (!Array.isArray(v) || v.length)));
@@ -343,7 +375,16 @@ export async function listProducts({ filters, query, ...category } = {}) {
   const cards = scope.flatMap((group) => {
     const match = found.get(group);
     // Sin SKU buscado, la card arranca en el primer acabado (negro)
-    const variant = match.bySku ? matchingVariant(group, active, match.variant) : firstFinishVariant(group, active);
+    if (match.bySku) {
+      const variant = matchingVariant(group, active, match.variant);
+      return variant ? [productCard(group, variant, active)] : [];
+    }
+    // Sin búsqueda: una card por cada SKU marcado con is_group_default (en la colección y en el listado general)
+    if (!words.length) {
+      const several = markedCards(group, active);
+      if (several.length > 1) return several;
+    }
+    const variant = firstFinishVariant(group, active);
     return variant ? [productCard(group, variant, active)] : [];
   });
   return demoListing({ cards, count: cards.length, filters: filterRows(scope), available: availableValues(scope, active) });
@@ -763,6 +804,8 @@ export function variantDetails(group, sku) {
     name: variantName(group, variant),
     description: variant.description,
     values: variant.values,
+    // Lo que ya se elige como atributo de variante (ej. potencia) no se repite en la banda
+    keyData: keyData(variant.values, group.variantAttributes ?? []),
     images: gallery.map((src, i) => ({ src, srcOn: galleryOn[i] ?? null, alt: `${group.name}, imagen ${i + 1}` })),
     sections: specSections(variant.values),
     downloads: downloads(variant),
@@ -781,7 +824,8 @@ export async function getCollection(id) {
   const images = collection.images ?? {};
   return {
     collection,
-    cards: groups.filter((g) => g.collection === id).map((g) => productCard(g)),
+    // Una card por cada SKU marcado con is_group_default (casi siempre uno por grupo)
+    cards: groups.filter((g) => g.collection === id).flatMap((g) => markedCards(g)),
     images: {
       gallery: unique(images.gallery),
       description: hasValue(images.description) ? images.description : null,
@@ -790,11 +834,9 @@ export async function getCollection(id) {
   };
 }
 
-// Datos de la card: dos líneas cortas, como las de LEDS C4. Primero lo que
-// diferencia al grupo (el primer atributo de variante que no es acabado ni
-// potencia: «1 – 3 módulos»; sin ninguno, la temperatura de color) y después la
-// potencia. CRI e IP/IK quedan para la ficha.
-// TODO (diseño): confirmar el par de datos y su estilo.
+// Datos de la card: una sola línea con ángulo · IP · CRI · UGR (el que falta no se muestra); la
+// temperatura de color va aparte, dentro de la imagen. IK, potencia y el resto quedan para la ficha.
+// TODO (diseño): confirmar los datos de la card y su estilo.
 const numberOf = (value) => Number.parseFloat(String(value).replace(/^x/i, '').replace(',', '.')); // ignora el «x1» de los módulos
 
 function fieldValues(group, field) {
@@ -805,25 +847,54 @@ function fieldValues(group, field) {
 // «6W» y «12W» → «6 – 12 W»; sin unidad en común, los valores completos
 function valueRange(values) {
   if (values.length < 2) return values[0] ?? '';
-  const parts = [values[0], values.at(-1)].map((value) => String(value).trim().match(/^([\d.,]+)\s*(\D*)$/));
+  const parts = [values[0], values.at(-1)].map((value) => String(value).trim().match(/^([d.,]+)s*(D*)$/));
   if (parts.every(Boolean) && parts[0][2] && parts[0][2] === parts[1][2]) return `${parts[0][1]} – ${parts[1][1]} ${parts[0][2]}`;
   return `${values[0]} – ${values.at(-1)}`;
 }
 
-function fieldSummary(group, field) {
-  const values = fieldValues(group, field);
+// Valor de un dato en las variantes dadas: el rango o los valores («2700K / 3000K»)
+function keyValue(variants, field) {
+  const info = attributeInfo(field);
+  const values = fieldValues({ variants }, field).map((value) => specValue(info, value));
   if (!values.length) return '';
-  if (field === 'temperatura_color') return values.join(' · ');
   if (field === 'potencia') return valueRange(values);
-  const range = values.length > 1 ? `${values[0]} – ${values.at(-1)}` : values[0];
-  const unit = attributeInfo(field).unit;
-  return unit ? `${range} ${values.length === 1 && numberOf(values[0]) === 1 ? unit[0] : unit[1]}` : range;
+  const text = values.join(' / ');
+  return field === 'cri' ? `CRI ${text}` : field === 'ugr' ? `UGR ${text}` : text;
 }
 
-function specs(group) {
-  const differs = group.variantAttributes.find((field) => !['potencia', 'modelo'].includes(field) && attributeInfo(field).control !== 'swatches' && attributeInfo(field).summary !== false);
-  const first = (differs && fieldSummary(group, differs)) || fieldSummary(group, 'temperatura_color');
-  return [first, fieldSummary(group, 'potencia')].filter(Boolean);
+// Datos de la card en una línea: [[ángulo, IP, CRI, UGR]], cada dato aparte (la card los separa con
+// una línea vertical). El ángulo es el único que puede variar entre las `variants` que agrupa la card
+// (rango); IP, CRI y UGR son los de la variante que muestra (`shown`), no los de todo el grupo.
+// skip: campos que ya van en el nombre de la card.
+const CARD_FIELDS = ['angulo_apertura', 'proteccion_ip', 'cri', 'ugr'];
+const cardSpecs = (variants, shown, skip = []) => {
+  const parts = CARD_FIELDS.filter((field) => !skip.includes(field)).map((field) => keyValue(field === 'angulo_apertura' ? variants : [shown], field)).filter(Boolean);
+  return parts.length ? [parts] : [];
+};
+
+const specs = (group, variant) => cardSpecs(group.variants, variant);
+
+// Temperatura de color de la variante: va dentro de la imagen de la card, abajo a la derecha
+const temperatureOf = (variant) => (hasValue(variant.values.temperatura_color) ? String(variant.values.temperatura_color).trim() : '');
+
+// Datos clave de la ficha, en este orden. «proteccion» junta IP e IK («IP65 / IK06»).
+const KEY_FIELDS = ['temperatura_color', 'potencia', 'angulo_apertura', 'proteccion', 'cri'];
+const KEY_LABELS = { temperatura_color: 'Temperatura', potencia: 'Potencia', angulo_apertura: 'Ángulo', proteccion: 'Protección', cri: 'CRI' };
+const PROTECTION = ['proteccion_ip', 'proteccion_ik'];
+
+/**
+ * Datos clave de una variante para la banda de la ficha: { items: [{ field, label, value }], usage }.
+ * skip: campos que ya se eligen como atributo de variante (potencia…): no se repiten en la banda.
+ */
+export function keyData(values, skip = []) {
+  const valueOf = (field) => field === 'proteccion'
+    ? PROTECTION.filter((part) => hasValue(values[part])).map((part) => specValue(attributeInfo(part), values[part])).join(' / ')
+    : hasValue(values[field]) ? specValue(attributeInfo(field), values[field]) : '';
+  const items = KEY_FIELDS
+    .filter((field) => !skip.includes(field))
+    .map((field) => ({ field, label: KEY_LABELS[field], value: valueOf(field) }))
+    .filter((item) => item.value);
+  return { items, usage: hasValue(values.escena_uso_sugerido) ? String(values.escena_uso_sugerido).trim() : '' };
 }
 
 // ── Comparativa ──────────────────────────────────────────────────────
