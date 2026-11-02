@@ -161,19 +161,25 @@ class ArqProductCard extends ArqElement {
     const card = root.querySelector('.card');
     card.addEventListener('pointerenter', wantHover);
     root.querySelector('.card-link').addEventListener('focus', wantHover);
-    // Hover con mouse sobre cualquier parte de la card (imagen, nombre,
-    // acabados): un solo estado para el fondo y la imagen.
+    // Hover con mouse solo sobre la imagen (no el nombre ni los acabados): un
+    // solo estado para el fondo y la imagen. El ::after del link estirado tapa
+    // la imagen, así que se mide contra su caja en vez de escuchar en .card-media.
+    const media = root.querySelector('.card-media');
     const setMediaHover = (on) => {
+      if (card.classList.contains('is-media-hover') === on) return;
       card.classList.toggle('is-media-hover', on);
       this.#syncHoverGround();
+    };
+    const overMedia = (event) => {
+      const box = media.getBoundingClientRect();
+      return event.clientX >= box.left && event.clientX < box.right &&
+        event.clientY >= box.top && event.clientY < box.bottom;
     };
     const link = root.querySelector('.card-link');
     link.addEventListener('focus', () => this.#syncHoverGround());
     link.addEventListener('blur', () => this.#syncHoverGround());
-    card.addEventListener('pointerenter', (event) => event.pointerType === 'mouse' && setMediaHover(true));
-    card.addEventListener('pointermove', (event) => {
-      if (event.pointerType === 'mouse' && !card.classList.contains('is-media-hover')) setMediaHover(true);
-    });
+    card.addEventListener('pointerenter', (event) => event.pointerType === 'mouse' && setMediaHover(overMedia(event)));
+    card.addEventListener('pointermove', (event) => event.pointerType === 'mouse' && setMediaHover(overMedia(event)));
     card.addEventListener('pointerleave', () => setMediaHover(false));
     for (const name of ['name', 'specs', 'finishes']) {
       root.querySelector(`slot[name="${name}"]`).addEventListener('slotchange', () => this.#renderSlots());

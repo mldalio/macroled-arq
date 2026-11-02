@@ -18,8 +18,20 @@
   --card-above: 4;
 }
 
+/* Solo la imagen es link (decisión 2026-11-02): el ::after cubre la caja de
+   .card-media (arriba, todo el ancho y su misma proporción) y el texto del
+   nombre no recibe el puntero. Así el resto de la card no navega, no lleva
+   la mano ni muestra la URL en la barra del navegador. El <a> sigue siendo el
+   que recibe el foco de teclado. */
+.card-link {
+  pointer-events: none;
+}
+
 .card-link::after {
   z-index: 3;
+  inset: 0 0 auto;
+  aspect-ratio: var(--card-ratio, 7 / 10);
+  pointer-events: auto;
 }
 
 .card.is-small {
@@ -168,8 +180,8 @@
   opacity: 1;
 }
 
-/* Hover sobre toda la tarjeta (.is-media-hover lo pone el JS con el mouse
-   sobre la card: imagen, nombre o acabados dan el mismo estado). Solo con la
+/* Hover sobre la imagen (.is-media-hover lo pone el JS con el mouse sobre
+   .card-media; el nombre y los acabados no lo activan). Solo con la
    foto ya cargada (.loaded): la de hover se pide al primer hover y, si el
    fundido arrancaba antes, terminaba sin foto y la foto aparecía de golpe al llegar. */
 @media (hover: hover) and (pointer: fine) {
