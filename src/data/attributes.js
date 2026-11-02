@@ -190,3 +190,34 @@ export function variantFields(variantAttributes) {
     })
     .filter(Boolean);
 }
+
+// Qué es cada dato de la card y de la ficha: texto del tooltip al pasar el mouse.
+// TODO (contenido): confirmar los textos con el equipo.
+export const FIELD_TIPS = {
+  temperatura_color: 'Temperatura de color: qué tan cálida o fría es la luz. Menos kelvin, luz más cálida.',
+  potencia: 'Potencia: consumo eléctrico del producto, en watts.',
+  angulo_apertura: 'Ángulo de apertura: qué tan abierto es el haz de luz. Más grados, luz más dispersa.',
+  proteccion: 'Protección: IP indica la resistencia al polvo y al agua; IK, al impacto.',
+  proteccion_ip: 'IP: resistencia al polvo y al agua. Cuanto mayor el número, mayor la protección.',
+  proteccion_ik: 'IK: resistencia a los impactos. Cuanto mayor el número, mayor la protección.',
+  cri: 'CRI: fidelidad con que la luz muestra los colores. 100 es la máxima.',
+  ugr: 'UGR: índice de deslumbramiento. Cuanto menor, más confortable.',
+};
+
+/**
+ * Tooltip de un dato ya armado («IP65», «CRI 90», «45°», «6 – 12 W», «2700K»), para los que llegan
+ * como texto suelto (la demo, HTML escrito a mano). Sin coincidencia, no hay tooltip.
+ */
+export function tipForText(text) {
+  const value = String(text ?? '').trim();
+  const field =
+    /^IP\s*\d/i.test(value) ? 'proteccion_ip'
+    : /^IK\s*\d/i.test(value) ? 'proteccion_ik'
+    : /^CRI\b/i.test(value) ? 'cri'
+    : /^UGR\b/i.test(value) ? 'ugr'
+    : /\d\s*K\b/i.test(value) ? 'temperatura_color'
+    : /°/.test(value) ? 'angulo_apertura'
+    : /\d\s*W\b/i.test(value) ? 'potencia'
+    : null;
+  return field ? FIELD_TIPS[field] : '';
+}

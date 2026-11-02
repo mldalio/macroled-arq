@@ -16,7 +16,7 @@
 // specs vale para todas las variantes del grupo; attributes de la variante pisa o completa.
 
 import { loadSource, loadGroupDetails } from './source.js';
-import { ATTRIBUTES, DOWNLOAD_FILTERS, TABLE_COLUMNS, attributeInfo, specSections, specValue, tableValues } from './attributes.js';
+import { ATTRIBUTES, DOWNLOAD_FILTERS, FIELD_TIPS, TABLE_COLUMNS, attributeInfo, specSections, specValue, tableValues } from './attributes.js';
 import { variantOptions, findVariant, choose, compareValues } from './variants.js';
 import { normalize, queryWords, matchWords } from './text.js';
 import { finishImage } from './finishes.js';
@@ -868,7 +868,9 @@ function keyValue(variants, field) {
 // skip: campos que ya van en el nombre de la card.
 const CARD_FIELDS = ['angulo_apertura', 'proteccion_ip', 'cri', 'ugr'];
 const cardSpecs = (variants, shown, skip = []) => {
-  const parts = CARD_FIELDS.filter((field) => !skip.includes(field)).map((field) => keyValue(field === 'angulo_apertura' ? variants : [shown], field)).filter(Boolean);
+  const parts = CARD_FIELDS.filter((field) => !skip.includes(field))
+    .map((field) => ({ text: keyValue(field === 'angulo_apertura' ? variants : [shown], field), tip: FIELD_TIPS[field] }))
+    .filter((part) => part.text);
   return parts.length ? [parts] : [];
 };
 
@@ -883,7 +885,7 @@ const KEY_LABELS = { temperatura_color: 'Temperatura', potencia: 'Potencia', ang
 const PROTECTION = ['proteccion_ip', 'proteccion_ik'];
 
 /**
- * Datos clave de una variante para la banda de la ficha: { items: [{ field, label, value }], usage }.
+ * Datos clave de una variante para la banda de la ficha: { items: [{ field, label, value }] }.
  * skip: campos que ya se eligen como atributo de variante (potencia…): no se repiten en la banda.
  */
 export function keyData(values, skip = []) {
@@ -894,7 +896,7 @@ export function keyData(values, skip = []) {
     .filter((field) => !skip.includes(field))
     .map((field) => ({ field, label: KEY_LABELS[field], value: valueOf(field) }))
     .filter((item) => item.value);
-  return { items, usage: hasValue(values.escena_uso_sugerido) ? String(values.escena_uso_sugerido).trim() : '' };
+  return { items };
 }
 
 // ── Comparativa ──────────────────────────────────────────────────────

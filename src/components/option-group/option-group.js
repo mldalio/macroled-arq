@@ -44,7 +44,7 @@ class ArqOptionGroup extends ArqElement {
   static template =
     `<div class="group"><span class="heading" hidden><span class="label role-label"></span>` +
     // El lector de pantalla ya anuncia la opción elegida: el valor es solo visual
-    `<span class="value role-body-sm" aria-hidden="true" hidden></span></span>` +
+    `<span class="value role-body-medium" aria-hidden="true" hidden></span></span>` +
     `<div class="options"><slot></slot></div></div>`;
 
   setup() {

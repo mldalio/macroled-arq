@@ -47,8 +47,12 @@
 
 import { ArqElement } from '../../base/arq-element.js';
 import { trackThemeImage, watchTheme, whenImageReady } from '../../base/theme.js';
+import { tipForText } from '../../data/attributes.js';
+import { temperatureColor } from '../../base/color-temperature.js';
+import { bindTooltip } from '../../base/tooltip.js';
 import '../checkbox/checkbox.js';
 import cardLinkCss from '../../base/card-link.css?inline';
+import tooltipCss from '../../base/tooltip.css?inline';
 import css from './product-card.css?inline';
 
 const MOBILE = matchMedia('(max-width: 767px)');
@@ -83,10 +87,13 @@ export function appendSpecs(card, specs = []) {
   for (const item of specs) {
     // una línea de varios datos ([ángulo, IP, CRI, UGR]): cada dato va en su span y los
     // que siguen al primero llevan `divided`, la línea vertical que los separa (product-card.css)
-    [].concat(item).forEach((text, index) => {
+    // cada dato es un texto o { text, tip }: tip es el tooltip al pasar el mouse
+    [].concat(item).forEach((part, index) => {
+      const { text, tip } = typeof part === 'object' ? part : { text: part };
       const line = document.createElement('span');
       line.slot = 'specs';
       line.textContent = text;
+      if (tip) line.dataset.tip = tip;
       if (index) line.toggleAttribute('divided', true);
       card.append(line);
     });
@@ -98,7 +105,7 @@ const FINISH_DATA = ['sku', 'href', 'temperature', 'image', 'imageHover', 'image
 
 class ArqProductCard extends ArqElement {
   static tag = 'arq-product-card';
-  static styles = cardLinkCss + css;
+  static styles = cardLinkCss + tooltipCss + css;
   static properties = {
     size: { type: String, values: ['large', 'small'], default: 'large' }, // Size
     showCompare: { type: Boolean }, // Show compare
@@ -118,8 +125,8 @@ class ArqProductCard extends ArqElement {
     `<img class="img base" alt="" loading="lazy" decoding="async">` +
     `<img class="img hover" alt="" decoding="async">` +
     `<span class="fallback role-body-sm" aria-hidden="true"></span>` +
-    // velo claro sobre la foto; con Iluminar, fondo oscuro y texto claro (.is-dark)
-    `<span class="temp role-body-sm" hidden></span>` +
+    // temperatura de color: un puntito de ese color y el texto, sin fondo
+    `<span class="temp role-body-sm" hidden><span class="temp-dot" aria-hidden="true"></span><span class="temp-text"></span></span>` +
     `</div>` +
     `<div class="info">` +
     `<div class="title"><a class="card-link name"><slot name="name"></slot></a></div>` +
@@ -192,6 +199,9 @@ class ArqProductCard extends ArqElement {
     card.addEventListener('pointerenter', (event) => event.pointerType === 'mouse' && setMediaHover(overMedia(event)));
     card.addEventListener('pointermove', (event) => event.pointerType === 'mouse' && setMediaHover(overMedia(event)));
     card.addEventListener('pointerleave', () => setMediaHover(false));
+    // Tooltip de cada dato de la línea (hover con mouse); arriba del dato, dentro de .card
+    // (no de .info: el link estirado se ancla a .card y .info no puede ser position: relative)
+    bindTooltip(card, root.querySelector('.specs'), '[slot="specs"]');
     for (const name of ['name', 'specs', 'finishes']) {
       root.querySelector(`slot[name="${name}"]`).addEventListener('slotchange', () => this.#renderSlots());
     }
@@ -246,7 +256,11 @@ class ArqProductCard extends ArqElement {
       else link.removeAttribute('href');
     }
     const temp = root.querySelector('.temp');
-    temp.textContent = this.temperature ?? '';
+    temp.querySelector('.temp-text').textContent = this.temperature ?? '';
+    const dot = temp.querySelector('.temp-dot');
+    const dotColor = temperatureColor(this.temperature);
+    dot.hidden = !dotColor;
+    if (dotColor) dot.style.backgroundColor = dotColor;
     temp.hidden = !this.temperature;
     const compare = root.querySelector('.compare');
     compare.hidden = !this.showCompare;
@@ -292,6 +306,11 @@ class ArqProductCard extends ArqElement {
     const filled = (name) =>
       root.querySelector(`slot[name="${name}"]`).assignedNodes({ flatten: true }).some((node) => node.nodeType === Node.ELEMENT_NODE || node.textContent.trim());
     root.querySelector('.specs').hidden = !filled('specs');
+    // datos escritos a mano sin tooltip: se deduce del texto
+    for (const spec of this.querySelectorAll(':scope > [slot="specs"]:not([data-tip])')) {
+      const tip = tipForText(spec.textContent);
+      if (tip) spec.dataset.tip = tip;
+    }
     root.querySelector('.finishes').hidden = !filled('finishes');
     this.#renderFinishes();
     const name = this.querySelector('[slot="name"]')?.textContent.trim() ?? '';
