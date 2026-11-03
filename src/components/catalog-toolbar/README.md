@@ -23,6 +23,7 @@ panel.addEventListener('arq:apply', (e) => (toolbar.count = aplicar(e.detail.fil
 | — (solo código) | `stuck` | `stuck` | booleano. Lo pone el listado mientras la barra está pegada debajo del navbar: la línea superior pasa a `color/surface/transparent` (sin cambiar el alto), para que no se vea doble con la del navbar |
 | — | `for` | `for` | `id` del `arq-filter-panel` que abre Filtrar |
 | button · Show count | `filter-count` | `filterCount` | Filtros aplicados. Con `for` se actualiza solo al aplicar |
+| — (solo código) | slot `action` | — | Un `<arq-button>` en el lugar de Iluminar, junto a Filtrar. La colección Daö (sin Iluminar) pone «Configurar Daö». Con el botón, el gap hasta Filtrar es `space/gap/md` en Desktop y Tablet (Mobile, `space/gap/sm-md`). `TODO` (diseño): no está en el set |
 | Breakpoint | — | — | Media query: hasta 767 px es Mobile |
 
 - **Count** va en un `aria-live="polite"`: se anuncia cuando la página lo cambia al filtrar.

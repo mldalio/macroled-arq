@@ -47,7 +47,7 @@ import { tokenMs, transitionMs } from '../../base/motion.js';
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const TEXT = {
-  title: 'Armá tu Daö',
+  title: 'Configurar Daö',
   loading: 'Cargando configurador…',
   empty: 'No hay piezas de Daö para armar.',
   error: 'No se pudo cargar el configurador. Probá de nuevo en unos minutos.',
@@ -123,7 +123,8 @@ class ArqDaoConfigurator extends ArqElement {
   #done = new Set(); // pasos confirmados con «Continuar»
   #chosen = new Set(); // grupos donde el usuario ya eligió (group, qty, color, head, headColor, lamp, front)
   #active = null; // paso abierto
-  #editing = false; // con todo hecho: «Cambiar» vuelve a desplegar los tres pasos
+  #editing = false; // con todo hecho: «Cambiar» vuelve a desplegar los tres pasos (hasta volver al armado)
+  #confirming = false; // se acaba de confirmar un paso: cambiando el armado, si quedó completo vuelve a él
   #entering = null; // paso que acaba de abrirse (animación)
   #skus = {};
   #result = null;
@@ -151,6 +152,8 @@ class ArqDaoConfigurator extends ArqElement {
       const key = group.dataset.step;
       if (!key) return;
       const value = event.detail.value;
+      // Lo elegido antes del cambio: lo que siga siendo compatible se conserva
+      const prev = resolveDao(this.#model, this.#state, this.#hrefs);
       // Color de un cabezal (aro de varios módulos)
       if (key.startsWith('headColorBy:')) {
         const grupo = key.slice('headColorBy:'.length);
@@ -166,33 +169,29 @@ class ArqDaoConfigurator extends ArqElement {
           const rows = view.lamps.filter((item) => (item.nombre || item.sku) === value);
           this.#state.lamp = (rows.find((item) => item.haz === view.lamp?.haz) ?? rows[0])?.sku ?? null;
         } else this.#state.lamp = value;
-        this.#choose(key);
+        this.#choose(key, this.#compatible(prev, key));
         this.#render(`[data-step="${CSS.escape(key)}"] [value="${CSS.escape(String(value))}"]`);
         return;
       }
-      // Otro aro (modelo): los cabezales se vuelven a elegir y arrancan en el color
-      // del aro. Cambiar solo el color o los módulos no toca los ya elegidos.
-      if (key === 'group') {
-        this.#state.headColor = null;
-        this.#state.headColorBy = null;
-      }
+      // Otro aro (modelo): los cabezales y la lámpara que sigan siendo
+      // compatibles se conservan (#compatible); los demás se vuelven a elegir.
+      // Cambiar solo el color o los módulos no toca los ya elegidos.
       this.#state[key] = key === 'qty' ? Number(value) : value;
       // Un cabezal por módulo: elegir uno (aro de 1 módulo o un solo cabezal posible) los pone a todos
       if (key === 'head') this.#state.headCounts = null;
-      this.#choose(key);
+      this.#choose(key, this.#compatible(prev, key));
       this.#render(`[data-step="${CSS.escape(key)}"] [value="${CSS.escape(String(value))}"]`);
     });
+    // Mobile: la flecha del indicador vuelve al paso anterior
     root.querySelector('.progress').addEventListener('click', (event) => {
-      const bar = event.target.closest?.('[data-section]');
-      if (!bar) return;
-      // Las barras van en el orden de los pasos: la de un paso hecho anterior al actual vuelve hacia atrás
-      const bars = [...event.currentTarget.querySelectorAll('.progress-bar')];
-      const current = bars.findIndex((item) => item.hasAttribute('aria-current'));
+      const back = event.target.closest?.('[data-section]');
+      if (!back) return;
+      // Vuelve hacia atrás: el paso sale hacia la derecha y el anterior entra desde la izquierda
       this.#leave(() => {
-        this.#active = bar.dataset.section;
+        this.#active = back.dataset.section;
         this.#entering = this.#active;
         this.#render();
-      }, bars.indexOf(bar) < current);
+      }, true);
     });
     steps.addEventListener('click', (event) => {
       const print = event.target.closest?.('.print');
@@ -225,15 +224,58 @@ class ArqDaoConfigurator extends ArqElement {
     });
   }
 
-  // Marca un grupo como elegido: lo que depende de él se vuelve a elegir y lo
-  // que trae un valor predeterminado queda elegido con ese valor.
-  #choose(key) {
+  // Marca un grupo como elegido: lo que depende de él se vuelve a elegir (salvo
+  // lo de `keep`, que sigue siendo compatible) y lo que trae un valor
+  // predeterminado queda elegido con ese valor.
+  #choose(key, keep = new Set()) {
     this.#chosen.add(key);
     for (const dependent of DEPENDENTS[key] ?? []) {
+      if (keep.has(dependent) && this.#chosen.has(dependent)) continue;
       this.#chosen.delete(dependent);
       this.#done.delete(STEP_OF[dependent]);
     }
     for (const preset of DEFAULTS[key] ?? []) this.#chosen.add(preset);
+  }
+
+  // Después de cambiar `key` (el estado ya cambió): de lo que dependía de él,
+  // lo que sigue siendo compatible con lo nuevo. Otro aro conserva el cabezal
+  // si el aro nuevo lo lleva (con sus colores, si los tiene) y la lámpara y el
+  // frente si siguen en la lista; otro cabezal u otra lámpara, lo mismo con lo
+  // que sigue. Lo que no se conserva se vuelve a elegir (#choose).
+  #compatible(prev, key) {
+    const keep = new Set();
+    if (!prev) return keep;
+    const view = () => resolveDao(this.#model, this.#state, this.#hrefs);
+    if (key === 'group') {
+      const next = view();
+      const grupos = this.#chosen.has('head') ? prev.headParts.map(({ row }) => row.grupo) : [];
+      const fits = grupos.length > 0 && grupos.every((grupo) => next?.heads.some((item) => item.grupo === grupo));
+      // Con un solo cabezal, va en todos los módulos del aro nuevo; combinados, solo si son los mismos módulos
+      if (fits && (grupos.length === 1 || next.qty === prev.qty)) {
+        if (grupos.length === 1 && this.#state.headCounts) this.#state.headCounts = { [grupos[0]]: next.qty };
+        keep.add('head');
+        const after = view();
+        const colorsOk = this.#combined(prev)
+          ? prev.headParts.every(({ row }) => after.headColorsBy[row.grupo]?.includes(row.color))
+          : after.headColors.includes(prev.headColor);
+        if (colorsOk) keep.add('headColor');
+      }
+      if (!keep.has('headColor')) {
+        this.#state.headColor = null;
+        this.#state.headColorBy = null;
+      }
+    }
+    // La lámpara se mira con el cabezal del armado nuevo (el que se conserva o,
+    // si no, el primero posible): PAR11 va con todos los aros de Daö
+    if (['group', 'head', 'lamp', 'lampBeam'].includes(key)) {
+      const next = view();
+      const lampOk = key === 'lamp' || key === 'lampBeam' || (prev.lamp && next?.lamps.some((item) => item.sku === prev.lamp.sku));
+      if (lampOk) {
+        if (key !== 'lamp' && key !== 'lampBeam') keep.add('lamp').add('lampBeam');
+        if (prev.front && next?.fronts.some((item) => item.sku === prev.front.sku)) keep.add('front');
+      }
+    }
+    return keep;
   }
 
   // − / + de un cabezal (aro de 2 o 3 módulos), de a uno. Sumar con todos los
@@ -305,6 +347,8 @@ class ArqDaoConfigurator extends ArqElement {
     this.#done = new Set();
     this.#chosen = new Set();
     this.#active = null;
+    this.#editing = false;
+    this.#confirming = false;
     this.#entering = null;
     this.#skus = {};
     this.#finalShown = false;
@@ -339,7 +383,7 @@ class ArqDaoConfigurator extends ArqElement {
     if (back) steps.dataset.dir = 'back';
     else delete steps.dataset.dir;
     const step = steps.querySelector('.step.is-active');
-    if (!step || reducedMotion() || !matchMedia('(max-width: 767px)').matches) return change();
+    if (!step || reducedMotion() || !matchMedia('(max-width: 767px)').matches || steps.classList.contains('is-editing')) return change();
     this.#leaving = true;
     step.classList.add('is-leaving');
     setTimeout(() => {
@@ -348,10 +392,12 @@ class ArqDaoConfigurator extends ArqElement {
     }, tokenMs(this, '--arq-motion-duration-fade'));
   }
 
+  // Cambiando el armado se sigue en los pasos desplegados: el siguiente que
+  // quedó sin elegir se abre en su lugar y, completo, vuelve el armado.
   #advance() {
     if (this.#active) this.#done.add(this.#active);
     this.#active = null;
-    this.#editing = false;
+    if (this.#editing) this.#confirming = true;
     this.#render();
   }
 
@@ -397,7 +443,8 @@ class ArqDaoConfigurator extends ArqElement {
     const root = this.shadowRoot;
     root.querySelector('.body').hidden = false;
     const finished = order.every((id) => this.#isDone(id));
-    if (!finished) this.#editing = false;
+    if (finished && this.#confirming) this.#editing = false;
+    this.#confirming = false;
     let nodes;
     if (finished && !this.#editing) nodes = [this.#final(view, order)];
     else {
@@ -407,12 +454,16 @@ class ArqDaoConfigurator extends ArqElement {
       if (finished) nodes.push(this.#backToSummary());
     }
     root.querySelector('.steps').replaceChildren(...nodes);
-    this.#progress(order, finished && !this.#editing);
+    // Cambiando un armado terminado, en Mobile los pasos se despliegan en su
+    // lugar, como en Desktop (sin el indicador ni un paso a la vez), también si
+    // el cambio obliga a volver a elegir un paso siguiente: se abre en su lugar.
+    root.querySelector('.steps').classList.toggle('is-editing', this.#editing);
+    this.#progress(order, finished || this.#editing);
     this.#panel(view, order);
     const entering = root.querySelector('.is-entering');
     if (entering) {
       // Mobile: el paso nuevo arranca arriba (la columna que se desplaza es el cuerpo)
-      if (matchMedia('(max-width: 767px)').matches) root.querySelector('.body').scrollTo({ top: 0, behavior: reducedMotion() ? 'auto' : 'smooth' });
+      if (matchMedia('(max-width: 767px)').matches && !this.#editing) root.querySelector('.body').scrollTo({ top: 0, behavior: reducedMotion() ? 'auto' : 'smooth' });
       else entering.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'nearest' });
       this.#entering = null;
     }
@@ -420,38 +471,46 @@ class ArqDaoConfigurator extends ArqElement {
   }
 
   // ── Indicador de pasos (solo Mobile: ahí se ve un paso a la vez) ───────
-  // Una barra por paso y «Paso 1 de 3 · Aro»; las de los pasos hechos vuelven a ellos.
+  // «Paso 2 de 3 · Cabezal», con una flecha que vuelve al paso anterior (desde
+  // el segundo), y una barra por paso, solo de indicador.
   #progressKey = '';
 
-  #progress(order, summary) {
+  #progress(order, finished) {
     const nav = this.shadowRoot.querySelector('.progress');
     // Solo se rearma cuando cambia el paso o lo hecho: así la barra que se llena
     // anima una vez y no con cada opción que se toca
-    const key = summary || !this.#active ? '' : `${this.#active}|${order.map((id) => (this.#isDone(id) ? 1 : 0)).join('')}`;
+    const key = finished || !this.#active ? '' : `${this.#active}|${order.map((id) => (this.#isDone(id) ? 1 : 0)).join('')}`;
     if (key === this.#progressKey) return;
     this.#progressKey = key;
     if (!key) return nav.replaceChildren();
     const current = order.indexOf(this.#active);
+    const head = document.createElement('div');
+    head.className = 'progress-head';
+    const previous = order[current - 1];
+    if (previous) {
+      const back = document.createElement('arq-icon-button');
+      back.className = 'progress-back';
+      back.setAttribute('icon', 'chevron-left');
+      back.dataset.section = previous;
+      back.textContent = TEXT.backTo(STEP_NAME[previous]);
+      head.append(back);
+    }
     const label = document.createElement('p');
     label.className = 'progress-label role-body-compact-medium';
     label.textContent = TEXT.stepOf(current + 1, order.length, STEP_NAME[this.#active]);
+    head.append(label);
     const bars = document.createElement('ol');
     bars.className = 'progress-bars';
     order.forEach((id, index) => {
       const item = document.createElement('li');
-      const reachable = this.#isDone(id) && id !== this.#active;
-      const bar = document.createElement(reachable ? 'button' : 'span');
+      const bar = document.createElement('span');
       bar.className = 'progress-bar';
       bar.classList.toggle('is-reached', index <= current || this.#isDone(id));
-      if (reachable) {
-        bar.type = 'button';
-        bar.dataset.section = id;
-        bar.setAttribute('aria-label', TEXT.backTo(STEP_NAME[id]));
-      } else if (index === current) bar.setAttribute('aria-current', 'step');
+      if (index === current) bar.setAttribute('aria-current', 'step');
       item.append(bar);
       bars.append(item);
     });
-    nav.replaceChildren(label, bars);
+    nav.replaceChildren(head, bars);
   }
 
   // ── Pasos ────────────────────────────────────────────────────────────
@@ -587,7 +646,12 @@ class ArqDaoConfigurator extends ArqElement {
         ready = item.ready();
         continue;
       }
-      if (item.options.length === 1) this.#chosen.add(item.key);
+      // Una sola opción se elige sola, con sus predeterminados (el cabezal único
+      // de Mini Daö arranca en el color del aro, como si se lo tocara)
+      if (item.options.length === 1 && !this.#chosen.has(item.key)) {
+        this.#chosen.add(item.key);
+        for (const preset of DEFAULTS[item.key] ?? []) this.#chosen.add(preset);
+      }
       nodes.push(this.#cards(item.key, item.label, this.#chosen.has(item.key) ? item.selected : null, item.options, { hideLabel: item.hideLabel }));
       ready = this.#chosen.has(item.key);
     }
@@ -881,9 +945,8 @@ class ArqDaoConfigurator extends ArqElement {
     change.textContent = TEXT.change;
     change.setAttribute('label', `${TEXT.change}: configuración`);
     head.append(title, change);
-    // Tres bloques: el armado (título y especificaciones), la descarga y las
-    // piezas (título y lista). En Desktop la descarga va al final; en Mobile,
-    // debajo de las especificaciones, para que se vea sin desplazar (CSS order).
+    // Tres bloques: el armado (título y especificaciones), la descarga (debajo,
+    // para que se vea sin desplazar) y las piezas (título y lista).
     const summary = document.createElement('div');
     summary.className = 'result-block result-summary';
     summary.append(head);
@@ -912,7 +975,7 @@ class ArqDaoConfigurator extends ArqElement {
     print.className = 'print';
     print.loadingLabel = TEXT.generating;
     print.textContent = TEXT.print;
-    section.append(summary, parts, print);
+    section.append(summary, print, parts);
     return section;
   }
 

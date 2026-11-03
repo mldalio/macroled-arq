@@ -126,7 +126,7 @@ Salen de las pantallas de Final, no de la página Componentes, y no cuentan en e
 | ✅ coleccion | `<arq-coleccion>` | Página de colección: cards de sus productos, galería, texto + imagen y mosaico con flechas ([README](../src/components/coleccion/README.md)) |
 | ✅ form-contacto | `<arq-form-contacto>` | Contacto (v3): información por slot (fija al desplazar en Desktop), formulario con validación, honeypot y envío a n8n, y preguntas frecuentes opcionales por slot ([README](../src/components/form-contacto/README.md)) |
 | ✅ ficha-producto | `<arq-ficha-producto>` | Ficha de producto: hero con galería y configurador, descargas, especificaciones, descripción, glosario, inspiración y colección. En Daö, la pestaña Configurador arma el producto ([README](../src/components/ficha-producto/README.md)) |
-| ✅ dao-configurator | `<arq-dao-configurator>` | Modal a pantalla completa para armar un Daö (aro, cabezal y lámpara, con sus colores) paso por paso; se abre con «Configura tu Daö» junto a «Accesorios y lámparas compatibles». Datos desde Typesense ([README](../src/components/dao-configurator/README.md)) |
+| ✅ dao-configurator | `<arq-dao-configurator>` | Modal a pantalla completa para armar un Daö (aro, cabezal y lámpara, con sus colores) paso por paso; se abre con «Configurar Daö» junto a «Accesorios y lámparas compatibles». Datos desde Typesense ([README](../src/components/dao-configurator/README.md)) |
 | ✅ descargas | `<arq-descargas>` | Página Descargas: «Buscar archivos por producto» con variants-table (todos los SKU, buscador) y el modal de descargas de cada fila ([README](../src/components/descargas/README.md)) |
 | ✅ compare-table | `<arq-compare-table>` | Tabla de la Comparativa: hasta 3 productos; arma adentro compare-group, compare-section-group y compare-row. «Solo diferencias» llega desde compare-header ([README](../src/components/compare-table/README.md)) |
 | ✅ comparativa | `<arq-comparativa>` | Página Comparativa: combina compare-header y compare-table con los SKU de `?sku=`, con datos del catálogo ([README](../src/components/comparativa/README.md)) |
@@ -269,6 +269,8 @@ Encabezado desplegable de catalog-nav-mobile. Mismo patrón que accordion-item: 
 - Propiedades: Count; Show iluminar; Breakpoint: Desktop · Mobile (sin State: `docs/decisiones.md`, 2026-10-19 · catalog-toolbar sin State=Scroll). Solo en código, `stuck`: pegada debajo del navbar, sin línea superior (2026-10-19 · Navbar fijo en los listados)
 
 Barra sobre la grilla de Productos y Colecciones: cantidad (role/body, color/text/secondary), toggle Iluminar, divider vertical y botón Filtrar (button Outline expuesto: con filtros activos, Show count + icon/filter-off). Mismo contenido en Desktop y Mobile. No cambia al desplazarse la página: mantiene el padding vertical space/padding/md.
+
+En código, slot `action` (solo de código, `TODO` diseño): un button en el lugar de Iluminar, junto a Filtrar. La usa la colección Daö para «Configurar Daö».
 
 ## category-card
 
@@ -963,4 +965,4 @@ Agregado en código (2026-10-22): icon/check (Figma 2891:13154), asset original 
 
 - Figma: sin set. Referencia vieja: `AccessoriesSection` (2256:28229). `TODO` (diseño): set y ficha `doc/compatible-products`.
 
-Sección de compatibles de la ficha de Daö y de la lámpara: título (slot) y una grilla de search-card, cada una con link a su ficha. Fichas de Daö (aro, cabezal): «Accesorios y lámparas compatibles», sin frentes, y «Configura tu Daö» en la punta opuesta al título. Ficha de la lámpara: «Accesorio requerido» con su frente. Una tarjeta por grupo; relaciones del configurador. Sin items no se muestra.
+Sección de compatibles de la ficha de Daö y de la lámpara: título (slot) y una grilla de search-card, cada una con link a su ficha. Fichas de Daö (aro, cabezal): «Accesorios y lámparas compatibles», sin frentes, y «Configurar Daö» en la punta opuesta al título. Ficha de la lámpara: «Accesorio requerido» con su frente. Una tarjeta por grupo; relaciones del configurador. Sin items no se muestra.

@@ -58,6 +58,21 @@
   flex: 1 0 auto; /* con las acciones en su propia línea, el divider queda junto a Filtrar */
 }
 
+/* action (solo de código): en el lugar de Iluminar. Si las acciones bajan a su
+   propia línea, queda a la izquierda y Filtrar a la derecha, como Iluminar. */
+.action {
+  display: flex;
+  flex: 1 0 auto;
+}
+
+/* Con action, de él a Filtrar space/gap/md en Desktop y Tablet (Mobile sigue
+   con sm-md). */
+@media (min-width: 768px) {
+  .actions:has(> .action:not([hidden])) {
+    gap: var(--arq-space-gap-md);
+  }
+}
+
 @media (max-width: 767px) {
   /* En un iPhone de 390 px con 20 de gutter, «45 productos» + Iluminar + Filtrar
      (con gap lg) pasan por ~8 px y las acciones bajan de fila. Con sm-md entran

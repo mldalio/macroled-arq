@@ -44,6 +44,8 @@ import '../compare-picker/compare-picker.js';
 import '../grid/grid.js';
 import { appendFinishes, appendSpecs } from '../product-card/product-card.js';
 import '../swatch/swatch.js';
+import '../button/button.js';
+import '../dao-configurator/dao-configurator.js';
 import { covered, reveal, revealCss } from '../../base/reveal.js';
 import { toMs } from '../../base/motion.js';
 import css from './catalog-listing.css?inline';
@@ -57,7 +59,7 @@ const LISTING_WIDE = matchMedia('(min-width: 1920px)');
 // Colección (id, sin tildes) sin Iluminar, como la ficha de Daö (decisiones.md, 2026-10-23)
 const NO_ILLUMINATION_COLLECTION = 'dao';
 
-const TEXT = { loading: 'Cargando productos…', empty: 'No hay productos con estos filtros.', error: 'No se pudieron cargar los productos. Probá de nuevo en unos minutos.' };
+const TEXT = { configure: 'Configurar Daö', loading: 'Cargando productos…', empty: 'No hay productos con estos filtros.', error: 'No se pudieron cargar los productos. Probá de nuevo en unos minutos.' };
 
 class ArqCatalogListing extends ArqElement {
   static tag = 'arq-catalog-listing';
@@ -77,6 +79,7 @@ class ArqCatalogListing extends ArqElement {
     `<arq-filter-panel id="filters" show-categories><slot name="filter-title" slot="title"></slot></arq-filter-panel>` +
     `<arq-compare-bar class="compare"></arq-compare-bar>` +
     `<arq-compare-picker class="picker"></arq-compare-picker>` +
+    `<arq-dao-configurator class="dao-config"></arq-dao-configurator>` +
     // Aviso para lectores de pantalla (límite de Comparar). Está siempre en la
     // página y vacío; solo cambia su texto (DESIGN.md §9).
     `<p class="notice visually-hidden" aria-live="polite"></p>`;
@@ -97,6 +100,7 @@ class ArqCatalogListing extends ArqElement {
     this.#category = categoryFromUrl();
     this.#query = new URLSearchParams(location.search).get('q')?.trim() ?? '';
     this.#syncIlluminate();
+    this.#syncConfigure();
     root.querySelector('slot[name="nav"]').addEventListener('slotchange', () => this.#markNav());
     // Si cambia el href de un link del nav (la demo reescribe los que llegan
     // de Typesense), se vuelve a marcar el actual. selected no es href: no
@@ -302,8 +306,31 @@ class ArqCatalogListing extends ArqElement {
     this.#filters = {};
     this.shadowRoot.querySelector('arq-filter-panel').clear();
     this.#syncIlluminate();
+    this.#syncConfigure();
     this.#markNav();
     this.#load();
+  }
+
+  // En la colección Daö, «Configurar Daö» va en catalog-toolbar, en el lugar
+  // de Iluminar (que Daö no tiene), junto a Filtrar. Como en la ficha, un
+  // arq-button Filled que abre arq-dao-configurator. Con una búsqueda o en otra
+  // categoría se saca.
+  #syncConfigure() {
+    const toolbar = this.shadowRoot.querySelector('.toolbar');
+    const plain = (text) => (text ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').trim().toLowerCase();
+    const { collection, family } = this.#category;
+    const dao = !this.#query && [collection, family].some((name) => plain(name) === NO_ILLUMINATION_COLLECTION);
+    let button = toolbar.querySelector(':scope > .configure');
+    if (dao && !button) {
+      button = document.createElement('arq-button');
+      button.className = 'configure';
+      button.slot = 'action';
+      button.textContent = TEXT.configure;
+      button.addEventListener('click', () => this.shadowRoot.querySelector('.dao-config').show(null, button));
+      toolbar.append(button);
+    } else if (!dao) {
+      button?.remove();
+    }
   }
 
   // La colección Daö no tiene Iluminar: sin toggle, y si se llegó iluminado
