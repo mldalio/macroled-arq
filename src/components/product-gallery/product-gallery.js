@@ -34,12 +34,18 @@
 //   brillo de la foto debajo (setOverlayTone), como el breadcrumb y el toggle.
 // - Desktop: miniaturas sobre la imagen, abajo a la izquierda. Mobile: debajo.
 //   Si no entran, la fila se desliza (decisión 2026-10-02 · Galerías).
+// - Producto grande con `zoom` (Kanu Jardín 90 cm, Kanu Pared 50 cm): la foto
+//   de estudio que llena el recuadro se corre y, si no alcanza, se achica, para
+//   que el producto quede a space/padding/3xl de los bordes, como el aire
+//   (src/base/image-fit.js).
+//   Con el atributo `crop` (solo de código; Afo) no: la foto llena el recuadro.
 // - Miniaturas: un <button> cada una (Tab), la elegida con aria-current.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { watchTheme } from '../../base/theme.js';
 import { icon } from '../../base/icons.js';
 import { GALLERY_WIDTH, sizedImage } from '../../base/image-size.js';
+import { containTransform, fitScale, productBox, tokenPx, wholeRect } from '../../base/image-fit.js';
 import '../gallery-thumb/gallery-thumb.js';
 import css from './product-gallery.css?inline';
 
@@ -89,6 +95,7 @@ class ArqProductGallery extends ArqElement {
   #nextSrc = null; // la última foto pedida por un cambio de variante (#crossfade)
   #width = 0;
   #resize = new ResizeObserver(() => this.#realign());
+  #boxes = new WeakMap(); // <img> → dónde está el producto en su foto (image-fit.js)
 
   /** La foto que se está viendo (la mide la ficha para el contraste de Iluminar). */
   get currentImage() {
@@ -170,6 +177,10 @@ class ArqProductGallery extends ArqElement {
       this.#images = this.#images.filter((image) => image !== failed);
       this.#index = Math.max(0, this.#images.indexOf(current));
       this.#render(null, { quick: true });
+    }, true);
+    // Cada foto que llega (otra foto, variante o Iluminar), con su escala
+    this.addEventListener('load', (event) => {
+      if (event.target.slot === 'image') this.#fitImage(event.target);
     }, true);
     watchTheme(this, 'themeChanged');
     this.#render();
@@ -314,6 +325,7 @@ class ArqProductGallery extends ArqElement {
       const src = this.#src(image);
       if (!(fading && i === this.#index) && img.getAttribute('src') !== src) img.src = src;
       img.dataset.fit = this.#fit(src);
+      if (img.dataset.fit === 'fill') productBox(src); // la copia chica se pide junto con la foto (#fitImage)
       img.alt = image.alt ?? '';
       img.draggable = false;
       if (i > 0) img.loading = 'lazy';
@@ -425,6 +437,7 @@ class ArqProductGallery extends ArqElement {
   }
 
   #realign() {
+    for (const img of this.#fitted()) this.#applyFit(img);
     const width = this.#fitSlides();
     if (!width || width === this.#width) return;
     this.#width = width;
@@ -470,6 +483,7 @@ class ArqProductGallery extends ArqElement {
     previous.className = quick ? 'theme-transition quick' : 'theme-transition';
     previous.src = previousSrc;
     previous.dataset.fit = this.#fit(previousSrc);
+    this.#fitImage(previous);
     previous.alt = '';
     previous.setAttribute('aria-hidden', 'true');
     const image = this.shadowRoot.querySelector('.image');
@@ -501,6 +515,52 @@ class ArqProductGallery extends ArqElement {
       img.src = nextSrc;
       return img.decode().catch(() => {});
     }).then(fade);
+  }
+
+  // Las fotos de la galería y las que funden encima
+  #fitted() {
+    return [...this.querySelectorAll(':scope > img[slot="image"]'), ...this.shadowRoot.querySelectorAll('.theme-transition')];
+  }
+
+  // Producto grande: mide la foto (una vez por URL) y le pone su escala. Solo
+  // las que llenan el recuadro (fill); las de aire ya se ven enteras.
+  async #fitImage(img) {
+    const src = img.getAttribute('src');
+    const box = img.dataset.fit === 'fill' && !this.hasAttribute('crop') ? await productBox(src) : null;
+    if (img.getAttribute('src') !== src) return;
+    this.#boxes.set(img, box);
+    this.#applyFit(img);
+  }
+
+  #applyFit(img) {
+    const frame = this.frame;
+    const size = { width: frame.clientWidth, height: frame.clientHeight };
+    const box = this.#boxes.get(img);
+    const margin = tokenPx('--arq-space-padding-3xl');
+    const { scale, origin, position } = fitScale(box, size, { margin, centerX: true, shift: true });
+    const moved = scale < 1 || position !== '50% 50%';
+    // Producto apoyado en un borde de la foto (la base de Kanu Jardín 90 cm): se
+    // ve entero, con aire arriba y apoyado abajo, más angosto que el de 50 cm
+    // (que llena el recuadro), así se aprecia el alto. Desde la foto entera
+    // (contain), salvo que haya que agrandarla: la caja crecería sobre las otras fotos.
+    const whole = moved && box && Object.values(box.anchored).some(Boolean)
+      ? containTransform(wholeRect(box, size, margin), size, box.ratio)
+      : null;
+    if (whole && whole.scale <= 1) {
+      img.dataset.whole = '';
+      img.style.objectPosition = img.style.scale = '';
+      img.style.transformOrigin = '0 0';
+      img.style.transform = whole.transform;
+      return;
+    }
+    // Sin borde apoyado (Kanu Pared 50 cm): primero se corre la foto
+    // (object-position) y, si no alcanza, se achica. El recorte de cover pasa
+    // antes que scale y lo que deja afuera no vuelve.
+    delete img.dataset.whole;
+    img.style.transform = '';
+    img.style.objectPosition = position === '50% 50%' ? '' : position;
+    img.style.scale = scale < 1 ? String(scale) : '';
+    img.style.transformOrigin = scale < 1 ? origin : '';
   }
 }
 

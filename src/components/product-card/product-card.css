@@ -45,6 +45,7 @@
    oscuro con Iluminar). La foto va encima. */
 .card-media {
   position: relative;
+  overflow: clip; /* foto de un producto grande, agrandada desde la foto entera (product-card.js, #applyFit) */
   aspect-ratio: var(--card-ratio, 7 / 10);
   background-color: var(--arq-color-surface-subtle);
   /* Hover y foco: fundido de motion/duration/slow. Iluminar pone

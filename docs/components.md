@@ -75,8 +75,8 @@ Descripción de cada componente, copiada de Figma (página Componentes, campo *d
 | ✅ [pdf-spec-group](#pdf-spec-group) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-spec-row](#pdf-spec-row) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
 | ✅ [pdf-spec-row · 2 col](#pdf-spec-row--2-col) | — | En `src/pdf/` con pdfmake: no es Web Component ([README](../src/pdf/README.md)) |
-| ✅ [product-card](#product-card) | `<arq-product-card>` | En código ([README](../src/components/product-card/README.md)); imágenes reales con TODO |
-| ✅ [product-gallery](#product-gallery) | `<arq-product-gallery>` | En código ([README](../src/components/product-gallery/README.md)) · sin arrastre con mouse, flechas también en táctil y clic en la foto para ampliarla (`arq:open`, 2026-11-02) |
+| ✅ [product-card](#product-card) | `<arq-product-card>` | En código ([README](../src/components/product-card/README.md)); imágenes reales con TODO · producto grande achicado para que entre en el recuadro (2026-11-03) |
+| ✅ [product-gallery](#product-gallery) | `<arq-product-gallery>` | En código ([README](../src/components/product-gallery/README.md)) · sin arrastre con mouse, flechas también en táctil y clic en la foto para ampliarla (`arq:open`, 2026-11-02) · producto grande achicado en las fotos en zoom (2026-11-03) |
 | ✅ [search-dropdown](#search-dropdown) | `<arq-search-dropdown>` | En código ([README](../src/components/search-dropdown/README.md)) |
 | ✅ [search-field](#search-field) | `<arq-search-field>` | En código ([README](../src/components/search-field/README.md)) |
 | ✅ [search-result](#search-result) | `<arq-search-result>` | En código ([README](../src/components/search-result/README.md)) |
