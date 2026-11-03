@@ -193,7 +193,7 @@ export function variantFields(variantAttributes) {
 
 // Qué significa cada característica, con el texto de las fichas de macroled.com.ar
 // (diccionario de especificaciones de /productos/<sku>; entre «» el nombre allá). Lo
-// usan el ⓘ de la ficha y de variants-table (src/base/info-tip.js) y, con el nombre
+// usan el ⓘ de la ficha (src/base/info-tip.js) y, con el nombre
 // adelante, el tooltip de los datos de la card (FIELD_TIPS). Un campo sin entrada
 // allá (Altura, Módulos, Calado, Medidas del cabezal, Color del lente, Uso sugerido,
 // Garantía) no lleva ⓘ. TODO (contenido): confirmar con el equipo.

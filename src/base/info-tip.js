@@ -1,8 +1,8 @@
 // info-tip · el ⓘ de las características, como en las fichas de macroled.com.ar:
 // una etiqueta con un ícono que abre una burbuja con el nombre y qué significa.
-// Lo usan las especificaciones y los datos clave de la ficha y el encabezado de
-// variants-table de la ficha (Descargas no). Estilos en info-tip.css, que el componente
-// suma a los suyos (static styles).
+// Lo usan las especificaciones y los datos clave de la ficha (la tabla de
+// variantes, en la ficha y en Descargas, no). Estilos en info-tip.css, que el
+// componente suma a los suyos (static styles).
 //
 //   const button = infoTip({ label: 'CRI', help: fieldHelp('cri') });  // etiqueta + ⓘ
 //   infoTipHtml({ title: 'Flujo luminoso', help })                      // solo el ⓘ (string)
@@ -14,7 +14,7 @@
 //   o el scroll. Con teclado, también al enfocar el botón.
 // - Va arriba de la etiqueta, con una flecha que la señala; si no entra, abajo.
 //   Nunca se sale de la pantalla. Es un popover (capa superior): no la recorta
-//   el scroll horizontal de la tabla.
+//   ningún contenedor con scroll.
 //
 // TODO (diseño): no está en Figma (ni el ícono info, ni la burbuja).
 
