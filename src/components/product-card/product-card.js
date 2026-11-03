@@ -44,12 +44,18 @@
 // - La foto principal funde al cargar la primera vez (motion/duration/slow);
 //   si ya estaba en la caché aparece directo. Al cambiar de acabado o con
 //   Iluminar, no.
+// - Producto grande (Döuli 18W, Höshi 12W, Sen 10W): la foto de estudio se
+//   achica para que el producto no pase de space/padding/3xl (2xl en Mobile)
+//   de los bordes del recuadro; lo que se pasa se achica con la raíz cúbica, sin llegar a
+//   space/padding/lg, así el más grande sigue viéndose más grande
+//   (src/base/image-fit.js). Se mide antes de mostrarla.
 
 import { ArqElement } from '../../base/arq-element.js';
 import { trackThemeImage, watchTheme, whenImageReady } from '../../base/theme.js';
 import { tipForText } from '../../data/attributes.js';
 import { temperatureColor } from '../../base/color-temperature.js';
 import { bindTooltip } from '../../base/tooltip.js';
+import { containTransform, fitScale, productBox, tokenPx } from '../../base/image-fit.js';
 import '../checkbox/checkbox.js';
 import cardLinkCss from '../../base/card-link.css?inline';
 import tooltipCss from '../../base/tooltip.css?inline';
@@ -147,12 +153,17 @@ class ArqProductCard extends ArqElement {
   #infoWidth = 0; // ancho de .info, para ver cuántos acabados entran
   #revealed = false; // la foto principal ya tuvo su fundido de entrada
   #failed = new Set(); // fotos que no cargaron
+  #boxes = new Map(); // <img> → dónde está el producto en su foto (image-fit.js)
 
   setup() {
     const root = this.shadowRoot;
     for (const img of root.querySelectorAll('.img')) {
-      // Se muestra al cargar. No se usa hidden: una <img> lazy oculta no se carga.
-      img.addEventListener('load', () => img.classList.add('loaded'));
+      // Se muestra al cargar, ya con su escala (producto grande, #fit): así no
+      // se ve achicarse. No se usa hidden: una <img> lazy oculta no se carga.
+      img.addEventListener('load', () => {
+        const src = img.getAttribute('src');
+        this.#fit(img).then(() => img.getAttribute('src') === src && img.classList.add('loaded'));
+      });
       // Foto que no carga (404 en la base): se recuerda, así un nuevo dibujo
       // (Iluminar, hover) no la vuelve a pedir ni esconde el fondo con el nombre.
       // Si era la encendida, se usa la apagada (DESIGN.md §8).
@@ -222,6 +233,10 @@ class ArqProductCard extends ArqElement {
       this.#infoWidth = entry.contentRect.width;
       this.#limitFinishes(this.#swatches());
     }).observe(root.querySelector('.info'));
+    // El margen del producto grande es en px: con otro tamaño de card, otra escala
+    new ResizeObserver(() => {
+      for (const img of root.querySelectorAll('.img')) this.#applyFit(img);
+    }).observe(root.querySelector('.card-media'));
     watchTheme(this, 'themeChanged');
   }
 
@@ -244,7 +259,7 @@ class ArqProductCard extends ArqElement {
       ? (dark ? this.imageHoverLit || this.imageHover : this.imageHover)
       : (dark ? this.imageLit || this.image : this.image);
     const overlay = previousSrc && nextSrc && previousSrc !== new URL(nextSrc, location.href).href
-      ? this.#createThemeOverlay(root.querySelector('.card-media'), previousSrc)
+      ? this.#createThemeOverlay(root.querySelector('.card-media'), previousSrc, visible)
       : null;
     this.#dark = dark;
     this.#renderImages();
@@ -486,9 +501,12 @@ class ArqProductCard extends ArqElement {
     const family = key(this.family);
     const name = key(this.querySelector('[slot="name"]')?.textContent);
     const contain = family === 'fuji' || family === 'mini kai' || family === 'mini kai round' || family === 'sen' || name === 'tori visera' || name.startsWith('mini kai');
+    const before = card?.className;
     card?.classList.toggle('is-contain', contain);
     // Foto ancha: con aire a los lados (product-card.css)
     card?.classList.toggle('is-wide', name.startsWith('mini kai'));
+    // Otro recorte: otra escala para el producto grande
+    if (card && card.className !== before) for (const img of card.querySelectorAll('.img')) this.#applyFit(img);
   }
 
   #setSrc(img, src) {
@@ -499,6 +517,7 @@ class ArqProductCard extends ArqElement {
       return;
     }
     img.src = src;
+    productBox(src); // la copia chica se pide junto con la foto (#fit)
     // Primera foto principal: funde al llegar, salvo que ya esté lista en el
     // mismo instante (en caché). complete solo no alcanza: una lazy que todavía
     // no empezó a cargar también da complete, pero sin tamaño.
@@ -508,11 +527,15 @@ class ArqProductCard extends ArqElement {
     }
   }
 
-  #createThemeOverlay(media, src) {
+  // from: la <img> que se estaba viendo; la de encima lleva su misma escala
+  #createThemeOverlay(media, src, from) {
     media.querySelector('.theme-transition')?.remove();
     const overlay = document.createElement('img');
     overlay.className = 'theme-transition';
     overlay.src = src;
+    overlay.style.objectFit = from.style.objectFit;
+    overlay.style.transformOrigin = from.style.transformOrigin;
+    overlay.style.transform = from.style.transform;
     overlay.alt = '';
     overlay.setAttribute('aria-hidden', 'true');
     media.append(overlay);
@@ -531,6 +554,46 @@ class ArqProductCard extends ArqElement {
     overlay.classList.add('fade-out');
     const duration = getComputedStyle(overlay).transitionDuration.split(',')[0];
     if (!Number.parseFloat(duration)) overlay.remove();
+  }
+
+  // Producto grande: mide la foto (una vez por URL) y le pone su escala
+  async #fit(img) {
+    const src = img.getAttribute('src');
+    const box = await productBox(src);
+    if (img.getAttribute('src') !== src) return;
+    this.#boxes.set(img, box);
+    this.#applyFit(img);
+  }
+
+  // Fuji, Mini Kai, Sen y Tori Visera van enteros (contain). Mini Kai ya tiene
+  // aire a los lados (padding): se mide dentro de él y el margen lo descuenta.
+  #applyFit(img) {
+    const media = img.parentElement;
+    const style = getComputedStyle(img);
+    const pad = (side) => Number.parseFloat(style.getPropertyValue(`padding-${side}`)) || 0;
+    const frame = {
+      width: media.clientWidth - pad('left') - pad('right'),
+      height: media.clientHeight - pad('top') - pad('bottom'),
+    };
+    const box = this.#boxes.get(img);
+    const cover = !this.shadowRoot.querySelector('.card').classList.contains('is-contain');
+    // Margen space/padding/3xl (2xl en Mobile: 3xl ahí achicaría todas las
+    // cards); lo que se pasa se achica hasta space/padding/lg (image-fit.js)
+    const room = (token) => ({
+      x: Math.max(0, tokenPx(token) - Math.max(pad('left'), pad('right'))),
+      y: Math.max(0, tokenPx(token) - Math.max(pad('top'), pad('bottom'))),
+    });
+    const margin = MOBILE.matches ? '--arq-space-padding-2xl' : '--arq-space-padding-3xl';
+    const { scale, rect } = fitScale(box, frame, { margin: room(margin), limit: room('--arq-space-padding-lg'), cover });
+    if (scale >= 1) {
+      img.style.objectFit = img.style.transformOrigin = img.style.transform = '';
+      return;
+    }
+    // Desde la foto entera (contain): con cover, lo que el recorte deja afuera
+    // no vuelve al achicar (el disco de Döuli 18W quedaba cortado en los costados)
+    img.style.objectFit = 'contain';
+    img.style.transformOrigin = '0 0';
+    img.style.transform = containTransform(rect, frame, box.ratio, { left: pad('left'), top: pad('top') }).transform;
   }
 
   #renderFallback(show) {

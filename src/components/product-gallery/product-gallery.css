@@ -159,8 +159,22 @@
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
-  scroll-snap-align: start;
+  /* center y no start: el snap usa la caja con transform, y la foto de un
+     producto grande se achica desde el centro (product-gallery.js, #applyFit).
+     Cada foto mide el ancho visible: alinear al centro es lo mismo. */
+  scroll-snap-align: center;
   scroll-snap-stop: always;
+}
+
+/* Producto grande entero (data-whole, product-gallery.js #applyFit): la foto
+   entera y un transform la lleva a su lugar. Desde el Shadow DOM: el
+   !important del style del <img> no le gana a este. */
+::slotted(img[data-whole]) {
+  object-fit: contain !important;
+}
+
+.theme-transition[data-whole] {
+  object-fit: contain;
 }
 
 /* Foto de estudio con aire (data-fit="air", product-gallery.js): entera y con

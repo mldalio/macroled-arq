@@ -815,6 +815,8 @@ class ArqFichaProducto extends ArqElement {
     this.#renderKeyData(details.keyData);
     // Fotos de estudio con aire, salvo los cortes en zoom (ver ZOOM_PHOTOS)
     root.querySelector('.gallery').toggleAttribute('zoom', hasZoomPhotos(group));
+    // Afo llena el recuadro aunque el producto se corte: su producto grande no se achica
+    root.querySelector('.gallery').toggleAttribute('crop', ZOOM_ALWAYS.includes(plain(group.name)));
     root.querySelector('.gallery').images = details.images;
     // Copias para medir el brillo de la primera foto, apagada y encendida: así
     // el toggle cambia junto con la foto al iluminar
