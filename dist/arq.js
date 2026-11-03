@@ -743,7 +743,11 @@ function rt(e, t, n) {
 	let r = e.find((e) => n && e.sku === n) ?? e.find((e) => e.isDefault) ?? e[0];
 	return r ? Object.fromEntries(t.map((e) => [e, r.attributes[e]])) : {};
 }
-function it(e) {
+function it(e, t) {
+	let n = e.length ? Object.keys(e[0].attributes).filter((n) => v(n).control === "swatches" && !t.includes(n) && tt(e, n).length === 1) : [];
+	return [...t, ...n];
+}
+function at(e) {
 	let t = e.find((e) => v(e).control === "swatches") ?? e[0];
 	return t ? [
 		t,
@@ -751,69 +755,69 @@ function it(e) {
 		...e.filter((e) => e !== t && e !== "potencia")
 	] : [];
 }
-var at = (e, t, n, r, i) => e.some((e) => e.attributes[r] === i && t.every((t) => e.attributes[t] === n[t]));
-function ot(e, t, n) {
-	let r = it(t);
+var ot = (e, t, n, r, i) => e.some((e) => e.attributes[r] === i && t.every((t) => e.attributes[t] === n[t]));
+function st(e, t, n) {
+	let r = at(t);
 	return r.map((t, i) => ({
 		attribute: t,
 		options: tt(e, t).map((a) => ({
 			value: a,
 			selected: n[t] === a,
-			disabled: !at(e, r.slice(0, i), n, t, a)
+			disabled: !ot(e, r.slice(0, i), n, t, a)
 		}))
 	}));
 }
-var st = (e, t) => Array.isArray(t) ? !t.length || t.includes(e) : !et(t) || e === t, ct = (e, t, n) => Object.entries(t).every(([t, r]) => t === n || st(e.attributes[t], r));
-function lt(e, t) {
-	return e.filter((e) => ct(e, t));
+var ct = (e, t) => Array.isArray(t) ? !t.length || t.includes(e) : !et(t) || e === t, lt = (e, t, n) => Object.entries(t).every(([t, r]) => t === n || ct(e.attributes[t], r));
+function ut(e, t) {
+	return e.filter((e) => lt(e, t));
 }
-function ut(e, t, n) {
+function dt(e, t, n) {
 	return t.map((t) => ({
 		attribute: t,
 		options: tt(e, t).map((r) => ({
 			value: r,
 			selected: Array.isArray(n[t]) ? n[t].includes(r) : n[t] === r,
-			disabled: !e.some((e) => e.attributes[t] === r && ct(e, n, t))
+			disabled: !e.some((e) => e.attributes[t] === r && lt(e, n, t))
 		}))
 	}));
 }
-function dt(e, t, n, r, i) {
-	let a = it(t), o = {
+function ft(e, t, n, r, i) {
+	let a = at(t), o = {
 		...n,
 		[r]: i
 	}, s = e.find((e) => e.isDefault)?.attributes ?? {};
 	return a.forEach((t, n) => {
 		if (n <= a.indexOf(r)) return;
-		let i = a.slice(0, n), c = (n) => et(n) && at(e, i, o, t, n);
+		let i = a.slice(0, n), c = (n) => et(n) && ot(e, i, o, t, n);
 		c(o[t]) || (o[t] = c(s[t]) ? s[t] : tt(e, t).find(c) ?? o[t]);
 	}), o;
 }
-function ft(e, t) {
+function pt(e, t) {
 	let n = le(t ?? "");
 	if (!n.length) return e;
 	let r = [], i = [];
 	for (let t of e) me(`${t.sku} ${t.search ?? ""}`, n, { typos: !1 }) ? r.push(t) : me(t.search ?? "", n) && i.push(t);
 	return [...r, ...i];
 }
-var pt = new Intl.Collator("es", {
+var mt = new Intl.Collator("es", {
 	numeric: !0,
 	sensitivity: "base"
 });
-function mt(e, t) {
+function ht(e, t) {
 	let n = !et(e) || e === "-", r = !et(t) || t === "-";
-	return n || r ? Number(n) - Number(r) : pt.compare(String(e), String(t));
+	return n || r ? Number(n) - Number(r) : mt.compare(String(e), String(t));
 }
-function ht(e, t, n = !1) {
+function gt(e, t, n = !1) {
 	if (!t) return e;
 	let r = (e) => t === "sku" ? e.sku : e.values?.[t], i = n ? -1 : 1;
 	return e.map((e, t) => [e, t]).sort(([e, t], [n, a]) => {
 		let o = r(e), s = r(n);
-		return Number(!et(o) || o === "-") - Number(!et(s) || s === "-") || i * mt(o, s) || t - a;
+		return Number(!et(o) || o === "-") - Number(!et(s) || s === "-") || i * ht(o, s) || t - a;
 	}).map(([e]) => e);
 }
 //#endregion
 //#region src/data/finishes.js
-var gt = (e) => b(e).replace(/\s+/g, " ").trim(), _t = Object.freeze({
+var _t = (e) => b(e).replace(/\s+/g, " ").trim(), vt = Object.freeze({
 	negro: "negro",
 	"negro satinado": "negro-mate",
 	"blanco y negro": "blanco-y-negro",
@@ -828,7 +832,7 @@ var gt = (e) => b(e).replace(/\s+/g, " ").trim(), _t = Object.freeze({
 	terracota: "terracota",
 	beige: "beige",
 	pardo: "pardo"
-}), vt = Object.freeze({ negro: [{
+}), yt = Object.freeze({ negro: [{
 	slug: "negro-mate",
 	families: [
 		"Kanu",
@@ -838,19 +842,19 @@ var gt = (e) => b(e).replace(/\s+/g, " ").trim(), _t = Object.freeze({
 		"Douli",
 		"Yoru",
 		"Sento"
-	].map(gt)
+	].map(_t)
 }] });
-function yt(e, t = "") {
-	let n = _t[gt(e)];
+function bt(e, t = "") {
+	let n = vt[_t(e)];
 	if (!n) return null;
-	let r = (vt[n] ?? []).find(({ families: e }) => e.includes(gt(t)));
+	let r = (yt[n] ?? []).find(({ families: e }) => e.includes(_t(t)));
 	return r ? r.slug : n;
 }
-function bt(e, t = "") {
-	let r = yt(e, t);
+function xt(e, t = "") {
+	let r = bt(e, t);
 	return r ? `${n.images.finishesBase}acabado-${r}.png` : null;
 }
-var xt = [
+var St = [
 	"Hoshi",
 	"Fuji",
 	"Douli",
@@ -859,19 +863,19 @@ var xt = [
 	"Sento",
 	"Nobu"
 ].map(b);
-function St(e) {
-	let t = b(e).trim(), n = xt.findIndex((e) => t === e || t.startsWith(`${e} `));
-	return n === -1 ? xt.length : n;
+function Ct(e) {
+	let t = b(e).trim(), n = St.findIndex((e) => t === e || t.startsWith(`${e} `));
+	return n === -1 ? St.length : n;
 }
 //#endregion
 //#region src/data/catalog.js
-var Ct = null;
+var wt = null;
 function T() {
-	return Ct ??= Ze().then(wt), Ct.catch(() => Ct = null), Ct;
+	return wt ??= Ze().then(Tt), wt.catch(() => wt = null), wt;
 }
-function wt({ collections: e, groups: t, withDetails: n }) {
+function Tt({ collections: e, groups: t, withDetails: n }) {
 	let r = new Map(e.map((e) => [e.id, e]));
-	for (let e of t) Tt(e, r);
+	for (let e of t) Et(e, r);
 	return {
 		collections: e,
 		groups: t,
@@ -880,7 +884,7 @@ function wt({ collections: e, groups: t, withDetails: n }) {
 		withDetails: n
 	};
 }
-function Tt(e, t) {
+function Et(e, t) {
 	e.collectionData = t.get(e.collection) ?? null;
 	for (let t of e.variants) t.values = {
 		...e.specs,
@@ -888,49 +892,49 @@ function Tt(e, t) {
 	};
 	e.defaultVariant = e.variants.find((e) => e.isDefault) ?? e.variants[0];
 }
-var Et = /* @__PURE__ */ new Map();
-function Dt(e) {
-	if (!Et.has(e.id)) {
+var Dt = /* @__PURE__ */ new Map();
+function Ot(e) {
+	if (!Dt.has(e.id)) {
 		let t = (async () => {
 			let t = await T();
-			return Object.assign(e, t.withDetails(e.id, await $e(e.variants.map((e) => e.sku)))), Tt(e, t.collectionById), e;
+			return Object.assign(e, t.withDetails(e.id, await $e(e.variants.map((e) => e.sku)))), Et(e, t.collectionById), e;
 		})();
-		Et.set(e.id, t), t.catch(() => Et.delete(e.id));
+		Dt.set(e.id, t), t.catch(() => Dt.delete(e.id));
 	}
-	return Et.get(e.id);
+	return Dt.get(e.id);
 }
-var Ot = (e, t) => e.variantNames && t?.name ? t.name : e.name, kt = (e, t) => `/arq/producto/${encodeURIComponent(e)}${t ? `?sku=${encodeURIComponent(t)}` : ""}`, E = (e) => e != null && String(e).trim() !== "";
-function At(e, t) {
+var kt = (e, t) => e.variantNames && t?.name ? t.name : e.name, At = (e, t) => `/arq/producto/${encodeURIComponent(e)}${t ? `?sku=${encodeURIComponent(t)}` : ""}`, E = (e) => e != null && String(e).trim() !== "";
+function jt(e, t) {
 	return Object.entries(t).every(([t, n]) => !n?.length || n.includes(e.values[t]));
 }
-function jt(e, t, n = e.defaultVariant) {
+function Mt(e, t, n = e.defaultVariant) {
 	return [
 		n,
 		e.defaultVariant,
 		...e.variants
-	].filter((e, t, n) => n.indexOf(e) === t).find((e) => At(e, t)) ?? null;
+	].filter((e, t, n) => n.indexOf(e) === t).find((e) => jt(e, t)) ?? null;
 }
-var Mt = "Lámparas y Artefactos", Nt = [
+var Nt = "Lámparas y Artefactos", Pt = [
 	["interior", "Interior"],
 	["exterior", "Exterior"],
-	["lamparas-y-artefactos", Mt]
+	["lamparas-y-artefactos", Nt]
 ], D = ({ environment: e, application: t, productType: n, collection: r, family: i } = {}) => {
 	let a = new URLSearchParams();
 	e && a.set("environment", e), t && a.set("application", t), n && a.set("product_type", n), r && a.set("collection", r), i && a.set("family", i);
 	let o = a.toString();
 	return `/arq/productos${o ? `?${o}` : ""}`;
 };
-function Pt(e) {
+function Ft(e) {
 	let t = decodeURIComponent(e).replace(/\/$/, "").match(/^\/arq\/([^/]+)$/)?.[1];
-	return Nt.find(([e]) => e === t)?.[1] ?? null;
+	return Pt.find(([e]) => e === t)?.[1] ?? null;
 }
-var Ft = (e, t = {}) => e.hasDefault ? t.productType ? !0 : e.environment.includes("Lámparas y Artefactos") ? t.environment === Mt : e.productType === "Luminaria" : !1;
-function It(e, { environment: t, application: n, productType: r, collection: i, family: a } = {}) {
+var It = (e, t = {}) => e.hasDefault ? t.productType ? !0 : e.environment.includes("Lámparas y Artefactos") ? t.environment === Nt : e.productType === "Luminaria" : !1;
+function Lt(e, { environment: t, application: n, productType: r, collection: i, family: a } = {}) {
 	return !(t && !e.environment.includes(t) || n && e.application !== n || r && e.productType !== r || i && e.collection !== i || a && b(e.family) !== b(a));
 }
-var Lt = (e = {}) => Object.fromEntries(Object.entries(e).filter(([, e]) => e?.length)), Rt = Object.keys(h).filter((e) => h[e].filter !== !1);
-function zt(e) {
-	return Rt.map((t) => {
+var Rt = (e = {}) => Object.fromEntries(Object.entries(e).filter(([, e]) => e?.length)), zt = Object.keys(h).filter((e) => h[e].filter !== !1);
+function Bt(e) {
+	return zt.map((t) => {
 		let n = /* @__PURE__ */ new Map();
 		for (let r of e) for (let e of new Set(r.variants.map((e) => e.values[t]).filter(E))) n.set(e, (n.get(e) ?? 0) + 1);
 		let r = [...n].map(([e, t]) => ({
@@ -944,53 +948,53 @@ function zt(e) {
 		};
 	}).filter((e) => e.options.length > 1);
 }
-function Bt(e, t) {
+function Vt(e, t) {
 	let n = {};
-	for (let r of Rt) {
+	for (let r of zt) {
 		let i = { ...t };
 		delete i[r];
 		let a = /* @__PURE__ */ new Map();
 		for (let t of e) for (let e of t.variants) {
 			let n = e.values[r];
-			E(n) && At(e, i) && (a.has(n) || a.set(n, /* @__PURE__ */ new Set()), a.get(n).add(t));
+			E(n) && jt(e, i) && (a.has(n) || a.set(n, /* @__PURE__ */ new Set()), a.get(n).add(t));
 		}
 		n[r] = Object.fromEntries([...a].map(([e, t]) => [e, t.size]));
 	}
 	return n;
 }
-function Vt(e) {
+function Ht(e) {
 	return e.productType && e.productType !== "Luminaria" ? e.productType : [e.environment.join(" · "), e.application].filter(Boolean).join(" · ");
 }
-var Ht = Object.keys(h).filter((e) => h[e].control === "swatches"), Ut = (e) => [...new Set(e.variants.flatMap((e) => Ht.map((t) => e.values[t])).filter(E))], Wt = [
+var Ut = Object.keys(h).filter((e) => h[e].control === "swatches"), Wt = (e) => [...new Set(e.variants.flatMap((e) => Ut.map((t) => e.values[t])).filter(E))], Gt = [
 	"negro",
 	"blanco",
 	"terracota",
 	"verde"
-], Gt = (e) => {
-	let t = String(e).normalize("NFD").replace(/[̀-ͯ]/g, "").trim().toLowerCase().split(/\s+/)[0], n = Wt.indexOf(t);
-	return n === -1 ? Wt.length : n;
-}, Kt = (e) => e.map((e, t) => [e, t]).sort((e, t) => Gt(e[0].name) - Gt(t[0].name) || e[1] - t[1]).map(([e]) => e), qt = (e) => Kt(Ut(e).map((t) => ({
+], Kt = (e) => {
+	let t = String(e).normalize("NFD").replace(/[̀-ͯ]/g, "").trim().toLowerCase().split(/\s+/)[0], n = Gt.indexOf(t);
+	return n === -1 ? Gt.length : n;
+}, qt = (e) => e.map((e, t) => [e, t]).sort((e, t) => Kt(e[0].name) - Kt(t[0].name) || e[1] - t[1]).map(([e]) => e), Jt = (e) => qt(Wt(e).map((t) => ({
 	name: t,
-	src: bt(t, e.family)
-}))), Jt = (e) => Ht.map((t) => e.values[t]).find(E);
-function Yt(e, t = {}) {
-	let n = (e) => Gt(Jt(e) ?? "");
-	return [e.defaultVariant, ...e.variants].filter((e, t, n) => n.indexOf(e) === t).map((e, t) => [e, t]).sort((e, t) => n(e[0]) - n(t[0]) || e[1] - t[1]).map(([e]) => e).find((e) => At(e, t)) ?? null;
+	src: xt(t, e.family)
+}))), Yt = (e) => Ut.map((t) => e.values[t]).find(E);
+function Xt(e, t = {}) {
+	let n = (e) => Kt(Yt(e) ?? "");
+	return [e.defaultVariant, ...e.variants].filter((e, t, n) => n.indexOf(e) === t).map((e, t) => [e, t]).sort((e, t) => n(e[0]) - n(t[0]) || e[1] - t[1]).map(([e]) => e).find((e) => jt(e, t)) ?? null;
 }
-function Xt(e, t, n = {}) {
-	let r = qt(e);
+function Zt(e, t, n = {}) {
+	let r = Jt(e);
 	return r.length < 2 ? r : r.map((r) => {
 		let i = [
 			t,
 			e.defaultVariant,
 			...e.variants
-		].filter((e, t, n) => n.indexOf(e) === t && Jt(e) === r.name), a = (n) => e.variantAttributes.filter((e) => !Ht.includes(e) && n.values[e] === t.values[e]).length, o = i.map((e, t) => [e, t]).sort((e, t) => a(t[0]) - a(e[0]) || e[1] - t[1]).map(([e]) => e), s = o.find((e) => At(e, n)) ?? o[0], c = k(s.images);
+		].filter((e, t, n) => n.indexOf(e) === t && Yt(e) === r.name), a = (n) => e.variantAttributes.filter((e) => !Ut.includes(e) && n.values[e] === t.values[e]).length, o = i.map((e, t) => [e, t]).sort((e, t) => a(t[0]) - a(e[0]) || e[1] - t[1]).map(([e]) => e), s = o.find((e) => jt(e, n)) ?? o[0], c = k(s.images);
 		return {
 			...r,
-			selected: Jt(t) === r.name,
+			selected: Yt(t) === r.name,
 			sku: s.sku,
-			href: kt(e.id, s.sku),
-			temperature: Hn(s),
+			href: At(e.id, s.sku),
+			temperature: Un(s),
 			image: c.studio ?? null,
 			imageHover: c.studioOn ?? c.context ?? c.contextOn ?? null,
 			imageLit: c.studioOn ?? null,
@@ -998,17 +1002,17 @@ function Xt(e, t, n = {}) {
 		};
 	});
 }
-function O(e, t = Yt(e) ?? e.defaultVariant, n = {}) {
+function O(e, t = Xt(e) ?? e.defaultVariant, n = {}) {
 	let r = k(t.images);
 	return {
 		id: e.id,
 		sku: t.sku,
 		name: e.name,
-		meta: Vt(e),
-		specs: Vn(e, t),
-		temperature: Hn(t),
-		finishes: Xt(e, t, n),
-		href: kt(e.id, t.sku),
+		meta: Ht(e),
+		specs: Hn(e, t),
+		temperature: Un(t),
+		finishes: Zt(e, t, n),
+		href: At(e.id, t.sku),
 		family: e.family,
 		image: r.studio ?? null,
 		imageHover: r.studioOn ?? r.context ?? r.contextOn ?? null,
@@ -1016,77 +1020,77 @@ function O(e, t = Yt(e) ?? e.defaultVariant, n = {}) {
 		imageHoverLit: r.contextOn ?? r.studio ?? null
 	};
 }
-function Zt(e, t = {}) {
+function Qt(e, t = {}) {
 	let n = e.variants.filter((e) => e.listed);
 	if (n.length < 2) {
-		let n = Yt(e, t);
+		let n = Xt(e, t);
 		return n ? [O(e, n, t)] : [];
 	}
-	let r = [...new Set(n.map((n) => jt(e, t, n)).filter(Boolean))], i = [.../* @__PURE__ */ new Set([
+	let r = [...new Set(n.map((n) => Mt(e, t, n)).filter(Boolean))], i = [.../* @__PURE__ */ new Set([
 		...e.variantAttributes,
 		"potencia",
 		"angulo_apertura"
-	])].filter((e) => !Ht.includes(e) && e !== "modelo"), a = (e, t) => new Set(t.map((t) => t.values[e]).filter(E)).size > 1, o = i.includes("potencia") && a("potencia", r) ? "potencia" : i.find((e) => a(e, r));
-	return o && r.sort((e, t) => Fn(e.values[o]) - Fn(t.values[o]) || String(e.values[o]).localeCompare(String(t.values[o]), "es", { numeric: !0 })), r.map((n) => {
+	])].filter((e) => !Ut.includes(e) && e !== "modelo"), a = (e, t) => new Set(t.map((t) => t.values[e]).filter(E)).size > 1, o = i.includes("potencia") && a("potencia", r) ? "potencia" : i.find((e) => a(e, r));
+	return o && r.sort((e, t) => In(e.values[o]) - In(t.values[o]) || String(e.values[o]).localeCompare(String(t.values[o]), "es", { numeric: !0 })), r.map((n) => {
 		let r = O(e, n, t), i = e.variantNames && n.name, a = o ? e.variants.filter((e) => e.values[o] === n.values[o]) : e.variants;
 		return {
 			...r,
 			name: i ? n.name : [e.name, o && n.values[o]].filter(E).join(" "),
-			specs: Bn(a, n, o ? [o] : [])
+			specs: Vn(a, n, o ? [o] : [])
 		};
 	});
 }
-var k = (e = {}) => Object.fromEntries(Object.entries(e).filter(([, e]) => E(e) && (!Array.isArray(e) || e.length))), Qt = "dao", $t = ["tori jardin", "tori visera"], en = (e) => {
+var k = (e = {}) => Object.fromEntries(Object.entries(e).filter(([, e]) => E(e) && (!Array.isArray(e) || e.length))), $t = "dao", en = ["tori jardin", "tori visera"], tn = (e) => {
 	let t = b(e.name);
 	return (/\bround/.test(t) ? 2 : 0) + +!!/\bapli(car|que)\b/.test(t);
 };
-function tn(e) {
+function nn(e) {
 	let t = (e) => b(e.collection || e.family || e.name).replace(/\s+round(ed)?$/, ""), n = (e) => {
-		let t = $t.indexOf(b(e.name));
-		return t >= 0 ? 2 + t : +(b(e.family) === Qt || b(e.collection) === Qt);
+		let t = en.indexOf(b(e.name));
+		return t >= 0 ? 2 + t : +(b(e.family) === $t || b(e.collection) === $t);
 	}, r = /* @__PURE__ */ new Map();
 	for (let n of e) r.has(t(n)) || r.set(t(n), r.size);
 	let i = (e) => e.environment.includes("Interior") ? 0 : e.environment.includes("Exterior") ? 1 : 2;
-	return [...e].sort((e, a) => i(e) - i(a) || n(e) - n(a) || r.get(t(e)) - r.get(t(a)) || en(e) - en(a));
+	return [...e].sort((e, a) => i(e) - i(a) || n(e) - n(a) || r.get(t(e)) - r.get(t(a)) || tn(e) - tn(a));
 }
-async function nn({ filters: e, query: t, ...n } = {}) {
+async function rn({ filters: e, query: t, ...n } = {}) {
 	let { groups: r } = await T(), i = le(t ?? ""), a = /* @__PURE__ */ new Map();
 	for (let e of r) {
-		if (!It(e, n) || !i.length && !Ft(e, n)) continue;
-		let t = i.length ? er(e, i) : {
+		if (!Lt(e, n) || !i.length && !It(e, n)) continue;
+		let t = i.length ? tr(e, i) : {
 			variant: e.defaultVariant,
 			bySku: !1
 		};
 		t && a.set(e, t);
 	}
 	let o = [...a.keys()].sort((e, t) => Number(a.get(e).typo) - Number(a.get(t).typo));
-	i.length || o.splice(0, o.length, ...tn(o));
-	let s = Lt(e);
+	i.length || o.splice(0, o.length, ...nn(o));
+	let s = Rt(e);
 	Object.keys(s).length;
 	let c = o.flatMap((e) => {
 		let t = a.get(e);
 		if (t.bySku) {
-			let n = jt(e, s, t.variant);
+			let n = Mt(e, s, t.variant);
 			return n ? [O(e, n, s)] : [];
 		}
 		if (!i.length) {
-			let t = Zt(e, s);
+			let t = Qt(e, s);
 			if (t.length > 1) return t;
 		}
-		let n = Yt(e, s);
+		let n = Xt(e, s);
 		return n ? [O(e, n, s)] : [];
 	});
-	return Sn({
+	return Cn({
 		cards: c,
 		count: c.length,
-		filters: zt(o),
-		available: Bt(o, s)
+		filters: Bt(o),
+		available: Vt(o, s)
 	});
 }
-function rn(e) {
+function an(e) {
 	let t = /* @__PURE__ */ new Map();
 	for (let n of e) {
-		if (!Ft(n)) continue;
+		if (!It(n)) continue;
 		let e = n.family.trim();
 		if (!e) continue;
 		let r = b(e);
@@ -1100,28 +1104,28 @@ function rn(e) {
 		numeric: !0
 	}));
 }
-var an = [
+var on = [
 	"Yoru",
 	"Afo",
 	"Sento",
 	"Hoshi",
 	"Kanu",
 	"Koen"
-], on = {
+], sn = {
 	hoshi: "Höshi",
 	koen: "Köen"
-}, sn = {
+}, cn = {
 	yoru: "https://d1zltvqju4u8ql.cloudfront.net/fit-in/1000x1000/MACROLED/ARQ/imagenes/productos/YORU%20WEB_0002s_0001_YORU-J-8W-N-WW_AMBIENT_1_ON.webp",
 	afo: "https://d1zltvqju4u8ql.cloudfront.net/fit-in/1000x1000/MACROLED/ARQ/imagenes/productos/afo.jpg",
 	sento: "https://d1zltvqju4u8ql.cloudfront.net/fit-in/1000x1000/MACROLED/ARQ/imagenes/productos/SENTO-J-520-12W-N-WW_AMBIENT_ON.webp",
 	hoshi: "https://d1zltvqju4u8ql.cloudfront.net/fit-in/filters:format(webp)/MACROLED/ARQ/imagenes/productos/HOSHI-E-7W-15G-B_AMBIENT_1_ON.png",
 	kanu: "https://d1zltvqju4u8ql.cloudfront.net/fit-in/MACROLED/ARQ/imagenes/productos/KANU-J-500-12W-N-WW_AMBIENT_3_ON.webp",
 	koen: "https://d1zltvqju4u8ql.cloudfront.net/fit-in/1000x1000/MACROLED/ARQ/imagenes/productos/KOEN-P-20W-N-WW_HERO_AMBIENT_3_ON.webp"
-}, cn = {
+}, ln = {
 	hoshi: "top",
 	afo: "bottom"
 };
-function ln(e) {
+function un(e) {
 	let t = /* @__PURE__ */ new Map();
 	for (let n of e) {
 		let e = n.family.trim();
@@ -1129,17 +1133,17 @@ function ln(e) {
 	}
 	return [...t.entries()].sort((e, t) => t[1] - e[1])[0][0];
 }
-async function un() {
-	let { groups: e } = await T(), t = new Map(rn(e).map((e) => [b(e.name), e]));
-	return an.flatMap((e) => {
-		let n = b(e), r = t.get(n), i = sn[n] ?? null;
+async function dn() {
+	let { groups: e } = await T(), t = new Map(an(e).map((e) => [b(e.name), e]));
+	return on.flatMap((e) => {
+		let n = b(e), r = t.get(n), i = cn[n] ?? null;
 		if (!r) return i ? [{
-			name: on[n] ?? e,
+			name: sn[n] ?? e,
 			href: D({ family: e }),
 			image: i,
-			focus: cn[n] ?? null
+			focus: ln[n] ?? null
 		}] : (console.warn(`[arq] collection-index: no hay familia «${e}»`), []);
-		let a = ln(r.groups), o = on[n] ?? a, s = k(r.groups[0].defaultVariant.images), c = sn[b(e)] ?? s.context ?? s.studio ?? null, l = cn[b(e)] ?? null;
+		let a = un(r.groups), o = sn[n] ?? a, s = k(r.groups[0].defaultVariant.images), c = cn[b(e)] ?? s.context ?? s.studio ?? null, l = ln[b(e)] ?? null;
 		return [{
 			name: o,
 			href: D({ family: a }),
@@ -1148,12 +1152,12 @@ async function un() {
 		}];
 	});
 }
-var dn = { "tori-jardin": ["tori-visera"] }, fn = (e, t) => e.map((e) => t.get(e)).filter((e) => e?.hasDefault).map((e) => O(e));
-async function pn(e) {
+var fn = { "tori-jardin": ["tori-visera"] }, pn = (e, t) => e.map((e) => t.get(e)).filter((e) => e?.hasDefault).map((e) => O(e));
+async function mn(e) {
 	let { groups: t, groupById: n } = await T(), r = n.get(e);
 	if (!r) return null;
-	await Dt(r);
-	let i = b(r.family ?? ""), a = i ? t.filter((e) => e !== r && b(e.family ?? "") === i && Ft(e)).sort((e, t) => en(e) - en(t)).map((e) => O(e)) : [], o = r.images ?? {};
+	await Ot(r);
+	let i = b(r.family ?? ""), a = i ? t.filter((e) => e !== r && b(e.family ?? "") === i && It(e)).sort((e, t) => tn(e) - tn(t)).map((e) => O(e)) : [], o = r.images ?? {};
 	return {
 		group: r,
 		collection: r.collectionData,
@@ -1163,41 +1167,41 @@ async function pn(e) {
 			attributes: e.values
 		})),
 		variantAttributes: r.variantAttributes,
-		finishImages: Object.fromEntries(qt(r).filter((e) => e.src).map((e) => [e.name, e.src])),
-		accessories: fn(dn[r.id] ?? [], n),
-		related: fn(Object.keys(dn).filter((e) => dn[e].includes(r.id)), n),
+		finishImages: Object.fromEntries(Jt(r).filter((e) => e.src).map((e) => [e.name, e.src])),
+		accessories: pn(fn[r.id] ?? [], n),
+		related: pn(Object.keys(fn).filter((e) => fn[e].includes(r.id)), n),
 		family: a,
 		images: {
-			ambient: mn(o.ambient),
+			ambient: hn(o.ambient),
 			description: E(o.description) ? o.description : null,
-			inspiration: mn(o.inspiration)
+			inspiration: hn(o.inspiration)
 		},
-		glossary: yn(r),
-		files: Mn(r.defaultVariant).filter((e) => e.type === "cad" || e.type === "manual")
+		glossary: bn(r),
+		files: Nn(r.defaultVariant).filter((e) => e.type === "cad" || e.type === "manual")
 	};
 }
-var mn = (e) => [...new Set([e ?? []].flat().filter(E))], hn = (e, t) => mt(e.values.potencia, t.values.potencia) || mt(e.values.temperatura_color, t.values.temperatura_color) || Gt(Jt(e) ?? "") - Gt(Jt(t) ?? ""), gn = (e) => e.map((e, t) => [e, t]).sort(([e, t], [n, r]) => hn(e, n) || t - r).map(([e]) => e), _n = (e) => g.filter(({ field: t }) => e.some((e) => E(e.values[t]))).map(({ field: e, label: t, wide: n }) => ({
+var hn = (e) => [...new Set([e ?? []].flat().filter(E))], gn = (e, t) => ht(e.values.potencia, t.values.potencia) || ht(e.values.temperatura_color, t.values.temperatura_color) || Kt(Yt(e) ?? "") - Kt(Yt(t) ?? ""), _n = (e) => e.map((e, t) => [e, t]).sort(([e, t], [n, r]) => gn(e, n) || t - r).map(([e]) => e), vn = (e) => g.filter(({ field: t }) => e.some((e) => E(e.values[t]))).map(({ field: e, label: t, wide: n }) => ({
 	key: e,
 	label: t,
 	wide: n
 }));
-function vn(e) {
-	let t = _n(e.variants), n = e.variantAttributes.filter((e) => !t.some((t) => t.key === e) && !g.some((t) => t.field === e)).filter((t) => e.variants.some((e) => E(e.values[t]))).map((e) => ({
+function yn(e) {
+	let t = vn(e.variants), n = e.variantAttributes.filter((e) => !t.some((t) => t.key === e) && !g.some((t) => t.field === e)).filter((t) => e.variants.some((e) => E(e.values[t]))).map((e) => ({
 		key: e,
 		label: v(e).label,
 		card: !0
 	})), r = t.findIndex((e) => e.key === "color_carcasa") + 1;
 	return t.splice(r, 0, ...n), t;
 }
-function yn(e) {
+function bn(e) {
 	return {
-		columns: vn(e),
+		columns: yn(e),
 		filters: e.variantAttributes.map((e) => ({
 			key: e,
 			label: v(e).label,
 			swatches: v(e).control === "swatches"
 		})),
-		rows: gn(e.variants).map((e) => ({
+		rows: _n(e.variants).map((e) => ({
 			sku: e.sku,
 			thumb: e.images?.studio ?? null,
 			attributes: e.values,
@@ -1205,7 +1209,7 @@ function yn(e) {
 		}))
 	};
 }
-function bn(e, t) {
+function xn(e, t) {
 	let n = e.collectionData?.name;
 	if (!n) return e.family || e.name;
 	let r = t.filter((t) => t.collection === e.collection);
@@ -1213,27 +1217,27 @@ function bn(e, t) {
 	let i = r.filter((t) => t.application === e.application);
 	return e.application && i.length === 1 ? `${n} ${e.application}` : e.name;
 }
-async function xn() {
+async function Sn() {
 	return null;
 }
-async function Sn(e) {
-	let t = await xn();
+async function Cn(e) {
+	let t = await Sn();
 	return t ? t.fixtures.catalogListing(t.mode, e) : e;
 }
-async function Cn() {
-	let e = await wn(), t = await xn();
+async function wn() {
+	let e = await Tn(), t = await Sn();
 	return t ? t.fixtures.downloadsTable(t.mode, e) : e;
 }
-async function wn() {
+async function Tn() {
 	let { groups: e } = await T(), t = (e) => e.collectionData?.name || e.family || e.name, n = new Intl.Collator("es", {
 		sensitivity: "base",
 		numeric: !0
 	}), r = new Map(e.map((e, t) => [e, t])), i = (e, t) => e.variants.findIndex((e) => e.name === t.name), a = e.flatMap((e) => e.variants.map((t) => ({
 		group: e,
 		variant: t
-	}))).map((e, t) => [e, t]).sort(([e, a], [o, s]) => n.compare(t(e.group), t(o.group)) || mt(e.variant.values.potencia, o.variant.values.potencia) || r.get(e.group) - r.get(o.group) || i(e.group, e.variant) - i(o.group, o.variant) || hn(e.variant, o.variant) || a - s).map(([e]) => e), o = (e) => new Set(a.map(({ variant: t }) => t.values[e]).filter(E)).size > 1;
+	}))).map((e, t) => [e, t]).sort(([e, a], [o, s]) => n.compare(t(e.group), t(o.group)) || ht(e.variant.values.potencia, o.variant.values.potencia) || r.get(e.group) - r.get(o.group) || i(e.group, e.variant) - i(o.group, o.variant) || gn(e.variant, o.variant) || a - s).map(([e]) => e), o = (e) => new Set(a.map(({ variant: t }) => t.values[e]).filter(E)).size > 1;
 	return {
-		columns: _n(a.map(({ variant: e }) => e)),
+		columns: vn(a.map(({ variant: e }) => e)),
 		filters: re.filter(({ field: e }) => o(e)).map(({ field: e, label: t }) => ({
 			key: e,
 			label: t,
@@ -1241,8 +1245,8 @@ async function wn() {
 		})),
 		rows: a.map(({ group: t, variant: n }) => ({
 			sku: n.sku,
-			name: t.variantNames ? n.name : bn(t, e),
-			href: kt(t.id, n.sku),
+			name: t.variantNames ? n.name : xn(t, e),
+			href: At(t.id, n.sku),
 			meta: t.variantAttributes.map((e) => n.values[e]).filter(E).join(", "),
 			thumb: n.images?.studio ?? null,
 			search: [
@@ -1255,62 +1259,62 @@ async function wn() {
 		}))
 	};
 }
-async function Tn(e) {
-	let t = await xn(), n = t?.fixtures.skuFiles(t.mode, e);
+async function En(e) {
+	let t = await Sn(), n = t?.fixtures.skuFiles(t.mode, e);
 	if (n) return n;
 	let { groups: r } = await T(), i = r.find((t) => t.variants.some((t) => t.sku === e));
-	return i ? (await Dt(i), Mn(i.variants.find((t) => t.sku === e))) : [];
+	return i ? (await Ot(i), Nn(i.variants.find((t) => t.sku === e))) : [];
 }
-async function En(e) {
+async function Dn(e) {
 	let { groups: t } = await T(), n = t.find((t) => t.variants.some((t) => t.sku === e));
 	if (!n) return null;
 	let r = n.variants.find((t) => t.sku === e), i = k(r.images), a = k(n.defaultVariant.images), o = {
-		name: Ot(n, r),
+		name: kt(n, r),
 		sku: r.sku,
 		image: i.main ?? i.studio ?? a.main ?? a.studio ?? null,
 		cota: r.cota ?? null,
 		sections: ie(r.values)
-	}, s = await xn();
+	}, s = await Sn();
 	return s ? s.fixtures.datasheet(s.mode, o) : o;
 }
-async function Dn(e) {
-	let { groupById: t } = await T(), n = e.map((e) => t.get(e)).filter(Boolean).map((e) => O(e)), r = await xn();
+async function On(e) {
+	let { groupById: t } = await T(), n = e.map((e) => t.get(e)).filter(Boolean).map((e) => O(e)), r = await Sn();
 	return r?.mode.startsWith("loading") ? (await r.fixtures.catalogListing(r.mode, {
 		cards: n,
 		count: n.length,
 		filters: []
 	})).cards : n;
 }
-async function On() {
+async function kn() {
 	let { groups: e } = await T();
 	return e.flatMap((e) => e.variants.filter((e) => e.isNew).map((t) => ({
 		...O(e, t),
-		name: Ot(e, t),
-		meta: kn(e)
-	}))).sort((e, t) => St(e.name) - St(t.name));
+		name: kt(e, t),
+		meta: An(e)
+	}))).sort((e, t) => Ct(e.name) - Ct(t.name));
 }
-function kn(e) {
+function An(e) {
 	return e.productType && e.productType !== "Luminaria" ? e.productType : e.application ?? e.productType ?? "";
 }
-var An = {
+var jn = {
 	cad: "CAD 2D/3D",
 	manual: "Manual",
 	ies: "IES",
 	fotometria: "Fotometría",
 	cotas: "Cotas"
-}, jn = (e) => e.cota ?? null;
-function Mn(e) {
+}, Mn = (e) => e.cota ?? null;
+function Nn(e) {
 	let t = {
 		...k(e.downloads),
-		cotas: jn(e)
+		cotas: Mn(e)
 	};
-	return Object.keys(An).filter((e) => t[e]).map((e) => ({
+	return Object.keys(jn).filter((e) => t[e]).map((e) => ({
 		type: e,
-		label: An[e],
+		label: jn[e],
 		href: t[e]
 	}));
 }
-function Nn(e, t) {
+function Pn(e, t) {
 	let n = e.variants.find((e) => e.sku === t) ?? e.defaultVariant, r = k(n.images), i = [...r.gallery ?? [r.studio].filter(Boolean)], a = [...r.galleryOn ?? [r.studioOn ?? null]], o = (e.images?.heroExtra ?? []).filter((e) => !i.includes(e));
 	if (o.length) {
 		let e = i.includes(r.context) ? i.indexOf(r.context) + 1 : i.length;
@@ -1318,90 +1322,90 @@ function Nn(e, t) {
 	}
 	return {
 		sku: n.sku,
-		name: Ot(e, n),
+		name: kt(e, n),
 		description: n.description,
 		values: n.values,
-		keyData: Kn(n.values, e.variantAttributes ?? []),
+		keyData: qn(n.values, e.variantAttributes ?? []),
 		images: i.map((t, n) => ({
 			src: t,
 			srcOn: a[n] ?? null,
 			alt: `${e.name}, imagen ${n + 1}`
 		})),
 		sections: ie(n.values),
-		downloads: Mn(n),
-		cota: jn(n)
+		downloads: Nn(n),
+		cota: Mn(n)
 	};
 }
-async function Pn(e) {
+async function Fn(e) {
 	let { collectionById: t, groups: n } = await T(), r = t.get(e);
 	if (!r) return null;
 	let i = r.images ?? {};
 	return {
 		collection: r,
-		cards: n.filter((t) => t.collection === e).flatMap((e) => Zt(e)),
+		cards: n.filter((t) => t.collection === e).flatMap((e) => Qt(e)),
 		images: {
-			gallery: mn(i.gallery),
+			gallery: hn(i.gallery),
 			description: E(i.description) ? i.description : null,
-			inspiration: mn(i.inspiration)
+			inspiration: hn(i.inspiration)
 		}
 	};
 }
-var Fn = (e) => Number.parseFloat(String(e).replace(/^x/i, "").replace(",", "."));
-function In(e, t) {
-	return [...new Set(e.variants.map((e) => e.values[t]).filter(E))].sort((e, t) => Fn(e) - Fn(t) || String(e).localeCompare(String(t), "es"));
+var In = (e) => Number.parseFloat(String(e).replace(/^x/i, "").replace(",", "."));
+function Ln(e, t) {
+	return [...new Set(e.variants.map((e) => e.values[t]).filter(E))].sort((e, t) => In(e) - In(t) || String(e).localeCompare(String(t), "es"));
 }
-function Ln(e) {
+function Rn(e) {
 	if (e.length < 2) return e[0] ?? "";
 	let t = [e[0], e.at(-1)].map((e) => String(e).trim().match(/^([d.,]+)s*(D*)$/));
 	return t.every(Boolean) && t[0][2] && t[0][2] === t[1][2] ? `${t[0][1]} – ${t[1][1]} ${t[0][2]}` : `${e[0]} – ${e.at(-1)}`;
 }
-function Rn(e, t) {
-	let n = v(t), r = In({ variants: e }, t).map((e) => ae(n, e));
+function zn(e, t) {
+	let n = v(t), r = Ln({ variants: e }, t).map((e) => ae(n, e));
 	if (!r.length) return "";
-	if (t === "potencia") return Ln(r);
+	if (t === "potencia") return Rn(r);
 	let i = r.join(" / ");
 	return t === "cri" ? `CRI ${i}` : t === "ugr" ? `UGR ${i}` : i;
 }
-var zn = [
+var Bn = [
 	"angulo_apertura",
 	"proteccion_ip",
 	"cri",
 	"ugr"
-], Bn = (e, t, n = []) => {
-	let r = zn.filter((e) => !n.includes(e)).map((n) => ({
-		text: Rn(n === "angulo_apertura" ? e : [t], n),
+], Vn = (e, t, n = []) => {
+	let r = Bn.filter((e) => !n.includes(e)).map((n) => ({
+		text: zn(n === "angulo_apertura" ? e : [t], n),
 		tip: ce[n]
 	})).filter((e) => e.text);
 	return r.length ? [r] : [];
-}, Vn = (e, t) => Bn(e.variants, t), Hn = (e) => E(e.values.temperatura_color) ? String(e.values.temperatura_color).trim() : "", Un = [
+}, Hn = (e, t) => Vn(e.variants, t), Un = (e) => E(e.values.temperatura_color) ? String(e.values.temperatura_color).trim() : "", Wn = [
 	"temperatura_color",
 	"potencia",
 	"angulo_apertura",
 	"proteccion",
 	"cri"
-], Wn = {
+], Gn = {
 	temperatura_color: "Temperatura",
 	potencia: "Potencia",
 	angulo_apertura: "Ángulo",
 	proteccion: "Protección",
 	cri: "CRI"
-}, Gn = ["proteccion_ip", "proteccion_ik"];
-function Kn(e, t = []) {
-	let n = (t) => t === "proteccion" ? Gn.filter((t) => E(e[t])).map((t) => ae(v(t), e[t])).join(" / ") : E(e[t]) ? ae(v(t), e[t]) : "";
-	return { items: Un.filter((e) => !t.includes(e)).map((e) => ({
+}, Kn = ["proteccion_ip", "proteccion_ik"];
+function qn(e, t = []) {
+	let n = (t) => t === "proteccion" ? Kn.filter((t) => E(e[t])).map((t) => ae(v(t), e[t])).join(" / ") : E(e[t]) ? ae(v(t), e[t]) : "";
+	return { items: Wn.filter((e) => !t.includes(e)).map((e) => ({
 		field: e,
-		label: Wn[e],
+		label: Gn[e],
 		value: n(e)
 	})).filter((e) => e.value) };
 }
-var qn = (e) => e.variants.map((t) => ({
+var Jn = (e) => e.variants.map((t) => ({
 	sku: t.sku,
 	isDefault: t === e.defaultVariant,
 	attributes: t.values
-})), Jn = (e, t) => Object.fromEntries(e.variantAttributes.map((e) => [e, t.values[e]]));
-function Yn(e, t) {
-	let n = Jn(e, t);
-	return ot(qn(e), e.variantAttributes, n).map(({ attribute: t, options: r }) => {
+})), Yn = (e, t) => Object.fromEntries(e.variantAttributes.map((e) => [e, t.values[e]]));
+function Xn(e, t) {
+	let n = Yn(e, t);
+	return st(Jn(e), e.variantAttributes, n).map(({ attribute: t, options: r }) => {
 		let i = v(t);
 		return {
 			field: t,
@@ -1412,18 +1416,18 @@ function Yn(e, t) {
 				label: t.value,
 				disabled: t.disabled,
 				showSwatch: i.control === "swatches",
-				swatch: i.control === "swatches" ? bt(t.value, e.family) ?? void 0 : void 0
+				swatch: i.control === "swatches" ? xt(t.value, e.family) ?? void 0 : void 0
 			}))
 		};
 	});
 }
-async function Xn(e, t, n) {
+async function Zn(e, t, n) {
 	let { groups: r } = await T(), i = r.find((t) => t.variants.some((t) => t.sku === e)), a = i?.variants.find((t) => t.sku === e);
 	if (!i || !a) return null;
-	let o = dt(qn(i), i.variantAttributes, Jn(i, a), t, n);
-	return nt(qn(i), o)?.sku ?? null;
+	let o = ft(Jn(i), i.variantAttributes, Yn(i, a), t, n);
+	return nt(Jn(i), o)?.sku ?? null;
 }
-async function Zn(e) {
+async function Qn(e) {
 	let { groups: t } = await T(), n = e.slice(0, 3).flatMap((e) => {
 		let n = t.find((t) => t.variants.some((t) => t.sku === e));
 		return n ? [{
@@ -1434,11 +1438,11 @@ async function Zn(e) {
 		let n = O(e, t);
 		return {
 			sku: t.sku,
-			name: Ot(e, t),
+			name: kt(e, t),
 			meta: t.sku,
 			image: n.image,
 			href: n.href,
-			attributes: Yn(e, t)
+			attributes: Xn(e, t)
 		};
 	}), i = ie(Object.assign({}, ...n.map(({ variant: e }) => e.values))).map((e) => ({
 		label: e.label,
@@ -1458,16 +1462,16 @@ async function Zn(e) {
 		groups: i
 	};
 }
-var Qn = (e) => [...new Set(e.variants.map((e) => e.category).filter(Boolean))], $n = (e) => [
+var $n = (e) => [...new Set(e.variants.map((e) => e.category).filter(Boolean))], er = (e) => [
 	e.name,
 	e.collectionData?.name,
 	e.application,
 	e.productType,
 	...e.environment,
-	...Qn(e)
+	...$n(e)
 ].join(" ");
-function er(e, t) {
-	let n = me($n(e), t);
+function tr(e, t) {
+	let n = me(er(e), t);
 	if (n === "exact") return {
 		variant: e.defaultVariant,
 		bySku: !1,
@@ -1490,27 +1494,27 @@ function er(e, t) {
 		typo: !0
 	} : null;
 }
-var tr = (e) => e.sort((e, t) => Number(e.typo) - Number(t.typo));
-async function nr(e, { limit: t = 5, collectionLimit: n = 3 } = {}) {
+var nr = (e) => e.sort((e, t) => Number(e.typo) - Number(t.typo));
+async function rr(e, { limit: t = 5, collectionLimit: n = 3 } = {}) {
 	let r = le(e);
 	if (!r.length) return {
 		results: [],
 		total: 0
 	};
-	let { groups: i } = await T(), a = tr(i.flatMap((e) => {
+	let { groups: i } = await T(), a = nr(i.flatMap((e) => {
 		if (!e.hasDefault) return [];
-		let t = er(e, r);
+		let t = tr(e, r);
 		if (!t) return [];
 		let n = O(e, t.variant);
 		return [{
 			kind: "product",
-			name: t.bySku ? Ot(e, t.variant) : e.name,
+			name: t.bySku ? kt(e, t.variant) : e.name,
 			meta: t.variant.sku,
 			href: n.href,
 			image: n.image,
 			typo: t.typo
 		}];
-	})), o = tr(rn(i).flatMap((e) => {
+	})), o = nr(an(i).flatMap((e) => {
 		let t = me(e.name, r), n = k(e.groups[0].defaultVariant.images);
 		return t ? [{
 			kind: "collection",
@@ -1526,31 +1530,31 @@ async function nr(e, { limit: t = 5, collectionLimit: n = 3 } = {}) {
 		total: a.length
 	};
 }
-var rr = (e) => `/arq/productos?q=${encodeURIComponent(e)}`, ir = "Lámparas y artefactos", ar = (e) => !e.productType || e.productType === "Luminaria";
-function or(e) {
-	return ar(e) ? Vt(e) : [ir, e.application ?? e.productType].filter(Boolean).join(" · ");
+var ir = (e) => `/arq/productos?q=${encodeURIComponent(e)}`, ar = "Lámparas y artefactos", or = (e) => !e.productType || e.productType === "Luminaria";
+function sr(e) {
+	return or(e) ? Ht(e) : [ar, e.application ?? e.productType].filter(Boolean).join(" · ");
 }
-async function sr({ query: e = "", selected: t = [] } = {}) {
+async function cr({ query: e = "", selected: t = [] } = {}) {
 	let { groups: n } = await T(), r = le(e), i = new Set(t);
 	return { items: n.flatMap((e) => {
 		if (!e.hasDefault) return [];
-		let t = r.length ? er(e, r) : { variant: e.defaultVariant };
+		let t = r.length ? tr(e, r) : { variant: e.defaultVariant };
 		if (!t) return [];
 		let n = e.variants.find((e) => i.has(e.sku))?.sku ?? null;
 		return [{
 			id: e.id,
 			sku: t.variant.sku,
 			name: e.name,
-			meta: or(e),
-			cardMeta: Vt(e),
+			meta: sr(e),
+			cardMeta: Ht(e),
 			image: O(e, t.variant).image,
 			added: !!n,
 			selectedSku: n
 		}];
 	}) };
 }
-async function cr() {
-	let { groups: e } = await T(), t = e.filter((e) => e.hasDefault), n = (e) => t.filter((t) => It(t, e) && Ft(t, e)).length, r = (e) => {
+async function lr() {
+	let { groups: e } = await T(), t = e.filter((e) => e.hasDefault), n = (e) => t.filter((t) => Lt(t, e) && It(t, e)).length, r = (e) => {
 		let t = k(e.defaultVariant.images);
 		return {
 			image: t.context ?? t.studio ?? null,
@@ -1566,7 +1570,7 @@ async function cr() {
 			fallbacks: n
 		};
 	}, o = (e, o) => {
-		let s = t.filter((e) => It(e, o));
+		let s = t.filter((e) => Lt(e, o));
 		return {
 			label: e,
 			href: D(o),
@@ -1575,7 +1579,7 @@ async function cr() {
 			thumb: s.map(r).find((e) => e.image)?.thumb ?? null
 		};
 	}, s = (e, n) => {
-		let r = e === Mt, i = [...[...new Set(t.filter((t) => t.environment.includes(e) && (r ? Ft(t, { environment: e }) : t.productType === "Luminaria")).map((e) => e.application).filter(Boolean))].map((t) => o(t, r ? {
+		let r = e === Nt, i = [...[...new Set(t.filter((t) => t.environment.includes(e) && (r ? It(t, { environment: e }) : t.productType === "Luminaria")).map((e) => e.application).filter(Boolean))].map((t) => o(t, r ? {
 			environment: e,
 			application: t
 		} : {
@@ -1604,9 +1608,9 @@ async function cr() {
 		sections: {
 			interior: s("Interior", "Ver todo interior"),
 			exterior: s("Exterior", "Ver todo exterior"),
-			"lamparas-y-artefactos": s(Mt, "Ver todo lámparas y artefactos")
+			"lamparas-y-artefactos": s(Nt, "Ver todo lámparas y artefactos")
 		},
-		collections: rn(t).map((e) => {
+		collections: an(t).map((e) => {
 			let t = e.groups, n = [...new Set(t.flatMap((e) => e.environment))];
 			return {
 				label: e.name,
@@ -1619,14 +1623,14 @@ async function cr() {
 		})
 	};
 }
-async function lr() {
-	let { groups: e } = await T(), t = e.filter((e) => e.hasDefault), n = (e) => t.filter((t) => It(t, e) && Ft(t, e)).length, r = (e, t) => ({
+async function ur() {
+	let { groups: e } = await T(), t = e.filter((e) => e.hasDefault), n = (e) => t.filter((t) => Lt(t, e) && It(t, e)).length, r = (e, t) => ({
 		label: e,
 		href: D(t),
 		count: n(t)
 	}), i = (e) => {
-		let n = e === Mt;
-		return [...[...new Set(t.filter((t) => t.environment.includes(e) && (n ? Ft(t, { environment: e }) : t.productType === "Luminaria")).map((e) => e.application).filter(Boolean))].map((t) => r(t, n ? {
+		let n = e === Nt;
+		return [...[...new Set(t.filter((t) => t.environment.includes(e) && (n ? It(t, { environment: e }) : t.productType === "Luminaria")).map((e) => e.application).filter(Boolean))].map((t) => r(t, n ? {
 			environment: e,
 			application: t
 		} : {
@@ -1644,8 +1648,8 @@ async function lr() {
 	return {
 		interior: i("Interior"),
 		exterior: i("Exterior"),
-		"lamparas-artefactos": i(Mt),
-		colecciones: rn(t).map((e) => ({
+		"lamparas-artefactos": i(Nt),
+		colecciones: an(t).map((e) => ({
 			label: e.name,
 			href: D({ family: e.name })
 		}))
@@ -1990,37 +1994,37 @@ var A = Object.freeze({
 		lineHeight: 14,
 		letterSpacing: .4
 	}
-}), ur = [
+}), dr = [
 	"M13.2112 1.03819C13.5552 0.538809 14.1401 0.243121 14.7662 0.243121H16.9337V15.6977H13.452V7.16879C13.452 6.99138 13.2112 6.92567 13.108 7.07023L8.62167 13.4637C8.54598 13.5688 8.38772 13.5688 8.31203 13.4637L3.80509 7.07023C3.70188 6.92567 3.46793 6.99138 3.46793 7.16879V15.6977H0V0.243121H2.16746C2.79361 0.243121 3.37848 0.538809 3.72252 1.03819L8.31203 7.76674C8.38772 7.87187 8.55286 7.87187 8.62855 7.76674L13.2112 1.03819ZM35.0922 15.6977H31.1564L30.5233 14.1799C30.5233 14.1799 30.5233 14.1667 30.5164 14.1602C30.1518 13.306 29.4362 13.1351 28.5623 13.1351H23.5943L22.5209 15.6977H18.592L24.8604 1.07105C25.0806 0.571663 25.5898 0.243121 26.1609 0.243121H28.4591L28.4797 0.295688L35.0853 15.6977H35.0922ZM29.0095 10.2571L27.021 5.46037C26.9591 5.30924 26.7389 5.30924 26.6769 5.46037L24.6677 10.2637H29.0164L29.0095 10.2571ZM47.6703 10.7828C47.6703 10.7828 46.2873 12.6949 43.5487 12.6949C42.1657 12.6949 41.0235 12.2546 40.0533 11.361C39.1175 10.4476 38.6633 9.34374 38.6633 7.98357C38.6633 6.62341 39.1175 5.51951 40.0533 4.60616C41.0166 3.71253 42.1657 3.27228 43.5487 3.27228C45.1244 3.27228 46.4455 3.85051 47.4914 4.99384L47.5534 5.05955L49.191 2.51663C49.2804 2.37207 49.2529 2.18152 49.1222 2.06324C47.574 0.742505 45.6405 0.0197125 43.5487 0.0197125C41.1542 0.0197125 39.1725 0.755647 37.4936 2.28008C36.0073 3.64682 35.0096 5.85462 35.0096 7.977C35.0096 10.2702 35.8216 12.1363 37.4936 13.6739C39.1725 15.1918 41.1542 15.9343 43.5487 15.9343C45.7024 15.9343 47.6979 15.1721 49.2598 13.7725C49.3905 13.6542 49.4181 13.4702 49.3217 13.3257L47.6703 10.7828ZM60.9985 9.66571C60.9022 9.7117 60.8677 9.82998 60.9297 9.9154L64.9068 15.6912H61.4113C60.9297 15.6912 60.4755 15.4481 60.2209 15.0604L57.331 10.6053H55.1291V15.6912H51.4617V3.48912V0.243121H58.198C59.7118 0.243121 61.0122 0.742505 62.065 1.7347C63.1522 2.72033 63.682 3.90965 63.682 5.36838C63.682 7.22793 62.5811 8.88378 60.9916 9.66571M55.1291 7.27392C55.1291 7.37248 55.2117 7.45134 55.3149 7.45134H57.8127C59.1407 7.45134 59.9939 6.64969 59.9939 5.41437C59.9939 4.31704 59.1819 3.48912 58.1085 3.48912H55.1291V7.27392ZM79.7281 2.32608C81.3795 3.86366 82.2121 5.77577 82.2121 8.00329C82.2121 10.2374 81.3864 12.1561 79.7487 13.7002C78.1042 15.2312 76.0881 16.0066 73.7349 16.0066C71.4092 16.0066 69.3862 15.2312 67.7279 13.7002C66.0903 12.1561 65.2646 10.2374 65.2646 8.00329C65.2646 5.78234 66.0903 3.87023 67.7279 2.32608C69.3862 0.78193 71.4092 0 73.7418 0C76.0881 0 78.0973 0.78193 79.735 2.32608M68.9665 8.00329C68.9665 9.34374 69.4206 10.4476 70.3495 11.3676C71.2647 12.2546 72.4069 12.708 73.7418 12.708C75.0904 12.708 76.1913 12.2612 77.1134 11.3478C78.0423 10.4411 78.5171 9.31745 78.5171 8.00329C78.5171 6.70883 78.056 5.59179 77.1409 4.67844C76.2189 3.75852 75.0766 3.29199 73.7486 3.29199C72.4206 3.29199 71.2784 3.75852 70.3564 4.67844C69.4413 5.58522 68.9734 6.70883 68.9734 8.00329M86.6433 0.243121H84.2832V3.48912V15.6977H94.164V12.3598H88.2328C88.1296 12.3598 88.047 12.2809 88.047 12.1823V1.577C88.047 0.841068 87.4208 0.243121 86.6433 0.243121ZM100.185 12.4517C100.082 12.4517 99.999 12.3729 99.999 12.2743V9.37659H105.951V6.16345H100.192C100.088 6.16345 100.006 6.0846 100.006 5.98604V3.48912H105.779C106.55 3.48912 107.183 2.89117 107.183 2.15524V0.243121H96.3177V15.6977H107.492V12.4517H100.192H100.185ZM124.364 8.00329C124.364 10.3359 123.621 12.2218 122.148 13.6148C120.71 15.0012 118.598 15.7043 115.866 15.7043H109.928V0.243121H115.846C118.557 0.243121 120.669 0.965914 122.128 2.39836C123.614 3.80452 124.364 5.69035 124.364 8.00329ZM113.623 12.2678C113.623 12.3663 113.706 12.4452 113.809 12.4452H115.639C119.052 12.4452 120.641 11.0324 120.641 7.99672C120.641 6.59055 120.256 5.47351 119.506 4.68501C118.77 3.88994 117.463 3.48912 115.612 3.48912H113.616V12.2743L113.623 12.2678Z",
 	"M141.655 1.64271H140.912L135.532 15.5006H134.142L139.977 0.512526H142.578L148.385 15.5072H147.016L141.655 1.64928V1.64271ZM136.722 10.2374H145.873V11.3741H136.722V10.2374Z",
 	"M156.89 0.512526C158.128 0.512526 159.133 0.70308 159.903 1.09076C160.674 1.47844 161.245 1.99754 161.617 2.65462C161.988 3.3117 162.174 4.05421 162.174 4.88214C162.174 5.49322 162.071 6.06489 161.858 6.59713C161.651 7.12279 161.328 7.58932 160.894 7.977C160.461 8.37125 159.917 8.68008 159.257 8.91006C158.596 9.14004 157.819 9.25175 156.924 9.25175H153.023V15.5072H151.653V0.512526H156.883H156.89ZM160.791 4.88214C160.791 3.89651 160.495 3.11458 159.897 2.5232C159.298 1.9384 158.293 1.64271 156.89 1.64271H153.029V8.08871H156.931C157.825 8.08871 158.562 7.95072 159.126 7.68131C159.69 7.41191 160.11 7.0308 160.385 6.54456C160.653 6.05832 160.791 5.4998 160.791 4.87557V4.88214ZM158.073 8.75893L162.449 15.5072H160.901L156.594 8.75893H158.073Z",
 	"M180.415 4.91499C180.023 3.98193 179.486 3.17372 178.791 2.49692C178.096 1.82012 177.277 1.29446 176.349 0.919918C175.413 0.551951 174.401 0.361396 173.307 0.361396C172.213 0.361396 171.174 0.54538 170.232 0.919918C169.289 1.29446 168.47 1.81355 167.761 2.49692C167.059 3.17372 166.516 3.98193 166.137 4.91499C165.759 5.84805 165.566 6.87967 165.566 8.00986C165.566 9.14004 165.759 10.1717 166.137 11.1047C166.516 12.0378 167.059 12.846 167.761 13.5228C168.463 14.1996 169.289 14.7253 170.232 15.0998C171.174 15.4743 172.199 15.6583 173.307 15.6583C174.415 15.6583 175.413 15.4743 176.349 15.0998C177.284 14.7318 178.096 14.2062 178.791 13.5228C179.486 12.846 180.03 12.0378 180.415 11.1047C180.8 10.1717 181 9.14004 181 8.00986C181 6.87967 180.807 5.84805 180.415 4.91499ZM178.771 11.4793C178.206 12.4517 177.456 13.2008 176.507 13.7265C175.557 14.2522 174.491 14.5216 173.307 14.5216C172.124 14.5216 171.037 14.2587 170.08 13.7265C169.124 13.2008 168.367 12.4517 167.803 11.4793C167.238 10.5068 166.963 9.35031 166.963 8.00986C166.963 6.6694 167.245 5.50637 167.803 4.52731C168.367 3.54825 169.124 2.79918 170.08 2.28008C171.037 1.76099 172.117 1.49815 173.307 1.49815C174.498 1.49815 175.55 1.76099 176.507 2.28008C177.456 2.79918 178.213 3.54825 178.771 4.52731C179.335 5.50637 179.61 6.66283 179.61 8.00986C179.61 9.35688 179.328 10.5068 178.771 11.4793Z",
 	"M176.698 10.9485L175.745 11.8591L179.598 15.539L180.552 14.6283L176.698 10.9485Z"
-], dr = Object.freeze({
+], fr = Object.freeze({
 	width: 181,
 	height: 16
-}), fr = Object.freeze({
+}), pr = Object.freeze({
 	default: 181,
 	small: 158,
 	compact: 117
-}), pr = Object.freeze({
+}), mr = Object.freeze({
 	label: "Ficha técnica",
 	brand: "Macroled Arq"
-}), mr = .75, M = (e) => e * mr, hr = Object.freeze({
+}), hr = .75, M = (e) => e * hr, gr = Object.freeze({
 	width: 595.28,
 	height: 841.89
-}), gr = 1.2, N = {
+}), _r = 1.2, N = {
 	top: A["space/padding/xl"],
 	side: A["space/padding/xl-2xl"],
 	bottom: A["space/padding/lg"]
-}, _r = A["border/default"], vr = "border/default", yr = "surface/strong", br = (e) => `${A["font/family/sans"].replace(/\s+/g, "")}-${e}`, xr = Object.freeze([...new Set([
+}, vr = A["border/default"], yr = "border/default", br = "surface/strong", xr = (e) => `${A["font/family/sans"].replace(/\s+/g, "")}-${e}`, Sr = Object.freeze([...new Set([
 	"label",
 	"heading-2",
 	"body-compact-medium",
 	"body-sm",
 	"body-sm-medium"
 ].map((e) => j[e].fontWeight))]);
-function Sr(e, t = A["color/surface/default"]) {
+function Cr(e, t = A["color/surface/default"]) {
 	let n = e.match(/^#([0-9a-f]{6})([0-9a-f]{2})?$/i);
 	if (!n?.[2]) return e;
 	let r = parseInt(n[2], 16) / 255, i = (e) => [
@@ -2030,14 +2034,14 @@ function Sr(e, t = A["color/surface/default"]) {
 	].map((t) => parseInt(e.slice(t, t + 2), 16)), a = i(t.replace("#", ""));
 	return `#${i(n[1]).map((e, t) => Math.round(e * r + a[t] * (1 - r))).map((e) => e.toString(16).padStart(2, "0")).join("")}`;
 }
-var P = (e) => Sr(A[`color/${e}`]);
+var P = (e) => Cr(A[`color/${e}`]);
 function F(e, t, n, { above: r = 0 } = {}) {
-	let i = j[t], a = M((i.lineHeight - gr * i.fontSize) / 2);
+	let i = j[t], a = M((i.lineHeight - _r * i.fontSize) / 2);
 	return {
 		text: i.textTransform === "uppercase" ? String(e).toLocaleUpperCase("es") : String(e),
-		font: br(i.fontWeight),
+		font: xr(i.fontWeight),
 		fontSize: M(i.fontSize),
-		lineHeight: i.lineHeight / (gr * i.fontSize),
+		lineHeight: i.lineHeight / (_r * i.fontSize),
 		characterSpacing: M(i.letterSpacing),
 		color: P(n),
 		margin: [
@@ -2048,14 +2052,14 @@ function F(e, t, n, { above: r = 0 } = {}) {
 		]
 	};
 }
-function Cr(e, { lineAt: t, lineColor: n, padding: r, widths: i = ["*"] }) {
+function wr(e, { lineAt: t, lineColor: n, padding: r, widths: i = ["*"] }) {
 	return {
 		table: {
 			widths: i,
 			body: [Array.isArray(e) ? e : [e]]
 		},
 		layout: {
-			hLineWidth: (e) => e === +(t === "bottom") ? M(_r) : 0,
+			hLineWidth: (e) => e === +(t === "bottom") ? M(vr) : 0,
 			vLineWidth: () => 0,
 			hLineColor: () => n,
 			paddingLeft: () => 0,
@@ -2065,23 +2069,23 @@ function Cr(e, { lineAt: t, lineColor: n, padding: r, widths: i = ["*"] }) {
 		}
 	};
 }
-function wr() {
-	let e = fr.small, t = ur.map((e) => `<path d="${e}"/>`).join("");
+function Tr() {
+	let e = pr.small, t = dr.map((e) => `<path d="${e}"/>`).join("");
 	return {
-		svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${dr.width} ${dr.height}" fill="${P("text/primary")}">${t}</svg>`,
+		svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${fr.width} ${fr.height}" fill="${P("text/primary")}">${t}</svg>`,
 		width: M(e),
-		height: M(e * dr.height / dr.width)
+		height: M(e * fr.height / fr.width)
 	};
 }
-var Tr = fr.small * dr.height / dr.width, Er = j["body-sm-medium"].lineHeight + j["body-sm"].lineHeight, Dr = (e) => Math.max(e, Tr) + A["space/padding/sm-md"] + _r, Or = j.label.lineHeight + A["space/padding/sm-md"] + _r;
-function kr(e, t = pr.label) {
-	let n = e ? { stack: [F(e.name, "body-sm-medium", "text/primary"), F(e.sku, "body-sm", "text/tertiary")] } : F(t, "label", "text/tertiary"), r = e ? Er : j.label.lineHeight;
-	return Cr({
+var Er = pr.small * fr.height / fr.width, Dr = j["body-sm-medium"].lineHeight + j["body-sm"].lineHeight, Or = (e) => Math.max(e, Er) + A["space/padding/sm-md"] + vr, kr = j.label.lineHeight + A["space/padding/sm-md"] + vr;
+function Ar(e, t = mr.label) {
+	let n = e ? { stack: [F(e.name, "body-sm-medium", "text/primary"), F(e.sku, "body-sm", "text/tertiary")] } : F(t, "label", "text/tertiary"), r = e ? Dr : j.label.lineHeight;
+	return wr({
 		columns: [{
-			...wr(),
+			...Tr(),
 			margin: [
 				0,
-				M((r - Tr) / 2),
+				M((r - Er) / 2),
 				0,
 				0
 			]
@@ -2093,27 +2097,27 @@ function kr(e, t = pr.label) {
 		columnGap: M(A["space/gap/md"])
 	}, {
 		lineAt: "bottom",
-		lineColor: P(vr),
+		lineColor: P(yr),
 		padding: A["space/padding/sm-md"]
 	});
 }
-function Ar(e, t) {
-	return Cr({
+function jr(e, t) {
+	return wr({
 		...F(`${e} / ${t}`, "label", "text/tertiary"),
 		alignment: "right"
 	}, {
 		lineAt: "top",
-		lineColor: P(vr),
+		lineColor: P(yr),
 		padding: A["space/padding/sm-md"]
 	});
 }
-var jr = hr.width / mr - 2 * N.side, Mr = (jr - A["space/gap/xl"]) / 2, Nr = A["layout/pdf-cover-image"], Pr = 1.5;
-function Fr(e) {
-	return Nr * Math.min(Math.max(e, 1), Pr);
+var Mr = gr.width / hr - 2 * N.side, Nr = (Mr - A["space/gap/xl"]) / 2, Pr = A["layout/pdf-cover-image"], Fr = 1.5;
+function Ir(e) {
+	return Pr * Math.min(Math.max(e, 1), Fr);
 }
-var Ir = A["space/padding/lg"];
-function Lr(e, { image: t, cota: n }) {
-	let r = M(Nr), i = [F(e.name, "heading-2", "text/primary"), F(e.sku, "body-sm", "text/secondary", { above: A["space/gap/xs"] })], a = [t ? {
+var Lr = A["space/padding/lg"];
+function Rr(e, { image: t, cota: n }) {
+	let r = M(Pr), i = [F(e.name, "heading-2", "text/primary"), F(e.sku, "body-sm", "text/secondary", { above: A["space/gap/xs"] })], a = [t ? {
 		image: t,
 		width: r,
 		height: r
@@ -2123,20 +2127,20 @@ function Lr(e, { image: t, cota: n }) {
 		y: 0,
 		w: r,
 		h: r,
-		color: P(yr)
+		color: P(br)
 	}] }, ...n ? [{
 		image: n.image,
 		width: M(n.width),
-		height: r - 2 * M(Ir),
+		height: r - 2 * M(Lr),
 		margin: [
-			M(A["space/gap/md"] + Ir),
-			M(Ir),
-			M(Ir),
-			M(Ir)
+			M(A["space/gap/md"] + Lr),
+			M(Lr),
+			M(Lr),
+			M(Lr)
 		]
 	}] : []];
 	return {
-		...Cr({ stack: [{ stack: i }, {
+		...wr({ stack: [{ stack: i }, {
 			columns: [...a.map((e) => ({
 				...e,
 				width: "auto"
@@ -2153,13 +2157,13 @@ function Lr(e, { image: t, cota: n }) {
 			]
 		}] }, {
 			lineAt: "bottom",
-			lineColor: P(vr),
+			lineColor: P(yr),
 			padding: A["space/padding/md"]
 		}),
 		unbreakable: !0
 	};
 }
-var Rr = (e, t, n) => ({
+var zr = (e, t, n) => ({
 	...F(e, t, n),
 	border: [
 		!1,
@@ -2168,8 +2172,8 @@ var Rr = (e, t, n) => ({
 		!0
 	]
 });
-function zr(e, t, n) {
-	let r = M(A["space/padding/sm"]), i = A["layout/pdf-spec-label-compact"], a = Mr - i - A["space/gap/lg"], o = Math.ceil(e.rows.length / 2), s = e.rows.slice(0, o), c = e.rows.slice(o), l = (e) => e ? [Rr(e.label, "body-sm", "text/secondary"), Rr(e.value, "body-sm-medium", "text/primary")] : [{}, {}];
+function Br(e, t, n) {
+	let r = M(A["space/padding/sm"]), i = A["layout/pdf-spec-label-compact"], a = Nr - i - A["space/gap/lg"], o = Math.ceil(e.rows.length / 2), s = e.rows.slice(0, o), c = e.rows.slice(o), l = (e) => e ? [zr(e.label, "body-sm", "text/secondary"), zr(e.value, "body-sm-medium", "text/primary")] : [{}, {}];
 	return {
 		table: {
 			widths: [
@@ -2205,9 +2209,9 @@ function zr(e, t, n) {
 		},
 		layout: {
 			defaultBorder: !1,
-			hLineWidth: () => M(_r),
+			hLineWidth: () => M(vr),
 			vLineWidth: () => 0,
-			hLineColor: (e) => P(e === 1 ? "border/strong" : vr),
+			hLineColor: (e) => P(e === 1 ? "border/strong" : yr),
 			paddingLeft: (e) => e === 1 || e === 4 ? M(A["space/gap/lg"]) : 0,
 			paddingRight: () => 0,
 			paddingTop: (e) => e === 0 ? 0 : r,
@@ -2221,22 +2225,22 @@ function zr(e, t, n) {
 		]
 	};
 }
-function Br(e, { image: t = null, cota: n = null } = {}) {
-	let r = N.top + Dr(Er) + A["space/padding/xl"], i = N.top + Dr(j.label.lineHeight) + A["space/padding/md"] - r, a = e.sections ?? [];
+function Vr(e, { image: t = null, cota: n = null } = {}) {
+	let r = N.top + Or(Dr) + A["space/padding/xl"], i = N.top + Or(j.label.lineHeight) + A["space/padding/md"] - r, a = e.sections ?? [];
 	return {
 		pageSize: "A4",
 		pageMargins: [
 			M(N.side),
 			M(r),
 			M(N.side),
-			M(Or + N.bottom)
+			M(kr + N.bottom)
 		],
 		info: {
-			title: `${pr.label} · ${e.name} · ${e.sku}`,
-			author: pr.brand
+			title: `${mr.label} · ${e.name} · ${e.sku}`,
+			author: mr.brand
 		},
 		header: (t) => ({
-			...kr(t === 1 ? null : e),
+			...Ar(t === 1 ? null : e),
 			margin: [
 				M(N.side),
 				M(N.top),
@@ -2245,7 +2249,7 @@ function Br(e, { image: t = null, cota: n = null } = {}) {
 			]
 		}),
 		footer: (e, t) => ({
-			...Ar(e, t),
+			...jr(e, t),
 			margin: [
 				M(N.side),
 				0,
@@ -2253,9 +2257,9 @@ function Br(e, { image: t = null, cota: n = null } = {}) {
 				0
 			]
 		}),
-		defaultStyle: { font: br(j.body.fontWeight) },
+		defaultStyle: { font: xr(j.body.fontWeight) },
 		content: [{
-			...Lr(e, {
+			...Rr(e, {
 				image: t,
 				cota: n
 			}),
@@ -2265,21 +2269,21 @@ function Br(e, { image: t = null, cota: n = null } = {}) {
 				0,
 				0
 			]
-		}, ...a.map((e, t) => zr(e, t, t === a.length - 1))]
+		}, ...a.map((e, t) => Br(e, t, t === a.length - 1))]
 	};
 }
 //#endregion
 //#region src/pdf/ficha-tecnica.js
-var Vr = 2.5, Hr = 4, Ur = .9, Wr = null;
-function Gr() {
-	return Wr ??= import(
+var Hr = 2.5, Ur = 4, Wr = .9, Gr = null;
+function Kr() {
+	return Gr ??= import(
 		/* @vite-ignore */
 		n.pdf.pdfmakeUrl
 ).then(({ default: e }) => {
 		let t = {};
-		for (let e of xr) {
+		for (let e of Sr) {
 			let r = n.pdf.fontUrl.replace("{weight}", e);
-			t[br(e)] = {
+			t[xr(e)] = {
 				normal: r,
 				bold: r,
 				italics: r,
@@ -2287,14 +2291,14 @@ function Gr() {
 			};
 		}
 		return e.addFonts(t), e.setUrlAccessPolicy((e) => e.startsWith(n.pdf.fontUrl.split("{weight}")[0])), e;
-	}), Wr.catch(() => Wr = null), Wr;
+	}), Gr.catch(() => Gr = null), Gr;
 }
-function Kr(e, t, r) {
+function qr(e, t, r) {
 	let { sampleFrom: i, pdfBase: a } = n.images;
 	return e.startsWith(i) ? a.replaceAll("{size}", Math.round(t)).replace("{format}", r) + e.slice(i.length) : e;
 }
-function qr(e, t, n, { maxPx: r = Math.max(Number(t) || 0, n), fit: i = "contain", background: a, scale: o = Vr, type: s = "image/jpeg", request: c = "webp" } = {}) {
-	return e ? (e = Kr(e, r * o, c), new Promise((r) => {
+function Jr(e, t, n, { maxPx: r = Math.max(Number(t) || 0, n), fit: i = "contain", background: a, scale: o = Hr, type: s = "image/jpeg", request: c = "webp" } = {}) {
+	return e ? (e = qr(e, r * o, c), new Promise((r) => {
 		let c = new Image();
 		c.crossOrigin = "anonymous", c.decoding = "async", c.onload = () => {
 			try {
@@ -2304,7 +2308,7 @@ function qr(e, t, n, { maxPx: r = Math.max(Number(t) || 0, n), fit: i = "contain
 				u.fillStyle = a, u.fillRect(0, 0, l.width, l.height);
 				let d = [l.width / c.naturalWidth, l.height / c.naturalHeight], f = i === "cover" ? Math.max(...d) : Math.min(...d), p = c.naturalWidth * f, m = c.naturalHeight * f;
 				u.drawImage(c, (l.width - p) / 2, (l.height - m) / 2, p, m), r({
-					image: l.toDataURL(s, Ur),
+					image: l.toDataURL(s, Wr),
 					width: e
 				});
 			} catch (t) {
@@ -2315,54 +2319,54 @@ function qr(e, t, n, { maxPx: r = Math.max(Number(t) || 0, n), fit: i = "contain
 		}, c.src = e;
 	})) : Promise.resolve(null);
 }
-var Jr = (e) => String(e).replace(/[^\w-]+/g, "-").replace(/^-+|-+$/g, ""), Yr = (e) => `${Jr(e)}.pdf`;
-async function Xr(e) {
-	let t = await En(e);
+var Yr = (e) => String(e).replace(/[^\w-]+/g, "-").replace(/^-+|-+$/g, ""), Xr = (e) => `${Yr(e)}.pdf`;
+async function Zr(e) {
+	let t = await Dn(e);
 	if (!t) return null;
-	let [n, r] = await Promise.all([qr(t.image, Nr, Nr, { background: A[`color/${yr}`] }), qr(t.cota, (e) => Fr(e) - 2 * Ir, Nr - 2 * Ir, {
-		maxPx: Fr(Infinity) - 2 * Ir,
+	let [n, r] = await Promise.all([Jr(t.image, Pr, Pr, { background: A[`color/${br}`] }), Jr(t.cota, (e) => Ir(e) - 2 * Lr, Pr - 2 * Lr, {
+		maxPx: Ir(Infinity) - 2 * Lr,
 		background: A["color/surface/default"],
-		scale: Hr,
+		scale: Ur,
 		type: "image/png",
 		request: "png"
 	})]);
 	return {
 		data: t,
-		definition: Br(t, {
+		definition: Vr(t, {
 			image: n?.image ?? null,
 			cota: r
 		})
 	};
 }
-var Zr = /* @__PURE__ */ new Map();
-function Qr(e) {
-	if (Zr.has(e)) return Zr.get(e);
+var Qr = /* @__PURE__ */ new Map();
+function $r(e) {
+	if (Qr.has(e)) return Qr.get(e);
 	let t = window.open("", "_blank"), n = (async () => {
 		try {
-			let [n, r] = await Promise.all([Gr(), Xr(e)]);
+			let [n, r] = await Promise.all([Kr(), Zr(e)]);
 			if (!r) throw Error(`el SKU «${e}» no está en el catálogo`);
-			r.definition.info.title = Jr(r.data.sku);
+			r.definition.info.title = Yr(r.data.sku);
 			let i = n.createPdf(r.definition);
-			t && !t.closed ? await i.open(t) : await i.download(Yr(r.data.sku));
+			t && !t.closed ? await i.open(t) : await i.download(Xr(r.data.sku));
 		} catch (e) {
 			throw t?.close(), e;
 		}
-	})().finally(() => Zr.delete(e));
-	return Zr.set(e, n), n;
+	})().finally(() => Qr.delete(e));
+	return Qr.set(e, n), n;
 }
 //#endregion
 //#region src/pdf/configuracion-doc.js
-var $r = Object.freeze({
+var ei = Object.freeze({
 	label: "Configuración Daö",
 	specs: "Características",
 	parts: "Piezas para este armado"
 });
-function ei(e) {
+function ti(e) {
 	let t = A["space/gap/sm"];
-	return Math.min(Nr, (jr - t * (e - 1)) / Math.max(e, 1));
+	return Math.min(Pr, (Mr - t * (e - 1)) / Math.max(e, 1));
 }
-function ti(e, t) {
-	let n = ei(e.pieces.length), r = jr - (e.pieces.length * n + (e.pieces.length - 1) * A["space/gap/sm"]) > 1 ? [{
+function ni(e, t) {
+	let n = ti(e.pieces.length), r = Mr - (e.pieces.length * n + (e.pieces.length - 1) * A["space/gap/sm"]) > 1 ? [{
 		text: "",
 		width: "*"
 	}] : [];
@@ -2380,7 +2384,7 @@ function ti(e, t) {
 					y: 0,
 					w: M(n),
 					h: M(n),
-					color: P(yr)
+					color: P(br)
 				}] }, F(e.qty ? `${e.qty} × ${e.label}` : e.label, "body-sm", "text/secondary", { above: A["space/gap/xs"] })]
 			})), ...r],
 			columnGap: M(A["space/gap/sm"]),
@@ -2400,7 +2404,7 @@ function ti(e, t) {
 		unbreakable: !0
 	};
 }
-function ni(e) {
+function ri(e) {
 	let t = (e, t, n, r = {}) => ({
 		...F(e, t, n),
 		border: [
@@ -2423,7 +2427,7 @@ function ni(e) {
 			dontBreakRows: !0,
 			body: [[
 				{
-					...F($r.parts, "body-compact-medium", "text/primary"),
+					...F(ei.parts, "body-compact-medium", "text/primary"),
 					colSpan: 3,
 					border: [
 						!1,
@@ -2447,7 +2451,7 @@ function ni(e) {
 			defaultBorder: !1,
 			hLineWidth: () => M(A["border/default"]),
 			vLineWidth: () => 0,
-			hLineColor: (e) => P(e === 1 ? "border/strong" : vr),
+			hLineColor: (e) => P(e === 1 ? "border/strong" : yr),
 			paddingLeft: (e) => e === 0 ? 0 : M(A["space/gap/lg"]),
 			paddingRight: () => 0,
 			paddingTop: (e) => e === 0 ? 0 : M(A["space/padding/sm"]),
@@ -2455,9 +2459,9 @@ function ni(e) {
 		}
 	};
 }
-function ri(e, { images: t = [] } = {}) {
-	let n = N.top + Dr(j.label.lineHeight) + A["space/padding/xl"], r = e.specs.length ? [zr({
-		label: $r.specs,
+function ii(e, { images: t = [] } = {}) {
+	let n = N.top + Or(j.label.lineHeight) + A["space/padding/xl"], r = e.specs.length ? [Br({
+		label: ei.specs,
 		rows: e.specs.map(([e, t]) => ({
 			label: e,
 			value: t
@@ -2469,14 +2473,14 @@ function ri(e, { images: t = [] } = {}) {
 			M(N.side),
 			M(n),
 			M(N.side),
-			M(Or + N.bottom)
+			M(kr + N.bottom)
 		],
 		info: {
-			title: `${$r.label} · ${e.title}`,
-			author: pr.brand
+			title: `${ei.label} · ${e.title}`,
+			author: mr.brand
 		},
 		header: () => ({
-			...kr(null, $r.label),
+			...Ar(null, ei.label),
 			margin: [
 				M(N.side),
 				M(N.top),
@@ -2485,7 +2489,7 @@ function ri(e, { images: t = [] } = {}) {
 			]
 		}),
 		footer: (e, t) => ({
-			...Ar(e, t),
+			...jr(e, t),
 			margin: [
 				M(N.side),
 				0,
@@ -2493,12 +2497,12 @@ function ri(e, { images: t = [] } = {}) {
 				0
 			]
 		}),
-		defaultStyle: { font: br(j.body.fontWeight) },
+		defaultStyle: { font: xr(j.body.fontWeight) },
 		content: [
-			ti(e, t),
+			ni(e, t),
 			...r,
 			{
-				...ni(e.parts),
+				...ri(e.parts),
 				margin: [
 					0,
 					r.length ? 0 : M(A["space/padding/md"]),
@@ -2511,69 +2515,69 @@ function ri(e, { images: t = [] } = {}) {
 }
 //#endregion
 //#region src/pdf/configuracion.js
-var ii = "configuracion-dao", ai = null;
-function oi(e) {
-	if (ai) return ai;
+var ai = "configuracion-dao", oi = null;
+function si(e) {
+	if (oi) return oi;
 	let t = window.open("", "_blank");
-	return ai = (async () => {
+	return oi = (async () => {
 		try {
-			let n = ei(e.pieces.length), [r, ...i] = await Promise.all([Gr(), ...e.pieces.map((e) => qr(e.src, n, n, { background: A[`color/${yr}`] }))]), a = ri(e, { images: i.map((e) => e?.image ?? null) });
-			a.info.title = ii;
+			let n = ti(e.pieces.length), [r, ...i] = await Promise.all([Kr(), ...e.pieces.map((e) => Jr(e.src, n, n, { background: A[`color/${br}`] }))]), a = ii(e, { images: i.map((e) => e?.image ?? null) });
+			a.info.title = ai;
 			let o = r.createPdf(a);
-			t && !t.closed ? await o.open(t) : await o.download(`${ii}.pdf`);
+			t && !t.closed ? await o.open(t) : await o.download(`${ai}.pdf`);
 		} catch (e) {
 			throw t?.close(), e;
 		}
-	})().finally(() => ai = null), ai;
+	})().finally(() => oi = null), oi;
 }
 //#endregion
 //#region src/styles/roles.css?inline
-var si = ".role-display-lg{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-display-lg-size);line-height:var(--arq-type-display-lg-leading);letter-spacing:var(--arq-font-tracking-tighter)}.role-display{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-display-size);line-height:var(--arq-type-display-leading);letter-spacing:var(--arq-font-tracking-tighter)}.role-display-sm{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-display-sm-size);line-height:var(--arq-type-display-sm-leading);letter-spacing:var(--arq-font-tracking-tight)}.role-heading-1{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-heading-1-size);line-height:var(--arq-type-heading-1-leading);letter-spacing:var(--arq-font-tracking-tight)}.role-heading-2{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-heading-2-size);line-height:var(--arq-type-heading-2-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-heading-3{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-regular);font-size:var(--arq-type-heading-3-size);line-height:var(--arq-type-heading-3-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-heading-3-light{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-heading-3-size);line-height:var(--arq-type-heading-3-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-xl{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-regular);font-size:var(--arq-type-body-xl-size);line-height:var(--arq-type-body-xl-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-xl-light{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-body-xl-size);line-height:var(--arq-type-body-xl-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-lg{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-body-lg-size);line-height:var(--arq-type-body-lg-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-lg-regular{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-regular);font-size:var(--arq-type-body-lg-size);line-height:var(--arq-type-body-lg-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-lg-medium{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-medium);font-size:var(--arq-type-body-lg-size);line-height:var(--arq-type-body-lg-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-body-size);line-height:var(--arq-type-body-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-regular{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-regular);font-size:var(--arq-type-body-size);line-height:var(--arq-type-body-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-medium{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-medium);font-size:var(--arq-type-body-size);line-height:var(--arq-type-body-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-strong{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-semibold);font-size:var(--arq-type-body-size);line-height:var(--arq-type-body-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-compact{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-body-compact-size);line-height:var(--arq-type-body-compact-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-compact-regular{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-regular);font-size:var(--arq-type-body-compact-size);line-height:var(--arq-type-body-compact-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-compact-medium{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-medium);font-size:var(--arq-type-body-compact-size);line-height:var(--arq-type-body-compact-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-compact-strong{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-semibold);font-size:var(--arq-type-body-compact-size);line-height:var(--arq-type-body-compact-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-sm{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-regular);font-size:var(--arq-type-body-sm-size);line-height:var(--arq-type-body-sm-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-sm-medium{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-medium);font-size:var(--arq-type-body-sm-size);line-height:var(--arq-type-body-sm-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-label-lg{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-regular);font-size:var(--arq-type-label-lg-size);line-height:var(--arq-type-label-lg-leading);letter-spacing:var(--arq-font-tracking-widest);text-transform:uppercase}.role-label{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-regular);font-size:var(--arq-type-label-size);line-height:var(--arq-type-label-leading);letter-spacing:var(--arq-font-tracking-widest);text-transform:uppercase}.role-label-sm{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-medium);font-size:var(--arq-type-label-sm-size);line-height:var(--arq-type-label-sm-leading);letter-spacing:var(--arq-font-tracking-widest);text-transform:uppercase}.role-caption{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-regular);font-size:var(--arq-type-caption-size);line-height:var(--arq-type-caption-leading);letter-spacing:var(--arq-font-tracking-wide)}.role-caption-medium{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-medium);font-size:var(--arq-type-caption-size);line-height:var(--arq-type-caption-leading);letter-spacing:var(--arq-font-tracking-wide)}", ci = "[data-arq-theme=dark]{--arq-color-surface-default:var(--arq-neutral-800);--arq-color-surface-faint:var(--arq-neutral-775);--arq-color-surface-hover:var(--arq-neutral-775);--arq-color-surface-soft:var(--arq-neutral-725);--arq-color-surface-subtle:var(--arq-neutral-750);--arq-color-surface-selected:var(--arq-neutral-725);--arq-color-surface-strong:var(--arq-neutral-700);--arq-color-surface-inverse:var(--arq-neutral-0);--arq-color-surface-inverse-hover:var(--arq-neutral-150);--arq-color-surface-inverse-pressed:var(--arq-neutral-200);--arq-color-surface-bone:var(--arq-neutral-750);--arq-color-surface-sand:var(--arq-neutral-750);--arq-color-text-primary:var(--arq-neutral-100);--arq-color-text-secondary:var(--arq-neutral-200);--arq-color-text-tertiary:var(--arq-neutral-500);--arq-color-text-inverse:var(--arq-neutral-800);--arq-color-text-accent:var(--arq-neutral-150);--arq-color-text-disabled:var(--arq-neutral-600);--arq-color-text-error:var(--arq-red-300);--arq-color-text-success:var(--arq-green-300);--arq-color-text-warning:var(--arq-amber-300);--arq-color-icon-primary:var(--arq-neutral-100);--arq-color-icon-secondary:var(--arq-neutral-200);--arq-color-icon-tertiary:var(--arq-neutral-500);--arq-color-icon-accent:var(--arq-neutral-150);--arq-color-icon-inverse:var(--arq-neutral-800);--arq-color-icon-disabled:var(--arq-neutral-600);--arq-color-border-subtle:var(--arq-alpha-white-10);--arq-color-border-default:var(--arq-alpha-white-22);--arq-color-border-strong:var(--arq-neutral-0);--arq-color-border-disabled:var(--arq-alpha-white-10);--arq-color-border-focus:var(--arq-neutral-150);--arq-color-border-error:var(--arq-red-300);--arq-color-action-primary:var(--arq-neutral-100);--arq-color-action-primary-hover:var(--arq-neutral-200);--arq-color-action-on-primary:var(--arq-neutral-900);--arq-color-accent-default:var(--arq-neutral-150)}", li = "[data-arq-theme=light]{--arq-color-surface-default:var(--arq-neutral-0);--arq-color-surface-faint:var(--arq-neutral-25);--arq-color-surface-hover:var(--arq-neutral-50);--arq-color-surface-soft:var(--arq-neutral-75);--arq-color-surface-subtle:var(--arq-neutral-100);--arq-color-surface-selected:var(--arq-neutral-150);--arq-color-surface-strong:var(--arq-neutral-200);--arq-color-surface-inverse:var(--arq-neutral-900);--arq-color-surface-inverse-hover:var(--arq-neutral-750);--arq-color-surface-inverse-pressed:var(--arq-neutral-600);--arq-color-surface-bone:var(--arq-offwhite-bone);--arq-color-surface-sand:var(--arq-offwhite-sand);--arq-color-text-primary:var(--arq-neutral-900);--arq-color-text-secondary:var(--arq-neutral-750);--arq-color-text-tertiary:var(--arq-neutral-600);--arq-color-text-inverse:var(--arq-neutral-0);--arq-color-text-accent:var(--arq-neutral-900);--arq-color-text-disabled:var(--arq-neutral-400);--arq-color-text-error:var(--arq-red-600);--arq-color-text-success:var(--arq-green-600);--arq-color-text-warning:var(--arq-amber-600);--arq-color-icon-primary:var(--arq-neutral-900);--arq-color-icon-secondary:var(--arq-neutral-750);--arq-color-icon-tertiary:var(--arq-neutral-600);--arq-color-icon-accent:var(--arq-neutral-900);--arq-color-icon-inverse:var(--arq-neutral-0);--arq-color-icon-disabled:var(--arq-neutral-400);--arq-color-border-subtle:var(--arq-alpha-ink-10);--arq-color-border-default:var(--arq-alpha-ink-22);--arq-color-border-strong:var(--arq-neutral-900);--arq-color-border-disabled:var(--arq-neutral-200);--arq-color-border-focus:var(--arq-neutral-900);--arq-color-border-error:var(--arq-red-600);--arq-color-action-primary:var(--arq-neutral-900);--arq-color-action-primary-hover:var(--arq-neutral-750);--arq-color-action-on-primary:var(--arq-neutral-0);--arq-color-accent-default:var(--arq-neutral-900)}", ui = "\n:host(:focus-visible),\n:focus-visible:not(input, textarea, select),\n:has(:focus-visible:not(input, textarea, select)) {\n  outline: none !important;\n}\n", di;
-function fi(e) {
-	di && (di.disabled = e);
+var ci = ".role-display-lg{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-display-lg-size);line-height:var(--arq-type-display-lg-leading);letter-spacing:var(--arq-font-tracking-tighter)}.role-display{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-display-size);line-height:var(--arq-type-display-leading);letter-spacing:var(--arq-font-tracking-tighter)}.role-display-sm{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-display-sm-size);line-height:var(--arq-type-display-sm-leading);letter-spacing:var(--arq-font-tracking-tight)}.role-heading-1{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-heading-1-size);line-height:var(--arq-type-heading-1-leading);letter-spacing:var(--arq-font-tracking-tight)}.role-heading-2{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-heading-2-size);line-height:var(--arq-type-heading-2-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-heading-3{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-regular);font-size:var(--arq-type-heading-3-size);line-height:var(--arq-type-heading-3-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-heading-3-light{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-heading-3-size);line-height:var(--arq-type-heading-3-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-xl{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-regular);font-size:var(--arq-type-body-xl-size);line-height:var(--arq-type-body-xl-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-xl-light{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-body-xl-size);line-height:var(--arq-type-body-xl-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-lg{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-body-lg-size);line-height:var(--arq-type-body-lg-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-lg-regular{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-regular);font-size:var(--arq-type-body-lg-size);line-height:var(--arq-type-body-lg-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-lg-medium{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-medium);font-size:var(--arq-type-body-lg-size);line-height:var(--arq-type-body-lg-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-body-size);line-height:var(--arq-type-body-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-regular{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-regular);font-size:var(--arq-type-body-size);line-height:var(--arq-type-body-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-medium{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-medium);font-size:var(--arq-type-body-size);line-height:var(--arq-type-body-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-strong{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-semibold);font-size:var(--arq-type-body-size);line-height:var(--arq-type-body-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-compact{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-light);font-size:var(--arq-type-body-compact-size);line-height:var(--arq-type-body-compact-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-compact-regular{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-regular);font-size:var(--arq-type-body-compact-size);line-height:var(--arq-type-body-compact-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-compact-medium{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-medium);font-size:var(--arq-type-body-compact-size);line-height:var(--arq-type-body-compact-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-compact-strong{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-semibold);font-size:var(--arq-type-body-compact-size);line-height:var(--arq-type-body-compact-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-sm{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-regular);font-size:var(--arq-type-body-sm-size);line-height:var(--arq-type-body-sm-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-body-sm-medium{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-medium);font-size:var(--arq-type-body-sm-size);line-height:var(--arq-type-body-sm-leading);letter-spacing:var(--arq-font-tracking-normal)}.role-label-lg{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-regular);font-size:var(--arq-type-label-lg-size);line-height:var(--arq-type-label-lg-leading);letter-spacing:var(--arq-font-tracking-widest);text-transform:uppercase}.role-label{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-regular);font-size:var(--arq-type-label-size);line-height:var(--arq-type-label-leading);letter-spacing:var(--arq-font-tracking-widest);text-transform:uppercase}.role-label-sm{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-medium);font-size:var(--arq-type-label-sm-size);line-height:var(--arq-type-label-sm-leading);letter-spacing:var(--arq-font-tracking-widest);text-transform:uppercase}.role-caption{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-regular);font-size:var(--arq-type-caption-size);line-height:var(--arq-type-caption-leading);letter-spacing:var(--arq-font-tracking-wide)}.role-caption-medium{font-family:var(--arq-font-family-sans);font-weight:var(--arq-font-weight-medium);font-size:var(--arq-type-caption-size);line-height:var(--arq-type-caption-leading);letter-spacing:var(--arq-font-tracking-wide)}", li = "[data-arq-theme=dark]{--arq-color-surface-default:var(--arq-neutral-800);--arq-color-surface-faint:var(--arq-neutral-775);--arq-color-surface-hover:var(--arq-neutral-775);--arq-color-surface-soft:var(--arq-neutral-725);--arq-color-surface-subtle:var(--arq-neutral-750);--arq-color-surface-selected:var(--arq-neutral-725);--arq-color-surface-strong:var(--arq-neutral-700);--arq-color-surface-inverse:var(--arq-neutral-0);--arq-color-surface-inverse-hover:var(--arq-neutral-150);--arq-color-surface-inverse-pressed:var(--arq-neutral-200);--arq-color-surface-bone:var(--arq-neutral-750);--arq-color-surface-sand:var(--arq-neutral-750);--arq-color-text-primary:var(--arq-neutral-100);--arq-color-text-secondary:var(--arq-neutral-200);--arq-color-text-tertiary:var(--arq-neutral-500);--arq-color-text-inverse:var(--arq-neutral-800);--arq-color-text-accent:var(--arq-neutral-150);--arq-color-text-disabled:var(--arq-neutral-600);--arq-color-text-error:var(--arq-red-300);--arq-color-text-success:var(--arq-green-300);--arq-color-text-warning:var(--arq-amber-300);--arq-color-icon-primary:var(--arq-neutral-100);--arq-color-icon-secondary:var(--arq-neutral-200);--arq-color-icon-tertiary:var(--arq-neutral-500);--arq-color-icon-accent:var(--arq-neutral-150);--arq-color-icon-inverse:var(--arq-neutral-800);--arq-color-icon-disabled:var(--arq-neutral-600);--arq-color-border-subtle:var(--arq-alpha-white-10);--arq-color-border-default:var(--arq-alpha-white-22);--arq-color-border-strong:var(--arq-neutral-0);--arq-color-border-disabled:var(--arq-alpha-white-10);--arq-color-border-focus:var(--arq-neutral-150);--arq-color-border-error:var(--arq-red-300);--arq-color-action-primary:var(--arq-neutral-100);--arq-color-action-primary-hover:var(--arq-neutral-200);--arq-color-action-on-primary:var(--arq-neutral-900);--arq-color-accent-default:var(--arq-neutral-150)}", ui = "[data-arq-theme=light]{--arq-color-surface-default:var(--arq-neutral-0);--arq-color-surface-faint:var(--arq-neutral-25);--arq-color-surface-hover:var(--arq-neutral-50);--arq-color-surface-soft:var(--arq-neutral-75);--arq-color-surface-subtle:var(--arq-neutral-100);--arq-color-surface-selected:var(--arq-neutral-150);--arq-color-surface-strong:var(--arq-neutral-200);--arq-color-surface-inverse:var(--arq-neutral-900);--arq-color-surface-inverse-hover:var(--arq-neutral-750);--arq-color-surface-inverse-pressed:var(--arq-neutral-600);--arq-color-surface-bone:var(--arq-offwhite-bone);--arq-color-surface-sand:var(--arq-offwhite-sand);--arq-color-text-primary:var(--arq-neutral-900);--arq-color-text-secondary:var(--arq-neutral-750);--arq-color-text-tertiary:var(--arq-neutral-600);--arq-color-text-inverse:var(--arq-neutral-0);--arq-color-text-accent:var(--arq-neutral-900);--arq-color-text-disabled:var(--arq-neutral-400);--arq-color-text-error:var(--arq-red-600);--arq-color-text-success:var(--arq-green-600);--arq-color-text-warning:var(--arq-amber-600);--arq-color-icon-primary:var(--arq-neutral-900);--arq-color-icon-secondary:var(--arq-neutral-750);--arq-color-icon-tertiary:var(--arq-neutral-600);--arq-color-icon-accent:var(--arq-neutral-900);--arq-color-icon-inverse:var(--arq-neutral-0);--arq-color-icon-disabled:var(--arq-neutral-400);--arq-color-border-subtle:var(--arq-alpha-ink-10);--arq-color-border-default:var(--arq-alpha-ink-22);--arq-color-border-strong:var(--arq-neutral-900);--arq-color-border-disabled:var(--arq-neutral-200);--arq-color-border-focus:var(--arq-neutral-900);--arq-color-border-error:var(--arq-red-600);--arq-color-action-primary:var(--arq-neutral-900);--arq-color-action-primary-hover:var(--arq-neutral-750);--arq-color-action-on-primary:var(--arq-neutral-0);--arq-color-accent-default:var(--arq-neutral-900)}", di = "\n:host(:focus-visible),\n:focus-visible:not(input, textarea, select),\n:has(:focus-visible:not(input, textarea, select)) {\n  outline: none !important;\n}\n", fi;
+function pi(e) {
+	fi && (fi.disabled = e);
 }
-var pi = !1;
-function mi() {
-	pi || (pi = !0, addEventListener("keydown", (e) => {
+var mi = !1;
+function hi() {
+	mi || (mi = !0, addEventListener("keydown", (e) => {
 		[
 			"Shift",
 			"Control",
 			"Alt",
 			"Meta"
-		].includes(e.key) || fi(!0);
-	}, !0), addEventListener("pointerdown", () => fi(!1), !0));
+		].includes(e.key) || pi(!0);
+	}, !0), addEventListener("pointerdown", () => pi(!1), !0));
 }
-function hi() {
-	return di || (di = new CSSStyleSheet(), di.replaceSync(ui), mi()), di;
+function gi() {
+	return fi || (fi = new CSSStyleSheet(), fi.replaceSync(di), hi()), fi;
 }
 //#endregion
 //#region src/styles/roles.js
-var gi, _i, vi, yi = /* @__PURE__ */ new Map();
-function bi(e) {
+var _i, vi, yi, bi = /* @__PURE__ */ new Map();
+function xi(e) {
 	let t = new CSSStyleSheet();
 	return t.replaceSync(e), t;
 }
-function xi() {
-	return gi ??= bi(si), gi;
-}
 function Si() {
-	return _i ??= bi(ci), _i;
+	return _i ??= xi(ci), _i;
 }
 function Ci() {
-	return vi ??= bi(li), vi;
+	return vi ??= xi(li), vi;
 }
-function wi(e, ...t) {
+function wi() {
+	return yi ??= xi(ui), yi;
+}
+function Ti(e, ...t) {
 	let n = [
-		xi(),
 		Si(),
-		Ci()
+		Ci(),
+		wi()
 	];
-	for (let e of t) e && (yi.has(e) || yi.set(e, bi(e)), n.push(yi.get(e)));
-	n.push(hi()), e.adoptedStyleSheets = [...n, ...e.adoptedStyleSheets.filter((e) => !n.includes(e))];
+	for (let e of t) e && (bi.has(e) || bi.set(e, xi(e)), n.push(bi.get(e)));
+	n.push(gi()), e.adoptedStyleSheets = [...n, ...e.adoptedStyleSheets.filter((e) => !n.includes(e))];
 }
 //#endregion
 //#region src/base/arq-element.js
-var Ti = (e) => e.replace(/[A-Z]/g, (e) => `-${e.toLowerCase()}`), Ei = /* @__PURE__ */ new WeakMap(), Di = "\n:host {\n  --page-gutter: max(var(--arq-layout-gutter), (100vw - var(--arq-layout-max-width)) / 2);\n  --page-extra: calc(var(--page-gutter) - var(--arq-layout-gutter));\n}\n\n@media print {\n  :host {\n    --page-gutter: var(--arq-space-padding-2xl);\n    --page-extra: 0px;\n  }\n}\n\n:host([hidden]),\n[hidden] {\n  display: none !important;\n}\n\n/* Táctil (mobile-native): sin el destello gris del navegador al tocar (cada\n   control tiene su propio Pressed o Hover), sin la espera del doble toque\n   (manipulation deja el desplazamiento y el zoom con dos dedos; touch-action\n   se suma con el de los ancestros, así que alcanza con el host) y sin\n   seleccionar el texto de un control al dejar el dedo apretado. El texto que\n   es contenido (mails, teléfonos, respuestas) se sigue pudiendo seleccionar. */\n:host {\n  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);\n  touch-action: manipulation;\n  /* Sin el texto agrandado de iOS al girar a horizontal. Se hereda: alcanza\n     con el host, sin tocar html (AGENTS.md · Integración con Webflow). */\n  -webkit-text-size-adjust: 100%;\n  text-size-adjust: 100%;\n}\n\n/* Albert Sans en cada componente: lo que hereda la fuente (font: inherit de\n   los <button>, texto sin role/*) no toma la del body de Webflow. En la demo\n   no se nota porque su body ya usa Albert Sans. */\n:host {\n  font-family: var(--arq-font-family-sans);\n}\n\nbutton,\n[role='button'],\n:host([role='button']),\n:host([role='radio']),\n:host([role='checkbox']) {\n  -webkit-user-select: none;\n  user-select: none;\n  -webkit-touch-callout: none;\n}\n\n*,\n*::before,\n*::after {\n  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;\n  transition-duration: var(--arq-theme-text-duration, var(--arq-motion-duration-fast)), var(--arq-theme-surface-duration, var(--arq-motion-duration-fast)), var(--arq-theme-text-duration, var(--arq-motion-duration-fast)), var(--arq-motion-duration-fast), var(--arq-theme-text-duration, var(--arq-motion-duration-fast)), var(--arq-theme-text-duration, var(--arq-motion-duration-fast)), var(--arq-theme-text-duration, var(--arq-motion-duration-fast));\n  transition-delay: var(--arq-theme-text-delay, 0s), 0s, var(--arq-theme-text-delay, 0s), 0s, var(--arq-theme-text-delay, 0s), var(--arq-theme-text-delay, 0s), var(--arq-theme-text-delay, 0s);\n  transition-timing-function: var(--arq-theme-text-easing, var(--arq-motion-easing-standard)), var(--arq-theme-surface-easing, var(--arq-motion-easing-standard)), var(--arq-theme-text-easing, var(--arq-motion-easing-standard)), var(--arq-theme-text-easing, var(--arq-motion-easing-standard)), var(--arq-theme-text-easing, var(--arq-motion-easing-standard)), var(--arq-theme-text-easing, var(--arq-motion-easing-standard)), var(--arq-theme-text-easing, var(--arq-motion-easing-standard));\n}\n\n/* Íconos SVG: heredan el color del texto que los rodea. Sin transición propia,\n   porque se sumaría a la del padre y cambiarían mucho después (logo, flechas). */\nsvg,\nsvg * {\n  transition: none;\n}\n\n.visually-hidden {\n  position: absolute;\n  width: var(--arq-border-default);\n  height: var(--arq-border-default);\n  margin: calc(-1 * var(--arq-border-default));\n  overflow: hidden;\n  clip-path: inset(50%);\n  white-space: nowrap;\n}\n\n::slotted(h1),\n::slotted(h2),\n::slotted(h3),\n::slotted(h4),\n::slotted(h5),\n::slotted(h6) {\n  margin: 0 !important;\n  font: inherit !important;\n  letter-spacing: inherit !important;\n  text-transform: inherit !important;\n  color: inherit !important;\n}\n";
+var Ei = (e) => e.replace(/[A-Z]/g, (e) => `-${e.toLowerCase()}`), Di = /* @__PURE__ */ new WeakMap(), Oi = "\n:host {\n  --page-gutter: max(var(--arq-layout-gutter), (100vw - var(--arq-layout-max-width)) / 2);\n  --page-extra: calc(var(--page-gutter) - var(--arq-layout-gutter));\n}\n\n@media print {\n  :host {\n    --page-gutter: var(--arq-space-padding-2xl);\n    --page-extra: 0px;\n  }\n}\n\n:host([hidden]),\n[hidden] {\n  display: none !important;\n}\n\n/* Táctil (mobile-native): sin el destello gris del navegador al tocar (cada\n   control tiene su propio Pressed o Hover), sin la espera del doble toque\n   (manipulation deja el desplazamiento y el zoom con dos dedos; touch-action\n   se suma con el de los ancestros, así que alcanza con el host) y sin\n   seleccionar el texto de un control al dejar el dedo apretado. El texto que\n   es contenido (mails, teléfonos, respuestas) se sigue pudiendo seleccionar. */\n:host {\n  -webkit-tap-highlight-color: var(--arq-color-surface-transparent);\n  touch-action: manipulation;\n  /* Sin el texto agrandado de iOS al girar a horizontal. Se hereda: alcanza\n     con el host, sin tocar html (AGENTS.md · Integración con Webflow). */\n  -webkit-text-size-adjust: 100%;\n  text-size-adjust: 100%;\n}\n\n/* Albert Sans en cada componente: lo que hereda la fuente (font: inherit de\n   los <button>, texto sin role/*) no toma la del body de Webflow. En la demo\n   no se nota porque su body ya usa Albert Sans. */\n:host {\n  font-family: var(--arq-font-family-sans);\n}\n\nbutton,\n[role='button'],\n:host([role='button']),\n:host([role='radio']),\n:host([role='checkbox']) {\n  -webkit-user-select: none;\n  user-select: none;\n  -webkit-touch-callout: none;\n}\n\n*,\n*::before,\n*::after {\n  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;\n  transition-duration: var(--arq-theme-text-duration, var(--arq-motion-duration-fast)), var(--arq-theme-surface-duration, var(--arq-motion-duration-fast)), var(--arq-theme-text-duration, var(--arq-motion-duration-fast)), var(--arq-motion-duration-fast), var(--arq-theme-text-duration, var(--arq-motion-duration-fast)), var(--arq-theme-text-duration, var(--arq-motion-duration-fast)), var(--arq-theme-text-duration, var(--arq-motion-duration-fast));\n  transition-delay: var(--arq-theme-text-delay, 0s), 0s, var(--arq-theme-text-delay, 0s), 0s, var(--arq-theme-text-delay, 0s), var(--arq-theme-text-delay, 0s), var(--arq-theme-text-delay, 0s);\n  transition-timing-function: var(--arq-theme-text-easing, var(--arq-motion-easing-standard)), var(--arq-theme-surface-easing, var(--arq-motion-easing-standard)), var(--arq-theme-text-easing, var(--arq-motion-easing-standard)), var(--arq-theme-text-easing, var(--arq-motion-easing-standard)), var(--arq-theme-text-easing, var(--arq-motion-easing-standard)), var(--arq-theme-text-easing, var(--arq-motion-easing-standard)), var(--arq-theme-text-easing, var(--arq-motion-easing-standard));\n}\n\n/* Íconos SVG: heredan el color del texto que los rodea. Sin transición propia,\n   porque se sumaría a la del padre y cambiarían mucho después (logo, flechas). */\nsvg,\nsvg * {\n  transition: none;\n}\n\n.visually-hidden {\n  position: absolute;\n  width: var(--arq-border-default);\n  height: var(--arq-border-default);\n  margin: calc(-1 * var(--arq-border-default));\n  overflow: hidden;\n  clip-path: inset(50%);\n  white-space: nowrap;\n}\n\n::slotted(h1),\n::slotted(h2),\n::slotted(h3),\n::slotted(h4),\n::slotted(h5),\n::slotted(h6) {\n  margin: 0 !important;\n  font: inherit !important;\n  letter-spacing: inherit !important;\n  text-transform: inherit !important;\n  color: inherit !important;\n}\n";
 document.addEventListener("touchstart", () => {}, { passive: !0 });
 var I = class e extends HTMLElement {
 	static tag = "";
@@ -2581,7 +2585,7 @@ var I = class e extends HTMLElement {
 	static template = "";
 	static properties = {};
 	static get observedAttributes() {
-		return Object.entries(this.properties).map(([e, t]) => t.attribute ?? Ti(e));
+		return Object.entries(this.properties).map(([e, t]) => t.attribute ?? Ei(e));
 	}
 	static define() {
 		if (!this.tag) throw Error(`${this.name}: falta static tag`);
@@ -2590,7 +2594,7 @@ var I = class e extends HTMLElement {
 	static #e() {
 		this.attributeToProp = /* @__PURE__ */ new Map();
 		for (let [e, t] of Object.entries(this.properties)) {
-			let n = t.attribute ?? Ti(e);
+			let n = t.attribute ?? Ei(e);
 			this.attributeToProp.set(n, e), Object.defineProperty(this.prototype, e, {
 				configurable: !0,
 				enumerable: !0,
@@ -2610,7 +2614,7 @@ var I = class e extends HTMLElement {
 	constructor() {
 		super();
 		let e = this.attachShadow({ mode: "open" });
-		wi(e, Di, this.constructor.styles);
+		Ti(e, Oi, this.constructor.styles);
 		let t = this.#s();
 		t && e.append(t.content.cloneNode(!0));
 	}
@@ -2651,11 +2655,11 @@ var I = class e extends HTMLElement {
 	#s() {
 		let e = this.constructor;
 		if (!e.template) return null;
-		if (!Ei.has(e)) {
+		if (!Di.has(e)) {
 			let t = document.createElement("template");
-			t.innerHTML = e.template, Ei.set(e, t);
+			t.innerHTML = e.template, Di.set(e, t);
 		}
-		return Ei.get(e);
+		return Di.get(e);
 	}
 	#c() {
 		for (let e of Object.keys(this.constructor.properties)) if (Object.prototype.hasOwnProperty.call(this, e)) {
@@ -2674,7 +2678,7 @@ var I = class e extends HTMLElement {
 		this.#t.clear(), this.update(e);
 		for (let t of this.#i) t.hostUpdate?.(e);
 	}
-}, Oi = "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<g id=\"icon/check\">\n<path id=\"Vector\" d=\"M6.5 12L2 7.5L2.707 6.793L6.5 10.5855L13.293 3.793L14 4.5L6.5 12Z\" fill=\"black\"/>\n</g>\n</svg>\n", ki = {
+}, ki = "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<g id=\"icon/check\">\n<path id=\"Vector\" d=\"M6.5 12L2 7.5L2.707 6.793L6.5 10.5855L13.293 3.793L14 4.5L6.5 12Z\" fill=\"black\"/>\n</g>\n</svg>\n", Ai = {
 	"arrow-down": "<path vector-effect=\"non-scaling-stroke\" d=\"M8 2V13.3M12.65 8.65L8 13.3L3.35 8.65\"/>",
 	"arrow-left": "<path vector-effect=\"non-scaling-stroke\" d=\"M14 8H2.7M7.35 12.65L2.7 8L7.35 3.35\"/>",
 	"arrow-right": "<path vector-effect=\"non-scaling-stroke\" d=\"M2 8H13.3M8.65 12.65L13.3 8L8.65 3.35\"/>",
@@ -2698,18 +2702,18 @@ var I = class e extends HTMLElement {
 	search: "<path vector-effect=\"non-scaling-stroke\" d=\"M13.6667 13.6667L10.676 10.6707M12.3333 6.66667C12.3333 8.16956 11.7363 9.6109 10.6736 10.6736C9.6109 11.7363 8.16956 12.3333 6.66667 12.3333C5.16377 12.3333 3.72243 11.7363 2.65973 10.6736C1.59702 9.6109 1 8.16956 1 6.66667C1 5.16377 1.59702 3.72243 2.65973 2.65973C3.72243 1.59702 5.16377 1 6.66667 1C8.16956 1 9.6109 1.59702 10.6736 2.65973C11.7363 3.72243 12.3333 5.16377 12.3333 6.66667Z\"/>",
 	youtube: "<path vector-effect=\"non-scaling-stroke\" d=\"M1.66688 4.66703C1.20117 6.86458 1.20117 9.13533 1.66688 11.3329C1.72807 11.556 1.8463 11.7594 2.00994 11.9231C2.17358 12.0867 2.37699 12.2049 2.60018 12.2661C6.17568 12.8585 9.82432 12.8585 13.3998 12.2661C13.623 12.2049 13.8264 12.0867 13.9901 11.9231C14.1537 11.7594 14.2719 11.556 14.3331 11.3329C14.7988 9.13533 14.7988 6.86458 14.3331 4.66703C14.2719 4.44387 14.1537 4.24047 13.9901 4.07684C13.8264 3.91322 13.623 3.795 13.3998 3.73382C9.82431 3.14153 6.17569 3.14153 2.60018 3.73382C2.37699 3.795 2.17358 3.91322 2.00994 4.07684C1.8463 4.24047 1.72807 4.44387 1.66688 4.66703Z\" stroke-linecap=\"round\"/><path vector-effect=\"non-scaling-stroke\" d=\"M10 8L6.5 5.75V10.25L10 8Z\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
 };
-Object.freeze([...Object.keys(ki), "check"]);
+Object.freeze([...Object.keys(Ai), "check"]);
 function L(e) {
-	if (e === "check") return Oi.replace("<svg ", "<svg class=\"icon\" data-icon=\"check\" aria-hidden=\"true\" focusable=\"false\" ").replace("fill=\"black\"", "fill=\"currentColor\"");
-	let t = ki[e];
+	if (e === "check") return ki.replace("<svg ", "<svg class=\"icon\" data-icon=\"check\" aria-hidden=\"true\" focusable=\"false\" ").replace("fill=\"black\"", "fill=\"currentColor\"");
+	let t = Ai[e];
 	return t ? `<svg class="icon" data-icon="${e}" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true" focusable="false">${t}</svg>` : "";
 }
 //#endregion
 //#region src/components/count-badge/count-badge.css?inline
-var Ai = ":host{vertical-align:middle;flex:none;display:inline-flex;position:relative}:host(:state(empty)){display:none}.badge{box-sizing:border-box;min-width:calc(var(--arq-type-caption-leading) + var(--arq-space-padding-2xs) * 2);padding:var(--arq-space-padding-2xs) var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-action-primary);color:var(--arq-color-action-on-primary);text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums;justify-content:center;align-items:center;display:inline-flex}.visually-hidden{width:var(--arq-border-default);height:var(--arq-border-default);clip-path:inset(50%);white-space:nowrap;position:absolute;overflow:hidden}:host([tone=inverse]) .badge{background:var(--arq-color-action-on-primary);color:var(--arq-color-action-primary)}", ji = 99;
+var ji = ":host{vertical-align:middle;flex:none;display:inline-flex;position:relative}:host(:state(empty)){display:none}.badge{box-sizing:border-box;min-width:calc(var(--arq-type-caption-leading) + var(--arq-space-padding-2xs) * 2);padding:var(--arq-space-padding-2xs) var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-action-primary);color:var(--arq-color-action-on-primary);text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums;justify-content:center;align-items:center;display:inline-flex}.visually-hidden{width:var(--arq-border-default);height:var(--arq-border-default);clip-path:inset(50%);white-space:nowrap;position:absolute;overflow:hidden}:host([tone=inverse]) .badge{background:var(--arq-color-action-on-primary);color:var(--arq-color-action-primary)}", Mi = 99;
 (class extends I {
 	static tag = "arq-count-badge";
-	static styles = Ai;
+	static styles = ji;
 	static properties = {
 		count: { type: Number },
 		tone: {
@@ -2722,15 +2726,15 @@ var Ai = ":host{vertical-align:middle;flex:none;display:inline-flex;position:rel
 	#e = this.attachInternals();
 	update() {
 		let e = !this.count, t = e ? "" : String(this.count);
-		this.shadowRoot.querySelector(".badge").textContent = this.count > ji ? `${ji}+` : t, this.shadowRoot.querySelector(".visually-hidden").textContent = t, e ? this.#e.states.add("empty") : this.#e.states.delete("empty");
+		this.shadowRoot.querySelector(".badge").textContent = this.count > Mi ? `${Mi}+` : t, this.shadowRoot.querySelector(".visually-hidden").textContent = t, e ? this.#e.states.add("empty") : this.#e.states.delete("empty");
 	}
 }).define();
 //#endregion
 //#region src/components/button/button.css?inline
-var Mi = ":host{vertical-align:middle;min-width:0;max-width:100%;transition:scale var(--arq-motion-duration-fast) var(--arq-motion-easing-out);display:inline-flex}@media (prefers-reduced-motion:no-preference){:host(:not([type=underline]):not([disabled]):not([loading]):active){scale:var(--arq-motion-scale-pressed)}}.control{box-sizing:border-box;justify-content:center;align-items:center;gap:var(--arq-space-gap-sm);max-width:100%;padding:var(--arq-space-gap-sm) var(--arq-space-padding-md);border-radius:var(--arq-radius-control);background:var(--arq-color-action-primary);color:var(--arq-color-action-on-primary);cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;flex:auto;margin:0;text-decoration:none;display:inline-flex;position:relative}.text{min-width:0;display:flex;position:relative}.label{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.leading,.trailing{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.control:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.control:focus:not(:focus-visible){outline:none}.control.inactive{cursor:default}@media (hover:hover) and (pointer:fine){.control:not(.inactive):hover{background:var(--arq-color-action-primary-hover)}}.control:not(.inactive):active{background:var(--arq-color-surface-inverse-pressed)}.control.inactive{background:var(--arq-color-surface-subtle);color:var(--arq-color-text-disabled)}.control[aria-busy=true]{background:var(--arq-color-action-primary-hover);color:var(--arq-color-action-on-primary)}.visually-hidden{width:var(--arq-border-default);height:var(--arq-border-default);clip-path:inset(50%);white-space:nowrap;position:absolute;overflow:hidden}:host([type=outline]) .control{padding:calc(var(--arq-space-gap-sm) - var(--arq-border-default)) calc(var(--arq-space-padding-md) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong);background:var(--arq-color-surface-transparent);color:var(--arq-color-action-primary)}@media (hover:hover) and (pointer:fine){:host([type=outline]) .control:not(.inactive):hover{background:var(--arq-color-surface-hover)}}:host([type=outline]) .control:not(.inactive):active{background:var(--arq-color-surface-selected)}:host([type=outline]) .control.inactive{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-disabled)}:host([type=outline]) .control[aria-busy=true]{border-color:var(--arq-color-border-strong);background:var(--arq-color-surface-hover);color:var(--arq-color-action-primary)}:host([compact]) .control{font-size:var(--arq-type-body-sm-size);line-height:var(--arq-type-body-sm-leading)}:host([compact]) .icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm)}:host([compact][type=underline]) .text:before,:host([compact][type=underline]) .text:after{height:var(--arq-border-default);top:100%}:host([type=underline]) .control{padding:var(--arq-space-gap-xs) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-action-primary)}:host([type=underline]) .text:before,:host([type=underline]) .text:after{content:\"\";inset-inline:0;top:calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));height:var(--arq-border-default);background:var(--arq-color-border-strong);position:absolute}:host([type=underline]:not([show-underline])) .text:before{display:none}:host([type=underline]) .text:after{height:var(--arq-border-strong);transform-origin:100%;transition:transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);transform:scaleX(0)}@media (hover:hover) and (pointer:fine){:host([type=underline]) .control:not(.inactive):hover .text:after{transform-origin:0;transform:scaleX(1)}}:host([type=underline]) .control:not(.inactive):active .text:after{transform-origin:0;transform:scaleX(1)}:host([type=underline]) .control:not(.inactive):active{color:var(--arq-color-text-tertiary)}:host([type=underline]) .control:not(.inactive):active .text:before,:host([type=underline]) .control:not(.inactive):active .text:after{background:var(--arq-color-text-tertiary)}:host([type=underline]) .control.inactive{background:var(--arq-color-surface-transparent);color:var(--arq-color-text-disabled)}:host([type=underline]) .control.inactive .text:before{background:var(--arq-color-border-disabled)}", Ni = "Enviando…", Pi = ["filled", "outline"];
+var Ni = ":host{vertical-align:middle;min-width:0;max-width:100%;transition:scale var(--arq-motion-duration-fast) var(--arq-motion-easing-out);display:inline-flex}@media (prefers-reduced-motion:no-preference){:host(:not([type=underline]):not([disabled]):not([loading]):active){scale:var(--arq-motion-scale-pressed)}}.control{box-sizing:border-box;justify-content:center;align-items:center;gap:var(--arq-space-gap-sm);max-width:100%;padding:var(--arq-space-gap-sm) var(--arq-space-padding-md);border-radius:var(--arq-radius-control);background:var(--arq-color-action-primary);color:var(--arq-color-action-on-primary);cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;flex:auto;margin:0;text-decoration:none;display:inline-flex;position:relative}.text{min-width:0;display:flex;position:relative}.label{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.leading,.trailing{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.control:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.control:focus:not(:focus-visible){outline:none}.control.inactive{cursor:default}@media (hover:hover) and (pointer:fine){.control:not(.inactive):hover{background:var(--arq-color-action-primary-hover)}}.control:not(.inactive):active{background:var(--arq-color-surface-inverse-pressed)}.control.inactive{background:var(--arq-color-surface-subtle);color:var(--arq-color-text-disabled)}.control[aria-busy=true]{background:var(--arq-color-action-primary-hover);color:var(--arq-color-action-on-primary)}.visually-hidden{width:var(--arq-border-default);height:var(--arq-border-default);clip-path:inset(50%);white-space:nowrap;position:absolute;overflow:hidden}:host([type=outline]) .control{padding:calc(var(--arq-space-gap-sm) - var(--arq-border-default)) calc(var(--arq-space-padding-md) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong);background:var(--arq-color-surface-transparent);color:var(--arq-color-action-primary)}@media (hover:hover) and (pointer:fine){:host([type=outline]) .control:not(.inactive):hover{background:var(--arq-color-surface-hover)}}:host([type=outline]) .control:not(.inactive):active{background:var(--arq-color-surface-selected)}:host([type=outline]) .control.inactive{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-disabled)}:host([type=outline]) .control[aria-busy=true]{border-color:var(--arq-color-border-strong);background:var(--arq-color-surface-hover);color:var(--arq-color-action-primary)}:host([compact]) .control{font-size:var(--arq-type-body-sm-size);line-height:var(--arq-type-body-sm-leading)}:host([compact]) .icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm)}:host([compact][type=underline]) .text:before,:host([compact][type=underline]) .text:after{height:var(--arq-border-default);top:100%}:host([type=underline]) .control{padding:var(--arq-space-gap-xs) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-action-primary)}:host([type=underline]) .text:before,:host([type=underline]) .text:after{content:\"\";inset-inline:0;top:calc(100% + var(--arq-space-padding-2xs) - var(--arq-border-default));height:var(--arq-border-default);background:var(--arq-color-border-strong);position:absolute}:host([type=underline]:not([show-underline])) .text:before{display:none}:host([type=underline]) .text:after{height:var(--arq-border-strong);transform-origin:100%;transition:transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);transform:scaleX(0)}@media (hover:hover) and (pointer:fine){:host([type=underline]) .control:not(.inactive):hover .text:after{transform-origin:0;transform:scaleX(1)}}:host([type=underline]) .control:not(.inactive):active .text:after{transform-origin:0;transform:scaleX(1)}:host([type=underline]) .control:not(.inactive):active{color:var(--arq-color-text-tertiary)}:host([type=underline]) .control:not(.inactive):active .text:before,:host([type=underline]) .control:not(.inactive):active .text:after{background:var(--arq-color-text-tertiary)}:host([type=underline]) .control.inactive{background:var(--arq-color-surface-transparent);color:var(--arq-color-text-disabled)}:host([type=underline]) .control.inactive .text:before{background:var(--arq-color-border-disabled)}", Pi = "Enviando…", Fi = ["filled", "outline"];
 (class extends I {
 	static tag = "arq-button";
-	static styles = Mi;
+	static styles = Ni;
 	static formAssociated = !0;
 	static properties = {
 		type: {
@@ -2778,8 +2782,8 @@ var Mi = ":host{vertical-align:middle;min-width:0;max-width:100%;transition:scal
 		this.#e ? this.#e.focus(e) : super.focus(e);
 	}
 	update(e) {
-		e.has("href") && this.#n(), e.has("loading") && this.loading && Pi.includes(this.type);
-		let t = this.shadowRoot, n = this.#e, r = this.loading, i = this.loadingLabel?.trim() || Ni, a = this.disabled || r;
+		e.has("href") && this.#n(), e.has("loading") && this.loading && Fi.includes(this.type);
+		let t = this.shadowRoot, n = this.#e, r = this.loading, i = this.loadingLabel?.trim() || Pi, a = this.disabled || r;
 		t.querySelector(".label[data-loading]").textContent = i, n.classList.toggle("inactive", a), r ? (n.setAttribute("aria-busy", "true"), n.setAttribute("aria-label", i)) : (n.removeAttribute("aria-busy"), n.removeAttribute("aria-label")), n.localName === "button" ? n.disabled = a : (a ? (n.removeAttribute("href"), n.setAttribute("aria-disabled", "true")) : (n.setAttribute("href", this.href), n.removeAttribute("aria-disabled")), this.target ? n.setAttribute("target", this.target) : n.removeAttribute("target"), this.target === "_blank" ? n.setAttribute("rel", "noopener") : n.removeAttribute("rel")), t.querySelector(".label:not([data-loading])").hidden = r, t.querySelector(".label[data-loading]").hidden = !r;
 		let o = t.querySelector(".leading");
 		e.has("leadingIcon") && (o.innerHTML = L(this.leadingIcon)), o.hidden = !this.showLeadingIcon || r;
@@ -2799,10 +2803,10 @@ var Mi = ":host{vertical-align:middle;min-width:0;max-width:100%;transition:scal
 }).define();
 //#endregion
 //#region src/components/divider/divider.css?inline
-var Fi = ":host{box-sizing:border-box;width:100%;height:var(--arq-border-default);background:var(--arq-color-border-subtle);flex:none;display:block}:host([emphasis=default]){background:var(--arq-color-border-default)}:host([orientation=vertical]){width:var(--arq-border-default);align-self:stretch;height:auto;display:inline-block}";
+var Ii = ":host{box-sizing:border-box;width:100%;height:var(--arq-border-default);background:var(--arq-color-border-subtle);flex:none;display:block}:host([emphasis=default]){background:var(--arq-color-border-default)}:host([orientation=vertical]){width:var(--arq-border-default);align-self:stretch;height:auto;display:inline-block}";
 (class extends I {
 	static tag = "arq-divider";
-	static styles = Fi;
+	static styles = Ii;
 	static properties = {
 		orientation: {
 			type: String,
@@ -2823,10 +2827,10 @@ var Fi = ":host{box-sizing:border-box;width:100%;height:var(--arq-border-default
 }).define();
 //#endregion
 //#region src/components/logo/logo.css?inline
-var Ii = ":host{vertical-align:middle;color:var(--arq-color-text-primary);flex:none;display:inline-flex}.link{color:inherit;transition:none;display:inline-flex}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}.mark{aspect-ratio:181/16;width:181px;height:auto;display:block;overflow:visible}:host([size=small]) .mark{width:158px}:host([size=compact]) .mark{width:117px}", Li = "Macroled Arq, inicio", Ri = "<svg class=\"mark\" viewBox=\"0 0 181 16\" fill=\"currentColor\" aria-hidden=\"true\" focusable=\"false\">" + ur.map((e) => `<path d="${e}"/>`).join("") + "</svg>";
+var Li = ":host{vertical-align:middle;color:var(--arq-color-text-primary);flex:none;display:inline-flex}.link{color:inherit;transition:none;display:inline-flex}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}.mark{aspect-ratio:181/16;width:181px;height:auto;display:block;overflow:visible}:host([size=small]) .mark{width:158px}:host([size=compact]) .mark{width:117px}", Ri = "Macroled Arq, inicio", zi = "<svg class=\"mark\" viewBox=\"0 0 181 16\" fill=\"currentColor\" aria-hidden=\"true\" focusable=\"false\">" + dr.map((e) => `<path d="${e}"/>`).join("") + "</svg>";
 (class extends I {
 	static tag = "arq-logo";
-	static styles = Ii;
+	static styles = Li;
 	static properties = {
 		size: {
 			type: String,
@@ -2842,38 +2846,38 @@ var Ii = ":host{vertical-align:middle;color:var(--arq-color-text-primary);flex:n
 			default: "/arq"
 		}
 	};
-	static template = `<a class="link" aria-label="${Li}">${Ri}</a>`;
+	static template = `<a class="link" aria-label="${Ri}">${zi}</a>`;
 	update(e) {
 		e.has("href") && this.shadowRoot.querySelector(".link").setAttribute("href", this.href);
 	}
 }).define();
 //#endregion
 //#region src/base/page-ready.js
-var zi = /* @__PURE__ */ new WeakSet(), Bi = !document.fonts;
+var Bi = /* @__PURE__ */ new WeakSet(), Vi = !document.fonts;
 document.fonts?.ready.then(() => {
-	Bi = !0;
+	Vi = !0;
 }, () => {
-	Bi = !0;
+	Vi = !0;
 });
-function Vi(e, t) {
+function Hi(e, t) {
 	if (e.nodeType === Node.ELEMENT_NODE && e.localName !== "arq-preloader") {
-		if ((e.localName === "img" || e.localName === "video") && t.push(e), e.shadowRoot) for (let n of e.shadowRoot.children) Vi(n, t);
-		for (let n of e.children) Vi(n, t);
+		if ((e.localName === "img" || e.localName === "video") && t.push(e), e.shadowRoot) for (let n of e.shadowRoot.children) Hi(n, t);
+		for (let n of e.children) Hi(n, t);
 	}
 }
-function Hi(e) {
+function Ui(e) {
 	for (let t = e; t && t.nodeType === Node.ELEMENT_NODE && t !== document.body; t = t.parentElement || t.getRootNode()?.host) if (t.getAttribute("aria-hidden") === "true") return !0;
 	return !1;
 }
-function Ui(e) {
-	return Hi(e) ? !1 : e.localName === "img" ? !e.getAttribute("src") && !e.currentSrc || e.getAttribute("loading") === "lazy" ? !1 : !e.complete : !(e.getAttribute("src") || e.querySelector("source[src]")?.getAttribute("src")) && !e.currentSrc || e.error ? !1 : (zi.has(e) || (zi.add(e), e.preload !== "auto" && (e.preload = "auto"), e.readyState < HTMLMediaElement.HAVE_CURRENT_DATA && e.load()), e.readyState < HTMLMediaElement.HAVE_CURRENT_DATA);
+function Wi(e) {
+	return Ui(e) ? !1 : e.localName === "img" ? !e.getAttribute("src") && !e.currentSrc || e.getAttribute("loading") === "lazy" ? !1 : !e.complete : !(e.getAttribute("src") || e.querySelector("source[src]")?.getAttribute("src")) && !e.currentSrc || e.error ? !1 : (Bi.has(e) || (Bi.add(e), e.preload !== "auto" && (e.preload = "auto"), e.readyState < HTMLMediaElement.HAVE_CURRENT_DATA && e.load()), e.readyState < HTMLMediaElement.HAVE_CURRENT_DATA);
 }
-function Wi(e = document.body) {
+function Gi(e = document.body) {
 	let t = [];
-	for (let n of e.children) Vi(n, t);
-	let n = t.filter(Ui).length, r = [...e.querySelectorAll("[aria-busy=\"true\"]")].filter((e) => e.localName !== "arq-preloader" && e.localName !== "arq-featured-products").length, i = +!Bi, a = t.length + 1;
+	for (let n of e.children) Hi(n, t);
+	let n = t.filter(Wi).length, r = [...e.querySelectorAll("[aria-busy=\"true\"]")].filter((e) => e.localName !== "arq-preloader" && e.localName !== "arq-featured-products").length, i = +!Vi, a = t.length + 1;
 	return {
-		done: t.length - n + +!!Bi,
+		done: t.length - n + +!!Vi,
 		total: a,
 		waiting: n > 0 || r > 0 || i > 0
 	};
@@ -2886,15 +2890,15 @@ function R(e) {
 }
 //#endregion
 //#region src/components/preloader/preloader.css?inline
-var Gi = ":host{z-index:5;background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);visibility:hidden;opacity:0;pointer-events:none;transition-property:opacity,visibility;transition-duration:var(--arq-motion-duration-fade), 0s;transition-timing-function:var(--arq-motion-easing-standard), linear;transition-delay:0s, var(--arq-motion-duration-fade);place-items:center;margin:0;display:grid;position:fixed;inset:0}:host([open]){visibility:visible;opacity:1;pointer-events:auto;transition-delay:0s,0s}.cluster{align-items:stretch;gap:var(--arq-space-gap-lg);flex-direction:column;width:max-content;display:flex}.mark{aspect-ratio:181/16;width:181px;height:auto;display:block}.track{height:var(--arq-border-default);overflow:hidden}.line{height:100%;transform:scaleX(var(--progress,0));transform-origin:0;transition-property:transform;transition-duration:var(--arq-motion-duration-base);transition-timing-function:var(--arq-motion-easing-out);background:currentColor;display:block}:host([open]:not([page])) .line.run{animation:arq-preloader-line var(--arq-motion-duration-shimmer) var(--arq-motion-easing-out) forwards;transition:none}@keyframes arq-preloader-line{to{transform:scaleX(1)}}@media (prefers-reduced-motion:reduce){:host([open]) .line.run{animation:none;transform:scaleX(1)}}@media print{:host{display:none!important}}", Ki = window.matchMedia("(prefers-reduced-motion: reduce)"), qi = 2e4, Ji = 2, Yi = "<svg class=\"mark\" viewBox=\"0 0 181 16\" fill=\"currentColor\" aria-hidden=\"true\" focusable=\"false\">" + ur.map((e) => `<path d="${e}"/>`).join("") + "</svg>";
+var Ki = ":host{z-index:5;background:var(--arq-color-surface-default);color:var(--arq-color-text-primary);visibility:hidden;opacity:0;pointer-events:none;transition-property:opacity,visibility;transition-duration:var(--arq-motion-duration-fade), 0s;transition-timing-function:var(--arq-motion-easing-standard), linear;transition-delay:0s, var(--arq-motion-duration-fade);place-items:center;margin:0;display:grid;position:fixed;inset:0}:host([open]){visibility:visible;opacity:1;pointer-events:auto;transition-delay:0s,0s}.cluster{align-items:stretch;gap:var(--arq-space-gap-lg);flex-direction:column;width:max-content;display:flex}.mark{aspect-ratio:181/16;width:181px;height:auto;display:block}.track{height:var(--arq-border-default);overflow:hidden}.line{height:100%;transform:scaleX(var(--progress,0));transform-origin:0;transition-property:transform;transition-duration:var(--arq-motion-duration-base);transition-timing-function:var(--arq-motion-easing-out);background:currentColor;display:block}:host([open]:not([page])) .line.run{animation:arq-preloader-line var(--arq-motion-duration-shimmer) var(--arq-motion-easing-out) forwards;transition:none}@keyframes arq-preloader-line{to{transform:scaleX(1)}}@media (prefers-reduced-motion:reduce){:host([open]) .line.run{animation:none;transform:scaleX(1)}}@media print{:host{display:none!important}}", qi = window.matchMedia("(prefers-reduced-motion: reduce)"), Ji = 2e4, Yi = 2, Xi = "<svg class=\"mark\" viewBox=\"0 0 181 16\" fill=\"currentColor\" aria-hidden=\"true\" focusable=\"false\">" + dr.map((e) => `<path d="${e}"/>`).join("") + "</svg>";
 (class extends I {
 	static tag = "arq-preloader";
-	static styles = Gi;
+	static styles = Ki;
 	static properties = {
 		open: { type: Boolean },
 		page: { type: Boolean }
 	};
-	static template = "<div class=\"cluster\">" + Yi + "<span class=\"track\" aria-hidden=\"true\"><span class=\"line\"></span></span><p class=\"status visually-hidden\" role=\"status\"></p></div>";
+	static template = "<div class=\"cluster\">" + Xi + "<span class=\"track\" aria-hidden=\"true\"><span class=\"line\"></span></span><p class=\"status visually-hidden\" role=\"status\"></p></div>";
 	#e = 0;
 	#t = 0;
 	#n = !1;
@@ -2941,10 +2945,10 @@ var Gi = ":host{z-index:5;background:var(--arq-color-surface-default);color:var(
 		let e = ++this.#e, t = performance.now(), n = 0, r = () => {
 			if (e !== this.#e || !this.open) return;
 			this.#o(!0);
-			let { done: i, total: a, waiting: o } = Wi(), s = a ? i / a : 1;
+			let { done: i, total: a, waiting: o } = Gi(), s = a ? i / a : 1;
 			this.#c(o ? Math.min(s, .92) : s);
-			let c = performance.now() - t > qi;
-			if (!o || c ? n += 1 : n = 0, n < Ji) {
+			let c = performance.now() - t > Ji;
+			if (!o || c ? n += 1 : n = 0, n < Yi) {
 				requestAnimationFrame(r);
 				return;
 			}
@@ -2953,7 +2957,7 @@ var Gi = ":host{z-index:5;background:var(--arq-color-surface-default);color:var(
 			let u = this.shadowRoot.querySelector(".line"), d = () => {
 				e === this.#e && this.open && (this.#e += 1, this.open = !1);
 			};
-			if (Ki.matches || l) {
+			if (qi.matches || l) {
 				requestAnimationFrame(d);
 				return;
 			}
@@ -2968,7 +2972,7 @@ var Gi = ":host{z-index:5;background:var(--arq-color-surface-default);color:var(
 	#u() {
 		let e = this.shadowRoot.querySelector(".line"), t = ++this.#e;
 		if (window.clearTimeout(this.#t), e.classList.remove("run"), e.offsetWidth, this.open && t === this.#e) {
-			if (e.classList.add("run"), Ki.matches) {
+			if (e.classList.add("run"), qi.matches) {
 				this.#d(t);
 				return;
 			}
@@ -2989,10 +2993,10 @@ var Gi = ":host{z-index:5;background:var(--arq-color-surface-default);color:var(
 }).define();
 //#endregion
 //#region src/components/icon-button/icon-button.css?inline
-var Xi = ":host{vertical-align:middle;color:var(--arq-color-icon-primary);transition:scale var(--arq-motion-duration-fast) var(--arq-motion-easing-out);flex:none;display:inline-flex}@media (prefers-reduced-motion:no-preference){:host(:not([disabled]):active){scale:var(--arq-motion-scale-pressed)}}.control{box-sizing:border-box;padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:inherit;transition-property:background-color,border-color,outline-color;transition-duration:var(--arq-motion-duration-fast);cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;justify-content:center;align-items:center;margin:0;transition-delay:0s;display:inline-flex;position:relative}.glyph{display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host([size=large]) .control{padding:var(--arq-space-padding-sm-md)}:host([size=large]) .icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl)}.control:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.control:focus:not(:focus-visible){outline:none}.visually-hidden{width:var(--arq-border-default);height:var(--arq-border-default);clip-path:inset(50%);white-space:nowrap;position:absolute;overflow:hidden}@media (hover:hover) and (pointer:fine){.control:enabled:hover{background:var(--arq-color-surface-hover)}}.control:enabled:active{background:var(--arq-color-surface-selected)}:host([background=surface]) .control{background:var(--arq-color-surface-default)}@media (hover:hover) and (pointer:fine){:host([background=surface]) .control:enabled:hover{background:var(--arq-color-surface-subtle)}}:host([background=surface]) .control:enabled:active{background:var(--arq-color-surface-selected)}:host([background=subtle]) .control{background:var(--arq-color-surface-subtle)}@media (hover:hover) and (pointer:fine){:host([background=subtle]) .control:enabled:hover{background:var(--arq-color-surface-selected)}}:host([background=subtle]) .control:enabled:active{background:var(--arq-color-surface-strong)}.control:disabled{color:var(--arq-color-icon-disabled);cursor:default}:host([background=outline]) .control{padding:calc(var(--arq-space-padding-xs) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-icon-button-border,var(--arq-color-border-strong))}:host([background=outline][size=large]) .control{padding:calc(var(--arq-space-padding-sm-md) - var(--arq-border-default));border-color:var(--arq-color-border-default)}:host([background=outline][size=large]) .icon :is(path,line,circle,rect){vector-effect:none}:host([background=outline]) .control:disabled{border-color:var(--arq-color-border-disabled)}";
+var Zi = ":host{vertical-align:middle;color:var(--arq-color-icon-primary);transition:scale var(--arq-motion-duration-fast) var(--arq-motion-easing-out);flex:none;display:inline-flex}@media (prefers-reduced-motion:no-preference){:host(:not([disabled]):active){scale:var(--arq-motion-scale-pressed)}}.control{box-sizing:border-box;padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:inherit;transition-property:background-color,border-color,outline-color;transition-duration:var(--arq-motion-duration-fast);cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;justify-content:center;align-items:center;margin:0;transition-delay:0s;display:inline-flex;position:relative}.glyph{display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host([size=large]) .control{padding:var(--arq-space-padding-sm-md)}:host([size=large]) .icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl)}.control:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.control:focus:not(:focus-visible){outline:none}.visually-hidden{width:var(--arq-border-default);height:var(--arq-border-default);clip-path:inset(50%);white-space:nowrap;position:absolute;overflow:hidden}@media (hover:hover) and (pointer:fine){.control:enabled:hover{background:var(--arq-color-surface-hover)}}.control:enabled:active{background:var(--arq-color-surface-selected)}:host([background=surface]) .control{background:var(--arq-color-surface-default)}@media (hover:hover) and (pointer:fine){:host([background=surface]) .control:enabled:hover{background:var(--arq-color-surface-subtle)}}:host([background=surface]) .control:enabled:active{background:var(--arq-color-surface-selected)}:host([background=subtle]) .control{background:var(--arq-color-surface-subtle)}@media (hover:hover) and (pointer:fine){:host([background=subtle]) .control:enabled:hover{background:var(--arq-color-surface-selected)}}:host([background=subtle]) .control:enabled:active{background:var(--arq-color-surface-strong)}.control:disabled{color:var(--arq-color-icon-disabled);cursor:default}:host([background=outline]) .control{padding:calc(var(--arq-space-padding-xs) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-icon-button-border,var(--arq-color-border-strong))}:host([background=outline][size=large]) .control{padding:calc(var(--arq-space-padding-sm-md) - var(--arq-border-default));border-color:var(--arq-color-border-default)}:host([background=outline][size=large]) .icon :is(path,line,circle,rect){vector-effect:none}:host([background=outline]) .control:disabled{border-color:var(--arq-color-border-disabled)}";
 (class extends I {
 	static tag = "arq-icon-button";
-	static styles = Xi;
+	static styles = Zi;
 	static properties = {
 		icon: {
 			type: String,
@@ -3034,10 +3038,10 @@ var Xi = ":host{vertical-align:middle;color:var(--arq-color-icon-primary);transi
 }).define();
 //#endregion
 //#region src/components/breadcrumb-item/breadcrumb-item.css?inline
-var Zi = ":host{min-width:0;display:inline-flex}.item{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;color:var(--arq-color-text-tertiary);display:inline-flex}.label{color:var(--arq-color-text-tertiary);text-overflow:ellipsis;white-space:nowrap;text-decoration:none;overflow:hidden}.label[aria-current=page]{white-space:normal;overflow-wrap:break-word;overflow:visible}.separator{color:var(--arq-color-text-tertiary);flex:none}:host([theme=transparent]) .item,:host([theme=transparent]) .label,:host([theme=transparent]) .separator{color:var(--arq-color-text-secondary)}:host([current]) .item,:host([current]) .label{color:var(--arq-color-text-primary)}@media (hover:hover) and (pointer:fine){a.label:hover{color:var(--arq-color-text-primary)}}a.label:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}a.label:focus:not(:focus-visible){outline:none}";
+var Qi = ":host{min-width:0;display:inline-flex}.item{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;color:var(--arq-color-text-tertiary);display:inline-flex}.label{color:var(--arq-color-text-tertiary);text-overflow:ellipsis;white-space:nowrap;text-decoration:none;overflow:hidden}.label[aria-current=page]{white-space:normal;overflow-wrap:break-word;overflow:visible}.separator{color:var(--arq-color-text-tertiary);flex:none}:host([theme=transparent]) .item,:host([theme=transparent]) .label,:host([theme=transparent]) .separator{color:var(--arq-color-text-secondary)}:host([current]) .item,:host([current]) .label{color:var(--arq-color-text-primary)}@media (hover:hover) and (pointer:fine){a.label:hover{color:var(--arq-color-text-primary)}}a.label:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}a.label:focus:not(:focus-visible){outline:none}";
 (class extends I {
 	static tag = "arq-breadcrumb-item";
-	static styles = Zi;
+	static styles = Qi;
 	static properties = {
 		href: { type: String },
 		showSeparator: { type: Boolean },
@@ -3068,18 +3072,18 @@ var Zi = ":host{min-width:0;display:inline-flex}.item{align-items:center;gap:var
 }).define();
 //#endregion
 //#region src/components/breadcrumb/breadcrumb.css?inline
-var Qi = ":host{min-width:0;display:block}.list{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-wrap:nowrap;min-width:0;margin:0;padding:0;list-style:none;display:flex}::slotted(*){flex:0 auto;min-width:0}::slotted([current]){flex-shrink:1000;min-width:auto}@media (width<=767px){.list{row-gap:var(--arq-space-gap-xs);flex-wrap:wrap}}", $i = "Migas de pan";
+var $i = ":host{min-width:0;display:block}.list{align-items:flex-start;gap:var(--arq-space-gap-sm);flex-wrap:nowrap;min-width:0;margin:0;padding:0;list-style:none;display:flex}::slotted(*){flex:0 auto;min-width:0}::slotted([current]){flex-shrink:1000;min-width:auto}@media (width<=767px){.list{row-gap:var(--arq-space-gap-xs);flex-wrap:wrap}}", ea = "Migas de pan";
 (class extends I {
 	static tag = "arq-breadcrumb";
-	static styles = Qi;
-	static template = `<nav aria-label="${$i}"><div class="list" role="list"><slot></slot></div></nav>`;
+	static styles = $i;
+	static template = `<nav aria-label="${ea}"><div class="list" role="list"><slot></slot></div></nav>`;
 }).define();
 //#endregion
 //#region src/components/footer-link/footer-link.css?inline
-var ea = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{align-items:center;gap:var(--arq-space-gap-sm);max-width:100%;color:var(--arq-color-text-secondary);text-decoration:none;display:inline-flex;position:relative}.label{overflow-wrap:break-word;min-width:0}.leading{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.link:after{content:\"\";inset-inline:0;height:var(--arq-border-default);background:var(--arq-color-border-strong);transform-origin:100%;transition:transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);position:absolute;top:100%;transform:scaleX(0)}@media (hover:hover) and (pointer:fine){.link[href]:hover{color:var(--arq-color-text-primary)}.link[href]:hover:after{transform-origin:0;transform:scaleX(1)}}.link[href]:active{color:var(--arq-color-text-tertiary)}.link[href]:active:after{transform:scaleX(0)}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}";
+var ta = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{align-items:center;gap:var(--arq-space-gap-sm);max-width:100%;color:var(--arq-color-text-secondary);text-decoration:none;display:inline-flex;position:relative}.label{overflow-wrap:break-word;min-width:0}.leading{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.link:after{content:\"\";inset-inline:0;height:var(--arq-border-default);background:var(--arq-color-border-strong);transform-origin:100%;transition:transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);position:absolute;top:100%;transform:scaleX(0)}@media (hover:hover) and (pointer:fine){.link[href]:hover{color:var(--arq-color-text-primary)}.link[href]:hover:after{transform-origin:0;transform:scaleX(1)}}.link[href]:active{color:var(--arq-color-text-tertiary)}.link[href]:active:after{transform:scaleX(0)}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}";
 (class extends I {
 	static tag = "arq-footer-link";
-	static styles = ea;
+	static styles = ta;
 	static properties = {
 		showIcon: { type: Boolean },
 		icon: {
@@ -3103,10 +3107,10 @@ var ea = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.link{a
 }).define();
 //#endregion
 //#region src/components/text-link/text-link.css?inline
-var ta = ":host{max-width:100%;display:inline-block}a.link{max-width:100%;color:var(--arq-color-text-primary);line-height:calc(1em + var(--arq-border-strong));transition:color var(--arq-motion-duration-base) var(--arq-motion-easing-standard);text-decoration:none;display:inline-block;position:relative}a.link:before{content:\"\";inset-inline:0;height:var(--arq-border-default);background:currentColor;position:absolute;top:100%}@media (hover:hover) and (pointer:fine){a.link:hover{color:var(--arq-color-text-tertiary)}}a.link:active{color:var(--arq-color-text-tertiary)}a.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:var(--arq-border-strong)}a.link:focus:not(:focus-visible){outline:none}";
+var na = ":host{max-width:100%;display:inline-block}a.link{max-width:100%;color:var(--arq-color-text-primary);line-height:calc(1em + var(--arq-border-strong));transition:color var(--arq-motion-duration-base) var(--arq-motion-easing-standard);text-decoration:none;display:inline-block;position:relative}a.link:before{content:\"\";inset-inline:0;height:var(--arq-border-default);background:currentColor;position:absolute;top:100%}@media (hover:hover) and (pointer:fine){a.link:hover{color:var(--arq-color-text-tertiary)}}a.link:active{color:var(--arq-color-text-tertiary)}a.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:var(--arq-border-strong)}a.link:focus:not(:focus-visible){outline:none}";
 (class extends I {
 	static tag = "arq-text-link";
-	static styles = ta;
+	static styles = na;
 	static properties = {
 		size: {
 			type: String,
@@ -3128,10 +3132,10 @@ var ta = ":host{max-width:100%;display:inline-block}a.link{max-width:100%;color:
 }).define();
 //#endregion
 //#region src/components/form-message/form-message.css?inline
-var na = ":host{display:block}.message{transition:opacity var(--arq-motion-duration-slow) var(--arq-motion-easing-out), transform var(--arq-motion-duration-slow) var(--arq-motion-easing-out), color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard)}@starting-style{.message{opacity:0;transform:translateY(var(--arq-space-gap-sm))}}@media (prefers-reduced-motion:reduce){.message{transition:opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out)}}.message{color:var(--arq-color-text-success);margin:0}:host([tone=error]) .message{color:var(--arq-color-text-error)}";
+var ra = ":host{display:block}.message{transition:opacity var(--arq-motion-duration-slow) var(--arq-motion-easing-out), transform var(--arq-motion-duration-slow) var(--arq-motion-easing-out), color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard)}@starting-style{.message{opacity:0;transform:translateY(var(--arq-space-gap-sm))}}@media (prefers-reduced-motion:reduce){.message{transition:opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out)}}.message{color:var(--arq-color-text-success);margin:0}:host([tone=error]) .message{color:var(--arq-color-text-error)}";
 (class extends I {
 	static tag = "arq-form-message";
-	static styles = na;
+	static styles = ra;
 	static properties = { tone: {
 		type: String,
 		values: ["success", "error"],
@@ -3150,18 +3154,18 @@ var na = ":host{display:block}.message{transition:opacity var(--arq-motion-durat
 }).define();
 //#endregion
 //#region src/components/spec-row/spec-row.css?inline
-var ra = ":host{display:block}.row{align-items:flex-start;gap:var(--arq-space-gap-md);padding-block:var(--arq-space-padding-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);margin:0;display:flex}:host([data-arq-last]) .row{border-bottom-color:var(--arq-color-surface-transparent)}.label{flex:0 1 var(--arq-layout-measure);overflow-wrap:anywhere;min-width:0;max-width:50%;color:var(--arq-color-text-primary)}.value{overflow-wrap:anywhere;min-width:0;color:var(--arq-color-text-primary);flex:1 1 0;margin:0}";
+var ia = ":host{display:block}.row{align-items:flex-start;gap:var(--arq-space-gap-md);padding-block:var(--arq-space-padding-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);margin:0;display:flex}:host([data-arq-last]) .row{border-bottom-color:var(--arq-color-surface-transparent)}.label{flex:0 1 var(--arq-layout-measure);overflow-wrap:anywhere;min-width:0;max-width:50%;color:var(--arq-color-text-primary)}.value{overflow-wrap:anywhere;min-width:0;color:var(--arq-color-text-primary);flex:1 1 0;margin:0}";
 (class extends I {
 	static tag = "arq-spec-row";
-	static styles = ra;
+	static styles = ia;
 	static template = "<dl class=\"row role-body-regular\"><dt class=\"label\"><slot name=\"label\"></slot></dt><dd class=\"value role-body\"><slot></slot></dd></dl>";
 }).define();
 //#endregion
 //#region src/components/spec-list/spec-list.css?inline
-var ia = ":host{min-width:0;display:block}.list{flex-direction:column;display:flex}@media (width>=1024px){:host([columns]) .list{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-flow:column;grid-template-rows:repeat(var(--rows,1), auto);column-gap:var(--arq-space-gap-4xl);display:grid}}";
+var aa = ":host{min-width:0;display:block}.list{flex-direction:column;display:flex}@media (width>=1024px){:host([columns]) .list{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-flow:column;grid-template-rows:repeat(var(--rows,1), auto);column-gap:var(--arq-space-gap-4xl);display:grid}}";
 (class extends I {
 	static tag = "arq-spec-list";
-	static styles = ia;
+	static styles = aa;
 	static properties = { columns: { type: Boolean } };
 	static template = "<div class=\"list\"><slot></slot></div>";
 	setup() {
@@ -3177,17 +3181,17 @@ var ia = ":host{min-width:0;display:block}.list{flex-direction:column;display:fl
 }).define();
 //#endregion
 //#region src/base/disclosure.js
-var aa = 0, oa = "\n[data-disclosure-panel=''] {\n  transition-property: opacity, color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;\n  transition-duration: var(--arq-motion-duration-base);\n  transition-timing-function: var(--arq-motion-easing-standard);\n}\n\n@starting-style {\n  [data-disclosure-panel='']:not([hidden]) {\n    opacity: 0;\n  }\n}\n\n/* Reduced motion: el fundido se queda (motion/duration/fade); los colores, en\n   motion/duration/fast, que vale 0. Ocho valores, uno por propiedad. */\n@media (prefers-reduced-motion: reduce) {\n  [data-disclosure-panel=''] {\n    transition-duration: var(--arq-motion-duration-fade), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast);\n    transition-timing-function: var(--arq-motion-easing-out);\n  }\n}\n\n/* animateHeight. visibility pasa a hidden recién al terminar de cerrar. */\n[data-disclosure-panel='height'] {\n  display: grid;\n  grid-template-rows: 0fr;\n  opacity: 0;\n  visibility: hidden;\n  transition:\n    grid-template-rows var(--arq-motion-duration-expand) var(--arq-motion-easing-out),\n    opacity var(--arq-motion-duration-base) var(--arq-motion-easing-out),\n    visibility 0s linear var(--arq-motion-duration-expand);\n}\n\n[data-disclosure-panel='height'][data-open] {\n  grid-template-rows: 1fr;\n  opacity: 1;\n  visibility: visible;\n  transition-delay: 0s;\n}\n\n[data-disclosure-panel='height'] > * {\n  min-height: 0;\n  overflow: hidden;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  [data-disclosure-panel='height'] {\n    transition:\n      opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out),\n      visibility 0s linear var(--arq-motion-duration-fade);\n  }\n\n  [data-disclosure-panel='height'][data-open] {\n    transition-delay: 0s;\n  }\n}\n", sa;
-function ca(e) {
-	sa || (sa = new CSSStyleSheet(), sa.replaceSync(oa)), e.adoptedStyleSheets.includes(sa) || (e.adoptedStyleSheets = [...e.adoptedStyleSheets, sa]);
+var oa = 0, sa = "\n[data-disclosure-panel=''] {\n  transition-property: opacity, color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;\n  transition-duration: var(--arq-motion-duration-base);\n  transition-timing-function: var(--arq-motion-easing-standard);\n}\n\n@starting-style {\n  [data-disclosure-panel='']:not([hidden]) {\n    opacity: 0;\n  }\n}\n\n/* Reduced motion: el fundido se queda (motion/duration/fade); los colores, en\n   motion/duration/fast, que vale 0. Ocho valores, uno por propiedad. */\n@media (prefers-reduced-motion: reduce) {\n  [data-disclosure-panel=''] {\n    transition-duration: var(--arq-motion-duration-fade), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast);\n    transition-timing-function: var(--arq-motion-easing-out);\n  }\n}\n\n/* animateHeight. visibility pasa a hidden recién al terminar de cerrar. */\n[data-disclosure-panel='height'] {\n  display: grid;\n  grid-template-rows: 0fr;\n  opacity: 0;\n  visibility: hidden;\n  transition:\n    grid-template-rows var(--arq-motion-duration-expand) var(--arq-motion-easing-out),\n    opacity var(--arq-motion-duration-base) var(--arq-motion-easing-out),\n    visibility 0s linear var(--arq-motion-duration-expand);\n}\n\n[data-disclosure-panel='height'][data-open] {\n  grid-template-rows: 1fr;\n  opacity: 1;\n  visibility: visible;\n  transition-delay: 0s;\n}\n\n[data-disclosure-panel='height'] > * {\n  min-height: 0;\n  overflow: hidden;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  [data-disclosure-panel='height'] {\n    transition:\n      opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out),\n      visibility 0s linear var(--arq-motion-duration-fade);\n  }\n\n  [data-disclosure-panel='height'][data-open] {\n    transition-delay: 0s;\n  }\n}\n", ca;
+function la(e) {
+	ca || (ca = new CSSStyleSheet(), ca.replaceSync(sa)), e.adoptedStyleSheets.includes(ca) || (e.adoptedStyleSheets = [...e.adoptedStyleSheets, ca]);
 }
-var la = class {
+var ua = class {
 	#e;
 	#t;
 	#n;
 	#r;
 	constructor(e, { trigger: t, panel: n, closeOnEscape: r = !1, animateHeight: i = !1 }) {
-		this.#e = e, this.#t = t, this.#n = n, this.#r = i, n.id ||= `arq-disclosure-${++aa}`, n.setAttribute("data-disclosure-panel", i ? "height" : ""), ca(e.shadowRoot), t.type = "button", t.setAttribute("aria-controls", n.id), t.addEventListener("click", () => this.toggle()), r && e.addEventListener("keydown", (e) => {
+		this.#e = e, this.#t = t, this.#n = n, this.#r = i, n.id ||= `arq-disclosure-${++oa}`, n.setAttribute("data-disclosure-panel", i ? "height" : ""), la(e.shadowRoot), t.type = "button", t.setAttribute("aria-controls", n.id), t.addEventListener("click", () => this.toggle()), r && e.addEventListener("keydown", (e) => {
 			e.key === "Escape" && this.open && (e.stopPropagation(), this.hide(), this.#t.focus());
 		}), e.addController(this);
 	}
@@ -3211,10 +3215,10 @@ var la = class {
 		let e = this.open;
 		this.#t.setAttribute("aria-expanded", String(e)), this.#r ? this.#n.toggleAttribute("data-open", e) : this.#n.hidden = !e;
 	}
-}, ua = ":host{min-width:0;display:block}.item{border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);background:var(--arq-color-surface-transparent)}.heading{margin:0}.trigger{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-xl-2xl) var(--arq-space-padding-xl);padding-bottom:calc(var(--arq-space-padding-xl-2xl) - var(--arq-border-default));background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .trigger{padding-block:var(--arq-space-padding-lg) var(--arq-space-gap-xs)}.title{overflow-wrap:break-word;flex:1 1 0;min-width:0}.icon-box{padding:var(--arq-space-padding-sm-md);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.content{padding:0 var(--arq-space-padding-xl) var(--arq-space-padding-lg)}@media (width<=767px){.trigger,.content{padding-inline:0}}@media (hover:hover) and (pointer:fine){:host(:not([open])) .item:has(.trigger:hover){background:var(--arq-color-surface-faint)}}.item:has(.trigger:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus{outline:none}";
+}, da = ":host{min-width:0;display:block}.item{border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);background:var(--arq-color-surface-transparent)}.heading{margin:0}.trigger{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-xl-2xl) var(--arq-space-padding-xl);padding-bottom:calc(var(--arq-space-padding-xl-2xl) - var(--arq-border-default));background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .trigger{padding-block:var(--arq-space-padding-lg) var(--arq-space-gap-xs)}.title{overflow-wrap:break-word;flex:1 1 0;min-width:0}.icon-box{padding:var(--arq-space-padding-sm-md);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.content{padding:0 var(--arq-space-padding-xl) var(--arq-space-padding-lg)}@media (width<=767px){.trigger,.content{padding-inline:0}}@media (hover:hover) and (pointer:fine){:host(:not([open])) .item:has(.trigger:hover){background:var(--arq-color-surface-faint)}}.item:has(.trigger:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus{outline:none}";
 (class extends I {
 	static tag = "arq-accordion-item";
-	static styles = ua;
+	static styles = da;
 	static properties = {
 		open: { type: Boolean },
 		headingLevel: {
@@ -3224,7 +3228,7 @@ var la = class {
 	};
 	static template = `<div class="item"><div class="heading" role="heading" aria-level="3"><button type="button" class="trigger"><span class="title role-heading-3"><slot name="title"></slot></span><span class="icon-box">${L("plus")}${L("minus")}</span></button></div><div class="content" part="panel"><slot></slot></div></div>`;
 	setup() {
-		this.disclosure = new la(this, {
+		this.disclosure = new ua(this, {
 			trigger: this.shadowRoot.querySelector(".trigger"),
 			panel: this.shadowRoot.querySelector(".content")
 		});
@@ -3236,10 +3240,10 @@ var la = class {
 }).define();
 //#endregion
 //#region src/components/filter-chip/filter-chip.css?inline
-var da = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.chip{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-xs);max-width:100%;padding:var(--arq-space-padding-xs) var(--arq-space-padding-sm);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);margin:0;display:inline-flex}.label{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm);flex:none}@media (hover:hover) and (pointer:fine){.chip:hover{border-color:var(--arq-color-text-primary)}}.chip:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.chip:focus:not(:focus-visible){outline:none}";
+var fa = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.chip{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-xs);max-width:100%;padding:var(--arq-space-padding-xs) var(--arq-space-padding-sm);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);margin:0;display:inline-flex}.label{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm);flex:none}@media (hover:hover) and (pointer:fine){.chip:hover{border-color:var(--arq-color-text-primary)}}.chip:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.chip:focus:not(:focus-visible){outline:none}";
 (class extends I {
 	static tag = "arq-filter-chip";
-	static styles = da;
+	static styles = fa;
 	static template = `<button type="button" class="chip role-body-sm"><span class="label"><slot></slot></span>${L("close")}</button>`;
 	#e = null;
 	setup() {
@@ -3255,10 +3259,10 @@ var da = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.chip{b
 }).define();
 //#endregion
 //#region src/components/select-option/select-option.css?inline
-var fa = ":host{cursor:pointer;display:block}:host([disabled]){cursor:default}.option{align-items:center;gap:var(--arq-space-gap-sm);padding:var(--arq-space-padding-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex}@media (hover:hover) and (pointer:fine){:host(:not([disabled]):hover) .option{background:var(--arq-color-surface-faint)}}.swatch{box-sizing:border-box;width:var(--arq-swatch-sm);height:var(--arq-swatch-sm);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);flex:none;position:relative;overflow:hidden}.swatch img{object-fit:cover;width:100%;height:100%;display:block}.name{min-width:0;color:var(--arq-color-text-primary)}:host([disabled]) .name{color:var(--arq-color-text-disabled)}:host([disabled]) .swatch{opacity:var(--arq-opacity-disabled)}.control{width:var(--arq-icon-md);height:var(--arq-icon-md);flex:none;justify-content:center;align-items:center;display:inline-flex}.box{box-sizing:border-box;width:var(--arq-icon-sm);height:var(--arq-icon-sm);border:var(--arq-border-default) solid var(--arq-color-icon-tertiary);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default)}:host([multiple]) .option{padding:var(--arq-space-padding-sm) var(--arq-space-padding-md);border-bottom:0}:host([multiple]) .name{color:var(--arq-color-text-secondary)}:host([multiple][active]) .name{color:var(--arq-color-text-primary)}@media (hover:hover) and (pointer:fine){:host([multiple]:not([disabled]):hover) .name{color:var(--arq-color-text-primary)}:host([multiple]:not([disabled]):hover) .box{border-width:var(--arq-border-strong);border-color:var(--arq-color-border-strong)}}:host([multiple][selected]) .box{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}:host([multiple][disabled]) .box{border-color:var(--arq-color-icon-disabled);background:var(--arq-color-surface-default)}:host([multiple][disabled]) .name{color:var(--arq-color-text-disabled)}:host([active]) .option{background:var(--arq-color-surface-faint)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+var pa = ":host{cursor:pointer;display:block}:host([disabled]){cursor:default}.option{align-items:center;gap:var(--arq-space-gap-sm);padding:var(--arq-space-padding-md);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex}@media (hover:hover) and (pointer:fine){:host(:not([disabled]):hover) .option{background:var(--arq-color-surface-faint)}}.swatch{box-sizing:border-box;width:var(--arq-swatch-sm);height:var(--arq-swatch-sm);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);flex:none;position:relative;overflow:hidden}.swatch img{object-fit:cover;width:100%;height:100%;display:block}.name{min-width:0;color:var(--arq-color-text-primary)}:host([disabled]) .name{color:var(--arq-color-text-disabled)}:host([disabled]) .swatch{opacity:var(--arq-opacity-disabled)}.control{width:var(--arq-icon-md);height:var(--arq-icon-md);flex:none;justify-content:center;align-items:center;display:inline-flex}.box{box-sizing:border-box;width:var(--arq-icon-sm);height:var(--arq-icon-sm);border:var(--arq-border-default) solid var(--arq-color-icon-tertiary);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default)}:host([multiple]) .option{padding:var(--arq-space-padding-sm) var(--arq-space-padding-md);border-bottom:0}:host([multiple]) .name{color:var(--arq-color-text-secondary)}:host([multiple][active]) .name{color:var(--arq-color-text-primary)}@media (hover:hover) and (pointer:fine){:host([multiple]:not([disabled]):hover) .name{color:var(--arq-color-text-primary)}:host([multiple]:not([disabled]):hover) .box{border-width:var(--arq-border-strong);border-color:var(--arq-color-border-strong)}}:host([multiple][selected]) .box{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}:host([multiple][disabled]) .box{border-color:var(--arq-color-icon-disabled);background:var(--arq-color-surface-default)}:host([multiple][disabled]) .name{color:var(--arq-color-text-disabled)}:host([active]) .option{background:var(--arq-color-surface-faint)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
 (class extends I {
 	static tag = "arq-select-option";
-	static styles = fa;
+	static styles = pa;
 	static properties = {
 		showSwatch: { type: Boolean },
 		swatchSrc: { type: String },
@@ -3290,10 +3294,10 @@ var fa = ":host{cursor:pointer;display:block}:host([disabled]){cursor:default}.o
 }).define();
 //#endregion
 //#region src/components/select-menu/select-menu.css?inline
-var pa = ":host{box-sizing:border-box;border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);min-width:100%;display:block}:host([type=filter]),:host([type=text]){width:max-content;max-width:calc(100vw - 2 * var(--arq-layout-gutter))}:host([type=filter]){min-width:max(100%, var(--arq-layout-select-menu-filter))}:host{max-height:calc(7 * (2 * var(--arq-space-padding-md) + var(--arq-type-body-leading) + var(--arq-border-default)) + 2 * var(--arq-border-default));overscroll-behavior:contain;overflow-y:auto}:host(:focus){outline:none}:host([aria-multiselectable=true]){padding-block:var(--arq-space-padding-sm)}", ma = 0;
+var ma = ":host{box-sizing:border-box;border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);min-width:100%;display:block}:host([type=filter]),:host([type=text]){width:max-content;max-width:calc(100vw - 2 * var(--arq-layout-gutter))}:host([type=filter]){min-width:max(100%, var(--arq-layout-select-menu-filter))}:host{max-height:calc(7 * (2 * var(--arq-space-padding-md) + var(--arq-type-body-leading) + var(--arq-border-default)) + 2 * var(--arq-border-default));overscroll-behavior:contain;overflow-y:auto}:host(:focus){outline:none}:host([aria-multiselectable=true]){padding-block:var(--arq-space-padding-sm)}", ha = 0;
 (class extends I {
 	static tag = "arq-select-menu";
-	static styles = pa;
+	static styles = ma;
 	static properties = {
 		type: {
 			type: String,
@@ -3320,12 +3324,12 @@ var pa = ":host{box-sizing:border-box;border:var(--arq-border-default) solid var
 		}
 		this.removeAttribute("aria-label");
 		let e = this.getRootNode().querySelector?.(".label");
-		e && (e.id ||= `arq-select-menu-label-${++ma}`, this.setAttribute("aria-labelledby", e.id));
+		e && (e.id ||= `arq-select-menu-label-${++ha}`, this.setAttribute("aria-labelledby", e.id));
 	}
 }).define();
 //#endregion
 //#region src/base/combobox.js
-var ha = class {
+var ga = class {
 	#e;
 	#t = -1;
 	#n = "";
@@ -3404,7 +3408,7 @@ var ha = class {
 		else return;
 		e.preventDefault();
 	}
-}, ga = "[role=\"radiogroup\"], [role=\"tablist\"]", _a = class {
+}, _a = "[role=\"radiogroup\"], [role=\"tablist\"]", va = class {
 	constructor(e, { role: t, state: n }) {
 		this.host = e, this.role = t, this.state = n, e.hasAttribute("role") || e.setAttribute("role", t), e.choose = () => this.choose(), e.addEventListener("click", () => this.choose()), e.addEventListener("keydown", (e) => {
 			(e.key === "Enter" || e.key === " ") && (e.preventDefault(), this.choose());
@@ -3428,12 +3432,12 @@ var ha = class {
 			]) e.removeAttribute(t);
 			return;
 		}
-		e.hasAttribute("role") || e.setAttribute("role", this.role), e.setAttribute(this.state, String(!!e.selected)), e.disabled ? e.setAttribute("aria-disabled", "true") : e.removeAttribute("aria-disabled"), e.parentElement?.closest(ga) || e.setAttribute("tabindex", e.disabled ? "-1" : "0");
+		e.hasAttribute("role") || e.setAttribute("role", this.role), e.setAttribute(this.state, String(!!e.selected)), e.disabled ? e.setAttribute("aria-disabled", "true") : e.removeAttribute("aria-disabled"), e.parentElement?.closest(_a) || e.setAttribute("tabindex", e.disabled ? "-1" : "0");
 	}
-}, va = ":host{vertical-align:middle;flex:none;display:inline-flex}.swatch{box-sizing:border-box;width:var(--arq-swatch-sm);height:var(--arq-swatch-sm);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);display:block;position:relative;overflow:hidden}:host([size=default]) .swatch{width:var(--arq-swatch-md);height:var(--arq-swatch-md)}:host([size=large]) .swatch{width:var(--arq-swatch-lg);height:var(--arq-swatch-lg)}:host([size=xsmall]) .swatch{width:var(--arq-swatch-xs);height:var(--arq-swatch-xs)}:host([size=xlarge]) .swatch{width:var(--arq-swatch-xl);height:var(--arq-swatch-xl)}.swatch img{object-fit:cover;width:100%;height:100%;display:block}.swatch:after{content:\"\";border:var(--arq-border-default) solid var(--arq-color-border-subtle);border-radius:inherit;pointer-events:none;position:absolute;inset:0}:host([role=radio]){cursor:pointer}:host([selected]) .swatch:after{border-width:var(--arq-border-strong);border-color:var(--arq-color-border-strong)}@media (hover:hover) and (pointer:fine){:host([role=radio]:not([disabled]):hover) .swatch:after{border-width:var(--arq-border-strong);border-color:var(--arq-color-border-strong)}}:host(:is([size=xlarge],[ring])) .swatch{outline:var(--arq-border-default) solid var(--arq-color-surface-transparent);outline-offset:var(--arq-space-padding-2xs);transition-property:outline-color,opacity;transition-duration:var(--arq-motion-duration-base);transition-timing-function:var(--arq-motion-easing-standard)}:host([ring]:not([size=xlarge])) .swatch{outline-offset:var(--arq-border-strong)}:host(:is([size=xlarge],[ring])) .swatch:after{border-width:var(--arq-border-default);border-color:var(--arq-color-border-subtle)}@media (hover:hover) and (pointer:fine){:host(:is([size=xlarge],[ring])[role=radio]:not([disabled]):hover) .swatch:after{border-width:var(--arq-border-default);border-color:var(--arq-color-border-subtle)}:host(:is([size=xlarge],[ring])[role=radio]:not([disabled]):not([selected]):hover) .swatch{outline-color:var(--arq-color-border-hover)}}:host(:is([size=xlarge],[ring])[selected]) .swatch{outline-color:var(--arq-color-border-strong)}:host([disabled]){cursor:default}:host([disabled]) .swatch{opacity:var(--arq-opacity-disabled)}:host([disabled]) .swatch:after{border-color:var(--arq-color-border-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}@media (forced-colors:active){.swatch{forced-color-adjust:none}.swatch:after,:host(:is([size=xlarge],[ring])) .swatch:after,:host([role=radio]:not([disabled]):hover) .swatch:after,:host(:is([size=xlarge],[ring])[role=radio]:not([disabled]):hover) .swatch:after{border-color:canvastext}:host([selected]) .swatch:after,:host([selected][role=radio]:not([disabled]):hover) .swatch:after{border-color:highlight}:host(:is([size=xlarge],[ring])[selected]) .swatch{outline-color:highlight}:host([disabled]) .swatch:after{border-color:graytext}}";
+}, ya = ":host{vertical-align:middle;flex:none;display:inline-flex}.swatch{box-sizing:border-box;width:var(--arq-swatch-sm);height:var(--arq-swatch-sm);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);display:block;position:relative;overflow:hidden}:host([size=default]) .swatch{width:var(--arq-swatch-md);height:var(--arq-swatch-md)}:host([size=large]) .swatch{width:var(--arq-swatch-lg);height:var(--arq-swatch-lg)}:host([size=xsmall]) .swatch{width:var(--arq-swatch-xs);height:var(--arq-swatch-xs)}:host([size=xlarge]) .swatch{width:var(--arq-swatch-xl);height:var(--arq-swatch-xl)}.swatch img{object-fit:cover;width:100%;height:100%;display:block}.swatch:after{content:\"\";border:var(--arq-border-default) solid var(--arq-color-border-subtle);border-radius:inherit;pointer-events:none;position:absolute;inset:0}:host([role=radio]){cursor:pointer}:host([selected]) .swatch:after{border-width:var(--arq-border-strong);border-color:var(--arq-color-border-strong)}@media (hover:hover) and (pointer:fine){:host([role=radio]:not([disabled]):hover) .swatch:after{border-width:var(--arq-border-strong);border-color:var(--arq-color-border-strong)}}:host(:is([size=xlarge],[ring])) .swatch{outline:var(--arq-border-default) solid var(--arq-color-surface-transparent);outline-offset:var(--arq-space-padding-2xs);transition-property:outline-color,opacity;transition-duration:var(--arq-motion-duration-base);transition-timing-function:var(--arq-motion-easing-standard)}:host([ring]:not([size=xlarge])) .swatch{outline-offset:var(--arq-border-strong)}:host(:is([size=xlarge],[ring])) .swatch:after{border-width:var(--arq-border-default);border-color:var(--arq-color-border-subtle)}@media (hover:hover) and (pointer:fine){:host(:is([size=xlarge],[ring])[role=radio]:not([disabled]):hover) .swatch:after{border-width:var(--arq-border-default);border-color:var(--arq-color-border-subtle)}:host(:is([size=xlarge],[ring])[role=radio]:not([disabled]):not([selected]):hover) .swatch{outline-color:var(--arq-color-border-hover)}}:host(:is([size=xlarge],[ring])[selected]) .swatch{outline-color:var(--arq-color-border-strong)}:host([disabled]){cursor:default}:host([disabled]) .swatch{opacity:var(--arq-opacity-disabled)}:host([disabled]) .swatch:after{border-color:var(--arq-color-border-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}@media (forced-colors:active){.swatch{forced-color-adjust:none}.swatch:after,:host(:is([size=xlarge],[ring])) .swatch:after,:host([role=radio]:not([disabled]):hover) .swatch:after,:host(:is([size=xlarge],[ring])[role=radio]:not([disabled]):hover) .swatch:after{border-color:canvastext}:host([selected]) .swatch:after,:host([selected][role=radio]:not([disabled]):hover) .swatch:after{border-color:highlight}:host(:is([size=xlarge],[ring])[selected]) .swatch{outline-color:highlight}:host([disabled]) .swatch:after{border-color:graytext}}";
 (class extends I {
 	static tag = "arq-swatch";
-	static styles = va;
+	static styles = ya;
 	static properties = {
 		size: {
 			type: String,
@@ -3460,7 +3464,7 @@ var ha = class {
 			let e = this.textContent.trim();
 			e && this.setAttribute("aria-label", e), e ? this.title = e : this.removeAttribute("title");
 		};
-		this.shadowRoot.querySelector("slot").addEventListener("slotchange", t), t(), this.getAttribute("role") === "radio" || this.parentElement?.closest("arq-swatch-picker") ? this.selectable = new _a(this, {
+		this.shadowRoot.querySelector("slot").addEventListener("slotchange", t), t(), this.getAttribute("role") === "radio" || this.parentElement?.closest("arq-swatch-picker") ? this.selectable = new va(this, {
 			role: "radio",
 			state: "aria-checked"
 		}) : this.hasAttribute("role") || this.setAttribute("role", "img");
@@ -3474,10 +3478,10 @@ var ha = class {
 }).define();
 //#endregion
 //#region src/components/select/select.css?inline
-var ya = ":host{min-width:0;display:block}.select{flex-direction:column;display:flex;position:relative}.label{color:var(--arq-color-text-tertiary)}.trigger{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-sm-md);width:100%;padding:var(--arq-space-padding-sm-md) 0 calc(var(--arq-space-padding-sm-md) - var(--arq-border-default));border:0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-strong);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);margin:0;display:flex}.value{overflow-wrap:break-word;flex:auto;min-width:0}.chevron{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary)}:host(:not([open])) [data-icon=chevron-up],:host([open]) [data-icon=chevron-down]{display:none}@media (hover:hover) and (pointer:fine){:host(:not([open])) .trigger:enabled:hover{background:var(--arq-color-surface-faint)}}:host([open]) .trigger{background:var(--arq-color-surface-faint)}.menu{z-index:2;position:absolute;top:100%;left:0}:host(:not([type=filter])) .menu,:host([size=small]) .menu,:host([multiple]) .menu{right:0}:host([type=filter]){min-width:var(--arq-layout-select-filter)}:host([type=filter]) .select{gap:var(--arq-space-gap-sm)}:host([type=filter]) .trigger{border-bottom-color:var(--arq-color-surface-transparent);justify-content:space-between}:host([type=filter]) .icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm)}:host([disabled]) .trigger,:host([type=filter][disabled]) .trigger{cursor:default;border-bottom-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-disabled)}:host([disabled]) .label,:host([disabled]) .icon{color:var(--arq-color-text-disabled)}:host([disabled]) .swatch{opacity:.4}.trigger:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus:not(:focus-visible){outline:none}", ba = 0;
+var ba = ":host{min-width:0;display:block}.select{flex-direction:column;display:flex;position:relative}.label{color:var(--arq-color-text-tertiary)}.trigger{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-sm-md);width:100%;padding:var(--arq-space-padding-sm-md) 0 calc(var(--arq-space-padding-sm-md) - var(--arq-border-default));border:0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-strong);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);margin:0;display:flex}.value{overflow-wrap:break-word;flex:auto;min-width:0}.chevron{flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary)}:host(:not([open])) [data-icon=chevron-up],:host([open]) [data-icon=chevron-down]{display:none}@media (hover:hover) and (pointer:fine){:host(:not([open])) .trigger:enabled:hover{background:var(--arq-color-surface-faint)}}:host([open]) .trigger{background:var(--arq-color-surface-faint)}.menu{z-index:2;position:absolute;top:100%;left:0}:host(:not([type=filter])) .menu,:host([size=small]) .menu,:host([multiple]) .menu{right:0}:host([type=filter]){min-width:var(--arq-layout-select-filter)}:host([type=filter]) .select{gap:var(--arq-space-gap-sm)}:host([type=filter]) .trigger{border-bottom-color:var(--arq-color-surface-transparent);justify-content:space-between}:host([type=filter]) .icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm)}:host([disabled]) .trigger,:host([type=filter][disabled]) .trigger{cursor:default;border-bottom-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-disabled)}:host([disabled]) .label,:host([disabled]) .icon{color:var(--arq-color-text-disabled)}:host([disabled]) .swatch{opacity:.4}.trigger:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus:not(:focus-visible){outline:none}", xa = 0;
 (class extends I {
 	static tag = "arq-select";
-	static styles = ya;
+	static styles = ba;
 	static properties = {
 		type: {
 			type: String,
@@ -3520,8 +3524,8 @@ var ya = ":host{min-width:0;display:block}.select{flex-direction:column;display:
 		this.#e = Array.isArray(e) ? e : [], this.isConnected && this.#i();
 	}
 	setup() {
-		let e = this.shadowRoot, t = `arq-select-${++ba}`;
-		this.trigger = e.querySelector(".trigger"), this.menu = e.querySelector(".menu"), this.menu.id = `${t}-menu`, e.querySelector(".label").id = `${t}-label`, this.trigger.id = `${t}-trigger`, this.#n = new ha({
+		let e = this.shadowRoot, t = `arq-select-${++xa}`;
+		this.trigger = e.querySelector(".trigger"), this.menu = e.querySelector(".menu"), this.menu.id = `${t}-menu`, e.querySelector(".label").id = `${t}-label`, this.trigger.id = `${t}-trigger`, this.#n = new ga({
 			trigger: this.trigger,
 			menu: this.menu,
 			options: () => this.#r(),
@@ -3595,10 +3599,10 @@ var ya = ":host{min-width:0;display:block}.select{flex-direction:column;display:
 }).define();
 //#endregion
 //#region src/components/filter-bar/filter-bar.css?inline
-var xa = ":host{min-width:0;display:block}.bar{align-items:flex-start;gap:var(--arq-space-gap-xl);padding:var(--arq-space-padding-2xl) var(--page-gutter);background:var(--arq-color-surface-soft);flex-direction:column;display:flex}.filters{align-items:stretch;gap:var(--arq-space-gap-lg);flex-wrap:wrap;min-width:0;display:flex}::slotted(arq-select){flex:none}::slotted(arq-select:not(:first-child)){border-inline-start:var(--arq-border-default) solid var(--arq-color-border-subtle);padding-inline-start:var(--arq-space-gap-lg)}.clear{flex:none}@media (width<=767px){.bar{align-items:stretch}.filters{gap:var(--arq-space-gap-md);flex-direction:column}::slotted(arq-select:not(:first-child)){border-inline-start:0;padding-inline-start:0}.clear{align-self:flex-start}}:host([stacked]) .bar{justify-content:flex-start;align-items:flex-start;gap:var(--arq-space-gap-xl);padding-block:var(--arq-space-padding-2xl);background:var(--arq-color-surface-soft);border-block:0;flex-direction:column}@media (width<=767px){:host([stacked]) .bar{align-items:stretch}}";
+var Sa = ":host{min-width:0;display:block}.bar{align-items:flex-start;gap:var(--arq-space-gap-xl);padding:var(--arq-space-padding-2xl) var(--page-gutter);background:var(--arq-color-surface-soft);flex-direction:column;display:flex}.filters{align-items:stretch;gap:var(--arq-space-gap-lg);flex-wrap:wrap;min-width:0;display:flex}::slotted(arq-select){flex:none}::slotted(arq-select:not(:first-child)){border-inline-start:var(--arq-border-default) solid var(--arq-color-border-subtle);padding-inline-start:var(--arq-space-gap-lg)}.clear{flex:none}@media (width<=767px){.bar{align-items:stretch}.filters{gap:var(--arq-space-gap-md);flex-direction:column}::slotted(arq-select:not(:first-child)){border-inline-start:0;padding-inline-start:0}.clear{align-self:flex-start}}:host([stacked]) .bar{justify-content:flex-start;align-items:flex-start;gap:var(--arq-space-gap-xl);padding-block:var(--arq-space-padding-2xl);background:var(--arq-color-surface-soft);border-block:0;flex-direction:column}@media (width<=767px){:host([stacked]) .bar{align-items:stretch}}";
 (class extends I {
 	static tag = "arq-filter-bar";
-	static styles = xa;
+	static styles = Sa;
 	static properties = {
 		applied: { type: Boolean },
 		stacked: { type: Boolean }
@@ -3631,14 +3635,14 @@ var xa = ":host{min-width:0;display:block}.bar{align-items:flex-start;gap:var(--
 }).define();
 //#endregion
 //#region src/components/sku/sku.css?inline
-var Sa = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.sku{align-items:flex-start;gap:var(--arq-space-gap-xs);flex-direction:column;min-width:0;display:flex}.label{color:var(--arq-color-text-secondary)}:host([size=compact]) .label{display:none}.row{align-items:flex-start;gap:var(--arq-space-gap-sm);background:var(--arq-color-surface-transparent);max-width:100%;color:var(--arq-sku-color,var(--arq-color-text-primary));text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;padding:0;display:inline-flex}.code{min-width:0;color:var(--arq-sku-color,var(--arq-color-text-primary));overflow-wrap:anywhere}:host([dense][size=compact]) .code{font-size:var(--arq-type-body-compact-size);line-height:var(--arq-type-body-compact-leading)}@media (width>=1920px){:host([dense][size=compact]) .code{font-size:var(--arq-type-body-size);line-height:var(--arq-type-body-leading)}}.copy{color:var(--arq-color-icon-secondary);flex:none;margin-block-start:calc((var(--arq-type-body-lg-leading) - var(--arq-icon-md)) / 2);display:inline-flex}:host([size=compact]) .copy{margin-block-start:calc((var(--arq-type-body-leading) - var(--arq-icon-md)) / 2)}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.success-icon{flex:none;display:none}:host([data-arq-copy-motion]) .copied,:host([data-arq-copy-feedback=replace]) .copied{align-items:center;gap:var(--arq-space-gap-xs)}:host([data-arq-copy-motion]) .success-icon,:host([data-arq-copy-feedback=replace]) .success-icon{display:inline-flex}@media (hover:hover) and (pointer:fine){.row:hover .copy{color:var(--arq-color-icon-primary)}}.copied,.failed{color:var(--arq-color-text-success);flex:none;margin-block-start:calc((var(--arq-type-body-lg-leading) - var(--arq-type-caption-leading)) / 2);display:none}:host([size=compact]) .copied,:host([size=compact]) .failed{margin-block-start:calc((var(--arq-type-body-leading) - var(--arq-type-caption-leading)) / 2)}:host([copied]) .copy,:host(:state(copy-failed)) .copy{display:none}:host([copied]) .copied,:host(:state(copy-failed)) .failed{display:inline}:host([size=compact][data-arq-copy-feedback=replace]) .row{position:relative}:host([size=compact][data-arq-copy-feedback=replace][copied]) .copy{visibility:hidden;display:inline-flex}:host([size=compact][data-arq-copy-feedback=replace][copied]) .code{visibility:hidden}:host([size=compact][data-arq-copy-feedback=replace]) .copied{inset-inline-start:0;white-space:nowrap;position:absolute;top:0}.copied,.failed{transition-property:opacity,color;transition-duration:var(--arq-motion-duration-fade), var(--arq-motion-duration-fast);transition-timing-function:var(--arq-motion-easing-out)}@starting-style{:host([copied]) .copied,:host(:state(copy-failed)) .failed{opacity:0}}.failed{color:var(--arq-color-text-secondary)}.label,.copy,.copied,.failed{-webkit-user-select:none;user-select:none}.row:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.row:focus:not(:focus-visible){outline:none}:host([data-arq-copy-motion]) .row{grid-template-columns:minmax(0,auto) max-content;display:inline-grid}:host([data-arq-copy-motion]) .code{grid-area:1/1}:host([data-arq-copy-motion]) .copy,:host([data-arq-copy-motion]) .copied,:host([data-arq-copy-motion]) .failed{grid-area:1/2}:host([data-arq-copy-motion]) :is(.code,.copy,.copied),:host([data-arq-copy-feedback=replace]) :is(.code,.copy,.copied){transition:opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-standard)}:host([data-arq-copy-motion]) .copied,:host([data-arq-copy-feedback=replace]) .copied{opacity:0;pointer-events:none;display:inline-flex}:host([data-arq-copy-motion][copied]) .copy,:host([data-arq-copy-feedback=replace][copied]) .copy{visibility:visible;opacity:0;display:inline-flex}:host([data-arq-copy-feedback=replace][copied]) .code{visibility:visible;opacity:0}:host([data-arq-copy-motion][copied]) .copied,:host([data-arq-copy-feedback=replace][copied]) .copied{opacity:1}:host([size=underline]) .label,:host([size=underline]) .copy{display:none}:host([size=underline]) .code{text-underline-position:from-font;text-decoration:underline}:host([size=underline][copied]) .code,:host([size=underline]:state(copy-failed)) .code{display:none}:host([size=underline]) .copied,:host([size=underline]) .failed{margin-block-start:0}", Ca = "Copiado", wa = /Mac|iPhone|iPad/.test(navigator.userAgentData?.platform ?? navigator.platform ?? "") ? "Copialo con ⌘C" : "Copialo con Ctrl+C";
-function Ta(e, t = "feedback") {
+var Ca = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.sku{align-items:flex-start;gap:var(--arq-space-gap-xs);flex-direction:column;min-width:0;display:flex}.label{color:var(--arq-color-text-secondary)}:host([size=compact]) .label{display:none}.row{align-items:flex-start;gap:var(--arq-space-gap-sm);background:var(--arq-color-surface-transparent);max-width:100%;color:var(--arq-sku-color,var(--arq-color-text-primary));text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;padding:0;display:inline-flex}.code{min-width:0;color:var(--arq-sku-color,var(--arq-color-text-primary));overflow-wrap:anywhere}:host([dense][size=compact]) .code{font-size:var(--arq-type-body-compact-size);line-height:var(--arq-type-body-compact-leading)}@media (width>=1920px){:host([dense][size=compact]) .code{font-size:var(--arq-type-body-size);line-height:var(--arq-type-body-leading)}}.copy{color:var(--arq-color-icon-secondary);flex:none;margin-block-start:calc((var(--arq-type-body-lg-leading) - var(--arq-icon-md)) / 2);display:inline-flex}:host([size=compact]) .copy{margin-block-start:calc((var(--arq-type-body-leading) - var(--arq-icon-md)) / 2)}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.success-icon{flex:none;display:none}:host([data-arq-copy-motion]) .copied,:host([data-arq-copy-feedback=replace]) .copied{align-items:center;gap:var(--arq-space-gap-xs)}:host([data-arq-copy-motion]) .success-icon,:host([data-arq-copy-feedback=replace]) .success-icon{display:inline-flex}@media (hover:hover) and (pointer:fine){.row:hover .copy{color:var(--arq-color-icon-primary)}}.copied,.failed{color:var(--arq-color-text-success);flex:none;margin-block-start:calc((var(--arq-type-body-lg-leading) - var(--arq-type-caption-leading)) / 2);display:none}:host([size=compact]) .copied,:host([size=compact]) .failed{margin-block-start:calc((var(--arq-type-body-leading) - var(--arq-type-caption-leading)) / 2)}:host([copied]) .copy,:host(:state(copy-failed)) .copy{display:none}:host([copied]) .copied,:host(:state(copy-failed)) .failed{display:inline}:host([size=compact][data-arq-copy-feedback=replace]) .row{position:relative}:host([size=compact][data-arq-copy-feedback=replace][copied]) .copy{visibility:hidden;display:inline-flex}:host([size=compact][data-arq-copy-feedback=replace][copied]) .code{visibility:hidden}:host([size=compact][data-arq-copy-feedback=replace]) .copied{inset-inline-start:0;white-space:nowrap;position:absolute;top:0}.copied,.failed{transition-property:opacity,color;transition-duration:var(--arq-motion-duration-fade), var(--arq-motion-duration-fast);transition-timing-function:var(--arq-motion-easing-out)}@starting-style{:host([copied]) .copied,:host(:state(copy-failed)) .failed{opacity:0}}.failed{color:var(--arq-color-text-secondary)}.label,.copy,.copied,.failed{-webkit-user-select:none;user-select:none}.row:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.row:focus:not(:focus-visible){outline:none}:host([data-arq-copy-motion]) .row{grid-template-columns:minmax(0,auto) max-content;display:inline-grid}:host([data-arq-copy-motion]) .code{grid-area:1/1}:host([data-arq-copy-motion]) .copy,:host([data-arq-copy-motion]) .copied,:host([data-arq-copy-motion]) .failed{grid-area:1/2}:host([data-arq-copy-motion]) :is(.code,.copy,.copied),:host([data-arq-copy-feedback=replace]) :is(.code,.copy,.copied){transition:opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-standard)}:host([data-arq-copy-motion]) .copied,:host([data-arq-copy-feedback=replace]) .copied{opacity:0;pointer-events:none;display:inline-flex}:host([data-arq-copy-motion][copied]) .copy,:host([data-arq-copy-feedback=replace][copied]) .copy{visibility:visible;opacity:0;display:inline-flex}:host([data-arq-copy-feedback=replace][copied]) .code{visibility:visible;opacity:0}:host([data-arq-copy-motion][copied]) .copied,:host([data-arq-copy-feedback=replace][copied]) .copied{opacity:1}:host([size=underline]) .label,:host([size=underline]) .copy{display:none}:host([size=underline]) .code{text-underline-position:from-font;text-decoration:underline}:host([size=underline][copied]) .code,:host([size=underline]:state(copy-failed)) .code{display:none}:host([size=underline]) .copied,:host([size=underline]) .failed{margin-block-start:0}", wa = "Copiado", Ta = /Mac|iPhone|iPad/.test(navigator.userAgentData?.platform ?? navigator.platform ?? "") ? "Copialo con ⌘C" : "Copialo con Ctrl+C";
+function Ea(e, t = "feedback") {
 	let n = getComputedStyle(e).getPropertyValue(`--arq-motion-duration-${t}`).trim(), r = Number.parseFloat(n);
 	return Number.isNaN(r) ? 0 : n.endsWith("ms") ? r : r * 1e3;
 }
 (class extends I {
 	static tag = "arq-sku";
-	static styles = Sa;
+	static styles = Ca;
 	static properties = {
 		size: {
 			type: String,
@@ -3652,7 +3656,7 @@ function Ta(e, t = "feedback") {
 		dense: { type: Boolean },
 		copied: { type: Boolean }
 	};
-	static template = `<span class="sku"><span class="label role-label">SKU</span><button type="button" class="row"><span class="code"><slot></slot></span><span class="copy">${L("copy")}</span><span class="copied role-caption" aria-hidden="true"><span class="success-icon">${L("check")}</span>${Ca}</span><span class="failed role-caption" aria-hidden="true">${wa}</span></button><span class="visually-hidden" aria-live="polite"></span></span>`;
+	static template = `<span class="sku"><span class="label role-label">SKU</span><button type="button" class="row"><span class="code"><slot></slot></span><span class="copy">${L("copy")}</span><span class="copied role-caption" aria-hidden="true"><span class="success-icon">${L("check")}</span>${wa}</span><span class="failed role-caption" aria-hidden="true">${Ta}</span></button><span class="visually-hidden" aria-live="polite"></span></span>`;
 	#e = null;
 	#t = 0;
 	#n = this.attachInternals();
@@ -3672,12 +3676,12 @@ function Ta(e, t = "feedback") {
 		try {
 			await navigator.clipboard.writeText(this.code);
 		} catch {
-			getSelection()?.selectAllChildren(this), this.copied = !1, this.#r(!0), this.#t = setTimeout(() => this.#r(!1), Ta(this));
+			getSelection()?.selectAllChildren(this), this.copied = !1, this.#r(!0), this.#t = setTimeout(() => this.#r(!1), Ea(this));
 			return;
 		}
 		this.copied = !0, this.emit("copy", { code: this.code }), this.#t = setTimeout(() => {
 			this.copied = !1;
-		}, Ta(this));
+		}, Ea(this));
 	}
 	update() {
 		let e = this.shadowRoot.querySelector(".code");
@@ -3693,15 +3697,15 @@ function Ta(e, t = "feedback") {
 	}
 	#i() {
 		let e = this.#n.states.has("copy-failed");
-		this.shadowRoot.querySelector("[aria-live]").textContent = e ? wa : this.copied ? Ca : "";
+		this.shadowRoot.querySelector("[aria-live]").textContent = e ? Ta : this.copied ? wa : "";
 	}
 }).define();
 //#endregion
 //#region src/components/search-field/search-field.css?inline
-var Ea = ":host{min-width:0;display:block}.field{align-items:center;gap:var(--arq-space-gap-md);padding:var(--arq-space-gap-sm) var(--arq-space-padding-xs) var(--arq-space-gap-sm) var(--arq-space-padding-md);border:var(--arq-border-default) solid var(--arq-color-border-default);background:var(--arq-color-surface-default);display:flex}:host(:not([show-close]):not([show-clear])) .field{padding-inline-end:var(--arq-space-padding-md)}.field:focus-within{border-color:var(--arq-color-border-focus)}.input{min-width:0;color:var(--arq-color-text-primary);caret-color:var(--arq-color-text-primary);appearance:none;background:0 0;border:0;flex:1;margin:0;padding:0}.input::placeholder{color:var(--arq-color-text-tertiary);opacity:1}:host([size=large]) .input::placeholder,:host([size=medium]) .input::placeholder{font-weight:var(--arq-font-weight-light)}.input:focus{outline:none}.input::-webkit-search-cancel-button{appearance:none}.input::-webkit-search-decoration{appearance:none}.close,.clear{flex:none}:host([show-icon]) .lead{color:var(--arq-color-icon-tertiary);flex:none;display:inline-flex}.lead{display:none}:host([type=line]) .lead{color:var(--arq-color-icon-tertiary);flex:none;display:inline-flex}:host([type=line]) .field{gap:var(--arq-space-gap-sm-md);padding:var(--arq-space-gap-md) 0;border-width:0 0 var(--arq-border-default);border-color:var(--arq-color-border-default);background:0 0}:host([type=line]) .field:focus-within{border-color:var(--arq-color-border-focus)}.lead .icon{width:var(--arq-icon-lg);height:var(--arq-icon-lg)}@media (prefers-contrast:more){.field,:host([type=line]) .field{border-color:var(--arq-color-border-strong)}}";
+var Da = ":host{min-width:0;display:block}.field{align-items:center;gap:var(--arq-space-gap-md);padding:var(--arq-space-gap-sm) var(--arq-space-padding-xs) var(--arq-space-gap-sm) var(--arq-space-padding-md);border:var(--arq-border-default) solid var(--arq-color-border-default);background:var(--arq-color-surface-default);display:flex}:host(:not([show-close]):not([show-clear])) .field{padding-inline-end:var(--arq-space-padding-md)}.field:focus-within{border-color:var(--arq-color-border-focus)}.input{min-width:0;color:var(--arq-color-text-primary);caret-color:var(--arq-color-text-primary);appearance:none;background:0 0;border:0;flex:1;margin:0;padding:0}.input::placeholder{color:var(--arq-color-text-tertiary);opacity:1}:host([size=large]) .input::placeholder,:host([size=medium]) .input::placeholder{font-weight:var(--arq-font-weight-light)}.input:focus{outline:none}.input::-webkit-search-cancel-button{appearance:none}.input::-webkit-search-decoration{appearance:none}.close,.clear{flex:none}:host([show-icon]) .lead{color:var(--arq-color-icon-tertiary);flex:none;display:inline-flex}.lead{display:none}:host([type=line]) .lead{color:var(--arq-color-icon-tertiary);flex:none;display:inline-flex}:host([type=line]) .field{gap:var(--arq-space-gap-sm-md);padding:var(--arq-space-gap-md) 0;border-width:0 0 var(--arq-border-default);border-color:var(--arq-color-border-default);background:0 0}:host([type=line]) .field:focus-within{border-color:var(--arq-color-border-focus)}.lead .icon{width:var(--arq-icon-lg);height:var(--arq-icon-lg)}@media (prefers-contrast:more){.field,:host([type=line]) .field{border-color:var(--arq-color-border-strong)}}";
 (class extends I {
 	static tag = "arq-search-field";
-	static styles = Ea;
+	static styles = Da;
 	static properties = {
 		type: {
 			type: String,
@@ -3773,10 +3777,10 @@ var Ea = ":host{min-width:0;display:block}.field{align-items:center;gap:var(--ar
 }).define();
 //#endregion
 //#region src/components/checkbox/checkbox.css?inline
-var Da = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.row{align-items:center;gap:var(--arq-space-gap-sm);max-width:100%;padding-block:var(--arq-space-gap-xs);cursor:pointer;-webkit-user-select:none;user-select:none;flex:1;display:inline-flex;position:relative}.control{width:var(--arq-icon-md);height:var(--arq-icon-md);flex:none;justify-content:center;align-items:center;display:inline-flex}.box{box-sizing:border-box;width:var(--arq-icon-sm);height:var(--arq-icon-sm);border:var(--arq-border-default) solid var(--arq-color-icon-tertiary);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent)}.label{min-width:0;color:var(--arq-color-text-secondary);flex:auto}.label,.count,.box{transition:color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard), border-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard), background-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard)}.count{color:var(--arq-color-text-tertiary);font-variant-numeric:tabular-nums;flex:none;align-self:flex-start;margin-inline-start:auto}@media (hover:hover) and (pointer:fine){.row:hover .box{border-width:var(--arq-border-strong);border-color:var(--arq-color-border-strong)}.row:hover .label{color:var(--arq-color-text-primary)}.row:hover .count{color:var(--arq-color-text-secondary)}}.native:checked+.control .box{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}@media (hover:hover) and (pointer:fine){.row:hover .native:checked+.control .box{border-color:var(--arq-color-action-primary-hover);background:var(--arq-color-action-primary-hover)}}:host([disabled]) .row{cursor:default}:host([disabled]) .box,:host([disabled]) .row:hover .box{border-width:var(--arq-border-default);border-color:var(--arq-color-icon-disabled)}:host([disabled]) .native:checked+.control .box{border-color:var(--arq-color-icon-disabled);background:var(--arq-color-icon-disabled)}:host([disabled]) .label,:host([disabled]) .row:hover .label,:host([disabled]) .count,:host([disabled]) .row:hover .count{color:var(--arq-color-text-disabled)}.native:focus-visible+.control .box{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}@media (forced-colors:active){.box,.row:hover .box{forced-color-adjust:none;border-color:canvastext}.native:checked+.control .box,.row:hover .native:checked+.control .box{background:highlight;border-color:highlight}:host([disabled]) .box,:host([disabled]) .native:checked+.control .box{border-color:graytext}:host([disabled]) .native:checked+.control .box{background:graytext}}", Oa = new Intl.NumberFormat("es-AR");
+var Oa = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.row{align-items:center;gap:var(--arq-space-gap-sm);max-width:100%;padding-block:var(--arq-space-gap-xs);cursor:pointer;-webkit-user-select:none;user-select:none;flex:1;display:inline-flex;position:relative}.control{width:var(--arq-icon-md);height:var(--arq-icon-md);flex:none;justify-content:center;align-items:center;display:inline-flex}.box{box-sizing:border-box;width:var(--arq-icon-sm);height:var(--arq-icon-sm);border:var(--arq-border-default) solid var(--arq-color-icon-tertiary);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent)}.label{min-width:0;color:var(--arq-color-text-secondary);flex:auto}.label,.count,.box{transition:color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard), border-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard), background-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard)}.count{color:var(--arq-color-text-tertiary);font-variant-numeric:tabular-nums;flex:none;align-self:flex-start;margin-inline-start:auto}@media (hover:hover) and (pointer:fine){.row:hover .box{border-width:var(--arq-border-strong);border-color:var(--arq-color-border-strong)}.row:hover .label{color:var(--arq-color-text-primary)}.row:hover .count{color:var(--arq-color-text-secondary)}}.native:checked+.control .box{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}@media (hover:hover) and (pointer:fine){.row:hover .native:checked+.control .box{border-color:var(--arq-color-action-primary-hover);background:var(--arq-color-action-primary-hover)}}:host([disabled]) .row{cursor:default}:host([disabled]) .box,:host([disabled]) .row:hover .box{border-width:var(--arq-border-default);border-color:var(--arq-color-icon-disabled)}:host([disabled]) .native:checked+.control .box{border-color:var(--arq-color-icon-disabled);background:var(--arq-color-icon-disabled)}:host([disabled]) .label,:host([disabled]) .row:hover .label,:host([disabled]) .count,:host([disabled]) .row:hover .count{color:var(--arq-color-text-disabled)}.native:focus-visible+.control .box{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}@media (forced-colors:active){.box,.row:hover .box{forced-color-adjust:none;border-color:canvastext}.native:checked+.control .box,.row:hover .native:checked+.control .box{background:highlight;border-color:highlight}:host([disabled]) .box,:host([disabled]) .native:checked+.control .box{border-color:graytext}:host([disabled]) .native:checked+.control .box{background:graytext}}", ka = new Intl.NumberFormat("es-AR");
 (class extends I {
 	static tag = "arq-checkbox";
-	static styles = Da;
+	static styles = Oa;
 	static formAssociated = !0;
 	static properties = {
 		size: {
@@ -3813,7 +3817,7 @@ var Da = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.row{al
 		let e = this.#t;
 		e.checked = this.checked, e.disabled = this.disabled, this.shadowRoot.querySelector(".label").classList.toggle("visually-hidden", !this.showLabel), this.shadowRoot.querySelector(".label").classList.toggle("role-body", this.size !== "large"), this.shadowRoot.querySelector(".label").classList.toggle("role-body-lg", this.size === "large");
 		let t = this.shadowRoot.querySelector(".count");
-		t.hidden = !this.showLabel || !Number.isFinite(this.count), t.textContent = Number.isFinite(this.count) ? Oa.format(this.count) : "", t.className = `count ${this.size === "large" ? "role-body-lg" : "role-body"}`, this.#e.setFormValue(this.checked ? this.value : null);
+		t.hidden = !this.showLabel || !Number.isFinite(this.count), t.textContent = Number.isFinite(this.count) ? ka.format(this.count) : "", t.className = `count ${this.size === "large" ? "role-body-lg" : "role-body"}`, this.#e.setFormValue(this.checked ? this.value : null);
 	}
 	formResetCallback() {
 		this.checked = this.#n;
@@ -3824,14 +3828,14 @@ var Da = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.row{al
 }).define();
 //#endregion
 //#region src/components/filter-row/filter-row.css?inline
-var ka = ":host{min-width:0;display:block}.row{border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.header{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .header{padding-bottom:var(--arq-space-gap-md)}.label{overflow-wrap:break-word;min-width:0}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.options{align-items:stretch;gap:calc(var(--arq-space-gap-sm-md) - 2 * var(--arq-space-padding-xs));padding-inline-end:var(--arq-space-padding-xs);padding-bottom:calc(var(--arq-space-padding-sm) + var(--arq-space-padding-md));flex-direction:column;display:flex}::slotted(arq-checkbox){margin-inline:calc(-1 * var(--arq-space-padding-sm-md));padding:var(--arq-space-padding-xs) var(--arq-space-padding-sm-md);background:var(--arq-color-surface-transparent);transition:background-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard)}@media (hover:hover) and (pointer:fine){::slotted(arq-checkbox:not([disabled]):hover){background:var(--arq-color-surface-faint)}.row:has(.header:hover){border-bottom-color:var(--arq-color-border-default)}.header:hover .icon-box{background:var(--arq-color-surface-hover)}}.row:has(.header:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.header:focus{outline:none}";
+var Aa = ":host{min-width:0;display:block}.row{border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle)}.header{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .header{padding-bottom:var(--arq-space-gap-md)}.label{overflow-wrap:break-word;min-width:0}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}.options{align-items:stretch;gap:calc(var(--arq-space-gap-sm-md) - 2 * var(--arq-space-padding-xs));padding-inline-end:var(--arq-space-padding-xs);padding-bottom:calc(var(--arq-space-padding-sm) + var(--arq-space-padding-md));flex-direction:column;display:flex}::slotted(arq-checkbox){margin-inline:calc(-1 * var(--arq-space-padding-sm-md));padding:var(--arq-space-padding-xs) var(--arq-space-padding-sm-md);background:var(--arq-color-surface-transparent);transition:background-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard)}@media (hover:hover) and (pointer:fine){::slotted(arq-checkbox:not([disabled]):hover){background:var(--arq-color-surface-faint)}.row:has(.header:hover){border-bottom-color:var(--arq-color-border-default)}.header:hover .icon-box{background:var(--arq-color-surface-hover)}}.row:has(.header:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.header:focus{outline:none}";
 (class extends I {
 	static tag = "arq-filter-row";
-	static styles = ka;
+	static styles = Aa;
 	static properties = { open: { type: Boolean } };
 	static template = `<div class="row"><button type="button" class="header"><span class="label role-body-xl"><slot name="label"></slot></span><span class="icon-box">${L("plus")}${L("minus")}</span></button><div class="options" role="group" part="panel"><slot></slot></div></div>`;
 	setup() {
-		this.disclosure = new la(this, {
+		this.disclosure = new ua(this, {
 			trigger: this.shadowRoot.querySelector(".header"),
 			panel: this.shadowRoot.querySelector(".options")
 		});
@@ -3844,10 +3848,10 @@ var ka = ":host{min-width:0;display:block}.row{border-bottom:var(--arq-border-de
 }).define();
 //#endregion
 //#region src/components/tab/tab.css?inline
-var Aa = ":host{cursor:pointer;flex:none;display:inline-flex}.tab{padding-bottom:var(--arq-space-padding-sm-md);border-bottom:var(--arq-border-default) solid var(--arq-color-surface-transparent);color:var(--arq-color-text-secondary);white-space:nowrap;display:inline-flex}@media (hover:hover) and (pointer:fine){:host(:not([disabled]):hover) .tab{color:var(--arq-color-text-primary)}}:host([selected]) .tab{border-bottom-color:var(--arq-color-border-strong);color:var(--arq-color-text-primary)}:host([disabled]){cursor:default}:host([disabled]) .tab{color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
+var ja = ":host{cursor:pointer;flex:none;display:inline-flex}.tab{padding-bottom:var(--arq-space-padding-sm-md);border-bottom:var(--arq-border-default) solid var(--arq-color-surface-transparent);color:var(--arq-color-text-secondary);white-space:nowrap;display:inline-flex}@media (hover:hover) and (pointer:fine){:host(:not([disabled]):hover) .tab{color:var(--arq-color-text-primary)}}:host([selected]) .tab{border-bottom-color:var(--arq-color-border-strong);color:var(--arq-color-text-primary)}:host([disabled]){cursor:default}:host([disabled]) .tab{color:var(--arq-color-text-disabled)}:host(:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}:host(:focus:not(:focus-visible)){outline:none}";
 (class extends I {
 	static tag = "arq-tab";
-	static styles = Aa;
+	static styles = ja;
 	static properties = {
 		selected: { type: Boolean },
 		disabled: { type: Boolean },
@@ -3855,7 +3859,7 @@ var Aa = ":host{cursor:pointer;flex:none;display:inline-flex}.tab{padding-bottom
 	};
 	static template = "<span class=\"tab role-body-regular\"><slot></slot></span>";
 	setup() {
-		this.selectable = new _a(this, {
+		this.selectable = new va(this, {
 			role: "tab",
 			state: "aria-selected"
 		});
@@ -3867,7 +3871,7 @@ var Aa = ":host{cursor:pointer;flex:none;display:inline-flex}.tab{padding-bottom
 }).define();
 //#endregion
 //#region src/base/single-select.js
-var ja = ["ArrowRight", "ArrowDown"], Ma = ["ArrowLeft", "ArrowUp"], Na = class {
+var Ma = ["ArrowRight", "ArrowDown"], Na = ["ArrowLeft", "ArrowUp"], Pa = class {
 	constructor(e, { items: t }) {
 		this.host = e, this.selector = t, e.addEventListener("keydown", (e) => this.#t(e)), e.addEventListener("arq:change", (e) => this.#e(e)), new MutationObserver(() => this.refresh()).observe(e, {
 			childList: !0,
@@ -3900,9 +3904,9 @@ var ja = ["ArrowRight", "ArrowDown"], Ma = ["ArrowLeft", "ArrowUp"], Na = class 
 		let t = this.enabledItems, n = t.indexOf(e.target);
 		if (n === -1) return;
 		let r = null;
-		ja.includes(e.key) ? r = t[(n + 1) % t.length] : Ma.includes(e.key) ? r = t[(n - 1 + t.length) % t.length] : e.key === "Home" ? r = t[0] : e.key === "End" && (r = t[t.length - 1]), r && (e.preventDefault(), r.focus(), r.choose?.());
+		Ma.includes(e.key) ? r = t[(n + 1) % t.length] : Na.includes(e.key) ? r = t[(n - 1 + t.length) % t.length] : e.key === "Home" ? r = t[0] : e.key === "End" && (r = t[t.length - 1]), r && (e.preventDefault(), r.focus(), r.choose?.());
 	}
-}, Pa = {
+}, Fa = {
 	ArrowDown: 1,
 	ArrowUp: -1,
 	PageDown: 1,
@@ -3911,7 +3915,7 @@ var ja = ["ArrowRight", "ArrowDown"], Ma = ["ArrowLeft", "ArrowUp"], Na = class 
 	Home: -1,
 	" ": 1
 };
-function Fa(e, t, n) {
+function Ia(e, t, n) {
 	for (let r of e.composedPath()) {
 		if (!(r instanceof Element)) continue;
 		let { overflowY: e } = getComputedStyle(r);
@@ -3920,10 +3924,10 @@ function Fa(e, t, n) {
 	}
 	return !1;
 }
-var Ia = (e) => e.composedPath().some((e) => e instanceof Element && (e.matches("input, textarea, select, [contenteditable=\"\"], [contenteditable=\"true\"]") || e.getAttribute("role") === "combobox"));
+var La = (e) => e.composedPath().some((e) => e instanceof Element && (e.matches("input, textarea, select, [contenteditable=\"\"], [contenteditable=\"true\"]") || e.getAttribute("role") === "combobox"));
 function z(e, { when: t = () => !0 } = {}) {
 	e.addEventListener("wheel", (n) => {
-		t() && n.deltaY && !Fa(n, e, n.deltaY) && n.preventDefault();
+		t() && n.deltaY && !Ia(n, e, n.deltaY) && n.preventDefault();
 	}, { passive: !1 });
 	let n = 0, r = 0;
 	e.addEventListener("touchstart", (e) => {
@@ -3931,51 +3935,51 @@ function z(e, { when: t = () => !0 } = {}) {
 	}, { passive: !0 }), e.addEventListener("touchmove", (i) => {
 		if (i.touches.length > 1) return;
 		let a = n - i.touches[0].clientX, o = r - i.touches[0].clientY;
-		Math.abs(a) > Math.abs(o) || t() && o && !Fa(i, e, o) && i.preventDefault();
+		Math.abs(a) > Math.abs(o) || t() && o && !Ia(i, e, o) && i.preventDefault();
 	}, { passive: !1 }), e.addEventListener("keydown", (n) => {
-		let r = Pa[n.key];
-		!t() || !r || n.altKey || n.ctrlKey || n.metaKey || Ia(n) || n.key === " " && n.composedPath().some((e) => e instanceof Element && e.matches("button, a[href], [role=\"button\"]")) || Fa(n, e, r) || n.preventDefault();
+		let r = Fa[n.key];
+		!t() || !r || n.altKey || n.ctrlKey || n.metaKey || La(n) || n.key === " " && n.composedPath().some((e) => e instanceof Element && e.matches("button, a[href], [role=\"button\"]")) || Ia(n, e, r) || n.preventDefault();
 	});
 }
 //#endregion
 //#region src/base/theme.js
-var La = /* @__PURE__ */ new Set(), Ra = null;
-function za(e) {
+var Ra = /* @__PURE__ */ new Set(), za = null;
+function Ba(e) {
 	if (e.assignedSlot) return e.assignedSlot;
 	if (e.parentElement) return e.parentElement;
 	let t = e.parentNode;
 	return t instanceof ShadowRoot ? t.host : null;
 }
-function Ba(e, t) {
-	for (let n = e; n; n = za(n)) {
+function Va(e, t) {
+	for (let n = e; n; n = Ba(n)) {
 		if (t !== void 0 && n === document.documentElement) return t;
 		if (n.hasAttribute?.("data-arq-theme")) return n.getAttribute("data-arq-theme") === "dark";
 	}
 	return t ?? !1;
 }
-function Va() {
-	Ha();
+function Ha() {
+	Ua();
 }
-function Ha(e) {
+function Ua(e) {
 	typeof e != "boolean" && (e = void 0);
-	for (let t of La) {
+	for (let t of Ra) {
 		let n = t.ref.deref();
 		if (!n) {
-			La.delete(t);
+			Ra.delete(t);
 			continue;
 		}
 		if (!n.isConnected) continue;
-		let r = Ba(n, e);
+		let r = Va(n, e);
 		r !== t.dark && (t.dark = r, n[t.method](r));
 	}
 }
-function Ua(e, t) {
+function Wa(e, t) {
 	let n = {
 		ref: new WeakRef(e),
-		dark: Ba(e),
+		dark: Va(e),
 		method: t
 	};
-	La.add(n), Ra || (Ra = new MutationObserver(Ha), Ra.observe(document.documentElement, {
+	Ra.add(n), za || (za = new MutationObserver(Ua), za.observe(document.documentElement, {
 		attributes: !0,
 		subtree: !0,
 		attributeFilter: ["data-arq-theme"]
@@ -3989,7 +3993,7 @@ var B = [
 	"--arq-theme-bg-easing",
 	"--arq-theme-surface-duration",
 	"--arq-theme-surface-easing"
-], Wa = 0, Ga = [
+], Ga = 0, Ka = [
 	"--arq-illumination-bg-duration",
 	"--arq-illumination-image-duration",
 	"--arq-theme-bg-duration",
@@ -3998,77 +4002,77 @@ var B = [
 	"--arq-theme-surface-duration",
 	"--arq-card-ground-duration"
 ];
-function Ka(e) {
+function qa(e) {
 	let t = document.documentElement.style;
-	for (let e of Ga) t.setProperty(e, "0s");
-	e(), requestAnimationFrame(() => requestAnimationFrame(() => Ga.forEach((e) => t.removeProperty(e))));
+	for (let e of Ka) t.setProperty(e, "0s");
+	e(), requestAnimationFrame(() => requestAnimationFrame(() => Ka.forEach((e) => t.removeProperty(e))));
 }
-var qa = "data-arq-theme-color", Ja = "data-arq-theme-color-added";
-function Ya(e, t = document.documentElement) {
+var Ja = "data-arq-theme-color", Ya = "data-arq-theme-color-added";
+function Xa(e, t = document.documentElement) {
 	let n = [...document.head.querySelectorAll("meta[name=\"theme-color\"]")];
 	if (!e) {
-		for (let e of n) e.hasAttribute(Ja) ? e.remove() : e.hasAttribute(qa) && (e.content = e.getAttribute(qa), e.removeAttribute(qa));
+		for (let e of n) e.hasAttribute(Ya) ? e.remove() : e.hasAttribute(Ja) && (e.content = e.getAttribute(Ja), e.removeAttribute(Ja));
 		return;
 	}
 	let r = getComputedStyle(t).getPropertyValue("--arq-color-surface-default").trim();
 	if (r) {
 		if (!n.length) {
 			let e = document.createElement("meta");
-			e.name = "theme-color", e.setAttribute(Ja, ""), document.head.append(e), n.push(e);
+			e.name = "theme-color", e.setAttribute(Ya, ""), document.head.append(e), n.push(e);
 		}
-		for (let e of n) !e.hasAttribute(Ja) && !e.hasAttribute(qa) && e.setAttribute(qa, e.content), e.content = r;
+		for (let e of n) !e.hasAttribute(Ya) && !e.hasAttribute(Ja) && e.setAttribute(Ja, e.content), e.content = r;
 	}
 }
-var Xa = "data-arq-theme-color-lit", Za = matchMedia("(max-width: 767px)");
-function Qa(e, t) {
-	let n = [...document.head.querySelectorAll(`meta[name="theme-color"][${qa}], meta[name="theme-color"][${Ja}]`)];
+var Za = "data-arq-theme-color-lit", Qa = matchMedia("(max-width: 767px)");
+function $a(e, t) {
+	let n = [...document.head.querySelectorAll(`meta[name="theme-color"][${Ja}], meta[name="theme-color"][${Ya}]`)];
 	if (!n.length) return;
 	if (!e) {
-		for (let e of n) e.hasAttribute(Xa) && (e.content = e.getAttribute(Xa), e.removeAttribute(Xa));
+		for (let e of n) e.hasAttribute(Za) && (e.content = e.getAttribute(Za), e.removeAttribute(Za));
 		return;
 	}
-	if (!Za.matches) return;
+	if (!Qa.matches) return;
 	let r = getComputedStyle(t).getPropertyValue("--arq-color-surface-default").trim();
-	if (r) for (let e of n) e.hasAttribute(Xa) || e.setAttribute(Xa, e.content), e.content = r;
+	if (r) for (let e of n) e.hasAttribute(Za) || e.setAttribute(Za, e.content), e.content = r;
 }
-var $a = "arq:iluminar-handoff", eo = 1e4;
-function to(e) {
+var eo = "arq:iluminar-handoff", to = 1e4;
+function no(e) {
 	try {
-		e ? sessionStorage.setItem($a, String(Date.now())) : sessionStorage.removeItem($a);
+		e ? sessionStorage.setItem(eo, String(Date.now())) : sessionStorage.removeItem(eo);
 	} catch {}
 }
-function no() {
+function ro() {
 	try {
-		let e = Number(sessionStorage.getItem($a));
-		return sessionStorage.removeItem($a), !!e && Date.now() - e < eo;
+		let e = Number(sessionStorage.getItem(eo));
+		return sessionStorage.removeItem(eo), !!e && Date.now() - e < to;
 	} catch {
 		return !1;
 	}
 }
-function ro(e = R(getComputedStyle(document.documentElement).getPropertyValue("--arq-illumination-bg-duration")) || 0, t = [document.documentElement]) {
+function io(e = R(getComputedStyle(document.documentElement).getPropertyValue("--arq-illumination-bg-duration")) || 0, t = [document.documentElement]) {
 	let n = t.map((e) => e.style), r = {
 		setProperty: (e, t) => n.forEach((n) => n.setProperty(e, t)),
 		removeProperty: (e) => n.forEach((t) => t.removeProperty(e))
 	};
 	if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
 		let e = "var(--arq-motion-duration-fade)";
-		r.setProperty(B[0], "0s"), r.setProperty(B[1], e), r.setProperty(B[2], "var(--arq-motion-easing-standard)"), r.setProperty(B[3], e), r.setProperty(B[4], "var(--arq-motion-easing-standard)"), r.setProperty(B[5], e), r.setProperty(B[6], "var(--arq-motion-easing-standard)"), clearTimeout(Wa), Wa = setTimeout(() => B.forEach((e) => r.removeProperty(e)), 1e3);
+		r.setProperty(B[0], "0s"), r.setProperty(B[1], e), r.setProperty(B[2], "var(--arq-motion-easing-standard)"), r.setProperty(B[3], e), r.setProperty(B[4], "var(--arq-motion-easing-standard)"), r.setProperty(B[5], e), r.setProperty(B[6], "var(--arq-motion-easing-standard)"), clearTimeout(Ga), Ga = setTimeout(() => B.forEach((e) => r.removeProperty(e)), 1e3);
 		return;
 	}
-	r.setProperty(B[0], `${Math.round(e * .25)}ms`), r.setProperty(B[1], `${Math.round(e * .5)}ms`), r.setProperty(B[2], "cubic-bezier(0.4, 0, 0.2, 1)"), r.setProperty(B[3], "var(--arq-illumination-bg-duration)"), r.setProperty(B[4], "var(--arq-illumination-bg-easing)"), r.setProperty(B[5], "var(--arq-illumination-bg-duration)"), r.setProperty(B[6], "var(--arq-illumination-bg-easing)"), clearTimeout(Wa), Wa = setTimeout(() => B.forEach((e) => r.removeProperty(e)), e + 100);
+	r.setProperty(B[0], `${Math.round(e * .25)}ms`), r.setProperty(B[1], `${Math.round(e * .5)}ms`), r.setProperty(B[2], "cubic-bezier(0.4, 0, 0.2, 1)"), r.setProperty(B[3], "var(--arq-illumination-bg-duration)"), r.setProperty(B[4], "var(--arq-illumination-bg-easing)"), r.setProperty(B[5], "var(--arq-illumination-bg-duration)"), r.setProperty(B[6], "var(--arq-illumination-bg-easing)"), clearTimeout(Ga), Ga = setTimeout(() => B.forEach((e) => r.removeProperty(e)), e + 100);
 }
-var io = 400, ao = 150, oo = /* @__PURE__ */ new Set(), so = 0, co = (e) => new Promise((t) => setTimeout(t, e));
-function lo(e) {
-	return !e.getAttribute("src") || e.complete ? Promise.resolve() : Promise.race([e.decode().catch(() => {}), co(io)]);
-}
+var ao = 400, oo = 150, so = /* @__PURE__ */ new Set(), co = 0, lo = (e) => new Promise((t) => setTimeout(t, e));
 function uo(e) {
+	return !e.getAttribute("src") || e.complete ? Promise.resolve() : Promise.race([e.decode().catch(() => {}), lo(ao)]);
+}
+function fo(e) {
 	if (!e.getAttribute("src") || e.complete) return;
 	let t = e.getBoundingClientRect();
 	if (t.bottom < 0 || t.top > innerHeight) return;
-	let n = lo(e).finally(() => oo.delete(n));
-	oo.add(n);
+	let n = uo(e).finally(() => so.delete(n));
+	so.add(n);
 }
-function fo(e, t, n) {
+function po(e, t, n) {
 	let r = document.documentElement;
 	for (let e of document.getAnimations()) e.effect?.pseudoElement?.startsWith("::view-transition") && e.cancel();
 	let i = 2 * Math.hypot(Math.max(e.x, innerWidth - e.x), Math.max(e.y, innerHeight - e.y)) / .4, a = (t) => `${e.x - t / 2}px ${e.y - t / 2}px`, o = "radial-gradient(closest-side, #000 40%, transparent 100%)", s = {
@@ -4090,41 +4094,41 @@ function fo(e, t, n) {
 		pseudoElement: "::view-transition-old(root)"
 	});
 }
-async function po(e, t, n) {
+async function mo(e, t, n) {
 	let r = document.documentElement, i = getComputedStyle(r), a = R(i.getPropertyValue("--arq-illumination-bg-duration")) || 0;
 	if (!document.startViewTransition || !a) {
-		ro(), t();
+		io(), t();
 		return;
 	}
-	let o = i.getPropertyValue("--arq-illumination-bg-easing").trim() || "ease", s = r.style, c = ++so, l = a, u = matchMedia("(prefers-reduced-motion: reduce)").matches, d = !u && n && i.getPropertyValue("--arq-illumination-style").trim() === "spread";
+	let o = i.getPropertyValue("--arq-illumination-bg-easing").trim() || "ease", s = r.style, c = ++co, l = a, u = matchMedia("(prefers-reduced-motion: reduce)").matches, d = !u && n && i.getPropertyValue("--arq-illumination-style").trim() === "spread";
 	if (!u) {
 		let t = R(i.getPropertyValue("--arq-illumination-lead")) || 0;
-		if (Ha(e), await Promise.race([Promise.all(oo), co(ao)]), await co(t), c !== so) return;
+		if (Ua(e), await Promise.race([Promise.all(so), lo(oo)]), await lo(t), c !== co) return;
 		l = Math.max(a - t, 0);
 	}
 	let f = document.startViewTransition(async () => {
-		for (let e of Ga) s.setProperty(e, "0s");
-		t(), await Promise.resolve(), await Promise.race([Promise.all(oo), co(ao)]);
+		for (let e of Ka) s.setProperty(e, "0s");
+		t(), await Promise.resolve(), await Promise.race([Promise.all(so), lo(oo)]);
 	});
 	f.ready.then(() => {
-		if (d) return fo(n, l, o);
+		if (d) return po(n, l, o);
 		for (let e of document.getAnimations()) e.effect?.pseudoElement?.startsWith("::view-transition") && e.effect.updateTiming({
 			duration: l,
 			easing: o
 		});
 	}).catch(() => {}), f.finished.finally(() => {
-		c === so && Ga.forEach((e) => s.removeProperty(e));
+		c === co && Ka.forEach((e) => s.removeProperty(e));
 	});
 }
 //#endregion
 //#region src/components/filter-panel/filter-panel.css?inline
-var mo = ":host{--panel-slow:var(--arq-motion-duration-panel);display:contents}.dialog:not(.is-open){--panel-slow:var(--arq-motion-duration-expand)}.dialog{box-sizing:border-box;width:var(--arq-layout-filter-panel);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);max-width:100%;height:100dvh;max-height:none;color:var(--arq-color-text-primary);clip-path:inset(0 0 0 100%);transition:clip-path var(--panel-slow) var(--arq-motion-easing-standard);margin:0;padding:0;inset:0 0 0 auto;overflow:clip}.dialog.is-open{clip-path:inset(0)}.dialog:not(.is-open){pointer-events:none}.dialog::backdrop{background:var(--arq-color-overlay-scrim);opacity:0;transition:opacity var(--panel-slow) var(--arq-motion-easing-standard)}.dialog.is-open::backdrop{opacity:1}.sheet{opacity:0;transition:opacity var(--arq-motion-duration-slow) var(--arq-motion-easing-standard)}.dialog.is-open .sheet{opacity:1}.sheet{--sheet-inline:var(--arq-space-padding-xl-2xl);box-sizing:border-box;gap:var(--arq-space-gap-lg);height:100%;padding:var(--arq-space-padding-xl-2xl) var(--sheet-inline);flex-direction:column;display:flex}.header{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.titles{gap:var(--arq-space-gap-xs);flex-direction:column;min-width:0;display:flex}.title{color:var(--arq-color-text-primary)}.summary{color:var(--arq-color-text-secondary);margin:0}.applied{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.tabs{display:none}.body{min-height:0;margin:calc(-1 * var(--arq-space-padding-xs));margin-inline:calc(-1 * var(--arq-space-padding-sm-md)) calc(-1 * var(--sheet-inline));padding:var(--arq-space-padding-xs);padding-inline:var(--arq-space-padding-sm-md) var(--sheet-inline);overscroll-behavior:contain;flex:auto;overflow-y:auto}.footer{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-lg);display:flex}@media (width<=767px){.dialog{border:0;width:100%;inset:0}.dialog::backdrop{background:var(--arq-color-surface-transparent)}.sheet{--sheet-inline:var(--arq-layout-gutter);gap:var(--arq-space-gap-xl);padding:var(--arq-space-padding-lg) var(--sheet-inline) calc(var(--arq-space-padding-lg) + env(safe-area-inset-bottom,var(--arq-space-0)))}.footer{justify-content:flex-start}.apply{flex:auto}}@media (width<=1023px){:host([show-categories]) .tabs{gap:var(--arq-space-gap-xl);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);flex:none;display:flex;overflow-x:auto}.categories-panel{min-width:0}}@media (prefers-reduced-motion:reduce){.dialog{clip-path:none;opacity:0;transition:opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out)}.dialog.is-open{opacity:1}.dialog::backdrop,.sheet{transition:opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out)}}", ho = {
+var ho = ":host{--panel-slow:var(--arq-motion-duration-panel);display:contents}.dialog:not(.is-open){--panel-slow:var(--arq-motion-duration-expand)}.dialog{box-sizing:border-box;width:var(--arq-layout-filter-panel);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);max-width:100%;height:100dvh;max-height:none;color:var(--arq-color-text-primary);clip-path:inset(0 0 0 100%);transition:clip-path var(--panel-slow) var(--arq-motion-easing-standard);margin:0;padding:0;inset:0 0 0 auto;overflow:clip}.dialog.is-open{clip-path:inset(0)}.dialog:not(.is-open){pointer-events:none}.dialog::backdrop{background:var(--arq-color-overlay-scrim);opacity:0;transition:opacity var(--panel-slow) var(--arq-motion-easing-standard)}.dialog.is-open::backdrop{opacity:1}.sheet{opacity:0;transition:opacity var(--arq-motion-duration-slow) var(--arq-motion-easing-standard)}.dialog.is-open .sheet{opacity:1}.sheet{--sheet-inline:var(--arq-space-padding-xl-2xl);box-sizing:border-box;gap:var(--arq-space-gap-lg);height:100%;padding:var(--arq-space-padding-xl-2xl) var(--sheet-inline);flex-direction:column;display:flex}.header{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.titles{gap:var(--arq-space-gap-xs);flex-direction:column;min-width:0;display:flex}.title{color:var(--arq-color-text-primary)}.summary{color:var(--arq-color-text-secondary);margin:0}.applied{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.tabs{display:none}.body{min-height:0;margin:calc(-1 * var(--arq-space-padding-xs));margin-inline:calc(-1 * var(--arq-space-padding-sm-md)) calc(-1 * var(--sheet-inline));padding:var(--arq-space-padding-xs);padding-inline:var(--arq-space-padding-sm-md) var(--sheet-inline);overscroll-behavior:contain;flex:auto;overflow-y:auto}.footer{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-lg);display:flex}@media (width<=767px){.dialog{border:0;width:100%;inset:0}.dialog::backdrop{background:var(--arq-color-surface-transparent)}.sheet{--sheet-inline:var(--arq-layout-gutter);gap:var(--arq-space-gap-xl);padding:var(--arq-space-padding-lg) var(--sheet-inline) calc(var(--arq-space-padding-lg) + env(safe-area-inset-bottom,var(--arq-space-0)))}.footer{justify-content:flex-start}.apply{flex:auto}}@media (width<=1023px){:host([show-categories]) .tabs{gap:var(--arq-space-gap-xl);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);flex:none;display:flex;overflow-x:auto}.categories-panel{min-width:0}}@media (prefers-reduced-motion:reduce){.dialog{clip-path:none;opacity:0;transition:opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out)}.dialog.is-open{opacity:1}.dialog::backdrop,.sheet{transition:opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out)}}", go = {
 	productos: ["producto", "productos"],
 	variantes: ["variante", "variantes"]
-}, go = new Intl.NumberFormat("es-AR");
+}, _o = new Intl.NumberFormat("es-AR");
 (class extends I {
 	static tag = "arq-filter-panel";
-	static styles = mo;
+	static styles = ho;
 	static properties = {
 		open: { type: Boolean },
 		count: { type: Number },
@@ -4142,7 +4146,7 @@ var mo = ":host{--panel-slow:var(--arq-motion-duration-panel);display:contents}.
 	#r = null;
 	setup() {
 		let e = this.shadowRoot;
-		this.#e = e.querySelector("dialog"), z(this.#e), this.#e.addEventListener("close", () => Qa(!1)), e.querySelector(".close").addEventListener("click", () => this.close()), e.querySelector(".clear").addEventListener("click", () => this.clear()), e.querySelector(".apply").addEventListener("click", () => this.apply()), new Na(e.querySelector(".tabs"), { items: "arq-tab" }), e.querySelector(".tabs").addEventListener("arq:change", (e) => {
+		this.#e = e.querySelector("dialog"), z(this.#e), this.#e.addEventListener("close", () => $a(!1)), e.querySelector(".close").addEventListener("click", () => this.close()), e.querySelector(".clear").addEventListener("click", () => this.clear()), e.querySelector(".apply").addEventListener("click", () => this.apply()), new Pa(e.querySelector(".tabs"), { items: "arq-tab" }), e.querySelector(".tabs").addEventListener("arq:change", (e) => {
 			this.#a(e.detail.value);
 		}), this.addEventListener("arq:toggle", (e) => {
 			let t = e.target;
@@ -4200,7 +4204,7 @@ var mo = ":host{--panel-slow:var(--arq-motion-duration-panel);display:contents}.
 		this.#l(), this.#t &&= new Map(this.options.map((e) => [e, !1])), this.emit("apply", { filters: this.filters });
 	}
 	#i() {
-		this.#t = new Map(this.options.map((e) => [e, e.checked])), this.#a("features"), this.#d(), clearTimeout(this.#r), this.#r = null, this.#e.open || (this.#e.showModal(), Qa(!0, this.#e), this.#e.offsetHeight), this.#e.classList.add("is-open");
+		this.#t = new Map(this.options.map((e) => [e, e.checked])), this.#a("features"), this.#d(), clearTimeout(this.#r), this.#r = null, this.#e.open || (this.#e.showModal(), $a(!0, this.#e), this.#e.offsetHeight), this.#e.classList.add("is-open");
 	}
 	#a(e) {
 		let t = this.showCategories && e === "categories", n = this.shadowRoot;
@@ -4248,8 +4252,8 @@ var mo = ":host{--panel-slow:var(--arq-motion-duration-panel);display:contents}.
 	#f() {
 		let e = this.shadowRoot.querySelector(".apply");
 		if (!e) return;
-		let [t, n] = ho[this.unit] ?? ho.productos;
-		e.textContent = Number.isFinite(this.count) ? `Ver ${go.format(this.count)} ${this.count === 1 ? t : n}` : `Ver ${n}`;
+		let [t, n] = go[this.unit] ?? go.productos;
+		e.textContent = Number.isFinite(this.count) ? `Ver ${_o.format(this.count)} ${this.count === 1 ? t : n}` : `Ver ${n}`;
 	}
 	#p(e) {
 		let t = [...this.shadowRoot.querySelectorAll(".applied arq-filter-chip")].indexOf(e);
@@ -4260,10 +4264,10 @@ var mo = ":host{--panel-slow:var(--arq-motion-duration-panel);display:contents}.
 }).define();
 //#endregion
 //#region src/components/carousel-button/carousel-button.css?inline
-var _o = ":host{vertical-align:middle;color:var(--arq-color-icon-primary);--blur:var(--arq-blur-backdrop);flex:none;display:inline-flex}.control{box-sizing:border-box;width:var(--arq-layout-carousel-button);height:var(--arq-layout-carousel-button);border:var(--arq-border-default) solid var(--arq-color-border-disabled);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);color:inherit;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);justify-content:center;align-items:center;margin:0;padding:0;display:inline-flex}.glyph{display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.control:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.control:focus:not(:focus-visible){outline:none}@media (hover:hover) and (pointer:fine){.control:enabled:hover{background:var(--arq-color-surface-hover)}}.control:enabled:active{background:var(--arq-color-surface-selected)}:host([disabled]){color:var(--arq-color-icon-disabled)}:host([disabled]) .control{background:var(--arq-color-surface-transparent);cursor:default}:host([background=frosted]){--blur:var(--arq-blur-backdrop-soft)}:host([background=frosted]) .control{border-color:var(--arq-color-border-subtle);background:var(--arq-color-overlay-frosted);-webkit-backdrop-filter:blur(var(--blur));backdrop-filter:blur(var(--blur))}:host([background=frosted]) .control:enabled:active{border-color:var(--arq-color-border-default);background:var(--arq-color-overlay-frosted)}@media (hover:hover) and (pointer:fine){:host([background=frosted]) .control:enabled:hover{border-color:var(--arq-color-border-default);background:var(--arq-color-overlay-frosted)}}:host([background=frosted][disabled]) .control{background:var(--arq-color-overlay-frosted)}:host([background=frosted]) .icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl)}";
+var vo = ":host{vertical-align:middle;color:var(--arq-color-icon-primary);--blur:var(--arq-blur-backdrop);flex:none;display:inline-flex}.control{box-sizing:border-box;width:var(--arq-layout-carousel-button);height:var(--arq-layout-carousel-button);border:var(--arq-border-default) solid var(--arq-color-border-disabled);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);color:inherit;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);justify-content:center;align-items:center;margin:0;padding:0;display:inline-flex}.glyph{display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}.control:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.control:focus:not(:focus-visible){outline:none}@media (hover:hover) and (pointer:fine){.control:enabled:hover{background:var(--arq-color-surface-hover)}}.control:enabled:active{background:var(--arq-color-surface-selected)}:host([disabled]){color:var(--arq-color-icon-disabled)}:host([disabled]) .control{background:var(--arq-color-surface-transparent);cursor:default}:host([background=frosted]){--blur:var(--arq-blur-backdrop-soft)}:host([background=frosted]) .control{border-color:var(--arq-color-border-subtle);background:var(--arq-color-overlay-frosted);-webkit-backdrop-filter:blur(var(--blur));backdrop-filter:blur(var(--blur))}:host([background=frosted]) .control:enabled:active{border-color:var(--arq-color-border-default);background:var(--arq-color-overlay-frosted)}@media (hover:hover) and (pointer:fine){:host([background=frosted]) .control:enabled:hover{border-color:var(--arq-color-border-default);background:var(--arq-color-overlay-frosted)}}:host([background=frosted][disabled]) .control{background:var(--arq-color-overlay-frosted)}:host([background=frosted]) .icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl)}";
 (class extends I {
 	static tag = "arq-carousel-button";
-	static styles = _o;
+	static styles = vo;
 	static properties = {
 		direction: {
 			type: String,
@@ -4297,12 +4301,12 @@ var _o = ":host{vertical-align:middle;color:var(--arq-color-icon-primary);--blur
 }).define();
 //#endregion
 //#region src/components/carousel-controls/carousel-controls.css?inline
-var vo = ":host{display:inline-flex}.controls,.arrows{align-items:center;gap:var(--arq-space-gap-sm);display:flex}:host([buttons=carousel]) .controls,:host([buttons=chevron]) .controls{gap:var(--arq-space-gap-lg)}.count{color:var(--arq-color-text-secondary);margin:0}.progress{width:var(--arq-space-gap-5xl);height:var(--arq-border-strong);flex:none;position:relative}.track{height:var(--arq-border-default);background:var(--arq-color-text-secondary);opacity:var(--arq-opacity-track);position:absolute;top:50%;left:0;right:0;transform:translateY(-50%)}.indicator{height:100%;width:calc(100% / var(--progress-count,1));background:var(--arq-color-text-primary);transform:translateX(calc(var(--progress-index,0) * 100%));transition:transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);position:absolute;top:0;left:0}:host([buttons=none]){width:100%;display:flex}:host([buttons=none]) .controls,:host([buttons=none]) .progress{width:100%}.progress[data-mode=scroll] .indicator{width:calc(100% * var(--progress-size,1));transform:translateX(calc(var(--progress-offset,0) / var(--progress-size,1) * 100%));transition:none}:host([buttons=none]) .progress.scrub{flex:1;width:auto;min-width:0}.progress.scrub{--thick:var(--arq-space-padding-xs);height:var(--arq-space-padding-sm-md);cursor:grab;touch-action:none}.progress.scrub.dragging{cursor:grabbing;-webkit-user-select:none;user-select:none}.progress.scrub .track{height:var(--thick);background:var(--arq-color-surface-subtle);opacity:1;transition:height var(--arq-motion-duration-base) var(--arq-motion-easing-standard)}.progress.scrub .indicator{top:calc(50% - var(--thick) / 2);height:var(--thick);background:var(--arq-color-border-hover);transition:top var(--arq-motion-duration-base) var(--arq-motion-easing-standard), height var(--arq-motion-duration-base) var(--arq-motion-easing-standard), background-color var(--arq-motion-duration-base) var(--arq-motion-easing-standard)}.progress.scrub.dragging{--thick:calc(var(--arq-space-padding-xs) + var(--arq-border-strong))}.progress.scrub.dragging .indicator{background:var(--arq-color-text-tertiary)}@media (hover:hover) and (pointer:fine){.progress.scrub:hover{--thick:calc(var(--arq-space-padding-xs) + var(--arq-border-strong))}.progress.scrub:hover .indicator{background:var(--arq-color-text-tertiary)}}:host([orientation=vertical]){width:auto;height:100%;display:flex}:host([orientation=vertical]) .controls{flex-direction:column;width:auto;height:100%}:host([orientation=vertical]) .progress.scrub{width:var(--arq-space-padding-sm-md);flex:1;height:auto;min-height:0}:host([orientation=vertical]) .progress.scrub .track{width:var(--thick);height:auto;transition:width var(--arq-motion-duration-base) var(--arq-motion-easing-standard);inset:0 auto 0 50%;transform:translate(-50%)}:host([orientation=vertical]) .progress.scrub .indicator{top:0;left:calc(50% - var(--thick) / 2);width:var(--thick);height:calc(100% * var(--progress-size,1));transform:translateY(calc(var(--progress-offset,0) / var(--progress-size,1) * 100%));transition:left var(--arq-motion-duration-base) var(--arq-motion-easing-standard), width var(--arq-motion-duration-base) var(--arq-motion-easing-standard), background-color var(--arq-motion-duration-base) var(--arq-motion-easing-standard)}@media (prefers-reduced-motion:reduce){.indicator{transition:none}}@media (width<=767px){:host{display:none}}", yo = [
+var yo = ":host{display:inline-flex}.controls,.arrows{align-items:center;gap:var(--arq-space-gap-sm);display:flex}:host([buttons=carousel]) .controls,:host([buttons=chevron]) .controls{gap:var(--arq-space-gap-lg)}.count{color:var(--arq-color-text-secondary);margin:0}.progress{width:var(--arq-space-gap-5xl);height:var(--arq-border-strong);flex:none;position:relative}.track{height:var(--arq-border-default);background:var(--arq-color-text-secondary);opacity:var(--arq-opacity-track);position:absolute;top:50%;left:0;right:0;transform:translateY(-50%)}.indicator{height:100%;width:calc(100% / var(--progress-count,1));background:var(--arq-color-text-primary);transform:translateX(calc(var(--progress-index,0) * 100%));transition:transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);position:absolute;top:0;left:0}:host([buttons=none]){width:100%;display:flex}:host([buttons=none]) .controls,:host([buttons=none]) .progress{width:100%}.progress[data-mode=scroll] .indicator{width:calc(100% * var(--progress-size,1));transform:translateX(calc(var(--progress-offset,0) / var(--progress-size,1) * 100%));transition:none}:host([buttons=none]) .progress.scrub{flex:1;width:auto;min-width:0}.progress.scrub{--thick:var(--arq-space-padding-xs);height:var(--arq-space-padding-sm-md);cursor:grab;touch-action:none}.progress.scrub.dragging{cursor:grabbing;-webkit-user-select:none;user-select:none}.progress.scrub .track{height:var(--thick);background:var(--arq-color-surface-subtle);opacity:1;transition:height var(--arq-motion-duration-base) var(--arq-motion-easing-standard)}.progress.scrub .indicator{top:calc(50% - var(--thick) / 2);height:var(--thick);background:var(--arq-color-border-hover);transition:top var(--arq-motion-duration-base) var(--arq-motion-easing-standard), height var(--arq-motion-duration-base) var(--arq-motion-easing-standard), background-color var(--arq-motion-duration-base) var(--arq-motion-easing-standard)}.progress.scrub.dragging{--thick:calc(var(--arq-space-padding-xs) + var(--arq-border-strong))}.progress.scrub.dragging .indicator{background:var(--arq-color-text-tertiary)}@media (hover:hover) and (pointer:fine){.progress.scrub:hover{--thick:calc(var(--arq-space-padding-xs) + var(--arq-border-strong))}.progress.scrub:hover .indicator{background:var(--arq-color-text-tertiary)}}:host([orientation=vertical]){width:auto;height:100%;display:flex}:host([orientation=vertical]) .controls{flex-direction:column;width:auto;height:100%}:host([orientation=vertical]) .progress.scrub{width:var(--arq-space-padding-sm-md);flex:1;height:auto;min-height:0}:host([orientation=vertical]) .progress.scrub .track{width:var(--thick);height:auto;transition:width var(--arq-motion-duration-base) var(--arq-motion-easing-standard);inset:0 auto 0 50%;transform:translate(-50%)}:host([orientation=vertical]) .progress.scrub .indicator{top:0;left:calc(50% - var(--thick) / 2);width:var(--thick);height:calc(100% * var(--progress-size,1));transform:translateY(calc(var(--progress-offset,0) / var(--progress-size,1) * 100%));transition:left var(--arq-motion-duration-base) var(--arq-motion-easing-standard), width var(--arq-motion-duration-base) var(--arq-motion-easing-standard), background-color var(--arq-motion-duration-base) var(--arq-motion-easing-standard)}@media (prefers-reduced-motion:reduce){.indicator{transition:none}}@media (width<=767px){:host{display:none}}", bo = [
 	"start",
 	"middle",
 	"end"
 ];
-function bo(e) {
+function xo(e) {
 	let t = String(e).match(/cubic-bezier\(\s*([-\d.]+)\s*,\s*([-\d.]+)\s*,\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)/), [n, r, i, a] = t ? t.slice(1).map(Number) : [
 		.42,
 		0,
@@ -4321,11 +4325,11 @@ function bo(e) {
 }
 (class extends I {
 	static tag = "arq-carousel-controls";
-	static styles = vo;
+	static styles = yo;
 	static properties = {
 		position: {
 			type: String,
-			values: yo,
+			values: bo,
 			default: "start"
 		},
 		for: { type: String },
@@ -4561,7 +4565,7 @@ function bo(e) {
 	#x(e, t) {
 		let n = e.scrollLeft;
 		this.#c?.(), this.#c = null, e.scrollLeft = n, e.removeAttribute("data-gliding");
-		let r = getComputedStyle(this), i = this.#s.matches ? 0 : R(r.getPropertyValue("--arq-motion-duration-fold")) || 0, a = bo(r.getPropertyValue("--arq-motion-easing-in-out"));
+		let r = getComputedStyle(this), i = this.#s.matches ? 0 : R(r.getPropertyValue("--arq-motion-duration-fold")) || 0, a = xo(r.getPropertyValue("--arq-motion-easing-in-out"));
 		if (!i || Math.abs(t - n) < 1) {
 			e.scrollLeft = t;
 			return;
@@ -4583,12 +4587,12 @@ function bo(e) {
 }).define();
 //#endregion
 //#region src/components/variants-table/variants-table.css?inline
-var xo = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page-gutter);color:var(--arq-color-text-primary);isolation:isolate;flex-direction:column;display:flex}.controls{align-items:center;gap:var(--arq-space-gap-md);padding-block:var(--arq-space-padding-md);grid-template-columns:auto auto minmax(0,1fr);display:grid}.controls.fixed{top:var(--arq-layout-navbar-height);z-index:3;background:var(--arq-color-surface-default);position:sticky}.toggle-filters{grid-area:1/1;justify-self:start}.total{color:var(--arq-color-text-secondary);grid-area:1/2}.downloads{justify-content:flex-end;gap:var(--arq-space-gap-sm);flex-wrap:wrap;grid-area:1/3;display:flex}.downloads-menu{display:none}.search{width:100%;max-width:var(--arq-download-search-width,var(--arq-layout-download-search));grid-area:1/1/auto/3;justify-self:start;min-width:0}.applied{align-items:center;gap:var(--arq-space-gap-lg);flex-wrap:wrap;grid-area:2/1/auto/-1;display:flex}:host([type=catalog]) .controls{column-gap:var(--arq-space-gap-lg);grid-template-columns:auto minmax(0,1fr) auto}:host([type=catalog]) .toggle-filters{grid-column:3;justify-self:end}:host([type=catalog]) .total{grid-area:2/1}:host([type=catalog]) .applied{grid-column:2/4;justify-content:flex-end}.chips{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.reveal{transition-property:opacity,color,background-color,border-color,outline-color,text-decoration-color,fill,stroke;transition-duration:var(--arq-motion-duration-base);transition-timing-function:var(--arq-motion-easing-standard)}@media (prefers-reduced-motion:reduce){.reveal{transition-duration:var(--arq-motion-duration-fade), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast);transition-timing-function:var(--arq-motion-easing-out)}}@starting-style{.reveal:not([hidden]){opacity:0}}.scroll{--page-gutter:var(--arq-space-padding-sm);overscroll-behavior-x:contain;scrollbar-width:none;overflow-x:auto}.scroll::-webkit-scrollbar{display:none}.scroll.fits{overflow-x:clip}.scrollbar{z-index:3;padding-block:var(--arq-space-padding-sm);background:var(--arq-color-surface-default);display:flex;position:sticky;bottom:0}.scroll:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(-1 * var(--arq-border-strong))}.table{border-collapse:collapse;border-spacing:0;width:100%}th,td{padding:0 var(--arq-space-gap-lg) 0 0;--cell-bg:var(--arq-color-surface-default);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--cell-bg);text-align:start;white-space:nowrap;vertical-align:middle}.cell{display:inline-block}.data{width:var(--col-width,auto)}.data>.cell{min-width:var(--col-width,0)}thead th{--cell-bg:var(--arq-color-surface-soft);padding-block:var(--arq-space-padding-sm-md);color:var(--arq-color-text-tertiary);font-weight:inherit}.sort{align-items:center;gap:var(--arq-space-gap-xs);color:inherit;font:inherit;letter-spacing:inherit;text-align:inherit;cursor:pointer;transition:color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);background:0 0;border:0;margin:0;padding:0;display:inline-flex}.sort .icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm);flex:none}.sort.sorted{color:var(--arq-color-text-primary)}@media (hover:hover) and (pointer:fine){.sort:hover{color:var(--arq-color-text-primary)}}.sort:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}tbody th,tbody td{padding-block:var(--arq-space-padding-sm);color:var(--arq-color-text-primary)}:host([type=catalog]) tbody th,:host([type=catalog]) tbody td{padding-block:var(--arq-space-padding-sm-md)}@media (hover:hover) and (pointer:fine){tbody tr:hover>*{--cell-bg:var(--arq-color-surface-faint)}}.start{z-index:1;width:1%;padding-inline:var(--page-gutter) var(--arq-space-gap-sm);position:sticky;left:0}.sku-col{left:calc(var(--page-gutter) + var(--arq-layout-table-thumb) + var(--arq-space-gap-sm));z-index:1;padding-inline-end:var(--arq-space-gap-xl);position:sticky}tbody .sku-col{font-weight:inherit}.thumb{width:var(--arq-layout-table-thumb);height:var(--arq-layout-table-thumb);background:var(--arq-color-surface-subtle);display:block;overflow:hidden}.thumb img,.card-thumb img{object-fit:cover;width:100%;height:100%;display:block}.product{align-items:flex-start;gap:var(--arq-space-gap-sm-md);flex-direction:column;min-width:0;display:flex}.name{color:var(--arq-color-text-primary)}.thumb-link{color:inherit;text-decoration:none;display:block}th.end,td.end{z-index:1;width:1%;padding-inline:var(--arq-space-gap-sm) var(--page-gutter);text-align:center;position:sticky;right:0}@media (width<=1023px){.sku-col{position:static}}.end:before,.sku-col:after,.start:after{content:\"\";width:var(--arq-space-gap-3xl);pointer-events:none;opacity:0;transition:opacity var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);position:absolute;top:0;bottom:0}.end:before{background:linear-gradient(to right, var(--arq-color-surface-transparent), var(--cell-bg));right:100%}.sku-col:after,.start:after{background:linear-gradient(to left, var(--arq-color-surface-transparent), var(--cell-bg));left:100%}.more-end .end:before,.more-start .sku-col:after,.more-start .start:after{opacity:1}@media (width>=1024px){.start:after{content:none}}@media (width<=1023px){.sku-col:after{content:none}}@media (width>=1920px){.table thead th,.head-table thead th,.table tbody td{font-size:var(--arq-type-body-size);line-height:var(--arq-type-body-leading)}}.more{padding-top:var(--arq-space-gap-xl);justify-content:center;display:flex}.empty{gap:var(--arq-space-gap-sm-md);padding:var(--arq-space-section-sm) 0 var(--arq-space-section-md);flex-direction:column;display:flex}.empty p{margin:0}.empty-title{color:var(--arq-color-text-primary)}.empty-text{max-width:var(--arq-layout-measure-wide);color:var(--arq-color-text-secondary)}.skeleton{flex-direction:column;display:flex}.sk-row{align-items:center;gap:var(--arq-space-gap-sm);padding:var(--arq-space-padding-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex}.sk-thumb{width:var(--arq-layout-table-thumb);height:var(--arq-layout-table-thumb);background:var(--arq-color-surface-subtle);flex:none}.sk-product{gap:var(--arq-space-gap-sm);flex-direction:column;flex:0 0 25%;padding-inline-start:var(--arq-space-padding-sm);display:flex}.sk-bar{width:70%;height:var(--arq-space-gap-sm-md);background:var(--arq-color-surface-subtle);display:block}.sk-short{width:35%;height:var(--arq-icon-sm)}.sk-cells{gap:var(--arq-space-gap-sm);flex:auto;min-width:0;display:flex}.sk-cell{flex:1 1 0;min-width:0}.sk-cell .sk-bar{width:55%}.sk-download{width:var(--arq-icon-xl);height:var(--arq-icon-xl);margin-inline:var(--arq-space-padding-lg);background:var(--arq-color-surface-subtle);flex:none}.sk-card{display:none}.cards{margin:0;padding:0;list-style:none;display:none}@media (width<=767px){:host([type=catalog]) .controls{margin-inline:calc(-1 * var(--page-gutter));padding-inline:var(--page-gutter)}.controls,:host([type=catalog]) .controls{grid-template-columns:auto minmax(0,1fr)}.downloads{display:none}.downloads-menu:not([hidden]){grid-area:1/2;justify-self:end;display:inline-flex}:host(:not([type=catalog])) .total{grid-area:2/1/auto/-1}.applied,:host([type=catalog]) .applied{grid-area:3/1/auto/-1}:host([type=catalog]) .search{grid-column:1/-1;max-width:none}:host([type=catalog]) .toggle-filters{grid-area:2/1;justify-self:start}:host([type=catalog]) .total{grid-area:2/2}.scroll,.scrollbar{display:none}.cards:not([hidden]){flex-direction:column;display:flex}.cards,.skeleton{margin-inline:calc(-1 * var(--page-gutter))}.card{gap:var(--arq-space-gap-sm);padding:var(--arq-space-padding-lg) var(--page-gutter);border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);flex-direction:column;display:flex}.card-head{align-items:center;gap:var(--arq-space-gap-md);display:flex}.card-head .product{flex:auto}.card-head .thumb-link,.card-head arq-icon-button{flex:none}.card-thumb{width:var(--arq-layout-download-thumb);height:var(--arq-layout-download-thumb);background:var(--arq-color-surface-subtle);flex:none;display:block;overflow:hidden}.card-data{grid-template-columns:repeat(2,minmax(0,1fr));margin:0;display:grid}.card-item{padding-block:var(--arq-space-padding-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);flex-direction:column;display:flex}.card-item:last-child,.card-item:nth-last-child(2):nth-child(odd){border-bottom:0}.card-item dt{color:var(--arq-color-text-secondary)}.card-item dd{color:var(--arq-color-text-primary);overflow-wrap:break-word;margin:0}.sk-row{display:none}.sk-card{gap:var(--arq-space-gap-md);padding:var(--arq-space-padding-lg) var(--page-gutter);border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);flex-direction:column;display:flex}.sk-head{align-items:center;gap:var(--arq-space-gap-md);display:flex}.sk-card .sk-thumb{width:var(--arq-layout-download-thumb);height:var(--arq-layout-download-thumb)}.sk-card .sk-product{flex:auto;padding:0}.sk-data{gap:var(--arq-space-gap-md);grid-template-columns:repeat(2,minmax(0,1fr));display:grid}.sk-data .sk-bar{width:50%}}.head{--page-gutter:var(--arq-space-padding-sm);top:100%;background:var(--arq-color-surface-default);position:absolute;inset-inline:0;overflow:hidden}.head-table{table-layout:fixed;border-collapse:collapse;border-spacing:0}@media (width<=767px){.head{display:none}}", So = new Intl.NumberFormat("es-AR"), V = (e) => String(e ?? "").replace(/[&<>"]/g, (e) => ({
+var So = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page-gutter);color:var(--arq-color-text-primary);isolation:isolate;flex-direction:column;display:flex}.controls{align-items:center;gap:var(--arq-space-gap-md);padding-block:var(--arq-space-padding-md);grid-template-columns:auto auto minmax(0,1fr);display:grid}.controls.fixed{top:var(--arq-layout-navbar-height);z-index:3;background:var(--arq-color-surface-default);position:sticky}.toggle-filters{grid-area:1/1;justify-self:start}.total{color:var(--arq-color-text-secondary);grid-area:1/2}.downloads{justify-content:flex-end;gap:var(--arq-space-gap-sm);flex-wrap:wrap;grid-area:1/3;display:flex}.downloads-menu{display:none}.search{width:100%;max-width:var(--arq-download-search-width,var(--arq-layout-download-search));grid-area:1/1/auto/3;justify-self:start;min-width:0}.applied{align-items:center;gap:var(--arq-space-gap-lg);flex-wrap:wrap;grid-area:2/1/auto/-1;display:flex}:host([type=catalog]) .controls{column-gap:var(--arq-space-gap-lg);grid-template-columns:auto minmax(0,1fr) auto}:host([type=catalog]) .toggle-filters{grid-column:3;justify-self:end}:host([type=catalog]) .total{grid-area:2/1}:host([type=catalog]) .applied{grid-column:2/4;justify-content:flex-end}.chips{gap:var(--arq-space-gap-sm);flex-wrap:wrap;display:flex}.reveal{transition-property:opacity,color,background-color,border-color,outline-color,text-decoration-color,fill,stroke;transition-duration:var(--arq-motion-duration-base);transition-timing-function:var(--arq-motion-easing-standard)}@media (prefers-reduced-motion:reduce){.reveal{transition-duration:var(--arq-motion-duration-fade), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast);transition-timing-function:var(--arq-motion-easing-out)}}@starting-style{.reveal:not([hidden]){opacity:0}}.scroll{--page-gutter:var(--arq-space-padding-sm);overscroll-behavior-x:contain;scrollbar-width:none;overflow-x:auto}.scroll::-webkit-scrollbar{display:none}.scroll.fits{overflow-x:clip}.scrollbar{z-index:3;padding-block:var(--arq-space-padding-sm);background:var(--arq-color-surface-default);display:flex;position:sticky;bottom:0}.scroll:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:calc(-1 * var(--arq-border-strong))}.table{border-collapse:collapse;border-spacing:0;width:100%}th,td{padding:0 var(--arq-space-gap-lg) 0 0;--cell-bg:var(--arq-color-surface-default);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--cell-bg);text-align:start;white-space:nowrap;vertical-align:middle}.cell{display:inline-block}.data{width:var(--col-width,auto)}.data>.cell{min-width:var(--col-width,0)}thead th{--cell-bg:var(--arq-color-surface-soft);padding-block:var(--arq-space-padding-sm-md);color:var(--arq-color-text-tertiary);font-weight:inherit}.sort{align-items:center;gap:var(--arq-space-gap-xs);color:inherit;font:inherit;letter-spacing:inherit;text-align:inherit;cursor:pointer;transition:color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);background:0 0;border:0;margin:0;padding:0;display:inline-flex}.sort .icon{width:var(--arq-icon-sm);height:var(--arq-icon-sm);flex:none}.sort.sorted{color:var(--arq-color-text-primary)}@media (hover:hover) and (pointer:fine){.sort:hover{color:var(--arq-color-text-primary)}}.sort:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}tbody th,tbody td{padding-block:var(--arq-space-padding-sm);color:var(--arq-color-text-primary)}:host([type=catalog]) tbody th,:host([type=catalog]) tbody td{padding-block:var(--arq-space-padding-sm-md)}@media (hover:hover) and (pointer:fine){tbody tr:hover>*{--cell-bg:var(--arq-color-surface-faint)}}.start{z-index:1;width:1%;padding-inline:var(--page-gutter) var(--arq-space-gap-sm);position:sticky;left:0}.sku-col{left:calc(var(--page-gutter) + var(--arq-layout-table-thumb) + var(--arq-space-gap-sm));z-index:1;padding-inline-end:var(--arq-space-gap-xl);position:sticky}tbody .sku-col{font-weight:inherit}.thumb{width:var(--arq-layout-table-thumb);height:var(--arq-layout-table-thumb);background:var(--arq-color-surface-subtle);display:block;overflow:hidden}.thumb img,.card-thumb img{object-fit:cover;width:100%;height:100%;display:block}.product{align-items:flex-start;gap:var(--arq-space-gap-sm-md);flex-direction:column;min-width:0;display:flex}.name{color:var(--arq-color-text-primary)}.thumb-link{color:inherit;text-decoration:none;display:block}th.end,td.end{z-index:1;width:1%;padding-inline:var(--arq-space-gap-sm) var(--page-gutter);text-align:center;position:sticky;right:0}@media (width<=1023px){.sku-col{position:static}}.end:before,.sku-col:after,.start:after{content:\"\";width:var(--arq-space-gap-3xl);pointer-events:none;opacity:0;transition:opacity var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);position:absolute;top:0;bottom:0}.end:before{background:linear-gradient(to right, var(--arq-color-surface-transparent), var(--cell-bg));right:100%}.sku-col:after,.start:after{background:linear-gradient(to left, var(--arq-color-surface-transparent), var(--cell-bg));left:100%}.more-end .end:before,.more-start .sku-col:after,.more-start .start:after{opacity:1}@media (width>=1024px){.start:after{content:none}}@media (width<=1023px){.sku-col:after{content:none}}@media (width>=1920px){.table thead th,.head-table thead th,.table tbody td{font-size:var(--arq-type-body-size);line-height:var(--arq-type-body-leading)}}.more{padding-top:var(--arq-space-gap-xl);justify-content:center;display:flex}.empty{gap:var(--arq-space-gap-sm-md);padding:var(--arq-space-section-sm) 0 var(--arq-space-section-md);flex-direction:column;display:flex}.empty p{margin:0}.empty-title{color:var(--arq-color-text-primary)}.empty-text{max-width:var(--arq-layout-measure-wide);color:var(--arq-color-text-secondary)}.skeleton{flex-direction:column;display:flex}.sk-row{align-items:center;gap:var(--arq-space-gap-sm);padding:var(--arq-space-padding-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);display:flex}.sk-thumb{width:var(--arq-layout-table-thumb);height:var(--arq-layout-table-thumb);background:var(--arq-color-surface-subtle);flex:none}.sk-product{gap:var(--arq-space-gap-sm);flex-direction:column;flex:0 0 25%;padding-inline-start:var(--arq-space-padding-sm);display:flex}.sk-bar{width:70%;height:var(--arq-space-gap-sm-md);background:var(--arq-color-surface-subtle);display:block}.sk-short{width:35%;height:var(--arq-icon-sm)}.sk-cells{gap:var(--arq-space-gap-sm);flex:auto;min-width:0;display:flex}.sk-cell{flex:1 1 0;min-width:0}.sk-cell .sk-bar{width:55%}.sk-download{width:var(--arq-icon-xl);height:var(--arq-icon-xl);margin-inline:var(--arq-space-padding-lg);background:var(--arq-color-surface-subtle);flex:none}.sk-card{display:none}.cards{margin:0;padding:0;list-style:none;display:none}@media (width<=767px){:host([type=catalog]) .controls{margin-inline:calc(-1 * var(--page-gutter));padding-inline:var(--page-gutter)}.controls,:host([type=catalog]) .controls{grid-template-columns:auto minmax(0,1fr)}.downloads{display:none}.downloads-menu:not([hidden]){grid-area:1/2;justify-self:end;display:inline-flex}:host(:not([type=catalog])) .total{grid-area:2/1/auto/-1}.applied,:host([type=catalog]) .applied{grid-area:3/1/auto/-1}:host([type=catalog]) .search{grid-column:1/-1;max-width:none}:host([type=catalog]) .toggle-filters{grid-area:2/1;justify-self:start}:host([type=catalog]) .total{grid-area:2/2}.scroll,.scrollbar{display:none}.cards:not([hidden]){flex-direction:column;display:flex}.cards,.skeleton{margin-inline:calc(-1 * var(--page-gutter))}.card{gap:var(--arq-space-gap-sm);padding:var(--arq-space-padding-lg) var(--page-gutter);border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);flex-direction:column;display:flex}.card-head{align-items:center;gap:var(--arq-space-gap-md);display:flex}.card-head .product{flex:auto}.card-head .thumb-link,.card-head arq-icon-button{flex:none}.card-thumb{width:var(--arq-layout-download-thumb);height:var(--arq-layout-download-thumb);background:var(--arq-color-surface-subtle);flex:none;display:block;overflow:hidden}.card-data{grid-template-columns:repeat(2,minmax(0,1fr));margin:0;display:grid}.card-item{padding-block:var(--arq-space-padding-sm);border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);flex-direction:column;display:flex}.card-item:last-child,.card-item:nth-last-child(2):nth-child(odd){border-bottom:0}.card-item dt{color:var(--arq-color-text-secondary)}.card-item dd{color:var(--arq-color-text-primary);overflow-wrap:break-word;margin:0}.sk-row{display:none}.sk-card{gap:var(--arq-space-gap-md);padding:var(--arq-space-padding-lg) var(--page-gutter);border-bottom:var(--arq-border-default) solid var(--arq-color-border-default);flex-direction:column;display:flex}.sk-head{align-items:center;gap:var(--arq-space-gap-md);display:flex}.sk-card .sk-thumb{width:var(--arq-layout-download-thumb);height:var(--arq-layout-download-thumb)}.sk-card .sk-product{flex:auto;padding:0}.sk-data{gap:var(--arq-space-gap-md);grid-template-columns:repeat(2,minmax(0,1fr));display:grid}.sk-data .sk-bar{width:50%}}.head{--page-gutter:var(--arq-space-padding-sm);top:100%;background:var(--arq-color-surface-default);position:absolute;inset-inline:0;overflow:hidden}.head-table{table-layout:fixed;border-collapse:collapse;border-spacing:0}@media (width<=767px){.head{display:none}}", Co = new Intl.NumberFormat("es-AR"), V = (e) => String(e ?? "").replace(/[&<>"]/g, (e) => ({
 	"&": "&amp;",
 	"<": "&lt;",
 	">": "&gt;",
 	"\"": "&quot;"
-})[e]), Co = (e) => e != null && String(e).trim() !== "" && e !== "-", H = {
+})[e]), wo = (e) => e != null && String(e).trim() !== "" && e !== "-", H = {
 	filters: "Filtros",
 	search: "Buscar por nombre o SKU…",
 	searchLabel: "Buscar por nombre o SKU",
@@ -4605,24 +4609,24 @@ var xo = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 	emptyVariantsTitle: "No hay variantes con estos filtros",
 	emptyVariantsText: "Probá quitar alguno de los filtros aplicados.",
 	more: "Ver más productos",
-	shown: (e, t) => `Se muestran ${So.format(e)} de ${So.format(t)} productos`,
-	count: (e) => e === 1 ? "1 producto" : `${So.format(e)} productos`,
-	countVariants: (e) => e === 1 ? "1 variante" : `${So.format(e)} variantes`,
+	shown: (e, t) => `Se muestran ${Co.format(e)} de ${Co.format(t)} productos`,
+	count: (e) => e === 1 ? "1 producto" : `${Co.format(e)} productos`,
+	countVariants: (e) => e === 1 ? "1 variante" : `${Co.format(e)} variantes`,
 	sorted: (e, t) => `Ordenado por ${e}, de ${t ? "mayor a menor" : "menor a mayor"}`
-}, wo = "orden", To = 100, Eo = 1.5, Do = 500, Oo = [
+}, To = "orden", Eo = 100, Do = 1.5, Oo = 500, ko = [
 	"potencia",
 	"temperatura_color",
 	"cri",
 	"flujo_luminoso",
 	"color_carcasa",
 	"tamanio"
-], ko = 9, Ao = (e) => `<arq-icon-button icon="download" size="large" background="outline" data-sku="${V(e)}">Descargas de ${V(e)}</arq-icon-button>`, jo = (e, t, n = !1) => {
+], Ao = 9, jo = (e) => `<arq-icon-button icon="download" size="large" background="outline" data-sku="${V(e)}">Descargas de ${V(e)}</arq-icon-button>`, Mo = (e, t, n = !1) => {
 	let r = `<span class="${t}">${e.thumb ? `<img src="${V(e.thumb)}" alt="" loading="lazy">` : ""}</span>`;
 	return n && e.href ? `<a class="thumb-link" href="${V(e.href)}" tabindex="-1" aria-hidden="true">${r}</a>` : r;
-}, Mo = (e, t) => e.href ? `<arq-text-link class="name" size="compact" href="${V(e.href)}">${V(e.name)}</arq-text-link>` : `<span class="name ${t}">${V(e.name)}</span>`;
+}, No = (e, t) => e.href ? `<arq-text-link class="name" size="compact" href="${V(e.href)}">${V(e.name)}</arq-text-link>` : `<span class="name ${t}">${V(e.name)}</span>`;
 (class extends I {
 	static tag = "arq-variants-table";
-	static styles = xo;
+	static styles = So;
 	static properties = {
 		type: {
 			type: String,
@@ -4649,7 +4653,7 @@ var xo = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 		desc: !1
 	};
 	#i = !1;
-	#a = To;
+	#a = Eo;
 	#o = null;
 	#s = null;
 	#c = !1;
@@ -4678,7 +4682,7 @@ var xo = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 			r.length && (t[n] = r);
 		}
 		this.#t = t;
-		let n = e.get(wo) ?? "", r = n.replace(/^-/, ""), i = r === "sku" || this.#e.columns.some((e) => e.key === r);
+		let n = e.get(To) ?? "", r = n.replace(/^-/, ""), i = r === "sku" || this.#e.columns.some((e) => e.key === r);
 		this.#r = i ? {
 			key: r,
 			desc: n.startsWith("-")
@@ -4696,10 +4700,10 @@ var xo = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 		for (let { key: t } of this.#e.filters) e.searchParams.delete(t);
 		this.#n.trim() && e.searchParams.set("q", this.#n.trim());
 		for (let { key: t } of this.#e.filters) for (let n of this.#t[t] ?? []) e.searchParams.append(t, n);
-		e.searchParams.delete(wo), this.#r.key && e.searchParams.set(wo, `${this.#r.desc ? "-" : ""}${this.#r.key}`), e.href !== location.href && history.replaceState(history.state, "", e);
+		e.searchParams.delete(To), this.#r.key && e.searchParams.set(To, `${this.#r.desc ? "-" : ""}${this.#r.key}`), e.href !== location.href && history.replaceState(history.state, "", e);
 	}
 	#m(e = 0) {
-		this.#a = To, this.#D(), this.#p(), this.#g(this.#h(this.#T().length), e);
+		this.#a = Eo, this.#D(), this.#p(), this.#g(this.#h(this.#T().length), e);
 	}
 	#h(e) {
 		return this.#d ? H.count(e) : H.countVariants(e);
@@ -4722,7 +4726,7 @@ var xo = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 		}, !0), e.querySelector(".toggle-filters").addEventListener("click", (e) => this.#F(e.currentTarget)), customElements.whenDefined("arq-button").then(() => {
 			e.querySelector(".toggle-filters").shadowRoot?.querySelector(".control")?.setAttribute("aria-haspopup", "dialog");
 		}), e.querySelector(".search").addEventListener("arq:input", (e) => {
-			e.stopPropagation(), this.#n = e.detail.value, this.#m(Do);
+			e.stopPropagation(), this.#n = e.detail.value, this.#m(Oo);
 		}), e.querySelector(".search").addEventListener("arq:submit", (e) => e.stopPropagation()), e.querySelector(".chips").addEventListener("click", (e) => {
 			let t = e.target.closest("arq-filter-chip");
 			t && this.#P(t);
@@ -4786,18 +4790,18 @@ var xo = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 		this.#r = {
 			key: e,
 			desc: e === n && !r
-		}, this.#a = To, this.#D(), this.#p();
+		}, this.#a = Eo, this.#D(), this.#p();
 		let i = e === "sku" ? H.sku : this.#e.columns.find((t) => t.key === e)?.label ?? e;
 		this.#g(H.sorted(i, this.#r.desc)), t && this.shadowRoot.querySelector(`.table thead [data-sort="${CSS.escape(e)}"]`)?.focus();
 	}
 	#x(e) {
-		return e.length ? this.#e.columns.filter((t) => e.some((e) => Co(e.values?.[t.key]))) : this.#e.columns;
+		return e.length ? this.#e.columns.filter((t) => e.some((e) => wo(e.values?.[t.key]))) : this.#e.columns;
 	}
 	#S() {
-		return this.#d ? ft(this.#e.rows, this.#n) : this.#e.rows;
+		return this.#d ? pt(this.#e.rows, this.#n) : this.#e.rows;
 	}
 	#C(e = this.#t) {
-		let t = this.#e.filters.map((e) => e.key), n = ut(this.#e.rows, t, e), r = ut(this.#S(), t, e);
+		let t = this.#e.filters.map((e) => e.key), n = dt(this.#e.rows, t, e), r = dt(this.#S(), t, e);
 		return n.map((e, t) => {
 			let n = new Set(r[t].options.filter((e) => !e.disabled).map((e) => e.value));
 			return e.options.map((e) => ({
@@ -4811,11 +4815,11 @@ var xo = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 		return Object.values(e).reduce((e, t) => e + (t?.length ?? 0), 0);
 	}
 	#T() {
-		return lt(this.#S(), this.#t);
+		return ut(this.#S(), this.#t);
 	}
 	#E() {
 		let e = this.shadowRoot, t = this.#a;
-		this.#a += To, this.#D();
+		this.#a += Eo, this.#D();
 		let n = this.#T().length;
 		if (this.#g(H.shown(Math.min(this.#a, n), n)), e.querySelector(".more").hidden) {
 			let n = getComputedStyle(e.querySelector(".cards")).display !== "none";
@@ -4823,14 +4827,14 @@ var xo = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 		}
 	}
 	#D() {
-		let e = this.shadowRoot, t = this.#d, { filters: n } = this.#e, r = t ? ht(this.#T(), this.#r.key, this.#r.desc) : this.#T(), i = t ? r.slice(0, this.#a) : r, a = this.#w(), o = this.#x(r);
+		let e = this.shadowRoot, t = this.#d, { filters: n } = this.#e, r = t ? gt(this.#T(), this.#r.key, this.#r.desc) : this.#T(), i = t ? r.slice(0, this.#a) : r, a = this.#w(), o = this.#x(r);
 		this.#y(o);
 		let s = e.querySelector(".toggle-filters");
-		s.textContent = a ? `${H.filters} (${a})` : H.filters, s.disabled = this.loading, s.hidden = !this.loading && !n.length, this.#N(), e.querySelector(".table tbody").innerHTML = i.map((e) => `<tr><td class="start">${jo(e, "thumb", t)}</td><th scope="row" class="sku-col"><span class="product">` + (t && e.name ? Mo(e, "role-body-compact-regular") : "") + `<arq-sku size="compact" dense data-arq-copy-feedback="replace">${V(e.sku)}</arq-sku></span></th>` + o.map((t) => `<td class="role-body-compact-regular${t.wide ? " wide" : " data"}"><span class="cell">${V(e.values?.[t.key] ?? "—")}</span></td>`).join("") + `<td class="end">${Ao(e.sku)}</td></tr>`).join("");
-		let c = [...Oo.map((e) => o.find((t) => t.key === e)).filter(Boolean), ...o.filter((e) => e.card)];
+		s.textContent = a ? `${H.filters} (${a})` : H.filters, s.disabled = this.loading, s.hidden = !this.loading && !n.length, this.#N(), e.querySelector(".table tbody").innerHTML = i.map((e) => `<tr><td class="start">${Mo(e, "thumb", t)}</td><th scope="row" class="sku-col"><span class="product">` + (t && e.name ? No(e, "role-body-compact-regular") : "") + `<arq-sku size="compact" dense data-arq-copy-feedback="replace">${V(e.sku)}</arq-sku></span></th>` + o.map((t) => `<td class="role-body-compact-regular${t.wide ? " wide" : " data"}"><span class="cell">${V(e.values?.[t.key] ?? "—")}</span></td>`).join("") + `<td class="end">${jo(e.sku)}</td></tr>`).join("");
+		let c = [...ko.map((e) => o.find((t) => t.key === e)).filter(Boolean), ...o.filter((e) => e.card)];
 		e.querySelector(".cards").innerHTML = i.map((e) => {
 			let n = t ? c.filter((t) => (e.values?.[t.key] ?? "") !== "") : c;
-			return `<li class="card"><span class="card-head">${jo(e, "card-thumb", t)}<span class="product">` + (t && e.name ? Mo(e, "role-body-compact-regular") : "") + `<arq-sku size="compact" dense data-arq-copy-feedback="replace">${V(e.sku)}</arq-sku></span>${Ao(e.sku)}</span>` + (n.length ? "<dl class=\"card-data\">" + n.map((t) => `<div class="card-item"><dt class="role-body-compact-regular">${V(t.label)}</dt><dd class="role-body-compact-medium">${V(e.values?.[t.key] ?? "—")}</dd></div>`).join("") + "</dl>" : "") + "</li>";
+			return `<li class="card"><span class="card-head">${Mo(e, "card-thumb", t)}<span class="product">` + (t && e.name ? No(e, "role-body-compact-regular") : "") + `<arq-sku size="compact" dense data-arq-copy-feedback="replace">${V(e.sku)}</arq-sku></span>${jo(e.sku)}</span>` + (n.length ? "<dl class=\"card-data\">" + n.map((t) => `<div class="card-item"><dt class="role-body-compact-regular">${V(t.label)}</dt><dd class="role-body-compact-medium">${V(e.values?.[t.key] ?? "—")}</dd></div>`).join("") + "</dl>" : "") + "</li>";
 		}).join(""), e.querySelector(".total").textContent = this.loading ? H.loading : this.#h(r.length);
 		let l = !this.loading && !r.length && this.#e.rows.length > 0;
 		!this.loading && !this.#i && !e.querySelector(".skeleton").hidden && this.#M(), e.querySelector(".skeleton").hidden = !this.loading, this.loading && this.#L(), e.querySelector(".scroll").hidden = l || this.loading, e.querySelector(".cards").hidden = l || this.loading, e.querySelector(".more").hidden = !t || this.loading || r.length <= this.#a, e.querySelector(".empty").hidden = !l, l && this.#j(a), this.#O(), this.#A();
@@ -4849,7 +4853,7 @@ var xo = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 			t.wide ||= e.classList.contains("wide"), t.width = Math.max(t.width, e.firstElementChild.getBoundingClientRect().width), n.set(e.cellIndex, t);
 		}
 		let r = [...n.values()].filter((e) => e.width).map((e) => e.width).sort((e, t) => e - t), i = r[Math.floor(r.length / 2)] ?? 0;
-		for (let e of n.values()) e.wide ||= e.width > i * Eo;
+		for (let e of n.values()) e.wide ||= e.width > i * Do;
 		let a = Math.max(0, ...[...n.values()].filter((e) => !e.wide).map((e) => e.width)), o = (r) => {
 			a && e.style.setProperty("--col-width", `${Math.ceil(a + r)}px`);
 			for (let e of t) {
@@ -4933,26 +4937,26 @@ var xo = ":host{gap:var(--arq-space-gap-md);min-width:0;margin-inline:var(--page
 		let t = this.shadowRoot.querySelector(".panel"), n = this.#S();
 		for (let r of t.options) {
 			let t = r.getAttribute("name");
-			r.count = lt(n, {
+			r.count = ut(n, {
 				...e,
 				[t]: [r.value]
 			}).length || null;
 		}
-		t.showAvailable((e) => Number.isFinite(e.count)), t.count = lt(n, e).length;
+		t.showAvailable((e) => Number.isFinite(e.count)), t.count = ut(n, e).length;
 	}
 	#L() {
 		let e = this.shadowRoot.querySelector(".skeleton");
 		if (e.childElementCount) return;
-		let t = this.#e.columns.length || ko, n = Array.from({ length: t }, () => "<span class=\"sk-cell\"><span class=\"sk-bar\"></span></span>").join("");
+		let t = this.#e.columns.length || Ao, n = Array.from({ length: t }, () => "<span class=\"sk-cell\"><span class=\"sk-bar\"></span></span>").join("");
 		e.innerHTML = Array.from({ length: 4 }, () => `<div class="sk-row"><span class="sk-thumb"></span><span class="sk-product"><span class="sk-bar sk-short"></span><span class="sk-bar"></span></span><span class="sk-cells">${n}</span><span class="sk-download"></span></div>`).join("") + Array.from({ length: 3 }, () => "<div class=\"sk-card\"><span class=\"sk-head\"><span class=\"sk-thumb\"></span><span class=\"sk-product\"><span class=\"sk-bar sk-short\"></span><span class=\"sk-bar\"></span></span></span><span class=\"sk-data\"><span class=\"sk-bar\"></span><span class=\"sk-bar\"></span><span class=\"sk-bar\"></span><span class=\"sk-bar\"></span></span></div>").join("");
 	}
 }).define();
 //#endregion
 //#region src/components/gallery-thumb/gallery-thumb.css?inline
-var No = ":host{display:block}.thumb{box-sizing:border-box;aspect-ratio:5/4;border-radius:var(--arq-radius-control);background:var(--thumb-surface,var(--arq-color-surface-subtle));cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;width:100%;margin:0;padding:0;display:block;position:relative;overflow:hidden}.thumb img{object-fit:cover;width:100%;height:100%;display:block}.thumb:after{content:\"\";border:var(--arq-border-default) solid var(--arq-color-surface-transparent);border-radius:inherit;pointer-events:none;position:absolute;inset:0}@media (hover:hover) and (pointer:fine){.thumb:hover:after{border-color:var(--arq-color-border-hover)}}.thumb[aria-current=true]:after{border-color:var(--arq-color-border-strong)}.thumb:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.thumb:focus:not(:focus-visible){outline:none}";
+var Po = ":host{display:block}.thumb{box-sizing:border-box;aspect-ratio:5/4;border-radius:var(--arq-radius-control);background:var(--thumb-surface,var(--arq-color-surface-subtle));cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;width:100%;margin:0;padding:0;display:block;position:relative;overflow:hidden}.thumb img{object-fit:cover;width:100%;height:100%;display:block}.thumb:after{content:\"\";border:var(--arq-border-default) solid var(--arq-color-surface-transparent);border-radius:inherit;pointer-events:none;position:absolute;inset:0}@media (hover:hover) and (pointer:fine){.thumb:hover:after{border-color:var(--arq-color-border-hover)}}.thumb[aria-current=true]:after{border-color:var(--arq-color-border-strong)}.thumb:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.thumb:focus:not(:focus-visible){outline:none}";
 (class extends I {
 	static tag = "arq-gallery-thumb";
-	static styles = No;
+	static styles = Po;
 	static properties = {
 		selected: { type: Boolean },
 		src: { type: String },
@@ -4979,10 +4983,10 @@ var No = ":host{display:block}.thumb{box-sizing:border-box;aspect-ratio:5/4;bord
 }).define();
 //#endregion
 //#region src/components/product-gallery/product-gallery.css?inline
-var Po = ":host{isolation:isolate;min-width:0;display:block}.gallery{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex;position:relative}.image{aspect-ratio:var(--gallery-ratio,5 / 4);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);position:relative;overflow:hidden}.image:has(.track:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.track{overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;cursor:zoom-in;touch-action:pan-x pan-y;display:flex;position:absolute;inset:0;overflow:auto hidden}@media (hover:hover) and (pointer:fine){.track{overflow-x:hidden}}.track:focus{outline:none}.track::-webkit-scrollbar{display:none}.nav{padding:var(--arq-space-padding-xs);color:var(--arq-color-icon-primary);cursor:pointer;background:0 0;border:0;flex:none;justify-content:center;align-items:center;margin:0;display:inline-flex}.nav[hidden]{display:none}.nav .icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl)}.nav:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.nav:focus:not(:focus-visible){outline:none}.prev,.next{z-index:4;position:absolute;top:50%;transform:translateY(-50%)}.prev{left:var(--arq-space-padding-md)}.next{right:var(--arq-space-padding-md)}@media (hover:hover) and (pointer:fine){.nav{opacity:0;pointer-events:none;transition:opacity var(--arq-motion-duration-fast) var(--arq-motion-easing-standard)}.gallery:hover .nav,.gallery:focus-within .nav{opacity:1;pointer-events:auto}}.theme-transition{z-index:1;object-fit:cover;opacity:1;pointer-events:none;width:100%;height:100%;transition-property:opacity;transition-duration:var(--arq-illumination-image-duration,var(--arq-motion-duration-slow));transition-timing-function:var(--arq-illumination-image-easing,var(--arq-motion-easing-standard));position:absolute;inset:0}.theme-transition.fade-out{opacity:0}.theme-transition.quick{transition-duration:var(--arq-motion-duration-fade);transition-timing-function:var(--arq-motion-easing-standard)}::slotted(img){scroll-snap-align:start;scroll-snap-stop:always;object-fit:cover!important;flex:0 0 100%!important;width:100%!important;height:100%!important;display:block!important}::slotted(img[data-fit=air]){box-sizing:border-box!important;padding:var(--arq-space-padding-3xl)!important;object-fit:contain!important}.theme-transition[data-fit=air]{box-sizing:border-box;padding:var(--arq-space-padding-3xl);object-fit:contain}.theme-transition.quick.ready[data-fit=air]{background:var(--arq-color-surface-subtle)}::slotted(img[hidden]){display:none!important}.gallery{--thumb-surface:var(--arq-color-surface-subtle)}.thumbs-row{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;display:flex}.thumbs{gap:var(--arq-space-gap-sm);margin:calc(-1 * var(--arq-space-padding-xs));padding:var(--arq-space-padding-xs);overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;display:flex;overflow-x:auto}.thumbs::-webkit-scrollbar{display:none}arq-gallery-thumb{width:var(--arq-layout-gallery-thumb);scroll-snap-align:start;flex:none}@media (width<=767px){:host([inset-thumbs]) .thumbs{padding-inline:var(--page-gutter);scroll-padding-inline:var(--page-gutter);margin-inline:0}}@media (width>=768px){.thumbs-row{z-index:3;left:var(--arq-space-padding-lg);bottom:var(--arq-space-padding-lg);max-width:calc(100% - 2 * var(--arq-space-padding-lg));position:absolute}.thumbs{min-width:0}}@media (width>=1024px){:host([fill]){flex-direction:column;display:flex}:host([fill]) .gallery{flex:auto;min-height:0}:host([fill]) .image{aspect-ratio:auto;flex:auto;min-height:0}:host([fill]) .prev{left:var(--arq-space-padding-xl-2xl)}:host([fill]) .next{right:var(--arq-space-padding-xl-2xl)}:host([fill]) .thumbs-row{left:var(--arq-space-padding-xl-2xl);bottom:var(--arq-space-padding-xl);max-height:calc(100% - 2 * var(--arq-space-padding-xl));align-items:center}:host([fill]) .thumbs{scroll-snap-type:y mandatory;flex-direction:column;max-width:none;min-height:0;max-height:100%;overflow:hidden auto}:host([fill]) arq-gallery-thumb{width:var(--arq-layout-gallery-thumb-overlay)}}";
+var Fo = ":host{isolation:isolate;min-width:0;display:block}.gallery{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex;position:relative}.image{aspect-ratio:var(--gallery-ratio,5 / 4);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);position:relative;overflow:hidden}.image:has(.track:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.track{overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;cursor:zoom-in;touch-action:pan-x pan-y;display:flex;position:absolute;inset:0;overflow:auto hidden}@media (hover:hover) and (pointer:fine){.track{overflow-x:hidden}}.track:focus{outline:none}.track::-webkit-scrollbar{display:none}.nav{padding:var(--arq-space-padding-xs);color:var(--arq-color-icon-primary);cursor:pointer;background:0 0;border:0;flex:none;justify-content:center;align-items:center;margin:0;display:inline-flex}.nav[hidden]{display:none}.nav .icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl)}.nav:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.nav:focus:not(:focus-visible){outline:none}.prev,.next{z-index:4;position:absolute;top:50%;transform:translateY(-50%)}.prev{left:var(--arq-space-padding-md)}.next{right:var(--arq-space-padding-md)}@media (hover:hover) and (pointer:fine){.nav{opacity:0;pointer-events:none;transition:opacity var(--arq-motion-duration-fast) var(--arq-motion-easing-standard)}.gallery:hover .nav,.gallery:focus-within .nav{opacity:1;pointer-events:auto}}.theme-transition{z-index:1;object-fit:cover;opacity:1;pointer-events:none;width:100%;height:100%;transition-property:opacity;transition-duration:var(--arq-illumination-image-duration,var(--arq-motion-duration-slow));transition-timing-function:var(--arq-illumination-image-easing,var(--arq-motion-easing-standard));position:absolute;inset:0}.theme-transition.fade-out{opacity:0}.theme-transition.quick{transition-duration:var(--arq-motion-duration-fade);transition-timing-function:var(--arq-motion-easing-standard)}::slotted(img){scroll-snap-align:start;scroll-snap-stop:always;object-fit:cover!important;flex:0 0 100%!important;width:100%!important;height:100%!important;display:block!important}::slotted(img[data-fit=air]){box-sizing:border-box!important;padding:var(--arq-space-padding-3xl)!important;object-fit:contain!important}.theme-transition[data-fit=air]{box-sizing:border-box;padding:var(--arq-space-padding-3xl);object-fit:contain}.theme-transition.quick.ready[data-fit=air]{background:var(--arq-color-surface-subtle)}::slotted(img[hidden]){display:none!important}.gallery{--thumb-surface:var(--arq-color-surface-subtle)}.thumbs-row{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;display:flex}.thumbs{gap:var(--arq-space-gap-sm);margin:calc(-1 * var(--arq-space-padding-xs));padding:var(--arq-space-padding-xs);overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;display:flex;overflow-x:auto}.thumbs::-webkit-scrollbar{display:none}arq-gallery-thumb{width:var(--arq-layout-gallery-thumb);scroll-snap-align:start;flex:none}@media (width<=767px){:host([inset-thumbs]) .thumbs{padding-inline:var(--page-gutter);scroll-padding-inline:var(--page-gutter);margin-inline:0}}@media (width>=768px){.thumbs-row{z-index:3;left:var(--arq-space-padding-lg);bottom:var(--arq-space-padding-lg);max-width:calc(100% - 2 * var(--arq-space-padding-lg));position:absolute}.thumbs{min-width:0}}@media (width>=1024px){:host([fill]){flex-direction:column;display:flex}:host([fill]) .gallery{flex:auto;min-height:0}:host([fill]) .image{aspect-ratio:auto;flex:auto;min-height:0}:host([fill]) .prev{left:var(--arq-space-padding-xl-2xl)}:host([fill]) .next{right:var(--arq-space-padding-xl-2xl)}:host([fill]) .thumbs-row{left:var(--arq-space-padding-xl-2xl);bottom:var(--arq-space-padding-xl);max-height:calc(100% - 2 * var(--arq-space-padding-xl));align-items:center}:host([fill]) .thumbs{scroll-snap-type:y mandatory;flex-direction:column;max-width:none;min-height:0;max-height:100%;overflow:hidden auto}:host([fill]) arq-gallery-thumb{width:var(--arq-layout-gallery-thumb-overlay)}}";
 (class extends I {
 	static tag = "arq-product-gallery";
-	static styles = Po;
+	static styles = Fo;
 	static properties = { insetThumbs: { type: Boolean } };
 	static template = "<div class=\"gallery\"><div class=\"image\"><slot name=\"image\" class=\"track\" tabindex=\"-1\" role=\"region\" aria-roledescription=\"carrusel\" aria-label=\"Fotos del producto\"></slot><slot name=\"overlay\"></slot><button type=\"button\" class=\"nav prev\"><span class=\"glyph\"></span><span class=\"visually-hidden\">Foto anterior</span></button><button type=\"button\" class=\"nav next\"><span class=\"glyph\"></span><span class=\"visually-hidden\">Foto siguiente</span></button><p class=\"live visually-hidden\" aria-live=\"polite\"></p></div><div class=\"thumbs-row\" hidden><div class=\"thumbs\"></div></div></div>";
 	#e = [];
@@ -5053,7 +5057,7 @@ var Po = ":host{isolation:isolate;min-width:0;display:block}.gallery{gap:var(--a
 			if (t < 1 || this.#e.length < 2 || !this.#e[t]) return;
 			let n = this.#e[t], r = this.#e[this.#t];
 			this.#e = this.#e.filter((e) => e !== n), this.#t = Math.max(0, this.#e.indexOf(r)), this.#v(null, { quick: !0 });
-		}, !0), Ua(this, "themeChanged"), this.#v();
+		}, !0), Wa(this, "themeChanged"), this.#v();
 	}
 	disconnectedCallback() {
 		this.#l.disconnect();
@@ -5255,10 +5259,10 @@ var Po = ":host{isolation:isolate;min-width:0;display:block}.gallery{gap:var(--a
 }).define();
 //#endregion
 //#region src/base/card-link.css?inline
-var Fo = ".card{--card-above:1;isolation:isolate;position:relative}.card-link{color:inherit;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);text-decoration:none;display:block}.card-link[href],.card-link[href]:after{cursor:pointer}.card:has(.card-link[href]) .card-media ::slotted(*){cursor:pointer!important}.card-link:after{content:\"\";position:absolute;inset:0}.card-link:focus{outline:none}.card:has(.card-link:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}@media (hover:hover) and (pointer:fine){.card:has(.card-link:hover) .card-media{outline:var(--arq-border-default) solid var(--arq-color-border-hover);outline-offset:calc(var(--arq-border-default) * -1)}}.card-media{background:var(--arq-color-surface-subtle);overflow:hidden}.card-media ::slotted(*){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}@media (hover:none){.card:has(.card-link:active) .card-media{outline:var(--arq-border-default) solid var(--arq-color-border-hover);outline-offset:calc(var(--arq-border-default) * -1)}}", Io = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.card-media{aspect-ratio:1;background:var(--arq-color-surface-subtle)}:host([size=large]) .card-media{aspect-ratio:7/10}.name{max-width:100%;color:var(--arq-color-text-secondary);overflow-wrap:break-word;align-self:flex-start}:host([size=large]) .name{color:var(--arq-color-text-primary)}";
+var Io = ".card{--card-above:1;isolation:isolate;position:relative}.card-link{color:inherit;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);text-decoration:none;display:block}.card-link[href],.card-link[href]:after{cursor:pointer}.card:has(.card-link[href]) .card-media ::slotted(*){cursor:pointer!important}.card-link:after{content:\"\";position:absolute;inset:0}.card-link:focus{outline:none}.card:has(.card-link:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}@media (hover:hover) and (pointer:fine){.card:has(.card-link:hover) .card-media{outline:var(--arq-border-default) solid var(--arq-color-border-hover);outline-offset:calc(var(--arq-border-default) * -1)}}.card-media{background:var(--arq-color-surface-subtle);overflow:hidden}.card-media ::slotted(*){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;display:block!important}@media (hover:none){.card:has(.card-link:active) .card-media{outline:var(--arq-border-default) solid var(--arq-color-border-hover);outline-offset:calc(var(--arq-border-default) * -1)}}", Lo = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.card-media{aspect-ratio:1;background:var(--arq-color-surface-subtle)}:host([size=large]) .card-media{aspect-ratio:7/10}.name{max-width:100%;color:var(--arq-color-text-secondary);overflow-wrap:break-word;align-self:flex-start}:host([size=large]) .name{color:var(--arq-color-text-primary)}";
 (class extends I {
 	static tag = "arq-family-card";
-	static styles = Fo + Io;
+	static styles = Io + Lo;
 	static properties = {
 		size: {
 			type: String,
@@ -5275,10 +5279,10 @@ var Fo = ".card{--card-above:1;isolation:isolate;position:relative}.card-link{co
 }).define();
 //#endregion
 //#region src/components/download-card/download-card.css?inline
-var Lo = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.card-media{aspect-ratio:5/4}.card-media ::slotted(*){object-fit:contain!important}.caption{gap:var(--arq-space-gap-xs);flex-direction:column;display:flex}.title-row{align-items:center;gap:var(--arq-space-gap-sm-md);display:flex}.title{min-width:0;color:var(--arq-color-text-primary);overflow-wrap:break-word;flex:auto}.icon-wrap{color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-lg);height:var(--arq-icon-lg)}.description{color:var(--arq-color-text-secondary);margin:0}";
+var Ro = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.card-media{aspect-ratio:5/4}.card-media ::slotted(*){object-fit:contain!important}.caption{gap:var(--arq-space-gap-xs);flex-direction:column;display:flex}.title-row{align-items:center;gap:var(--arq-space-gap-sm-md);display:flex}.title{min-width:0;color:var(--arq-color-text-primary);overflow-wrap:break-word;flex:auto}.icon-wrap{color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-lg);height:var(--arq-icon-lg)}.description{color:var(--arq-color-text-secondary);margin:0}";
 (class extends I {
 	static tag = "arq-download-card";
-	static styles = Fo + Lo;
+	static styles = Io + Ro;
 	static properties = {
 		href: { type: String },
 		showDescription: { type: Boolean }
@@ -5298,10 +5302,10 @@ var Lo = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex
 }).define();
 //#endregion
 //#region src/components/catalog-card/catalog-card.css?inline
-var Ro = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.cover{color:inherit;text-decoration:none;display:block}.cover[href]{cursor:pointer}.cover:not([href]){cursor:default}.cover:focus{outline:none}.cover:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.card-media{aspect-ratio:7/10;background:var(--arq-color-surface-subtle);overflow:hidden}.card-media ::slotted(*){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;transition:transform var(--arq-motion-duration-slow) var(--arq-motion-easing-standard)!important;display:block!important}@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){.card:hover .card-media ::slotted(*){transform:scale(var(--arq-motion-scale-hover))!important}}.title{color:var(--arq-color-text-primary);overflow-wrap:break-word;margin:0}";
+var zo = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}.cover{color:inherit;text-decoration:none;display:block}.cover[href]{cursor:pointer}.cover:not([href]){cursor:default}.cover:focus{outline:none}.cover:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.card-media{aspect-ratio:7/10;background:var(--arq-color-surface-subtle);overflow:hidden}.card-media ::slotted(*){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;transition:transform var(--arq-motion-duration-slow) var(--arq-motion-easing-standard)!important;display:block!important}@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){.card:hover .card-media ::slotted(*){transform:scale(var(--arq-motion-scale-hover))!important}}.title{color:var(--arq-color-text-primary);overflow-wrap:break-word;margin:0}";
 (class extends I {
 	static tag = "arq-catalog-card";
-	static styles = Ro;
+	static styles = zo;
 	static properties = { href: { type: String } };
 	static template = "<div class=\"card\"><a class=\"cover\"><span class=\"visually-hidden\"></span><div class=\"card-media\"><slot name=\"image\"></slot></div></a><p class=\"title role-body\"><slot name=\"title\"></slot></p></div>";
 	setup() {
@@ -5324,10 +5328,10 @@ var Ro = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);flex
 }).define();
 //#endregion
 //#region src/components/download-item/download-item.css?inline
-var zo = ":host{min-width:0;display:block}.row{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0 calc(var(--arq-space-padding-md) - var(--arq-border-default));border:0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);margin:0;text-decoration:none;display:flex}.info{gap:var(--arq-space-gap-xs);flex-direction:column;flex:auto;min-width:0;display:flex}.label{overflow-wrap:break-word;align-self:flex-start;position:relative}:host(:not([emphasis=featured])) .label:after{content:\"\";inset-inline:0;height:var(--arq-border-default);transform-origin:100%;transition:transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);background:currentColor;position:absolute;top:100%;transform:scaleX(0)}.meta{color:var(--arq-color-text-tertiary)}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}:host([emphasis=featured]) .row{padding:calc(var(--arq-space-padding-md) - var(--arq-border-default)) calc(var(--arq-space-padding-lg) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong)}@media (hover:hover) and (pointer:fine){:host(:not([emphasis=featured])) .row:hover .label:after{transform-origin:0;transform:scaleX(1)}:host([emphasis=featured]) .row:hover{background:var(--arq-color-surface-faint)}}.row:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.row:focus:not(:focus-visible){outline:none}@media (hover:none){:host([emphasis=featured]) .row:active{background:var(--arq-color-surface-faint)}}";
+var Bo = ":host{min-width:0;display:block}.row{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0 calc(var(--arq-space-padding-md) - var(--arq-border-default));border:0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);margin:0;text-decoration:none;display:flex}.info{gap:var(--arq-space-gap-xs);flex-direction:column;flex:auto;min-width:0;display:flex}.label{overflow-wrap:break-word;align-self:flex-start;position:relative}:host(:not([emphasis=featured])) .label:after{content:\"\";inset-inline:0;height:var(--arq-border-default);transform-origin:100%;transition:transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);background:currentColor;position:absolute;top:100%;transform:scaleX(0)}.meta{color:var(--arq-color-text-tertiary)}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}:host([emphasis=featured]) .row{padding:calc(var(--arq-space-padding-md) - var(--arq-border-default)) calc(var(--arq-space-padding-lg) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong)}@media (hover:hover) and (pointer:fine){:host(:not([emphasis=featured])) .row:hover .label:after{transform-origin:0;transform:scaleX(1)}:host([emphasis=featured]) .row:hover{background:var(--arq-color-surface-faint)}}.row:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.row:focus:not(:focus-visible){outline:none}@media (hover:none){:host([emphasis=featured]) .row:active{background:var(--arq-color-surface-faint)}}";
 (class extends I {
 	static tag = "arq-download-item";
-	static styles = zo;
+	static styles = Bo;
 	static properties = {
 		emphasis: {
 			type: String,
@@ -5362,10 +5366,10 @@ var zo = ":host{min-width:0;display:block}.row{box-sizing:border-box;align-items
 }).define();
 //#endregion
 //#region src/components/download-file-row/download-file-row.css?inline
-var Bo = ":host{min-width:0;display:block}.row{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0 calc(var(--arq-space-padding-md) - var(--arq-border-default));border:0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);margin:0;text-decoration:none;display:flex}.info{gap:var(--arq-space-gap-xs);flex-direction:column;flex:auto;min-width:0;display:flex}.label{color:var(--arq-color-text-primary);overflow-wrap:break-word;align-self:flex-start;position:relative}.label:after{content:\"\";inset-inline:0;height:var(--arq-border-default);transform-origin:100%;transition:transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);background:currentColor;position:absolute;top:100%;transform:scaleX(0)}.meta{color:var(--arq-color-text-tertiary)}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}@media (hover:hover) and (pointer:fine){.row:hover .label:after{transform-origin:0;transform:scaleX(1)}}.row:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.row:focus:not(:focus-visible){outline:none}";
+var Vo = ":host{min-width:0;display:block}.row{box-sizing:border-box;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md) 0 calc(var(--arq-space-padding-md) - var(--arq-border-default));border:0;border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);margin:0;text-decoration:none;display:flex}.info{gap:var(--arq-space-gap-xs);flex-direction:column;flex:auto;min-width:0;display:flex}.label{color:var(--arq-color-text-primary);overflow-wrap:break-word;align-self:flex-start;position:relative}.label:after{content:\"\";inset-inline:0;height:var(--arq-border-default);transform-origin:100%;transition:transform var(--arq-motion-duration-base) var(--arq-motion-easing-standard);background:currentColor;position:absolute;top:100%;transform:scaleX(0)}.meta{color:var(--arq-color-text-tertiary)}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}@media (hover:hover) and (pointer:fine){.row:hover .label:after{transform-origin:0;transform:scaleX(1)}}.row:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.row:focus:not(:focus-visible){outline:none}";
 (class extends I {
 	static tag = "arq-download-file-row";
-	static styles = Bo;
+	static styles = Vo;
 	static properties = {
 		href: { type: String },
 		showFormat: { type: Boolean },
@@ -5397,10 +5401,10 @@ var Bo = ":host{min-width:0;display:block}.row{box-sizing:border-box;align-items
 }).define();
 //#endregion
 //#region src/components/download-modal/download-modal.css?inline
-var Vo = ":host{display:contents}.dialog{box-sizing:border-box;width:100%;max-width:none;height:100%;max-height:none;padding:var(--arq-layout-gutter);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);overscroll-behavior:contain;border:0;margin:0;position:fixed;inset:0;overflow-y:auto}.dialog[open]{flex-direction:column;display:flex}.dialog::backdrop{background:var(--arq-color-overlay-scrim)}:host{--panel-slow:var(--arq-motion-duration-panel)}.dialog:not(.is-open){--panel-slow:var(--arq-motion-duration-expand)}.dialog::backdrop{opacity:0;transition:opacity var(--panel-slow) var(--arq-motion-easing-standard)}.dialog.is-open::backdrop{opacity:1}.dialog:not(.is-open){pointer-events:none}.dialog:not(.is-settled){overflow:clip}.sheet{opacity:0;transition-property:opacity,transform;transition-duration:var(--panel-slow);transition-timing-function:var(--arq-motion-easing-standard);transform:translateY(2%)}.dialog.is-open .sheet{opacity:1;transform:none}.sheet{box-sizing:border-box;gap:var(--arq-space-gap-2xl);width:var(--arq-layout-filter-panel);max-width:100%;padding:var(--arq-space-padding-xl-2xl);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);flex-direction:column;flex:none;margin:auto 0 0 auto;display:flex}.header{justify-content:space-between;align-items:flex-start;gap:var(--arq-space-gap-md);display:flex}.title-wrap{gap:var(--arq-space-gap-sm);flex-direction:column;min-width:0;display:flex}.title{min-width:0;color:var(--arq-color-text-primary)}.content{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}::slotted(arq-form-message:empty){position:absolute}.list{flex-direction:column;display:flex}@media (width<=767px){.sheet{width:auto;margin-inline-start:0}}:host([show-product]) .sheet{gap:var(--arq-space-gap-xl)}.product{align-items:center;gap:var(--arq-space-gap-md);min-width:0;display:flex}.thumb{width:var(--arq-layout-download-thumb);height:var(--arq-layout-download-thumb);background:var(--arq-color-surface-subtle);flex:none;overflow:hidden}.thumb img{object-fit:cover;width:100%;height:100%;display:block}.product-info{gap:var(--arq-space-gap-xs);flex-direction:column;min-width:0;display:flex}.meta{color:var(--arq-color-text-tertiary)}@media (width<=767px){:host([show-product]) .dialog{padding:var(--arq-space-0)}:host([show-product]) .sheet{width:100%;padding:var(--arq-space-padding-lg) var(--arq-layout-gutter) calc(var(--arq-space-padding-xl) + env(safe-area-inset-bottom,var(--arq-space-0)));border-inline:0;opacity:1;border-bottom:0;margin:auto 0 0;transform:translateY(100%)}:host([show-product]) .dialog.is-open .sheet{transform:none}}@media (prefers-reduced-motion:reduce){.sheet,:host([show-product]) .sheet{opacity:0;transition-property:opacity,transform;transition-duration:var(--arq-motion-duration-fade), 0s;transition-timing-function:var(--arq-motion-easing-out);transform:none}.dialog.is-open .sheet,:host([show-product]) .dialog.is-open .sheet{opacity:1}.dialog::backdrop{transition:opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out)}}";
+var Ho = ":host{display:contents}.dialog{box-sizing:border-box;width:100%;max-width:none;height:100%;max-height:none;padding:var(--arq-layout-gutter);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);overscroll-behavior:contain;border:0;margin:0;position:fixed;inset:0;overflow-y:auto}.dialog[open]{flex-direction:column;display:flex}.dialog::backdrop{background:var(--arq-color-overlay-scrim)}:host{--panel-slow:var(--arq-motion-duration-panel)}.dialog:not(.is-open){--panel-slow:var(--arq-motion-duration-expand)}.dialog::backdrop{opacity:0;transition:opacity var(--panel-slow) var(--arq-motion-easing-standard)}.dialog.is-open::backdrop{opacity:1}.dialog:not(.is-open){pointer-events:none}.dialog:not(.is-settled){overflow:clip}.sheet{opacity:0;transition-property:opacity,transform;transition-duration:var(--panel-slow);transition-timing-function:var(--arq-motion-easing-standard);transform:translateY(2%)}.dialog.is-open .sheet{opacity:1;transform:none}.sheet{box-sizing:border-box;gap:var(--arq-space-gap-2xl);width:var(--arq-layout-filter-panel);max-width:100%;padding:var(--arq-space-padding-xl-2xl);border:var(--arq-border-default) solid var(--arq-color-border-default);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-default);flex-direction:column;flex:none;margin:auto 0 0 auto;display:flex}.header{justify-content:space-between;align-items:flex-start;gap:var(--arq-space-gap-md);display:flex}.title-wrap{gap:var(--arq-space-gap-sm);flex-direction:column;min-width:0;display:flex}.title{min-width:0;color:var(--arq-color-text-primary)}.content{gap:var(--arq-space-gap-md);flex-direction:column;display:flex}::slotted(arq-form-message:empty){position:absolute}.list{flex-direction:column;display:flex}@media (width<=767px){.sheet{width:auto;margin-inline-start:0}}:host([show-product]) .sheet{gap:var(--arq-space-gap-xl)}.product{align-items:center;gap:var(--arq-space-gap-md);min-width:0;display:flex}.thumb{width:var(--arq-layout-download-thumb);height:var(--arq-layout-download-thumb);background:var(--arq-color-surface-subtle);flex:none;overflow:hidden}.thumb img{object-fit:cover;width:100%;height:100%;display:block}.product-info{gap:var(--arq-space-gap-xs);flex-direction:column;min-width:0;display:flex}.meta{color:var(--arq-color-text-tertiary)}@media (width<=767px){:host([show-product]) .dialog{padding:var(--arq-space-0)}:host([show-product]) .sheet{width:100%;padding:var(--arq-space-padding-lg) var(--arq-layout-gutter) calc(var(--arq-space-padding-xl) + env(safe-area-inset-bottom,var(--arq-space-0)));border-inline:0;opacity:1;border-bottom:0;margin:auto 0 0;transform:translateY(100%)}:host([show-product]) .dialog.is-open .sheet{transform:none}}@media (prefers-reduced-motion:reduce){.sheet,:host([show-product]) .sheet{opacity:0;transition-property:opacity,transform;transition-duration:var(--arq-motion-duration-fade), 0s;transition-timing-function:var(--arq-motion-easing-out);transform:none}.dialog.is-open .sheet,:host([show-product]) .dialog.is-open .sheet{opacity:1}.dialog::backdrop{transition:opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-out)}}";
 (class extends I {
 	static tag = "arq-download-modal";
-	static styles = Vo;
+	static styles = Ho;
 	static properties = {
 		open: { type: Boolean },
 		sku: { type: String },
@@ -5484,10 +5488,10 @@ var Vo = ":host{display:contents}.dialog{box-sizing:border-box;width:100%;max-wi
 }).define();
 //#endregion
 //#region src/components/catalog-nav-item/catalog-nav-item.css?inline
-var Ho = ":host{min-width:0;display:flex}.link{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;padding-block:var(--arq-space-padding-xs);color:var(--arq-color-text-secondary);-webkit-tap-highlight-color:var(--arq-color-surface-transparent);padding-inline-start:var(--arq-space-padding-sm-md);text-decoration:none;display:inline-flex}.label{overflow-wrap:break-word;min-width:0}.indicator{width:var(--arq-space-gap-sm-md);height:var(--arq-border-default);background:var(--arq-color-text-primary);transition-property:background-color;transition-duration:var(--arq-theme-text-duration,var(--arq-motion-duration-fast));transition-delay:var(--arq-theme-text-delay,0s);flex:none;display:none}:host([size=large]) .link{color:var(--arq-color-text-tertiary)}@media (hover:hover) and (pointer:fine){.link:hover{color:var(--arq-color-text-primary)}}:host([selected]) .link{color:var(--arq-color-text-primary)}:host([selected]) .indicator{display:block}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}@media (hover:none){.link:active{color:var(--arq-color-text-primary)}}";
+var Uo = ":host{min-width:0;display:flex}.link{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;padding-block:var(--arq-space-padding-xs);color:var(--arq-color-text-secondary);-webkit-tap-highlight-color:var(--arq-color-surface-transparent);padding-inline-start:var(--arq-space-padding-sm-md);text-decoration:none;display:inline-flex}.label{overflow-wrap:break-word;min-width:0}.indicator{width:var(--arq-space-gap-sm-md);height:var(--arq-border-default);background:var(--arq-color-text-primary);transition-property:background-color;transition-duration:var(--arq-theme-text-duration,var(--arq-motion-duration-fast));transition-delay:var(--arq-theme-text-delay,0s);flex:none;display:none}:host([size=large]) .link{color:var(--arq-color-text-tertiary)}@media (hover:hover) and (pointer:fine){.link:hover{color:var(--arq-color-text-primary)}}:host([selected]) .link{color:var(--arq-color-text-primary)}:host([selected]) .indicator{display:block}.link:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.link:focus:not(:focus-visible){outline:none}@media (hover:none){.link:active{color:var(--arq-color-text-primary)}}";
 (class extends I {
 	static tag = "arq-catalog-nav-item";
-	static styles = Ho;
+	static styles = Uo;
 	static properties = {
 		size: {
 			type: String,
@@ -5510,10 +5514,10 @@ var Ho = ":host{min-width:0;display:flex}.link{align-items:center;gap:var(--arq-
 }).define();
 //#endregion
 //#region src/components/catalog-nav-group/catalog-nav-group.css?inline
-var Uo = ":host{min-width:0;display:block}.group:after{content:\"\";border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);display:block}.header{box-sizing:border-box;width:100%;padding:var(--arq-space-padding-md) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-secondary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;justify-content:space-between;align-items:center;margin:0;display:flex}:host([open]) .header{padding-bottom:var(--arq-space-gap-md);color:var(--arq-color-text-primary)}.label{overflow-wrap:break-word;min-width:0}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);transition:rotate var(--arq-motion-duration-expand) var(--arq-motion-easing-standard)}:host([open]) .icon{rotate:180deg}@media (hover:hover) and (pointer:fine){.header:hover .icon-box{background:var(--arq-color-surface-hover)}}.items-inner{padding-inline-start:var(--arq-space-padding-lg);padding-bottom:calc(var(--arq-space-padding-md) + var(--arq-space-padding-xs))}.rail{border-inline-start:var(--arq-border-default) solid var(--arq-color-border-subtle);flex-direction:column;align-items:flex-start;display:flex}.header:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.header:focus:not(:focus-visible){outline:none}";
+var Wo = ":host{min-width:0;display:block}.group:after{content:\"\";border-bottom:var(--arq-border-default) solid var(--arq-color-border-subtle);display:block}.header{box-sizing:border-box;width:100%;padding:var(--arq-space-padding-md) 0;background:var(--arq-color-surface-transparent);color:var(--arq-color-text-secondary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;justify-content:space-between;align-items:center;margin:0;display:flex}:host([open]) .header{padding-bottom:var(--arq-space-gap-md);color:var(--arq-color-text-primary)}.label{overflow-wrap:break-word;min-width:0}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);transition:rotate var(--arq-motion-duration-expand) var(--arq-motion-easing-standard)}:host([open]) .icon{rotate:180deg}@media (hover:hover) and (pointer:fine){.header:hover .icon-box{background:var(--arq-color-surface-hover)}}.items-inner{padding-inline-start:var(--arq-space-padding-lg);padding-bottom:calc(var(--arq-space-padding-md) + var(--arq-space-padding-xs))}.rail{border-inline-start:var(--arq-border-default) solid var(--arq-color-border-subtle);flex-direction:column;align-items:flex-start;display:flex}.header:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.header:focus:not(:focus-visible){outline:none}";
 (class extends I {
 	static tag = "arq-catalog-nav-group";
-	static styles = Uo;
+	static styles = Wo;
 	static properties = {
 		open: { type: Boolean },
 		selected: { type: Boolean }
@@ -5528,7 +5532,7 @@ var Uo = ":host{min-width:0;display:block}.group:after{content:\"\";border-botto
 		let e = this.shadowRoot.querySelector(".header"), t = null;
 		e.addEventListener("click", () => {
 			t = this.getBoundingClientRect().height, this.#n();
-		}), this.disclosure = new la(this, {
+		}), this.disclosure = new ua(this, {
 			trigger: e,
 			panel: this.shadowRoot.querySelector(".items")
 		}), this.addEventListener("arq:toggle", (e) => {
@@ -5574,10 +5578,10 @@ var Uo = ":host{min-width:0;display:block}.group:after{content:\"\";border-botto
 }).define();
 //#endregion
 //#region src/components/catalog-nav/catalog-nav.css?inline
-var Wo = ":host{min-width:0;display:block}.nav{background:var(--arq-color-surface-transparent)}.trigger{display:none}.panel,.panel[hidden]{display:block!important}@media (width<=1023px){.panel,.panel[hidden]{padding-inline:var(--arq-space-padding-md)}.nav{border-block:var(--arq-border-default) solid var(--arq-color-border-default)}.panel[hidden]{display:none!important}.trigger{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .trigger{background:var(--arq-color-surface-faint)}@media (hover:hover) and (pointer:fine){.trigger:hover{background:var(--arq-color-surface-faint)}:host(:not([open])) .trigger:hover .icon-box{background:var(--arq-color-surface-hover)}}.trigger:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus:not(:focus-visible){outline:none}}.current{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;display:inline-flex}.current-label{overflow-wrap:break-word;min-width:0}.indicator{width:var(--arq-space-gap-sm-md);height:var(--arq-border-default);background:var(--arq-color-text-primary);flex:none}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}:host([open]) .icon-box{background:var(--arq-color-surface-default)}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}";
+var Go = ":host{min-width:0;display:block}.nav{background:var(--arq-color-surface-transparent)}.trigger{display:none}.panel,.panel[hidden]{display:block!important}@media (width<=1023px){.panel,.panel[hidden]{padding-inline:var(--arq-space-padding-md)}.nav{border-block:var(--arq-border-default) solid var(--arq-color-border-default)}.panel[hidden]{display:none!important}.trigger{box-sizing:border-box;justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);width:100%;padding:var(--arq-space-padding-md);background:var(--arq-color-surface-transparent);color:var(--arq-color-text-primary);font:inherit;text-align:start;cursor:pointer;-webkit-tap-highlight-color:var(--arq-color-surface-transparent);border:0;margin:0;display:flex}:host([open]) .trigger{background:var(--arq-color-surface-faint)}@media (hover:hover) and (pointer:fine){.trigger:hover{background:var(--arq-color-surface-faint)}:host(:not([open])) .trigger:hover .icon-box{background:var(--arq-color-surface-hover)}}.trigger:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.trigger:focus:not(:focus-visible){outline:none}}.current{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;display:inline-flex}.current-label{overflow-wrap:break-word;min-width:0}.indicator{width:var(--arq-space-gap-sm-md);height:var(--arq-border-default);background:var(--arq-color-text-primary);flex:none}.icon-box{padding:var(--arq-space-padding-xs);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-transparent);color:var(--arq-color-icon-primary);flex:none;display:inline-flex}:host([open]) .icon-box{background:var(--arq-color-surface-default)}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md)}:host(:not([open])) [data-icon=minus],:host([open]) [data-icon=plus]{display:none}";
 (class extends I {
 	static tag = "arq-catalog-nav";
-	static styles = Wo;
+	static styles = Go;
 	static properties = {
 		open: { type: Boolean },
 		label: {
@@ -5587,7 +5591,7 @@ var Wo = ":host{min-width:0;display:block}.nav{background:var(--arq-color-surfac
 	};
 	static template = `<nav class="nav"><button type="button" class="trigger"><span class="current"><span class="indicator" aria-hidden="true"></span><span class="current-label role-body-regular"></span></span><span class="icon-box">${L("plus")}${L("minus")}</span></button><div class="panel" part="panel"><slot></slot></div></nav>`;
 	setup() {
-		this.disclosure = new la(this, {
+		this.disclosure = new ua(this, {
 			trigger: this.shadowRoot.querySelector(".trigger"),
 			panel: this.shadowRoot.querySelector(".panel")
 		});
@@ -5640,10 +5644,10 @@ var Wo = ":host{min-width:0;display:block}.nav{background:var(--arq-color-surfac
 }).define();
 //#endregion
 //#region src/components/toggle/toggle.css?inline
-var Go = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.toggle{align-items:center;gap:var(--arq-space-gap-sm);cursor:pointer;max-width:100%;display:inline-flex;position:relative}.track{box-sizing:border-box;width:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm) * 2 + var(--arq-space-gap-sm));height:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm));padding:calc(var(--arq-space-padding-2xs) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong);border-radius:var(--arq-radius-pill);background:var(--arq-color-surface-transparent);flex:none;align-items:center;display:inline-flex}.thumb{width:var(--arq-icon-sm);height:var(--arq-icon-sm);border-radius:var(--arq-radius-pill);background:var(--arq-color-icon-primary);transition-property:transform,background-color;transition-duration:var(--arq-motion-duration-fast), var(--arq-theme-surface-duration,var(--arq-motion-duration-fast));transition-delay:0s;transition-timing-function:var(--arq-motion-easing-in-out), var(--arq-theme-surface-easing,var(--arq-motion-easing-standard))}.label{min-width:0;color:var(--arq-color-text-primary)}.native:checked+.track{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}.native:checked+.track .thumb{background:var(--arq-color-action-on-primary);transform:translateX(calc(var(--arq-icon-sm) + var(--arq-space-gap-sm)))}:host([disabled]) .toggle{cursor:default}:host([disabled]) .track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-transparent)}:host([disabled]) .native:checked+.track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-strong)}:host([disabled]) .thumb,:host([disabled]) .native:checked+.track .thumb{background:var(--arq-color-icon-disabled)}:host([disabled]) .label{color:var(--arq-color-text-disabled)}:host([theme=inverse]:not([disabled])) .track{border-color:var(--arq-color-icon-secondary)}:host([theme=inverse]:not([disabled])) .thumb{background:var(--arq-color-icon-secondary)}:host([theme=inverse]:not([disabled])) .label{color:var(--arq-color-text-secondary)}:host([theme=inverse]:not([disabled])) .native:checked+.track{border-color:var(--arq-color-icon-secondary);background:var(--arq-color-icon-secondary)}:host([theme=inverse]:not([disabled])) .native:checked+.track .thumb{background:var(--arq-color-action-on-primary)}.native:focus-visible+.track{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}@media (forced-colors:active){.track,.thumb{forced-color-adjust:none}.track,:host([theme=inverse]:not([disabled])) .track{background:canvas;border-color:canvastext}.thumb,:host([theme=inverse]:not([disabled])) .thumb{background:canvastext}.native:checked+.track,:host([theme=inverse]:not([disabled])) .native:checked+.track{background:highlight;border-color:highlight}.native:checked+.track .thumb,:host([theme=inverse]:not([disabled])) .native:checked+.track .thumb{background:highlighttext}:host([disabled]) .track,:host([disabled]) .native:checked+.track{background:canvas;border-color:graytext}:host([disabled]) .thumb,:host([disabled]) .native:checked+.track .thumb{background:graytext}}";
+var Ko = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.toggle{align-items:center;gap:var(--arq-space-gap-sm);cursor:pointer;max-width:100%;display:inline-flex;position:relative}.track{box-sizing:border-box;width:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm) * 2 + var(--arq-space-gap-sm));height:calc(var(--arq-space-padding-2xs) * 2 + var(--arq-icon-sm));padding:calc(var(--arq-space-padding-2xs) - var(--arq-border-default));border:var(--arq-border-default) solid var(--arq-color-border-strong);border-radius:var(--arq-radius-pill);background:var(--arq-color-surface-transparent);flex:none;align-items:center;display:inline-flex}.thumb{width:var(--arq-icon-sm);height:var(--arq-icon-sm);border-radius:var(--arq-radius-pill);background:var(--arq-color-icon-primary);transition-property:transform,background-color;transition-duration:var(--arq-motion-duration-fast), var(--arq-theme-surface-duration,var(--arq-motion-duration-fast));transition-delay:0s;transition-timing-function:var(--arq-motion-easing-in-out), var(--arq-theme-surface-easing,var(--arq-motion-easing-standard))}.label{min-width:0;color:var(--arq-color-text-primary)}.native:checked+.track{border-color:var(--arq-color-action-primary);background:var(--arq-color-action-primary)}.native:checked+.track .thumb{background:var(--arq-color-action-on-primary);transform:translateX(calc(var(--arq-icon-sm) + var(--arq-space-gap-sm)))}:host([disabled]) .toggle{cursor:default}:host([disabled]) .track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-transparent)}:host([disabled]) .native:checked+.track{border-color:var(--arq-color-border-disabled);background:var(--arq-color-surface-strong)}:host([disabled]) .thumb,:host([disabled]) .native:checked+.track .thumb{background:var(--arq-color-icon-disabled)}:host([disabled]) .label{color:var(--arq-color-text-disabled)}:host([theme=inverse]:not([disabled])) .track{border-color:var(--arq-color-icon-secondary)}:host([theme=inverse]:not([disabled])) .thumb{background:var(--arq-color-icon-secondary)}:host([theme=inverse]:not([disabled])) .label{color:var(--arq-color-text-secondary)}:host([theme=inverse]:not([disabled])) .native:checked+.track{border-color:var(--arq-color-icon-secondary);background:var(--arq-color-icon-secondary)}:host([theme=inverse]:not([disabled])) .native:checked+.track .thumb{background:var(--arq-color-action-on-primary)}.native:focus-visible+.track{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}@media (forced-colors:active){.track,.thumb{forced-color-adjust:none}.track,:host([theme=inverse]:not([disabled])) .track{background:canvas;border-color:canvastext}.thumb,:host([theme=inverse]:not([disabled])) .thumb{background:canvastext}.native:checked+.track,:host([theme=inverse]:not([disabled])) .native:checked+.track{background:highlight;border-color:highlight}.native:checked+.track .thumb,:host([theme=inverse]:not([disabled])) .native:checked+.track .thumb{background:highlighttext}:host([disabled]) .track,:host([disabled]) .native:checked+.track{background:canvas;border-color:graytext}:host([disabled]) .thumb,:host([disabled]) .native:checked+.track .thumb{background:graytext}}";
 (class extends I {
 	static tag = "arq-toggle";
-	static styles = Go;
+	static styles = Ko;
 	static formAssociated = !0;
 	static properties = {
 		checked: { type: Boolean },
@@ -5689,10 +5693,10 @@ var Go = ":host{vertical-align:middle;max-width:100%;display:inline-flex}.toggle
 }).define();
 //#endregion
 //#region src/components/catalog-toolbar/catalog-toolbar.css?inline
-var Ko = ":host{min-width:0;display:block}.bar{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-sm-md) var(--arq-space-gap-md);padding-block:var(--arq-space-padding-md);border-block:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-transparent);transition:border-top-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);flex-wrap:wrap;display:flex}:host([stuck]) .bar{border-top-color:var(--arq-color-surface-transparent)}.count{color:var(--arq-color-text-secondary);white-space:nowrap;flex:1000 0 auto;margin:0}.actions{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-xl);flex:1 0 auto;display:flex}.lead{justify-content:space-between;align-items:stretch;gap:var(--arq-space-gap-xl);flex:1 0 auto;display:flex}@media (width<=767px){.actions,.lead{gap:var(--arq-space-gap-sm-md)}}", qo = { productos: ["producto", "productos"] }, Jo = new Intl.NumberFormat("es-AR");
+var qo = ":host{min-width:0;display:block}.bar{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-sm-md) var(--arq-space-gap-md);padding-block:var(--arq-space-padding-md);border-block:var(--arq-border-default) solid var(--arq-color-border-subtle);background:var(--arq-color-surface-transparent);transition:border-top-color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);flex-wrap:wrap;display:flex}:host([stuck]) .bar{border-top-color:var(--arq-color-surface-transparent)}.count{color:var(--arq-color-text-secondary);white-space:nowrap;flex:1000 0 auto;margin:0}.actions{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-xl);flex:1 0 auto;display:flex}.lead{justify-content:space-between;align-items:stretch;gap:var(--arq-space-gap-xl);flex:1 0 auto;display:flex}@media (width<=767px){.actions,.lead{gap:var(--arq-space-gap-sm-md)}}", Jo = { productos: ["producto", "productos"] }, Yo = new Intl.NumberFormat("es-AR");
 (class extends I {
 	static tag = "arq-catalog-toolbar";
-	static styles = Ko;
+	static styles = qo;
 	static properties = {
 		count: { type: Number },
 		unit: {
@@ -5722,8 +5726,8 @@ var Ko = ":host{min-width:0;display:block}.bar{justify-content:space-between;ali
 		(e.has("count") || e.has("unit")) && this.#r(), e.has("showIluminar") && (this.shadowRoot.querySelector(".lead").hidden = !this.showIluminar), e.has("for") && this.#s(), e.has("filterCount") && this.#i();
 	}
 	#r() {
-		let [e, t] = qo[this.unit] ?? qo.productos, n = this.shadowRoot.querySelector(".count");
-		n.textContent = Number.isFinite(this.count) ? `${Jo.format(this.count)} ${this.count === 1 ? e : t}` : "";
+		let [e, t] = Jo[this.unit] ?? Jo.productos, n = this.shadowRoot.querySelector(".count");
+		n.textContent = Number.isFinite(this.count) ? `${Yo.format(this.count)} ${this.count === 1 ? e : t}` : "";
 	}
 	#i() {
 		let e = Number.isFinite(this.filterCount) ? this.filterCount : 0, t = this.#n;
@@ -5731,8 +5735,8 @@ var Ko = ":host{min-width:0;display:block}.bar{justify-content:space-between;ali
 	}
 	#a(e) {
 		let t = document.documentElement, n = this.#t.getBoundingClientRect();
-		po(e, () => {
-			e ? t.setAttribute("data-arq-theme", "dark") : t.removeAttribute("data-arq-theme"), Ya(e);
+		mo(e, () => {
+			e ? t.setAttribute("data-arq-theme", "dark") : t.removeAttribute("data-arq-theme"), Xa(e);
 		}, {
 			x: n.left + n.width / 2,
 			y: n.top + n.height / 2
@@ -5765,7 +5769,7 @@ var Ko = ":host{min-width:0;display:block}.bar{justify-content:space-between;ali
 }).define();
 //#endregion
 //#region src/base/color-temperature.js
-function Yo(e) {
+function Xo(e) {
 	let t = Number.parseInt(String(e ?? "").match(/(\d{4,5})\s*K/i)?.[1], 10);
 	if (!t) return null;
 	let n = Math.min(Math.max(t, 1e3), 1e4) / 100, r = (e) => Math.round(Math.min(Math.max(e, 0), 255)), i = n <= 66 ? 255 : 329.698727446 * (n - 60) ** -.1332047592, a = n <= 66 ? 99.4708025861 * Math.log(n) - 161.1195681661 : 288.1221695283 * (n - 60) ** -.0755148492, o = n >= 66 ? 255 : n <= 19 ? 0 : 138.5177312231 * Math.log(n - 10) - 305.0447927307;
@@ -5773,14 +5777,14 @@ function Yo(e) {
 }
 //#endregion
 //#region src/base/tooltip.js
-var Xo = 80;
-function Zo(e, t, n = "[data-tip]") {
+var Zo = 80;
+function Qo(e, t, n = "[data-tip]") {
 	let r = document.createElement("div");
 	r.className = "tooltip role-body-sm", r.setAttribute("role", "tooltip"), e.append(r);
 	let i = null, a = 0, o = () => {
 		clearTimeout(a), a = setTimeout(() => {
 			i = null, r.removeAttribute("data-open");
-		}, Xo);
+		}, Zo);
 	}, s = (t) => {
 		if (clearTimeout(a), t === i) return;
 		let n = !r.hasAttribute("data-open");
@@ -5796,7 +5800,7 @@ function Zo(e, t, n = "[data-tip]") {
 }
 //#endregion
 //#region src/base/tooltip.css?inline
-var Qo = ".tooltip{z-index:var(--card-above,1);box-sizing:border-box;width:max-content;max-width:var(--arq-layout-footer-tagline);padding:var(--arq-space-padding-xs) var(--arq-space-padding-sm);border:var(--arq-border-default) solid var(--arq-color-border-default);background-color:var(--arq-color-surface-default);color:var(--arq-color-text-secondary);pointer-events:none;opacity:0;visibility:hidden;transform:translate(var(--tip-x,0), calc(var(--tip-y,0) - 100% - var(--arq-space-gap-sm)));transition-property:opacity,transform,visibility;transition-duration:var(--arq-motion-duration-fade), var(--arq-motion-duration-base), 0s;transition-delay:0s, 0s, var(--arq-motion-duration-fade);transition-timing-function:var(--arq-motion-easing-standard);position:absolute;top:0;left:0}.tooltip[data-open]{opacity:1;visibility:visible;transition-delay:0s}.tooltip[data-jump]{transition-property:opacity,visibility}@media (prefers-reduced-motion:reduce){.tooltip{transition-property:opacity,visibility}}", $o = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);--card-above:4;flex-direction:column;display:flex}.card-link{pointer-events:none}.card-link:after{z-index:3;aspect-ratio:var(--card-ratio,7 / 10);pointer-events:auto;inset:0 0 auto}.card.is-small{gap:var(--arq-space-gap-sm)}.card-media{aspect-ratio:var(--card-ratio,7 / 10);background-color:var(--arq-color-surface-subtle);transition-property:background-color;transition-delay:0s;transition-duration:var(--arq-card-ground-duration,var(--arq-motion-duration-slow));transition-timing-function:var(--arq-motion-easing-standard);position:relative}@media (prefers-reduced-motion:reduce){.card-media{transition-duration:var(--arq-card-ground-duration,var(--arq-motion-duration-fade))}}@media (hover:hover) and (pointer:fine){.card.is-media-hover .card-media{background-color:var(--arq-color-surface-inverse-hover)}.card:has(.card-link:hover) .card-media{outline:none}}.card.is-dark.is-media-hover .card-media{background-color:var(--arq-color-surface-subtle)}.card.is-dark:has(.card-link:focus-visible) .card-media{background-color:var(--arq-color-surface-subtle)}.card:has(.card-link:focus-visible) .card-media{background-color:var(--arq-color-surface-inverse-hover)}.img{z-index:1;object-fit:cover;visibility:hidden;width:100%;height:100%;position:absolute;inset:0}.card.is-contain .img,.card.is-contain .theme-transition{box-sizing:border-box;object-fit:contain}.card.is-wide .img,.card.is-wide .theme-transition{box-sizing:border-box;padding-inline:var(--arq-space-padding-2xl)}.theme-transition{z-index:2;object-fit:cover;opacity:1;pointer-events:none;width:100%;height:100%;transition-property:opacity;transition-duration:var(--arq-illumination-image-duration,var(--arq-motion-duration-slow));transition-timing-function:var(--arq-illumination-image-easing,var(--arq-motion-easing-standard));position:absolute;inset:0}.theme-transition.fade-out{opacity:0}.img.loaded{visibility:visible}.base.reveal{opacity:0;transition:none}.base.reveal.loaded{opacity:1;transition-property:opacity;transition-duration:var(--arq-motion-duration-slow);transition-timing-function:var(--arq-motion-easing-standard)}@media (prefers-reduced-motion:reduce){.base.reveal.loaded{transition-duration:var(--arq-motion-duration-fade)}}.hover{opacity:0;transition-property:opacity,color,background-color,border-color,outline-color,text-decoration-color,fill,stroke;transition-duration:var(--arq-motion-duration-slow);transition-timing-function:var(--arq-motion-easing-illumination-image)}@media (prefers-reduced-motion:reduce){.hover{transition-duration:var(--arq-motion-duration-fade)}}.card.has-hover:has(.card-link:focus-visible) .hover.loaded{opacity:1}@media (hover:hover) and (pointer:fine){.card.has-hover.is-media-hover .hover.loaded{opacity:1}}.base{transition-property:opacity;transition-duration:var(--arq-motion-duration-slow);transition-timing-function:var(--arq-motion-easing-illumination-image)}@media (prefers-reduced-motion:reduce){.base{transition-duration:var(--arq-motion-duration-fade)}}.card.hover-unlit.is-media-hover .base{opacity:0}.card.hover-unlit:has(.card-link:focus-visible) .base{opacity:0}.fallback{z-index:1;padding:var(--arq-space-padding-md);color:var(--arq-color-text-secondary);text-align:center;overflow-wrap:break-word;justify-content:center;align-items:center;display:flex;position:absolute;inset:0}.info{align-items:flex-start;gap:var(--arq-space-gap-xs);padding-top:var(--arq-space-gap-xs);padding-bottom:var(--arq-space-gap-sm);flex-direction:column;display:flex}.title{align-self:stretch;align-items:center;display:flex}.name{min-width:0;color:var(--arq-color-text-primary);overflow-wrap:break-word;flex:auto}.info{gap:var(--arq-space-gap-sm)}.finishes{z-index:var(--card-above);justify-content:flex-start;align-items:center;gap:var(--arq-space-gap-md);min-width:0;max-width:100%;padding-block:var(--arq-space-padding-xs);margin-bottom:calc(var(--arq-space-padding-xs) * -1);flex-wrap:wrap;flex:none;display:flex;position:relative}.finishes[hidden]{display:none}.specs{color:var(--arq-color-text-secondary);overflow-wrap:break-word;margin:0}.specs[hidden]{display:none}.specs ::slotted([slot=specs]){display:block}.compare{z-index:var(--card-above);--arq-type-body-size:var(--arq-type-body-compact-size);--arq-type-body-leading:var(--arq-type-body-compact-leading);margin-top:var(--arq-space-gap-sm);position:relative}.card.is-loading{--shimmer-shine:var(--arq-color-surface-default)}.card.is-dark.is-loading{--shimmer-shine:var(--arq-color-surface-strong)}.is-loading .card-media,.is-loading .sk-bar,.is-loading .sk-swatches>span{background-image:linear-gradient(105deg, var(--arq-color-surface-subtle) 44%, var(--shimmer-shine) 50%, var(--arq-color-surface-subtle) 56%);animation:arq-skeleton-shimmer var(--arq-motion-duration-shimmer) linear infinite;background-repeat:no-repeat;background-size:300% 100%;background-attachment:fixed}@keyframes arq-skeleton-shimmer{0%{background-position:100% 0}to{background-position:0 0}}@media (prefers-reduced-motion:reduce){.is-loading .card-media,.is-loading .sk-bar,.is-loading .sk-swatches>span{background-image:none;animation:none}}.sk,.is-loading .img,.is-loading .fallback,.is-loading .title,.is-loading .specs,.is-loading .finishes,.is-loading .compare{display:none}.is-loading .sk{align-self:stretch;align-items:center;display:flex}.sk-name{flex:auto;align-self:stretch;align-items:center;min-width:0;height:1lh;display:flex}.sk-bar{width:60%;height:var(--arq-space-gap-md);background:var(--arq-color-surface-subtle);display:block}.sk-short{width:35%;height:var(--arq-space-gap-sm-md)}.sk-swatches{gap:var(--arq-space-gap-md);padding-block:var(--arq-space-padding-xs);flex:none}.sk-swatches>span{width:var(--arq-swatch-xs);height:var(--arq-swatch-xs);background:var(--arq-color-surface-subtle)}.sk-detail{justify-content:center;align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;height:2lh}.temp{z-index:2;align-items:center;gap:var(--arq-space-gap-xs);color:var(--arq-color-text-primary);pointer-events:none;transition-property:color;transition-duration:var(--arq-motion-duration-slow);transition-timing-function:var(--arq-motion-easing-standard);display:flex;position:absolute;inset-block-end:var(--arq-space-padding-sm);inset-inline-end:var(--arq-space-padding-md)}.temp-dot{box-sizing:border-box;width:var(--arq-space-gap-sm);height:var(--arq-space-gap-sm);border-radius:var(--arq-radius-pill);flex:none}.temp-dot[hidden]{display:none}.card:not(.is-dark).is-media-hover .temp{color:var(--arq-color-text-inverse)}.card:not(.is-dark):has(.card-link:focus-visible) .temp{color:var(--arq-color-text-inverse)}.temp[hidden],.is-loading .temp{display:none}.specs{white-space:nowrap;align-self:stretch;align-items:center;min-width:0;display:flex;overflow:hidden}.specs ::slotted([slot=specs]){text-overflow:ellipsis;flex:0 auto;min-width:0;overflow:hidden}.specs ::slotted([slot=specs][divided]){border-inline-start:var(--arq-border-default) solid var(--arq-color-border-default);margin-inline-start:var(--arq-space-gap-sm);padding-inline-start:var(--arq-space-gap-sm)}@media (width<=767px){.specs{--arq-type-body-size:var(--arq-type-body-compact-size);--arq-type-body-leading:var(--arq-type-body-compact-leading);white-space:normal;flex-wrap:wrap;align-items:flex-start;margin-inline-start:calc(var(--arq-space-gap-sm) * -1)}.specs ::slotted([slot=specs]),.specs ::slotted([slot=specs][divided]){max-width:100%;margin-inline:calc(var(--arq-border-default) * -1) var(--arq-space-gap-sm);border-inline-start:var(--arq-border-default) solid var(--arq-color-border-default);text-overflow:clip;flex:none;padding-inline-start:var(--arq-space-gap-sm);overflow:visible}}.title{order:0}.finishes{order:1}.specs{order:2}.compare{order:3}.info:has(.finishes:not([hidden])) .specs{margin-top:var(--arq-space-gap-sm)}.finishes ::slotted([data-overflow]){display:none!important}.more{color:var(--arq-color-text-tertiary);pointer-events:none}.more[hidden]{display:none}", es = matchMedia("(max-width: 767px)"), ts = 5;
+var $o = ".tooltip{z-index:var(--card-above,1);box-sizing:border-box;width:max-content;max-width:var(--arq-layout-footer-tagline);padding:var(--arq-space-padding-xs) var(--arq-space-padding-sm);border:var(--arq-border-default) solid var(--arq-color-border-default);background-color:var(--arq-color-surface-default);color:var(--arq-color-text-secondary);pointer-events:none;opacity:0;visibility:hidden;transform:translate(var(--tip-x,0), calc(var(--tip-y,0) - 100% - var(--arq-space-gap-sm)));transition-property:opacity,transform,visibility;transition-duration:var(--arq-motion-duration-fade), var(--arq-motion-duration-base), 0s;transition-delay:0s, 0s, var(--arq-motion-duration-fade);transition-timing-function:var(--arq-motion-easing-standard);position:absolute;top:0;left:0}.tooltip[data-open]{opacity:1;visibility:visible;transition-delay:0s}.tooltip[data-jump]{transition-property:opacity,visibility}@media (prefers-reduced-motion:reduce){.tooltip{transition-property:opacity,visibility}}", es = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-md);--card-above:4;flex-direction:column;display:flex}.card-link{pointer-events:none}.card-link:after{z-index:3;aspect-ratio:var(--card-ratio,7 / 10);pointer-events:auto;inset:0 0 auto}.card.is-small{gap:var(--arq-space-gap-sm)}.card-media{aspect-ratio:var(--card-ratio,7 / 10);background-color:var(--arq-color-surface-subtle);transition-property:background-color;transition-delay:0s;transition-duration:var(--arq-card-ground-duration,var(--arq-motion-duration-slow));transition-timing-function:var(--arq-motion-easing-standard);position:relative}@media (prefers-reduced-motion:reduce){.card-media{transition-duration:var(--arq-card-ground-duration,var(--arq-motion-duration-fade))}}@media (hover:hover) and (pointer:fine){.card.is-media-hover .card-media{background-color:var(--arq-color-surface-inverse-hover)}.card:has(.card-link:hover) .card-media{outline:none}}.card.is-dark.is-media-hover .card-media{background-color:var(--arq-color-surface-subtle)}.card.is-dark:has(.card-link:focus-visible) .card-media{background-color:var(--arq-color-surface-subtle)}.card:has(.card-link:focus-visible) .card-media{background-color:var(--arq-color-surface-inverse-hover)}.img{z-index:1;object-fit:cover;visibility:hidden;width:100%;height:100%;position:absolute;inset:0}.card.is-contain .img,.card.is-contain .theme-transition{box-sizing:border-box;object-fit:contain}.card.is-wide .img,.card.is-wide .theme-transition{box-sizing:border-box;padding-inline:var(--arq-space-padding-2xl)}.theme-transition{z-index:2;object-fit:cover;opacity:1;pointer-events:none;width:100%;height:100%;transition-property:opacity;transition-duration:var(--arq-illumination-image-duration,var(--arq-motion-duration-slow));transition-timing-function:var(--arq-illumination-image-easing,var(--arq-motion-easing-standard));position:absolute;inset:0}.theme-transition.fade-out{opacity:0}.img.loaded{visibility:visible}.base.reveal{opacity:0;transition:none}.base.reveal.loaded{opacity:1;transition-property:opacity;transition-duration:var(--arq-motion-duration-slow);transition-timing-function:var(--arq-motion-easing-standard)}@media (prefers-reduced-motion:reduce){.base.reveal.loaded{transition-duration:var(--arq-motion-duration-fade)}}.hover{opacity:0;transition-property:opacity,color,background-color,border-color,outline-color,text-decoration-color,fill,stroke;transition-duration:var(--arq-motion-duration-slow);transition-timing-function:var(--arq-motion-easing-illumination-image)}@media (prefers-reduced-motion:reduce){.hover{transition-duration:var(--arq-motion-duration-fade)}}.card.has-hover:has(.card-link:focus-visible) .hover.loaded{opacity:1}@media (hover:hover) and (pointer:fine){.card.has-hover.is-media-hover .hover.loaded{opacity:1}}.base{transition-property:opacity;transition-duration:var(--arq-motion-duration-slow);transition-timing-function:var(--arq-motion-easing-illumination-image)}@media (prefers-reduced-motion:reduce){.base{transition-duration:var(--arq-motion-duration-fade)}}.card.hover-unlit.is-media-hover .base{opacity:0}.card.hover-unlit:has(.card-link:focus-visible) .base{opacity:0}.fallback{z-index:1;padding:var(--arq-space-padding-md);color:var(--arq-color-text-secondary);text-align:center;overflow-wrap:break-word;justify-content:center;align-items:center;display:flex;position:absolute;inset:0}.info{align-items:flex-start;gap:var(--arq-space-gap-xs);padding-top:var(--arq-space-gap-xs);padding-bottom:var(--arq-space-gap-sm);flex-direction:column;display:flex}.title{align-self:stretch;align-items:center;display:flex}.name{min-width:0;color:var(--arq-color-text-primary);overflow-wrap:break-word;flex:auto}.info{gap:var(--arq-space-gap-sm)}.finishes{z-index:var(--card-above);justify-content:flex-start;align-items:center;gap:var(--arq-space-gap-md);min-width:0;max-width:100%;padding-block:var(--arq-space-padding-xs);margin-bottom:calc(var(--arq-space-padding-xs) * -1);flex-wrap:wrap;flex:none;display:flex;position:relative}.finishes[hidden]{display:none}.specs{color:var(--arq-color-text-secondary);overflow-wrap:break-word;margin:0}.specs[hidden]{display:none}.specs ::slotted([slot=specs]){display:block}.compare{z-index:var(--card-above);--arq-type-body-size:var(--arq-type-body-compact-size);--arq-type-body-leading:var(--arq-type-body-compact-leading);margin-top:var(--arq-space-gap-sm);position:relative}.card.is-loading{--shimmer-shine:var(--arq-color-surface-default)}.card.is-dark.is-loading{--shimmer-shine:var(--arq-color-surface-strong)}.is-loading .card-media,.is-loading .sk-bar,.is-loading .sk-swatches>span{background-image:linear-gradient(105deg, var(--arq-color-surface-subtle) 44%, var(--shimmer-shine) 50%, var(--arq-color-surface-subtle) 56%);animation:arq-skeleton-shimmer var(--arq-motion-duration-shimmer) linear infinite;background-repeat:no-repeat;background-size:300% 100%;background-attachment:fixed}@keyframes arq-skeleton-shimmer{0%{background-position:100% 0}to{background-position:0 0}}@media (prefers-reduced-motion:reduce){.is-loading .card-media,.is-loading .sk-bar,.is-loading .sk-swatches>span{background-image:none;animation:none}}.sk,.is-loading .img,.is-loading .fallback,.is-loading .title,.is-loading .specs,.is-loading .finishes,.is-loading .compare{display:none}.is-loading .sk{align-self:stretch;align-items:center;display:flex}.sk-name{flex:auto;align-self:stretch;align-items:center;min-width:0;height:1lh;display:flex}.sk-bar{width:60%;height:var(--arq-space-gap-md);background:var(--arq-color-surface-subtle);display:block}.sk-short{width:35%;height:var(--arq-space-gap-sm-md)}.sk-swatches{gap:var(--arq-space-gap-md);padding-block:var(--arq-space-padding-xs);flex:none}.sk-swatches>span{width:var(--arq-swatch-xs);height:var(--arq-swatch-xs);background:var(--arq-color-surface-subtle)}.sk-detail{justify-content:center;align-items:flex-start;gap:var(--arq-space-gap-sm);flex-direction:column;height:2lh}.temp{z-index:2;align-items:center;gap:var(--arq-space-gap-xs);color:var(--arq-color-text-primary);pointer-events:none;transition-property:color;transition-duration:var(--arq-motion-duration-slow);transition-timing-function:var(--arq-motion-easing-standard);display:flex;position:absolute;inset-block-end:var(--arq-space-padding-sm);inset-inline-end:var(--arq-space-padding-md)}.temp-dot{box-sizing:border-box;width:var(--arq-space-gap-sm);height:var(--arq-space-gap-sm);border-radius:var(--arq-radius-pill);flex:none}.temp-dot[hidden]{display:none}.card:not(.is-dark).is-media-hover .temp{color:var(--arq-color-text-inverse)}.card:not(.is-dark):has(.card-link:focus-visible) .temp{color:var(--arq-color-text-inverse)}.temp[hidden],.is-loading .temp{display:none}.specs{white-space:nowrap;align-self:stretch;align-items:center;min-width:0;display:flex;overflow:hidden}.specs ::slotted([slot=specs]){text-overflow:ellipsis;flex:0 auto;min-width:0;overflow:hidden}.specs ::slotted([slot=specs][divided]){border-inline-start:var(--arq-border-default) solid var(--arq-color-border-default);margin-inline-start:var(--arq-space-gap-sm);padding-inline-start:var(--arq-space-gap-sm)}@media (width<=767px){.specs{--arq-type-body-size:var(--arq-type-body-compact-size);--arq-type-body-leading:var(--arq-type-body-compact-leading);white-space:normal;flex-wrap:wrap;align-items:flex-start;margin-inline-start:calc(var(--arq-space-gap-sm) * -1)}.specs ::slotted([slot=specs]),.specs ::slotted([slot=specs][divided]){max-width:100%;margin-inline:calc(var(--arq-border-default) * -1) var(--arq-space-gap-sm);border-inline-start:var(--arq-border-default) solid var(--arq-color-border-default);text-overflow:clip;flex:none;padding-inline-start:var(--arq-space-gap-sm);overflow:visible}}.title{order:0}.finishes{order:1}.specs{order:2}.compare{order:3}.info:has(.finishes:not([hidden])) .specs{margin-top:var(--arq-space-gap-sm)}.finishes ::slotted([data-overflow]){display:none!important}.more{color:var(--arq-color-text-tertiary);pointer-events:none}.more[hidden]{display:none}", ts = matchMedia("(max-width: 767px)");
 function ns(e, t = []) {
 	for (let n of t) {
 		let t = document.createElement("arq-swatch");
@@ -5822,7 +5826,7 @@ var is = [
 ];
 (class extends I {
 	static tag = "arq-product-card";
-	static styles = Fo + Qo + $o;
+	static styles = Io + $o + es;
 	static properties = {
 		size: {
 			type: String,
@@ -5844,45 +5848,48 @@ var is = [
 	#e = !1;
 	#t = !1;
 	#n = 0;
-	#r = !1;
-	#i = /* @__PURE__ */ new Set();
+	#r = 0;
+	#i = !1;
+	#a = /* @__PURE__ */ new Set();
 	setup() {
 		let e = this.shadowRoot;
 		for (let t of e.querySelectorAll(".img")) t.addEventListener("load", () => t.classList.add("loaded")), t.addEventListener("error", () => {
 			t.classList.remove("loaded", "reveal");
 			let e = t.getAttribute("src");
-			e && (this.#i.add(e), this.#m());
+			e && (this.#a.add(e), this.#h());
 		});
 		let t = e.querySelector(".base");
 		t.addEventListener("transitionend", (e) => {
 			e.propertyName === "opacity" && t.classList.contains("loaded") && t.classList.remove("reveal");
 		});
 		let n = () => {
-			this.#t || (this.#t = !0, this.#m());
+			this.#t || (this.#t = !0, this.#h());
 		}, r = e.querySelector(".card");
 		r.addEventListener("pointerenter", n), e.querySelector(".card-link").addEventListener("focus", n);
 		let i = e.querySelector(".card-media"), a = (e) => {
-			r.classList.contains("is-media-hover") !== e && (r.classList.toggle("is-media-hover", e), this.#p());
+			r.classList.contains("is-media-hover") !== e && (r.classList.toggle("is-media-hover", e), this.#m());
 		}, o = (e) => {
 			let t = i.getBoundingClientRect();
 			return e.clientX >= t.left && e.clientX < t.right && e.clientY >= t.top && e.clientY < t.bottom;
 		}, s = e.querySelector(".card-link");
-		s.addEventListener("focus", () => this.#p()), s.addEventListener("blur", () => this.#p()), r.addEventListener("pointerenter", (e) => e.pointerType === "mouse" && a(o(e))), r.addEventListener("pointermove", (e) => e.pointerType === "mouse" && a(o(e))), r.addEventListener("pointerleave", () => a(!1)), Zo(r, e.querySelector(".specs"), "[slot=\"specs\"]");
+		s.addEventListener("focus", () => this.#m()), s.addEventListener("blur", () => this.#m()), r.addEventListener("pointerenter", (e) => e.pointerType === "mouse" && a(o(e))), r.addEventListener("pointermove", (e) => e.pointerType === "mouse" && a(o(e))), r.addEventListener("pointerleave", () => a(!1)), Qo(r, e.querySelector(".specs"), "[slot=\"specs\"]");
 		for (let t of [
 			"name",
 			"specs",
 			"finishes"
-		]) e.querySelector(`slot[name="${t}"]`).addEventListener("slotchange", () => this.#s());
+		]) e.querySelector(`slot[name="${t}"]`).addEventListener("slotchange", () => this.#c());
 		let c = e.querySelector(".finishes");
-		c.addEventListener("click", (e) => this.#f(e.target.closest?.("arq-swatch"))), c.addEventListener("keydown", (e) => this.#d(e)), e.querySelector(".compare").addEventListener("arq:change", (e) => {
+		c.addEventListener("click", (e) => this.#p(e.target.closest?.("arq-swatch"))), c.addEventListener("keydown", (e) => this.#f(e)), e.querySelector(".compare").addEventListener("arq:change", (e) => {
 			e.stopPropagation(), this.compared = e.detail.checked, this.emit("compare", { checked: e.detail.checked });
-		}), es.addEventListener("change", () => this.#o()), Ua(this, "themeChanged");
+		}), ts.addEventListener("change", () => this.#s()), new ResizeObserver(([e]) => {
+			e.contentRect.width !== this.#r && (this.#r = e.contentRect.width, this.#d(this.#l()));
+		}).observe(e.querySelector(".info")), Wa(this, "themeChanged");
 	}
 	themeChanged(e) {
 		let t = this.shadowRoot;
 		t.querySelector(".card").classList.toggle("is-dark", e);
-		let n = t.querySelector(".base"), r = t.querySelector(".hover"), i = t.querySelector(".card"), a = i.classList.contains("has-hover") && r.classList.contains("loaded") && (i.classList.contains("is-media-hover") || !!t.querySelector(".card-link:focus-visible")), o = a ? r : n, s = o.naturalWidth ? o.currentSrc || o.getAttribute("src") : null, c = a ? e && this.imageHoverLit || this.imageHover : e && this.imageLit || this.image, l = s && c && s !== new URL(c, location.href).href ? this.#_(t.querySelector(".card-media"), s) : null;
-		this.#e = e, this.#m(), uo(o), l && lo(o).then(() => this.#v(l));
+		let n = t.querySelector(".base"), r = t.querySelector(".hover"), i = t.querySelector(".card"), a = i.classList.contains("has-hover") && r.classList.contains("loaded") && (i.classList.contains("is-media-hover") || !!t.querySelector(".card-link:focus-visible")), o = a ? r : n, s = o.naturalWidth ? o.currentSrc || o.getAttribute("src") : null, c = a ? e && this.imageHoverLit || this.imageHover : e && this.imageLit || this.image, l = s && c && s !== new URL(c, location.href).href ? this.#v(t.querySelector(".card-media"), s) : null;
+		this.#e = e, this.#h(), fo(o), l && uo(o).then(() => this.#y(l));
 	}
 	update(e) {
 		let t = this.shadowRoot;
@@ -5892,41 +5899,41 @@ var is = [
 		}
 		let n = t.querySelector(".temp");
 		n.querySelector(".temp-text").textContent = this.temperature ?? "";
-		let r = n.querySelector(".temp-dot"), i = Yo(this.temperature);
+		let r = n.querySelector(".temp-dot"), i = Xo(this.temperature);
 		r.hidden = !i, i && (r.style.backgroundColor = i), n.hidden = !this.temperature;
 		let a = t.querySelector(".compare");
 		a.hidden = !this.showCompare, a.checked = this.compared;
 		let o = t.querySelector(".card");
-		o.classList.toggle("is-loading", this.loading), o.classList.toggle("has-compare", this.showCompare), this.#h(o), this.loading ? this.setAttribute("aria-hidden", "true") : e.has("loading") && this.removeAttribute("aria-hidden"), e.has("size") && this.#o(), [...e].some((e) => e.startsWith("image")) && this.#m(), this.#s();
-	}
-	#a() {
-		return this.size === "small" || es.matches;
+		o.classList.toggle("is-loading", this.loading), o.classList.toggle("has-compare", this.showCompare), this.#g(o), this.loading ? this.setAttribute("aria-hidden", "true") : e.has("loading") && this.removeAttribute("aria-hidden"), e.has("size") && this.#s(), [...e].some((e) => e.startsWith("image")) && this.#h(), this.#c();
 	}
 	#o() {
-		let e = this.#a(), t = this.shadowRoot;
+		return this.size === "small" || ts.matches;
+	}
+	#s() {
+		let e = this.#o(), t = this.shadowRoot;
 		t.querySelector(".card").classList.toggle("is-small", e);
-		let n = e ? es.matches ? "role-heading-3" : "role-body-xl" : "role-heading-3";
+		let n = e ? ts.matches ? "role-heading-3" : "role-body-xl" : "role-heading-3";
 		t.querySelector(".name").className = `card-link name ${n}`, t.querySelector(".sk-name").className = `sk-name ${n}`;
 		for (let e of this.querySelectorAll(":scope > arq-swatch[slot=\"finishes\"]")) e.setAttribute("size", "small"), e.setAttribute("ring", "");
 	}
-	#s() {
+	#c() {
 		let e = this.shadowRoot, t = (t) => e.querySelector(`slot[name="${t}"]`).assignedNodes({ flatten: !0 }).some((e) => e.nodeType === Node.ELEMENT_NODE || e.textContent.trim());
 		e.querySelector(".specs").hidden = !t("specs");
 		for (let e of this.querySelectorAll(":scope > [slot=\"specs\"]:not([data-tip])")) {
 			let t = y(e.textContent);
 			t && (e.dataset.tip = t);
 		}
-		e.querySelector(".finishes").hidden = !t("finishes"), this.#l();
+		e.querySelector(".finishes").hidden = !t("finishes"), this.#u();
 		let n = this.querySelector("[slot=\"name\"]")?.textContent.trim() ?? "";
-		e.querySelector(".fallback").textContent = n, e.querySelector(".compare-name").textContent = n ? ` ${n}` : "", this.#o(), this.#h(e.querySelector(".card"));
-	}
-	#c() {
-		return [...this.querySelectorAll(":scope > arq-swatch[slot=\"finishes\"]")];
+		e.querySelector(".fallback").textContent = n, e.querySelector(".compare-name").textContent = n ? ` ${n}` : "", this.#s(), this.#g(e.querySelector(".card"));
 	}
 	#l() {
-		let e = this.#c(), t = this.shadowRoot.querySelector(".finishes");
+		return [...this.querySelectorAll(":scope > arq-swatch[slot=\"finishes\"]")];
+	}
+	#u() {
+		let e = this.#l(), t = this.shadowRoot.querySelector(".finishes");
 		if (!(e.length > 1 && e.some((e) => e.dataset.sku || e.dataset.image))) {
-			t.removeAttribute("role"), this.#u(e);
+			t.removeAttribute("role"), e.length === 1 && e[0].setAttribute("selected", ""), this.#d(e);
 			return;
 		}
 		t.setAttribute("role", "radiogroup"), t.setAttribute("aria-label", "Acabado"), e.some((e) => e.hasAttribute("selected")) || e[0].setAttribute("selected", "");
@@ -5934,37 +5941,43 @@ var is = [
 			let e = t.hasAttribute("selected");
 			t.setAttribute("role", "radio"), t.setAttribute("aria-checked", String(e)), t.setAttribute("tabindex", e ? "0" : "-1");
 		}
-		this.#u(e);
-	}
-	#u(e) {
-		let t = this.shadowRoot.querySelector(".more");
-		for (let t of e) t.removeAttribute("data-overflow");
-		let n = e.length - ts;
-		if (t.hidden = n <= 0, n <= 0) return;
-		let r = e.findIndex((e) => e.hasAttribute("selected")), i = new Set(e.slice(0, ts));
-		r >= ts && (i.delete(e[4]), i.add(e[r]));
-		for (let t of e) i.has(t) || t.setAttribute("data-overflow", "");
-		t.textContent = `+${n}`, t.setAttribute("aria-label", `${n} acabados más`);
+		this.#d(e);
 	}
 	#d(e) {
+		let t = this.shadowRoot.querySelector(".more");
+		for (let t of e) t.removeAttribute("data-overflow");
+		t.hidden = !0;
+		let n = this.#r, r = e[0]?.getBoundingClientRect().width;
+		if (!n || !r || e.length < 2) return;
+		let i = parseFloat(getComputedStyle(this.shadowRoot.querySelector(".finishes")).columnGap) || 0, a = (e) => e * r + (e - 1) * i;
+		if (a(e.length) <= n) return;
+		t.textContent = `+${e.length}`, t.hidden = !1;
+		let o = t.getBoundingClientRect().width, s = e.length - 1;
+		for (; s > 1 && a(s) + i + o > n;) s--;
+		let c = e.length - s, l = e.findIndex((e) => e.hasAttribute("selected")), u = new Set(e.slice(0, s));
+		l >= s && (u.delete(e[s - 1]), u.add(e[l]));
+		for (let t of e) u.has(t) || t.setAttribute("data-overflow", "");
+		t.textContent = `+${c}`, t.setAttribute("aria-label", `${c} acabados más`);
+	}
+	#f(e) {
 		let t = {
 			ArrowRight: 1,
 			ArrowDown: 1,
 			ArrowLeft: -1,
 			ArrowUp: -1
-		}, n = this.#c().filter((e) => !e.hasAttribute("data-overflow")), r = n.indexOf(e.target.closest?.("arq-swatch"));
+		}, n = this.#l().filter((e) => !e.hasAttribute("data-overflow")), r = n.indexOf(e.target.closest?.("arq-swatch"));
 		if (r !== -1) {
-			if (e.key === "Enter" || e.key === " ") e.preventDefault(), this.#f(n[r]);
+			if (e.key === "Enter" || e.key === " ") e.preventDefault(), this.#p(n[r]);
 			else if (t[e.key]) {
 				e.preventDefault();
 				let i = n[(r + t[e.key] + n.length) % n.length];
-				i.focus(), this.#f(i);
+				i.focus(), this.#p(i);
 			}
 		}
 	}
-	#f(e) {
+	#p(e) {
 		if (!e || e.getAttribute("role") !== "radio" || e.hasAttribute("selected")) return;
-		for (let t of this.#c()) {
+		for (let t of this.#l()) {
 			let n = t === e;
 			t.toggleAttribute("selected", n), t.setAttribute("aria-checked", String(n)), t.setAttribute("tabindex", n ? "0" : "-1");
 		}
@@ -5989,35 +6002,35 @@ var is = [
 			image: n.image
 		});
 	}
-	#p() {
+	#m() {
 		let e = this.shadowRoot, t = e.querySelector(".card"), n = (t.classList.contains("hover-unlit") || t.classList.contains("hover-ground")) && (t.classList.contains("is-media-hover") || !!e.querySelector(".card-link:focus-visible")), r = e.querySelector(".card-media");
 		n ? r.setAttribute("data-arq-theme", "light") : r.removeAttribute("data-arq-theme");
 	}
-	#m() {
-		let e = this.shadowRoot, t = e.querySelector(".base"), n = e.querySelector(".hover"), r = (e) => e && !this.#i.has(e) ? e : null, i = this.#e && r(this.imageLit) || r(this.image), a = (this.#e ? [this.imageHoverLit, this.image] : [this.imageHover]).map(r).find((e) => e && e !== i) ?? null;
-		this.#g(t, i), this.#y(!i), e.querySelector(".card").classList.toggle("has-hover", !!(i && a)), e.querySelector(".card").classList.toggle("hover-unlit", !!(this.#e && a && a === r(this.image))), e.querySelector(".card").classList.toggle("hover-ground", !!(this.#e && i && !a && i === r(this.image))), this.#p(), this.#g(n, this.#t ? a : null);
+	#h() {
+		let e = this.shadowRoot, t = e.querySelector(".base"), n = e.querySelector(".hover"), r = (e) => e && !this.#a.has(e) ? e : null, i = this.#e && r(this.imageLit) || r(this.image), a = (this.#e ? [this.imageHoverLit, this.image] : [this.imageHover]).map(r).find((e) => e && e !== i) ?? null;
+		this.#_(t, i), this.#b(!i), e.querySelector(".card").classList.toggle("has-hover", !!(i && a)), e.querySelector(".card").classList.toggle("hover-unlit", !!(this.#e && a && a === r(this.image))), e.querySelector(".card").classList.toggle("hover-ground", !!(this.#e && i && !a && i === r(this.image))), this.#m(), this.#_(n, this.#t ? a : null);
 		let o = this.#e ? this.image : this.imageLit;
 		i && o && o !== i && (new Image().src = o);
 	}
-	#h(e) {
+	#g(e) {
 		let t = (e) => String(e ?? "").normalize("NFD").replace(/\p{M}/gu, "").trim().toLowerCase(), n = t(this.family), r = t(this.querySelector("[slot=\"name\"]")?.textContent), i = n === "fuji" || n === "mini kai" || n === "mini kai round" || n === "sen" || r === "tori visera" || r.startsWith("mini kai");
 		e?.classList.toggle("is-contain", i), e?.classList.toggle("is-wide", r.startsWith("mini kai"));
 	}
-	#g(e, t) {
+	#_(e, t) {
 		if (e.getAttribute("src") !== (t ?? null)) {
 			if (e.classList.remove("loaded"), !t) {
 				e.removeAttribute("src");
 				return;
 			}
-			e.src = t, e.classList.contains("base") && !this.#r && (this.#r = !0, e.complete && e.naturalWidth || e.classList.add("reveal"));
+			e.src = t, e.classList.contains("base") && !this.#i && (this.#i = !0, e.complete && e.naturalWidth || e.classList.add("reveal"));
 		}
 	}
-	#_(e, t) {
+	#v(e, t) {
 		e.querySelector(".theme-transition")?.remove();
 		let n = document.createElement("img");
 		return n.className = "theme-transition", n.src = t, n.alt = "", n.setAttribute("aria-hidden", "true"), e.append(n), n;
 	}
-	#v(e) {
+	#y(e) {
 		if (!e.isConnected) return;
 		e.addEventListener("transitionend", (t) => {
 			t.propertyName === "opacity" && e.remove();
@@ -6025,7 +6038,7 @@ var is = [
 		let t = getComputedStyle(e).transitionDuration.split(",")[0];
 		Number.parseFloat(t) || e.remove();
 	}
-	#y(e) {
+	#b(e) {
 		this.shadowRoot.querySelector(".fallback").hidden = !e;
 	}
 }).define();
@@ -6122,7 +6135,7 @@ var ps = (e) => ({
 	}
 	setup() {
 		let e = this.shadowRoot;
-		this.open = !this.#i(), this.disclosure = new la(this, {
+		this.open = !this.#i(), this.disclosure = new ua(this, {
 			trigger: e.querySelector(".toggle"),
 			panel: e.querySelector(".slots")
 		});
@@ -6343,7 +6356,7 @@ var gs = ":host{--panel-slow:var(--arq-motion-duration-panel);display:contents}.
 	}
 	setup() {
 		let e = this.shadowRoot;
-		this.#e = e.querySelector("dialog"), z(this.#e), this.#e.addEventListener("close", () => Qa(!1)), e.querySelector(".close").addEventListener("click", () => this.close()), this.#e.addEventListener("click", (e) => {
+		this.#e = e.querySelector("dialog"), z(this.#e), this.#e.addEventListener("close", () => $a(!1)), e.querySelector(".close").addEventListener("click", () => this.close()), this.#e.addEventListener("click", (e) => {
 			e.target === this.#e && this.close();
 		}), this.#e.addEventListener("cancel", (e) => {
 			e.preventDefault(), this.close();
@@ -6425,7 +6438,7 @@ var gs = ":host{--panel-slow:var(--arq-motion-duration-panel);display:contents}.
 	}
 	#m() {
 		let e = this.#e;
-		clearTimeout(this.#n), this.#n = null, e.open || (e.showModal(), Qa(!0, e), e.offsetHeight, (vs.matches ? this.shadowRoot.querySelector(".search") : this.shadowRoot.querySelector(".close")).focus({ preventScroll: !0 })), e.classList.add("is-open");
+		clearTimeout(this.#n), this.#n = null, e.open || (e.showModal(), $a(!0, e), e.offsetHeight, (vs.matches ? this.shadowRoot.querySelector(".search") : this.shadowRoot.querySelector(".close")).focus({ preventScroll: !0 })), e.classList.add("is-open");
 	}
 	#h() {
 		let e = this.#e;
@@ -6802,7 +6815,7 @@ function Ns(e) {
 		let e = this.shadowRoot.querySelector(".picker"), t = [...this.#e], n = ++this.#t;
 		e.count = t.length;
 		try {
-			let { items: r } = await sr({
+			let { items: r } = await cr({
 				...e.search,
 				selected: t
 			});
@@ -6814,7 +6827,7 @@ function Ns(e) {
 	async #l({ index: e, field: t, value: n }) {
 		let r = this.#e[e];
 		if (!n || !r) return;
-		let i = await Xn(r, t, n);
+		let i = await Zn(r, t, n);
 		i && i !== r && (this.#e[e] = i, this.#e = this.#e.slice(0, ks), this.#u());
 	}
 	async #u() {
@@ -6822,7 +6835,7 @@ function Ns(e) {
 		this.setAttribute("aria-busy", "true");
 		let a = null, o = !1;
 		try {
-			a = this.#e.length ? await Zn(this.#e) : {
+			a = this.#e.length ? await Qn(this.#e) : {
 				products: [],
 				groups: []
 			};
@@ -6881,7 +6894,7 @@ var Ps = ":host{min-width:0;display:block}.link{box-sizing:border-box;align-item
 	};
 	setup() {
 		let e = this.shadowRoot, t = document.createElement("template");
-		if (t.innerHTML = this.type === "group" ? Rs : this.submenu ? Ls : Is, e.append(t.content), this.type === "group") this.disclosure = new la(this, {
+		if (t.innerHTML = this.type === "group" ? Rs : this.submenu ? Ls : Is, e.append(t.content), this.type === "group") this.disclosure = new ua(this, {
 			trigger: e.querySelector(".trigger"),
 			panel: e.querySelector(".links")
 		});
@@ -6990,7 +7003,7 @@ var zs = ":host{display:block}.menu{grid-template-columns:minmax(0, 1fr) var(--a
 	}
 	setup() {
 		let e = this.shadowRoot, t = e.querySelector(".tabs");
-		this.select = new Na(t, { items: "arq-tab" }), t.addEventListener("arq:change", (e) => {
+		this.select = new Pa(t, { items: "arq-tab" }), t.addEventListener("arq:change", (e) => {
 			e.stopPropagation(), this.tab = e.detail.value;
 		});
 		let n = e.querySelector(".panels"), r = (e) => {
@@ -7444,7 +7457,7 @@ var sc = ":host{display:contents}.dialog{box-sizing:border-box;inset:var(--sheet
 		let e = this.shadowRoot, t = e.querySelector(".cards");
 		t.addEventListener("scroll", () => this.#s(), { passive: !0 }), t.addEventListener("dragstart", (e) => e.preventDefault()), e.querySelector(".rail-prev").addEventListener("click", () => this.#c(-1)), e.querySelector(".rail-next").addEventListener("click", () => this.#c(1)), this.#e = e.querySelector("dialog"), e.querySelector(".close").addEventListener("click", () => this.close());
 		let n = () => e.querySelector(".logo").size = cc.matches ? "small" : "default";
-		cc.addEventListener("change", n), n(), this.inline ? (this.#e.show(), this.#e.classList.add("is-open")) : (z(this.#e), this.#e.addEventListener("close", () => Qa(!1)), this.#e.addEventListener("cancel", (e) => {
+		cc.addEventListener("change", n), n(), this.inline ? (this.#e.show(), this.#e.classList.add("is-open")) : (z(this.#e), this.#e.addEventListener("close", () => $a(!1)), this.#e.addEventListener("cancel", (e) => {
 			e.preventDefault(), this.close();
 		}), this.#e.addEventListener("click", (e) => {
 			e.target === this.#e && this.close();
@@ -7499,7 +7512,7 @@ var sc = ":host{display:contents}.dialog{box-sizing:border-box;inset:var(--sheet
 	#l() {
 		clearTimeout(this.#n), this.#n = null;
 		let e = this.#e;
-		e.open || (e.showModal(), Qa(!0, e), e.offsetHeight, this.#p(), requestAnimationFrame(() => this.field.focus({ preventScroll: !0 }))), e.classList.add("is-open");
+		e.open || (e.showModal(), $a(!0, e), e.offsetHeight, this.#p(), requestAnimationFrame(() => this.field.focus({ preventScroll: !0 }))), e.classList.add("is-open");
 	}
 	#u() {
 		let e = this.#e;
@@ -7719,7 +7732,7 @@ var fc = ":host{--mega-in:var(--arq-motion-duration-panel);--mega-out:var(--arq-
 		}), e.querySelector(".back").addEventListener("click", () => this.#f("menu")), e.querySelector(".back-recursos").addEventListener("click", () => this.#f("menu")), e.querySelector(".back-sub").addEventListener("click", () => this.#f("products")), e.querySelector(".groups").addEventListener("click", (e) => {
 			let t = e.target.closest("arq-mega-link[data-sub]");
 			t && this.#f(t.dataset.sub);
-		}), z(e.querySelector(".navbar"), { when: () => this.#_ }), z(e.querySelector(".menu")), e.querySelector(".menu").addEventListener("close", () => Qa(!1)), e.querySelector(".scrim").addEventListener("click", () => this.#L(!1)), this.addEventListener("keydown", (e) => {
+		}), z(e.querySelector(".navbar"), { when: () => this.#_ }), z(e.querySelector(".menu")), e.querySelector(".menu").addEventListener("close", () => $a(!1)), e.querySelector(".scrim").addEventListener("click", () => this.#L(!1)), this.addEventListener("keydown", (e) => {
 			if (e.key === "Escape" && this.#_) {
 				e.stopPropagation();
 				let t = this.#A;
@@ -7779,7 +7792,7 @@ var fc = ":host{--mega-in:var(--arq-motion-duration-panel);--mega-out:var(--arq-
 		let r = t.querySelector(".menu"), i = q.matches, a = e === "search" && !i && !this.#m;
 		t.querySelector(".search-open").hidden = a, t.querySelector(".search-box").hidden = !a, a && requestAnimationFrame(() => t.querySelector(".search-field").focus()), e !== "search" && this.#Y();
 		let o = _c.includes(e), s = e === "menu" || e === "products" || e === "recursos" || o, c = [...t.querySelectorAll(".menu-main, .menu-products, .menu-recursos, .menu-sub")], l = r.classList.contains("is-open") ? c.find((e) => !e.hidden && !e.inert) : null, u = l?.offsetTop ?? 0, d = l ? this.#S(r) : 0;
-		if (r.classList.toggle("is-tall", e === "colecciones"), s && !r.open ? (this.#p(), this.#h = t.querySelector(".menu-open"), clearTimeout(this.#v), r.showModal(), Qa(!0, r), r.offsetHeight, r.classList.add("is-open"), e === "menu" && t.querySelector(".menu-close").focus()) : s && !r.classList.contains("is-open") ? (clearTimeout(this.#v), r.classList.add("is-open")) : !s && r.open && this.#T(r), s) {
+		if (r.classList.toggle("is-tall", e === "colecciones"), s && !r.open ? (this.#p(), this.#h = t.querySelector(".menu-open"), clearTimeout(this.#v), r.showModal(), $a(!0, r), r.offsetHeight, r.classList.add("is-open"), e === "menu" && t.querySelector(".menu-close").focus()) : s && !r.classList.contains("is-open") ? (clearTimeout(this.#v), r.classList.add("is-open")) : !s && r.open && this.#T(r), s) {
 			t.querySelector(".menu-main").hidden = e !== "menu", t.querySelector(".menu-products").hidden = e !== "products", t.querySelector(".menu-recursos").hidden = e !== "recursos", t.querySelector(".menu-sub").hidden = !o;
 			let i = c.find((e) => !e.hidden), a = (e) => e === "menu" ? 0 : e === "products" || e === "recursos" ? 1 : 2;
 			l && i && l !== i && (this.#E(l, i, a(e) > a(n), u), this.#C(r, d));
@@ -7961,7 +7974,7 @@ var fc = ":host{--mega-in:var(--arq-motion-duration-panel);--mega-out:var(--arq-
 		this.#z(), q.matches ? _c.includes(e) && this.#f(e) : this.#L(!0, "products", e);
 	}
 	#z() {
-		this.#e || this.#t || (this.#t = cr().then((e) => this.navigation = e).catch((e) => console.error("[arq] navbar: no se pudo cargar la navegación", e)).finally(() => this.#t = null));
+		this.#e || this.#t || (this.#t = lr().then((e) => this.navigation = e).catch((e) => console.error("[arq] navbar: no se pudo cargar la navegación", e)).finally(() => this.#t = null));
 	}
 	#B() {
 		let e = this.shadowRoot, t = this.#e;
@@ -8000,7 +8013,7 @@ var fc = ":host{--mega-in:var(--arq-motion-duration-panel);--mega-out:var(--arq-
 		this.#a = setTimeout(async () => {
 			let e = this.#o;
 			try {
-				let { results: t, total: n } = await nr(e, { limit: mc });
+				let { results: t, total: n } = await rr(e, { limit: mc });
 				e === this.#o && this.#W(t, n);
 			} catch (t) {
 				console.error("[arq] navbar: no se pudo buscar", t), e === this.#o && this.#W([], 0, !0);
@@ -8010,14 +8023,14 @@ var fc = ":host{--mega-in:var(--arq-motion-duration-panel);--mega-out:var(--arq-
 	#W(e, t, n = !1) {
 		let r = this.shadowRoot;
 		this.#r = e, this.#i = -1;
-		let i = this.#o, a = e.map((e) => `<arq-search-result href="${J(e.href)}"${e.image ? ` image="${J(e.image)}"` : ""}>${J(e.name)}<span slot="meta">${J(e.meta)}</span></arq-search-result>`).join("") + (e.length ? `<arq-search-see-all href="${J(rr(i))}" term="${J(i)}" count="${t}"></arq-search-see-all>` : ""), o = i && !e.length, s = n ? "error" : "no-results", c = r.querySelector(".search-dropdown");
+		let i = this.#o, a = e.map((e) => `<arq-search-result href="${J(e.href)}"${e.image ? ` image="${J(e.image)}"` : ""}>${J(e.name)}<span slot="meta">${J(e.meta)}</span></arq-search-result>`).join("") + (e.length ? `<arq-search-see-all href="${J(ir(i))}" term="${J(i)}" count="${t}"></arq-search-see-all>` : ""), o = i && !e.length, s = n ? "error" : "no-results", c = r.querySelector(".search-dropdown");
 		c.state = o ? s : "results", c.term = i, c.innerHTML = a, this.#J(!!i);
 		let l = r.querySelector(".search-screen");
 		l.innerHTML = o ? `<arq-search-dropdown state="${s}" term="${J(i)}"></arq-search-dropdown>` : a, r.querySelector(".search-sheet").results = {
 			query: i,
 			items: e,
 			total: t,
-			href: rr(i),
+			href: ir(i),
 			error: n
 		}, this.#Q();
 		let u = t + e.filter((e) => e.kind === "collection").length, d = i ? n ? "No se pudo completar la búsqueda." : e.length ? `${u.toLocaleString("es-AR")} ${u === 1 ? "resultado" : "resultados"}` : `No encontramos resultados para «${i}»` : "";
@@ -8035,7 +8048,7 @@ var fc = ":host{--mega-in:var(--arq-motion-duration-panel);--mega-out:var(--arq-
 	#K() {
 		if (this.#n || this.search !== "sheet") return;
 		let e = this.shadowRoot.querySelector(".search-sheet");
-		this.#n = On().then((t) => e.recommended = t).catch((e) => {
+		this.#n = kn().then((t) => e.recommended = t).catch((e) => {
 			this.#n = null, console.error("[arq] navbar: no se pudieron cargar los recomendados", e);
 		});
 	}
@@ -8066,7 +8079,7 @@ var fc = ":host{--mega-in:var(--arq-motion-duration-panel);--mega-out:var(--arq-
 	}
 	#$(e) {
 		let t = this.#X()[this.#i];
-		t ? t.click() : e.trim() && location.assign(rr(e.trim()));
+		t ? t.click() : e.trim() && location.assign(ir(e.trim()));
 	}
 }).define();
 //#endregion
@@ -8137,7 +8150,7 @@ var Sc = ":host{cursor:pointer;flex:0 auto;min-width:0;display:flex}.tile{box-si
 	};
 	static template = "<span class=\"tile\"><span class=\"media\" hidden><slot name=\"media\"></slot></span><span class=\"title role-body-regular\"><slot name=\"swatch\"></slot><slot></slot></span><span class=\"meta role-body-compact\" hidden><slot name=\"meta\"></slot></span></span>";
 	setup() {
-		this.selectable = new _a(this, {
+		this.selectable = new va(this, {
 			role: "radio",
 			state: "aria-checked"
 		});
@@ -8156,7 +8169,7 @@ var Cc = ":host{align-items:center;gap:var(--arq-space-gap-sm-md);flex-wrap:wrap
 	static properties = { label: { type: String } };
 	static template = "<slot></slot>";
 	setup() {
-		this.setAttribute("role", "radiogroup"), this.select = new Na(this, { items: "arq-swatch" });
+		this.setAttribute("role", "radiogroup"), this.select = new Pa(this, { items: "arq-swatch" });
 		let e = () => {
 			for (let e of this.select.items) e.getAttribute("size") !== "xlarge" && e.setAttribute("size", "xlarge");
 		};
@@ -8195,7 +8208,7 @@ var wc = ":host{display:block}.group{align-items:flex-start;gap:var(--arq-space-
 	};
 	static template = "<div class=\"group\"><span class=\"heading\" hidden><span class=\"label role-label\"></span><span class=\"value role-body-medium\" aria-hidden=\"true\" hidden></span></span><div class=\"options\"><slot></slot></div></div>";
 	setup() {
-		this.select = new Na(this, { items: "arq-option-tile" }), this.shadowRoot.querySelector("slot").addEventListener("slotchange", () => {
+		this.select = new Pa(this, { items: "arq-option-tile" }), this.shadowRoot.querySelector("slot").addEventListener("slotchange", () => {
 			this.#n(), this.#e();
 		});
 	}
@@ -8242,7 +8255,7 @@ var Tc = ":host{vertical-align:middle;cursor:pointer;max-width:100%;display:inli
 	#e = this.attachInternals();
 	#t = !1;
 	setup() {
-		this.#t = this.selected, this.selectable = new _a(this, {
+		this.#t = this.selected, this.selectable = new va(this, {
 			role: "radio",
 			state: "aria-checked"
 		});
@@ -8401,7 +8414,7 @@ var Ec = ":host{width:100%;display:block}.input{gap:var(--arq-space-gap-sm);flex
 		let n = e.querySelector(".field");
 		n.replaceChildren(t);
 		let r = document.createElement("arq-select-menu");
-		r.type = "text", r.className = "menu", r.id = `${this.#n.control}-menu`, r.hidden = !0, n.append(r), this.#t = t, this.#a = this.getAttribute("value") ?? "", this.#o = new ha({
+		r.type = "text", r.className = "menu", r.id = `${this.#n.control}-menu`, r.hidden = !0, n.append(r), this.#t = t, this.#a = this.getAttribute("value") ?? "", this.#o = new ga({
 			trigger: t,
 			menu: r,
 			options: () => this.#i,
@@ -8623,7 +8636,7 @@ var Bc = ":host{min-width:0;display:block}:host([data-arq-empty]){display:none}.
 	};
 	static template = `<div class="item"><button type="button" class="trigger"><span class="number role-caption" hidden></span><span class="question role-body-xl"><slot name="question"></slot></span>${L("plus")}${L("minus")}</button><div class="answer-wrap" part="panel"><div class="answer-clip"><div class="answer role-body"><slot></slot></div></div></div></div>`;
 	setup() {
-		this.disclosure = new la(this, {
+		this.disclosure = new ua(this, {
 			trigger: this.shadowRoot.querySelector(".trigger"),
 			panel: this.shadowRoot.querySelector(".answer-wrap"),
 			animateHeight: !0
@@ -8852,7 +8865,7 @@ var Xc = ":host{isolation:isolate;min-width:0;display:block}.block{justify-conte
 var Qc = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.card-media{aspect-ratio:3/4}.caption{align-items:stretch;gap:var(--arq-space-gap-sm-md);flex-direction:column;display:flex}.title-row{align-items:center;gap:var(--arq-space-gap-sm);display:flex}.description{color:var(--arq-color-text-secondary);overflow-wrap:break-word;margin:0}.name{min-width:0;color:var(--arq-color-text-primary);overflow-wrap:break-word}.icon{width:var(--arq-icon-md);height:var(--arq-icon-md);color:var(--arq-color-icon-primary);flex:none}@media (width>=768px){.card-media{max-height:none}}@media (width<=767px){.card{gap:var(--arq-space-gap-md)}.card-media{aspect-ratio:4/5}}.card-media ::slotted(*){transition:transform var(--arq-motion-duration-slow) var(--arq-motion-easing-standard)!important}@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){.card:has(.card-link:hover) .card-media ::slotted(*){transform:scale(var(--arq-motion-scale-hover))!important}}.card-media{position:relative}.card.reveal{opacity:0;transform:translateY(var(--arq-space-gap-2xl));transition-property:color,background-color,border-color,outline-color,opacity,transform;transition-duration:var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), var(--arq-motion-duration-fast), calc(var(--arq-motion-duration-slow) * 2), calc(var(--arq-motion-duration-slow) * 2);transition-delay:0s, 0s, 0s, 0s, calc(var(--arq-motion-duration-fast) * var(--reveal-index,0)), calc(var(--arq-motion-duration-fast) * var(--reveal-index,0));transition-timing-function:var(--arq-motion-easing-standard)}.card.reveal.revealed{opacity:1;transform:none}:host([overlay]){height:100%}:host([overlay]) .card{gap:0;height:100%;overflow:hidden}:host([overlay]) .card-media{aspect-ratio:auto;flex:auto;height:100%;min-height:0}:host([overlay]) .card-media:after{content:\"\";z-index:0;pointer-events:none;background:linear-gradient(#0000,#000000b8);height:50%;position:absolute;bottom:0;left:0;right:0}:host([overlay]) .caption{right:var(--arq-space-padding-xl);bottom:var(--arq-space-padding-xl);left:var(--arq-space-padding-xl);z-index:var(--card-above);pointer-events:none;transform:translateY(var(--description-shift,0));transition:transform var(--arq-motion-duration-slow) var(--arq-motion-easing-out);position:absolute}:host([overlay]) .card-link{pointer-events:auto}:host([overlay]) .card-link:after{inset:-100vmax}:host([overlay]) .title-row{justify-content:space-between;gap:var(--arq-space-gap-md)}:host([overlay]) .name{min-width:0;color:var(--arq-color-text-inverse);flex:auto}:host([overlay]) .icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl);color:var(--arq-color-icon-inverse)}:host([overlay]) .description{color:var(--arq-color-text-inverse);opacity:0;transition-property:opacity,color,background-color,border-color,outline-color;transition-duration:var(--arq-motion-duration-slow);transition-timing-function:var(--arq-motion-easing-out)}:host([overlay]) .card:has(.card-link:focus-visible) .caption{transform:none}:host([overlay]) .card:has(.card-link:focus-visible) .description{opacity:1}@media (hover:hover) and (pointer:fine){:host([overlay]:hover) .caption{transform:none}:host([overlay]:hover) .description{opacity:1}:host([overlay]) .card:has(.card-link:hover) .card-media{outline:none}:host([overlay]) .card-media ::slotted(*){transition:transform var(--arq-motion-duration-slow) var(--arq-motion-easing-standard)!important}@media (prefers-reduced-motion:no-preference){:is(:host([overlay]:hover) .card-media ::slotted(*),:host([overlay]) .card:has(.card-link:focus-visible) .card-media ::slotted(*)){transform:scale(var(--arq-motion-scale-hover))!important}}}@media (width<=767px){:host([overlay]),:host([overlay]) .card{height:auto}:host([overlay]) .card-media{aspect-ratio:3/4;flex:none;height:auto}:host([overlay]) .caption{transform:none}:host([overlay]) .description{opacity:1}}";
 (class extends I {
 	static tag = "arq-category-card";
-	static styles = Fo + Qc;
+	static styles = Io + Qc;
 	static properties = {
 		href: { type: String },
 		overlay: { type: Boolean }
@@ -8891,7 +8904,7 @@ var Qc = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex
 var $c = ":host{min-width:0;display:block}.card{gap:var(--arq-space-gap-lg);flex-direction:column;display:flex}.card-media{aspect-ratio:5/4}.content{align-items:flex-start;gap:var(--arq-space-gap-md);padding-top:var(--arq-space-padding-sm);flex-direction:column;display:flex}.label,.description{margin:0}.label{color:var(--arq-color-text-tertiary)}.name{max-width:100%;color:var(--arq-color-text-primary);overflow-wrap:break-word}.description{max-width:var(--arq-layout-measure);color:var(--arq-color-text-secondary);overflow-wrap:break-word}.cta{margin-top:calc(var(--arq-space-gap-sm) + var(--arq-space-gap-md))}@media (width>=768px){.card-media{max-height:max(50svh, 100svh - var(--arq-space-section-xl) * 2 - var(--arq-space-gap-6xl))}}@media (width<=767px){.card-media{aspect-ratio:1}.content{gap:var(--arq-space-gap-sm-md);padding-top:0}.description{max-width:none}.cta{margin-top:calc(var(--arq-space-gap-xs) + var(--arq-space-gap-sm-md))}}", el = ["label", "description"];
 (class extends I {
 	static tag = "arq-line-card";
-	static styles = Fo + $c;
+	static styles = Io + $c;
 	static properties = { href: { type: String } };
 	static template = "<div class=\"card\"><div class=\"card-media\"><slot name=\"image\"></slot></div><div class=\"content\"><p class=\"label role-label\" hidden><slot name=\"label\"></slot></p><div class=\"name role-heading-1\"><slot name=\"name\"></slot></div><p class=\"description role-body-lg\" hidden><slot name=\"description\"></slot></p><arq-button class=\"cta\" type=\"underline\" show-underline show-icon icon=\"arrow-right\"><slot name=\"action\">Ver colección</slot></arq-button></div></div>";
 	setup() {
@@ -9161,7 +9174,7 @@ var cl = ":host{min-width:0;display:block}.block{align-items:flex-start;gap:var(
 var ul = ":host{min-width:0;height:100%;min-height:0;display:block}:host(.reveal:not(.revealed)){opacity:0}:host(.reveal.revealed){animation:arq-reveal calc(var(--arq-motion-duration-slow) * 2) var(--arq-motion-easing-standard) backwards;animation-delay:calc(var(--arq-motion-duration-fast) * var(--reveal-index,0))}.card{background:var(--arq-color-surface-inverse);height:100%;color:var(--arq-color-text-inverse);overflow:hidden}.card-media{position:absolute;inset:0}::slotted([slot=image]){object-fit:cover;width:100%!important;max-width:none!important;height:100%!important;transition:transform var(--arq-motion-duration-slow) var(--arq-motion-easing-standard)!important;display:block!important}.scrim{pointer-events:none;background:linear-gradient(#0000,#000000c7);height:50%;position:absolute;bottom:0;left:0;right:0}.tag{top:var(--arq-space-padding-lg);left:var(--arq-space-padding-lg);z-index:var(--card-above);padding:var(--arq-space-padding-xs) var(--arq-space-padding-sm);border:var(--arq-border-default) solid var(--arq-color-border-default);background:var(--arq-color-surface-default);color:var(--arq-color-text-secondary);position:absolute}.info{right:var(--arq-space-padding-xl);bottom:var(--arq-space-padding-xl);left:var(--arq-space-padding-xl);z-index:var(--card-above);gap:var(--arq-space-gap-sm-md);transform:translateY(var(--description-shift,0));transition:transform var(--arq-motion-duration-slow) var(--arq-motion-easing-out);flex-direction:column;display:flex;position:absolute}.title-row{justify-content:space-between;align-items:center;gap:var(--arq-space-gap-md);display:flex}.label,.name,.description{margin:0}.label{opacity:.8}.name{min-width:0;color:var(--arq-color-text-inverse);flex:auto}.icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl);color:var(--arq-color-icon-inverse);pointer-events:none;flex:none}.description{color:var(--arq-color-text-inverse);opacity:0;transition-property:opacity,color,background-color,border-color,outline-color;transition-duration:var(--arq-motion-duration-slow);transition-timing-function:var(--arq-motion-easing-out)}.card:has(.card-link:focus-visible) .info{transform:none}.card:has(.card-link:focus-visible) .description{opacity:1}@media (hover:hover) and (pointer:fine){:host(:hover) .info{transform:none}:host(:hover) .description{opacity:1}.card:has(.card-link:hover) .card-media{outline:none}@media (prefers-reduced-motion:no-preference){:host(:hover) ::slotted([slot=image]){transform:scale(var(--arq-motion-scale-hover))!important}.card:has(.card-link:focus-visible) ::slotted([slot=image]){transform:scale(var(--arq-motion-scale-hover))!important}}}@media (width<=767px){.info{transform:none}.description{opacity:1}}";
 (class extends I {
 	static tag = "arq-collection-tile";
-	static styles = Fo + G + ul;
+	static styles = Io + G + ul;
 	static properties = {
 		href: { type: String },
 		featured: { type: Boolean }
@@ -9269,7 +9282,7 @@ var fl = ":host{isolation:isolate;min-width:0;display:block}.layout{align-items:
 	async #f() {
 		let e = [];
 		try {
-			e = await un();
+			e = await dn();
 		} catch (e) {
 			console.error("[arq] collection-index: no se pudieron cargar las familias", e);
 			return;
@@ -9861,7 +9874,7 @@ var Ml = ":host{min-width:0;display:block}.layout{align-items:flex-start;gap:var
 		this.setAttribute("aria-busy", "true"), e.length && this.#m(e.length), this.#h(e.length ? "Cargando productos…" : "");
 		let r = [];
 		try {
-			r = e.length ? await Dn(e) : [];
+			r = e.length ? await On(e) : [];
 		} catch (e) {
 			console.error("[arq] featured-products: no se pudo cargar el catálogo", e);
 		}
@@ -10060,8 +10073,8 @@ var Pl = (e) => String(e ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").trim().
 			subtree: !0,
 			attributes: !0,
 			attributeFilter: ["href"]
-		}), this.#E(), e.addEventListener("click", this.#u), document.querySelector("arq-page-header")?.addEventListener("click", this.#u), to(!1), e.querySelector(".grid").addEventListener("click", (e) => {
-			e.composedPath().some((e) => e.localName === "a" && e.hasAttribute("href")) && to(document.documentElement.getAttribute("data-arq-theme") === "dark");
+		}), this.#E(), e.addEventListener("click", this.#u), document.querySelector("arq-page-header")?.addEventListener("click", this.#u), no(!1), e.querySelector(".grid").addEventListener("click", (e) => {
+			e.composedPath().some((e) => e.localName === "a" && e.hasAttribute("href")) && no(document.documentElement.getAttribute("data-arq-theme") === "dark");
 		}), window.addEventListener("popstate", this.#d);
 		let t = e.querySelector("arq-filter-panel");
 		t.addEventListener("arq:filters", (e) => this.#v(e.detail.filters)), t.addEventListener("arq:apply", (e) => {
@@ -10146,7 +10159,7 @@ var Pl = (e) => String(e ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").trim().
 		let e = this.shadowRoot, t = e.querySelector(".compare"), n = e.querySelector(".picker"), r = t.items.map((e) => e.sku), i = ++this.#f;
 		n.count = r.length, n.href = "/arq/productos";
 		try {
-			let { items: e } = await sr({
+			let { items: e } = await cr({
 				...n.search,
 				selected: r
 			});
@@ -10163,8 +10176,8 @@ var Pl = (e) => String(e ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").trim().
 		let e = (e) => (e ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").trim().toLowerCase(), { collection: t, family: n } = this.#e, r = [t, n].some((t) => e(t) === Wl);
 		this.shadowRoot.querySelector(".toolbar").showIluminar = !r;
 		let i = document.documentElement;
-		r && i.getAttribute("data-arq-theme") === "dark" && Ka(() => {
-			i.removeAttribute("data-arq-theme"), Ya(!1);
+		r && i.getAttribute("data-arq-theme") === "dark" && qa(() => {
+			i.removeAttribute("data-arq-theme"), Xa(!1);
 		});
 	}
 	update() {
@@ -10189,7 +10202,7 @@ var Pl = (e) => String(e ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").trim().
 		e && this.#T(r.filters), i.count = r.count, this.#S(r.cards), this.#y(r.count ? "" : this.#t ? `No encontramos productos para «${this.#t}».` : n.empty);
 	}
 	#_(e) {
-		return nn({
+		return rn({
 			...this.#e,
 			query: this.#t,
 			filters: e
@@ -10263,7 +10276,7 @@ var Pl = (e) => String(e ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").trim().
 		if (!e?.length) return;
 		let t;
 		try {
-			t = await lr();
+			t = await ur();
 		} catch (e) {
 			console.error("[arq] catalog-listing: no se pudieron cargar las categorías", e);
 			return;
@@ -10409,7 +10422,7 @@ var Pl = (e) => String(e ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").trim().
 	}
 };
 function ql() {
-	let e = new URLSearchParams(location.search), t = {}, n = Pt(location.pathname);
+	let e = new URLSearchParams(location.search), t = {}, n = Ft(location.pathname);
 	n && (t.environment = n);
 	for (let [n, r] of Object.entries(Vl)) {
 		let i = e.get(n);
@@ -10419,7 +10432,7 @@ function ql() {
 }
 function Jl(e) {
 	let t = decodeURIComponent(e).replace(/\/$/, "");
-	return t === "/arq/productos" || Pt(t) !== null;
+	return t === "/arq/productos" || Ft(t) !== null;
 }
 function Yl(e, t) {
 	let n = new URL(e, location.href), r = (e) => [...new URLSearchParams(e)].sort().join("&"), i = new URL(t, location.href);
@@ -10690,7 +10703,7 @@ function lu(e) {
 		groups: s,
 		moduleName: (e) => `x${e}`,
 		formatSize: su,
-		swatch: (e) => bt(e, $l),
+		swatch: (e) => xt(e, $l),
 		extra: (e) => {
 			let t = tu[e];
 			return t?.sku && r[t.sku] ? r[t.sku] : null;
@@ -10975,7 +10988,7 @@ var bu = null;
 function xu() {
 	return bu ??= (async () => {
 		let [e, { groups: t }] = await Promise.all([vu(), Ze()]), n = /* @__PURE__ */ new Map();
-		for (let e of t) for (let t of e.variants) n.set(t.sku, kt(e.id, t.sku));
+		for (let e of t) for (let t of e.variants) n.set(t.sku, At(e.id, t.sku));
 		return {
 			model: lu(e),
 			hrefs: n
@@ -11654,39 +11667,38 @@ var Au = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		n ? e.dataset.size = n : delete e.dataset.size;
 	};
 	#u = {};
-	#d = null;
+	#d = [];
+	#f = null;
 	setup() {
 		let e = this.shadowRoot, t = e.querySelector(".spec-tabs");
-		new Na(t, { items: "arq-tab" }), t.addEventListener("arq:change", (e) => {
-			e.stopPropagation(), this.#z(e.detail.value);
-		}), this.#m(), e.querySelector("slot[name=\"inspiration\"]").addEventListener("slotchange", () => this.#Q()), this.#Q(), this.#K(), this.#n = new Ql(this, e.querySelector(".cards")), this.#n.connect(), this.#r = new ResizeObserver(() => this.#te()), this.#r.observe(e.querySelector(".cards"));
+		new Pa(t, { items: "arq-tab" }), t.addEventListener("arq:change", (e) => {
+			e.stopPropagation(), this.#B(e.detail.value);
+		}), this.#h(), e.querySelector("slot[name=\"inspiration\"]").addEventListener("slotchange", () => this.#$()), this.#$(), this.#q(), this.#n = new Ql(this, e.querySelector(".cards")), this.#n.connect(), this.#r = new ResizeObserver(() => this.#ne()), this.#r.observe(e.querySelector(".cards"));
 		let n = matchMedia("(max-width: 1023px)"), r = () => e.querySelector(".iluminar").showLabel = !n.matches;
-		n.addEventListener("change", r), r(), e.querySelector(".iluminar").addEventListener("arq:change", (e) => this.#C(e.detail.checked)), e.querySelector(".gallery").addEventListener("arq:open", (e) => {
+		n.addEventListener("change", r), r(), e.querySelector(".iluminar").addEventListener("arq:change", (e) => this.#w(e.detail.checked)), e.querySelector(".gallery").addEventListener("arq:open", (e) => {
 			let { index: t, photos: n, opener: r } = e.detail;
-			this.#W().open(t, r, n);
+			this.#G().open(t, r, n);
 		});
 		let i = e.querySelector(".compare-bar");
-		i.addEventListener("arq:compare-space", (e) => this.#c(e.detail.height)), this.#c(i.foldedHeight ?? 0), this.#y(), no() && (e.querySelector(".iluminar").checked = !0, Ka(() => this.#E(!0))), e.querySelector(".options").addEventListener("arq:change", (e) => {
+		i.addEventListener("arq:compare-space", (e) => this.#c(e.detail.height)), this.#c(i.foldedHeight ?? 0), this.#b(), ro() && (e.querySelector(".iluminar").checked = !0, qa(() => this.#D(!0))), e.querySelector(".options").addEventListener("arq:change", (e) => {
 			let t = e.target.closest("[data-attribute]")?.dataset.attribute;
-			if (!t || !e.detail?.selected) return;
-			let { variants: n, variantAttributes: r } = this.#e;
-			this.#u = dt(n, r, this.#u, t, e.detail.value), this.#O(), this.#A({ updateUrl: !0 });
-		}), e.querySelector(".datasheet").addEventListener("click", (e) => this.#U(this.#d, e.currentTarget)), e.querySelector(".to-downloads").addEventListener("click", (t) => {
-			this.#Y(this.#d), e.querySelector("arq-download-modal").show(t.currentTarget);
+			t && e.detail?.selected && (this.#u = ft(this.#e.variants, this.#d, this.#u, t, e.detail.value), this.#k(), this.#j({ updateUrl: !0 }));
+		}), e.querySelector(".datasheet").addEventListener("click", (e) => this.#W(this.#f, e.currentTarget)), e.querySelector(".to-downloads").addEventListener("click", (t) => {
+			this.#X(this.#f), e.querySelector("arq-download-modal").show(t.currentTarget);
 		});
-		for (let t of e.querySelectorAll(".config-cta")) t.addEventListener("click", () => e.querySelector(".dao-config").show(this.#d, t));
+		for (let t of e.querySelectorAll(".config-cta")) t.addEventListener("click", () => e.querySelector(".dao-config").show(this.#f, t));
 		let a = e.querySelector(".compare"), o = e.querySelector(".compare-bar");
 		a.addEventListener("arq:change", (e) => {
-			e.stopPropagation(), this.#d && (e.detail.checked ? o.add(this.#H()) || (a.checked = !1) : o.remove(this.#d));
+			e.stopPropagation(), this.#f && (e.detail.checked ? o.add(this.#U()) || (a.checked = !1) : o.remove(this.#f));
 		}), o.addEventListener("arq:compare-change", () => {
-			a.checked = o.has(this.#d), s.open && this.#V();
+			a.checked = o.has(this.#f), s.open && this.#H();
 		});
 		let s = e.querySelector(".picker");
 		o.addEventListener("arq:add", (e) => {
 			e.stopPropagation(), s.show();
 		}), o.addEventListener("arq:replace", (e) => {
 			e.stopPropagation(), s.show(null, { replace: e.detail.sku });
-		}), o.addEventListener("arq:dismiss", () => ms(this)), s.addEventListener("arq:search", () => this.#V()), s.addEventListener("arq:close", (e) => {
+		}), o.addEventListener("arq:dismiss", () => ms(this)), s.addEventListener("arq:search", () => this.#H()), s.addEventListener("arq:close", (e) => {
 			e.detail.restored || (e.detail.item ? o.focusItem(e.detail.item.sku) : o.focusAdd());
 		}), s.addEventListener("arq:add", (e) => {
 			let { sku: t, name: n, cardMeta: r, meta: i, image: a } = e.detail.item, s = {
@@ -11696,48 +11708,48 @@ var Au = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 				image: a
 			};
 			e.detail.replace ? o.replace(e.detail.replace, s) : o.add(s);
-		}), s.addEventListener("arq:remove", (e) => o.remove(e.detail.sku)), e.querySelector(".table").addEventListener("arq:downloads", (e) => e.detail.sku ? this.#Y(e.detail.sku) : this.#X()), e.querySelector("arq-download-modal").addEventListener("arq:download", (e) => {
-			e.stopPropagation(), this.#U(e.currentTarget.dataset.sku, e.target.closest("arq-download-item"));
-		}), this.#f();
+		}), s.addEventListener("arq:remove", (e) => o.remove(e.detail.sku)), e.querySelector(".table").addEventListener("arq:downloads", (e) => e.detail.sku ? this.#X(e.detail.sku) : this.#Z()), e.querySelector("arq-download-modal").addEventListener("arq:download", (e) => {
+			e.stopPropagation(), this.#W(e.currentTarget.dataset.sku, e.target.closest("arq-download-item"));
+		}), this.#p();
 	}
-	async #f() {
+	async #p() {
 		let e = this.getAttribute("data-group");
-		this.setAttribute("aria-busy", "true"), this.#p($.loading);
+		this.setAttribute("aria-busy", "true"), this.#m($.loading);
 		let t = null, n = !1;
 		try {
-			t = e ? await pn(e) : null;
+			t = e ? await mn(e) : null;
 		} catch (e) {
 			n = !0, console.error("[arq] ficha-producto: no se pudo cargar el catálogo", e);
 		}
 		if (this.removeAttribute("aria-busy"), !t) {
-			this.#p(n ? $.error : $.notFound);
+			this.#m(n ? $.error : $.notFound);
 			return;
 		}
-		this.#e = t, this.#p("");
+		this.#e = t, this.#m("");
 		let r = t.group.variantGroup ?? "";
 		if (b(t.group.family) === Hu || /^DAO-/i.test(r) || t.group.id === Uu || Wu.test(r)) {
 			let e = this.shadowRoot.querySelector(".iluminar");
-			e.hidden = !0, e.checked && (e.checked = !1, Ka(() => this.#E(!1)));
+			e.hidden = !0, e.checked && (e.checked = !1, qa(() => this.#D(!1)));
 		}
 		let i = new URLSearchParams(location.search).get("sku");
-		this.#u = rt(t.variants, t.variantAttributes, i), this.#h(), this.#q(t.group.story), this.#Z(t.group.inspiration), this.#D(), this.#O(), this.#A({
+		this.#d = it(t.variants, t.variantAttributes), this.#u = rt(t.variants, this.#d, i), this.#g(), this.#J(t.group.story), this.#Q(t.group.inspiration), this.#O(), this.#k(), this.#j({
 			updateUrl: !0,
 			sku: t.variants.find((e) => e.sku === i)?.sku ?? t.variants.find((e) => e.isDefault)?.sku
 		});
 		try {
-			this.#k(t);
+			this.#A(t);
 		} catch {}
-		this.#G(), this.#J(), this.#$(), this.#ee(), this.shadowRoot.querySelector(".page").toggleAttribute("data-ready", !0);
+		this.#K(), this.#Y(), this.#ee(), this.#te(), this.shadowRoot.querySelector(".page").toggleAttribute("data-ready", !0);
 	}
-	#p(e) {
+	#m(e) {
 		let t = this.shadowRoot.querySelector(".status");
 		t.textContent = e;
 	}
-	#m() {
+	#h() {
 		let e = this.querySelector(":scope > img[slot=\"image\"]");
 		e && this.shadowRoot.querySelector(".gallery").append(e);
 	}
-	#h() {
+	#g() {
 		let { group: e, collection: t } = this.#e, n = this.shadowRoot, { crumbs: r, see: i } = qu(e, t);
 		n.querySelector(".breadcrumb").replaceChildren(...r.map(({ label: e, href: t, menu: n }) => {
 			let r = document.createElement("arq-breadcrumb-item");
@@ -11749,28 +11761,28 @@ var Au = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		}));
 		for (let e of n.querySelectorAll(".collection-link")) e.hidden = !i, i && (e.href = i.href, e.textContent = i.label);
 	}
-	#g(e) {
+	#_(e) {
 		if (!this.#e.group.variantNames || !e) return;
 		let t = this.querySelector(":scope > [slot=\"title\"]");
 		t && t.textContent !== e && (t.textContent = e);
 		let n = this.shadowRoot.querySelector(".breadcrumb").lastElementChild;
 		n && n.textContent !== e && (n.textContent = e);
 	}
-	#_ = /* @__PURE__ */ new Map();
-	#v = 0;
-	#y() {
+	#v = /* @__PURE__ */ new Map();
+	#y = 0;
+	#b() {
 		let e = this.shadowRoot, t = e.querySelector(".gallery"), n = () => {
-			cancelAnimationFrame(this.#v), this.#v = requestAnimationFrame(() => this.#b());
+			cancelAnimationFrame(this.#y), this.#y = requestAnimationFrame(() => this.#x());
 		};
 		t.addEventListener("load", n, !0), t.addEventListener("arq:slide", n);
 		let r = new ResizeObserver(n);
 		r.observe(t), r.observe(e.querySelector(".iluminar")), r.observe(e.querySelector(".breadcrumb")), n();
 	}
-	async #b() {
+	async #x() {
 		let e = this.shadowRoot, t = e.querySelector(".iluminar"), n = e.querySelector(".breadcrumb"), r = e.querySelector(".gallery"), i = r.currentImage, a = i && !i.hidden && i.getAttribute("src") ? i.src : null, o = async (e) => {
 			if (!a) return null;
 			try {
-				return await this.#x(a, i, e);
+				return await this.#S(a, i, e);
 			} catch {
 				return null;
 			}
@@ -11781,17 +11793,17 @@ var Au = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		]);
 		if (a && (i.src !== a || r.currentImage !== i)) return;
 		let d = e.querySelector(".gallery").images.find((e) => [e.src, e.srcOn].some((e) => e && new URL(Se(e, 1600), location.href).href === a));
-		for (let e of [d?.src, d?.srcOn]) e && this.#S(e).catch(() => {});
+		for (let e of [d?.src, d?.srcOn]) e && this.#C(e).catch(() => {});
 		let f = (e) => e !== null && e < ju;
 		t.theme = f(c) ? "inverse" : "default", c === null || f(c) ? t.removeAttribute("data-arq-theme") : t.setAttribute("data-arq-theme", "light"), l === null ? n.removeAttribute("data-arq-theme") : n.setAttribute("data-arq-theme", f(l) ? "dark" : "light"), s.forEach(([e], t) => {
 			let n = u[t];
 			r.setOverlayTone(e, n === null ? null : f(n) ? "dark" : "light");
 		});
 	}
-	async #x(e, t, n) {
+	async #S(e, t, n) {
 		let r = this.shadowRoot.querySelector(".gallery").frame.getBoundingClientRect(), i = n.getBoundingClientRect();
 		if (!r.width || !r.height || !i.width || !i.height || i.right <= r.left || i.left >= r.right || i.bottom <= r.top || i.top >= r.bottom) return null;
-		let a = await this.#S(e);
+		let a = await this.#C(e);
 		if (!a) return null;
 		let o = getComputedStyle(t), s = (e) => parseFloat(o.getPropertyValue(`padding-${e}`)) || 0, c = t.dataset.fit === "air", l = c ? {
 			left: r.left + s("left"),
@@ -11806,21 +11818,21 @@ var Au = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		for (let e = 0; e < h.length; e += 4) g += .2126 * Vu(h[e]) + .7152 * Vu(h[e + 1]) + .0722 * Vu(h[e + 2]);
 		return g / (h.length / 4);
 	}
-	#S(e) {
-		if (!this.#_.has(e)) {
+	#C(e) {
+		if (!this.#v.has(e)) {
 			let t = Bu(e), n = (e, t) => {
 				let n = new Image();
 				return t && (n.crossOrigin = "anonymous"), n.src = e, n.decode().then(() => n);
 			}, r = t ? n(e, !1).then(() => n(t, !0)) : Promise.resolve(null);
-			r.catch(() => this.#_.delete(e)), this.#_.set(e, r);
+			r.catch(() => this.#v.delete(e)), this.#v.set(e, r);
 		}
-		return this.#_.get(e);
+		return this.#v.get(e);
 	}
-	#C(e) {
-		ro(void 0, [this.shadowRoot.querySelector(".hero"), ...document.querySelectorAll("arq-navbar")]), this.#E(e);
+	#w(e) {
+		io(void 0, [this.shadowRoot.querySelector(".hero"), ...document.querySelectorAll("arq-navbar")]), this.#D(e);
 	}
-	#w = 0;
-	#T() {
+	#T = 0;
+	#E() {
 		let e = this.shadowRoot, t = [
 			e.querySelector(".breadcrumb"),
 			e.querySelector(".iluminar"),
@@ -11831,17 +11843,17 @@ var Au = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 			"--arq-theme-text-easing": "var(--arq-illumination-image-easing)"
 		};
 		for (let e of t) for (let [t, r] of Object.entries(n)) e.style.setProperty(t, r);
-		clearTimeout(this.#w), this.#w = setTimeout(() => {
+		clearTimeout(this.#T), this.#T = setTimeout(() => {
 			for (let e of t) for (let t of Object.keys(n)) e.style.removeProperty(t);
 		}, 1200);
 	}
-	#E(e) {
+	#D(e) {
 		let t = this.shadowRoot.querySelector(".hero");
 		for (let n of [t, ...document.querySelectorAll("arq-navbar")]) e ? n.setAttribute("data-arq-theme", "dark") : n.removeAttribute("data-arq-theme");
-		Va(), this.#T(), this.#b(), Ya(e, document.querySelector("arq-navbar") ?? t);
+		Ha(), this.#E(), this.#x(), Xa(e, document.querySelector("arq-navbar") ?? t);
 	}
-	#D() {
-		let { variants: e, variantAttributes: t } = this.#e, n = ot(e, t, this.#u).map(({ attribute: e, options: t }) => {
+	#O() {
+		let e = st(this.#e.variants, this.#d, this.#u).map(({ attribute: e, options: t }) => {
 			let n = v(e), r = document.createElement("arq-option-group");
 			r.dataset.attribute = e, r.label = n.label;
 			let i = n.control === "swatches", a = i ? document.createElement("arq-swatch-picker") : r;
@@ -11854,19 +11866,19 @@ var Au = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 			}
 			return r.hidden = t.every((e) => e.disabled), r;
 		});
-		this.shadowRoot.querySelector(".options").replaceChildren(...n);
+		this.shadowRoot.querySelector(".options").replaceChildren(...e);
 	}
-	#O() {
-		let { variants: e, variantAttributes: t } = this.#e, n = this.shadowRoot;
-		for (let { attribute: r, options: i } of ot(e, t, this.#u)) {
-			n.querySelectorAll(`.options [data-attribute="${CSS.escape(r)}"] :is(arq-swatch, arq-option-tile)`).forEach((e, t) => {
-				e.selected = i[t].selected, e.disabled = i[t].disabled, e.hidden = i[t].disabled;
+	#k() {
+		let e = this.shadowRoot;
+		for (let { attribute: t, options: n } of st(this.#e.variants, this.#d, this.#u)) {
+			e.querySelectorAll(`.options [data-attribute="${CSS.escape(t)}"] :is(arq-swatch, arq-option-tile)`).forEach((e, t) => {
+				e.selected = n[t].selected, e.disabled = n[t].disabled, e.hidden = n[t].disabled;
 			});
-			let e = n.querySelector(`.options [data-attribute="${CSS.escape(r)}"]`);
-			e.hidden = i.every((e) => e.disabled), e?.type === "swatches" && (e.value = i.find((e) => e.selected)?.value ?? "");
+			let r = e.querySelector(`.options [data-attribute="${CSS.escape(t)}"]`);
+			r.hidden = n.every((e) => e.disabled), r?.type === "swatches" && (r.value = n.find((e) => e.selected)?.value ?? "");
 		}
 	}
-	#k({ group: e }) {
+	#A({ group: e }) {
 		if (navigator.connection?.saveData) return;
 		let t = e.variants.slice(0, 40).flatMap((e) => [e.images?.gallery?.[0] ?? e.images?.studio, e.images?.galleryOn?.[0] ?? e.images?.studioOn]).filter(Boolean).map((e) => Se(e, ye)), n = [...new Set(t)], r = () => {
 			let e = n.shift();
@@ -11876,16 +11888,16 @@ var Au = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		};
 		setTimeout(r, 1500);
 	}
-	#A({ updateUrl: e = !1, sku: t = null } = {}) {
+	#j({ updateUrl: e = !1, sku: t = null } = {}) {
 		let { group: n, variants: r } = this.#e, i = Object.keys(this.#u).length ? nt(r, this.#u) : null, a = r.find((e) => e.sku === t) ?? i ?? r.find((e) => e.isDefault) ?? r[0];
-		if (!a || a.sku === this.#d) return;
-		this.#d = a.sku;
-		let o = Nn(n, a.sku), s = this.shadowRoot;
-		s.querySelector(".sku").textContent = o.sku, this.#g(o.name);
+		if (!a || a.sku === this.#f) return;
+		this.#f = a.sku;
+		let o = Pn(n, a.sku), s = this.shadowRoot;
+		s.querySelector(".sku").textContent = o.sku, this.#_(o.name);
 		let c = s.querySelector(".variant-description");
-		c.textContent = o.description ?? "", c.hidden = !o.description, this.#j(o.keyData), s.querySelector(".gallery").toggleAttribute("zoom", zu(n)), s.querySelector(".gallery").images = o.images;
-		for (let e of [o.images?.[0]?.src, o.images?.[0]?.srcOn]) e && this.#S(e).catch(() => {});
-		this.#F(o.sections, o.cota, o.name), this.#R();
+		c.textContent = o.description ?? "", c.hidden = !o.description, this.#M(o.keyData), s.querySelector(".gallery").toggleAttribute("zoom", zu(n)), s.querySelector(".gallery").images = o.images;
+		for (let e of [o.images?.[0]?.src, o.images?.[0]?.srcOn]) e && this.#C(e).catch(() => {});
+		this.#I(o.sections, o.cota, o.name), this.#z();
 		let l = s.querySelector(".compare");
 		if (l.checked = s.querySelector(".compare-bar").has(o.sku), e) {
 			let e = new URL(location.href);
@@ -11893,7 +11905,7 @@ var Au = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		}
 		this.emit("variant", { sku: a.sku });
 	}
-	#j({ items: e }) {
+	#M({ items: e }) {
 		let t = this.shadowRoot.querySelector(".keydata");
 		t.hidden = !e.length, t.replaceChildren(...e.map(({ field: e, label: t, value: n }) => {
 			let r = document.createElement("div");
@@ -11902,7 +11914,7 @@ var Au = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 			i.className = "keydata-label role-label", i.textContent = t;
 			let a = document.createElement("dd");
 			a.className = "keydata-value role-body-xl-light";
-			let o = e === "temperatura_color" ? Yo(n) : null;
+			let o = e === "temperatura_color" ? Xo(n) : null;
 			if (o) {
 				let e = document.createElement("span");
 				e.className = "keydata-dot", e.style.backgroundColor = o, e.setAttribute("aria-hidden", "true"), a.append(e);
@@ -11910,8 +11922,8 @@ var Au = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 			return a.append(n), r.append(i, a), r;
 		}));
 	}
-	#M = "specs";
-	#N(e, t = !0) {
+	#N = "specs";
+	#P(e, t = !0) {
 		let n = document.createElement("arq-spec-list");
 		n.columns = t;
 		for (let t of e.rows) {
@@ -11920,11 +11932,11 @@ var Au = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		}
 		return n;
 	}
-	#P(e, t) {
+	#F(e, t) {
 		let n = Ju(e, `Cotas de ${t}`, "cota");
 		n.addEventListener("error", () => n.hidden = !0), n.draggable = !1, Fu(n);
 		let r = () => {
-			Nu.matches && this.#W().open(0, n, [{
+			Nu.matches && this.#G().open(0, n, [{
 				src: n.currentSrc || n.src,
 				alt: n.alt,
 				original: !0
@@ -11937,7 +11949,7 @@ var Au = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 			e && n.naturalWidth && n.naturalHeight && (n.style.width = `${n.naturalWidth * Math.sqrt(e * e / (n.naturalWidth * n.naturalHeight))}px`);
 		}), n;
 	}
-	#F(e, t, n) {
+	#I(e, t, n) {
 		let r = this.shadowRoot, i = r.querySelector(".spec-tabs"), a = r.querySelector(".spec-panels"), o = [...a.querySelectorAll("arq-accordion-item")], s = e.filter((e) => e.id !== "comercial"), c = o.length ? new Set(o.filter((e) => e.open).map((e) => e.dataset.section)) : new Set(s.map((e) => e.id)), l = (e, r) => {
 			let i = document.createElement("div");
 			i.className = "accordion";
@@ -11947,8 +11959,8 @@ var Au = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 				let o = document.createElement("span");
 				if (o.slot = "title", o.textContent = a.id === "comercial" ? $.commercial : a.label, a.id === "materiales" && t) {
 					let r = document.createElement("div");
-					r.className = "with-cota", r.append(this.#N(a, !1), this.#P(t, n)), e.append(o, r);
-				} else e.append(o, this.#N(a));
+					r.className = "with-cota", r.append(this.#P(a, !1), this.#F(t, n)), e.append(o, r);
+				} else e.append(o, this.#P(a));
 				i.append(e);
 			}
 			return i;
@@ -11961,16 +11973,16 @@ var Au = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 			label: d.label,
 			content: l([d], () => !o.length || c.has("comercial"))
 		}].filter(Boolean);
-		f.some((e) => e.id === this.#M) || (this.#M = f[0]?.id), i.replaceChildren(...f.map((e) => {
+		f.some((e) => e.id === this.#N) || (this.#N = f[0]?.id), i.replaceChildren(...f.map((e) => {
 			let t = document.createElement("arq-tab");
-			return t.id = `spec-tab-${e.id}`, t.value = e.id, t.setAttribute("aria-controls", `spec-panel-${e.id}`), t.selected = e.id === this.#M, t.textContent = e.label, t;
+			return t.id = `spec-tab-${e.id}`, t.value = e.id, t.setAttribute("aria-controls", `spec-panel-${e.id}`), t.selected = e.id === this.#N, t.textContent = e.label, t;
 		})), a.replaceChildren(...f.map((e) => {
 			let t = document.createElement("div");
-			return t.className = "spec-panel", t.id = `spec-panel-${e.id}`, t.dataset.tab = e.id, t.setAttribute("role", "tabpanel"), t.setAttribute("aria-labelledby", `spec-tab-${e.id}`), t.hidden = e.id !== this.#M, t.append(e.content), t;
+			return t.className = "spec-panel", t.id = `spec-panel-${e.id}`, t.dataset.tab = e.id, t.setAttribute("role", "tabpanel"), t.setAttribute("aria-labelledby", `spec-tab-${e.id}`), t.hidden = e.id !== this.#N, t.append(e.content), t;
 		})), i.hidden = f.length < 2, r.querySelector(".details").hidden = !f.length;
 	}
-	#I = 0;
-	#L(e, t) {
+	#L = 0;
+	#R(e, t) {
 		for (let n of [
 			"compatible-title",
 			"accessory-title",
@@ -11978,55 +11990,55 @@ var Au = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 			"product-compatible-title"
 		]) e.querySelector(`.${n}`).hidden = n !== t;
 	}
-	async #R() {
-		let e = this.shadowRoot.querySelector(".compatible"), t = ++this.#I, n = this.shadowRoot.querySelector(".config-cta-inline");
-		if (this.#e.collection?.id !== "dao" && !this.#d?.startsWith("PAR11-")) {
+	async #z() {
+		let e = this.shadowRoot.querySelector(".compatible"), t = ++this.#L, n = this.shadowRoot.querySelector(".config-cta-inline");
+		if (this.#e.collection?.id !== "dao" && !this.#f?.startsWith("PAR11-")) {
 			let { accessories: t = [], related: r = [] } = this.#e;
-			this.#L(e, t.length ? "accessory-compatible-title" : r.length ? "product-compatible-title" : null), e.items = t.length ? t : r, n.hidden = !0;
+			this.#R(e, t.length ? "accessory-compatible-title" : r.length ? "product-compatible-title" : null), e.items = t.length ? t : r, n.hidden = !0;
 			return;
 		}
 		try {
 			let { model: r, hrefs: i } = await xu();
-			if (t !== this.#I) return;
-			let { kind: a, items: o } = yu(r, i, this.#d);
-			this.#L(e, {
+			if (t !== this.#L) return;
+			let { kind: a, items: o } = yu(r, i, this.#f);
+			this.#R(e, {
 				accessory: "accessory-title",
 				product: "product-compatible-title"
 			}[a] ?? "compatible-title"), n.hidden = a !== "compatible", e.items = o;
 		} catch (r) {
-			console.error("[arq] productos compatibles: no se pudieron cargar", r), t === this.#I && (e.items = [], n.hidden = !0);
+			console.error("[arq] productos compatibles: no se pudieron cargar", r), t === this.#L && (e.items = [], n.hidden = !0);
 		}
 	}
-	#z(e) {
+	#B(e) {
 		let t = this.shadowRoot;
-		this.#M = e;
+		this.#N = e;
 		for (let n of t.querySelectorAll(".spec-tabs arq-tab")) n.selected = n.value === e;
 		for (let n of t.querySelectorAll(".spec-panel")) n.hidden = n.dataset.tab !== e;
 	}
-	#B = 0;
-	async #V() {
-		let e = this.shadowRoot, t = e.querySelector(".picker"), n = e.querySelector(".compare-bar").items.map((e) => e.sku), r = ++this.#B;
+	#V = 0;
+	async #H() {
+		let e = this.shadowRoot, t = e.querySelector(".picker"), n = e.querySelector(".compare-bar").items.map((e) => e.sku), r = ++this.#V;
 		t.count = n.length;
 		try {
-			let { items: e } = await sr({
+			let { items: e } = await cr({
 				...t.search,
 				selected: n
 			});
-			r === this.#B && (t.items = e);
+			r === this.#V && (t.items = e);
 		} catch (e) {
-			console.error("[arq] compare-picker: no se pudo cargar el catálogo", e), r === this.#B && t.showError();
+			console.error("[arq] compare-picker: no se pudo cargar el catálogo", e), r === this.#V && t.showError();
 		}
 	}
-	#H() {
-		let { group: e } = this.#e, t = Nn(e, this.#d);
+	#U() {
+		let { group: e } = this.#e, t = Pn(e, this.#f);
 		return {
-			sku: this.#d,
+			sku: this.#f,
 			name: t.name || e.name,
-			meta: this.#d,
+			meta: this.#f,
 			image: t.images?.[0]?.src ?? null
 		};
 	}
-	#U(e, t = null) {
+	#W(e, t = null) {
 		if (!e) return;
 		let n = !!t?.closest("arq-download-modal"), r = this.shadowRoot.querySelector(n ? "arq-download-modal .datasheet-error" : ".buy .datasheet-error");
 		r.textContent = "";
@@ -12036,26 +12048,26 @@ var Au = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		let a = () => t.loading = !1;
 		i.pending.then(a, a);
 	}
-	#W() {
+	#G() {
 		return this.#a ??= new Dl(this.shadowRoot, () => []), this.#a;
 	}
-	#G() {
+	#K() {
 		let { group: e, images: t } = this.#e, n = this.shadowRoot;
 		n.querySelector(".ambient"), n.querySelector(".ambient-block").hidden = !0;
 	}
-	#K() {}
-	#q(e) {
+	#q() {}
+	#J(e) {
 		for (let e of this.querySelectorAll(":scope > [slot=\"story-title\"], :scope > [slot=\"story-text\"], :scope > [slot=\"story-list\"]")) e.remove();
 	}
-	#J() {
+	#Y() {
 		let { group: e, glossary: t, files: n } = this.#e, r = this.shadowRoot.querySelector(".table");
 		r.label = `Variantes de ${e.name}`, r.data = t, r.replaceChildren(...n.map((e) => {
 			let t = document.createElement("arq-button");
 			return t.slot = "downloads", t.type = "outline", t.showIcon = !0, t.icon = "arrow-up-right", t.href = e.href, t.target = "_blank", t.textContent = e.label, t;
 		}));
 	}
-	#Y(e) {
-		let { group: t, variantAttributes: n } = this.#e, r = this.shadowRoot.querySelector("arq-download-modal"), i = Nn(t, e);
+	#X(e) {
+		let { group: t, variantAttributes: n } = this.#e, r = this.shadowRoot.querySelector("arq-download-modal"), i = Pn(t, e);
 		r.dataset.sku = e, r.sku = e, r.thumb = i.images[0]?.src ?? null, r.meta = n.map((e) => i.values[e]).filter(Boolean).join(", ");
 		let a = document.createElement("arq-download-item");
 		a.emphasis = "featured", a.textContent = $.datasheet;
@@ -12066,7 +12078,7 @@ var Au = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		for (let e of r.querySelectorAll(":scope > arq-download-item")) e.remove();
 		r.querySelector(".datasheet-error").textContent = "", r.append(a, ...o);
 	}
-	#X() {
+	#Z() {
 		let e = this.shadowRoot.querySelector("arq-download-modal");
 		delete e.dataset.sku, e.sku = null, e.thumb = null, e.meta = null;
 		let t = this.#e.files.map((e) => {
@@ -12076,23 +12088,23 @@ var Au = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		for (let t of e.querySelectorAll(":scope > arq-download-item")) t.remove();
 		e.querySelector(".datasheet-error").textContent = "", e.append(...t);
 	}
-	#Z(e) {
+	#Q(e) {
 		this.querySelector(":scope > [slot=\"inspiration\"]")?.remove();
 	}
-	#Q() {
+	#$() {
 		let e = this.shadowRoot;
 		e.querySelector("slot[name=\"inspiration\"]").assignedElements().length, e.querySelector(".inspiration-images").children.length, e.querySelector(".inspiration").hidden = !0;
 	}
-	#$() {}
-	#ee() {
+	#ee() {}
+	#te() {
 		let { family: e } = this.#e, t = this.shadowRoot.querySelector(".collection");
 		t.hidden = !e.length;
 		let n = t.querySelector(".cards"), r = e.map(Yu);
 		this.#i?.disconnect(), n.replaceChildren(...r), this.#i = ic(r), this.#r?.disconnect(), this.#r?.observe(n);
 		for (let e of n.children) this.#r?.observe(e);
-		this.#te();
+		this.#ne();
 	}
-	#te() {
+	#ne() {
 		let e = this.shadowRoot, t = e.querySelector(".cards");
 		e.querySelector(".collection-controls").hidden = t.scrollWidth <= t.clientWidth + 1;
 	}
@@ -12104,12 +12116,12 @@ function qu(e, t) {
 	if (e.environment?.includes("Lámparas y Artefactos") && !e.environment.some((e) => e === "Interior" || e === "Exterior")) {
 		let t = [Ku, {
 			label: "Lámparas y artefactos",
-			href: D({ environment: Mt })
+			href: D({ environment: Nt })
 		}];
 		return e.application && t.push({
 			label: e.application,
 			href: D({
-				environment: Mt,
+				environment: Nt,
 				application: e.application
 			})
 		}), { crumbs: t };
@@ -12174,7 +12186,7 @@ var Xu = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.p
 		this.setAttribute("aria-busy", "true"), this.#t(Zu.loading);
 		let t = null, n = !1;
 		try {
-			t = e ? await Pn(e) : null;
+			t = e ? await Fn(e) : null;
 		} catch (e) {
 			n = !0, console.error("[arq] coleccion: no se pudo cargar el catálogo", e);
 		}
@@ -12275,7 +12287,7 @@ var td = ":host{min-width:0;padding-bottom:var(--arq-space-section-xl);color:var
 		t.hidden = !0, e.hidden = !1, this.setAttribute("aria-busy", "true"), e.loading = !0, this.#r("");
 		let r = null;
 		try {
-			r = await Cn();
+			r = await wn();
 		} catch (e) {
 			console.error("[arq] descargas: no se pudo cargar el catálogo", e);
 		}
@@ -12296,7 +12308,7 @@ var td = ":host{min-width:0;padding-bottom:var(--arq-space-section-xl);color:var
 		t.querySelector(".datasheet-error").textContent = "";
 		let r = this.#a(nd.datasheet);
 		r.emphasis = "featured", t.append(r);
-		let i = await Tn(e);
+		let i = await En(e);
 		t.sku === e && t.append(...i.map((e) => this.#a(e.label, e.href)));
 	}
 	#a(e, t) {
@@ -12372,7 +12384,7 @@ var rd = ":host{min-width:0;color:var(--arq-color-text-primary);display:block}.l
 	#e = !1;
 	setup() {
 		let e = this.shadowRoot;
-		new Na(e.querySelector(".choices"), { items: "arq-choice-chip" });
+		new Pa(e.querySelector(".choices"), { items: "arq-choice-chip" });
 		for (let [t, n] of Object.entries(cd)) {
 			let r = e.querySelector(`slot[name="${t}"]`), i = () => {
 				e.querySelector(n).hidden = !r.assignedNodes().length;
@@ -12433,11 +12445,11 @@ async function fd(e) {
 dd.define(), document.addEventListener("arq:datasheet", (e) => {
 	let t = e.detail?.sku;
 	if (!t) return;
-	let n = Qr(t);
+	let n = $r(t);
 	e.detail.pending = n, n.catch((e) => console.error("[arq] ficha técnica:", e));
 }), document.addEventListener("arq:configuration", (e) => {
 	if (!e.detail?.parts) return;
-	let t = oi(e.detail);
+	let t = si(e.detail);
 	e.detail.pending = t, t.catch((e) => console.error("[arq] configuración Daö:", e));
 }), document.addEventListener("click", (e) => {
 	e.target.closest?.("[data-arq-print]") && window.print();
