@@ -21,7 +21,7 @@
   display: none;
 }
 
-/* Título a la izquierda y la acción (Configura tu Daö) en la punta opuesta. */
+/* Título a la izquierda y la acción (Configurar Daö) en la punta opuesta. */
 .heading {
   display: flex;
   flex-wrap: wrap;

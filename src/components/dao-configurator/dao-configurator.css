@@ -561,7 +561,7 @@
    paso que se abre. Tres bloques a space/gap/2xl: el armado (título y
    especificaciones a space/gap/lg), las piezas (título y lista a
    space/gap/sm: menos que entre piezas, space/gap/md, así el título va con su
-   lista) y la descarga. */
+   lista) y la descarga, entre el armado y las piezas. */
 .final {
   display: flex;
   flex-direction: column;
@@ -694,12 +694,14 @@
      (el indicador de arriba lleva a los hechos). Sin ninguno abierto (el
      armado con «Cambiar»), los hechos quedan como filas de resumen. Entra
      desde la derecha: solo opacity y transform. */
-  .steps:has(.is-active) .step:not(.is-active) {
+  .steps:not(.is-editing):has(.is-active) .step:not(.is-active) {
     display: none;
   }
 
-  /* El título del paso abierto lo dice el indicador («Paso 1 de 3 · Aro») */
-  .step.is-active .step-head {
+  /* El título del paso abierto lo dice el indicador («Paso 1 de 3 · Aro»).
+     Cambiando un armado terminado (is-editing) no hay indicador: los pasos se
+     despliegan en su lugar, como en Desktop, con su título. */
+  .steps:not(.is-editing) .step.is-active .step-head {
     display: none;
   }
 
@@ -711,12 +713,12 @@
     animation: arq-step-out var(--arq-motion-duration-fade) var(--arq-motion-easing-standard) both;
   }
 
-  .step.is-entering {
+  .steps:not(.is-editing) .step.is-entering {
     animation-name: arq-step-slide;
     animation-duration: var(--arq-motion-duration-slow);
   }
 
-  /* Al volver a un paso anterior (barra de pasos) el sentido se invierte:
+  /* Al volver a un paso anterior (la flecha) el sentido se invierte:
      el que se va sale hacia la derecha y el nuevo entra desde la izquierda. */
   .steps {
     --step-dir: 1;
@@ -753,7 +755,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .step.is-entering {
+    .steps:not(.is-editing) .step.is-entering {
       animation-name: arq-step-fade;
       animation-duration: var(--arq-motion-duration-fade);
     }
@@ -778,6 +780,14 @@
     display: none;
   }
 
+  /* Flecha (icon-button Default, chevron-left) y «Paso 2 de 3 · Cabezal» a
+     space/gap/sm. En el primer paso no hay flecha. */
+  .progress-head {
+    display: flex;
+    align-items: center;
+    gap: var(--arq-space-gap-sm);
+  }
+
   .progress-label {
     margin: 0;
     color: var(--arq-color-text-secondary);
@@ -795,8 +805,8 @@
     flex: 1;
   }
 
-  /* Hecho o actual: color/border/strong; pendiente: color/border/default. Los
-     hechos son botones con el alto del trazo y un área táctil más alta. */
+  /* Hecho o actual: color/border/strong; pendiente: color/border/default.
+     Solo indican: para volver está la flecha. */
   .progress-bar {
     display: block;
     box-sizing: border-box;
@@ -811,28 +821,6 @@
     background: var(--arq-color-border-strong);
   }
 
-  /* Área táctil de space/padding/sm-md arriba y abajo del trazo (unos 28 px),
-     sin cambiar el dibujo. TODO (diseño): un «Atrás» visible en el paso. */
-  button.progress-bar {
-    position: relative;
-    cursor: pointer;
-  }
-
-  button.progress-bar::after {
-    content: '';
-    position: absolute;
-    inset: calc(-1 * var(--arq-space-padding-sm-md)) 0;
-  }
-
-  /* En táctil no hay hover: al apoyar el dedo, el trazo pasa a color/border/hover */
-  button.progress-bar:active {
-    background: var(--arq-color-border-hover);
-  }
-
-  button.progress-bar:focus-visible {
-    outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
-    outline-offset: 2px;
-  }
 
   /* Las fotos van debajo de las opciones. El recuadro mide al menos 5:4 del
      ancho (con 1 a 4 fotos no cambia de alto) y cada tarjeta, al menos 5:4 de
@@ -847,7 +835,7 @@
     display: none;
   }
 
-  /* La descarga sube debajo de las especificaciones: se ve sin desplazar */
+  /* Armado, descarga, fotos y piezas: el panel de fotos se ordena entre ellos */
   .result-summary {
     order: 1;
   }

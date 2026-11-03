@@ -51,7 +51,7 @@
   overflow: hidden;
 }
 
-/* «Configura tu Daö», en la fila de compatibles: el button Filled del sistema
+/* «Configurar Daö», en la fila de compatibles: el button Filled del sistema
    (padding, role/body-regular, hover, foco y presionado los trae el componente). */
 .config-cta-inline {
   flex: none;

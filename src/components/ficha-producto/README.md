@@ -86,7 +86,7 @@ Tablet (768–1023 px) usa la columna Desktop salvo en los bloques marcados: ah�
 
 ## Configurador (2026-10-21)
 
-> En la colección Daö, el «Configurar» de Daö ya no es una pestaña: «Configura tu Daö» (un `arq-button` Filled: sus paddings y `role/body-regular`, en caja normal) va en «Accesorios y lámparas compatibles», en la punta opuesta al título, y abre `<arq-dao-configurator>` en un modal a pantalla completa ([README](../dao-configurator/README.md)). El resto de esta sección es el configurador de variantes de la ficha.
+> En la colección Daö, el «Configurar» de Daö ya no es una pestaña: «Configurar Daö» (un `arq-button` Filled: sus paddings y `role/body-regular`, en caja normal) va en «Accesorios y lámparas compatibles», en la punta opuesta al título, y abre `<arq-dao-configurator>` en un modal a pantalla completa ([README](../dao-configurator/README.md)). El resto de esta sección es el configurador de variantes de la ficha.
 
 - **Característica madre:** el color, o la primera de `variant_attributes` si no hay color. Va primera y nunca se apaga; las demás dependen solo de las de arriba. Si una opción no forma un SKU con lo elegido, no se muestra. Al elegir, las de abajo se acomodan solas (`src/data/variants.js`; `docs/decisiones.md`, 2026-10-21 · Característica madre).
 - **Descripción** de la variante: debajo del nombre y arriba del sku, en `role/body-compact` (14 px; 16/24 desde 1920 px, mismo peso) y `color/text/tertiary`.

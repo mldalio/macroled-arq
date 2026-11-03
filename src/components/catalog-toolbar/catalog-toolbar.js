@@ -15,6 +15,8 @@
 //   recuerda: al recargar o volver a la página arranca apagado. Solo se traspasa
 //   a la ficha (theme.js, handOffTheme). El toggle sigue a <html> si otro lo
 //   cambia. La ficha tiene su propio Iluminar.
+// - slot action (solo de código): un arq-button en el lugar de Iluminar, junto a
+//   Filtrar. Lo usa la colección Daö, que no tiene Iluminar («Configurar Daö»).
 
 import { ArqElement } from '../../base/arq-element.js';
 import { setBrowserBar, switchTheme } from '../../base/theme.js';
@@ -42,6 +44,7 @@ class ArqCatalogToolbar extends ArqElement {
     `<p class="count role-body" aria-live="polite"></p>` +
     `<div class="actions">` +
     `<div class="lead"><arq-toggle show-label class="iluminar">Iluminar</arq-toggle><arq-divider orientation="vertical"></arq-divider></div>` +
+    `<div class="action" hidden><slot name="action"></slot></div>` +
     `<arq-button type="outline" show-icon icon="filter" count-label="filtros activos" class="filter">Filtrar</arq-button>` +
     `</div>` +
     `</div>`;
@@ -63,6 +66,10 @@ class ArqCatalogToolbar extends ArqElement {
     new MutationObserver(() => this.#syncToggle()).observe(document.documentElement, { attributes: true, attributeFilter: ['data-arq-theme'] });
     this.#syncToggle();
     customElements.whenDefined('arq-button').then(() => this.#a11y());
+    const action = root.querySelector('slot[name="action"]');
+    action.addEventListener('slotchange', () => {
+      root.querySelector('.action').hidden = !action.assignedElements().length;
+    });
   }
 
   update(changed) {

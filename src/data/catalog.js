@@ -321,31 +321,46 @@ const pick = (object = {}) => Object.fromEntries(Object.entries(object).filter((
 // ── Listados ─────────────────────────────────────────────────────────
 // Orden del listado sin búsqueda: los grupos de una misma colección (o, sin ella,
 // de la misma familia) juntos, en el orden en que aparece cada una en los datos.
-// Dentro de cada ambiente, Daö va casi al final, y después Tori Jardín y Tori Visera (esta, la última).
+// Interior sigue INTERIOR_ORDER (cada nombre abarca sus variantes: «Mini Kai»
+// incluye «Mini Kai Rounded»); las que no están van después. En Exterior, Daö va
+// casi al final, y después Tori Jardín y Tori Visera (esta, la última).
+const INTERIOR_ORDER = ['fuji', 'hoshi', 'ugoki', 'afo', 'douli', 'mini kai', 'nami', 'dao', 'sen'];
 const LAST_FAMILY = 'dao';
 const LAST_GROUPS = ['tori jardin', 'tori visera'];
+
+const interiorRank = (key) => {
+  const index = INTERIOR_ORDER.findIndex((entry) => key === entry || key.startsWith(`${entry} `));
+  return index === -1 ? INTERIOR_ORDER.length : index;
+};
 
 // Orden de los productos de una misma familia (listado, ?family= y «Explora la
 // colección»): el de embutir, el de aplicar, el redondo y el redondo de aplicar
 // (Mini Kai, Mini Kai Aplicar, Mini Kai Round, Mini Kai Round Aplicar). Se lee del
-// nombre; los demás empatan en 0 y siguen el orden de los datos.
+// nombre; los demás empatan en 0 y siguen el orden de los datos. Daö sigue
+// DAO_ORDER; los que no están (Daö Deepframe) van al final.
+const DAO_ORDER = ['dao', 'dao trimless', 'dao pinhole', 'dao cabezal', 'dao cabezal direccionable'];
 const variantRank = (group) => {
-  const name = normalize(group.name);
+  const name = normalize(group.name).trim();
+  if (normalize(group.family) === LAST_FAMILY) {
+    const index = DAO_ORDER.indexOf(name);
+    return index === -1 ? DAO_ORDER.length : index;
+  }
   return (/\bround/.test(name) ? 2 : 0) + (/\bapli(car|que)\b/.test(name) ? 1 : 0);
 };
 
 function byCollection(groups) {
   // «Mini Kai Round» va con Mini Kai: la clave ignora el «Round» final
   const key = (group) => normalize(group.collection || group.family || group.name).replace(/\s+round(ed)?$/, '');
+  // Primero Interior y después Exterior (un grupo en los dos va con Interior)
+  const space = (group) => (group.environment.includes('Interior') ? 0 : group.environment.includes('Exterior') ? 1 : 2);
   const tail = (group) => {
+    if (space(group) === 0) return interiorRank(key(group));
     const own = LAST_GROUPS.indexOf(normalize(group.name));
     if (own >= 0) return 2 + own;
     return normalize(group.family) === LAST_FAMILY || normalize(group.collection) === LAST_FAMILY ? 1 : 0;
   };
   const order = new Map();
   for (const group of groups) if (!order.has(key(group))) order.set(key(group), order.size);
-  // Primero Interior y después Exterior (un grupo en los dos va con Interior)
-  const space = (group) => (group.environment.includes('Interior') ? 0 : group.environment.includes('Exterior') ? 1 : 2);
   return [...groups].sort((a, b) => space(a) - space(b) || tail(a) - tail(b) || order.get(key(a)) - order.get(key(b)) || variantRank(a) - variantRank(b));
 }
 
