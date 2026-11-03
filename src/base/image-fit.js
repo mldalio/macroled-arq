@@ -22,6 +22,8 @@ import { sizedImage } from './image-size.js';
 
 const SAMPLE = 128; // ancho de la copia que se lee
 const ALPHA = 20; // de 0 a 255: por debajo es fondo (el borde suave del recorte)
+const STEM_WIDTH = 0.03; // cable de un colgante: el producto no mide más que esto de ancho (parte de la foto)
+const STEM_MIN = 0.05; // ni menos que esto de alto
 const boxes = new Map(); // URL de la copia → Promise<caja | null>
 
 // Copia chica que se puede leer con CORS; null si la foto viene de otro
@@ -70,7 +72,19 @@ async function measure(url) {
   const anchored = { left: left === 0, top: top === 0, right: right === width - 1, bottom: bottom === height - 1 };
   // Sin fondo transparente: no es una foto de estudio
   if (anchored.left && anchored.top && anchored.right && anchored.bottom) return null;
-  return { left: left / width, top: top / height, right: (right + 1) / width, bottom: (bottom + 1) / height, ratio: width / height, anchored };
+  // Colgante: un cable desde el borde de arriba (filas del producto muy angostas)
+  let stemRows = 0;
+  for (let y = top; anchored.top && y <= bottom; y++, stemRows++) {
+    let first = -1, last = -1;
+    for (let x = left; x <= right; x++) {
+      if (data[(y * width + x) * 4 + 3] <= ALPHA) continue;
+      if (first < 0) first = x;
+      last = x;
+    }
+    if (first < 0 || last - first + 1 > width * STEM_WIDTH) break;
+  }
+  const stem = stemRows / height >= STEM_MIN ? stemRows / height : 0;
+  return { left: left / width, top: top / height, right: (right + 1) / width, bottom: (bottom + 1) / height, ratio: width / height, anchored, stem };
 }
 
 /** Dónde está el producto en la foto (0 a 1 de cada lado), o null si no se puede medir o no es de estudio. */
@@ -123,6 +137,11 @@ export function fitScale(box, { width, height }, { margin = 0, limit, cover = tr
   };
   const x = place(width, drawnWidth, box.left, box.right, !anchored.left, !anchored.right, soft.x);
   const y = place(height, drawnHeight, box.top, box.bottom, !anchored.top, !anchored.bottom, soft.y);
+  // Colgante (cable desde arriba): la escala es la de siempre (desde el cable),
+  // pero se achica desde abajo del producto, así la lámpara queda a la misma
+  // altura que la de las otras potencias (Döuli). El cable, que deja de llegar
+  // arriba, lo completa quien dibuja (stem en rect).
+  const hanging = Boolean(box.stem) && anchored.top && !anchored.bottom;
   const product = {
     left: x + box.left * drawnWidth,
     right: x + box.right * drawnWidth,
@@ -131,7 +150,7 @@ export function fitScale(box, { width, height }, { margin = 0, limit, cover = tr
   };
   // Se achica desde el lado anclado; con los dos o ninguno, desde el centro
   const originX = centerX ? width / 2 : anchored.left && !anchored.right ? 0 : anchored.right && !anchored.left ? width : width / 2;
-  const originY = anchored.top && !anchored.bottom ? 0 : anchored.bottom && !anchored.top ? height : height / 2;
+  let originY = anchored.top && !anchored.bottom ? 0 : anchored.bottom && !anchored.top ? height : height / 2;
   let scale = 1;
   // Lado libre: reach es lo que ocupa desde el origen; room, el lugar hasta el margen
   const fit = (room, roomLimit, reach) => {
@@ -143,6 +162,7 @@ export function fitScale(box, { width, height }, { margin = 0, limit, cover = tr
   if (!anchored.right || centerX) fit(width - soft.x - originX, width - hard.x - originX, product.right - originX);
   if (!anchored.top) fit(originY - soft.y, originY - hard.y, originY - product.top);
   if (!anchored.bottom) fit(height - soft.y - originY, height - hard.y - originY, product.bottom - originY);
+  if (hanging) originY = product.bottom;
   const percent = (value, size) => `${(value / size) * 100}%`;
   // object-position: el corrimiento sobre lo que la foto sobra del recuadro
   const share = (offset, size, drawn) => (size === drawn ? '50%' : percent(offset, size - drawn));
@@ -155,6 +175,8 @@ export function fitScale(box, { width, height }, { margin = 0, limit, cover = tr
       y: originY + (y - originY) * scale,
       width: drawnWidth * scale,
       height: drawnHeight * scale,
+      // Colgante: dónde termina el cable de la foto (0 a 1); arriba falta cable
+      stem: hanging ? box.top + box.stem : 0,
     },
   };
 }

@@ -87,6 +87,20 @@
   background-color: var(--arq-color-surface-inverse-hover);
 }
 
+/* Cable de un colgante achicado (product-card.js, #renderStem): debajo de las
+   fotos, se ve donde la foto achicada no llega. Se ve con la foto de reposo. */
+.stem {
+  position: absolute;
+  inset: 0 0 auto;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.card:has(.base.loaded) .stem {
+  visibility: visible;
+}
+
 .img {
   position: absolute;
   z-index: 1;

@@ -126,6 +126,8 @@ class ArqProductCard extends ArqElement {
   static template =
     `<div class="card">` +
     `<div class="card-media">` +
+    // Cable de un colgante achicado, de arriba hasta la foto (#applyFit)
+    `<span class="stem" aria-hidden="true"></span>` +
     `<img class="img base" alt="" loading="lazy" decoding="async">` +
     `<img class="img hover" alt="" decoding="async">` +
     `<span class="fallback role-body-sm" aria-hidden="true"></span>` +
@@ -518,6 +520,7 @@ class ArqProductCard extends ArqElement {
     }
     img.src = src;
     productBox(src); // la copia chica se pide junto con la foto (#fit)
+    if (img.classList.contains('base')) this.#renderStem();
     // Primera foto principal: funde al llegar, salvo que ya esté lista en el
     // mismo instante (en caché). complete solo no alcanza: una lazy que todavía
     // no empezó a cargar también da complete, pero sin tamaño.
@@ -587,6 +590,7 @@ class ArqProductCard extends ArqElement {
     const { scale, rect } = fitScale(box, frame, { margin: room(margin), limit: room('--arq-space-padding-lg'), cover });
     if (scale >= 1) {
       img.style.objectFit = img.style.transformOrigin = img.style.transform = '';
+      if (img.classList.contains('base')) this.#renderStem();
       return;
     }
     // Desde la foto entera (contain): con cover, lo que el recorte deja afuera
@@ -594,6 +598,33 @@ class ArqProductCard extends ArqElement {
     img.style.objectFit = 'contain';
     img.style.transformOrigin = '0 0';
     img.style.transform = containTransform(rect, frame, box.ratio, { left: pad('left'), top: pad('top') }).transform;
+    if (img.classList.contains('base')) this.#renderStem(img, rect, { left: pad('left'), top: pad('top') });
+  }
+
+  // Colgante achicado desde abajo (Döuli 15W y 18W, alineados con el 12W): el
+  // cable ya no llega al borde de arriba. Se completa con el de la misma foto,
+  // estirado a lo alto (es una línea vertical: no se nota), con su misma
+  // posición y ancho. Sin argumentos, se saca.
+  #renderStem(img, rect, offset) {
+    const stem = this.shadowRoot.querySelector('.stem');
+    if (!rect?.stem) {
+      stem.removeAttribute('style');
+      return;
+    }
+    // Solo arriba de la foto (más 1 px, que tapa la línea clara del borde): donde
+    // se superponen, el cable estirado y el de la foto se ven dobles. Se estiran
+    // las primeras filas de la foto (2 px): el cable no es del todo vertical y
+    // así empalma con el borde de arriba de la foto.
+    const top = offset.top + rect.y;
+    if (top <= 0) {
+      stem.removeAttribute('style');
+      return;
+    }
+    const height = top + 1;
+    stem.style.height = `${height}px`;
+    stem.style.backgroundImage = `url(${JSON.stringify(img.getAttribute('src'))})`;
+    stem.style.backgroundSize = `${rect.width}px ${(rect.height * height) / 2}px`;
+    stem.style.backgroundPosition = `${offset.left + rect.x}px 0`;
   }
 
   #renderFallback(show) {
