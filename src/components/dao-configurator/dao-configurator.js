@@ -42,6 +42,7 @@ import '../text-link/text-link.js';
 import '../count-badge/count-badge.js';
 import { icon } from '../../base/icons.js';
 import css from './dao-configurator.css?inline';
+import { tokenMs, transitionMs } from '../../base/motion.js';
 
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -91,11 +92,6 @@ const DEFAULTS = {
 
 const sumCounts = (counts) => Object.values(counts ?? {}).reduce((total, count) => total + count, 0);
 
-// Valor de un token de movimiento en ms («400ms», «0.4s»)
-const durationOf = (element, name) => {
-  const value = getComputedStyle(element).getPropertyValue(name).trim();
-  return (parseFloat(value) || 0) * (value.endsWith('ms') ? 1 : 1000);
-};
 
 class ArqDaoConfigurator extends ArqElement {
   static tag = 'arq-dao-configurator';
@@ -189,11 +185,14 @@ class ArqDaoConfigurator extends ArqElement {
     root.querySelector('.progress').addEventListener('click', (event) => {
       const bar = event.target.closest?.('[data-section]');
       if (!bar) return;
+      // Las barras van en el orden de los pasos: la de un paso hecho anterior al actual vuelve hacia atrás
+      const bars = [...event.currentTarget.querySelectorAll('.progress-bar')];
+      const current = bars.findIndex((item) => item.hasAttribute('aria-current'));
       this.#leave(() => {
         this.#active = bar.dataset.section;
         this.#entering = this.#active;
         this.#render();
-      });
+      }, bars.indexOf(bar) < current);
     });
     steps.addEventListener('click', (event) => {
       const print = event.target.closest?.('.print');
@@ -213,7 +212,8 @@ class ArqDaoConfigurator extends ArqElement {
         return;
       }
       const counter = event.target.closest?.('[data-count]');
-      if (counter) return this.#count(counter.dataset.head, counter.dataset.count === 'add');
+      // El área táctil agrandada (::after) también llega al host: se descarta si está deshabilitado
+      if (counter) return counter.disabled ? undefined : this.#count(counter.dataset.head, counter.dataset.count === 'add');
       const next = event.target.closest?.('.next');
       const change = event.target.closest?.('.step-toggle');
       if (next) this.#leave(() => this.#advance());
@@ -294,6 +294,13 @@ class ArqDaoConfigurator extends ArqElement {
       return;
     }
     this.#status('');
+    // Si se cerró a mitad del armado (la X, Esc o el «atrás» de Android), al
+    // volver a abrirlo sigue donde quedó mientras dure la página.
+    // TODO (diseño): «Empezar de nuevo» en el armado final.
+    if (this.#state && this.#chosen.size) {
+      this.#render();
+      return;
+    }
     this.#state = daoSelection(this.#model, null);
     this.#done = new Set();
     this.#chosen = new Set();
@@ -321,20 +328,24 @@ class ArqDaoConfigurator extends ArqElement {
   }
 
   // Mobile (un paso a la vez): el paso que se va sale hacia la izquierda con un
-  // fundido y recién entonces entra el siguiente desde la derecha. Sin
-  // movimiento, o con pasos plegados, el cambio es directo.
+  // fundido y recién entonces entra el siguiente desde la derecha. Al volver a
+  // un paso anterior (`back`), al revés. Sin movimiento, o con pasos plegados,
+  // el cambio es directo.
   #leaving = false;
 
-  #leave(change) {
+  #leave(change, back = false) {
     if (this.#leaving) return;
-    const step = this.shadowRoot.querySelector('.steps .step.is-active');
+    const steps = this.shadowRoot.querySelector('.steps');
+    if (back) steps.dataset.dir = 'back';
+    else delete steps.dataset.dir;
+    const step = steps.querySelector('.step.is-active');
     if (!step || reducedMotion() || !matchMedia('(max-width: 767px)').matches) return change();
     this.#leaving = true;
     step.classList.add('is-leaving');
     setTimeout(() => {
       this.#leaving = false;
       change();
-    }, durationOf(this, '--arq-motion-duration-fade'));
+    }, tokenMs(this, '--arq-motion-duration-fade'));
   }
 
   #advance() {
@@ -763,7 +774,7 @@ class ArqDaoConfigurator extends ArqElement {
     if (figures.length !== grid.children.length || figures.some((figure, index) => grid.children[index] !== figure)) grid.replaceChildren(...figures);
 
     if (!motion) return;
-    const duration = durationOf(this, '--arq-motion-duration-panel');
+    const duration = tokenMs(this, '--arq-motion-duration-panel');
     const easing = getComputedStyle(this).getPropertyValue('--arq-motion-easing-standard').trim() || 'ease';
     for (const figure of figures) {
       const from = before.get(figure.dataset.key);
@@ -813,7 +824,7 @@ class ArqDaoConfigurator extends ArqElement {
           if (old === next || old.classList.contains('is-leaving')) continue;
           old.classList.add('is-leaving');
           old.alt = '';
-          if (motion) setTimeout(() => old.remove(), durationOf(this, '--arq-motion-duration-slow'));
+          if (motion) setTimeout(() => old.remove(), tokenMs(this, '--arq-motion-duration-slow'));
           else old.remove();
         }
         next.classList.add('is-loaded');
@@ -829,7 +840,9 @@ class ArqDaoConfigurator extends ArqElement {
     img.alt = label;
     const badge = figure.querySelector('.badge');
     if (motion && piece.qty && badge.count && badge.count !== piece.qty) {
-      badge.animate([{ transform: 'scale(1.25)' }, { transform: 'none' }], { duration: durationOf(this, '--arq-motion-duration-base'), easing: 'ease-out' });
+      // TODO (diseño): la escala del badge (1,1) no tiene token
+      const easing = getComputedStyle(this).getPropertyValue('--arq-motion-easing-out').trim() || 'ease-out';
+      badge.animate([{ transform: 'scale(1.1)' }, { transform: 'none' }], { duration: tokenMs(this, '--arq-motion-duration-base'), easing });
     }
     badge.count = piece.qty || null;
     // Con cantidad, el número lo dice el badge: el texto sigue con «× …»
@@ -986,8 +999,7 @@ class ArqDaoConfigurator extends ArqElement {
     const dialog = this.#dialog;
     if (this.#closing || !dialog.open) return;
     dialog.classList.remove('is-open');
-    const { transitionDuration } = getComputedStyle(this.shadowRoot.querySelector('.sheet'));
-    const ms = Math.max(0, ...transitionDuration.split(',').map((value) => (parseFloat(value) || 0) * (value.trim().endsWith('ms') ? 1 : 1000)));
+    const ms = transitionMs(this.shadowRoot.querySelector('.sheet'));
     this.#closing = setTimeout(() => {
       this.#closing = null;
       dialog.close();

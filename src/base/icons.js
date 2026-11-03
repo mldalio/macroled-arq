@@ -39,6 +39,9 @@ const paths = {
   // TODO (diseño): no está en el set de Figma (icons 1075:4571). Aviso (triángulo
   // con «!»): accesorios requeridos del configurador de Daö. Trazo de 1 px, misma grilla.
   'alert': '<path vector-effect="non-scaling-stroke" stroke-linejoin="round" d="M8 1.75L14.75 13.75H1.25L8 1.75Z"/><path vector-effect="non-scaling-stroke" stroke-linecap="round" d="M8 6.25V9.75M8 11.75V11.8"/>',
+  // TODO (diseño): no está en el set de Figma (icons 1075:4571). Información (círculo con
+  // «i»): el ⓘ de las características (src/base/info-tip.js). Trazo de 1 px, misma grilla.
+  'info': '<circle vector-effect="non-scaling-stroke" cx="8" cy="8" r="6.5"/><path vector-effect="non-scaling-stroke" stroke-linecap="round" d="M8 7.25V11.25M8 4.75V4.8"/>',
   // TODO (diseño): no está en el set de Figma (icons 1075:4571). Trazo de 1 px, misma grilla.
   'eye': '<path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" d="M1 8C2.6 4.7 5.1 3.25 8 3.25C10.9 3.25 13.4 4.7 15 8C13.4 11.3 10.9 12.75 8 12.75C5.1 12.75 2.6 11.3 1 8Z"/><path vector-effect="non-scaling-stroke" d="M8 10.2C9.22 10.2 10.2 9.22 10.2 8C10.2 6.78 9.22 5.8 8 5.8C6.78 5.8 5.8 6.78 5.8 8C5.8 9.22 6.78 10.2 8 10.2Z"/>',
   // 854:2420

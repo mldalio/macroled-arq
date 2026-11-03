@@ -42,6 +42,7 @@ import { SingleSelect } from '../../base/single-select.js';
 import { containScroll } from '../../base/scroll-lock.js';
 import { setPanelBar } from '../../base/theme.js';
 import css from './filter-panel.css?inline';
+import { transitionMs } from '../../base/motion.js';
 
 const UNITS = { productos: ['producto', 'productos'], variantes: ['variante', 'variantes'] };
 const NUMBER = new Intl.NumberFormat('es-AR');
@@ -232,8 +233,7 @@ class ArqFilterPanel extends ArqElement {
     const dialog = this.#dialog;
     if (this.#closing) return;
     dialog.classList.remove('is-open');
-    const { transitionDuration } = getComputedStyle(dialog);
-    const ms = Math.max(0, ...transitionDuration.split(',').map((value) => (parseFloat(value) || 0) * (value.trim().endsWith('ms') ? 1 : 1000)));
+    const ms = transitionMs(dialog);
     this.#closing = setTimeout(() => {
       this.#closing = null;
       dialog.close();

@@ -11,12 +11,13 @@
 //   <arq-text-link size="compact" href="/arq/productos/dao?sku=DAO-C-B">Mini Daö Cabezal</arq-text-link>
 //
 // - size: default (role/body-regular, 16) · compact (role/body-compact-regular, 14).
-// - La línea (border/default, 1 px) va en el borde inferior de una caja de texto
-//   ajustada (1em + border/strong) y en el color del texto. Hover y Pressed
-//   atenúan texto y línea a color/text/tertiary (State de Figma: :hover y :active).
+// - La línea (border/default, 1 px) es el subrayado del texto, a space/padding/2xs
+//   de la base, en una caja de texto ajustada (1em + border/strong) y en el color
+//   del texto. Hover y Pressed atenúan texto y línea a color/text/tertiary (State
+//   de Figma: :hover y :active).
 // - Foco: anillo separado (DESIGN.md §7).
-// - El texto llega por slot (indexable). Pensado para una línea: si el texto baja
-//   de renglón, la línea queda debajo de todo el bloque.
+// - El texto llega por slot (indexable). Si baja de renglón (data-wrap, lo mide
+//   el componente), cada renglón lleva su línea y toma el interlineado del role.
 
 import { ArqElement } from '../../base/arq-element.js';
 import css from './text-link.css?inline';
@@ -31,6 +32,25 @@ class ArqTextLink extends ArqElement {
     label: { type: String }, // nombre accesible del link (aria-label), si el texto visible no alcanza
   };
   static template = `<a class="link"><slot></slot></a>`;
+
+  #observer = null;
+
+  connectedCallback() {
+    super.connectedCallback?.();
+    // Más alto que un renglón ajustado (1em + border/strong) y medio: bajó de línea
+    // (se mide con la caja ajustada: sin data-wrap)
+    this.#observer ??= new ResizeObserver(() => {
+      const link = this.shadowRoot.querySelector('.link');
+      this.removeAttribute('data-wrap');
+      this.toggleAttribute('data-wrap', link.offsetHeight > Number.parseFloat(getComputedStyle(link).fontSize) * 1.75);
+    });
+    this.#observer.observe(this);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback?.();
+    this.#observer?.disconnect();
+  }
 
   update() {
     const link = this.shadowRoot.querySelector('.link');

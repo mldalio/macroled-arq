@@ -14,6 +14,7 @@ import { config } from '../config.js';
 
 export const CARD_WIDTH = 800; // card de 350 px a doble densidad, con margen
 export const GALLERY_WIDTH = 1600; // foto grande de la ficha
+export const THUMB_WIDTH = 320; // miniatura (layout/gallery-thumb, 105) a triple densidad
 const QUALITY = 85;
 
 const isStep = (segment) => segment === 'fit-in' || segment.startsWith('filters:') || /^[0-9]+x[0-9]+$/.test(segment);

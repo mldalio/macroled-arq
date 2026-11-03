@@ -60,7 +60,9 @@ import { normalize } from '../../data/text.js';
 import { animateThemeChange, refreshTheme, setBrowserBar, takeThemeHandoff, withoutThemeTransition } from '../../base/theme.js';
 import { getDaoConfigurator, compatibleProducts } from '../../data/dao-config.js';
 import { getProduct, variantDetails, categoryHref, listCompareCandidates, LAMPS_ENVIRONMENT } from '../../data/catalog.js';
-import { attributeInfo } from '../../data/attributes.js';
+import { attributeInfo, fieldHelp } from '../../data/attributes.js';
+import { bindInfoTips, infoTip } from '../../base/info-tip.js';
+import infoTipCss from '../../base/info-tip.css?inline';
 import { config } from '../../config.js';
 import { GALLERY_WIDTH, sizedImage } from '../../base/image-size.js';
 import { reveal, revealCss } from '../../base/reveal.js';
@@ -93,6 +95,7 @@ import '../download-modal/download-modal.js';
 import '../download-item/download-item.js';
 import '../form-message/form-message.js';
 import css from './ficha-producto.css?inline';
+import { tokenMs } from '../../base/motion.js';
 
 
 // Secciones apagadas por ahora (2026-10-27). El código y los estilos siguen para
@@ -177,7 +180,7 @@ const NO_ILLUMINATION_VARIANT_GROUP = /^PAR11-.*FRENTE/i;
 
 class ArqFichaProducto extends ArqElement {
   static tag = 'arq-ficha-producto';
-  static styles = revealCss + css + viewerCss;
+  static styles = revealCss + css + viewerCss + infoTipCss;
   static template =
     `<div class="page">` +
     // Hero (Ficha v2, 2085:27570): galería a sangre a la izquierda y configurador
@@ -332,6 +335,8 @@ class ArqFichaProducto extends ArqElement {
   #sku = null;
 
   setup() {
+    // ⓘ de las especificaciones y los datos clave (como las fichas de macroled.com.ar)
+    bindInfoTips(this.shadowRoot);
     const root = this.shadowRoot;
     const specTabs = root.querySelector('.spec-tabs');
     new SingleSelect(specTabs, { items: 'arq-tab' });
@@ -695,10 +700,13 @@ class ArqFichaProducto extends ArqElement {
     };
     for (const element of elements) for (const [name, value] of Object.entries(vars)) element.style.setProperty(name, value);
     clearTimeout(this.#followPhotoTimer);
-    // Se quitan al terminar, así hover y foco no se retrasan
+    // Se quitan al terminar (el fundido de las fotos, su adelanto y un margen de
+    // motion/duration/fast), así hover y foco no se retrasan
+    const page = document.documentElement;
+    const ms = tokenMs(page, '--arq-illumination-image-duration') + tokenMs(page, '--arq-motion-duration-illumination-lead') + tokenMs(page, '--arq-motion-duration-fast');
     this.#followPhotoTimer = setTimeout(() => {
       for (const element of elements) for (const name of Object.keys(vars)) element.style.removeProperty(name);
-    }, 1200);
+    }, ms);
   }
 
   #applyDark(dark) {
@@ -834,7 +842,9 @@ class ArqFichaProducto extends ArqElement {
       cell.className = 'keydata-item';
       const term = document.createElement('dt');
       term.className = 'keydata-label role-label';
-      term.textContent = label;
+      const help = fieldHelp(field);
+      if (help) term.append(infoTip({ label, help }));
+      else term.textContent = label;
       const detail = document.createElement('dd');
       detail.className = 'keydata-value role-body-xl-light';
       // temperatura de color: puntito del color de la luz antes del valor
@@ -869,7 +879,9 @@ class ArqFichaProducto extends ArqElement {
       const spec = document.createElement('arq-spec-row');
       const label = document.createElement('span');
       label.slot = 'label';
-      label.textContent = row.label;
+      const help = fieldHelp(row.field);
+      if (help) label.append(infoTip({ label: row.label, help }));
+      else label.textContent = row.label;
       spec.append(label, String(row.value));
       list.append(spec);
     }

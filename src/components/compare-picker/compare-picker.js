@@ -53,6 +53,7 @@ import '../search-field/search-field.js';
 import '../button/button.js';
 import '../compare-picker-item/compare-picker-item.js';
 import css from './compare-picker.css?inline';
+import { transitionMs } from '../../base/motion.js';
 
 const MAX = 3;
 const FINE = matchMedia('(hover: hover) and (pointer: fine)');
@@ -326,8 +327,7 @@ class ArqComparePicker extends ArqElement {
     const dialog = this.#dialog;
     if (this.#closing) return;
     dialog.classList.remove('is-open');
-    const { transitionDuration } = getComputedStyle(this.shadowRoot.querySelector('.sheet'));
-    const ms = Math.max(0, ...transitionDuration.split(',').map((value) => (parseFloat(value) || 0) * (value.trim().endsWith('ms') ? 1 : 1000)));
+    const ms = transitionMs(this.shadowRoot.querySelector('.sheet'));
     this.#closing = setTimeout(() => {
       this.#closing = null;
       dialog.close();

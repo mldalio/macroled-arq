@@ -62,6 +62,15 @@
   }
 }
 
+/* Táctil: sin hover, el toque muestra el borde de hover mientras el dedo apoya
+   (:active), como las demás cards (src/base/card-link.css) */
+@media (hover: none) {
+  .card:active .media {
+    outline: var(--arq-border-default) solid var(--arq-color-border-hover);
+    outline-offset: calc(var(--arq-border-default) * -1);
+  }
+}
+
 .placeholder {
   padding: var(--arq-space-padding-md);
   color: var(--arq-color-text-tertiary);

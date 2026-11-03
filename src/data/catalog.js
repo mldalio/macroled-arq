@@ -847,7 +847,9 @@ function fieldValues(group, field) {
 // «6W» y «12W» → «6 – 12 W»; sin unidad en común, los valores completos
 function valueRange(values) {
   if (values.length < 2) return values[0] ?? '';
-  const parts = [values[0], values.at(-1)].map((value) => String(value).trim().match(/^([d.,]+)s*(D*)$/));
+  const parts = [values[0], values.at(-1)].map((value) => String(value).trim().match(/^([\d.,]+)\s*(\D*)$/));
+  // «24°» y «60°» → «24° – 60°» (los grados van pegados al número; la base usa ° o º)
+  if (parts.every((part) => /^[°º]$/.test(part?.[2] ?? ''))) return `${values[0]} – ${values.at(-1)}`;
   if (parts.every(Boolean) && parts[0][2] && parts[0][2] === parts[1][2]) return `${parts[0][1]} – ${parts[1][1]} ${parts[0][2]}`;
   return `${values[0]} – ${values.at(-1)}`;
 }
@@ -857,7 +859,8 @@ function keyValue(variants, field) {
   const info = attributeInfo(field);
   const values = fieldValues({ variants }, field).map((value) => specValue(info, value));
   if (!values.length) return '';
-  if (field === 'potencia') return valueRange(values);
+  // El ángulo, como la potencia, en rango («15° – 60°»): con muchas ópticas la lista no entraba en la card
+  if (field === 'potencia' || field === 'angulo_apertura') return valueRange(values);
   const text = values.join(' / ');
   return field === 'cri' ? `CRI ${text}` : field === 'ugr' ? `UGR ${text}` : text;
 }

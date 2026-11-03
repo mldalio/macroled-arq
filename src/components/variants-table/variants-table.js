@@ -79,6 +79,9 @@ import '../filter-row/filter-row.js';
 import '../filter-panel/filter-panel.js';
 import '../checkbox/checkbox.js';
 import '../carousel-controls/carousel-controls.js';
+import { ATTRIBUTES, fieldHelp } from '../../data/attributes.js';
+import { bindInfoTips, infoTipHtml } from '../../base/info-tip.js';
+import infoTipCss from '../../base/info-tip.css?inline';
 import css from './variants-table.css?inline';
 
 const NUMBER = new Intl.NumberFormat('es-AR');
@@ -159,7 +162,7 @@ const productName = (row, role) =>
 
 class ArqVariantsTable extends ArqElement {
   static tag = 'arq-variants-table';
-  static styles = css;
+  static styles = infoTipCss + css;
   static properties = {
     type: { type: String, values: ['product', 'catalog'], default: 'product' }, // Type: ficha (un grupo) · Descargas (todo el catálogo)
     loading: { type: Boolean }, // filas de carga
@@ -283,6 +286,8 @@ class ArqVariantsTable extends ArqElement {
 
   setup() {
     const root = this.shadowRoot;
+    // ⓘ de las columnas de datos (como las fichas de macroled.com.ar)
+    bindInfoTips(root);
     // Miniatura que no carga: queda el fondo color/surface/subtle.
     root.addEventListener('error', (event) => {
       if (event.target.localName === 'img') event.target.hidden = true;
@@ -430,10 +435,17 @@ class ArqVariantsTable extends ArqElement {
       return `<button type="button" class="sort${active ? ' sorted' : ''}" data-sort="${esc(key)}">${esc(text)}${icon(active && desc ? 'chevron-up' : 'chevron-down')}</button>`;
     };
     const ariaSort = (key) => (sortable && key === sorted ? ` aria-sort="${desc ? 'descending' : 'ascending'}"` : '');
+    // ⓘ al lado del nombre de la columna; la burbuja lleva el nombre completo («Flujo
+    // luminoso» para «Flujo lum.»). Solo en la ficha (Product): Descargas (catalog) no lo lleva.
+    const tip = (key) => {
+      if (sortable) return '';
+      const help = fieldHelp(key);
+      return help ? infoTipHtml({ title: ATTRIBUTES[key]?.label ?? key, help }) : '';
+    };
     this.shadowRoot.querySelector('.table thead').innerHTML =
       `<tr><th scope="col" class="start"><span class="visually-hidden">${TEXT.image}</span></th>` +
       `<th scope="col" class="sku-col role-body-compact-regular"${ariaSort('sku')}>${label('sku', TEXT.sku)}</th>` +
-      columns.map((c) => `<th scope="col" class="role-body-compact-regular${c.wide ? ' wide' : ' data'}"${ariaSort(c.key)}><span class="cell">${label(c.key, c.label)}</span></th>`).join('') +
+      columns.map((c) => `<th scope="col" class="role-body-compact-regular${c.wide ? ' wide' : ' data'}"${ariaSort(c.key)}><span class="cell">${label(c.key, c.label)}${tip(c.key)}</span></th>`).join('') +
       `<th scope="col" class="end role-body-compact-regular">${TEXT.downloads}</th></tr>`;
   }
 

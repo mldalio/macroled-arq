@@ -43,7 +43,8 @@
   gap: var(--arq-space-gap-xl);
   width: 100%;
   height: 100%;
-  padding: var(--arq-space-padding-xl) var(--arq-layout-gutter) 0;
+  /* Abajo, el área segura (barra de inicio del iPhone; 0 sin viewport-fit=cover) */
+  padding: var(--arq-space-padding-xl) var(--arq-layout-gutter) env(safe-area-inset-bottom, var(--arq-space-0));
   background: var(--arq-color-surface-default);
   opacity: 0;
   transform: translateY(2%);
@@ -55,6 +56,21 @@
 .dialog.is-open .sheet {
   opacity: 1;
   transform: none;
+}
+
+/* Sale más rápido de lo que entra (motion/duration/expand), como compare-picker */
+.dialog:not(.is-open) {
+  --panel-slow: var(--arq-motion-duration-expand);
+}
+
+/* Con reduced motion no sube: solo funde (motion/duration/fade), como compare-picker */
+@media (prefers-reduced-motion: reduce) {
+  .sheet {
+    transform: none;
+    transition-property: opacity;
+    transition-duration: var(--arq-motion-duration-fade);
+    transition-timing-function: var(--arq-motion-easing-out);
+  }
 }
 
 /* Título role/heading-2 + cerrar (icon-button Large) */
@@ -351,6 +367,21 @@
   flex: none;
   align-items: center;
   gap: var(--arq-space-gap-sm);
+}
+
+/* En táctil, −/+ con un área más grande que su dibujo de 24: se tocan muchas
+   veces seguidas. Hacia los costados, space/padding/xs (no se pisan con el
+   gap space/gap/sm); arriba y abajo, space/padding/sm-md. */
+@media (pointer: coarse) {
+  .stepper arq-icon-button {
+    position: relative;
+  }
+
+  .stepper arq-icon-button::after {
+    content: '';
+    position: absolute;
+    inset: calc(-1 * var(--arq-space-padding-sm-md)) calc(-1 * var(--arq-space-padding-xs));
+  }
 }
 
 /* El número, con el ancho de un ícono para que no salte de 1 a 2 */
@@ -685,17 +716,27 @@
     animation-duration: var(--arq-motion-duration-slow);
   }
 
+  /* Al volver a un paso anterior (barra de pasos) el sentido se invierte:
+     el que se va sale hacia la derecha y el nuevo entra desde la izquierda. */
+  .steps {
+    --step-dir: 1;
+  }
+
+  .steps[data-dir='back'] {
+    --step-dir: -1;
+  }
+
   @keyframes arq-step-out {
     to {
       opacity: 0;
-      transform: translateX(calc(-1 * var(--arq-space-gap-xl)));
+      transform: translateX(calc(-1 * var(--step-dir) * var(--arq-space-gap-xl)));
     }
   }
 
   @keyframes arq-step-slide {
     from {
       opacity: 0;
-      transform: translateX(var(--arq-space-gap-xl));
+      transform: translateX(calc(var(--step-dir) * var(--arq-space-gap-xl)));
     }
   }
 
@@ -770,8 +811,22 @@
     background: var(--arq-color-border-strong);
   }
 
+  /* Área táctil de space/padding/sm-md arriba y abajo del trazo (unos 28 px),
+     sin cambiar el dibujo. TODO (diseño): un «Atrás» visible en el paso. */
   button.progress-bar {
+    position: relative;
     cursor: pointer;
+  }
+
+  button.progress-bar::after {
+    content: '';
+    position: absolute;
+    inset: calc(-1 * var(--arq-space-padding-sm-md)) 0;
+  }
+
+  /* En táctil no hay hover: al apoyar el dedo, el trazo pasa a color/border/hover */
+  button.progress-bar:active {
+    background: var(--arq-color-border-hover);
   }
 
   button.progress-bar:focus-visible {

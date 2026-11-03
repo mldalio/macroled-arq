@@ -86,7 +86,7 @@ import '../search-sheet/search-sheet.js';
 import { sizedImage } from '../../base/image-size.js';
 import { containScroll } from '../../base/scroll-lock.js';
 import { setPanelBar } from '../../base/theme.js';
-import { toMs } from '../../base/motion.js';
+import { toMs, transitionMs } from '../../base/motion.js';
 import css from './navbar.css?inline';
 
 const MOBILE = matchMedia('(max-width: 767px)');
@@ -609,8 +609,7 @@ class ArqNavbar extends ArqElement {
   #closeMenu(menu) {
     this.#finishMenuResize(menu);
     menu.classList.remove('is-open');
-    const { transitionDuration } = getComputedStyle(menu);
-    const ms = Math.max(0, ...transitionDuration.split(',').map((value) => (parseFloat(value) || 0) * (/ms\s*$/.test(value) ? 1 : 1000)));
+    const ms = transitionMs(menu);
     clearTimeout(this.#menuTimer);
     this.#menuTimer = setTimeout(() => {
       if (menu.classList.contains('is-open')) return;
@@ -797,8 +796,7 @@ class ArqNavbar extends ArqElement {
       else navbar.removeAttribute('data-arq-theme');
       wrap.classList.toggle('is-open', next);
       navbar.classList.toggle('mega-open', next);
-      const { transitionDuration } = getComputedStyle(root.querySelector('.mega-drawer'));
-      const ms = Math.max(0, ...transitionDuration.split(',').map((value) => (parseFloat(value) || 0) * (/mss*$/.test(value) ? 1 : 1000)));
+      const ms = transitionMs(root.querySelector('.mega-drawer'));
       this.#megaTimer = setTimeout(() => {
         navbar.classList.remove('mega-motion');
         if (!this.#megaOpen) wrap.hidden = true;

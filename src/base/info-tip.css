@@ -1,0 +1,130 @@
+/* info-tip · el ⓘ de las características (src/base/info-tip.js), como en las
+   fichas de macroled.com.ar. Solo tokens semánticos. TODO (diseño): no está en
+   Figma (ni el ícono info, ni la burbuja). */
+
+/* Botón: la etiqueta (con su estilo de texto, que hereda) y el ícono icon/sm en
+   color/icon/tertiary, a space/gap/xs. Hover (mouse) y abierta: el ícono pasa a
+   color/icon/primary. */
+.info-tip {
+  --info-icon: var(--arq-icon-sm);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--arq-space-gap-xs);
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: start;
+  text-transform: inherit;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.info-tip .icon {
+  flex: none;
+  width: var(--info-icon);
+  height: var(--info-icon);
+  color: var(--arq-color-icon-tertiary);
+  transition: color var(--arq-motion-duration-fast) var(--arq-motion-easing-standard);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .info-tip:hover .icon {
+    color: var(--arq-color-icon-primary);
+  }
+}
+
+.info-tip[aria-expanded='true'] .icon,
+.info-tip:active .icon {
+  color: var(--arq-color-icon-primary);
+}
+
+/* Solo el ícono: área táctil de space/padding/xs alrededor, sin cambiar el dibujo */
+.info-tip--icon::after {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--arq-space-padding-xs));
+}
+
+.info-tip:focus {
+  outline: none;
+}
+
+.info-tip:focus-visible {
+  outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
+  outline-offset: 2px;
+}
+
+/* Burbuja: color/surface/default con borde color/border/default, sin sombra ni
+   esquinas redondeadas (DESIGN.md §10). Título en role/label (color/text/primary)
+   y texto en role/body-sm (color/text/secondary), a space/gap/xs. Hasta
+   layout/footer-tagline de ancho, a layout/gutter de los bordes de la pantalla.
+   Aparece con un fundido (motion/duration/fade) y sale sin animación. */
+.info-bubble {
+  --gap: var(--arq-space-gap-sm);
+  /* Distancias que mide el JS (en px): al borde de la pantalla, layout/gutter;
+     a la etiqueta, space/gap/sm (scroll-margin no se usa para otra cosa) */
+  scroll-margin-inline: var(--arq-layout-gutter);
+  scroll-margin-block: var(--gap);
+  position: fixed;
+  inset: 0 auto auto 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--arq-space-gap-xs);
+  width: max-content;
+  max-width: min(var(--arq-layout-footer-tagline), 100vw - 2 * var(--arq-layout-gutter));
+  margin: 0;
+  padding: var(--arq-space-padding-sm) var(--arq-space-padding-sm-md);
+  overflow: visible;
+  border: var(--arq-border-default) solid var(--arq-color-border-default);
+  border-radius: var(--arq-radius-control);
+  background: var(--arq-color-surface-default);
+  color: var(--arq-color-text-secondary);
+  text-align: start;
+  transform: translate(var(--x, 0), var(--y, 0));
+  opacity: 1;
+  transition: opacity var(--arq-motion-duration-fade) var(--arq-motion-easing-standard);
+}
+
+.info-bubble:not(:popover-open) {
+  display: none;
+}
+
+@starting-style {
+  .info-bubble:popover-open {
+    opacity: 0;
+  }
+}
+
+.info-bubble-title {
+  color: var(--arq-color-text-primary);
+}
+
+/* Flecha: un cuadrado de space/gap/sm girado, con el borde de la burbuja de los
+   dos lados que quedan afuera. Abajo de la burbuja; con .is-below, arriba. */
+.info-bubble::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: var(--arrow-x, 50%);
+  box-sizing: border-box;
+  width: var(--gap);
+  height: var(--gap);
+  border: solid var(--arq-color-border-default);
+  border-width: 0 var(--arq-border-default) var(--arq-border-default) 0;
+  background: var(--arq-color-surface-default);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.info-bubble.is-below::after {
+  top: 0;
+  border-width: var(--arq-border-default) 0 0 var(--arq-border-default);
+}

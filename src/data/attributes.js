@@ -191,18 +191,62 @@ export function variantFields(variantAttributes) {
     .filter(Boolean);
 }
 
-// Qué es cada dato de la card y de la ficha: texto del tooltip al pasar el mouse.
-// TODO (contenido): confirmar los textos con el equipo.
-export const FIELD_TIPS = {
-  temperatura_color: 'Temperatura de color: qué tan cálida o fría es la luz. Menos kelvin, luz más cálida.',
-  potencia: 'Potencia: consumo eléctrico del producto, en watts.',
-  angulo_apertura: 'Ángulo de apertura: qué tan abierto es el haz de luz. Más grados, luz más dispersa.',
-  proteccion: 'Protección: IP indica la resistencia al polvo y al agua; IK, al impacto.',
-  proteccion_ip: 'IP: resistencia al polvo y al agua. Cuanto mayor el número, mayor la protección.',
-  proteccion_ik: 'IK: resistencia a los impactos. Cuanto mayor el número, mayor la protección.',
-  cri: 'CRI: fidelidad con que la luz muestra los colores. 100 es la máxima.',
-  ugr: 'UGR: índice de deslumbramiento. Cuanto menor, más confortable.',
+// Qué significa cada característica, con el texto de las fichas de macroled.com.ar
+// (diccionario de especificaciones de /productos/<sku>; entre «» el nombre allá). Lo
+// usan el ⓘ de la ficha y de variants-table (src/base/info-tip.js) y, con el nombre
+// adelante, el tooltip de los datos de la card (FIELD_TIPS). Un campo sin entrada
+// allá (Altura, Módulos, Calado, Medidas del cabezal, Color del lente, Uso sugerido,
+// Garantía) no lleva ⓘ. TODO (contenido): confirmar con el equipo.
+const FIELD_HELP = {
+  flujo_luminoso: 'Cantidad total de luz emitida, en lúmenes (lm).', // «Flujo luminoso»
+  lumenes_lmw: 'Lúmenes por cada vatio consumido.', // «Lúmenes/W», sin «Eficiencia lumínica:» (la etiqueta es Eficacia luminosa)
+  temperatura_color: 'Tono de la luz en kelvin (K). Más bajo es más cálida, más alto es más fría.', // «Temperatura del color», con punto en vez de «:» (en la card va después de «Temperatura de color:»)
+  cri: 'Fidelidad de color bajo esta luz, en una escala de 0 a 100.', // «CRI»
+  angulo_apertura: 'Ángulo en el que se distribuye la luz.', // «Ángulo de apertura»
+  ugr: 'Nivel de deslumbramiento molesto que puede causar la luminaria.', // «UGR»
+  sdcm: 'Uniformidad de color entre unidades. Más bajo es más consistente.', // «SDCM»
+  tipo_led: 'Tecnología o encapsulado del LED utilizado.', // «Tipo de LED»
+  vida_util: 'Vida estimada del LED en horas de uso.', // «Vida útil»
+  potencia: 'Consumo eléctrico, en vatios (W).', // «Potencia»
+  tension_proveedor: 'Voltaje de alimentación del producto (AC o DC).', // «Tensión»
+  factor_potencia: 'Qué tan eficiente es el uso de la energía. Más cerca de 1 es mejor.', // «Factor de Potencia (FP)»
+  thd: 'Distorsión armónica de la corriente. Cuanto más bajo, mejor calidad eléctrica.', // «THD»
+  dimeable: 'Si permite regular la intensidad de la luz.', // «Dimerizable»
+  tipo_driver: 'Tipo de driver o fuente que alimenta el LED (integrado, externo, etc.).', // «Driver»
+  emc: 'Cumplimiento de compatibilidad electromagnética.', // «EMC»
+  color_carcasa: 'Color exterior de la carcasa.', // «Color de carcasa»
+  tamanio: 'Dimensiones o formato general del producto.', // «Tamaño»
+  dimensiones: 'Medidas exteriores del producto.', // «Dimensiones»
+  material_cuerpo: 'Material principal de la carcasa o estructura.', // «Material del cuerpo»
+  material_lente: 'Material del difusor u óptica.', // «Material del lente»
+  largo_cable: 'Longitud del cable incluido.', // «Largo del cable»
+  peso: 'Peso neto del producto.', // «Peso»
+  proteccion_ip: 'Grado de protección contra polvo y agua.', // «Protección IP»
+  proteccion_ik: 'Grado de protección contra impactos mecánicos.', // «Protección IK»
+  proteccion: 'Grados de protección del producto (IP / IK).', // «Protección»
+  tipo_montaje: 'Forma de instalación (sobreponer, empotrar, pie, etc.).', // «Tipo de montaje»
+  temperatura_operacion: 'Rango de temperatura ambiente de uso.', // «Temperatura de operación»
 };
+
+/** Explicación de un campo para el ⓘ («Fidelidad de color bajo esta luz…»), o '' si no tiene. */
+export function fieldHelp(field) {
+  return FIELD_HELP[field] ?? '';
+}
+
+// Tooltip de los datos de la card (al pasar el mouse): el nombre corto y la explicación.
+const TIP_NAMES = {
+  temperatura_color: 'Temperatura de color',
+  potencia: 'Potencia',
+  angulo_apertura: 'Ángulo de apertura',
+  proteccion: 'Protección',
+  proteccion_ip: 'IP',
+  proteccion_ik: 'IK',
+  cri: 'CRI',
+  ugr: 'UGR',
+};
+// «Fidelidad…» → «CRI: fidelidad…» (una sigla al principio queda como está)
+const afterColon = (text) => (/^\p{Lu}\p{Ll}/u.test(text) ? text.charAt(0).toLowerCase() + text.slice(1) : text);
+export const FIELD_TIPS = Object.fromEntries(Object.entries(TIP_NAMES).map(([field, name]) => [field, `${name}: ${afterColon(FIELD_HELP[field])}`]));
 
 /**
  * Tooltip de un dato ya armado («IP65», «CRI 90», «45°», «6 – 12 W», «2700K»), para los que llegan

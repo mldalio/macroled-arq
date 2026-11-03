@@ -88,6 +88,18 @@
   background: var(--arq-color-overlay-frosted);
 }
 
+/* Sin transparencia (preferencia del sistema) o con más contraste: fondo
+   color/surface/default sin blur y borde color/border/default, como el navbar */
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  :host([background='frosted']) .control,
+  :host([background='frosted']) .control:enabled:active {
+    border-color: var(--arq-color-border-default);
+    background: var(--arq-color-surface-default);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
 @media (hover: hover) and (pointer: fine) {
   :host([background='frosted']) .control:enabled:hover {
     border-color: var(--arq-color-border-default);

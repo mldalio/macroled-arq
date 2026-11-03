@@ -1,5 +1,5 @@
 import { containScroll } from './scroll-lock.js';
-import { sizedImage } from './image-size.js';
+import { sizedImage, THUMB_WIDTH } from './image-size.js';
 import { PhotoZoom } from './photo-zoom.js';
 import '../components/gallery-thumb/gallery-thumb.js';
 
@@ -90,7 +90,9 @@ export class PhotoViewer {
     photos.forEach((photo, i) => {
       const thumb = row.children[i];
       thumb.dataset.index = String(i);
-      thumb.src = photo.original ? photo.src : sizedImage(photo.src, photo.width ?? VIEWER_WIDTH);
+      // Con `width` (galería del hero) la foto ya está en caché a ese tamaño; si no,
+      // la miniatura se pide chica: a 2400 px competía con la foto grande
+      thumb.src = photo.original ? photo.src : sizedImage(photo.src, photo.width ?? THUMB_WIDTH);
       thumb.alt = photo.alt || `Foto ${i + 1}`;
       thumb.selected = i === this.#index;
       if (photo.ground) thumb.setAttribute('data-arq-theme', photo.ground); else thumb.removeAttribute('data-arq-theme');

@@ -47,6 +47,8 @@
 
 .bar.animate[hidden] {
   transform: translateY(100%);
+  /* La salida (la X de la barra vacía) más corta que la entrada, como los paneles */
+  transition-duration: var(--arq-motion-duration-expand);
 }
 
 @starting-style {

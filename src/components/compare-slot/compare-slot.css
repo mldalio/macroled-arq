@@ -153,3 +153,16 @@
   }
 }
 
+/* Táctil: el dibujo de Hover mientras el dedo apoya (:active) */
+@media (hover: none) {
+  :host([filled]) .slot:active {
+    background: var(--arq-color-surface-faint);
+    border-color: var(--arq-color-border-default);
+  }
+
+  :host(:not([filled])) .slot:active {
+    background: var(--arq-color-surface-faint);
+    border-color: var(--arq-color-border-strong);
+  }
+}
+
