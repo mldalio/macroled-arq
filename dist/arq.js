@@ -4979,7 +4979,7 @@ var No = ":host{display:block}.thumb{box-sizing:border-box;aspect-ratio:5/4;bord
 }).define();
 //#endregion
 //#region src/components/product-gallery/product-gallery.css?inline
-var Po = ":host{isolation:isolate;min-width:0;display:block}.gallery{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex;position:relative}.image{aspect-ratio:var(--gallery-ratio,5 / 4);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);position:relative;overflow:hidden}.image:has(.track:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.track{overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;cursor:zoom-in;touch-action:pan-x pan-y;display:flex;position:absolute;inset:0;overflow:auto hidden}@media (hover:hover) and (pointer:fine){.track{overflow-x:hidden}}.track:focus{outline:none}.track::-webkit-scrollbar{display:none}.nav{padding:var(--arq-space-padding-xs);color:var(--arq-color-icon-primary);cursor:pointer;background:0 0;border:0;flex:none;justify-content:center;align-items:center;margin:0;display:inline-flex}.nav[hidden]{display:none}.nav .icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl)}.nav:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.nav:focus:not(:focus-visible){outline:none}.prev,.next{z-index:4;position:absolute;top:50%;transform:translateY(-50%)}.prev{left:var(--arq-space-padding-md)}.next{right:var(--arq-space-padding-md)}@media (hover:hover) and (pointer:fine){.nav{opacity:0;pointer-events:none;transition:opacity var(--arq-motion-duration-fast) var(--arq-motion-easing-standard)}.gallery:hover .nav,.gallery:focus-within .nav{opacity:1;pointer-events:auto}}.theme-transition{z-index:1;object-fit:cover;opacity:1;pointer-events:none;width:100%;height:100%;transition-property:opacity;transition-duration:var(--arq-illumination-image-duration,var(--arq-motion-duration-slow));transition-timing-function:var(--arq-illumination-image-easing,var(--arq-motion-easing-standard));position:absolute;inset:0}.theme-transition.fade-out{opacity:0}.theme-transition.quick{transition-duration:var(--arq-motion-duration-fade);transition-timing-function:var(--arq-motion-easing-standard)}::slotted(img){scroll-snap-align:start;scroll-snap-stop:always;object-fit:cover!important;flex:0 0 100%!important;width:100%!important;height:100%!important;display:block!important}::slotted(img[data-fit=air]){box-sizing:border-box!important;padding:var(--arq-space-padding-3xl)!important;object-fit:contain!important}.theme-transition[data-fit=air]{box-sizing:border-box;padding:var(--arq-space-padding-3xl);object-fit:contain}::slotted(img[hidden]){display:none!important}.gallery{--thumb-surface:var(--arq-color-surface-subtle)}.thumbs-row{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;display:flex}.thumbs{gap:var(--arq-space-gap-sm);margin:calc(-1 * var(--arq-space-padding-xs));padding:var(--arq-space-padding-xs);overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;display:flex;overflow-x:auto}.thumbs::-webkit-scrollbar{display:none}arq-gallery-thumb{width:var(--arq-layout-gallery-thumb);scroll-snap-align:start;flex:none}@media (width<=767px){:host([inset-thumbs]) .thumbs{padding-inline:var(--page-gutter);scroll-padding-inline:var(--page-gutter);margin-inline:0}}@media (width>=768px){.thumbs-row{z-index:3;left:var(--arq-space-padding-lg);bottom:var(--arq-space-padding-lg);max-width:calc(100% - 2 * var(--arq-space-padding-lg));position:absolute}.thumbs{min-width:0}}@media (width>=1024px){:host([fill]){flex-direction:column;display:flex}:host([fill]) .gallery{flex:auto;min-height:0}:host([fill]) .image{aspect-ratio:auto;flex:auto;min-height:0}:host([fill]) .prev{left:var(--arq-space-padding-xl-2xl)}:host([fill]) .next{right:var(--arq-space-padding-xl-2xl)}:host([fill]) .thumbs-row{left:var(--arq-space-padding-xl-2xl);bottom:var(--arq-space-padding-xl);max-height:calc(100% - 2 * var(--arq-space-padding-xl));align-items:center}:host([fill]) .thumbs{scroll-snap-type:y mandatory;flex-direction:column;max-width:none;min-height:0;max-height:100%;overflow:hidden auto}:host([fill]) arq-gallery-thumb{width:var(--arq-layout-gallery-thumb-overlay)}}";
+var Po = ":host{isolation:isolate;min-width:0;display:block}.gallery{gap:var(--arq-space-gap-sm);flex-direction:column;display:flex;position:relative}.image{aspect-ratio:var(--gallery-ratio,5 / 4);border-radius:var(--arq-radius-control);background:var(--arq-color-surface-subtle);position:relative;overflow:hidden}.image:has(.track:focus-visible){outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.track{overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;cursor:zoom-in;touch-action:pan-x pan-y;display:flex;position:absolute;inset:0;overflow:auto hidden}@media (hover:hover) and (pointer:fine){.track{overflow-x:hidden}}.track:focus{outline:none}.track::-webkit-scrollbar{display:none}.nav{padding:var(--arq-space-padding-xs);color:var(--arq-color-icon-primary);cursor:pointer;background:0 0;border:0;flex:none;justify-content:center;align-items:center;margin:0;display:inline-flex}.nav[hidden]{display:none}.nav .icon{width:var(--arq-icon-xl);height:var(--arq-icon-xl)}.nav:focus-visible{outline:var(--arq-border-strong) solid var(--arq-color-border-focus);outline-offset:2px}.nav:focus:not(:focus-visible){outline:none}.prev,.next{z-index:4;position:absolute;top:50%;transform:translateY(-50%)}.prev{left:var(--arq-space-padding-md)}.next{right:var(--arq-space-padding-md)}@media (hover:hover) and (pointer:fine){.nav{opacity:0;pointer-events:none;transition:opacity var(--arq-motion-duration-fast) var(--arq-motion-easing-standard)}.gallery:hover .nav,.gallery:focus-within .nav{opacity:1;pointer-events:auto}}.theme-transition{z-index:1;object-fit:cover;opacity:1;pointer-events:none;width:100%;height:100%;transition-property:opacity;transition-duration:var(--arq-illumination-image-duration,var(--arq-motion-duration-slow));transition-timing-function:var(--arq-illumination-image-easing,var(--arq-motion-easing-standard));position:absolute;inset:0}.theme-transition.fade-out{opacity:0}.theme-transition.quick{transition-duration:var(--arq-motion-duration-fade);transition-timing-function:var(--arq-motion-easing-standard)}::slotted(img){scroll-snap-align:start;scroll-snap-stop:always;object-fit:cover!important;flex:0 0 100%!important;width:100%!important;height:100%!important;display:block!important}::slotted(img[data-fit=air]){box-sizing:border-box!important;padding:var(--arq-space-padding-3xl)!important;object-fit:contain!important}.theme-transition[data-fit=air]{box-sizing:border-box;padding:var(--arq-space-padding-3xl);object-fit:contain}.theme-transition.quick.ready[data-fit=air]{background:var(--arq-color-surface-subtle)}::slotted(img[hidden]){display:none!important}.gallery{--thumb-surface:var(--arq-color-surface-subtle)}.thumbs-row{align-items:center;gap:var(--arq-space-gap-sm);min-width:0;display:flex}.thumbs{gap:var(--arq-space-gap-sm);margin:calc(-1 * var(--arq-space-padding-xs));padding:var(--arq-space-padding-xs);overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;display:flex;overflow-x:auto}.thumbs::-webkit-scrollbar{display:none}arq-gallery-thumb{width:var(--arq-layout-gallery-thumb);scroll-snap-align:start;flex:none}@media (width<=767px){:host([inset-thumbs]) .thumbs{padding-inline:var(--page-gutter);scroll-padding-inline:var(--page-gutter);margin-inline:0}}@media (width>=768px){.thumbs-row{z-index:3;left:var(--arq-space-padding-lg);bottom:var(--arq-space-padding-lg);max-width:calc(100% - 2 * var(--arq-space-padding-lg));position:absolute}.thumbs{min-width:0}}@media (width>=1024px){:host([fill]){flex-direction:column;display:flex}:host([fill]) .gallery{flex:auto;min-height:0}:host([fill]) .image{aspect-ratio:auto;flex:auto;min-height:0}:host([fill]) .prev{left:var(--arq-space-padding-xl-2xl)}:host([fill]) .next{right:var(--arq-space-padding-xl-2xl)}:host([fill]) .thumbs-row{left:var(--arq-space-padding-xl-2xl);bottom:var(--arq-space-padding-xl);max-height:calc(100% - 2 * var(--arq-space-padding-xl));align-items:center}:host([fill]) .thumbs{scroll-snap-type:y mandatory;flex-direction:column;max-width:none;min-height:0;max-height:100%;overflow:hidden auto}:host([fill]) arq-gallery-thumb{width:var(--arq-layout-gallery-thumb-overlay)}}";
 (class extends I {
 	static tag = "arq-product-gallery";
 	static styles = Po;
@@ -4997,10 +4997,11 @@ var Po = ":host{isolation:isolate;min-width:0;display:block}.gallery{gap:var(--a
 	#i = !1;
 	#a = !1;
 	#o = null;
-	#s = 0;
-	#c = new ResizeObserver(() => this.#w());
+	#s = null;
+	#c = 0;
+	#l = new ResizeObserver(() => this.#T());
 	get currentImage() {
-		let e = this.#d();
+		let e = this.#f();
 		return e[this.#t] ?? e[0] ?? null;
 	}
 	get frame() {
@@ -5035,7 +5036,7 @@ var Po = ":host{isolation:isolate;min-width:0;display:block}.gallery{gap:var(--a
 	}
 	set images(e) {
 		let t = this.#a ? this.currentImage?.getAttribute("src") : null;
-		this.#e = Array.isArray(e) ? e.filter((e) => e && e.src) : [], this.#a = !0, this.#t = 0, this.isConnected && this.#_(t, {
+		this.#e = Array.isArray(e) ? e.filter((e) => e && e.src) : [], this.#a = !0, this.#t = 0, this.isConnected && this.#v(t, {
 			quick: !0,
 			reset: !0
 		});
@@ -5045,100 +5046,100 @@ var Po = ":host{isolation:isolate;min-width:0;display:block}.gallery{gap:var(--a
 		e.querySelector(".thumbs").addEventListener("click", (e) => {
 			let t = e.target.closest("arq-gallery-thumb");
 			t && this.select(Number(t.dataset.index));
-		}), e.querySelector(".prev .glyph").innerHTML = L("chevron-left"), e.querySelector(".next .glyph").innerHTML = L("chevron-right"), e.querySelector(".prev").addEventListener("click", () => this.#p(this.#t - 1, !0)), e.querySelector(".next").addEventListener("click", () => this.#p(this.#t + 1, !0)), t.addEventListener("scroll", () => this.#S(), { passive: !0 }), t.addEventListener("scrollend", () => {
-			this.#y || this.#C();
-		}), t.addEventListener("click", () => this.#l()), t.addEventListener("dragstart", (e) => e.preventDefault()), e.addEventListener("keydown", (e) => this.#E(e)), this.#c.observe(t), this.addEventListener("error", (e) => {
-			let t = this.#d().indexOf(e.target);
+		}), e.querySelector(".prev .glyph").innerHTML = L("chevron-left"), e.querySelector(".next .glyph").innerHTML = L("chevron-right"), e.querySelector(".prev").addEventListener("click", () => this.#m(this.#t - 1, !0)), e.querySelector(".next").addEventListener("click", () => this.#m(this.#t + 1, !0)), t.addEventListener("scroll", () => this.#C(), { passive: !0 }), t.addEventListener("scrollend", () => {
+			this.#b || this.#w();
+		}), t.addEventListener("click", () => this.#u()), t.addEventListener("dragstart", (e) => e.preventDefault()), e.addEventListener("keydown", (e) => this.#D(e)), this.#l.observe(t), this.addEventListener("error", (e) => {
+			let t = this.#f().indexOf(e.target);
 			if (t < 1 || this.#e.length < 2 || !this.#e[t]) return;
 			let n = this.#e[t], r = this.#e[this.#t];
-			this.#e = this.#e.filter((e) => e !== n), this.#t = Math.max(0, this.#e.indexOf(r)), this.#_(null, { quick: !0 });
-		}, !0), Ua(this, "themeChanged"), this.#_();
+			this.#e = this.#e.filter((e) => e !== n), this.#t = Math.max(0, this.#e.indexOf(r)), this.#v(null, { quick: !0 });
+		}, !0), Ua(this, "themeChanged"), this.#v();
 	}
 	disconnectedCallback() {
-		this.#c.disconnect();
+		this.#l.disconnect();
 	}
 	themeChanged(e) {
-		let t = this.#e[this.#t], n = t ? this.#u(t) : null;
-		this.#i = e, this.#_(n);
+		let t = this.#e[this.#t], n = t ? this.#d(t) : null;
+		this.#i = e, this.#v(n);
 	}
 	select(e) {
-		this.#p(e, !1);
+		this.#m(e, !1);
 	}
-	#l() {
+	#u() {
 		this.#e.length && this.emit("open", {
 			index: this.#t,
 			photos: this.photos,
-			opener: this.#f()
+			opener: this.#p()
 		});
 	}
-	#u(e) {
+	#d(e) {
 		return Se(this.#i && e.srcOn || e.src, ye);
 	}
-	#d() {
+	#f() {
 		return [...this.querySelectorAll(":scope > img[slot=\"image\"]:not([data-clone])")];
 	}
-	#f() {
+	#p() {
 		return this.shadowRoot.querySelector(".track");
 	}
-	#p(e, t) {
+	#m(e, t) {
 		let n = this.#e.length;
 		if (n < 2) return;
 		let r = (e % n + n) % n;
 		if (r === this.#t) return;
 		let i = t && this.#t === n - 1 && r === 0, a = t && this.#t === 0 && r === n - 1;
-		this.#t = r, this.#v(!0);
+		this.#t = r, this.#y(!0);
 		let o = i ? n + 1 : a ? 0 : r + 1;
-		this.#x(o);
-	}
-	#m() {
-		return this.#e.length > 1 ? this.#t + 1 : 0;
+		this.#S(o);
 	}
 	#h() {
+		return this.#e.length > 1 ? this.#t + 1 : 0;
+	}
+	#g() {
 		let e = this.#e.length;
-		if (e && !this.#d().length) {
+		if (e && !this.#f().length) {
 			let e = document.createElement("img");
 			e.slot = "image", this.append(e);
 		}
-		let t = this.#d();
+		let t = this.#f();
 		for (; t.length > Math.max(e, 1);) {
 			let e = t.pop();
 			e.dataset.slide === "extra" && e.remove();
 		}
-		for (let t of this.#d()) t.hidden = this.#a && !e;
-		for (; e && this.#d().length < e;) {
+		for (let t of this.#f()) t.hidden = this.#a && !e;
+		for (; e && this.#f().length < e;) {
 			let e = document.createElement("img");
 			e.slot = "image", e.dataset.slide = "extra", e.alt = "", e.draggable = !1;
 			let t = this.querySelector(":scope > img[data-clone=\"after\"]");
 			t ? this.insertBefore(e, t) : this.append(e);
 		}
-		this.#g();
+		this.#_();
 	}
-	#g() {
-		let e = this.#e, t = this.#d(), n = this.querySelector(":scope > img[data-clone=\"before\"]"), r = this.querySelector(":scope > img[data-clone=\"after\"]");
+	#_() {
+		let e = this.#e, t = this.#f(), n = this.querySelector(":scope > img[data-clone=\"before\"]"), r = this.querySelector(":scope > img[data-clone=\"after\"]");
 		if (e.length < 2 || !t[0]) {
 			n?.remove(), r?.remove();
 			return;
 		}
 		n || (n = document.createElement("img"), n.dataset.clone = "before", n.slot = "image", n.alt = "", n.setAttribute("aria-hidden", "true"), n.draggable = !1, this.insertBefore(n, t[0])), r || (r = document.createElement("img"), r.dataset.clone = "after", r.slot = "image", r.alt = "", r.setAttribute("aria-hidden", "true"), r.draggable = !1, this.append(r));
-		let i = this.#u(e.at(-1)), a = this.#u(e[0]);
+		let i = this.#d(e.at(-1)), a = this.#d(e[0]);
 		n.getAttribute("src") !== i && (n.src = i), r.getAttribute("src") !== a && (r.src = a), n.dataset.fit = this.#n(i), r.dataset.fit = this.#n(a);
 	}
-	#_(e = null, { quick: t = !1, reset: n = !1 } = {}) {
-		this.#b = !0;
+	#v(e = null, { quick: t = !1, reset: n = !1 } = {}) {
+		this.#x = !0;
 		let r = this.#e;
-		this.#h(), n && (this.#t = 0), this.#t > r.length - 1 && (this.#t = Math.max(r.length - 1, 0));
-		let i = this.#d(), a = r[this.#t], o = a ? this.#u(a) : null, s = i[this.#t], c = !!(e && o && e !== o && s);
-		c && this.#D(s, e, o, t), i.forEach((e, t) => {
+		this.#g(), n && (this.#t = 0), this.#t > r.length - 1 && (this.#t = Math.max(r.length - 1, 0));
+		let i = this.#f(), a = r[this.#t], o = a ? this.#d(a) : null, s = i[this.#t], c = !!(e && o && e !== o && s);
+		c && this.#O(s, e, o, t), i.forEach((e, t) => {
 			let n = r[t];
 			if (!n) return;
-			let i = this.#u(n);
+			let i = this.#d(n);
 			!(c && t === this.#t) && e.getAttribute("src") !== i && (e.src = i), e.dataset.fit = this.#n(i), e.alt = n.alt ?? "", e.draggable = !1, t > 0 && (e.loading = "lazy");
 			let a = Se(this.#i ? n.src : n.srcOn, ye);
 			a && a !== i && (new Image().src = a);
-		}), this.#g();
-		let l = this.#T();
-		this.#f().scrollTo({
-			left: this.#m() * l,
+		}), this.#_();
+		let l = this.#E();
+		this.#p().scrollTo({
+			left: this.#h() * l,
 			behavior: "auto"
 		});
 		let u = this.shadowRoot.querySelector(".thumbs"), d = this.shadowRoot.querySelector(".thumbs-row");
@@ -5150,50 +5151,50 @@ var Po = ":host{isolation:isolate;min-width:0;display:block}.gallery{gap:var(--a
 			for (; u.children.length < r.length;) u.append(document.createElement("arq-gallery-thumb"));
 			r.forEach((e, t) => {
 				let n = u.children[t];
-				n.dataset.index = String(t), n.src = this.#u(e), n.alt = e.alt ?? "";
+				n.dataset.index = String(t), n.src = this.#d(e), n.alt = e.alt ?? "";
 			});
 		}
-		this.#v(!1), this.#b = !1;
+		this.#y(!1), this.#x = !1;
 	}
-	#v(e) {
+	#y(e) {
 		let t = this.#e, n = this.#t;
 		[...this.shadowRoot.querySelector(".thumbs").children].forEach((e, t) => {
 			e.selected = t === n;
 		});
-		let r = t.length > 1, i = this.#f();
+		let r = t.length > 1, i = this.#p();
 		if (i.tabIndex = r ? 0 : -1, !e || !r) return;
 		let a = t[n]?.alt;
 		this.shadowRoot.querySelector(".live").textContent = `Foto ${n + 1} de ${t.length}${a ? `, ${a}` : ""}`, this.dispatchEvent(new CustomEvent("arq:slide", { detail: { index: n } }));
 	}
-	#y = 0;
-	#b = !1;
-	#x(e) {
-		let t = this.#f(), n = e * (this.#T() || t.clientWidth);
+	#b = 0;
+	#x = !1;
+	#S(e) {
+		let t = this.#p(), n = e * (this.#E() || t.clientWidth);
 		if (matchMedia("(prefers-reduced-motion: reduce)").matches || Math.abs(t.scrollLeft - n) < 1) {
 			t.scrollTo({
 				left: n,
 				behavior: "auto"
-			}), this.#C();
+			}), this.#w();
 			return;
 		}
-		this.#y += 1;
+		this.#b += 1;
 		let r = 0, i = () => {
-			this.#y && (t.removeEventListener("scrollend", i), clearTimeout(r), --this.#y, this.#y || this.#C());
+			this.#b && (t.removeEventListener("scrollend", i), clearTimeout(r), --this.#b, this.#b || this.#w());
 		};
 		t.addEventListener("scrollend", i), r = setTimeout(i, 800), t.scrollTo({
 			left: n,
 			behavior: "smooth"
 		});
 	}
-	#S() {
-		if (this.#b || this.#y) return;
-		let e = this.#f(), t = e.clientWidth;
+	#C() {
+		if (this.#x || this.#b) return;
+		let e = this.#p(), t = e.clientWidth;
 		if (!t || this.#e.length < 2) return;
 		let n = Math.round(e.scrollLeft / t), r = this.#e.length, i = n <= 0 ? r - 1 : n >= r + 1 ? 0 : n - 1;
-		i !== this.#t && (this.#t = i, this.#v(!0));
+		i !== this.#t && (this.#t = i, this.#y(!0));
 	}
-	#C() {
-		let e = this.#e.length, t = this.#f(), n = t.clientWidth;
+	#w() {
+		let e = this.#e.length, t = this.#p(), n = t.clientWidth;
 		if (e < 2 || !n) return;
 		let r = Math.round(t.scrollLeft / n), i = !1;
 		r <= 0 ? (t.scrollTo({
@@ -5206,35 +5207,35 @@ var Po = ":host{isolation:isolate;min-width:0;display:block}.gallery{gap:var(--a
 			this.dispatchEvent(new CustomEvent("arq:slide", { detail: { index: this.#t } }));
 		});
 	}
-	#w() {
-		let e = this.#T();
-		e && e !== this.#s && (this.#s = e, this.#f().scrollTo({
-			left: this.#m() * e,
+	#T() {
+		let e = this.#E();
+		e && e !== this.#c && (this.#c = e, this.#p().scrollTo({
+			left: this.#h() * e,
 			behavior: "auto"
 		}));
 	}
-	#T() {
-		let e = this.#f().clientWidth;
+	#E() {
+		let e = this.#p().clientWidth;
 		if (!e) return 0;
 		let t = `${e}px`;
 		for (let e of this.querySelectorAll(":scope > img[slot=\"image\"]")) e.style.setProperty("flex-basis", t, "important"), e.style.setProperty("width", t, "important"), e.style.setProperty("min-width", t, "important"), e.style.setProperty("max-width", t, "important");
 		return e;
 	}
-	#E(e) {
-		let t = e.composedPath(), n = this.#f();
+	#D(e) {
+		let t = e.composedPath(), n = this.#p();
 		if ((e.key === "Enter" || e.key === " ") && t[0] === n) {
-			e.preventDefault(), this.#l();
+			e.preventDefault(), this.#u();
 			return;
 		}
 		if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
 		let r = this.shadowRoot.querySelector(".thumbs"), i = t.some((e) => e.classList?.contains?.("nav"));
-		(t.includes(n) || t.includes(r) || i) && (e.preventDefault(), this.#p(this.#t + (e.key === "ArrowRight" ? 1 : -1), !0));
+		(t.includes(n) || t.includes(r) || i) && (e.preventDefault(), this.#m(this.#t + (e.key === "ArrowRight" ? 1 : -1), !0));
 	}
-	#D(e, t, n, r = !1) {
+	#O(e, t, n, r = !1) {
 		let i = document.createElement("img");
 		i.className = r ? "theme-transition quick" : "theme-transition", i.src = t, i.dataset.fit = this.#n(t), i.alt = "", i.setAttribute("aria-hidden", "true");
 		let a = this.shadowRoot.querySelector(".image"), o = this.#o?.isConnected ? this.#o : null;
-		a.insertBefore(i, o), this.#o = i, e.src = n, i.addEventListener("transitionend", (e) => {
+		a.insertBefore(i, o), this.#o = i, this.#s = n, r || (e.src = n), i.addEventListener("transitionend", (e) => {
 			e.propertyName === "opacity" && i.remove();
 		}, { once: !0 });
 		let s = () => {
@@ -5243,7 +5244,13 @@ var Po = ":host{isolation:isolate;min-width:0;display:block}.gallery{gap:var(--a
 			let e = getComputedStyle(i).transitionDuration.split(",")[0];
 			Number.parseFloat(e) || i.remove();
 		};
-		r ? e.decode().catch(() => {}).then(s) : s();
+		if (!r) {
+			s();
+			return;
+		}
+		i.decode().catch(() => {}).then(() => {
+			if (i.classList.add("ready"), this.#s === n) return e.src = n, e.decode().catch(() => {});
+		}).then(s);
 	}
 }).define();
 //#endregion

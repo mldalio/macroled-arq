@@ -86,6 +86,7 @@ class ArqProductGallery extends ArqElement {
   #dark = false;
   #received = false; // ya llegaron los datos: antes no se oculta la imagen del HTML
   #transitionImage = null;
+  #nextSrc = null; // la última foto pedida por un cambio de variante (#crossfade)
   #width = 0;
   #resize = new ResizeObserver(() => this.#realign());
 
@@ -475,7 +476,11 @@ class ArqProductGallery extends ArqElement {
     const running = this.#transitionImage?.isConnected ? this.#transitionImage : null;
     image.insertBefore(previous, running);
     this.#transitionImage = previous;
-    img.src = nextSrc;
+    // Cambio de variante: la nueva se pide recién cuando la anterior ya la tapa
+    // (con su fondo, .ready); si no, en el primer cuadro se ven las dos. Si
+    // mientras tanto llegó otro cambio, gana el último.
+    this.#nextSrc = nextSrc;
+    if (!quick) img.src = nextSrc;
     previous.addEventListener('transitionend', (event) => {
       if (event.propertyName === 'opacity') previous.remove();
     }, { once: true });
@@ -486,8 +491,16 @@ class ArqProductGallery extends ArqElement {
       const duration = getComputedStyle(previous).transitionDuration.split(',')[0];
       if (!Number.parseFloat(duration)) previous.remove();
     };
-    if (quick) img.decode().catch(() => {}).then(fade);
-    else fade();
+    if (!quick) {
+      fade();
+      return;
+    }
+    previous.decode().catch(() => {}).then(() => {
+      previous.classList.add('ready');
+      if (this.#nextSrc !== nextSrc) return;
+      img.src = nextSrc;
+      return img.decode().catch(() => {});
+    }).then(fade);
   }
 }
 
