@@ -1,7 +1,8 @@
 // info-tip · el ⓘ de las características, como en las fichas de macroled.com.ar:
 // una etiqueta con un ícono que abre una burbuja con el nombre y qué significa.
-// Lo usan las especificaciones y los datos clave de la ficha (la tabla de
-// variantes, en la ficha y en Descargas, no). Estilos en info-tip.css, que el
+// Lo usan las especificaciones y los datos clave de la ficha y las etiquetas de
+// fila de la comparativa (compare-table). La tabla de variantes (ficha y
+// Descargas) no. Estilos en info-tip.css, que el
 // componente suma a los suyos (static styles).
 //
 //   const button = infoTip({ label: 'CRI', help: fieldHelp('cri') });  // etiqueta + ⓘ

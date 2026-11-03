@@ -16,7 +16,7 @@
 // specs vale para todas las variantes del grupo; attributes de la variante pisa o completa.
 
 import { loadSource, loadGroupDetails } from './source.js';
-import { ATTRIBUTES, DOWNLOAD_FILTERS, FIELD_TIPS, TABLE_COLUMNS, attributeInfo, specSections, specValue, tableValues } from './attributes.js';
+import { ATTRIBUTES, DOWNLOAD_FILTERS, FIELD_TIPS, TABLE_COLUMNS, attributeInfo, fieldHelp, specSections, specValue, tableValues } from './attributes.js';
 import { variantOptions, findVariant, choose, compareValues } from './variants.js';
 import { normalize, queryWords, matchWords } from './text.js';
 import { finishImage } from './finishes.js';
@@ -971,7 +971,8 @@ export async function getCompare(skus) {
   const sections = specSections(Object.assign({}, ...found.map(({ variant }) => variant.values)));
   const tableGroups = sections.map((section) => ({
     label: section.label,
-    rows: section.rows.map((row) => ({ label: row.label, values: found.map(({ variant }) => variant.values[row.field] ?? '—') })),
+    // help: explicación del ⓘ de la etiqueta (fieldHelp, src/data/attributes.js); sin texto, sin ⓘ
+    rows: section.rows.map((row) => ({ label: row.label, help: fieldHelp(row.field), values: found.map(({ variant }) => variant.values[row.field] ?? '—') })),
   }));
   const commercial = tableGroups.find((g) => g.label === 'Información comercial');
   const skuRow = { label: 'SKU', values: found.map(({ variant }) => variant.sku) };
