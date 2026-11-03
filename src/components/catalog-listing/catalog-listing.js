@@ -31,7 +31,7 @@
 //   (?collection=) y desde el mega-menu.
 
 import { ArqElement } from '../../base/arq-element.js';
-import { listProducts, listCompareCandidates, getCatalogNav, categoryFromPath } from '../../data/catalog.js';
+import { listProducts, listCompareCandidates, getCatalogNav, categoryFromPath, LAMPS_ENVIRONMENT } from '../../data/catalog.js';
 import { subcategoryDescription, collectionDescription } from '../../data/category-descriptions.js';
 import { handOffTheme, setBrowserBar, withoutThemeTransition } from '../../base/theme.js';
 import '../catalog-toolbar/catalog-toolbar.js';
@@ -58,6 +58,13 @@ const LISTING_WIDE = matchMedia('(min-width: 1920px)');
 
 // Colección (id, sin tildes) sin Iluminar, como la ficha de Daö (decisiones.md, 2026-10-23)
 const NO_ILLUMINATION_COLLECTION = 'dao';
+
+// Listados del sistema Daö: su colección y Lámparas y Artefactos, que son sus piezas y
+// lámparas (decisiones.md, 2026-11-03 · Un producto en varias categorías). Sin Iluminar
+// y con «Configurar Daö».
+const plain = (text) => (text ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').trim().toLowerCase();
+const isDaoListing = ({ collection, family, environment } = {}) =>
+  environment === LAMPS_ENVIRONMENT || [collection, family].some((name) => plain(name) === NO_ILLUMINATION_COLLECTION);
 
 const TEXT = { configure: 'Configurar Daö', loading: 'Cargando productos…', empty: 'No hay productos con estos filtros.', error: 'No se pudieron cargar los productos. Probá de nuevo en unos minutos.' };
 
@@ -311,15 +318,13 @@ class ArqCatalogListing extends ArqElement {
     this.#load();
   }
 
-  // En la colección Daö, «Configurar Daö» va en catalog-toolbar, en el lugar
-  // de Iluminar (que Daö no tiene), junto a Filtrar. Como en la ficha, un
-  // arq-button Filled que abre arq-dao-configurator. Con una búsqueda o en otra
-  // categoría se saca.
+  // En la colección Daö y en Lámparas y Artefactos, «Configurar Daö» va en
+  // catalog-toolbar, en el lugar de Iluminar (que no tienen), junto a Filtrar.
+  // Como en la ficha, un arq-button Filled que abre arq-dao-configurator. Con una
+  // búsqueda o en otra categoría se saca.
   #syncConfigure() {
     const toolbar = this.shadowRoot.querySelector('.toolbar');
-    const plain = (text) => (text ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').trim().toLowerCase();
-    const { collection, family } = this.#category;
-    const dao = !this.#query && [collection, family].some((name) => plain(name) === NO_ILLUMINATION_COLLECTION);
+    const dao = !this.#query && isDaoListing(this.#category);
     let button = toolbar.querySelector(':scope > .configure');
     if (dao && !button) {
       button = document.createElement('arq-button');
@@ -333,13 +338,11 @@ class ArqCatalogListing extends ArqElement {
     }
   }
 
-  // La colección Daö no tiene Iluminar: sin toggle, y si se llegó iluminado
-  // (otra categoría) la página vuelve a Light. Llega como ?collection= o como
-  // ?family= (los links del menú Colecciones y del breadcrumb de la ficha).
+  // La colección Daö y Lámparas y Artefactos no tienen Iluminar: sin toggle, y si
+  // se llegó iluminado (otra categoría) la página vuelve a Light. Daö llega como
+  // ?collection= o como ?family= (los links del menú Colecciones y del breadcrumb de la ficha).
   #syncIlluminate() {
-    const plain = (text) => (text ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').trim().toLowerCase();
-    const { collection, family } = this.#category;
-    const off = [collection, family].some((name) => plain(name) === NO_ILLUMINATION_COLLECTION);
+    const off = isDaoListing(this.#category);
     this.shadowRoot.querySelector('.toolbar').showIluminar = !off;
     const html = document.documentElement;
     if (off && html.getAttribute('data-arq-theme') === 'dark') {

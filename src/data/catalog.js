@@ -8,7 +8,7 @@
 //
 // Forma del catálogo:
 //   collection: { id, name, intro, description, images: { menu, studio, studioOn, context, contextOn, gallery[], description, inspiration[] } }
-//   group: { id, name, family, collection, productType, hasDefault, menuImage, environment[], application, variantAttributes[],
+//   group: { id, name, family, collection, productType, hasDefault, menuImage, categories[{ environment, application }], environment[], application, variantAttributes[],
 //            story, inspiration, video, images: { ambient[], description, inspiration }, specs: { campo: valor },
 //            variants: [{ sku, isDefault, description, attributes: { campo: valor },
 //                         images: { main, studio, studioOn, context, contextOn, gallery[], galleryOn[] },
@@ -121,19 +121,29 @@ export function categoryFromPath(pathname) {
 // predeterminado marcado en la base (is_group_default), una card por grupo. Sin
 // product_type en la categoría, solo Luminarias: las colecciones no son productos
 // y los accesorios quedan afuera. Lámparas y artefactos se listan en su
-// macrofamilia, no en el listado general. La búsqueda (?q=) y «Explora la
+// macrofamilia, no en el listado general; una luminaria que además está en
+// Lámparas y Artefactos (Daö) se lista en las dos. La búsqueda (?q=) y «Explora la
 // colección» piden solo el SKU predeterminado; las fichas abiertas por URL no usan
 // esta regla. category: { productType, environment }.
 const isListed = (group, category = {}) => {
   if (!group.hasDefault) return false;
   if (category.productType) return true;
-  if (group.environment.includes(LAMPS_ENVIRONMENT)) return category.environment === LAMPS_ENVIRONMENT;
+  if (group.environment.includes(LAMPS_ENVIRONMENT) && category.environment === LAMPS_ENVIRONMENT) return true;
+  if (isLampsOnly(group)) return false;
   return group.productType === 'Luminaria';
 };
 
+const isLampsOnly = (group) => group.environment.length > 0 && group.environment.every((env) => env === LAMPS_ENVIRONMENT);
+
+// ¿Algún par macrofamilia › subfamilia del grupo coincide con la categoría?
+const inPair = (group, environment, application) =>
+  group.categories.some((c) => (!environment || c.environment === environment) && (!application || c.application === application));
+
+// Subfamilias de una macrofamilia, en el orden de la base
+const applicationsOf = (groups, environment) => [...new Set(groups.flatMap((g) => g.categories.filter((c) => c.environment === environment).map((c) => c.application)).filter(Boolean))];
+
 function inCategory(group, { environment, application, productType, collection, family } = {}) {
-  if (environment && !group.environment.includes(environment)) return false;
-  if (application && group.application !== application) return false;
+  if ((environment || application) && !inPair(group, environment, application)) return false;
   if (productType && group.productType !== productType) return false;
   if (collection && group.collection !== collection) return false;
   if (family && normalize(group.family) !== normalize(family)) return false;
@@ -193,7 +203,9 @@ function availableValues(groups, active) {
 // ── Cards ────────────────────────────────────────────────────────────
 function meta(group) {
   if (group.productType && group.productType !== 'Luminaria') return group.productType;
-  return [group.environment.join(' · '), group.application].filter(Boolean).join(' · ');
+  // Las macrofamilias de su subfamilia principal: «Interior · Embutir» (Daö no suma Lámparas y Artefactos)
+  const environments = group.categories.filter((c) => c.application === group.application).map((c) => c.environment);
+  return [environments.join(' · '), group.application].filter(Boolean).join(' · ');
 }
 
 // Acabados de la card (Show finishes): valores únicos de los campos con
@@ -323,7 +335,9 @@ const pick = (object = {}) => Object.fromEntries(Object.entries(object).filter((
 // de la misma familia) juntos, en el orden en que aparece cada una en los datos.
 // Interior sigue INTERIOR_ORDER (cada nombre abarca sus variantes: «Mini Kai»
 // incluye «Mini Kai Rounded»); las que no están van después. En Exterior, Daö va
-// casi al final, y después Tori Jardín y Tori Visera (esta, la última).
+// casi al final, y después Tori Jardín y Tori Visera (esta, la última). En
+// Lámparas y Artefactos, primero los artefactos (Daö, como viene) y al final las
+// lámparas (subfamilia Lámpara), en PAR11_ORDER.
 const INTERIOR_ORDER = ['fuji', 'hoshi', 'ugoki', 'afo', 'douli', 'mini kai', 'nami', 'dao', 'sen'];
 const LAST_FAMILY = 'dao';
 const LAST_GROUPS = ['tori jardin', 'tori visera'];
@@ -337,13 +351,17 @@ const interiorRank = (key) => {
 // colección»): el de embutir, el de aplicar, el redondo y el redondo de aplicar
 // (Mini Kai, Mini Kai Aplicar, Mini Kai Round, Mini Kai Round Aplicar). Se lee del
 // nombre; los demás empatan en 0 y siguen el orden de los datos. Daö sigue
-// DAO_ORDER; los que no están (Daö Deepframe) van al final.
+// DAO_ORDER y Par 11, PAR11_ORDER (el frente es un accesorio del Cerámico: va
+// después); los que no están (Daö Deepframe) van al final.
 const DAO_ORDER = ['dao', 'dao trimless', 'dao pinhole', 'dao cabezal', 'dao cabezal direccionable'];
+const PAR11_ORDER = ['par11 dim to warm', 'par11 ceramico', 'frente par11 ceramico'];
+const FAMILY_ORDER = { [LAST_FAMILY]: DAO_ORDER, 'par 11': PAR11_ORDER };
 const variantRank = (group) => {
   const name = normalize(group.name).trim();
-  if (normalize(group.family) === LAST_FAMILY) {
-    const index = DAO_ORDER.indexOf(name);
-    return index === -1 ? DAO_ORDER.length : index;
+  const order = FAMILY_ORDER[normalize(group.family)];
+  if (order) {
+    const index = order.indexOf(name);
+    return index === -1 ? order.length : index;
   }
   return (/\bround/.test(name) ? 2 : 0) + (/\bapli(car|que)\b/.test(name) ? 1 : 0);
 };
@@ -351,8 +369,8 @@ const variantRank = (group) => {
 function byCollection(groups) {
   // «Mini Kai Round» va con Mini Kai: la clave ignora el «Round» final
   const key = (group) => normalize(group.collection || group.family || group.name).replace(/\s+round(ed)?$/, '');
-  // Primero Interior y después Exterior (un grupo en los dos va con Interior)
-  const space = (group) => (group.environment.includes('Interior') ? 0 : group.environment.includes('Exterior') ? 1 : 2);
+  // Primero Interior y después Exterior (un grupo en los dos va con Interior); las lámparas, al final
+  const space = (group) => (group.environment.includes('Interior') ? 0 : group.environment.includes('Exterior') ? 1 : group.application === 'Lámpara' ? 3 : 2);
   const tail = (group) => {
     if (space(group) === 0) return interiorRank(key(group));
     const own = LAST_GROUPS.indexOf(normalize(group.name));
@@ -1005,7 +1023,7 @@ export async function getCompare(skus) {
 
 // categoria (campo de cada SKU: «Bolardo»…) entra en el texto del grupo, como el nombre y la aplicación (subfamilia).
 const categories = (group) => [...new Set(group.variants.map((v) => v.category).filter(Boolean))];
-const groupText = (group) => [group.name, group.collectionData?.name, group.application, group.productType, ...group.environment, ...categories(group)].join(' ');
+const groupText = (group) => [group.name, group.collectionData?.name, ...group.categories.map((c) => c.application), group.productType, ...group.environment, ...categories(group)].join(' ');
 
 /**
  * ¿El grupo coincide con la búsqueda? { variant, bySku, typo } o null. Si
@@ -1161,20 +1179,26 @@ export async function getNavigation() {
     const [image = null, ...fallbacks] = [...new Set(candidates.filter(Boolean))];
     return { image, fallbacks };
   };
+  const menuPhoto = (inside, { environment, application }) => {
+    const marked = inside.filter((g) => g.menuImage);
+    const main = (g) => (!environment || g.categories[0]?.environment === environment) && (!application || g.categories[0]?.application === application);
+    return (marked.find(main) ?? marked[0])?.menuImage;
+  };
   const link = (label, filter) => {
     const inside = groups.filter((g) => inCategory(g, filter));
     return {
       label,
       href: categoryHref(filter),
       count: count(filter),
-      // Primero la del producto marcado con is_menu_default
-      ...preview([inside.find((g) => g.menuImage)?.menuImage, ...productPhotos(inside)]),
+      // Primero la del producto marcado con is_menu_default. Si son varios, la de uno que
+      // tiene esta categoría como principal (la foto de Daö es la de Embutir, no la de Artefacto).
+      ...preview([menuPhoto(inside, filter), ...productPhotos(inside)]),
       thumb: inside.map(groupImages).find((i) => i.image)?.thumb ?? null,
     };
   };
   const environmentSection = (environment, allLabel) => {
     const lamps = environment === LAMPS_ENVIRONMENT;
-    const applications = [...new Set(groups.filter((g) => g.environment.includes(environment) && (lamps ? isListed(g, { environment }) : g.productType === 'Luminaria')).map((g) => g.application).filter(Boolean))];
+    const applications = applicationsOf(groups.filter((g) => (lamps ? isListed(g, { environment }) : g.productType === 'Luminaria')), environment);
     const links = [
       ...applications.map((application) => link(application, lamps ? { environment, application } : { environment, application, productType: 'Luminaria' })),
       ...(lamps ? [] : [link('Artefactos', { environment, productType: 'Artefacto' }), link('Lámparas', { environment, productType: 'Lámpara' })]),
@@ -1183,7 +1207,8 @@ export async function getNavigation() {
   };
   const familyLink = (family) => {
     const own = family.groups;
-    const environments = [...new Set(own.flatMap((g) => g.environment))];
+    // Lámparas y Artefactos no es una línea: Daö es «Línea Interior»
+    const environments = [...new Set(own.flatMap((g) => g.environment))].filter((env) => env !== LAMPS_ENVIRONMENT);
     return {
       label: family.name,
       meta: [...new Set(own.map((g) => g.application).filter(Boolean))].join(' · '),
@@ -1214,7 +1239,7 @@ export async function getCatalogNav() {
   const link = (label, filter) => ({ label, href: categoryHref(filter), count: count(filter) });
   const environment = (env) => {
     const lamps = env === LAMPS_ENVIRONMENT;
-    const applications = [...new Set(groups.filter((g) => g.environment.includes(env) && (lamps ? isListed(g, { environment: env }) : g.productType === 'Luminaria')).map((g) => g.application).filter(Boolean))];
+    const applications = applicationsOf(groups.filter((g) => (lamps ? isListed(g, { environment: env }) : g.productType === 'Luminaria')), env);
     return [
       ...applications.map((application) => link(application, lamps ? { environment: env, application } : { environment: env, application, productType: 'Luminaria' })),
       ...(lamps ? [] : [link('Artefactos', { environment: env, productType: 'Artefacto' }), link('Lámparas', { environment: env, productType: 'Lámpara' })]),

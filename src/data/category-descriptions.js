@@ -17,8 +17,8 @@ const SUBCATEGORIES = {
   'exterior/pared': 'Luminarias de pared para fachadas, accesos, galerías y pasos, que acompañan la arquitectura desde el muro.',
   'exterior/artefactos': 'Accesorios y artefactos para completar las luminarias de exterior.',
   'exterior/lamparas': 'Lámparas para las luminarias de exterior que las usan.',
-  'lamparas-artefactos/lampara': 'Lámparas mini dicroicas PAR11 de luz cálida, con versión dim to warm.',
-  'lamparas-artefactos/artefacto': 'Accesorios para completar lámparas PAR11.',
+  'lamparas-artefactos/lampara': 'Lámparas mini dicroicas PAR11 de luz cálida, con versión dim to warm, compatibles con el sistema Daö.',
+  'lamparas-artefactos/artefacto': 'Aros y cabezales del sistema Daö, para combinar y armar cada punto de luz.',
 };
 
 const COLLECTIONS = {
