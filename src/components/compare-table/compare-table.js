@@ -8,7 +8,7 @@
 //   <arq-compare-table></arq-compare-table>
 //   tabla.data = {
 //     products: [{ sku, name, meta, image }],                       // hasta 3
-//     groups: [{ label: 'Características lumínicas', rows: [{ label: 'Flujo luminoso', values: ['850 lm', '850 lm', '650 lm'] }] }],
+//     groups: [{ label: 'Características lumínicas', rows: [{ label: 'Flujo luminoso', help: 'Cantidad total…', values: ['850 lm', '850 lm', '650 lm'] }] }],
 //   };
 //
 // - Es un <table> real: un lector de pantalla anuncia el producto (columna) y
@@ -30,11 +30,15 @@
 //   muestra 3 compare-product): con menos productos, las columnas de más
 //   quedan en blanco en vez de desaparecer, para que las líneas de la tabla no
 //   se estiren a lo ancho que haya.
+// - help (opcional) en una fila: la etiqueta lleva el ⓘ con esa explicación
+//   (src/base/info-tip.js, como en la ficha); sin help, la etiqueta sola.
 // - "Solo diferencias" (prop onlyDifferences, la página la sincroniza con el
 //   toggle de compare-header): oculta las filas con todos los valores iguales
 //   y el grupo que queda vacío.
 
 import { ArqElement } from '../../base/arq-element.js';
+import { bindInfoTips, infoTipHtml } from '../../base/info-tip.js';
+import infoTipCss from '../../base/info-tip.css?inline';
 import css from './compare-table.css?inline';
 
 const esc = (text) => String(text ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -43,7 +47,7 @@ const MOBILE = matchMedia('(max-width: 767px)');
 
 class ArqCompareTable extends ArqElement {
   static tag = 'arq-compare-table';
-  static styles = css;
+  static styles = infoTipCss + css;
   static properties = {
     onlyDifferences: { type: Boolean }, // toggle "Solo diferencias"
     label: { type: String, default: 'Comparación de productos' }, // nombre de la región con scroll
@@ -67,6 +71,8 @@ class ArqCompareTable extends ArqElement {
   }
 
   setup() {
+    // ⓘ de las etiquetas de fila (como en la ficha)
+    bindInfoTips(this.shadowRoot);
     MOBILE.addEventListener('change', () => this.#syncBreakpoint());
     this.shadowRoot.querySelector('.table').addEventListener(
       'scroll',
@@ -129,7 +135,7 @@ class ArqCompareTable extends ArqElement {
             const same = real.length > 0 && real.every((v) => String(v) === String(real[0]));
             const values = Array.from({ length: MAX }, (_, i) => real[i] ?? '');
             return (
-              `<tr class="row" role="row"${same ? ' data-same' : ''}><th scope="row" class="label-cell row-label" role="rowheader">${esc(row.label)}</th>` +
+              `<tr class="row" role="row"${same ? ' data-same' : ''}><th scope="row" class="label-cell row-label" role="rowheader">${row.help ? infoTipHtml({ label: row.label, help: row.help }) : esc(row.label)}</th>` +
               values.map((v, i) => `<td class="value${empty(i)} role-body-lg-regular" role="cell">${esc(v)}</td>`).join('') +
               `</tr>`
             );

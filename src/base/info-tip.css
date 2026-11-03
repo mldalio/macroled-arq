@@ -57,6 +57,13 @@
   outline: none;
 }
 
+/* Impreso (la comparativa se imprime) no hay a quién explicarle: sin el ícono */
+@media print {
+  .info-tip .icon {
+    display: none;
+  }
+}
+
 .info-tip:focus-visible {
   outline: var(--arq-border-strong) solid var(--arq-color-border-focus);
   outline-offset: 2px;
