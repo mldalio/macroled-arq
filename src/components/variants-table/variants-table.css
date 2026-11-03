@@ -213,6 +213,13 @@ td {
   display: inline-block;
 }
 
+/* Encabezado: el nombre y su ⓘ (src/base/info-tip.js) a space/gap/xs */
+thead .cell {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--arq-space-gap-xs);
+}
+
 /* El texto no baja de ese ancho: la tabla no achica las columnas y, si no
    entran, se desplaza */
 .data {

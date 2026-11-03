@@ -60,6 +60,7 @@ import '../search-see-all/search-see-all.js';
 import '../search-dropdown/search-dropdown.js';
 import '../search-card/search-card.js';
 import css from './search-sheet.css?inline';
+import { transitionMs } from '../../base/motion.js';
 
 const MOBILE = matchMedia('(max-width: 767px)');
 const esc = (text) => String(text ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -276,8 +277,7 @@ class ArqSearchSheet extends ArqElement {
 
   // Lo que dura la transición más larga (la de la persiana, en .drawer; 0 con reduced motion), en ms
   #duration() {
-    const { transitionDuration } = getComputedStyle(this.shadowRoot.querySelector('.drawer'));
-    return Math.max(0, ...transitionDuration.split(',').map((value) => (parseFloat(value) || 0) * (/mss*$/.test(value) ? 1 : 1000)));
+    return transitionMs(this.shadowRoot.querySelector('.drawer'));
   }
 
   /** Abre el sheet. El foco vuelve a opener al cerrar. */

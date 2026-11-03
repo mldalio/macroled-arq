@@ -90,7 +90,8 @@ export function appendSpecs(card, specs = []) {
       const line = document.createElement('span');
       line.slot = 'specs';
       line.textContent = text;
-      if (tip) line.dataset.tip = tip;
+      // El tooltip es solo con mouse: el texto también queda para lectores de pantalla
+      if (tip) { line.dataset.tip = tip; line.setAttribute('aria-description', tip); }
       if (index) line.toggleAttribute('divided', true);
       card.append(line);
     });
@@ -128,7 +129,7 @@ class ArqProductCard extends ArqElement {
     `<div class="info">` +
     `<div class="title"><a class="card-link name"><slot name="name"></slot></a></div>` +
     `<p class="specs role-body" hidden><slot name="specs"></slot></p>` +
-    `<span class="finishes" hidden><slot name="finishes"></slot><span class="more role-body-sm" hidden></span></span>` +
+    `<span class="finishes" hidden><slot name="finishes"></slot><span class="more role-body-sm" role="img" hidden></span></span>` +
     // «Comparar» + el nombre del producto solo para lectores: en un listado
     // cada checkbox se distingue (WCAG 2.4.6). Se ve igual que en Figma.
     `<arq-checkbox class="compare" show-label hidden>Comparar<span class="compare-name visually-hidden"></span></arq-checkbox>` +
@@ -175,7 +176,9 @@ class ArqProductCard extends ArqElement {
       this.#renderImages();
     };
     const card = root.querySelector('.card');
-    card.addEventListener('pointerenter', wantHover);
+    // Solo con mouse: en táctil pointerenter llega con cada toque (también al
+    // desplazar) y bajaba una foto que nunca se muestra
+    card.addEventListener('pointerenter', (event) => event.pointerType === 'mouse' && wantHover());
     root.querySelector('.card-link').addEventListener('focus', wantHover);
     // Hover con mouse solo sobre la imagen (no el nombre ni los acabados): un
     // solo estado para el fondo y la imagen. El ::after del link estirado tapa
@@ -313,7 +316,7 @@ class ArqProductCard extends ArqElement {
     // datos escritos a mano sin tooltip: se deduce del texto
     for (const spec of this.querySelectorAll(':scope > [slot="specs"]:not([data-tip])')) {
       const tip = tipForText(spec.textContent);
-      if (tip) spec.dataset.tip = tip;
+      if (tip) { spec.dataset.tip = tip; spec.setAttribute('aria-description', tip); }
     }
     root.querySelector('.finishes').hidden = !filled('finishes');
     this.#renderFinishes();
@@ -383,7 +386,7 @@ class ArqProductCard extends ArqElement {
     }
     for (const swatch of swatches) if (!visible.has(swatch)) swatch.setAttribute('data-overflow', '');
     more.textContent = `+${hidden}`;
-    more.setAttribute('aria-label', `${hidden} acabados más`);
+    more.setAttribute('aria-label', hidden === 1 ? '1 acabado más' : `${hidden} acabados más`);
   }
 
   #finishKey(event) {
@@ -468,10 +471,12 @@ class ArqProductCard extends ArqElement {
     this.#syncHoverGround();
     this.#setSrc(hover, this.#hoverWanted ? hoverSrc : null);
     // Iluminar: la imagen de estudio del otro modo queda en caché, así el fundido
-    // arranca al instante y termina junto con el fondo. TODO (diseño): §8 pide
+    // arranca al instante y termina junto con el fondo. Solo donde Iluminar
+    // existe (Productos): en la Home duplicaba las fotos. TODO (diseño): §8 pide
     // cargarla al activar Iluminar; confirmar el precargado.
+    const canIlluminate = this.#dark || document.querySelector('arq-catalog-toolbar[show-iluminar]');
     const otherSrc = this.#dark ? this.image : this.imageLit;
-    if (baseSrc && otherSrc && otherSrc !== baseSrc) new Image().src = otherSrc;
+    if (canIlluminate && baseSrc && otherSrc && otherSrc !== baseSrc) new Image().src = otherSrc;
   }
 
   // Fuji, Mini Kai, Mini Kai Round y Sen son la familia. Tori Visera es el

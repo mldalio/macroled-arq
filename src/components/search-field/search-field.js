@@ -63,7 +63,7 @@ class ArqSearchField extends ArqElement {
   static template =
     `<div class="field">` +
     `<span class="lead">${icon('search')}</span>` +
-    `<input class="input role-body" type="search" autocomplete="off" spellcheck="false" enterkeyhint="search">` +
+    `<input class="input role-body" type="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">` +
     `<arq-icon-button class="clear" icon="close" hidden>Borrar búsqueda</arq-icon-button>` +
     `<arq-icon-button class="close" icon="close">Cerrar búsqueda</arq-icon-button>` +
     `</div>` +

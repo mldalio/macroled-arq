@@ -42,6 +42,7 @@ import '../icon-button/icon-button.js';
 import '../download-item/download-item.js';
 import '../sku/sku.js';
 import css from './download-modal.css?inline';
+import { transitionMs } from '../../base/motion.js';
 
 class ArqDownloadModal extends ArqElement {
   static tag = 'arq-download-modal';
@@ -169,8 +170,7 @@ class ArqDownloadModal extends ArqElement {
     const dialog = this.#dialog;
     if (this.#closing) return;
     dialog.classList.remove('is-open', 'is-settled');
-    const { transitionDuration } = getComputedStyle(this.shadowRoot.querySelector('.sheet'));
-    const ms = Math.max(0, ...transitionDuration.split(',').map((value) => (parseFloat(value) || 0) * (value.trim().endsWith('ms') ? 1 : 1000)));
+    const ms = transitionMs(this.shadowRoot.querySelector('.sheet'));
     this.#closing = setTimeout(() => {
       this.#closing = null;
       dialog.close();

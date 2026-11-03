@@ -9,6 +9,10 @@
 .toggle {
   position: relative;
   display: inline-flex;
+  /* Es un control: con el dedo apretado no se selecciona «Iluminar» */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
   align-items: center;
   gap: var(--arq-space-gap-sm);
   max-width: 100%;

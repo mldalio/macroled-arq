@@ -106,6 +106,7 @@ const baseCss = `
 button,
 [role='button'],
 :host([role='button']),
+:host([role='tab']),
 :host([role='radio']),
 :host([role='checkbox']) {
   -webkit-user-select: none;

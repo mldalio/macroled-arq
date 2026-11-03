@@ -142,22 +142,36 @@ export class HorizontalRail {
       target = positions.reduce((best, x) => (Math.abs(x - target) < Math.abs(best - target) ? x : best), target);
     }
     target = Math.min(max, Math.max(0, target));
-    let timer = 0;
+    let frame = 0;
     const release = () => {
       this.#settle = null;
-      rail.removeEventListener('scrollend', release);
-      clearTimeout(timer);
+      cancelAnimationFrame(frame);
       rail.removeAttribute('data-arq-dragging');
     };
-    if (this.#reduced.matches || Math.abs(target - rail.scrollLeft) < 1) {
+    const start = rail.scrollLeft;
+    const distance = target - start;
+    if (this.#reduced.matches || Math.abs(distance) < 1) {
       rail.scrollTo({ left: target, behavior: 'auto' });
       return release();
     }
+    // Sigue a la velocidad con la que se soltó (no arranca de cero, como el
+    // scroll suave del navegador) y frena hasta el destino: x(t) = destino −
+    // distancia · e^(−k·t), con k = velocidad / distancia. Un k mínimo (llega en
+    // unas motion/duration/panel) para que un soltado lento no se arrastre.
+    const panel = toMs(getComputedStyle(this.#host).getPropertyValue('--arq-motion-duration-panel')) || 400;
+    const rate = Math.max(Math.abs(velocity) / Math.abs(distance), 3 / panel);
+    const began = performance.now();
     this.#settle = release;
-    rail.addEventListener('scrollend', release);
-    // Por si scrollend no llega: tope de motion/duration/panel × 2
-    timer = setTimeout(release, (toMs(getComputedStyle(this.#host).getPropertyValue('--arq-motion-duration-panel')) || 400) * 2);
-    rail.scrollTo({ left: target, behavior: 'smooth' });
+    const step = (now) => {
+      const remaining = distance * Math.exp(-rate * (now - began));
+      if (Math.abs(remaining) < 0.5) {
+        rail.scrollLeft = target;
+        return release();
+      }
+      rail.scrollLeft = target - remaining;
+      frame = requestAnimationFrame(step);
+    };
+    frame = requestAnimationFrame(step);
   }
   #stop() { clearInterval(this.#timer); this.#timer = 0; }
   #sync() {

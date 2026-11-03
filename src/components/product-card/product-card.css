@@ -246,6 +246,8 @@
   min-width: 0;
   color: var(--arq-color-text-primary);
   overflow-wrap: break-word;
+  /* Una palabra larga en una card angosta corta con guion («Antideslum-brante»), como el h1 de la ficha */
+  hyphens: auto;
 }
 
 /* en todos los tamaños y dispositivos, space/gap/sm (8 px) entre el título y los datos y entre
@@ -441,14 +443,18 @@
    temperatura y el texto, sin fondo, en color/text/primary. Con hover o foco sin Iluminar la imagen pasa a su
    versión encendida sobre fondo oscuro (color/surface/inverse-hover) y el texto la acompaña en
    color/text/inverse. Por encima de las fotos y por debajo del link estirado (el clic abre la ficha).
-   El color del punto sale del dato (src/base/color-temperature.js), sin borde. TODO (diseño): no está en Figma. */
+   El color del punto sale del dato (src/base/color-temperature.js), con un borde color/border/subtle
+   para que el blanco frío (5000 K o más) se vea sobre color/surface/subtle. Un valor largo
+   («2700K-6500K Tunable») baja de línea con el punto alineado al primer renglón. TODO (diseño):
+   no está en Figma. */
 .temp {
   position: absolute;
   z-index: 2;
   inset-block-end: var(--arq-space-padding-sm);
   inset-inline-end: var(--arq-space-padding-md);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  max-width: calc(100% - 2 * var(--arq-space-padding-md));
   gap: var(--arq-space-gap-xs);
   color: var(--arq-color-text-primary);
   pointer-events: none;
@@ -462,6 +468,8 @@
   box-sizing: border-box;
   width: var(--arq-space-gap-sm);
   height: var(--arq-space-gap-sm);
+  margin-block-start: calc((1lh - var(--arq-space-gap-sm)) / 2);
+  border: var(--arq-border-default) solid var(--arq-color-border-subtle);
   border-radius: var(--arq-radius-pill);
 }
 
@@ -497,7 +505,10 @@
   text-overflow: ellipsis;
 }
 
+/* Solo el primero (el ángulo, que puede ser un rango) se achica con «…»; IP, CRI y UGR son cortos
+   y no se cortan: antes se achicaban todos a la vez y ninguno se leía. */
 .specs ::slotted([slot='specs'][divided]) {
+  flex-shrink: 0;
   margin-inline-start: var(--arq-space-gap-sm);
   padding-inline-start: var(--arq-space-gap-sm);
   border-inline-start: var(--arq-border-default) solid var(--arq-color-border-default);
@@ -521,6 +532,7 @@
 
   .specs ::slotted([slot='specs']),
   .specs ::slotted([slot='specs'][divided]) {
+    box-sizing: border-box;
     flex: none;
     max-width: 100%;
     overflow: visible;

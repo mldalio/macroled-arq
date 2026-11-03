@@ -105,6 +105,8 @@
   margin-inline: var(--page-extra);
   padding-left: var(--arq-layout-gutter);
   overflow-x: auto;
+  /* Al llegar al final no dispara el «atrás» del navegador (Chrome Android) */
+  overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scroll-padding-inline-start: var(--arq-layout-gutter);
   scrollbar-width: none;

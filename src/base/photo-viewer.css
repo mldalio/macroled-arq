@@ -7,7 +7,8 @@
   max-width: none;
   max-height: none;
   margin: 0;
-  padding: var(--arq-layout-gutter);
+  /* Abajo suma el área segura: las miniaturas no quedan bajo la barra de inicio */
+  padding: var(--arq-layout-gutter) var(--arq-layout-gutter) calc(var(--arq-layout-gutter) + env(safe-area-inset-bottom, var(--arq-space-0)));
   border: 0;
   background: var(--arq-color-surface-transparent);
   color: var(--arq-color-text-primary);

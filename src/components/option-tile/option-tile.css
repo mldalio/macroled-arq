@@ -43,6 +43,14 @@
   }
 }
 
+/* Táctil: sin hover, el dibujo de Hover mientras el dedo apoya (:active) */
+@media (hover: none) {
+  :host(:not([disabled]):not([selected]):not([type='value'])) .tile:active {
+    border-bottom-color: var(--arq-color-border-hover);
+    color: var(--arq-color-text-primary);
+  }
+}
+
 /* State=Selected: la línea es el indicador */
 :host([selected]) .tile {
   border-bottom-color: var(--arq-color-border-strong);

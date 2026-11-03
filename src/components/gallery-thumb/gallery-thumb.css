@@ -47,6 +47,13 @@
   }
 }
 
+/* Táctil: el borde de Hover mientras el dedo apoya (:active) */
+@media (hover: none) {
+  .thumb:active::after {
+    border-color: var(--arq-color-border-hover);
+  }
+}
+
 /* State=Selected (gana sobre Hover) */
 .thumb[aria-current='true']::after {
   border-color: var(--arq-color-border-strong);

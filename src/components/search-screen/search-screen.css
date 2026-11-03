@@ -14,7 +14,8 @@
   height: 100dvh;
   max-height: none;
   margin: 0;
-  padding: 0;
+  /* El área segura abajo (barra de inicio del iPhone; 0 sin viewport-fit=cover) */
+  padding: 0 0 env(safe-area-inset-bottom, var(--arq-space-0));
   border: 0;
   border-radius: var(--arq-radius-control);
   background: var(--arq-color-surface-default);

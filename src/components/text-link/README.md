@@ -20,10 +20,10 @@ Link de texto: un nombre o una frase que lleva a otra página y sigue el estilo 
 | — | `label` | `label` | nombre accesible (`aria-label`), si el texto visible no alcanza |
 
 - Hover, Pressed y Focus son CSS (`:hover` solo con mouse, `:active`, `:focus-visible`).
-- **Línea:** `border/default` (1 px) en el color del texto, en el borde inferior de una caja de texto ajustada (`line-height: 1em + border/strong`, o sea 2 px más que el cuerpo: 14 → 16, 16 → 18). Queda a unos 3,5 px de la base de las letras y no toca las colas de g, p, y, q. En un link en línea sin esa caja, la línea quedaría a unos 9 px (el área de contenido de la fuente es más alta que las letras).
+- **Línea:** `border/default` (1 px) en el color del texto: es el subrayado del texto (`text-decoration`), a `space/padding/2xs` (3 px) de la base, así no toca las colas de g, p, y, q. La caja de texto es ajustada (`line-height: 1em + border/strong`, o sea 2 px más que el cuerpo: 14 → 16, 16 → 18).
 - **Hover y Pressed:** no se dibuja otra línea: texto y línea se atenúan juntos a `color/text/tertiary`, con fundido de `motion/duration/base`.
 - **Foco:** anillo separado (`border/strong`, offset 2 px, `color/border/focus`); no cambia el tamaño.
-- **Una línea:** si el texto baja de renglón, la línea queda debajo de todo el bloque.
+- **Más de un renglón:** si el texto baja de renglón (nombres largos de la base), cada renglón lleva su línea y toma el interlineado del role (`data-wrap`, lo pone el componente al medirse). Antes la línea quedaba solo debajo del bloque y los renglones, pegados.
 
 ## Dónde se usa
 

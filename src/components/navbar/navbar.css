@@ -371,7 +371,7 @@
   min-height: min(55dvh, var(--menu-full));
   max-height: var(--menu-full);
   margin: 0;
-  padding: 0 0 calc(var(--arq-space-gap-xl) * 2);
+  padding: 0 0 calc(var(--arq-space-gap-xl) * 2 + env(safe-area-inset-bottom, var(--arq-space-0)));
   border: 0;
   border-radius: var(--arq-radius-control);
   background: var(--arq-color-surface-default);

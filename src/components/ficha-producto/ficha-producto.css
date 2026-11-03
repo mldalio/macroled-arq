@@ -183,6 +183,8 @@
   box-sizing: border-box;
   width: var(--arq-space-gap-sm);
   height: var(--arq-space-gap-sm);
+  /* El blanco frío (5000 K o más) no se veía sobre el fondo claro */
+  border: var(--arq-border-default) solid var(--arq-color-border-subtle);
   border-radius: var(--arq-radius-pill);
 }
 
