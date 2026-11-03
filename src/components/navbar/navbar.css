@@ -576,14 +576,20 @@
   display: none;
 }
 
-/* Colecciones (frame 2295:23605): la lista arranca pegada a «volver» y
-   "Ver todo" cierra con space/padding/md abajo */
+/* Colecciones (frame 2295:23605): la lista arranca pegada a «volver». No
+   tiene "Ver todo" al pie: el aire de abajo (el del menú) va al final de la
+   lista, dentro del scroll, así la lista llega al borde de la pantalla en vez
+   de cortarse sobre una franja blanca (2026-11-03) */
+.menu.is-tall {
+  padding-bottom: 0;
+}
+
 .menu-sub--colecciones {
-  padding-bottom: var(--arq-space-padding-md);
+  padding-bottom: 0;
 }
 
 .menu-sub--colecciones .sub-list {
-  padding-block: 0;
+  padding-block: 0 calc(var(--arq-space-gap-xl) * 2 + env(safe-area-inset-bottom, var(--arq-space-0)));
 }
 
 /* Lámparas y artefactos (set 2312:8904): dos grupos en la misma lista, cada

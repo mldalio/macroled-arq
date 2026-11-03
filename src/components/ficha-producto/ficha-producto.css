@@ -168,7 +168,7 @@
   color: var(--arq-color-text-tertiary);
 }
 
-/* Valor en role/body-xl-light (20/28; 16/24 en Mobile) y color/text/primary.
+/* Valor en role/body-xl-light (20/28; en Mobile, role/heading-3-light 20/28) y color/text/primary.
    La temperatura de color lleva un puntito del color de la luz antes del valor (src/base/color-temperature.js). */
 .keydata-value {
   display: flex;
@@ -1014,6 +1014,14 @@
 
   .header {
     gap: var(--arq-space-gap-2xl);
+  }
+
+  /* Características en role/heading-3-light (20/28): role/body-xl-light baja a 16/24 en
+     Mobile y quedaba igual que los atributos que se eligen (option-tile, 16 px). Mismo
+     peso Light; así el valor sigue un escalón arriba, como en Desktop */
+  .keydata-value {
+    font-size: var(--arq-type-heading-3-size);
+    line-height: var(--arq-type-heading-3-leading);
   }
 
   .actions {
