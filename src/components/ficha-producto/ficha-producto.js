@@ -64,7 +64,7 @@ import { attributeInfo } from '../../data/attributes.js';
 import { config } from '../../config.js';
 import { GALLERY_WIDTH, sizedImage } from '../../base/image-size.js';
 import { reveal, revealCss } from '../../base/reveal.js';
-import { variantOptions, initialSelection, findVariant, choose } from '../../data/variants.js';
+import { variantOptions, initialSelection, findVariant, choose, configuratorAttributes } from '../../data/variants.js';
 import '../breadcrumb/breadcrumb.js';
 import '../breadcrumb-item/breadcrumb-item.js';
 import '../button/button.js';
@@ -328,6 +328,8 @@ class ArqFichaProducto extends ArqElement {
   };
 
   #selection = {};
+  // Atributos del configurador: variant_attributes y el color si es uno solo (configuratorAttributes)
+  #attributes = [];
   #storyHasText = false;
   #sku = null;
 
@@ -381,8 +383,7 @@ class ArqFichaProducto extends ArqElement {
     root.querySelector('.options').addEventListener('arq:change', (event) => {
       const attribute = event.target.closest('[data-attribute]')?.dataset.attribute;
       if (!attribute || !event.detail?.selected) return;
-      const { variants, variantAttributes } = this.#product;
-      this.#selection = choose(variants, variantAttributes, this.#selection, attribute, event.detail.value);
+      this.#selection = choose(this.#product.variants, this.#attributes, this.#selection, attribute, event.detail.value);
       this.#refreshOptions();
       this.#showVariant({ updateUrl: true });
     });
@@ -485,7 +486,8 @@ class ArqFichaProducto extends ArqElement {
       }
     }
     const sku = new URLSearchParams(location.search).get('sku');
-    this.#selection = initialSelection(product.variants, product.variantAttributes, sku);
+    this.#attributes = configuratorAttributes(product.variants, product.variantAttributes);
+    this.#selection = initialSelection(product.variants, this.#attributes, sku);
     this.#renderHeader();
     this.#renderStory(product.group.story);
     this.#renderInspirationText(product.group.inspiration);
@@ -722,8 +724,7 @@ class ArqFichaProducto extends ArqElement {
   // Los controles se crean una vez; al elegir se actualizan selected y
   // disabled en los mismos elementos (así el foco no se pierde con las flechas).
   #buildOptions() {
-    const { variants, variantAttributes } = this.#product;
-    const groups = variantOptions(variants, variantAttributes, this.#selection).map(({ attribute, options }) => {
+    const groups = variantOptions(this.#product.variants, this.#attributes, this.#selection).map(({ attribute, options }) => {
       const info = attributeInfo(attribute);
       const group = document.createElement('arq-option-group');
       group.dataset.attribute = attribute;
@@ -752,9 +753,8 @@ class ArqFichaProducto extends ArqElement {
   }
 
   #refreshOptions() {
-    const { variants, variantAttributes } = this.#product;
     const root = this.shadowRoot;
-    for (const { attribute, options } of variantOptions(variants, variantAttributes, this.#selection)) {
+    for (const { attribute, options } of variantOptions(this.#product.variants, this.#attributes, this.#selection)) {
       const items = root.querySelectorAll(`.options [data-attribute="${CSS.escape(attribute)}"] :is(arq-swatch, arq-option-tile)`);
       items.forEach((item, i) => {
         item.selected = options[i].selected;

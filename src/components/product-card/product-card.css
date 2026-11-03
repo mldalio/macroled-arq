@@ -556,7 +556,7 @@
   margin-top: var(--arq-space-gap-sm);
 }
 
-/* acabados de más: se ven MAX_FINISHES y «+N» (product-card.js · #limitFinishes). El «+N» no es
+/* acabados de más: si no entran en una línea, se ven los que entran y «+N» (product-card.js · #limitFinishes). El «+N» no es
    interactivo: el clic pasa al link de la card. */
 .finishes ::slotted([data-overflow]) {
   display: none !important;

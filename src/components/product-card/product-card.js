@@ -36,7 +36,7 @@
 //   ring del swatch), sin crecer (siempre Small, 16, a space/gap/md entre
 //   muestras). Elegir uno cambia las imágenes y el link a las de
 //   ese acabado y emite arq:finish { name, sku, href, image }. Con un solo
-//   acabado no hay elegido ni se puede elegir.
+//   acabado se ve elegido (como la opción única de la ficha), pero no se elige.
 // - loading: card de carga (skeleton) con la misma geometría (bloque 7:10,
 //   nombre, dos líneas de datos y acabados) en color/surface/subtle, como las
 //   filas de carga de Descargas, con una franja de brillo que la cruza
@@ -56,9 +56,6 @@ import tooltipCss from '../../base/tooltip.css?inline';
 import css from './product-card.css?inline';
 
 const MOBILE = matchMedia('(max-width: 767px)');
-
-// muestras de acabado que se ven; el resto se resume en «+N»
-const MAX_FINISHES = 5;
 
 /**
  * Agrega los acabados de una card como swatches del slot finishes. finishes:
@@ -146,6 +143,7 @@ class ArqProductCard extends ArqElement {
   #dark = false;
   #hoverWanted = false;
   #finishToken = 0;
+  #infoWidth = 0; // ancho de .info, para ver cuántos acabados entran
   #revealed = false; // la foto principal ya tuvo su fundido de entrada
   #failed = new Set(); // fotos que no cargaron
 
@@ -215,6 +213,12 @@ class ArqProductCard extends ArqElement {
       this.emit('compare', { checked: event.detail.checked });
     });
     MOBILE.addEventListener('change', () => this.#renderSize());
+    // ancho de la columna de textos: decide cuántos acabados entran (#limitFinishes)
+    new ResizeObserver(([entry]) => {
+      if (entry.contentRect.width === this.#infoWidth) return;
+      this.#infoWidth = entry.contentRect.width;
+      this.#limitFinishes(this.#swatches());
+    }).observe(root.querySelector('.info'));
     watchTheme(this, 'themeChanged');
   }
 
@@ -324,14 +328,15 @@ class ArqProductCard extends ArqElement {
     return [...this.querySelectorAll(':scope > arq-swatch[slot="finishes"]')];
   }
 
-  // Elegible: más de un acabado y datos por acabado. Un solo acabado queda como
-  // imagen (sin elegido), como los de las cards de colección.
+  // Elegible: más de un acabado y datos por acabado. Un solo acabado se ve
+  // elegido (aro de Selected, como la opción única de la ficha) pero no se elige.
   #renderFinishes() {
     const swatches = this.#swatches();
     const group = this.shadowRoot.querySelector('.finishes');
     const choosable = swatches.length > 1 && swatches.some((swatch) => swatch.dataset.sku || swatch.dataset.image);
     if (!choosable) {
       group.removeAttribute('role');
+      if (swatches.length === 1) swatches[0].setAttribute('selected', '');
       this.#limitFinishes(swatches);
       return;
     }
@@ -348,19 +353,32 @@ class ArqProductCard extends ArqElement {
     this.#limitFinishes(swatches);
   }
 
-  // con más de MAX_FINISHES acabados se ven los primeros y «+N» con los que siguen. El elegido
-  // siempre se ve: si está más allá, ocupa el último lugar. Los ocultos (data-overflow) no se pueden
-  // elegir en la card (ni con las flechas): se eligen en la ficha. TODO (diseño): no está en Figma.
+  // Si los acabados no entran en una línea del ancho de la card, se ven los que entran y «+N» con
+  // los que siguen; si entran, se ven todos. El elegido siempre se ve: si está más allá, ocupa el
+  // último lugar. Los ocultos (data-overflow) no se pueden elegir en la card (ni con las flechas):
+  // se eligen en la ficha. Se recalcula al cambiar el ancho (#infoWidth, ResizeObserver de setup).
+  // TODO (diseño): no está en Figma.
   #limitFinishes(swatches) {
     const more = this.shadowRoot.querySelector('.more');
     for (const swatch of swatches) swatch.removeAttribute('data-overflow');
-    const hidden = swatches.length - MAX_FINISHES;
-    more.hidden = hidden <= 0;
-    if (hidden <= 0) return;
+    more.hidden = true;
+    const width = this.#infoWidth;
+    const size = swatches[0]?.getBoundingClientRect().width;
+    if (!width || !size || swatches.length < 2) return;
+    const gap = parseFloat(getComputedStyle(this.shadowRoot.querySelector('.finishes')).columnGap) || 0;
+    const row = (count) => count * size + (count - 1) * gap;
+    if (row(swatches.length) <= width) return;
+    // el «+N» más ancho posible, para que no cambie lo que entra según la cantidad
+    more.textContent = `+${swatches.length}`;
+    more.hidden = false;
+    const moreWidth = more.getBoundingClientRect().width;
+    let shown = swatches.length - 1;
+    while (shown > 1 && row(shown) + gap + moreWidth > width) shown--;
+    const hidden = swatches.length - shown;
     const chosen = swatches.findIndex((swatch) => swatch.hasAttribute('selected'));
-    const visible = new Set(swatches.slice(0, MAX_FINISHES));
-    if (chosen >= MAX_FINISHES) {
-      visible.delete(swatches[MAX_FINISHES - 1]);
+    const visible = new Set(swatches.slice(0, shown));
+    if (chosen >= shown) {
+      visible.delete(swatches[shown - 1]);
       visible.add(swatches[chosen]);
     }
     for (const swatch of swatches) if (!visible.has(swatch)) swatch.setAttribute('data-overflow', '');

@@ -70,6 +70,20 @@ export function initialSelection(variants, attributes, sku) {
 }
 
 /**
+ * Atributos del configurador de la ficha: los de VARIANT_ATTRIBUTES y, si el
+ * grupo tiene un solo color que la hoja no declara (no varía), también el color:
+ * se ve como opción única, elegida, igual que un color que no queda con otro.
+ */
+export function configuratorAttributes(variants, attributes) {
+  const extra = variants.length
+    ? Object.keys(variants[0].attributes).filter(
+        (field) => attributeInfo(field).control === 'swatches' && !attributes.includes(field) && variantValues(variants, field).length === 1,
+      )
+    : [];
+  return [...attributes, ...extra];
+}
+
+/**
  * Atributos en el orden del configurador: la característica madre primero (el
  * color si lo hay; si no, la primera), la potencia segunda si el grupo la
  * declara en VARIANT_ATTRIBUTES y el resto en el orden de la hoja.
