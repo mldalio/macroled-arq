@@ -37,6 +37,7 @@ gallery.images = [
 - **Si no entran,** la fila se desliza (scroll-snap, sin barra visible; decisión 2026-10-02 · Galerías). Con Tab, la miniatura con foco entra sola en la vista.
 - **Iluminar:** dentro de un bloque con `data-arq-theme="dark"` (en la ficha, la sección hero), la imagen grande y las miniaturas usan `srcOn`; si falta, la apagada. Lo detecta `src/base/theme.js` cuando cambia el atributo; la página no tiene que avisar.
 - **Modo de flechas y miniaturas:** `setOverlayTone(name, tone)` (`name`: `prev`, `next` o `thumbs`; `tone`: `'dark'`, `'light'` o `null`) pone `data-arq-theme` en cada una. La ficha lo elige según el brillo de la foto debajo, como el del breadcrumb y el toggle Iluminar; `frame` (el recuadro de la foto) y `overlays` (los tres elementos) son para medirlo.
+- **Cambio de variante** (`images` nueva): la foto nueva funde sobre la anterior con `motion/duration/fade`. Con fotos de estudio (PNG transparente), la que sale lleva el fondo `color/surface/subtle` y la nueva se carga recién cuando ya está tapada: así no se ven los dos productos superpuestos cuando cambia la forma (otra potencia). Iluminar funde sin ese fondo: la forma es la misma.
 - **Sin imagen:** queda el fondo `color/surface/subtle`.
 
 ## Tokens

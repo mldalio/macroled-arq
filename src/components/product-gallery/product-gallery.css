@@ -177,6 +177,15 @@
   object-fit: contain;
 }
 
+/* Cambio de variante con foto de estudio (PNG transparente): la que sale lleva
+   el fondo del marco y tapa a la nueva, así funden de una a la otra en vez de
+   verse las dos superpuestas (otra potencia es otra forma). En Iluminar no:
+   la forma es la misma y el fondo cambia con la página. .ready: recién con la
+   foto decodificada (product-gallery.js), si no el fondo solo tapa todo. */
+.theme-transition.quick.ready[data-fit='air'] {
+  background: var(--arq-color-surface-subtle);
+}
+
 /* Sin foto: se ve el fondo del marco (product-gallery.js) */
 ::slotted(img[hidden]) {
   display: none !important;
