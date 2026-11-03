@@ -62,6 +62,12 @@
 //   que incluye su familia. Los accesorios no entran en las colecciones.
 // - Accesorio: product_type «Accesorio»; compatible_with es el nombre del
 //   producto con el que se usa.
+// - Categorías: macrofamilia y subfamilia aceptan varios valores separados por
+//   coma, emparejados por posición: «Interior, Lámparas y Artefactos» con
+//   «Embutir, Artefacto» es Interior › Embutir y Lámparas y Artefactos ›
+//   Artefacto. El primer par es el principal (meta de la card, breadcrumb). Con
+//   una sola subfamilia, vale para todas las macrofamilias (decisiones.md,
+//   2026-11-03 · Un producto en varias categorías).
 // - Foto del mega-menú: img_ambient_1_on (o img_ambient_1, la columna
 //   img_ambient_1_off de la hoja, si falta). En una
 //   aplicación de Por espacio (Embutir, Jardín…), la del SKU con
@@ -164,6 +170,17 @@ const attributeText = (field, value) => {
   return field === 'modulos' ? shown.replace(/^(?:x\s*(\d+)|(\d+)\s*x?)$/i, (_, a, b) => `x${a ?? b}`) : shown;
 };
 const list = (value) => (Array.isArray(value) ? value.map(text).filter(Boolean) : text(value) ? text(value).split(',').map((v) => v.trim()).filter(Boolean) : []);
+
+// Pares { environment, application } de una fila (ver «Categorías» arriba).
+const categoryPairs = (doc) => {
+  const environments = list(doc[FIELDS.environment]);
+  const applications = list(doc[FIELDS.application]);
+  if (applications.length > 1 && applications.length !== environments.length) {
+    console.warn(`[arq] categorías: «${text(doc[FIELDS.name])}» tiene ${environments.length} macrofamilias y ${applications.length} subfamilias; se emparejan por posición.`);
+  }
+  const at = (i) => (applications.length === 1 ? applications[0] : applications[i]) ?? null;
+  return environments.map((environment, i) => ({ environment, application: at(i) }));
+};
 
 /** Slug para URLs: «Kanu Jardín» → kanu-jardin. */
 export const slug = (value) => normalize(value).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -311,6 +328,7 @@ export function fromDocuments(rawDocs) {
     const names = new Set(rows.map((doc) => text(doc[FIELDS.name])));
     const productType = text(first[FIELDS.productType]) || DEFAULT_TYPE;
     const compatible = list(first[FIELDS.compatibleWith]).map((name) => idByName.get(normalize(name))).filter(Boolean);
+    const categories = categoryPairs(first);
     return {
       id,
       name: groupName(rows, first),
@@ -331,8 +349,11 @@ export function fromDocuments(rawDocs) {
         const marked = rows.find((doc) => doc[FIELDS.isMenuDefault] === true);
         return marked ? menuImage(slots(marked)) : null;
       })(),
-      environment: list(first[FIELDS.environment]),
-      application: text(first[FIELDS.application]) || null,
+      // Pares macrofamilia › subfamilia; environment y application son los del primero
+      // (environment: todas las macrofamilias). catalog.js · inCategory mira los pares.
+      categories,
+      environment: categories.map((c) => c.environment),
+      application: categories[0]?.application ?? (list(first[FIELDS.application])[0] || null),
       variantAttributes: variantFields(first[FIELDS.variantAttributes]),
       compatibleWith: compatible,
       story: text(first[FIELDS.story]),

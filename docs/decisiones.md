@@ -2224,3 +2224,13 @@ Pasada con los skills emil-design-eng, improve-animations, find-animation-opport
 - Colgante: la foto toca el borde de arriba y sus primeras filas (al menos 5 % del alto) miden menos de 3 % del ancho (`src/base/image-fit.js`). Hoy solo Döuli.
 - `TODO` (diseño): no está en Figma.
 
+## 2026-11-03 · Un producto en varias categorías
+
+- **Caso:** Daö se ve en Interior › Embutir y también en Lámparas y artefactos › Artefacto.
+- **En la hoja:** `macrofamilia` y `subfamilia` aceptan varios valores separados por coma, **emparejados por posición**: `Interior, Lámparas y Artefactos` con `Embutir, Artefacto`. El primer par es el principal: da la meta de la card («Interior · Embutir»), el breadcrumb de la ficha y la foto del mega-menú del producto (`is_menu_default`). Con una sola subfamilia, vale para todas las macrofamilias. Si las dos columnas no tienen la misma cantidad, la consola avisa y se empareja por posición. Daö y Mini Daö tienen que traer los mismos valores para seguir unidos (`models.js`).
+- **En el sitio:** el producto aparece en el listado, el mega-menú, el menú Mobile y el sidebar de cada par, y en el listado general como cualquier luminaria. Una luminaria que está solo en Lámparas y Artefactos sigue fuera del listado general (como antes). En Colecciones, la línea es la de Interior o Exterior («Línea Interior»): Lámparas y Artefactos no es una línea.
+- `familia` no cambia (un producto, una familia; la fila de la colección ya lista varias por coma) y `categoria` queda como está.
+- Se descartó duplicar filas (SKU repetidos en la ficha y en Descargas) y una columna nueva (suma un cambio en n8n).
+- **Orden de Lámparas y artefactos:** en Lámpara, PAR11 Dim to warm, PAR11 Cerámico y Frente PAR11 Cerámico (el frente es un accesorio del Cerámico; en la hoja, subfamilia Lámpara). En Artefacto, como viene (Daö en `DAO_ORDER`). En «Todo lámparas y artefactos», primero los artefactos y al final las lámparas, en ese orden (`PAR11_ORDER` y `byCollection` en `src/data/catalog.js`).
+- **Configurar Daö en Lámparas y artefactos:** lo que se ve ahí son las piezas y las lámparas del sistema Daö, así que el listado (Todo, Artefacto y Lámpara) se comporta como la colección Daö: «Configurar Daö» en catalog-toolbar en el lugar de Iluminar, sin Iluminar. Bajadas: «Las piezas del sistema Daö para armar cada punto de luz: aros, cabezales y lámparas.» (Todo, en `src/pages/productos.html`), «Aros y cabezales del sistema Daö, para combinar y armar cada punto de luz.» (Artefacto) y la de Lámpara con «compatibles con el sistema Daö» (`src/data/category-descriptions.js`). `TODO` (diseño): no está en Figma.
+- Código: `categoryPairs` en `src/data/typesense-adapter.js` (`group.categories`) e `inCategory` / `isListed` en `src/data/catalog.js`.

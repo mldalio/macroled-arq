@@ -15,6 +15,8 @@
 // - Solo se unen dos grupos que existen los dos (un DAO-E-PH sin Mini no recibe «Modelo»).
 // - No se unen grupos de distinta macrofamilia o subfamilia: Aplicar y Embutir son
 //   categorías de navegación y el producto se listaría solo en una.
+//   Con varias categorías («Interior, Lámparas y Artefactos»), los dos modelos tienen que
+//   traer las mismas.
 
 // Cada regla: de qué grupos es (match), cómo se llama el grupo del modelo base a partir
 // del de cualquier modelo (parent) y qué modelo es cada uno (model).
@@ -55,7 +57,7 @@ export function applyModels(docs) {
     const entry = parents.get(parent);
     entry.variantGroups.add(variantGroup);
     entry.models.add(r.model(variantGroup));
-    entry.categories.add(`${text(doc.macrofamilia)}|${text(doc.subfamilia)}`);
+    entry.categories.add(`${names(doc.macrofamilia).join(', ')}|${names(doc.subfamilia).join(', ')}`);
   }
 
   // Se unen los que tienen más de un modelo y una sola categoría.
