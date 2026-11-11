@@ -76,7 +76,7 @@
 // - Imágenes: listas multimagen_* con posición fija (IMAGE_SLOTS). Un lugar
 //   vacío ('') es una foto que falta.
 
-import { ATTRIBUTES, variantFields } from './attributes.js';
+import { ATTRIBUTES, normalizeValue, variantFields } from './attributes.js';
 import { normalize } from './text.js';
 import { applyModels } from './models.js';
 import { sizedImage } from '../base/image-size.js';
@@ -167,7 +167,7 @@ const imageUrl = (url) => (IMAGE_BUST && url ? `${url}${url.includes('?') ? '&' 
 // el patrón y quedan como vienen.
 const attributeText = (field, value) => {
   const shown = text(value);
-  return field === 'modulos' ? shown.replace(/^(?:x\s*(\d+)|(\d+)\s*x?)$/i, (_, a, b) => `x${a ?? b}`) : shown;
+  return field === 'modulos' ? shown.replace(/^(?:x\s*(\d+)|(\d+)\s*x?)$/i, (_, a, b) => `x${a ?? b}`) : normalizeValue(field, shown);
 };
 const list = (value) => (Array.isArray(value) ? value.map(text).filter(Boolean) : text(value) ? text(value).split(',').map((v) => v.trim()).filter(Boolean) : []);
 
