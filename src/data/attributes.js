@@ -28,6 +28,31 @@ export const SECTIONS = Object.freeze([
   { id: 'comercial', label: 'Información comercial' },
 ]);
 
+// «SI», «Si», «NO», «no», «SI / TRIAC», «Triac»: la base los trae con cualquier mayúscula. Se
+// muestran siempre «Sí», «No», «Sí / Triac», «Triac», así que un mismo valor no se repite.
+function yesNoText(value) {
+  return value
+    .split('/')
+    .map((part) => part.trim().toLowerCase())
+    .filter(Boolean)
+    .map((part) => (part === 'si' || part === 'sí' ? 'Sí' : part.charAt(0).toUpperCase() + part.slice(1)))
+    .join(' / ');
+}
+
+// «AC220V», «ac 220 v», «220V AC», «AC 85 - 265V» → «AC 220V», «AC 220V», «AC 220V», «AC 85-265V»: el tipo
+// de corriente primero y separado del valor, el valor sin espacios y con «V». Sin AC ni DC (o sin número), como llega.
+function voltageText(value) {
+  const type = value.match(/\b(?:AC\s*\/\s*DC|AC|DC)(?![a-z])/i)?.[0];
+  const rest = type ? value.replace(type, ' ') : value;
+  const volts = rest
+    .replace(/\s+/g, '')
+    .replace(/[–—]/g, '-')
+    .replace(/v$/i, 'V');
+  if (!/\d/.test(volts)) return value;
+  const compact = /\dV?$/.test(volts) && !/V$/.test(volts) ? `${volts}V` : volts;
+  return type ? `${type.replace(/\s+/g, '').toUpperCase()} ${compact}` : compact;
+}
+
 const a = (label, section, extra = {}) => Object.freeze({ label, section, control: 'tiles', ...extra });
 
 export const ATTRIBUTES = Object.freeze({
@@ -43,10 +68,10 @@ export const ATTRIBUTES = Object.freeze({
   vida_util: a('Vida útil', 'luminicas', { filter: false }),
   // Eléctricas
   potencia: a('Potencia', 'electricas'),
-  tension_proveedor: a('Tensión de entrada', 'electricas'),
+  tension_proveedor: a('Tensión de entrada', 'electricas', { normalize: voltageText }),
   factor_potencia: a('Factor de potencia', 'electricas', { filter: false }),
   thd: a('THD', 'electricas', { filter: false }),
-  dimeable: a('Dimerizable', 'electricas'),
+  dimeable: a('Dimerizable', 'electricas', { normalize: yesNoText }),
   tipo_driver: a('Driver', 'electricas', { filter: false }),
   emc: a('EMC', 'electricas', { filter: false }),
   // Materiales e instalación
@@ -168,6 +193,20 @@ export function specValue({ prefix, digits = 0 }, value) {
   if (!prefix) return value;
   const match = String(value).match(new RegExp(`^\\s*(?:${prefix}\\s*)?(\\d+)\\s*$`, 'i'));
   return match ? `${prefix}${match[1].padStart(digits, '0')}` : value;
+}
+
+/**
+ * Valor de un campo como lo usa el front (filtros, selectores, tablas, comparativa): una sola forma
+ * para lo que la base escribe de varias. IP e IK siempre con su sigla («65», «IP65», «IP 65» →
+ * «IP65»; «6», «06», «IK06» → «IK06»); dimeable, sin diferencias de mayúsculas (yesNoText). Los
+ * demás campos quedan como llegan. Se aplica una vez, al leer los datos (typesense-adapter.js).
+ */
+export function normalizeValue(field, value) {
+  const shown = String(value ?? '').trim();
+  const info = ATTRIBUTES[field];
+  if (!shown || !info) return shown;
+  if (info.normalize) return info.normalize(shown);
+  return info.prefix ? specValue(info, shown) : shown;
 }
 
 const hasValue = (value) => value !== undefined && value !== null && String(value).trim() !== '' && value !== '-';
