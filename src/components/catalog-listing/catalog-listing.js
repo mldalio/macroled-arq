@@ -315,7 +315,8 @@ class ArqCatalogListing extends ArqElement {
     this.#syncIlluminate();
     this.#syncConfigure();
     this.#markNav();
-    this.#load();
+    // rows: las filas del filter-panel salen de la categoría; al cambiarla se rearman
+    this.#load({ rows: true });
   }
 
   // En la colección Daö y en Lámparas y Artefactos, «Configurar Daö» va en
