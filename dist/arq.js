@@ -1,5 +1,5 @@
 //#region package.json
-var e = "0.3.13", t = {
+var e = "0.3.14", t = {
 	BASE_URL: "/",
 	DEV: !1,
 	MODE: "production",
@@ -11659,7 +11659,7 @@ var td = ":host{box-sizing:border-box;background:var(--arq-color-surface-default
 	}
 	#m() {
 		let e = new URLSearchParams(location.search);
-		this.#e = dd(), this.#t = e.get("q")?.trim() ?? "", this.#n = {}, this.shadowRoot.querySelector("arq-filter-panel").clear(), this.#g(), this.#h(), this.#O(), this.#_();
+		this.#e = dd(), this.#t = e.get("q")?.trim() ?? "", this.#n = {}, this.shadowRoot.querySelector("arq-filter-panel").clear(), this.#g(), this.#h(), this.#O(), this.#_({ rows: !0 });
 	}
 	#h() {
 		let e = this.shadowRoot.querySelector(".toolbar"), t = !this.#t && cd(this.#e), n = e.querySelector(":scope > .configure");
